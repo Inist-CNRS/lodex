@@ -11,7 +11,7 @@ describe('Dataset Publication', () => {
         it('should receive a csv file and preview its data in a table', () => {
             homePage.openAdvancedDrawer();
             homePage.goToAdminDashboard();
-            datasetImportPage.openImportModal();
+            datasetImportPage.openImportDialog();
 
             fillInputWithFixture(
                 '.btn-upload-dataset input[type=file]',

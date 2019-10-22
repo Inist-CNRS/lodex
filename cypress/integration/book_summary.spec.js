@@ -78,7 +78,7 @@ describe('Book Summary Format', () => {
         });
 
         it('should allow to embed the summary into an external website', () => {
-            bookSummary.openEmbedModal();
+            bookSummary.openEmbedDialog();
 
             cy.contains('embedded-istex-summary').should('exist');
         });

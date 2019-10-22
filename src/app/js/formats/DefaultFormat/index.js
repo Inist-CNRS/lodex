@@ -10,6 +10,9 @@ export default {
     ListComponent: DefaultView,
     AdminComponent: Empty,
     EditionComponent: DefaultEdition,
-    predicate: value => !Array.isArray(value) && typeof value !== 'object',
+    predicate: value =>
+        value == null ||
+        value === '' ||
+        (!Array.isArray(value) && typeof value !== 'object'),
     defaultArgs: {},
 };

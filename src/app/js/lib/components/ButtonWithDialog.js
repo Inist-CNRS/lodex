@@ -55,6 +55,9 @@ export const PureButtonWithDialog = ({
                 onRequestClose={handleClose}
                 autoScrollBodyContent
                 contentStyle={styles.modal}
+                bodyClassName="dialog-body"
+                contentClassName="dialog-content"
+                actionsContainerClassName="dialog-actions"
             >
                 {dialog}
             </Dialog>

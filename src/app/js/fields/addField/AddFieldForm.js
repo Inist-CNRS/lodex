@@ -71,7 +71,10 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
     withHandlers({
         onSubmit: ({ addFieldToResource, resource }) => () => {
             addFieldToResource(resource.uri);

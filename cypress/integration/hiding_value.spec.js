@@ -4,16 +4,21 @@ import * as datasetImportPage from '../support/datasetImportPage';
 import * as searchDrawer from '../support/searchDrawer';
 
 describe('hiding null value to user', () => {
-    beforeEach(teardown);
-    it('admin should be able hide field to user by setting it to null', () => {
+    const dataset = 'dataset/simple.csv';
+    const model = 'model/simple.json';
+
+    before(() => {
+        teardown();
         homePage.openAdvancedDrawer();
         homePage.goToAdminDashboard();
 
-        datasetImportPage.importDataset('dataset/simple.csv');
-        datasetImportPage.importModel('model/simple.json');
+        datasetImportPage.importDataset(dataset);
+        datasetImportPage.importModel(model);
         datasetImportPage.publish();
         datasetImportPage.goToPublishedResources();
+    });
 
+    it('admin should be able hide field to user by setting it to null', () => {
         searchDrawer.openSearchDrawer();
         searchDrawer.goToResourceNumber(1);
         cy.get('.detail')
@@ -22,9 +27,9 @@ describe('hiding null value to user', () => {
 
         cy.get('.column1 h3').contains('Row 1');
         cy.get('.column2').contains('Test 1');
-        cy.get('.column1 .edit-field').click();
+        cy.get('.column2 .edit-field').click();
 
-        cy.get('#field_form input').clear();
+        cy.get('#field_form textarea[name=column2]').clear();
         cy.get('.edit-field.save').click();
         cy.get('.detail')
             .find('.property')
@@ -37,7 +42,7 @@ describe('hiding null value to user', () => {
             .find('.property')
             .should('have.length', 1);
 
-        cy.get('.column1').should('not.exist');
-        cy.get('.column2').should('be.visible');
+        cy.get('.column1').should('be.visible');
+        cy.get('.column2').should('not.exist');
     });
 });

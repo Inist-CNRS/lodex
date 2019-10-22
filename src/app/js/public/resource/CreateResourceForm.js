@@ -50,9 +50,11 @@ export const CreateResourceFormComponent = ({
             </Alert>
         )}
         <UriFieldInput />
-        {fields.filter(({ name }) => name !== 'uri').map(field => (
-            <FieldInput key={field.name} field={field} />
-        ))}
+        {fields
+            .filter(({ name }) => name !== 'uri')
+            .map(field => (
+                <FieldInput key={field.name} field={field} />
+            ))}
     </form>
 );
 
