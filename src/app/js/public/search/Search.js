@@ -315,11 +315,17 @@ class Search extends Component {
                         styles.searchContent,
                     )}
                 >
-                    <Facets
-                        className={classnames('search-facets', styles.facets, {
-                            [styles.facetsOpening]: showFacets,
-                        })}
-                    />
+                    {withFacets && (
+                        <Facets
+                            className={classnames(
+                                'search-facets',
+                                styles.facets,
+                                {
+                                    [styles.facetsOpening]: showFacets,
+                                },
+                            )}
+                        />
+                    )}
 
                     <div
                         className={classnames(

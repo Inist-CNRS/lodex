@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
@@ -72,100 +72,91 @@ const styles = stylesToClassname(
     'search-result',
 );
 
-class SearchResult extends Component {
-    shouldComponentUpdate(nextProps) {
-        return nextProps.result.uri !== this.props.result.uri;
-    }
-    render() {
-        const { fields, fieldNames, result, closeDrawer } = this.props;
-        const titleField = fields.find(
-            field => field.name === fieldNames.title,
-        );
-        const descriptionField = fields.find(
-            field => field.name === fieldNames.description,
-        );
-        const firstDetailField = fields.find(
-            field => field.name === fieldNames.detail1,
-        );
-        const secondDetailField = fields.find(
-            field => field.name === fieldNames.detail2,
-        );
+const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
+    const titleField = fields.find(field => field.name === fieldNames.title);
+    const descriptionField = fields.find(
+        field => field.name === fieldNames.description,
+    );
+    const firstDetailField = fields.find(
+        field => field.name === fieldNames.detail1,
+    );
+    const secondDetailField = fields.find(
+        field => field.name === fieldNames.detail2,
+    );
 
-        const shouldDisplayDetails =
-            (firstDetailField && result[firstDetailField.name]) ||
-            (secondDetailField && result[secondDetailField.name]);
+    const shouldDisplayDetails =
+        (firstDetailField && result[firstDetailField.name]) ||
+        (secondDetailField && result[secondDetailField.name]);
 
-        return (
-            <Link
-                routeAware
-                to={getResourceUri(result)}
-                className={classnames('search-result-link', styles.link)}
-                onClick={closeDrawer}
-                activeClassName={styles.activeLink}
+    return (
+        <Link
+            to={getResourceUri(result)}
+            routeAware
+            className={classnames('search-result-link', styles.link)}
+            onClick={closeDrawer}
+            activeClassName={styles.activeLink}
+        >
+            <div
+                id={`search-result-${result.uri}`}
+                className={classnames('search-result', styles.container)}
             >
-                <div
-                    id={`search-result-${result.uri}`}
-                    className={classnames('search-result', styles.container)}
-                >
-                    {titleField && result[titleField.name] && (
-                        <div
-                            className={classnames(
-                                'search-result-title',
-                                styles.title,
-                            )}
-                            title={result[titleField.name]}
-                        >
-                            {result[titleField.name]}
-                        </div>
-                    )}
-                    {descriptionField && result[descriptionField.name] && (
-                        <div
-                            className={classnames(
-                                'search-result-description',
-                                styles.description,
-                            )}
-                            title={result[descriptionField.name]}
-                        >
-                            {result[descriptionField.name]}
-                        </div>
-                    )}
-                    {shouldDisplayDetails && (
-                        <div
-                            className={classnames(
-                                'search-result-details',
-                                styles.details,
-                            )}
-                        >
-                            {firstDetailField && result[firstDetailField.name] && (
-                                <div
-                                    className={classnames(
-                                        'search-result-detail1',
-                                        styles.detailsColumn,
-                                    )}
-                                    title={result[firstDetailField.name]}
-                                >
-                                    {result[firstDetailField.name]}
-                                </div>
-                            )}
-                            {secondDetailField &&
-                                result[secondDetailField.name] && (
-                                    <div
-                                        className={classnames(
-                                            'search-result-detail2',
-                                            styles.detailsColumn,
-                                        )}
-                                        title={result[secondDetailField.name]}
-                                    >
-                                        {result[secondDetailField.name]}
-                                    </div>
+                {titleField && result[titleField.name] && (
+                    <div
+                        className={classnames(
+                            'search-result-title',
+                            styles.title,
+                        )}
+                        title={result[titleField.name]}
+                    >
+                        {result[titleField.name]}
+                    </div>
+                )}
+                {descriptionField && result[descriptionField.name] && (
+                    <div
+                        className={classnames(
+                            'search-result-description',
+                            styles.description,
+                        )}
+                        title={result[descriptionField.name]}
+                    >
+                        {result[descriptionField.name]}
+                    </div>
+                )}
+                {shouldDisplayDetails && (
+                    <div
+                        className={classnames(
+                            'search-result-details',
+                            styles.details,
+                        )}
+                    >
+                        {firstDetailField && result[firstDetailField.name] && (
+                            <div
+                                className={classnames(
+                                    'search-result-detail1',
+                                    styles.detailsColumn,
                                 )}
-                        </div>
-                    )}
-                </div>
-            </Link>
-        );
-    }
-}
+                                title={result[firstDetailField.name]}
+                            >
+                                {result[firstDetailField.name]}
+                            </div>
+                        )}
+                        {secondDetailField && result[secondDetailField.name] && (
+                            <div
+                                className={classnames(
+                                    'search-result-detail2',
+                                    styles.detailsColumn,
+                                )}
+                                title={result[secondDetailField.name]}
+                            >
+                                {result[secondDetailField.name]}
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+        </Link>
+    );
+};
 
 SearchResult.propTypes = {
     fields: PropTypes.arrayOf(fieldProptypes).isRequired,
@@ -180,4 +171,7 @@ SearchResult.propTypes = {
     closeDrawer: PropTypes.func.isRequired,
 };
 
-export default SearchResult;
+export default memo(
+    SearchResult,
+    (prevProps, nextProps) => prevProps.result.uri === nextProps.result.uri,
+);
