@@ -81,8 +81,6 @@ export const NavBar = ({
 
     const [searchDrawer, toggleSearchDrawer, closeSearchDrawer] = useDrawer(
         DRAWER_CLOSED,
-        null,
-        closeSearch,
     );
     const [graphDrawer, toggleGraphDrawer, closeGraphDrawer] = useDrawer(
         DRAWER_CLOSED,
@@ -98,6 +96,12 @@ export const NavBar = ({
             toggleSearch();
         }
     }, [search]);
+
+    useEffect(() => {
+        if (searchDrawer == DRAWER_CLOSED) {
+            closeSearch();
+        }
+    }, [searchDrawer]);
 
     const toggleSearch = () => {
         closeAdvancedMenuDrawer();
@@ -270,6 +274,7 @@ NavBar.propTypes = {
     }),
     hasFacetFields: PropTypes.bool.isRequired,
     search: PropTypes.bool.isRequired,
+    closeSearch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

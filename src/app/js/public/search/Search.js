@@ -157,12 +157,6 @@ class Search extends Component {
         } = this.props;
 
         if (withDataset) {
-            console.log(
-                datasetFacetsValues,
-                datasetInvertedFacets,
-                datasetAppliedFacets,
-                datasetOpenedFacets,
-            );
             setFacets({
                 facetsValues: datasetFacetsValues,
                 appliedFacets: datasetAppliedFacets,
@@ -413,6 +407,7 @@ Search.propTypes = {
     closeDrawer: PropTypes.func.isRequired,
     withFacets: PropTypes.bool.isRequired,
     withDataset: PropTypes.bool.isRequired,
+    setFacets: PropTypes.func.isRequired,
 };
 
 Search.defaultProps = {
