@@ -121,6 +121,7 @@
 "remove_from_publication"	"Remove"	"Supprimer"
 "separator"	"separator"	"séparateur"
 "composed_of"	"Composed of"	"Composé de"
+"composed_of_edit_not_possible"	"To edit this field you should change the value of its composed fields"	"Pour éditer ce champ vous devez changer la valeur de ses champs composés."
 "wizard_composed_of"	"Compose this field - the subsequent fields will be displayed under it"	"Composer ce champ - les champs suivants seront affichés en-dessous"
 "transformers"	"Operations"	"Opérations"
 "add"	"add"	"ajout"
