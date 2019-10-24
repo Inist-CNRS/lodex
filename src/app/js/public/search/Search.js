@@ -18,7 +18,7 @@ import {
 import Link from '../../lib/components/Link';
 import {
     polyglot as polyglotPropTypes,
-    field as fieldProptypes,
+    field as fieldPropTypes,
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../../fields';
@@ -401,13 +401,31 @@ Search.propTypes = {
         title: PropTypes.string,
         description: PropTypes.string,
     }).isRequired,
-    fields: PropTypes.arrayOf(fieldProptypes).isRequired,
+    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     loadMore: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
     closeDrawer: PropTypes.func.isRequired,
     withFacets: PropTypes.bool.isRequired,
     withDataset: PropTypes.bool.isRequired,
     setFacets: PropTypes.func.isRequired,
+    datasetFacetsValues: PropTypes.object,
+    datasetAppliedFacets: PropTypes.objectOf(
+        PropTypes.arrayOf(
+            PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number,
+                PropTypes.bool,
+            ]),
+        ),
+    ),
+    datasetInvertedFacets: PropTypes.arrayOf(
+        PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.bool,
+        ]),
+    ),
+    datasetOpenedFacets: PropTypes.objectOf(PropTypes.bool),
 };
 
 Search.defaultProps = {
