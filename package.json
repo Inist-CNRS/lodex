@@ -95,7 +95,7 @@
         "jbj-rdfa": "1.1.2",
         "jbj-template": "2.0.0",
         "js-sentencecase": "1.2.1",
-        "json-csv": "Kmaschta/json-csv",
+        "json-csv": "2.0.2",
         "jsonld": "1.1.0",
         "jsonwebtoken": "8.4.0",
         "kcors": "2.2.2",
