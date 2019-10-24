@@ -46,7 +46,9 @@ export const CompositeFieldInputComponent = ({
         {isRootFieldEditable ? (
             <FieldInput field={rootField} />
         ) : (
-            <span>{polyglot.t('composed_of_edit_not_possible')}</span>
+            <div style={style.list}>
+                {polyglot.t('composed_of_edit_not_possible')}
+            </div>
         )}
         <div style={style.list}>
             {compositeFields.map(f => (
