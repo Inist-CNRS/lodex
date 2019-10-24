@@ -16,7 +16,6 @@ import ReactTooltip from 'react-tooltip';
 
 import injectData from '../injectData';
 import getGradientScaleAndLegend from '../../lib/components/getGradientScaleAndLegend';
-import exportableToPng from '../exportableToPng';
 import mapJson from './world-50m.json';
 
 const maxZoom = 16;
@@ -156,11 +155,7 @@ class CartographyView extends Component {
                                                 data-for="cartography"
                                                 data-tip={
                                                     value
-                                                        ? `${
-                                                              geography
-                                                                  .properties
-                                                                  .NAME
-                                                          },${value}`
+                                                        ? `${geography.properties.NAME},${value}`
                                                         : undefined
                                                 }
                                                 cacheId={`geography-${i}`}
@@ -257,6 +252,8 @@ const mapDispatchToProps = {};
 
 export default compose(
     injectData(),
-    connect(mapStateToProps, mapDispatchToProps),
-    exportableToPng,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
 )(CartographyView);

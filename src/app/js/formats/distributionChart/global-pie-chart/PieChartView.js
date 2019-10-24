@@ -5,7 +5,6 @@ import compose from 'recompose/compose';
 
 import { field as fieldPropTypes } from '../../../propTypes';
 import injectData from '../../injectData';
-import exportableToPng from '../../exportableToPng';
 
 const styles = {
     container: {
@@ -49,7 +48,4 @@ PieChartView.propTypes = {
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default compose(
-    injectData(),
-    exportableToPng,
-)(PieChartView);
+export default compose(injectData())(PieChartView);

@@ -14,7 +14,6 @@ import isEqual from 'lodash.isequal';
 import { scaleLinear } from 'd3-scale';
 
 import injectData from '../injectData';
-import exportableToPng from '../exportableToPng';
 import MouseIcon from '../shared/MouseIcon';
 
 const simulationOptions = {
@@ -177,5 +176,4 @@ const mapStateToProps = (state, { formatData }) => {
 export default compose(
     injectData(),
     connect(mapStateToProps),
-    exportableToPng,
 )(Network);
