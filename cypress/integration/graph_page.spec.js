@@ -2,6 +2,7 @@ import { teardown } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as homePage from '../support/homePage';
 import * as graphPage from '../support/graphPage';
+import * as searchDrawer from '../support/searchDrawer';
 
 describe('Graph Page', () => {
     beforeEach(() => {
@@ -40,5 +41,31 @@ describe('Graph Page', () => {
             .getFacetItem('Publication Year', '2011')
             .find('input[type=checkbox]')
             .should('not.be.checked');
+    });
+
+    it('should copy filters to search drawer', () => {
+        homePage.openAdvancedDrawer();
+        homePage.openChartDrawer();
+
+        homePage.goToChart('Bar Chart');
+
+        graphPage.setFacet('Publication Year', '2011');
+        graphPage.getStats().should('have.text', 'Found 21 on 50');
+
+        searchDrawer.openSearchDrawer();
+        searchDrawer.getFacet('Publication Year').click();
+        searchDrawer
+            .getFacetItem('Publication Year', '2011')
+            .find('input[type=checkbox]')
+            .should('not.checked');
+
+        searchDrawer.closeSearchDrawer();
+        graphPage.browseResults();
+
+        searchDrawer.getFacet('Publication Year').click();
+        searchDrawer
+            .getFacetItem('Publication Year', '2011')
+            .find('input[type=checkbox]')
+            .should('checked');
     });
 });

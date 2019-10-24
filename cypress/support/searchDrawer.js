@@ -9,6 +9,19 @@ export const openSearchDrawer = () => {
     cy.get('.drawer .search .search-header').should('be.visible');
 };
 
+export const closeSearchDrawer = () => {
+    cy.get('.drawer').should('exist');
+    cy.get('.drawer .search .search-header')
+        .scrollIntoView()
+        .should('be.visible');
+
+    cy.get('nav div')
+        .contains('Search')
+        .click();
+
+    cy.wait(300);
+};
+
 export const searchInput = () => cy.get('.drawer input[type="text"]');
 
 export const search = value => {
