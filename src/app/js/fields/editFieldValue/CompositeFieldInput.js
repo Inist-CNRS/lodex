@@ -18,7 +18,7 @@ const style = {
     },
 };
 
-const directlyEditableTransformers = [
+export const directlyEditableTransformers = [
     'COLUMN',
     'UPPERCASE',
     'LOWERCASE',
@@ -29,7 +29,7 @@ const directlyEditableTransformers = [
     'CAPITALIZE',
 ];
 
-const canBeDirectlyEdited = transformers =>
+export const canBeDirectlyEdited = transformers =>
     !transformers.some(
         ({ operation }) => !directlyEditableTransformers.includes(operation),
     );
@@ -38,11 +38,12 @@ export const CompositeFieldInputComponent = ({
     label,
     p: polyglot,
     rootField,
+    isRootFieldEditable,
     compositeFields,
 }) => (
     <div>
         <Subheader>{label}</Subheader>
-        {rootField.isEditable ? (
+        {isRootFieldEditable ? (
             <FieldInput field={rootField} />
         ) : (
             <span>{polyglot.t('composed_of_edit_not_possible')}</span>
@@ -59,19 +60,21 @@ CompositeFieldInputComponent.propTypes = {
     label: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
     rootField: fieldPropTypes.isRequired,
+    isRootFieldEditable: PropTypes.bool,
     compositeFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
 };
 
 CompositeFieldInputComponent.defaultProps = {
+    isRootFieldEditable: false,
     compositeFields: null,
 };
 
 const mapStateToProps = (state, { field }) => ({
     rootField: {
         ...fromFields.getFieldByName(state, field.name),
-        isEditable: canBeDirectlyEdited(field.transformers),
         composedOf: null,
     },
+    isRootFieldEditable: canBeDirectlyEdited(field.transformers),
     compositeFields: fromFields.getCompositeFieldsByField(state, field),
 });
 
