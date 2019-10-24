@@ -5,5 +5,5 @@ import { isURL } from '../../../../common/uris.js';
 export default {
     ...DefaultFormat,
     Component,
-    predicate: isURL,
+    predicate: value => value == null || value === '' || isURL,
 };
