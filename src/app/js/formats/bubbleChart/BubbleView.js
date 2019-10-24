@@ -7,7 +7,6 @@ import memoize from 'lodash.memoize';
 import Transition from 'react-inline-transition-group';
 
 import injectData from '../injectData';
-import exportableToPng from '../exportableToPng';
 import Bubble from './Bubble';
 
 import * as colorUtils from '../colorUtils';
@@ -99,5 +98,4 @@ const mapStateToProps = (state, { formatData, diameter: stringDiameter }) => {
 export default compose(
     injectData(),
     connect(mapStateToProps),
-    exportableToPng,
 )(BubbleView);

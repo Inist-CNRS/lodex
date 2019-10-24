@@ -4,7 +4,6 @@ import { StyleSheet, css } from 'aphrodite/no-important';
 import * as d3 from 'd3';
 import { zoomFunction, generateUniqueId } from './utils';
 import injectData from '../injectData';
-import exportableToPng from '../exportableToPng';
 import cliTruncate from 'cli-truncate';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -247,7 +246,7 @@ class Hierarchy extends PureComponent {
                     },
                 );
 
-            //remove old links
+            // remove old links
             link.exit().remove();
 
             // update remaining link
@@ -316,7 +315,7 @@ class Hierarchy extends PureComponent {
             // remove old nodes
             node.exit().remove();
 
-            //udpate remaining nodes
+            // udpate remaining nodes
             node.attr('transform', function(d) {
                 return 'translate(' + d.x + ',' + d.y + ')';
             });
@@ -786,7 +785,4 @@ Hierarchy.propTypes = {
     anchor: PropTypes.any.isRequired,
 };
 
-export default compose(
-    injectData(),
-    exportableToPng,
-)(Hierarchy);
+export default compose(injectData())(Hierarchy);

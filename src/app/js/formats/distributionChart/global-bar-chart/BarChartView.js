@@ -14,7 +14,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import injectData from '../../injectData';
-import exportableToPng from '../../exportableToPng';
 
 const margin = {
     top: 10,
@@ -180,5 +179,4 @@ const mapStateToProps = (
 export default compose(
     injectData(),
     connect(mapStateToProps),
-    exportableToPng,
 )(BarChartView);

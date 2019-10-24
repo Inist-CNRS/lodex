@@ -7,7 +7,6 @@ import ReactTooltip from 'react-tooltip';
 import injectData from '../injectData';
 import { mapSourceToX, mapTargetToX } from './parseChartData';
 import getGradientScaleAndLegend from '../../lib/components/getGradientScaleAndLegend';
-import exportableToPng from '../exportableToPng';
 import stylesToClassname from '../../lib/stylesToClassName';
 
 const firstCell = {
@@ -221,5 +220,4 @@ const mapStateToProps = (state, { formatData, colorScheme, flipAxis }) => {
 export default compose(
     injectData(),
     connect(mapStateToProps),
-    exportableToPng,
 )(HeatMapView);

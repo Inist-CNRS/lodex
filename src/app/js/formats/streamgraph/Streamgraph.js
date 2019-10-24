@@ -11,7 +11,6 @@ import {
     generateUniqueId,
 } from './utils';
 import injectData from '../injectData';
-import exportableToPng from '../exportableToPng';
 import moment from 'moment';
 
 import * as colorUtils from '../colorUtils';
@@ -720,7 +719,4 @@ Streamgraph.propTypes = {
     height: PropTypes.number.isRequired,
 };
 
-export default compose(
-    injectData(),
-    exportableToPng,
-)(Streamgraph);
+export default compose(injectData())(Streamgraph);
