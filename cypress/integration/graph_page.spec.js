@@ -49,8 +49,10 @@ describe('Graph Page', () => {
 
         homePage.goToChart('Bar Chart');
 
+        graphPage.searchFor('Biodiversity');
+        graphPage.getStats().should('have.text', 'Found 5 on 50');
         graphPage.setFacet('Publication Year', '2011');
-        graphPage.getStats().should('have.text', 'Found 21 on 50');
+        graphPage.getStats().should('have.text', 'Found 4 on 50');
 
         searchDrawer.openSearchDrawer();
         searchDrawer.getFacet('Publication Year').click();
@@ -58,11 +60,13 @@ describe('Graph Page', () => {
             .getFacetItem('Publication Year', '2011')
             .find('input[type=checkbox]')
             .should('not.checked');
+        searchDrawer.searchInput().should('have.value', '');
 
         searchDrawer.closeSearchDrawer();
         graphPage.browseResults();
 
         searchDrawer.getFacet('Publication Year').click();
+        searchDrawer.searchInput().should('have.value', 'Biodiversity');
         searchDrawer
             .getFacetItem('Publication Year', '2011')
             .find('input[type=checkbox]')
