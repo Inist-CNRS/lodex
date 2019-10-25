@@ -34,11 +34,8 @@ const updateField = (ctx, requestedNewCharacteristics) => async field => {
     const body = {};
 
     if (isValueField(field)) {
-        body.field = await updateFieldValue(
-            ctx,
-            field,
-            requestedNewCharacteristics[field.name],
-        );
+        const newValue = requestedNewCharacteristics[field.name] || null;
+        body.field = await updateFieldValue(ctx, field, newValue);
 
         const annotation = await ctx.field.findOne({ completes: field.name });
 
@@ -79,11 +76,11 @@ export const updateCharacteristics = async ctx => {
 
     const newCharacteristics = Object.keys(characteristics).reduce(
         (result, name) => {
-            const newCharacteristic = requestedNewCharacteristics[name];
+            const newValue = requestedNewCharacteristics[name] || null;
 
             return {
                 ...result,
-                [name]: newCharacteristic || characteristics[name],
+                [name]: newValue,
             };
         },
         {},

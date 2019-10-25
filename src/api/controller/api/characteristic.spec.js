@@ -69,6 +69,7 @@ describe('characteristic routes', () => {
             const characteristics = {
                 foo: 'new foo',
                 bar: 'new bar',
+                covfefe: '',
                 iShouldntBeHere: 'iShouldntBeHere',
             };
 
@@ -139,6 +140,7 @@ describe('characteristic routes', () => {
                 ).toHaveBeenCalledWith({
                     foo: 'new foo',
                     bar: 'new bar',
+                    covfefe: null,
                     updatedField: 'updated value',
                     doNotUpdateMe: 'doNotUpdateMe value',
                 });
