@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
-import { field as fieldProptypes } from '../propTypes';
+import { field as fieldPropTypes } from '../propTypes';
 
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
 
@@ -37,7 +37,7 @@ const DatasetCharacteristicsView = ({ characteristics }) => (
 );
 
 DatasetCharacteristicsView.propTypes = {
-    characteristics: PropTypes.arrayOf(fieldProptypes).isRequired,
+    characteristics: PropTypes.arrayOf(fieldPropTypes).isRequired,
 };
 
 DatasetCharacteristicsView.defaultProps = {

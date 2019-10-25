@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import { field as fieldProptypes } from '../../propTypes';
+import { field as fieldPropTypes } from '../../propTypes';
 import SortButton from '../../lib/components/SortButton';
 
 export const getSortableFieldNames = fieldNames =>
@@ -47,7 +47,7 @@ const SearchResultSort = ({ fields, fieldNames, sort, sortBy, sortDir }) => {
 };
 
 SearchResultSort.propTypes = {
-    fields: PropTypes.arrayOf(fieldProptypes).isRequired,
+    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     fieldNames: PropTypes.shape({
         uri: PropTypes.string,
         title: PropTypes.string,

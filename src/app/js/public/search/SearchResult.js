@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import Link from '../../lib/components/Link';
 import {
-    field as fieldProptypes,
+    field as fieldPropTypes,
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { isURL, getResourceUri } from '../../../../common/uris';
@@ -163,7 +163,7 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
 };
 
 SearchResult.propTypes = {
-    fields: PropTypes.arrayOf(fieldProptypes).isRequired,
+    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     fieldNames: PropTypes.shape({
         uri: PropTypes.string,
         title: PropTypes.string,

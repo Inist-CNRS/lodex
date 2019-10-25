@@ -4,7 +4,7 @@ import isEqual from 'lodash.isequal';
 import classnames from 'classnames';
 
 import {
-    field as fieldProptypes,
+    field as fieldPropTypes,
     resource as resourcePropTypes,
 } from '../../propTypes';
 import SearchResult from './SearchResult';
@@ -116,7 +116,7 @@ SearchResultList.propTypes = {
         title: PropTypes.string,
         description: PropTypes.string,
     }).isRequired,
-    fields: PropTypes.arrayOf(fieldProptypes).isRequired,
+    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     closeDrawer: PropTypes.func.isRequired,
     placeholders: PropTypes.bool,
 };
