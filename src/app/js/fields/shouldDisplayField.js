@@ -2,25 +2,12 @@ import get from 'lodash.get';
 
 import isEmpty from '../../../common/lib/isEmpty';
 
-const shouldDisplayField = resource => field => {
-    const isEmptyValue = isEmpty(resource[field.name]);
-    if (!isEmptyValue) {
-        return true;
-    }
-
+export default (resource, field) => {
     const isComposedField = Boolean(field.composedOf);
-
     if (!isComposedField) {
-        return false;
+        return !isEmpty(resource[field.name]);
     }
 
-    const composedFields = get(field, 'composedOf.fields', []);
-
-    if (isEmpty(composedFields)) {
-        return false;
-    }
-
-    return composedFields.some(shouldDisplayField(resource));
+    const composedFieldNames = get(field, 'composedOf.fields', []);
+    return !isEmpty(composedFieldNames);
 };
-
-export default shouldDisplayField;

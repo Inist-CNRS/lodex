@@ -14,7 +14,7 @@ const DatasetCharacteristicItemComponent = ({
     style,
 }) => {
     const displayCharacteristic =
-        isAdmin || shouldDisplayField(resource)(field);
+        isAdmin || shouldDisplayField(resource, field);
 
     return displayCharacteristic ? (
         <Property resource={resource} field={field} style={style} />
