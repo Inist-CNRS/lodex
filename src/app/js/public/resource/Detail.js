@@ -211,7 +211,9 @@ DetailComponent.defaultProps = {
 DetailComponent.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
-    resource: PropTypes.shape({}),
+    resource: PropTypes.shape({
+        uri: PropTypes.string.isRequired,
+    }).isRequired,
     title: PropTypes.string,
     description: PropTypes.string,
     backToListLabel: PropTypes.string,
