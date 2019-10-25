@@ -115,7 +115,7 @@ class GraphPage extends Component {
                         </Card>
                     )}
                     <FlatButton
-                        className="add-transformer"
+                        className="browse-result"
                         onClick={onSearch}
                         label={polyglot.t('browse_results')}
                     />

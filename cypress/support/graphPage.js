@@ -49,6 +49,6 @@ export const setFacet = (name, value) => {
 };
 
 export const browseResults = () => {
-    cy.get('.add-transformer').click();
+    cy.get('.browse-result').click();
     cy.wait(500);
 };
