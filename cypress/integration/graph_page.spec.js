@@ -2,6 +2,7 @@ import { teardown } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as homePage from '../support/homePage';
 import * as graphPage from '../support/graphPage';
+import * as searchDrawer from '../support/searchDrawer';
 
 describe('Graph Page', () => {
     beforeEach(() => {
@@ -40,5 +41,35 @@ describe('Graph Page', () => {
             .getFacetItem('Publication Year', '2011')
             .find('input[type=checkbox]')
             .should('not.be.checked');
+    });
+
+    it('should copy filters to search drawer', () => {
+        homePage.openAdvancedDrawer();
+        homePage.openChartDrawer();
+
+        homePage.goToChart('Bar Chart');
+
+        graphPage.searchFor('Biodiversity');
+        graphPage.getStats().should('have.text', 'Found 5 on 50');
+        graphPage.setFacet('Publication Year', '2011');
+        graphPage.getStats().should('have.text', 'Found 4 on 50');
+
+        searchDrawer.openSearchDrawer();
+        searchDrawer.getFacet('Publication Year').click();
+        searchDrawer
+            .getFacetItem('Publication Year', '2011')
+            .find('input[type=checkbox]')
+            .should('not.checked');
+        searchDrawer.searchInput().should('have.value', '');
+
+        searchDrawer.closeSearchDrawer();
+        graphPage.browseResults();
+
+        searchDrawer.getFacet('Publication Year').click();
+        searchDrawer.searchInput().should('have.value', 'Biodiversity');
+        searchDrawer
+            .getFacetItem('Publication Year', '2011')
+            .find('input[type=checkbox]')
+            .should('checked');
     });
 });

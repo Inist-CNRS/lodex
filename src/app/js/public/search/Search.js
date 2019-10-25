@@ -18,7 +18,7 @@ import {
 import Link from '../../lib/components/Link';
 import {
     polyglot as polyglotPropTypes,
-    field as fieldProptypes,
+    field as fieldPropTypes,
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../../fields';
@@ -115,9 +115,7 @@ const styles = stylesToClassname(
             marginTop: '1.5rem',
         },
         noResult: {
-            position: 'absolute',
-            top: '40%',
-            width: '100%',
+            padding: '10% 0',
             textAlign: 'center',
         },
     },
@@ -149,6 +147,7 @@ class Search extends Component {
             results,
             preLoadPublication,
             withDataset,
+            datasetSearchTerm,
             datasetFacetsValues,
             datasetAppliedFacets,
             datasetInvertedFacets,
@@ -163,9 +162,9 @@ class Search extends Component {
                 invertedFacets: datasetInvertedFacets,
                 openedFacets: datasetOpenedFacets,
             });
-        }
-
-        if (!results || results.length === 0) {
+            preLoadPublication();
+            search({ query: datasetSearchTerm || '' });
+        } else if (!results || results.length === 0) {
             preLoadPublication();
             search({ query: searchQuery || '' });
         }
@@ -401,13 +400,32 @@ Search.propTypes = {
         title: PropTypes.string,
         description: PropTypes.string,
     }).isRequired,
-    fields: PropTypes.arrayOf(fieldProptypes).isRequired,
+    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     loadMore: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
     closeDrawer: PropTypes.func.isRequired,
     withFacets: PropTypes.bool.isRequired,
     withDataset: PropTypes.bool.isRequired,
     setFacets: PropTypes.func.isRequired,
+    datasetSearchTerm: PropTypes.string,
+    datasetFacetsValues: PropTypes.object,
+    datasetAppliedFacets: PropTypes.objectOf(
+        PropTypes.arrayOf(
+            PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number,
+                PropTypes.bool,
+            ]),
+        ),
+    ),
+    datasetInvertedFacets: PropTypes.arrayOf(
+        PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.bool,
+        ]),
+    ),
+    datasetOpenedFacets: PropTypes.objectOf(PropTypes.bool),
 };
 
 Search.defaultProps = {
@@ -426,6 +444,7 @@ const mapStateToProps = state => {
         searchQuery: fromSearch.getQuery(state),
         sortBy,
         sortDir,
+        datasetSearchTerm: fromDataset.getFilter(state),
         datasetFacetsValues: fromDataset.getFacetsValues(state),
         datasetAppliedFacets: fromDataset.getAppliedFacets(state),
         datasetInvertedFacets: fromDataset.getInvertedFacets(state),
