@@ -15,6 +15,7 @@ import { fromResource } from '../selectors';
 import { fromFields, fromUser } from '../../sharedSelectors';
 import Property from '../Property';
 import AddField from '../../fields/addField/AddField';
+import shouldDisplayField from '../../fields/shouldDisplayField';
 import HideResource from './HideResource';
 import SelectVersion from './SelectVersion';
 import Version from '../Version';
@@ -115,15 +116,6 @@ const styles = {
     },
 };
 
-export const shouldDisplayField = (resource, isAdmin) => field => {
-    if (isAdmin) {
-        return true;
-    }
-
-    const isEmptyValue = !resource[field.name];
-    return !isEmptyValue || Boolean(field.composedOf);
-};
-
 export const DetailComponent = ({
     fields,
     resource,
@@ -138,10 +130,10 @@ export const DetailComponent = ({
     sortedFields.sort((a, b) => a.position - b.position);
 
     const topFields = sortedFields
-        .filter(shouldDisplayField(resource, isAdmin))
+        .filter(field => isAdmin || shouldDisplayField(resource)(field))
         .slice(0, TOP_FIELDS_LIMIT);
     const otherFields = sortedFields
-        .filter(shouldDisplayField(resource, isAdmin))
+        .filter(field => isAdmin || shouldDisplayField(resource)(field))
         .slice(TOP_FIELDS_LIMIT);
 
     return (
