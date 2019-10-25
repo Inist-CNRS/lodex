@@ -44,7 +44,7 @@ const styles = {
     ),
     label: (status, isSub) => ({
         flexGrow: 2,
-        fontSize: isSub === true ? 'initial' : '80%',
+        fontSize: isSub === true ? 'smaller' : 'inherit',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     }),
     language: memoize(hide => ({
