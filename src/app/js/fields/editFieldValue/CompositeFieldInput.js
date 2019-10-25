@@ -4,7 +4,9 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import Subheader from 'material-ui/Subheader';
+import { Field } from 'redux-form';
 
+import { getEditionComponent } from '../../formats';
 import FieldInput from './FieldInput';
 import { fromFields } from '../../sharedSelectors';
 import {
@@ -43,13 +45,19 @@ export const CompositeFieldInputComponent = ({
 }) => (
     <div>
         <Subheader>{label}</Subheader>
-        {isRootFieldEditable ? (
-            <FieldInput field={rootField} />
-        ) : (
-            <div style={style.list}>
-                {polyglot.t('composed_of_edit_not_possible')}
-            </div>
-        )}
+        <div style={style.list}>
+            {isRootFieldEditable ? (
+                <Field
+                    key={rootField.name}
+                    name={rootField.name}
+                    field={rootField}
+                    component={getEditionComponent(rootField)}
+                    fullWidth
+                />
+            ) : (
+                polyglot.t('composed_of_edit_not_possible')
+            )}
+        </div>
         <div style={style.list}>
             {compositeFields.map(f => (
                 <FieldInput key={f.name} field={f} />
