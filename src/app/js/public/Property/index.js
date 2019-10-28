@@ -15,7 +15,6 @@ import CompositeProperty from './CompositeProperty';
 import propositionStatus, {
     REJECTED,
 } from '../../../../common/propositionStatus';
-import isEmpty from '../../../../common/lib/isEmpty';
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from '../resource';
 import PropertyContributor from './PropertyContributor';
@@ -29,6 +28,7 @@ import Format from '../Format';
 import GraphLink from '../graph/GraphLink';
 import Link from '../../lib/components/Link';
 import { getPredicate } from '../../formats';
+import shouldDisplayField from '../../fields/shouldDisplayField';
 
 const styles = {
     container: memoize(
@@ -98,16 +98,11 @@ export const PropertyComponent = ({
     style,
     parents,
 }) => {
-    if (!isAdmin) {
-        if (fieldStatus === REJECTED) {
-            return null;
-        }
-        const value = resource[field.name];
-        const predicate = getPredicate(field);
-        if (!predicate(value) || isEmpty(value)) {
-            return null;
-        }
+    const predicate = getPredicate(field);
+    if (!shouldDisplayField(resource, field, fieldStatus, predicate, isAdmin)) {
+        return null;
     }
+
     const fieldClassName = getFieldClassName(field);
 
     const formatChildren = [

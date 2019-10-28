@@ -29,6 +29,7 @@ describe('Property', () => {
 
             expect(wrapper.getElement()).toBe(null);
         });
+
         it('should render nothing if resource[field.name] is undefined', () => {
             const wrapper = shallow(
                 <PropertyComponent
@@ -40,6 +41,7 @@ describe('Property', () => {
 
             expect(wrapper.getElement()).toBe(null);
         });
+
         it('should render nothing if resource[field.name] is an empty string', () => {
             const wrapper = shallow(
                 <PropertyComponent
@@ -51,6 +53,7 @@ describe('Property', () => {
 
             expect(wrapper.getElement()).toBe(null);
         });
+
         it('should render nothing if resource[field.name] is an empty array', () => {
             const wrapper = shallow(
                 <PropertyComponent
@@ -62,6 +65,19 @@ describe('Property', () => {
 
             expect(wrapper.getElement()).toBe(null);
         });
+
+        it('should render nothing if fieldStatus is rejected', () => {
+            const wrapper = shallow(
+                <PropertyComponent
+                    {...defaultProps}
+                    fieldStatus={REJECTED}
+                    isAdmin={false}
+                />,
+            );
+
+            expect(wrapper.getElement()).toBe(null);
+        });
+
         it('should render something if resource[field.name] is a value', () => {
             const wrapper = shallow(
                 <PropertyComponent
@@ -73,6 +89,7 @@ describe('Property', () => {
 
             expect(wrapper.getElement()).not.toBe(null);
         });
+
         it('should render something if resource[field.name] and field format is list is a list of value', () => {
             const wrapper = shallow(
                 <PropertyComponent
