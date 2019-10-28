@@ -17,6 +17,7 @@ export default (
     if (fieldStatus === REJECTED) {
         return false;
     }
+
     const value = resource[field.name];
     const isFieldEmpty = isEmpty(value);
 
