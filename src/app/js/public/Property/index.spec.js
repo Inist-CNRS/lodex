@@ -78,6 +78,18 @@ describe('Property', () => {
             expect(wrapper.getElement()).toBe(null);
         });
 
+        it('should render nothing if predicate is false', () => {
+            const wrapper = shallow(
+                <PropertyComponent
+                    {...defaultProps}
+                    predicate={() => false}
+                    isAdmin={false}
+                />,
+            );
+
+            expect(wrapper.getElement()).toBe(null);
+        });
+
         it('should render something if resource[field.name] is a value', () => {
             const wrapper = shallow(
                 <PropertyComponent

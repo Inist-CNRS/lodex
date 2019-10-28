@@ -90,6 +90,7 @@ const styles = {
 export const PropertyComponent = ({
     className,
     field,
+    predicate,
     isSub,
     resource,
     fieldStatus,
@@ -98,7 +99,6 @@ export const PropertyComponent = ({
     style,
     parents,
 }) => {
-    const predicate = getPredicate(field);
     if (!shouldDisplayField(resource, field, fieldStatus, predicate, isAdmin)) {
         return null;
     }
@@ -201,6 +201,7 @@ PropertyComponent.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
     fieldStatus: PropTypes.oneOf(propositionStatus),
+    predicate: PropTypes.func,
     isSub: PropTypes.bool,
     isAdmin: PropTypes.bool.isRequired,
     resource: PropTypes.shape({}).isRequired,
@@ -211,12 +212,14 @@ PropertyComponent.propTypes = {
 PropertyComponent.defaultProps = {
     className: null,
     fieldStatus: null,
+    predicate: () => true,
     isSub: false,
 };
 
 const mapStateToProps = (state, { field }) => ({
     isAdmin: fromUser.isAdmin(state),
     fieldStatus: fromResource.getFieldStatus(state, field),
+    predicate: getPredicate(field),
 });
 
 const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>
