@@ -1,6 +1,7 @@
 import get from 'lodash.get';
 import merge from '../lib/merge';
 
+import asterPlotChart from './asterPlotChart';
 import code from './code';
 import globalBarchart from './distributionChart/global-bar-chart/';
 import globalPiechart from './distributionChart/global-pie-chart/';
@@ -38,6 +39,7 @@ import hierarchy from './hierarchy';
 import checkPredicate from './checkPredicate';
 
 const components = {
+    asterPlotChart,
     code,
     globalBarchart,
     globalPiechart,
