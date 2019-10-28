@@ -17,15 +17,15 @@ describe('DatasetCharacteristicItem', () => {
             };
 
             const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
+
             const property = wrapper.find(Property);
-
             expect(property.length).toBe(1);
-
-            expect(property[0].prop('field')).toEqual({
+            const propertyProps = property.at(0).props();
+            expect(propertyProps.field).toEqual({
                 name: 'field1',
                 scheme: 'scheme1',
             });
-            expect(property[0].prop('resource')).toEqual({
+            expect(propertyProps.resource).toEqual({
                 field1: '',
                 field2: 'value2',
             });
@@ -42,8 +42,8 @@ describe('DatasetCharacteristicItem', () => {
             };
 
             const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
-            const property = wrapper.find(Property);
 
+            const property = wrapper.find(Property);
             expect(property.length).toBe(0);
         });
     });
@@ -60,15 +60,15 @@ describe('DatasetCharacteristicItem', () => {
             };
 
             const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
+
             const property = wrapper.find(Property);
-
             expect(property.length).toBe(1);
-
-            expect(property[0].prop('field')).toEqual({
+            const propertyProps = property.at(0).props();
+            expect(propertyProps.field).toEqual({
                 name: 'field1',
                 scheme: 'scheme1',
             });
-            expect(property[0].prop('resource')).toEqual({
+            expect(propertyProps.resource).toEqual({
                 field1: 'value1',
                 field2: 'value2',
             });
@@ -85,15 +85,15 @@ describe('DatasetCharacteristicItem', () => {
             };
 
             const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
+
             const property = wrapper.find(Property);
-
             expect(property.length).toBe(1);
-
-            expect(property[0].prop('field')).toEqual({
+            const propertyProps = property.at(0).props();
+            expect(propertyProps.field).toEqual({
                 name: 'field1',
                 scheme: 'scheme1',
             });
-            expect(property[0].prop('resource')).toEqual({
+            expect(propertyProps.resource).toEqual({
                 field1: 'value1',
                 field2: 'value2',
             });
@@ -116,16 +116,16 @@ describe('DatasetCharacteristicItem', () => {
             };
 
             const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
+
             const property = wrapper.find(Property);
-
             expect(property.length).toBe(1);
-
-            expect(property[0].prop('field')).toEqual({
+            const propertyProps = property.at(0).props();
+            expect(propertyProps.field).toEqual({
                 name: 'field1',
                 scheme: 'scheme1',
                 composedOf: { fields: [] },
             });
-            expect(property[0].prop('resource')).toEqual({
+            expect(propertyProps.resource).toEqual({
                 field1: 'value1',
                 field2: 'value2',
             });
@@ -146,16 +146,16 @@ describe('DatasetCharacteristicItem', () => {
             };
 
             const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
+
             const property = wrapper.find(Property);
-
             expect(property.length).toBe(1);
-
-            expect(property[0].prop('field')).toEqual({
+            const propertyProps = property.at(0).props();
+            expect(propertyProps.field).toEqual({
                 name: 'field1',
                 scheme: 'scheme1',
                 composedOf: { fields: [] },
             });
-            expect(property[0].prop('resource')).toEqual({
+            expect(propertyProps.resource).toEqual({
                 field1: 'value1',
                 field2: 'value2',
             });
@@ -180,16 +180,16 @@ describe('DatasetCharacteristicItem', () => {
             };
 
             const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
+
             const property = wrapper.find(Property);
-
             expect(property.length).toBe(1);
-
-            expect(property[0].prop('field')).toEqual({
+            const propertyProps = property.at(0).props();
+            expect(propertyProps.field).toEqual({
                 name: 'field1',
                 scheme: 'scheme1',
                 composedOf: { fields: ['fieldChild1', 'fieldChild2'] },
             });
-            expect(property[0].prop('resource')).toEqual({
+            expect(propertyProps.resource).toEqual({
                 field1: '',
                 field2: 'value2',
                 fieldChild1: 'value3',
@@ -214,16 +214,18 @@ describe('DatasetCharacteristicItem', () => {
             };
 
             const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
+
             const property = wrapper.find(Property);
-
             expect(property.length).toBe(1);
-
-            expect(property[0].prop('field')).toEqual({
+            const propertyProps = property.at(0).props();
+            expect(propertyProps.field).toEqual({
                 name: 'field1',
                 scheme: 'scheme1',
-                composedOf: { fields: ['fieldChild1', 'fieldChild2'] },
+                composedOf: {
+                    fields: ['fieldChild1', 'fieldChild2'],
+                },
             });
-            expect(property[0].prop('resource')).toEqual({
+            expect(propertyProps.resource).toEqual({
                 field1: '',
                 field2: 'value2',
                 fieldChild1: 'value3',
@@ -248,16 +250,16 @@ describe('DatasetCharacteristicItem', () => {
             };
 
             const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
+
             const property = wrapper.find(Property);
-
             expect(property.length).toBe(1);
-
-            expect(property[0].prop('field')).toEqual({
+            const propertyProps = property.at(0).props();
+            expect(propertyProps.field).toEqual({
                 name: 'field1',
                 scheme: 'scheme1',
                 composedOf: { fields: [] },
             });
-            expect(property[0].prop('resource')).toEqual({
+            expect(propertyProps.resource).toEqual({
                 field1: '',
                 field2: 'value2',
             });
@@ -278,8 +280,8 @@ describe('DatasetCharacteristicItem', () => {
             };
 
             const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
-            const property = wrapper.find(Property);
 
+            const property = wrapper.find(Property);
             expect(property.length).toBe(0);
         });
     });
