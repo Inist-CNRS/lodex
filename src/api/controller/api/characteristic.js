@@ -57,6 +57,27 @@ const updateField = (ctx, requestedNewCharacteristics) => async field => {
     return body;
 };
 
+const prepareNewCharacteristics = (characteristics, newCharacteristics) => {
+    const characteristicsNames = Object.keys(characteristics);
+    const newCharacteristicsNames = Object.keys(newCharacteristics);
+
+    const existingNewCharacteristicsNames = newCharacteristicsNames.filter(
+        newCharacteristicName =>
+            characteristicsNames.some(
+                characteristicName =>
+                    characteristicName === newCharacteristicName,
+            ),
+    );
+
+    return existingNewCharacteristicsNames.reduce((result, name) => {
+        const newValue = newCharacteristics[name] || null;
+        return {
+            ...result,
+            [name]: newValue,
+        };
+    }, {});
+};
+
 export const updateCharacteristics = async ctx => {
     const {
         name,
@@ -73,21 +94,13 @@ export const updateCharacteristics = async ctx => {
     }
 
     const characteristics = await ctx.publishedCharacteristic.findLastVersion();
-
-    const newCharacteristics = Object.keys(characteristics).reduce(
-        (result, name) => {
-            const newValue = requestedNewCharacteristics[name] || null;
-
-            return {
-                ...result,
-                [name]: newValue,
-            };
-        },
-        {},
+    const newCharacteristics = prepareNewCharacteristics(
+        characteristics,
+        requestedNewCharacteristics,
     );
 
     ctx.body.characteristics = await ctx.publishedCharacteristic.addNewVersion(
-        newCharacteristics,
+        Object.assign({}, characteristics, newCharacteristics),
     );
 };
 
