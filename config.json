@@ -12,6 +12,7 @@
         "classif-by",
         "count-all",
         "count-by-fields",
+        "close-by",
         "cross-by",
         "decompose-by",
         "distinct-alpha-2-alpha3-from",
