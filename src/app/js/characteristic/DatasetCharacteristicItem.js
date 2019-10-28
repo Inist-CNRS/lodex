@@ -3,28 +3,19 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Property from '../public/Property';
-import { fromFields, fromCharacteristic, fromUser } from '../sharedSelectors';
+import { fromFields, fromCharacteristic } from '../sharedSelectors';
 import { field as fieldPropTypes } from '../propTypes';
-import shouldDisplayField from '../fields/shouldDisplayField';
 
 export const DatasetCharacteristicItemComponent = ({
     resource,
-    isAdmin,
     field,
     style,
-}) => {
-    const displayCharacteristic = shouldDisplayField(resource, field, isAdmin);
-
-    return displayCharacteristic ? (
-        <Property resource={resource} field={field} style={style} />
-    ) : null;
-};
+}) => <Property resource={resource} field={field} style={style} />;
 
 DatasetCharacteristicItemComponent.propTypes = {
     resource: PropTypes.shape({
         uri: PropTypes.string.isRequired,
     }).isRequired,
-    isAdmin: PropTypes.bool.isRequired,
     field: fieldPropTypes.isRequired,
     style: PropTypes.shape({}).isRequired,
 };
@@ -35,7 +26,6 @@ const mapStateToProps = (state, { characteristic: { name } }) => ({
         name,
         ...fromCharacteristic.getCharacteristicsAsResource(state),
     },
-    isAdmin: fromUser.isAdmin(state),
 });
 
 export default connect(mapStateToProps)(DatasetCharacteristicItemComponent);
