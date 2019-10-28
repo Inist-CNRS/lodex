@@ -7,14 +7,13 @@ import { fromFields, fromCharacteristic, fromUser } from '../sharedSelectors';
 import { field as fieldPropTypes } from '../propTypes';
 import shouldDisplayField from '../fields/shouldDisplayField';
 
-const DatasetCharacteristicItemComponent = ({
+export const DatasetCharacteristicItemComponent = ({
     resource,
     isAdmin,
     field,
     style,
 }) => {
-    const displayCharacteristic =
-        isAdmin || shouldDisplayField(resource, field);
+    const displayCharacteristic = shouldDisplayField(resource, field, isAdmin);
 
     return displayCharacteristic ? (
         <Property resource={resource} field={field} style={style} />

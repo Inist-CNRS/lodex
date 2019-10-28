@@ -130,10 +130,10 @@ export const DetailComponent = ({
     sortedFields.sort((a, b) => a.position - b.position);
 
     const topFields = sortedFields
-        .filter(field => isAdmin || shouldDisplayField(resource, field))
+        .filter(field => shouldDisplayField(resource, field, isAdmin))
         .slice(0, TOP_FIELDS_LIMIT);
     const otherFields = sortedFields
-        .filter(field => isAdmin || shouldDisplayField(resource, field))
+        .filter(field => shouldDisplayField(resource, field, isAdmin))
         .slice(TOP_FIELDS_LIMIT);
 
     return (
