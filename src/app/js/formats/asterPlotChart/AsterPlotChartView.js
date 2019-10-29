@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import * as d3 from 'd3';
 
 import AsterPlot from './AsterPlot';
 
-function getRandomInt(min, max) {
+function getRandomInt(min = 5, max = 10) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -12,23 +12,20 @@ function getRandomValue() {
 }
 
 const AsterPlotChartView = () => {
-    const generateData = (value, length) =>
-        d3.range(length).map((item, index) => ({
+    const generateData = () => {
+        const numberOfElements = getRandomInt();
+        return d3.range(numberOfElements).map((item, index) => ({
             date: index,
-            value,
+            value: getRandomValue(),
         }));
-
-    const [data, setData] = useState(generateData(0, 10));
-
-    const changeData = () => {
-        const value = getRandomValue();
-        const length = getRandomInt(5, 10);
-        setData(generateData(value, length));
     };
 
-    useEffect(() => {
-        setData(generateData());
-    }, [!data]);
+    const [data, setData] = useState(generateData());
+
+    const changeData = () => {
+        const newData = generateData();
+        setData(newData);
+    };
 
     return (
         <div>
@@ -36,7 +33,7 @@ const AsterPlotChartView = () => {
                 <button onClick={changeData}>Random</button>
             </div>
 
-            <AsterPlot data={data} width={300} height={300} />
+            <AsterPlot data={data} width={200} height={200} />
         </div>
     );
 };
