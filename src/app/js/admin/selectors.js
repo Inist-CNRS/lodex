@@ -11,6 +11,7 @@ import { selectors as uploadSelectors } from './upload';
 import { selectors as contributedResourcesSelectors } from './contributedResources';
 import { selectors as clearSelectors } from './clear';
 import { selectors as progressSelectors } from './progress/reducer';
+import { selectors as loaderSelectors } from './loader';
 
 export const fromParsing = createGlobalSelectors(
     s => s.parsing,
@@ -46,4 +47,8 @@ export const fromContributedResources = createGlobalSelectors(
 export const fromProgress = createGlobalSelectors(
     s => s.progress,
     progressSelectors,
+);
+export const fromLoaders = createGlobalSelectors(
+    s => s.loaders,
+    loaderSelectors,
 );

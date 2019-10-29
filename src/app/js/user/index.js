@@ -377,6 +377,11 @@ export const getMenuRequest = state =>
         url: '/api/menu',
     });
 
+export const getLoadLoadersRequest = state =>
+    getRequest(state, {
+        url: '/api/loader',
+    });
+
 export const selectors = {
     isAdmin,
     getRole,
@@ -422,4 +427,5 @@ export const selectors = {
     getIstexRequest,
     getMenuRequest,
     getBreadcrumbRequest,
+    getLoadLoadersRequest,
 };

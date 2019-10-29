@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -15,6 +15,7 @@ import Loading from '../lib/components/Loading';
 import Card from '../lib/components/Card';
 import Statistics from './Statistics';
 import theme from '../theme';
+import { preLoadLoaders } from './loader/';
 
 const styles = {
     punchLine: {
@@ -29,7 +30,12 @@ export const AdminComponent = ({
     hasPublishedDataset,
     canUploadFile,
     p: polyglot,
+    preLoadLoaders,
 }) => {
+    useEffect(() => {
+        preLoadLoaders();
+    }, []);
+
     if (loadingParsingResult) {
         return (
             <Loading className="admin">
@@ -79,8 +85,15 @@ const mapStateToProps = state => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 
+const mapDispatchToProps = {
+    preLoadLoaders,
+};
+
 export default compose(
     withInitialData,
-    connect(mapStateToProps),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
     translate,
 )(AdminComponent);
