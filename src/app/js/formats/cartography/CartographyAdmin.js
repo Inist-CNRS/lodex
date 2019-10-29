@@ -82,13 +82,13 @@ class CartographyAdmin extends Component {
     render() {
         const {
             p: polyglot,
-            args: { params },
+            args: { params, colorScheme, hoverColorScheme },
             showMaxSize = false,
             showMaxValue = false,
             showMinValue = false,
             showOrderBy = false,
         } = this.props;
-        const { colorScheme, hoverColorScheme } = this.props.args;
+
         return (
             <div style={styles.container}>
                 <RoutineParamsAdmin
