@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card, CardTitle } from 'material-ui/Card';
 import { Helmet } from 'react-helmet';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
@@ -15,7 +17,6 @@ import Toolbar from '../Toolbar';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
 import Format from '../Format';
 import AppliedFacetList from '../dataset/AppliedFacetList';
-
 import EditButton from '../../fields/editFieldValue/EditButton';
 import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
@@ -114,10 +115,20 @@ class GraphPage extends Component {
                             />
                         </Card>
                     )}
-                    <FlatButton
+                    <RaisedButton
                         className="browse-result"
                         onClick={onSearch}
                         label={polyglot.t('browse_results')}
+                        primary
+                        fullWidth
+                        icon={
+                            <FontAwesomeIcon
+                                data-tip
+                                data-for="centerIconTooltip"
+                                icon={faSearch}
+                                height={20}
+                            />
+                        }
                     />
                 </div>
             </div>
