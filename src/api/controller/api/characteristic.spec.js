@@ -69,6 +69,7 @@ describe('characteristic routes', () => {
             const characteristics = {
                 foo: 'new foo',
                 bar: 'new bar',
+                covfefe: '', // new covfefe is empty
                 iShouldntBeHere: 'iShouldntBeHere',
             };
 
@@ -88,6 +89,7 @@ describe('characteristic routes', () => {
                     findLastVersion: jest.fn().mockImplementation(() => ({
                         foo: 'foo value',
                         bar: 'bar value',
+                        covfefe: 'covfefe value',
                         updatedField: 'updated value',
                         doNotUpdateMe: 'doNotUpdateMe value',
                     })),
@@ -96,7 +98,6 @@ describe('characteristic routes', () => {
                     findOneByName: jest.fn().mockImplementation(() => ({
                         _id: 'id',
                         name: 'updatedField',
-
                         transformers: [
                             {
                                 operation: 'COLUMN',
@@ -139,6 +140,7 @@ describe('characteristic routes', () => {
                 ).toHaveBeenCalledWith({
                     foo: 'new foo',
                     bar: 'new bar',
+                    covfefe: null,
                     updatedField: 'updated value',
                     doNotUpdateMe: 'doNotUpdateMe value',
                 });

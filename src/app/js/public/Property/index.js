@@ -15,7 +15,6 @@ import CompositeProperty from './CompositeProperty';
 import propositionStatus, {
     REJECTED,
 } from '../../../../common/propositionStatus';
-import isEmpty from '../../../../common/lib/isEmpty';
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from '../resource';
 import PropertyContributor from './PropertyContributor';
@@ -29,6 +28,7 @@ import Format from '../Format';
 import GraphLink from '../graph/GraphLink';
 import Link from '../../lib/components/Link';
 import { getPredicate } from '../../formats';
+import shouldDisplayField from '../../fields/shouldDisplayField';
 
 const styles = {
     container: memoize(
@@ -90,6 +90,7 @@ const styles = {
 export const PropertyComponent = ({
     className,
     field,
+    predicate,
     isSub,
     resource,
     fieldStatus,
@@ -98,16 +99,10 @@ export const PropertyComponent = ({
     style,
     parents,
 }) => {
-    if (!isAdmin) {
-        if (fieldStatus === REJECTED) {
-            return null;
-        }
-        const value = resource[field.name];
-        const predicate = getPredicate(field);
-        if (!predicate(value) || isEmpty(value)) {
-            return null;
-        }
+    if (!shouldDisplayField(resource, field, fieldStatus, predicate, isAdmin)) {
+        return null;
     }
+
     const fieldClassName = getFieldClassName(field);
 
     const formatChildren = [
@@ -206,6 +201,7 @@ PropertyComponent.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
     fieldStatus: PropTypes.oneOf(propositionStatus),
+    predicate: PropTypes.func,
     isSub: PropTypes.bool,
     isAdmin: PropTypes.bool.isRequired,
     resource: PropTypes.shape({}).isRequired,
@@ -216,12 +212,14 @@ PropertyComponent.propTypes = {
 PropertyComponent.defaultProps = {
     className: null,
     fieldStatus: null,
+    predicate: () => true,
     isSub: false,
 };
 
 const mapStateToProps = (state, { field }) => ({
     isAdmin: fromUser.isAdmin(state),
     fieldStatus: fromResource.getFieldStatus(state, field),
+    predicate: getPredicate(field),
 });
 
 const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>

@@ -34,11 +34,8 @@ const updateField = (ctx, requestedNewCharacteristics) => async field => {
     const body = {};
 
     if (isValueField(field)) {
-        body.field = await updateFieldValue(
-            ctx,
-            field,
-            requestedNewCharacteristics[field.name],
-        );
+        const newValue = requestedNewCharacteristics[field.name] || null;
+        body.field = await updateFieldValue(ctx, field, newValue);
 
         const annotation = await ctx.field.findOne({ completes: field.name });
 
@@ -60,6 +57,27 @@ const updateField = (ctx, requestedNewCharacteristics) => async field => {
     return body;
 };
 
+const prepareNewCharacteristics = (characteristics, newCharacteristics) => {
+    const characteristicsNames = Object.keys(characteristics);
+    const newCharacteristicsNames = Object.keys(newCharacteristics);
+
+    const existingNewCharacteristicsNames = newCharacteristicsNames.filter(
+        newCharacteristicName =>
+            characteristicsNames.some(
+                characteristicName =>
+                    characteristicName === newCharacteristicName,
+            ),
+    );
+
+    return existingNewCharacteristicsNames.reduce((result, name) => {
+        const newValue = newCharacteristics[name] || null;
+        return {
+            ...result,
+            [name]: newValue,
+        };
+    }, {});
+};
+
 export const updateCharacteristics = async ctx => {
     const {
         name,
@@ -76,21 +94,13 @@ export const updateCharacteristics = async ctx => {
     }
 
     const characteristics = await ctx.publishedCharacteristic.findLastVersion();
-
-    const newCharacteristics = Object.keys(characteristics).reduce(
-        (result, name) => {
-            const newCharacteristic = requestedNewCharacteristics[name];
-
-            return {
-                ...result,
-                [name]: newCharacteristic || characteristics[name],
-            };
-        },
-        {},
+    const newCharacteristics = prepareNewCharacteristics(
+        characteristics,
+        requestedNewCharacteristics,
     );
 
     ctx.body.characteristics = await ctx.publishedCharacteristic.addNewVersion(
-        newCharacteristics,
+        Object.assign({}, characteristics, newCharacteristics),
     );
 };
 

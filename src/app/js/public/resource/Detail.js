@@ -12,7 +12,7 @@ import get from 'lodash.get';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
-import { fromFields, fromUser } from '../../sharedSelectors';
+import { fromFields } from '../../sharedSelectors';
 import Property from '../Property';
 import AddField from '../../fields/addField/AddField';
 import HideResource from './HideResource';
@@ -115,34 +115,15 @@ const styles = {
     },
 };
 
-export const shouldDisplayField = (resource, isAdmin) => field => {
-    if (isAdmin) {
-        return true;
-    }
-
-    const isEmptyValue = !resource[field.name];
-    return !isEmptyValue || Boolean(field.composedOf);
-};
-
-export const DetailComponent = ({
-    fields,
-    resource,
-    title,
-    description,
-    isAdmin,
-}) => {
+export const DetailComponent = ({ fields, resource, title, description }) => {
     if (!resource) {
         return null;
     }
     const sortedFields = [...fields]; // Isolation
     sortedFields.sort((a, b) => a.position - b.position);
 
-    const topFields = sortedFields
-        .filter(shouldDisplayField(resource, isAdmin))
-        .slice(0, TOP_FIELDS_LIMIT);
-    const otherFields = sortedFields
-        .filter(shouldDisplayField(resource, isAdmin))
-        .slice(TOP_FIELDS_LIMIT);
+    const topFields = sortedFields.slice(0, TOP_FIELDS_LIMIT);
+    const otherFields = sortedFields.slice(TOP_FIELDS_LIMIT);
 
     return (
         <span className="detail">
@@ -211,11 +192,12 @@ DetailComponent.defaultProps = {
 DetailComponent.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
-    resource: PropTypes.shape({}),
+    resource: PropTypes.shape({
+        uri: PropTypes.string.isRequired,
+    }).isRequired,
     title: PropTypes.string,
     description: PropTypes.string,
     backToListLabel: PropTypes.string,
-    isAdmin: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => {
@@ -231,7 +213,6 @@ const mapStateToProps = state => {
         fields: fromFields.getResourceFields(state, resource),
         title,
         description,
-        isAdmin: fromUser.isAdmin(state),
     };
 };
 
