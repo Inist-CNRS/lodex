@@ -68,7 +68,8 @@ export const UploadComponent = ({
                 label={polyglot.t('first-upload')}
             />
             <p>
-                {polyglot.t('supported_format_list') loaders.map(loader => loader.name).join(', ')}
+                {polyglot.t('supported_format_list')}{' '}
+                {loaders.map(loader => loader.name).join(', ')}
             </p>
         </div>
     </div>
@@ -97,7 +98,7 @@ const mapDispatchToProps = {
 export default compose(
     connect(
         mapsStateToProps,
-        mapDispatchToProps,
+        mapDispatchToProps
     ),
-    translate,
+    translate
 )(UploadComponent);

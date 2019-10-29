@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
+import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 
@@ -30,11 +30,10 @@ export const AdminComponent = ({
     hasPublishedDataset,
     canUploadFile,
     p: polyglot,
-    preLoadLoaders,
 }) => {
-    useEffect(() => {
+    /* useEffect(() => {
         preLoadLoaders();
-    }, []);
+    }, []);*/
 
     if (loadingParsingResult) {
         return (
@@ -95,5 +94,10 @@ export default compose(
         mapStateToProps,
         mapDispatchToProps,
     ),
+    lifecycle({
+        componentWillMount() {
+            this.props.preLoadLoaders();
+        },
+    }),
     translate,
 )(AdminComponent);
