@@ -17,11 +17,11 @@ const AsterPlot = ({ data, width, height }) => {
 
         const svg = d3.select(ref.current);
 
-        svg.select('g.outlineArcs').remove();
-        const outlineArcsGroup = svg.append('g').attr('class', 'outlineArcs');
-
         svg.select('g.arcs').remove();
         const arcsGroup = svg.append('g').attr('class', 'arcs');
+
+        svg.select('g.outlineArcs').remove();
+        const outlineArcsGroup = svg.append('g').attr('class', 'outlineArcs');
 
         // Prepare variables
 
