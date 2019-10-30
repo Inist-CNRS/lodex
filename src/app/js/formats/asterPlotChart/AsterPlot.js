@@ -23,7 +23,7 @@ const AsterPlot = ({ data, width, height }) => {
         svg.select('g.arcs').remove();
         const arcsGroup = svg.append('g').attr('class', 'arcs');
 
-        // Create outlineArcs
+        // Prepare variables
 
         const radius = Math.min(width, height) / 2;
         const circumferenceOfCircle = radius * Math.PI * 2;
@@ -35,52 +35,6 @@ const AsterPlot = ({ data, width, height }) => {
         let tempEndAngle;
         let j = 0;
         let tempEndAngle1;
-
-        const outlineArc = d3
-            .arc()
-            .innerRadius(inner)
-            .outerRadius(function() {
-                return radius;
-            })
-            .startAngle(function() {
-                let startAngle = 0;
-                let endAngle = 0;
-                if (i === 0) {
-                    startAngle = 0;
-                    endAngle = startAngle + arcDegrees;
-                } else {
-                    startAngle = tempEndAngle;
-                    endAngle = startAngle + arcDegrees;
-                }
-                i++;
-                tempEndAngle = endAngle;
-                return startAngle;
-            })
-            .endAngle(function() {
-                let startAngle = 0;
-                let endAngle = 0;
-                if (j === 0) {
-                    startAngle = 0;
-                    endAngle = startAngle + arcDegrees;
-                } else {
-                    startAngle = tempEndAngle1;
-                    endAngle = startAngle + arcDegrees;
-                }
-                j++;
-                tempEndAngle1 = endAngle;
-                return endAngle;
-            });
-
-        outlineArcsGroup
-            .selectAll('.outlineArc')
-            .data(data)
-            .enter()
-            .append('path')
-            .attr('fill', 'none')
-            .attr('stroke', 'gray')
-            .attr('class', 'outlineArc')
-            .attr('d', outlineArc)
-            .attr('transform', `translate(90 90)`);
 
         // Create Arcs
 
@@ -132,12 +86,67 @@ const AsterPlot = ({ data, width, height }) => {
             .attr('stroke-width', '1')
             .attr('d', arc)
             .attr('class', 'arc')
-            .attr('transform', `translate(90 90)`);
+            .attr('transform', `translate(${width / 2} ${height / 2})`);
+
+        // Create outlineArcs
+
+        const outlineArc = d3
+            .arc()
+            .innerRadius(inner)
+            .outerRadius(function() {
+                return radius;
+            })
+            .startAngle(function() {
+                let startAngle = 0;
+                let endAngle = 0;
+                if (i === 0) {
+                    startAngle = 0;
+                    endAngle = startAngle + arcDegrees;
+                } else {
+                    startAngle = tempEndAngle;
+                    endAngle = startAngle + arcDegrees;
+                }
+                i++;
+                tempEndAngle = endAngle;
+                return startAngle;
+            })
+            .endAngle(function() {
+                let startAngle = 0;
+                let endAngle = 0;
+                if (j === 0) {
+                    startAngle = 0;
+                    endAngle = startAngle + arcDegrees;
+                } else {
+                    startAngle = tempEndAngle1;
+                    endAngle = startAngle + arcDegrees;
+                }
+                j++;
+                tempEndAngle1 = endAngle;
+                return endAngle;
+            });
+
+        outlineArcsGroup
+            .selectAll('.outlineArc')
+            .data(data)
+            .enter()
+            .append('path')
+            .attr('fill', 'none')
+            .attr('stroke', 'gray')
+            .attr('class', 'outlineArc')
+            .attr('d', outlineArc)
+            .attr('transform', `translate(${width / 2} ${height / 2})`);
     }, [ref, data]);
 
     return (
         <div>
-            <svg ref={ref} xmlns="http://www.w3.org/2000/svg" />
+            <svg
+                ref={ref}
+                width={width}
+                height={height}
+                viewBox={`-5 -5 ${width + 10} ${height + 10}`}
+                preserveAspectRatio="xMidYMid meet"
+                xmlns="http://www.w3.org/2000/svg"
+            />
         </div>
     );
 };
