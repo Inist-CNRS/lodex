@@ -120,9 +120,7 @@ export async function exportFileMiddleware(
 export async function exportWidgetMiddleware(ctx, type) {
     const fields = encodeURIComponent(JSON.stringify(ctx.query.fields));
     const uri = encodeURIComponent(ctx.query.uri);
-    const widgetUrl = `${
-        config.host
-    }/api/widget?type=${type}&fields=${fields}&uri=${uri}`;
+    const widgetUrl = `${config.host}/api/widget?type=${type}&fields=${fields}&uri=${uri}`;
 
     ctx.body = widgetUrl;
 }

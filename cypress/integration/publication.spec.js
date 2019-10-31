@@ -1,5 +1,6 @@
 import { teardown } from '../support/authentication';
 import * as homePage from '../support/homePage';
+import * as adminPage from '../support/adminPage';
 import * as datasetImportPage from '../support/datasetImportPage';
 import { fillInputWithFixture } from '../support/forms';
 import * as searchDrawer from '../support/searchDrawer';
@@ -8,6 +9,17 @@ describe('Dataset Publication', () => {
     beforeEach(teardown);
 
     describe('Dataset Import', () => {
+        it('should get the list of possible loaders', () => {
+            homePage.openAdvancedDrawer();
+            homePage.goToAdminDashboard();
+            adminPage.checkListOfSupportedFileFormats();
+
+            datasetImportPage.openImportDialog();
+            cy.wait(300);
+
+            datasetImportPage.checkListOfSupportedFileFormats();
+        });
+
         it('should receive a csv file and preview its data in a table', () => {
             homePage.openAdvancedDrawer();
             homePage.goToAdminDashboard();

@@ -31,10 +31,6 @@ export const AdminComponent = ({
     canUploadFile,
     p: polyglot,
 }) => {
-    /* useEffect(() => {
-        preLoadLoaders();
-    }, []);*/
-
     if (loadingParsingResult) {
         return (
             <Loading className="admin">
