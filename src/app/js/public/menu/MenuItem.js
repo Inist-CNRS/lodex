@@ -8,7 +8,6 @@ import { Link, NavLink } from 'react-router-dom';
 
 import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import ExportShareMenuItem from '../ExportShareMenuItem';
 import stylesToClassname from '../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
@@ -205,24 +204,6 @@ const MenuItem = ({
                     </Link>
                 )
             );
-
-        case 'share_export': {
-            return (
-                <ExportShareMenuItem
-                    renderOpenButton={({ handleOpen, open }) => (
-                        <div
-                            className={classnames('nav-item', styles.menuItem, {
-                                [styles.drawerActive]: open,
-                            })}
-                            onClick={handleOpen}
-                        >
-                            {icon}
-                            {label}
-                        </div>
-                    )}
-                />
-            );
-        }
         case 'custom': {
             const { link } = config;
             if (!link) {
@@ -292,7 +273,6 @@ MenuItem.propTypes = {
             'sign-in',
             'sign-out',
             'custom',
-            'share_export',
             'advanced',
         ]),
         label: PropTypes.shape({
