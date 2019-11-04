@@ -241,7 +241,6 @@ const menuPropTypes = PropTypes.arrayOf(
             'graphs',
             'search',
             'admin',
-            'share_export',
             'sign-in',
             'sign-out',
             'custom',

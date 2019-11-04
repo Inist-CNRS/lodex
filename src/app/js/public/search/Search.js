@@ -32,6 +32,7 @@ import Facets from './Facets';
 import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
 import stylesToClassname from '../../lib/stylesToClassName';
+import ExportButton from '../ExportButton';
 
 const styles = stylesToClassname(
     {
@@ -287,6 +288,7 @@ class Search extends Component {
                             underlineFocusStyle={muiStyles.searchBarUnderline}
                             ref={this.textInput}
                         />
+                        <ExportButton />
                     </div>
                     <div
                         className={classnames(
