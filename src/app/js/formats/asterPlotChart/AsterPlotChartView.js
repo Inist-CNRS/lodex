@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import * as d3 from 'd3';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 
+// import injectData from '../injectData';
+import stylesToClassname from '../../lib/stylesToClassName';
 import AsterPlot from './AsterPlot';
 
 function getRandomInt(min = 5, max = 10) {
@@ -11,31 +16,43 @@ function getRandomValue() {
     return Math.random() * 100;
 }
 
-const AsterPlotChartView = () => {
-    const generateData = () => {
-        const numberOfElements = getRandomInt();
-        return d3.range(numberOfElements).map((item, index) => ({
-            date: index,
-            value: getRandomValue(),
-        }));
-    };
+const generateData = () => {
+    const numberOfElements = getRandomInt();
+    return d3.range(numberOfElements).map((item, index) => ({
+        date: index,
+        value: getRandomValue(),
+    }));
+};
 
-    const [data, setData] = useState(generateData());
+const styles = stylesToClassname(
+    {
+        container: {
+            margin: '10px',
+        },
+    },
+    'aster-plot-chart',
+);
 
-    const changeData = () => {
-        const newData = generateData();
-        setData(newData);
-    };
-
+const AsterPlotChartView = ({ data }) => {
     return (
-        <div>
-            <div>
-                <button onClick={changeData}>Random</button>
-            </div>
-
+        <div className={styles.container}>
             <AsterPlot data={data} width={200} height={200} />
         </div>
     );
 };
 
-export default AsterPlotChartView;
+AsterPlotChartView.propTypes = {
+    data: PropTypes.array.isRequired,
+};
+
+const mapStateToProps = () => {
+    const data = generateData();
+    return {
+        data,
+    };
+};
+
+export default compose(
+    // injectData(),
+    connect(mapStateToProps),
+)(AsterPlotChartView);
