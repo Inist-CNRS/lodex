@@ -196,9 +196,7 @@ export const checkChunkMiddleware = async ctx => {
         resumableIdentifier,
         resumableCurrentChunkSize,
     } = ctx.request.query;
-    const chunkname = `${
-        config.uploadDir
-    }/${resumableIdentifier}.${resumableChunkNumber}`;
+    const chunkname = `${config.uploadDir}/${resumableIdentifier}.${resumableChunkNumber}`;
     const exists = await checkFileExists(chunkname, resumableCurrentChunkSize);
     ctx.status = exists ? 200 : 204;
 };

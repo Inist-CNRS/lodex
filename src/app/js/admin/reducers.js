@@ -17,6 +17,7 @@ import contributedResources from './contributedResources';
 import clear from './clear';
 import characteristic from '../characteristic';
 import progress from './progress/reducer';
+import loaders from './loader';
 
 const reducer = combineReducers({
     fetch: fetchReducer,
@@ -36,6 +37,7 @@ const reducer = combineReducers({
     contributedResources,
     characteristic,
     progress,
+    loaders,
 });
 
 export default reducer;

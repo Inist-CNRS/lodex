@@ -22,6 +22,7 @@ import run from './run';
 import progress from './progress';
 import breadcrumbs from './breadcrumb';
 import menu from './menu';
+import loader from './loader';
 
 const app = new Koa();
 
@@ -103,6 +104,7 @@ app.use(mount('/publish', publish));
 app.use(mount('/upload', upload));
 app.use(mount('/dataset', dataset));
 app.use(route.get('/progress', progress));
+app.use(mount('/loader', loader));
 
 app.use(async ctx => {
     ctx.status = 404;

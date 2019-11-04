@@ -65,9 +65,7 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     if (filter.$and && !filter.$and.length) {
         delete filter.$and;
     }
-    const connectionStringURI = `mongodb://${config.mongo.host}/${
-        config.mongo.dbName
-    }`;
+    const connectionStringURI = `mongodb://${config.mongo.host}/${config.mongo.dbName}`;
     // context is the intput for LodexReduceQuery & LodexRunQuery & LodexDocuments
     const context = {
         // /*

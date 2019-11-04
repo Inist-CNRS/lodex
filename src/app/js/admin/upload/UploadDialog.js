@@ -11,7 +11,7 @@ import MenuItem from 'material-ui/MenuItem';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { uploadFile, changeUploadUrl, changeParserName, uploadUrl } from './';
-import { fromUpload } from '../selectors';
+import { fromUpload, fromLoaders } from '../selectors';
 
 const styles = {
     button: {
@@ -53,10 +53,14 @@ export const UploadDialogComponent = ({
     onFileLoad,
     onUrlUpload,
     p: polyglot,
+    loaders,
 }) => {
-    const parserNames = LOADERS.sort((x, y) =>
-        polyglot.t(x).localeCompare(polyglot.t(y)),
-    ).map(pn => <MenuItem key={pn} value={pn} primaryText={polyglot.t(pn)} />);
+    const parserNames = loaders
+        .map(loader => loader.name)
+        .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
+        .map(pn => (
+            <MenuItem key={pn} value={pn} primaryText={polyglot.t(pn)} />
+        ));
 
     return (
         <div>
@@ -153,6 +157,7 @@ const mapStateToProps = state => ({
     url: fromUpload.getUrl(state),
     isUrlValid: fromUpload.isUrlValid(state),
     parserName: fromUpload.getParserName(state),
+    loaders: fromLoaders.getLoaders(state),
 });
 
 const mapDispatchToProps = {
