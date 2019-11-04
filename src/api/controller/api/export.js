@@ -117,18 +117,9 @@ export async function exportFileMiddleware(
     ctx.body = exportStream;
 }
 
-export async function exportWidgetMiddleware(ctx, type) {
-    const fields = encodeURIComponent(JSON.stringify(ctx.query.fields));
-    const uri = encodeURIComponent(ctx.query.uri);
-    const widgetUrl = `${config.host}/api/widget?type=${type}&fields=${fields}&uri=${uri}`;
-
-    ctx.body = widgetUrl;
-}
-
 export async function setup(ctx, next) {
     ctx.getExporter = getExporter;
     ctx.exportFileMiddleware = exportFileMiddleware;
-    ctx.exportWidgetMiddleware = exportWidgetMiddleware;
     ctx.getExporterConfig = getExporterConfig;
     await next();
 }
@@ -146,10 +137,7 @@ export async function exportMiddleware(ctx, type) {
                 exportStreamFactory,
                 exporterConfig,
             );
-            return;
         }
-
-        await ctx.exportWidgetMiddleware(ctx, type);
     } catch (error) {
         ctx.status = 500;
         ctx.body = error.message;

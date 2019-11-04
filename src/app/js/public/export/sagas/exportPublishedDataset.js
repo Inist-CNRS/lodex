@@ -13,7 +13,7 @@ export function* handleExportPublishedDatasetSuccess({
     payload: { type, uri },
 }) {
     const facets = yield select(fromSearch.getAppliedFacets);
-    const match = yield select(fromSearch.getFilter);
+    const match = yield select(fromSearch.getQuery);
     const sort = yield select(fromSearch.getSort);
 
     const queryString = yield call(getQueryString, {

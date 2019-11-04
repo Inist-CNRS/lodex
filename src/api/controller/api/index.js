@@ -17,7 +17,6 @@ import publish from './publish';
 import publishedDataset from './publishedDataset';
 import dataset from './dataset';
 import upload from './upload';
-import widget from './widget';
 import run from './run';
 import progress from './progress';
 import breadcrumbs from './breadcrumb';
@@ -64,7 +63,6 @@ app.use(async (ctx, next) => {
 
 app.use(mount('/export', exportPublishedDataset));
 app.use(mount('/facet', facet));
-app.use(mount('/widget', widget));
 app.use(mount('/run', run));
 app.use(route.get('/publication', publication));
 

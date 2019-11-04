@@ -2,7 +2,7 @@ import { call, select } from 'redux-saga/effects';
 
 import { handleExportPublishedDatasetSuccess } from './exportPublishedDataset';
 import getQueryString from '../../../lib/getQueryString';
-import { fromDataset } from '../../selectors';
+import { fromSearch } from '../../selectors';
 import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 import downloadFile from '../../../lib/downloadFile';
@@ -13,13 +13,13 @@ describe('export saga', () => {
             payload: { type: 'type' },
         });
 
-        it('should select fromDataset.getAppliedFacets', () => {
+        it('should select fromSearch.getAppliedFacets', () => {
             expect(saga.next().value).toEqual(
-                select(fromDataset.getAppliedFacets),
+                select(fromSearch.getAppliedFacets),
             );
         });
 
-        it('should select fromDataset.getFilter', () => {
+        it('should select fromSearch.getQuery', () => {
             expect(
                 saga.next([
                     {
@@ -29,12 +29,12 @@ describe('export saga', () => {
                         value: 'aFacetValue',
                     },
                 ]).value,
-            ).toEqual(select(fromDataset.getFilter));
+            ).toEqual(select(fromSearch.getQuery));
         });
 
-        it('should select fromDataset.getSort', () => {
+        it('should select fromSearch.getSort', () => {
             expect(saga.next('aFilter').value).toEqual(
-                select(fromDataset.getSort),
+                select(fromSearch.getSort),
             );
         });
 
