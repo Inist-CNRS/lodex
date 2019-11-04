@@ -45,7 +45,12 @@ const styles = stylesToClassname(
             padding: '1rem',
         },
         searchBarContainer: {
-            flex: '1 0 0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+        },
+        searchField: {
+            flexGrow: 3,
         },
         details: {
             display: 'flex',
@@ -277,7 +282,10 @@ class Search extends Component {
                     >
                         <TextField
                             hintText={`🔍 ${polyglot.t('search_placeholder')}`}
-                            fullWidth
+                            className={classnames(
+                                'search-text',
+                                styles.searchField,
+                            )}
                             onChange={this.handleTextFieldChange}
                             value={
                                 (bufferQuery !== null
