@@ -67,10 +67,7 @@ const ListView = ({
     return (
         <List className={classnames(styles[type], className)}>
             {values.map((value, index) => (
-                <li
-                    key={value}
-                    className={classnames(styles[`${type}_li`])}
-                >
+                <li key={value} className={classnames(styles[`${type}_li`])}>
                     {subFormat ? (
                         <ViewComponent
                             resource={values}
