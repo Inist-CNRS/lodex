@@ -38,12 +38,17 @@ describe('list format view <ListView />', () => {
             const component = shallow(
                 <ListView {...defaultProps} resource={{ name: value }} />,
             );
-            expect(component.length).toBe(0);
+            const listComponent = component.find(UL);
+            expect(listComponent.length).toBe(0);
         });
     });
 
     it('should render list of value', () => {
         const component = shallow(<ListView {...defaultProps} />);
+
+        const listComponent = component.find(UL);
+        expect(listComponent.length).toBe(1);
+
         const subFormat = component.find('Translated(CheckedComponent)');
         expect(subFormat.length).toBe(3);
         subFormat.forEach((t, index) => {
