@@ -32,9 +32,15 @@ const generateData = () => {
     const numberOfElements = getRandomInt();
     return d3
         .range(numberOfElements)
-        .map(() => ({
-            value: getRandomValue(),
-        }))
+        .map(() => {
+            const value = getRandomValue();
+            const label = `${value}% similarity`;
+
+            return {
+                label,
+                value,
+            };
+        })
         .sort(sortByKey('value'));
 };
 
@@ -44,7 +50,7 @@ const styles = stylesToClassname(
             margin: '10px',
         },
     },
-    'aster-plot-chart',
+    'aster-plot-chart-view',
 );
 
 const AsterPlotChartView = ({ data }) => {
