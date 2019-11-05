@@ -60,12 +60,14 @@ const ExportButton = ({
                     onClick={handleClick}
                     label={label}
                     icon={<ExportIcon />}
+                    className="export"
                 />
             )}
             {width <= 2 && (
                 <IconButton
                     onClick={handleClick}
                     iconStyle={{ color: theme.green.primary }}
+                    className="export"
                 >
                     <ExportIcon />
                 </IconButton>
