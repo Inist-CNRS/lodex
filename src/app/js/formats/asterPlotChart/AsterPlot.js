@@ -1,16 +1,12 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
 import * as d3 from 'd3';
 
 const colors = d3.scaleOrdinal(d3.schemeCategory10);
 
 const AsterPlot = ({ data, width, height }) => {
     const ref = useRef(null);
-    const createPie = d3
-        .pie()
-        .value(d => d.value)
-        .sort(null);
+    const createPie = d3.pie().value(d => d.value);
 
     useEffect(() => {
         // Create structure
@@ -44,7 +40,7 @@ const AsterPlot = ({ data, width, height }) => {
             .arc()
             .innerRadius(inner)
             .outerRadius(function(d) {
-                return (radius - inner) * (d.data.value / 100) + inner;
+                return (radius - inner) * (d.value / 100) + inner;
             })
             .startAngle(function() {
                 var startAngle = 0;
@@ -150,9 +146,15 @@ const AsterPlot = ({ data, width, height }) => {
         </div>
     );
 };
+
 AsterPlot.propTypes = {
-    data: PropTypes.array.isRequired,
+    data: PropTypes.arrayOf(
+        PropTypes.shape({
+            value: PropTypes.number.isRequired,
+        }),
+    ).isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
 };
+
 export default AsterPlot;
