@@ -24,8 +24,8 @@ function getRandomInt(min = 5, max = 10) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getRandomValue() {
-    return Math.random() * 100;
+function getRandomValue(decimals = 2) {
+    return parseFloat(Math.random() * 100).toFixed(decimals);
 }
 
 const generateData = () => {
