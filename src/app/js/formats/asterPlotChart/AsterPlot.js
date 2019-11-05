@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import ReactTooltip from 'react-tooltip';
@@ -128,7 +128,7 @@ const AsterPlot = ({ data, width, height }) => {
     }, [ref, data]);
 
     return (
-        <Fragment>
+        <>
             <svg
                 className="aster-plot-chart"
                 ref={ref}
@@ -139,7 +139,7 @@ const AsterPlot = ({ data, width, height }) => {
                 xmlns="http://www.w3.org/2000/svg"
             />
             <ReactTooltip />
-        </Fragment>
+        </>
     );
 };
 
