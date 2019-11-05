@@ -20,7 +20,7 @@ const sortByKey = (key = '') => (dataA, dataB) => {
     return Math.sign(a - b);
 };
 
-function getRandomInt(min = 5, max = 10) {
+function getRandomInt(min = 5, max = 15) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -41,7 +41,7 @@ const generateData = () => {
                 value,
             };
         })
-        .sort(sortByKey('value'));
+        .sort(sortByKey('index'));
 };
 
 const styles = stylesToClassname(
