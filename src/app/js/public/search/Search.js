@@ -8,6 +8,8 @@ import debounce from 'lodash.debounce';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
+import FilterListIcon from 'material-ui/svg-icons/content/filter-list';
 
 import {
     facetActions,
@@ -15,7 +17,6 @@ import {
     sort as sortAction,
     loadMore as loadMoreAction,
 } from './reducer';
-import Link from '../../lib/components/Link';
 import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
@@ -68,11 +69,12 @@ const styles = stylesToClassname(
             color: 'rgb(95, 99, 104)',
         },
         toggleFacets: {
-            alignSelf: 'flex-end',
-            cursor: 'pointer',
             '@media (min-width: 992px)': {
-                display: 'none',
+                display: 'none !important',
             },
+        },
+        iconFacets: {
+            color: theme.green.primary,
         },
         appliedFacets: {
             flex: '0 0 auto',
@@ -296,7 +298,21 @@ class Search extends Component {
                             underlineFocusStyle={muiStyles.searchBarUnderline}
                             ref={this.textInput}
                         />
-                        <ExportButton />
+                        <div>
+                            {withFacets && (
+                                <IconButton
+                                    className={classnames(
+                                        'search-facets-toggle',
+                                        styles.toggleFacets,
+                                    )}
+                                    onClick={this.handleToggleFacets}
+                                    iconStyle={{ color: theme.green.primary }}
+                                >
+                                    <FilterListIcon />
+                                </IconButton>
+                            )}
+                            <ExportButton />
+                        </div>
                     </div>
                     <div
                         className={classnames(
@@ -318,21 +334,6 @@ class Search extends Component {
                                               smart_count: total,
                                           })}
                                 </div>
-                            )}
-                            {withFacets && (
-                                <Link
-                                    className={classnames(
-                                        'search-facets-toggle',
-                                        styles.toggleFacets,
-                                    )}
-                                    onClick={this.handleToggleFacets}
-                                >
-                                    {polyglot.t(
-                                        showFacets
-                                            ? 'search_facets_close'
-                                            : 'search_facets_open',
-                                    )}
-                                </Link>
                             )}
                         </div>
                     </div>

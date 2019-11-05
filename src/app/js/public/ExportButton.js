@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import withWidth from 'material-ui/utils/withWidth';
@@ -18,7 +19,7 @@ import {
     preLoadExporters,
     exportPublishedDataset as exportPublishedDatasetAction,
 } from './export';
-
+import theme from '../theme';
 import ExportItem from './export/ExportMenuItem';
 
 const styles = stylesToClassname(
@@ -70,13 +71,25 @@ class ExportButton extends React.Component {
 
         return (
             <>
-                <FlatButton
-                    primary
-                    onClick={this.handleClick}
-                    label={label}
-                    icon={<ExportIcon />}
-                    className={classnames('export', styles.button)}
-                />
+                {width > 2 && (
+                    <FlatButton
+                        primary
+                        onClick={this.handleClick}
+                        label={label}
+                        icon={<ExportIcon />}
+                        className={classnames('export', styles.button)}
+                    />
+                )}
+                {width <= 2 && (
+                    <IconButton
+                        className={classnames('export', styles.button)}
+                        onClick={this.handleClick}
+                        iconStyle={{ color: theme.green.primary }}
+                    >
+                        <ExportIcon />
+                    </IconButton>
+                )}
+
                 <Popover
                     open={this.state.open}
                     anchorEl={this.state.anchorEl}

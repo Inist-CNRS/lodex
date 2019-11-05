@@ -120,15 +120,6 @@
             },
             {
                 "label": {
-                    "en": "Export",
-                    "fr": "Exporter"
-                },
-                "icon": "faShareAlt",
-                "position": "advanced",
-                "role": "share_export"
-            },
-            {
-                "label": {
                     "en": "Admin",
                     "fr": "Admin"
                 },
