@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -8,6 +8,8 @@ import debounce from 'lodash.debounce';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
+import FilterListIcon from 'material-ui/svg-icons/content/filter-list';
 
 import {
     facetActions,
@@ -15,7 +17,6 @@ import {
     sort as sortAction,
     loadMore as loadMoreAction,
 } from './reducer';
-import Link from '../../lib/components/Link';
 import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
@@ -32,6 +33,7 @@ import Facets from './Facets';
 import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
 import stylesToClassname from '../../lib/stylesToClassName';
+import ExportButton from '../ExportButton';
 
 const styles = stylesToClassname(
     {
@@ -44,7 +46,12 @@ const styles = stylesToClassname(
             padding: '1rem',
         },
         searchBarContainer: {
-            flex: '1 0 0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+        },
+        searchField: {
+            flexGrow: 3,
         },
         details: {
             display: 'flex',
@@ -62,11 +69,12 @@ const styles = stylesToClassname(
             color: 'rgb(95, 99, 104)',
         },
         toggleFacets: {
-            alignSelf: 'flex-end',
-            cursor: 'pointer',
             '@media (min-width: 992px)': {
-                display: 'none',
+                display: 'none !important',
             },
+        },
+        iconFacets: {
+            color: theme.green.primary,
         },
         appliedFacets: {
             flex: '0 0 auto',
@@ -223,13 +231,13 @@ class Search extends Component {
         return (
             <div className={classnames('load-more', styles.loadMore)}>
                 {loading ? (
-                    <Fragment>
+                    <>
                         <CircularProgress
                             size={20}
                             className={styles.loading}
                         />{' '}
                         {polyglot.t('loading')}
-                    </Fragment>
+                    </>
                 ) : (
                     <FlatButton fullWidth onClick={loadMore}>
                         {polyglot.t('search_load_more')} ({results.length} /{' '}
@@ -276,7 +284,10 @@ class Search extends Component {
                     >
                         <TextField
                             hintText={`🔍 ${polyglot.t('search_placeholder')}`}
-                            fullWidth
+                            className={classnames(
+                                'search-text',
+                                styles.searchField,
+                            )}
                             onChange={this.handleTextFieldChange}
                             value={
                                 (bufferQuery !== null
@@ -287,6 +298,21 @@ class Search extends Component {
                             underlineFocusStyle={muiStyles.searchBarUnderline}
                             ref={this.textInput}
                         />
+                        <div>
+                            {withFacets && (
+                                <IconButton
+                                    className={classnames(
+                                        'search-facets-toggle',
+                                        styles.toggleFacets,
+                                    )}
+                                    onClick={this.handleToggleFacets}
+                                    iconStyle={{ color: theme.green.primary }}
+                                >
+                                    <FilterListIcon />
+                                </IconButton>
+                            )}
+                            <ExportButton />
+                        </div>
                     </div>
                     <div
                         className={classnames(
@@ -308,21 +334,6 @@ class Search extends Component {
                                               smart_count: total,
                                           })}
                                 </div>
-                            )}
-                            {withFacets && (
-                                <Link
-                                    className={classnames(
-                                        'search-facets-toggle',
-                                        styles.toggleFacets,
-                                    )}
-                                    onClick={this.handleToggleFacets}
-                                >
-                                    {polyglot.t(
-                                        showFacets
-                                            ? 'search_facets_close'
-                                            : 'search_facets_open',
-                                    )}
-                                </Link>
                             )}
                         </div>
                     </div>
@@ -360,7 +371,7 @@ class Search extends Component {
                         {noOverviewField && this.renderNoOverviewField()}
                         {noResults && this.renderNoResults()}
                         {(everythingIsOk || loading) && (
-                            <Fragment>
+                            <>
                                 <SearchResultSort
                                     fields={fields}
                                     fieldNames={fieldNames}
@@ -375,7 +386,7 @@ class Search extends Component {
                                     closeDrawer={closeDrawer}
                                     placeholders={loading}
                                 />
-                            </Fragment>
+                            </>
                         )}
                         {canLoadMore && this.renderLoadMore()}
                     </div>

@@ -19,7 +19,7 @@ import HideResource from './HideResource';
 import SelectVersion from './SelectVersion';
 import Version from '../Version';
 import getTitle from '../../lib/getTitle';
-import ExportShareButton from '../ExportShareButton';
+import ExportButton from '../ExportButton';
 import { getCleanHost } from '../../../../common/uris';
 
 const TOP_FIELDS_LIMIT = 1;
@@ -168,7 +168,7 @@ export const DetailComponent = ({ fields, resource, title, description }) => {
                         <SelectVersion />
                         <AddField style={{ marginLeft: 'auto' }} />
                         <HideResource />
-                        <ExportShareButton
+                        <ExportButton
                             style={{ float: 'right' }}
                             uri={resource.uri}
                         />

@@ -5,7 +5,7 @@ import * as searchDrawer from '../support/searchDrawer';
 
 const initSearchDataset = (
     dataset = 'dataset/book_summary.csv',
-    model = 'model/book_summary.json',
+    model = 'model/book_summary.json'
 ) => () => {
     teardown();
     homePage.openAdvancedDrawer();
@@ -25,6 +25,17 @@ describe('Search', () => {
             searchDrawer.openSearchDrawer();
             cy.get('.search-result').should('have.length', 10);
             cy.get('.drawer .load-more button').should('contain', '(10 / 12)');
+        });
+
+        it('should export the dataset', () => {
+            searchDrawer.openSearchDrawer();
+            cy.get('.search-result').should('have.length', 10);
+            cy.get('.export').click();
+            cy.wait(300);
+            cy.get('span[role="menuitem"]')
+                .should('have.length', 9)
+                .contains('Export as JSON')
+                .should('be.visible');
         });
 
         it('should do a search, and its result redirect to a resource', () => {
@@ -202,8 +213,8 @@ describe('Search', () => {
         beforeEach(
             initSearchDataset(
                 'dataset/exotic-search-dataset.csv',
-                'model/exotic-search-model.json',
-            ),
+                'model/exotic-search-model.json'
+            )
         );
 
         it('should have a diacritic insensible text-based search', () => {

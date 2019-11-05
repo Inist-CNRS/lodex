@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
@@ -144,12 +144,12 @@ class RoutineParamsAdmin extends Component {
         }
 
         return (
-            <Fragment>
+            <>
                 {maxSizeField}
                 {minValueField}
                 {maxValueField}
                 {orderByField}
-            </Fragment>
+            </>
         );
     }
 }
