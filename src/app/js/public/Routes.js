@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -43,7 +43,7 @@ const Routes = props => {
     return (
         <App>
             <ConnectedRouter history={history} onUpdate={scrollToTop}>
-                <Fragment>
+                <>
                     <ScrollToTop />
                     <Route path={notLogin} component={Breadcrumb} />
                     <Route
@@ -79,7 +79,7 @@ const Routes = props => {
                         />
                     ))}
                     <Route path={notLogin} component={CreateResource} />
-                </Fragment>
+                </>
             </ConnectedRouter>
         </App>
     );

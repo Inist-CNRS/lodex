@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -231,13 +231,13 @@ class Search extends Component {
         return (
             <div className={classnames('load-more', styles.loadMore)}>
                 {loading ? (
-                    <Fragment>
+                    <>
                         <CircularProgress
                             size={20}
                             className={styles.loading}
                         />{' '}
                         {polyglot.t('loading')}
-                    </Fragment>
+                    </>
                 ) : (
                     <FlatButton fullWidth onClick={loadMore}>
                         {polyglot.t('search_load_more')} ({results.length} /{' '}
@@ -371,7 +371,7 @@ class Search extends Component {
                         {noOverviewField && this.renderNoOverviewField()}
                         {noResults && this.renderNoResults()}
                         {(everythingIsOk || loading) && (
-                            <Fragment>
+                            <>
                                 <SearchResultSort
                                     fields={fields}
                                     fieldNames={fieldNames}
@@ -386,7 +386,7 @@ class Search extends Component {
                                     closeDrawer={closeDrawer}
                                     placeholders={loading}
                                 />
-                            </Fragment>
+                            </>
                         )}
                         {canLoadMore && this.renderLoadMore()}
                     </div>
