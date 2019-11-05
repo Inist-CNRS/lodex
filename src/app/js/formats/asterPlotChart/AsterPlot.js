@@ -9,16 +9,14 @@ const colors = d3.scaleOrdinal(d3.schemeCategory10);
 
 const styles = stylesToClassname(
     {
-        arc: {
+        arc: {},
+        outlineArc: {
             ':hover': {
-                fill: 'black',
-                fillOpacity: '0.25',
-                stroke: 'black',
-                strokeOpacity: '0.25',
+                fill: 'white',
+                fillOpacity: '0.33',
                 cursor: 'pointer',
             },
         },
-        outlineArc: {},
     },
     'aster-plot-chart',
 );
@@ -35,60 +33,70 @@ const AsterPlot = ({ data, width, height }) => {
         svg.select('g.arcs').remove();
         const arcsGroup = svg.append('g').attr('class', 'arcs');
 
-        svg.select('g.outlineArcs').remove();
-        const outlineArcsGroup = svg.append('g').attr('class', 'outlineArcs');
-
-        // Prepare variables
+        // Prepare variables and methods
 
         const radius = Math.min(width, height) / 2;
+        const inner = 0.2 * radius;
         const circumferenceOfCircle = radius * Math.PI * 2;
         const arcLength = circumferenceOfCircle / data.length;
         const arcDegrees = (arcLength / circumferenceOfCircle) * (Math.PI * 2);
 
-        let inner = 0.2 * radius;
-        let i = 0;
+        let startAngleIndex = 0;
         let tempEndAngle;
-        let j = 0;
+        let endAngleIndex = 0;
         let tempEndAngle1;
 
-        // Create Arcs
+        const computeStartAngle = () => {
+            let startAngle = 0;
+            let endAngle = 0;
+            if (startAngleIndex === 0) {
+                startAngle = 0;
+                endAngle = startAngle + arcDegrees;
+            } else {
+                startAngle = tempEndAngle;
+                endAngle = startAngle + arcDegrees;
+            }
+            startAngleIndex++;
+            tempEndAngle = endAngle;
+            return startAngle;
+        };
+
+        const computeEndAngle = () => {
+            let startAngle = 0;
+            let endAngle = 0;
+            if (endAngleIndex === 0) {
+                startAngle = 0;
+                endAngle = startAngle + arcDegrees;
+            } else {
+                startAngle = tempEndAngle1;
+                endAngle = startAngle + arcDegrees;
+            }
+            endAngleIndex++;
+            tempEndAngle1 = endAngle;
+            return endAngle;
+        };
 
         const pieData = createPie(data);
 
-        const arc = d3
+        // Create arcs
+
+        const filledArc = d3
             .arc()
             .innerRadius(inner)
             .outerRadius(function(d) {
                 return (radius - inner) * (d.value / 100) + inner;
             })
-            .startAngle(function() {
-                var startAngle = 0;
-                var endAngle = 0;
-                if (i === 0) {
-                    startAngle = 0;
-                    endAngle = startAngle + arcDegrees;
-                } else {
-                    startAngle = tempEndAngle;
-                    endAngle = startAngle + arcDegrees;
-                }
-                i++;
-                tempEndAngle = endAngle;
-                return startAngle;
-            })
-            .endAngle(function() {
-                var startAngle = 0;
-                var endAngle = 0;
-                if (j === 0) {
-                    startAngle = 0;
-                    endAngle = startAngle + arcDegrees;
-                } else {
-                    startAngle = tempEndAngle1;
-                    endAngle = startAngle + arcDegrees;
-                }
-                j++;
-                tempEndAngle1 = endAngle;
-                return endAngle;
-            });
+            .startAngle(computeStartAngle)
+            .endAngle(computeEndAngle);
+
+        const outlineArc = d3
+            .arc()
+            .innerRadius(inner)
+            .outerRadius(radius)
+            .startAngle(computeStartAngle)
+            .endAngle(computeEndAngle);
+
+        // Apply arcs to groups
 
         arcsGroup
             .selectAll('.arc')
@@ -96,60 +104,23 @@ const AsterPlot = ({ data, width, height }) => {
             .enter()
             .append('path')
             .attr('fill', (d, i) => colors(i))
-            .attr('d', arc)
+            .attr('d', filledArc)
             .attr('class', `arc ${styles.arc}`)
+            .attr('transform', `translate(${width / 2} ${height / 2})`);
+
+        arcsGroup
+            .selectAll('.outlineArc')
+            .data(pieData)
+            .enter()
+            .append('path')
+            .attr('fill', 'transparent')
+            .attr('stroke', 'gray')
+            .attr('d', outlineArc)
+            .attr('class', `outlineArc ${styles.outlineArc}`)
             .attr('transform', `translate(${width / 2} ${height / 2})`)
             .attr('data-tip', function(d) {
                 return d.data.label;
             });
-
-        // Create outlineArcs
-
-        const outlineArc = d3
-            .arc()
-            .innerRadius(inner)
-            .outerRadius(function() {
-                return radius;
-            })
-            .startAngle(function() {
-                let startAngle = 0;
-                let endAngle = 0;
-                if (i === 0) {
-                    startAngle = 0;
-                    endAngle = startAngle + arcDegrees;
-                } else {
-                    startAngle = tempEndAngle;
-                    endAngle = startAngle + arcDegrees;
-                }
-                i++;
-                tempEndAngle = endAngle;
-                return startAngle;
-            })
-            .endAngle(function() {
-                let startAngle = 0;
-                let endAngle = 0;
-                if (j === 0) {
-                    startAngle = 0;
-                    endAngle = startAngle + arcDegrees;
-                } else {
-                    startAngle = tempEndAngle1;
-                    endAngle = startAngle + arcDegrees;
-                }
-                j++;
-                tempEndAngle1 = endAngle;
-                return endAngle;
-            });
-
-        outlineArcsGroup
-            .selectAll('.outlineArc')
-            .data(data)
-            .enter()
-            .append('path')
-            .attr('fill', 'none')
-            .attr('stroke', 'gray')
-            .attr('class', `outlineArc ${styles.outlineArc}`)
-            .attr('d', outlineArc)
-            .attr('transform', `translate(${width / 2} ${height / 2})`);
 
         // Manage Tooltip
 
@@ -159,6 +130,7 @@ const AsterPlot = ({ data, width, height }) => {
     return (
         <Fragment>
             <svg
+                className="aster-plot-chart"
                 ref={ref}
                 width={width}
                 height={height}
