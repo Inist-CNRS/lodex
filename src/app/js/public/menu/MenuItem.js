@@ -241,16 +241,6 @@ const MenuItem = ({
                 </NavLink>
             );
         }
-        case 'resources': {
-            console.error(
-                `The role ${
-                    config.role
-                } has been removed in lodex v11.0.2 (https://github.com/Inist-CNRS/lodex/releases/tag/v11.0.1). Menu item: ${JSON.stringify(
-                    config,
-                )} will be ignored.`,
-            );
-            return null;
-        }
         default:
             console.error(
                 `Unknow role: ${config.role}. Menu item: ${JSON.stringify(
