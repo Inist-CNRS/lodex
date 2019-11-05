@@ -1,8 +1,27 @@
-import React, { useRef, useEffect } from 'react';
+import React, { Fragment, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as d3 from 'd3';
+import ReactTooltip from 'react-tooltip';
+
+import stylesToClassname from '../../lib/stylesToClassName';
 
 const colors = d3.scaleOrdinal(d3.schemeCategory10);
+
+const styles = stylesToClassname(
+    {
+        arc: {
+            ':hover': {
+                fill: 'black',
+                fillOpacity: '0.25',
+                stroke: 'black',
+                strokeOpacity: '0.25',
+                cursor: 'pointer',
+            },
+        },
+        outlineArc: {},
+    },
+    'aster-plot-chart',
+);
 
 const AsterPlot = ({ data, width, height }) => {
     const ref = useRef(null);
@@ -77,12 +96,12 @@ const AsterPlot = ({ data, width, height }) => {
             .enter()
             .append('path')
             .attr('fill', (d, i) => colors(i))
-            .attr('fill-opacity', '0.7')
-            .attr('stroke', (d, i) => colors(i))
-            .attr('stroke-width', '1')
             .attr('d', arc)
-            .attr('class', 'arc')
-            .attr('transform', `translate(${width / 2} ${height / 2})`);
+            .attr('class', `arc ${styles.arc}`)
+            .attr('transform', `translate(${width / 2} ${height / 2})`)
+            .attr('data-tip', function(d) {
+                return d.data.label;
+            });
 
         // Create outlineArcs
 
@@ -128,13 +147,17 @@ const AsterPlot = ({ data, width, height }) => {
             .append('path')
             .attr('fill', 'none')
             .attr('stroke', 'gray')
-            .attr('class', 'outlineArc')
+            .attr('class', `outlineArc ${styles.outlineArc}`)
             .attr('d', outlineArc)
             .attr('transform', `translate(${width / 2} ${height / 2})`);
+
+        // Manage Tooltip
+
+        ReactTooltip.rebuild();
     }, [ref, data]);
 
     return (
-        <div>
+        <Fragment>
             <svg
                 ref={ref}
                 width={width}
@@ -143,13 +166,15 @@ const AsterPlot = ({ data, width, height }) => {
                 preserveAspectRatio="xMidYMid meet"
                 xmlns="http://www.w3.org/2000/svg"
             />
-        </div>
+            <ReactTooltip />
+        </Fragment>
     );
 };
 
 AsterPlot.propTypes = {
     data: PropTypes.arrayOf(
         PropTypes.shape({
+            label: PropTypes.string.isRequired,
             value: PropTypes.number.isRequired,
         }),
     ).isRequired,
