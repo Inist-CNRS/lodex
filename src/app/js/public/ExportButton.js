@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
@@ -10,9 +10,7 @@ import translate from 'redux-polyglot/translate';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import classnames from 'classnames';
 
-import stylesToClassname from '../lib/stylesToClassName';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { fromExport } from './selectors';
 import {
@@ -22,97 +20,79 @@ import {
 import theme from '../theme';
 import ExportItem from './export/ExportMenuItem';
 
-const styles = stylesToClassname(
-    {
-        button: {},
-    },
-    'export',
-);
+const ExportButton = ({
+    exporters,
+    handleExportClick,
+    uri,
+    p: polyglot,
+    width,
+}) => {
+    const [popover, setPopover] = useState({ open: false });
 
-class ExportButton extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            open: false,
-        };
-    }
-
-    handleClick = event => {
+    const handleClick = event => {
         // This prevents ghost click.
         event.preventDefault();
 
-        this.setState({
+        setPopover({
             open: true,
             anchorEl: event.currentTarget,
         });
     };
 
-    handleRequestClose = () => {
-        this.setState({
+    const handleRequestClose = () => {
+        setPopover({
             open: false,
         });
     };
 
-    render() {
-        const {
-            exporters,
-            handleExportClick,
-            uri,
-            p: polyglot,
-            width,
-        } = this.props;
-        if (!exporters || !exporters.length) {
-            return null;
-        }
-
-        const exportLabel = uri ? 'export_resource' : 'export_resultset';
-        const label = width > 1 ? polyglot.t(exportLabel) : '';
-
-        return (
-            <>
-                {width > 2 && (
-                    <FlatButton
-                        primary
-                        onClick={this.handleClick}
-                        label={label}
-                        icon={<ExportIcon />}
-                        className={classnames('export', styles.button)}
-                    />
-                )}
-                {width <= 2 && (
-                    <IconButton
-                        className={classnames('export', styles.button)}
-                        onClick={this.handleClick}
-                        iconStyle={{ color: theme.green.primary }}
-                    >
-                        <ExportIcon />
-                    </IconButton>
-                )}
-
-                <Popover
-                    open={this.state.open}
-                    anchorEl={this.state.anchorEl}
-                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                    targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                    onRequestClose={this.handleRequestClose}
-                    animation={PopoverAnimationVertical}
-                >
-                    <Menu>
-                        {exporters.map(({ name }) => (
-                            <ExportItem
-                                key={name}
-                                type={name}
-                                uri={uri}
-                                onClick={handleExportClick}
-                            />
-                        ))}
-                    </Menu>
-                </Popover>
-            </>
-        );
+    if (!exporters || !exporters.length) {
+        return null;
     }
-}
+
+    const exportLabel = uri ? 'export_resource' : 'export_resultset';
+    const label = width > 1 ? polyglot.t(exportLabel) : '';
+
+    return (
+        <>
+            {width > 2 && (
+                <FlatButton
+                    primary
+                    onClick={handleClick}
+                    label={label}
+                    icon={<ExportIcon />}
+                />
+            )}
+            {width <= 2 && (
+                <IconButton
+                    onClick={handleClick}
+                    iconStyle={{ color: theme.green.primary }}
+                >
+                    <ExportIcon />
+                </IconButton>
+            )}
+
+            <Popover
+                open={popover.open}
+                anchorEl={popover.anchorEl}
+                anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+                onRequestClose={handleRequestClose}
+                animation={PopoverAnimationVertical}
+            >
+                <Menu>
+                    {exporters.map(({ name }) => (
+                        <ExportItem
+                            key={name}
+                            type={name}
+                            uri={uri}
+                            onClick={handleExportClick}
+                        />
+                    ))}
+                </Menu>
+            </Popover>
+        </>
+    );
+};
 
 ExportButton.propTypes = {
     exporters: PropTypes.arrayOf(PropTypes.object),
