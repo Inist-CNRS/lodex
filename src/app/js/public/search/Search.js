@@ -10,6 +10,9 @@ import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import FilterListIcon from 'material-ui/svg-icons/content/filter-list';
+import ActionSearch from 'material-ui/svg-icons/action/search';
+import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
     facetActions,
@@ -23,12 +26,11 @@ import {
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../../fields';
-
 import { fromFields } from '../../sharedSelectors';
 import { fromSearch, fromDataset } from '../selectors';
 import theme from '../../theme';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
-import AppliedFacets from './AppliedFacets';
+import AppliedFacetList from './AppliedSearchFacetList';
 import Facets from './Facets';
 import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
@@ -126,6 +128,10 @@ const styles = stylesToClassname(
             padding: '10% 0',
             textAlign: 'center',
         },
+        icon: {
+            marginRight: 8,
+            marginTop: 8,
+        },
     },
     'search',
 );
@@ -200,6 +206,10 @@ class Search extends Component {
     handleSort = ({ sortBy }) => {
         const { sort } = this.props;
         sort({ sortBy });
+    };
+
+    handleClearFilter = () => {
+        this.handleTextFieldChange(null, '');
     };
 
     renderNoResults = () => {
@@ -282,8 +292,11 @@ class Search extends Component {
                             styles.searchBarContainer,
                         )}
                     >
+                        <div className={classnames('search-icon', styles.icon)}>
+                            <ActionSearch />
+                        </div>
                         <TextField
-                            hintText={`🔍 ${polyglot.t('search_placeholder')}`}
+                            hintText={polyglot.t('filter')}
                             className={classnames(
                                 'search-text',
                                 styles.searchField,
@@ -298,6 +311,13 @@ class Search extends Component {
                             underlineFocusStyle={muiStyles.searchBarUnderline}
                             ref={this.textInput}
                         />
+                        <IconButton
+                            iconStyle={{ color: theme.green.primary }}
+                            onClick={this.handleClearFilter}
+                        >
+                            <FontAwesomeIcon icon={faUndo} height={15} />
+                        </IconButton>
+
                         <div>
                             {withFacets && (
                                 <IconButton
@@ -339,7 +359,7 @@ class Search extends Component {
                     </div>
                 </div>
                 {withFacets && (
-                    <AppliedFacets className={styles.appliedFacets} />
+                    <AppliedFacetList className={styles.appliedFacets} />
                 )}
                 <div
                     className={classnames(
