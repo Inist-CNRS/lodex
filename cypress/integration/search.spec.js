@@ -5,7 +5,7 @@ import * as searchDrawer from '../support/searchDrawer';
 
 const initSearchDataset = (
     dataset = 'dataset/book_summary.csv',
-    model = 'model/book_summary.json'
+    model = 'model/book_summary.json',
 ) => () => {
     teardown();
     homePage.openAdvancedDrawer();
@@ -213,8 +213,8 @@ describe('Search', () => {
         beforeEach(
             initSearchDataset(
                 'dataset/exotic-search-dataset.csv',
-                'model/exotic-search-model.json'
-            )
+                'model/exotic-search-model.json',
+            ),
         );
 
         it('should have a diacritic insensible text-based search', () => {
