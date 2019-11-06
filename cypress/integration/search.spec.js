@@ -21,13 +21,13 @@ describe('Search', () => {
     describe('Basics', () => {
         beforeEach(initSearchDataset());
 
-        it.skip('should have the right informations in the search results', () => {
+        it('should have the right informations in the search results', () => {
             searchDrawer.openSearchDrawer();
             cy.get('.search-result').should('have.length', 10);
             cy.get('.drawer .load-more button').should('contain', '(10 / 12)');
         });
 
-        it.skip('should export the dataset', () => {
+        it('should export the dataset', () => {
             searchDrawer.openSearchDrawer();
             cy.get('.search-result').should('have.length', 10);
             cy.get('.export').click();
@@ -38,7 +38,7 @@ describe('Search', () => {
                 .should('be.visible');
         });
 
-        it.skip('should do a search, and its result redirect to a resource', () => {
+        it('should do a search, and its result redirect to a resource', () => {
             searchDrawer.openSearchDrawer();
             searchDrawer.search('Annals of the rheumatic');
 
@@ -65,7 +65,6 @@ describe('Search', () => {
             searchDrawer.checkMoreResultsNotExist();
 
             searchDrawer.search('bezoar');
-            searchDrawer.search('dragoncelle');
             searchDrawer.clearSearch();
 
             searchDrawer.checkResultsCount(10);
@@ -77,7 +76,7 @@ describe('Search', () => {
             searchDrawer.checkMoreResultsNotExist();
         });
 
-        it.skip('should mark active resource on the result list', () => {
+        it('should mark active resource on the result list', () => {
             searchDrawer.openSearchDrawer();
             searchDrawer.search('Annals of the rheumatic');
 
@@ -92,7 +91,7 @@ describe('Search', () => {
             cy.get('.search-result-link[class*=activeLink_]').should('exist');
         });
 
-        it.skip('should keep track of the current search after changing page', () => {
+        it('should keep track of the current search after changing page', () => {
             const query = 'Annals of the rheumatic';
             searchDrawer.openSearchDrawer();
             searchDrawer.search(query);
@@ -110,7 +109,7 @@ describe('Search', () => {
             searchDrawer.searchInput().should('have.value', query);
         });
 
-        it.skip('should sort result by pertinence', () => {
+        it('should sort result by pertinence', () => {
             searchDrawer.openSearchDrawer();
             searchDrawer.search('medicine');
             cy.get('.search-result').should('have.length', 2);
@@ -132,7 +131,7 @@ describe('Search', () => {
         });
     });
 
-    describe.skip('Advanced Search', () => {
+    describe('Advanced Search', () => {
         beforeEach(initSearchDataset());
 
         it('should filter search results by facets', () => {
@@ -222,7 +221,7 @@ describe('Search', () => {
         });
     });
 
-    describe.skip('Edge Cases', () => {
+    describe('Edge Cases', () => {
         beforeEach(
             initSearchDataset(
                 'dataset/exotic-search-dataset.csv',
