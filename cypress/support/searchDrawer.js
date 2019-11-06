@@ -53,7 +53,9 @@ export const checkResultList = titles => {
 };
 
 export const loadMore = () => {
-    cy.get('.drawer .load-more button').click();
+    cy.get('.drawer .load-more button')
+        .scrollIntoView()
+        .click();
 };
 
 export const waitForLoading = () => {
@@ -120,13 +122,23 @@ export const sortFacet = (name, sortName) => {
     cy.wait(500);
 };
 
-export const checkMoreCount = (count, total) => {
-    cy.get('.load-more')
+export const checkMoreResultsExist = () => {
+    cy.get('.load-more button').should('exist');
+};
+
+export const checkMoreResultsNotExist = () => {
+    cy.get('.load-more button').should('not.exist');
+};
+
+export const checkMoreResultsCount = (count, total) => {
+    cy.get('.load-more button')
         .scrollIntoView()
-        .contains(count)
         .should('be.visible')
-        .contains(total)
-        .should('be.visible');
+        .contains(`${count} / ${total}`);
+};
+
+export const checkResultsCount = count => {
+    cy.get('.search-result').should('have.length', count);
 };
 
 export const goToResourceNumber = nb => {
