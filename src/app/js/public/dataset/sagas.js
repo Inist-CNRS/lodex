@@ -6,7 +6,6 @@ import {
     takeLatest,
     throttle,
 } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'connected-react-router';
 
 import {
     LOAD_DATASET_PAGE,
@@ -17,7 +16,6 @@ import {
     loadDatasetPage,
     loadDatasetPageSuccess,
     loadDatasetPageError,
-    clearFilter,
     facetActionTypes,
     facetActions,
 } from './';
@@ -72,22 +70,6 @@ export function* handleLoadDatasetPageRequest({ payload }) {
     yield put(loadDatasetPageSuccess({ dataset, page, total, fullTotal }));
 }
 
-const clearDatasetSearch = function*() {
-    const match = yield select(fromDataset.getFilter);
-
-    if (match) {
-        yield put(clearFilter());
-    }
-};
-
-const clearFacetSaga = function*() {
-    const appliedFacets = yield select(fromDataset.getAppliedFacets);
-
-    if (Object.keys(appliedFacets).length > 0) {
-        yield put(facetActions.clearFacet());
-    }
-};
-
 const facetSagas = facetSagasFactory({
     actionTypes: facetActionTypes,
     actions: facetActions,
@@ -114,7 +96,4 @@ export default function*() {
         yield takeLatest(PRE_LOAD_DATASET_PAGE, handlePreLoadDatasetPage);
         yield facetSagas();
     });
-
-    yield takeLatest(LOCATION_CHANGE, clearDatasetSearch);
-    yield takeLatest(LOCATION_CHANGE, clearFacetSaga);
 }
