@@ -5,7 +5,7 @@ import * as searchDrawer from '../support/searchDrawer';
 
 const initSearchDataset = (
     dataset = 'dataset/book_summary.csv',
-    model = 'model/book_summary.json'
+    model = 'model/book_summary.json',
 ) => () => {
     teardown();
     homePage.openAdvancedDrawer();
@@ -53,15 +53,27 @@ describe('Search', () => {
                 .should('be.visible');
         });
 
-        it('should be able to load more search results', () => {
+        it('should be able to load more search results several times', () => {
             searchDrawer.openSearchDrawer();
-            cy.get('.search-result').should('have.length', 10);
-            cy.get('.drawer .load-more button').should('contain', '(10 / 12)');
 
-            searchDrawer.loadMore();
+            searchDrawer.checkResultsCount(10);
+            searchDrawer.checkMoreResultsCount(10, 12);
 
-            cy.get('.search-result').should('have.length', 12);
-            cy.get('.drawer- .load-more button').should('not.be.visible');
+            searchDrawer.loadMore(); // Call load more for the first time
+
+            searchDrawer.checkResultsCount(12);
+            searchDrawer.checkMoreResultsNotExist();
+
+            searchDrawer.search('bezoar');
+            searchDrawer.clearSearch();
+
+            searchDrawer.checkResultsCount(10);
+            searchDrawer.checkMoreResultsCount(10, 12);
+
+            searchDrawer.loadMore(); // Call load more for the second time
+
+            searchDrawer.checkResultsCount(12);
+            searchDrawer.checkMoreResultsNotExist();
         });
 
         it('should mark active resource on the result list', () => {
@@ -213,8 +225,8 @@ describe('Search', () => {
         beforeEach(
             initSearchDataset(
                 'dataset/exotic-search-dataset.csv',
-                'model/exotic-search-model.json'
-            )
+                'model/exotic-search-model.json',
+            ),
         );
 
         it('should have a diacritic insensible text-based search', () => {

@@ -99,7 +99,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.goToPublishedResources();
 
             searchDrawer.openSearchDrawer();
-            searchDrawer.checkMoreCount(10, 14);
+            searchDrawer.checkMoreResultsCount(10, 14);
         });
     });
 
