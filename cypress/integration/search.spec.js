@@ -53,12 +53,24 @@ describe('Search', () => {
                 .should('be.visible');
         });
 
-        it('should be able to load more search results', () => {
+        it('should be able to load more search results several times', () => {
             searchDrawer.openSearchDrawer();
             cy.get('.search-result').should('have.length', 10);
-            cy.get('.drawer .load-more button').should('contain', '(10 / 12)');
+            cy.get('.drawer- .load-more button').should('be.visible');
 
-            searchDrawer.loadMore();
+            searchDrawer.loadMore(); // Call load more for the first time
+
+            cy.get('.search-result').should('have.length', 12);
+            cy.get('.drawer- .load-more button').should('not.be.visible');
+
+            searchDrawer.search('bezoar');
+            searchDrawer.search('dragoncelle');
+            searchDrawer.clearSearch();
+
+            cy.get('.search-result').should('have.length', 10);
+            cy.get('.drawer- .load-more button').should('be.visible');
+
+            searchDrawer.loadMore(); // Call load more for the second time
 
             cy.get('.search-result').should('have.length', 12);
             cy.get('.drawer- .load-more button').should('not.be.visible');
