@@ -32,6 +32,8 @@ export const search = value => {
     cy.wait(500); // Wait for the debounce
 };
 
+export const clearSearch = () => cy.get('button.search-clear').click();
+
 export const findSearchResultByTitle = value =>
     cy
         .get('.drawer .search-result-title')

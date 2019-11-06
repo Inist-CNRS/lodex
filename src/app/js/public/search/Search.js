@@ -312,6 +312,7 @@ class Search extends Component {
                             ref={this.textInput}
                         />
                         <IconButton
+                            classname="search-clear"
                             iconStyle={{ color: theme.green.primary }}
                             onClick={this.handleClearFilter}
                         >
