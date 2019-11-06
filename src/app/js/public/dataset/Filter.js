@@ -9,6 +9,7 @@ import { ToolbarGroup } from 'material-ui/Toolbar';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import CircularProgress from 'material-ui/CircularProgress';
 
+import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { applyFilter as applyFilterAction } from './';
 import { fromDataset } from '../selectors';
@@ -22,6 +23,12 @@ const styles = {
     },
     textbox: {
         fontSize: '1.5rem',
+    },
+};
+
+const muiStyles = {
+    searchBarUnderline: {
+        borderColor: theme.orange.primary,
     },
 };
 
@@ -70,6 +77,8 @@ class FilterComponent extends Component {
                     hintText={polyglot.t('filter')}
                     onChange={this.handleFilterChange}
                     style={styles.textbox}
+                    underlineStyle={muiStyles.searchBarUnderline}
+                    underlineFocusStyle={muiStyles.searchBarUnderline}
                 />
             </ToolbarGroup>
         );

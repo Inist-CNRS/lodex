@@ -423,7 +423,6 @@
 "istex_no_result"	"no result found"	"Aucun résultat n'a été trouvé"
 "no_overview_field_error"	"Warning: No field has been tagged for a resource syndication. Please select at least one from the admin dashboard."	"Attention : Aucun champ n'a été tagué pour une syndication. Veuillez en sélectionner au moins un depuis le panneau d'administration."
 "search_load_more"	"View more results"	"Voir plus de résultats"
-"search_placeholder"	"search"	"recherche"
 "search_facets_open"	"Filtered search"	"Recherche filtrée"
 "search_facets_close"	"Close filtered search"	"Fermer la recherche filtrée"
 "searched_field"	"Searched field"	"Champs recherché"
@@ -462,3 +461,4 @@
 "label_offset"	"Label left offset (in px)"	"Décalage du label à gauche (en px)"
 "max_char_number_in_legends"	"Maximum character number in legends"	"Nombre max de caractères dans les légendes"
 "browse_results"	"Browse results"	"Parcourir les résultats"
+"clear_all"	"Clear All"	"Tout supprimer"

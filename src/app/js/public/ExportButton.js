@@ -6,6 +6,9 @@ import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import withWidth from 'material-ui/utils/withWidth';
 import ExportIcon from 'material-ui/svg-icons/editor/vertical-align-bottom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+
 import translate from 'redux-polyglot/translate';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -59,7 +62,7 @@ const ExportButton = ({
                     primary
                     onClick={handleClick}
                     label={label}
-                    icon={<ExportIcon />}
+                    icon={<FontAwesomeIcon icon={faDownload} height={20} />}
                     className="export"
                 />
             )}
@@ -69,7 +72,7 @@ const ExportButton = ({
                     iconStyle={{ color: theme.green.primary }}
                     className="export"
                 >
-                    <ExportIcon />
+                    <FontAwesomeIcon icon={faDownload} height={20} />
                 </IconButton>
             )}
 

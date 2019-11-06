@@ -16,7 +16,7 @@ import {
 import Toolbar from '../Toolbar';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
 import Format from '../Format';
-import AppliedFacetList from '../dataset/AppliedFacetList';
+import AppliedFacetList from '../dataset/AppliedDatasetFacetList';
 import EditButton from '../../fields/editFieldValue/EditButton';
 import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';

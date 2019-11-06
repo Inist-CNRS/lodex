@@ -91,6 +91,7 @@ export const clearFacet = value => {
     cy.get('.applied-facet-container')
         .contains(value)
         .parent()
+        .parent()
         .find('svg')
         .click();
     waitForLoading();
