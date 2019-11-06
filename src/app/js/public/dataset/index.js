@@ -24,7 +24,6 @@ export const loadDatasetPageError = createAction(LOAD_DATASET_PAGE_ERROR);
 export const changePage = createAction(CHANGE_PAGE);
 
 export const applyFilter = createAction(APPLY_FILTER);
-export const clearFilter = createAction(CLEAR_FILTER);
 
 export const sortDataset = createAction(SORT_DATASET);
 
