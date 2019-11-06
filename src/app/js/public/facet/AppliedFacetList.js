@@ -23,7 +23,7 @@ export const AppliedFacetListComponent = ({
     children,
     p: polyglot,
 }) => (
-    <div>
+    <div className="applied-facet-container">
         {facets.length ? (
             <div style={styles.container}>
                 {facets.map(({ name, value }) =>
@@ -36,7 +36,7 @@ export const AppliedFacetListComponent = ({
                             name: name,
                             value: value,
                         });
-                    })
+                    }),
                 )}
                 {facets.length && (
                     <Chip style={styles.chip} onClick={clearAll}>
