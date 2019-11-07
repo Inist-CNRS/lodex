@@ -37,10 +37,13 @@ export default class Script {
                 Path.basename(fileName, '.ini'),
                 null,
             ]);
+        const cacheParameter = `${source}Cache`;
+        this.declared = routinesDeclared;
         this.local = routinesLocal;
         this.distant = routinesDistant;
 
         this.cache = {};
+        this.cacheEnable = Boolean(config[cacheParameter] || false);
     }
 
     async get(routineCalled) {
@@ -64,5 +67,21 @@ export default class Script {
         }
         this.cache[routineCalled] = routineDistant;
         return routineDistant;
+    }
+
+    async list() {
+        const availableListPromises = this.declared.map(name => this.get(name));
+        const availableList = await Promise.all(availableListPromises);
+        return availableList
+            .map(([, metaData, id]) => ({
+                id,
+                name: metaData.label,
+                type: metaData.type,
+            }))
+            .filter(script => script.name !== undefined);
+    }
+
+    useCache() {
+        return this.cacheEnable;
     }
 }

@@ -1,170 +1,143 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import ezs from '@ezs/core';
-import ezsLodex from '@ezs/lodex';
-import { getHost, getCleanHost } from '../../../common/uris';
-import config from '../../../../config.json';
-
+import Booster from '@ezs/booster';
+import Lodex from '@ezs/lodex';
+import { PassThrough } from 'stream';
+import cacheControl from 'koa-cache-control';
+import config from 'config';
 import Script from '../../services/script';
+import getPublishedDatasetFilter from '../../models/getPublishedDatasetFilter';
+import getFields from '../../models/field';
+import mongoClient from '../../services/mongoClient';
+import Statements from '../../statements';
+import localConfig from '../../../../config.json';
+import { getCleanHost } from '../../../common/uris';
 
-const exporters = new Script('exporters');
+ezs.use(Statements);
+ezs.use(Booster);
+ezs.use(Lodex);
+const scripts = new Script('exporters');
 
-ezs.use(ezsLodex);
-
-export const getExporter = async type => {
-    const exporter = await exporters.get(type);
-    if (!exporter) {
-        throw new Error(`Unsupported document type: ${type}`);
+const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
+    const currentScript = await scripts.get(scriptNameCalled);
+    if (!currentScript) {
+        ctx.throw(404, `Unknown script '${scriptNameCalled}'.ini`);
     }
 
-    const [, metaData, , script] = exporter;
-
-    const exporterStreamFactory = (config, fields, characteristics, stream) =>
-        stream
-            .pipe(ezs('filterVersions'))
-            .pipe(ezs('filterContributions', { fields }))
-            .pipe(
-                ezs(
-                    'delegate',
-                    { script },
-                    {
-                        cleanHost: config.cleanHost,
-                        collectionClass: config.collectionClass,
-                        datasetClass: config.datasetClass,
-                        exportDataset: config.exportDataset,
-                        schemeForDatasetLink: config.schemeForDatasetLink,
-                        labels: config.istexQuery.labels,
-                        linked: config.istexQuery.linked,
-                        context: config.istexQuery.context,
-                        fields,
-                        characteristics,
-                    },
-                ),
-            );
-
-    exporterStreamFactory.extension = metaData.extension;
-    exporterStreamFactory.mimeType = metaData.mimeType;
-    exporterStreamFactory.type = metaData.type;
-    exporterStreamFactory.label = metaData.label;
-
-    return exporterStreamFactory;
-};
-
-export const getExporterConfig = () => ({
-    ...config,
-    host: getCleanHost(),
-    rawHost: getHost(),
-    cleanHost: getCleanHost(),
-});
-
-export async function exportFileMiddleware(
-    ctx,
-    type,
-    exportStreamFactory,
-    exporterConfig,
-) {
-    ctx.keepDbOpened = true;
-
-    const characteristics = await ctx.publishedCharacteristic.findAllVersions();
-    const fields = await ctx.field.findAll();
-
-    const searchableFieldNames = await ctx.field.findSearchableNames();
-    const facetFieldNames = await ctx.field.findFacetNames();
+    const [, metaData, , script] = currentScript;
+    if (metaData.fileName) {
+        ctx.set(
+            'Content-disposition',
+            `attachment; filename=${metaData.fileName}`,
+        );
+    }
+    ctx.type = metaData.mimeType;
+    ctx.status = 200;
 
     const {
         uri,
+        maxSize,
+        skip,
+        maxValue,
+        minValue,
         match,
-        sortBy,
-        sortDir,
-        invertedFacets,
+        orderBy = '_id/asc',
+        invertedFacets = [],
+        $query,
         ...facets
-    } = ctx.request.query;
-    const publishedDatasetStream = ctx.publishedDataset.getFindAllStream(
+    } = ctx.query;
+    const host = getCleanHost();
+    const field = [field1, field2].filter(x => x);
+    const handleDb = await mongoClient();
+    const fieldHandle = await getFields(handleDb);
+    const searchableFieldNames = await fieldHandle.findSearchableNames();
+    const facetFieldNames = await fieldHandle.findFacetNames();
+    const fields = await fieldHandle.findAll();
+    const filter = getPublishedDatasetFilter({
         uri,
         match,
-        searchableFieldNames,
-        facets,
-        facetFieldNames,
         invertedFacets,
-        sortBy,
-        sortDir,
-    );
+        facets,
+        ...$query,
+        searchableFieldNames,
+        facetFieldNames,
+    });
 
-    const exportStream = exportStreamFactory(
-        exporterConfig,
+    if (filter.$and && !filter.$and.length) {
+        delete filter.$and;
+    }
+    const connectionStringURI = `mongodb://${config.mongo.host}/${
+        config.mongo.dbName
+    }`;
+    // context is the intput for LodexReduceQuery & LodexRunQuery & LodexDocuments
+    const context = {
+        // /*
+        // to build the MongoDB Query
+        filter,
+        field,
         fields,
-        characteristics,
-        publishedDatasetStream,
-        ctx.request.query,
-    );
+        // Default parameters for ALL scripts
+        maxSize,
+        maxValue,
+        minValue,
+        orderBy,
+        host,
+        // to allow script to connect to MongoDB
+        connectionStringURI,
+    };
 
-    exportStream
-        .pipe(ezs.catch(e => e))
-        .on('error', error => {
+    const environment = {
+        ...ctx.query,
+        ...localConfig,
+        ...context,
+    };
+    const input = new PassThrough({ objectMode: true });
+    const commands = ezs.parseString(script, environment);
+    const statement = scripts.useCache() ? 'booster' : 'delegate';
+    const errorHandle = err => {
+        ctx.status = 503;
+        ctx.body.destroy();
+        input.destroy();
+        global.console.error('Error with ', ctx.path, ' and', ctx.query, err);
+    };
+    const emptyHandle = () => {
+        if (ctx.headerSent === false) {
+            ctx.status = 204;
+            ctx.body.write('No Content');
             global.console.error(
-                `Error while exporting published dataset into ${type}`,
-                error,
-            );
-        })
-        .resume();
-
-    ctx.set(
-        'Content-Disposition',
-        `attachment; filename="export.${exportStreamFactory.extension}"`,
-    );
-    ctx.type = `${exportStreamFactory.mimeType}; charset=utf-8`;
-    ctx.status = 200;
-    ctx.body = exportStream;
-}
-
-export async function setup(ctx, next) {
-    ctx.getExporter = getExporter;
-    ctx.exportFileMiddleware = exportFileMiddleware;
-    ctx.getExporterConfig = getExporterConfig;
-    await next();
-}
-
-export async function exportMiddleware(ctx, type) {
-    try {
-        const exporterConfig = ctx.getExporterConfig();
-
-        const exportStreamFactory = await ctx.getExporter(type);
-
-        if (exportStreamFactory.type === 'file') {
-            await ctx.exportFileMiddleware(
-                ctx,
-                type,
-                exportStreamFactory,
-                exporterConfig,
+                'Empty response with ',
+                ctx.path,
+                ' and',
+                ctx.query,
             );
         }
-    } catch (error) {
-        ctx.status = 500;
-        ctx.body = error.message;
-    }
-}
+    };
+    ctx.body = input
+        .pipe(ezs('LodexRunQuery', {}, environment))
+        .pipe(ezs('filterVersions'))
+        .pipe(ezs('filterContributions'))
+        .pipe(ezs(statement, { commands, key: ctx.url }, environment))
+        .pipe(ezs.catch(e => e))
+        .on('finish', emptyHandle)
+        .on('error', errorHandle)
+        .pipe(ezs.toBuffer());
+    input.write(context);
+    input.end();
+};
 
-export async function getExporters(ctx) {
-    const configuredExporters = config.exporters || [];
-
-    const availableExportStreamFactoryPromises = configuredExporters.map(
-        exporter => ctx.getExporter(exporter),
-    );
-    const availableExporters = await Promise.all(
-        availableExportStreamFactoryPromises,
-    );
-    ctx.body = availableExporters
-        .filter(exporter => exporter.label !== undefined)
-        .map(exporter => ({
-            name: exporter.label,
-            type: exporter.type,
-        }));
+export async function getScripts(ctx) {
+    ctx.body = await scripts.list();
 }
 
 const app = new Koa();
-
-app.use(setup);
-app.use(route.get('/', getExporters));
-app.use(route.get('/:type', exportMiddleware));
+app.use(
+    cacheControl({
+        public: true,
+        maxAge: config.cache.maxAge,
+    }),
+);
+app.use(route.get('/', getScripts));
+app.use(route.get('/:scriptNameCalled', middlewareScript));
 
 export default app;
