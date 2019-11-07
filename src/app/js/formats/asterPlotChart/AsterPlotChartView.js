@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import get from 'lodash.get';
 
-// import injectData from '../injectData';
+import injectData from '../injectData';
 import stylesToClassname from '../../lib/stylesToClassName';
 import AsterPlot from './AsterPlot';
 
@@ -74,6 +74,6 @@ const mapStateToProps = () => {
 };
 
 export default compose(
-    // injectData(),
+    injectData(),
     connect(mapStateToProps),
 )(AsterPlotChartView);
