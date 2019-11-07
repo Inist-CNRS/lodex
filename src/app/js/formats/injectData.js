@@ -47,7 +47,7 @@ export default url => FormatView => {
             loadFormatData: PropTypes.func.isRequired,
             formatData: PropTypes.any,
             isLoaded: PropTypes.bool.isRequired,
-            error: PropTypes.object,
+            error: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
             p: polyglotPropTypes.isRequired,
         };
 
