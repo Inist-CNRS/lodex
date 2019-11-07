@@ -26,6 +26,7 @@ export default function* fetchSaga(
                     pathname: `/login?page=${encodeURIComponent(pathname)}`,
                 }),
             );
+            window.location.reload();
         }
 
         yield put(logout());
