@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
+import TextField from 'material-ui/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -15,16 +16,6 @@ const styles = {
     },
 };
 
-export const defaultArgs = {
-    params: {
-        maxSize: 20,
-        maxValue: 100,
-        minValue: 50,
-        orderBy: 'value/asc',
-        uri: '',
-    },
-};
-
 const AsterPlotChartAdmin = ({
     p: polyglot,
     args,
@@ -36,7 +27,16 @@ const AsterPlotChartAdmin = ({
     showUri,
 }) => {
     const setParams = params => {
-        updateAdminArgs('params', params, { args, onChange });
+        updateAdminArgs('params', Object.assign({}, args.params, params), {
+            args,
+            onChange,
+        });
+    };
+
+    const setUri = (_, newUri) => {
+        setParams({
+            uri: newUri,
+        });
     };
 
     return (
@@ -49,8 +49,15 @@ const AsterPlotChartAdmin = ({
                 showMaxValue={showMaxValue}
                 showMinValue={showMinValue}
                 showOrderBy={showOrderBy}
-                showUri={showUri}
             />
+            {showUri && (
+                <TextField
+                    floatingLabelText={polyglot.t('uri')}
+                    onChange={setUri}
+                    style={styles.input}
+                    value={args.params.uri}
+                />
+            )}
         </div>
     );
 };
@@ -74,13 +81,23 @@ AsterPlotChartAdmin.propTypes = {
     showUri: PropTypes.bool,
 };
 
+export const defaultArgs = {
+    params: {
+        maxSize: undefined,
+        maxValue: undefined,
+        minValue: undefined,
+        orderBy: 'value/asc',
+        uri: undefined,
+    },
+};
+
 AsterPlotChartAdmin.defaultProps = {
     args: defaultArgs,
-    showMaxSize: true,
-    showMaxValue: true,
-    showMinValue: true,
-    showOrderBy: true,
-    showUri: true,
+    showMaxSize: false,
+    showMaxValue: false,
+    showMinValue: false,
+    showOrderBy: false,
+    showUri: false,
 };
 
 export default translate(AsterPlotChartAdmin);
