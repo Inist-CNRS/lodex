@@ -118,6 +118,7 @@ const AsterPlot = ({ data, width, height }) => {
             .attr('d', outlineArc)
             .attr('class', `outlineArc ${styles.outlineArc}`)
             .attr('transform', `translate(${width / 2} ${height / 2})`)
+            .attr('data-html', true)
             .attr('data-tip', function(d) {
                 return d.data.label;
             });
