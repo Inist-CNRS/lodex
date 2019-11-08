@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import compose from 'recompose/compose';
 import get from 'lodash.get';
+import translate from 'redux-polyglot/translate';
 
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { getShortText } from '../../lib/longTexts';
 import stylesToClassname from '../../lib/stylesToClassName';
 import injectData from '../injectData';
@@ -25,13 +27,16 @@ function getRandomValue(decimals = 2) {
     return parseFloat(Math.random() * 100).toFixed(decimals);
 }
 
-const prepareData = (data = [], history) =>
+const prepareData = (data = [], history, polyglot) =>
     data
         .map(d => {
             const title = getShortText(d['target-title']);
 
             const value = getRandomValue(2);
-            const label = `<div>${title} <br/><br/> ${value}% similarity</div>`;
+            const label = `<div>${title}<br/><br/>${value}% ${polyglot.t(
+                'similarity',
+            )}</div>`;
+
             const onClick = () => {
                 history.push({
                     pathname: `/${d.target}`,
@@ -69,13 +74,15 @@ AsterPlotChartView.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
     }),
+    p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = (_, { formatData, history }) => ({
-    data: prepareData(formatData, history),
+const mapStateToProps = (_, { formatData, history, p: polyglot }) => ({
+    data: prepareData(formatData, history, polyglot),
 });
 
 export default compose(
+    translate,
     withRouter,
     injectData(),
     connect(mapStateToProps),
