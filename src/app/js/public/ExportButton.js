@@ -5,7 +5,6 @@ import IconButton from 'material-ui/IconButton';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import withWidth from 'material-ui/utils/withWidth';
-import ExportIcon from 'material-ui/svg-icons/editor/vertical-align-bottom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
