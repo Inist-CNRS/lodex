@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as d3 from 'd3';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import get from 'lodash.get';
+import { getShortText } from '../../lib/longTexts';
 
 import injectData from '../injectData';
 import stylesToClassname from '../../lib/stylesToClassName';
@@ -20,21 +20,17 @@ const sortByKey = (key = '') => (dataA, dataB) => {
     return Math.sign(a - b);
 };
 
-function getRandomInt(min = 5, max = 15) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 function getRandomValue(decimals = 2) {
     return parseFloat(Math.random() * 100).toFixed(decimals);
 }
 
-const generateData = () => {
-    const numberOfElements = getRandomInt();
-    return d3
-        .range(numberOfElements)
-        .map(() => {
-            const value = getRandomValue();
-            const label = `${value}% similarity`;
+const prepareData = (data = []) =>
+    data
+        .map(d => {
+            const title = getShortText(d['target-title']);
+
+            const value = getRandomValue(2);
+            const label = `<div>${title} <br/><br/> ${value}% similarity</div>`;
 
             return {
                 label,
@@ -42,7 +38,6 @@ const generateData = () => {
             };
         })
         .sort(sortByKey('index'));
-};
 
 const styles = stylesToClassname(
     {
@@ -65,13 +60,9 @@ AsterPlotChartView.propTypes = {
     data: PropTypes.array.isRequired,
 };
 
-const mapStateToProps = () => {
-    const data = generateData();
-
-    return {
-        data,
-    };
-};
+const mapStateToProps = (_, { formatData }) => ({
+    data: prepareData(formatData),
+});
 
 export default compose(
     injectData(),
