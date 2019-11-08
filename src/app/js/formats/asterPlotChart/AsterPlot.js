@@ -121,6 +121,9 @@ const AsterPlot = ({ data, width, height }) => {
             .attr('data-html', true)
             .attr('data-tip', function(d) {
                 return d.data.label;
+            })
+            .on('click', function(d) {
+                d.data.onClick();
             });
 
         // Manage Tooltip
