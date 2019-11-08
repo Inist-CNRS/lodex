@@ -22,16 +22,10 @@ import {
 import theme from '../theme';
 import ExportItem from './export/ExportMenuItem';
 
-const ExportButton = ({
-    exporters,
-    handleExportClick,
-    uri,
-    p: polyglot,
-    width,
-}) => {
-    const [popover, setPopover] = useState({ open: false });
+const ExportButton = ({ exporters, onExport, uri, p: polyglot, width }) => {
+    const [popover, setPopover] = useState(null);
 
-    const handleClick = event => {
+    const handleOpen = event => {
         // This prevents ghost click.
         event.preventDefault();
 
@@ -41,10 +35,15 @@ const ExportButton = ({
         });
     };
 
-    const handleRequestClose = () => {
+    const handleClose = () => {
         setPopover({
             open: false,
         });
+    };
+
+    const handleExport = event => {
+        handleClose();
+        onExport(event);
     };
 
     if (!exporters || !exporters.length) {
@@ -59,7 +58,7 @@ const ExportButton = ({
             {width > 2 && (
                 <FlatButton
                     primary
-                    onClick={handleClick}
+                    onClick={handleOpen}
                     label={label}
                     icon={<FontAwesomeIcon icon={faDownload} height={20} />}
                     className="export"
@@ -67,7 +66,7 @@ const ExportButton = ({
             )}
             {width <= 2 && (
                 <IconButton
-                    onClick={handleClick}
+                    onClick={handleOpen}
                     iconStyle={{ color: theme.green.primary }}
                     className="export"
                 >
@@ -80,7 +79,7 @@ const ExportButton = ({
                 anchorEl={popover.anchorEl}
                 anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
                 targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                onRequestClose={handleRequestClose}
+                onRequestClose={handleClose}
                 animation={PopoverAnimationVertical}
             >
                 <Menu>
@@ -89,7 +88,7 @@ const ExportButton = ({
                             key={name}
                             type={name}
                             uri={uri}
-                            onClick={handleExportClick}
+                            onClick={handleExport}
                         />
                     ))}
                 </Menu>
@@ -100,7 +99,7 @@ const ExportButton = ({
 
 ExportButton.propTypes = {
     exporters: PropTypes.arrayOf(PropTypes.object),
-    handleExportClick: PropTypes.func.isRequired,
+    onExport: PropTypes.func.isRequired,
     preLoadExporters: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     uri: PropTypes.string,
@@ -115,7 +114,7 @@ const mapDispatchToProps = dispatch =>
     bindActionCreators(
         {
             preLoadExporters,
-            handleExportClick: exportPublishedDatasetAction,
+            onExport: exportPublishedDatasetAction,
         },
         dispatch,
     );
