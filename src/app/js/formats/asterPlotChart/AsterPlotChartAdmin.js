@@ -21,19 +21,22 @@ export const defaultArgs = {
         maxValue: 100,
         minValue: 50,
         orderBy: 'value/asc',
+        uri: '',
     },
 };
 
 const AsterPlotChartAdmin = ({
     p: polyglot,
     args,
+    onChange,
     showMaxSize,
     showMaxValue,
     showMinValue,
     showOrderBy,
+    showUri,
 }) => {
     const setParams = params => {
-        updateAdminArgs('params', params, { args });
+        updateAdminArgs('params', params, { args, onChange });
     };
 
     return (
@@ -46,6 +49,7 @@ const AsterPlotChartAdmin = ({
                 showMaxValue={showMaxValue}
                 showMinValue={showMinValue}
                 showOrderBy={showOrderBy}
+                showUri={showUri}
             />
         </div>
     );
@@ -58,6 +62,7 @@ AsterPlotChartAdmin.propTypes = {
             maxValue: PropTypes.number,
             minValue: PropTypes.number,
             orderBy: PropTypes.string,
+            uri: PropTypes.string,
         }),
     }),
     onChange: PropTypes.func.isRequired,
@@ -66,6 +71,7 @@ AsterPlotChartAdmin.propTypes = {
     showMaxValue: PropTypes.bool,
     showMinValue: PropTypes.bool,
     showOrderBy: PropTypes.bool,
+    showUri: PropTypes.bool,
 };
 
 AsterPlotChartAdmin.defaultProps = {
@@ -74,6 +80,7 @@ AsterPlotChartAdmin.defaultProps = {
     showMaxValue: true,
     showMinValue: true,
     showOrderBy: true,
+    showUri: true,
 };
 
 export default translate(AsterPlotChartAdmin);
