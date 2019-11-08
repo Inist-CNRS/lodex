@@ -23,7 +23,7 @@ import theme from '../theme';
 import ExportItem from './export/ExportMenuItem';
 
 const ExportButton = ({ exporters, onExport, uri, p: polyglot, width }) => {
-    const [popover, setPopover] = useState(null);
+    const [popover, setPopover] = useState({ open: false });
 
     const handleOpen = event => {
         // This prevents ghost click.
