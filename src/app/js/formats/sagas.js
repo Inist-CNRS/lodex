@@ -6,6 +6,7 @@ import {
     throttle,
     all,
 } from 'redux-saga/effects';
+import get from 'lodash.get';
 
 import {
     LOAD_FORMAT_DATA,
@@ -89,7 +90,7 @@ export function* loadFormatData(name, url, queryString) {
 }
 
 export function* handleLoadFormatDataRequest({
-    payload: { field, filter, value } = {},
+    payload: { field, filter, value, resource } = {},
 }) {
     const name = field && field.name;
 
@@ -108,10 +109,12 @@ export function* handleLoadFormatDataRequest({
     }
 
     const params = yield select(fromFields.getGraphFieldParamsByName, name);
+    const uri = get(resource, 'uri', undefined);
 
     const queryString = yield call(getQueryString, {
         params: {
             ...params,
+            uri,
             ...(filter || {}),
         },
     });
