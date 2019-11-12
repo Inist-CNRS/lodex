@@ -35,7 +35,7 @@ const prepareData = (data = [], history, polyglot) =>
 
             const value = getValue(2);
             const label = `<div>${title}<br/><br/>${value}% ${polyglot.t(
-                'similare',
+                'similar',
             )}</div>`;
 
             const onClick = () => {
