@@ -23,8 +23,9 @@ const sortByKey = (key = '') => (dataA, dataB) => {
     return Math.sign(a - b);
 };
 
-function getRandomValue(decimals = 2) {
-    return parseFloat(Math.random() * 100).toFixed(decimals);
+function getValue(data, decimals = 2) {
+    const value = get(data, 'weight', 0);
+    return parseFloat(value).toFixed(decimals);
 }
 
 const prepareData = (data = [], history, polyglot) =>
@@ -32,7 +33,7 @@ const prepareData = (data = [], history, polyglot) =>
         .map(d => {
             const title = getShortText(d['target-title']);
 
-            const value = getRandomValue(2);
+            const value = getValue(2);
             const label = `<div>${title}<br/><br/>${value}% ${polyglot.t(
                 'similare',
             )}</div>`;
