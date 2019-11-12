@@ -83,9 +83,9 @@ AsterPlotChartAdmin.propTypes = {
 
 export const defaultArgs = {
     params: {
-        maxSize: undefined,
-        maxValue: undefined,
-        minValue: undefined,
+        maxSize: 10,
+        maxValue: 100,
+        minValue: 0,
         orderBy: 'value/asc',
         uri: undefined,
     },
@@ -93,11 +93,11 @@ export const defaultArgs = {
 
 AsterPlotChartAdmin.defaultProps = {
     args: defaultArgs,
-    showMaxSize: false,
-    showMaxValue: false,
-    showMinValue: false,
-    showOrderBy: false,
-    showUri: false,
+    showMaxSize: true,
+    showMaxValue: true,
+    showMinValue: true,
+    showOrderBy: true,
+    showUri: true,
 };
 
 export default translate(AsterPlotChartAdmin);
