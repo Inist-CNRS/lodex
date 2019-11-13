@@ -52,6 +52,10 @@ class HeatMapAdmin extends Component {
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
+        showMaxSize: PropTypes.bool.isRequired,
+        showMaxValue: PropTypes.bool.isRequired,
+        showMinValue: PropTypes.bool.isRequired,
+        showOrderBy: PropTypes.bool.isRequired,
     };
 
     static defaultProps = {
@@ -74,6 +78,10 @@ class HeatMapAdmin extends Component {
         const {
             p: polyglot,
             args: { params, colorScheme, flipAxis },
+            showMaxSize = true,
+            showMaxValue = true,
+            showMinValue = true,
+            showOrderBy = true,
         } = this.props;
 
         return (
@@ -82,7 +90,10 @@ class HeatMapAdmin extends Component {
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
                     onChange={this.setParams}
-                    fieldsToShow={'maxSize, minValue, maxValue, orderBy'}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
                 />
                 <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}

@@ -78,6 +78,7 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
         maxValue,
         minValue,
         orderBy,
+        uri,
         host,
         // to externalize routine
         connectionStringURI,

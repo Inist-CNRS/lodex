@@ -131,8 +131,8 @@ const getAllListFields = createSelector(
 );
 
 const findFieldWithOverviewID = id => fields => {
-    const result = fields.filter(f => f.overview === id);
-    return result[0] ? result[0].name : null;
+    const result = fields.find(f => f.overview === id);
+    return result ? result.name : null;
 };
 
 export const getFieldByName = createSelector(
