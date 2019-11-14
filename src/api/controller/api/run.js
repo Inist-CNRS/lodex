@@ -99,9 +99,21 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
         input.destroy();
         global.console.error('Error with ', ctx.path, ' and', ctx.query, err);
     };
+    const emptyHandle = () => {
+        if (ctx.headerSent === false) {
+            ctx.body.write('{"total":0}');
+            global.console.error(
+                'Empty response with ',
+                ctx.path,
+                ' and',
+                ctx.query,
+            );
+        }
+    };
     ctx.body = input
         .pipe(ezs(statement, { commands, key: ctx.url }, environment))
         .pipe(ezs.catch(e => e))
+        .on('finish', emptyHandle)
         .on('error', errorHandle)
         .pipe(ezs.toBuffer());
     input.write(context);
