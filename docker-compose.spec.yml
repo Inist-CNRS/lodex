@@ -20,7 +20,7 @@ services:
             - ./cypress/mocks/external:/app/external
 
     istex-api:
-        image: node:10
+        image: node:10-alpine
         volumes:
             - .:/app
         working_dir: /app
