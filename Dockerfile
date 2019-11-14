@@ -15,7 +15,7 @@ RUN rm -rf ./node_modules && \
 ARG node_env="production"
 ENV NODE_ENV=$node_env
 
-RUN cp -n ./config/production-dist.js ./config/production.js
+RUN cp ./config/production-dist.js ./config/production.js
 
 # ezmasterizing of lodex
 # See https://github.com/Inist-CNRS/ezmaster#ezmasterizing-an-application
