@@ -1,5 +1,7 @@
 FROM node:10-alpine
 
+RUN apk add --no-cache make gcc g++ python
+
 WORKDIR /app
 
 # Copy the local code source
