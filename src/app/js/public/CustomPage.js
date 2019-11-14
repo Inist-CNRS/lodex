@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -42,14 +42,14 @@ export class CustomPage extends Component {
         }
 
         return (
-            <Fragment>
+            <>
                 <Helmet>
                     {scripts.map((src, index) => (
                         <script key={index} src={src} />
                     ))}
                 </Helmet>
                 <div dangerouslySetInnerHTML={{ __html: html }} />
-            </Fragment>
+            </>
         );
     }
 }

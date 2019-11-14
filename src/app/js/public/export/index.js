@@ -68,14 +68,11 @@ export default handleActions(
 
 export const getExporters = state =>
     state.exporters.filter(e => e.type === 'file');
-export const getWidgets = state =>
-    state.exporters.filter(e => e.type === 'widget');
 export const areExporterLoaded = state => state.exporters.length > 0;
 export const isOpen = state => state.open;
 
 export const fromExport = {
     getExporters,
-    getWidgets,
     areExporterLoaded,
     isOpen,
 };

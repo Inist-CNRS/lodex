@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
+import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 
@@ -15,6 +15,7 @@ import Loading from '../lib/components/Loading';
 import Card from '../lib/components/Card';
 import Statistics from './Statistics';
 import theme from '../theme';
+import { preLoadLoaders } from './loader/';
 
 const styles = {
     punchLine: {
@@ -79,8 +80,20 @@ const mapStateToProps = state => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 
+const mapDispatchToProps = {
+    preLoadLoaders,
+};
+
 export default compose(
     withInitialData,
-    connect(mapStateToProps),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    lifecycle({
+        componentWillMount() {
+            this.props.preLoadLoaders();
+        },
+    }),
     translate,
 )(AdminComponent);

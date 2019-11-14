@@ -65,9 +65,7 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
     if (filter.$and && !filter.$and.length) {
         delete filter.$and;
     }
-    const connectionStringURI = `mongodb://${config.mongo.host}/${
-        config.mongo.dbName
-    }`;
+    const connectionStringURI = `mongodb://${config.mongo.host}/${config.mongo.dbName}`;
     // context is the intput for LodexReduceQuery & LodexRunQuery & LodexDocuments
     const context = {
         // /*
@@ -80,6 +78,7 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
         maxValue,
         minValue,
         orderBy,
+        uri,
         host,
         // to allow script to connect to MongoDB
         connectionStringURI,

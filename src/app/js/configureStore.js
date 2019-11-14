@@ -24,9 +24,10 @@ export default function configureStore(
           }
         : pureReducer;
 
-    const reducer = compose(mergePersistedState(), connectRouter(history))(
-        rootReducer,
-    );
+    const reducer = compose(
+        mergePersistedState(),
+        connectRouter(history),
+    )(rootReducer);
 
     const storage = compose(filter('user'))(adapter(window.sessionStorage));
 
@@ -36,8 +37,8 @@ export default function configureStore(
     );
 
     const devtools =
-        typeof window !== 'undefined' && window.devToolsExtension
-            ? window.devToolsExtension()
+        typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
+            ? window.__REDUX_DEVTOOLS_EXTENSION__()
             : f => f;
 
     const persistStateEnhancer = persistState(storage);
@@ -45,7 +46,11 @@ export default function configureStore(
     const store = createStore(
         reducer,
         initialState,
-        compose(middlewares, persistStateEnhancer, devtools),
+        compose(
+            middlewares,
+            persistStateEnhancer,
+            devtools,
+        ),
     );
 
     sagaMiddleware.run(sagas);

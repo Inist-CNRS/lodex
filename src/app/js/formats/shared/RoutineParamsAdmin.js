@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
@@ -12,112 +12,96 @@ const styles = {
     },
 };
 
-class RoutineParamsAdmin extends Component {
-    static propTypes = {
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-        }),
-        onChange: PropTypes.func.isRequired,
-        polyglot: polyglotPropTypes.isRequired,
-        fieldsToShow: PropTypes.array.isRequired,
-        showMaxSize: PropTypes.bool.isRequired,
-        showMaxValue: PropTypes.bool.isRequired,
-        showMinValue: PropTypes.bool.isRequired,
-        showOrderBy: PropTypes.bool.isRequired,
-    };
-
-    setMaxSize = (_, maxSize) => {
-        this.props.onChange({
-            ...this.props.params,
-            maxSize: parseInt(maxSize, 10),
-        });
-    };
-
-    setMaxValue = (_, maxValue) => {
-        this.props.onChange({
-            ...this.props.params,
-            maxValue: parseInt(maxValue, 10),
-        });
-    };
-
-    setMinValue = (_, minValue) => {
-        this.props.onChange({
-            ...this.props.params,
-            minValue: parseInt(minValue, 10),
-        });
-    };
-
-    setOrderBy = (_, __, orderBy) => {
-        this.props.onChange({
-            ...this.props.params,
+const RoutineParamsAdmin = ({
+    polyglot,
+    onChange,
+    params: { maxSize, maxValue, minValue, orderBy, uri },
+    showUri,
+    showMaxSize,
+    showMaxValue,
+    showMinValue,
+    showOrderBy,
+}) => {
+    const setMaxSize = (_, newMaxSize) => {
+        onChange({
+            maxSize: parseInt(newMaxSize, 10),
+            maxValue,
+            minValue,
             orderBy,
+            uri,
         });
     };
 
-    render() {
-        const {
-            params,
-            polyglot,
-            showMaxSize,
-            showMaxValue,
-            showMinValue,
-            showOrderBy,
-        } = this.props;
+    const setMaxValue = (_, newMaxValue) => {
+        onChange({
+            maxSize,
+            maxValue: parseInt(newMaxValue, 10),
+            minValue,
+            orderBy,
+            uri,
+        });
+    };
 
-        const { maxSize, maxValue, minValue, orderBy } = params;
+    const setMinValue = (_, newMinValue) => {
+        onChange({
+            maxSize,
+            maxValue,
+            minValue: parseInt(newMinValue, 10),
+            orderBy,
+            uri,
+        });
+    };
 
-        var maxSizeField;
+    const setOrderBy = (_, __, newOrderBy) => {
+        onChange({
+            maxSize,
+            maxValue,
+            minValue,
+            orderBy: newOrderBy,
+            uri,
+        });
+    };
 
-        if (showMaxSize) {
-            maxSizeField = (
+    const setUri = (_, newUri) => {
+        onChange({
+            maxSize,
+            maxValue,
+            minValue,
+            orderBy,
+            uri: newUri,
+        });
+    };
+
+    return (
+        <>
+            {showMaxSize && (
                 <TextField
                     floatingLabelText={polyglot.t('max_fields')}
-                    onChange={this.setMaxSize}
+                    onChange={setMaxSize}
                     style={styles.input}
                     value={maxSize}
                 />
-            );
-        } else {
-            maxSizeField = '';
-        }
-
-        var minValueField;
-        if (showMinValue) {
-            minValueField = (
+            )}
+            {showMinValue && (
                 <TextField
                     floatingLabelText={polyglot.t('min_value')}
-                    onChange={this.setMinValue}
+                    onChange={setMinValue}
                     style={styles.input}
                     value={minValue}
                 />
-            );
-        } else {
-            minValueField = '';
-        }
-
-        var maxValueField;
-        if (showMaxValue) {
-            maxValueField = (
+            )}
+            {showMaxValue && (
                 <TextField
                     floatingLabelText={polyglot.t('max_value')}
-                    onChange={this.setMaxValue}
+                    onChange={setMaxValue}
                     style={styles.input}
                     value={maxValue}
                 />
-            );
-        } else {
-            maxValueField = '';
-        }
-
-        var orderByField;
-        if (showOrderBy) {
-            orderByField = (
+            )}
+            {showOrderBy && (
                 <SelectField
                     floatingLabelText={polyglot.t('order_by')}
-                    onChange={this.setOrderBy}
+                    onChange={setOrderBy}
                     style={styles.input}
                     value={orderBy}
                 >
@@ -138,20 +122,34 @@ class RoutineParamsAdmin extends Component {
                         primaryText={polyglot.t('value_desc')}
                     />
                 </SelectField>
-            );
-        } else {
-            orderByField = '';
-        }
+            )}
+            {showUri && (
+                <TextField
+                    floatingLabelText={polyglot.t('uri')}
+                    onChange={setUri}
+                    style={styles.input}
+                    value={uri}
+                />
+            )}
+        </>
+    );
+};
 
-        return (
-            <Fragment>
-                {maxSizeField}
-                {minValueField}
-                {maxValueField}
-                {orderByField}
-            </Fragment>
-        );
-    }
-}
+RoutineParamsAdmin.propTypes = {
+    params: PropTypes.shape({
+        maxSize: PropTypes.number,
+        maxValue: PropTypes.number,
+        minValue: PropTypes.number,
+        orderBy: PropTypes.string,
+        uri: PropTypes.string,
+    }),
+    onChange: PropTypes.func.isRequired,
+    polyglot: polyglotPropTypes.isRequired,
+    showMaxSize: PropTypes.bool.isRequired,
+    showMaxValue: PropTypes.bool.isRequired,
+    showMinValue: PropTypes.bool.isRequired,
+    showOrderBy: PropTypes.bool.isRequired,
+    showUri: PropTypes.bool.isRequired,
+};
 
 export default RoutineParamsAdmin;

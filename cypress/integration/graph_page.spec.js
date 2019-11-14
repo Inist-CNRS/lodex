@@ -16,7 +16,7 @@ describe('Graph Page', () => {
         datasetImportPage.goToPublishedResources();
     });
 
-    it('should reset filters & search query when switching to another graph', () => {
+    it('should not reset filters & search query when switching to another graph', () => {
         homePage.openAdvancedDrawer();
         homePage.openChartDrawer();
 
@@ -33,14 +33,14 @@ describe('Graph Page', () => {
         homePage.openChartDrawer();
         homePage.goToChart('Bubble Chart');
 
-        graphPage.getSearchInput().should('have.value', '');
-        graphPage.getStats().should('have.text', 'Found 50 on 50');
+        graphPage.getSearchInput().should('have.value', 'Biodiversity');
+        graphPage.getStats().should('have.text', 'Found 4 on 50');
 
         graphPage.getFacet('Publication Year').click();
         graphPage
             .getFacetItem('Publication Year', '2011')
             .find('input[type=checkbox]')
-            .should('not.be.checked');
+            .should('be.checked');
     });
 
     it('should copy filters to search drawer', () => {

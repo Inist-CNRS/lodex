@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -8,6 +8,11 @@ import debounce from 'lodash.debounce';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
+import FilterListIcon from 'material-ui/svg-icons/content/filter-list';
+import ActionSearch from 'material-ui/svg-icons/action/search';
+import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
     facetActions,
@@ -15,23 +20,22 @@ import {
     sort as sortAction,
     loadMore as loadMoreAction,
 } from './reducer';
-import Link from '../../lib/components/Link';
 import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../../fields';
-
 import { fromFields } from '../../sharedSelectors';
 import { fromSearch, fromDataset } from '../selectors';
 import theme from '../../theme';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
-import AppliedFacets from './AppliedFacets';
+import AppliedFacetList from './AppliedSearchFacetList';
 import Facets from './Facets';
 import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
 import stylesToClassname from '../../lib/stylesToClassName';
+import ExportButton from '../ExportButton';
 
 const styles = stylesToClassname(
     {
@@ -44,7 +48,12 @@ const styles = stylesToClassname(
             padding: '1rem',
         },
         searchBarContainer: {
-            flex: '1 0 0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+        },
+        searchField: {
+            flexGrow: 3,
         },
         details: {
             display: 'flex',
@@ -62,11 +71,12 @@ const styles = stylesToClassname(
             color: 'rgb(95, 99, 104)',
         },
         toggleFacets: {
-            alignSelf: 'flex-end',
-            cursor: 'pointer',
             '@media (min-width: 992px)': {
-                display: 'none',
+                display: 'none !important',
             },
+        },
+        iconFacets: {
+            color: theme.green.primary,
         },
         appliedFacets: {
             flex: '0 0 auto',
@@ -117,6 +127,10 @@ const styles = stylesToClassname(
         noResult: {
             padding: '10% 0',
             textAlign: 'center',
+        },
+        icon: {
+            marginRight: 8,
+            marginTop: 8,
         },
     },
     'search',
@@ -194,6 +208,10 @@ class Search extends Component {
         sort({ sortBy });
     };
 
+    handleClearFilter = () => {
+        this.handleTextFieldChange(null, '');
+    };
+
     renderNoResults = () => {
         const { p: polyglot } = this.props;
 
@@ -223,13 +241,13 @@ class Search extends Component {
         return (
             <div className={classnames('load-more', styles.loadMore)}>
                 {loading ? (
-                    <Fragment>
+                    <>
                         <CircularProgress
                             size={20}
                             className={styles.loading}
                         />{' '}
                         {polyglot.t('loading')}
-                    </Fragment>
+                    </>
                 ) : (
                     <FlatButton fullWidth onClick={loadMore}>
                         {polyglot.t('search_load_more')} ({results.length} /{' '}
@@ -274,9 +292,15 @@ class Search extends Component {
                             styles.searchBarContainer,
                         )}
                     >
+                        <div className={classnames('search-icon', styles.icon)}>
+                            <ActionSearch />
+                        </div>
                         <TextField
-                            hintText={`🔍 ${polyglot.t('search_placeholder')}`}
-                            fullWidth
+                            hintText={polyglot.t('filter')}
+                            className={classnames(
+                                'search-text',
+                                styles.searchField,
+                            )}
                             onChange={this.handleTextFieldChange}
                             value={
                                 (bufferQuery !== null
@@ -287,6 +311,29 @@ class Search extends Component {
                             underlineFocusStyle={muiStyles.searchBarUnderline}
                             ref={this.textInput}
                         />
+                        <IconButton
+                            className="search-clear"
+                            iconStyle={{ color: theme.green.primary }}
+                            onClick={this.handleClearFilter}
+                        >
+                            <FontAwesomeIcon icon={faUndo} height={15} />
+                        </IconButton>
+
+                        <div>
+                            {withFacets && (
+                                <IconButton
+                                    className={classnames(
+                                        'search-facets-toggle',
+                                        styles.toggleFacets,
+                                    )}
+                                    onClick={this.handleToggleFacets}
+                                    iconStyle={{ color: theme.green.primary }}
+                                >
+                                    <FilterListIcon />
+                                </IconButton>
+                            )}
+                            <ExportButton />
+                        </div>
                     </div>
                     <div
                         className={classnames(
@@ -309,26 +356,11 @@ class Search extends Component {
                                           })}
                                 </div>
                             )}
-                            {withFacets && (
-                                <Link
-                                    className={classnames(
-                                        'search-facets-toggle',
-                                        styles.toggleFacets,
-                                    )}
-                                    onClick={this.handleToggleFacets}
-                                >
-                                    {polyglot.t(
-                                        showFacets
-                                            ? 'search_facets_close'
-                                            : 'search_facets_open',
-                                    )}
-                                </Link>
-                            )}
                         </div>
                     </div>
                 </div>
                 {withFacets && (
-                    <AppliedFacets className={styles.appliedFacets} />
+                    <AppliedFacetList className={styles.appliedFacets} />
                 )}
                 <div
                     className={classnames(
@@ -360,7 +392,7 @@ class Search extends Component {
                         {noOverviewField && this.renderNoOverviewField()}
                         {noResults && this.renderNoResults()}
                         {(everythingIsOk || loading) && (
-                            <Fragment>
+                            <>
                                 <SearchResultSort
                                     fields={fields}
                                     fieldNames={fieldNames}
@@ -375,7 +407,7 @@ class Search extends Component {
                                     closeDrawer={closeDrawer}
                                     placeholders={loading}
                                 />
-                            </Fragment>
+                            </>
                         )}
                         {canLoadMore && this.renderLoadMore()}
                     </div>

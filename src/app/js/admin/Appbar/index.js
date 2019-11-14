@@ -72,22 +72,20 @@ const AppbarComponent = ({
                     )}
                 />
             )}
-            {isAdmin &&
-                hasPublishedDataset && (
-                    <FlatButton
-                        label={polyglot.t('moderation')}
-                        containerElement={<Link to="/contributions" />}
-                        style={styles.button}
-                    />
-                )}
-            {isAdmin &&
-                hasPublishedDataset && (
-                    <FlatButton
-                        label={polyglot.t('removed_resources')}
-                        containerElement={<Link to="/removed" />}
-                        style={styles.button}
-                    />
-                )}
+            {isAdmin && hasPublishedDataset && (
+                <FlatButton
+                    label={polyglot.t('moderation')}
+                    containerElement={<Link to="/contributions" />}
+                    style={styles.button}
+                />
+            )}
+            {isAdmin && hasPublishedDataset && (
+                <FlatButton
+                    label={polyglot.t('removed_resources')}
+                    containerElement={<Link to="/removed" />}
+                    style={styles.button}
+                />
+            )}
             {isAdmin ? (
                 <ModelMenu hasPublishedDataset={hasPublishedDataset} />
             ) : (

@@ -17,11 +17,11 @@ import publish from './publish';
 import publishedDataset from './publishedDataset';
 import dataset from './dataset';
 import upload from './upload';
-import widget from './widget';
 import run from './run';
 import progress from './progress';
 import breadcrumbs from './breadcrumb';
 import menu from './menu';
+import loader from './loader';
 
 const app = new Koa();
 
@@ -63,7 +63,6 @@ app.use(async (ctx, next) => {
 
 app.use(mount('/export', exportPublishedDataset));
 app.use(mount('/facet', facet));
-app.use(mount('/widget', widget));
 app.use(mount('/run', run));
 app.use(route.get('/publication', publication));
 
@@ -103,6 +102,7 @@ app.use(mount('/publish', publish));
 app.use(mount('/upload', upload));
 app.use(mount('/dataset', dataset));
 app.use(route.get('/progress', progress));
+app.use(mount('/loader', loader));
 
 app.use(async ctx => {
     ctx.status = 404;

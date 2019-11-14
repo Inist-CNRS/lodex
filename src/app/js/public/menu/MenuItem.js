@@ -8,7 +8,6 @@ import { Link, NavLink } from 'react-router-dom';
 
 import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import ExportShareMenuItem from '../ExportShareMenuItem';
 import stylesToClassname from '../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
@@ -205,24 +204,6 @@ const MenuItem = ({
                     </Link>
                 )
             );
-
-        case 'share_export': {
-            return (
-                <ExportShareMenuItem
-                    renderOpenButton={({ handleOpen, open }) => (
-                        <div
-                            className={classnames('nav-item', styles.menuItem, {
-                                [styles.drawerActive]: open,
-                            })}
-                            onClick={handleOpen}
-                        >
-                            {icon}
-                            {label}
-                        </div>
-                    )}
-                />
-            );
-        }
         case 'custom': {
             const { link } = config;
             if (!link) {
@@ -260,16 +241,6 @@ const MenuItem = ({
                 </NavLink>
             );
         }
-        case 'resources': {
-            console.error(
-                `The role ${
-                    config.role
-                } has been removed in lodex v11.0.2 (https://github.com/Inist-CNRS/lodex/releases/tag/v11.0.1). Menu item: ${JSON.stringify(
-                    config,
-                )} will be ignored.`,
-            );
-            return null;
-        }
         default:
             console.error(
                 `Unknow role: ${config.role}. Menu item: ${JSON.stringify(
@@ -292,7 +263,6 @@ MenuItem.propTypes = {
             'sign-in',
             'sign-out',
             'custom',
-            'share_export',
             'advanced',
         ]),
         label: PropTypes.shape({

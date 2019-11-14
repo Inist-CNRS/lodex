@@ -109,6 +109,7 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
         .pipe(ezs('filterContributions'))
         .pipe(ezs(statement, { commands, key: ctx.url }, environment))
         .pipe(ezs.catch(e => e))
+
         .on('error', errorHandle)
         .pipe(ezs.toBuffer());
     input.write(context);

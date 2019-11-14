@@ -1,8 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import withHandlers from 'recompose/withHandlers';
 import Chip from 'material-ui/Chip';
 import translate from 'redux-polyglot/translate';
 
@@ -11,9 +8,6 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 import getFieldClassName from '../../lib/getFieldClassName';
-import { fromFields } from '../../sharedSelectors';
-import { fromDataset } from '../selectors';
-import { facetActions } from '../dataset';
 import interleave from '../../lib/interleave';
 
 const styles = {
@@ -67,20 +61,4 @@ AppliedFacetComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = (state, { name }) => ({
-    field: fromFields.getFieldByName(state, name),
-    inverted: fromDataset.isFacetValuesInverted(state, name),
-});
-
-const mapDispatchToProps = { onClearFacet: facetActions.clearFacet };
-
-export default compose(
-    translate,
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
-    withHandlers({
-        onRequestDelete: ({ name, onClearFacet }) => () => onClearFacet(name),
-    }),
-)(AppliedFacetComponent);
+export default translate(AppliedFacetComponent);

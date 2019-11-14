@@ -23,8 +23,19 @@ describe('Search', () => {
 
         it('should have the right informations in the search results', () => {
             searchDrawer.openSearchDrawer();
-            cy.get('.search-result').should('have.length', 10);
-            cy.get('.drawer .load-more button').should('contain', '(10 / 12)');
+            searchDrawer.checkResultsCount(10);
+            searchDrawer.checkMoreResultsCount(10, 12);
+        });
+
+        it('should export the dataset', () => {
+            searchDrawer.openSearchDrawer();
+            searchDrawer.checkResultsCount(10);
+            cy.get('.export').click();
+            cy.wait(300);
+            cy.get('span[role="menuitem"]')
+                .should('have.length', 9)
+                .contains('Export as JSON')
+                .should('be.visible');
         });
 
         it('should do a search, and its result redirect to a resource', () => {
@@ -42,15 +53,27 @@ describe('Search', () => {
                 .should('be.visible');
         });
 
-        it('should be able to load more search results', () => {
+        it('should be able to load more search results several times', () => {
             searchDrawer.openSearchDrawer();
-            cy.get('.search-result').should('have.length', 10);
-            cy.get('.drawer .load-more button').should('contain', '(10 / 12)');
 
-            searchDrawer.loadMore();
+            searchDrawer.checkResultsCount(10);
+            searchDrawer.checkMoreResultsCount(10, 12);
 
-            cy.get('.search-result').should('have.length', 12);
-            cy.get('.drawer- .load-more button').should('not.be.visible');
+            searchDrawer.loadMore(); // Call load more for the first time
+
+            searchDrawer.checkResultsCount(12);
+            searchDrawer.checkMoreResultsNotExist();
+
+            searchDrawer.search('bezoar');
+            searchDrawer.clearSearch();
+
+            searchDrawer.checkResultsCount(10);
+            searchDrawer.checkMoreResultsCount(10, 12);
+
+            searchDrawer.loadMore(); // Call load more for the second time
+
+            searchDrawer.checkResultsCount(12);
+            searchDrawer.checkMoreResultsNotExist();
         });
 
         it('should mark active resource on the result list', () => {
@@ -72,7 +95,7 @@ describe('Search', () => {
             const query = 'Annals of the rheumatic';
             searchDrawer.openSearchDrawer();
             searchDrawer.search(query);
-            cy.get('.search-result').should('have.length', 1);
+            searchDrawer.checkResultsCount(1);
 
             searchDrawer
                 .findSearchResultByTitle('Annals of the rheumatic diseases')
@@ -82,21 +105,21 @@ describe('Search', () => {
             cy.get('.loading').should('not.be.visible');
             searchDrawer.openSearchDrawer();
 
-            cy.get('.search-result').should('have.length', 1);
+            searchDrawer.checkResultsCount(1);
             searchDrawer.searchInput().should('have.value', query);
         });
 
         it('should sort result by pertinence', () => {
             searchDrawer.openSearchDrawer();
             searchDrawer.search('medicine');
-            cy.get('.search-result').should('have.length', 2);
+            searchDrawer.checkResultsCount(2);
 
             searchDrawer.checkResultList([
                 'Acupuncture in medicine',
                 'Archives of emergency medicine',
             ]);
             searchDrawer.search(' archive');
-            cy.get('.search-result').should('have.length', 5);
+            searchDrawer.checkResultsCount(5);
 
             searchDrawer.checkResultList([
                 'Archives of emergency medicine',
@@ -113,19 +136,19 @@ describe('Search', () => {
 
         it('should filter search results by facets', () => {
             searchDrawer.openSearchDrawer();
-            cy.get('.search-result').should('have.length', 10);
+            searchDrawer.checkResultsCount(10);
 
             searchDrawer.setFacet('Dernière mise en ligne en', '2014');
-            cy.get('.search-result').should('have.length', 1);
+            searchDrawer.checkResultsCount(1);
         });
 
         it('should allow to clear facets from the search results', () => {
             searchDrawer.openSearchDrawer();
             searchDrawer.setFacet('Dernière mise en ligne en', '2014');
-            cy.get('.search-result').should('have.length', 1);
+            searchDrawer.checkResultsCount(1);
 
             searchDrawer.clearFacet('2014');
-            cy.get('.search-result').should('have.length', 10);
+            searchDrawer.checkResultsCount(10);
         });
 
         it('should allow to sort facet', () => {
@@ -209,13 +232,13 @@ describe('Search', () => {
         it('should have a diacritic insensible text-based search', () => {
             searchDrawer.openSearchDrawer();
             searchDrawer.search('sirene');
-            cy.get('.search-result').should('have.length', 1);
+            searchDrawer.checkResultsCount(1);
         });
 
         it('should allow to search for long sentences or descriptions', () => {
             searchDrawer.openSearchDrawer();
             searchDrawer.search('Lorem ipsum');
-            cy.get('.search-result').should('have.length', 1);
+            searchDrawer.checkResultsCount(1);
         });
     });
 });

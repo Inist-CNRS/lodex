@@ -119,6 +119,7 @@ export default handleActions(
             ...state,
             loading: false,
             dataset: payload.dataset || [],
+            page: payload.page || 0,
             total: payload.total || 0,
             fields: payload.fields || state.fields,
         }),

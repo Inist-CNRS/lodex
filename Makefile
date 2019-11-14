@@ -113,7 +113,10 @@ else
 		exit 1)
 endif
 
-test: test-unit test-api-e2e test-e2e
+test: ## Run all tests
+	$(MAKE) test-unit
+	$(MAKE) test-api-e2e
+	CI=true $(MAKE) test-e2e
 
 ## Data ========================================================================
 

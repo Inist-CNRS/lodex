@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';
@@ -155,7 +155,7 @@ export const NavBar = ({
     };
 
     return (
-        <Fragment>
+        <>
             <nav
                 className={classnames(styles.menu, {
                     [styles.menuWithDrawer]:
@@ -230,7 +230,7 @@ export const NavBar = ({
                     polyglot={polyglot}
                 />
             </Drawer>
-        </Fragment>
+        </>
     );
 };
 
@@ -241,7 +241,6 @@ const menuPropTypes = PropTypes.arrayOf(
             'graphs',
             'search',
             'admin',
-            'share_export',
             'sign-in',
             'sign-out',
             'custom',

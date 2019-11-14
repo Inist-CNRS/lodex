@@ -59,7 +59,11 @@ const ListView = ({
     subFormat,
     subFormatOptions,
 }) => {
-    let values = resource[field.name];
+    const values = resource[field.name];
+    if (values == null || values === '' || !Array.isArray(values)) {
+        return null;
+    }
+
     const { ViewComponent, args } = getViewComponent(subFormat);
 
     const List = type === 'ordered' ? OL : UL;
@@ -67,10 +71,7 @@ const ListView = ({
     return (
         <List className={classnames(styles[type], className)}>
             {values.map((value, index) => (
-                <li
-                    key={value}
-                    className={classnames(styles[`${type}_li`])}
-                >
+                <li key={value} className={classnames(styles[`${type}_li`])}>
                     {subFormat ? (
                         <ViewComponent
                             resource={values}

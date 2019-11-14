@@ -1,9 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import * as colorUtils from '../colorUtils';
 
 const styles = {
     input: {
@@ -69,7 +68,7 @@ class ColorPickerParamsAdmin extends Component {
     render() {
         const { monochromatic } = this.props;
         return (
-            <Fragment>
+            <>
                 <TextField
                     floatingLabelText={
                         monochromatic
@@ -82,7 +81,7 @@ class ColorPickerParamsAdmin extends Component {
                     maxLength={monochromatic ? 7 : multichromatic_maxLength}
                 />
                 {this.createUI()}
-            </Fragment>
+            </>
         );
     }
 }

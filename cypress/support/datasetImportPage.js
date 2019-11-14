@@ -109,3 +109,23 @@ export const importModel = (filename, mimeType = 'application/json') => {
     cy.get('button.btn-import-fields').click();
     fillInputWithFixture('input[name="file_model"]', filename, mimeType);
 };
+
+const checkParserItem = label => {
+    cy.get('span[role=menuitem]')
+        .contains(label)
+        .scrollIntoView()
+        .should('be.visible');
+};
+
+export const checkListOfSupportedFileFormats = () => {
+    cy.get('div')
+        .contains('AUTO')
+        .click({ force: true });
+    cy.wait(300);
+    cy.get('span[role=menuitem]').should('have.length', 18);
+    checkParserItem('CSV - with semicolon');
+    checkParserItem('XML - TEI document');
+    checkParserItem('ZIP file from dl.istex.fr');
+    checkParserItem('JSON - from Lodex API');
+    checkParserItem('XML - ATOM feed');
+};

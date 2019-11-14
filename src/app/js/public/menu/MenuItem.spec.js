@@ -70,6 +70,26 @@ describe('MenuItem', () => {
         ).toBe('label en');
     });
 
+    describe('role: unknown', () => {
+        it('should not render the MenuItem', () => {
+            const wrapper = shallow(
+                <MenuItem
+                    {...defaultProps}
+                    config={{
+                        role: 'unknown',
+                        label: { fr: 'unknown fr', en: 'unknown en' },
+                        icon: 'faList',
+                    }}
+                />,
+            );
+
+            const link = wrapper.find(NavLink);
+
+            expect(link).toHaveLength(0);
+            expect(console.error).toHaveBeenCalled();
+        });
+    });
+
     describe('role: home', () => {
         it('should render MenuItem to home', () => {
             const wrapper = shallow(
@@ -87,26 +107,6 @@ describe('MenuItem', () => {
 
             expect(link.prop('to')).toBe('/');
             expect(link.prop('onClick')).toBe(onClick);
-        });
-    });
-
-    describe('role: resources', () => {
-        it('should not render MenuItem to resources', () => {
-            const wrapper = shallow(
-                <MenuItem
-                    {...defaultProps}
-                    config={{
-                        role: 'resources',
-                        label: { fr: 'resources fr', en: 'resources en' },
-                        icon: 'faList',
-                    }}
-                />,
-            );
-
-            const link = wrapper.find(NavLink);
-
-            expect(link).toHaveLength(0);
-            expect(console.error).toHaveBeenCalled();
         });
     });
 

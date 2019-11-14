@@ -31,8 +31,24 @@ describe('list format view <ListView />', () => {
 
     beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
 
+    it('should render nothing if the list of value is not an array', () => {
+        const wrongValues = [undefined, null, '', 'covfefe', 0, 42, {}];
+
+        wrongValues.forEach(value => {
+            const component = shallow(
+                <ListView {...defaultProps} resource={{ name: value }} />,
+            );
+            const listComponent = component.find(UL);
+            expect(listComponent.length).toBe(0);
+        });
+    });
+
     it('should render list of value', () => {
         const component = shallow(<ListView {...defaultProps} />);
+
+        const listComponent = component.find(UL);
+        expect(listComponent.length).toBe(1);
+
         const subFormat = component.find('Translated(CheckedComponent)');
         expect(subFormat.length).toBe(3);
         subFormat.forEach((t, index) => {

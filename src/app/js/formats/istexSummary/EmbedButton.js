@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import IconButton from 'material-ui/IconButton';
 import CodeIcon from 'material-ui/svg-icons/action/code';
@@ -39,7 +39,7 @@ class EmbedButton extends Component {
         const host = getCleanHost();
 
         return (
-            <Fragment>
+            <>
                 <p>{polyglot.t('embed_step_head')}</p>
                 <pre>
                     {`<script src="${host}/embeddedIstexSummary.js" defer></script>`}
@@ -48,7 +48,7 @@ class EmbedButton extends Component {
                 <pre>
                     {`<div class="embedded-istex-summary" data-api="${host}" data-uri="${uri}" data-field-name="${fieldName}"></div>`}
                 </pre>
-            </Fragment>
+            </>
         );
     };
 

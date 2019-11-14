@@ -16,7 +16,7 @@ import {
 import Toolbar from '../Toolbar';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
 import Format from '../Format';
-import AppliedFacetList from '../dataset/AppliedFacetList';
+import AppliedFacetList from '../dataset/AppliedDatasetFacetList';
 import EditButton from '../../fields/editFieldValue/EditButton';
 import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
@@ -24,7 +24,6 @@ import CompositeProperty from '../Property/CompositeProperty';
 import { grey500 } from 'material-ui/styles/colors';
 import Stats from '../Stats';
 import getTitle from '../../lib/getTitle';
-import ExportShareButton from '../ExportShareButton';
 import { preLoadPublication } from '../../fields';
 import { preLoadDatasetPage as preLoadDatasetPageAction } from '../dataset';
 
@@ -85,7 +84,6 @@ class GraphPage extends Component {
                     <Toolbar name={name} />
                 </div>
                 <div style={styles.centerColumn}>
-                    <ExportShareButton style={{ float: 'right' }} />
                     <Stats />
                     <AppliedFacetList style={styles.section} />
                     {graphField && (

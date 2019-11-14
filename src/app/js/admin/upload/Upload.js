@@ -9,7 +9,7 @@ import { lightBlue500 } from 'material-ui/styles/colors';
 
 import Alert from '../../lib/components/Alert';
 import { uploadFile } from './';
-import { fromUpload } from '../selectors';
+import { fromUpload, fromLoaders } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import UploadButton from './UploadButton';
 
@@ -46,6 +46,7 @@ export const UploadComponent = ({
     onFileLoad,
     error,
     p: polyglot,
+    loaders,
     ...props
 }) => (
     <div className={classnames('upload', props.className)} style={styles.div}>
@@ -67,7 +68,8 @@ export const UploadComponent = ({
                 label={polyglot.t('first-upload')}
             />
             <p>
-                {polyglot.t('supported_format_list')} {LOADERS.join(', ')}
+                {polyglot.t('supported_format_list')}{' '}
+                {loaders.map(loader => loader.name).join(', ')}
             </p>
         </div>
     </div>
@@ -86,6 +88,7 @@ UploadComponent.defaultProps = {
 
 const mapsStateToProps = state => ({
     ...fromUpload.getUpload(state),
+    loaders: fromLoaders.getLoaders(state),
 });
 
 const mapDispatchToProps = {
@@ -93,6 +96,9 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(mapsStateToProps, mapDispatchToProps),
-    translate,
+    connect(
+        mapsStateToProps,
+        mapDispatchToProps
+    ),
+    translate
 )(UploadComponent);

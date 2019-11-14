@@ -5,7 +5,7 @@
         "username": "user",
         "password": "secret"
     },
-    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v2/",
+    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v2.1/",
     "routinesCache": true,
     "routines": [
         "all-documents",
@@ -117,15 +117,6 @@
                 "icon": "faChartArea",
                 "position": "advanced",
                 "role": "graphs"
-            },
-            {
-                "label": {
-                    "en": "Export",
-                    "fr": "Exporter"
-                },
-                "icon": "faShareAlt",
-                "position": "advanced",
-                "role": "share_export"
             },
             {
                 "label": {
