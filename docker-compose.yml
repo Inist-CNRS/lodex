@@ -1,8 +1,7 @@
 version: '2'
 services:
     api:
-        build:
-            context: .
+        image: node:10
         volumes:
             - .:/app
         working_dir: /app
@@ -22,8 +21,7 @@ services:
         command: npm run development:api
 
     dev-server: ## Enable hot-reload in development
-        build:
-            context: .
+        image: node:10
         volumes:
             - .:/app
         working_dir: /app
