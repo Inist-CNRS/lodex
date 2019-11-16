@@ -20,8 +20,7 @@ services:
             - ./cypress/mocks/external:/app/external
 
     istex-api:
-        build:
-            context: .
+        image: node:10
         volumes:
             - .:/app
         working_dir: /app
