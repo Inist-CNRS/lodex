@@ -10,11 +10,10 @@ COPY --from=build /app /app
 COPY ./src /app/src
 COPY ./config /app/config
 COPY ./config.json ./babel.config.js jest.config.js jsconfig.json typings.json /app/
-
+RUN mkdir /app/upload
 WORKDIR /app
 
-ARG node_env="production"
-ENV NODE_ENV=$node_env
+ENV NODE_ENV="production"
 
 RUN cp ./config/production-dist.js ./config/production.js
 

@@ -1,0 +1,39 @@
+version: '2'
+services:
+    node:
+        image: node:10
+        volumes:
+            - .:/app
+        working_dir: /app
+        user: '${UID}:${GID}'
+        environment:
+            DEBUG: ${DEBUG}
+            NODE_ENV: ${NODE_ENV}
+            http_proxy: ${http_proxy}
+            https_proxy: ${https_proxy}
+            no_proxy: 'localhost,127.0.0.1,'
+            EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
+            CI: ${CI}
+        links:
+            - mongo
+        ports:
+            - 3000:3000
+        command: npm run development:api
+
+    dev-server: ## Enable hot-reload in development
+        image: node:10
+        volumes:
+            - .:/app
+        working_dir: /app
+        user: '${UID}:${GID}'
+        environment:
+            NODE_ENV: development
+        ports:
+            - 8080:8080
+        command: npm run dev:server
+
+    mongo:
+        image: mongo:3.4.1
+        command: '--smallfiles'
+        ports:
+            - 27017:27017

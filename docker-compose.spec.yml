@@ -3,6 +3,7 @@ services:
     api:
         build:
             context: .
+            dockerfile: Dockerfile.spec
             args:
                 node_env: e2e
         environment:

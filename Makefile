@@ -35,51 +35,55 @@ endif
 install-npm-dependencies:
 	echo "Installing Node dependencies"
 ifeq "$(CI)" "true"
-	docker-compose run --no-deps --rm api npm ci
+	docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm ci
 else
-	docker-compose run --no-deps --rm api npm install
+	docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm install
 endif
 
-install: copy-conf install-npm-dependencies ## Install npm dependencies for the api, admin, and frontend apps
+install: copy-conf install-npm-dependencies ## Install npm dependencies for the node, admin, and frontend apps
+
+## Production =================================================================
+run: ## Run the project in production mode
+	docker-compose up --force-recreate
+start: run ## Start the project (alias of make run)
 
 ## Development =================================================================
 
 run-dev: ## Run the project in dev mode
-	docker-compose up --force-recreate
+	docker-compose -f docker-compose.dev.yml up --force-recreate
 
-start: run-dev ## Start the project (alias of make run-dev)
 
 build-app:
-	docker-compose run --no-deps --rm api npm run build
+	docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run build
 
 build: ## Build the docker image localy
 	docker build -t inistcnrs/lodex --build-arg http_proxy --build-arg https_proxy .
 
 analyze-code: ## Generate statistics about the bundle. Usage: make analyze-code.
-	docker-compose run --no-deps --rm api npm run analyze
+	docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run analyze
 
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
-	docker-compose run --no-deps --rm api npm $(COMMAND_ARGS)
+	docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm $(COMMAND_ARGS)
 
 ## Tests =======================================================================
 
 test-api-e2e: ## Run the API E2E tests
 	NODE_ENV=test \
 	EZMASTER_PUBLIC_URL="http://localhost:3010" \
-	docker-compose run --rm -p "3010:3010" api \
+	docker-compose -f docker-compose.dev.yml run --rm -p "3010:3010" node \
 		npm run test:api:e2e
 
 test-api-e2e-watch: ## Run the API E2E tests in watch mode
 	NODE_ENV=test \
 	EZMASTER_PUBLIC_URL="http://localhost:3010" \
-	docker-compose run --rm -p "3010:3010" api \
+	docker-compose -f docker-compose.dev.yml run --rm -p "3010:3010" node \
 		npm run test:api:e2e:watch
 
 test-unit: ## Run the unit tests
-	NODE_ENV=test docker-compose run --no-deps --rm api npm run test:unit
+	NODE_ENV=test docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run test:unit
 
 test-unit-watch: ## Run the unit tests
-	NODE_ENV=test docker-compose run --no-deps --rm api npm run test:unit:watch
+	NODE_ENV=test docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run test:unit:watch
 
 test-e2e-start-dockers:
 ifeq "$(CI)" "true"
