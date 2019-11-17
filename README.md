@@ -14,10 +14,9 @@ You need to set the EZMASTER_PUBLIC_URL environment variable based on your machi
 
 ### with docker
 
-_prerequisites_ : docker
+_prerequisites_ : docker-compose
 
 ```bash
-make install
 make start
 ```
 
@@ -51,6 +50,18 @@ To see what Lodex can do, check out
 - Contribute (for developer) : <https://github.com/Inist-CNRS/lodex/wiki>
 - Contact email: contact@listes.lodex.fr
 - Mailing list about LODEX usage: users@listes.lodex.fr (subscribe on [listes.lodex.fr](https://listes.lodex.fr/sympa/info/users))
+
+## Development
+
+_prerequisites_ : docker, docker-compose
+
+To enable hot-reload server for frontend, and nodemon for backend :
+
+```bash
+make install
+make run-dev
+```
+
 
 ## Testing
 
