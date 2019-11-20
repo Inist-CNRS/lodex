@@ -15,15 +15,15 @@ import { getCleanHost } from '../../../common/uris';
 
 ezs.use(Statements);
 ezs.use(Booster);
+const scripts = new Script('routines');
 
-export const runRoutine = async (ctx, routineCalled, field1, field2) => {
-    const routine = new Script('routines');
-    const currentRoutine = await routine.get(routineCalled);
-    if (!currentRoutine) {
-        ctx.throw(404, `Unknown routine '${routineCalled}'`);
+const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
+    const currentScript = await scripts.get(scriptNameCalled);
+    if (!currentScript) {
+        ctx.throw(404, `Unknown script '${scriptNameCalled}'.ini`);
     }
 
-    const [, metaData, , script] = currentRoutine;
+    const [, metaData, , script] = currentScript;
     if (metaData.fileName) {
         ctx.set(
             'Content-disposition',
@@ -73,14 +73,14 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
         filter,
         field,
         fields,
-        // Default parameters for ALL routines
+        // Default parameters for ALL scripts
         maxSize,
         maxValue,
         minValue,
         orderBy,
         uri,
         host,
-        // to externalize routine
+        // to allow script to connect to MongoDB
         connectionStringURI,
     };
 
@@ -91,21 +91,37 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     };
     const input = new PassThrough({ objectMode: true });
     const commands = ezs.parseString(script, environment);
-    const statement = localConfig.routinesCache ? 'booster' : 'delegate';
+    const statement = scripts.useCache() ? 'booster' : 'delegate';
     const errorHandle = err => {
         ctx.status = 503;
         ctx.body.destroy();
         input.destroy();
         global.console.error('Error with ', ctx.path, ' and', ctx.query, err);
     };
+    const emptyHandle = () => {
+        if (ctx.headerSent === false) {
+            ctx.body.write('{"total":0}');
+            global.console.error(
+                'Empty response with ',
+                ctx.path,
+                ' and',
+                ctx.query,
+            );
+        }
+    };
     ctx.body = input
         .pipe(ezs(statement, { commands, key: ctx.url }, environment))
         .pipe(ezs.catch(e => e))
+        .on('finish', emptyHandle)
         .on('error', errorHandle)
         .pipe(ezs.toBuffer());
     input.write(context);
     input.end();
 };
+
+export async function getScripts(ctx) {
+    ctx.body = await scripts.list();
+}
 
 const app = new Koa();
 app.use(
@@ -114,8 +130,9 @@ app.use(
         maxAge: config.cache.maxAge,
     }),
 );
-app.use(route.get('/:routineCalled', runRoutine));
-app.use(route.get('/:routineCalled/:field1/', runRoutine));
-app.use(route.get('/:routineCalled/:field1/:field2/', runRoutine));
+app.use(route.get('/', getScripts));
+app.use(route.get('/:scriptNameCalled', middlewareScript));
+app.use(route.get('/:scriptNameCalled/:field1/', middlewareScript));
+app.use(route.get('/:scriptNameCalled/:field1/:field2/', middlewareScript));
 
 export default app;
