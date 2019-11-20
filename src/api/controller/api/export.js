@@ -3,6 +3,7 @@ import route from 'koa-route';
 import ezs from '@ezs/core';
 import Booster from '@ezs/booster';
 import Lodex from '@ezs/lodex';
+import Analytics from '@ezs/analytics';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
@@ -17,6 +18,7 @@ import { getCleanHost } from '../../../common/uris';
 ezs.use(Statements);
 ezs.use(Booster);
 ezs.use(Lodex);
+ezs.use(Analytics);
 const scripts = new Script('exporters');
 
 const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
@@ -35,6 +37,12 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
     ctx.type = metaData.mimeType;
     ctx.status = 200;
 
+    // Legacy
+    const orderByLegacy = [
+        ctx.query.sortBy || '_id',
+        String(ctx.query.sortDir || 'asc').toLowerCase(),
+    ].join('/');
+
     const {
         uri,
         maxSize,
@@ -42,7 +50,7 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
         maxValue,
         minValue,
         match,
-        orderBy = '_id/asc',
+        orderBy = orderByLegacy,
         invertedFacets = [],
         $query,
         ...facets
@@ -104,7 +112,6 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
     const emptyHandle = () => {
         if (ctx.headerSent === false) {
             ctx.status = 204;
-            ctx.body.write('No Content');
             global.console.error(
                 'Empty response with ',
                 ctx.path,
@@ -115,6 +122,7 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
     };
     ctx.body = input
         .pipe(ezs('LodexRunQuery', {}, environment))
+        .pipe(ezs('greater', { path: 'total', 'than': 1 }))
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions'))
         .pipe(ezs(statement, { commands, key: ctx.url }, environment))
