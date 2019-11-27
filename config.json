@@ -115,7 +115,7 @@
                     "fr": "Graphiques"
                 },
                 "icon": "faChartArea",
-                "position": "advanced",
+                "position": "left",
                 "role": "graphs"
             },
             {
