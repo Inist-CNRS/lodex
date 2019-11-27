@@ -1,36 +1,20 @@
-version: '2'
+version: '3'
+
 services:
-    api:
-        image: node:10
-        volumes:
-            - .:/app
-        working_dir: /app
+    lodex:
+        build:
+            context: .
         user: '${UID}:${GID}'
         environment:
-            DEBUG: ${DEBUG}
-            NODE_ENV: ${NODE_ENV}
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
+            EZMASTER_MONGODB_HOST_PORT: 'mongo:27017'
+            EZMASTER_TECHNICAL_NAME: 'lodex'
             no_proxy: 'localhost,127.0.0.1,'
-            EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
-            CI: ${CI}
         links:
             - mongo
         ports:
             - 3000:3000
-        command: npm run development:api
-
-    dev-server: ## Enable hot-reload in development
-        image: node:10
-        volumes:
-            - .:/app
-        working_dir: /app
-        user: '${UID}:${GID}'
-        environment:
-            NODE_ENV: development
-        ports:
-            - 8080:8080
-        command: npm run dev:server
 
     mongo:
         image: mongo:3.4.1

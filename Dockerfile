@@ -1,19 +1,21 @@
-FROM node:10
+FROM node:10-alpine AS build
+RUN apk add --no-cache make gcc g++ python
+RUN mkdir /app
+COPY package.json /app
+WORKDIR /app
+RUN npm install --production && npm cache clean --force
 
+FROM node:10-alpine AS release
+COPY --from=build /app /app
+COPY ./src /app/src
+COPY ./config /app/config
+COPY ./config.json ./babel.config.js jest.config.js jsconfig.json typings.json /app/
+RUN mkdir /app/upload
 WORKDIR /app
 
-# Copy the local code source
-COPY . /app
+ENV NODE_ENV="production"
 
-# Install the node modules only
-RUN rm -rf ./node_modules && \
-    npm install --production && \
-    npm cache clean --force
-
-ARG node_env="production"
-ENV NODE_ENV=$node_env
-
-RUN cp -n ./config/production-dist.js ./config/production.js
+RUN cp ./config/production-dist.js ./config/production.js
 
 # ezmasterizing of lodex
 # See https://github.com/Inist-CNRS/ezmaster#ezmasterizing-an-application
