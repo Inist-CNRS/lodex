@@ -31,6 +31,7 @@ describe('Chart Menu', () => {
 
         menu.goToChart('Pie Chart');
 
+        menu.openChartDrawer();
         cy.get(`.graph-link.active`)
             .contains('Pie Chart')
             .should('be.visible');
