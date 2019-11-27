@@ -17,7 +17,7 @@ export const goToAdminDashboard = () => {
 };
 
 export const openChartDrawer = () => {
-    cy.get('.nav div')
+    cy.get('nav div')
         .contains('Graphs')
         .click();
     cy.get('.graph-summary').should('be.visible');

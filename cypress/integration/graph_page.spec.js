@@ -18,8 +18,8 @@ describe('Graph Page', () => {
 
     it('should not reset filters & search query when switching to another graph', () => {
         menu.openChartDrawer();
-
         menu.goToChart('Bar Chart');
+
         graphPage.getStats().should('have.text', 'Found 50 on 50');
 
         graphPage.searchFor('Biodiversity');
@@ -28,7 +28,7 @@ describe('Graph Page', () => {
         graphPage.setFacet('Publication Year', '2011');
         graphPage.getStats().should('have.text', 'Found 4 on 50');
 
-        menu.openAdvancedDrawer();
+        menu.openChartDrawer();
         menu.goToChart('Bubble Chart');
 
         graphPage.getSearchInput().should('have.value', 'Biodiversity');
@@ -43,7 +43,6 @@ describe('Graph Page', () => {
 
     it('should copy filters to search drawer', () => {
         menu.openChartDrawer();
-
         menu.goToChart('Bar Chart');
 
         graphPage.searchFor('Biodiversity');
