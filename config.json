@@ -102,21 +102,21 @@
             },
             {
                 "label": {
-                    "en": "Search",
-                    "fr": "recherche"
-                },
-                "icon": "faSearch",
-                "position": "left",
-                "role": "search"
-            },
-            {
-                "label": {
                     "en": "Graphs",
                     "fr": "Graphiques"
                 },
                 "icon": "faChartArea",
                 "position": "left",
                 "role": "graphs"
+            },
+            {
+                "label": {
+                    "en": "Search",
+                    "fr": "recherche"
+                },
+                "icon": "faSearch",
+                "position": "left",
+                "role": "search"
             },
             {
                 "label": {
@@ -151,7 +151,7 @@
                 "en": "Advanced",
                 "fr": "Avancé"
             },
-            "icon": "faEllipsisH"
+            "icon": "faBars"
         }
     }
 }
