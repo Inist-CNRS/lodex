@@ -83,6 +83,7 @@ export const FacetValueList = ({
             label={polyglot.t('exclude')}
             checked={inverted}
             onCheck={onInvertChange(invertFacet, name)}
+            className="exclude-facet"
         />
         <TextField
             hintText={polyglot.t('filter_value', { field: label })}

@@ -35,7 +35,7 @@ export const isFacetValuesInverted = ({ invertedFacets }, name) =>
 export const isFacetValuesChecked = (state, { name, value }) =>
     get(state, ['appliedFacets', name], []).indexOf(value) !== -1;
 
-export const getInvertedFacets = ({ invertedFacets }) =>
+export const getInvertedFacetKeys = ({ invertedFacets }) =>
     Object.keys(invertedFacets);
 
 export const getFacetValueRequestData = (state, name) =>
@@ -50,6 +50,8 @@ export const getFacetsValues = ({ facetsValues }) => facetsValues;
 
 export const getOpenedFacets = ({ openedFacets }) => openedFacets;
 
+export const getInvertedFacets = ({ invertedFacets }) => invertedFacets;
+
 export default {
     getAppliedFacets,
     getAppliedFacetList,
@@ -62,8 +64,9 @@ export default {
     getFacetValuesFilter,
     getFacetValuesSort,
     isFacetValuesInverted,
-    getInvertedFacets,
+    getInvertedFacetKeys,
     getFacetValueRequestData,
     getOpenedFacets,
     getFacetsValues,
+    getInvertedFacets,
 };
