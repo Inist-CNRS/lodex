@@ -43,6 +43,7 @@ endif
 install: copy-conf install-npm-dependencies ## Install npm dependencies for the node, admin, and frontend apps
 
 ## Production =================================================================
+
 run: ## Run the project in production mode
 	docker-compose up --force-recreate
 start: run ## Start the project (alias of make run)
@@ -51,7 +52,7 @@ start: run ## Start the project (alias of make run)
 
 run-dev: ## Run the project in dev mode
 	docker-compose -f docker-compose.dev.yml up --force-recreate
-
+start-dev: run-dev ## Start the project (alias of make run-dev)
 
 build-app:
 	docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run build
