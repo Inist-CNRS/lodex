@@ -17,7 +17,6 @@ describe('Graph Page', () => {
     });
 
     it('should not reset filters & search query when switching to another graph', () => {
-        homePage.openAdvancedDrawer();
         homePage.openChartDrawer();
 
         homePage.goToChart('Bar Chart');
@@ -30,7 +29,6 @@ describe('Graph Page', () => {
         graphPage.getStats().should('have.text', 'Found 4 on 50');
 
         homePage.openAdvancedDrawer();
-        homePage.openChartDrawer();
         homePage.goToChart('Bubble Chart');
 
         graphPage.getSearchInput().should('have.value', 'Biodiversity');
@@ -44,7 +42,6 @@ describe('Graph Page', () => {
     });
 
     it('should copy filters to search drawer', () => {
-        homePage.openAdvancedDrawer();
         homePage.openChartDrawer();
 
         homePage.goToChart('Bar Chart');

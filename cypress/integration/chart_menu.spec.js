@@ -14,7 +14,6 @@ describe('Chart Menu', () => {
     });
 
     it('should display chart menu with list of all chart', () => {
-        homePage.openAdvancedDrawer();
         homePage.openChartDrawer();
         const charts = [
             'Bar Chart',
@@ -31,7 +30,6 @@ describe('Chart Menu', () => {
         });
 
         homePage.goToChart('Pie Chart');
-        homePage.openAdvancedDrawer();
         homePage.openChartDrawer();
 
         cy.get(`.graph-link.active`)
