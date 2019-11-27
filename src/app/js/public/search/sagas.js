@@ -25,7 +25,7 @@ const doSearchRequest = function*(page = 0) {
     const query = yield select(fromSearch.getQuery);
     const sort = yield select(fromSearch.getSort);
     const facets = yield select(fromSearch.getAppliedFacets);
-    const invertedFacets = yield select(fromSearch.getInvertedFacets);
+    const invertedFacets = yield select(fromSearch.getInvertedFacetKeys);
 
     const request = yield select(fromUser.getLoadDatasetPageRequest, {
         match: query || '',

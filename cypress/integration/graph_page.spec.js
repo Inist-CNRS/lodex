@@ -71,5 +71,15 @@ describe('Graph Page', () => {
             .getFacetItem('Publication Year', '2011')
             .find('input[type=checkbox]')
             .should('checked');
+
+        searchDrawer.closeSearchDrawer();
+        graphPage.setFacetExclude('Publication Year');
+        graphPage.browseResults();
+        searchDrawer.getFacet('Publication Year').click();
+        searchDrawer.searchInput().should('have.value', 'Biodiversity');
+        searchDrawer
+            .getFacetExcludeItem('Publication Year')
+            .find('input[type=checkbox]')
+            .should('checked');
     });
 });

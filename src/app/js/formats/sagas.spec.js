@@ -72,7 +72,7 @@ describe('format sagas', () => {
                 done: false,
             });
             expect(it.next('facets')).toEqual({
-                value: select(fromDataset.getInvertedFacets),
+                value: select(fromDataset.getInvertedFacetKeys),
                 done: false,
             });
             expect(it.next('invertedFacets')).toEqual({

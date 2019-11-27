@@ -41,9 +41,23 @@ export const getFacetItem = (name, value) =>
         .parentsUntil('.facet-value-item')
         .last();
 
+export const getFacetExcludeItem = name =>
+    getFacet(name)
+        .parentsUntil('.facet-list > div')
+        .last()
+        .next() // .facet-value-list next to the .facet-item
+        .find('.exclude-facet');
+
 export const setFacet = (name, value) => {
     getFacet(name).click();
     getFacetItem(name, value).click();
+    waitForLoading();
+    getFacet(name).click();
+};
+
+export const setFacetExclude = name => {
+    getFacet(name).click();
+    getFacetExcludeItem(name).click();
     waitForLoading();
     getFacet(name).click();
 };

@@ -24,11 +24,11 @@ describe('dataset saga', () => {
             );
         });
 
-        it('should select fromDataset.getInvertedFacets', () => {
+        it('should select fromDataset.getInvertedFacetKeys', () => {
             expect(
                 saga.next([{ field: { name: 'aFacet' }, value: 'aFacetValue' }])
                     .value,
-            ).toEqual(select(fromDataset.getInvertedFacets));
+            ).toEqual(select(fromDataset.getInvertedFacetKeys));
         });
 
         it('should select fromDataset.getFilter', () => {
