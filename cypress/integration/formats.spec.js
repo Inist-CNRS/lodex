@@ -2,7 +2,6 @@ import { teardown, logoutAndLoginAs } from '../support/authentication';
 import * as menu from '../support/menu';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as configureField from '../support/configureField';
-import * as searchDrawer from '../support/searchDrawer';
 
 describe('Transformers & Formats', () => {
     beforeEach(teardown);

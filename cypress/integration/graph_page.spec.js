@@ -69,7 +69,7 @@ describe('Graph Page', () => {
             .find('input[type=checkbox]')
             .should('checked');
 
-        searchDrawer.closeSearchDrawer();
+        menu.closeSearchDrawer();
         graphPage.setFacetExclude('Publication Year');
         graphPage.browseResults();
         searchDrawer.getFacet('Publication Year').click();
