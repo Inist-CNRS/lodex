@@ -1,5 +1,6 @@
 import { teardown } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
+import * as menu from '../support/menu';
 import * as homePage from '../support/homePage';
 import * as modelPage from '../support/modelPage';
 import * as searchDrawer from '../support/searchDrawer';
@@ -7,8 +8,8 @@ import * as searchDrawer from '../support/searchDrawer';
 describe('Model Page', () => {
     beforeEach(() => {
         teardown();
-        homePage.openAdvancedDrawer();
-        homePage.goToAdminDashboard();
+        menu.openAdvancedDrawer();
+        menu.goToAdminDashboard();
         datasetImportPage.importDataset('dataset/simple.csv');
         datasetImportPage.importModel('model/concat.json');
         datasetImportPage.publish();
@@ -17,8 +18,8 @@ describe('Model Page', () => {
 
     it('should display list of characteristics and allow to reorder them', () => {
         homePage.checkCharacteristicsOrder(['Title', 'Description']);
-        homePage.openAdvancedDrawer();
-        homePage.goToAdminDashboard();
+        menu.openAdvancedDrawer();
+        menu.goToAdminDashboard();
         datasetImportPage.goToModel();
         cy.get('.ontology-table-dataset h4')
             .contains('Dataset')
@@ -35,11 +36,11 @@ describe('Model Page', () => {
     });
 
     it('should display list of resource field and allow to reorder them', () => {
-        searchDrawer.openSearchDrawer();
+        menu.openSearchDrawer();
         searchDrawer.getFacetsOrder(['Column 1', 'Column 2']);
 
-        homePage.openAdvancedDrawer();
-        homePage.goToAdminDashboard();
+        menu.openAdvancedDrawer();
+        menu.goToAdminDashboard();
         datasetImportPage.goToModel();
 
         cy.get('.ontology-table-dataset h4')
@@ -60,7 +61,7 @@ describe('Model Page', () => {
         modelPage.goToDatasetImportPage();
         datasetImportPage.goToPublishedResources();
 
-        searchDrawer.openSearchDrawer();
+        menu.openSearchDrawer();
         searchDrawer.getFacetsOrder(['Column 2', 'Column 1']);
     });
 });

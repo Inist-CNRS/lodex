@@ -1,5 +1,5 @@
 import { teardown } from '../support/authentication';
-import * as homePage from '../support/homePage';
+import * as menu from '../support/menu';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as searchDrawer from '../support/searchDrawer';
 
@@ -8,8 +8,8 @@ const initSearchDataset = (
     model = 'model/book_summary.json',
 ) => () => {
     teardown();
-    homePage.openAdvancedDrawer();
-    homePage.goToAdminDashboard();
+    menu.openAdvancedDrawer();
+    menu.goToAdminDashboard();
 
     datasetImportPage.importDataset(dataset);
     datasetImportPage.importModel(model);
@@ -22,13 +22,13 @@ describe('Search', () => {
         beforeEach(initSearchDataset());
 
         it('should have the right informations in the search results', () => {
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
             searchDrawer.checkResultsCount(10);
             searchDrawer.checkMoreResultsCount(10, 12);
         });
 
         it('should export the dataset', () => {
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
             searchDrawer.checkResultsCount(10);
             cy.get('.export').click();
             cy.wait(300);
@@ -39,7 +39,7 @@ describe('Search', () => {
         });
 
         it('should do a search, and its result redirect to a resource', () => {
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
             searchDrawer.search('Annals of the rheumatic');
 
             searchDrawer
@@ -54,7 +54,7 @@ describe('Search', () => {
         });
 
         it('should be able to load more search results several times', () => {
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
 
             searchDrawer.checkResultsCount(10);
             searchDrawer.checkMoreResultsCount(10, 12);
@@ -77,7 +77,7 @@ describe('Search', () => {
         });
 
         it('should mark active resource on the result list', () => {
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
             searchDrawer.search('Annals of the rheumatic');
 
             searchDrawer
@@ -86,14 +86,14 @@ describe('Search', () => {
 
             cy.url().should('contain', '/uid');
             cy.get('.loading').should('not.be.visible');
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
 
             cy.get('.search-result-link[class*=activeLink_]').should('exist');
         });
 
         it('should keep track of the current search after changing page', () => {
             const query = 'Annals of the rheumatic';
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
             searchDrawer.search(query);
             searchDrawer.checkResultsCount(1);
 
@@ -103,14 +103,14 @@ describe('Search', () => {
 
             cy.url().should('contain', '/uid');
             cy.get('.loading').should('not.be.visible');
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
 
             searchDrawer.checkResultsCount(1);
             searchDrawer.searchInput().should('have.value', query);
         });
 
         it('should sort result by pertinence', () => {
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
             searchDrawer.search('medicine');
             searchDrawer.checkResultsCount(2);
 
@@ -135,7 +135,7 @@ describe('Search', () => {
         beforeEach(initSearchDataset());
 
         it('should filter search results by facets', () => {
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
             searchDrawer.checkResultsCount(10);
 
             searchDrawer.setFacet('Dernière mise en ligne en', '2014');
@@ -143,7 +143,7 @@ describe('Search', () => {
         });
 
         it('should allow to clear facets from the search results', () => {
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
             searchDrawer.setFacet('Dernière mise en ligne en', '2014');
             searchDrawer.checkResultsCount(1);
 
@@ -152,7 +152,7 @@ describe('Search', () => {
         });
 
         it('should allow to sort facet', () => {
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
             searchDrawer.getFacet('Première mise en ligne en').click();
             searchDrawer.checkFacetsItem('Première mise en ligne en', [
                 '2011',
@@ -230,13 +230,13 @@ describe('Search', () => {
         );
 
         it('should have a diacritic insensible text-based search', () => {
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
             searchDrawer.search('sirene');
             searchDrawer.checkResultsCount(1);
         });
 
         it('should allow to search for long sentences or descriptions', () => {
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
             searchDrawer.search('Lorem ipsum');
             searchDrawer.checkResultsCount(1);
         });

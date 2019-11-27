@@ -102,21 +102,21 @@
             },
             {
                 "label": {
-                    "en": "Search",
-                    "fr": "recherche"
-                },
-                "icon": "faSearch",
-                "position": "left",
-                "role": "search"
-            },
-            {
-                "label": {
                     "en": "Graphs",
                     "fr": "Graphiques"
                 },
                 "icon": "faChartArea",
-                "position": "advanced",
+                "position": "left",
                 "role": "graphs"
+            },
+            {
+                "label": {
+                    "en": "Search",
+                    "fr": "Recherche"
+                },
+                "icon": "faSearch",
+                "position": "left",
+                "role": "search"
             },
             {
                 "label": {
@@ -148,10 +148,10 @@
         ],
         "advancedMenuButton": {
             "label": {
-                "en": "Advanced",
-                "fr": "Avancé"
+                "en": "More",
+                "fr": "Voir Plus"
             },
-            "icon": "faCog"
+            "icon": "faBars"
         }
     }
 }

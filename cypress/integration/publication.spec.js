@@ -1,5 +1,5 @@
 import { teardown } from '../support/authentication';
-import * as homePage from '../support/homePage';
+import * as menu from '../support/menu';
 import * as adminPage from '../support/adminPage';
 import * as datasetImportPage from '../support/datasetImportPage';
 import { fillInputWithFixture } from '../support/forms';
@@ -10,8 +10,8 @@ describe('Dataset Publication', () => {
 
     describe('Dataset Import', () => {
         it('should get the list of possible loaders', () => {
-            homePage.openAdvancedDrawer();
-            homePage.goToAdminDashboard();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
             adminPage.checkListOfSupportedFileFormats();
 
             datasetImportPage.openImportDialog();
@@ -21,8 +21,8 @@ describe('Dataset Publication', () => {
         });
 
         it('should receive a csv file and preview its data in a table', () => {
-            homePage.openAdvancedDrawer();
-            homePage.goToAdminDashboard();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
             datasetImportPage.openImportDialog();
 
             fillInputWithFixture(
@@ -40,8 +40,8 @@ describe('Dataset Publication', () => {
 
     describe('Publication', () => {
         it('should publish dataset by manually adding columns', () => {
-            homePage.openAdvancedDrawer();
-            homePage.goToAdminDashboard();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.addColumn('Column 1');
 
@@ -55,15 +55,15 @@ describe('Dataset Publication', () => {
             datasetImportPage.setUriColumnValue();
             datasetImportPage.publish();
             datasetImportPage.goToPublishedResources();
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
 
             cy.contains('Row 1').should('be.visible');
             cy.contains('Row 2').should('be.visible');
         });
 
         it('should publish dataset by importing an existing model', () => {
-            homePage.openAdvancedDrawer();
-            homePage.goToAdminDashboard();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.importModel('model/concat.json');
 
@@ -72,7 +72,7 @@ describe('Dataset Publication', () => {
 
             datasetImportPage.publish();
             datasetImportPage.goToPublishedResources();
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
 
             cy.get('.search-result-title')
                 .contains('Row 1')
@@ -83,8 +83,8 @@ describe('Dataset Publication', () => {
         });
 
         it('should allow to load a file multiple times', () => {
-            homePage.openAdvancedDrawer();
-            homePage.goToAdminDashboard();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.importModel('model/concat.json');
             datasetImportPage.publish();
@@ -98,21 +98,21 @@ describe('Dataset Publication', () => {
 
             datasetImportPage.goToPublishedResources();
 
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
             searchDrawer.checkMoreResultsCount(10, 14);
         });
     });
 
     describe('Facets', () => {
         it('should allow to have a facet with a single value', () => {
-            homePage.openAdvancedDrawer();
-            homePage.goToAdminDashboard();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/single-facet.csv');
             datasetImportPage.importModel('model/facet.json');
             datasetImportPage.publish();
 
             datasetImportPage.goToPublishedResources();
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
 
             cy.contains('Affiliation(s)').click();
             cy.get('.facet-list')
@@ -125,14 +125,14 @@ describe('Dataset Publication', () => {
         });
 
         it('should allow to have facets with multiples values in them', () => {
-            homePage.openAdvancedDrawer();
-            homePage.goToAdminDashboard();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/multiple-facet.csv');
             datasetImportPage.importModel('model/facet.json');
             datasetImportPage.publish();
 
             datasetImportPage.goToPublishedResources();
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
 
             cy.contains('Affiliation(s)').click();
             cy.get('.facet-list')
