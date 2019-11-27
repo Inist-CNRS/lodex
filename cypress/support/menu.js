@@ -2,7 +2,7 @@ export const openAdvancedDrawer = () => {
     cy.get('.drawer').should('exist');
 
     cy.get('nav div')
-        .contains('Advanced')
+        .contains('More')
         .click();
 
     cy.wait(300);

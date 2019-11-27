@@ -148,8 +148,8 @@
         ],
         "advancedMenuButton": {
             "label": {
-                "en": "Advanced",
-                "fr": "Avancé"
+                "en": "More",
+                "fr": "Voir Plus"
             },
             "icon": "faBars"
         }
