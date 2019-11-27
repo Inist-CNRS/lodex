@@ -1,4 +1,5 @@
-version: '2'
+version: '3'
+
 services:
     node:
         image: node:10
@@ -15,6 +16,8 @@ services:
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
             CI: ${CI}
         links:
+            - mongo
+        depends_on:
             - mongo
         ports:
             - 3000:3000
@@ -35,5 +38,3 @@ services:
     mongo:
         image: mongo:3.4.1
         command: '--smallfiles'
-        ports:
-            - 27017:27017

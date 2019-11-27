@@ -1,4 +1,5 @@
 version: '3'
+
 services:
     lodex:
         build:
@@ -14,6 +15,7 @@ services:
             - mongo
         ports:
             - 3000:3000
+
     mongo:
         image: mongo:3.4.1
         command: '--smallfiles'
