@@ -1,14 +1,14 @@
 import { teardown } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
-import * as homePage from '../support/homePage';
+import * as menu from '../support/menu';
 import * as bookSummary from '../support/bookSummary';
 import * as searchDrawer from '../support/searchDrawer';
 
 describe('Book Summary Format', () => {
     beforeEach(() => {
         teardown();
-        homePage.openAdvancedDrawer();
-        homePage.goToAdminDashboard();
+        menu.openAdvancedDrawer();
+        menu.goToAdminDashboard();
 
         datasetImportPage.importDataset('dataset/book.csv');
         datasetImportPage.importModel('model/book.json');
@@ -20,7 +20,7 @@ describe('Book Summary Format', () => {
         const resourceTitle = 'MP. Molecular pathology';
 
         beforeEach(() => {
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
             searchDrawer.search(resourceTitle);
             searchDrawer.findSearchResultByTitle(resourceTitle).click();
         });

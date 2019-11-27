@@ -1,5 +1,5 @@
 import { teardown } from '../support/authentication';
-import * as homePage from '../support/homePage';
+import * as menu from '../support/menu';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as searchDrawer from '../support/searchDrawer';
 import * as resourcePage from '../support/resourcePage';
@@ -11,8 +11,8 @@ describe('Resource', () => {
     describe('Create a resource', () => {
         before(() => {
             teardown();
-            homePage.openAdvancedDrawer();
-            homePage.goToAdminDashboard();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
 
             datasetImportPage.importDataset(dataset);
             datasetImportPage.importModel(model);
@@ -30,7 +30,7 @@ describe('Resource', () => {
 
             resourcePage.saveResourceForm();
 
-            searchDrawer.openSearchDrawer();
+            menu.openSearchDrawer();
             searchDrawer.search('Salut');
 
             searchDrawer.findSearchResultByTitle('Salut').click();

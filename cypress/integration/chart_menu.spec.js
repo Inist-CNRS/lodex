@@ -1,12 +1,12 @@
 import { teardown } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
-import * as homePage from '../support/homePage';
+import * as menu from '../support/menu';
 
 describe('Chart Menu', () => {
     beforeEach(() => {
         teardown();
-        homePage.openAdvancedDrawer();
-        homePage.goToAdminDashboard();
+        menu.openAdvancedDrawer();
+        menu.goToAdminDashboard();
         datasetImportPage.importDataset('dataset/chart.csv');
         datasetImportPage.importModel('model/chart.json');
         datasetImportPage.publish();
@@ -14,7 +14,7 @@ describe('Chart Menu', () => {
     });
 
     it('should display chart menu with list of all chart', () => {
-        homePage.openChartDrawer();
+        menu.openChartDrawer();
         const charts = [
             'Bar Chart',
             'Bubble Chart',
@@ -29,8 +29,8 @@ describe('Chart Menu', () => {
                 .should('be.visible');
         });
 
-        homePage.goToChart('Pie Chart');
-        homePage.openChartDrawer();
+        menu.goToChart('Pie Chart');
+        menu.openChartDrawer();
 
         cy.get(`.graph-link.active`)
             .contains('Pie Chart')

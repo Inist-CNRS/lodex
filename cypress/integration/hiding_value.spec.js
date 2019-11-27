@@ -1,5 +1,5 @@
 import { teardown, logoutAndLoginAs } from '../support/authentication';
-import * as homePage from '../support/homePage';
+import * as menu from '../support/menu';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as searchDrawer from '../support/searchDrawer';
 
@@ -9,8 +9,8 @@ describe('hiding null value to user', () => {
 
     before(() => {
         teardown();
-        homePage.openAdvancedDrawer();
-        homePage.goToAdminDashboard();
+        menu.openAdvancedDrawer();
+        menu.goToAdminDashboard();
 
         datasetImportPage.importDataset(dataset);
         datasetImportPage.importModel(model);
@@ -19,7 +19,7 @@ describe('hiding null value to user', () => {
     });
 
     it('admin should be able hide field to user by setting it to null', () => {
-        searchDrawer.openSearchDrawer();
+        menu.openSearchDrawer();
         searchDrawer.goToResourceNumber(1);
         cy.get('.detail')
             .find('.property')
@@ -36,7 +36,7 @@ describe('hiding null value to user', () => {
             .should('have.length', 2);
 
         logoutAndLoginAs('user');
-        searchDrawer.openSearchDrawer();
+        menu.openSearchDrawer();
         searchDrawer.goToResourceNumber(1);
         cy.get('.detail')
             .find('.property')
