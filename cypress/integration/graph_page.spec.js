@@ -25,6 +25,10 @@ describe('Graph Page', () => {
         graphPage.searchFor('Biodiversity');
         graphPage.getStats().should('have.text', 'Found 5 on 50');
 
+        graphPage.clearSearch();
+        graphPage.getStats().should('have.text', 'Found 5 on 50');
+
+        graphPage.searchFor('Biodiversity');
         graphPage.setFacet('Publication Year', '2011');
         graphPage.getStats().should('have.text', 'Found 4 on 50');
 

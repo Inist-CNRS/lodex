@@ -8,6 +8,9 @@ import TextField from 'material-ui/TextField';
 import { ToolbarGroup } from 'material-ui/Toolbar';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import CircularProgress from 'material-ui/CircularProgress';
+import IconButton from 'material-ui/IconButton';
+import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -46,6 +49,10 @@ class FilterComponent extends Component {
         this.debouncedApplyFilter(value);
     };
 
+    handleClearFilter = () => {
+        this.handleFilterChange(null, '');
+    };
+
     render() {
         const {
             filter,
@@ -80,6 +87,13 @@ class FilterComponent extends Component {
                     underlineStyle={muiStyles.searchBarUnderline}
                     underlineFocusStyle={muiStyles.searchBarUnderline}
                 />
+                <IconButton
+                    className="filter-clear"
+                    iconStyle={{ color: theme.green.primary }}
+                    onClick={this.handleClearFilter}
+                >
+                    <FontAwesomeIcon icon={faUndo} height={15} />
+                </IconButton>
             </ToolbarGroup>
         );
     }
