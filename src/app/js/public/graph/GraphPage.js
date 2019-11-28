@@ -51,7 +51,7 @@ const styles = {
         alignItems: 'center',
         color: grey500,
         fontWeight: 'bold',
-        fontSize: '2rem',
+        fontSize: '1.5rem',
     },
 };
 

@@ -98,6 +98,10 @@ const mapDispatchToProps = {
     handleClearParsing: reloadParsingResult,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    ParsingResultComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(ParsingResultComponent);

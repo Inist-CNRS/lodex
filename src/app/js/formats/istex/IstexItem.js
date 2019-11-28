@@ -11,7 +11,7 @@ const styles = stylesToClassname(
             paddingBottom: '3rem',
         },
         title: {
-            lineHeight: '2rem',
+            lineHeight: '1.5rem',
             display: 'flex',
         },
         titleIcon: {

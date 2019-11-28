@@ -29,7 +29,7 @@ const styles = {
         float: 'right',
     },
     total: {
-        fontSize: '1.2rem',
+        fontSize: '1rem',
         fontWeight: 'bold',
         color: 'rgba(0,0,0,0.54)',
     },
@@ -64,14 +64,13 @@ export const IstexView = ({
                 </Alert>
             )}
         </div>
-        {data &&
-            data.hits && (
-                <div>
-                    {data.hits.map(item => (
-                        <IstexItem key={item.id} {...item} />
-                    ))}
-                </div>
-            )}
+        {data && data.hits && (
+            <div>
+                {data.hits.map(item => (
+                    <IstexItem key={item.id} {...item} />
+                ))}
+            </div>
+        )}
     </div>
 );
 
@@ -79,7 +78,10 @@ IstexView.propTypes = {
     fieldStatus: PropTypes.string,
     resource: PropTypes.object.isRequired, // eslint-disable-line
     field: fieldPropTypes.isRequired,
-    data: PropTypes.shape({}),
+    data: PropTypes.shape({
+        hits: PropTypes.array.isRequired,
+        total: PropTypes.number.isRequired,
+    }),
     error: PropTypes.string,
     p: polyglotPropTypes.isRequired,
 };

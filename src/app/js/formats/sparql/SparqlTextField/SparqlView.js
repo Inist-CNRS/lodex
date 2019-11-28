@@ -46,7 +46,7 @@ const styles = {
         color: 'rgb(158, 158, 158)',
         flexGrow: '2',
         fontWeight: 'bold',
-        fontSize: '2rem',
+        fontSize: '1.5rem',
         textDecoration: 'none',
         cursor: 'pointer',
     },
@@ -224,7 +224,7 @@ export default compose(
                 .replace(/[\s\u200B]+/g, ' ')
                 .replace(/[?]{2}/g, value.trim()),
         );
-        builtURL = builtURL.replace(/LIMIT([%]20)+\d*/i, ''); //remove LIMIT with its var
+        builtURL = builtURL.replace(/LIMIT([%]20)+\d*/i, ''); // remove LIMIT with its var
         const request = builtURL + '%20LIMIT%20' + sparql.maxValue;
         if (isURL(request)) {
             const source = URL.parse(request);

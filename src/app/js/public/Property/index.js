@@ -47,7 +47,7 @@ const styles = {
         color: grey500,
         flexGrow: 2,
         fontWeight: 'bold',
-        fontSize: isSub === true ? 'initial' : '2rem',
+        fontSize: isSub === true ? 'initial' : '1.5rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
         fontFamily: 'Quicksand, sans-serif',
     }),

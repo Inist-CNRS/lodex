@@ -80,7 +80,7 @@ const styles = {
         color: grey500,
         flexGrow: 2,
         fontWeight: 'bold',
-        fontSize: '2rem',
+        fontSize: '1.5rem',
         textDecoration: 'none',
     },
     scheme: {

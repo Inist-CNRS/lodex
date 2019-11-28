@@ -77,8 +77,9 @@ const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>
         dispatch,
     );
 
-const PropertyLinkedFields = connect(mapStateToProps, mapDispatchToProps)(
-    PropertyLinkedFieldsComponent,
-);
+const PropertyLinkedFields = connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(PropertyLinkedFieldsComponent);
 
 export default PropertyLinkedFields;

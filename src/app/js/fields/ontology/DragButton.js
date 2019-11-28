@@ -4,18 +4,23 @@ import Reorder from 'material-ui/svg-icons/editor/format-line-spacing';
 import { SortableHandle } from 'react-sortable-hoc';
 import { grey400 } from 'material-ui/styles/colors';
 
-const styles = {
-    iconDisabled: {
-        cursor: 'default',
-        color: grey400,
+import stylesToClassname from '../../lib/stylesToClassName';
+
+const styles = stylesToClassname(
+    {
+        icon: {
+            cursor: 'pointer',
+        },
+        iconDisabled: {
+            cursor: 'default',
+            color: grey400,
+        },
     },
-    icon: {
-        cursor: 'pointer',
-    },
-};
+    'ontology-drag-button',
+);
 
 const DragIcon = ({ disabled }) => (
-    <Reorder style={disabled ? styles.iconDisabled : styles.icon} />
+    <Reorder className={disabled ? styles.iconDisabled : styles.icon} />
 );
 
 DragIcon.propTypes = {
