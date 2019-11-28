@@ -8,7 +8,7 @@ import injectData from '../../injectData';
 
 const styles = {
     container: {
-        fontSize: '1.5rem',
+        fontSize: '1rem',
     },
 };
 

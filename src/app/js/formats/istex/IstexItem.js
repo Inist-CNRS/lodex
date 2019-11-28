@@ -22,7 +22,7 @@ const styles = stylesToClassname(
             fontStyle: 'oblique',
         },
         metadata: {
-            lineHeight: '1.5rem',
+            lineHeight: '1rem',
             color: '#757575',
         },
         genre: {
