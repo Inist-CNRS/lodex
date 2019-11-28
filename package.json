@@ -167,7 +167,6 @@
         "stream-to-string": "1.1.0",
         "through": "2.3.8",
         "url-api-polyfill": "1.1.0",
-        "valid-url": "1.0.9",
         "vega-lib": "4.4.0",
         "vega-lite": "3.0.0-rc10",
         "webpack": "4.41.2",
