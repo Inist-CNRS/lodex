@@ -23,12 +23,12 @@ const sortByKey = (key = '') => (dataA, dataB) => {
     return Math.sign(a - b);
 };
 
-export function getPercentValue(data, decimals = 2) {
+export function getPercentValue(data, decimals = 0) {
     const value = get(data, 'weight', 0);
     const parsedValue = parseFloat(value);
 
     if (isNaN(parsedValue) || parsedValue < 0 || parsedValue > 1) {
-        return 0;
+        return '0';
     }
 
     const percent = parsedValue * 100;

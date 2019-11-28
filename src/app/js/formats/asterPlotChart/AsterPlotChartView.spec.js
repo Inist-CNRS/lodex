@@ -5,7 +5,7 @@ describe('AsterPlotChartView', () => {
         it('should return 0 if weight is wrong', () => {
             const test = data => {
                 const result = getPercentValue(data);
-                expect(result).toBe(0);
+                expect(result).toBe('0');
             };
 
             const wrongData = [
@@ -29,16 +29,17 @@ describe('AsterPlotChartView', () => {
             };
 
             const result = getPercentValue(data);
-            expect(result).toBe(98);
+            expect(result).toBe('98');
         });
 
         it('should return the percentage with two decimals', () => {
             const data = {
                 weight: 0.69696969,
             };
+            const nbDecimals = 2;
 
-            const result = getPercentValue(data);
-            expect(result).toBe(69.69);
+            const result = getPercentValue(data, nbDecimals);
+            expect(result).toBe('69.70');
         });
     });
 });
