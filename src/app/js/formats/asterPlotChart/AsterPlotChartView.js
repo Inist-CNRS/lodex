@@ -33,7 +33,7 @@ const prepareData = (data = [], history, polyglot) =>
         .map(d => {
             const title = getShortText(d['target-title']);
 
-            const value = getValue(2);
+            const value = getValue(d);
             const label = `<div>${title}<br/><br/>${value}% ${polyglot.t(
                 'similar',
             )}</div>`;
