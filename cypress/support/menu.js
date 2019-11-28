@@ -70,4 +70,3 @@ export const signOut = () => {
 };
 
     cy.visit('http://localhost:3000');
-};
