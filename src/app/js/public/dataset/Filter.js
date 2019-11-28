@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import debounce from 'lodash.debounce';
@@ -17,17 +18,19 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { applyFilter as applyFilterAction } from './';
 import { fromDataset } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
+import stylesToClassname from '../../lib/stylesToClassName';
 
-const styles = {
-    icon: {
-        marginLeft: 16,
-        marginRight: 8,
-        marginTop: 8,
+const styles = stylesToClassname(
+    {
+        icon: {
+            margin: '8px 8px 0px 8px',
+        },
+        textbox: {
+            fontSize: '1.5rem',
+        },
     },
-    textbox: {
-        fontSize: '1.5rem',
-    },
-};
+    'filter',
+);
 
 const muiStyles = {
     searchBarUnderline: {
@@ -68,7 +71,7 @@ class FilterComponent extends Component {
 
         return (
             <ToolbarGroup>
-                <div style={styles.icon}>
+                <div className={styles.icon}>
                     {isDatasetLoading ? (
                         <CircularProgress
                             className="dataset-loading"
@@ -79,11 +82,10 @@ class FilterComponent extends Component {
                     )}
                 </div>
                 <TextField
-                    className="filter"
+                    className={classnames('filter', styles.textbox)}
                     value={query !== null ? query : filter}
                     hintText={polyglot.t('filter')}
                     onChange={this.handleFilterChange}
-                    style={styles.textbox}
                     underlineStyle={muiStyles.searchBarUnderline}
                     underlineFocusStyle={muiStyles.searchBarUnderline}
                 />
