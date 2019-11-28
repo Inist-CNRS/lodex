@@ -23,9 +23,16 @@ const sortByKey = (key = '') => (dataA, dataB) => {
     return Math.sign(a - b);
 };
 
-function getValue(data, decimals = 2) {
+export function getPercentValue(data, decimals = 2) {
     const value = get(data, 'weight', 0);
-    return parseFloat(value).toFixed(decimals);
+    const parsedValue = parseFloat(value);
+
+    if (isNaN(parsedValue) || parsedValue < 0 || parsedValue > 1) {
+        return 0;
+    }
+
+    const percent = parsedValue * 100;
+    return percent.toFixed(decimals);
 }
 
 const prepareData = (data = [], history, polyglot) =>
@@ -33,7 +40,7 @@ const prepareData = (data = [], history, polyglot) =>
         .map(d => {
             const title = getShortText(d['target-title']);
 
-            const value = getValue(d);
+            const value = getPercentValue(d);
             const label = `<div>${title}<br/><br/>${value}% ${polyglot.t(
                 'similar',
             )}</div>`;
