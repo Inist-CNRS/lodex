@@ -15,7 +15,7 @@ describe('AsterPlotChartView', () => {
         wrongData.forEach(data => {
             it(`should return 0 if weight is ${data.weight}`, () => {
                 const result = getPercentValue(data);
-                expect(result).toBe('0....');
+                expect(result).toBe('0');
             });
         });
 
