@@ -26,7 +26,7 @@ describe('Login', () => {
         menu.openAdvancedDrawer();
         menu.signOut();
 
-        menu.goToHomePage();
+        cy.visit('http://localhost:3000');
         cy.wait(300);
         menu.openAdvancedDrawer();
         menu.openChartDrawer();
