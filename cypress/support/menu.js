@@ -68,5 +68,3 @@ export const signOut = () => {
         .click();
     cy.location('pathname').should('equal', '/login');
 };
-
-    cy.visit('http://localhost:3000');
