@@ -23,11 +23,15 @@ export const openChartDrawer = () => {
     cy.get('.graph-summary').should('be.visible');
 };
 
-export const goToChart = name => {
+export const clickOnChart = name => {
     cy.get('.graph-link')
         .contains(name)
         .click();
     cy.wait(500);
+};
+
+export const goToChart = name => {
+    clickOnChart(name);
     cy.get('.loading').should('not.be.visible');
     cy.get('.graph .title')
         .contains(name)
@@ -56,4 +60,15 @@ export const closeSearchDrawer = () => {
         .click();
 
     cy.wait(300);
+};
+
+export const signOut = () => {
+    cy.get('.advanced-page a')
+        .contains('Sign out')
+        .click();
+    cy.location('pathname').should('equal', '/login');
+};
+
+export const goToHomePage = () => {
+    cy.visit('http://localhost:3000');
 };
