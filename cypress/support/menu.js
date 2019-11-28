@@ -69,6 +69,5 @@ export const signOut = () => {
     cy.location('pathname').should('equal', '/login');
 };
 
-export const goToHomePage = () => {
     cy.visit('http://localhost:3000');
 };
