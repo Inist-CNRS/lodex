@@ -66,3 +66,5 @@ export const browseResults = () => {
     cy.get('.browse-result').click();
     cy.wait(500);
 };
+
+export const clearSearch = () => cy.get('button.filter-clear').click();

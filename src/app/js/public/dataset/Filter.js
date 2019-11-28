@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import debounce from 'lodash.debounce';
@@ -8,23 +9,28 @@ import TextField from 'material-ui/TextField';
 import { ToolbarGroup } from 'material-ui/Toolbar';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import CircularProgress from 'material-ui/CircularProgress';
+import IconButton from 'material-ui/IconButton';
+import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { applyFilter as applyFilterAction } from './';
 import { fromDataset } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
+import stylesToClassname from '../../lib/stylesToClassName';
 
-const styles = {
-    icon: {
-        marginLeft: 16,
-        marginRight: 8,
-        marginTop: 8,
+const styles = stylesToClassname(
+    {
+        icon: {
+            margin: '8px 8px 0px 8px',
+        },
+        textbox: {
+            fontSize: '1.5rem',
+        },
     },
-    textbox: {
-        fontSize: '1.5rem',
-    },
-};
+    'filter',
+);
 
 const muiStyles = {
     searchBarUnderline: {
@@ -46,6 +52,10 @@ class FilterComponent extends Component {
         this.debouncedApplyFilter(value);
     };
 
+    handleClearFilter = () => {
+        this.handleFilterChange(null, '');
+    };
+
     render() {
         const {
             filter,
@@ -61,7 +71,7 @@ class FilterComponent extends Component {
 
         return (
             <ToolbarGroup>
-                <div style={styles.icon}>
+                <div className={styles.icon}>
                     {isDatasetLoading ? (
                         <CircularProgress
                             className="dataset-loading"
@@ -72,14 +82,20 @@ class FilterComponent extends Component {
                     )}
                 </div>
                 <TextField
-                    className="filter"
+                    className={classnames('filter', styles.textbox)}
                     value={query !== null ? query : filter}
                     hintText={polyglot.t('filter')}
                     onChange={this.handleFilterChange}
-                    style={styles.textbox}
                     underlineStyle={muiStyles.searchBarUnderline}
                     underlineFocusStyle={muiStyles.searchBarUnderline}
                 />
+                <IconButton
+                    className="filter-clear"
+                    iconStyle={{ color: theme.green.primary }}
+                    onClick={this.handleClearFilter}
+                >
+                    <FontAwesomeIcon icon={faUndo} height={15} />
+                </IconButton>
             </ToolbarGroup>
         );
     }
