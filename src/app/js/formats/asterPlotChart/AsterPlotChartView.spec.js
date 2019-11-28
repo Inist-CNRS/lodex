@@ -2,24 +2,20 @@ import { getPercentValue } from './AsterPlotChartView';
 
 describe('AsterPlotChartView', () => {
     describe('getValue', () => {
-        it('should return 0 if weight is wrong', () => {
-            const test = data => {
+        const wrongData = [
+            { weight: undefined },
+            { weight: null },
+            { weight: -2 },
+            { weight: 2 },
+            { weight: '-2' },
+            { weight: '2' },
+            { weight: 'salut' },
+        ];
+
+        wrongData.forEach(data => {
+            it(`should return 0 if weight is ${data.weight}`, () => {
                 const result = getPercentValue(data);
-                expect(result).toBe('0');
-            };
-
-            const wrongData = [
-                { weight: undefined },
-                { weight: null },
-                { weight: -2 },
-                { weight: 2 },
-                { weight: '-2' },
-                { weight: '2' },
-                { weight: 'salut' },
-            ];
-
-            wrongData.forEach(data => {
-                test(data);
+                expect(result).toBe('0....');
             });
         });
 
