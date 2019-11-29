@@ -16,7 +16,7 @@ const styles = {
     label: {
         float: 'right',
         color: grey400,
-        fontSize: '1.5rem',
+        fontSize: '1rem',
     },
 };
 

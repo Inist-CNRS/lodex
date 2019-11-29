@@ -26,7 +26,7 @@ const styles = stylesToClassname(
             margin: '8px 8px 0px 8px',
         },
         textbox: {
-            fontSize: '1.5rem',
+            fontSize: '1rem',
         },
     },
     'filter',

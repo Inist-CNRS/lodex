@@ -13,15 +13,15 @@ import Link from '../../lib/components/Link';
 
 const styles = {
     [REJECTED]: {
-        fontSize: '1.5rem',
+        fontSize: '1rem',
         textDecoration: 'line-through',
     },
     [PROPOSED]: {
-        fontSize: '1.5rem',
+        fontSize: '1rem',
         textDecoration: 'none',
     },
     [VALIDATED]: {
-        fontSize: '1.5rem',
+        fontSize: '1rem',
         textDecoration: 'none',
     },
 };

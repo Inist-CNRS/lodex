@@ -21,17 +21,17 @@ const styles = {
     label: {
         color: 'rgb(158, 158, 158)',
         flexGrow: '2',
-        fontSize: '1.5rem',
+        fontSize: '1rem',
         textDecoration: 'none',
     },
     value: {
         flexGrow: '2',
-        fontSize: '1.5rem',
+        fontSize: '1rem',
         textDecoration: 'none',
     },
     array: {
         flexGrow: '2',
-        fontSize: '1.5rem',
+        fontSize: '1rem',
         textDecoration: 'none',
         margin: 0,
     },

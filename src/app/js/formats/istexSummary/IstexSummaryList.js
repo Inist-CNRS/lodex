@@ -9,7 +9,7 @@ import { getSiteUrl } from '../shared/fetchIstexData';
 const styles = {
     text: memoize(status =>
         Object.assign({
-            fontSize: '1.5rem',
+            fontSize: '1rem',
             textDecoration: status === REJECTED ? 'line-through' : 'none',
         }),
     ),

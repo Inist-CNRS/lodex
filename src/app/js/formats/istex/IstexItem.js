@@ -8,10 +8,10 @@ import stylesToClassname from '../../lib/stylesToClassName';
 const styles = stylesToClassname(
     {
         article: {
-            paddingBottom: '3rem',
+            paddingBottom: '2rem',
         },
         title: {
-            lineHeight: '2rem',
+            lineHeight: '1.25rem',
             display: 'flex',
         },
         titleIcon: {
@@ -22,7 +22,7 @@ const styles = stylesToClassname(
             fontStyle: 'oblique',
         },
         metadata: {
-            lineHeight: '1.5rem',
+            lineHeight: '1rem',
             color: '#757575',
         },
         genre: {

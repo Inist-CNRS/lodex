@@ -13,7 +13,7 @@ const styles = stylesToClassname(
             listStyleType: 'none',
         },
         loadMore: {
-            marginTop: '1.5rem',
+            marginTop: '1rem',
         },
         skip: {
             paddingLeft: 0,

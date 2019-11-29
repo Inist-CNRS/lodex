@@ -25,7 +25,7 @@ const padding = { top: 3, bottom: 3 };
 
 const styles = {
     container: {
-        fontSize: '1.5rem',
+        fontSize: '1rem',
         margin: '10px',
     },
     tooltipItem: {

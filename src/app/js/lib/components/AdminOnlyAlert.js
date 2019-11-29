@@ -12,7 +12,7 @@ const styles = stylesToClassname(
             display: 'flex',
             flexDirection: 'column',
             backgroundColor: '#FDDBD3',
-            padding: '2rem 1.5rem',
+            padding: '2rem 1rem',
         },
     },
     'admin-only-alert',

@@ -122,7 +122,7 @@ const styles = stylesToClassname(
         },
         loadMore: {
             height: 36,
-            marginTop: '1.5rem',
+            marginTop: '1rem',
         },
         noResult: {
             padding: '10% 0',
