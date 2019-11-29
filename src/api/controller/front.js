@@ -41,7 +41,8 @@ import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
 
 const indexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
-    .toString();
+    .toString()
+    .replace('{|__JS_HOST__|}', jsHost);
 
 const adminIndexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/admin.html'))
