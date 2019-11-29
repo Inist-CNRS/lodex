@@ -48,3 +48,14 @@ body {
         max-width: 1140px;
     }
 }
+
+a {
+    color: #337ab7;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #23527c;
+    text-decoration: underline;
+}
