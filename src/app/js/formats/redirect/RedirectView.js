@@ -1,7 +1,62 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+
+import stylesToClassname from '../../lib/stylesToClassName';
 import { field as fieldPropTypes } from '../../propTypes';
+import theme from '../../theme';
+
+const typing = {
+    '0%': {
+        width: '0%',
+    },
+    '100%': {
+        width: '100%',
+    },
+};
+
+const blinkCaret = {
+    '0%': {
+        borderColor: theme.green.primary,
+    },
+    '100%': {
+        borderColor: 'transparent',
+    },
+};
+
+const styles = stylesToClassname(
+    {
+        loading: {
+            position: 'fixed',
+            backgroundColor: '#fff',
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            zIndex: 100000,
+        },
+        typewriter: {
+            color: theme.green.primary,
+            overflow: 'hidden',
+            fontSize: '2rem',
+            borderRight: '0.25rem solid',
+            whiteSpace: 'nowrap',
+            margin: '0 auto',
+            animationName: [typing, blinkCaret],
+            animationDuration: '1.4s, 1s',
+            animationIterationCount: '1, infinite',
+            zIndex: 100001,
+        },
+        link: {
+            margin: '10px',
+        },
+    },
+    'redirect-view',
+);
 
 const RedirectView = ({ className, field, resource }) => {
     const url = resource[field.name];
@@ -15,7 +70,14 @@ const RedirectView = ({ className, field, resource }) => {
             <Helmet>
                 <link rel="canonical" href={url} />
             </Helmet>
-            <a href={url}>{url}</a>
+            <div className={styles.loading}>
+                <div>
+                    <h1 className={styles.typewriter}>Veuillez patienter...</h1>
+                </div>
+                <div className={styles.link}>
+                    <a href={url}>{url}</a>
+                </div>
+            </div>
         </div>
     );
 };
