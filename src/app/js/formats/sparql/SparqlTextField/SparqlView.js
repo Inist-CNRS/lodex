@@ -46,7 +46,7 @@ const styles = {
         color: 'rgb(158, 158, 158)',
         flexGrow: '2',
         fontWeight: 'bold',
-        fontSize: '1.5rem',
+        fontSize: '1.25rem',
         textDecoration: 'none',
         cursor: 'pointer',
     },

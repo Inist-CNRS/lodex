@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import stylesToClassname from '../../lib/stylesToClassName';
 import * as colorUtils from '../colorUtils';
 
-const sizes = ['8rem', '6rem', '3rem'];
+const sizes = ['7rem', '5rem', '2rem'];
 
 const styles = stylesToClassname(
     {

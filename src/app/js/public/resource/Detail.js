@@ -73,14 +73,14 @@ const styles = {
         flexGrow: 2,
         width: '100%',
         padding: '0.75rem',
-        paddingRight: '3rem',
+        paddingRight: '2rem',
         textAlign: 'justify',
     },
     label: {
         color: grey500,
         flexGrow: 2,
         fontWeight: 'bold',
-        fontSize: '1.5rem',
+        fontSize: '1.25rem',
         textDecoration: 'none',
     },
     scheme: {

@@ -47,7 +47,7 @@ const styles = {
         color: grey500,
         flexGrow: 2,
         fontWeight: 'bold',
-        fontSize: isSub === true ? 'initial' : '1.5rem',
+        fontSize: isSub === true ? '1rem' : '1.25rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
         fontFamily: 'Quicksand, sans-serif',
     }),
@@ -81,8 +81,7 @@ const styles = {
     value: {
         flexGrow: 2,
         width: '100%',
-        padding: '0.75rem',
-        paddingLeft: '0px',
+        padding: '0px',
         textAlign: 'justify',
     },
 };
