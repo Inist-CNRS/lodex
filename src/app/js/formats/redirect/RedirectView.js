@@ -1,42 +1,33 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { field as fieldPropTypes } from '../../propTypes';
 
-class RedirectView extends Component {
-    constructor(props) {
-        super(props);
-    }
+const RedirectView = ({ className, field, resource }) => {
+    const url = resource[field.name];
 
-    componentDidMount() {
-        const { field, resource } = this.props;
-        const url = resource[field.name];
+    useEffect(() => {
         window.location.href = url;
-    }
+    });
 
-    render() {
-        const { field, resource, className } = this.props;
-        const url = resource[field.name];
-        return (
-            <div className={className}>
-                <Helmet>
-                    <link rel="canonical" href={url} />
-                </Helmet>
-                <a href={url}>{url}</a>
-            </div>
-        );
-    }
-}
+    return (
+        <div className={className}>
+            <Helmet>
+                <link rel="canonical" href={url} />
+            </Helmet>
+            <a href={url}>{url}</a>
+        </div>
+    );
+};
 
 RedirectView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    linkedResource: PropTypes.object, // eslint-disable-line
-    resource: PropTypes.object.isRequired, // eslint-disable-line
     className: PropTypes.string,
+    field: fieldPropTypes.isRequired,
+    resource: PropTypes.object.isRequired,
 };
 
 RedirectView.defaultProps = {
-    className: null,
+    className: '',
 };
 
 export default RedirectView;
