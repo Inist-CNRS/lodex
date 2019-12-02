@@ -1,9 +1,14 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 
 import stylesToClassname from '../../lib/stylesToClassName';
-import { field as fieldPropTypes } from '../../propTypes';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
 import theme from '../../theme';
 
 const typing = {
@@ -47,7 +52,7 @@ const styles = stylesToClassname(
             whiteSpace: 'nowrap',
             margin: '0 auto',
             animationName: [typing, blinkCaret],
-            animationDuration: '1.4s, 1s',
+            animationDuration: '1.5s, 1s',
             animationIterationCount: '1, infinite',
             zIndex: 100001,
         },
@@ -58,7 +63,7 @@ const styles = stylesToClassname(
     'redirect-view',
 );
 
-const RedirectView = ({ className, field, resource }) => {
+const RedirectView = ({ className, p: polyglot, field, resource }) => {
     const url = resource[field.name];
 
     useEffect(() => {
@@ -72,7 +77,9 @@ const RedirectView = ({ className, field, resource }) => {
             </Helmet>
             <div className={styles.loading}>
                 <div>
-                    <h1 className={styles.typewriter}>Veuillez patienter...</h1>
+                    <h1 className={styles.typewriter}>
+                        {polyglot.t('loading_redirecting')}
+                    </h1>
                 </div>
                 <div className={styles.link}>
                     <a href={url}>{url}</a>
@@ -84,6 +91,7 @@ const RedirectView = ({ className, field, resource }) => {
 
 RedirectView.propTypes = {
     className: PropTypes.string,
+    p: polyglotPropTypes.isRequired,
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
 };
@@ -92,4 +100,4 @@ RedirectView.defaultProps = {
     className: '',
 };
 
-export default RedirectView;
+export default compose(translate)(RedirectView);

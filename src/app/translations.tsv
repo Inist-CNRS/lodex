@@ -28,6 +28,7 @@
 "perPage"	"per page"	"par page"
 "loading"	"Loading..."	"Chargement..."
 "loading_parsing_results"	"Loading parsing results"	"Chargement des résultats de l'analyse"
+"loading_redirecting"	"Loading in progress..."	"Chargement en cours..."
 "publication_preview"	"Preview"	"Aperçu"
 "click_to_edit_publication_field"	"Click on this icon to edit the field"	"Cliquer sur l'icône pour modifier le champ"
 "add_transformer"	"Add an operation"	"Ajouter une opération"
