@@ -137,7 +137,6 @@
         "react-dom": "16.11.0",
         "react-event-timeline": "1.5.4",
         "react-helmet": "5.2.1",
-        "react-inline-transition-group": "2.2.1",
         "react-medium-image-zoom": "1.0.4",
         "react-redux": "5.1.1",
         "react-router": "5.0.1",
