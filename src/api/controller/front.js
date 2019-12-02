@@ -39,15 +39,17 @@ import customTheme from '../../app/js/public/customTheme';
 import { getPublication } from './api/publication';
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
 
+const REGEX_JS_HOST = /\{\|__JS_HOST__\|\}/g;
+
 const indexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
     .toString()
-    .replace('{|__JS_HOST__|}', jsHost);
+    .replace(REGEX_JS_HOST, jsHost);
 
 const adminIndexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/admin.html'))
     .toString()
-    .replace('{|__JS_HOST__|}', jsHost);
+    .replace(REGEX_JS_HOST, jsHost);
 
 const getDefaultInitialState = (token, cookie, locale) => ({
     fields: {
