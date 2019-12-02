@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
@@ -63,8 +64,35 @@ const styles = stylesToClassname(
     'redirect-view',
 );
 
-const RedirectView = ({ className, p: polyglot, field, resource }) => {
+export const RedirectViewLoader = ({ classes, title, url }) => (
+    <div className={classes.loading}>
+        <div>
+            <h1 className={classes.typewriter}>{title}</h1>
+        </div>
+        <div className={classes.link}>
+            <a href={url}>{url}</a>
+        </div>
+    </div>
+);
+
+RedirectViewLoader.propTypes = {
+    classes: PropTypes.object.isRequired,
+    title: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+};
+
+export const RedirectView = ({
+    className,
+    classes,
+    p: polyglot,
+    field,
+    resource,
+}) => {
     const url = resource[field.name];
+
+    if (url == null || url === '') {
+        return null;
+    }
 
     useEffect(() => {
         window.location.href = url;
@@ -75,22 +103,18 @@ const RedirectView = ({ className, p: polyglot, field, resource }) => {
             <Helmet>
                 <link rel="canonical" href={url} />
             </Helmet>
-            <div className={styles.loading}>
-                <div>
-                    <h1 className={styles.typewriter}>
-                        {polyglot.t('loading_redirecting')}
-                    </h1>
-                </div>
-                <div className={styles.link}>
-                    <a href={url}>{url}</a>
-                </div>
-            </div>
+            <RedirectViewLoader
+                classes={classes}
+                title={polyglot.t('loading_redirecting')}
+                url={url}
+            />
         </div>
     );
 };
 
 RedirectView.propTypes = {
     className: PropTypes.string,
+    classes: PropTypes.object.isRequired,
     p: polyglotPropTypes.isRequired,
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
@@ -100,4 +124,11 @@ RedirectView.defaultProps = {
     className: '',
 };
 
-export default compose(translate)(RedirectView);
+const mapStateToProps = () => ({
+    classes: styles,
+});
+
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(RedirectView);
