@@ -8,8 +8,11 @@ import CircularProgress from 'material-ui/CircularProgress';
 import memoize from 'lodash.memoize';
 
 import LodexResource from '../shared/LodexResource';
-import { field as fieldPropTypes } from '../../propTypes';
-import injectData from '../injectData';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
+import injectData, { LoadMode } from '../injectData';
 import stylesToClassname from '../../lib/stylesToClassName';
 
 const createStyles = memoize(spaceWidth =>
@@ -60,6 +63,7 @@ class ResourcesGridView extends Component {
         spaceWidth: PropTypes.string.isRequired,
         filterFormatData: PropTypes.func.isRequired,
         allowToLoadMore: PropTypes.bool.isRequired,
+        p: polyglotPropTypes.isRequired,
     };
 
     constructor(props) {
@@ -128,7 +132,7 @@ class ResourcesGridView extends Component {
     }
 }
 
-const mapStateToProps = (state, { formatData, spaceWidth }) => {
+const mapStateToProps = (_, { formatData, spaceWidth }) => {
     if (!formatData || !formatData.items) {
         return {
             data: [],
@@ -144,7 +148,7 @@ const mapStateToProps = (state, { formatData, spaceWidth }) => {
 };
 
 export default compose(
-    injectData(),
+    injectData(null, LoadMode.FIELD),
     connect(mapStateToProps),
     translate,
 )(ResourcesGridView);

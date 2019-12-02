@@ -220,7 +220,7 @@ export default url => FormatView => {
                     {!isLoaded && <Loading>{polyglot.t('loading')}</Loading>}
                     <FormatView
                         {...props}
-                        formatData={formatData /*injection dans le props ici*/}
+                        formatData={formatData /* injection dans le props ici*/}
                         field={field}
                     />
                 </div>
@@ -232,7 +232,7 @@ export default url => FormatView => {
 
     const mapStateToProps = (state, { field }) => ({
         formatData: fromFormat.getFormatData(state, field.name),
-        isLoaded: field && fromFormat.isFormatDataLoaded(state, field.name),
+        isLoaded: fromFormat.isFormatDataLoaded(state, field.name),
         error: fromFormat.getFormatError(state, field.name),
     });
 
