@@ -132,6 +132,9 @@ const styles = stylesToClassname(
             marginRight: 8,
             marginTop: 8,
         },
+        clearIcon: {
+            color: theme.orange.primary,
+        },
     },
     'search',
 );
@@ -313,10 +316,13 @@ class Search extends Component {
                         />
                         <IconButton
                             className="search-clear"
-                            iconStyle={{ color: theme.green.primary }}
                             onClick={this.handleClearFilter}
                         >
-                            <FontAwesomeIcon icon={faUndo} height={15} />
+                            <FontAwesomeIcon
+                                className={styles.clearIcon}
+                                icon={faUndo}
+                                height={15}
+                            />
                         </IconButton>
 
                         <div>

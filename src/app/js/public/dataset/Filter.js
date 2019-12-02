@@ -25,6 +25,9 @@ const styles = stylesToClassname(
         icon: {
             margin: '8px 8px 0px 8px',
         },
+        clearIcon: {
+            color: theme.orange.primary,
+        },
         textbox: {
             fontSize: '1rem',
         },
@@ -91,10 +94,13 @@ class FilterComponent extends Component {
                 />
                 <IconButton
                     className="filter-clear"
-                    iconStyle={{ color: theme.green.primary }}
                     onClick={this.handleClearFilter}
                 >
-                    <FontAwesomeIcon icon={faUndo} height={15} />
+                    <FontAwesomeIcon
+                        className={styles.clearIcon}
+                        icon={faUndo}
+                        height={15}
+                    />
                 </IconButton>
             </ToolbarGroup>
         );
