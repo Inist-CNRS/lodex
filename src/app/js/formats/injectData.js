@@ -36,8 +36,8 @@ const getCreateUrl = url => {
 };
 
 export const LoadMode = {
-    FIELD: 1,
-    STATE: 2,
+    FIELD_IS_PRESENT: 1,
+    FIELD_IS_LOADED: 2,
 };
 
 export default (url, loadMode) => FormatView => {
@@ -160,7 +160,7 @@ export default (url, loadMode) => FormatView => {
 
     const mapStateToProps = (state, { field, resource }) => {
         const isLoaded =
-            loadMode === LoadMode.FIELD
+            loadMode === LoadMode.FIELD_IS_PRESENT
                 ? !!field
                 : fromFormat.isFormatDataLoaded(state, field.name);
         return {
