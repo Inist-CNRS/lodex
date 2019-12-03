@@ -220,7 +220,7 @@ export default url => FormatView => {
                     {!isLoaded && <Loading>{polyglot.t('loading')}</Loading>}
                     <FormatView
                         {...props}
-                        formatData={formatData /* injection dans le props ici*/}
+                        formatData={formatData}
                         field={field}
                     />
                 </div>
