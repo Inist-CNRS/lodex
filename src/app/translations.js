@@ -2,17 +2,34 @@ const fs = require('fs');
 const { resolve } = require('path');
 const CSV = require('csv-string');
 
-const translationsFile = resolve(__dirname, './translations.tsv');
-const translationsTSV = fs.readFileSync(translationsFile, 'utf8');
-const translationsRAW = CSV.parse(translationsTSV, `\t`, '"');
+let languages = ['english', 'french'];
+
+let lastModifiedTime;
+let traductions = {};
+
+const getFileUpdatedDate = path => {
+    const stats = fs.statSync(path);
+    return stats.mtime;
+};
+
+const getTranslations = language => {
+    const path = resolve(__dirname, './custom', './translations.tsv');
+    const lastTime = getFileUpdatedDate(path);
+    if (lastModifiedTime != lastTime) {
+        const tsv = fs.readFileSync(path, 'utf8');
+        const csv = CSV.parse(tsv, `\t`, '"');
+        traductions[language] = csv.reduce(
+            (acc, line) => ({
+                ...acc,
+                [line[0]]: line[languages.indexOf(language) + 1],
+            }),
+            {},
+        );
+    }
+    return traductions[language];
+};
 
 module.exports = {
-    english: translationsRAW.reduce(
-        (acc, line) => ({ ...acc, [line[0]]: line[1] }),
-        {},
-    ),
-    french: translationsRAW.reduce(
-        (acc, line) => ({ ...acc, [line[0]]: line[2] }),
-        {},
-    ),
+    english: () => getTranslations('english'),
+    french: () => getTranslations('french'),
 };

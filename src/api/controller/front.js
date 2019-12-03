@@ -68,8 +68,8 @@ const getDefaultInitialState = (token, cookie, locale) => ({
         locale: locale,
         phrases:
             locale === 'fr' || locale === 'fr-FR'
-                ? translations.french
-                : translations.english,
+                ? translations.french()
+                : translations.english(),
     },
     user: {
         token,
