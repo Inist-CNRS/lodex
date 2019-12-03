@@ -12,7 +12,7 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import injectData, { LoadMode } from '../injectData';
+import injectData from '../injectData';
 import stylesToClassname from '../../lib/stylesToClassName';
 
 const createStyles = memoize(spaceWidth =>
