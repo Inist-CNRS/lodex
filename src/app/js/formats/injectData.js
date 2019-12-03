@@ -35,7 +35,7 @@ const getCreateUrl = url => {
     return ({ field, resource }) => resource[field.name];
 };
 
-export default url => FormatView => {
+export default (url, checkFormatLoaded = null) => FormatView => {
     const createUrl = getCreateUrl(url);
 
     class GraphItem extends Component {
@@ -69,6 +69,7 @@ export default url => FormatView => {
             }
             this.loadFormatData();
         }
+
         componentWillUnmount() {
             const { field, unLoadFormatData } = this.props;
             if (!field) {
@@ -152,12 +153,18 @@ export default url => FormatView => {
 
     GraphItem.WrappedComponent = FormatView;
 
-    const mapStateToProps = (state, { field, resource }) => ({
-        resource,
-        formatData: fromFormat.getFormatData(state, field.name),
-        isLoaded: !!field,
-        error: fromFormat.getFormatError(state, field.name),
-    });
+    const mapStateToProps = (state, { field, resource }) => {
+        const isLoaded =
+            typeof checkFormatLoaded == 'function'
+                ? checkFormatLoaded(field)
+                : field && fromFormat.isFormatDataLoaded(state, field.name);
+        return {
+            resource,
+            formatData: fromFormat.getFormatData(state, field.name),
+            isLoaded,
+            error: fromFormat.getFormatError(state, field.name),
+        };
+    };
 
     const mapDispatchToProps = {
         preLoadFormatData,
