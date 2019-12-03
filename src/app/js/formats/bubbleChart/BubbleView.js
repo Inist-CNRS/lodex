@@ -4,11 +4,9 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { pack, hierarchy } from 'd3-hierarchy';
 import memoize from 'lodash.memoize';
-import Transition from 'react-inline-transition-group';
 
 import injectData from '../injectData';
 import Bubble from './Bubble';
-
 import * as colorUtils from '../colorUtils';
 
 const styles = {
@@ -18,47 +16,25 @@ const styles = {
         height: diameter,
         overflow: 'hidden',
     })),
-    base: {
-        opacity: 0,
-        transition: 'all 500ms',
-    },
-    appear: {
-        opacity: 1,
-    },
-    leave: {
-        opacity: 0,
-    },
 };
 
 export const BubbleView = ({ data, diameter, colorSet }) => (
-    <div>
-        <Transition
-            style={styles.container({ diameter })}
-            childrenStyles={{
-                base: styles.base,
-                appear: styles.appear,
-                enter: styles.appear,
-                leave: styles.leave,
-            }}
-        >
-            {data.map(({ data: { _id: key }, r, x, y, value }, index) => (
-                <Bubble
-                    key={key}
-                    r={r}
-                    x={x}
-                    y={y}
-                    name={key}
-                    value={value}
-                    color={
-                        colorUtils.isValidColor(
-                            colorSet[index % colorSet.length],
-                        )
-                            ? colorSet[index % colorSet.length]
-                            : 'black'
-                    }
-                />
-            ))}
-        </Transition>
+    <div style={styles.container({ diameter })}>
+        {data.map(({ data: { _id: key }, r, x, y, value }, index) => (
+            <Bubble
+                key={key}
+                r={r}
+                x={x}
+                y={y}
+                name={key}
+                value={value}
+                color={
+                    colorUtils.isValidColor(colorSet[index % colorSet.length])
+                        ? colorSet[index % colorSet.length]
+                        : 'black'
+                }
+            />
+        ))}
     </div>
 );
 
