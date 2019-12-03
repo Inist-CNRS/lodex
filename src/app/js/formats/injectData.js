@@ -35,12 +35,7 @@ const getCreateUrl = url => {
     return ({ field, resource }) => resource[field.name];
 };
 
-export const LoadMode = {
-    FIELD_IS_PRESENT: 1,
-    FIELD_IS_LOADED: 2,
-};
-
-export default (url, loadMode) => FormatView => {
+export default (url, checkFormatLoaded = null) => FormatView => {
     const createUrl = getCreateUrl(url);
 
     class GraphItem extends Component {
@@ -160,8 +155,8 @@ export default (url, loadMode) => FormatView => {
 
     const mapStateToProps = (state, { field, resource }) => {
         const isLoaded =
-            loadMode === LoadMode.FIELD_IS_PRESENT
-                ? !!field
+            typeof checkFormatLoaded == 'function'
+                ? checkFormatLoaded(field)
                 : fromFormat.isFormatDataLoaded(state, field.name);
         return {
             resource,

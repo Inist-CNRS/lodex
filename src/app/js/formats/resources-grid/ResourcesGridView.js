@@ -148,7 +148,7 @@ const mapStateToProps = (_, { formatData, spaceWidth }) => {
 };
 
 export default compose(
-    injectData(null, LoadMode.FIELD_IS_PRESENT),
+    injectData(null, field => !!field),
     connect(mapStateToProps),
     translate,
 )(ResourcesGridView);
