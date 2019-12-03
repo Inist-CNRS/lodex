@@ -157,7 +157,7 @@ export default (url, checkFormatLoaded = null) => FormatView => {
         const isLoaded =
             typeof checkFormatLoaded == 'function'
                 ? checkFormatLoaded(field)
-                : fromFormat.isFormatDataLoaded(state, field.name);
+                : field && fromFormat.isFormatDataLoaded(state, field.name);
         return {
             resource,
             formatData: fromFormat.getFormatData(state, field.name),
