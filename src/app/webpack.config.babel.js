@@ -47,8 +47,8 @@ module.exports = {
     plugins: [
         new DefinePlugin({
             __DEBUG__: false,
-            __EN__: JSON.stringify(translations.english),
-            __FR__: JSON.stringify(translations.french),
+            __EN__: JSON.stringify(translations.english()),
+            __FR__: JSON.stringify(translations.french()),
             LOADERS: JSON.stringify(loaders),
             'process.env': {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV),

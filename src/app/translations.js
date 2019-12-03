@@ -13,7 +13,7 @@ const getFileUpdatedDate = path => {
 };
 
 const getTranslations = language => {
-    const path = resolve(__dirname, './custom', './translations.tsv');
+    const path = resolve(__dirname, './custom/translations.tsv');
     const lastTime = getFileUpdatedDate(path);
     if (lastModifiedTime != lastTime) {
         const tsv = fs.readFileSync(path, 'utf8');
