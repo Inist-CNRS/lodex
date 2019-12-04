@@ -14,6 +14,10 @@ const getFileUpdatedDate = path => {
 
 const getTranslations = language => {
     const path = resolve(__dirname, './custom/translations.tsv');
+    if (!fs.existsSync(path)) {
+        console.log('The translation file is missing.');
+        return {};
+    }
     const lastTime = getFileUpdatedDate(path);
     if (lastModifiedTime != lastTime) {
         const tsv = fs.readFileSync(path, 'utf8');
