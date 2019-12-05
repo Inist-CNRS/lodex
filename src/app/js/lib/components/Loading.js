@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CardText } from 'material-ui/Card';
 import CircularProgress from 'material-ui/CircularProgress';
-import Card from './Card';
 
 const styles = {
     container: {
-        paddingTop: '0.5rem',
+        margin: '2rem',
+        padding: '2rem',
     },
     textContainer: {
         display: 'flex',
@@ -18,12 +17,12 @@ const styles = {
 };
 
 const Loading = ({ children }) => (
-    <Card className="loading" style={styles.container}>
-        <CardText style={styles.textContainer}>
+    <div className="loading" style={styles.container}>
+        <div style={styles.textContainer}>
             <CircularProgress style={styles.progress} size={20} />
             {children}
-        </CardText>
-    </Card>
+        </div>
+    </div>
 );
 
 Loading.propTypes = {
