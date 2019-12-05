@@ -66,10 +66,7 @@ const getDefaultInitialState = (token, cookie, locale) => ({
     },
     polyglot: {
         locale: locale,
-        phrases:
-            locale === 'fr' || locale === 'fr-FR'
-                ? translations.french()
-                : translations.english(),
+        phrases: translations.translate(),
     },
     user: {
         token,

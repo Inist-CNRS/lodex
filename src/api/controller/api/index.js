@@ -22,6 +22,7 @@ import progress from './progress';
 import breadcrumbs from './breadcrumb';
 import menu from './menu';
 import loader from './loader';
+import translate from './translate';
 
 const app = new Koa();
 
@@ -30,6 +31,7 @@ app.use(ezMasterConfig);
 app.use(mount('/login', login));
 app.use(route.get('/breadcrumb', breadcrumbs));
 app.use(route.get('/menu', menu));
+app.use(mount('/translations', translate));
 
 app.use(
     jwt({

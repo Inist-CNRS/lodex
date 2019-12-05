@@ -2,8 +2,6 @@ const fs = require('fs');
 const { resolve } = require('path');
 const CSV = require('csv-string');
 
-let languages = ['english', 'french'];
-
 let lastModifiedTime;
 let traductions = {};
 
@@ -12,7 +10,18 @@ const getFileUpdatedDate = path => {
     return stats.mtime;
 };
 
-const getTranslations = language => {
+const getTranslations = locale => {
+    if (typeof locale != 'string') {
+        locale = 'en';
+    }
+    const language = locale.toLowerCase();
+    if (language.startsWith('fr')) {
+        return getLanguageTranslations('french', 2);
+    }
+    return getLanguageTranslations('english', 1);
+};
+
+const getLanguageTranslations = (language, index) => {
     const path = resolve(__dirname, './custom/translations.tsv');
     if (!fs.existsSync(path)) {
         console.log('The translation file is missing.');
@@ -25,7 +34,7 @@ const getTranslations = language => {
         traductions[language] = csv.reduce(
             (acc, line) => ({
                 ...acc,
-                [line[0]]: line[languages.indexOf(language) + 1],
+                [line[0]]: line[index],
             }),
             {},
         );
@@ -34,6 +43,5 @@ const getTranslations = language => {
 };
 
 module.exports = {
-    english: () => getTranslations('english'),
-    french: () => getTranslations('french'),
+    translate: locale => getTranslations(locale),
 };

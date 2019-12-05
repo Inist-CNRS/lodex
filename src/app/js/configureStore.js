@@ -15,12 +15,10 @@ export default function configureStore(
 ) {
     const rootReducer = __DEBUG__
         ? (state, action) => {
-              switch (action.type) {
-                  case 'SET_STATE':
-                      return action.state || pureReducer({}, action);
-                  default:
-                      return pureReducer(state, action);
+              if (action.type == 'SET_STATE') {
+                  return action.state || pureReducer({}, action);
               }
+              return pureReducer(state, action);
           }
         : pureReducer;
 
