@@ -34,14 +34,12 @@ const styles = {
     },
     sideColumn: {
         padding: '10px',
-        width: '25%',
-        flexGrow: 1,
+        width: '30%',
         margin: '20px 0',
     },
     centerColumn: {
         padding: '10px',
-        width: '75%',
-        flexGrow: 4,
+        width: '70%',
     },
     section: {
         margin: '20px 0',

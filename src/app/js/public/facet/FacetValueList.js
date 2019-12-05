@@ -18,7 +18,7 @@ import FacetActionsContext from './FacetActionsContext';
 
 const styles = {
     list: {
-        padding: '1rem 2rem',
+        padding: '1rem',
     },
     listHeader: {
         display: 'flex',
