@@ -6,21 +6,17 @@ import { useInView } from 'react-intersection-observer';
 import Property from '../public/Property';
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
 import { field as fieldPropTypes } from '../propTypes';
-import stylesToClassname from '../lib/stylesToClassName';
 
-const styles = stylesToClassname(
-    {
-        loading: {
-            height: '500px !important',
-            width: '100% !important',
-        },
-        loaded: {
-            height: '0px !important',
-            width: '0px !important',
-        },
+const styles = {
+    loading: {
+        height: '500px !important',
+        width: '100% !important',
     },
-    'dataset-characteristic-item',
-);
+    loaded: {
+        height: '0px !important',
+        width: '0px !important',
+    },
+};
 
 export const DatasetCharacteristicItemComponent = ({
     resource,
@@ -34,10 +30,7 @@ export const DatasetCharacteristicItemComponent = ({
 
     return (
         <Fragment>
-            <div
-                ref={ref}
-                className={inView ? styles.loaded : styles.loading}
-            />
+            <div ref={ref} style={inView ? styles.loaded : styles.loading} />
             {inView && (
                 <Property resource={resource} field={field} style={style} />
             )}
