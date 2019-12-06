@@ -8,7 +8,6 @@ import rootReducer from './reducers';
 import Routes from './Routes';
 import sagas from './sagas';
 import configureStore from '../configureStore';
-import phrasesFor from '../i18n/translations';
 import { createHashHistory } from 'history';
 import { Provider } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -16,7 +15,6 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import scrollToTop from '../lib/scrollToTop';
 import { ConnectedRouter } from 'connected-react-router';
 
-import getLocale from '../../../common/getLocale';
 import theme from '../theme';
 
 const muiTheme = getMuiTheme({
@@ -28,16 +26,8 @@ const muiTheme = getMuiTheme({
     },
 });
 
-const language = getLocale();
-const initialState = {
-    polyglot: {
-        locale: language,
-        phrases: phrasesFor(language),
-    },
-};
-
 const history = createHashHistory();
-const store = configureStore(rootReducer, sagas, initialState, history);
+const store = configureStore(rootReducer, sagas, {}, history);
 
 render(
     <Provider {...{ store }}>

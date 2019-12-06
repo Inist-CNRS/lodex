@@ -3,9 +3,15 @@ import { LOCATION_CHANGE } from 'connected-react-router';
 import qs from 'qs';
 
 import { setLanguage } from '../';
+import getLocale from '../../../../common/getLocale';
 
-const getLanguage = queryString =>
-    qs.parse(queryString, { ignorePrefix: true }).language;
+const getLanguage = queryString => {
+    const locale = qs.parse(queryString, { ignorePrefix: true }).language;
+    if (!locale) {
+        return getLocale();
+    }
+    return locale;
+};
 
 export function* handleInitializeLanguage({ payload: { search } }) {
     const language = yield call(getLanguage, search);
