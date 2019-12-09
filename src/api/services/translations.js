@@ -30,7 +30,7 @@ const parseTranslationsFile = path => {
 let lastCacheTimestamp = null;
 let cachedTranslations = {};
 
-const getTranslations = (filePath = './custom/translations.tsv') => {
+const getTranslations = (filePath = '../../app/custom/translations.tsv') => {
     const path = resolve(__dirname, filePath);
     if (!fs.existsSync(path)) {
         console.error('The translation file is missing.');
