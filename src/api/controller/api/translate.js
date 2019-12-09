@@ -5,7 +5,7 @@ import translations from '../../services/translations';
 
 const getTranslations = async (ctx, locale) => {
     ctx.status = 200;
-    ctx.body = translations.translate(locale);
+    ctx.body = translations.getByLanguage(locale);
 };
 
 const app = new Koa();
