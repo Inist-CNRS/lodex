@@ -45,6 +45,7 @@ const getTranslations = (filePath = '../../app/custom/translations.tsv') => {
         cachedTranslations = parseTranslationsFile(path);
         lastCacheTimestamp = new Date();
     }
+
     return cachedTranslations;
 };
 
