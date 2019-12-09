@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 
-import translations from '../../../app/translations';
+import translations from '../../services/translations';
 
 const getTranslations = async (ctx, locale) => {
     ctx.status = 200;

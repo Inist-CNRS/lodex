@@ -15,7 +15,7 @@ const { loaders } = require('../../config.json');
 const isDevelopment = process.env.NODE_ENV === 'development';
 const isAnalyze = process.env.NODE_ENV === 'analyze';
 
-const translations = require('./translations');
+const translations = require('../api/services/translations');
 
 module.exports = {
     mode: isDevelopment ? 'development' : 'production',
