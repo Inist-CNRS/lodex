@@ -10,21 +10,24 @@ import {
 } from '../';
 
 export function* loadPhrases(locale) {
-    return yield call(fetchSaga, {
+    const { response, error } = yield call(fetchSaga, {
         url: `/api/translations/${locale}`,
         method: 'GET',
     });
+
+    if (error) {
+        throw new Error(error);
+    }
+
+    return response;
 }
 
 export function* handleSetLanguage({ payload: language }) {
     try {
-        const { response, error } = yield call(loadPhrases, language);
-        if (error) {
-            yield put(setLanguageError(error));
-            return;
-        }
+        const phrases = yield call(loadPhrases, language);
+
         yield put(setLanguageSuccess(language));
-        yield put(setLanguage(language, response));
+        yield put(setLanguage(language, phrases));
     } catch (error) {
         yield put(setLanguageError(error));
     }
