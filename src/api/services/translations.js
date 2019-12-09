@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { resolve } = require('path');
 const CSV = require('csv-string');
+const moment = require('moment');
 
 const getFileUpdatedDate = path => {
     const stats = fs.statSync(path);
@@ -8,7 +9,8 @@ const getFileUpdatedDate = path => {
 };
 
 const shouldUpdateTranslations = (fileCacheTime, fileLastUpdatedTime) =>
-    fileLastUpdatedTime > fileCacheTime;
+    lastCacheTimestamp === null ||
+    moment(fileLastUpdatedTime).isAfter(fileCacheTime);
 
 const parseTranslationsFile = path => {
     const tsv = fs.readFileSync(path, 'utf8');
@@ -19,7 +21,7 @@ const parseTranslationsFile = path => {
         translations[language] = csv.reduce(
             (acc, line) => ({
                 ...acc,
-                [line[0]]: line[index],
+                [line[0]]: line[index + 1],
             }),
             {},
         );
@@ -41,7 +43,7 @@ const getTranslations = (filePath = '../../app/custom/translations.tsv') => {
 
     if (shouldUpdateTranslations(lastCacheTimestamp, lastUpdateTimestamp)) {
         cachedTranslations = parseTranslationsFile(path);
-        lastCacheTimestamp = new Date().getTime();
+        lastCacheTimestamp = new Date();
     }
     return cachedTranslations;
 };
