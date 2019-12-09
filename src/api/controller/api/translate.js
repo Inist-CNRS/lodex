@@ -9,7 +9,6 @@ const getTranslations = async (ctx, locale) => {
 };
 
 const app = new Koa();
-app.use(route.get('/', getTranslations));
-app.use(route.get('/:locale', getTranslations));
+app.use(route.get('/:locale*', getTranslations));
 
 export default app;
