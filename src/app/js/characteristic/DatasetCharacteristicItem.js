@@ -7,14 +7,16 @@ import Property from '../public/Property';
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
 import { field as fieldPropTypes } from '../propTypes';
 
+const LOADING_BOX_HEIGHT = 250;
+
 const styles = {
     loading: {
-        height: '500px !important',
-        width: '100% !important',
+        height: `${LOADING_BOX_HEIGHT}px`,
+        width: '100%',
     },
     loaded: {
-        height: '0px !important',
-        width: '0px !important',
+        height: '0px',
+        width: '0px',
     },
 };
 
@@ -25,7 +27,7 @@ export const DatasetCharacteristicItemComponent = ({
 }) => {
     const [ref, inView] = useInView({
         triggerOnce: true,
-        rootMargin: '50px 0px',
+        rootMargin: `${LOADING_BOX_HEIGHT * 2}px 0px`,
     });
 
     return (
