@@ -17,11 +17,11 @@ import customTheme from './customTheme';
 
 const muiTheme = getMuiTheme(customTheme);
 
-const language = getLocale();
+const locale = getLocale();
 const initialState = {
     polyglot: {
-        locale: language,
-        phrases: phrasesFor(language),
+        locale,
+        phrases: phrasesFor(locale),
     },
 };
 

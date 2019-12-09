@@ -15,7 +15,7 @@ const { loaders } = require('../../config.json');
 const isDevelopment = process.env.NODE_ENV === 'development';
 const isAnalyze = process.env.NODE_ENV === 'analyze';
 
-const translations = require('./translations');
+const translations = require('../api/services/translations');
 
 module.exports = {
     mode: isDevelopment ? 'development' : 'production',
@@ -47,8 +47,8 @@ module.exports = {
     plugins: [
         new DefinePlugin({
             __DEBUG__: false,
-            __EN__: JSON.stringify(translations.english),
-            __FR__: JSON.stringify(translations.french),
+            __EN__: JSON.stringify(translations.getByLanguage('english')),
+            __FR__: JSON.stringify(translations.getByLanguage('french')),
             LOADERS: JSON.stringify(loaders),
             'process.env': {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV),

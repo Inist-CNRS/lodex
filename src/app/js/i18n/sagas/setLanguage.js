@@ -1,22 +1,31 @@
-import { call, fork, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { setLanguage } from 'redux-polyglot';
+
+import fetchSaga from '../../lib/sagas/fetchSaga';
 
 import {
     SET_LANGUAGE_REQUEST,
-    SUPPORTED_LANGUAGES,
     setLanguageSuccess,
     setLanguageError,
 } from '../';
 
-export function loadPhrases(locale) {
-    return import(`../translations/${locale}`).then(module => module.default());
+export function* loadPhrases(locale) {
+    const { response, error } = yield call(fetchSaga, {
+        url: `/api/translations/${locale}`,
+        method: 'GET',
+    });
+
+    if (error) {
+        throw new Error(error);
+    }
+
+    return response;
 }
 
 export function* handleSetLanguage({ payload: language }) {
     try {
-        if (!SUPPORTED_LANGUAGES.includes(language)) return;
-
         const phrases = yield call(loadPhrases, language);
+
         yield put(setLanguageSuccess(language));
         yield put(setLanguage(language, phrases));
     } catch (error) {
@@ -24,10 +33,6 @@ export function* handleSetLanguage({ payload: language }) {
     }
 }
 
-export function* watchSetLanguage() {
+export default function* watchSetLanguage() {
     yield takeLatest(SET_LANGUAGE_REQUEST, handleSetLanguage);
-}
-
-export default function*() {
-    yield fork(watchSetLanguage);
 }

@@ -7,17 +7,17 @@ import Polyglot from 'node-polyglot';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
-
-const language = getLocale();
-
-const polyglot = new Polyglot({
-    phrases: language.includes('fr') ? __FR__ : __EN__,
-});
-
 import customTheme from '../public/customTheme';
 import FieldProvider from './FieldProvider';
 import { IstexSummaryView } from '../formats/istexSummary/IstexSummaryView';
+
+const locale = getLocale();
+const polyglot = new Polyglot({
+    locale,
+    phrases: phrasesFor(locale),
+});
 
 const muiTheme = getMuiTheme(customTheme, {
     userAgent: navigator.userAgent,

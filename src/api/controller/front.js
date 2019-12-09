@@ -23,7 +23,7 @@ import rootReducer from '../../app/js/public/reducers';
 import sagas from '../../app/js/public/sagas';
 import configureStoreServer from '../../app/js/configureStoreServer';
 import Routes from '../../app/js/public/Routes';
-import translations from '../../app/translations';
+import translations from '../services/translations';
 import config from '../../../config.json';
 import getLocale from '../../common/getLocale';
 import {
@@ -65,11 +65,8 @@ const getDefaultInitialState = (token, cookie, locale) => ({
         published: true,
     },
     polyglot: {
-        locale: locale,
-        phrases:
-            locale === 'fr' || locale === 'fr-FR'
-                ? translations.french
-                : translations.english,
+        locale,
+        phrases: translations.getByLanguage(locale),
     },
     user: {
         token,
