@@ -67,6 +67,7 @@ const handleSearch = function*() {
             dataset: response.data,
             fields,
             total: response.total,
+            fullTotal: response.fullTotal,
         }),
     );
 };

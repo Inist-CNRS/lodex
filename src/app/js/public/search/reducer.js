@@ -27,6 +27,8 @@ export const loadMoreFailed = createAction(SEARCH_LOAD_MORE_ERROR);
 export const fromSearch = {
     isLoading: state => state.loading,
     getDataset: state => state.dataset,
+    getDatasetTotal: state => state.total,
+    getDatasetFullTotal: state => state.fullTotal,
     getSort: state => state.sort,
     getFieldNames: state => state.fields,
     getPage: state => state.page,
@@ -121,6 +123,7 @@ export default handleActions(
             dataset: payload.dataset || [],
             page: payload.page || 0,
             total: payload.total || 0,
+            fullTotal: payload.fullTotal || 0,
             fields: payload.fields || state.fields,
         }),
         [SEARCH_LOAD_MORE]: state => ({
