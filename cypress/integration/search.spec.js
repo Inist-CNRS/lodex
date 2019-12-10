@@ -34,7 +34,7 @@ describe('Search', () => {
             cy.wait(300);
             cy.get('span[role="menuitem"]')
                 .should('have.length', 9)
-                .contains('Export as JSON')
+                .contains('JSON')
                 .should('be.visible');
         });
 
