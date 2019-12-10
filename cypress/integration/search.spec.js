@@ -56,6 +56,7 @@ describe('Search', () => {
         it('should be able to load more search results several times', () => {
             menu.openSearchDrawer();
 
+            searchDrawer.checkStatsCount(12, 12);
             searchDrawer.checkResultsCount(10);
             searchDrawer.checkMoreResultsCount(10, 12);
 
@@ -112,6 +113,7 @@ describe('Search', () => {
         it('should sort result by pertinence', () => {
             menu.openSearchDrawer();
             searchDrawer.search('medicine');
+            searchDrawer.checkStatsCount(2, 12);
             searchDrawer.checkResultsCount(2);
 
             searchDrawer.checkResultList([

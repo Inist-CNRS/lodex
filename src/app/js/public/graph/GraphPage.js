@@ -22,7 +22,7 @@ import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButt
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
 import CompositeProperty from '../Property/CompositeProperty';
 import { grey500 } from 'material-ui/styles/colors';
-import Stats from '../Stats';
+import DatasetStats from '../dataset/DatasetStats';
 import getTitle from '../../lib/getTitle';
 import { preLoadPublication } from '../../fields';
 import { preLoadDatasetPage as preLoadDatasetPageAction } from '../dataset';
@@ -82,7 +82,7 @@ class GraphPage extends Component {
                     <Toolbar name={name} />
                 </div>
                 <div style={styles.centerColumn}>
-                    <Stats />
+                    <DatasetStats />
                     <AppliedFacetList style={styles.section} />
                     {graphField && (
                         <Card style={styles.section} className="graph">

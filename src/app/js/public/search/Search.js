@@ -36,6 +36,7 @@ import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
 import stylesToClassname from '../../lib/stylesToClassName';
 import ExportButton from '../ExportButton';
+import SearchStats from './SearchStats';
 
 const styles = stylesToClassname(
     {
@@ -348,20 +349,7 @@ class Search extends Component {
                         )}
                     >
                         <div className={styles.advancedTopBar}>
-                            {(everythingIsOk || noResults) && (
-                                <div
-                                    className={classnames(
-                                        'search-message',
-                                        styles.searchMessage,
-                                    )}
-                                >
-                                    {loading
-                                        ? polyglot.t('loading')
-                                        : polyglot.t('results', {
-                                              smart_count: total,
-                                          })}
-                                </div>
-                            )}
+                            {(everythingIsOk || noResults) && <SearchStats />}
                         </div>
                     </div>
                 </div>
