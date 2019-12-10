@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
@@ -31,12 +31,12 @@ export const DatasetCharacteristicItemComponent = ({
     });
 
     return (
-        <Fragment>
+        <>
             <div ref={ref} style={inView ? styles.loaded : styles.loading} />
             {inView && (
                 <Property resource={resource} field={field} style={style} />
             )}
-        </Fragment>
+        </>
     );
 };
 

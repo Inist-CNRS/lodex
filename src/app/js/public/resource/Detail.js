@@ -171,6 +171,7 @@ export const DetailComponent = ({ fields, resource, title, description }) => {
                         <ExportButton
                             style={{ float: 'right' }}
                             uri={resource.uri}
+                            withText
                         />
                     </CardActions>
                     <div style={styles.version}>
@@ -216,7 +217,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default compose(
-    connect(mapStateToProps),
-    translate,
-)(DetailComponent);
+export default compose(connect(mapStateToProps), translate)(DetailComponent);

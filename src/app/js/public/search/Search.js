@@ -316,6 +316,7 @@ class Search extends Component {
                             ref={this.textInput}
                         />
                         <IconButton
+                            tooltip={polyglot.t('clear')}
                             className="search-clear"
                             onClick={this.handleClearFilter}
                         >
@@ -488,8 +489,5 @@ const mapDispatchToProps = {
 
 export default compose(
     translate,
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
 )(Search);
