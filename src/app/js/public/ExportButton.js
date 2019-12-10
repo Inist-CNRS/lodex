@@ -24,13 +24,18 @@ import stylesToClassname from '../lib/stylesToClassName';
 
 const styles = stylesToClassname(
     {
-        menu: {
+        menuContainer: {
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
+            flexDirection: 'column',
+            marginTop: '16px',
         },
         menuTitle: {
-            padding: '5px',
+            padding: '0px 16px',
+            margin: '0px',
+        },
+        menuList: {
+            padding: '0px 24px',
+            margin: '0px',
         },
     },
     'export',
@@ -98,10 +103,10 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
                 animation={PopoverAnimationVertical}
             >
                 <div className={styles.menuContainer}>
-                    <h4 className={styles.menuTitle}>
+                    <h3 className={styles.menuTitle}>
                         {polyglot.t('export_in')}
-                    </h4>
-                    <Menu>
+                    </h3>
+                    <Menu className={styles.menuList}>
                         {exporters.map(({ name }) => (
                             <ExportItem
                                 key={name}
