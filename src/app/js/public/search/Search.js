@@ -316,6 +316,7 @@ class Search extends Component {
                             ref={this.textInput}
                         />
                         <IconButton
+                            tooltip={polyglot.t('clear')}
                             className="search-clear"
                             onClick={this.handleClearFilter}
                         >
