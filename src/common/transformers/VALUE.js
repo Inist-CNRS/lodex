@@ -2,7 +2,7 @@ const transformation = (_, args) => () =>
     new Promise((resolve, reject) => {
         const valueArg = args.find(a => a.name === 'value');
 
-        if (!valueArg || !valueArg.value) {
+        if (!valueArg || valueArg.value == undefined) {
             reject(new Error('Invalid Argument for VALUE transformation'));
             return;
         }
