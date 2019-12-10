@@ -69,9 +69,8 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
         onExport(event);
     };
 
-    const buttonLabel = polyglot.t(
-        uri ? 'export_resource' : 'export_resultset',
-    );
+    const buttonLabel = polyglot.t('export');
+    const menuTitle = polyglot.t(uri ? 'export_resource' : 'export_results');
 
     return (
         <>
@@ -103,9 +102,7 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
                 animation={PopoverAnimationVertical}
             >
                 <div className={styles.menuContainer}>
-                    <h3 className={styles.menuTitle}>
-                        {polyglot.t('export_in')}
-                    </h3>
+                    <h3 className={styles.menuTitle}>{menuTitle}</h3>
                     <Menu className={styles.menuList}>
                         {exporters.map(({ name }) => (
                             <ExportItem
