@@ -4,7 +4,6 @@ import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
-import withWidth from 'material-ui/utils/withWidth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -21,8 +20,27 @@ import {
 } from './export';
 import theme from '../theme';
 import ExportItem from './export/ExportMenuItem';
+import stylesToClassname from '../lib/stylesToClassName';
 
-const ExportButton = ({ exporters, onExport, uri, p: polyglot, width }) => {
+const styles = stylesToClassname(
+    {
+        menu: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+        },
+        menuTitle: {
+            padding: '5px',
+        },
+    },
+    'export',
+);
+
+const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
+    if (!exporters || !exporters.length) {
+        return null;
+    }
+
     const [popover, setPopover] = useState({ open: false });
 
     const handleOpen = event => {
@@ -46,27 +64,23 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, width }) => {
         onExport(event);
     };
 
-    if (!exporters || !exporters.length) {
-        return null;
-    }
-
-    const exportLabel = uri ? 'export_resource' : 'export_resultset';
-    const label = width > 1 ? polyglot.t(exportLabel) : '';
+    const buttonLabel = polyglot.t(
+        uri ? 'export_resource' : 'export_resultset',
+    );
 
     return (
         <>
-            {width > 2 && (
+            {withText ? (
                 <FlatButton
                     primary
                     onClick={handleOpen}
-                    label={label}
+                    label={buttonLabel}
                     icon={
                         <FontAwesomeIcon icon={faExternalLinkAlt} height={20} />
                     }
                     className="export"
                 />
-            )}
-            {width <= 2 && (
+            ) : (
                 <IconButton
                     onClick={handleOpen}
                     iconStyle={{ color: theme.green.primary }}
@@ -75,7 +89,6 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, width }) => {
                     <FontAwesomeIcon icon={faExternalLinkAlt} height={20} />
                 </IconButton>
             )}
-
             <Popover
                 open={popover.open}
                 anchorEl={popover.anchorEl}
@@ -84,16 +97,21 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, width }) => {
                 onRequestClose={handleClose}
                 animation={PopoverAnimationVertical}
             >
-                <Menu>
-                    {exporters.map(({ name }) => (
-                        <ExportItem
-                            key={name}
-                            type={name}
-                            uri={uri}
-                            onClick={handleExport}
-                        />
-                    ))}
-                </Menu>
+                <div className={styles.menuContainer}>
+                    <h4 className={styles.menuTitle}>
+                        {polyglot.t('export_in')}
+                    </h4>
+                    <Menu>
+                        {exporters.map(({ name }) => (
+                            <ExportItem
+                                key={name}
+                                type={name}
+                                uri={uri}
+                                onClick={handleExport}
+                            />
+                        ))}
+                    </Menu>
+                </div>
             </Popover>
         </>
     );
@@ -103,9 +121,13 @@ ExportButton.propTypes = {
     exporters: PropTypes.arrayOf(PropTypes.object),
     onExport: PropTypes.func.isRequired,
     preLoadExporters: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
     uri: PropTypes.string,
-    width: PropTypes.number.isRequired,
+    p: polyglotPropTypes.isRequired,
+    withText: PropTypes.bool.isRequired,
+};
+
+ExportButton.defaultProps = {
+    withText: false,
 };
 
 const mapStateToProps = state => ({
@@ -122,10 +144,6 @@ const mapDispatchToProps = dispatch =>
     );
 
 export default compose(
-    withWidth(),
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
     translate,
 )(ExportButton);
