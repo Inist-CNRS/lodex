@@ -120,6 +120,12 @@ export const checkMoreResultsCount = (count, total) => {
         .contains(`${count} / ${total}`);
 };
 
+export const checkStatsCount = (current, count) => {
+    cy.get('.stats')
+        .contains(`Found ${current} on ${count}`)
+        .should('be.visible');
+};
+
 export const checkResultsCount = count => {
     cy.get('.search-result').should('have.length', count);
 };
