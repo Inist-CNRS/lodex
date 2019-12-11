@@ -22,11 +22,11 @@ const MouseIcon = ({ polyglot }) => (
         </svg>
 
         <ReactTooltip id="mouseIconTooltip" effect="solid">
-            <ul>
+            <div>
                 {polyglot.t('user_can_interact_with_mouse_1')}
                 {<br />}
                 {polyglot.t('user_can_interact_with_mouse_2')}
-            </ul>
+            </div>
         </ReactTooltip>
     </>
 );
