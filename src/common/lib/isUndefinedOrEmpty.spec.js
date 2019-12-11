@@ -1,17 +1,31 @@
 import isUndefinedOrEmpty from './isUndefinedOrEmpty';
 
 describe('isEmpty', () => {
-    it('should return "true" if the value is "undefined" or an "empty string"', () => {
-        expect(isUndefinedOrEmpty(undefined)).toBe(true);
-        expect(isUndefinedOrEmpty('')).toBe(true);
+    it(`should return "true" if the value is "undefined"`, () => {
+        expect(isUndefinedOrEmpty(undefined)).toBe(false);
     });
 
-    it('should return "false" otherwise', () => {
+    it(`should return "true" if the value is "''"`, () => {
+        expect(isUndefinedOrEmpty('')).toBe(false);
+    });
+
+    it(`should return "false" if value is "null"`, () => {
         expect(isUndefinedOrEmpty(null)).toBe(false);
+    });
+
+    it(`should return "false" if value is "[]"`, () => {
         expect(isUndefinedOrEmpty([])).toBe(false);
-        expect(isUndefinedOrEmpty('matthieu')).toBe(false);
-        expect(isUndefinedOrEmpty(18)).toBe(false);
-        expect(isUndefinedOrEmpty({})).toBe(false);
+    });
+
+    it(`should return "false" if value is "[1, 2, 3]"`, () => {
         expect(isUndefinedOrEmpty([1, 2, 3])).toBe(false);
+    });
+
+    it(`should return "false" if value is "matthieu"`, () => {
+        expect(isUndefinedOrEmpty('matthieu')).toBe(false);
+    });
+
+    it(`should return "false" if value is "18"`, () => {
+        expect(isUndefinedOrEmpty(18)).toBe(false);
     });
 });

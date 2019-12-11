@@ -14,12 +14,8 @@ describe('VALUE', () => {
             { name: 'value', value: 'a custom value' },
         ]);
 
-        try {
-            await transformer({});
-        } catch (error) {
-            expect(error.message).toEqual(
-                'Invalid Argument for VALUE transformation',
-            );
-        }
+        expect(await transformer({})).toThrowError(
+            'Invalid Argument for VALUE transformation',
+        );
     });
 });
