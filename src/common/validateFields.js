@@ -220,8 +220,8 @@ export const validateTransformer = (
 
     const transformerMeta = transformerOperation.getMetas();
     const transformerArgs = transformer.args || [];
-    const filteredTransformerArgs = transformerArgs.filter(({ value }) =>
-        isUndefinedOrEmpty(value),
+    const filteredTransformerArgs = transformerArgs.filter(
+        ({ value }) => !isUndefinedOrEmpty(value),
     );
 
     if (transformerMeta.args.length > filteredTransformerArgs.length) {
@@ -243,7 +243,7 @@ export const validateTransformer = (
 };
 
 export const validateEachTransformer = (transformers = []) =>
-    transformers.map(validateTransformer);
+    transformers.map(value => validateTransformer(value));
 
 export const validateLanguage = (field, languages = languagesList) => {
     const result = {

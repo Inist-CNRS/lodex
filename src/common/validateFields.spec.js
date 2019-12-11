@@ -96,7 +96,6 @@ describe('validateField', () => {
                 {
                     name: 'completes',
                     isValid: true,
-                    error: undefined,
                 },
                 {
                     name: 'composedOf',
