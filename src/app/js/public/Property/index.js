@@ -236,10 +236,7 @@ const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>
     );
 
 const Property = compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
     withProps(({ field, parents = [] }) => ({
         parents: [field.name, ...parents],
     })),

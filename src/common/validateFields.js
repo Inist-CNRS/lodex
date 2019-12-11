@@ -1,6 +1,7 @@
 import { COVERS, COVER_DOCUMENT, COVER_DATASET } from './cover';
 import knownTransformers from './transformers';
 import languagesList from './languages';
+import isUndefinedOrEmpty from './lib/isUndefinedOrEmpty';
 
 export const validateCover = (field, isContribution) => {
     const result = {
@@ -202,9 +203,11 @@ export const validateScheme = field => {
     return result;
 };
 
-export const validateTransformer = transformer => {
-    const transformerOperation = knownTransformers[transformer.operation];
-    const transformerArgs = transformer.args || [];
+export const validateTransformer = (
+    transformer,
+    transformers = knownTransformers,
+) => {
+    const transformerOperation = transformers[transformer.operation];
 
     if (!transformerOperation) {
         return {
@@ -214,11 +217,14 @@ export const validateTransformer = transformer => {
             error: 'invalid',
         };
     }
+
     const transformerMeta = transformerOperation.getMetas();
-    if (
-        transformerMeta.args.length >
-        transformerArgs.filter(({ value }) => !!value).length
-    ) {
+    const transformerArgs = transformer.args || [];
+    const filteredTransformerArgs = transformerArgs.filter(
+        ({ value }) => !isUndefinedOrEmpty(value),
+    );
+
+    if (transformerMeta.args.length > filteredTransformerArgs.length) {
         return {
             name: 'transformer.args',
             isValid: false,
@@ -237,7 +243,7 @@ export const validateTransformer = transformer => {
 };
 
 export const validateEachTransformer = (transformers = []) =>
-    transformers.map(validateTransformer);
+    transformers.map(value => validateTransformer(value));
 
 export const validateLanguage = (field, languages = languagesList) => {
     const result = {
