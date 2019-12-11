@@ -9,6 +9,7 @@ import {
     validateLanguage,
     validatePosition,
     validateScheme,
+    validateTransformer,
     validateTransformers,
 } from './validateFields';
 
@@ -318,6 +319,177 @@ describe('validateField', () => {
                 isValid: false,
                 error: 'required',
             });
+        });
+    });
+
+    describe('validateTransformer', () => {
+        it('should return invalid if the transformer is not in known transformers', () => {
+            const knownTransformers = {
+                UPPERCASE: x => x,
+                LOWERCASE: x => x,
+            };
+
+            const transformer = {
+                operation: 'IVY',
+            };
+
+            const result = validateTransformer(transformer, knownTransformers);
+
+            expect(result.name).toBe('transformer.operation');
+            expect(result.isValid).toBe(false);
+            expect(result.meta.operation).toBe('IVY');
+            expect(result.error).toBe('invalid');
+        });
+
+        it('should return invalid if there is less args in the transformer than in the corresponding transformer', () => {
+            const IVY = x => x;
+
+            IVY.getMetas = () => ({
+                name: 'IVY',
+                type: 'transform',
+                args: [
+                    {
+                        name: 'value',
+                        type: 'string',
+                    },
+                ],
+            });
+
+            const knownTransformers = {
+                IVY,
+            };
+
+            const transformer = {
+                operation: 'IVY',
+                args: [],
+            };
+
+            const result = validateTransformer(transformer, knownTransformers);
+
+            expect(result.name).toBe('transformer.args');
+            expect(result.isValid).toBe(false);
+            expect(result.meta.operation).toBe('IVY');
+            expect(result.error).toBe('invalid');
+        });
+
+        it('should return invalid if the transformer args has an undefined value', () => {
+            const IVY = x => x;
+
+            IVY.getMetas = () => ({
+                name: 'IVY',
+                type: 'transform',
+                args: [
+                    {
+                        name: 'value',
+                        type: 'string',
+                    },
+                ],
+            });
+
+            const knownTransformers = {
+                IVY,
+            };
+
+            const transformer = {
+                operation: 'IVY',
+                args: [
+                    {
+                        name: 'value',
+                        type: 'string',
+                        value: undefined,
+                    },
+                ],
+            };
+
+            const result = validateTransformer(transformer, knownTransformers);
+
+            expect(result.name).toBe('transformer.args');
+            expect(result.isValid).toBe(false);
+            expect(result.meta.operation).toBe('IVY');
+            expect(result.meta.args).toBe(1);
+            expect(result.error).toBe('invalid');
+        });
+
+        it('should return invalid if the transformer args has a value equals to an empty string', () => {
+            const IVY = x => x;
+
+            IVY.getMetas = () => ({
+                name: 'IVY',
+                type: 'transform',
+                args: [
+                    {
+                        name: 'value',
+                        type: 'string',
+                    },
+                ],
+            });
+
+            const knownTransformers = {
+                IVY,
+            };
+
+            const transformer = {
+                operation: 'IVY',
+                args: [
+                    {
+                        name: 'value',
+                        type: 'string',
+                        value: '',
+                    },
+                ],
+            };
+
+            const result = validateTransformer(transformer, knownTransformers);
+
+            expect(result.name).toBe('transformer.args');
+            expect(result.isValid).toBe(false);
+            expect(result.meta.operation).toBe('IVY');
+            expect(result.meta.args).toBe(1);
+            expect(result.error).toBe('invalid');
+        });
+
+        it('should return valid otherwise', () => {
+            const IVY = x => x;
+
+            IVY.getMetas = () => ({
+                name: 'IVY',
+                type: 'transform',
+                args: [
+                    {
+                        name: 'value',
+                        type: 'string',
+                    },
+                    {
+                        name: 'value',
+                        type: 'string',
+                    },
+                ],
+            });
+
+            const knownTransformers = {
+                IVY,
+            };
+
+            const transformer = {
+                operation: 'IVY',
+                args: [
+                    {
+                        name: 'value',
+                        type: 'string',
+                        value: null,
+                    },
+                    {
+                        name: 'value',
+                        type: 'string',
+                        value: 'covfefe',
+                    },
+                ],
+            };
+
+            const result = validateTransformer(transformer, knownTransformers);
+
+            expect(result.name).toBe('transformer.operation');
+            expect(result.isValid).toBe(true);
         });
     });
 
