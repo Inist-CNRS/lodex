@@ -143,8 +143,14 @@ class Streamgraph extends PureComponent {
         const zoom = d3
             .zoom()
             .scaleExtent([1, 99999])
-            .translateExtent([[0, 0], [width, height]])
-            .extent([[0, 0], [width, height]])
+            .translateExtent([
+                [0, 0],
+                [width, height],
+            ])
+            .extent([
+                [0, 0],
+                [width, height],
+            ])
             .on('zoom', this.zoomFunction);
 
         const innerSpace = svgViewport
@@ -177,7 +183,7 @@ class Streamgraph extends PureComponent {
         return { innerSpace, graphZone };
     }
 
-    stackDatas(nameList, valuesArray) {
+    stackData(nameList, valuesArray) {
         if (
             valuesArray.length <= 0 ||
             nameList === undefined ||
@@ -327,7 +333,7 @@ class Streamgraph extends PureComponent {
         const colorNameTmpList = colorNameList;
         colorNameTmpList.reverse();
 
-        colorNameList.forEach((item, index) => {
+        colorNameList.forEach((_, index) => {
             const element = colorNameList[index];
             element.id = index;
             const legendItemContainer = legendView
@@ -378,7 +384,7 @@ class Streamgraph extends PureComponent {
                             return j != colorNameList.length - index ? 0.3 : 1;
                         });
 
-                    colorNameList.forEach((item, index) => {
+                    colorNameList.forEach((_, index) => {
                         const currentLegendItem = document.getElementById(
                             colorNameList.length - index - 1,
                         );
@@ -398,7 +404,7 @@ class Streamgraph extends PureComponent {
                         .duration(25)
                         .attr('opacity', () => 1);
 
-                    colorNameList.forEach((item, index) => {
+                    colorNameList.forEach((_, index) => {
                         document.getElementById(index).style.opacity = '1';
                     });
                 });
@@ -447,9 +453,12 @@ class Streamgraph extends PureComponent {
                     this.mouseIsOverStream = true;
                     this.hoveredKey = d3.select(nodes[i]).attr('name');
 
-                    this.hoveredValue = d.find(
-                        elem => elem.data.date.getFullYear() === parseInt(date),
-                    ).data[this.hoveredKey];
+                    this.hoveredValue = d
+                        .find(
+                            elem =>
+                                elem.data.date.getFullYear() === parseInt(date),
+                        )
+                        .data[this.hoveredKey].toFixed(3);
 
                     this.hoveredColor = colorNameList.find(
                         elem => elem.name === this.hoveredKey,
@@ -474,7 +483,7 @@ class Streamgraph extends PureComponent {
                         )
                         .style('visibility', 'visible');
 
-                    colorNameList.forEach((item, index) => {
+                    colorNameList.forEach((_, index) => {
                         const currentLegendItem = document.getElementById(
                             colorNameList.length - index - 1,
                         );
@@ -562,7 +571,7 @@ class Streamgraph extends PureComponent {
 
         const layersNumber = valuesObjectsArray.length;
 
-        const stackedData = this.stackDatas(namesList, valuesArray);
+        const stackedData = this.stackData(namesList, valuesArray);
         const { minValue, maxValue } = getMinMaxValue(stackedData);
 
         const { innerSpace, graphZone } = this.initTheGraphBasicsElements(
@@ -659,7 +668,6 @@ class Streamgraph extends PureComponent {
         if (Array.isArray(this.props.formatData)) {
             loading = '';
         }
-
         return (
             <div
                 ref={this.divContainer}

@@ -60,6 +60,7 @@ export function transformDataIntoMapArray(formatData) {
     if (formatData) {
         for (let i = 0; i < formatData.length; i++) {
             let elem = formatData[i];
+
             if (elem) {
                 // source: "2010"
                 // target: "Pétrogenèse de roches basaltiques"
@@ -87,7 +88,8 @@ export function transformDataIntoMapArray(formatData) {
                                 parseInt(valueElem.date.getFullYear()) ===
                                 parseInt(elem.source)
                             ) {
-                                valueElem.value = valueElem.value + elem.weight;
+                                var sum = valueElem.value + elem.weight;
+                                valueElem.value = +sum.toFixed(3);
                                 addValueAsSum = true;
                                 break;
                             }
