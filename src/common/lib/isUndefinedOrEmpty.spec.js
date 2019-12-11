@@ -1,12 +1,12 @@
 import isUndefinedOrEmpty from './isUndefinedOrEmpty';
 
-describe('isEmpty', () => {
+describe('isUndefinedOrEmpty', () => {
     it(`should return "true" if the value is "undefined"`, () => {
-        expect(isUndefinedOrEmpty(undefined)).toBe(false);
+        expect(isUndefinedOrEmpty(undefined)).toBe(true);
     });
 
     it(`should return "true" if the value is "''"`, () => {
-        expect(isUndefinedOrEmpty('')).toBe(false);
+        expect(isUndefinedOrEmpty('')).toBe(true);
     });
 
     it(`should return "false" if value is "null"`, () => {

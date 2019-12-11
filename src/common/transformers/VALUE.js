@@ -5,11 +5,12 @@ const transformation = (_, args) => () =>
         const valueArg = args.find(a => a.name === 'value');
 
         if (!valueArg || isUndefinedOrEmpty(valueArg.value)) {
-            reject(new Error('Invalid Argument for VALUE transformation'));
-            return;
+            return reject(
+                new Error('Invalid Argument for VALUE transformation'),
+            );
         }
 
-        resolve(valueArg.value);
+        return resolve(valueArg.value);
     });
 
 transformation.getMetas = () => ({
