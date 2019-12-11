@@ -6,7 +6,6 @@ import {
     throttle,
     all,
 } from 'redux-saga/effects';
-import get from 'lodash.get';
 
 import {
     LOAD_FORMAT_DATA,
@@ -89,39 +88,6 @@ export function* loadFormatData(name, url, queryString) {
     yield put(loadFormatDataSuccess({ name, data: response }));
 }
 
-export function* handleLoadFormatDataRequest({
-    payload: { field, filter, value, resource } = {},
-}) {
-    const name = field && field.name;
-
-    if (!name) {
-        return;
-    }
-
-    if (typeof value !== 'string') {
-        yield put(
-            loadFormatDataError({
-                name,
-                error: 'bad value',
-            }),
-        );
-        return;
-    }
-
-    const params = yield select(fromFields.getGraphFieldParamsByName, name);
-    const uri = get(resource, 'uri', undefined);
-
-    const queryString = yield call(getQueryString, {
-        params: {
-            ...params,
-            uri,
-            ...(filter || {}),
-        },
-    });
-
-    yield call(loadFormatData, name, value, queryString);
-}
-
 export function* loadFormatDataForName(name, filter) {
     const field = yield select(fromFields.getFieldByName, name);
     if (!field || field.cover !== COVER_DATASET) {
@@ -172,5 +138,5 @@ export default function*() {
         ],
         handleFilterFormatDataRequest,
     );
-    yield takeEvery(LOAD_FORMAT_DATA, handleLoadFormatDataRequest);
+    yield takeEvery(LOAD_FORMAT_DATA, handleFilterFormatDataRequest);
 }
