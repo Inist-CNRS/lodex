@@ -27,6 +27,7 @@ const mapDispatchToProps = {
     handleClose: () => addCharacteristicCancel(),
 };
 
-export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    ButtonWithDialogForm,
-);
+export default compose(
+    translate,
+    connect(mapStateToProps, mapDispatchToProps),
+)(ButtonWithDialogForm);

@@ -217,7 +217,4 @@ const mapStateToProps = (state, { formatData, colorScheme, flipAxis }) => {
     };
 };
 
-export default compose(
-    injectData(),
-    connect(mapStateToProps),
-)(HeatMapView);
+export default compose(injectData(), connect(mapStateToProps))(HeatMapView);

@@ -8,22 +8,20 @@ import { COVER_DOCUMENT, COVER_COLLECTION } from '../../common/cover';
 import generateUid from '../services/generateUid';
 
 export const buildInvalidPropertiesMessage = name =>
-    `Invalid data for field ${name} which need a name, a label, a cover, a valid scheme if specified and a transformers array`; // eslint-disable-line
+    `Invalid data for field ${name} which need a name, a label, a cover, a valid scheme if specified and a transformers array`;
 
 export const buildInvalidTransformersMessage = name =>
-    `Invalid transformers for field ${name}: transformers must have a valid operation and an args array`; // eslint-disable-line
+    `Invalid transformers for field ${name}: transformers must have a valid operation and an args array`;
 
 export const validateField = (data, isContribution) => {
     const validation = validateFieldIsomorphic(data, isContribution);
 
     if (!validation.propertiesAreValid) {
-        // eslint-disable-next-line no-console
         console.error('propertiesAreValid', JSON.stringify(validation));
         throw new Error(buildInvalidPropertiesMessage(data.label));
     }
 
     if (!validation.transformersAreValid) {
-        // eslint-disable-next-line no-console
         console.error('transformersAreValid', JSON.stringify(validation));
         throw new Error(buildInvalidTransformersMessage(data.label));
     }

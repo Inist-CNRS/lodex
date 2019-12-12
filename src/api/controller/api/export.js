@@ -75,9 +75,7 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
     if (filter.$and && !filter.$and.length) {
         delete filter.$and;
     }
-    const connectionStringURI = `mongodb://${config.mongo.host}/${
-        config.mongo.dbName
-    }`;
+    const connectionStringURI = `mongodb://${config.mongo.host}/${config.mongo.dbName}`;
     // context is the intput for LodexReduceQuery & LodexRunQuery & LodexDocuments
     const context = {
         // /*
@@ -122,7 +120,7 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
     };
     ctx.body = input
         .pipe(ezs('LodexRunQuery', {}, environment))
-        .pipe(ezs('greater', { path: 'total', 'than': 1 }))
+        .pipe(ezs('greater', { path: 'total', than: 1 }))
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions'))
         .pipe(ezs(statement, { commands, key: ctx.url }, environment))

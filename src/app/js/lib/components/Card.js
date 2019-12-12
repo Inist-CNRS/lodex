@@ -15,7 +15,7 @@ const CardComponent = ({ children, style, ...props }) => (
 
 CardComponent.propTypes = {
     children: PropTypes.node.isRequired,
-    style: PropTypes.object, // eslint-disable-line
+    style: PropTypes.object,
 };
 
 export default CardComponent;

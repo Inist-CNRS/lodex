@@ -86,10 +86,7 @@ const mapDispatchToProps = {
 
 export default compose(
     withInitialData,
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
     lifecycle({
         componentWillMount() {
             this.props.preLoadLoaders();

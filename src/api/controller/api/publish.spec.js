@@ -1,4 +1,3 @@
-/* eslint max-len: off */
 import { doPublish, preparePublish, handlePublishError } from './publish';
 import publishCharacteristics from '../../services/publishCharacteristics';
 import publishDocuments from '../../services/publishDocuments';

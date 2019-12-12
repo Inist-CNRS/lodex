@@ -1,4 +1,3 @@
-/* eslint max-len: off */
 export default [
     {
         code: 'fr',

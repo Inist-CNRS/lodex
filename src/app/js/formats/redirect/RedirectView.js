@@ -128,7 +128,4 @@ const mapStateToProps = () => ({
     classes: styles,
 });
 
-export default compose(
-    connect(mapStateToProps),
-    translate,
-)(RedirectView);
+export default compose(connect(mapStateToProps), translate)(RedirectView);

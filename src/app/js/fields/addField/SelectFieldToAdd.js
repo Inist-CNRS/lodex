@@ -70,6 +70,7 @@ const mapDispatchToProps = {
     onSelectField: selectField,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    SelectFieldToAddComponent,
-);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate,
+)(SelectFieldToAddComponent);

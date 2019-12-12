@@ -45,6 +45,7 @@ const mapDispatchToProps = {
     sortDataset: sortDatasetAction,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-    DatasetColumnHeader,
-);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(DatasetColumnHeader);

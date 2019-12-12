@@ -44,7 +44,6 @@ export const addFieldsToFilters = matchableFields => filters => {
     };
 };
 
-
 export const getValueQueryFragment = (name, value, inverted) => {
     if (Array.isArray(value) && value.length > 1) {
         return {

@@ -36,5 +36,4 @@ describe('DEFAULT', () => {
     it('should return value if object', () => {
         expect(defval({ a: 'Ya' }, 'Yo')).toEqual({ a: 'Ya' });
     });
-
 });

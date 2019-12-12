@@ -24,8 +24,8 @@ const UriColumn = ({ column, resource, indice }) => (
 
 UriColumn.propTypes = {
     column: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired, // eslint-disable-line
-    indice: PropTypes.number, // eslint-disable-line
+    resource: PropTypes.object.isRequired,
+    indice: PropTypes.number,
 };
 
 export default UriColumn;

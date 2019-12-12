@@ -1,4 +1,3 @@
-/* eslint react/no-array-index-key: off */
 import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
@@ -21,6 +20,8 @@ const TransformerArgList = ({ fields }) => (
 TransformerArgList.propTypes = {
     fields: PropTypes.shape({
         map: PropTypes.func.isRequired,
+        remove: PropTypes.func.isRequired,
+        get: PropTypes.func.isRequired,
     }).isRequired,
 };
 

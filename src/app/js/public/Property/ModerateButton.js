@@ -101,6 +101,7 @@ const mapStateToProps = (state, { fieldName }) => ({
     isAdmin: fromUser.isAdmin(state),
 });
 
-export default compose(translate, connect(mapStateToProps))(
-    ModerateButtonComponent,
-);
+export default compose(
+    translate,
+    connect(mapStateToProps),
+)(ModerateButtonComponent);

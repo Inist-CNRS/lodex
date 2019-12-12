@@ -36,7 +36,10 @@ class ParagraphAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { paragraphWidth } } = this.props;
+        const {
+            p: polyglot,
+            args: { paragraphWidth },
+        } = this.props;
 
         return (
             <div style={styles.container}>

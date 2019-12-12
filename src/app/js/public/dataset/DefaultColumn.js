@@ -27,7 +27,7 @@ const DatasetColumn = ({ column, columns, resource }) => (
 DatasetColumn.propTypes = {
     column: fieldPropTypes.isRequired,
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    resource: PropTypes.object.isRequired, // eslint-disable-line
+    resource: PropTypes.object.isRequired,
 };
 
 export default DatasetColumn;

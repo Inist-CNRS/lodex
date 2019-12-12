@@ -59,7 +59,7 @@ IdentifierBadgeView.propTypes = {
     field: fieldPropTypes.isRequired,
     typid: PropTypes.string.isRequired,
     colors: PropTypes.string.isRequired,
-    resource: PropTypes.object.isRequired, // eslint-disable-line
+    resource: PropTypes.object.isRequired,
 };
 
 export default IdentifierBadgeView;

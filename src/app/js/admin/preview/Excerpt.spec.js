@@ -11,7 +11,10 @@ describe('<Excerpt />', () => {
             { name: 'foo', label: 'foo' },
             { name: 'bar', label: 'Super Bar' },
         ],
-        lines: [{ foo: 'foo1', bar: 'bar1' }, { foo: 'foo2', bar: 'bar2' }],
+        lines: [
+            { foo: 'foo1', bar: 'bar1' },
+            { foo: 'foo2', bar: 'bar2' },
+        ],
         p: { t: key => key },
     };
 

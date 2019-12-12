@@ -1,4 +1,3 @@
-/* eslint max-len: off */
 import { publishCharacteristicsFactory } from './publishCharacteristics';
 
 describe('publishCharacteristics', () => {

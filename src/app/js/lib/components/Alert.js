@@ -20,7 +20,7 @@ const Alert = ({ children, style }) => (
 
 Alert.propTypes = {
     children: PropTypes.node.isRequired,
-    style: PropTypes.object, // eslint-disable-line
+    style: PropTypes.object,
 };
 
 Alert.defaultProps = {

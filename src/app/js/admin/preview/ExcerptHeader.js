@@ -13,14 +13,13 @@ import {
 import getFieldClassName from '../../lib/getFieldClassName';
 import { isLongText, getShortText } from '../../lib/longTexts';
 
-const getStyle = memoize(
-    field =>
-        field.cover === 'dataset'
-            ? {
-                  fontWeight: 'bold',
-                  color: 'black',
-              }
-            : null,
+const getStyle = memoize(field =>
+    field.cover === 'dataset'
+        ? {
+              fontWeight: 'bold',
+              color: 'black',
+          }
+        : null,
 );
 
 const ensureTextIsShort = text =>
@@ -80,6 +79,7 @@ const mapStateToProps = (state, { field }) => ({
     compositeFields: fromFields.getCompositeFieldsNamesByField(state, field),
 });
 
-export default compose(connect(mapStateToProps), translate)(
-    ExcerptHeaderComponent,
-);
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(ExcerptHeaderComponent);

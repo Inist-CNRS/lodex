@@ -28,7 +28,7 @@ export const ParsingExcerptColumnComponent = ({ children, style, value }) =>
 
 ParsingExcerptColumnComponent.propTypes = {
     children: PropTypes.node,
-    style: PropTypes.object, // eslint-disable-line
+    style: PropTypes.object,
     value: PropTypes.string.isRequired,
 };
 

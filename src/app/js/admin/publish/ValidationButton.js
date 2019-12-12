@@ -62,7 +62,7 @@ const ValidationButtonComponent = ({
 );
 
 ValidationButtonComponent.propTypes = {
-    popover: PropTypes.object, // eslint-disable-line
+    popover: PropTypes.object,
     handleEditField: PropTypes.func.isRequired,
     fields: PropTypes.arrayOf(validationFieldPropType).isRequired,
     handleHideErrors: PropTypes.func.isRequired,

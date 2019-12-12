@@ -66,7 +66,10 @@ class LodexFieldAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { param } } = this.props;
+        const {
+            p: polyglot,
+            args: { param },
+        } = this.props;
         const { labelArray, hiddenInfo } = param || defaultArgs.param;
         const label = labelArray.join(';');
 

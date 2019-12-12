@@ -83,9 +83,6 @@ const mapDispatchToProps = (dispatch, { page }) => ({
 });
 
 export default compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
     translate,
 )(FacetList);

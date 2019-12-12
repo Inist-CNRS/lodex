@@ -1,9 +1,10 @@
-/* eslint-disable */
+/* global fields, emit */
+
 //
 // MongoDB JS functions
 //
 
-module.exports.map = function () {
+module.exports.map = function() {
     var doc = this;
     var dta = doc.versions[doc.versions.length - 1];
     dta.uri = doc.uri;
@@ -20,8 +21,7 @@ module.exports.map = function () {
                 return o;
             });
         }
-    }
-    else if (fields.length > 1) {
+    } else if (fields.length > 1) {
         values = fields
             .map(function(field) {
                 var fieldValues = {};
@@ -31,32 +31,29 @@ module.exports.map = function () {
             .reduce(function(previous, current) {
                 var field = Object.keys(current)[0];
                 if (Array.isArray(current[field])) {
-                    current[field].sort().forEach(function (value) {
-                        var o    = {};
+                    current[field].sort().forEach(function(value) {
+                        var o = {};
                         o[field] = value;
                         previous.push(o);
                     });
-                }
-                else {
-                    var o    = {};
+                } else {
+                    var o = {};
                     o[field] = current[field];
                     previous.push(o);
                 }
                 return previous;
             }, []);
     }
-    values
-        .forEach(function(v, i) {
-            values.slice(i + 1).forEach(function(w) {
-                emit(JSON.stringify([v, w]), 1);
-            });
+    values.forEach(function(v, i) {
+        values.slice(i + 1).forEach(function(w) {
+            emit(JSON.stringify([v, w]), 1);
         });
+    });
 };
 
-module.exports.reduce = function (key, values) {
+module.exports.reduce = function(_, values) {
     return Array.sum(values);
 };
-
 
 module.exports.finalize = function finalize(key, value) {
     var vector = JSON.parse(key);
@@ -66,6 +63,6 @@ module.exports.finalize = function finalize(key, value) {
         source: vector[0][sourceKey],
         target: vector[1][targetKey],
         weight: value,
-    }
+    };
     return obj;
 };

@@ -26,8 +26,6 @@ const styles = {
     },
 };
 
-// FIXME: the props are declared, but ESLint warns!
-// eslint-disable-next-line react/prop-types
 const ClassList = ({ fields, p: polyglot }) => (
     <div>
         <div style={styles.header}>
@@ -53,11 +51,12 @@ const ClassList = ({ fields, p: polyglot }) => (
     </div>
 );
 
-ClassList.PropTypes = {
+ClassList.propTypes = {
     fields: PropTypes.shape({
         map: PropTypes.func.isRequired,
         get: PropTypes.func.isRequired,
         remove: PropTypes.func.isRequired,
+        push: PropTypes.func.isRequired,
     }).isRequired,
     p: polyglotPropTypes.isRequired,
     onChangeClass: PropTypes.func.isRequired,

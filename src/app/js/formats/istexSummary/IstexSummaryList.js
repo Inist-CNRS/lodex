@@ -23,7 +23,7 @@ const IstexSummaryList = ({ fieldStatus, field, resource }) => {
             style={styles.text(fieldStatus)}
             href={`${url}`}
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
         >
             {url}
         </a>
@@ -32,7 +32,7 @@ const IstexSummaryList = ({ fieldStatus, field, resource }) => {
 
 IstexSummaryList.propTypes = {
     fieldStatus: PropTypes.string,
-    resource: PropTypes.object.isRequired, // eslint-disable-line
+    resource: PropTypes.object.isRequired,
     field: fieldPropTypes.isRequired,
 };
 

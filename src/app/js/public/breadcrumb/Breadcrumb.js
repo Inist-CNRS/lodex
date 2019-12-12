@@ -89,7 +89,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default compose(
-    connect(mapStateToProps),
-    withRouter,
-)(Breadcrumb);
+export default compose(connect(mapStateToProps), withRouter)(Breadcrumb);

@@ -225,10 +225,7 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
     translate,
     withRouter,
 )(ResourceComponent);

@@ -70,7 +70,11 @@ describe('publishedDataset', () => {
             await getPage(ctx);
 
             expect(ctx.body).toEqual({
-                data: [{ uri: 1, v: 2 }, { uri: 2, v: 3 }, { uri: 3, v: 1 }],
+                data: [
+                    { uri: 1, v: 2 },
+                    { uri: 2, v: 3 },
+                    { uri: 3, v: 1 },
+                ],
                 total: 42,
                 fullTotal: 'fullTotal',
             });

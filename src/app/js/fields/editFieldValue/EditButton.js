@@ -72,10 +72,7 @@ const mapDispatchToProps = {
 
 export default compose(
     translate,
-    connect(
-        null,
-        mapDispatchToProps,
-    ),
+    connect(null, mapDispatchToProps),
     withHandlers({
         onSaveProperty: ({
             updateCharacteristics,

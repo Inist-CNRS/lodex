@@ -166,8 +166,5 @@ const mapDispatchToProps = {
 
 export default compose(
     translate,
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
 )(GraphPage);

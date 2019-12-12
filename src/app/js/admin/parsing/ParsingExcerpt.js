@@ -106,9 +106,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(
-        undefined,
-        mapDispatchToProps,
-    ),
+    connect(undefined, mapDispatchToProps),
     pure,
 )(ParsingExcerptComponent);

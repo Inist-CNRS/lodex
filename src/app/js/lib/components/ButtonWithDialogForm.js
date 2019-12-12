@@ -113,8 +113,8 @@ PureButtonWithDialogForm.propTypes = {
     saving: PropTypes.bool.isRequired,
     open: PropTypes.bool,
     show: PropTypes.bool,
-    buttonStyle: PropTypes.object, // eslint-disable-line
-    style: PropTypes.object, // eslint-disable-line
+    buttonStyle: PropTypes.object,
+    style: PropTypes.object,
     form: PropTypes.node.isRequired,
     icon: PropTypes.node,
     label: PropTypes.string.isRequired,
@@ -125,10 +125,7 @@ PureButtonWithDialogForm.propTypes = {
 const mapDispatchToProps = { submit: submitAction };
 
 export default compose(
-    connect(
-        null,
-        mapDispatchToProps,
-    ),
+    connect(null, mapDispatchToProps),
     withHandlers({
         handleSubmit: ({ submit, formName }) => () => {
             submit(formName);

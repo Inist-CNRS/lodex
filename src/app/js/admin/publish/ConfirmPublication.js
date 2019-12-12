@@ -72,6 +72,7 @@ const mapDispatchToProps = {
     cancelPublication: publishCancel,
 };
 
-export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    ConfirmPublicationComponent,
-);
+export default compose(
+    translate,
+    connect(mapStateToProps, mapDispatchToProps),
+)(ConfirmPublicationComponent);

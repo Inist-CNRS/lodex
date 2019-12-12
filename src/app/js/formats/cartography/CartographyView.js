@@ -252,8 +252,5 @@ const mapDispatchToProps = {};
 
 export default compose(
     injectData(),
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
 )(CartographyView);

@@ -37,7 +37,7 @@ class ClearDialogComponent extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps.succeeded) { // eslint-disable-line
+        if (nextProps.succeeded) {
             window.location.reload();
         }
     }
@@ -144,6 +144,7 @@ class ClearDialogComponent extends Component {
 
 ClearDialogComponent.propTypes = {
     type: PropTypes.string.isRequired,
+    succeeded: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     onClose: PropTypes.func.isRequired,
     clearDataset: PropTypes.func.isRequired,
@@ -166,8 +167,5 @@ const mapDispatchToProps = {
 
 export default compose(
     translate,
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
 )(ClearDialogComponent);

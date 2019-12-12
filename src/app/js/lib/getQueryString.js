@@ -17,20 +17,18 @@ export const addKeyToLiteral = (key, value) => (literal = {}) => {
     };
 };
 
-export default (
-    {
-        match,
-        facets,
-        params,
-        invertedFacets,
-        sort = {},
-        page,
-        perPage,
-        limit,
-        skip,
-        uri,
-    } = {},
-) =>
+export default ({
+    match,
+    facets,
+    params,
+    invertedFacets,
+    sort = {},
+    page,
+    perPage,
+    limit,
+    skip,
+    uri,
+} = {}) =>
     compose(
         qs.stringify,
         addLiteralToLiteral(facets),

@@ -44,7 +44,10 @@ class UriAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { type, value } } = this.props;
+        const {
+            p: polyglot,
+            args: { type, value },
+        } = this.props;
 
         return (
             <div style={styles.container}>

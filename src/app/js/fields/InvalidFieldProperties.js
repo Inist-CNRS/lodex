@@ -40,6 +40,7 @@ const mapStateToprops = state => ({
     invalidProperties: fromFields.getInvalidProperties(state),
 });
 
-export default compose(translate, connect(mapStateToprops))(
-    InvalidFieldProperties,
-);
+export default compose(
+    translate,
+    connect(mapStateToprops),
+)(InvalidFieldProperties);

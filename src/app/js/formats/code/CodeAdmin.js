@@ -35,7 +35,10 @@ class AdminComponent extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { languageToHighlight } } = this.props;
+        const {
+            p: polyglot,
+            args: { languageToHighlight },
+        } = this.props;
 
         return (
             <div style={styles.container}>

@@ -241,10 +241,7 @@ export default url => FormatView => {
     };
 
     return compose(
-        connect(
-            mapStateToProps,
-            mapDispatchToProps,
-        ),
+        connect(mapStateToProps, mapDispatchToProps),
         translate,
     )(SparqlRequest);
 };
