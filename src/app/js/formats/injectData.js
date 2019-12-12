@@ -173,10 +173,7 @@ export default (url, checkFormatLoaded = null) => FormatView => {
     };
 
     return compose(
-        connect(
-            mapStateToProps,
-            mapDispatchToProps,
-        ),
+        connect(mapStateToProps, mapDispatchToProps),
         translate,
     )(GraphItem);
 };

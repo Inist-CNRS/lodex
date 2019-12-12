@@ -6,6 +6,7 @@ import {
     throttle,
     all,
 } from 'redux-saga/effects';
+import get from 'lodash.get';
 
 import {
     LOAD_FORMAT_DATA,
@@ -114,14 +115,55 @@ export function* loadFormatDataForName(name, filter) {
     yield call(loadFormatData, name, url, queryString);
 }
 
+function* handleURIFormatDataRequest({
+    payload: { field, filter, value, resource } = {},
+}) {
+    const name = field && field.name;
+    if (!name) {
+        return;
+    }
+    if (typeof value !== 'string') {
+        yield put(
+            loadFormatDataError({
+                name,
+                error: 'bad value',
+            }),
+        );
+        return;
+    }
+    const params = yield select(fromFields.getGraphFieldParamsByName, name);
+    const uri = get(resource, 'uri', undefined);
+    const queryString = yield call(getQueryString, {
+        params: {
+            ...params,
+            uri,
+            ...(filter || {}),
+        },
+    });
+
+    yield call(loadFormatData, name, value, queryString);
+}
+
 export function* handleFilterFormatDataRequest({ payload: { filter } = {} }) {
     const names = yield select(fromFormat.getCurrentFieldNames);
-
     if (!names || !names.length) {
         return;
     }
-
     yield all(names.map(name => call(loadFormatDataForName, name, filter)));
+}
+
+export function* handleFormatDataRequest({
+    payload: { field, filter, value, resource } = {},
+}) {
+    if (value && value.startsWith('http')) {
+        yield handleURIFormatDataRequest({
+            payload: { field, filter, value, resource },
+        });
+    } else {
+        yield handleFilterFormatDataRequest({
+            payload: { filter },
+        });
+    }
 }
 
 export default function*() {
@@ -138,5 +180,5 @@ export default function*() {
         ],
         handleFilterFormatDataRequest,
     );
-    yield takeEvery(LOAD_FORMAT_DATA, handleFilterFormatDataRequest);
+    yield takeEvery(LOAD_FORMAT_DATA, handleFormatDataRequest);
 }
