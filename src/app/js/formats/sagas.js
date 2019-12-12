@@ -89,11 +89,15 @@ export function* loadFormatData(name, url, queryString) {
     yield put(loadFormatDataSuccess({ name, data: response }));
 }
 
+const isUrl = text => {
+    const regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return regexp.test(text);
+};
+
 export function* handleLoadFormatDataRequest({
     payload: { field, filter, value, resource, withUri } = {},
 }) {
     const name = field && field.name;
-
     if (!name) {
         return;
     }
@@ -105,6 +109,11 @@ export function* handleLoadFormatDataRequest({
                 error: 'bad value',
             }),
         );
+        return;
+    }
+
+    if (!isUrl(value)) {
+        yield handleFilterFormatDataRequest({ payload: { filter } });
         return;
     }
 
