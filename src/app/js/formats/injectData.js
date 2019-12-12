@@ -35,7 +35,11 @@ const getCreateUrl = url => {
     return ({ field, resource }) => resource[field.name];
 };
 
-export default (url, checkFormatLoaded = null) => FormatView => {
+export default (
+    url = null,
+    checkFormatLoaded = null,
+    withUri = false,
+) => FormatView => {
     const createUrl = getCreateUrl(url);
 
     class GraphItem extends Component {
@@ -60,7 +64,7 @@ export default (url, checkFormatLoaded = null) => FormatView => {
                 return;
             }
 
-            loadFormatData({ ...this.props, value });
+            loadFormatData({ ...this.props, value, withUri });
         };
 
         UNSAFE_componentWillMount() {
@@ -100,6 +104,7 @@ export default (url, checkFormatLoaded = null) => FormatView => {
                 field,
                 value: createUrl(this.props),
                 filter,
+                withUri,
             });
         };
 
