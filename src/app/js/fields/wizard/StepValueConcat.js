@@ -1,5 +1,3 @@
-/* eslint react/no-array-index-key: off */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import RadioButton from 'material-ui/RadioButton';

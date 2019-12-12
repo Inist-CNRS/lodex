@@ -1,4 +1,5 @@
 /* eslint-disable */
+
 /*
  * Duplicated from original Material-ui tooltip and modified to suit our needs until
  * v7 is out
@@ -192,11 +193,11 @@ class Tooltip extends Component {
 
     render() {
         const {
-            horizontalPosition, // eslint-disable-line no-unused-vars
+            horizontalPosition,
             label,
-            show, // eslint-disable-line no-unused-vars
-            touch, // eslint-disable-line no-unused-vars
-            verticalPosition, // eslint-disable-line no-unused-vars
+            show,
+            touch,
+            verticalPosition,
             ...other
         } = this.props;
 

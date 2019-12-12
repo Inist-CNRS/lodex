@@ -38,7 +38,6 @@ class ClearDialogComponent extends Component {
 
     UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.succeeded) {
-            // eslint-disable-line
             window.location.reload();
         }
     }
@@ -145,6 +144,7 @@ class ClearDialogComponent extends Component {
 
 ClearDialogComponent.propTypes = {
     type: PropTypes.string.isRequired,
+    succeeded: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     onClose: PropTypes.func.isRequired,
     clearDataset: PropTypes.func.isRequired,

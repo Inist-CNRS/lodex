@@ -1,4 +1,5 @@
-/* eslint-disable */
+/* global fields, emit */
+
 //
 // MongoDB JS functions
 //
@@ -50,7 +51,7 @@ module.exports.map = function() {
     });
 };
 
-module.exports.reduce = function(key, values) {
+module.exports.reduce = function(_, values) {
     return Array.sum(values);
 };
 

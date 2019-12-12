@@ -1,4 +1,5 @@
-/* eslint-disable */
+/* global emit */
+
 //
 // MongoDB JS functions
 //

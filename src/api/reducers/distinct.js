@@ -1,4 +1,5 @@
-/* eslint-disable */
+/* global fields, emit */
+
 //
 // MongoDB JS functions
 //
@@ -7,6 +8,7 @@ module.exports.map = function() {
     var doc = this;
     var dta = doc.versions[doc.versions.length - 1];
     dta.uri = doc.uri;
+
     fields
         .filter(function(key) {
             return dta[key] || doc[key];

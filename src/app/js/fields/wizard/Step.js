@@ -47,7 +47,7 @@ StepComponent.propTypes = {
     disabled: PropTypes.bool,
     index: PropTypes.number.isRequired,
     last: PropTypes.bool,
-    style: PropTypes.object, // eslint-disable-line
+    style: PropTypes.object,
     icon: PropTypes.node,
 
     handleSelectStep: PropTypes.func.isRequired,

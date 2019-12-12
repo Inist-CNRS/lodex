@@ -27,7 +27,7 @@ const IstexView = ({ fieldStatus, field, resource }) => {
 
 IstexView.propTypes = {
     fieldStatus: PropTypes.string,
-    resource: PropTypes.object.isRequired, // eslint-disable-line
+    resource: PropTypes.object.isRequired,
     field: fieldPropTypes.isRequired,
 };
 

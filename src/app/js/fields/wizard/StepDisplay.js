@@ -31,7 +31,7 @@ export const StepDisplayComponent = ({ cover, p: polyglot, ...props }) => (
 StepDisplayComponent.propTypes = {
     transformers: PropTypes.arrayOf(PropTypes.object).isRequired,
     cover: PropTypes.oneOf(COVERS),
-    format: PropTypes.object, // eslint-disable-line
+    format: PropTypes.object,
     p: polyglotPropTypes.isRequired,
 };
 

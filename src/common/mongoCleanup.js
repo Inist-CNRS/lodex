@@ -1,4 +1,3 @@
-/* eslint no-console: off */
 // Remove LODEX's mongoDB base
 import { MongoClient } from 'mongodb';
 import config from 'config';

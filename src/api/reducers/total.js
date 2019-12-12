@@ -1,4 +1,5 @@
-/* eslint-disable */
+/* global fields, emit */
+
 //
 // MongoDB JS functions :  to sum all values from a field
 //

@@ -1,4 +1,3 @@
-/* eslint max-len: off */
 import publishFacets from './publishFacets';
 
 describe('publishFacets', () => {

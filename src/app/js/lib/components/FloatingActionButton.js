@@ -51,7 +51,7 @@ FloatingActionButtonComponent.propTypes = {
     handleMouseLeave: PropTypes.func.isRequired,
     setShowTooltip: PropTypes.func.isRequired,
     showTooltip: PropTypes.bool.isRequired,
-    style: PropTypes.object, // eslint-disable-line
+    style: PropTypes.object,
     tooltip: PropTypes.string,
 };
 

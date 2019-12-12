@@ -26,7 +26,7 @@ export const validateConfig = config => {
 
 export default async (ctx, next) => {
     try {
-        const config = require('../../../config.json'); // eslint-disable-line
+        const config = require('../../../config.json');
 
         validateConfig(config);
 
@@ -34,7 +34,7 @@ export default async (ctx, next) => {
     } catch (err) {
         const error = new Error(
             `Invalid configuration from EzMaster: ${err.message}`,
-        ); // eslint-disable-line
+        );
         throw error;
     }
 

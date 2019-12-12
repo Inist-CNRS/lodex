@@ -21,7 +21,7 @@ const ImageView = ({ resource, field, imageWidth }) => {
 
 ImageView.propTypes = {
     field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired, // eslint-disable-line
+    resource: PropTypes.object.isRequired,
     imageWidth: PropTypes.string.isRequired,
 };
 

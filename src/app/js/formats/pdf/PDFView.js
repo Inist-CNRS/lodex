@@ -36,7 +36,7 @@ const PDFView = ({ resource, field, PDFWidth }) => {
 
 PDFView.propTypes = {
     field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired, // eslint-disable-line
+    resource: PropTypes.object.isRequired,
     PDFWidth: PropTypes.string.isRequired,
 };
 

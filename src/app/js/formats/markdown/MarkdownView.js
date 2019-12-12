@@ -1,4 +1,3 @@
-/* eslint react/no-danger: off */
 import React from 'react';
 import PropTypes from 'prop-types';
 import MarkdownIt from 'markdown-it';
@@ -32,7 +31,7 @@ const MarkdownView = ({ className, resource, field }) => {
 MarkdownView.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired, // eslint-disable-line
+    resource: PropTypes.object.isRequired,
 };
 
 MarkdownView.defaultProps = {

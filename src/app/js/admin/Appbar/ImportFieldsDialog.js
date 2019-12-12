@@ -34,7 +34,6 @@ const styles = {
 class ImportFieldsDialogComponent extends Component {
     UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.succeeded) {
-            // eslint-disable-line
             this.props.onClose();
         }
     }
@@ -89,6 +88,7 @@ class ImportFieldsDialogComponent extends Component {
 }
 
 ImportFieldsDialogComponent.propTypes = {
+    succeeded: PropTypes.bool.isRequired,
     failed: PropTypes.bool.isRequired,
     importFields: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,

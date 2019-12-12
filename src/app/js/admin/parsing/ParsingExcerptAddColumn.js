@@ -43,7 +43,7 @@ ParsingExcerptAddColumnComponent.propTypes = {
     atTop: PropTypes.bool.isRequired,
     handleAddColumn: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
-    style: PropTypes.object, // eslint-disable-line
+    style: PropTypes.object,
     p: polyglotPropTypes.isRequired,
 };
 

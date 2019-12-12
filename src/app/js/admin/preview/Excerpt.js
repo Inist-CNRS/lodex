@@ -104,8 +104,8 @@ ExcerptComponent.propTypes = {
     areHeadersClickable: PropTypes.bool.isRequired,
     className: PropTypes.string,
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    colStyle: PropTypes.object, // eslint-disable-line
-    isPreview: PropTypes.bool, // eslint-disable-line
+    colStyle: PropTypes.object,
+    isPreview: PropTypes.bool,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
     onCellClick: PropTypes.func.isRequired,
     onHeaderClick: PropTypes.func.isRequired,
