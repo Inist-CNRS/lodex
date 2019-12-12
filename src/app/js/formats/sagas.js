@@ -90,7 +90,7 @@ export function* loadFormatData(name, url, queryString) {
 }
 
 export function* handleLoadFormatDataRequest({
-    payload: { field, filter, value, resource } = {},
+    payload: { field, filter, value, resource, withUri } = {},
 }) {
     const name = field && field.name;
 
@@ -114,8 +114,8 @@ export function* handleLoadFormatDataRequest({
     const queryString = yield call(getQueryString, {
         params: {
             ...params,
-            uri,
             ...(filter || {}),
+            ...(withUri && { uri }),
         },
     });
 
