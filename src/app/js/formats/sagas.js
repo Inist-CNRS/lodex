@@ -22,6 +22,7 @@ import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import { COVER_DATASET } from '../../../common/cover';
 import { ISTEX_API_URL } from '../../../common/externals';
+import { isLink } from '../../../common/uris';
 
 const isSparqlQuery = url =>
     url.toLowerCase().includes('select') &&
@@ -89,11 +90,6 @@ export function* loadFormatData(name, url, queryString) {
     yield put(loadFormatDataSuccess({ name, data: response }));
 }
 
-const isUrl = text => {
-    const regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-    return regexp.test(text);
-};
-
 export function* handleLoadFormatDataRequest({
     payload: { field, filter, value, resource, withUri } = {},
 }) {
@@ -112,7 +108,7 @@ export function* handleLoadFormatDataRequest({
         return;
     }
 
-    if (!isUrl(value)) {
+    if (!isLink(value)) {
         yield handleFilterFormatDataRequest({ payload: { filter } });
         return;
     }
