@@ -183,6 +183,7 @@ const mapDispatchToProps = {
     onChangeFilter: changeContributedResourceFilter,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    ContributedResourceListComponent,
-);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate,
+)(ContributedResourceListComponent);

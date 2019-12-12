@@ -82,7 +82,11 @@ export const exportFields = async ctx => {
     ctx.attachment('lodex_export.json');
     ctx.type = 'application/json';
 
-    ctx.body = JSON.stringify(fields.map(f => omit(f, ['_id'])), null, 4);
+    ctx.body = JSON.stringify(
+        fields.map(f => omit(f, ['_id'])),
+        null,
+        4,
+    );
 };
 
 const simplifyTransformers = field => {
@@ -118,7 +122,9 @@ export const getUploadedFields = (
     asyncBusboyImpl,
     streamToStringImpl,
 ) => async req => {
-    const { files: [fieldsStream] } = await asyncBusboyImpl(req);
+    const {
+        files: [fieldsStream],
+    } = await asyncBusboyImpl(req);
 
     return JSON.parse(await streamToStringImpl(fieldsStream));
 };

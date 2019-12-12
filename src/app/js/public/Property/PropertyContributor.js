@@ -67,6 +67,7 @@ const mapStateToProps = (state, { fieldName }) => ({
     contributor: fromResource.getResourceContributorForField(state, fieldName),
 });
 
-export default compose(translate, connect(mapStateToProps))(
-    PropertyContributorComponent,
-);
+export default compose(
+    translate,
+    connect(mapStateToProps),
+)(PropertyContributorComponent);

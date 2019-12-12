@@ -43,8 +43,5 @@ const mapDispatchToProps = (dispatch, { field: { name } }) => ({
 
 export default compose(
     translate,
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
 )(ButtonWithDialogForm);

@@ -107,6 +107,7 @@ const mapDispatchToProps = {
     onSelectVersion: selectVersion,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    SelectVersionComponent,
-);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate,
+)(SelectVersionComponent);

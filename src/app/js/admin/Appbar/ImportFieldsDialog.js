@@ -33,7 +33,8 @@ const styles = {
 
 class ImportFieldsDialogComponent extends Component {
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps.succeeded) { // eslint-disable-line
+        if (nextProps.succeeded) {
+            // eslint-disable-line
             this.props.onClose();
         }
     }
@@ -105,8 +106,5 @@ const mapDispatchToProps = {
 
 export default compose(
     translate,
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
 )(ImportFieldsDialogComponent);

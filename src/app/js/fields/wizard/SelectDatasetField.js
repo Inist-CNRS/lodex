@@ -58,6 +58,7 @@ const mapStateToProps = state => ({
     datasetFields: fromParsing.getParsedExcerptColumns(state),
 });
 
-export default compose(connect(mapStateToProps), translate)(
-    SelectDatasetFieldComponent,
-);
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(SelectDatasetFieldComponent);

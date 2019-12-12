@@ -125,10 +125,7 @@ PureButtonWithDialogForm.propTypes = {
 const mapDispatchToProps = { submit: submitAction };
 
 export default compose(
-    connect(
-        null,
-        mapDispatchToProps,
-    ),
+    connect(null, mapDispatchToProps),
     withHandlers({
         handleSubmit: ({ submit, formName }) => () => {
             submit(formName);

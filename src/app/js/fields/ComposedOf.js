@@ -108,6 +108,7 @@ const mapDispatchToProps = {
     removeComposedOf: () => change('field', 'composedOf', undefined),
 };
 
-export default compose(translate, connect(null, mapDispatchToProps))(
-    ComposedOfComponent,
-);
+export default compose(
+    translate,
+    connect(null, mapDispatchToProps),
+)(ComposedOfComponent);

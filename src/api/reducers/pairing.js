@@ -3,7 +3,7 @@
 // MongoDB JS functions
 //
 
-module.exports.map = function () {
+module.exports.map = function() {
     var doc = this;
     var dta = doc.versions[doc.versions.length - 1];
     dta.uri = doc.uri;
@@ -16,28 +16,26 @@ module.exports.map = function () {
         }
         return value;
     });
-    values
-        .forEach(function(v, i) {
-            var allValues = values.slice(i + 1).reduce(function(previous, current) {
-                current.forEach(function(val) {
-                    previous.push(val);
+    values.forEach(function(v, i) {
+        var allValues = values.slice(i + 1).reduce(function(previous, current) {
+            current.forEach(function(val) {
+                previous.push(val);
+            });
+            return previous;
+        }, []);
+        if (allValues) {
+            v.forEach(function(w) {
+                allValues.forEach(function(x) {
+                    emit(JSON.stringify([w, x]), 1);
                 });
-                return previous;
-            }, []);
-            if (allValues) {
-                v.forEach(function(w) {
-                    allValues.forEach(function(x) {
-                        emit(JSON.stringify([w, x]), 1);
-                    });
-                })
-            }
-        });
+            });
+        }
+    });
 };
 
-module.exports.reduce = function (key, values) {
+module.exports.reduce = function(key, values) {
     return Array.sum(values);
 };
-
 
 module.exports.finalize = function finalize(key, value) {
     var vector = JSON.parse(key);
@@ -45,6 +43,6 @@ module.exports.finalize = function finalize(key, value) {
         source: vector[0],
         target: vector[1],
         weight: value,
-    }
+    };
     return obj;
 };

@@ -74,10 +74,7 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
         onSubmit: ({ onSaveField }) => values => {
             onSaveField(values);

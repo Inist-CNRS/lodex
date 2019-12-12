@@ -15,10 +15,10 @@ import { FINISH_PROGRESS, ERROR_PROGRESS } from '../progress/reducer';
 export function* handlePublishRequest() {
     const verifyUriRequest = yield select(fromUser.getVerifyUriRequest);
 
-    const { error: verifyError, response: { nbInvalidUri } } = yield call(
-        fetchSaga,
-        verifyUriRequest,
-    );
+    const {
+        error: verifyError,
+        response: { nbInvalidUri },
+    } = yield call(fetchSaga, verifyUriRequest);
 
     if (verifyError) {
         yield put(publishError(verifyError));

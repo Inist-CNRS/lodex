@@ -15,10 +15,7 @@ const mapStateToProps = (state, { name }) => ({
 const mapDispatchToProps = { onClearFacet: facetActions.clearFacet };
 
 export default compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
         onRequestDelete: ({ name, onClearFacet }) => () => onClearFacet(name),
     }),

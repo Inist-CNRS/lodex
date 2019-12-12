@@ -139,7 +139,4 @@ const mapStateToProps = state => ({
     isAdmin: fromUser.isAdmin(state),
 });
 
-export default compose(
-    translate,
-    connect(mapStateToProps),
-)(AppbarComponent);
+export default compose(translate, connect(mapStateToProps))(AppbarComponent);

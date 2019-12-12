@@ -47,9 +47,7 @@ const ComposedOfColumn = ({
         </SelectField>
         {index > 1 && (
             <IconButton
-                className={`btn-remove-composite-field btn-remove-composite-field-${
-                    index
-                }`}
+                className={`btn-remove-composite-field btn-remove-composite-field-${index}`}
                 onClick={handleRemoveColumn}
                 title={polyglot.t('remove_composition_column')}
             >

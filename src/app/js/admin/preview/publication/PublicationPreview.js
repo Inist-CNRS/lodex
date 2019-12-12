@@ -77,9 +77,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(
-        null,
-        mapDispatchToProps,
-    ),
+    connect(null, mapDispatchToProps),
     translate,
 )(PublicationPreviewComponent);

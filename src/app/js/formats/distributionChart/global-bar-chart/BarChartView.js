@@ -176,7 +176,4 @@ const mapStateToProps = (
     };
 };
 
-export default compose(
-    injectData(),
-    connect(mapStateToProps),
-)(BarChartView);
+export default compose(injectData(), connect(mapStateToProps))(BarChartView);

@@ -40,6 +40,7 @@ const mapDispatchToProps = dispatch =>
         dispatch,
     );
 
-export default compose(connect(undefined, mapDispatchToProps), translate)(
-    SignOutButtonComponent,
-);
+export default compose(
+    connect(undefined, mapDispatchToProps),
+    translate,
+)(SignOutButtonComponent);

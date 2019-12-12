@@ -15,7 +15,10 @@ describe('getPublishedDatasetFilter', () => {
             };
             const facetNames = ['facet', 'otherFacet'];
             expect(
-                addFacetToFilters(facets, facetNames)({
+                addFacetToFilters(
+                    facets,
+                    facetNames,
+                )({
                     filter: 'data',
                 }),
             ).toEqual({
@@ -34,7 +37,10 @@ describe('getPublishedDatasetFilter', () => {
             };
             const facetNames = ['facet', 'otherFacet'];
             expect(
-                addFacetToFilters(facets, facetNames)({
+                addFacetToFilters(
+                    facets,
+                    facetNames,
+                )({
                     filter: 'data',
                 }),
             ).toEqual({
@@ -52,7 +58,10 @@ describe('getPublishedDatasetFilter', () => {
             };
             const facetNames = ['facet', 'otherFacet'];
             expect(
-                addFacetToFilters(facets, facetNames)({
+                addFacetToFilters(
+                    facets,
+                    facetNames,
+                )({
                     filter: 'data',
                 }),
             ).toEqual({
@@ -75,7 +84,10 @@ describe('getPublishedDatasetFilter', () => {
             };
             const facetNames = ['otherFacet'];
             expect(
-                addFacetToFilters(facets, facetNames)({
+                addFacetToFilters(
+                    facets,
+                    facetNames,
+                )({
                     filter: 'data',
                 }),
             ).toEqual({
@@ -88,7 +100,10 @@ describe('getPublishedDatasetFilter', () => {
             const facets = null;
             const facetNames = ['facet', 'otherFacet'];
             expect(
-                addFacetToFilters(facets, facetNames)({
+                addFacetToFilters(
+                    facets,
+                    facetNames,
+                )({
                     filter: 'data',
                 }),
             ).toEqual({
@@ -103,7 +118,10 @@ describe('getPublishedDatasetFilter', () => {
             };
             const facetNames = null;
             expect(
-                addFacetToFilters(facets, facetNames)({
+                addFacetToFilters(
+                    facets,
+                    facetNames,
+                )({
                     filter: 'data',
                 }),
             ).toEqual({
@@ -236,7 +254,10 @@ describe('getPublishedDatasetFilter', () => {
     describe('addKeyToFilters', () => {
         it('should add value at key to filters', () => {
             expect(
-                addKeyToFilters('key', 'value')({
+                addKeyToFilters(
+                    'key',
+                    'value',
+                )({
                     filter: 'data',
                 }),
             ).toEqual({
@@ -247,7 +268,10 @@ describe('getPublishedDatasetFilter', () => {
 
         it('should return filters if no values', () => {
             expect(
-                addKeyToFilters('key', null)({
+                addKeyToFilters(
+                    'key',
+                    null,
+                )({
                     filter: 'data',
                 }),
             ).toEqual({

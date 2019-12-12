@@ -48,6 +48,7 @@ const mapDispatchtoProps = (dispatch, { field: { name } }) =>
         dispatch,
     );
 
-export default compose(connect(undefined, mapDispatchtoProps), translate)(
-    ExcerptRemoveColumnComponent,
-);
+export default compose(
+    connect(undefined, mapDispatchtoProps),
+    translate,
+)(ExcerptRemoveColumnComponent);

@@ -37,7 +37,8 @@ class ClearDialogComponent extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps.succeeded) { // eslint-disable-line
+        if (nextProps.succeeded) {
+            // eslint-disable-line
             window.location.reload();
         }
     }
@@ -166,8 +167,5 @@ const mapDispatchToProps = {
 
 export default compose(
     translate,
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
 )(ClearDialogComponent);

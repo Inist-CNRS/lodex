@@ -173,7 +173,4 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-export default compose(
-    injectData(),
-    connect(mapStateToProps),
-)(Network);
+export default compose(injectData(), connect(mapStateToProps))(Network);

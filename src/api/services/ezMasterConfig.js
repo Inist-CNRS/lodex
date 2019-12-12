@@ -32,7 +32,9 @@ export default async (ctx, next) => {
 
         ctx.ezMasterConfig = config;
     } catch (err) {
-        const error = new Error(`Invalid configuration from EzMaster: ${err.message}`); // eslint-disable-line
+        const error = new Error(
+            `Invalid configuration from EzMaster: ${err.message}`,
+        ); // eslint-disable-line
         throw error;
     }
 

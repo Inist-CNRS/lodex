@@ -92,10 +92,7 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(
-        null,
-        mapDispatchToProps,
-    ),
+    connect(null, mapDispatchToProps),
     redirectToDashboardIfNoField,
     translate,
 )(OntologyComponent);

@@ -56,7 +56,10 @@ class LinkImageAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { type, value, maxHeight } } = this.props;
+        const {
+            p: polyglot,
+            args: { type, value, maxHeight },
+        } = this.props;
 
         return (
             <div style={styles.container}>

@@ -145,14 +145,12 @@ describe('field routes', () => {
         it('should call ctx.field.findAll and pass the result to ctx.body with correct headers', async () => {
             const ctx = {
                 field: {
-                    findAll: jest
-                        .fn()
-                        .mockImplementation(() =>
-                            Promise.resolve([
-                                { name: 'field1', _id: 'id1' },
-                                { name: 'field2', _id: 'id2' },
-                            ]),
-                        ),
+                    findAll: jest.fn().mockImplementation(() =>
+                        Promise.resolve([
+                            { name: 'field1', _id: 'id1' },
+                            { name: 'field2', _id: 'id2' },
+                        ]),
+                    ),
                 },
                 attachment: jest.fn(),
             };
@@ -183,12 +181,10 @@ describe('field routes', () => {
         };
 
         beforeEach(() => {
-            getUploadedFields = jest
-                .fn()
-                .mockImplementation(() => [
-                    { name: 'field1', label: 'Field 1' },
-                    { name: 'field2', label: 'Field 2' },
-                ]);
+            getUploadedFields = jest.fn().mockImplementation(() => [
+                { name: 'field1', label: 'Field 1' },
+                { name: 'field2', label: 'Field 2' },
+            ]);
             ctx.field.create.mockClear();
             ctx.field.remove.mockClear();
         });
@@ -241,12 +237,10 @@ describe('field routes', () => {
         });
 
         it('should rearrange the position to avoid gap', async () => {
-            getUploadedFields = jest
-                .fn()
-                .mockImplementation(() => [
-                    { name: 'field1', label: 'Field 1', position: 5 },
-                    { name: 'field2', label: 'Field 2', position: 6 },
-                ]);
+            getUploadedFields = jest.fn().mockImplementation(() => [
+                { name: 'field1', label: 'Field 1', position: 5 },
+                { name: 'field2', label: 'Field 2', position: 6 },
+            ]);
 
             await importFields(getUploadedFields)(ctx);
 
@@ -264,13 +258,11 @@ describe('field routes', () => {
         });
 
         it('should ensure uri is first', async () => {
-            getUploadedFields = jest
-                .fn()
-                .mockImplementation(() => [
-                    { name: 'field1', label: 'Field 1', position: 5 },
-                    { name: 'field2', label: 'Field 2', position: 6 },
-                    { name: 'uri', label: 'Uri', position: 10 },
-                ]);
+            getUploadedFields = jest.fn().mockImplementation(() => [
+                { name: 'field1', label: 'Field 1', position: 5 },
+                { name: 'field2', label: 'Field 2', position: 6 },
+                { name: 'uri', label: 'Uri', position: 10 },
+            ]);
 
             await importFields(getUploadedFields)(ctx);
 

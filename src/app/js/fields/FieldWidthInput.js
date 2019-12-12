@@ -10,7 +10,8 @@ const FieldWidthInput = () => (
             name="width"
             component={FormPercentField}
             labelKey="field_width"
-        />%
+        />
+        %
     </div>
 );
 

@@ -23,10 +23,7 @@ export default function configureStoreServer(
     const store = createStore(
         connectRouter(history)(reducer),
         initialState,
-        compose(
-            middlewares,
-            devtools,
-        ),
+        compose(middlewares, devtools),
     );
 
     sagaMiddleware.run(sagas);

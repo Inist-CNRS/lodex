@@ -72,9 +72,6 @@ const handleComplete = ({
 };
 
 export default compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
     withHandlers({ handleValueChosen, handleComplete }),
 )(FormAutoCompleteField);

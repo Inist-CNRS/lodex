@@ -83,6 +83,7 @@ const mapDispatchToProps = {
     onChangeOperation: changeOperation,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    TransformerListItem,
-);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate,
+)(TransformerListItem);

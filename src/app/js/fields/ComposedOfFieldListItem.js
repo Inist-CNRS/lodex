@@ -47,6 +47,7 @@ const mapStateToProps = (state, { fieldName }) => ({
     availableFields: fromFields.getFieldsExceptEdited(state),
 });
 
-export default compose(translate, connect(mapStateToProps))(
-    ComposedOfFieldListItemComponent,
-);
+export default compose(
+    translate,
+    connect(mapStateToProps),
+)(ComposedOfFieldListItemComponent);

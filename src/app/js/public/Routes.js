@@ -99,7 +99,4 @@ const mapDispatchToProps = {
     loadMenu,
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Routes);
+export default connect(mapStateToProps, mapDispatchToProps)(Routes);

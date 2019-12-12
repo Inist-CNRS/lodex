@@ -47,6 +47,7 @@ const mapStateToProps = state => ({
     fields: fromFields.getFields(state),
 });
 
-export default compose(connect(mapStateToProps), translate)(
-    FieldLabelInputComponent,
-);
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(FieldLabelInputComponent);

@@ -59,27 +59,22 @@ const getParams = (_, params) => params;
 
 const getEditedField = state => state.byName[state.editedFieldName];
 
-export const getCollectionFields = createSelector(
-    getFields,
-    fields => fields.filter(f => f.cover === COVER_COLLECTION),
+export const getCollectionFields = createSelector(getFields, fields =>
+    fields.filter(f => f.cover === COVER_COLLECTION),
 );
 
-const getDocumentFields = createSelector(
-    getFields,
-    fields =>
-        fields
-            .filter(f => f.display_in_resource || f.contribution)
-            .filter(f => f.cover === COVER_DOCUMENT),
+const getDocumentFields = createSelector(getFields, fields =>
+    fields
+        .filter(f => f.display_in_resource || f.contribution)
+        .filter(f => f.cover === COVER_DOCUMENT),
 );
 
-const getDatasetFields = createSelector(
-    getFields,
-    fields => fields.filter(f => f.cover === COVER_DATASET),
+const getDatasetFields = createSelector(getFields, fields =>
+    fields.filter(f => f.cover === COVER_DATASET),
 );
 
-const getComposedFields = createSelector(
-    getFields,
-    fields => fields.filter(({ composedOf }) => !!composedOf),
+const getComposedFields = createSelector(getFields, fields =>
+    fields.filter(({ composedOf }) => !!composedOf),
 );
 
 export const isACompositeFields = (name, composedFields) =>
@@ -115,19 +110,16 @@ const getResourceFields = createSelector(
             : [],
 );
 
-const getListFields = createSelector(
-    getCollectionFields,
-    fields => fields.filter(f => f.name === 'uri').filter(f => !f.composedOf),
+const getListFields = createSelector(getCollectionFields, fields =>
+    fields.filter(f => f.name === 'uri').filter(f => !f.composedOf),
 );
 
-const getGraphFields = createSelector(
-    getDatasetFields,
-    fields => fields.filter(f => f.display_in_graph),
+const getGraphFields = createSelector(getDatasetFields, fields =>
+    fields.filter(f => f.display_in_graph),
 );
 
-const getAllListFields = createSelector(
-    getCollectionFields,
-    fields => fields.filter(f => !f.composedOf),
+const getAllListFields = createSelector(getCollectionFields, fields =>
+    fields.filter(f => !f.composedOf),
 );
 
 const findFieldWithOverviewID = id => fields => {
@@ -141,9 +133,8 @@ export const getFieldByName = createSelector(
     (name, fields) => fields.find(f => f.name === name),
 );
 
-export const getGraphFieldParamsByName = createSelector(
-    getFieldByName,
-    field => get(field, 'format.args.params', {}),
+export const getGraphFieldParamsByName = createSelector(getFieldByName, field =>
+    get(field, 'format.args.params', {}),
 );
 
 export const getFieldsExceptEdited = createSelector(
@@ -250,9 +241,8 @@ const getCompositeFieldsNamesByField = createSelector(
 
 const hasPublishedDataset = ({ published }) => published;
 
-const getContributionFields = createSelector(
-    getFields,
-    fields => fields.filter(f => f.contribution),
+const getContributionFields = createSelector(getFields, fields =>
+    fields.filter(f => f.contribution),
 );
 
 const getSelectedField = ({ selectedField }) => selectedField;
@@ -317,9 +307,8 @@ const isSaving = state => state.isSaving;
 const isAdding = state => state.isAdding;
 const getError = state => state.error;
 
-const getFacetFields = createSelector(
-    getFields,
-    allFields => allFields.filter(f => f.isFacet),
+const getFacetFields = createSelector(getFields, allFields =>
+    allFields.filter(f => f.isFacet),
 );
 
 const hasFacetFields = createSelector(
@@ -360,9 +349,8 @@ const isFieldConfigured = createSelector(
 export const getNewCharacteristicFormData = state =>
     state.form[NEW_CHARACTERISTIC_FORM_NAME].values;
 
-const getFieldFormatArgs = createSelector(
-    getFieldByName,
-    field => get(field, 'format.args', {}),
+const getFieldFormatArgs = createSelector(getFieldByName, field =>
+    get(field, 'format.args', {}),
 );
 
 const getInvalidProperties = state => state.invalidProperties || [];

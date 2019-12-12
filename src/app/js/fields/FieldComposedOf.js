@@ -144,6 +144,7 @@ const mapDispatchToProps = (dispatch, { FORM_NAME = FIELD_FORM_NAME }) => ({
     },
 });
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    FieldComposedOf,
-);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate,
+)(FieldComposedOf);

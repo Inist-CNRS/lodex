@@ -96,9 +96,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(
-        mapsStateToProps,
-        mapDispatchToProps
-    ),
-    translate
+    connect(mapsStateToProps, mapDispatchToProps),
+    translate,
 )(UploadComponent);

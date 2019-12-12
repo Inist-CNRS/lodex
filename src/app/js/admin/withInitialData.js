@@ -51,10 +51,7 @@ export default BaseComponent => {
     });
 
     return compose(
-        connect(
-            mapStateToProps,
-            mapDispatchToProps,
-        ),
+        connect(mapStateToProps, mapDispatchToProps),
         translate,
     )(withInitialDataHoc(BaseComponent));
 };

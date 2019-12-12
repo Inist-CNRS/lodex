@@ -100,6 +100,7 @@ const mapDispatchToProps = {
     handleHideExistingColumns: hideAddColumns,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    StatisticsComponent,
-);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate,
+)(StatisticsComponent);

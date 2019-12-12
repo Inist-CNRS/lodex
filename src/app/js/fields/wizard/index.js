@@ -233,9 +233,6 @@ const mapDispatchToProps = {
     saveField: saveFieldAction,
 };
 
-export default compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
-)(FieldEditionWizardComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps))(
+    FieldEditionWizardComponent,
+);

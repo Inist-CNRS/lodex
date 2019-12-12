@@ -54,7 +54,4 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-export default compose(
-    injectData(),
-    connect(mapStateToProps),
-)(VegaLiteView);
+export default compose(injectData(), connect(mapStateToProps))(VegaLiteView);

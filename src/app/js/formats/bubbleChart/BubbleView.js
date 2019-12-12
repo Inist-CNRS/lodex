@@ -71,7 +71,4 @@ const mapStateToProps = (state, { formatData, diameter: stringDiameter }) => {
     };
 };
 
-export default compose(
-    injectData(),
-    connect(mapStateToProps),
-)(BubbleView);
+export default compose(injectData(), connect(mapStateToProps))(BubbleView);
