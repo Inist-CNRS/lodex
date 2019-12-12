@@ -279,6 +279,7 @@ describe('format sagas', () => {
                     field: { name: 'fieldName' },
                     filter: { filterKey: 'filterValue' },
                     value: 'url',
+                    withUri: false,
                 },
             });
 
@@ -311,12 +312,54 @@ describe('format sagas', () => {
             });
         });
 
+        it('should loadFormatData with the resource uri for field', () => {
+            const iterator = handleLoadFormatDataRequest({
+                payload: {
+                    field: { name: 'fieldName' },
+                    filter: { filterKey: 'filterValue' },
+                    resource: { uri: 'thisIsAnUri' },
+                    value: 'url',
+                    withUri: true,
+                },
+            });
+
+            expect(iterator.next()).toEqual({
+                done: false,
+                value: select(
+                    fromFields.getGraphFieldParamsByName,
+                    'fieldName',
+                ),
+            });
+
+            expect(iterator.next({ paramsKey: 'paramsValue' })).toEqual({
+                done: false,
+                value: call(getQueryString, {
+                    params: {
+                        filterKey: 'filterValue',
+                        paramsKey: 'paramsValue',
+                        uri: 'thisIsAnUri',
+                    },
+                }),
+            });
+
+            expect(iterator.next('queryString')).toEqual({
+                done: false,
+                value: call(loadFormatData, 'fieldName', 'url', 'queryString'),
+            });
+
+            expect(iterator.next()).toEqual({
+                done: true,
+                value: undefined,
+            });
+        });
+
         it('should put loadFormatDataError if value is not a string', () => {
             const iterator = handleLoadFormatDataRequest({
                 payload: {
                     field: { name: 'fieldName' },
                     filter: { filterKey: 'filterValue' },
                     value: ['an', 'incorrect', 'value'],
+                    withUri: false,
                 },
             });
 
@@ -342,6 +385,7 @@ describe('format sagas', () => {
                     field: {},
                     filter: { filterKey: 'filterValue' },
                     value: 'url',
+                    withUri: false,
                 },
             });
 
@@ -357,6 +401,7 @@ describe('format sagas', () => {
                     field: null,
                     filter: { filterKey: 'filterValue' },
                     value: 'url',
+                    withUri: false,
                 },
             });
 

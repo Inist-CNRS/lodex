@@ -92,6 +92,6 @@ const mapStateToProps = (_, { formatData, history, p: polyglot }) => ({
 export default compose(
     translate,
     withRouter,
-    injectData(),
+    injectData(null, null, true),
     connect(mapStateToProps),
 )(AsterPlotChartView);

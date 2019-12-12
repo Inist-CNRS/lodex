@@ -216,22 +216,24 @@ export default compose(
             return null;
         }
 
-        if (isURL(value)) {
-            const source = URL.parse(value);
-            if (source.pathname.search(/^\/\w+:/) === 0) {
-                const uri = source.pathname.slice(1);
-                const target = {
-                    protocol: source.protocol,
-                    hostname: source.hostname,
-                    slashes: source.slashes,
-                    port: source.port,
-                    pathname: '/api/export/jsonallvalue',
-                    search: '?uri=' + uri,
-                };
-                return URL.format(target);
-            }
-            return value;
+        if (!isURL(value)) {
+            return '/api/export/jsonallvalue?uri=' + resource[field.name];
         }
-        return '/api/export/jsonallvalue/?uri=' + resource[field.name];
+
+        const source = URL.parse(value);
+        if (source.pathname.search(/^\/\w+:/) === 0) {
+            const uri = source.pathname.slice(1);
+            const target = {
+                protocol: source.protocol,
+                hostname: source.hostname,
+                slashes: source.slashes,
+                port: source.port,
+                pathname: '/api/export/jsonallvalue',
+                search: '?uri=' + uri,
+            };
+            return URL.format(target);
+        }
+
+        return value;
     }),
 )(LodexFieldView);
