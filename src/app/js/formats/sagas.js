@@ -22,6 +22,7 @@ import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import { COVER_DATASET } from '../../../common/cover';
 import { ISTEX_API_URL } from '../../../common/externals';
+import { isLink } from '../../../common/uris';
 
 const isSparqlQuery = url =>
     url.toLowerCase().includes('select') &&
@@ -93,7 +94,6 @@ export function* handleLoadFormatDataRequest({
     payload: { field, filter, value, resource, withUri } = {},
 }) {
     const name = field && field.name;
-
     if (!name) {
         return;
     }
@@ -105,6 +105,11 @@ export function* handleLoadFormatDataRequest({
                 error: 'bad value',
             }),
         );
+        return;
+    }
+
+    if (!isLink(value)) {
+        yield handleFilterFormatDataRequest({ payload: { filter } });
         return;
     }
 

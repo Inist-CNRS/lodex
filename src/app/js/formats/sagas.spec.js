@@ -278,7 +278,7 @@ describe('format sagas', () => {
                 payload: {
                     field: { name: 'fieldName' },
                     filter: { filterKey: 'filterValue' },
-                    value: 'url',
+                    value: 'https://api.lodex.fr',
                     withUri: false,
                 },
             });
@@ -303,7 +303,12 @@ describe('format sagas', () => {
 
             expect(iterator.next('queryString')).toEqual({
                 done: false,
-                value: call(loadFormatData, 'fieldName', 'url', 'queryString'),
+                value: call(
+                    loadFormatData,
+                    'fieldName',
+                    'https://api.lodex.fr',
+                    'queryString',
+                ),
             });
 
             expect(iterator.next()).toEqual({
@@ -318,7 +323,7 @@ describe('format sagas', () => {
                     field: { name: 'fieldName' },
                     filter: { filterKey: 'filterValue' },
                     resource: { uri: 'thisIsAnUri' },
-                    value: 'url',
+                    value: 'https://api.lodex.fr',
                     withUri: true,
                 },
             });
@@ -344,7 +349,12 @@ describe('format sagas', () => {
 
             expect(iterator.next('queryString')).toEqual({
                 done: false,
-                value: call(loadFormatData, 'fieldName', 'url', 'queryString'),
+                value: call(
+                    loadFormatData,
+                    'fieldName',
+                    'https://api.lodex.fr',
+                    'queryString',
+                ),
             });
 
             expect(iterator.next()).toEqual({
