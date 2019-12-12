@@ -55,6 +55,7 @@ export default (url, checkFormatLoaded = null) => FormatView => {
             const { loadFormatData } = this.props;
 
             const value = createUrl(this.props);
+
             if (!value) {
                 return;
             }
@@ -173,10 +174,7 @@ export default (url, checkFormatLoaded = null) => FormatView => {
     };
 
     return compose(
-        connect(
-            mapStateToProps,
-            mapDispatchToProps,
-        ),
+        connect(mapStateToProps, mapDispatchToProps),
         translate,
     )(GraphItem);
 };
