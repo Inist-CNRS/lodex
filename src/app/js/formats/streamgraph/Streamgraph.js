@@ -453,12 +453,9 @@ class Streamgraph extends PureComponent {
                     this.mouseIsOverStream = true;
                     this.hoveredKey = d3.select(nodes[i]).attr('name');
 
-                    this.hoveredValue = d
-                        .find(
-                            elem =>
-                                elem.data.date.getFullYear() === parseInt(date),
-                        )
-                        .data[this.hoveredKey].toFixed(3);
+                    this.hoveredValue = d.find(
+                        elem => elem.data.date.getFullYear() === parseInt(date),
+                    ).data[this.hoveredKey];
 
                     this.hoveredColor = colorNameList.find(
                         elem => elem.name === this.hoveredKey,
