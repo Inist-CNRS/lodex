@@ -13,7 +13,7 @@ const CenterIcon = ({ polyglot }) => (
             height={30}
         />
         <ReactTooltip id="centerIconTooltip" place="right" effect="solid">
-            <ul>{polyglot.t('graph_reinit')}</ul>
+            {polyglot.t('graph_reinit')}
         </ReactTooltip>
     </>
 );
