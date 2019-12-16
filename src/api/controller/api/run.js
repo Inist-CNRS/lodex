@@ -17,10 +17,15 @@ ezs.use(Statements);
 ezs.use(Booster);
 const scripts = new Script('routines');
 
-const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
-    const currentScript = await scripts.get(scriptNameCalled);
+const parseFieldsParams = fieldsParams =>
+    typeof fieldsParams === 'string' && fieldsParams !== ''
+        ? fieldsParams.split('/').filter(x => x)
+        : '';
+
+const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
+    const currentScript = await scripts.get(scriptNameCalledParam);
     if (!currentScript) {
-        ctx.throw(404, `Unknown script '${scriptNameCalled}'.ini`);
+        ctx.throw(404, `Unknown script '${scriptNameCalledParam}'.ini`);
     }
 
     const [, metaData, , script] = currentScript;
@@ -46,7 +51,7 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
         ...facets
     } = ctx.query;
     const host = getCleanHost();
-    const field = [field1, field2].filter(x => x);
+    const field = parseFieldsParams(fieldsParams);
     const handleDb = await mongoClient();
     const fieldHandle = await getFields(handleDb);
     const searchableFieldNames = await fieldHandle.findSearchableNames();
@@ -132,7 +137,6 @@ app.use(
 );
 app.use(route.get('/', getScripts));
 app.use(route.get('/:scriptNameCalled', middlewareScript));
-app.use(route.get('/:scriptNameCalled/:field1/', middlewareScript));
-app.use(route.get('/:scriptNameCalled/:field1/:field2/', middlewareScript));
+app.use(route.get('/:scriptNameCalled/*', middlewareScript));
 
 export default app;
