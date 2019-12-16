@@ -7,7 +7,7 @@ import memoize from 'lodash.memoize';
 
 import injectData from '../injectData';
 import Bubble from './Bubble';
-import * as colorUtils from '../colorUtils';
+import { getColor } from '../colorUtils';
 
 const styles = {
     container: memoize(({ diameter }) => ({
@@ -28,7 +28,7 @@ export const BubbleView = ({ data, diameter, colorSet }) => (
                 y={y}
                 name={key}
                 value={value}
-                color={colorUtils.getColor(colorSet, index)}
+                color={getColor(colorSet, index)}
             />
         ))}
     </div>

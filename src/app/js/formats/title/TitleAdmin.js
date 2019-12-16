@@ -7,7 +7,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 
-import * as colorUtils from '../colorUtils';
+import { MONOCHROMATIC_DEFAULT_COLORSET } from '../colorUtils';
 
 const styles = {
     container: {
@@ -23,7 +23,7 @@ const styles = {
 
 export const defaultArgs = {
     level: 1,
-    colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
+    colors: MONOCHROMATIC_DEFAULT_COLORSET,
 };
 
 class TitleAdmin extends Component {

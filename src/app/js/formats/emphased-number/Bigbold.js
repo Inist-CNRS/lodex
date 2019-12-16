@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import stylesToClassname from '../../lib/stylesToClassName';
-import * as colorUtils from '../colorUtils';
+import { MONOCHROMATIC_DEFAULT_COLORSET } from '../colorUtils';
 
 const sizes = ['7rem', '5rem', '2rem'];
 
@@ -17,8 +17,7 @@ const styles = stylesToClassname(
 );
 
 const getContentInlineStyle = (colors, size) => {
-    const color =
-        colors.split(' ')[0] || colorUtils.MONOCHROMATIC_DEFAULT_COLORSET;
+    const color = colors.split(' ')[0] || MONOCHROMATIC_DEFAULT_COLORSET;
     const currentSize = sizes[size - 1];
     const fontSize = currentSize || 'inherit';
     const fontWeight = currentSize ? 'bold' : 'normal';

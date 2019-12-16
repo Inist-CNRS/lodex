@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import ReactTooltip from 'react-tooltip';
 
-import * as colorUtils from '../colorUtils';
+import { getColor } from '../colorUtils';
 import stylesToClassname from '../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
@@ -102,7 +102,7 @@ const AsterPlot = ({ data, width, height, colorSet }) => {
             .data(pieData)
             .enter()
             .append('path')
-            .attr('fill', (_, i) => colorUtils.getColor(colorSet, i))
+            .attr('fill', (_, i) => getColor(colorSet, i))
             .attr('d', filledArc)
             .attr('class', `arc ${styles.arc}`)
             .attr('transform', `translate(${width / 2} ${height / 2})`);

@@ -6,7 +6,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
-import * as colorUtils from '../colorUtils';
+import { MULTICHROMATIC_DEFAULT_COLORSET } from '../colorUtils';
 
 const styles = {
     container: {
@@ -85,7 +85,7 @@ export const defaultArgs = {
         minValue: 0,
         orderBy: 'value/asc',
     },
-    colors: colorUtils.MULTICHROMATIC_DEFAULT_COLORSET,
+    colors: MULTICHROMATIC_DEFAULT_COLORSET,
 };
 
 AsterPlotChartAdmin.defaultProps = {
