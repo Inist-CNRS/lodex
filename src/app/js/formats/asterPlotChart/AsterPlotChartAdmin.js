@@ -5,6 +5,8 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
+import * as colorUtils from '../colorUtils';
 
 const styles = {
     container: {
@@ -31,6 +33,13 @@ const AsterPlotChartAdmin = ({
         });
     };
 
+    const setColors = colors => {
+        updateAdminArgs('colors', colors, {
+            args,
+            onChange,
+        });
+    };
+
     return (
         <div style={styles.container}>
             <RoutineParamsAdmin
@@ -41,6 +50,11 @@ const AsterPlotChartAdmin = ({
                 showMaxValue={showMaxValue}
                 showMinValue={showMinValue}
                 showOrderBy={showOrderBy}
+            />
+            <ColorPickerParamsAdmin
+                colors={args.colors}
+                onChange={setColors}
+                polyglot={polyglot}
             />
         </div>
     );
@@ -54,6 +68,7 @@ AsterPlotChartAdmin.propTypes = {
             minValue: PropTypes.number,
             orderBy: PropTypes.string,
         }),
+        colors: PropTypes.string,
     }),
     onChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -70,6 +85,7 @@ export const defaultArgs = {
         minValue: 0,
         orderBy: 'value/asc',
     },
+    colors: colorUtils.MULTICHROMATIC_DEFAULT_COLORSET,
 };
 
 AsterPlotChartAdmin.defaultProps = {

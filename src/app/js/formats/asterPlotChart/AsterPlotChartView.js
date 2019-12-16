@@ -6,7 +6,6 @@ import compose from 'recompose/compose';
 import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { getShortText } from '../../lib/longTexts';
 import stylesToClassname from '../../lib/stylesToClassName';
 import injectData from '../injectData';
@@ -69,20 +68,22 @@ const styles = stylesToClassname(
     'aster-plot-chart-view',
 );
 
-const AsterPlotChartView = ({ data }) => {
+const AsterPlotChartView = ({ data, colorSet }) => {
     return (
         <div className={styles.container}>
-            <AsterPlot data={data} width={200} height={200} />
+            <AsterPlot
+                data={data}
+                width={200}
+                height={200}
+                colorSet={colorSet}
+            />
         </div>
     );
 };
 
 AsterPlotChartView.propTypes = {
     data: PropTypes.array.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }),
-    p: polyglotPropTypes.isRequired,
+    colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
 const mapStateToProps = (_, { formatData, history, p: polyglot }) => ({
