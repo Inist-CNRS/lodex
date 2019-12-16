@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import ReactTooltip from 'react-tooltip';
 
+import { getColor } from '../colorUtils';
 import stylesToClassname from '../../lib/stylesToClassName';
-
-const colors = d3.scaleOrdinal(d3.schemeCategory10);
 
 const styles = stylesToClassname(
     {
@@ -21,7 +20,7 @@ const styles = stylesToClassname(
     'aster-plot-chart',
 );
 
-const AsterPlot = ({ data, width, height }) => {
+const AsterPlot = ({ data, width, height, colorSet }) => {
     const ref = useRef(null);
     const createPie = d3.pie().value(d => d.value);
 
@@ -103,7 +102,7 @@ const AsterPlot = ({ data, width, height }) => {
             .data(pieData)
             .enter()
             .append('path')
-            .attr('fill', (d, i) => colors(i))
+            .attr('fill', (_, i) => getColor(colorSet, i))
             .attr('d', filledArc)
             .attr('class', `arc ${styles.arc}`)
             .attr('transform', `translate(${width / 2} ${height / 2})`);
@@ -156,6 +155,7 @@ AsterPlot.propTypes = {
     ).isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
+    colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default AsterPlot;

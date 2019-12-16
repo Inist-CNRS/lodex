@@ -7,7 +7,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import { resolvers } from '.';
 
-import * as colorUtils from '../colorUtils';
+import { MONOCHROMATIC_DEFAULT_COLORSET } from '../colorUtils';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 
 const styles = {
@@ -25,7 +25,7 @@ const styles = {
 
 export const defaultArgs = {
     typid: 1,
-    colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
+    colors: MONOCHROMATIC_DEFAULT_COLORSET,
 };
 
 class IdentifierBadgeAdmin extends Component {
@@ -40,7 +40,7 @@ class IdentifierBadgeAdmin extends Component {
 
     static defaultProps = {
         args: defaultArgs,
-        colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
+        colors: MONOCHROMATIC_DEFAULT_COLORSET,
     };
 
     constructor(props) {

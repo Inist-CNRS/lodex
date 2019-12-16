@@ -9,8 +9,7 @@ import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
-
-import * as colorUtils from '../../colorUtils';
+import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
 
 const styles = {
     container: {
@@ -29,7 +28,7 @@ export const defaultArgs = {
         maxSize: 5,
         orderBy: 'value/asc',
     },
-    colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
+    colors: MONOCHROMATIC_DEFAULT_COLORSET,
     axisRoundValue: true,
     scale: 'linear',
 };

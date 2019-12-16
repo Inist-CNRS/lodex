@@ -13,7 +13,7 @@ import {
 import injectData from '../injectData';
 import moment from 'moment';
 
-import * as colorUtils from '../colorUtils';
+import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../colorUtils';
 
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
 });
 
 export const defaultArgs = {
-    colors: colorUtils.MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
+    colors: MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
     maxLegendLength: 30,
     height: 300,
 };

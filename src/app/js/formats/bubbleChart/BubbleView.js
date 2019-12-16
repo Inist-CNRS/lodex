@@ -7,7 +7,7 @@ import memoize from 'lodash.memoize';
 
 import injectData from '../injectData';
 import Bubble from './Bubble';
-import * as colorUtils from '../colorUtils';
+import { getColor } from '../colorUtils';
 
 const styles = {
     container: memoize(({ diameter }) => ({
@@ -28,11 +28,7 @@ export const BubbleView = ({ data, diameter, colorSet }) => (
                 y={y}
                 name={key}
                 value={value}
-                color={
-                    colorUtils.isValidColor(colorSet[index % colorSet.length])
-                        ? colorSet[index % colorSet.length]
-                        : 'black'
-                }
+                color={getColor(colorSet, index)}
             />
         ))}
     </div>
@@ -47,7 +43,7 @@ BubbleView.propTypes = {
 
 BubbleView.displayName = 'BubbleView';
 
-const mapStateToProps = (state, { formatData, diameter: stringDiameter }) => {
+const mapStateToProps = (_, { formatData, diameter: stringDiameter }) => {
     const diameter = parseInt(stringDiameter, 10);
     if (!formatData) {
         return {

@@ -7,7 +7,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
-import * as colorUtils from '../colorUtils';
+import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../colorUtils';
 
 const styles = {
     container: {
@@ -26,7 +26,7 @@ export const defaultArgs = {
         maxSize: 200,
         orderBy: 'value/desc',
     },
-    colors: colorUtils.MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
+    colors: MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
     maxLegendLength: 30,
     height: 300,
 };
@@ -41,9 +41,9 @@ class StreamgraphAdmin extends Component {
                 orderBy: PropTypes.string,
             }),
             colors: PropTypes.string,
+            maxLegendLength: PropTypes.number,
+            height: PropTypes.number.isRequired,
         }),
-        maxLegendLength: PropTypes.number,
-        height: PropTypes.number.isRequired,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
         showMaxSize: PropTypes.bool.isRequired,

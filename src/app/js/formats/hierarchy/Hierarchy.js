@@ -8,7 +8,7 @@ import cliTruncate from 'cli-truncate';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-import * as colorUtils from '../colorUtils';
+import { isValidColor } from '../colorUtils';
 import MouseIcon from '../shared/MouseIcon';
 
 import theme from '../../theme';
@@ -295,10 +295,7 @@ class Hierarchy extends PureComponent {
                         d.parent.y
                     );
                 })
-                .attr(
-                    'stroke',
-                    colorUtils.isValidColor(color) ? color : 'black',
-                );
+                .attr('stroke', isValidColor(color) ? color : 'black');
 
             // Setup position for every datum; Applying different css classes to parents and leafs.
             let node = this.g()
