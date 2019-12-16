@@ -89,7 +89,7 @@ export function transformDataIntoMapArray(formatData) {
                                 parseInt(elem.source)
                             ) {
                                 var sum = valueElem.value + elem.weight;
-                                valueElem.value = +sum.toFixed(3);
+                                valueElem.value = parseFloat(sum.toFixed(3));
                                 addValueAsSum = true;
                                 break;
                             }
