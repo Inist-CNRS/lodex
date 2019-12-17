@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
-import FloatingActionButton from '@material-ui/core/FloatingActionButton';
+import Button from '@material-ui/core/Button';
 import ContentAdd from '@material-ui/icons/Add';
+
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import ListItem from './ClassListItem';
 
@@ -30,14 +31,15 @@ const ClassList = ({ fields, p: polyglot }) => (
     <div>
         <div style={styles.header}>
             {polyglot.t('annotate_class')}
-            <FloatingActionButton
+            <Button
                 className="add-class"
+                variant="fab"
                 onClick={() => fields.push()}
                 mini
                 style={styles.add}
             >
                 <ContentAdd />
-            </FloatingActionButton>
+            </Button>
         </div>
         <div style={styles.tab}>
             {fields.map((fieldName, index) => (

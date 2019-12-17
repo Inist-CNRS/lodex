@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import FloatingActionButton from '@material-ui/core/FloatingActionButton';
+import Button from '@material-ui/core/Button';
 import ContentAdd from '@material-ui/icons/Add';
 
 import { fromResource } from '../selectors';
@@ -31,14 +31,15 @@ const CreateResource = ({ handleOpen, p, ...props }) => (
         label={p.t('create_resource')}
         className="create-resource"
         openButton={
-            <FloatingActionButton
+            <Button
                 className="create-resource"
+                variant="fab"
                 onClick={handleOpen}
                 style={styles.button}
                 title={p.t('create_resource')}
             >
                 <ContentAdd />
-            </FloatingActionButton>
+            </Button>
         }
     />
 );
