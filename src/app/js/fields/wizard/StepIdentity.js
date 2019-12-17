@@ -24,14 +24,10 @@ export const StepIdentityComponent = ({ field, p: polyglot, ...props }) => (
             label={polyglot.t('select_cover')}
             fullWidth
         >
-            <MenuItem
-                value="dataset"
-                primaryText={polyglot.t('cover_dataset')}
-            />
-            <MenuItem
-                value="collection"
-                primaryText={polyglot.t('cover_collection')}
-            />
+            <MenuItem value="dataset">{polyglot.t('cover_dataset')}</MenuItem>
+            <MenuItem value="collection">
+                {polyglot.t('cover_collection')}
+            </MenuItem>
         </Field>
         <FieldArray name="classes" component={ClassList} type="classes" />
         <FieldLanguageInput field={field} />

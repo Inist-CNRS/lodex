@@ -35,8 +35,9 @@ export const SelectDatasetFieldComponent = ({
                 key={`id_${datasetField}`}
                 className={`column-${datasetField}`}
                 value={datasetField}
-                primaryText={datasetField}
-            />
+            >
+                {datasetField}
+            </MenuItem>
         ))}
     </SelectField>
 );

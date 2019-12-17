@@ -21,8 +21,9 @@ export const FieldLanguageInputComponent = ({
             className={`language_${getFieldClassName(field)}`}
             key={language.code}
             value={language.code}
-            primaryText={language.label}
-        />
+        >
+            {language.label}
+        </MenuItem>
     ));
 
     return (
@@ -37,8 +38,9 @@ export const FieldLanguageInputComponent = ({
                 className={`language_${getFieldClassName(field)}`}
                 key={null}
                 value={null}
-                primaryText={polyglot.t('none')}
-            />
+            >
+                {polyglot.t('none')}
+            </MenuItem>
             {languagesItems}
         </Field>
     );

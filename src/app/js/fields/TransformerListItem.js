@@ -46,8 +46,9 @@ const TransformerListItem = ({
                     key={t.name}
                     className={`transformer_${t.name}`}
                     value={t.name}
-                    primaryText={t.name}
-                />
+                >
+                    {t.name}
+                </MenuItem>
             ))}
         </Field>
         <FieldArray name={`${fieldName}.args`} component={TransformerArgList} />

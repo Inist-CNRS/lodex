@@ -26,12 +26,9 @@ export const ComposedOfFieldListItemComponent = ({
         label={polyglot.t('select_a_field')}
     >
         {availableFields.map(f => (
-            <MenuItem
-                key={f.name}
-                className={`field_${f.name}`}
-                value={f.name}
-                primaryText={f.label}
-            />
+            <MenuItem key={f.name} className={`field_${f.name}`} value={f.name}>
+                {f.label}
+            </MenuItem>
         ))}
     </Field>
 );

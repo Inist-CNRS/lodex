@@ -52,15 +52,11 @@ class DefaultAdminComponentWithLabel extends Component {
                     style={styles.input}
                     value={type}
                 >
-                    <MenuItem value="value" primaryText="The column content" />
-                    <MenuItem
-                        value="text"
-                        primaryText="A custom text (same for all resources)"
-                    />
-                    <MenuItem
-                        value="column"
-                        primaryText="Another column content"
-                    />
+                    <MenuItem value="value">The column content</MenuItem>
+                    <MenuItem value="text">
+                        A custom text (same for all resources)
+                    </MenuItem>
+                    <MenuItem value="column">Another column content</MenuItem>
                 </SelectField>
 
                 {type !== 'value' && (

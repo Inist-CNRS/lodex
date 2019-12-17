@@ -15,8 +15,7 @@ const SelectFormat = ({ formats, value, onChange, p: polyglot }) => (
         value={value}
         dropDownMenuProps={dropDownMenuProps}
     >
-        <MenuItem value="None" primaryText="None" />
-
+        <MenuItem value="None">None</MenuItem>
         {formats
             .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
             .map(format => (
@@ -24,9 +23,11 @@ const SelectFormat = ({ formats, value, onChange, p: polyglot }) => (
                     className="select-format-item"
                     key={format}
                     value={format}
-                    primaryText={polyglot.t(format)}
                 >
-                    <div data-value={format} />
+                    <>
+                        <div>{polyglot.t(format)}</div>
+                        <div data-value={format} />
+                    </>
                 </MenuItem>
             ))}
     </SelectField>

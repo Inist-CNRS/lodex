@@ -77,10 +77,10 @@ class EmphasedNumberAdmin extends Component {
                     style={styles.input}
                     value={size}
                 >
-                    <MenuItem value={1} primaryText={polyglot.t('size1')} />
-                    <MenuItem value={2} primaryText={polyglot.t('size2')} />
-                    <MenuItem value={3} primaryText={polyglot.t('size3')} />
-                    <MenuItem value={4} primaryText={polyglot.t('size4')} />
+                    <MenuItem value={1}>{polyglot.t('size1')}</MenuItem>
+                    <MenuItem value={2}>{polyglot.t('size2')}</MenuItem>
+                    <MenuItem value={3}>{polyglot.t('size3')}</MenuItem>
+                    <MenuItem value={4}>{polyglot.t('size4')}</MenuItem>
                 </SelectField>
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}

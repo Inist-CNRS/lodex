@@ -171,14 +171,12 @@ class BarChartAdmin extends Component {
                     style={styles.input}
                     value={direction}
                 >
-                    <MenuItem
-                        value="horizontal"
-                        primaryText={polyglot.t('horizontal')}
-                    />
-                    <MenuItem
-                        value="vertical"
-                        primaryText={polyglot.t('vertical')}
-                    />
+                    <MenuItem value="horizontal">
+                        {polyglot.t('horizontal')}
+                    </MenuItem>
+                    <MenuItem value="vertical">
+                        {polyglot.t('vertical')}
+                    </MenuItem>
                 </SelectField>
                 <TextField
                     type="number"
@@ -218,11 +216,8 @@ class BarChartAdmin extends Component {
                     style={styles.input}
                     value={scale}
                 >
-                    <MenuItem
-                        value="linear"
-                        primaryText={polyglot.t('linear')}
-                    />
-                    <MenuItem value="log" primaryText={polyglot.t('log')} />
+                    <MenuItem value="linear">{polyglot.t('linear')}</MenuItem>
+                    <MenuItem value="log">{polyglot.t('log')}</MenuItem>
                 </SelectField>
                 <TextField
                     floatingLabelText={polyglot.t('bar_size')}

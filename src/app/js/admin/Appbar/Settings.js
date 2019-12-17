@@ -116,16 +116,18 @@ class SettingsComponent extends Component {
                     <Menu>
                         <MenuItem
                             className="btn-clear-published"
-                            primaryText={polyglot.t('clear_publish')}
                             onClick={this.handleClearPublished}
                             disabled={!hasPublishedDataset}
-                        />
+                        >
+                            {polyglot.t('clear_publish')}
+                        </MenuItem>
                         <MenuItem
                             className="btn-clear-dataset"
-                            primaryText={polyglot.t('clear_dataset')}
                             onClick={this.handleClearDataset}
                             disabled={!hasLoadedDataset}
-                        />
+                        >
+                            {polyglot.t('clear_dataset')}
+                        </MenuItem>
                     </Menu>
                 </Popover>
                 {showClearPublished && (

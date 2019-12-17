@@ -129,11 +129,8 @@ class RadarChartAdmin extends Component {
                     style={styles.input}
                     value={scale}
                 >
-                    <MenuItem
-                        value="linear"
-                        primaryText={polyglot.t('linear')}
-                    />
-                    <MenuItem value="log" primaryText={polyglot.t('log')} />
+                    <MenuItem value="linear">{polyglot.t('linear')}</MenuItem>
+                    <MenuItem value="log">{polyglot.t('log')}</MenuItem>
                 </SelectField>
             </div>
         );

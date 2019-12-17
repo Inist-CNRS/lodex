@@ -41,8 +41,9 @@ const ComposedOfColumn = ({
                     className={`composite-field-${index}-${f.name}`}
                     key={`composite-field-${index}-${f.name}`}
                     value={f.name}
-                    primaryText={f.label}
-                />
+                >
+                    {f.label}
+                </MenuItem>
             ))}
         </SelectField>
         {index > 1 && (

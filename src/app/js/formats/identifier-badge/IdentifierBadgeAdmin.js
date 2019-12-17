@@ -66,11 +66,9 @@ class IdentifierBadgeAdmin extends Component {
             args: { typid },
         } = this.props;
         const items = Object.keys(resolvers).map(resolverID => (
-            <MenuItem
-                key={`resolver_${resolverID}`}
-                value={resolverID}
-                primaryText={polyglot.t(resolverID)}
-            />
+            <MenuItem key={`resolver_${resolverID}`} value={resolverID}>
+                {polyglot.t(resolverID)}
+            </MenuItem>
         ));
         return (
             <div style={styles.container}>

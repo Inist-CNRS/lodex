@@ -204,10 +204,10 @@ class Pagination extends Component {
                         style={styles.input}
                         underlineStyle={styles.underline}
                     >
-                        <MenuItem value={10} primaryText="10" />
-                        <MenuItem value={20} primaryText="20" />
-                        <MenuItem value={50} primaryText="50" />
-                        <MenuItem value={100} primaryText="100" />
+                        <MenuItem value={10}>10</MenuItem>
+                        <MenuItem value={20}>20</MenuItem>
+                        <MenuItem value={50}>50</MenuItem>
+                        <MenuItem value={100}>100</MenuItem>
                     </SelectField>
                 </div>
                 {navigationArrow}

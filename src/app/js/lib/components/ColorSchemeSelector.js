@@ -70,17 +70,13 @@ const getColorSchemeSelector = schemes => {
             value={value.join(',')}
         >
             {schemes.map(scheme => (
-                <MenuItem
-                    key={scheme}
-                    value={scheme.join(',')}
-                    primaryText={
-                        <ColorScalePreview
-                            colorScale={scaleQuantize()
-                                .domain([0, 100])
-                                .range(scheme)}
-                        />
-                    }
-                />
+                <MenuItem key={scheme} value={scheme.join(',')}>
+                    <ColorScalePreview
+                        colorScale={scaleQuantize()
+                            .domain([0, 100])
+                            .range(scheme)}
+                    />
+                </MenuItem>
             ))}
         </SelectField>
     );

@@ -69,16 +69,12 @@ class LinkImageAdmin extends Component {
                     style={styles.input}
                     value={type}
                 >
-                    <MenuItem
-                        value="text"
-                        primaryText={polyglot.t('Another column content')}
-                    />
-                    <MenuItem
-                        value="column"
-                        primaryText={polyglot.t(
-                            'A custom URL (same for all resources)',
-                        )}
-                    />
+                    <MenuItem value="text">
+                        {polyglot.t('Another column content')}
+                    </MenuItem>
+                    <MenuItem value="column">
+                        {polyglot.t('A custom URL (same for all resources)')}
+                    </MenuItem>
                 </SelectField>
                 <TextField
                     floatingLabelText={

@@ -30,20 +30,15 @@ export const SelectFieldToAddComponent = ({
         value={selectedField}
         onChange={(_, __, value) => onSelectField(value)}
     >
-        <MenuItem
-            value="new"
-            className="new"
-            primaryText={polyglot.t('new_contribution_field')}
-        />
+        <MenuItem value="new" className="new">
+            {polyglot.t('new_contribution_field')}
+        </MenuItem>
         {contributionFields
             .filter(({ name }) => !resource[name])
             .map(({ name, label }) => (
-                <MenuItem
-                    key={name}
-                    className={name}
-                    value={name}
-                    primaryText={label}
-                />
+                <MenuItem key={name} className={name} value={name}>
+                    {label}
+                </MenuItem>
             ))}
     </SelectField>
 );

@@ -39,8 +39,9 @@ export class SelectVersionComponent extends Component {
                 key={date}
                 className={`version version_${index}`}
                 value={index}
-                primaryText={format(date, index)}
-            />
+            >
+                {format(date, index)}
+            </MenuItem>
         ));
 
     handleClick = event => {

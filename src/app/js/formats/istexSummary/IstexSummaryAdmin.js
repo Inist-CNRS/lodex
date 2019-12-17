@@ -39,6 +39,7 @@ export class IstexSummaryAdmin extends Component {
             searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
             sortDir: PropTypes.oneOf(SORT_YEAR_VALUES),
             yearThreshold: PropTypes.number,
+            documentSortBy: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -82,11 +83,9 @@ export class IstexSummaryAdmin extends Component {
                     value={searchedField}
                 >
                     {SEARCHED_FIELD_VALUES.map(value => (
-                        <MenuItem
-                            key={value}
-                            value={value}
-                            primaryText={polyglot.t(value)}
-                        />
+                        <MenuItem key={value} value={value}>
+                            {polyglot.t(value)}
+                        </MenuItem>
                     ))}
                 </SelectField>
                 <SelectField
@@ -97,11 +96,9 @@ export class IstexSummaryAdmin extends Component {
                     value={sortDir}
                 >
                     {SORT_YEAR_VALUES.map(value => (
-                        <MenuItem
-                            key={value}
-                            value={value}
-                            primaryText={polyglot.t(value)}
-                        />
+                        <MenuItem key={value} value={value}>
+                            {polyglot.t(value)}
+                        </MenuItem>
                     ))}
                 </SelectField>
                 <TextField

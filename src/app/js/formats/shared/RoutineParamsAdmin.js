@@ -105,22 +105,18 @@ const RoutineParamsAdmin = ({
                     style={styles.input}
                     value={orderBy}
                 >
-                    <MenuItem
-                        value="_id/asc"
-                        primaryText={polyglot.t('label_asc')}
-                    />
-                    <MenuItem
-                        value="_id/desc"
-                        primaryText={polyglot.t('label_desc')}
-                    />
-                    <MenuItem
-                        value="value/asc"
-                        primaryText={polyglot.t('value_asc')}
-                    />
-                    <MenuItem
-                        value="value/desc"
-                        primaryText={polyglot.t('value_desc')}
-                    />
+                    <MenuItem value="_id/asc">
+                        {polyglot.t('label_asc')}
+                    </MenuItem>
+                    <MenuItem value="_id/desc">
+                        {polyglot.t('label_desc')}
+                    </MenuItem>
+                    <MenuItem value="value/asc">
+                        {polyglot.t('value_asc')}
+                    </MenuItem>
+                    <MenuItem value="value/desc">
+                        {polyglot.t('value_desc')}
+                    </MenuItem>
                 </SelectField>
             )}
             {showUri && (

@@ -85,10 +85,11 @@ export class ContributedResourceListComponent extends Component {
                                 key={status}
                                 className={`filter_${status}`}
                                 value={status}
-                                primaryText={polyglot.t('contribution_filter', {
+                            >
+                                {polyglot.t('contribution_filter', {
                                     status: polyglot.t(status),
                                 })}
-                            />
+                            </MenuItem>
                         ))}
                     </SelectField>
                 </CardText>

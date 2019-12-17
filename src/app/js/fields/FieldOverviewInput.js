@@ -41,12 +41,9 @@ export const OverviewFieldComponent = ({ p: polyglot }) => {
         },
     ];
     const overviewMenuItems = overviewItems.map(({ _id, value }) => (
-        <MenuItem
-            className={value}
-            key={value}
-            value={_id}
-            primaryText={polyglot.t(`overview${upperFirst(value)}`)}
-        />
+        <MenuItem className={value} key={value} value={_id}>
+            {polyglot.t(`overview${upperFirst(value)}`)}
+        </MenuItem>
     ));
 
     return (

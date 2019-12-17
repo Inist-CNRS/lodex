@@ -57,18 +57,15 @@ class UriAdmin extends Component {
                     style={styles.input}
                     value={type}
                 >
-                    <MenuItem
-                        value="value"
-                        primaryText={polyglot.t('uri_format_column')}
-                    />
-                    <MenuItem
-                        value="text"
-                        primaryText={polyglot.t('uri_format_custom')}
-                    />
-                    <MenuItem
-                        value="column"
-                        primaryText={polyglot.t('uri_format_another_column')}
-                    />
+                    <MenuItem value="value">
+                        {polyglot.t('uri_format_column')}
+                    </MenuItem>
+                    <MenuItem value="text">
+                        {polyglot.t('uri_format_custom')}
+                    </MenuItem>
+                    <MenuItem value="column">
+                        {polyglot.t('uri_format_another_column')}
+                    </MenuItem>
                 </SelectField>
 
                 {type !== 'value' && (

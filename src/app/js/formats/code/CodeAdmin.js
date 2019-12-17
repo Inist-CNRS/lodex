@@ -50,12 +50,12 @@ class AdminComponent extends Component {
                     style={styles.input}
                     value={languageToHighlight}
                 >
-                    <MenuItem value="xml" primaryText="XML" />
-                    <MenuItem value="json" primaryText="JSON" />
-                    <MenuItem value="ini" primaryText="INI" />
-                    <MenuItem value="shell" primaryText="Shell" />
-                    <MenuItem value="sql" primaryText="SQL" />
-                    <MenuItem value="javascript" primaryText="Javascript" />
+                    <MenuItem value="xml">XML</MenuItem>
+                    <MenuItem value="json">json</MenuItem>
+                    <MenuItem value="ini">INI</MenuItem>
+                    <MenuItem value="shell">Shell</MenuItem>
+                    <MenuItem value="sql">SQL</MenuItem>
+                    <MenuItem value="javascript">Javascript</MenuItem>
                 </SelectField>
             </div>
         );
