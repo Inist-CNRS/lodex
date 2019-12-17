@@ -150,6 +150,7 @@
         "react-swipeable": "5.5.0",
         "react-syntax-highlighter": "6.1.1",
         "react-tooltip": "3.11.1",
+        "react-transition-group": "4.3.0",
         "react-vega": "4.0.2",
         "react-vega-lite": "2.0.2",
         "react-vis-force": "0.3.1",
