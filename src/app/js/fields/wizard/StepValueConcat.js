@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RadioButton from '@material-ui/core/RadioButton';
+import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -35,10 +35,10 @@ export const StepValueConcatComponent = ({
     handleRemoveColumn,
 }) => (
     <div id="step-value-concat">
-        <RadioButton
+        <Radio
             label={polyglot.t('multi_field_concat')}
             value="concat"
-            onClick={handleSelect}
+            onChange={handleSelect}
             checked={selected}
             style={styles.radio}
         />

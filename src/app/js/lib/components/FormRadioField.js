@@ -1,12 +1,12 @@
 import React from 'react';
-import RadioButton from '@material-ui/core/RadioButton';
+import Radio from '@material-ui/core/Radio';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
 const FormRadioField = ({ input, label, meta, ...custom }) => (
-    <RadioButton
+    <Radio
         label={label}
         checked={input.value}
-        onCheck={input.onChange}
+        onChange={input.onChange}
         {...custom}
     />
 );
