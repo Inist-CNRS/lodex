@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import RaisedButton from '@material-ui/core/RaisedButton';
+import Button from '@material-ui/core/Button';
 import { CardText } from '@material-ui/core/Card';
 import SelectField from '@material-ui/core/SelectField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -122,9 +122,10 @@ export class ContributedResourceListComponent extends Component {
                                                 baseUri,
                                             )}
                                         >
-                                            <RaisedButton
+                                            <Button
                                                 className="btn-review-resource"
                                                 label={polyglot.t('review')}
+                                                variant="contained"
                                                 primary
                                             />
                                         </a>

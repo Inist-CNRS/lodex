@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card, CardTitle } from '@material-ui/core/Card';
 import { Helmet } from 'react-helmet';
-import RaisedButton from '@material-ui/core/RaisedButton';
+import Button from '@material-ui/core/Button';
 import { grey } from '@material-ui/core/colors';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -111,10 +111,11 @@ class GraphPage extends Component {
                             />
                         </Card>
                     )}
-                    <RaisedButton
+                    <Button
                         className="browse-result"
-                        onClick={onSearch}
                         label={polyglot.t('browse_results')}
+                        variant="contained"
+                        onClick={onSearch}
                         primary
                         fullWidth
                         icon={

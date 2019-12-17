@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import RaisedButton from '@material-ui/core/RaisedButton';
+import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import memoize from 'lodash.memoize';
 
@@ -120,8 +120,9 @@ class ResourcesGridView extends Component {
                 </ul>
                 {allowToLoadMore && more < total && (
                     <div className={styles.button}>
-                        <RaisedButton
+                        <Button
                             label={polyglot.t('see_more')}
+                            variant="contained"
                             onClick={this.handleMore}
                             icon={fetch ? <CircularProgress size={20} /> : null}
                         />

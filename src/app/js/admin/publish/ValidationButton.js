@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
 import translate from 'redux-polyglot/translate';
-import RaisedButton from '@material-ui/core/RaisedButton';
+import Button from '@material-ui/core/Button';
 import { List } from '@material-ui/core/List';
 import Popover from '@material-ui/core/Popover';
 
@@ -36,9 +36,10 @@ const ValidationButtonComponent = ({
     popover,
 }) => (
     <div style={styles.container}>
-        <RaisedButton
+        <Button
             secondary
             label={polyglot.t('show_publication_errors')}
+            variant="contained"
             onClick={handleShowErrorsClick}
         />
         <Popover
