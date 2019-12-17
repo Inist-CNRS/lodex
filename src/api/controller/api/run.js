@@ -17,7 +17,7 @@ import { getCleanHost } from '../../../common/uris';
 ezs.use(Statements);
 ezs.use(Booster);
 
-const scripts = new Script('routines', '../app/custom');
+const scripts = new Script('routines', '../app/custom/routines');
 
 const parseFieldsParams = fieldsParams =>
     typeof fieldsParams === 'string' && fieldsParams !== ''

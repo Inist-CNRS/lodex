@@ -9,7 +9,7 @@ import Script from '../../services/script';
 
 ezs.use(ezsLodex);
 
-const loaders = new Script('loaders', '../app/custom');
+const loaders = new Script('loaders', '../app/custom/loaders');
 
 export const getLoader = async type => {
     const loader = await loaders.get(type);

@@ -21,7 +21,7 @@ ezs.use(Booster);
 ezs.use(Lodex);
 ezs.use(Analytics);
 
-const scripts = new Script('exporters', '../app/custom');
+const scripts = new Script('exporters', '../app/custom/exporters');
 
 const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
     const currentScript = await scripts.get(scriptNameCalled);

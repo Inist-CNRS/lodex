@@ -6,13 +6,11 @@ import fetch from 'fetch-with-proxy';
 import config from '../../../config.json';
 
 export default class Script {
-    constructor(source, customPath = '') {
-        const routineDirectory = `./${source}/`;
+    constructor(source, path = '.') {
         const routineLocalDirectory = Path.resolve(
             __dirname,
             '../',
-            customPath,
-            routineDirectory,
+            `${path}/`,
         );
 
         const routinesDeclared = config[source] || [];
@@ -27,8 +25,9 @@ export default class Script {
                 Path.basename(fileName, '.ini'),
                 fs.readFileSync(fileName).toString(),
             ]);
+
         const pluginsURL = config.pluginsURL || '';
-        const routineRepository = URL.resolve(pluginsURL, routineDirectory);
+        const routineRepository = URL.resolve(pluginsURL, `./${source}/`);
         const routinesDistant = routinesDeclared
             .map(routineName =>
                 URL.resolve(routineRepository, routineName.concat('.ini')),

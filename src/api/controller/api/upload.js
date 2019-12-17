@@ -28,7 +28,7 @@ import saveParsedStream from '../../services/saveParsedStream';
 import safePipe from '../../services/safePipe';
 import publishFacets from './publishFacets';
 
-const loaders = new Script('loaders', '../app/custom');
+const loaders = new Script('loaders', '../app/custom/loaders');
 
 export const getParser = async parserName => {
     const currentLoader = await loaders.get(parserName);
