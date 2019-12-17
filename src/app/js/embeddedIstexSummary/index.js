@@ -4,8 +4,7 @@ import 'url-api-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import Polyglot from 'node-polyglot';
-import getMuiTheme from '@material-ui/core/styles/getMuiTheme';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
@@ -19,7 +18,7 @@ const polyglot = new Polyglot({
     phrases: phrasesFor(locale),
 });
 
-const muiTheme = getMuiTheme(customTheme, {
+const muiTheme = createMuiTheme(customTheme, {
     userAgent: navigator.userAgent,
 });
 

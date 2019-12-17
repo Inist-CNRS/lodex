@@ -8,8 +8,8 @@ import mount from 'koa-mount';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 import { Helmet } from 'react-helmet';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import getMuiTheme from '@material-ui/core/styles/getMuiTheme';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
 import { END } from 'redux-saga';
 import fs from 'fs';
 import { StyleSheetServer } from 'aphrodite/no-important';
@@ -214,7 +214,7 @@ const handleRender = async (ctx, next) => {
         initialEntries: [url],
     });
 
-    const muiTheme = getMuiTheme(customTheme, {
+    const muiTheme = createMuiTheme(customTheme, {
         userAgent: headers['user-agent'],
     });
 

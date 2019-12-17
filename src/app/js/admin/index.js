@@ -6,8 +6,7 @@ import { render } from 'react-dom';
 import { createHashHistory } from 'history';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import getMuiTheme from '@material-ui/core/styles/getMuiTheme';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import rootReducer from './reducers';
 import Routes from './Routes';
@@ -18,7 +17,7 @@ import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import theme from '../theme';
 
-const muiTheme = getMuiTheme({
+const muiTheme = createMuiTheme({
     palette: {
         accent1Color: theme.orange.primary,
         primary1Color: theme.green.primary,

@@ -3,9 +3,8 @@ import 'url-api-polyfill';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { hydrate } from 'react-dom';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { Provider } from 'react-redux';
-import getMuiTheme from '@material-ui/core/styles/getMuiTheme';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import rootReducer from './reducers';
 import Routes from './Routes';
@@ -15,7 +14,7 @@ import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import customTheme from './customTheme';
 
-const muiTheme = getMuiTheme(customTheme);
+const muiTheme = createMuiTheme(customTheme);
 
 const locale = getLocale();
 const initialState = {
