@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, FieldArray, change } from 'redux-form';
 import translate from 'redux-polyglot/translate';
-import Subheader from '@material-ui/core/Subheader';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -49,28 +49,28 @@ export class ComposedOfComponent extends Component {
         if (!hasComposedOf) {
             return (
                 <div>
-                    <Subheader style={styles.header}>
+                    <ListSubheader style={styles.header}>
                         {polyglot.t('composed_of')}
                         <Button
                             className="add-composed-of"
                             onClick={() => this.addComposedOf()}
                             label={polyglot.t('add')}
                         />
-                    </Subheader>
+                    </ListSubheader>
                 </div>
             );
         }
 
         return (
             <div>
-                <Subheader>
+                <ListSubheader>
                     {polyglot.t('composed_of')}
                     <Button
                         className="remove-composed-of"
                         label={polyglot.t('remove')}
                         onClick={() => this.removeComposedOf()}
                     />
-                </Subheader>
+                </ListSubheader>
                 <Field
                     className="separator"
                     name={`${name}.separator`}
