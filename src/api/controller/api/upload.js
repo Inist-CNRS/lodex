@@ -24,11 +24,11 @@ import {
     getUploadedFileSize,
     createReadStream,
 } from '../../services/fsHelpers';
-import publishFacets from './publishFacets';
 import saveParsedStream from '../../services/saveParsedStream';
 import safePipe from '../../services/safePipe';
+import publishFacets from './publishFacets';
 
-const loaders = new Script('loaders');
+const loaders = new Script('loaders', '../app/custom');
 
 export const getParser = async parserName => {
     const currentLoader = await loaders.get(parserName);

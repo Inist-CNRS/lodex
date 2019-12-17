@@ -2,14 +2,14 @@ import Koa from 'koa';
 import route from 'koa-route';
 import ezs from '@ezs/core';
 import ezsLodex from '@ezs/lodex';
+
 import { getHost, getCleanHost } from '../../../common/uris';
 import config from '../../../../config.json';
-
 import Script from '../../services/script';
 
-const loaders = new Script('loaders');
-
 ezs.use(ezsLodex);
+
+const loaders = new Script('loaders', '../app/custom');
 
 export const getLoader = async type => {
     const loader = await loaders.get(type);

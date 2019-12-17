@@ -6,11 +6,12 @@ import fetch from 'fetch-with-proxy';
 import config from '../../../config.json';
 
 export default class Script {
-    constructor(source) {
+    constructor(source, customPath = '') {
         const routineDirectory = `./${source}/`;
         const routineLocalDirectory = Path.resolve(
             __dirname,
             '../',
+            customPath,
             routineDirectory,
         );
         const routinesDeclared = config[source] || [];

@@ -5,17 +5,19 @@ import Booster from '@ezs/booster';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
+
 import Script from '../../services/script';
+import mongoClient from '../../services/mongoClient';
 import getPublishedDatasetFilter from '../../models/getPublishedDatasetFilter';
 import getFields from '../../models/field';
-import mongoClient from '../../services/mongoClient';
 import Statements from '../../statements';
 import localConfig from '../../../../config.json';
 import { getCleanHost } from '../../../common/uris';
 
 ezs.use(Statements);
 ezs.use(Booster);
-const scripts = new Script('routines');
+
+const scripts = new Script('routines', '../app/custom');
 
 const parseFieldsParams = fieldsParams =>
     typeof fieldsParams === 'string' && fieldsParams !== ''
