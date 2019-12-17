@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { lightGreenA400, red400 } from '@material-ui/core/styles/colors';
+import { lightGreenA, red } from '@material-ui/core/colors';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FlatButton from '@material-ui/core/FlatButton';
 import RaisedButton from '@material-ui/core/RaisedButton';
@@ -33,7 +33,7 @@ describe('<ButtonWithStatus />', () => {
             const wrapper = shallow(<ButtonWithStatus label="Foo" error />);
             const button = wrapper.find(FlatButton);
 
-            expect(button.prop('icon')).toEqual(<Warning color={red400} />);
+            expect(button.prop('icon')).toEqual(<Warning color={red[400]} />);
         });
 
         it('should render a FlatButton with a Success icon when it has success', () => {
@@ -41,7 +41,7 @@ describe('<ButtonWithStatus />', () => {
             const button = wrapper.find(FlatButton);
 
             expect(button.prop('icon')).toEqual(
-                <Success color={lightGreenA400} />,
+                <Success color={lightGreenA[400]} />,
             );
         });
     });
@@ -72,7 +72,7 @@ describe('<ButtonWithStatus />', () => {
             );
             const button = wrapper.find(RaisedButton);
 
-            expect(button.prop('icon')).toEqual(<Warning color={red400} />);
+            expect(button.prop('icon')).toEqual(<Warning color={red[400]} />);
         });
 
         it('should render a RaisedButton with a Success icon when it has success', () => {
@@ -82,7 +82,7 @@ describe('<ButtonWithStatus />', () => {
             const button = wrapper.find(RaisedButton);
 
             expect(button.prop('icon')).toEqual(
-                <Success color={lightGreenA400} />,
+                <Success color={lightGreenA[400]} />,
             );
         });
     });

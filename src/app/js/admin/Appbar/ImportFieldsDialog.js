@@ -5,12 +5,12 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import Dialog from '@material-ui/core/Dialog';
 import FlatButton from '@material-ui/core/FlatButton';
-import { red300 } from '@material-ui/core/styles/colors';
+import RaisedButton from '@material-ui/core/RaisedButton';
+import { red } from '@material-ui/core/colors';
 
 import { importFields as importFieldsAction } from '../import';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromImport } from '../selectors';
-import { RaisedButton } from '@material-ui/core';
 
 const styles = {
     input: {
@@ -27,7 +27,7 @@ const styles = {
         top: '12px',
     },
     error: {
-        color: red300,
+        color: red[300],
     },
 };
 

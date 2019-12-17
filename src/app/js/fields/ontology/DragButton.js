@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Reorder from '@material-ui/icons/FormatLineSpacing';
 import { SortableHandle } from 'react-sortable-hoc';
-import { grey400 } from '@material-ui/core/styles/colors';
+import { grey } from '@material-ui/core/colors';
 
 import stylesToClassname from '../../lib/stylesToClassName';
 
@@ -13,7 +13,7 @@ const styles = stylesToClassname(
         },
         iconDisabled: {
             cursor: 'default',
-            color: grey400,
+            color: grey[400],
         },
     },
     'ontology-drag-button',

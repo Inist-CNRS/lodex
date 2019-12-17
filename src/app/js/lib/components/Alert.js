@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { red400 } from '@material-ui/core/styles/colors';
 import memoize from 'lodash.memoize';
+import { red } from '@material-ui/core/colors';
 
 const styles = {
     alert: {
         display: 'inline-block',
-        color: red400,
+        color: red[400],
     },
 };
 

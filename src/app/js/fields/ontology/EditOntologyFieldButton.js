@@ -3,19 +3,23 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
+<<<<<<< HEAD
 import SettingsIcon from '@material-ui/icons/Settings';
+=======
+import SettingsIcon from '@material-ui/icons/settings';
+import { grey } from '@material-ui/core/colors';
+>>>>>>> 55d1bdf5... Change all colors
 
 import getFieldClassName from '../../lib/getFieldClassName';
 import EditOntologyFieldForm, { FORM_NAME } from './EditOntologyFieldForm';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 import { configureFieldOpen, configureFieldCancel } from '../';
-import { grey400 } from '@material-ui/core/styles/colors';
 
 const styles = {
     label: {
         float: 'right',
-        color: grey400,
+        color: grey[400],
         fontSize: '1rem',
     },
 };

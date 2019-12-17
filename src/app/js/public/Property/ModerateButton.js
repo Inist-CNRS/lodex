@@ -7,12 +7,7 @@ import ValidatedIcon from '@material-ui/icons/Done';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import {
-    red500,
-    yellow500,
-    green500,
-    grey500,
-} from '@material-ui/core/styles/colors';
+import { red, yellow, green, grey } from '@material-ui/core/colors';
 import classnames from 'classnames';
 
 import propositionStatus from '../../../../common/propositionStatus';
@@ -27,9 +22,9 @@ const icons = {
 };
 
 const colors = {
-    PROPOSED: yellow500,
-    VALIDATED: green500,
-    REJECTED: red500,
+    PROPOSED: yellow[500],
+    VALIDATED: green[500],
+    REJECTED: red[500],
 };
 
 const getIcons = (status, active) => {
@@ -37,7 +32,7 @@ const getIcons = (status, active) => {
 
     return (
         <Icon
-            color={active ? colors[status] : grey500}
+            color={active ? colors[status] : grey[500]}
             hoverColor={colors[status]}
         />
     );
