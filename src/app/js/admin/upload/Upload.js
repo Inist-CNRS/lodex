@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
-import ArchiveIcon from 'material-ui/svg-icons/content/archive';
-import { lightBlue500 } from 'material-ui/styles/colors';
+import ArchiveIcon from '@material-ui/icons/Archive';
+import { lightBlue } from '@material-ui/core/colors';
 
 import Alert from '../../lib/components/Alert';
 import { uploadFile } from './';
@@ -37,7 +37,7 @@ const styles = {
         marginTop: '2rem',
     },
     actionText: {
-        color: lightBlue500,
+        color: lightBlue[500],
         paddingLeft: '10px',
     },
 };
@@ -80,6 +80,7 @@ UploadComponent.propTypes = {
     error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     onFileLoad: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    loaders: PropTypes.array,
 };
 
 UploadComponent.defaultProps = {
