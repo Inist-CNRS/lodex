@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import Dialog from '@material-ui/core/Dialog';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import RaisedButton from '@material-ui/core/RaisedButton';
 import { red } from '@material-ui/core/colors';
 
@@ -65,7 +65,7 @@ class ImportFieldsDialogComponent extends Component {
                     style={styles.input}
                 />
             </RaisedButton>,
-            <FlatButton
+            <Button
                 secondary
                 key="cancel"
                 className="btn-cancel"

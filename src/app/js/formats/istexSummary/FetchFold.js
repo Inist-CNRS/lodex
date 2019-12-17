@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Folder from '@material-ui/icons/Folder';
 import FolderOpen from '@material-ui/icons/FolderOpen';
 import Arrow from '@material-ui/icons/KeyboardArrowDown';
-import Button from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import get from 'lodash.get';
 

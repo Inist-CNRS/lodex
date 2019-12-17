@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import debounce from 'lodash.debounce';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import ActionSearch from '@material-ui/icons/Search';
@@ -253,10 +253,10 @@ class Search extends Component {
                         {polyglot.t('loading')}
                     </>
                 ) : (
-                    <FlatButton fullWidth onClick={loadMore}>
+                    <Button fullWidth onClick={loadMore}>
                         {polyglot.t('search_load_more')} ({results.length} /{' '}
                         {total})
-                    </FlatButton>
+                    </Button>
                 )}
             </div>
         );

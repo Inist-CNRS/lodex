@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import Subheader from '@material-ui/core/Subheader';
 import memoize from 'lodash.memoize';
 
@@ -33,7 +33,7 @@ const TransformerList = ({
     <div>
         <Subheader style={styles.header}>
             {polyglot.t('transformers')}
-            <FlatButton
+            <Button
                 className="add-transformer"
                 onClick={() => fields.push({})}
                 label={polyglot.t('add_transformer')}

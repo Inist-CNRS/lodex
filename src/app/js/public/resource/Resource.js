@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import translate from 'redux-polyglot/translate';
 import HomeIcon from '@material-ui/icons/Home';
 import { CardText, CardActions } from '@material-ui/core/Card';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import { Swipeable } from 'react-swipeable';
 import get from 'lodash.get';
 import isEqual from 'lodash.isequal';
@@ -99,7 +99,7 @@ export class ResourceComponent extends Component {
             (datasetTitleKey && characteristics[datasetTitleKey]) ||
             polyglot.t('back_to_list');
         const backToListButton = (
-            <FlatButton
+            <Button
                 className="btn-back-to-list"
                 containerElement={<Link to="/graph" />}
                 label={backToListLabel}

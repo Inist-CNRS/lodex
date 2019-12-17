@@ -5,7 +5,7 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { submit as submitAction } from 'redux-form';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import classnames from 'classnames';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -54,7 +54,7 @@ export const PureButtonWithDialogForm = ({
             {saving ? <CircularProgress /> : icon}
         </IconButton>
     ) : (
-        <FlatButton
+        <Button
             className={classnames(className, 'dialog-button')}
             label={label}
             primary
@@ -77,7 +77,7 @@ export const PureButtonWithDialogForm = ({
             loading={saving}
             onClick={handleSubmit}
         />,
-        <FlatButton
+        <Button
             secondary
             key="cancel"
             label={polyglot.t('cancel')}

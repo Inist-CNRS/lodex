@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Popover, { PopoverAnimationVertical } from '@material-ui/core/Popover';
 import Menu from '@material-ui/core/Menu';
@@ -75,7 +75,7 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
     return (
         <>
             {withText ? (
-                <FlatButton
+                <Button
                     primary
                     onClick={handleOpen}
                     label={buttonLabel}

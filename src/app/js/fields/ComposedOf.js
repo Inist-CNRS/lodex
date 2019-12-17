@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Field, FieldArray, change } from 'redux-form';
 import translate from 'redux-polyglot/translate';
 import Subheader from '@material-ui/core/Subheader';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
@@ -51,7 +51,7 @@ export class ComposedOfComponent extends Component {
                 <div>
                     <Subheader style={styles.header}>
                         {polyglot.t('composed_of')}
-                        <FlatButton
+                        <Button
                             className="add-composed-of"
                             onClick={() => this.addComposedOf()}
                             label={polyglot.t('add')}
@@ -65,7 +65,7 @@ export class ComposedOfComponent extends Component {
             <div>
                 <Subheader>
                     {polyglot.t('composed_of')}
-                    <FlatButton
+                    <Button
                         className="remove-composed-of"
                         label={polyglot.t('remove')}
                         onClick={() => this.removeComposedOf()}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import compose from 'recompose/compose';
@@ -97,7 +97,7 @@ class SettingsComponent extends Component {
         } = this.state;
         return (
             <div style={styles.container}>
-                <FlatButton
+                <Button
                     className="btn-danger-zone"
                     onClick={this.handleTouchTap}
                     label={polyglot.t('clear')}

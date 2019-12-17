@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Toggle from '@material-ui/core/Toggle';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -97,7 +97,7 @@ class FieldComposedOf extends Component {
                             />
                         ))}
                     {isComposedOf && (
-                        <FlatButton
+                        <Button
                             className="btn-add-composition-column"
                             label={polyglot.t('add_composition_column')}
                             onClick={this.handleAddColumn}
