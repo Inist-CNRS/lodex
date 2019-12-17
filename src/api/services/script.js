@@ -14,6 +14,7 @@ export default class Script {
             customPath,
             routineDirectory,
         );
+
         const routinesDeclared = config[source] || [];
         const routinesLocal = routinesDeclared
             .map(routineName =>
@@ -51,13 +52,16 @@ export default class Script {
         if (this.cache[routineCalled]) {
             return this.cache[routineCalled];
         }
-        const routineLocal = this.local.find(r => r[2] === routineCalled);
-        const routineDistant = this.distant.find(r => r[2] === routineCalled);
+
         // Warning : don't change the order, distant routine should be only use if there no local routine
+
+        const routineLocal = this.local.find(r => r[2] === routineCalled);
         if (routineLocal) {
             this.cache[routineCalled] = routineLocal;
             return routineLocal;
         }
+
+        const routineDistant = this.distant.find(r => r[2] === routineCalled);
         if (routineDistant) {
             const response = await fetch(routineDistant[0]);
             const routineScript = await response.text();
@@ -66,6 +70,7 @@ export default class Script {
                 routineDistant[3] = routineScript;
             }
         }
+
         this.cache[routineCalled] = routineDistant;
         return routineDistant;
     }
