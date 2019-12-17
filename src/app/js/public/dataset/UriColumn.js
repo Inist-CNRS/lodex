@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { TableRowColumn } from '@material-ui/core/Table';
 import FlatButton from '@material-ui/core/FlatButton';
-import RightIcon from '@material-ui/core/svg-icons/hardware/keyboard-arrow-right';
+import RightIcon from '@material-ui/icons/KeyboardArrowRight';
 
 import { field as fieldPropTypes } from '../../propTypes';
 import { getResourceUri } from '../../../../common/uris';

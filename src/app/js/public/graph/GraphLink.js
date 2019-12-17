@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardMedia, CardActions } from '@material-ui/core/Card';
 import FlatButton from '@material-ui/core/FlatButton';
-import Forward from '@material-ui/core/svg-icons/content/forward';
+import Forward from '@material-ui/icons/Forward';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';

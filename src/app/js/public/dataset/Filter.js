@@ -7,7 +7,7 @@ import debounce from 'lodash.debounce';
 import translate from 'redux-polyglot/translate';
 import TextField from '@material-ui/core/TextField';
 import { ToolbarGroup } from '@material-ui/core/Toolbar';
-import ActionSearch from '@material-ui/core/svg-icons/action/search';
+import ActionSearch from '@material-ui/icons/Search';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';

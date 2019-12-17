@@ -7,7 +7,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import Popover, { PopoverAnimationVertical } from '@material-ui/core/Popover';
-import ArrowDown from '@material-ui/core/svg-icons/hardware/keyboard-arrow-down';
+import ArrowDown from '@material-ui/icons/KeyboardArrowDown';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 

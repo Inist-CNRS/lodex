@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 
 import translate from 'redux-polyglot/translate';
 import IconButton from '@material-ui/core/IconButton';
-import LockOutlineIcon from '@material-ui/core/svg-icons/action/lock-outline';
+import LockIcon from '@material-ui/icons/Lock';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { toggleLogin as toggleLoginAction } from '../../user';
@@ -17,7 +17,7 @@ export const SignInButtonComponent = ({ onToggleLogin, p: polyglot }) => (
         tooltip={polyglot.t('Sign in')}
         onClick={onToggleLogin}
     >
-        <LockOutlineIcon color="white" />
+        <LockIcon color="white" />
     </IconButton>
 );
 

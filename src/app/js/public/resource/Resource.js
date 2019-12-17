@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router-dom';
 import translate from 'redux-polyglot/translate';
-import HomeIcon from '@material-ui/core/svg-icons/action/home';
+import HomeIcon from '@material-ui/icons/Home';
 import { CardText, CardActions } from '@material-ui/core/Card';
 import FlatButton from '@material-ui/core/FlatButton';
 import { Swipeable } from 'react-swipeable';

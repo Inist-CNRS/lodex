@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import TextField from '@material-ui/core/TextField';
 import config from '../../../../../../config.json';
-import ContentAdd from '@material-ui/core/svg-icons/content/add';
-import ContentClear from '@material-ui/core/svg-icons/content/clear';
+import ContentAdd from '@material-ui/icons/Add';
+import ContentClear from '@material-ui/icons/Clear';
 import SelectFormat from '../../SelectFormat';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';

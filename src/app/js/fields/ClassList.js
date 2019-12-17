@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
 import FloatingActionButton from '@material-ui/core/FloatingActionButton';
-import ContentAdd from '@material-ui/core/svg-icons/content/add';
+import ContentAdd from '@material-ui/icons/Add';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import ListItem from './ClassListItem';
 

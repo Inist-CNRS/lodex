@@ -12,7 +12,7 @@ import {
 import { fromFormat } from '../../public/selectors';
 import { loadFormatData } from '../../formats/reducer';
 import Loading from '../../lib/components/Loading';
-import LinkIcon from '@material-ui/core/svg-icons/content/link';
+import LinkIcon from '@material-ui/icons/Link';
 import TextField from '@material-ui/core/TextField';
 import { isURL } from '../../../../common/uris.js';
 import Link from '../../lib/components/Link';
