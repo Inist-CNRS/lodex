@@ -7,10 +7,11 @@ import Analytics from '@ezs/analytics';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
+
 import Script from '../../services/script';
+import mongoClient from '../../services/mongoClient';
 import getPublishedDatasetFilter from '../../models/getPublishedDatasetFilter';
 import getFields from '../../models/field';
-import mongoClient from '../../services/mongoClient';
 import Statements from '../../statements';
 import localConfig from '../../../../config.json';
 import { getCleanHost } from '../../../common/uris';
@@ -19,7 +20,8 @@ ezs.use(Statements);
 ezs.use(Booster);
 ezs.use(Lodex);
 ezs.use(Analytics);
-const scripts = new Script('exporters');
+
+const scripts = new Script('exporters', '../app/custom/exporters');
 
 const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
     const currentScript = await scripts.get(scriptNameCalled);

@@ -6,13 +6,13 @@ import fetch from 'fetch-with-proxy';
 import config from '../../../config.json';
 
 export default class Script {
-    constructor(source) {
-        const routineDirectory = `./${source}/`;
+    constructor(source, path = '.') {
         const routineLocalDirectory = Path.resolve(
             __dirname,
             '../',
-            routineDirectory,
+            `${path}/`,
         );
+
         const routinesDeclared = config[source] || [];
         const routinesLocal = routinesDeclared
             .map(routineName =>
@@ -25,8 +25,9 @@ export default class Script {
                 Path.basename(fileName, '.ini'),
                 fs.readFileSync(fileName).toString(),
             ]);
+
         const pluginsURL = config.pluginsURL || '';
-        const routineRepository = URL.resolve(pluginsURL, routineDirectory);
+        const routineRepository = URL.resolve(pluginsURL, `./${source}/`);
         const routinesDistant = routinesDeclared
             .map(routineName =>
                 URL.resolve(routineRepository, routineName.concat('.ini')),
@@ -50,13 +51,16 @@ export default class Script {
         if (this.cache[routineCalled]) {
             return this.cache[routineCalled];
         }
-        const routineLocal = this.local.find(r => r[2] === routineCalled);
-        const routineDistant = this.distant.find(r => r[2] === routineCalled);
+
         // Warning : don't change the order, distant routine should be only use if there no local routine
+
+        const routineLocal = this.local.find(r => r[2] === routineCalled);
         if (routineLocal) {
             this.cache[routineCalled] = routineLocal;
             return routineLocal;
         }
+
+        const routineDistant = this.distant.find(r => r[2] === routineCalled);
         if (routineDistant) {
             const response = await fetch(routineDistant[0]);
             const routineScript = await response.text();
@@ -65,6 +69,7 @@ export default class Script {
                 routineDistant[3] = routineScript;
             }
         }
+
         this.cache[routineCalled] = routineDistant;
         return routineDistant;
     }
