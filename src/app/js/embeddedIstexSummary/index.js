@@ -4,8 +4,8 @@ import 'url-api-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import Polyglot from 'node-polyglot';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from '@material-ui/core/styles/getMuiTheme';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';

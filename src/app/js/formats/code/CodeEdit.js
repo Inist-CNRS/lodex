@@ -1,5 +1,5 @@
 import React from 'react';
-import TextField from 'material-ui/TextField';
+import TextField from '@material-ui/core/TextField';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
 const CodeEdit = ({ input, label, meta: { touched, error }, ...custom }) => (

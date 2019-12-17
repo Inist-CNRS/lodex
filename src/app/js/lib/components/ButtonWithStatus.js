@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { lightGreenA400, red400 } from 'material-ui/styles/colors';
-import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import { lightGreenA400, red400 } from '@material-ui/core/styles/colors';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FlatButton from '@material-ui/core/FlatButton';
+import RaisedButton from '@material-ui/core/RaisedButton';
 
-import Warning from 'material-ui/svg-icons/alert/warning';
-import Success from 'material-ui/svg-icons/action/done';
+import Warning from '@material-ui/core/svg-icons/alert/warning';
+import Success from '@material-ui/core/svg-icons/action/done';
 
 const getIcon = (error, loading, success) => {
     if (loading) return <CircularProgress size={20} />;

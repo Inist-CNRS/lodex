@@ -1,7 +1,7 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import Chip from 'material-ui/Chip';
+import Chip from '@material-ui/core/Chip';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 

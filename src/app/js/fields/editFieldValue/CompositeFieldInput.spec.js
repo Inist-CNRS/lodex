@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Subheader from 'material-ui/Subheader';
+import Subheader from '@material-ui/core/Subheader';
 import { Field } from 'redux-form';
 
 import FieldInput from './FieldInput';

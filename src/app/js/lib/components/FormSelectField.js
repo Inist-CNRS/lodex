@@ -1,5 +1,5 @@
 import React from 'react';
-import SelectField from 'material-ui/SelectField';
+import SelectField from '@material-ui/core/SelectField';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
 const FormSelectField = ({

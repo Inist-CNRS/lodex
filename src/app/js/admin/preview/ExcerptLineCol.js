@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { TableRowColumn } from 'material-ui/Table';
+import { TableRowColumn } from '@material-ui/core/Table';
 import { connect } from 'react-redux';
 
 import { fromFields } from '../../sharedSelectors';

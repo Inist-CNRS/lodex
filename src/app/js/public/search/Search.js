@@ -5,12 +5,12 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
 import debounce from 'lodash.debounce';
-import TextField from 'material-ui/TextField';
-import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
-import FilterListIcon from 'material-ui/svg-icons/content/filter-list';
-import ActionSearch from 'material-ui/svg-icons/action/search';
+import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FlatButton from '@material-ui/core/FlatButton';
+import IconButton from '@material-ui/core/IconButton';
+import FilterListIcon from '@material-ui/core/svg-icons/content/filter-list';
+import ActionSearch from '@material-ui/core/svg-icons/action/search';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

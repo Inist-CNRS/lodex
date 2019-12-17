@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import FlatButton from 'material-ui/FlatButton';
+import FlatButton from '@material-ui/core/FlatButton';
 
 import { FacetValueList } from './FacetValueList';
 import SortButton from '../../lib/components/SortButton';

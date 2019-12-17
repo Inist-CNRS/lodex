@@ -1,6 +1,6 @@
 import React from 'react';
 import { SortableContainer } from 'react-sortable-hoc';
-import { TableBody } from 'material-ui/Table';
+import { TableBody } from '@material-ui/core/Table';
 
 import OntologyField from './OntologyField';
 import { COVER_DATASET } from '../../../../common/cover';
@@ -21,6 +21,6 @@ const OntologyFieldList = SortableContainer(({ items }) => (
     </TableBody>
 ));
 
-OntologyFieldList.muiName = 'TableBody'; // tell material-ui that this component is TableBody
+OntologyFieldList.muiName = 'TableBody'; // tell @material-ui/core that this component is TableBody
 
 export default OntologyFieldList;

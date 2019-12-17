@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
-import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward';
+import FlatButton from '@material-ui/core/FlatButton';
+import ArrowUp from '@material-ui/core/svg-icons/navigation/arrow-upward';
 import withHandlers from 'recompose/withHandlers';
 import { isLongText, getShortText } from '../../lib/longTexts';
 

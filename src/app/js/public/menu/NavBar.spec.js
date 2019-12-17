@@ -6,7 +6,7 @@ import { NavBar } from './NavBar';
 import MenuItem from './MenuItem';
 
 describe.skip('NavBar', () => {
-    // Todo: Unskip this test once material-ui is upgraded
+    // Todo: Unskip this test once @material-ui/core is upgraded
 
     // Invariant Violation: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
     // 1. You might have mismatching versions of React and the renderer (such as React DOM)

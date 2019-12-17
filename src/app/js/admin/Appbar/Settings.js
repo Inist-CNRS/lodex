@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+import FlatButton from '@material-ui/core/FlatButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import Popover, { PopoverAnimationVertical } from '@material-ui/core/Popover';
+import ArrowDown from '@material-ui/core/svg-icons/hardware/keyboard-arrow-down';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 

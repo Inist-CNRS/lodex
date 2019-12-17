@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import FloatingActionButton from '@material-ui/core/FloatingActionButton';
+import ContentAdd from '@material-ui/core/svg-icons/content/add';
 
 import { fromResource } from '../selectors';
 import CreateResourceForm from './CreateResourceForm';

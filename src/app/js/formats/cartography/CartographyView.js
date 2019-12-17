@@ -8,9 +8,9 @@ import {
 import { connect } from 'react-redux';
 import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
-import ZoomIn from 'material-ui/svg-icons/action/zoom-in';
-import ZoomOut from 'material-ui/svg-icons/action/zoom-out';
-import IconButton from 'material-ui/IconButton';
+import ZoomIn from '@material-ui/core/svg-icons/action/zoom-in';
+import ZoomOut from '@material-ui/core/svg-icons/action/zoom-out';
+import IconButton from '@material-ui/core/IconButton';
 import compose from 'recompose/compose';
 import ReactTooltip from 'react-tooltip';
 

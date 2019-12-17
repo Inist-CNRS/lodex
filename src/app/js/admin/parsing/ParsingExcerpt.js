@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 
-import { Table, TableBody, TableHeader, TableRow } from 'material-ui/Table';
+import { Table, TableBody, TableHeader, TableRow } from '@material-ui/core/Table';
 
 import { addField } from '../../fields';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { TableRowColumn } from 'material-ui/Table';
-import FlatButton from 'material-ui/FlatButton';
-import RightIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+import { TableRowColumn } from '@material-ui/core/Table';
+import FlatButton from '@material-ui/core/FlatButton';
+import RightIcon from '@material-ui/core/svg-icons/hardware/keyboard-arrow-right';
 
 import { field as fieldPropTypes } from '../../propTypes';
 import { getResourceUri } from '../../../../common/uris';

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Chip from 'material-ui/Chip';
+import Chip from '@material-ui/core/Chip';
 import translate from 'redux-polyglot/translate';
 
 import {

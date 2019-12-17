@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import { TableHeaderColumn } from 'material-ui/Table';
+import { TableHeaderColumn } from '@material-ui/core/Table';
 import { isLongText, getShortText } from '../../lib/longTexts';
 
 const styles = {

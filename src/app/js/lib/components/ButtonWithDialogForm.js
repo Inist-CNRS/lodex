@@ -5,10 +5,10 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { submit as submitAction } from 'redux-form';
-import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
+import FlatButton from '@material-ui/core/FlatButton';
+import IconButton from '@material-ui/core/IconButton';
 import classnames from 'classnames';
-import CircularProgress from 'material-ui/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import ButtonWithStatus from './ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';

@@ -3,9 +3,9 @@ import 'url-api-polyfill';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { hydrate } from 'react-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { Provider } from 'react-redux';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import getMuiTheme from '@material-ui/core/styles/getMuiTheme';
 
 import rootReducer from './reducers';
 import Routes from './Routes';

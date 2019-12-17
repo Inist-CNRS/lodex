@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { grey500 } from 'material-ui/styles/colors';
+import { grey500 } from '@material-ui/core/styles/colors';
 
 import {
     Table,
@@ -11,7 +11,7 @@ import {
     TableHeader,
     TableRow,
     TableRowColumn,
-} from 'material-ui/Table';
+} from '@material-ui/core/Table';
 import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
 import Pagination from '../../lib/components/Pagination';

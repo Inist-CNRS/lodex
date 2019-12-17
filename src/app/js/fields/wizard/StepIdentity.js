@@ -2,7 +2,7 @@ import React from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { Field, FieldArray } from 'redux-form';
-import MenuItem from 'material-ui/MenuItem';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import Step from './Step';
 import FormSelectField from '../../lib/components/FormSelectField';

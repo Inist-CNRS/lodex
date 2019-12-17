@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import IconButton from 'material-ui/IconButton';
-import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
-import ActionAddIcon from 'material-ui/svg-icons/content/add';
-import RaisedButton from 'material-ui/RaisedButton';
+import IconButton from '@material-ui/core/IconButton';
+import ActionDeleteIcon from '@material-ui/core/svg-icons/action/delete';
+import ActionAddIcon from '@material-ui/core/svg-icons/content/add';
+import RaisedButton from '@material-ui/core/RaisedButton';
 import classnames from 'classnames';
 import memoize from 'lodash.memoize';
 

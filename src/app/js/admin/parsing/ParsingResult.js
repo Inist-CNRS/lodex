@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { grey400 } from 'material-ui/styles/colors';
+import { grey400 } from '@material-ui/core/styles/colors';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { reloadParsingResult } from './';

@@ -1,7 +1,7 @@
 import React from 'react';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
-import MenuItem from 'material-ui/MenuItem';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import languages from '../../../common/languages';
 import {

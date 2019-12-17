@@ -5,8 +5,8 @@ import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
-import { TableRowColumn } from 'material-ui/Table';
-import FlatButton from 'material-ui/FlatButton';
+import { TableRowColumn } from '@material-ui/core/Table';
+import FlatButton from '@material-ui/core/FlatButton';
 
 import { removeField } from '../../fields';
 import {

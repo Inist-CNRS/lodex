@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import RaisedButton from 'material-ui/RaisedButton';
-import { CardText } from 'material-ui/Card';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from '@material-ui/core/RaisedButton';
+import { CardText } from '@material-ui/core/Card';
+import SelectField from '@material-ui/core/SelectField';
+import MenuItem from '@material-ui/core/MenuItem';
 import {
     Table,
     TableBody,
@@ -14,7 +14,7 @@ import {
     TableHeaderColumn,
     TableRow,
     TableRowColumn,
-} from 'material-ui/Table';
+} from '@material-ui/core/Table';
 
 import Loading from '../../lib/components/Loading';
 import Pagination from '../../lib/components/Pagination';

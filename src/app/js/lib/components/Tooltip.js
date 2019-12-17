@@ -1,12 +1,12 @@
 /* eslint-disable */
 
 /*
- * Duplicated from original Material-ui tooltip and modified to suit our needs until
+ * Duplicated from original @material-ui/core tooltip and modified to suit our needs until
  * v7 is out
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import transitions from 'material-ui/styles/transitions';
+import transitions from '@material-ui/core/styles/transitions';
 
 function getStyles(props, context, state) {
     const verticalPosition = props.verticalPosition;

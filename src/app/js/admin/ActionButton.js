@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import ActionDescription from 'material-ui/svg-icons/action/description';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import ContentClear from 'material-ui/svg-icons/content/clear';
+import Popover, { PopoverAnimationVertical } from '@material-ui/core/Popover';
+import ActionDescription from '@material-ui/core/svg-icons/action/description';
+import ContentAdd from '@material-ui/core/svg-icons/content/add';
+import ContentClear from '@material-ui/core/svg-icons/content/clear';
 
 import FloatingActionButton from '../lib/components/FloatingActionButton';
 import { fromFields } from '../sharedSelectors';

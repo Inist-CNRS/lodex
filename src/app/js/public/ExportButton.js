@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
+import FlatButton from '@material-ui/core/FlatButton';
+import IconButton from '@material-ui/core/IconButton';
+import Popover, { PopoverAnimationVertical } from '@material-ui/core/Popover';
+import Menu from '@material-ui/core/Menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 

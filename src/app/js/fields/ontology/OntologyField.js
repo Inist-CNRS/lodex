@@ -1,7 +1,7 @@
 import React from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { TableRow, TableRowColumn } from 'material-ui/Table';
+import { TableRow, TableRowColumn } from '@material-ui/core/Table';
 import { SortableElement } from 'react-sortable-hoc';
 import DragButton from './DragButton';
 import { connect } from 'react-redux';

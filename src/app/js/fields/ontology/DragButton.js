@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Reorder from 'material-ui/svg-icons/editor/format-line-spacing';
+import Reorder from '@material-ui/core/svg-icons/editor/format-line-spacing';
 import { SortableHandle } from 'react-sortable-hoc';
-import { grey400 } from 'material-ui/styles/colors';
+import { grey400 } from '@material-ui/core/styles/colors';
 
 import stylesToClassname from '../../lib/stylesToClassName';
 

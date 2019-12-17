@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { red400 } from 'material-ui/styles/colors';
+import { red400 } from '@material-ui/core/styles/colors';
 import memoize from 'lodash.memoize';
 
 const styles = {

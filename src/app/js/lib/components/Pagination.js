@@ -1,17 +1,17 @@
 /*
-Taken from https://raw.githubusercontent.com/ENDiGo/pagination-material-ui
+Taken from https://raw.githubusercontent.com/ENDiGo/pagination-@material-ui/core
 Could not use it from npm at the time as it has not been compiled correctly
 */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import IconButton from 'material-ui/IconButton';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
-import TextField from 'material-ui/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import MenuItem from '@material-ui/core/MenuItem';
+import SelectField from '@material-ui/core/SelectField';
+import TextField from '@material-ui/core/TextField';
 
-import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
-import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
+import ChevronLeft from '@material-ui/core/svg-icons/navigation/chevron-left';
+import ChevronRight from '@material-ui/core/svg-icons/navigation/chevron-right';
 
 const styles = {
     container: {

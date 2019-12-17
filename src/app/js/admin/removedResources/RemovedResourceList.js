@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import moment from 'moment';
 
-import { CardText } from 'material-ui/Card';
+import { CardText } from '@material-ui/core/Card';
 
 import {
     Table,
@@ -14,7 +14,7 @@ import {
     TableHeaderColumn,
     TableRow,
     TableRowColumn,
-} from 'material-ui/Table';
+} from '@material-ui/core/Table';
 
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import Loading from '../../lib/components/Loading';

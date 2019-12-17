@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card';
-import Divider from 'material-ui/Divider';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { Card, CardHeader, CardText, CardActions } from '@material-ui/core/Card';
+import Divider from '@material-ui/core/Divider';
+import SelectField from '@material-ui/core/SelectField';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import {
     polyglot as polyglotPropTypes,
