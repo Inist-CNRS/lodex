@@ -117,6 +117,7 @@
         "lodash.get": "4.4.2",
         "lodash.isequal": "4.5.0",
         "lodash.memoize": "4.1.2",
+        "lodash.merge": "4.6.2",
         "lodash.omit": "4.5.0",
         "lodash.pick": "4.4.0",
         "lodash.range": "3.2.0",
