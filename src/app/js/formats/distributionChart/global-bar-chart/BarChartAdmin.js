@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import translate from 'redux-polyglot/translate';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -165,8 +165,8 @@ class BarChartAdmin extends Component {
                     onChange={this.setColors}
                     polyglot={polyglot}
                 />
-                <SelectField
-                    floatingLabelText={polyglot.t('direction')}
+                <Select
+                    name={polyglot.t('direction')}
                     onChange={this.setDirection}
                     style={styles.input}
                     value={direction}
@@ -177,7 +177,7 @@ class BarChartAdmin extends Component {
                     <MenuItem value="vertical">
                         {polyglot.t('vertical')}
                     </MenuItem>
-                </SelectField>
+                </Select>
                 <TextField
                     type="number"
                     floatingLabelText={polyglot.t('category_margin')}
@@ -210,15 +210,15 @@ class BarChartAdmin extends Component {
                     style={styles.input}
                     checked={axisRoundValue}
                 />
-                <SelectField
-                    floatingLabelText={polyglot.t('scale')}
+                <Select
+                    name={polyglot.t('scale')}
                     onChange={this.setScale}
                     style={styles.input}
                     value={scale}
                 >
                     <MenuItem value="linear">{polyglot.t('linear')}</MenuItem>
                     <MenuItem value="log">{polyglot.t('log')}</MenuItem>
-                </SelectField>
+                </Select>
                 <TextField
                     floatingLabelText={polyglot.t('bar_size')}
                     onChange={this.setBarSize}

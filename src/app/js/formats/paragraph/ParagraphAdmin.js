@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -43,10 +43,8 @@ class ParagraphAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <SelectField
-                    floatingLabelText={polyglot.t(
-                        'list_format_select_image_width',
-                    )}
+                <Select
+                    name={polyglot.t('list_format_select_image_width')}
                     onChange={(event, index, newValue) =>
                         this.setWidth(newValue)
                     }
@@ -69,7 +67,7 @@ class ParagraphAdmin extends Component {
                     <MenuItem value="100%">
                         {polyglot.t('hundred_percent')}
                     </MenuItem>
-                </SelectField>
+                </Select>
             </div>
         );
     }

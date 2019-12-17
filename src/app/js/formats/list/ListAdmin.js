@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MenuItem from '@material-ui/core/MenuItem';
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -79,8 +79,8 @@ class ListAdmin extends Component {
                     onChange={this.setSubFormatOptions}
                     args={subFormatOptions}
                 />
-                <SelectField
-                    floatingLabelText={polyglot.t('list_format_select_type')}
+                <Select
+                    name={polyglot.t('list_format_select_type')}
                     onChange={(event, index, newValue) =>
                         this.setType(newValue)
                     }
@@ -99,7 +99,7 @@ class ListAdmin extends Component {
                     <MenuItem value="unordered_flat">
                         {polyglot.t('list_format_unordered_flat')}
                     </MenuItem>
-                </SelectField>
+                </Select>
             </div>
         );
     }

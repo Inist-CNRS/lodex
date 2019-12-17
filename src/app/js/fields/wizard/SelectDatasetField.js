@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -23,11 +23,11 @@ export const SelectDatasetFieldComponent = ({
     label,
     id,
 }) => (
-    <SelectField
+    <Select
         id={id}
         onChange={handleChange}
         style={styles.select}
-        floatingLabelText={polyglot.t(label)}
+        name={polyglot.t(label)}
         value={column}
     >
         {datasetFields.map(datasetField => (
@@ -39,7 +39,7 @@ export const SelectDatasetFieldComponent = ({
                 {datasetField}
             </MenuItem>
         ))}
-    </SelectField>
+    </Select>
 );
 
 SelectDatasetFieldComponent.propTypes = {

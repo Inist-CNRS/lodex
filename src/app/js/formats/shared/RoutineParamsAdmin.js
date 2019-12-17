@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -99,8 +99,8 @@ const RoutineParamsAdmin = ({
                 />
             )}
             {showOrderBy && (
-                <SelectField
-                    floatingLabelText={polyglot.t('order_by')}
+                <Select
+                    name={polyglot.t('order_by')}
                     onChange={setOrderBy}
                     style={styles.input}
                     value={orderBy}
@@ -117,7 +117,7 @@ const RoutineParamsAdmin = ({
                     <MenuItem value="value/desc">
                         {polyglot.t('value_desc')}
                     </MenuItem>
-                </SelectField>
+                </Select>
             )}
             {showUri && (
                 <TextField

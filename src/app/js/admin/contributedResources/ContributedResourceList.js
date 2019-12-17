@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import Button from '@material-ui/core/Button';
 import { CardText } from '@material-ui/core/Card';
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import {
     Table,
@@ -73,7 +73,7 @@ export class ContributedResourceListComponent extends Component {
         return (
             <div className="contributed_resources">
                 <CardText>
-                    <SelectField
+                    <Select
                         className="filter"
                         style={styles.select}
                         autoWidth
@@ -91,7 +91,7 @@ export class ContributedResourceListComponent extends Component {
                                 })}
                             </MenuItem>
                         ))}
-                    </SelectField>
+                    </Select>
                 </CardText>
 
                 <CardText>

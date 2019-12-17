@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 
@@ -75,9 +75,9 @@ export class IstexSummaryAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <SelectField
+                <Select
                     className="searched_field"
-                    floatingLabelText={polyglot.t('searched_field')}
+                    name={polyglot.t('searched_field')}
                     onChange={this.setSearchedField}
                     style={styles.input}
                     value={searchedField}
@@ -87,10 +87,10 @@ export class IstexSummaryAdmin extends Component {
                             {polyglot.t(value)}
                         </MenuItem>
                     ))}
-                </SelectField>
-                <SelectField
+                </Select>
+                <Select
                     className="year_sort_dir"
-                    floatingLabelText={polyglot.t('year_sort_dir')}
+                    name={polyglot.t('year_sort_dir')}
                     onChange={this.setSortDir}
                     style={styles.input}
                     value={sortDir}
@@ -100,7 +100,7 @@ export class IstexSummaryAdmin extends Component {
                             {polyglot.t(value)}
                         </MenuItem>
                     ))}
-                </SelectField>
+                </Select>
                 <TextField
                     className="year_threshold"
                     type="number"

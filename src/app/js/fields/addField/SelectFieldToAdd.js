@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -23,9 +23,9 @@ export const SelectFieldToAddComponent = ({
     onSelectField,
     p: polyglot,
 }) => (
-    <SelectField
+    <Select
         className="select-field"
-        floatingLabelText={polyglot.t('select_contribution_field')}
+        name={polyglot.t('select_contribution_field')}
         fullWidth
         value={selectedField}
         onChange={(_, __, value) => onSelectField(value)}
@@ -40,7 +40,7 @@ export const SelectFieldToAddComponent = ({
                     {label}
                 </MenuItem>
             ))}
-    </SelectField>
+    </Select>
 );
 
 SelectFieldToAddComponent.defaultProps = {

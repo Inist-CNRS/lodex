@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { scaleQuantize } from 'd3-scale';
 import {
@@ -63,8 +63,8 @@ import ColorScalePreview from '../../lib/components/ColorScalePreview';
 
 const getColorSchemeSelector = schemes => {
     const ColorSchemeSelector = ({ value = [], style, label, onChange }) => (
-        <SelectField
-            floatingLabelText={label}
+        <Select
+            name={label}
             onChange={onChange}
             style={style}
             value={value.join(',')}
@@ -78,7 +78,7 @@ const getColorSchemeSelector = schemes => {
                     />
                 </MenuItem>
             ))}
-        </SelectField>
+        </Select>
     );
     ColorSchemeSelector.propTypes = {
         value: PropTypes.arrayOf(PropTypes.string),

@@ -10,7 +10,7 @@ import {
     CardActions,
 } from '@material-ui/core/Card';
 import Divider from '@material-ui/core/Divider';
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import {
@@ -49,7 +49,7 @@ export class OntologyComponent extends Component {
                 <CardHeader title={<h3>{polyglot.t('model')}</h3>} />
                 <Divider />
                 <CardText>
-                    <SelectField
+                    <Select
                         autoWidth
                         value={filter}
                         onChange={this.handleFilterChange}
@@ -65,7 +65,7 @@ export class OntologyComponent extends Component {
                         <MenuItem value={'dataset'}>
                             {polyglot.t('model_filter_dataset')}
                         </MenuItem>
-                    </SelectField>
+                    </Select>
                     {(filter === ALL || filter === COVER_DATASET) && (
                         <OntologyTable title="dataset" />
                     )}

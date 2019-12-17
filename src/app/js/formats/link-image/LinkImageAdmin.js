@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MenuItem from '@material-ui/core/MenuItem';
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -63,8 +63,8 @@ class LinkImageAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <SelectField
-                    floatingLabelText={polyglot.t('Select a format')}
+                <Select
+                    name={polyglot.t('Select a format')}
                     onChange={this.setType}
                     style={styles.input}
                     value={type}
@@ -75,7 +75,7 @@ class LinkImageAdmin extends Component {
                     <MenuItem value="column">
                         {polyglot.t('A custom URL (same for all resources)')}
                     </MenuItem>
-                </SelectField>
+                </Select>
                 <TextField
                     floatingLabelText={
                         type !== 'text'

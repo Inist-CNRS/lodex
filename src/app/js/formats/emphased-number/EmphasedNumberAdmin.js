@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -69,8 +69,8 @@ class EmphasedNumberAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <SelectField
-                    floatingLabelText={polyglot.t('list_format_select_size')}
+                <Select
+                    name={polyglot.t('list_format_select_size')}
                     onChange={(event, index, newValue) =>
                         this.setSize(newValue)
                     }
@@ -81,7 +81,7 @@ class EmphasedNumberAdmin extends Component {
                     <MenuItem value={2}>{polyglot.t('size2')}</MenuItem>
                     <MenuItem value={3}>{polyglot.t('size3')}</MenuItem>
                     <MenuItem value={4}>{polyglot.t('size4')}</MenuItem>
-                </SelectField>
+                </Select>
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}

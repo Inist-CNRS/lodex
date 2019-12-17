@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
-import IconDelete from '@material-ui/icons/Delete';
+import IconDelete from '@material-ui/icons';
 import translate from 'redux-polyglot/translate';
 
 import {
@@ -29,10 +29,10 @@ const ComposedOfColumn = ({
     p: polyglot,
 }) => (
     <div style={styles.compositionContainer}>
-        <SelectField
+        <Select
             onChange={handleSelectColumn}
             style={styles.select}
-            hintText={polyglot.t('select_a_column')}
+            name={polyglot.t('select_a_column')}
             value={column}
             required
         >
@@ -45,7 +45,7 @@ const ComposedOfColumn = ({
                     {f.label}
                 </MenuItem>
             ))}
-        </SelectField>
+        </Select>
         {index > 1 && (
             <IconButton
                 className={`btn-remove-composite-field btn-remove-composite-field-${index}`}

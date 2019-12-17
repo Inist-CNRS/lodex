@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SelectField from '@material-ui/core/SelectField';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
@@ -89,10 +89,8 @@ class RessourcesGridAdmin extends Component {
                     onChange={this.setParams}
                     polyglot={polyglot}
                 />
-                <SelectField
-                    floatingLabelText={polyglot.t(
-                        'list_format_select_image_width',
-                    )}
+                <Select
+                    name={polyglot.t('list_format_select_image_width')}
                     onChange={(event, index, newValue) =>
                         this.setWidth(newValue)
                     }
@@ -115,7 +113,7 @@ class RessourcesGridAdmin extends Component {
                     <MenuItem value="100%">
                         {polyglot.t('hundred_percent')}
                     </MenuItem>
-                </SelectField>
+                </Select>
                 <Checkbox
                     label={polyglot.t('allow_to_load_more')}
                     onCheck={this.toggleAllowToLoadMore}
