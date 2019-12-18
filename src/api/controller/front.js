@@ -146,7 +146,7 @@ const renderHtml = (store, muiTheme, url, context, history) =>
         renderToString(
             <StaticRouter location={url} context={context}>
                 <Provider {...{ store }}>
-                    <MuiThemeProvider muiTheme={muiTheme}>
+                    <MuiThemeProvider theme={muiTheme}>
                         <Routes history={history} />
                     </MuiThemeProvider>
                 </Provider>

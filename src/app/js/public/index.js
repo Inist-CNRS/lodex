@@ -35,7 +35,7 @@ const store = configureStore(
 
 hydrate(
     <Provider {...{ store }}>
-        <MuiThemeProvider muiTheme={muiTheme}>
+        <MuiThemeProvider theme={muiTheme}>
             <Routes history={history} />
         </MuiThemeProvider>
     </Provider>,

@@ -23,7 +23,7 @@ const muiTheme = createMuiTheme(customTheme, {
 });
 
 const App = props => (
-    <MuiThemeProvider muiTheme={muiTheme}>
+    <MuiThemeProvider theme={muiTheme}>
         <FieldProvider {...props}>
             {({ resource, field, formatData }) => (
                 <IstexSummaryView

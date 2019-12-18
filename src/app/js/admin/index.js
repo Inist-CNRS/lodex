@@ -44,7 +44,7 @@ const store = configureStore(
 
 render(
     <Provider {...{ store }}>
-        <MuiThemeProvider muiTheme={muiTheme}>
+        <MuiThemeProvider theme={muiTheme}>
             <ConnectedRouter history={history} onUpdate={scrollToTop}>
                 <Routes />
             </ConnectedRouter>
