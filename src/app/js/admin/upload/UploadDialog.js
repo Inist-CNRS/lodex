@@ -81,7 +81,6 @@ export const UploadDialogComponent = ({
                     <StepLabel>{polyglot.t('select_file')}</StepLabel>
                     <StepContent>
                         <input
-                            accept="*"
                             id="btn-upload-dataset"
                             type="file"
                             onChange={onFileLoad}

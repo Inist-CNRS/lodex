@@ -66,13 +66,13 @@ class ImportFieldsDialogComponent extends Component {
                         {polyglot.t('cancel')}
                     </Button>
                     <input
-                        id="file_model"
+                        id="file-model"
                         name="file_model"
                         type="file"
                         onChange={this.handleFileUpload}
                         style={styles.input}
                     />
-                    <label htmlFor="file_model">
+                    <label htmlFor="file-model">
                         <Button
                             key="confirm"
                             className="btn-save"
