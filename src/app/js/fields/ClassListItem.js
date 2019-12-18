@@ -6,7 +6,9 @@ import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
-import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
 import FormAutoCompleteField from '../lib/components/FormAutoCompleteField';
 import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -88,7 +90,7 @@ export const ClassListItem = ({
         </div>
         <span>
             <IconButton tooltip={polyglot.t('remove_class')} onClick={onRemove}>
-                <ActionDeleteIcon />
+                <FontAwesomeIcon icon={faTrash} />
             </IconButton>
         </span>
     </div>

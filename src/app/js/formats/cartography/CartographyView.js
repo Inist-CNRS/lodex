@@ -8,11 +8,11 @@ import {
 import { connect } from 'react-redux';
 import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
-import ZoomIn from 'material-ui/svg-icons/action/zoom-in';
-import ZoomOut from 'material-ui/svg-icons/action/zoom-out';
 import IconButton from 'material-ui/IconButton';
 import compose from 'recompose/compose';
 import ReactTooltip from 'react-tooltip';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearchMinus, faSearchPlus } from '@fortawesome/free-solid-svg-icons';
 
 import injectData from '../injectData';
 import getGradientScaleAndLegend from '../../lib/components/getGradientScaleAndLegend';
@@ -122,13 +122,13 @@ class CartographyView extends Component {
                             disabled={zoom >= maxZoom}
                             onClick={this.zoomIn}
                         >
-                            <ZoomIn />
+                            <FontAwesomeIcon icon={faSearchPlus} />
                         </IconButton>
                         <IconButton
                             disabled={zoom <= minZoom}
                             onClick={this.zoomOut}
                         >
-                            <ZoomOut />
+                            <FontAwesomeIcon icon={faSearchMinus} />
                         </IconButton>
                     </div>
                     <ComposableMap

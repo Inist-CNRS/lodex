@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import URL from 'url';
+import TextField from 'material-ui/TextField';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
 
 import {
     field as fieldPropTypes,
@@ -12,8 +15,7 @@ import {
 import { fromFormat } from '../../public/selectors';
 import { loadFormatData } from '../../formats/reducer';
 import Loading from '../../lib/components/Loading';
-import LinkIcon from 'material-ui/svg-icons/content/link';
-import TextField from 'material-ui/TextField';
+
 import { isURL } from '../../../../common/uris.js';
 import Link from '../../lib/components/Link';
 
@@ -133,7 +135,8 @@ export default url => FormatView => {
             if (!sparql.hiddenInfo) {
                 return (
                     <div>
-                        <LinkIcon
+                        <FontAwesomeIcon
+                            icon={faLink}
                             style={
                                 isURL(requestText)
                                     ? styles.pointer

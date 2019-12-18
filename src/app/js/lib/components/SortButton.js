@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
-import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward';
 import withHandlers from 'recompose/withHandlers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+
 import { isLongText, getShortText } from '../../lib/longTexts';
 
 const styles = {
@@ -26,7 +28,8 @@ const SortButton = ({ name, label, sortBy, sortDir, sort }) => (
         label={isLongText(label) ? getShortText(label) : label}
         icon={
             sortBy === name && (
-                <ArrowUp
+                <FontAwesomeIcon
+                    icon={faArrowUp}
                     style={Object.assign(
                         {},
                         styles.iconSortBy,

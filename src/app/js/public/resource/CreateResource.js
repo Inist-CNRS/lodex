@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { fromResource } from '../selectors';
 import CreateResourceForm from './CreateResourceForm';
@@ -21,6 +22,11 @@ const styles = {
         bottom: 100,
         right: 40,
     },
+    icon: {
+        color: 'white',
+        height: 56,
+        lineHeight: 56,
+    },
 };
 
 const CreateResource = ({ handleOpen, p, ...props }) => (
@@ -37,7 +43,7 @@ const CreateResource = ({ handleOpen, p, ...props }) => (
                 style={styles.button}
                 title={p.t('create_resource')}
             >
-                <ContentAdd />
+                <FontAwesomeIcon icon={faPlus} style={styles.icon} />
             </FloatingActionButton>
         }
     />

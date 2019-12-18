@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Book from 'material-ui/svg-icons/av/library-books';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 
 import Link from '../../lib/components/Link';
 import stylesToClassname from '../../lib/stylesToClassName';
@@ -43,7 +44,11 @@ export const IstexItemComponent = ({
     <article>
         <div className={styles.article}>
             <div className={styles.title}>
-                <Book size="20" className={styles.titleIcon} />
+                <FontAwesomeIcon
+                    icon={faBookmark}
+                    size="20"
+                    className={styles.titleIcon}
+                />
                 <Link href={url}>{title}</Link>
             </div>
             {authors && (

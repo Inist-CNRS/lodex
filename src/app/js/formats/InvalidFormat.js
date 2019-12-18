@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import Warning from 'material-ui/svg-icons/alert/warning';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
@@ -62,7 +63,10 @@ const InvalidFormat = ({ p: polyglot, format, value }) => (
                 <strong>{polyglot.t('bad_format_error')}</strong>
             </span>
             <span className={styles.titleLogo}>
-                <Warning iconStyle={iconStyle} style={iconStyle} />
+                <FontAwesomeIcon
+                    icon={faExclamationTriangle}
+                    style={iconStyle}
+                />
             </span>
         </div>
         <p className={styles.details}>{polyglot.t('bad_format_details')}</p>

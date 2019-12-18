@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Folder from 'material-ui/svg-icons/file/folder';
-import FolderOpen from 'material-ui/svg-icons/file/folder-open';
-import Arrow from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import get from 'lodash.get';
 import Button from 'material-ui/FlatButton';
 import CircularProgress from 'material-ui/CircularProgress';
-import get from 'lodash.get';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faFolder,
+    faFolderOpen,
+    faChevronDown,
+} from '@fortawesome/free-solid-svg-icons';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import SkipFold from './SkipFold';
 import stylesToClassname from '../../lib/stylesToClassName';
+
+export const FolderIcon = props => (
+    <FontAwesomeIcon icon={faFolder} {...props} />
+);
+export const FolderOpenIcon = props => (
+    <FontAwesomeIcon icon={faFolderOpen} {...props} />
+);
 
 const styles = stylesToClassname(
     {
@@ -108,12 +118,13 @@ class FetchFold extends Component {
                 <div>
                     <Button onClick={isOpen ? this.close : this.open}>
                         <div className={styles.buttonLabel}>
-                            <Arrow
+                            <FontAwesomeIcon
+                                icon={faChevronDown}
                                 className={
                                     isOpen ? undefined : styles.arrowClose
                                 }
                             />
-                            {isOpen ? <FolderOpen /> : <Folder />}
+                            {isOpen ? <FolderIcon /> : <FolderOpenIcon />}
                             <span className={styles.labelText}>{label}</span>
                             <span className={styles.count}>{count}</span>
                             {isLoading && circularProgress}

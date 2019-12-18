@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import translate from 'redux-polyglot/translate';
 import { Card, CardMedia, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import Forward from 'material-ui/svg-icons/content/forward';
-import translate from 'redux-polyglot/translate';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';
@@ -41,7 +42,9 @@ const GraphLink = ({ link, children, p: polyglot }) => (
                 to={link}
                 label={polyglot.t('view_details')}
                 labelPosition="before"
-                icon={<Forward style={styles.icon} />}
+                icon={
+                    <FontAwesomeIcon icon={faArrowRight} style={styles.icon} />
+                }
             />
         </CardActions>
     </Card>

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
-import IconDelete from 'material-ui/svg-icons/action/delete';
 import translate from 'redux-polyglot/translate';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import {
     polyglot as polyglotPropTypes,
@@ -51,7 +52,7 @@ const ComposedOfColumn = ({
                 onClick={handleRemoveColumn}
                 title={polyglot.t('remove_composition_column')}
             >
-                <IconDelete />
+                <FontAwesomeIcon icon={faTrash} />
             </IconButton>
         )}
     </div>

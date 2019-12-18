@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import IconButton from 'material-ui/IconButton';
-import RejectedIcon from 'material-ui/svg-icons/content/clear';
-import ProposedIcon from 'material-ui/svg-icons/content/remove';
-import ValidatedIcon from 'material-ui/svg-icons/action/done';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -14,6 +11,8 @@ import {
     grey500,
 } from 'material-ui/styles/colors';
 import classnames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faTimes, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 import propositionStatus from '../../../../common/propositionStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -21,9 +20,9 @@ import { fromResource } from '../selectors';
 import { fromUser } from '../../sharedSelectors';
 
 const icons = {
-    PROPOSED: ProposedIcon,
-    VALIDATED: ValidatedIcon,
-    REJECTED: RejectedIcon,
+    PROPOSED: <FontAwesomeIcon icon={faMinus} />,
+    VALIDATED: <FontAwesomeIcon icon={faCheck} />,
+    REJECTED: <FontAwesomeIcon icon={faTimes} />,
 };
 
 const colors = {

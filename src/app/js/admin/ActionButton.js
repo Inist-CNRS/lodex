@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import ActionDescription from 'material-ui/svg-icons/action/description';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import ContentClear from 'material-ui/svg-icons/content/clear';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faTimes, faFileAlt } from '@fortawesome/free-solid-svg-icons';
 
 import FloatingActionButton from '../lib/components/FloatingActionButton';
 import { fromFields } from '../sharedSelectors';
@@ -154,7 +152,7 @@ export class ActionButtonComponent extends Component {
                         style={styles.button}
                         tooltip={polyglot.t('add_column_from_original_dataset')}
                     >
-                        <ActionDescription />
+                        <FontAwesomeIcon icon={faFileAlt} />
                     </FloatingActionButton>
 
                     <FloatingActionButton
@@ -164,12 +162,16 @@ export class ActionButtonComponent extends Component {
                         style={styles.button}
                         tooltip="Add a new column"
                     >
-                        <ContentAdd />
+                        <FontAwesomeIcon icon={faPlus} />
                     </FloatingActionButton>
                 </Popover>
                 <div ref={this.storeAnchorRef}>
-                    {!showCancel && <ContentAdd style={styles.icon} />}
-                    {showCancel && <ContentClear style={styles.icon} />}
+                    {!showCancel && (
+                        <FontAwesomeIcon icon={faPlus} style={styles.icon} />
+                    )}
+                    {showCancel && (
+                        <FontAwesomeIcon icon={faTimes} style={styles.icon} />
+                    )}
                 </div>
             </FloatingActionButton>
         );

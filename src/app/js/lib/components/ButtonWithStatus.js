@@ -4,14 +4,30 @@ import { lightGreenA400, red400 } from 'material-ui/styles/colors';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faCheck,
+    faExclamationTriangle,
+} from '@fortawesome/free-solid-svg-icons';
 
-import Warning from 'material-ui/svg-icons/alert/warning';
-import Success from 'material-ui/svg-icons/action/done';
+export const WarningIcon = props => (
+    <FontAwesomeIcon icon={faExclamationTriangle} color={red400} {...props} />
+);
+
+export const SuccessIcon = props => (
+    <FontAwesomeIcon icon={faCheck} color={lightGreenA400} {...props} />
+);
 
 const getIcon = (error, loading, success) => {
-    if (loading) return <CircularProgress size={20} />;
-    if (error) return <Warning color={red400} />;
-    if (success) return <Success color={lightGreenA400} />;
+    if (loading) {
+        return <CircularProgress size={20} />;
+    }
+    if (error) {
+        return <WarningIcon />;
+    }
+    if (success) {
+        return <SuccessIcon />;
+    }
     return null;
 };
 
