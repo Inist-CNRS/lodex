@@ -11,9 +11,7 @@ describe('<ButtonWithStatus />', () => {
             const button = wrapper.find(Button);
 
             expect(button.prop('disabled')).toEqual(false);
-            expect(button.prop('icon')).toEqual(null);
-            expect(button.prop('labelPosition')).toEqual('before');
-            expect(button.prop('label')).toEqual('Foo');
+            expect(button.prop('children')).toEqual('Foo');
         });
 
         it('should render a Button with a CircularProgress icon when loading', () => {
@@ -45,8 +43,7 @@ describe('<ButtonWithStatus />', () => {
 
             expect(button.prop('disabled')).toEqual(false);
             expect(button.prop('icon')).toEqual(null);
-            expect(button.prop('labelPosition')).toEqual('before');
-            expect(button.prop('label')).toEqual('Foo');
+            expect(button.prop('children')).toEqual('Foo');
         });
 
         it('should render a Button with a CircularProgress icon when loading', () => {

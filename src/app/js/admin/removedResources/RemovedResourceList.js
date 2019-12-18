@@ -98,16 +98,17 @@ export class RemovedResourceListComponent extends Component {
                                 <TableRowColumn>{data.reason}</TableRowColumn>
                                 <TableRowColumn>
                                     <ButtonWithStatus
-                                        raised
+                                        variant="contained"
                                         className="btn-restore-resource"
                                         loading={loading}
-                                        label={polyglot.t('restore')}
                                         onClick={this.handleRestoreResourceClick(
                                             data.uri,
                                         )}
                                         primary
                                         data={data.uri}
-                                    />
+                                    >
+                                        {polyglot.t('restore')}
+                                    </ButtonWithStatus>
                                 </TableRowColumn>
                                 {columns.map(({ name }) => (
                                     <TableRowColumn key={data[name]}>

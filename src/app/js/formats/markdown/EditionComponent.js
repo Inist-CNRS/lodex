@@ -2,7 +2,7 @@ import React from 'react';
 import { formField as formFieldPropTypes } from '../../propTypes';
 import DefaultEdition from '../DefaultFormat/DefaultEdition';
 
-const FormTextField = props => {
+const EditionComponent = props => {
     const {
         input,
         label,
@@ -12,8 +12,7 @@ const FormTextField = props => {
         <DefaultEdition
             {...props}
             {...input}
-            hintText={label}
-            floatingLabelText={label}
+            label={label}
             multiLine
             rows={4}
             errorText={touched && error}
@@ -21,6 +20,6 @@ const FormTextField = props => {
     );
 };
 
-FormTextField.propTypes = formFieldPropTypes;
+EditionComponent.propTypes = formFieldPropTypes;
 
-export default FormTextField;
+export default EditionComponent;

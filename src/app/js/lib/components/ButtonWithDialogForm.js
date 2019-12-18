@@ -70,7 +70,7 @@ export const PureButtonWithDialogForm = ({
     }
     const actions = [
         <ButtonWithStatus
-            raised
+            variant="contained"
             key="save"
             className={classnames(className, 'save')}
             loading={saving}

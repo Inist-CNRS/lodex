@@ -30,12 +30,9 @@ export const LoginComponent = ({ login, p: polyglot, submit, submitting }) => (
             <LoginForm onSubmit={login} />
         </CardContent>
         <CardActions>
-            <ButtonWithStatus
-                label={polyglot.t('Sign in')}
-                loading={submitting}
-                onClick={submit}
-                primary
-            />
+            <ButtonWithStatus loading={submitting} onClick={submit} primary>
+                {polyglot.t('Sign in')}
+            </ButtonWithStatus>
         </CardActions>
     </Card>
 );

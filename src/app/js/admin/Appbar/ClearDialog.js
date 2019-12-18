@@ -96,7 +96,7 @@ class ClearDialogComponent extends Component {
 
         const actions = [
             <ButtonWithStatus
-                raised
+                variant="contained"
                 key="submit"
                 className="btn-save"
                 onClick={this.handleClear(type)}

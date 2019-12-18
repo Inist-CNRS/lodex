@@ -11,9 +11,8 @@ const FormTextField = ({
     ...custom
 }) => (
     <TextField
-        hintText={label}
-        floatingLabelText={label}
-        errorText={touched && error}
+        label={label}
+        error={touched && error}
         {...input}
         value={input.value === null ? '' : input.value}
         {...custom}

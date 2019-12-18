@@ -39,17 +39,18 @@ export class PublishButtonComponent extends Component {
         return (
             <div>
                 <ButtonWithStatus
-                    raised
-                    labelColor={theme.green.primary}
+                    variant="contained"
+                    color={theme.green.primary}
                     className="btn-publish"
                     loading={isPublishing}
                     error={error}
                     success={published}
-                    label={polyglot.t('publish')}
                     onClick={this.handleClick}
                     disabled={!canPublish}
                     style={styles.button}
-                />
+                >
+                    {polyglot.t('publish')}
+                </ButtonWithStatus>
                 <ConfirmPublication />
             </div>
         );
