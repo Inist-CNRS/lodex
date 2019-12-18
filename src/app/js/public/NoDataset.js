@@ -1,12 +1,13 @@
 import React from 'react';
 import translate from 'redux-polyglot/translate';
-import { CardText } from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import Card from '../lib/components/Card';
 
 const NoDatasetComponent = ({ p: polyglot }) => (
     <Card>
-        <CardText>{polyglot.t('no_dataset')}</CardText>
+        <CardContent>{polyglot.t('no_dataset')}</CardContent>
     </Card>
 );
 

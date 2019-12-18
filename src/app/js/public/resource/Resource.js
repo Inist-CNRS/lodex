@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router-dom';
 import translate from 'redux-polyglot/translate';
-import { CardText, CardActions } from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import { Swipeable } from 'react-swipeable';
 import get from 'lodash.get';
@@ -116,9 +117,9 @@ export class ResourceComponent extends Component {
                         <CardActions>{backToListButton}</CardActions>
                     </Card>
                     <Card>
-                        <CardText>
+                        <CardContent>
                             <h1>{polyglot.t('not_found')}</h1>
-                        </CardText>
+                        </CardContent>
                     </Card>
                 </div>
             );

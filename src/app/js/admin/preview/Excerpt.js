@@ -6,13 +6,11 @@ import withProps from 'recompose/withProps';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import memoize from 'lodash.memoize';
-import {
-    Table,
-    TableBody,
-    TableHeader,
-    TableHeaderColumn,
-    TableRow,
-} from '@material-ui/core/Table';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
 
 import {
     polyglot as polyglotPropTypes,
@@ -58,10 +56,10 @@ export const ExcerptComponent = ({
         style={styles.table(isPreview)}
         onCellClick={onCellClick}
     >
-        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+        <TableHead displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow onCellClick={onHeaderClick}>
                 {columns.map(field => (
-                    <TableHeaderColumn
+                    <TableCell
                         key={field.name}
                         className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
                             field,
@@ -74,10 +72,10 @@ export const ExcerptComponent = ({
                         }
                     >
                         <ExcerptHeader field={field} />
-                    </TableHeaderColumn>
+                    </TableCell>
                 ))}
             </TableRow>
-        </TableHeader>
+        </TableHead>
         <TableBody displayRowCheckbox={false}>
             {lines.map((line, index) => (
                 <ExcerptLine

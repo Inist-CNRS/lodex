@@ -1,8 +1,9 @@
 import React from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Card, CardHeader } from '@material-ui/core/Card';
-import Divider from '@material-ui/core/Divider';
+import Card from '@material-ui/core/Card';
+import CardHead from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import RemovedResourceList from './RemovedResourceList';
@@ -11,9 +12,10 @@ import redirectToDashboardIfNoField from '../../admin/redirectToDashboardIfNoFie
 
 export const RemovedResourcePageComponent = ({ p: polyglot }) => (
     <Card>
-        <CardHeader title={<h3>{polyglot.t('removed_resources')}</h3>} />
-        <Divider />
-        <RemovedResourceList />
+        <CardHead title={<h3>{polyglot.t('removed_resources')}</h3>} />
+        <CardContent>
+            <RemovedResourceList />
+        </CardContent>
     </Card>
 );
 

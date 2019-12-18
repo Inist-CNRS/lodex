@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import Popover, { PopoverAnimationVertical } from '@material-ui/core/Popover';
+import Popover from '@material-ui/core/Popover';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTimes, faFileAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -138,7 +138,6 @@ export class ActionButtonComponent extends Component {
             >
                 <Popover
                     open={showPopover}
-                    animation={PopoverAnimationVertical}
                     anchorEl={this.anchor}
                     anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
                     autoCloseWhenOffScreen={false}

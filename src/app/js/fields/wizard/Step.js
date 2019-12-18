@@ -5,7 +5,9 @@ import withProps from 'recompose/withProps';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import { reduxForm } from 'redux-form';
-import { Step, StepButton, StepContent } from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Stepper';
+import StepButton from '@material-ui/core/StepButton';
+import StepContent from '@material-ui/core/StepContent';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';

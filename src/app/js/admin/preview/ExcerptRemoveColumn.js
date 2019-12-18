@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
-import { TableRowColumn } from '@material-ui/core/Table';
+import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
 
 import { removeField } from '../../fields';
@@ -20,7 +20,7 @@ export const ExcerptRemoveColumnComponent = ({
     field: { name },
     p: polyglot,
 }) => (
-    <TableRowColumn>
+    <TableCell>
         {name !== 'uri' ? (
             <Button
                 className={`btn-excerpt-remove-column btn-excerpt-remove-column-${getFieldClassName(
@@ -32,7 +32,7 @@ export const ExcerptRemoveColumnComponent = ({
                 {polyglot.t('remove_from_publication')}
             </Button>
         ) : null}
-    </TableRowColumn>
+    </TableCell>
 );
 
 ExcerptRemoveColumnComponent.propTypes = {

@@ -4,17 +4,14 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import Button from '@material-ui/core/Button';
-import { CardText } from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import {
-    Table,
-    TableBody,
-    TableHeader,
-    TableHeaderColumn,
-    TableRow,
-    TableRowColumn,
-} from '@material-ui/core/Table';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
 
 import Loading from '../../lib/components/Loading';
 import Pagination from '../../lib/components/Pagination';
@@ -72,7 +69,7 @@ export class ContributedResourceListComponent extends Component {
 
         return (
             <div className="contributed_resources">
-                <CardText>
+                <CardContent>
                     <Select
                         className="filter"
                         style={styles.select}
@@ -92,31 +89,28 @@ export class ContributedResourceListComponent extends Component {
                             </MenuItem>
                         ))}
                     </Select>
-                </CardText>
-
-                <CardText>
+                </CardContent>
+                <CardContent>
                     <Table
                         selectable={false}
                         fixedHeader={false}
                         style={styles.table}
                     >
-                        <TableHeader
+                        <TableHead
                             displaySelectAll={false}
                             adjustForCheckbox={false}
                         >
                             <TableRow>
-                                <TableHeaderColumn />
+                                <TableCell />
                                 {columns.map(({ name, label }) => (
-                                    <TableHeaderColumn key={name}>
-                                        {label}
-                                    </TableHeaderColumn>
+                                    <TableCell key={name}>{label}</TableCell>
                                 ))}
                             </TableRow>
-                        </TableHeader>
+                        </TableHead>
                         <TableBody displayRowCheckbox={false}>
                             {resources.map(data => (
                                 <TableRow key={data.uri}>
-                                    <TableRowColumn key="review">
+                                    <TableCell key="review">
                                         <a
                                             href={getFullResourceUri(
                                                 data,
@@ -131,11 +125,11 @@ export class ContributedResourceListComponent extends Component {
                                                 {polyglot.t('review')}
                                             </Button>
                                         </a>
-                                    </TableRowColumn>
+                                    </TableCell>
                                     {columns.map(({ name }) => (
-                                        <TableRowColumn key={name}>
+                                        <TableCell key={name}>
                                             {data[name]}
-                                        </TableRowColumn>
+                                        </TableCell>
                                     ))}
                                 </TableRow>
                             ))}
@@ -152,7 +146,7 @@ export class ContributedResourceListComponent extends Component {
                             showing: polyglot.t('showing'),
                         }}
                     />
-                </CardText>
+                </CardContent>
             </div>
         );
     }

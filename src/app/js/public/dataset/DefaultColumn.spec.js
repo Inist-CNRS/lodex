@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { TableRowColumn } from '@material-ui/core/Table';
+import TableCell from '@material-ui/core/TableCell';
 
 import DefaultColumn from './DefaultColumn';
 import Format from '../Format';
@@ -18,7 +18,7 @@ describe('<DefaultColumn />', () => {
     );
 
     it('renders a TableRowColumn with correct class', () => {
-        const element = wrapper.find(TableRowColumn);
+        const element = wrapper.find(TableCell);
 
         expect(element.prop('className')).toEqual(
             'dataset-column dataset-a_name',

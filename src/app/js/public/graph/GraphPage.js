@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card, CardTitle } from '@material-ui/core/Card';
 import { Helmet } from 'react-helmet';
-import Button from '@material-ui/core/Button';
-import { grey } from '@material-ui/core/colors';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
+import { grey } from '@material-ui/core/colors';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import {
     field as fieldPropTypes,
@@ -86,7 +88,7 @@ class GraphPage extends Component {
                     <AppliedFacetList style={styles.section} />
                     {graphField && (
                         <Card style={styles.section} className="graph">
-                            <CardTitle style={styles.label} className="title">
+                            <CardHeader style={styles.label} className="title">
                                 {graphField.label}
                                 <EditButton
                                     field={graphField}
@@ -96,19 +98,24 @@ class GraphPage extends Component {
                                     field={graphField}
                                     resource={resource}
                                 />
-                            </CardTitle>
-                            <Format field={graphField} resource={resource} />
-                            <CompositeProperty
-                                key="composite"
-                                field={graphField}
-                                resource={resource}
-                                parents={[]}
-                            />
-                            <PropertyLinkedFields
-                                fieldName={graphField.name}
-                                resource={resource}
-                                parents={[]}
-                            />
+                            </CardHeader>
+                            <CardContent>
+                                <Format
+                                    field={graphField}
+                                    resource={resource}
+                                />
+                                <CompositeProperty
+                                    key="composite"
+                                    field={graphField}
+                                    resource={resource}
+                                    parents={[]}
+                                />
+                                <PropertyLinkedFields
+                                    fieldName={graphField.name}
+                                    resource={resource}
+                                    parents={[]}
+                                />
+                            </CardContent>
                         </Card>
                     )}
                     <Button

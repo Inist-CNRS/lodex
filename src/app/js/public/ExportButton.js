@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import Popover, { PopoverAnimationVertical } from '@material-ui/core/Popover';
+import Popover from '@material-ui/core/Popover';
 import Menu from '@material-ui/core/Menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
@@ -95,7 +95,6 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
                 anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
                 targetOrigin={{ horizontal: 'left', vertical: 'top' }}
                 onRequestClose={handleClose}
-                animation={PopoverAnimationVertical}
             >
                 <div className={styles.menuContainer}>
                     <h3 className={styles.menuTitle}>{menuTitle}</h3>

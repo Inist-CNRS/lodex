@@ -6,7 +6,7 @@ import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
 import translate from 'redux-polyglot/translate';
 import Button from '@material-ui/core/Button';
-import { List } from '@material-ui/core/List';
+import List from '@material-ui/core/List';
 import Popover from '@material-ui/core/Popover';
 
 import { fromFields } from '../../sharedSelectors';

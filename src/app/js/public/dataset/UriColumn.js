@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { TableRowColumn } from '@material-ui/core/Table';
+import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -11,14 +11,14 @@ import { getResourceUri } from '../../../../common/uris';
 import Link from '../../lib/components/Link';
 
 const UriColumn = ({ column, resource, indice }) => (
-    <TableRowColumn
+    <TableCell
         className={classnames('dataset-column', `dataset-${column.name}`)}
     >
         <Button component={<Link to={getResourceUri(resource)} />}>
             {indice}
             {<FontAwesomeIcon icon={faChevronRight} />}
         </Button>
-    </TableRowColumn>
+    </TableCell>
 );
 
 UriColumn.propTypes = {

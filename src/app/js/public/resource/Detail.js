@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { CardActions } from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import { grey } from '@material-ui/core/colors';
 import memoize from 'lodash.memoize';

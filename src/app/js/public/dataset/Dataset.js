@@ -5,13 +5,12 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { grey } from '@material-ui/core/colors';
 
-import {
-    Table,
-    TableBody,
-    TableHeader,
-    TableRow,
-    TableRowColumn,
-} from '@material-ui/core/Table';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+
 import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
 import Pagination from '../../lib/components/Pagination';
@@ -92,7 +91,7 @@ export class DatasetComponent extends Component {
                     fixedHeader={false}
                     style={styles.table}
                 >
-                    <TableHeader
+                    <TableHead
                         displaySelectAll={false}
                         adjustForCheckbox={false}
                     >
@@ -105,13 +104,11 @@ export class DatasetComponent extends Component {
                                 />
                             ))}
                         </TableRow>
-                    </TableHeader>
+                    </TableHead>
                     <TableBody displayRowCheckbox={false}>
                         {!dataset.length ? (
                             <TableRow>
-                                <TableRowColumn>
-                                    {polyglot.t('no_result')}
-                                </TableRowColumn>
+                                <TableCell>{polyglot.t('no_result')}</TableCell>
                             </TableRow>
                         ) : (
                             dataset.map((data, indice) => (

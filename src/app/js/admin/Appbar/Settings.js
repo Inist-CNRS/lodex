@@ -6,7 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import Popover, { PopoverAnimationVertical } from '@material-ui/core/Popover';
+import Popover from '@material-ui/core/Popover';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 

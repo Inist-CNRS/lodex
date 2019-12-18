@@ -3,13 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import {
-    Card,
-    CardHeader,
-    CardText,
-    CardActions,
-} from '@material-ui/core/Card';
-import Divider from '@material-ui/core/Divider';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
@@ -47,8 +44,7 @@ export class OntologyComponent extends Component {
         return (
             <Card>
                 <CardHeader title={<h3>{polyglot.t('model')}</h3>} />
-                <Divider />
-                <CardText>
+                <CardContent>
                     <Select
                         autoWidth
                         value={filter}
@@ -72,7 +68,7 @@ export class OntologyComponent extends Component {
                     {(filter === ALL || filter != COVER_DATASET) && (
                         <OntologyTable title="document" />
                     )}
-                </CardText>
+                </CardContent>
                 <CardActions>
                     <ExportFieldsButton />
                     <ExportFieldsReadyButton />

@@ -6,7 +6,6 @@ import compose from 'recompose/compose';
 import debounce from 'lodash.debounce';
 import translate from 'redux-polyglot/translate';
 import TextField from '@material-ui/core/TextField';
-import { ToolbarGroup } from '@material-ui/core/Toolbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -72,7 +71,7 @@ class FilterComponent extends Component {
         }
 
         return (
-            <ToolbarGroup>
+            <div>
                 <div className={styles.icon}>
                     {isDatasetLoading ? (
                         <CircularProgress
@@ -101,7 +100,7 @@ class FilterComponent extends Component {
                         height={15}
                     />
                 </IconButton>
-            </ToolbarGroup>
+            </div>
         );
     }
 }
