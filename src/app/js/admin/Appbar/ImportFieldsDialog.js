@@ -5,7 +5,6 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
-import Button from '@material-ui/core/Button';
 import { red } from '@material-ui/core/colors';
 
 import { importFields as importFieldsAction } from '../import';
