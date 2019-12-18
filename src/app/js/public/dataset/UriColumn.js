@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { TableRowColumn } from '@material-ui/core/Table';
 import Button from '@material-ui/core/Button';
-import RightIcon from '@material-ui/icons/KeyboardArrowRight';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 import { field as fieldPropTypes } from '../../propTypes';
 import { getResourceUri } from '../../../../common/uris';
@@ -17,7 +18,7 @@ const UriColumn = ({ column, resource, indice }) => (
             labelPosition="after"
             label={indice}
             containerElement={<Link to={getResourceUri(resource)} />}
-            icon={<RightIcon />}
+            icon={<FontAwesomeIcon icon={faChevronRight} />}
         />
     </TableRowColumn>
 );

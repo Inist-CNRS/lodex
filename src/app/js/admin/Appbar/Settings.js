@@ -7,7 +7,8 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import Popover, { PopoverAnimationVertical } from '@material-ui/core/Popover';
-import ArrowDown from '@material-ui/icons/KeyboardArrowDown';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -102,7 +103,7 @@ class SettingsComponent extends Component {
                     onClick={this.handleTouchTap}
                     label={polyglot.t('clear')}
                     labelPosition="before"
-                    icon={<ArrowDown />}
+                    icon={<FontAwesomeIcon icon={faChevronDown} />}
                     style={styles.button}
                 />
                 <Popover

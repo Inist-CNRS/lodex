@@ -9,10 +9,8 @@ import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import ActionSearch from '@material-ui/icons/Search';
-import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faUndo, faFilter } from '@fortawesome/free-solid-svg-icons';
 
 import {
     facetActions,
@@ -297,7 +295,7 @@ class Search extends Component {
                         )}
                     >
                         <div className={classnames('search-icon', styles.icon)}>
-                            <ActionSearch />
+                            <FontAwesomeIcon icon={faSearch} />
                         </div>
                         <TextField
                             hintText={polyglot.t('filter')}
@@ -337,7 +335,7 @@ class Search extends Component {
                                     onClick={this.handleToggleFacets}
                                     iconStyle={{ color: theme.green.primary }}
                                 >
-                                    <FilterListIcon />
+                                    <FontAwesomeIcon icon={faFilter} />
                                 </IconButton>
                             )}
                             <ExportButton />

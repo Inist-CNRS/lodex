@@ -1,7 +1,5 @@
-/*
-Taken from https://raw.githubusercontent.com/ENDiGo/pagination-@material-ui/core
-Could not use it from npm at the time as it has not been compiled correctly
-*/
+// Taken from https://raw.githubusercontent.com/ENDiGo/pagination-@material-ui/core
+// Could not use it from npm at the time as it has not been compiled correctly
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -9,9 +7,11 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
-
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faChevronLeft,
+    faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
 
 const styles = {
     container: {
@@ -151,13 +151,13 @@ class Pagination extends Component {
                     disabled={currentPage === 0}
                     onClick={this.handlePreviousPageClick}
                 >
-                    <ChevronLeft />
+                    <FontAwesomeIcon icon={faChevronLeft} />
                 </IconButton>
                 <IconButton
                     disabled={currentPage === count - 1}
                     onClick={this.handleNextPageClick}
                 >
-                    <ChevronRight />
+                    <FontAwesomeIcon icon={faChevronRight} />
                 </IconButton>
             </div>
         );

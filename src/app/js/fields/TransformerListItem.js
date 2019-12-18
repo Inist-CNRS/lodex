@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+import { Field, FieldArray } from 'redux-form';
+import memoize from 'lodash.memoize';
 import translate from 'redux-polyglot/translate';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
-import ActionDeleteIcon from '@material-ui/icons/Delete';
-import { Field, FieldArray } from 'redux-form';
-import memoize from 'lodash.memoize';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { fromFields } from '../sharedSelectors';
@@ -56,7 +57,7 @@ const TransformerListItem = ({
             tooltip={polyglot.t('remove_transformer')}
             onClick={onRemove}
         >
-            <ActionDeleteIcon />
+            <FontAwesomeIcon icon={faTrash} />
         </IconButton>
     </div>
 );

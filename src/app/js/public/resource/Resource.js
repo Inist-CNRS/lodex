@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router-dom';
 import translate from 'redux-polyglot/translate';
-import HomeIcon from '@material-ui/icons/Home';
 import { CardText, CardActions } from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import { Swipeable } from 'react-swipeable';
 import get from 'lodash.get';
 import isEqual from 'lodash.isequal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
 
 import { fromResource, fromSearch } from '../selectors';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
@@ -103,7 +104,7 @@ export class ResourceComponent extends Component {
                 className="btn-back-to-list"
                 containerElement={<Link to="/graph" />}
                 label={backToListLabel}
-                icon={<HomeIcon />}
+                icon={<FontAwesomeIcon icon={faHome} />}
             />
         );
 

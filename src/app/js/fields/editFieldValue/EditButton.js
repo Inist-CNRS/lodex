@@ -3,8 +3,9 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import EditIcon from '@material-ui/icons/Edit';
 import withHandlers from 'recompose/withHandlers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 import EditFieldForm, { FORM_NAME } from './EditFieldForm';
 import { fromResource } from '../../public/selectors';
@@ -59,7 +60,7 @@ const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
             <span className={styles.name}>#{field.name}</span>
         </p>
     ),
-    icon: <EditIcon viewBox="-10 0 32 32" />,
+    icon: <FontAwesomeIcon icon={faPen} />,
     buttonStyle: { padding: 0, height: 'auto', width: 'auto' },
 });
 

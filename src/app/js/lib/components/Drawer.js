@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import CloseIcon from '@material-ui/icons/Clear';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const styles = {
     container: {
@@ -41,7 +42,7 @@ class LodexDrawer extends Component {
                                 style={styles.close}
                                 onClick={this.close}
                             >
-                                <CloseIcon />
+                                <FontAwesomeIcon icon={faTimes} />
                             </IconButton>
                             {children}
                         </div>

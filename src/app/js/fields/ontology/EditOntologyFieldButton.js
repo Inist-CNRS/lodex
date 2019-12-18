@@ -3,8 +3,9 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import SettingsIcon from '@material-ui/icons/Settings';
 import { grey } from '@material-ui/core/colors';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 import getFieldClassName from '../../lib/getFieldClassName';
 import EditOntologyFieldForm, { FORM_NAME } from './EditOntologyFieldForm';
@@ -33,7 +34,7 @@ const mapStateToProps = (state, { field, p }) => ({
     ),
     form: <EditOntologyFieldForm field={field} />,
     formName: FORM_NAME,
-    icon: <SettingsIcon />,
+    icon: <FontAwesomeIcon icon={faCog} />,
 });
 
 const mapDispatchToProps = (dispatch, { field: { name } }) => ({

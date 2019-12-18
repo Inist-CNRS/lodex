@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
-import CodeIcon from '@material-ui/icons/Code';
 import classnames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCode } from '@fortawesome/free-solid-svg-icons';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
@@ -29,7 +30,7 @@ class EmbedButton extends Component {
                 tooltip={polyglot.t('embed_istex_summary')}
                 onClick={this.handleOpen}
             >
-                <CodeIcon />
+                <FontAwesomeIcon icon={faCode} />
             </IconButton>
         );
     };

@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import TextField from '@material-ui/core/TextField';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
+
 import config from '../../../../../../config.json';
-import ContentAdd from '@material-ui/icons/Add';
-import ContentClear from '@material-ui/icons/Clear';
 import SelectFormat from '../../SelectFormat';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
@@ -299,7 +300,10 @@ class SparqlTextFieldAdmin extends Component {
                         }}
                         style={styles.pointer}
                     >
-                        <ContentAdd style={{ verticalAlign: 'sub' }} />
+                        <FontAwesomeIcon
+                            icon={faPlus}
+                            style={{ verticalAlign: 'sub' }}
+                        />
                         {polyglot.t('sparql_add_subformat')}
                     </div>
                     {sparql.subformat.map((result, key) => {
@@ -311,7 +315,8 @@ class SparqlTextFieldAdmin extends Component {
                                     key % 2 == 1 ? styles.color1 : styles.color2
                                 }
                             >
-                                <ContentClear
+                                <FontAwesomeIcon
+                                    icon={faTimes}
                                     onClick={() => {
                                         this.removeSubformat({ key });
                                     }}

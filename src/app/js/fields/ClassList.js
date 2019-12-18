@@ -4,7 +4,8 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
 import Button from '@material-ui/core/Button';
-import ContentAdd from '@material-ui/icons/Add';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import ListItem from './ClassListItem';
@@ -38,7 +39,7 @@ const ClassList = ({ fields, p: polyglot }) => (
                 mini
                 style={styles.add}
             >
-                <ContentAdd />
+                <FontAwesomeIcon icon={faPlus} />;
             </Button>
         </div>
         <div style={styles.tab}>

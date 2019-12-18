@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import Button from '@material-ui/core/Button';
-import ContentAdd from '@material-ui/icons/Add';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { fromResource } from '../selectors';
 import CreateResourceForm from './CreateResourceForm';
@@ -38,7 +39,7 @@ const CreateResource = ({ handleOpen, p, ...props }) => (
                 style={styles.button}
                 title={p.t('create_resource')}
             >
-                <ContentAdd />
+                <FontAwesomeIcon icon={faPlus} />
             </Button>
         }
     />

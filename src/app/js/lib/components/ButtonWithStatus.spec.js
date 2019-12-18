@@ -1,12 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { lightGreenA, red } from '@material-ui/core/colors';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
-import Warning from '@material-ui/icons/Warning';
-import Success from '@material-ui/icons/Done';
-
-import ButtonWithStatus from './ButtonWithStatus';
+import ButtonWithStatus, { WarningIcon, SuccessIcon } from './ButtonWithStatus';
 
 describe('<ButtonWithStatus />', () => {
     describe('<ButtonWithStatus raised={false} />', () => {
@@ -32,16 +28,14 @@ describe('<ButtonWithStatus />', () => {
             const wrapper = shallow(<ButtonWithStatus label="Foo" error />);
             const button = wrapper.find(Button);
 
-            expect(button.prop('icon')).toEqual(<Warning color={red[400]} />);
+            expect(button.prop('icon')).toEqual(<WarningIcon />);
         });
 
         it('should render a Button with a Success icon when it has success', () => {
             const wrapper = shallow(<ButtonWithStatus label="Foo" success />);
             const button = wrapper.find(Button);
 
-            expect(button.prop('icon')).toEqual(
-                <Success color={lightGreenA[400]} />,
-            );
+            expect(button.prop('icon')).toEqual(<SuccessIcon />);
         });
     });
     describe('<ButtonWithStatus raised={true} />', () => {
@@ -71,7 +65,7 @@ describe('<ButtonWithStatus />', () => {
             );
             const button = wrapper.find(Button);
 
-            expect(button.prop('icon')).toEqual(<Warning color={red[400]} />);
+            expect(button.prop('icon')).toEqual(<WarningIcon />);
         });
 
         it('should render a Button with a Success icon when it has success', () => {
@@ -80,9 +74,7 @@ describe('<ButtonWithStatus />', () => {
             );
             const button = wrapper.find(Button);
 
-            expect(button.prop('icon')).toEqual(
-                <Success color={lightGreenA[400]} />,
-            );
+            expect(button.prop('icon')).toEqual(<SuccessIcon />);
         });
     });
 });

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
-import IconButton from '@material-ui/core/IconButton';
-import ActionDeleteIcon from '@material-ui/icons/Delete';
-import ActionAddIcon from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
 import classnames from 'classnames';
 import memoize from 'lodash.memoize';
+import { Field } from 'redux-form';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
@@ -81,7 +81,7 @@ class InputList extends Component {
                             tooltip={polyglot.t('remove')}
                             onClick={this.removeValue(index)}
                         >
-                            <ActionDeleteIcon />
+                            <FontAwesomeIcon icon={faTrash} />
                         </IconButton>
                     </div>
                 ))}
@@ -90,7 +90,7 @@ class InputList extends Component {
                     tooltip={polyglot.t('add')}
                     onClick={this.addValue}
                 >
-                    <ActionAddIcon />
+                    <FontAwesomeIcon icon={faPlus} />
                 </IconButton>
             </div>
         );

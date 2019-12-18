@@ -1,12 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Folder from '@material-ui/icons/Folder';
-import FolderOpen from '@material-ui/icons/FolderOpen';
 import Button from '@material-ui/core/Button';
 import { CircularProgress } from '@material-ui/core';
 import { StyleSheetTestUtils } from 'aphrodite';
 
-import FetchFold from './FetchFold';
+import FetchFold, { FolderIcon, FolderOpenIcon } from './FetchFold';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 
 describe('FetchFold', () => {
@@ -27,8 +25,8 @@ describe('FetchFold', () => {
 
     it('should render closed', () => {
         const wrapper = shallow(<FetchFold {...defaultProps} />);
-        expect(wrapper.find(Folder).length).toBe(1);
-        expect(wrapper.find(FolderOpen).length).toBe(0);
+        expect(wrapper.find(FolderIcon).length).toBe(1);
+        expect(wrapper.find(FolderOpenIcon).length).toBe(0);
         expect(wrapper.find('li').length).toBe(0);
         expect(defaultProps.children).toHaveBeenCalledTimes(0);
         expect(defaultProps.getData).toHaveBeenCalledTimes(0);
@@ -57,8 +55,8 @@ describe('FetchFold', () => {
         await dataPromise; // wait for dataPromise to be resolved by component
         wrapper.update();
         expect(wrapper.find(CircularProgress).length).toBe(0);
-        expect(wrapper.find(Folder).length).toBe(0);
-        expect(wrapper.find(FolderOpen)).toHaveLength(1);
+        expect(wrapper.find(FolderIcon).length).toBe(0);
+        expect(wrapper.find(FolderOpenIcon)).toHaveLength(1);
         expect(wrapper.find('.children')).toHaveLength(1);
         expect(defaultProps.children).toHaveBeenCalledWith({
             ...defaultProps,
@@ -90,8 +88,8 @@ describe('FetchFold', () => {
         await dataPromise.catch(v => v); // wait for dataPromise to get rejected by component
         wrapper.update();
         expect(wrapper.find(CircularProgress).length).toBe(0);
-        expect(wrapper.find(Folder).length).toBe(0);
-        expect(wrapper.find(FolderOpen).length).toBe(0);
+        expect(wrapper.find(FolderIcon).length).toBe(0);
+        expect(wrapper.find(FolderOpenIcon).length).toBe(0);
         expect(wrapper.find('li')).toHaveLength(0);
         const alert = wrapper.find(AdminOnlyAlert);
         expect(alert).toHaveLength(1);
@@ -102,8 +100,8 @@ describe('FetchFold', () => {
 
     it('should not render if count is 0', () => {
         const wrapper = shallow(<FetchFold {...defaultProps} count={0} />);
-        expect(wrapper.find(Folder).length).toBe(0);
-        expect(wrapper.find(FolderOpen).length).toBe(0);
+        expect(wrapper.find(FolderIcon).length).toBe(0);
+        expect(wrapper.find(FolderOpenIcon).length).toBe(0);
         expect(wrapper.find(AdminOnlyAlert)).toHaveLength(0);
         expect(wrapper.find('p')).toHaveLength(0);
     });

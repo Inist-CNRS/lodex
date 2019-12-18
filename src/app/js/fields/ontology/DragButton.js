@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Reorder from '@material-ui/icons/FormatLineSpacing';
 import { SortableHandle } from 'react-sortable-hoc';
 import { grey } from '@material-ui/core/colors';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGripVertical } from '@fortawesome/free-solid-svg-icons';
 
 import stylesToClassname from '../../lib/stylesToClassName';
 
@@ -20,7 +21,10 @@ const styles = stylesToClassname(
 );
 
 const DragIcon = ({ disabled }) => (
-    <Reorder className={disabled ? styles.iconDisabled : styles.icon} />
+    <FontAwesomeIcon
+        icon={faGripVertical}
+        className={disabled ? styles.iconDisabled : styles.icon}
+    />
 );
 
 DragIcon.propTypes = {

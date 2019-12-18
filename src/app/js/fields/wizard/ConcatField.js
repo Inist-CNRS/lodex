@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import IconButton from '@material-ui/core/IconButton';
-import ActionDeleteIcon from '@material-ui/icons/Delete';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
+import IconButton from '@material-ui/core/IconButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
 import SelectDatasetField from './SelectDatasetField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -41,7 +43,7 @@ export const ConcatFieldComponent = ({
                 tooltip={polyglot.t('remove_column')}
                 onClick={handleRemoveColumn}
             >
-                <ActionDeleteIcon />
+                <FontAwesomeIcon icon={faTrash} />
             </IconButton>
         )}
     </div>
