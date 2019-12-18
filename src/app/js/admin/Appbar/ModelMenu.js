@@ -94,7 +94,7 @@ export class ModelMenuComponent extends Component {
             <div style={styles.container}>
                 {hasPublishedDataset ? (
                     <Button
-                        containerElement={<Link to="/ontology" />}
+                        component={<Link to="/ontology" />}
                         disabled={location.pathname === '/ontology'}
                         style={styles.button}
                     >

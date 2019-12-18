@@ -90,7 +90,7 @@ export const UploadDialogComponent = ({
                         <label htmlFor="btn-upload-dataset">
                             <Button
                                 className="btn-upload-dataset"
-                                containerElement="label"
+                                component="label"
                                 variant="raised"
                                 primary
                                 style={styles.button}
@@ -121,13 +121,14 @@ export const UploadDialogComponent = ({
                                 onClick={onUrlUpload}
                                 disabled={!isUrlValid}
                                 className="btn-upload-url"
-                                containerElement="label"
+                                component="label"
                                 variant="raised"
                                 primary
                                 fullWidth
-                                label={polyglot.t('upload_url')}
                                 style={styles.button}
-                            />
+                            >
+                                {polyglot.t('upload_url')}
+                            </Button>
                         </div>
                     </StepContent>
                 </Step>

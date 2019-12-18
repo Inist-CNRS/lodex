@@ -74,7 +74,7 @@ const AppbarComponent = ({
             )}
             {isAdmin && hasPublishedDataset && (
                 <Button
-                    containerElement={<Link to="/contributions" />}
+                    component={<Link to="/contributions" />}
                     style={styles.button}
                 >
                     {polyglot.t('moderation')}
@@ -82,7 +82,7 @@ const AppbarComponent = ({
             )}
             {isAdmin && hasPublishedDataset && (
                 <Button
-                    containerElement={<Link to="/removed" />}
+                    component={<Link to="/removed" />}
                     style={styles.button}
                 >
                     {polyglot.t('removed_resources')}

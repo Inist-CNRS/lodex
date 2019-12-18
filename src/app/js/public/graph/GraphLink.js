@@ -40,7 +40,7 @@ const GraphLink = ({ link, children, p: polyglot }) => (
                 primary
                 fullWidth
                 style={styles.detailsButton}
-                containerElement={<Link to={link} />}
+                component={<Link to={link} />}
                 to={link}
             >
                 <FontAwesomeIcon icon={faArrowRight} style={styles.icon} />
