@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -24,20 +27,15 @@ export const PureButtonWithDialog = ({
     icon,
     p: polyglot,
     actions = [
-        <Button
-            key="cancel"
-            label={polyglot.t('close')}
-            onClick={handleClose}
-        />,
+        <Button key="cancel" onClick={handleClose}>
+            {polyglot.t('close')}
+        </Button>,
     ],
     openButton = (
-        <Button
-            primary
-            className={className}
-            label={label}
-            icon={icon}
-            onClick={handleOpen}
-        />
+        <Button primary className={className} onClick={handleOpen}>
+            {label}
+            {icon}
+        </Button>
     ),
 }) => {
     if (!show) {
@@ -48,8 +46,6 @@ export const PureButtonWithDialog = ({
         <span style={style}>
             {openButton}
             <Dialog
-                title={label}
-                actions={actions}
                 modal={false}
                 open={open}
                 onRequestClose={handleClose}
@@ -59,7 +55,9 @@ export const PureButtonWithDialog = ({
                 contentClassName="dialog-content"
                 actionsContainerClassName="dialog-actions"
             >
-                {dialog}
+                <DialogTitle>{label}</DialogTitle>
+                <DialogContent>{dialog}</DialogContent>
+                <DialogActions>{actions}</DialogActions>
             </Dialog>
         </span>
     );

@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import { red } from '@material-ui/core/colors';
 
@@ -12,16 +15,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromImport } from '../selectors';
 
 const styles = {
-    input: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        opacity: 0,
-        width: '100%',
-        cursor: 'pointer',
-    },
+    input: { display: 'none' },
     button: {
         top: '12px',
     },
@@ -48,41 +42,48 @@ class ImportFieldsDialogComponent extends Component {
     render() {
         const { failed, onClose, p: polyglot } = this.props;
 
-        const actions = [
-            <Button
-                key="confirm"
-                className="btn-save"
-                containerElement="label"
-                variant="contained"
-                label={polyglot.t('confirm')}
-                primary
-                style={styles.button}
-            >
-                <input
-                    name="file_model"
-                    type="file"
-                    onChange={this.handleFileUpload}
-                    style={styles.input}
-                />
-            </Button>,
-            <Button
-                secondary
-                key="cancel"
-                className="btn-cancel"
-                variant="contained"
-                label={polyglot.t('cancel')}
-                onClick={onClose}
-            />,
-        ];
-
         return (
-            <Dialog actions={actions} className="dialog-import-fields" open>
-                {!failed && polyglot.t('confirm_import_fields')}
-                {failed && (
-                    <span style={styles.error}>
-                        {polyglot.t('import_fields_failed')}
-                    </span>
-                )}
+            <Dialog className="dialog-import-fields" open>
+                <DialogContent>
+                    <DialogContentText>
+                        {!failed ? (
+                            polyglot.t('confirm_import_fields')
+                        ) : (
+                            <span style={styles.error}>
+                                {polyglot.t('import_fields_failed')}
+                            </span>
+                        )}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        secondary
+                        key="cancel"
+                        className="btn-cancel"
+                        variant="contained"
+                        onClick={onClose}
+                    >
+                        {polyglot.t('cancel')}
+                    </Button>
+                    <input
+                        id="file_model"
+                        name="file_model"
+                        type="file"
+                        onChange={this.handleFileUpload}
+                        style={styles.input}
+                    />
+                    <label htmlFor="file_model">
+                        <Button
+                            key="confirm"
+                            className="btn-save"
+                            variant="contained"
+                            primary
+                            style={styles.button}
+                        >
+                            {polyglot.t('confirm')}
+                        </Button>
+                    </label>
+                </DialogActions>
             </Dialog>
         );
     }

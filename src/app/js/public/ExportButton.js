@@ -75,15 +75,10 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
     return (
         <>
             {withText ? (
-                <Button
-                    primary
-                    onClick={handleOpen}
-                    label={buttonLabel}
-                    icon={
-                        <FontAwesomeIcon icon={faExternalLinkAlt} height={20} />
-                    }
-                    className="export"
-                />
+                <Button primary onClick={handleOpen} className="export">
+                    <FontAwesomeIcon icon={faExternalLinkAlt} height={20} />
+                    {buttonLabel}
+                </Button>
             ) : (
                 <IconButton
                     tooltip={buttonLabel}

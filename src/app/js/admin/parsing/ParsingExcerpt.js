@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
-
-import { Table, TableBody, TableHeader, TableRow } from '@material-ui/core/Table';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
 import { addField } from '../../fields';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
@@ -47,7 +49,7 @@ export const ParsingExcerptComponent = ({
 
     return (
         <Table selectable={false} fixedHeader={false} style={styles.table}>
-            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+            <TableHead displaySelectAll={false} adjustForCheckbox={false}>
                 <TableRow>
                     {columns.map(column => (
                         <ParsingExcerptHeaderColumn
@@ -56,7 +58,7 @@ export const ParsingExcerptComponent = ({
                         />
                     ))}
                 </TableRow>
-            </TableHeader>
+            </TableHead>
             <TableBody style={styles.body} displayRowCheckbox={false}>
                 {lines.map((line, index) => (
                     <TableRow

@@ -99,20 +99,22 @@ class ClearDialogComponent extends Component {
                 raised
                 key="submit"
                 className="btn-save"
-                label={polyglot.t('confirm')}
                 onClick={this.handleClear(type)}
                 primary
                 error={hasFailed}
                 disabled={!validName}
                 loading={isClearing}
-            />,
+            >
+                {polyglot.t('confirm')}
+            </ButtonWithStatus>,
             <Button
                 key="cancel"
                 secondary
                 className="btn-cancel"
-                label={polyglot.t('cancel')}
                 onClick={onClose}
-            />,
+            >
+                {polyglot.t('cancel')}
+            </Button>,
         ];
         return (
             <Dialog

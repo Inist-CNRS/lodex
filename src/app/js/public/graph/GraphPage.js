@@ -113,20 +113,19 @@ class GraphPage extends Component {
                     )}
                     <Button
                         className="browse-result"
-                        label={polyglot.t('browse_results')}
                         variant="contained"
                         onClick={onSearch}
                         primary
                         fullWidth
-                        icon={
-                            <FontAwesomeIcon
-                                data-tip
-                                data-for="centerIconTooltip"
-                                icon={faSearch}
-                                height={20}
-                            />
-                        }
-                    />
+                    >
+                        <FontAwesomeIcon
+                            data-tip
+                            data-for="centerIconTooltip"
+                            icon={faSearch}
+                            height={20}
+                        />
+                        {polyglot.t('browse_results')}
+                    </Button>
                 </div>
             </div>
         );

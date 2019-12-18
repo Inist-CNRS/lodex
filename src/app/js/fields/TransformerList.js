@@ -33,11 +33,9 @@ const TransformerList = ({
     <div>
         <ListSubheader style={styles.header}>
             {polyglot.t('transformers')}
-            <Button
-                className="add-transformer"
-                onClick={() => fields.push({})}
-                label={polyglot.t('add_transformer')}
-            />
+            <Button className="add-transformer" onClick={() => fields.push({})}>
+                {polyglot.t('add_transformer')}
+            </Button>
         </ListSubheader>
         {touched && error && <span>{error}</span>}
 
@@ -59,6 +57,7 @@ TransformerList.propTypes = {
         map: PropTypes.func.isRequired,
         get: PropTypes.func.isRequired,
         remove: PropTypes.func.isRequired,
+        push: PropTypes.func.isRequired,
     }).isRequired,
     meta: PropTypes.shape({
         touched: PropTypes.bool,

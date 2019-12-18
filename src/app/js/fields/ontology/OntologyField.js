@@ -3,7 +3,6 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { TableRow, TableRowColumn } from '@material-ui/core/Table';
 import { SortableElement } from 'react-sortable-hoc';
-import DragButton from './DragButton';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -11,6 +10,7 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
+import DragButton from './DragButton';
 import EditOntologyFieldButton from './EditOntologyFieldButton';
 import languages from '../../../../common/languages';
 import { fromCharacteristic } from '../../sharedSelectors';

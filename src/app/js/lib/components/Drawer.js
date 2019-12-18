@@ -34,7 +34,7 @@ class LodexDrawer extends Component {
         const { open } = this.state;
         return (
             <div>
-                <Button label={label} onClick={this.toggleOpen} />
+                <Button onClick={this.toggleOpen}>{label}</Button>
                 <Drawer open={open}>
                     {
                         <div style={styles.container}>

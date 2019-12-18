@@ -102,10 +102,11 @@ export class ResourceComponent extends Component {
         const backToListButton = (
             <Button
                 className="btn-back-to-list"
-                containerElement={<Link to="/graph" />}
-                label={backToListLabel}
-                icon={<FontAwesomeIcon icon={faHome} />}
-            />
+                component={<Link to="/graph" />}
+            >
+                <FontAwesomeIcon icon={faHome} />
+                {backToListLabel}
+            </Button>
         );
 
         if (!resource) {

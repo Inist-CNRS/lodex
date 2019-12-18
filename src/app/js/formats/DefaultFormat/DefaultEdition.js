@@ -27,11 +27,12 @@ class DefaultEditon extends Component {
                     <p>{polyglot.t('bad_format_edit_value', { label })}</p>
                     <Button
                         className="convert-to-value"
-                        label={polyglot.t('convert_to_value')}
                         variant="contained"
                         onClick={this.convertValue}
                         primary
-                    />
+                    >
+                        {polyglot.t('convert_to_value')}
+                    </Button>
                 </div>
             );
         }

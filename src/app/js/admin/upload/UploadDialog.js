@@ -22,14 +22,7 @@ const styles = {
         marginRight: 4,
     },
     input: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        opacity: 0,
-        width: '100%',
-        cursor: 'pointer',
+        display: 'none',
     },
     divider: {
         display: 'flex',
@@ -87,22 +80,24 @@ export const UploadDialogComponent = ({
                 <Step active>
                     <StepLabel>{polyglot.t('select_file')}</StepLabel>
                     <StepContent>
-                        <Button
-                            className="btn-upload-dataset"
-                            containerElement="label"
-                            variant="raised"
-                            primary
-                            fullWidth
-                            label={polyglot.t('upload_file')}
-                            style={styles.button}
-                        >
-                            <input
-                                name="file"
-                                type="file"
-                                onChange={onFileLoad}
-                                style={styles.input}
-                            />
-                        </Button>
+                        <input
+                            accept="*"
+                            id="btn-upload-dataset"
+                            type="file"
+                            onChange={onFileLoad}
+                            style={styles.input}
+                        />
+                        <label htmlFor="btn-upload-dataset">
+                            <Button
+                                className="btn-upload-dataset"
+                                containerElement="label"
+                                variant="raised"
+                                primary
+                                style={styles.button}
+                            >
+                                {polyglot.t('upload_file')}
+                            </Button>
+                        </label>
                         <div style={styles.divider}>
                             <hr style={styles.dividerHr} />
                             <div style={styles.dividerLabel}>

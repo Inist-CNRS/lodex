@@ -243,13 +243,13 @@ class Search extends Component {
         return (
             <div className={classnames('load-more', styles.loadMore)}>
                 {loading ? (
-                    <>
+                    <Button fullWidth>
                         <CircularProgress
                             size={20}
                             className={styles.loading}
                         />{' '}
                         {polyglot.t('loading')}
-                    </>
+                    </Button>
                 ) : (
                     <Button fullWidth onClick={loadMore}>
                         {polyglot.t('search_load_more')} ({results.length} /{' '}

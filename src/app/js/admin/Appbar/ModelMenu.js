@@ -94,18 +94,20 @@ export class ModelMenuComponent extends Component {
             <div style={styles.container}>
                 {hasPublishedDataset ? (
                     <Button
-                        label={polyglot.t('view_fields')}
                         containerElement={<Link to="/ontology" />}
                         disabled={location.pathname === '/ontology'}
                         style={styles.button}
-                    />
+                    >
+                        {polyglot.t('view_fields')}
+                    </Button>
                 ) : (
                     <Button
                         className="btn-import-fields"
-                        label={polyglot.t('import_fields')}
                         onClick={this.handleImportFields}
                         style={styles.button}
-                    />
+                    >
+                        {polyglot.t('import_fields')}
+                    </Button>
                 )}
                 {!hasPublishedDataset && showImportFieldsConfirmation && (
                     <ImportFieldsDialog

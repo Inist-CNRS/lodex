@@ -21,25 +21,15 @@ const styles = {
 };
 
 const SortButton = ({ name, label, sortBy, sortDir, sort }) => (
-    <Button
-        className={`sort_${name}`}
-        labelPosition="before"
-        onClick={sort}
-        label={isLongText(label) ? getShortText(label) : label}
-        icon={
-            sortBy === name && (
-                <FontAwesomeIcon
-                    icon={faArrowUp}
-                    style={Object.assign(
-                        {},
-                        styles.iconSortBy,
-                        styles[sortDir],
-                    )}
-                />
-            )
-        }
-        style={styles.sortButton}
-    />
+    <Button className={`sort_${name}`} onClick={sort} style={styles.sortButton}>
+        {sortBy === name && (
+            <FontAwesomeIcon
+                icon={faArrowUp}
+                style={Object.assign({}, styles.iconSortBy, styles[sortDir])}
+            />
+        )}
+        {isLongText(label) ? getShortText(label) : label}
+    </Button>
 );
 
 SortButton.defaultProps = {

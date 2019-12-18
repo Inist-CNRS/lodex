@@ -40,12 +40,10 @@ const GraphLink = ({ link, children, p: polyglot }) => (
                 style={styles.detailsButton}
                 containerElement={<Link to={link} />}
                 to={link}
-                label={polyglot.t('view_details')}
-                labelPosition="before"
-                icon={
-                    <FontAwesomeIcon icon={faArrowRight} style={styles.icon} />
-                }
-            />
+            >
+                <FontAwesomeIcon icon={faArrowRight} style={styles.icon} />
+                {polyglot.t('view_details')}
+            </Button>
         </CardActions>
     </Card>
 );

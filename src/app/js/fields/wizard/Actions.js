@@ -42,23 +42,19 @@ export const ActionsComponent = ({
     if (step === 0) {
         return (
             <div>
-                <Button
-                    className="btn-next"
-                    label={polyglot.t('next')}
-                    onClick={onNextStep}
-                />
-                <Button
-                    className="btn-save"
-                    label={polyglot.t('save')}
-                    primary
-                    onClick={onSave}
-                />
+                <Button className="btn-next" onClick={onNextStep}>
+                    {polyglot.t('next')}
+                </Button>
+                <Button className="btn-save" primary onClick={onSave}>
+                    {polyglot.t('save')}
+                </Button>
                 <Button
                     className="btn-exit-column-edition"
-                    label={polyglot.t('cancel')}
                     secondary
                     onClick={onCancel}
-                />
+                >
+                    {polyglot.t('cancel')}
+                </Button>
             </div>
         );
     }
@@ -66,51 +62,43 @@ export const ActionsComponent = ({
     if (step === stepsCount - 1) {
         return (
             <div>
-                <Button
-                    className="btn-previous"
-                    label={polyglot.t('previous')}
-                    onClick={onPreviousStep}
-                />
-                <Button
-                    className="btn-save"
-                    label={polyglot.t('save')}
-                    onClick={onSave}
-                    primary
-                />
+                <Button className="btn-previous" onClick={onPreviousStep}>
+                    {polyglot.t('previous')}
+                </Button>
+
+                <Button className="btn-save" onClick={onSave} primary>
+                    {polyglot.t('save')}
+                </Button>
                 <Button
                     className="btn-exit-column-edition"
                     secondary
-                    label={polyglot.t('cancel')}
                     onClick={onCancel}
-                />
+                >
+                    {polyglot.t('cancel')}
+                </Button>
             </div>
         );
     }
 
     return (
         <div>
-            <Button
-                className="btn-previous"
-                label={polyglot.t('previous')}
-                onClick={onPreviousStep}
-            />
-            <Button
-                className="btn-next"
-                label={polyglot.t('next')}
-                onClick={onNextStep}
-            />
-            <Button
-                className="btn-save"
-                label={polyglot.t('save')}
-                primary
-                onClick={onSave}
-            />
+            <Button className="btn-previous" onClick={onPreviousStep}>
+                {polyglot.t('previous')}
+            </Button>
+
+            <Button className="btn-next" onClick={onNextStep}>
+                {polyglot.t('next')}
+            </Button>
+            <Button className="btn-save" primary onClick={onSave}>
+                {polyglot.t('save')}
+            </Button>
             <Button
                 className="btn-exit-column-edition"
-                label={polyglot.t('cancel')}
                 secondary
                 onClick={onCancel}
-            />
+            >
+                {polyglot.t('cancel')}
+            </Button>
         </div>
     );
 };

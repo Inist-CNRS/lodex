@@ -36,12 +36,9 @@ const ValidationButtonComponent = ({
     popover,
 }) => (
     <div style={styles.container}>
-        <Button
-            secondary
-            label={polyglot.t('show_publication_errors')}
-            variant="contained"
-            onClick={handleShowErrorsClick}
-        />
+        <Button secondary variant="contained" onClick={handleShowErrorsClick}>
+            {polyglot.t('show_publication_errors')}
+        </Button>
         <Popover
             open={popover.show}
             anchorEl={popover.anchorEl}

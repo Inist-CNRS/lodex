@@ -28,12 +28,9 @@ const UploadButtonComponent = ({
     p: polyglot,
 }) => {
     const actions = [
-        <Button
-            key="cancel"
-            secondary
-            label={polyglot.t('cancel')}
-            onClick={handleClose}
-        />,
+        <Button key="cancel" secondary onClick={handleClose}>
+            {polyglot.t('cancel')}
+        </Button>,
     ];
 
     return (
@@ -43,18 +40,20 @@ const UploadButtonComponent = ({
                     style={styles.button}
                     className="open-upload"
                     variant="raised"
-                    label={label}
                     primary
                     onClick={handleOpen}
-                />
+                >
+                    {label}
+                </Button>
             ) : (
                 <Button
                     style={styles.button}
                     className="open-upload"
-                    label={label}
                     primary
                     onClick={handleOpen}
-                />
+                >
+                    {label}
+                </Button>
             )}
             <Dialog
                 actions={actions}

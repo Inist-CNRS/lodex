@@ -54,8 +54,9 @@ export class ComposedOfComponent extends Component {
                         <Button
                             className="add-composed-of"
                             onClick={() => this.addComposedOf()}
-                            label={polyglot.t('add')}
-                        />
+                        >
+                            {polyglot.t('add')}
+                        </Button>
                     </ListSubheader>
                 </div>
             );

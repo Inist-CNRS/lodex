@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -32,7 +32,7 @@ const CreateResource = ({ handleOpen, p, ...props }) => (
         label={p.t('create_resource')}
         className="create-resource"
         openButton={
-            <Button
+            <IconButton
                 className="create-resource"
                 variant="fab"
                 onClick={handleOpen}
@@ -40,7 +40,7 @@ const CreateResource = ({ handleOpen, p, ...props }) => (
                 title={p.t('create_resource')}
             >
                 <FontAwesomeIcon icon={faPlus} />
-            </Button>
+            </IconButton>
         }
     />
 );

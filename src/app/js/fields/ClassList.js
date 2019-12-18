@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -32,7 +32,7 @@ const ClassList = ({ fields, p: polyglot }) => (
     <div>
         <div style={styles.header}>
             {polyglot.t('annotate_class')}
-            <Button
+            <IconButton
                 className="add-class"
                 variant="fab"
                 onClick={() => fields.push()}
@@ -40,7 +40,7 @@ const ClassList = ({ fields, p: polyglot }) => (
                 style={styles.add}
             >
                 <FontAwesomeIcon icon={faPlus} />;
-            </Button>
+            </IconButton>
         </div>
         <div style={styles.tab}>
             {fields.map((fieldName, index) => (
