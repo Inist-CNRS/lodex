@@ -15,16 +15,9 @@ import configureStore from '../configureStore';
 import scrollToTop from '../lib/scrollToTop';
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
-import theme from '../theme';
+import customTheme from '../public/customTheme';
 
-const muiTheme = createMuiTheme({
-    palette: {
-        accent1Color: theme.orange.primary,
-        primary1Color: theme.green.primary,
-        primary2Color: theme.purple.primary,
-        textColor: '#5F6368',
-    },
-});
+const muiTheme = createMuiTheme(customTheme);
 
 const locale = getLocale();
 const initialState = {
