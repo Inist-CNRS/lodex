@@ -5,7 +5,6 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
-import ArchiveIcon from '@material-ui/icons/Archive';
 
 import UploadDialog from './UploadDialog';
 import { fromUpload } from '../selectors';
@@ -44,7 +43,6 @@ const UploadButtonComponent = ({
                     style={styles.button}
                     className="open-upload"
                     variant="raised"
-                    icon={<ArchiveIcon />}
                     label={label}
                     primary
                     onClick={handleOpen}

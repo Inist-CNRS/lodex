@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
-import ArchiveIcon from '@material-ui/icons/Archive';
 import { lightBlue } from '@material-ui/core/colors';
 
 import Alert from '../../lib/components/Alert';
@@ -62,11 +61,7 @@ export const UploadComponent = ({
             <p>{polyglot.t('easy-creation')}</p>
             <p>{polyglot.t('semantic-web-compatibility')}</p>
             <p>{polyglot.t('easy-update')}</p>
-            <UploadButton
-                raised
-                icon={<ArchiveIcon />}
-                label={polyglot.t('first-upload')}
-            />
+            <UploadButton raised label={polyglot.t('first-upload')} />
             <p>
                 {polyglot.t('supported_format_list')}{' '}
                 {loaders.map(loader => loader.name).join(', ')}
