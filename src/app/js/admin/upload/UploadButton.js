@@ -60,7 +60,6 @@ const UploadButtonComponent = ({
                 modal={false}
                 open={open}
                 onRequestClose={handleClose}
-                autoScrollBodyContent
             >
                 <UploadDialog />
             </Dialog>

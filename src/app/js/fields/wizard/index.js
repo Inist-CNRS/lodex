@@ -186,7 +186,6 @@ class FieldEditionWizardComponent extends Component {
                 actions={actions}
                 title={title}
                 contentStyle={styles.modal}
-                autoScrollBodyContent
                 repositionOnUpdate={false}
                 className="wizard"
             >
