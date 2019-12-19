@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
 import Stats from '../Stats';
-
 import { fromDataset } from '../selectors';
 
 const mapStateToProps = state => ({
