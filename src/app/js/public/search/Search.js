@@ -9,9 +9,7 @@ import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
-import FilterListIcon from 'material-ui/svg-icons/content/filter-list';
-import ActionSearch from 'material-ui/svg-icons/action/search';
-import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faUndo, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
@@ -132,6 +130,12 @@ const styles = stylesToClassname(
         icon: {
             marginRight: 8,
             marginTop: 8,
+        },
+        searchIcon: {
+            color: theme.black.secondary,
+        },
+        toggleIcon: {
+            color: theme.green.primary,
         },
         clearIcon: {
             color: theme.orange.primary,
@@ -297,7 +301,11 @@ class Search extends Component {
                         )}
                     >
                         <div className={classnames('search-icon', styles.icon)}>
-                            <ActionSearch />
+                            <FontAwesomeIcon
+                                className={styles.searchIcon}
+                                icon={faSearch}
+                                height={20}
+                            />
                         </div>
                         <TextField
                             hintText={polyglot.t('filter')}
@@ -323,10 +331,9 @@ class Search extends Component {
                             <FontAwesomeIcon
                                 className={styles.clearIcon}
                                 icon={faUndo}
-                                height={15}
+                                height={20}
                             />
                         </IconButton>
-
                         <div>
                             {withFacets && (
                                 <IconButton
@@ -335,9 +342,12 @@ class Search extends Component {
                                         styles.toggleFacets,
                                     )}
                                     onClick={this.handleToggleFacets}
-                                    iconStyle={{ color: theme.green.primary }}
                                 >
-                                    <FilterListIcon />
+                                    <FontAwesomeIcon
+                                        className={styles.toggleIcon}
+                                        icon={faFilter}
+                                        height={20}
+                                    />
                                 </IconButton>
                             )}
                             <ExportButton />
