@@ -44,7 +44,6 @@ export const ExcerptComponent = ({
     className,
     columns,
     lines,
-    onCellClick,
     onHeaderClick,
     p: polyglot,
     isPreview = false,
@@ -54,11 +53,10 @@ export const ExcerptComponent = ({
         selectable={false}
         fixedHeader={false}
         style={styles.table(isPreview)}
-        onCellClick={onCellClick}
     >
         <TableHead displaySelectAll={false} adjustForCheckbox={false}>
-            <TableRow onCellClick={onHeaderClick}>
-                {columns.map(field => (
+            <TableRow>
+                {columns.map((field, index) => (
                     <TableCell
                         key={field.name}
                         className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
@@ -70,6 +68,7 @@ export const ExcerptComponent = ({
                                 ? polyglot.t('click_to_edit_publication_field')
                                 : ''
                         }
+                        onClick={() => onHeaderClick(index)}
                     >
                         <ExcerptHeader field={field} />
                     </TableCell>
@@ -123,14 +122,9 @@ export default compose(
         areHeadersClickable: typeof onHeaderClick === 'function',
     })),
     withHandlers({
-        onHeaderClick: ({ onHeaderClick }) => (_, __, col) => {
+        onHeaderClick: ({ onHeaderClick }) => col => {
             if (onHeaderClick) {
-                onHeaderClick(col - 1);
-            }
-        },
-        onCellClick: ({ onHeaderClick }) => (_, col) => {
-            if (onHeaderClick) {
-                onHeaderClick(col - 1);
+                onHeaderClick(col);
             }
         },
     }),
