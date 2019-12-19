@@ -50,13 +50,13 @@ const SearchBar = ({
     onClear,
     actions,
 }) => {
-    const refTextInput = useRef(null);
+    const refTextField = useRef(null);
 
     useEffect(() => {
         setTimeout(() => {
-            refTextInput.current.input.focus();
+            refTextField.current.input.focus();
         }, 300);
-    });
+    }, [refTextField]);
 
     return (
         <div className={classnames(className, styles.container)}>
@@ -73,7 +73,7 @@ const SearchBar = ({
                 />
             </div>
             <TextField
-                ref={refTextInput}
+                ref={refTextField}
                 className={classnames('searchbar-text', styles.searchText)}
                 hintText={polyglot.t('search')}
                 onChange={onChange}
