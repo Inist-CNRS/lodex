@@ -13,7 +13,11 @@ const styles = {
     },
 };
 
-export const Stats = ({ nbResources, currentNbResources, p: polyglot }) => (
+export const StatsComponent = ({
+    nbResources,
+    currentNbResources,
+    p: polyglot,
+}) => (
     <div className="stats" style={styles.nb}>
         {polyglot.t('resources_found', {
             current: currentNbResources,
@@ -22,10 +26,10 @@ export const Stats = ({ nbResources, currentNbResources, p: polyglot }) => (
     </div>
 );
 
-Stats.propTypes = {
+StatsComponent.propTypes = {
     nbResources: PropTypes.number.isRequired,
     currentNbResources: PropTypes.number.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-export default compose(translate)(Stats);
+export default compose(translate)(StatsComponent);
