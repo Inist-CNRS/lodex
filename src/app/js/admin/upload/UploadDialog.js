@@ -81,6 +81,7 @@ export const UploadDialogComponent = ({
                     <StepLabel>{polyglot.t('select_file')}</StepLabel>
                     <StepContent>
                         <input
+                            accept="*"
                             id="btn-upload-dataset"
                             type="file"
                             onChange={onFileLoad}
@@ -88,10 +89,8 @@ export const UploadDialogComponent = ({
                         />
                         <label htmlFor="btn-upload-dataset">
                             <Button
-                                className="btn-upload-dataset"
-                                component="label"
                                 variant="raised"
-                                primary
+                                component="span"
                                 style={styles.button}
                             >
                                 {polyglot.t('upload_file')}
