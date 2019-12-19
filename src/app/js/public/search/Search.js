@@ -5,11 +5,10 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
 import debounce from 'lodash.debounce';
-import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
-import { faSearch, faUndo, faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
@@ -35,6 +34,7 @@ import SearchResultSort from './SearchResultSort';
 import stylesToClassname from '../../lib/stylesToClassName';
 import ExportButton from '../ExportButton';
 import SearchStats from './SearchStats';
+import SearchBar from '../../lib/components/SearchBar';
 
 const styles = stylesToClassname(
     {
@@ -143,12 +143,6 @@ const styles = stylesToClassname(
     },
     'search',
 );
-
-const muiStyles = {
-    searchBarUnderline: {
-        borderColor: theme.orange.primary,
-    },
-};
 
 class Search extends Component {
     state = {
@@ -276,7 +270,6 @@ class Search extends Component {
             fieldNames,
             results,
             total,
-            p: polyglot,
             withFacets,
             fields,
             closeDrawer,
@@ -294,65 +287,35 @@ class Search extends Component {
         return (
             <div className={classnames('search', styles.container)}>
                 <div className={classnames('search-header', styles.header)}>
-                    <div
-                        className={classnames(
-                            'search-bar',
-                            styles.searchBarContainer,
-                        )}
-                    >
-                        <div className={classnames('search-icon', styles.icon)}>
-                            <FontAwesomeIcon
-                                className={styles.searchIcon}
-                                icon={faSearch}
-                                height={20}
-                            />
-                        </div>
-                        <TextField
-                            hintText={polyglot.t('filter')}
-                            className={classnames(
-                                'search-text',
-                                styles.searchField,
-                            )}
-                            onChange={this.handleTextFieldChange}
-                            value={
-                                (bufferQuery !== null
-                                    ? bufferQuery
-                                    : searchQuery) || ''
-                            }
-                            underlineStyle={muiStyles.searchBarUnderline}
-                            underlineFocusStyle={muiStyles.searchBarUnderline}
-                            ref={this.textInput}
-                        />
-                        <IconButton
-                            tooltip={polyglot.t('clear')}
-                            className="search-clear"
-                            onClick={this.handleClearFilter}
-                        >
-                            <FontAwesomeIcon
-                                className={styles.clearIcon}
-                                icon={faUndo}
-                                height={20}
-                            />
-                        </IconButton>
-                        <div>
-                            {withFacets && (
-                                <IconButton
-                                    className={classnames(
-                                        'search-facets-toggle',
-                                        styles.toggleFacets,
-                                    )}
-                                    onClick={this.handleToggleFacets}
-                                >
-                                    <FontAwesomeIcon
-                                        className={styles.toggleIcon}
-                                        icon={faFilter}
-                                        height={20}
-                                    />
-                                </IconButton>
-                            )}
-                            <ExportButton />
-                        </div>
-                    </div>
+                    <SearchBar
+                        value={
+                            (bufferQuery !== null
+                                ? bufferQuery
+                                : searchQuery) || ''
+                        }
+                        onChange={this.handleTextFieldChange}
+                        onClear={this.handleClearFilter}
+                        actions={
+                            <>
+                                {withFacets && (
+                                    <IconButton
+                                        className={classnames(
+                                            'search-facets-toggle',
+                                            styles.toggleFacets,
+                                        )}
+                                        onClick={this.handleToggleFacets}
+                                    >
+                                        <FontAwesomeIcon
+                                            className={styles.toggleIcon}
+                                            icon={faFilter}
+                                            height={20}
+                                        />
+                                    </IconButton>
+                                )}
+                                <ExportButton />
+                            </>
+                        }
+                    />
                     <div
                         className={classnames(
                             'search-advanced',
