@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -8,9 +8,9 @@ import IconButton from 'material-ui/IconButton';
 import { faSearch, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import stylesToClassname from '../stylesToClassName';
-import theme from '../../theme';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import stylesToClassname from '../../stylesToClassName';
+import theme from '../../../theme';
+import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 const styles = stylesToClassname(
     {
@@ -33,7 +33,7 @@ const styles = stylesToClassname(
             color: theme.orange.primary,
         },
     },
-    'search',
+    'searchbar',
 );
 
 const muiStyles = {
@@ -42,12 +42,27 @@ const muiStyles = {
     },
 };
 
-const SearchBar = ({ p: polyglot, value, onChange, onClear, actions }) => {
+const SearchBar = ({
+    className,
+    p: polyglot,
+    value,
+    onChange,
+    onClear,
+    actions,
+}) => {
+    const refTextInput = useRef(null);
+
+    useEffect(() => {
+        setTimeout(() => {
+            refTextInput.current.input.focus();
+        }, 300);
+    });
+
     return (
-        <div className={classnames('search-bar', styles.container)}>
+        <div className={classnames(className, styles.container)}>
             <div
                 className={classnames(
-                    'search-icon-container',
+                    'searchbar-icon-container',
                     styles.searchIconContainer,
                 )}
             >
@@ -58,16 +73,17 @@ const SearchBar = ({ p: polyglot, value, onChange, onClear, actions }) => {
                 />
             </div>
             <TextField
-                className={classnames('search-text', styles.searchText)}
+                ref={refTextInput}
+                className={classnames('searchbar-text', styles.searchText)}
                 hintText={polyglot.t('search')}
                 onChange={onChange}
                 value={value}
                 underlineStyle={muiStyles.searchTextUnderline}
                 underlineFocusStyle={muiStyles.searchTextUnderline}
             />
-            <div className="search-advanced">
+            <div className="searchbar-actions">
                 <IconButton
-                    className="search-clear"
+                    className="searchbar-clear"
                     tooltip={polyglot.t('clear')}
                     onClick={onClear}
                 >
@@ -84,11 +100,16 @@ const SearchBar = ({ p: polyglot, value, onChange, onClear, actions }) => {
 };
 
 SearchBar.propTypes = {
+    className: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     onClear: PropTypes.func.isRequired,
     actions: PropTypes.element,
+};
+
+SearchBar.defaultProps = {
+    className: 'searchbar',
 };
 
 export default compose(translate)(SearchBar);
