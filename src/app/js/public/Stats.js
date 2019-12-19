@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
+import compose from 'recompose/compose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
@@ -12,11 +13,7 @@ const styles = {
     },
 };
 
-export const StatsComponent = ({
-    nbResources,
-    currentNbResources,
-    p: polyglot,
-}) => (
+export const Stats = ({ nbResources, currentNbResources, p: polyglot }) => (
     <div className="stats" style={styles.nb}>
         {polyglot.t('resources_found', {
             current: currentNbResources,
@@ -25,10 +22,10 @@ export const StatsComponent = ({
     </div>
 );
 
-StatsComponent.propTypes = {
+Stats.propTypes = {
     nbResources: PropTypes.number.isRequired,
     currentNbResources: PropTypes.number.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-export default translate()(StatsComponent);
+export default compose(translate)(Stats);
