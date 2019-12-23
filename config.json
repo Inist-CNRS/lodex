@@ -5,7 +5,7 @@
         "username": "user",
         "password": "secret"
     },
-    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v2.2.0/",
+    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v2.6.0/",
     "routinesCache": true,
     "routines": [
         "all-documents",
@@ -57,15 +57,13 @@
     ],
     "exporters": [
         "csv",
+        "tsv",
         "extended-nquads-compressed",
         "extended-nquads",
         "jsonallvalue",
         "jsonld",
         "nquads",
-        "sitemap",
-        "tsv",
-        "turtle",
-        "widget"
+        "turtle"
     ],
     "datasetClass": "http://test.fr/datasetClass",
     "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
