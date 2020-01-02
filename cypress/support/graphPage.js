@@ -33,7 +33,7 @@ export const getFacet = name => cy.get('.facet-item').contains(name);
 
 export const getFacetItem = (name, value) =>
     getFacet(name)
-        .parentsUntil('.facet-list > div')
+        .parentsUntil('.graph-facets > div')
         .last()
         .next() // .facet-value-list next to the .facet-item
         .find('.facet-value-item')
@@ -43,7 +43,7 @@ export const getFacetItem = (name, value) =>
 
 export const getFacetExcludeItem = name =>
     getFacet(name)
-        .parentsUntil('.facet-list > div')
+        .parentsUntil('.graph-facets > div')
         .last()
         .next() // .facet-value-list next to the .facet-item
         .find('.exclude-facet');
