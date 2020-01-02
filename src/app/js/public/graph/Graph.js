@@ -32,12 +32,14 @@ import { preLoadDatasetPage as preLoadDatasetPageAction } from '../dataset';
 const styles = stylesToClassname(
     {
         container: {
-            margin: '0 auto',
+            margin: '30px auto',
         },
         header: {
             display: 'flex',
             flexDirection: 'column',
-            padding: '1rem',
+            '@media (min-width: 992px)': {
+                padding: '1rem',
+            },
         },
         advanced: {
             display: 'flex',
@@ -53,10 +55,10 @@ const styles = stylesToClassname(
             },
         },
         results: {
-            padding: '0rem calc(1rem + 12px)',
             '@media (min-width: 992px)': {
                 minWidth: '600px',
                 flex: 3,
+                padding: '0rem calc(1rem + 12px)',
             },
         },
     },

@@ -23,14 +23,14 @@ const styles = stylesToClassname(
             transition: 'max-height 300ms ease-in-out, opacity 600ms ease',
             '@media (min-width: 992px)': {
                 opacity: '1',
-                maxHeight: '1000px',
+                maxHeight: '10000px',
                 minWidth: '300px',
                 flex: 1,
             },
         },
         listOpen: {
             opacity: '1',
-            maxHeight: '1000px',
+            maxHeight: '10000px',
         },
     },
     'facets',

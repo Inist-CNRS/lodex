@@ -38,7 +38,9 @@ const styles = stylesToClassname(
         header: {
             display: 'flex',
             flexDirection: 'column',
-            padding: '1rem',
+            '@media (min-width: 992px)': {
+                padding: '1rem',
+            },
         },
         advanced: {
             display: 'flex',
@@ -54,10 +56,10 @@ const styles = stylesToClassname(
             },
         },
         results: {
-            padding: '0rem calc(1rem + 12px)',
             opacity: '1',
             transition: 'opacity 300ms ease-in-out',
             '@media (min-width: 992px)': {
+                padding: '0rem calc(1rem + 12px)',
                 minWidth: '600px',
                 flex: 3,
             },

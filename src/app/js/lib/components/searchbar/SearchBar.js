@@ -19,7 +19,7 @@ const styles = stylesToClassname(
             alignItems: 'center',
             justifyContent: 'space-between',
         },
-        searchText: {
+        text: {
             flexGrow: 3,
             margin: '0px 8px',
         },
@@ -31,6 +31,9 @@ const styles = stylesToClassname(
         },
         clearIcon: {
             color: theme.orange.primary,
+        },
+        actions: {
+            display: 'flex',
         },
     },
     'searchbar',
@@ -60,12 +63,7 @@ const SearchBar = ({
 
     return (
         <div className={classnames(className, styles.container)}>
-            <div
-                className={classnames(
-                    'searchbar-icon-container',
-                    styles.searchIconContainer,
-                )}
-            >
+            <div className={styles.searchIconContainer}>
                 <FontAwesomeIcon
                     className={styles.searchIcon}
                     icon={faSearch}
@@ -74,14 +72,14 @@ const SearchBar = ({
             </div>
             <TextField
                 ref={refTextField}
-                className={classnames('searchbar-text', styles.searchText)}
+                className={styles.text}
                 hintText={polyglot.t('search')}
                 onChange={onChange}
                 value={value}
                 underlineStyle={muiStyles.searchTextUnderline}
                 underlineFocusStyle={muiStyles.searchTextUnderline}
             />
-            <div className="searchbar-actions">
+            <div className={styles.actions}>
                 <IconButton
                     className="searchbar-clear"
                     tooltip={polyglot.t('clear')}
