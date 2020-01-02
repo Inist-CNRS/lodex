@@ -53,14 +53,14 @@ const styles = {
     }),
     language: memoize(hide => ({
         marginRight: '1rem',
-        fontSize: '0.6em',
+        fontSize: '0.6rem',
         color: 'grey',
         textTransform: 'uppercase',
         visibility: hide ? 'hidden' : 'visible',
     })),
     scheme: {
         fontWeight: 'normale',
-        fontSize: '0.75em',
+        fontSize: '0.75rem',
         alignSelf: 'flex-end',
     },
     schemeLink: {
@@ -81,7 +81,7 @@ const styles = {
     value: {
         flexGrow: 2,
         width: '100%',
-        padding: '0px',
+        padding: '0.75rem 0.75rem 0.75rem 0',
         textAlign: 'justify',
     },
 };
