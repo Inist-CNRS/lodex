@@ -52,6 +52,7 @@ class DatasetSearchBar extends Component {
 
         return (
             <SearchBar
+                className="dataset-searchbar"
                 value={query}
                 onChange={this.handleFilterChange}
                 onClear={this.handleClearFilter}

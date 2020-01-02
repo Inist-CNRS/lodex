@@ -15,7 +15,8 @@ export const createResource = resource => {
     cy.location('pathname').should('not.equal', '/graph');
 };
 
-export const getSearchInput = () => cy.get('.filter input[type=text]');
+export const getSearchInput = () =>
+    cy.get('.dataset-searchbar input[type=text]');
 
 export const waitForLoading = () => {
     // This is the best way to wait for the loading to disappear so far
@@ -67,4 +68,5 @@ export const browseResults = () => {
     cy.wait(500);
 };
 
-export const clearSearch = () => cy.get('button.filter-clear').click();
+export const clearSearch = () =>
+    cy.get('.dataset-searchbar button.searchbar-clear').click();

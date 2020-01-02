@@ -1,7 +1,7 @@
 export const searchInput = () => cy.get('.drawer input[type="text"]');
 
 export const search = value => {
-    cy.get('.drawer .search-bar')
+    cy.get('.drawer .search-searchbar')
         .scrollIntoView()
         .should('be.visible');
     searchInput().type(value);
@@ -49,7 +49,8 @@ export const getFacetsOrder = facets => {
     });
 };
 
-export const getFacet = name => cy.get('.facets .facet-item').contains(name);
+export const getFacet = name =>
+    cy.get('.search-facets .facet-item').contains(name);
 
 export const getFacetItem = (name, value) =>
     getFacet(name)

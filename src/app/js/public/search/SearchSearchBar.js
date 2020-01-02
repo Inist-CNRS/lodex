@@ -53,6 +53,7 @@ class SearchSearchBar extends Component {
 
         return (
             <SearchBar
+                className="search-searchbar"
                 value={query}
                 onChange={this.handleChangeSearch}
                 onClear={this.handleClearSearch}
