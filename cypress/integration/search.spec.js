@@ -33,7 +33,7 @@ describe('Search', () => {
             cy.get('.export').click();
             cy.wait(300);
             cy.get('span[role="menuitem"]')
-                .should('have.length', 9)
+                .should('have.length', 8)
                 .contains('JSON')
                 .should('be.visible');
         });
