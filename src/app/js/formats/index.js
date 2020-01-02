@@ -22,6 +22,7 @@ import markdown from './markdown';
 import uri from './uri';
 import title from './title';
 import paragraph from './paragraph';
+import parallelCoordinatesChart from './parallel-coordinates';
 import sentence from './sentence';
 import vegaLite from './vega-lite';
 import resource from './lodex-resource';
@@ -59,6 +60,7 @@ const components = {
     uri,
     title,
     paragraph,
+    parallelCoordinatesChart,
     sentence,
     vegaLite,
     resource,
