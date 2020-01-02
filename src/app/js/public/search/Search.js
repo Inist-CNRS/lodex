@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
-import debounce from 'lodash.debounce';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 
@@ -23,15 +22,13 @@ import { preLoadPublication as preLoadPublicationAction } from '../../fields';
 import { fromFields } from '../../sharedSelectors';
 import { fromSearch, fromDataset } from '../selectors';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
+import stylesToClassname from '../../lib/stylesToClassName';
 import AppliedFacetList from './AppliedSearchFacetList';
 import FacetList from '../facet/FacetList';
 import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
-import stylesToClassname from '../../lib/stylesToClassName';
-import ExportButton from '../ExportButton';
+import SearchSearchBar from './SearchSearchBar';
 import SearchStats from './SearchStats';
-import SearchBar from '../../lib/components/searchbar/SearchBar';
-import ToggleFacetsButton from '../../lib/components/searchbar/ToggleFacetsButton';
 
 const styles = stylesToClassname(
     {
@@ -95,7 +92,6 @@ const styles = stylesToClassname(
 
 class Search extends Component {
     state = {
-        bufferQuery: null,
         opening: true,
         showFacets: false,
     };
@@ -138,15 +134,6 @@ class Search extends Component {
         }, 300);
     }
 
-    debouncedSearch = debounce(params => {
-        this.props.search(params);
-    }, 500);
-
-    handleTextFieldChange = (_, query) => {
-        this.debouncedSearch({ query });
-        this.setState({ bufferQuery: query });
-    };
-
     handleToggleFacets = () => {
         const { showFacets } = this.state;
         this.setState({ showFacets: !showFacets });
@@ -155,10 +142,6 @@ class Search extends Component {
     handleSort = ({ sortBy }) => {
         const { sort } = this.props;
         sort({ sortBy });
-    };
-
-    handleClearFilter = () => {
-        this.handleTextFieldChange(null, '');
     };
 
     renderNoResults = () => {
@@ -208,9 +191,8 @@ class Search extends Component {
     };
 
     render() {
-        const { bufferQuery, opening, showFacets } = this.state;
+        const { opening, showFacets } = this.state;
         const {
-            searchQuery,
             sortBy,
             sortDir,
             loading,
@@ -234,27 +216,7 @@ class Search extends Component {
         return (
             <div className={classnames('search', styles.container)}>
                 <div className={classnames('search-header', styles.header)}>
-                    <SearchBar
-                        ref={this.textInput}
-                        value={
-                            (bufferQuery !== null
-                                ? bufferQuery
-                                : searchQuery) || ''
-                        }
-                        onChange={this.handleTextFieldChange}
-                        onClear={this.handleClearFilter}
-                        actions={
-                            <>
-                                {withFacets && (
-                                    <ToggleFacetsButton
-                                        className={styles.toggleFacets}
-                                        onChange={this.handleToggleFacets}
-                                    />
-                                )}
-                                <ExportButton />
-                            </>
-                        }
-                    />
+                    <SearchSearchBar withFacets={withFacets} />
                     <div
                         className={classnames(
                             'search-advanced',
