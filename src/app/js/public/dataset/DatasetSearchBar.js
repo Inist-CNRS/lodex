@@ -58,7 +58,7 @@ class DatasetSearchBar extends Component {
                 actions={
                     <ToggleFacetsButton
                         onChange={onToggleFacets}
-                        styles={styles.toggleFacetsButton}
+                        className={styles.toggleFacetsButton}
                     />
                 }
             />

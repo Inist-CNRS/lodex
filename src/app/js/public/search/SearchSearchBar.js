@@ -61,7 +61,7 @@ class SearchSearchBar extends Component {
                         {withFacets && (
                             <ToggleFacetsButton
                                 onChange={onToggleFacets}
-                                styles={styles.toggleFacetsButton}
+                                className={styles.toggleFacetsButton}
                             />
                         )}
                         <ExportButton />
