@@ -1,20 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { List } from 'material-ui/List';
 
 import { field as fieldPropTypes } from '../../propTypes';
-
+import stylesToClassname from '../../lib/stylesToClassName';
 import { facetActions as datasetActions } from '../dataset';
 import { facetActions as searchActions } from '../search/reducer';
 import FacetActionsContext from './FacetActionsContext';
-
 import { fromFields } from '../../sharedSelectors';
 import FacetItem from './FacetItem';
 
+const styles = stylesToClassname(
+    {
+        list: {
+            opacity: '0',
+            maxHeight: '0px',
+            transition: 'max-height 300ms ease-in-out, opacity 600ms ease',
+            '@media (min-width: 992px)': {
+                opacity: '1',
+                maxHeight: '1000px',
+                minWidth: '300px',
+                flex: 1,
+            },
+        },
+        listOpen: {
+            opacity: '1',
+            maxHeight: '1000px',
+        },
+    },
+    'facets',
+);
+
 const FacetList = ({
+    className,
+    open,
     hasFacetFields,
     fields,
     page,
@@ -24,7 +47,9 @@ const FacetList = ({
     sortFacetValue,
     toggleFacetValue,
 }) => {
-    if (!hasFacetFields) return null;
+    if (!hasFacetFields) {
+        return null;
+    }
 
     const actions = {
         changeFacetValue,
@@ -35,7 +60,11 @@ const FacetList = ({
     };
 
     return (
-        <List className="facet-list">
+        <List
+            className={classnames(className, styles.list, {
+                [styles.listOpen]: open,
+            })}
+        >
             <FacetActionsContext.Provider value={actions}>
                 {fields.map(field => (
                     <FacetItem
@@ -50,6 +79,8 @@ const FacetList = ({
 };
 
 FacetList.propTypes = {
+    className: PropTypes.string,
+    open: PropTypes.bool,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     hasFacetFields: PropTypes.bool.isRequired,
     page: PropTypes.oneOf(['dataset', 'search']).isRequired,
