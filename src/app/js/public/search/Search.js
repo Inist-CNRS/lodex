@@ -45,11 +45,6 @@ const styles = stylesToClassname(
             flex: '0 0 auto',
             flexDirection: 'column',
         },
-        toggleFacets: {
-            '@media (min-width: 992px)': {
-                display: 'none !important',
-            },
-        },
         appliedFacets: {
             flex: '0 0 auto',
         },
@@ -58,8 +53,7 @@ const styles = stylesToClassname(
                 display: 'flex',
             },
         },
-
-        searchResults: {
+        results: {
             padding: '1rem 0',
             opacity: '1',
             transition: 'opacity 300ms ease-in-out',
@@ -68,10 +62,7 @@ const styles = stylesToClassname(
                 flex: 3,
             },
         },
-        searchResultsOpening: {
-            opacity: '0',
-        },
-        searchResultsEmpty: {
+        resultsOpening: {
             opacity: '0',
         },
         loading: {
@@ -193,6 +184,7 @@ class Search extends Component {
     render() {
         const { opening, showFacets } = this.state;
         const {
+            className,
             sortBy,
             sortDir,
             loading,
@@ -214,22 +206,17 @@ class Search extends Component {
         const canLoadMore = everythingIsOk && results.length < total;
 
         return (
-            <div className={classnames('search', styles.container)}>
-                <div className={classnames('search-header', styles.header)}>
+            <div className={classnames(className, styles.container)}>
+                <div className={styles.header}>
                     <SearchSearchBar withFacets={withFacets} />
-                    <div
-                        className={classnames(
-                            'search-advanced',
-                            styles.advanced,
-                        )}
-                    >
+                    <div className={styles.advanced}>
                         {(everythingIsOk || noResults) && <SearchStats />}
                     </div>
                 </div>
                 {withFacets && (
                     <AppliedFacetList className={styles.appliedFacets} />
                 )}
-                <div className={classnames('search-content', styles.content)}>
+                <div className={styles.content}>
                     {withFacets && (
                         <FacetList
                             className="search-facets"
@@ -237,15 +224,10 @@ class Search extends Component {
                             open={showFacets}
                         />
                     )}
-
                     <div
-                        className={classnames(
-                            'search-results',
-                            styles.searchResults,
-                            {
-                                [styles.searchResultsOpening]: opening,
-                            },
-                        )}
+                        className={classnames(styles.results, {
+                            [styles.resultsOpening]: opening,
+                        })}
                     >
                         {noOverviewField && this.renderNoOverviewField()}
                         {noResults && this.renderNoResults()}
@@ -276,6 +258,7 @@ class Search extends Component {
 }
 
 Search.propTypes = {
+    className: PropTypes.string,
     search: PropTypes.func.isRequired,
     searchQuery: PropTypes.string,
     sort: PropTypes.func.isRequired,
