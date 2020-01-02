@@ -7,9 +7,6 @@ import classnames from 'classnames';
 import debounce from 'lodash.debounce';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
     facetActions,
@@ -25,16 +22,16 @@ import {
 import { preLoadPublication as preLoadPublicationAction } from '../../fields';
 import { fromFields } from '../../sharedSelectors';
 import { fromSearch, fromDataset } from '../selectors';
-import theme from '../../theme';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import AppliedFacetList from './AppliedSearchFacetList';
-import Facets from './Facets';
+import FacetList from '../facet/FacetList';
 import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
 import stylesToClassname from '../../lib/stylesToClassName';
 import ExportButton from '../ExportButton';
 import SearchStats from './SearchStats';
-import SearchBar from '../../lib/components/SearchBar';
+import SearchBar from '../../lib/components/searchbar/SearchBar';
+import ToggleFacetsButton from '../../lib/components/searchbar/ToggleFacetsButton';
 
 const styles = stylesToClassname(
     {
@@ -46,60 +43,25 @@ const styles = stylesToClassname(
             flexDirection: 'column',
             padding: '1rem',
         },
-        searchBarContainer: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-        },
-        searchField: {
-            flexGrow: 3,
-        },
-        details: {
-            display: 'flex',
-        },
         advanced: {
             display: 'flex',
             flex: '0 0 auto',
             flexDirection: 'column',
-        },
-        advancedTopBar: {
-            display: 'flex',
-        },
-        searchMessage: {
-            flex: '1 0 0',
-            color: 'rgb(95, 99, 104)',
         },
         toggleFacets: {
             '@media (min-width: 992px)': {
                 display: 'none !important',
             },
         },
-        iconFacets: {
-            color: theme.green.primary,
-        },
         appliedFacets: {
             flex: '0 0 auto',
         },
-        searchContent: {
+        content: {
             '@media (min-width: 992px)': {
                 display: 'flex',
             },
         },
-        facets: {
-            opacity: '0',
-            maxHeight: '0px',
-            transition: 'max-height 300ms ease-in-out, opacity 600ms ease',
-            '@media (min-width: 992px)': {
-                opacity: '1',
-                maxHeight: '1000px',
-                minWidth: '300px',
-                flex: 1,
-            },
-        },
-        facetsOpening: {
-            opacity: '1',
-            maxHeight: '1000px',
-        },
+
         searchResults: {
             padding: '1rem 0',
             opacity: '1',
@@ -127,19 +89,6 @@ const styles = stylesToClassname(
             padding: '10% 0',
             textAlign: 'center',
         },
-        icon: {
-            marginRight: 8,
-            marginTop: 8,
-        },
-        searchIcon: {
-            color: theme.black.secondary,
-        },
-        toggleIcon: {
-            color: theme.green.primary,
-        },
-        clearIcon: {
-            color: theme.orange.primary,
-        },
     },
     'search',
 );
@@ -153,7 +102,6 @@ class Search extends Component {
 
     constructor(props) {
         super(props);
-        this.textInput = React.createRef();
     }
 
     UNSAFE_componentWillMount() {
@@ -187,7 +135,6 @@ class Search extends Component {
 
         setTimeout(() => {
             this.setState({ opening: false });
-            this.textInput.current.input.focus();
         }, 300);
     }
 
@@ -288,6 +235,7 @@ class Search extends Component {
             <div className={classnames('search', styles.container)}>
                 <div className={classnames('search-header', styles.header)}>
                     <SearchBar
+                        ref={this.textInput}
                         value={
                             (bufferQuery !== null
                                 ? bufferQuery
@@ -298,19 +246,10 @@ class Search extends Component {
                         actions={
                             <>
                                 {withFacets && (
-                                    <IconButton
-                                        className={classnames(
-                                            'search-facets-toggle',
-                                            styles.toggleFacets,
-                                        )}
-                                        onClick={this.handleToggleFacets}
-                                    >
-                                        <FontAwesomeIcon
-                                            className={styles.toggleIcon}
-                                            icon={faFilter}
-                                            height={20}
-                                        />
-                                    </IconButton>
+                                    <ToggleFacetsButton
+                                        className={styles.toggleFacets}
+                                        onChange={this.handleToggleFacets}
+                                    />
                                 )}
                                 <ExportButton />
                             </>
@@ -322,29 +261,18 @@ class Search extends Component {
                             styles.advanced,
                         )}
                     >
-                        <div className={styles.advancedTopBar}>
-                            {(everythingIsOk || noResults) && <SearchStats />}
-                        </div>
+                        {(everythingIsOk || noResults) && <SearchStats />}
                     </div>
                 </div>
                 {withFacets && (
                     <AppliedFacetList className={styles.appliedFacets} />
                 )}
-                <div
-                    className={classnames(
-                        'search-content',
-                        styles.searchContent,
-                    )}
-                >
+                <div className={classnames('search-content', styles.content)}>
                     {withFacets && (
-                        <Facets
-                            className={classnames(
-                                'search-facets',
-                                styles.facets,
-                                {
-                                    [styles.facetsOpening]: showFacets,
-                                },
-                            )}
+                        <FacetList
+                            className="search-facets"
+                            page="search"
+                            open={showFacets}
                         />
                     )}
 
