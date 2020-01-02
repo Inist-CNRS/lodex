@@ -54,7 +54,7 @@ const styles = stylesToClassname(
             },
         },
         results: {
-            padding: '1rem 0',
+            padding: '0rem calc(1rem + 12px)',
             opacity: '1',
             transition: 'opacity 300ms ease-in-out',
             '@media (min-width: 992px)': {
