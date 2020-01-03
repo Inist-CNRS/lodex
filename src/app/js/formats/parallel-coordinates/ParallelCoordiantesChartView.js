@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
+import get from 'lodash.get';
 
 import stylesToClassname from '../../lib/stylesToClassName';
 import injectData from '../injectData';
@@ -18,11 +19,13 @@ const styles = stylesToClassname(
     'parallel-coordinates-chart-view',
 );
 
-const ParallelCoordinatesChartView = ({ data, colorSet }) => {
+const ROUTINE_NAME = 'distance-with/';
+
+const ParallelCoordinatesChartView = ({ fieldNames, data, colorSet }) => {
     return (
         <div className={styles.container}>
             <ParallelCoordinatesChart
-                fieldNames={['Test', 'Author']}
+                fieldNames={fieldNames}
                 data={data}
                 width={600}
                 height={200}
@@ -33,13 +36,32 @@ const ParallelCoordinatesChartView = ({ data, colorSet }) => {
 };
 
 ParallelCoordinatesChartView.propTypes = {
+    fieldNames: PropTypes.arrayOf(PropTypes.string),
     data: PropTypes.array.isRequired,
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
-const mapStateToProps = (_, { formatData }) => ({
-    data: formatData,
-});
+const mapStateToProps = (_, { field, fields, resource, formatData }) => {
+    const characteristicPath = get(resource, field.name, '');
+    const pathIndex = characteristicPath.indexOf(ROUTINE_NAME);
+    if (pathIndex === -1) {
+        return {
+            fieldNames: [],
+            data: formatData,
+        };
+    }
+    const characteristics = characteristicPath
+        .substring(pathIndex + ROUTINE_NAME.length)
+        .split('/');
+    const fieldNames = characteristics.map(characteristic => {
+        const fieldName = fields.find(field => field.name === characteristic);
+        return get(fieldName, 'label', '');
+    });
+    return {
+        fieldNames,
+        data: formatData,
+    };
+};
 
 export default compose(
     translate,

@@ -17,6 +17,10 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
     const w = width - margin.left - margin.right;
     const h = height - margin.top - margin.bottom;
 
+    if (!data) {
+        return null;
+    }
+
     useEffect(() => {
         const svg = d3
             .select(ref.current)
@@ -38,8 +42,7 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
         const path = d => {
             return d3.line()(
                 fieldNames.map((fieldName, i) => {
-                    // return [x(fieldName), fieldAxes[fieldName](d.weights[i])];
-                    return [x(fieldName), fieldAxes[fieldName](Math.random())];
+                    return [x(fieldName), fieldAxes[fieldName](d.weights[i])];
                 }),
             );
         };
