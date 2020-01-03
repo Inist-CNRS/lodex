@@ -1,8 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import debounce from 'lodash.debounce';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -12,6 +11,7 @@ import { fromFields } from '../../sharedSelectors';
 import stylesToClassname from '../../lib/stylesToClassName';
 import SearchBar from '../../lib/components/searchbar/SearchBar';
 import ToggleFacetsButton from '../../lib/components/searchbar/ToggleFacetsButton';
+import useSearchBar from '../../lib/components/searchbar/useSearchBar';
 
 const styles = stylesToClassname(
     {
@@ -25,7 +25,7 @@ const styles = stylesToClassname(
 );
 
 const DatasetSearchBar = ({
-    query,
+    defaultQuery,
     search,
     hasSearchableFields,
     onToggleFacets,
@@ -34,23 +34,10 @@ const DatasetSearchBar = ({
         return null;
     }
 
-    const [localQuery, setLocalQuery] = useState(query || '');
-
-    const debouncedSearch = useCallback(
-        debounce(value => {
-            search(value);
-        }, 500),
-        [],
+    const [localQuery, handleSearch, handleClearSearch] = useSearchBar(
+        defaultQuery,
+        search,
     );
-
-    const handleSearch = (_, value) => {
-        setLocalQuery(value);
-        debouncedSearch(value);
-    };
-
-    const handleClearSearch = () => {
-        handleSearch(null, '');
-    };
 
     return (
         <SearchBar
@@ -69,20 +56,20 @@ const DatasetSearchBar = ({
 };
 
 DatasetSearchBar.defaultProps = {
-    query: '',
+    defaultQuery: '',
 };
 
 DatasetSearchBar.propTypes = {
     p: polyglotPropTypes.isRequired,
     hasSearchableFields: PropTypes.bool.isRequired,
     search: PropTypes.func.isRequired,
-    query: PropTypes.string,
+    defaultQuery: PropTypes.string,
     onToggleFacets: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
     hasSearchableFields: fromFields.hasSearchableFields(state),
-    query: fromDataset.getFilter(state),
+    defaultQuery: fromDataset.getFilter(state),
 });
 
 const mapDispatchToProps = {
