@@ -115,11 +115,11 @@ describe('Dataset Publication', () => {
             menu.openSearchDrawer();
 
             cy.contains('Affiliation(s)').click();
-            cy.get('.graph-facets')
+            cy.get('.search-facets')
                 .find('.facet-item')
                 .should('have.length', 1);
 
-            cy.get('.graph-facets')
+            cy.get('.search-facets')
                 .find('.facet-value-item')
                 .should('have.length', 1);
         });
@@ -135,11 +135,11 @@ describe('Dataset Publication', () => {
             menu.openSearchDrawer();
 
             cy.contains('Affiliation(s)').click();
-            cy.get('.graph-facets')
+            cy.get('.search-facets')
                 .find('.facet-item')
                 .should('have.length', 1);
 
-            cy.get('.graph-facets')
+            cy.get('.search-facets')
                 .find('.facet-value-item')
                 .should('have.length', 3);
         });
