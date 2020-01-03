@@ -103,6 +103,10 @@ PureButtonWithDialogForm.defaultProps = {
     icon: null,
     show: true,
     open: false,
+    buttonStyle: {
+        width: '40px',
+        height: '40px',
+    },
 };
 
 PureButtonWithDialogForm.propTypes = {
