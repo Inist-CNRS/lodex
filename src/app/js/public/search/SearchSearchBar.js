@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -25,53 +25,55 @@ const styles = stylesToClassname(
     'search-searchbar',
 );
 
-class SearchSearchBar extends Component {
-    state = {
-        query: this.props.query || '',
-    };
-
-    debouncedChangeSearch = debounce(value => {
-        this.props.search(value);
-    }, 500);
-
-    handleChangeSearch = (_, value) => {
-        this.setState({ query: value });
-        this.debouncedChangeSearch(value);
-    };
-
-    handleClearSearch = () => {
-        this.handleChangeSearch(null, '');
-    };
-
-    render() {
-        const { hasSearchableFields, withFacets, onToggleFacets } = this.props;
-        const { query } = this.state;
-
-        if (!hasSearchableFields) {
-            return null;
-        }
-
-        return (
-            <SearchBar
-                className="search-searchbar"
-                value={query}
-                onChange={this.handleChangeSearch}
-                onClear={this.handleClearSearch}
-                actions={
-                    <>
-                        {withFacets && (
-                            <ToggleFacetsButton
-                                onChange={onToggleFacets}
-                                className={styles.toggleFacetsButton}
-                            />
-                        )}
-                        <ExportButton />
-                    </>
-                }
-            />
-        );
+const SearchSearchBar = ({
+    query,
+    search,
+    hasSearchableFields,
+    onToggleFacets,
+    withFacets,
+}) => {
+    if (!hasSearchableFields) {
+        return null;
     }
-}
+
+    const [localQuery, setLocalQuery] = useState(query || '');
+
+    const debouncedSearch = useCallback(
+        debounce(value => {
+            search(value);
+        }, 500),
+        [],
+    );
+
+    const handleSearch = (_, value) => {
+        setLocalQuery(value);
+        debouncedSearch(value);
+    };
+
+    const handleClearSearch = () => {
+        handleSearch(null, '');
+    };
+
+    return (
+        <SearchBar
+            className="search-searchbar"
+            value={localQuery}
+            onChange={handleSearch}
+            onClear={handleClearSearch}
+            actions={
+                <>
+                    {withFacets && (
+                        <ToggleFacetsButton
+                            onChange={onToggleFacets}
+                            className={styles.toggleFacetsButton}
+                        />
+                    )}
+                    <ExportButton />
+                </>
+            }
+        />
+    );
+};
 
 SearchSearchBar.defaultProps = {
     query: '',

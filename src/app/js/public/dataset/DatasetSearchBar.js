@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -24,48 +24,49 @@ const styles = stylesToClassname(
     'dataset-searchbar',
 );
 
-class DatasetSearchBar extends Component {
-    state = {
-        query: this.props.query || '',
-    };
-
-    debouncedApplyFilter = debounce(value => {
-        this.props.search(value);
-    }, 500);
-
-    handleFilterChange = (_, value) => {
-        this.setState({ query: value });
-        this.debouncedApplyFilter(value);
-    };
-
-    handleClearFilter = () => {
-        this.handleFilterChange(null, '');
-    };
-
-    render() {
-        const { hasSearchableFields, onToggleFacets } = this.props;
-        const { query } = this.state;
-
-        if (!hasSearchableFields) {
-            return null;
-        }
-
-        return (
-            <SearchBar
-                className="dataset-searchbar"
-                value={query}
-                onChange={this.handleFilterChange}
-                onClear={this.handleClearFilter}
-                actions={
-                    <ToggleFacetsButton
-                        onChange={onToggleFacets}
-                        className={styles.toggleFacetsButton}
-                    />
-                }
-            />
-        );
+const DatasetSearchBar = ({
+    query,
+    search,
+    hasSearchableFields,
+    onToggleFacets,
+}) => {
+    if (!hasSearchableFields) {
+        return null;
     }
-}
+
+    const [localQuery, setLocalQuery] = useState(query || '');
+
+    const debouncedSearch = useCallback(
+        debounce(value => {
+            search(value);
+        }, 500),
+        [],
+    );
+
+    const handleSearch = (_, value) => {
+        setLocalQuery(value);
+        debouncedSearch(value);
+    };
+
+    const handleClearSearch = () => {
+        handleSearch(null, '');
+    };
+
+    return (
+        <SearchBar
+            className="dataset-searchbar"
+            value={localQuery}
+            onChange={handleSearch}
+            onClear={handleClearSearch}
+            actions={
+                <ToggleFacetsButton
+                    onChange={onToggleFacets}
+                    className={styles.toggleFacetsButton}
+                />
+            }
+        />
+    );
+};
 
 DatasetSearchBar.defaultProps = {
     query: '',
