@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
 import stylesToClassname from '../../lib/stylesToClassName';
 import injectData from '../injectData';
+import ParallelCoordinatesChart from './ParallelCoordinatesChart';
 
 const styles = stylesToClassname(
     {
@@ -17,9 +19,17 @@ const styles = stylesToClassname(
 );
 
 const ParallelCoordinatesChartView = ({ data, colorSet }) => {
-    console.log(data, colorSet);
-
-    return <div className={styles.container}>parallel coordinates chart</div>;
+    return (
+        <div className={styles.container}>
+            <ParallelCoordinatesChart
+                fieldNames={['Test', 'Author']}
+                data={data}
+                width={600}
+                height={200}
+                colorSet={colorSet}
+            />
+        </div>
+    );
 };
 
 ParallelCoordinatesChartView.propTypes = {
@@ -27,8 +37,13 @@ ParallelCoordinatesChartView.propTypes = {
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
+const mapStateToProps = (_, { formatData }) => ({
+    data: formatData,
+});
+
 export default compose(
     translate,
     withRouter,
-    injectData,
+    injectData(),
+    connect(mapStateToProps),
 )(ParallelCoordinatesChartView);
