@@ -14,8 +14,8 @@ const margin = {
 const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
     const ref = useRef(null);
 
-    const w = width - margin.left - margin.right;
-    const h = height - margin.top - margin.bottom;
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
 
     if (!data) {
         return null;
@@ -30,12 +30,12 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
         const fieldAxes = {};
         for (let i in fieldNames) {
             let name = fieldNames[i];
-            fieldAxes[name] = d3.scaleLinear().range([h, 0]);
+            fieldAxes[name] = d3.scaleLinear().range([chartHeight, 0]);
         }
 
         const x = d3
             .scalePoint()
-            .range([0, w])
+            .range([0, chartWidth])
             .padding(1)
             .domain(fieldNames);
 
@@ -78,8 +78,8 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
         <svg
             className="parallel-coordinates-chart"
             ref={ref}
-            width={w + margin.left + margin.right}
-            height={h + margin.top + margin.bottom}
+            width={chartWidth + margin.left + margin.right}
+            height={chartHeight + margin.top + margin.bottom}
             preserveAspectRatio="xMidYMid meet"
             xmlns="http://www.w3.org/2000/svg"
         />

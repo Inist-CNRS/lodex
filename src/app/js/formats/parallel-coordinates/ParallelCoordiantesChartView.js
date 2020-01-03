@@ -41,24 +41,24 @@ ParallelCoordinatesChartView.propTypes = {
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
-const mapStateToProps = (_, { field, fields, resource, formatData }) => {
+const getFieldNames = (field, fields, resource) => {
     const characteristicPath = get(resource, field.name, '');
     const pathIndex = characteristicPath.indexOf(ROUTINE_NAME);
     if (pathIndex === -1) {
-        return {
-            fieldNames: [],
-            data: formatData,
-        };
+        return [];
     }
     const characteristics = characteristicPath
         .substring(pathIndex + ROUTINE_NAME.length)
         .split('/');
-    const fieldNames = characteristics.map(characteristic => {
+    return characteristics.map(characteristic => {
         const fieldName = fields.find(field => field.name === characteristic);
         return get(fieldName, 'label', '');
     });
+};
+
+const mapStateToProps = (_, { field, fields, resource, formatData }) => {
     return {
-        fieldNames,
+        fieldNames: getFieldNames(field, fields, resource),
         data: formatData,
     };
 };
