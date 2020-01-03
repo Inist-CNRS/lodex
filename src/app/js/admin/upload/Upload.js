@@ -80,6 +80,7 @@ UploadComponent.propTypes = {
     error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     onFileLoad: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    loaders: PropTypes.array.isRequired,
 };
 
 UploadComponent.defaultProps = {
