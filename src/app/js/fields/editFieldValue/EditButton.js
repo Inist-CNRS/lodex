@@ -6,6 +6,7 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { grey400 } from 'material-ui/styles/colors';
 
 import EditFieldForm, { FORM_NAME } from './EditFieldForm';
 import { fromResource } from '../../public/selectors';
@@ -20,7 +21,6 @@ import { openEditFieldValue, closeEditFieldValue } from '../';
 import { COVER_DATASET } from '../../../../common/cover';
 import { saveResource } from '../../public/resource';
 import { updateCharacteristics } from '../../characteristic';
-import { grey400 } from 'material-ui/styles/colors';
 
 import stylesToClassname from '../../lib/stylesToClassName';
 
@@ -61,7 +61,6 @@ const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
         </p>
     ),
     icon: <FontAwesomeIcon icon={faPen} />,
-    buttonStyle: { padding: 0, height: 'auto', width: 'auto' },
 });
 
 const mapDispatchToProps = {
