@@ -17,7 +17,6 @@ export const PureButtonWithDialog = ({
     handleOpen,
     open,
     show,
-    style,
     dialog,
     className,
     label,
@@ -45,7 +44,7 @@ export const PureButtonWithDialog = ({
     }
 
     return (
-        <span style={style}>
+        <>
             {openButton}
             <Dialog
                 title={label}
@@ -61,7 +60,7 @@ export const PureButtonWithDialog = ({
             >
                 {dialog}
             </Dialog>
-        </span>
+        </>
     );
 };
 
@@ -71,7 +70,6 @@ PureButtonWithDialog.propTypes = {
     p: polyglotPropTypes.isRequired,
     open: PropTypes.bool,
     show: PropTypes.bool,
-    style: PropTypes.object,
     dialog: PropTypes.node.isRequired,
     label: PropTypes.string.isRequired,
     icon: PropTypes.node,
