@@ -47,9 +47,6 @@ const styles = stylesToClassname(
             flex: '0 0 auto',
             flexDirection: 'column',
         },
-        appliedFacets: {
-            flex: '0 0 auto',
-        },
         content: {
             '@media (min-width: 992px)': {
                 display: 'flex',
@@ -215,9 +212,7 @@ class Search extends Component {
                         {(everythingIsOk || noResults) && <SearchStats />}
                     </div>
                 </div>
-                {withFacets && (
-                    <AppliedFacetList className={styles.appliedFacets} />
-                )}
+                {withFacets && <AppliedFacetList />}
                 <div className={styles.content}>
                     {withFacets && (
                         <FacetList

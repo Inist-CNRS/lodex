@@ -46,9 +46,6 @@ const styles = stylesToClassname(
             flex: '0 0 auto',
             flexDirection: 'column',
         },
-        appliedFacets: {
-            flex: '0 0 auto',
-        },
         content: {
             '@media (min-width: 992px)': {
                 display: 'flex',
@@ -118,7 +115,7 @@ class Graph extends Component {
                         <DatasetStats />
                     </div>
                 </div>
-                <AppliedFacetList className={styles.appliedFacets} />
+                <AppliedFacetList />
                 <div className={styles.content}>
                     <FacetList
                         className="graph-facets"
