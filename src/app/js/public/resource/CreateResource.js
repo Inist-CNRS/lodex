@@ -19,13 +19,13 @@ import { fromUser } from '../../sharedSelectors';
 const styles = {
     button: {
         position: 'fixed',
-        bottom: 100,
-        right: 40,
+        bottom: '100px',
+        right: '40px',
     },
     icon: {
         color: 'white',
-        height: 56,
-        lineHeight: 56,
+        width: '20px',
+        height: '20px',
     },
 };
 
