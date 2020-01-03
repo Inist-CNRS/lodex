@@ -92,7 +92,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    search: searchAction,
+    search: value => searchAction({ query: value }),
 };
 
 export default compose(
