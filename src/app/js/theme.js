@@ -1,12 +1,22 @@
 export default {
+    black: {
+        primary: '#000',
+        secondary: 'rgb(95, 99, 104)',
+    },
+    white: {
+        primary: '#fff',
+    },
+    red: {
+        primary: '#f44336',
+    },
     green: {
-        primary: '#7DBD42',
+        primary: '#7dbd42',
     },
     purple: {
-        primary: '#B22F90',
+        primary: '#b22f90',
     },
     orange: {
-        primary: '#F48022',
+        primary: '#f48022',
         secondary: 'rgba(244, 128, 34, .7)',
     },
 };

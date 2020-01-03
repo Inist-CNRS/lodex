@@ -4,15 +4,8 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
-import debounce from 'lodash.debounce';
-import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
-import FilterListIcon from 'material-ui/svg-icons/content/filter-list';
-import ActionSearch from 'material-ui/svg-icons/action/search';
-import { faUndo } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
     facetActions,
@@ -28,14 +21,13 @@ import {
 import { preLoadPublication as preLoadPublicationAction } from '../../fields';
 import { fromFields } from '../../sharedSelectors';
 import { fromSearch, fromDataset } from '../selectors';
-import theme from '../../theme';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
+import stylesToClassname from '../../lib/stylesToClassName';
 import AppliedFacetList from './AppliedSearchFacetList';
-import Facets from './Facets';
+import FacetList from '../facet/FacetList';
 import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
-import stylesToClassname from '../../lib/stylesToClassName';
-import ExportButton from '../ExportButton';
+import SearchSearchBar from './SearchSearchBar';
 import SearchStats from './SearchStats';
 
 const styles = stylesToClassname(
@@ -46,75 +38,30 @@ const styles = stylesToClassname(
         header: {
             display: 'flex',
             flexDirection: 'column',
-            padding: '1rem',
-        },
-        searchBarContainer: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-        },
-        searchField: {
-            flexGrow: 3,
-        },
-        details: {
-            display: 'flex',
+            '@media (min-width: 992px)': {
+                padding: '1rem',
+            },
         },
         advanced: {
             display: 'flex',
             flex: '0 0 auto',
             flexDirection: 'column',
         },
-        advancedTopBar: {
-            display: 'flex',
-        },
-        searchMessage: {
-            flex: '1 0 0',
-            color: 'rgb(95, 99, 104)',
-        },
-        toggleFacets: {
-            '@media (min-width: 992px)': {
-                display: 'none !important',
-            },
-        },
-        iconFacets: {
-            color: theme.green.primary,
-        },
-        appliedFacets: {
-            flex: '0 0 auto',
-        },
-        searchContent: {
+        content: {
             '@media (min-width: 992px)': {
                 display: 'flex',
             },
         },
-        facets: {
-            opacity: '0',
-            maxHeight: '0px',
-            transition: 'max-height 300ms ease-in-out',
-            '@media (min-width: 992px)': {
-                opacity: '1',
-                maxHeight: '1000px',
-                minWidth: '300px',
-                flex: 1,
-            },
-        },
-        facetsOpening: {
-            opacity: '1',
-            maxHeight: '1000px',
-        },
-        searchResults: {
-            padding: '1rem 0',
+        results: {
             opacity: '1',
             transition: 'opacity 300ms ease-in-out',
             '@media (min-width: 992px)': {
+                padding: '0rem calc(1rem + 12px)',
                 minWidth: '600px',
                 flex: 3,
             },
         },
-        searchResultsOpening: {
-            opacity: '0',
-        },
-        searchResultsEmpty: {
+        resultsOpening: {
             opacity: '0',
         },
         loading: {
@@ -129,33 +76,18 @@ const styles = stylesToClassname(
             padding: '10% 0',
             textAlign: 'center',
         },
-        icon: {
-            marginRight: 8,
-            marginTop: 8,
-        },
-        clearIcon: {
-            color: theme.orange.primary,
-        },
     },
     'search',
 );
 
-const muiStyles = {
-    searchBarUnderline: {
-        borderColor: theme.orange.primary,
-    },
-};
-
 class Search extends Component {
     state = {
-        bufferQuery: null,
         opening: true,
         showFacets: false,
     };
 
     constructor(props) {
         super(props);
-        this.textInput = React.createRef();
     }
 
     UNSAFE_componentWillMount() {
@@ -189,18 +121,8 @@ class Search extends Component {
 
         setTimeout(() => {
             this.setState({ opening: false });
-            this.textInput.current.input.focus();
         }, 300);
     }
-
-    debouncedSearch = debounce(params => {
-        this.props.search(params);
-    }, 500);
-
-    handleTextFieldChange = (_, query) => {
-        this.debouncedSearch({ query });
-        this.setState({ bufferQuery: query });
-    };
 
     handleToggleFacets = () => {
         const { showFacets } = this.state;
@@ -210,10 +132,6 @@ class Search extends Component {
     handleSort = ({ sortBy }) => {
         const { sort } = this.props;
         sort({ sortBy });
-    };
-
-    handleClearFilter = () => {
-        this.handleTextFieldChange(null, '');
     };
 
     renderNoResults = () => {
@@ -263,16 +181,15 @@ class Search extends Component {
     };
 
     render() {
-        const { bufferQuery, opening, showFacets } = this.state;
+        const { opening, showFacets } = this.state;
         const {
-            searchQuery,
+            className,
             sortBy,
             sortDir,
             loading,
             fieldNames,
             results,
             total,
-            p: polyglot,
             withFacets,
             fields,
             closeDrawer,
@@ -288,101 +205,26 @@ class Search extends Component {
         const canLoadMore = everythingIsOk && results.length < total;
 
         return (
-            <div className={classnames('search', styles.container)}>
-                <div className={classnames('search-header', styles.header)}>
-                    <div
-                        className={classnames(
-                            'search-bar',
-                            styles.searchBarContainer,
-                        )}
-                    >
-                        <div className={classnames('search-icon', styles.icon)}>
-                            <ActionSearch />
-                        </div>
-                        <TextField
-                            hintText={polyglot.t('filter')}
-                            className={classnames(
-                                'search-text',
-                                styles.searchField,
-                            )}
-                            onChange={this.handleTextFieldChange}
-                            value={
-                                (bufferQuery !== null
-                                    ? bufferQuery
-                                    : searchQuery) || ''
-                            }
-                            underlineStyle={muiStyles.searchBarUnderline}
-                            underlineFocusStyle={muiStyles.searchBarUnderline}
-                            ref={this.textInput}
-                        />
-                        <IconButton
-                            tooltip={polyglot.t('clear')}
-                            className="search-clear"
-                            onClick={this.handleClearFilter}
-                        >
-                            <FontAwesomeIcon
-                                className={styles.clearIcon}
-                                icon={faUndo}
-                                height={15}
-                            />
-                        </IconButton>
-
-                        <div>
-                            {withFacets && (
-                                <IconButton
-                                    className={classnames(
-                                        'search-facets-toggle',
-                                        styles.toggleFacets,
-                                    )}
-                                    onClick={this.handleToggleFacets}
-                                    iconStyle={{ color: theme.green.primary }}
-                                >
-                                    <FilterListIcon />
-                                </IconButton>
-                            )}
-                            <ExportButton />
-                        </div>
-                    </div>
-                    <div
-                        className={classnames(
-                            'search-advanced',
-                            styles.advanced,
-                        )}
-                    >
-                        <div className={styles.advancedTopBar}>
-                            {(everythingIsOk || noResults) && <SearchStats />}
-                        </div>
+            <div className={classnames(className, styles.container)}>
+                <div className={styles.header}>
+                    <SearchSearchBar withFacets={withFacets} />
+                    <div className={styles.advanced}>
+                        {(everythingIsOk || noResults) && <SearchStats />}
                     </div>
                 </div>
-                {withFacets && (
-                    <AppliedFacetList className={styles.appliedFacets} />
-                )}
-                <div
-                    className={classnames(
-                        'search-content',
-                        styles.searchContent,
-                    )}
-                >
+                {withFacets && <AppliedFacetList />}
+                <div className={styles.content}>
                     {withFacets && (
-                        <Facets
-                            className={classnames(
-                                'search-facets',
-                                styles.facets,
-                                {
-                                    [styles.facetsOpening]: showFacets,
-                                },
-                            )}
+                        <FacetList
+                            className="search-facets"
+                            page="search"
+                            open={showFacets}
                         />
                     )}
-
                     <div
-                        className={classnames(
-                            'search-results',
-                            styles.searchResults,
-                            {
-                                [styles.searchResultsOpening]: opening,
-                            },
-                        )}
+                        className={classnames(styles.results, {
+                            [styles.resultsOpening]: opening,
+                        })}
                     >
                         {noOverviewField && this.renderNoOverviewField()}
                         {noResults && this.renderNoResults()}
@@ -413,6 +255,7 @@ class Search extends Component {
 }
 
 Search.propTypes = {
+    className: PropTypes.string,
     search: PropTypes.func.isRequired,
     searchQuery: PropTypes.string,
     sort: PropTypes.func.isRequired,

@@ -15,7 +15,8 @@ export const createResource = resource => {
     cy.location('pathname').should('not.equal', '/graph');
 };
 
-export const getSearchInput = () => cy.get('.filter input[type=text]');
+export const getSearchInput = () =>
+    cy.get('.dataset-searchbar input[type=text]');
 
 export const waitForLoading = () => {
     // This is the best way to wait for the loading to disappear so far
@@ -33,7 +34,7 @@ export const getFacet = name => cy.get('.facet-item').contains(name);
 
 export const getFacetItem = (name, value) =>
     getFacet(name)
-        .parentsUntil('.facet-list > div')
+        .parentsUntil('.graph-facets > div')
         .last()
         .next() // .facet-value-list next to the .facet-item
         .find('.facet-value-item')
@@ -43,7 +44,7 @@ export const getFacetItem = (name, value) =>
 
 export const getFacetExcludeItem = name =>
     getFacet(name)
-        .parentsUntil('.facet-list > div')
+        .parentsUntil('.graph-facets > div')
         .last()
         .next() // .facet-value-list next to the .facet-item
         .find('.exclude-facet');
@@ -67,4 +68,5 @@ export const browseResults = () => {
     cy.wait(500);
 };
 
-export const clearSearch = () => cy.get('button.filter-clear').click();
+export const clearSearch = () =>
+    cy.get('.dataset-searchbar button.searchbar-clear').click();

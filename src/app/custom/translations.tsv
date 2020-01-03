@@ -148,7 +148,7 @@
 "field_display_in_graph"	"Display in graph page"	"Afficher sur la page graphique"
 "field_display_in_home"	"Display in home page"	"Afficher sur la page d'accueil"
 "field_searchable"	"Searchable - global full text search will target this field"	"Une recherche texte globale peut être effectuée sur ce champ"
-"filter"	"Enter your search term here"	"Vous pouvez saisir votre recherche ici"
+"search"	"Enter your search term here"	"Vous pouvez saisir votre recherche ici"
 "field_is_facet"	"is a facet"	"est une facette"
 "add_facet"	"Add a facet"	"Ajouter une facette"
 "select_facet_value"	"Select a value for: %{facet}"	"Sélectionner une valeur pour: %{facet}"
