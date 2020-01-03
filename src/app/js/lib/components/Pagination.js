@@ -40,6 +40,10 @@ const styles = {
     underline: {
         display: 'none',
     },
+    icon: {
+        width: '20px',
+        height: '20px',
+    },
 };
 
 const texts = {
@@ -150,12 +154,14 @@ class Pagination extends Component {
                 <IconButton
                     disabled={currentPage === 0}
                     onClick={this.handlePreviousPageClick}
+                    iconStyle={styles.icon}
                 >
                     <FontAwesomeIcon icon={faChevronLeft} />
                 </IconButton>
                 <IconButton
                     disabled={currentPage === count - 1}
                     onClick={this.handleNextPageClick}
+                    iconStyle={styles.icon}
                 >
                     <FontAwesomeIcon icon={faChevronRight} />
                 </IconButton>

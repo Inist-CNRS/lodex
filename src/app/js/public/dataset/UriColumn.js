@@ -18,7 +18,15 @@ const UriColumn = ({ column, resource, indice }) => (
             labelPosition="after"
             label={indice}
             containerElement={<Link to={getResourceUri(resource)} />}
-            icon={<FontAwesomeIcon icon={faChevronRight} />}
+            icon={
+                <FontAwesomeIcon
+                    icon={faChevronRight}
+                    style={{
+                        width: '20px',
+                        height: '20px',
+                    }}
+                />
+            }
         />
     </TableRowColumn>
 );
