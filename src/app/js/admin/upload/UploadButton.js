@@ -6,7 +6,8 @@ import compose from 'recompose/compose';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import ArchiveIcon from 'material-ui/svg-icons/content/archive';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
 
 import UploadDialog from './UploadDialog';
 import { fromUpload } from '../selectors';
@@ -44,7 +45,7 @@ const UploadButtonComponent = ({
                 <RaisedButton
                     style={styles.button}
                     className="open-upload"
-                    icon={<ArchiveIcon />}
+                    icon={<FontAwesomeIcon icon={faFileUpload} />}
                     label={label}
                     primary
                     onClick={handleOpen}

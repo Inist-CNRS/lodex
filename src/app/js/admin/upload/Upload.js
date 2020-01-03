@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
-import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 import { lightBlue500 } from 'material-ui/styles/colors';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
 
 import Alert from '../../lib/components/Alert';
 import { uploadFile } from './';
@@ -64,7 +65,7 @@ export const UploadComponent = ({
             <p>{polyglot.t('easy-update')}</p>
             <UploadButton
                 raised
-                icon={<ArchiveIcon />}
+                icon={<FontAwesomeIcon icon={faFileUpload} />}
                 label={polyglot.t('first-upload')}
             />
             <p>
