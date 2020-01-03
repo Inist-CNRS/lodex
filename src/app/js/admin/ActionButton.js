@@ -29,8 +29,8 @@ const styles = {
     },
     icon: {
         color: 'white',
-        height: 56,
-        lineHeight: 56,
+        width: '20px',
+        height: '20px',
     },
 };
 
@@ -152,9 +152,8 @@ export class ActionButtonComponent extends Component {
                         style={styles.button}
                         tooltip={polyglot.t('add_column_from_original_dataset')}
                     >
-                        <FontAwesomeIcon icon={faFileAlt} />
+                        <FontAwesomeIcon icon={faFileAlt} style={styles.icon} />
                     </FloatingActionButton>
-
                     <FloatingActionButton
                         className="btn-add-free-column"
                         label={polyglot.t('add_column')}
@@ -162,7 +161,7 @@ export class ActionButtonComponent extends Component {
                         style={styles.button}
                         tooltip="Add a new column"
                     >
-                        <FontAwesomeIcon icon={faPlus} />
+                        <FontAwesomeIcon icon={faPlus} style={styles.icon} />
                     </FloatingActionButton>
                 </Popover>
                 <div ref={this.storeAnchorRef}>
