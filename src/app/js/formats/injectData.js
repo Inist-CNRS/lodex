@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
+import { withRouter } from 'react-router';
 import isEqual from 'lodash.isequal';
 
 import {
@@ -181,5 +182,6 @@ export default (
     return compose(
         connect(mapStateToProps, mapDispatchToProps),
         translate,
+        withRouter,
     )(GraphItem);
 };
