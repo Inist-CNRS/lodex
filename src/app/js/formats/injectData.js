@@ -32,7 +32,6 @@ const getCreateUrl = url => {
     if (typeof url === 'string') {
         return () => url;
     }
-
     return ({ field, resource }) => resource[field.name];
 };
 
@@ -56,7 +55,7 @@ export default (
             p: polyglotPropTypes.isRequired,
         };
 
-        loadFormatData = () => {
+        loadFormatData = ({ ...args }) => {
             const { loadFormatData } = this.props;
 
             const value = createUrl(this.props);
@@ -65,7 +64,13 @@ export default (
                 return;
             }
 
-            loadFormatData({ ...this.props, value, withUri });
+            loadFormatData({ ...this.props, value, withUri, ...args });
+        };
+
+        filterFormatData = filter => {
+            this.loadFormatData({
+                filter,
+            });
         };
 
         UNSAFE_componentWillMount() {
@@ -98,16 +103,6 @@ export default (
 
             this.loadFormatData();
         }
-
-        filterFormatData = filter => {
-            const { field, loadFormatData } = this.props;
-            loadFormatData({
-                field,
-                value: createUrl(this.props),
-                filter,
-                withUri,
-            });
-        };
 
         render() {
             const {
