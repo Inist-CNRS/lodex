@@ -179,7 +179,7 @@
     "devDependencies": {
         "babel-core": "7.0.0-bridge.0",
         "babel-jest": "23.6.0",
-        "cypress": "3.7.0",
+        "cypress": "3.8.1",
         "enzyme": "3.10.0",
         "enzyme-adapter-react-16": "1.15.1",
         "eslint": "6.7.2",
