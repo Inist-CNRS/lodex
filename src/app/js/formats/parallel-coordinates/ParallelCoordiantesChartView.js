@@ -6,6 +6,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import get from 'lodash.get';
 
+import { getShortText } from '../../lib/longTexts';
 import stylesToClassname from '../../lib/stylesToClassName';
 import injectData from '../injectData';
 import ParallelCoordinatesChart from './ParallelCoordinatesChart';
@@ -20,6 +21,22 @@ const styles = stylesToClassname(
 );
 
 const ROUTINE_NAME = 'distance-with/';
+
+const prepareData = (data = [], history) =>
+    data.map(d => {
+        const title = getShortText(d['target-title']);
+        const onClick = () => {
+            history.push({
+                pathname: `/${d.target}`,
+                state: {},
+            });
+        };
+        return {
+            title,
+            weights: d.weights,
+            onClick,
+        };
+    });
 
 const ParallelCoordinatesChartView = ({ fieldNames, data, colorSet }) => {
     return (
@@ -56,16 +73,19 @@ const getFieldNames = (field, fields, resource) => {
     });
 };
 
-const mapStateToProps = (_, { field, fields, resource, formatData }) => {
+const mapStateToProps = (
+    _,
+    { field, fields, resource, formatData, history },
+) => {
     return {
         fieldNames: getFieldNames(field, fields, resource),
-        data: formatData,
+        data: prepareData(formatData, history),
     };
 };
 
 export default compose(
     translate,
     withRouter,
-    injectData(),
+    injectData(null, null, true),
     connect(mapStateToProps),
 )(ParallelCoordinatesChartView);

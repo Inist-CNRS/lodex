@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as d3 from 'd3';
+import ReactTooltip from 'react-tooltip';
 
 import { getColor } from '../colorUtils';
 
@@ -51,7 +52,10 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .attr('d', path)
             .attr('stroke', (_, i) => getColor(colorSet, i))
             .style('fill', 'none')
-            .style('opacity', 0.5);
+            .style('opacity', 0.5)
+            .attr('data-html', true)
+            .attr('data-tip', d => d.title)
+            .on('click', d => d.onClick());
 
         // Draw the axes
         svg.selectAll('fields')
@@ -59,7 +63,7 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .enter()
             .append('g')
             .attr('transform', d => 'translate(' + x(d) + ')')
-            .each(function(d) {
+            .each(function() {
                 d3.select(this).call(d3.axisLeft().scale(y));
             })
             // Add axes title
@@ -68,17 +72,22 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .attr('y', -9)
             .text(d => d)
             .style('fill', 'black');
+
+        ReactTooltip.rebuild();
     }, [ref, data]);
 
     return (
-        <svg
-            className="parallel-coordinates-chart"
-            ref={ref}
-            width={chartWidth + margin.left + margin.right}
-            height={chartHeight + margin.top + margin.bottom}
-            preserveAspectRatio="xMidYMid meet"
-            xmlns="http://www.w3.org/2000/svg"
-        />
+        <>
+            <svg
+                className="parallel-coordinates-chart"
+                ref={ref}
+                width={chartWidth + margin.left + margin.right}
+                height={chartHeight + margin.top + margin.bottom}
+                preserveAspectRatio="xMidYMid meet"
+                xmlns="http://www.w3.org/2000/svg"
+            />
+            <ReactTooltip />
+        </>
     );
 };
 
