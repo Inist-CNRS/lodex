@@ -11,10 +11,11 @@
         "plugin:import/errors",
         "plugin:import/warnings",
         "plugin:react/recommended",
+        "plugin:jest/style",
         "prettier",
         "prettier/react"
     ],
-    "plugins": ["import", "react", "prettier", "cypress", "jest", "jest/style"],
+    "plugins": ["import", "react", "prettier", "cypress", "jest"],
     "rules": {
         "prettier/prettier": [
             "error",
