@@ -33,7 +33,7 @@ const prepareData = (data = [], history) =>
         };
         return {
             title,
-            weights: d.weights,
+            weights: d.weights.map(weight => weight * 100),
             onClick,
         };
     });

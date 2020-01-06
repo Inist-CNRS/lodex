@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import ReactTooltip from 'react-tooltip';
 
+import { isLongText, getShortText } from '../../lib/longTexts';
 import { getColor } from '../colorUtils';
 
 const margin = {
@@ -28,7 +29,10 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .append('g')
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-        const y = d3.scaleLinear().range([chartHeight, 0]);
+        const y = d3
+            .scaleLinear()
+            .range([chartHeight, 0])
+            .domain([0, 100]);
 
         const x = d3
             .scalePoint()
@@ -38,10 +42,32 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
 
         const path = d => {
             return d3.line()(
-                fieldNames.map((fieldName, i) => {
-                    return [x(fieldName), y(d.weights[i])];
-                }),
+                fieldNames.map((fieldName, i) => [
+                    x(fieldName),
+                    y(d.weights[i]),
+                ]),
             );
+        };
+
+        const highlight = (_, i) => {
+            d3.selectAll('.line')
+                .transition()
+                .duration(200)
+                .style('opacity', '0');
+            d3.selectAll('.l' + i)
+                .transition()
+                .duration(200)
+                .style('stroke', getColor(colorSet, i))
+                .style('opacity', '1');
+        };
+
+        const doNotHighlight = () => {
+            d3.selectAll('.line')
+                .transition()
+                .duration(200)
+                .delay(200)
+                .style('stroke', (_, i) => getColor(colorSet, i))
+                .style('opacity', '1');
         };
 
         // Draw the lines
@@ -49,14 +75,17 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .data(data)
             .enter()
             .append('path')
+            .attr('class', (_, i) => 'line l' + i)
             .attr('d', path)
             .attr('stroke', (_, i) => getColor(colorSet, i))
             .attr('stroke-width', 3)
             .style('fill', 'none')
-            .style('opacity', 0.5)
+            .style('opacity', '0.5')
             .attr('data-html', true)
-            .attr('data-tip', d => d.title)
-            .on('click', d => d.onClick());
+            .attr('data-tip', d => `${d.title}`)
+            .on('click', d => d.onClick())
+            .on('mouseover', highlight)
+            .on('mouseleave', doNotHighlight);
 
         // Draw the axes
         svg.selectAll('fields')
@@ -65,13 +94,18 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .append('g')
             .attr('transform', d => 'translate(' + x(d) + ')')
             .each(function() {
-                d3.select(this).call(d3.axisLeft().scale(y));
+                d3.select(this).call(
+                    d3
+                        .axisLeft()
+                        .ticks(5)
+                        .scale(y),
+                );
             })
             // Add axes title
             .append('text')
             .style('text-anchor', 'middle')
             .attr('y', -9)
-            .text(d => d)
+            .text(d => (isLongText(d, 20) ? getShortText(d, 20) : d))
             .style('fill', 'black');
 
         ReactTooltip.rebuild();
