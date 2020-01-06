@@ -5,6 +5,7 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
 import isEqual from 'lodash.isequal';
+import get from 'lodash.get';
 
 import {
     field as fieldPropTypes,
@@ -35,6 +36,8 @@ const getCreateUrl = url => {
     return ({ field, resource }) => resource[field.name];
 };
 
+const isHomePage = location => get(location, 'pathname', '') === '/';
+
 export default (
     url = null,
     checkFormatLoaded = null,
@@ -52,11 +55,12 @@ export default (
             formatData: PropTypes.any,
             isLoaded: PropTypes.bool.isRequired,
             error: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
+            location: PropTypes.shape({ pathname: PropTypes.string }),
             p: polyglotPropTypes.isRequired,
         };
 
         loadFormatData = ({ ...args }) => {
-            const { loadFormatData } = this.props;
+            const { loadFormatData, location } = this.props;
 
             const value = createUrl(this.props);
 
@@ -64,7 +68,15 @@ export default (
                 return;
             }
 
-            loadFormatData({ ...this.props, value, withUri, ...args });
+            const withFacets = !isHomePage(location);
+
+            loadFormatData({
+                ...this.props,
+                value,
+                withUri,
+                withFacets,
+                ...args,
+            });
         };
 
         filterFormatData = filter => {
