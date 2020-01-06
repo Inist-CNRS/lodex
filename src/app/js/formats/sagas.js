@@ -106,6 +106,7 @@ export function* handleLoadFormatDataRequest({
         );
         return;
     }
+
     if (field.cover === COVER_DATASET) {
         yield handleFilterFormatDataRequest({ payload: { filter } });
         return;
