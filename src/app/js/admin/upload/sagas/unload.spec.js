@@ -26,7 +26,7 @@ describe('Window Unload Prevention', () => {
                 onbeforeunload: () => true,
             };
             allowUnload();
-            expect(global.window.onbeforeunload).toBe(undefined);
+            expect(global.window.onbeforeunload).toBeUndefined();
         });
     });
 

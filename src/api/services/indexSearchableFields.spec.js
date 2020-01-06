@@ -20,10 +20,10 @@ describe('indexSearchableFields', () => {
         }));
         await indexSearchableFields();
 
-        expect(mongoClient).toBeCalledTimes(2);
+        expect(mongoClient).toHaveBeenCalledTimes(2);
         expect(field).toHaveBeenCalledWith('db');
         expect(publishedDataset).toHaveBeenCalledWith('db');
-        expect(findSearchableNames).toBeCalledTimes(1);
+        expect(findSearchableNames).toHaveBeenCalledTimes(1);
         expect(createTextIndexes).toHaveBeenCalledWith('field name list');
     });
 });

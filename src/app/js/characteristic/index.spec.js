@@ -133,7 +133,7 @@ describe('characteristic', () => {
                     fields,
                 );
 
-                expect(characteristics.length).toEqual(2);
+                expect(characteristics).toHaveLength(2);
 
                 const c1 = characteristics[0];
                 expect(c1.name).toEqual('lothal');

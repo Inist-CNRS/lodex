@@ -48,7 +48,7 @@ describe('FacetValueList', () => {
             .find(FlatButton)
             .simulate('click');
 
-        expect(defaultProps.sortFacetValue).toBeCalledTimes(1);
+        expect(defaultProps.sortFacetValue).toHaveBeenCalledTimes(1);
 
         expect(defaultProps.sortFacetValue).toHaveBeenCalledWith({
             name: 'facet',
@@ -62,7 +62,7 @@ describe('FacetValueList', () => {
             .find(FlatButton)
             .simulate('click');
 
-        expect(defaultProps.sortFacetValue).toBeCalledTimes(2);
+        expect(defaultProps.sortFacetValue).toHaveBeenCalledTimes(2);
 
         expect(defaultProps.sortFacetValue).toHaveBeenCalledWith({
             name: 'facet',

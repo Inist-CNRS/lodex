@@ -20,7 +20,7 @@ describe('CompositeProperty', () => {
         };
         const compositeProperty = shallow(<CompositeProperty {...props} />);
         const property = compositeProperty.find(Property);
-        expect(property.length).toBe(2);
+        expect(property).toHaveLength(2);
         expect(property.at(0).props().field).toBe('field1');
         expect(property.at(1).props().field).toBe('field2');
     });

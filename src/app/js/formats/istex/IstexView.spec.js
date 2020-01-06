@@ -38,7 +38,7 @@ describe('<IstexView />', () => {
                 p={{ t: v => v }}
             />,
         );
-        expect(wrapper.find('.istex-list').length).toEqual(1);
+        expect(wrapper.find('.istex-list')).toHaveLength(1);
     });
 
     it('should not display List if no data.hits', () => {
@@ -51,7 +51,7 @@ describe('<IstexView />', () => {
                 p={{ t: v => v }}
             />,
         );
-        expect(wrapper.find(List).length).toEqual(0);
+        expect(wrapper.find(List)).toHaveLength(0);
     });
 
     // The above condition should never happen
@@ -66,7 +66,7 @@ describe('<IstexView />', () => {
                 p={{ t: v => v }}
             />,
         );
-        expect(wrapper.find('.istex-list').length).toEqual(1);
+        expect(wrapper.find('.istex-list')).toHaveLength(1);
     });
 
     it('should create one IstexItem per hit inside List', () => {
@@ -102,7 +102,7 @@ describe('<IstexView />', () => {
         );
         const list = wrapper.find('.istex-list');
         const istexItems = list.find(IstexItem);
-        expect(istexItems.length).toEqual(2);
+        expect(istexItems).toHaveLength(2);
         expect(istexItems.at(0).props()).toEqual({
             id: 1,
             title: 'title1',
@@ -154,7 +154,7 @@ describe('<IstexView />', () => {
         );
 
         const alert = wrapper.find(Alert);
-        expect(alert.length).toBe(1);
+        expect(alert).toHaveLength(1);
         expect(alert.find('p').text()).toBe('error message');
     });
 
@@ -172,6 +172,6 @@ describe('<IstexView />', () => {
         );
 
         const alert = wrapper.find(Alert);
-        expect(alert.length).toBe(0);
+        expect(alert).toHaveLength(0);
     });
 });

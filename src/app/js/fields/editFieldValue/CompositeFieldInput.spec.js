@@ -21,12 +21,12 @@ describe('CompositeFieldInput', () => {
         const wrapper = shallow(<CompositeFieldInput {...props} />);
 
         const editField = wrapper.find(Field);
-        expect(editField.length).toBe(1);
+        expect(editField).toHaveLength(1);
         const editFieldProps = editField.at(0).props();
         expect(editFieldProps.field).toEqual('field');
 
         const editFieldInput = wrapper.find(FieldInput);
-        expect(editFieldInput.length).toBe(2);
+        expect(editFieldInput).toHaveLength(2);
         const editFieldInput1Props = editFieldInput.at(0).props();
         expect(editFieldInput1Props.field).toEqual('field1');
         const editFieldInput2Props = editFieldInput.at(1).props();
@@ -45,12 +45,12 @@ describe('CompositeFieldInput', () => {
         const wrapper = shallow(<CompositeFieldInput {...props} />);
 
         const editField = wrapper.find(Field);
-        expect(editField.length).toBe(0);
+        expect(editField).toHaveLength(0);
 
         expect(t).toHaveBeenCalledWith('composed_of_edit_not_possible');
 
         const editFieldInput = wrapper.find(FieldInput);
-        expect(editFieldInput.length).toBe(2);
+        expect(editFieldInput).toHaveLength(2);
         const editFieldInput1Props = editFieldInput.at(0).props();
         expect(editFieldInput1Props.field).toEqual('field1');
         const editFieldInput2Props = editFieldInput.at(1).props();
@@ -69,7 +69,7 @@ describe('CompositeFieldInput', () => {
         const wrapper = shallow(<CompositeFieldInput {...props} />);
 
         const subheader = wrapper.find(Subheader);
-        expect(subheader.length).toBe(1);
+        expect(subheader).toHaveLength(1);
         expect(
             subheader
                 .at(0)

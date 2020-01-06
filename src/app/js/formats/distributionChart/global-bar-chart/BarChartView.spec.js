@@ -83,7 +83,7 @@ describe('BarChartView', () => {
                 getCategoryAxisProps({
                     diagonalCategoryAxis: false,
                 }).angle,
-            ).toBe(null);
+            ).toBeNull();
         });
 
         it('should set textAnchor to `end` if diagonalCategoryAxis is true', () => {
@@ -118,7 +118,7 @@ describe('BarChartView', () => {
                 direction: 'horizontal',
             });
             expect(props.width).toBe(200);
-            expect(props.height).toBe(undefined);
+            expect(props.height).toBeUndefined();
         });
 
         it('should set height to categoryMargin if direction is vertical', () => {
@@ -127,7 +127,7 @@ describe('BarChartView', () => {
                 direction: 'vertical',
             });
             expect(props.height).toBe(200);
-            expect(props.width).toBe(undefined);
+            expect(props.width).toBeUndefined();
         });
     });
 
@@ -159,7 +159,7 @@ describe('BarChartView', () => {
                 getValueAxisProps({
                     diagonalValueAxis: false,
                 }).angle,
-            ).toBe(null);
+            ).toBeNull();
         });
 
         it('should set textAnchor to `end` if diagonalValueAxis is true', () => {
@@ -250,7 +250,7 @@ describe('BarChartView', () => {
                 direction: 'vertical',
             });
             expect(props.width).toBe(200);
-            expect(props.height).toBe(undefined);
+            expect(props.height).toBeUndefined();
         });
 
         it('should set height to valueMargin if direction is horizontal', () => {
@@ -259,7 +259,7 @@ describe('BarChartView', () => {
                 direction: 'horizontal',
             });
             expect(props.height).toBe(200);
-            expect(props.width).toBe(undefined);
+            expect(props.width).toBeUndefined();
         });
     });
 });

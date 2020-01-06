@@ -16,7 +16,7 @@ describe('<Upload />', () => {
         const wrapper = shallow(<Upload {...props} />);
 
         const raisedButton = wrapper.find(RaisedButton).at(0);
-        expect(raisedButton).not.toBe(undefined);
+        expect(raisedButton).not.toBeUndefined();
 
         expect(
             wrapper.contains(

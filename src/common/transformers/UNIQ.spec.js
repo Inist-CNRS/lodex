@@ -23,6 +23,6 @@ describe('UNIQ', () => {
                 a: 'hello',
                 b: 'world',
             }),
-        ).toEqual(null);
+        ).toBeNull();
     });
 });

@@ -106,7 +106,7 @@ describe('Progress', () => {
             progress.incrementProgress();
             progress.finish();
 
-            expect(() => progress.getProgress()).toThrowError(error);
+            expect(() => progress.getProgress()).toThrow(error);
 
             expect(progress.getProgress()).toEqual({
                 error: null,

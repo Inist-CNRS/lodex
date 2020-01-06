@@ -24,7 +24,7 @@ describe('Detail', () => {
 
         const wrapper = shallow(<Detail {...props} />);
         const properties = wrapper.find(Property);
-        expect(properties.length).toBe(3);
+        expect(properties).toHaveLength(3);
         properties.forEach((element, index) => {
             if (index === 2) {
                 expect(element.prop('field')).toEqual({
@@ -72,7 +72,7 @@ describe('Detail', () => {
 
         const wrapper = shallow(<Detail {...props} />);
         const properties = wrapper.find(Property);
-        expect(properties.length).toBe(3);
+        expect(properties).toHaveLength(3);
 
         const renderedFields = properties.map((element, index) => ({
             index,

@@ -17,7 +17,7 @@ describe('<Resource />', () => {
 
         const wrapper = shallow(<CreateResourceFormComponent {...props} />);
         const fieldInputs = wrapper.find(FieldInput);
-        expect(fieldInputs.length).toBe(2);
+        expect(fieldInputs).toHaveLength(2);
         expect(fieldInputs.at(0).props()).toEqual({
             field: { name: 'field1' },
         });
@@ -35,7 +35,7 @@ describe('<Resource />', () => {
         };
 
         const wrapper = shallow(<CreateResourceFormComponent {...props} />);
-        expect(wrapper.find(UriFieldInput).length).toBe(1);
+        expect(wrapper.find(UriFieldInput)).toHaveLength(1);
     });
 
     it('should not display Alert if no error', () => {
@@ -47,7 +47,7 @@ describe('<Resource />', () => {
         };
 
         const wrapper = shallow(<CreateResourceFormComponent {...props} />);
-        expect(wrapper.find(Alert).length).toBe(0);
+        expect(wrapper.find(Alert)).toHaveLength(0);
     });
 
     it('should display Alert if error', () => {
@@ -60,7 +60,7 @@ describe('<Resource />', () => {
 
         const wrapper = shallow(<CreateResourceFormComponent {...props} />);
         const alert = wrapper.find(Alert);
-        expect(alert.length).toBe(1);
+        expect(alert).toHaveLength(1);
         expect(alert.find('p').text()).toBe('error');
     });
 });

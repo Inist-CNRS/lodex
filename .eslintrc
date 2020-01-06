@@ -11,6 +11,7 @@
         "plugin:import/errors",
         "plugin:import/warnings",
         "plugin:react/recommended",
+        "plugin:jest/style",
         "prettier",
         "prettier/react"
     ],

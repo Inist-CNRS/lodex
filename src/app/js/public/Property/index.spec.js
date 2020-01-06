@@ -27,7 +27,7 @@ describe('Property', () => {
                 />,
             );
 
-            expect(wrapper.getElement()).toBe(null);
+            expect(wrapper.getElement()).toBeNull();
         });
 
         it('should render nothing if resource[field.name] is undefined', () => {
@@ -39,7 +39,7 @@ describe('Property', () => {
                 />,
             );
 
-            expect(wrapper.getElement()).toBe(null);
+            expect(wrapper.getElement()).toBeNull();
         });
 
         it('should render nothing if resource[field.name] is an empty string', () => {
@@ -51,7 +51,7 @@ describe('Property', () => {
                 />,
             );
 
-            expect(wrapper.getElement()).toBe(null);
+            expect(wrapper.getElement()).toBeNull();
         });
 
         it('should render nothing if resource[field.name] is an empty array', () => {
@@ -63,7 +63,7 @@ describe('Property', () => {
                 />,
             );
 
-            expect(wrapper.getElement()).toBe(null);
+            expect(wrapper.getElement()).toBeNull();
         });
 
         it('should render nothing if fieldStatus is rejected', () => {
@@ -75,7 +75,7 @@ describe('Property', () => {
                 />,
             );
 
-            expect(wrapper.getElement()).toBe(null);
+            expect(wrapper.getElement()).toBeNull();
         });
 
         it('should render nothing if predicate is false', () => {
@@ -87,7 +87,7 @@ describe('Property', () => {
                 />,
             );
 
-            expect(wrapper.getElement()).toBe(null);
+            expect(wrapper.getElement()).toBeNull();
         });
 
         it('should render something if resource[field.name] is a value', () => {
@@ -99,7 +99,7 @@ describe('Property', () => {
                 />,
             );
 
-            expect(wrapper.getElement()).not.toBe(null);
+            expect(wrapper.getElement()).not.toBeNull();
         });
 
         it('should render something if resource[field.name] and field format is list is a list of value', () => {
@@ -117,7 +117,7 @@ describe('Property', () => {
                 />,
             );
 
-            expect(wrapper.getElement()).not.toBe(null);
+            expect(wrapper.getElement()).not.toBeNull();
         });
     });
 
@@ -133,7 +133,7 @@ describe('Property', () => {
                         />,
                     );
 
-                    expect(wrapper.getElement()).not.toBe(null);
+                    expect(wrapper.getElement()).not.toBeNull();
                 },
             );
         });

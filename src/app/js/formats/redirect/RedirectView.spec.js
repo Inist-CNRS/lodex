@@ -18,7 +18,7 @@ describe('<RedirectView />', () => {
             />,
         );
 
-        expect(Object.keys(wrapper).length).toBe(0);
+        expect(Object.keys(wrapper)).toHaveLength(0);
     });
 
     it('should render nothing if there is no resource', () => {
@@ -36,7 +36,7 @@ describe('<RedirectView />', () => {
             />,
         );
 
-        expect(Object.keys(wrapper).length).toBe(0);
+        expect(Object.keys(wrapper)).toHaveLength(0);
     });
 
     it('should render a <RedirectViewLoader />', () => {
@@ -56,7 +56,7 @@ describe('<RedirectView />', () => {
             />,
         );
 
-        expect(wrapper.find(RedirectViewLoader).length).toBe(1);
+        expect(wrapper.find(RedirectViewLoader)).toHaveLength(1);
     });
 
     describe('<RedirectViewLoader/>', () => {

@@ -88,7 +88,7 @@ describe('upload', () => {
             });
 
             it('should not call uploadFile', () => {
-                expect(ctx.uploadFile).toBeCalledTimes(0);
+                expect(ctx.uploadFile).toHaveBeenCalledTimes(0);
             });
         });
 
@@ -133,7 +133,7 @@ describe('upload', () => {
             });
 
             it('should call uploadFile', () => {
-                expect(ctx.uploadFile).toBeCalledTimes(1);
+                expect(ctx.uploadFile).toHaveBeenCalledTimes(1);
             });
         });
 
@@ -181,7 +181,7 @@ describe('upload', () => {
             });
 
             it('should call uploadFile', () => {
-                expect(ctx.uploadFile).toBeCalledTimes(1);
+                expect(ctx.uploadFile).toHaveBeenCalledTimes(1);
             });
         });
 
@@ -237,7 +237,7 @@ describe('upload', () => {
             });
 
             it('should not call uploadFile', () => {
-                expect(ctx.uploadFile).toBeCalledTimes(0);
+                expect(ctx.uploadFile).toHaveBeenCalledTimes(0);
             });
         });
     });

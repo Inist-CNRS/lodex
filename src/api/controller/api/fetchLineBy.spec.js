@@ -49,7 +49,7 @@ describe('fetchLineBy', () => {
         };
 
         const result = await fetchLineBy(ctx)(field, value);
-        expect(result).toEqual(null);
+        expect(result).toBeNull();
     });
 
     it('returns null when referenced line is not found', async () => {
@@ -63,6 +63,6 @@ describe('fetchLineBy', () => {
         };
 
         const result = await fetchLineBy(ctx)(field, value);
-        expect(result).toEqual(null);
+        expect(result).toBeNull();
     });
 });

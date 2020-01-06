@@ -16,7 +16,7 @@ describe('<ButtonWithStatus />', () => {
             const button = wrapper.find(FlatButton);
 
             expect(button.prop('disabled')).toEqual(false);
-            expect(button.prop('icon')).toEqual(null);
+            expect(button.prop('icon')).toBeNull();
             expect(button.prop('labelPosition')).toEqual('before');
             expect(button.prop('label')).toEqual('Foo');
         });
@@ -51,7 +51,7 @@ describe('<ButtonWithStatus />', () => {
             const button = wrapper.find(RaisedButton);
 
             expect(button.prop('disabled')).toEqual(false);
-            expect(button.prop('icon')).toEqual(null);
+            expect(button.prop('icon')).toBeNull();
             expect(button.prop('labelPosition')).toEqual('before');
             expect(button.prop('label')).toEqual('Foo');
         });

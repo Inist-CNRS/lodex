@@ -21,7 +21,7 @@ describe('<IstexItem />', () => {
             />,
         );
         const link = wrapper.find(Link);
-        expect(link.length).toEqual(1);
+        expect(link).toHaveLength(1);
         expect(link.props().href).toEqual('url');
     });
     afterEach(() => StyleSheetTestUtils.clearBufferAndResumeStyleInjection());

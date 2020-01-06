@@ -27,9 +27,9 @@ describe('FetchFold', () => {
 
     it('should render closed', () => {
         const wrapper = shallow(<FetchFold {...defaultProps} />);
-        expect(wrapper.find(Folder).length).toBe(1);
-        expect(wrapper.find(FolderOpen).length).toBe(0);
-        expect(wrapper.find('li').length).toBe(0);
+        expect(wrapper.find(Folder)).toHaveLength(1);
+        expect(wrapper.find(FolderOpen)).toHaveLength(0);
+        expect(wrapper.find('li')).toHaveLength(0);
         expect(defaultProps.children).toHaveBeenCalledTimes(0);
         expect(defaultProps.getData).toHaveBeenCalledTimes(0);
         expect(wrapper.find(CircularProgress)).toHaveLength(0);
@@ -50,14 +50,14 @@ describe('FetchFold', () => {
             <FetchFold {...defaultProps} getData={getData} />,
         );
         const button = wrapper.find(Button);
-        expect(wrapper.find(CircularProgress).length).toBe(0);
+        expect(wrapper.find(CircularProgress)).toHaveLength(0);
         button.simulate('click');
         expect(getData).toHaveBeenCalledTimes(1);
-        expect(wrapper.find(CircularProgress).length).toBe(1);
+        expect(wrapper.find(CircularProgress)).toHaveLength(1);
         await dataPromise; // wait for dataPromise to be resolved by component
         wrapper.update();
-        expect(wrapper.find(CircularProgress).length).toBe(0);
-        expect(wrapper.find(Folder).length).toBe(0);
+        expect(wrapper.find(CircularProgress)).toHaveLength(0);
+        expect(wrapper.find(Folder)).toHaveLength(0);
         expect(wrapper.find(FolderOpen)).toHaveLength(1);
         expect(wrapper.find('.children')).toHaveLength(1);
         expect(defaultProps.children).toHaveBeenCalledWith({
@@ -83,15 +83,15 @@ describe('FetchFold', () => {
             <FetchFold {...defaultProps} getData={getData} />,
         );
         const button = wrapper.find(Button);
-        expect(wrapper.find(CircularProgress).length).toBe(0);
+        expect(wrapper.find(CircularProgress)).toHaveLength(0);
         button.simulate('click');
         expect(getData).toHaveBeenCalledTimes(1);
-        expect(wrapper.find(CircularProgress).length).toBe(1);
+        expect(wrapper.find(CircularProgress)).toHaveLength(1);
         await dataPromise.catch(v => v); // wait for dataPromise to get rejected by component
         wrapper.update();
-        expect(wrapper.find(CircularProgress).length).toBe(0);
-        expect(wrapper.find(Folder).length).toBe(0);
-        expect(wrapper.find(FolderOpen).length).toBe(0);
+        expect(wrapper.find(CircularProgress)).toHaveLength(0);
+        expect(wrapper.find(Folder)).toHaveLength(0);
+        expect(wrapper.find(FolderOpen)).toHaveLength(0);
         expect(wrapper.find('li')).toHaveLength(0);
         const alert = wrapper.find(AdminOnlyAlert);
         expect(alert).toHaveLength(1);
@@ -102,8 +102,8 @@ describe('FetchFold', () => {
 
     it('should not render if count is 0', () => {
         const wrapper = shallow(<FetchFold {...defaultProps} count={0} />);
-        expect(wrapper.find(Folder).length).toBe(0);
-        expect(wrapper.find(FolderOpen).length).toBe(0);
+        expect(wrapper.find(Folder)).toHaveLength(0);
+        expect(wrapper.find(FolderOpen)).toHaveLength(0);
         expect(wrapper.find(AdminOnlyAlert)).toHaveLength(0);
         expect(wrapper.find('p')).toHaveLength(0);
     });

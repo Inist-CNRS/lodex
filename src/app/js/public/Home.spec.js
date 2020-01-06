@@ -38,7 +38,7 @@ describe('<Home />', () => {
         );
 
         const loading = wrapper.find(Loading);
-        expect(loading.length).toEqual(1);
+        expect(loading).toHaveLength(1);
     });
 
     it('should render a NoDataset component if no dataset present', () => {
@@ -53,6 +53,6 @@ describe('<Home />', () => {
         );
 
         const component = wrapper.find(NoDataset);
-        expect(component.length).toEqual(1);
+        expect(component).toHaveLength(1);
     });
 });

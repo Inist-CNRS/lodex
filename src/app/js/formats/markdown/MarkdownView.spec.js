@@ -11,7 +11,7 @@ describe('<MarkdownView />', () => {
         const wrapper = shallow(
             <MarkdownView resource={resource} field={field} />,
         );
-        expect(wrapper.find('div').length).toEqual(1);
+        expect(wrapper.find('div')).toHaveLength(1);
         expect(wrapper.prop('dangerouslySetInnerHTML')).toEqual({
             __html: '<p><strong>Run you fools!</strong></p>\n',
         });
@@ -23,6 +23,6 @@ describe('<MarkdownView />', () => {
         const wrapper = shallow(
             <MarkdownView resource={resource} field={field} />,
         );
-        expect(wrapper.find(InvalidFormat).length).toEqual(1);
+        expect(wrapper.find(InvalidFormat)).toHaveLength(1);
     });
 });

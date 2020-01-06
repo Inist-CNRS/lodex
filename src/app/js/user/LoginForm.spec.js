@@ -10,7 +10,7 @@ describe('<LoginForm />', () => {
         const wrapper = shallow(
             <LoginFormComponent p={{ t: () => {} }} handleSubmit={() => {}} />,
         );
-        expect(wrapper.length).toEqual(1);
+        expect(wrapper).toHaveLength(1);
     });
 
     it('should render error', () => {
@@ -22,7 +22,7 @@ describe('<LoginForm />', () => {
             />,
         );
         const alerts = wrapper.find(Alert);
-        expect(alerts.length).toEqual(1);
+        expect(alerts).toHaveLength(1);
         expect(alerts.children().html()).toEqual('<p>Foo</p>');
     });
 
@@ -31,7 +31,7 @@ describe('<LoginForm />', () => {
             <LoginFormComponent p={{ t: () => {} }} handleSubmit={() => {}} />,
         );
         const textField = wrapper.find(Field).at(0);
-        expect(textField.length).toEqual(1);
+        expect(textField).toHaveLength(1);
         expect(textField.prop('name')).toEqual('username');
     });
 
@@ -40,7 +40,7 @@ describe('<LoginForm />', () => {
             <LoginFormComponent p={{ t: () => {} }} handleSubmit={() => {}} />,
         );
         const textField = wrapper.find(Field).at(1);
-        expect(textField.length).toEqual(1);
+        expect(textField).toHaveLength(1);
         expect(textField.prop('name')).toEqual('password');
     });
 });

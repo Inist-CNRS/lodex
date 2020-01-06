@@ -22,7 +22,7 @@ describe('BubbleView', () => {
         );
 
         const bubbles = wrapper.find('Bubble');
-        expect(bubbles.length).toBe(3);
+        expect(bubbles).toHaveLength(3);
 
         expect(bubbles.map(b => b.props())).toEqual([
             { color: '#1D1A31', name: 'id1', r: 10, value: 1, x: 10, y: 10 },
@@ -41,7 +41,7 @@ describe('BubbleView', () => {
         );
 
         const bubbles = wrapper.find('Bubble');
-        expect(bubbles.length).toBe(3);
+        expect(bubbles).toHaveLength(3);
 
         expect(bubbles.map(b => b.props())).toEqual([
             { color: '#1D1A31', name: 'id1', r: 10, value: 1, x: 10, y: 10 },

@@ -17,7 +17,7 @@ describe('EditFieldInput', () => {
         };
         const wrapper = shallow(<FieldInput {...props} />);
         const compositeEditField = wrapper.find(CompositeFieldInput);
-        expect(compositeEditField.length).toBe(1);
+        expect(compositeEditField).toHaveLength(1);
         expect(compositeEditField.at(0).props()).toEqual({
             field: props.field,
             label: 'Field',
@@ -33,10 +33,10 @@ describe('EditFieldInput', () => {
         };
         const wrapper = shallow(<FieldInput {...props} />);
         const compositeEditField = wrapper.find(CompositeFieldInput);
-        expect(compositeEditField.length).toBe(0);
+        expect(compositeEditField).toHaveLength(0);
 
         const field = wrapper.find(Field);
-        expect(field.length).toBe(1);
+        expect(field).toHaveLength(1);
         expect(field.at(0).prop('name')).toBe('field');
         expect(field.at(0).prop('label')).toBe('Field');
         expect(field.at(0).prop('disabled')).toBe(false);

@@ -18,7 +18,7 @@ describe('<LinkImageView />', () => {
                 value="http://image.com"
             />,
         );
-        expect(wrapper.find(Link).length).toEqual(1);
+        expect(wrapper.find(Link)).toHaveLength(1);
         expect(wrapper.prop('href')).toEqual('http://example.com');
         expect(
             wrapper

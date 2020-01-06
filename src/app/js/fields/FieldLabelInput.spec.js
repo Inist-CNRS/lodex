@@ -30,7 +30,7 @@ describe('FieldLabelInput', () => {
                 )('my label', null, {
                     fieldToAdd: { label: 'my label' },
                 }),
-            ).toBe(undefined);
+            ).toBeUndefined();
         });
 
         it('should return undefined if value is equal to props.field.label', () => {
@@ -45,7 +45,7 @@ describe('FieldLabelInput', () => {
                 )('my label', null, {
                     field: { label: 'my label' },
                 }),
-            ).toBe(undefined);
+            ).toBeUndefined();
         });
 
         it('should return undefined if value is not in one of the other existing fields', () => {
@@ -54,7 +54,7 @@ describe('FieldLabelInput', () => {
                     [{ label: 'a label' }, { label: 'another label' }],
                     polyglot,
                 )('my label', null, {}),
-            ).toBe(undefined);
+            ).toBeUndefined();
         });
     });
 });
