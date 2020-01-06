@@ -7,13 +7,13 @@ describe('URLENCODE', () => {
         );
     });
     it('should return empty for empty', () => {
-        expect(valueToURLEncode(null)).toBe(null);
+        expect(valueToURLEncode(null)).toBeNull();
         expect(valueToURLEncode('')).toBe('');
     });
     it('should return empty for non string', () => {
-        expect(valueToURLEncode(12345)).toBe(null);
-        expect(valueToURLEncode(false)).toBe(null);
-        expect(valueToURLEncode({})).toBe(null);
-        expect(valueToURLEncode([])).toBe(null);
+        expect(valueToURLEncode(12345)).toBeNull();
+        expect(valueToURLEncode(false)).toBeNull();
+        expect(valueToURLEncode({})).toBeNull();
+        expect(valueToURLEncode([])).toBeNull();
     });
 });

@@ -2,7 +2,6 @@ import fieldFactory, {
     validateField,
     buildInvalidPropertiesMessage,
     buildInvalidTransformersMessage,
-    findByName,
 } from './field';
 import { URI_FIELD_NAME } from '../../common/uris';
 import { COVER_DOCUMENT, COVER_COLLECTION } from '../../common/cover';

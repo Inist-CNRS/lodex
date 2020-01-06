@@ -38,7 +38,7 @@ describe('HeatMapView', () => {
         );
 
         const tds = wrapper.find('td');
-        expect(tds.length).toBe(12);
+        expect(tds).toHaveLength(12);
 
         expect(tds.map(b => b.prop('data-tip'))).toEqual([
             undefined,

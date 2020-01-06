@@ -10,7 +10,7 @@ describe('<ParsingExcerptColumn />', () => {
         const value = 'foo';
         const wrapper = shallow(<ParsingExcerptColumn value={value} />);
         const row = wrapper.find(TableRowColumn);
-        expect(row.prop('title')).toEqual(undefined);
+        expect(row.prop('title')).toBeUndefined();
         expect(row.children().text()).toEqual(value);
     });
 

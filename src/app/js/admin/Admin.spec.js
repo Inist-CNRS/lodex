@@ -15,7 +15,7 @@ describe('<Admin />', () => {
                 p={{ t: () => {} }}
             />,
         );
-        expect(wrapper.find(Loading).length).toEqual(1);
+        expect(wrapper.find(Loading)).toHaveLength(1);
     });
 
     it('should render the ParsingResult', () => {
@@ -34,7 +34,7 @@ describe('<Admin />', () => {
                 p={{ t: () => {} }}
             />,
         );
-        expect(wrapper.find(ParsingResult).length).toEqual(0);
-        expect(wrapper.find(Upload).length).toEqual(1);
+        expect(wrapper.find(ParsingResult)).toHaveLength(0);
+        expect(wrapper.find(Upload)).toHaveLength(1);
     });
 });

@@ -577,7 +577,7 @@ describe('validateField', () => {
         });
 
         it('should return null if there is no composedOf', () => {
-            expect(validateComposedOfFields({})).toEqual(null);
+            expect(validateComposedOfFields({})).toBeNull();
         });
     });
 

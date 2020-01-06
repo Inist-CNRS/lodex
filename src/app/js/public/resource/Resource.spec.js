@@ -22,7 +22,7 @@ describe('<Resource />', () => {
         };
 
         const wrapper = shallow(<ResourceComponent {...props} />);
-        expect(wrapper.find(Loading).length).toEqual(1);
+        expect(wrapper.find(Loading)).toHaveLength(1);
     });
 
     it('should display not found message if no resource', () => {
@@ -32,8 +32,8 @@ describe('<Resource />', () => {
         };
 
         const wrapper = shallow(<ResourceComponent {...props} />);
-        expect(wrapper.find(Loading).length).toEqual(0);
-        expect(wrapper.find('.not-found').length).toEqual(1);
+        expect(wrapper.find(Loading)).toHaveLength(0);
+        expect(wrapper.find('.not-found')).toHaveLength(1);
     });
 
     it('should display Detail if resource', () => {
@@ -44,9 +44,9 @@ describe('<Resource />', () => {
         };
 
         const wrapper = shallow(<ResourceComponent {...props} />);
-        expect(wrapper.find(Loading).length).toEqual(0);
-        expect(wrapper.find('.not-found').length).toEqual(0);
-        expect(wrapper.find(Detail).length).toEqual(1);
+        expect(wrapper.find(Loading)).toHaveLength(0);
+        expect(wrapper.find('.not-found')).toHaveLength(0);
+        expect(wrapper.find(Detail)).toHaveLength(1);
     });
 
     it('should display RemovedDetail if resource is removed', () => {
@@ -58,8 +58,8 @@ describe('<Resource />', () => {
         };
 
         const wrapper = shallow(<ResourceComponent {...props} />);
-        expect(wrapper.find(RemovedDetail).length).toEqual(1);
-        expect(wrapper.find(Detail).length).toEqual(0);
+        expect(wrapper.find(RemovedDetail)).toHaveLength(1);
+        expect(wrapper.find(Detail)).toHaveLength(0);
     });
 
     it('should display back to list in link if no datasetTitle', () => {

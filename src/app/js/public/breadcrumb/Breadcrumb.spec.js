@@ -21,7 +21,7 @@ describe('Breadcrumb', () => {
         );
         const link = wrapper.find(BreadcrumbItem);
 
-        expect(link.length).toEqual(0);
+        expect(link).toHaveLength(0);
     });
 
     it('should create the breadcrumb trail with an item', () => {
@@ -43,7 +43,7 @@ describe('Breadcrumb', () => {
         );
         const link = wrapper.find(BreadcrumbItem);
 
-        expect(link.length).toEqual(1);
+        expect(link).toHaveLength(1);
     });
 
     it('should not create the breadcrumb trail with an item on the main page', () => {
@@ -65,6 +65,6 @@ describe('Breadcrumb', () => {
         );
         const link = wrapper.find(BreadcrumbItem);
 
-        expect(link.length).toEqual(0);
+        expect(link).toHaveLength(0);
     });
 });

@@ -5,18 +5,18 @@ describe('MASK', () => {
         expect(mask('hello', '^\\w+$')).toBe('hello');
     });
     it('should return mask value', () => {
-        expect(mask('hello!', '^\\w+$')).toBe(null);
+        expect(mask('hello!', '^\\w+$')).toBeNull();
     });
     it('should return null if null', () => {
-        expect(mask(null, '^\\w+$')).toBe(null);
+        expect(mask(null, '^\\w+$')).toBeNull();
     });
     it('should return null if empty', () => {
-        expect(mask('', '^\\w+$')).toBe(null);
+        expect(mask('', '^\\w+$')).toBeNull();
     });
     it('should return null if object', () => {
-        expect(mask({}, '^\\w+$')).toBe(null);
+        expect(mask({}, '^\\w+$')).toBeNull();
     });
     it('should return null if number', () => {
-        expect(mask(1111, '^\\w+$')).toBe(null);
+        expect(mask(1111, '^\\w+$')).toBeNull();
     });
 });

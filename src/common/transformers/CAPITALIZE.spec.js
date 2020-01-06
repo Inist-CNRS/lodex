@@ -6,7 +6,7 @@ describe('CAPITALIZE', () => {
     });
 
     it('should return value if it is not a string', () => {
-        expect(capitalizeString(null)).toEqual(null);
+        expect(capitalizeString(null)).toBeNull();
         expect(capitalizeString(5)).toEqual(5);
     });
 });

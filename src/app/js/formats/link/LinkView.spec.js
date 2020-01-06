@@ -20,7 +20,7 @@ describe('<LinkView />', () => {
                 value="label"
             />,
         );
-        expect(wrapper.find(Link).length).toEqual(1);
+        expect(wrapper.find(Link)).toHaveLength(1);
         expect(wrapper.prop('href')).toEqual('http://example.com');
         expect(wrapper.find(Link).prop('children')).toEqual('label');
     });
@@ -34,8 +34,8 @@ describe('<LinkView />', () => {
         const wrapper = shallow(
             <LinkView resource={resource} field={field} fields={fields} />,
         );
-        expect(wrapper.find('li').length).toEqual(2);
-        expect(wrapper.find(Link).length).toEqual(2);
+        expect(wrapper.find('li')).toHaveLength(2);
+        expect(wrapper.find(Link)).toHaveLength(2);
         expect(
             wrapper
                 .find(Link)

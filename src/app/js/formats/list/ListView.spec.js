@@ -39,7 +39,7 @@ describe('list format view <ListView />', () => {
                 <ListView {...defaultProps} resource={{ name: value }} />,
             );
             const listComponent = component.find(UL);
-            expect(listComponent.length).toBe(0);
+            expect(listComponent).toHaveLength(0);
         });
     });
 
@@ -47,10 +47,10 @@ describe('list format view <ListView />', () => {
         const component = shallow(<ListView {...defaultProps} />);
 
         const listComponent = component.find(UL);
-        expect(listComponent.length).toBe(1);
+        expect(listComponent).toHaveLength(1);
 
         const subFormat = component.find('Translated(CheckedComponent)');
-        expect(subFormat.length).toBe(3);
+        expect(subFormat).toHaveLength(3);
         subFormat.forEach((t, index) => {
             expect(t.props().resource).toEqual(['value1', 'value2', 'value3']);
             expect(t.props().field.name).toBe(index.toString());
@@ -80,7 +80,7 @@ describe('list format view <ListView />', () => {
         };
         const component = shallow(<ListView {...props} />);
         const title = component.find('Translated(CheckedComponent)');
-        expect(title.length).toBe(3);
+        expect(title).toHaveLength(3);
         title.forEach((t, index) => {
             expect(t.props().resource).toEqual(['value1', 'value2', 'value3']);
             expect(t.props().field.name).toBe(index.toString());
@@ -92,9 +92,9 @@ describe('list format view <ListView />', () => {
     it('should wrap list in UL if no format type provided', () => {
         const component = shallow(<ListView {...defaultProps} />);
         const ul = component.find(UL);
-        expect(ul.length).toBe(1);
+        expect(ul).toHaveLength(1);
         const ol = component.find(OL);
-        expect(ol.length).toBe(0);
+        expect(ol).toHaveLength(0);
     });
 
     it('should wrap list in OL if format type is ordered', () => {
@@ -115,9 +115,9 @@ describe('list format view <ListView />', () => {
         };
         const component = shallow(<ListView {...props} />);
         const ul = component.find(UL);
-        expect(ul.length).toBe(0);
+        expect(ul).toHaveLength(0);
         const ol = component.find(OL);
-        expect(ol.length).toBe(1);
+        expect(ol).toHaveLength(1);
     });
 
     it('should wrap list in UL if format type is unordered_without_bullet', () => {
@@ -138,9 +138,9 @@ describe('list format view <ListView />', () => {
         };
         const component = shallow(<ListView {...props} />);
         const ul = component.find(UL);
-        expect(ul.length).toBe(1);
+        expect(ul).toHaveLength(1);
         const ol = component.find(OL);
-        expect(ol.length).toBe(0);
+        expect(ol).toHaveLength(0);
     });
 
     afterEach(() => StyleSheetTestUtils.clearBufferAndResumeStyleInjection());

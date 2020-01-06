@@ -80,8 +80,8 @@ describe('publishFacets', () => {
                 [{ name: 'field1' }, { name: 'field2' }, { name: 'field3' }],
                 false,
             );
-            expect(ctx.publishedFacet.remove).toBeCalledTimes(0);
-            expect(ctx.publishedFacet.insertMany).toBeCalledTimes(0);
+            expect(ctx.publishedFacet.remove).toHaveBeenCalledTimes(0);
+            expect(ctx.publishedFacet.insertMany).toHaveBeenCalledTimes(0);
         });
     });
 });

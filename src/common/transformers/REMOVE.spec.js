@@ -5,6 +5,6 @@ describe('REMOVE', () => {
         expect(remove('hello world', ' world')).toBe('hello');
     });
     it('should return new value from array', () => {
-        expect(remove(['hello', 'world'], 'world').length).toEqual(1);
+        expect(remove(['hello', 'world'], 'world')).toHaveLength(1);
     });
 });

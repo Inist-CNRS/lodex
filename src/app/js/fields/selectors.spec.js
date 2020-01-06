@@ -421,6 +421,6 @@ describe('getFieldToAdd', () => {
             selectedField: '404',
         };
 
-        expect(selectors.getFieldToAdd(state)).toBe(null);
+        expect(selectors.getFieldToAdd(state)).toBeNull();
     });
 });

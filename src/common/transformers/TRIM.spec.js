@@ -6,7 +6,7 @@ describe('TRIM', () => {
     });
 
     it('should return value if it is not a string', () => {
-        expect(trimString(null)).toBe(null);
+        expect(trimString(null)).toBeNull();
         expect(trimString(5)).toBe(5);
     });
 });

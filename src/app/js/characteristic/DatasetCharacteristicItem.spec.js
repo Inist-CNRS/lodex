@@ -22,7 +22,7 @@ describe('DatasetCharacteristicItem', () => {
         const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
 
         const property = wrapper.find(Property);
-        expect(property.length).toBe(0);
+        expect(property).toHaveLength(0);
     });
 
     it('should render a Property when it is visible', () => {
@@ -39,7 +39,7 @@ describe('DatasetCharacteristicItem', () => {
         const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
 
         const property = wrapper.find(Property);
-        expect(property.length).toBe(1);
+        expect(property).toHaveLength(1);
         const propertyProps = property.at(0).props();
         expect(propertyProps.field).toEqual({
             name: 'field1',

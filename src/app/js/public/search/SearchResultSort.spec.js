@@ -14,7 +14,7 @@ describe('<SearchResultSort />', () => {
 
             const result = getSortableFieldNames(fieldNames);
 
-            expect(result.length).toEqual(4);
+            expect(result).toHaveLength(4);
 
             expect(result[0]).toEqual('my-title');
             expect(result[1]).toEqual('my-description');
@@ -32,7 +32,7 @@ describe('<SearchResultSort />', () => {
 
             const result = getSortableFieldNames(fieldNames);
 
-            expect(result.length).toEqual(2);
+            expect(result).toHaveLength(2);
 
             expect(result[0]).toEqual('my-title');
             expect(result[1]).toEqual('my-second-detail');
@@ -58,7 +58,7 @@ describe('<SearchResultSort />', () => {
             ];
             const result = getSortableFields(fields, sortedFieldNames);
 
-            expect(result.length).toEqual(4);
+            expect(result).toHaveLength(4);
 
             expect(result[0].name).toEqual('my-title');
             expect(result[0].label).toEqual('Title');
