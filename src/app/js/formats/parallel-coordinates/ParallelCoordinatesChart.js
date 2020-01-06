@@ -51,6 +51,7 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .append('path')
             .attr('d', path)
             .attr('stroke', (_, i) => getColor(colorSet, i))
+            .attr('stroke-width', 3)
             .style('fill', 'none')
             .style('opacity', 0.5)
             .attr('data-html', true)
@@ -95,6 +96,7 @@ ParallelCoordinates.propTypes = {
     fieldNames: PropTypes.arrayOf(PropTypes.string),
     data: PropTypes.arrayOf(
         PropTypes.shape({
+            title: PropTypes.string,
             weights: PropTypes.arrayOf(PropTypes.number),
         }),
     ).isRequired,
