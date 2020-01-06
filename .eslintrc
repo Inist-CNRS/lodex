@@ -14,7 +14,7 @@
         "prettier",
         "prettier/react"
     ],
-    "plugins": ["import", "react", "prettier", "cypress", "jest"],
+    "plugins": ["import", "react", "prettier", "cypress", "jest", "jest/style"],
     "rules": {
         "prettier/prettier": [
             "error",
