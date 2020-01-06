@@ -73,6 +73,11 @@ export default (
             });
         };
 
+        unLoadFormatData = ({ ...args }) => {
+            const { unLoadFormatData } = this.props;
+            unLoadFormatData({ ...args });
+        };
+
         UNSAFE_componentWillMount() {
             const { field } = this.props;
             if (!field) {
@@ -82,12 +87,11 @@ export default (
         }
 
         componentWillUnmount() {
-            const { field, unLoadFormatData } = this.props;
+            const { field } = this.props;
             if (!field) {
                 return;
             }
-
-            unLoadFormatData(field);
+            this.unLoadFormatData(field);
         }
 
         componentDidUpdate(prevProps) {
