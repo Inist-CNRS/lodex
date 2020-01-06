@@ -27,11 +27,7 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .append('g')
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-        const fieldAxes = {};
-        for (let i in fieldNames) {
-            let name = fieldNames[i];
-            fieldAxes[name] = d3.scaleLinear().range([chartHeight, 0]);
-        }
+        const y = d3.scaleLinear().range([chartHeight, 0]);
 
         const x = d3
             .scalePoint()
@@ -42,7 +38,7 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
         const path = d => {
             return d3.line()(
                 fieldNames.map((fieldName, i) => {
-                    return [x(fieldName), fieldAxes[fieldName](d.weights[i])];
+                    return [x(fieldName), y(d.weights[i])];
                 }),
             );
         };
@@ -64,7 +60,7 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .append('g')
             .attr('transform', d => 'translate(' + x(d) + ')')
             .each(function(d) {
-                d3.select(this).call(d3.axisLeft().scale(fieldAxes[d]));
+                d3.select(this).call(d3.axisLeft().scale(y));
             })
             // Add axes title
             .append('text')
