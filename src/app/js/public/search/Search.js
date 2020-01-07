@@ -207,7 +207,10 @@ class Search extends Component {
         return (
             <div className={classnames(className, styles.container)}>
                 <div className={styles.header}>
-                    <SearchSearchBar withFacets={withFacets} />
+                    <SearchSearchBar
+                        withFacets={withFacets}
+                        onToggleFacets={this.handleToggleFacets}
+                    />
                     <div className={styles.advanced}>
                         {(everythingIsOk || noResults) && <SearchStats />}
                     </div>
