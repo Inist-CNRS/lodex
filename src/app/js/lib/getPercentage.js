@@ -1,8 +1,7 @@
 import get from 'lodash.get';
 
-export function getPercentValue(data, decimals = 0) {
-    const weight = get(data, 'weight', 0);
-    const parsedValue = parseFloat(weight);
+export function getPercentValue(value, decimals = 0) {
+    const parsedValue = parseFloat(value);
     if (isNaN(parsedValue) || parsedValue < 0 || parsedValue > 1) {
         return '0';
     }

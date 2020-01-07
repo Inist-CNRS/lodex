@@ -32,7 +32,8 @@ const prepareData = (data = [], history, polyglot) =>
                 state: {},
             });
         };
-        const value = getPercentValue(d, 2);
+        const weight = get(d, 'weight', 0);
+        const value = getPercentValue(weight, 2);
         const label = `<div>${title}<br/><br/>${value}% ${polyglot.t(
             'similar',
         )}</div>`;
