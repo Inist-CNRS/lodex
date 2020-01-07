@@ -6,6 +6,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import get from 'lodash.get';
 
+import { getPercentValue } from '../../lib/getPercentage';
 import { getShortText } from '../../lib/longTexts';
 import stylesToClassname from '../../lib/stylesToClassName';
 import injectData from '../injectData';
@@ -22,7 +23,7 @@ const styles = stylesToClassname(
 
 const ROUTINE_NAME = 'distance-with/';
 
-const prepareData = (data = [], history) =>
+const prepareData = (data = [], history, polyglot) =>
     data.map(d => {
         const title = getShortText(d['target-title']);
         const onClick = () => {
@@ -31,8 +32,12 @@ const prepareData = (data = [], history) =>
                 state: {},
             });
         };
+        const value = getPercentValue(d, 2);
+        const label = `<div>${title}<br/><br/>${value}% ${polyglot.t(
+            'similar',
+        )}</div>`;
         return {
-            title,
+            label,
             weights: d.weights.map(weight => weight * 100),
             onClick,
         };
@@ -75,11 +80,11 @@ const getFieldNames = (field, fields, resource) => {
 
 const mapStateToProps = (
     _,
-    { field, fields, resource, formatData, history },
+    { field, fields, resource, formatData, history, p: polyglot },
 ) => {
     return {
         fieldNames: getFieldNames(field, fields, resource),
-        data: prepareData(formatData, history),
+        data: prepareData(formatData, history, polyglot),
     };
 };
 

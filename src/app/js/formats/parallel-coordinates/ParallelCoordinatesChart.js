@@ -82,7 +82,7 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .style('fill', 'none')
             .style('opacity', '0.5')
             .attr('data-html', true)
-            .attr('data-tip', d => `${d.title}`)
+            .attr('data-tip', d => d.label)
             .on('click', d => d.onClick())
             .on('mouseover', highlight)
             .on('mouseleave', doNotHighlight);
@@ -130,8 +130,9 @@ ParallelCoordinates.propTypes = {
     fieldNames: PropTypes.arrayOf(PropTypes.string),
     data: PropTypes.arrayOf(
         PropTypes.shape({
-            title: PropTypes.string,
+            label: PropTypes.string,
             weights: PropTypes.arrayOf(PropTypes.number),
+            onClick: PropTypes.func,
         }),
     ).isRequired,
     width: PropTypes.number.isRequired,
