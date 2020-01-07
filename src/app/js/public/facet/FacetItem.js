@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { ListItem } from 'material-ui/List';
 import { connect } from 'react-redux';
 
@@ -17,11 +18,15 @@ const styles = {
 
 const onClick = (openFacet, field) => () => openFacet({ name: field.name });
 
-const FacetItem = ({ isOpen, field, total, page }) => (
+const FacetItem = ({ className, isOpen, field, total, page }) => (
     <FacetActionsContext.Consumer>
         {({ openFacet }) => (
             <ListItem
-                className={`facet-item facet-${getFieldClassName(field)}`}
+                className={classnames(
+                    className,
+                    'facet-item',
+                    `facet-${getFieldClassName(field)}`,
+                )}
                 nestedListStyle={styles.nested}
                 key={field.name}
                 primaryText={`${field.label} ${total ? `(${total})` : ''}`}
@@ -42,6 +47,7 @@ const FacetItem = ({ isOpen, field, total, page }) => (
 );
 
 FacetItem.propTypes = {
+    className: PropTypes.string,
     isOpen: PropTypes.bool.isRequired,
     field: fieldPropType.isRequired,
     total: PropTypes.number,
