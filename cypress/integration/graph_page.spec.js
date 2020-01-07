@@ -16,7 +16,7 @@ describe('Graph Page', () => {
         datasetImportPage.goToPublishedResources();
     });
 
-    it('should not reset filters & search query when switching to another graph', () => {
+    it('should not reset the facets and the search query when switching to another graph', () => {
         menu.openChartDrawer();
         menu.goToChart('Bar Chart');
 

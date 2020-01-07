@@ -1,0 +1,436 @@
+[
+    {
+        "cover": "collection",
+        "label": "uri",
+        "display_on_list": true,
+        "transformers": [
+            {
+                "operation": "AUTOGENERATE_URI",
+                "args": []
+            }
+        ],
+        "scheme": "http://purl.org/dc/terms/identifier",
+        "format": {
+            "args": {
+                "type": "value",
+                "value": ""
+            },
+            "name": "uri"
+        },
+        "position": 0,
+        "name": "uri"
+    },
+    {
+        "cover": "dataset",
+        "label": "Dataset Name",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "Une collection de films célébres"
+                    }
+                ]
+            }
+        ],
+        "position": 1,
+        "scheme": "http://purl.org/dc/terms/title",
+        "language": "fr",
+        "format": {
+            "name": "title"
+        },
+        "name": "WXc1",
+        "count": 0,
+        "display_in_home": true,
+        "overview": 100
+    },
+    {
+        "cover": "dataset",
+        "label": "Dataset Description",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "Cette collection n'a pas d'autre but que de présenter un manière d’utiliser l'application Lodex pour mettre en ligne des données."
+                    }
+                ]
+            }
+        ],
+        "position": 2,
+        "scheme": "http://purl.org/dc/terms/description",
+        "language": "fr",
+        "format": {
+            "args": {
+                "paragraphWidth": "80%"
+            },
+            "name": "None"
+        },
+        "name": "Doay",
+        "count": 0,
+        "display_in_home": true,
+        "overview": 200
+    },
+    {
+        "cover": "collection",
+        "label": "title",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "title"
+                    }
+                ]
+            }
+        ],
+        "scheme": "http://purl.org/dc/terms/title",
+        "format": {
+            "args": {
+                "level": 1
+            },
+            "name": "title"
+        },
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "position": 3,
+        "name": "Q98n",
+        "count": 29,
+        "overview": 1
+    },
+    {
+        "label": "Nombre de films",
+        "format": {
+            "args": {
+                "size": 3,
+                "colors": "#5ca33e"
+            },
+            "name": "emphasedNumber"
+        },
+        "cover": "dataset",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "/api/run/count-all/"
+                    }
+                ]
+            }
+        ],
+        "position": 4,
+        "display_in_home": true,
+        "count": 30,
+        "name": "MzM2"
+    },
+    {
+        "cover": "collection",
+        "label": "actors",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "actors"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "separator",
+                        "type": "string",
+                        "value": "/"
+                    }
+                ],
+                "operation": "SPLIT"
+            }
+        ],
+        "scheme": "http://schema.org/actor",
+        "display_in_list": false,
+        "searchable": true,
+        "display_in_resource": true,
+        "position": 5,
+        "format": {
+            "args": {
+                "type": "unordered",
+                "subFormat": "None",
+                "subFormatOptions": {},
+                "args": {}
+            },
+            "name": "list"
+        },
+        "name": "K8Lu",
+        "count": 29
+    },
+    {
+        "cover": "collection",
+        "label": "rating",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "rating"
+                    }
+                ]
+            }
+        ],
+        "scheme": "http://dbpedia.org/ontology/rating",
+        "position": 6,
+        "isFacet": true,
+        "name": "bZE+"
+    },
+    {
+        "cover": "collection",
+        "label": "imdb",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "imdb"
+                    }
+                ]
+            }
+        ],
+        "scheme": "http://www.w3.org/2004/02/skos/core#exactMatch",
+        "format": {
+            "args": {
+                "type": "value",
+                "value": "IMDB"
+            },
+            "name": "link"
+        },
+        "position": 7,
+        "name": "jB7h"
+    },
+    {
+        "cover": "collection",
+        "label": "director firstName",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "director/firstNane"
+                    }
+                ]
+            }
+        ],
+        "position": 8,
+        "name": "uWGm",
+        "count": 29,
+        "scheme": "http://xmlns.com/foaf/0.1/#term_firstName"
+    },
+    {
+        "cover": "collection",
+        "label": "director lastname",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "director/LastNane"
+                    }
+                ]
+            }
+        ],
+        "position": 9,
+        "name": "nekS",
+        "count": 29,
+        "scheme": "http://xmlns.com/foaf/0.1/#term_lastName"
+    },
+    {
+        "cover": "collection",
+        "label": "Director",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "CONCAT",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "director/firstNane"
+                    },
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "director/LastNane"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "separator",
+                        "type": "string",
+                        "value": " "
+                    }
+                ],
+                "operation": "JOIN"
+            }
+        ],
+        "position": 10,
+        "composedOf": {
+            "separator": " ",
+            "fields": ["uWGm", "nekS"]
+        },
+        "scheme": "http://schema.org/director",
+        "name": "sovY",
+        "count": 29,
+        "overview": 2
+    },
+    {
+        "cover": "collection",
+        "label": "year",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "year"
+                    }
+                ]
+            }
+        ],
+        "scheme": "http://schema.org/releaseDate",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "isFacet": true,
+        "position": 11,
+        "format": {
+            "args": {
+                "maxSize": "10",
+                "chartWidth": "50%"
+            },
+            "name": "chart"
+        },
+        "name": "xqgM"
+    },
+    {
+        "cover": "collection",
+        "label": "Rating Source",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "IMDb"
+                    }
+                ],
+                "operation": "VALUE"
+            }
+        ],
+        "position": 12,
+        "scheme": "http://purl.org/dc/terms/source",
+        "completes": "bZE+",
+        "name": "73Hi"
+    },
+    {
+        "label": "Liste des films",
+        "format": {
+            "args": {
+                "spaceWidth": "20%",
+                "pageSize": 50,
+                "orderBy": "value/asc"
+            },
+            "name": "resourcesGrid"
+        },
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "/api/run/syndication"
+                    }
+                ]
+            }
+        ],
+        "cover": "dataset",
+        "position": 12,
+        "name": "vPYU",
+        "count": 0,
+        "display_in_home": true,
+        "width": "100"
+    },
+    {
+        "label": "Répartition par réalisateurs ",
+        "format": {
+            "args": {
+                "maxSize": "10",
+                "orderBy": "label/desc",
+                "colors": "#FF00FF #4D2D52 #9A4C95 #F08CAE #C1A5A9"
+            },
+            "name": "globalRadarchart"
+        },
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "/api/run/distinct-by/nekS/"
+                    }
+                ]
+            }
+        ],
+        "cover": "dataset",
+        "position": 13,
+        "name": "xkNT",
+        "count": 0,
+        "display_in_home": true,
+        "width": "",
+        "display_in_graph": true
+    }
+]

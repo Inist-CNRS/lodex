@@ -90,7 +90,7 @@ export function* loadFormatData(name, url, queryString) {
 }
 
 export function* handleLoadFormatDataRequest({
-    payload: { field, filter, value, resource, withUri } = {},
+    payload: { field, filter, value, resource, withUri, withFacets } = {},
 }) {
     const name = field && field.name;
     if (!name) {
@@ -106,7 +106,8 @@ export function* handleLoadFormatDataRequest({
         );
         return;
     }
-    if (field.cover === COVER_DATASET) {
+
+    if (field.cover === COVER_DATASET && withFacets) {
         yield handleFilterFormatDataRequest({ payload: { filter } });
         return;
     }

@@ -16,6 +16,12 @@ export const goToAdminDashboard = () => {
     cy.location('pathname').should('equal', '/admin');
 };
 
+export const goToHomePage = () => {
+    cy.get('nav div')
+        .contains('Home')
+        .click();
+};
+
 export const openChartDrawer = () => {
     cy.get('nav div')
         .contains('Graphs')

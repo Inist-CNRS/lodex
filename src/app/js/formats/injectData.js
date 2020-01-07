@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
+import { withRouter } from 'react-router';
 import isEqual from 'lodash.isequal';
+import get from 'lodash.get';
 
 import {
     field as fieldPropTypes,
@@ -31,9 +33,10 @@ const getCreateUrl = url => {
     if (typeof url === 'string') {
         return () => url;
     }
-
     return ({ field, resource }) => resource[field.name];
 };
+
+const isHomePage = location => get(location, 'pathname', '') === '/';
 
 export default (
     url = null,
@@ -52,11 +55,12 @@ export default (
             formatData: PropTypes.any,
             isLoaded: PropTypes.bool.isRequired,
             error: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
+            location: PropTypes.shape({ pathname: PropTypes.string }),
             p: polyglotPropTypes.isRequired,
         };
 
-        loadFormatData = () => {
-            const { loadFormatData } = this.props;
+        loadFormatData = ({ ...args }) => {
+            const { loadFormatData, location } = this.props;
 
             const value = createUrl(this.props);
 
@@ -64,7 +68,26 @@ export default (
                 return;
             }
 
-            loadFormatData({ ...this.props, value, withUri });
+            const withFacets = !isHomePage(location);
+
+            loadFormatData({
+                ...this.props,
+                value,
+                withUri,
+                withFacets,
+                ...args,
+            });
+        };
+
+        filterFormatData = filter => {
+            this.loadFormatData({
+                filter,
+            });
+        };
+
+        unLoadFormatData = ({ ...args }) => {
+            const { unLoadFormatData } = this.props;
+            unLoadFormatData({ ...args });
         };
 
         UNSAFE_componentWillMount() {
@@ -76,12 +99,11 @@ export default (
         }
 
         componentWillUnmount() {
-            const { field, unLoadFormatData } = this.props;
+            const { field } = this.props;
             if (!field) {
                 return;
             }
-
-            unLoadFormatData(field);
+            this.unLoadFormatData(field);
         }
 
         componentDidUpdate(prevProps) {
@@ -97,16 +119,6 @@ export default (
 
             this.loadFormatData();
         }
-
-        filterFormatData = filter => {
-            const { field, loadFormatData } = this.props;
-            loadFormatData({
-                field,
-                value: createUrl(this.props),
-                filter,
-                withUri,
-            });
-        };
 
         render() {
             const {
@@ -181,5 +193,6 @@ export default (
     return compose(
         connect(mapStateToProps, mapDispatchToProps),
         translate,
+        withRouter,
     )(GraphItem);
 };
