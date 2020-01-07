@@ -35,6 +35,15 @@ const styles = stylesToClassname(
             height: '100%',
             maxHeight: '10000px',
         },
+        listItem: {
+            height: '0px',
+            '@media (min-width: 992px)': {
+                height: '100%',
+            },
+        },
+        listItemOpen: {
+            height: '100%',
+        },
     },
     'facets',
 );
@@ -75,6 +84,9 @@ const FacetList = ({
                         key={`${page}-${field.name}`}
                         field={field}
                         page={page}
+                        className={classnames(styles.listItem, {
+                            [styles.listItemOpen]: open,
+                        })}
                     />
                 ))}
             </FacetActionsContext.Provider>
