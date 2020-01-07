@@ -6,6 +6,7 @@ import compose from 'recompose/compose';
 import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
 
+import { getPercentValue } from '../../lib/getPercentage';
 import { getShortText } from '../../lib/longTexts';
 import stylesToClassname from '../../lib/stylesToClassName';
 import injectData from '../injectData';
@@ -22,24 +23,12 @@ const sortByKey = (key = '') => (dataA, dataB) => {
     return Math.sign(a - b);
 };
 
-export function getPercentValue(data, decimals = 0) {
-    const value = get(data, 'weight', 0);
-    const parsedValue = parseFloat(value);
-
-    if (isNaN(parsedValue) || parsedValue < 0 || parsedValue > 1) {
-        return '0';
-    }
-
-    const percent = parsedValue * 100;
-    return percent.toFixed(decimals);
-}
-
 const prepareData = (data = [], history, polyglot) =>
     data
         .map(d => {
             const title = getShortText(d['target-title']);
-
-            const value = getPercentValue(d);
+            const weight = get(d, 'weight', 0);
+            const value = getPercentValue(weight);
             const label = `<div>${title}<br/><br/>${value}% ${polyglot.t(
                 'similar',
             )}</div>`;

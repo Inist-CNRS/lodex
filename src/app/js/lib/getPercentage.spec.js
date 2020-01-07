@@ -1,6 +1,6 @@
-import { getPercentValue } from './AsterPlotChartView';
+import { getPercentValue } from './getPercentage';
 
-describe('AsterPlotChartView', () => {
+describe('getPercentValue', () => {
     describe('getValue', () => {
         const wrongData = [
             { weight: undefined },
@@ -20,18 +20,14 @@ describe('AsterPlotChartView', () => {
         });
 
         it('should return the percentage', () => {
-            const data = {
-                weight: 0.98,
-            };
+            const data = 0.98;
 
             const result = getPercentValue(data);
             expect(result).toBe('98');
         });
 
         it('should return the percentage with two decimals', () => {
-            const data = {
-                weight: 0.69696969,
-            };
+            const data = 0.69696969;
             const nbDecimals = 2;
 
             const result = getPercentValue(data, nbDecimals);
