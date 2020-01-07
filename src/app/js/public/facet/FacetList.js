@@ -19,10 +19,12 @@ const styles = stylesToClassname(
         list: {
             opacity: '0',
             maxHeight: '0px',
+            height: '0px',
             padding: '0px !important',
             transition: 'max-height 300ms ease-in-out, opacity 600ms ease',
             '@media (min-width: 992px)': {
                 opacity: '1',
+                height: '100%',
                 maxHeight: '10000px',
                 minWidth: '300px',
                 flex: 1,
@@ -30,6 +32,7 @@ const styles = stylesToClassname(
         },
         listOpen: {
             opacity: '1',
+            height: '100%',
             maxHeight: '10000px',
         },
     },
