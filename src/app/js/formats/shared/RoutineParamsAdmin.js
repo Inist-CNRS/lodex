@@ -24,7 +24,7 @@ const RoutineParamsAdmin = ({
 }) => {
     const setMaxSize = (_, newMaxSize) => {
         onChange({
-            maxSize: parseInt(newMaxSize, 10),
+            maxSize: newMaxSize,
             maxValue,
             minValue,
             orderBy,
@@ -35,7 +35,7 @@ const RoutineParamsAdmin = ({
     const setMaxValue = (_, newMaxValue) => {
         onChange({
             maxSize,
-            maxValue: parseInt(newMaxValue, 10),
+            maxValue: newMaxValue,
             minValue,
             orderBy,
             uri,
@@ -46,7 +46,7 @@ const RoutineParamsAdmin = ({
         onChange({
             maxSize,
             maxValue,
-            minValue: parseInt(newMinValue, 10),
+            minValue: newMinValue,
             orderBy,
             uri,
         });
