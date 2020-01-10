@@ -127,6 +127,7 @@
         "markdown-it": "8.4.2",
         "material-ui": "0.20.2",
         "memorystream": "0.3.1",
+        "mime-types": "2.1.26",
         "moment": "2.22.2",
         "mongodb": "2.2.33",
         "multistream": "2.1.1",

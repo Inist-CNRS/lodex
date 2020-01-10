@@ -30,14 +30,15 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
     }
 
     const [, metaData, , script] = currentScript;
-    if (metaData.fileName) {
-        ctx.set(
-            'Content-disposition',
-            `attachment; filename=${metaData.fileName}`,
-        );
-    }
     ctx.type = metaData.mimeType;
     ctx.status = 200;
+    if (metaData.fileName) {
+        const attachmentOpts = {
+            fallback: false,
+            type: metaData.type === 'file' ? 'attachment' : 'inline',
+        };
+        ctx.attachment(metaData.fileName, attachmentOpts);
+    }
 
     // Legacy
     const orderByLegacy = [

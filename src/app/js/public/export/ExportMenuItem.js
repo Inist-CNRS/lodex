@@ -7,19 +7,20 @@ import MenuItem from 'material-ui/MenuItem';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-const ExportMenuItem = ({ type, p: polyglot, handleClick }) => (
-    <MenuItem primaryText={polyglot.t(type)} onClick={handleClick} />
+const ExportMenuItem = ({ label, p: polyglot, handleClick }) => (
+    <MenuItem primaryText={polyglot.t(label)} onClick={handleClick} />
 );
 
 ExportMenuItem.propTypes = {
     handleClick: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    type: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
 };
 
 export default compose(
     withHandlers({
-        handleClick: ({ onClick, type, uri }) => () => onClick({ type, uri }),
+        handleClick: ({ onClick, uri, exportID }) => () =>
+            onClick({ uri, exportID }),
     }),
     translate,
 )(ExportMenuItem);
