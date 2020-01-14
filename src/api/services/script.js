@@ -3,6 +3,7 @@ import fs from 'fs';
 import ezs from '@ezs/core';
 import URL from 'url';
 import fetch from 'fetch-with-proxy';
+import mime from 'mime-types';
 import config from '../../../config.json';
 
 export default class Script {
@@ -68,6 +69,9 @@ export default class Script {
                 routineDistant[1] = ezs.metaString(routineScript);
                 routineDistant[3] = routineScript;
             }
+            if (!routineDistant[1].fileName) {
+                routineDistant[1].fileName = `export.${mime.extension(routineDistant[1].mimeType)}`;
+            }
         }
 
         this.cache[routineCalled] = routineDistant;
@@ -79,11 +83,12 @@ export default class Script {
         const availableList = await Promise.all(availableListPromises);
         return availableList
             .map(([, metaData, id]) => ({
-                id,
-                name: metaData.label,
+                exportID: id,
+                label: metaData.label,
                 type: metaData.type,
+                fileName: metaData.fileName,
             }))
-            .filter(script => script.name !== undefined);
+            .filter(script => script.label !== undefined);
     }
 
     useCache() {

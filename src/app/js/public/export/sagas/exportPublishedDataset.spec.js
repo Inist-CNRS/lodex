@@ -1,16 +1,16 @@
 import { call, select } from 'redux-saga/effects';
 
-import { handleExportPublishedDatasetSuccess } from './exportPublishedDataset';
+import { handleExportPublishedDatasetSuccess, open } from './exportPublishedDataset';
 import getQueryString from '../../../lib/getQueryString';
 import { fromSearch } from '../../selectors';
 import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 import downloadFile from '../../../lib/downloadFile';
 
-describe('export saga', () => {
+describe.only('export saga', () => {
     describe('handleExportPublishedDatasetSuccess', () => {
         const saga = handleExportPublishedDatasetSuccess({
-            payload: { type: 'type' },
+            payload: { exportID: 'type' },
         });
 
         it('should select fromSearch.getAppliedFacets', () => {
@@ -70,16 +70,8 @@ describe('export saga', () => {
             );
         });
 
-        it('should fetch request', () => {
-            expect(saga.next('request').value).toEqual(
-                call(fetchSaga, 'request', [], 'blob'),
-            );
-        });
-
-        it('should call downloadFile with response', () => {
-            expect(saga.next({ response: 'response' }).value).toEqual(
-                call(downloadFile, 'response', 'export.type'),
-            );
+        it('should fetch request and open the window', () => {
+            expect(saga.next('request').value).toEqual(call(open, undefined));
         });
     });
 });

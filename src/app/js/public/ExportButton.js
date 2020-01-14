@@ -105,10 +105,11 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
                 <div className={styles.menuContainer}>
                     <h3 className={styles.menuTitle}>{menuTitle}</h3>
                     <Menu className={styles.menuList}>
-                        {exporters.map(({ name }) => (
+                        {exporters.map(({ exportID, label }) => (
                             <ExportItem
-                                key={name}
-                                type={name}
+                                key={exportID}
+                                label={label}
+                                exportID={exportID}
                                 uri={uri}
                                 onClick={handleExport}
                             />
