@@ -1,13 +1,13 @@
 import { call, select } from 'redux-saga/effects';
 
-import { handleExportPublishedDatasetSuccess, open } from './exportPublishedDataset';
+import { handleExportPublishedDatasetSuccess } from './exportPublishedDataset';
 import getQueryString from '../../../lib/getQueryString';
 import { fromSearch } from '../../selectors';
 import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 import downloadFile from '../../../lib/downloadFile';
 
-describe.only('export saga', () => {
+describe('export saga', () => {
     describe('handleExportPublishedDatasetSuccess', () => {
         const saga = handleExportPublishedDatasetSuccess({
             payload: { exportID: 'type' },
@@ -70,8 +70,16 @@ describe.only('export saga', () => {
             );
         });
 
-        it('should fetch request and open the window', () => {
-            expect(saga.next('request').value).toEqual(call(open, undefined));
+        it('should fetch request', () => {
+            expect(saga.next('request').value).toEqual(
+                call(fetchSaga, 'request', [], 'blob'),
+            );
+        });
+
+        it('should call downloadFile with response', () => {
+            expect(saga.next({ response: 'response' }).value).toEqual(
+                call(downloadFile, 'response', undefined),
+            );
         });
     });
 });
