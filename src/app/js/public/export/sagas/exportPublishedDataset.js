@@ -1,14 +1,16 @@
-import { call, takeEvery, select } from 'redux-saga/effects';
+import { call, takeEvery, select, put } from 'redux-saga/effects';
 
-import { EXPORT_PUBLISHED_DATASET } from '../';
+import { EXPORT_PUBLISHED_DATASET, exportPublishedDatasetError } from '../';
 import { fromSearch } from '../../selectors';
 import getQueryString from '../../../lib/getQueryString';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
+import downloadFile from '../../../lib/downloadFile';
 import { fromUser } from '../../../sharedSelectors';
 
-export const open = url => window.open(url);
+export const open = url => window.open(url); // Warning: does not work with authentication and token
 
 export function* handleExportPublishedDatasetSuccess({
-    payload: { uri, exportID },
+    payload: { exportID, uri },
 }) {
     const facets = yield select(fromSearch.getAppliedFacets);
     const match = yield select(fromSearch.getQuery);
@@ -26,7 +28,18 @@ export function* handleExportPublishedDatasetSuccess({
         queryString,
     });
 
-    yield call(open, request.url);
+    const { error, response, filename } = yield call(
+        fetchSaga,
+        request,
+        [],
+        'blob',
+    );
+
+    if (error) {
+        yield put(exportPublishedDatasetError(error));
+    }
+
+    yield call(downloadFile, response, filename);
 }
 
 export default function*() {
