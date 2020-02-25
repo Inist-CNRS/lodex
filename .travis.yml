@@ -9,16 +9,24 @@ services:
     - docker
 
 node_js:
-    - '10'
+    - 10
+
+addons:
+  apt:
+    packages:
+      # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
+      - libgconf-2-4
 
 env:
     global:
         - NODE_ENV=test
         - EZMASTER_PUBLIC_URL=http://localhost:3000
+        - NODE_OPTIONS=
 
-dist: trusty
+# dist: bionic
 
 cache:
+    npm: true
     directories:
         - node_modules
         - ~/.cache/Cypress
