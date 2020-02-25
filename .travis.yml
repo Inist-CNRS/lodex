@@ -21,10 +21,12 @@ env:
     global:
         - NODE_ENV=test
         - EZMASTER_PUBLIC_URL=http://localhost:3000
+        - NODE_OPTIONS=
 
-dist: bionic
+# dist: bionic
 
 cache:
+    npm: true
     directories:
         - node_modules
         - ~/.cache/Cypress
