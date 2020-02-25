@@ -1,7 +1,7 @@
 sudo: required
 
 addons:
-    chrome: stable
+    chrome: beta
 
 language: node_js
 
