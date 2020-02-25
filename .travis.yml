@@ -1,7 +1,7 @@
 sudo: required
 
 addons:
-    chrome: beta
+    chrome: stable
 
 language: node_js
 
@@ -16,7 +16,7 @@ env:
         - NODE_ENV=test
         - EZMASTER_PUBLIC_URL=http://localhost:3000
 
-dist: trusty
+dist: bionic
 
 cache:
     directories:
