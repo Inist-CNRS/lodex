@@ -1,11 +1,8 @@
 import { transformers, transformersMetas } from '@ezs/transformers';
 import AUTOGENERATE_URI from './AUTOGENERATE_URI';
-import JBJ from './JBJ';
 
 transformers.AUTOGENERATE_URI = AUTOGENERATE_URI;
 transformersMetas.push(AUTOGENERATE_URI.getMetas());
-transformers.JBJ = JBJ;
-transformersMetas.push(JBJ.getMetas());
 
 export default transformers;
 
