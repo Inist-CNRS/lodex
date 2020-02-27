@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+import '@babel/polyfill';
 import 'url-api-polyfill';
 
 import React from 'react';
