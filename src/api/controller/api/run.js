@@ -5,7 +5,6 @@ import Storage from '@ezs/storage';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
-import debug from 'debug';
 
 import Script from '../../services/script';
 import mongoClient from '../../services/mongoClient';
@@ -17,7 +16,6 @@ import { getCleanHost } from '../../../common/uris';
 
 ezs.use(Statements);
 ezs.use(Storage);
-debug.enable('ezs');
 
 const scripts = new Script('routines', '../app/custom/routines');
 
