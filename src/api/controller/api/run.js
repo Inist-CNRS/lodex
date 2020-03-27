@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import ezs from '@ezs/core';
-import Storage from '@ezs/storage';
+import Booster from '@ezs/booster';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
@@ -15,7 +15,7 @@ import localConfig from '../../../../config.json';
 import { getCleanHost } from '../../../common/uris';
 
 ezs.use(Statements);
-ezs.use(Storage);
+ezs.use(Booster);
 
 const scripts = new Script('routines', '../app/custom/routines');
 
@@ -99,7 +99,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     };
     const input = new PassThrough({ objectMode: true });
     const commands = ezs.parseString(script, environment);
-    const statement = scripts.useCache() ? 'boost' : 'delegate';
+    const statement = scripts.useCache() ? 'booster' : 'delegate';
     const errorHandle = err => {
         ctx.status = 503;
         ctx.body.destroy();
