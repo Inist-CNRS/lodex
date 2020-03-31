@@ -9,21 +9,16 @@ import cacheControl from 'koa-cache-control';
 import config from 'config';
 
 import Script from '../../services/script';
-import mongoClient from '../../services/mongoClient';
-import getPublishedDatasetFilter from '../../models/getPublishedDatasetFilter';
-import getFields from '../../models/field';
-import Statements from '../../statements';
 import localConfig from '../../../../config.json';
 import { getCleanHost } from '../../../common/uris';
 
-ezs.use(Statements);
 ezs.use(Booster);
 ezs.use(Lodex);
 ezs.use(Analytics);
 
 const scripts = new Script('exporters', '../app/custom/exporters');
 
-const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
+const middlewareScript = async (ctx, scriptNameCalled) => {
     const currentScript = await scripts.get(scriptNameCalled);
     if (!currentScript) {
         ctx.throw(404, `Unknown script '${scriptNameCalled}'.ini`);
@@ -39,68 +34,21 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
         };
         ctx.attachment(metaData.fileName, attachmentOpts);
     }
-
     // Legacy
-    const orderByLegacy = [
+    const orderBy = [
         ctx.query.sortBy || '_id',
         String(ctx.query.sortDir || 'asc').toLowerCase(),
     ].join('/');
 
-    const {
-        uri,
-        maxSize,
-        skip,
-        maxValue,
-        minValue,
-        match,
-        orderBy = orderByLegacy,
-        invertedFacets = [],
-        $query,
-        ...facets
-    } = ctx.query;
-    const host = getCleanHost();
-    const field = [field1, field2].filter(x => x);
-    const handleDb = await mongoClient();
-    const fieldHandle = await getFields(handleDb);
-    const searchableFieldNames = await fieldHandle.findSearchableNames();
-    const facetFieldNames = await fieldHandle.findFacetNames();
-    const fields = await fieldHandle.findAll();
-    const filter = getPublishedDatasetFilter({
-        uri,
-        match,
-        invertedFacets,
-        facets,
-        ...$query,
-        searchableFieldNames,
-        facetFieldNames,
-    });
-
-    if (filter.$and && !filter.$and.length) {
-        delete filter.$and;
-    }
     const connectionStringURI = `mongodb://${config.mongo.host}/${config.mongo.dbName}`;
-    // context is the intput for LodexReduceQuery & LodexRunQuery & LodexDocuments
-    const context = {
-        // /*
-        // to build the MongoDB Query
-        filter,
-        field,
-        fields,
-        // Default parameters for ALL scripts
-        maxSize,
-        maxValue,
-        minValue,
-        orderBy,
-        host,
-        // to allow script to connect to MongoDB
-        connectionStringURI,
-    };
-
     const environment = {
-        ...ctx.query,
         ...localConfig,
-        ...context,
     };
+    const query = {
+        orderBy,
+        ...ctx.query,
+    };
+    const host = getCleanHost();
     const input = new PassThrough({ objectMode: true });
     const commands = ezs.parseString(script, environment);
     const statement = scripts.useCache() ? 'booster' : 'delegate';
@@ -122,6 +70,7 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
         }
     };
     ctx.body = input
+        .pipe(ezs('buildContext', { connectionStringURI, host }, environment))
         .pipe(ezs('LodexRunQuery', {}, environment))
         .pipe(ezs('greater', { path: 'total', than: 1 }))
         .pipe(ezs('filterVersions'))
@@ -131,7 +80,7 @@ const middlewareScript = async (ctx, scriptNameCalled, field1, field2) => {
         .on('finish', emptyHandle)
         .on('error', errorHandle)
         .pipe(ezs.toBuffer());
-    input.write(context);
+    input.write(query);
     input.end();
 };
 
