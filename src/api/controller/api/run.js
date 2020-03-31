@@ -2,20 +2,19 @@ import Koa from 'koa';
 import route from 'koa-route';
 import ezs from '@ezs/core';
 import Booster from '@ezs/booster';
+import Storage from '@ezs/storage';
+import Lodex from '@ezs/lodex';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
 
 import Script from '../../services/script';
-import mongoClient from '../../services/mongoClient';
-import getPublishedDatasetFilter from '../../models/getPublishedDatasetFilter';
-import getFields from '../../models/field';
-import Statements from '../../statements';
 import localConfig from '../../../../config.json';
 import { getCleanHost } from '../../../common/uris';
 
-ezs.use(Statements);
+ezs.use(Lodex);
 ezs.use(Booster);
+ezs.use(Storage);
 
 const scripts = new Script('routines', '../app/custom/routines');
 
@@ -40,66 +39,18 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         };
         ctx.attachment(metaData.fileName, attachmentOpts);
     }
-
-    const {
-        uri,
-        maxSize,
-        skip,
-        maxValue,
-        minValue,
-        match,
-        orderBy = '_id/asc',
-        invertedFacets = [],
-        $query,
-        ...facets
-    } = ctx.query;
-    const host = getCleanHost();
-    const field = parseFieldsParams(fieldsParams);
-    const handleDb = await mongoClient();
-    const fieldHandle = await getFields(handleDb);
-    const searchableFieldNames = await fieldHandle.findSearchableNames();
-    const facetFieldNames = await fieldHandle.findFacetNames();
-    const fields = await fieldHandle.findAll();
-    const filter = getPublishedDatasetFilter({
-        uri,
-        match,
-        invertedFacets,
-        facets,
-        ...$query,
-        searchableFieldNames,
-        facetFieldNames,
-    });
-
-    if (filter.$and && !filter.$and.length) {
-        delete filter.$and;
-    }
     const connectionStringURI = `mongodb://${config.mongo.host}/${config.mongo.dbName}`;
-    // context is the intput for LodexReduceQuery & LodexRunQuery & LodexDocuments
-    const context = {
-        // /*
-        // to build the MongoDB Query
-        filter,
-        field,
-        fields,
-        // Default parameters for ALL scripts
-        maxSize,
-        maxValue,
-        minValue,
-        orderBy,
-        uri,
-        host,
-        // to allow script to connect to MongoDB
-        connectionStringURI,
-    };
-
     const environment = {
-        ...ctx.query,
         ...localConfig,
-        ...context,
     };
+    const query = {
+        field: parseFieldsParams(fieldsParams),
+        ...ctx.query,
+    };
+    const host = getCleanHost();
     const input = new PassThrough({ objectMode: true });
     const commands = ezs.parseString(script, environment);
-    const statement = scripts.useCache() ? 'booster' : 'delegate';
+    const statement = scripts.useCache() ? 'boost' : 'delegate';
     const errorHandle = err => {
         ctx.status = 503;
         ctx.body.destroy();
@@ -118,12 +69,13 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         }
     };
     ctx.body = input
+        .pipe(ezs('buildContext', { connectionStringURI, host }, environment))
         .pipe(ezs(statement, { commands, key: ctx.url }, environment))
-        .pipe(ezs.catch(e => e))
+        .pipe(ezs.catch())
         .on('finish', emptyHandle)
         .on('error', errorHandle)
         .pipe(ezs.toBuffer());
-    input.write(context);
+    input.write(query);
     input.end();
 };
 
