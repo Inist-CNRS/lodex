@@ -7,6 +7,9 @@ import Lodex from '@ezs/lodex';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
+import fetch from 'fetch-with-proxy';
+import URL from 'url';
+import qs from 'qs';
 
 import Script from '../../services/script';
 import localConfig from '../../../../config.json';
@@ -68,13 +71,28 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             );
         }
     };
-    ctx.body = input
-        .pipe(ezs('buildContext', { connectionStringURI, host }, environment))
-        .pipe(ezs(statement, { commands, key: ctx.url }, environment))
-        .pipe(ezs.catch())
-        .on('finish', emptyHandle)
-        .on('error', errorHandle)
-        .pipe(ezs.toBuffer());
+    if (localConfig.workersURL) {
+        query.host = host;
+        query.connectionStringURI = connectionStringURI;
+        const wurl = URL.parse(localConfig.workersURL);
+        wurl.pathname = `/routines/${scriptNameCalledParam}.ini`;
+        wurl.search = qs.stringify(query, { indices: false });
+        const href = URL.format(wurl);
+        const response = await fetch(href);
+        ctx.body = response.body
+            .on('finish', emptyHandle)
+            .on('error', errorHandle);
+    } else {
+        ctx.body = input
+            .pipe(
+                ezs('buildContext', { connectionStringURI, host }, environment),
+            )
+            .pipe(ezs(statement, { commands, key: ctx.url }, environment))
+            .pipe(ezs.catch())
+            .on('finish', emptyHandle)
+            .on('error', errorHandle)
+            .pipe(ezs.toBuffer());
+    }
     input.write(query);
     input.end();
 };
