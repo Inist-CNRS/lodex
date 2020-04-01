@@ -11,6 +11,9 @@ services:
             EZMASTER_MONGODB_HOST_PORT: 'mongo:27017'
             EZMASTER_TECHNICAL_NAME: 'lodex'
             no_proxy: 'localhost,127.0.0.1,'
+            BABEL_DISABLE_CACHE: 1
+        volumes:
+            - ./upload:/app/upload
         links:
             - mongo
         ports:

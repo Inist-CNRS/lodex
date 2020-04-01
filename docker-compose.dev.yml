@@ -38,3 +38,5 @@ services:
     mongo:
         image: mongo:3.4.1
         command: '--smallfiles'
+        ports:
+            - 27017:27017
