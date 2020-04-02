@@ -5,7 +5,8 @@
         "username": "user",
         "password": "secret"
     },
-    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v3.0.0/public/",
+    "#workersURL" : "http://172.17.0.1:31976",
+    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v4.0.0/public/",
     "routinesCache": true,
     "routines": [
         "all-documents",
