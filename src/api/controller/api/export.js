@@ -72,10 +72,10 @@ const middlewareScript = async (ctx, scriptNameCalled) => {
             );
         }
     };
-    if (localConfig.workersURL) {
+    if (localConfig.pluginsAPI) {
         query.host = host;
         query.connectionStringURI = connectionStringURI;
-        const wurl = URL.parse(localConfig.workersURL);
+        const wurl = URL.parse(localConfig.pluginsAPI);
         wurl.pathname = `/exporters/${scriptNameCalled}.ini`;
         wurl.search = qs.stringify(query, { indices: false });
         const href = URL.format(wurl);
