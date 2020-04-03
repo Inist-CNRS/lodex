@@ -42,18 +42,26 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         };
         ctx.attachment(metaData.fileName, attachmentOpts);
     }
+    // Legacy
+    const orderBy = [
+        ctx.query.sortBy || '_id',
+        String(ctx.query.sortDir || 'asc').toLowerCase(),
+    ].join('/');
+
     const connectionStringURI = `mongodb://${config.mongo.host}/${config.mongo.dbName}`;
     const environment = {
         ...localConfig,
     };
+    const host = getCleanHost();
     const query = {
+        orderBy,
         field: parseFieldsParams(fieldsParams),
         ...ctx.query,
+        connectionStringURI,
+        host,
     };
-    const host = getCleanHost();
     const input = new PassThrough({ objectMode: true });
     const commands = ezs.parseString(script, environment);
-    const statement = scripts.useCache() ? 'boost' : 'delegate';
     const errorHandle = err => {
         ctx.status = 503;
         ctx.body.destroy();
@@ -72,8 +80,6 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         }
     };
     if (localConfig.pluginsAPI) {
-        query.host = host;
-        query.connectionStringURI = connectionStringURI;
         const wurl = URL.parse(localConfig.pluginsAPI);
         wurl.pathname = `/routines/${scriptNameCalledParam}.ini`;
         wurl.search = qs.stringify(query, { indices: false });
@@ -83,11 +89,9 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             .on('finish', emptyHandle)
             .on('error', errorHandle);
     } else {
+        const statement = scripts.useCache() ? 'boost' : 'delegate';
         ctx.body = input
-            .pipe(
-                ezs('buildContext', { connectionStringURI, host }, environment),
-            )
-            .pipe(ezs(statement, { commands, key: ctx.url }, environment))
+            .pipe(ezs(statement, { commands }, environment))
             .pipe(ezs.catch())
             .on('finish', emptyHandle)
             .on('error', errorHandle)
