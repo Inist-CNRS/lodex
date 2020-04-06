@@ -16,6 +16,7 @@ services:
             - ./upload:/app/upload
         links:
             - mongo
+            - lodex-extended
         ports:
             - 3000:3000
 
@@ -24,3 +25,7 @@ services:
         command: '--smallfiles'
         ports:
             - 27017:27017
+    lodex-extended:
+        image: inistcnrs/lodex-extended:6.0.1
+        ports:
+            - 31976:31976
