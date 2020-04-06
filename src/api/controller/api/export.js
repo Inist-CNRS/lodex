@@ -2,8 +2,8 @@ import Koa from 'koa';
 import route from 'koa-route';
 import ezs from '@ezs/core';
 import Booster from '@ezs/booster';
+import Storage from '@ezs/storage';
 import Lodex from '@ezs/lodex';
-import Analytics from '@ezs/analytics';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
@@ -15,16 +15,21 @@ import Script from '../../services/script';
 import localConfig from '../../../../config.json';
 import { getCleanHost } from '../../../common/uris';
 
-ezs.use(Booster);
 ezs.use(Lodex);
-ezs.use(Analytics);
+ezs.use(Booster);
+ezs.use(Storage);
 
 const scripts = new Script('exporters', '../app/custom/exporters');
 
-const middlewareScript = async (ctx, scriptNameCalled) => {
-    const currentScript = await scripts.get(scriptNameCalled);
+const parseFieldsParams = fieldsParams =>
+    typeof fieldsParams === 'string' && fieldsParams !== ''
+        ? fieldsParams.split('/').filter(x => x)
+        : '';
+
+const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
+    const currentScript = await scripts.get(scriptNameCalledParam);
     if (!currentScript) {
-        ctx.throw(404, `Unknown script '${scriptNameCalled}'.ini`);
+        ctx.throw(404, `Unknown script '${scriptNameCalledParam}'.ini`);
     }
 
     const [, metaData, , script] = currentScript;
@@ -47,14 +52,16 @@ const middlewareScript = async (ctx, scriptNameCalled) => {
     const environment = {
         ...localConfig,
     };
+    const host = getCleanHost();
     const query = {
         orderBy,
+        field: parseFieldsParams(fieldsParams),
         ...ctx.query,
+        connectionStringURI,
+        host,
     };
-    const host = getCleanHost();
     const input = new PassThrough({ objectMode: true });
     const commands = ezs.parseString(script, environment);
-    const statement = scripts.useCache() ? 'booster' : 'delegate';
     const errorHandle = err => {
         ctx.status = 503;
         ctx.body.destroy();
@@ -64,6 +71,7 @@ const middlewareScript = async (ctx, scriptNameCalled) => {
     const emptyHandle = () => {
         if (ctx.headerSent === false) {
             ctx.status = 204;
+            // ctx.body.write('{"total":0}');  JSON is not the only export format
             global.console.error(
                 'Empty response with ',
                 ctx.path,
@@ -72,26 +80,21 @@ const middlewareScript = async (ctx, scriptNameCalled) => {
             );
         }
     };
-    if (localConfig.workersURL) {
-        query.host = host;
-        query.connectionStringURI = connectionStringURI;
-        const wurl = URL.parse(localConfig.workersURL);
-        wurl.pathname = `/exporters/${scriptNameCalled}.ini`;
-        wurl.search = qs.stringify(query, { indices: false });
-        const href = URL.format(wurl);
-        const response = await fetch(href);
-        ctx.body = response.body
-            .on('finish', emptyHandle)
-            .on('error', errorHandle);
-    } else {
+    if (localConfig.pluginsAPI) {
+        const statement = 'dispatch';
+        const wurl = URL.parse(localConfig.pluginsAPI);
+        const server = wurl.hostname;
         ctx.body = input
-            .pipe(ezs('buildContext', { connectionStringURI, host }, environment))
-            .pipe(ezs('LodexRunQuery', {}, environment))
-            .pipe(ezs('greater', { path: 'total', than: 1 }))
-            .pipe(ezs('filterVersions'))
-            .pipe(ezs('filterContributions'))
-            .pipe(ezs(statement, { commands, key: ctx.url }, environment))
-            .pipe(ezs.catch(e => e))
+            .pipe(ezs(statement, { commands, server }, environment))
+            .pipe(ezs.catch())
+            .on('finish', emptyHandle)
+            .on('error', errorHandle)
+            .pipe(ezs.toBuffer());
+    } else {
+        const statement = 'delegate';
+        ctx.body = input
+            .pipe(ezs(statement, { commands }, environment))
+            .pipe(ezs.catch())
             .on('finish', emptyHandle)
             .on('error', errorHandle)
             .pipe(ezs.toBuffer());
@@ -113,5 +116,6 @@ app.use(
 );
 app.use(route.get('/', getScripts));
 app.use(route.get('/:scriptNameCalled', middlewareScript));
+app.use(route.get('/:scriptNameCalled/*', middlewareScript));
 
 export default app;
