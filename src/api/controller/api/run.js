@@ -19,6 +19,7 @@ ezs.use(Lodex);
 ezs.use(Booster);
 ezs.use(Storage);
 
+
 const scripts = new Script('routines', '../app/custom/routines');
 
 const parseFieldsParams = fieldsParams =>
@@ -84,6 +85,12 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         wurl.pathname = `/routines/${scriptNameCalledParam}.ini`;
         wurl.search = qs.stringify(query, { indices: false });
         const href = URL.format(wurl);
+        // Warning : Don't use proxy with docker virtual network
+        process.env.no_proxy = String(process.env.no_proxy || 'localhost')
+            .split(',')
+            .concat(wurl.hostname)
+            .filter((value, index, self) => self.indexOf(value) === index)
+            .join(',');
         const response = await fetch(href);
         ctx.body = response.body
             .on('finish', emptyHandle)
