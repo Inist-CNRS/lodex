@@ -130,8 +130,8 @@ export const NavBar = ({
         closeGraphDrawer();
     };
 
-    const handleMenuItemClick = (role, supressEvent = false) => evt => {
-        if (supressEvent) {
+    const handleMenuItemClick = (role, suppressEvent = false) => evt => {
+        if (suppressEvent) {
             evt.preventDefault();
         }
 

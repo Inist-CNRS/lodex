@@ -494,7 +494,7 @@ describe('field', () => {
             );
         });
 
-        it('should throw an error if transformer operation has unknow operation', () => {
+        it('should throw an error if transformer operation has unknown operation', () => {
             const field = {
                 cover: 'dataset',
                 label: 'label',

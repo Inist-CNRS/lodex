@@ -33,7 +33,7 @@ const loaders = new Script('loaders', '../app/custom/loaders');
 export const getParser = async parserName => {
     const currentLoader = await loaders.get(parserName);
     if (!currentLoader) {
-        throw new Error(`Unknow parser: ${parserName}`);
+        throw new Error(`Unknown parser: ${parserName}`);
     }
 
     const [, , , script] = currentLoader;

@@ -243,7 +243,7 @@ const MenuItem = ({
         }
         default:
             console.error(
-                `Unknow role: ${config.role}. Menu item: ${JSON.stringify(
+                `Unknown role: ${config.role}. Menu item: ${JSON.stringify(
                     config,
                 )} will be ignored.`,
             );
