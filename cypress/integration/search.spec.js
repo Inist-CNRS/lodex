@@ -21,7 +21,7 @@ describe('Search', () => {
     describe('Basics', () => {
         beforeEach(initSearchDataset());
 
-        it('should have the right informations in the search results', () => {
+        it('should have the right information in the search results', () => {
             menu.openSearchDrawer();
             searchDrawer.checkResultsCount(10);
             searchDrawer.checkMoreResultsCount(10, 12);
