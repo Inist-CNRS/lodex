@@ -17,10 +17,8 @@ services:
             CI: ${CI}
         links:
             - mongo
-            - lodex-extended
         depends_on:
             - mongo
-            - lodex-extended
         ports:
             - 3000:3000
         command: npm run development:api
@@ -42,9 +40,3 @@ services:
         command: '--smallfiles'
         ports:
             - 27017:27017
-    lodex-extended:
-        image: inistcnrs/lodex-extended:6.0.1
-        environment:
-            EZS_VERBOSE: 'true'
-        ports:
-            - 31976:31976
