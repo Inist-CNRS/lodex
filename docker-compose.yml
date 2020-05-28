@@ -26,6 +26,6 @@ services:
         ports:
             - 27017:27017
     lodex-extended:
-        image: inistcnrs/lodex-extended:6.0.1
+        image: inistcnrs/lodex-extended:6.1.3
         ports:
             - 31976:31976
