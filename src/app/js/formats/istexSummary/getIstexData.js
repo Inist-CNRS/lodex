@@ -15,7 +15,7 @@ const defaultQueryOptions = {
     size: 0,
 };
 
-const buildIstexQuery = (options = defaultQueryOptions) => {
+export const buildIstexQuery = (options = defaultQueryOptions) => {
     const opts = { ...defaultQueryOptions, ...options };
     const params = {
         ...omit(opts, ['query']),
@@ -33,7 +33,7 @@ const buildIstexQuery = (options = defaultQueryOptions) => {
     return `${ISTEX_API_URL}/document/?${queryParams}`;
 };
 
-const getFilterQuery = (searchedField, value) =>
+export const getFilterQuery = (searchedField, value) =>
     searchedField === CUSTOM_ISTEX_QUERY
         ? `(${value})`
         : `${searchedField}:"${value}"`;
@@ -236,7 +236,7 @@ export const getIssueData = ({ value, year, volume, searchedField }) =>
 const getIssueQuery = issue =>
     issue === 'other' ? '-host.issue.raw:*' : `host.issue.raw:"${issue}"`;
 
-const documentOutput = [
+export const documentOutput = [
     'id',
     'arkIstex',
     'title',

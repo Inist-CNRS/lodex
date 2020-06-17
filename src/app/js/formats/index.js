@@ -38,6 +38,7 @@ import istexSummary from './istexSummary';
 import streamgraph from './streamgraph';
 import hierarchy from './hierarchy';
 import checkPredicate from './checkPredicate';
+import istexCitation from './istexCitation';
 
 const components = {
     asterPlotChart,
@@ -75,6 +76,7 @@ const components = {
     istexSummary,
     streamgraph,
     hierarchy,
+    istexCitation,
 };
 
 export const FORMATS = Object.keys(components).sort();
