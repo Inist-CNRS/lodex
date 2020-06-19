@@ -51,7 +51,7 @@ export const parseFetchResult = fetchResult => {
             url: URL.format({
                 protocol,
                 host,
-                pathname: `${hit.arkIstex}/fulltext.pdf`,
+                pathname: `/document/${hit.id}/fulltext/pdf`,
             }),
             title: hit.title,
             publicationDate: hit.publicationDate,

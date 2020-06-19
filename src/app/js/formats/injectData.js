@@ -144,6 +144,29 @@ export default (
             }
 
             if (
+                window.sessionStorage.getItem('PanistIdc') === null &&
+                field.label === 'Couverture'
+            ) {
+                return (
+                    <p style={styles.message}>
+                        Veuillez séléctioner votre établissement
+                    </p>
+                );
+            }
+            if (
+                formatData != undefined &&
+                formatData.length === 0 &&
+                field.label === 'Couverture'
+            ) {
+                return (
+                    <p style={styles.message}>
+                        Votre établissement ne possède pas de droits pour cette
+                        revue
+                    </p>
+                );
+            }
+
+            if (
                 formatData === 'no result' ||
                 (formatData != undefined && formatData.length === 0)
             ) {

@@ -16,10 +16,12 @@ const defaultQueryOptions = {
 };
 
 const buildIstexQuery = (options = defaultQueryOptions) => {
+
+    const idc = window.sessionStorage.getItem('PanistIdc');
     const opts = { ...defaultQueryOptions, ...options };
     const params = {
         ...omit(opts, ['query']),
-        q: `(${opts.query})`,
+        q: `(grantees.raw:"` + idc + `" AND ${opts.query})`,
     };
 
     const queryParams = Object.entries(params)
@@ -44,7 +46,7 @@ export const getYearUrl = ({ resource, field, searchedField }) => {
     if (!value || !searchedField) {
         return null;
     }
-
+    
     return buildIstexQuery({
         query: getFilterQuery(searchedField, value),
         facet: 'publicationDate[perYear]',

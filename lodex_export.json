@@ -1,0 +1,1419 @@
+[
+    {
+        "cover": "collection",
+        "label": "uri",
+        "display_on_list": true,
+        "transformers": [
+            {
+                "operation": "AUTOGENERATE_URI",
+                "args": []
+            }
+        ],
+        "position": 0,
+        "name": "uri"
+    },
+    {
+        "cover": "collection",
+        "label": " Titre de la publication",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "publication_title"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^\\S+.*$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 1,
+        "overview": 1,
+        "count": 46767,
+        "format": {
+            "args": {
+                "level": 1,
+                "textColor": "#000"
+            },
+            "name": "title"
+        },
+        "scheme": "http://purl.org/dc/terms/title",
+        "name": "XXRn"
+    },
+    {
+        "cover": "collection",
+        "label": "Couverture",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "CONCAT",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "publisher_name"
+                    },
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "print_identifier"
+                    },
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "online_identifier"
+                    },
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "publication_title"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "corpusName:\"%1$s\" AND (host.issn:\"%2$s\" OR host.eissn:\"%3$s\" OR host.title.raw:\"%4$s\")"
+                    }
+                ],
+                "operation": "FORMAT"
+            },
+            {
+                "args": [
+                    {
+                        "name": "the",
+                        "type": "string",
+                        "value": "host.issn:\"\" OR "
+                    }
+                ],
+                "operation": "REMOVE"
+            },
+            {
+                "args": [
+                    {
+                        "name": "the",
+                        "type": "string",
+                        "value": "host.eissn:\"\" OR "
+                    }
+                ],
+                "operation": "REMOVE"
+            }
+        ],
+        "classes": [],
+        "position": 2,
+        "overview": 0,
+        "format": {
+            "name": "istexSummary",
+            "args": {
+                "searchedField": "custom_istex_query",
+                "sortDir": "YEAR_DESC",
+                "yearThreshold": 10,
+                "documentSortBy": "host.pages.first,title.raw"
+            }
+        },
+        "count": 46766,
+        "name": "BZSn"
+    },
+    {
+        "label": "",
+        "format": {
+            "args": {
+                "level": 1
+            },
+            "name": "title"
+        },
+        "width": "100",
+        "cover": "dataset",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "Revue de sommaire ISTEX"
+                    }
+                ]
+            }
+        ],
+        "position": 2,
+        "count": 0,
+        "display_in_home": true,
+        "overview": 100,
+        "scheme": "http://purl.org/dc/terms/title",
+        "name": "ExFk"
+    },
+    {
+        "cover": "collection",
+        "label": "auteur(s)",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "first_author"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 3,
+        "overview": 0,
+        "scheme": "http://purl.org/dc/terms/contributor",
+        "count": 44315,
+        "name": "Ai4O"
+    },
+    {
+        "cover": "collection",
+        "label": "A-Z",
+        "display_in_list": false,
+        "display_in_resource": false,
+        "searchable": false,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "publication_title"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "gap",
+                        "type": "number",
+                        "value": "1"
+                    }
+                ],
+                "operation": "TRUNCATE"
+            },
+            {
+                "operation": "UPPERCASE"
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^[a-zA-Z]$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 4,
+        "overview": 0,
+        "display_in_home": false,
+        "isFacet": true,
+        "count": 0,
+        "display_in_graph": false,
+        "name": "sq92"
+    },
+    {
+        "cover": "collection",
+        "label": "Corpus",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "corpus"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 5,
+        "isFacet": true,
+        "count": 46766,
+        "width": "100",
+        "scheme": "http://www.w3.org/ns/prov#used",
+        "completes": "jN0X",
+        "overview": 4,
+        "name": "aCG7"
+    },
+    {
+        "cover": "collection",
+        "label": "information sur le corpus",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "information sur le corpus"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 6,
+        "overview": 0,
+        "format": {
+            "args": {
+                "param": {
+                    "labelArray": [
+                        "FOmf",
+                        "6I4D"
+                    ]
+                }
+            },
+            "name": "lodexField"
+        },
+        "completes": null,
+        "count": 46767,
+        "scheme": "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+        "name": "jN0X"
+    },
+    {
+        "label": "Description",
+        "scheme": "http://purl.org/dc/terms/description",
+        "position": 6,
+        "cover": "dataset",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "Ce jeu correspond au choix de documenter des données ISTEX et plus particulièrement la liste des ressources acquises (journal, book series, serie, etc.). Pour le moment, nous ne présentons que les ressources présentes dans les fichiers kbart."
+                    }
+                ]
+            }
+        ],
+        "display_in_home": true,
+        "overview": 200,
+        "name": "bJzy"
+    },
+    {
+        "cover": "collection",
+        "label": "Editeur scientifique",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "publisher_name"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^\\S+.*$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 7,
+        "isFacet": true,
+        "overview": 0,
+        "count": 47806,
+        "width": "100",
+        "scheme": "http://purl.org/dc/terms/publisher",
+        "name": "UVFW"
+    },
+    {
+        "cover": "collection",
+        "label": "ISSN",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "print_identifier"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^\\d{4}-\\d{3}[\\dxX]$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 8,
+        "overview": 3,
+        "count": 8659,
+        "format": {
+            "args": {
+                "level": 4
+            },
+            "name": "title"
+        },
+        "width": "100",
+        "scheme": "http://purl.org/ontology/bibo/issn",
+        "name": "nC6e"
+    },
+    {
+        "cover": "collection",
+        "label": "eISSN",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "online_identifier"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^\\d{4}-\\d{3}[\\dxX]$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 9,
+        "overview": 0,
+        "count": 7735,
+        "width": "100",
+        "scheme": "http://purl.org/ontology/bibo/eissn",
+        "format": {
+            "args": {
+                "level": 4
+            },
+            "name": "title"
+        },
+        "name": "auA7"
+    },
+    {
+        "cover": "collection",
+        "label": "ISBN",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "print_identifier"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "([-]*(1[03])*[ ]*(: ){0,1})*(([0-9Xx][- ]*){13}|([0-9Xx][- ]*){10})"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 10,
+        "overview": 2,
+        "scheme": "http://purl.org/ontology/bibo/isbn",
+        "width": "100",
+        "format": {
+            "args": {
+                "level": 4
+            },
+            "name": "title"
+        },
+        "count": 37961,
+        "name": "hLNF"
+    },
+    {
+        "cover": "collection",
+        "label": "eISBN",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "online_identifier"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "([-]*(1[03])*[ ]*(: ){0,1})*(([0-9Xx][- ]*){13}|([0-9Xx][- ]*){10})"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 11,
+        "overview": 0,
+        "scheme": "https://data.istex.fr/ontology/istex/#eISBN",
+        "width": "100",
+        "format": {
+            "args": {
+                "level": 4
+            },
+            "name": "title"
+        },
+        "count": 36374,
+        "name": "YDZ9"
+    },
+    {
+        "cover": "collection",
+        "label": "identifiant PPN sudoc",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "ppn_id"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^\\S+$"
+                    }
+                ],
+                "operation": "MASK"
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "http://www.sudoc.fr/"
+                    }
+                ],
+                "operation": "PREFIX"
+            }
+        ],
+        "classes": [],
+        "position": 12,
+        "overview": 0,
+        "format": {
+            "name": "link",
+            "args": {
+                "type": "value",
+                "value": ""
+            }
+        },
+        "count": 3229,
+        "name": "aqTf"
+    },
+    {
+        "cover": "collection",
+        "label": "suite de",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "preceding_publication_title_id"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "/api/run/syndication-from/nC6e/"
+                    }
+                ],
+                "operation": "PREFIX"
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^/api/run/syndication-from/nC6e/\\S+$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 13,
+        "overview": 0,
+        "scheme": "http://purl.org/co/precededBy",
+        "format": {
+            "name": "resourcesGrid",
+            "args": {
+                "allowToLoadMore": true,
+                "pageSize": 6,
+                "spaceWidth": "100%",
+                "params": {
+                    "maxSize": 1,
+                    "orderBy": "value/asc"
+                }
+            }
+        },
+        "count": 279,
+        "name": "izmJ"
+    },
+    {
+        "label": "Répartition par corpus",
+        "format": {
+            "name": "bubbleChart",
+            "args": {
+                "params": {
+                    "maxSize": 200,
+                    "orderBy": "value/asc",
+                    "maxValue": 10000
+                },
+                "colorScheme": [
+                    "#fbb4ae",
+                    "#b3cde3",
+                    "#ccebc5",
+                    "#decbe4",
+                    "#fed9a6",
+                    "#ffffcc",
+                    "#e5d8bd",
+                    "#fddaec",
+                    "#f2f2f2"
+                ],
+                "diameter": 500
+            }
+        },
+        "position": 13,
+        "cover": "dataset",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "/api/run/distinct-by/aCG7"
+                    }
+                ]
+            }
+        ],
+        "count": 0,
+        "display_in_home": false,
+        "display_in_graph": true,
+        "searchable": true,
+        "width": "50",
+        "name": "FSNp"
+    },
+    {
+        "cover": "collection",
+        "label": "devient",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "succeeding_publication_title_id"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "/api/run/syndication-from/nC6e/"
+                    }
+                ],
+                "operation": "PREFIX"
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^/api/run/syndication-from/nC6e/\\S+$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 14,
+        "overview": 0,
+        "count": 251,
+        "format": {
+            "name": "resourcesGrid",
+            "args": {
+                "allowToLoadMore": true,
+                "pageSize": 6,
+                "spaceWidth": "100%",
+                "params": {
+                    "maxSize": 1,
+                    "orderBy": "value/asc"
+                }
+            }
+        },
+        "scheme": "http://purl.org/co/followedBy",
+        "name": "FdsN"
+    },
+    {
+        "cover": "collection",
+        "label": "Début de collection",
+        "display_in_list": "",
+        "display_in_resource": false,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "date_first_issue_online"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^\\d{4}$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 15,
+        "isFacet": true,
+        "count": 8704,
+        "width": "50",
+        "scheme": "http://schema.org/startDate",
+        "name": "Rijz"
+    },
+    {
+        "cover": "collection",
+        "label": "Fin de collection",
+        "display_in_list": "",
+        "display_in_resource": false,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "date_last_issue_online"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^\\d{4}$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 16,
+        "isFacet": true,
+        "count": 8707,
+        "width": "50",
+        "scheme": "http://schema.org/endDate",
+        "name": "ZLPq"
+    },
+    {
+        "cover": "collection",
+        "label": "Serie",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "parent_publication_title_id"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "/api/run/syndication-from/V7IG/"
+                    }
+                ],
+                "operation": "PREFIX"
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^/api/run/syndication-from/V7IG/\\S+$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 17,
+        "overview": 0,
+        "count": 2366,
+        "format": {
+            "args": {
+                "spaceWidth": "100%",
+                "params": {
+                    "maxSize": 1,
+                    "orderBy": "value/asc"
+                }
+            },
+            "name": "resourcesGrid"
+        },
+        "scheme": "http://purl.org/dc/terms/isPartOf",
+        "name": "kber"
+    },
+    {
+        "cover": "collection",
+        "label": "Monographies appartenant à cette série",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "title_id"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "/api/run/syndication-from/XX3r/"
+                    }
+                ],
+                "operation": "PREFIX"
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^/api/run/syndication-from/XX3r/[a-zA-Z]+-"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 18,
+        "overview": 0,
+        "format": {
+            "name": "resourcesGrid",
+            "args": {
+                "allowToLoadMore": true,
+                "pageSize": 10,
+                "spaceWidth": "30%",
+                "params": {
+                    "maxSize": 50,
+                    "orderBy": "value/asc",
+                    "maxValue": null
+                }
+            }
+        },
+        "count": 2464,
+        "scheme": "http://purl.org/dc/terms/hasPart",
+        "name": "BBl9"
+    },
+    {
+        "cover": "dataset",
+        "label": "Exemples de Revues présentes dans ISTEX",
+        "display_in_list": "",
+        "display_in_resource": "",
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": [
+                            "ark:/67375/8Q1-RNCVFLH5-X",
+                            "ark:/67375/8Q1-RXS2SQJ2-9",
+                            "ark:/67375/8Q1-Q541PWQK-M",
+                            "ark:/67375/8Q1-0Z0KXQDT-X",
+                            "ark:/67375/8Q1-5C9014X7-7",
+                            "ark:/67375/8Q1-8N4LP5Z9-6"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 18,
+        "overview": 0,
+        "display_in_home": true,
+        "format": {
+            "name": "list",
+            "args": {
+                "type": "unordered_without_bullet",
+                "subFormat": "resource",
+                "subFormatOptions": {},
+                "args": {}
+            }
+        },
+        "width": "80",
+        "count": 0,
+        "scheme": "http://schema.org/exampleOfWork",
+        "name": "jB1Z"
+    },
+    {
+        "cover": "collection",
+        "label": "alignement wikidata",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "print_identifier"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^\\d{4}-\\d{3}[\\dxX]$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 19,
+        "overview": 0,
+        "count": 8694,
+        "format": {
+            "name": "sparqlTextField",
+            "args": {
+                "sparql": {
+                    "endpoint": "https://query.wikidata.org/sparql",
+                    "maxValue": 1,
+                    "request": "SELECT ?titre ?image ?identifiantWikidata ?dateDeCreation ?nomCourt (GROUP_CONCAT (DISTINCT ?autreNoms;SEPARATOR=\"&& \") AS ?autresNoms) ?abreviation ?sujetPrincipal ?genre ?editeur ?paysDOrigine ?langueDePublication (GROUP_CONCAT (DISTINCT ?identifiantISSN;SEPARATOR=\"&& \") AS ?ISSN)\n ?identifiantCODEN ?identifiantNLM ?identifiantOCLC ?identifiantSCOPUS ?identifiantVIAF ?identifiantBNF ?identifiantLC ?identifiantJSTOR ?identifiantERAJournal ?identifiantJUFO ?identifiantOpenCitationsBibliographicResource ?identifiantFreebase ?identifiantDialnetJournal \nWHERE {\n\n  ?identifiantWikidata wdt:P236 \"??\"\n  OPTIONAL {?identifiantWikidata rdfs:label ?titre. filter(lang(?titre)=\"en\")}\nOPTIONAL {?identifiantWikidata wdt:P236 ?identifiantISSN.}\nOPTIONAL {?identifiantWikidata wdt:P154 ?logo.}\nOPTIONAL {?identifiantWikidata wdt:P18 ?image.}\n  OPTIONAL {?identifiantWikidata wdt:P571 ?dateDeCreation.}\n  OPTIONAL {?identifiantWikidata wdt:P1476 ?autreNoms. }\n  OPTIONAL {?identifiantWikidata wdt:P1160 ?abreviation. }\nOPTIONAL {?identifiantWikidata wdt:P1813 ?nomCourt. }\nOPTIONAL {?identifiantWikidata wdt:P921 ?sujet.\n?sujet rdfs:label ?sujetPrincipal .\n    FILTER(LANG(?sujetPrincipal)=\"fr\")}\nOPTIONAL {?identifiantWikidata wdt:P136 ?nomGenre.\n?nomGenre rdfs:label ?genre .\n    FILTER(LANG(?genre)=\"fr|en\")}\n  OPTIONAL {?identifiantWikidata wdt:P123 ?nomEditeur. \n  ?nomEditeur rdfs:label ?editeur .\n    FILTER(LANG(?editeur)=\"en\")}\nOPTIONAL {?identifiantWikidata wdt:P495 ?pays.\n?pays rdfs:label ?paysDOrigine .\n    FILTER(LANG(?paysDOrigine)=\"fr\")\n }\n  OPTIONAL {?identifiantWikidata wdt:P407 ?langue.\n?langue rdfs:label ?langueDePublication .\n    FILTER(LANG(?langueDePublication)=\"fr\")\n }\n  OPTIONAL {?identifiantWikidata wdt:P1159 ?identifiantCODEN. }\n  OPTIONAL {?identifiantWikidata wdt:P1055 ?NLM.BIND(IRI(CONCAT(STR(\"https://www.ncbi.nlm.nih.gov/nlmcatalog/\"),?NLM)) AS ?identifiantNLM)}\n  OPTIONAL {?identifiantWikidata wdt:P243 ?OCLC.BIND(IRI(CONCAT(STR(\"https://www.worldcat.org/oclc/\"),?OCLC)) AS ?identifiantOCLC)}\n  OPTIONAL {?identifiantWikidata wdt:P1156 ?SCOPUS.BIND(IRI(CONCAT(STR(\"https://www.scopus.com/sourceid/\"),?SCOPUS)) AS ?identifiantSCOPUS)}\n  OPTIONAL {?identifiantWikidata wdt:P1058 ?ERAJournal. BIND(IRI(CONCAT(STR(\"http://lamp.infosys.deakin.edu.au/era/?page=jnamedet12f&eraid=\"),?ERAJournal)) AS ?identifiantERAJournal)}\n  OPTIONAL {?identifiantWikidata wdt:P1277 ?JUFO. BIND(IRI(CONCAT(STR(\"https://www.tsv.fi/julkaisufoorumi/haku.php?tyyppi=kaikki&nappi=Hae&issn=\"),?JUFO)) AS ?identifiantJUFO)}\n  OPTIONAL {?identifiantWikidata wdt:P3181 ?OpenCitationsBibliographicResource.BIND(IRI(CONCAT(STR(\"http://opencitations.net/corpus/br/\"),?OpenCitationsBibliographicResource)) AS ?identifiantOpenCitationsBibliographicResource) }\n  OPTIONAL {?identifiantWikidata wdt:P646 ?freebase. BIND(IRI(CONCAT(STR(\"https://g.co/kg/\"),?freebase)) AS ?identifiantFreebase)}\n  OPTIONAL {?identifiantWikidata wdt:P1609 ?DialnetJournal. BIND(IRI(CONCAT(STR(\"https://dialnet.unirioja.es/servlet/revista?codigo=\"),?DialnetJournal)) AS ?identifiantDialnetJournal)}\n  OPTIONAL {?identifiantWikidata wdt:P214 ?VIAF. BIND(IRI(CONCAT(STR(\"https://viaf.org/viaf/\"),?VIAF)) AS ?identifiantVIAF)\n}\nOPTIONAL {?identifiantWikidata wdt:P1230 ?JSTOR. BIND(IRI(CONCAT(STR(\"https://www.jstor.org/journal/\"),?JSTOR)) AS ?identifiantJSTOR)}\nOPTIONAL {?identifiantWikidata wdt:P244 ?LC. BIND(IRI(CONCAT(STR(\"http://id.loc.gov/authorities/names/\"),?LC)) AS ?identifiantLC)}\nOPTIONAL {?identifiantWikidata wdt:P268 ?BNF. BIND(IRI(CONCAT(STR(\"https://catalogue.bnf.fr/ark:/12148/cb\"),?BNF)) AS ?identifiantBNF)}\nOPTIONAL {?identifiantWikidata wdt:P3417 ?quora. BIND(IRI(CONCAT(STR(\"https://www.quora.com/topic/\"),?quora)) AS ?identifiantQuoraTopic)}\n}\nGROUP BY ?image ?titre ?identifiantWikidata ?dateDeCreation ?nomCourt ?autresNoms ?abreviation ?ISSN ?sujetPrincipal ?genre ?editeur ?paysDOrigine ?langueDePublication ?identifiantCODEN ?identifiantNLM ?identifiantOCLC ?identifiantSCOPUS ?identifiantVIAF ?identifiantBNF ?identifiantLC ?identifiantERAJournal ?identifiantJUFO ?identifiantOpenCitationsBibliographicResource ?identifiantFreebase ?identifiantDialnetJournal  ?identifiantJSTOR",
+                    "hiddenInfo": true,
+                    "separator": "&&",
+                    "subformat": [
+                        {
+                            "attribute": "?image",
+                            "sub": "image",
+                            "option": {
+                                "imageWidth": "30%"
+                            }
+                        },
+                        {
+                            "attribute": "?titre",
+                            "sub": "title",
+                            "option": {
+                                "level": 2,
+                                "textColor": "blue"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "scheme": "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+        "name": "g6FY"
+    },
+    {
+        "cover": "collection",
+        "label": "Accès",
+        "display_in_list": "",
+        "display_in_resource": false,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "access_type"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^\\S+$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 20,
+        "count": 47962,
+        "width": "50",
+        "scheme": "http://purl.org/dc/terms/rights",
+        "name": "Fr7z"
+    },
+    {
+        "cover": "collection",
+        "label": "Type",
+        "display_in_list": "",
+        "display_in_resource": false,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "publication_type"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^\\S+$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 21,
+        "isFacet": true,
+        "count": 362,
+        "width": "50",
+        "scheme": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "name": "WmzM"
+    },
+    {
+        "label": "Editeur scientifique",
+        "cover": "document",
+        "contribution": true,
+        "position": 22,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "Editeur"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^\\S+.*$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "format": {
+            "args": {
+                "param": {
+                    "labelArray": [
+                        "W0zn",
+                        "V8Si",
+                        "gEbL"
+                    ]
+                }
+            },
+            "name": "lodexField"
+        },
+        "count": 0,
+        "scheme": "http://purl.org/dc/terms/publisher",
+        "name": "yuYo"
+    },
+    {
+        "cover": "collection",
+        "label": "parent_publication_title_id",
+        "display_in_list": "",
+        "display_in_resource": "",
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "parent_publication_title_id"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^\\S+$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 23,
+        "overview": 0,
+        "count": 2365,
+        "scheme": "http://purl.org/dc/terms/identifier",
+        "name": "XX3r"
+    },
+    {
+        "cover": "dataset",
+        "label": "Modèle conceptuel",
+        "display_in_list": "",
+        "display_in_resource": "",
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": " https://docs.google.com/drawings/d/e/2PACX-1vT2jjCxmck4DZWoYEGzHlveg4qYa9947aGtu-k9S4h0Cxs4sPc-ctCPJniC0d_McW39ebSj4mN3w7cV/pub?w=960&h=720"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 23,
+        "overview": 0,
+        "scheme": "http://schema.org/image",
+        "format": {
+            "args": {
+                "imageWidth": "50%"
+            },
+            "name": "image"
+        },
+        "count": 0,
+        "display_in_home": true,
+        "width": "50",
+        "name": "4cMz"
+    },
+    {
+        "cover": "collection",
+        "label": "title_id",
+        "display_in_list": "",
+        "display_in_resource": "",
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "title_id"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "with",
+                        "type": "string",
+                        "value": "^\\S+$"
+                    }
+                ],
+                "operation": "MASK"
+            }
+        ],
+        "classes": [],
+        "position": 24,
+        "overview": 0,
+        "count": 47696,
+        "scheme": "http://schema.org/productID",
+        "name": "V7IG"
+    },
+    {
+        "cover": "collection",
+        "label": "Grantees",
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "notes"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 25,
+        "overview": 0,
+        "name": "zY0l",
+        "isFacet": true
+    },
+    {
+        "cover": "dataset",
+        "label": "Licence",
+        "display_in_list": "",
+        "display_in_resource": "",
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "https://www.etalab.gouv.fr/licence-ouverte-open-licence"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 27,
+        "overview": 0,
+        "scheme": "http://purl.org/dc/terms/license",
+        "language": "fr",
+        "format": {
+            "args": {
+                "type": "text",
+                "value": "https://data.istex.fr/img/licence-ouverte-open-licence.png"
+            },
+            "name": "linkImage"
+        },
+        "count": 0,
+        "display_in_home": true,
+        "width": "50",
+        "name": "r5xj"
+    },
+    {
+        "cover": "dataset",
+        "label": "Créateur",
+        "display_in_list": "",
+        "display_in_resource": "",
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "Inist-CNRS"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 31,
+        "overview": 0,
+        "scheme": "http://purl.org/dc/terms/creator",
+        "count": 0,
+        "display_in_home": true,
+        "width": "50",
+        "name": "TdZC"
+    },
+    {
+        "cover": "dataset",
+        "label": "Editeur",
+        "display_in_list": "",
+        "display_in_resource": "",
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "Plateforme ISTEX"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 32,
+        "overview": 0,
+        "scheme": "http://purl.org/dc/terms/publisher",
+        "count": 0,
+        "display_in_home": true,
+        "width": "50",
+        "name": "ej2C"
+    },
+    {
+        "cover": "dataset",
+        "label": "Date de Création",
+        "display_in_list": "",
+        "display_in_resource": "",
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "2018-11-07"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 33,
+        "overview": 0,
+        "scheme": "http://purl.org/dc/terms/created",
+        "count": 0,
+        "display_in_home": true,
+        "width": "50",
+        "name": "BblN"
+    },
+    {
+        "cover": "dataset",
+        "label": "Date de modification",
+        "display_in_list": "",
+        "display_in_resource": "",
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "2019-01-14"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 34,
+        "overview": 0,
+        "scheme": "http://purl.org/dc/terms/modified",
+        "completes": null,
+        "format": {
+            "name": "None"
+        },
+        "count": 0,
+        "display_in_home": true,
+        "width": "50",
+        "name": "6MVB"
+    }
+]

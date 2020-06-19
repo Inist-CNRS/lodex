@@ -15,7 +15,7 @@ module.exports = {
     },
     hostname: 'http://data.istex.fr/',
     uploadDir: 'upload',
-    istexApiUrl: 'https://api.istex.fr',
+    istexApiUrl: 'https://api.panist.fr',
     jsHost: '',
     logger: {
         disabled: false,

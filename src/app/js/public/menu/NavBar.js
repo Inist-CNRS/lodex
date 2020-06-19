@@ -17,6 +17,7 @@ import AdvancedPage from './AdvancedPage';
 import Favicon from '../Favicon';
 import MenuItem from './MenuItem';
 import stylesToClassname from '../../lib/stylesToClassName';
+import DropDownEtabSelect from '../../DropDownEtabSelect';
 
 config.autoAddCss = false;
 
@@ -156,6 +157,9 @@ export const NavBar = ({
 
     return (
         <>
+            <div>
+                <DropDownEtabSelect />
+            </div>
             <nav
                 className={classnames(styles.menu, {
                     [styles.menuWithDrawer]:

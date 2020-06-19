@@ -190,8 +190,14 @@ export const getAddCharacteristicRequest = (state, newCharacteristics) =>
 export const getLoadDatasetPageRequest = (state, params = {}) => {
     const paramString = getQueryString(params);
 
+    let idc;
+
+    if (typeof window !== 'undefined') {
+        idc = window.sessionStorage['PanistIdc'];
+    }
+
     return getRequest(state, {
-        url: `/api/publishedDataset?${paramString}`,
+        url: `/api/publishedDataset?${paramString}&zY0l[0]=` + idc,
     });
 };
 
@@ -272,7 +278,7 @@ export const getLoadContributedResourcePageRequest = (
 ) => {
     const encodedPage = encodeURIComponent(page);
     const encodedPerPage = encodeURIComponent(perPage);
-
+console.log('Filter ', filter);
     return getRequest(state, {
         url: `/api/publishedDataset/${filter}?page=${encodedPage}&perPage=${encodedPerPage}`,
     });
