@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import VegaLite from 'react-vega-lite';
+import {VegaLite} from 'react-vega';
 import InvalidFormat from '../InvalidFormat';
 import injectData from '../injectData';
 import { field as fieldPropTypes } from '../../propTypes';
