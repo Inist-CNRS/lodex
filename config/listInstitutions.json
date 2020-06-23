@@ -1,982 +1,982 @@
 [
     {
-        "value": "bsm",
-        "label": "A-3PM Instituts de Formation en Masso-Kinésithérapie"
+        "id": "bsm",
+        "text": "A-3PM Instituts de Formation en Masso-Kinésithérapie"
     },
     {
-        "value": "anm",
-        "label": "Académie nationale de médecine"
+        "id": "anm",
+        "text": "Académie nationale de médecine"
     },
     {
-        "value": "ans",
-        "label": "Agence Nationale de Sécurité des Médicaments et des produits de santé (ANSM )"
+        "id": "ans",
+        "text": "Agence Nationale de Sécurité des Médicaments et des produits de santé (ANSM )"
     },
     {
-        "value": "afs",
-        "label": "Agence nationale de sécurité sanitaire de l'alimentation, de l'environnement et du travail (ANSES)"
+        "id": "afs",
+        "text": "Agence nationale de sécurité sanitaire de l'alimentation, de l'environnement et du travail (ANSES)"
     },
     {
-        "value": "aco",
-        "label": "Agrocampus Ouest"
+        "id": "aco",
+        "text": "Agrocampus Ouest"
     },
     {
-        "value": "apt",
-        "label": "AgroParisTech"
+        "id": "apt",
+        "text": "AgroParisTech"
     },
     {
-        "value": "sad",
-        "label": "Agrosup Dijon"
+        "id": "sad",
+        "text": "Agrosup Dijon"
     },
     {
-        "value": "sam",
-        "label": "Arts et Métiers Paristech (ENSAM)"
+        "id": "sam",
+        "text": "Arts et Métiers Paristech (ENSAM)"
     },
     {
-        "value": "chm",
-        "label": "Assistance publique - Hôpitaux de Marseille (APHM)"
+        "id": "chm",
+        "text": "Assistance publique - Hôpitaux de Marseille (APHM)"
     },
     {
-        "value": "hpp",
-        "label": "Assistance publique - Hôpitaux de Paris (APHP)"
+        "id": "hpp",
+        "text": "Assistance publique - Hôpitaux de Paris (APHP)"
     },
     {
-        "value": "aud",
-        "label": "Audencia Business School"
+        "id": "aud",
+        "text": "Audencia Business School"
     },
     {
-        "value": "rim",
-        "label": "Bibliothèque Mathématiques-Informatique Recherche (MIR)"
+        "id": "rim",
+        "text": "Bibliothèque Mathématiques-Informatique Recherche (MIR)"
     },
     {
-        "value": "bnf",
-        "label": "Bibliothèque nationale de France (BNF)"
+        "id": "bnf",
+        "text": "Bibliothèque nationale de France (BNF)"
     },
     {
-        "value": "bnu",
-        "label": "Bibliothèque nationale et universitaire de Strasbourg (BNUS)"
+        "id": "bnu",
+        "text": "Bibliothèque nationale et universitaire de Strasbourg (BNUS)"
     },
     {
-        "value": "bim",
-        "label": "BIU Montpellier"
+        "id": "bim",
+        "text": "BIU Montpellier"
     },
     {
-        "value": "boi",
-        "label": "Bordeaux INP"
+        "id": "boi",
+        "text": "Bordeaux INP"
     },
     {
-        "value": "etb",
-        "label": "Bordeaux Sciences Agro (ex ENITA Bordeaux)"
+        "id": "etb",
+        "text": "Bordeaux Sciences Agro (ex ENITA Bordeaux)"
     },
     {
-        "value": "rgm",
-        "label": "Bureau de recherches géologiques et minières (BRGM)"
+        "id": "rgm",
+        "text": "Bureau de recherches géologiques et minières (BRGM)"
     },
     {
-        "value": "csu",
-        "label": "Centrale Supelec"
+        "id": "csu",
+        "text": "Centrale Supelec"
     },
     {
-        "value": "cer",
-        "label": "Centre d'études et d'expertise sur les risques, l'environnement, la mobilité et l'aménagement (Cerema)"
+        "id": "cer",
+        "text": "Centre d'études et d'expertise sur les risques, l'environnement, la mobilité et l'aménagement (Cerema)"
     },
     {
-        "value": "cir",
-        "label": "Centre de coopération internationale en recherche agronomique pour le développement (CIRAD)"
+        "id": "cir",
+        "text": "Centre de coopération internationale en recherche agronomique pour le développement (CIRAD)"
     },
     {
-        "value": "cay",
-        "label": "Centre hospitalier de Cayenne Andrée Rosemon"
+        "id": "cay",
+        "text": "Centre hospitalier de Cayenne Andrée Rosemon"
     },
     {
-        "value": "hro",
-        "label": "Centre hospitalier régional d'Orléans (CHR d'Orléans)"
+        "id": "hro",
+        "text": "Centre hospitalier régional d'Orléans (CHR d'Orléans)"
     },
     {
-        "value": "chl",
-        "label": "Centre hospitalier régional universitaire de Lille (CHRU de Lille)"
+        "id": "chl",
+        "text": "Centre hospitalier régional universitaire de Lille (CHRU de Lille)"
     },
     {
-        "value": "can",
-        "label": "Centre hospitalier universitaire d'Angers"
+        "id": "can",
+        "text": "Centre hospitalier universitaire d'Angers"
     },
     {
-        "value": "chc",
-        "label": "Centre Hospitalier Universitaire de Clermont-Ferrand"
+        "id": "chc",
+        "text": "Centre Hospitalier Universitaire de Clermont-Ferrand"
     },
     {
-        "value": "hum",
-        "label": "Centre Hospitalier universitaire de Montpellier (CHU Montpellier)"
+        "id": "hum",
+        "text": "Centre Hospitalier universitaire de Montpellier (CHU Montpellier)"
     },
     {
-        "value": "chd",
-        "label": "Centre hospitalier universitaire de Nantes - Hotel Dieu"
+        "id": "chd",
+        "text": "Centre hospitalier universitaire de Nantes - Hotel Dieu"
     },
     {
-        "value": "hun",
-        "label": "Centre hospitalier universitaire de Nice (CHU Nice)"
+        "id": "hun",
+        "text": "Centre hospitalier universitaire de Nice (CHU Nice)"
     },
     {
-        "value": "cni",
-        "label": "Centre Hospitalier Universitaire de Nîmes (CHU Nîmes)"
+        "id": "cni",
+        "text": "Centre Hospitalier Universitaire de Nîmes (CHU Nîmes)"
     },
     {
-        "value": "hua",
-        "label": "Centre hospitalier universitaire de Pointe-à-Pitre Abymes (CHU Pointe-à-Pitre)"
+        "id": "hua",
+        "text": "Centre hospitalier universitaire de Pointe-à-Pitre Abymes (CHU Pointe-à-Pitre)"
     },
     {
-        "value": "cup",
-        "label": "Centre hospitalier universitaire de Poitiers"
+        "id": "cup",
+        "text": "Centre hospitalier universitaire de Poitiers"
     },
     {
-        "value": "cre",
-        "label": "Centre hospitalier universitaire de Reims"
+        "id": "cre",
+        "text": "Centre hospitalier universitaire de Reims"
     },
     {
-        "value": "chr",
-        "label": "Centre Hospitalier Universitaire de Rennes (CHU de Rennes)"
+        "id": "chr",
+        "text": "Centre Hospitalier Universitaire de Rennes (CHU de Rennes)"
     },
     {
-        "value": "cse",
-        "label": "Centre Hospitalier Universitaire de Saint-Etienne (CHU de Saint-Etienne)"
+        "id": "cse",
+        "text": "Centre Hospitalier Universitaire de Saint-Etienne (CHU de Saint-Etienne)"
     },
     {
-        "value": "cut",
-        "label": "Centre hospitalier universitaire de Toulouse"
+        "id": "cut",
+        "text": "Centre hospitalier universitaire de Toulouse"
     },
     {
-        "value": "cht",
-        "label": "Centre hospitalier universitaire de Tours"
+        "id": "cht",
+        "text": "Centre hospitalier universitaire de Tours"
     },
     {
-        "value": "cnr",
-        "label": "Centre national de la recherche scientifique (CNRS)"
+        "id": "cnr",
+        "text": "Centre national de la recherche scientifique (CNRS)"
     },
     {
-        "value": "cst",
-        "label": "Centre scientifique et technique du bâtiment (CSTB)"
+        "id": "cst",
+        "text": "Centre scientifique et technique du bâtiment (CSTB)"
     },
     {
-        "value": "scp",
-        "label": "Chimie ParisTech (ex Ecole Nationale Supérieure de Chimie de Paris)"
+        "id": "scp",
+        "text": "Chimie ParisTech (ex Ecole Nationale Supérieure de Chimie de Paris)"
     },
     {
-        "value": "rec",
-        "label": "CHU Sud-Réunion"
+        "id": "rec",
+        "text": "CHU Sud-Réunion"
     },
     {
-        "value": "cea",
-        "label": "Commissariat à l'énergie atomique (CEA)"
+        "id": "cea",
+        "text": "Commissariat à l'énergie atomique (CEA)"
     },
     {
-        "value": "psl",
-        "label": "COMUE - Paris Sciences et Lettres (PSL)"
+        "id": "psl",
+        "text": "COMUE - Paris Sciences et Lettres (PSL)"
     },
     {
-        "value": "ubl",
-        "label": "COMUE - Université Bretagne Loire"
+        "id": "ubl",
+        "text": "COMUE - Université Bretagne Loire"
     },
     {
-        "value": "cna",
-        "label": "Conservatoire national des arts et métiers (CNAM)"
+        "id": "cna",
+        "text": "Conservatoire national des arts et métiers (CNAM)"
     },
     {
-        "value": "cas",
-        "label": "ECAM Strasbourg"
+        "id": "cas",
+        "text": "ECAM Strasbourg"
     },
     {
-        "value": "ecl",
-        "label": "Ecole centrale de Lyon"
+        "id": "ecl",
+        "text": "Ecole centrale de Lyon"
     },
     {
-        "value": "ecm",
-        "label": "Ecole centrale de Marseille"
+        "id": "ecm",
+        "text": "Ecole centrale de Marseille"
     },
     {
-        "value": "ecn",
-        "label": "Ecole centrale de Nantes"
+        "id": "ecn",
+        "text": "Ecole centrale de Nantes"
     },
     {
-        "value": "ecp",
-        "label": "Ecole Centrale de Paris"
+        "id": "ecp",
+        "text": "Ecole Centrale de Paris"
     },
     {
-        "value": "ebi",
-        "label": "Ecole de biologie industrielle"
+        "id": "ebi",
+        "text": "Ecole de biologie industrielle"
     },
     {
-        "value": "hec",
-        "label": "Ecole des Hautes Etudes Commerciales de Paris (HEC)"
+        "id": "hec",
+        "text": "Ecole des Hautes Etudes Commerciales de Paris (HEC)"
     },
     {
-        "value": "nsp",
-        "label": "Ecole des hautes études en santé publique (EHESP)"
+        "id": "nsp",
+        "text": "Ecole des hautes études en santé publique (EHESP)"
     },
     {
-        "value": "mal",
-        "label": "Ecole des Mines d'Albi-Carmaux (EMAC)"
+        "id": "mal",
+        "text": "Ecole des Mines d'Albi-Carmaux (EMAC)"
     },
     {
-        "value": "mia",
-        "label": "Ecole des Mines d'Alès (EM Alès)"
+        "id": "mia",
+        "text": "Ecole des Mines d'Alès (EM Alès)"
     },
     {
-        "value": "mse",
-        "label": "Ecole des Mines de Saint-Etienne (EMSE)"
+        "id": "mse",
+        "text": "Ecole des Mines de Saint-Etienne (EMSE)"
     },
     {
-        "value": "ise",
-        "label": "Ecole nationale d'ingénieurs de Saint-Etienne"
+        "id": "ise",
+        "text": "Ecole nationale d'ingénieurs de Saint-Etienne"
     },
     {
-        "value": "evl",
-        "label": "École nationale d'ingénieurs du Val de Loire (ENIVL)"
+        "id": "evl",
+        "text": "École nationale d'ingénieurs du Val de Loire (ENIVL)"
     },
     {
-        "value": "nac",
-        "label": "Ecole nationale de l'aviation civile (ENAC)"
+        "id": "nac",
+        "text": "Ecole nationale de l'aviation civile (ENAC)"
     },
     {
-        "value": "sts",
-        "label": "Ecole Nationale de la Statistique et de Administration Economique (ENSAE ParisTech)"
+        "id": "sts",
+        "text": "Ecole Nationale de la Statistique et de Administration Economique (ENSAE ParisTech)"
     },
     {
-        "value": "epc",
-        "label": "Ecole nationale des Ponts et Chaussées (Ponts ParisTech - ENPC)"
+        "id": "epc",
+        "text": "Ecole nationale des Ponts et Chaussées (Ponts ParisTech - ENPC)"
     },
     {
-        "value": "tpe",
-        "label": "Ecole nationale des Travaux publics de l'Etat (ENTPE )"
+        "id": "tpe",
+        "text": "Ecole nationale des Travaux publics de l'Etat (ENTPE )"
     },
     {
-        "value": "eaf",
-        "label": "Ecole nationale supérieure d'architecture de Clermont-Ferrand"
+        "id": "eaf",
+        "text": "Ecole nationale supérieure d'architecture de Clermont-Ferrand"
     },
     {
-        "value": "eag",
-        "label": "Ecole nationale supérieure d'architecture de Grenoble"
+        "id": "eag",
+        "text": "Ecole nationale supérieure d'architecture de Grenoble"
     },
     {
-        "value": "eay",
-        "label": "Ecole nationale supérieure d'architecture de Lyon"
+        "id": "eay",
+        "text": "Ecole nationale supérieure d'architecture de Lyon"
     },
     {
-        "value": "ear",
-        "label": "Ecole nationale supérieure d'architecture de Marseille"
+        "id": "ear",
+        "text": "Ecole nationale supérieure d'architecture de Marseille"
     },
     {
-        "value": "etn",
-        "label": "Ecole nationale supérieure d'architecture de Nancy"
+        "id": "etn",
+        "text": "Ecole nationale supérieure d'architecture de Nancy"
     },
     {
-        "value": "apb",
-        "label": "Ecole nationale supérieure d'architecture de Paris-Belleville"
+        "id": "apb",
+        "text": "Ecole nationale supérieure d'architecture de Paris-Belleville"
     },
     {
-        "value": "ert",
-        "label": "Ecole nationale supérieure d'architecture de Toulouse"
+        "id": "ert",
+        "text": "Ecole nationale supérieure d'architecture de Toulouse"
     },
     {
-        "value": "ebo",
-        "label": "Ecole nationale supérieure d'ingénieurs de Bourges"
+        "id": "ebo",
+        "text": "Ecole nationale supérieure d'ingénieurs de Bourges"
     },
     {
-        "value": "eab",
-        "label": "Ecole nationale supérieure d’art de Bourges"
+        "id": "eab",
+        "text": "Ecole nationale supérieure d’art de Bourges"
     },
     {
-        "value": "sii",
-        "label": "Ecole nationale supérieure d’informatique pour l’industrie et l’entreprise (ENSIIE),"
+        "id": "sii",
+        "text": "Ecole nationale supérieure d’informatique pour l’industrie et l’entreprise (ENSIIE),"
     },
     {
-        "value": "npb",
-        "label": "Ecole nationale supérieure de la nature et du paysage de Blois (ENSNPB)"
+        "id": "npb",
+        "text": "Ecole nationale supérieure de la nature et du paysage de Blois (ENSNPB)"
     },
     {
-        "value": "arn",
-        "label": "Ecole Nationale Supérieure de la Nature et du Paysage de Nantes"
+        "id": "arn",
+        "text": "Ecole Nationale Supérieure de la Nature et du Paysage de Nantes"
     },
     {
-        "value": "stb",
-        "label": "Ecole nationale supérieure de techniques avancées - Bretagne (ENSTA Bretagne)"
+        "id": "stb",
+        "text": "Ecole nationale supérieure de techniques avancées - Bretagne (ENSTA Bretagne)"
     },
     {
-        "value": "sta",
-        "label": "Ecole nationale supérieure de techniques avancées (ENSTA ParisTech)"
+        "id": "sta",
+        "text": "Ecole nationale supérieure de techniques avancées (ENSTA ParisTech)"
     },
     {
-        "value": "ent",
-        "label": "Ecole nationale supérieure des arts et industries labeliles (ENSAIT)"
+        "id": "ent",
+        "text": "Ecole nationale supérieure des arts et industries textiles (ENSAIT)"
     },
     {
-        "value": "mpt",
-        "label": "Ecole nationale supérieure des Mines de Paris (Mines ParisTech)"
+        "id": "mpt",
+        "text": "Ecole nationale supérieure des Mines de Paris (Mines ParisTech)"
     },
     {
-        "value": "sib",
-        "label": "Ecole nationale supérieure des sciences de l'information et des bibliothèques (ENSSIB)"
+        "id": "sib",
+        "text": "Ecole nationale supérieure des sciences de l'information et des bibliothèques (ENSSIB)"
     },
     {
-        "value": "nva",
-        "label": "Ecole nationale vétérinaire d'Alfort"
+        "id": "nva",
+        "text": "Ecole nationale vétérinaire d'Alfort"
     },
     {
-        "value": "nvt",
-        "label": "Ecole nationale vétérinaire de Toulouse (ENVT)"
+        "id": "nvt",
+        "text": "Ecole nationale vétérinaire de Toulouse (ENVT)"
     },
     {
-        "value": "ely",
-        "label": "Ecole normale supérieure de Lyon (ENS Lyon)"
+        "id": "ely",
+        "text": "Ecole normale supérieure de Lyon (ENS Lyon)"
     },
     {
-        "value": "ens",
-        "label": "Ecole normale supérieure de Paris (ENS)"
+        "id": "ens",
+        "text": "Ecole normale supérieure de Paris (ENS)"
     },
     {
-        "value": "eca",
-        "label": "Ecole normale supérieure Paris-Saclay (ENS Cachan)"
+        "id": "eca",
+        "text": "Ecole normale supérieure Paris-Saclay (ENS Cachan)"
     },
     {
-        "value": "epo",
-        "label": "Ecole polytechnique"
+        "id": "epo",
+        "text": "Ecole polytechnique"
     },
     {
-        "value": "lfi",
-        "label": "Ecole polytechnique féminine (EPF)"
+        "id": "lfi",
+        "text": "Ecole polytechnique féminine (EPF)"
     },
     {
-        "value": "mrp",
-        "label": "Ecole spéciale des travaux publics du bâtiment et de l'industrie (ESTP)"
+        "id": "mrp",
+        "text": "Ecole spéciale des travaux publics du bâtiment et de l'industrie (ESTP)"
     },
     {
-        "value": "dlf",
-        "label": "Ecole supérieure angevine d'informatique et de productique (ESAIP)"
+        "id": "dlf",
+        "text": "Ecole supérieure angevine d'informatique et de productique (ESAIP)"
     },
     {
-        "value": "sup",
-        "label": "Ecole Supérieure d'Electricité - SUPELEC"
+        "id": "sup",
+        "text": "Ecole Supérieure d'Electricité - SUPELEC"
     },
     {
-        "value": "esi",
-        "label": "Ecole Supérieure d'Informatique Electronique Automatique (ESIEA)"
+        "id": "esi",
+        "text": "Ecole Supérieure d'Informatique Electronique Automatique (ESIEA)"
     },
     {
-        "value": "tom",
-        "label": "École Supérieure d'Ingénieur d'Agro-Développement International (ISTOM)"
+        "id": "tom",
+        "text": "École Supérieure d'Ingénieur d'Agro-Développement International (ISTOM)"
     },
     {
-        "value": "bxx",
-        "label": "École supérieure d’ingénieurs et de techniciens pour l’agriculture"
+        "id": "bxx",
+        "text": "École supérieure d’ingénieurs et de techniciens pour l’agriculture"
     },
     {
-        "value": "mpf",
-        "label": "Ecole supérieure de commerce de Bretagne Brest"
+        "id": "mpf",
+        "text": "Ecole supérieure de commerce de Bretagne Brest"
     },
     {
-        "value": "pci",
-        "label": "Ecole supérieure de physique et de chimie industrielles (ESPCI)"
+        "id": "pci",
+        "text": "Ecole supérieure de physique et de chimie industrielles (ESPCI)"
     },
     {
-        "value": "sca",
-        "label": "École supérieure des sciences commerciales d'Angers (ESSCA)"
+        "id": "sca",
+        "text": "École supérieure des sciences commerciales d'Angers (ESSCA)"
     },
     {
-        "value": "sec",
-        "label": "Ecole supérieure des sciences économiques et commerciales (ESSEC)"
+        "id": "sec",
+        "text": "Ecole supérieure des sciences économiques et commerciales (ESSEC)"
     },
     {
-        "value": "glu",
-        "label": "Ecole supérieure du commerce extérieur de Paris (ESCE Paris)"
+        "id": "glu",
+        "text": "Ecole supérieure du commerce extérieur de Paris (ESCE Paris)"
     },
     {
-        "value": "eml",
-        "label": "EM LYON Business School"
+        "id": "eml",
+        "text": "EM LYON Business School"
     },
     {
-        "value": "aaa",
-        "label": "EPMI Cergy-Pontoise (Groupe ECAM)"
+        "id": "aaa",
+        "text": "EPMI Cergy-Pontoise (Groupe ECAM)"
     },
     {
-        "value": "cem",
-        "label": "ESCEM Ecole de management"
+        "id": "cem",
+        "text": "ESCEM Ecole de management"
     },
     {
-        "value": "eim",
-        "label": "ESIEE Management"
+        "id": "eim",
+        "text": "ESIEE Management"
     },
     {
-        "value": "iee",
-        "label": "ESIEE Paris"
+        "id": "iee",
+        "text": "ESIEE Paris"
     },
     {
-        "value": "gen",
-        "label": "Genopole"
+        "id": "gen",
+        "text": "Genopole"
     },
     {
-        "value": "emg",
-        "label": "Grenoble Ecole de Management (GEM-EESC)"
+        "id": "emg",
+        "text": "Grenoble Ecole de Management (GEM-EESC)"
     },
     {
-        "value": "mix",
-        "label": "Groupe des écoles des mines (GEM)"
+        "id": "mix",
+        "text": "Groupe des écoles des mines (GEM)"
     },
     {
-        "value": "ena",
-        "label": "Groupe des Ecoles Nationales d'Economie et Statistique (GENES-ENSAI)"
+        "id": "ena",
+        "text": "Groupe des Ecoles Nationales d'Economie et Statistique (GENES-ENSAI)"
     },
     {
-        "value": "enx",
-        "label": "Groupe ENI"
+        "id": "enx",
+        "text": "Groupe ENI"
     },
     {
-        "value": "esa",
-        "label": "Groupe ESA - Ecole supérieure d'agriculture d'Angers"
+        "id": "esa",
+        "text": "Groupe ESA - Ecole supérieure d'agriculture d'Angers"
     },
     {
-        "value": "roy",
-        "label": "Groupe ESC Troyes"
+        "id": "roy",
+        "text": "Groupe ESC Troyes"
     },
     {
-        "value": "chh",
-        "label": "Groupe hospitalier du Havre"
+        "id": "chh",
+        "text": "Groupe hospitalier du Havre"
     },
     {
-        "value": "inx",
-        "label": "Groupe INSEEC"
+        "id": "inx",
+        "text": "Groupe INSEEC"
     },
     {
-        "value": "bba",
-        "label": "Hôpitaux universitaires de Strasbourg (HUS)"
+        "id": "bba",
+        "text": "Hôpitaux universitaires de Strasbourg (HUS)"
     },
     {
-        "value": "hul",
-        "label": "Hospices civils de Lyon"
+        "id": "hul",
+        "text": "Hospices civils de Lyon"
     },
     {
-        "value": "ien",
-        "label": "IFP Énergies nouvelles (IFPEN)"
+        "id": "ien",
+        "text": "IFP Énergies nouvelles (IFPEN)"
     },
     {
-        "value": "imt",
-        "label": "IMT Atlantique Bretagne - Pays de la Loire"
+        "id": "imt",
+        "text": "IMT Atlantique Bretagne - Pays de la Loire"
     },
     {
-        "value": "mdo",
-        "label": "IMT Lille-Douai (École Mines-Télécom - IMT Lille-Douai)"
+        "id": "mdo",
+        "text": "IMT Lille-Douai (École Mines-Télécom - IMT Lille-Douai)"
     },
     {
-        "value": "arm",
-        "label": "Ingénieur des études et techniques de l'armement (IETA)"
+        "id": "arm",
+        "text": "Ingénieur des études et techniques de l'armement (IETA)"
     },
     {
-        "value": "ead",
-        "label": "INSEAD"
+        "id": "ead",
+        "text": "INSEAD"
     },
     {
-        "value": "fsp",
-        "label": "Institut d'Etudes Politiques de Paris (Sciences Po Paris)"
+        "id": "fsp",
+        "text": "Institut d'Etudes Politiques de Paris (Sciences Po Paris)"
     },
     {
-        "value": "rsn",
-        "label": "Institut de Radioprotection et de Sûreté Nucléaire (IRSN)"
+        "id": "rsn",
+        "text": "Institut de Radioprotection et de Sûreté Nucléaire (IRSN)"
     },
     {
-        "value": "tea",
-        "label": "Institut de Recherche en Sciences et Technologies pour l'Environnement et l'Agriculture (IRSTEA)"
+        "id": "tea",
+        "text": "Institut de Recherche en Sciences et Technologies pour l'Environnement et l'Agriculture (IRSTEA)"
     },
     {
-        "value": "nrs",
-        "label": "Institut de recherche et de sécurité pour la prévention des accvalueents du travail et des maladies professionnelles (INRS)"
+        "id": "nrs",
+        "text": "Institut de recherche et de sécurité pour la prévention des accidents du travail et des maladies professionnelles (INRS)"
     },
     {
-        "value": "ird",
-        "label": "Institut de Recherche pour le Développement (IRD)"
+        "id": "ird",
+        "text": "Institut de Recherche pour le Développement (IRD)"
     },
     {
-        "value": "hsc",
-        "label": "Institut des hautes études scientifiques (IHES)"
+        "id": "hsc",
+        "text": "Institut des hautes études scientifiques (IHES)"
     },
     {
-        "value": "bpe",
-        "label": "Institut français de la mode (IFM)"
+        "id": "bpe",
+        "text": "Institut français de la mode (IFM)"
     },
     {
-        "value": "mer",
-        "label": "Institut Français de Recherche pour l'Exploitation de la Mer (IFREMER)"
+        "id": "mer",
+        "text": "Institut Français de Recherche pour l'Exploitation de la Mer (IFREMER)"
     },
     {
-        "value": "tar",
-        "label": "Institut Français des Sciences et Technologies des Transports, de l’aménagement et des Réseaux (IFSTTAR)"
+        "id": "tar",
+        "text": "Institut Français des Sciences et Technologies des Transports, de l’aménagement et des Réseaux (IFSTTAR)"
     },
     {
-        "value": "dex",
-        "label": "Institut international du commerce et du développement de Paris (ICD Paris)"
+        "id": "dex",
+        "text": "Institut international du commerce et du développement de Paris (ICD Paris)"
     },
     {
-        "value": "ris",
-        "label": "Institut National de l'Environnement Industriel et des Risques (INERIS)"
+        "id": "ris",
+        "text": "Institut National de l'Environnement Industriel et des Risques (INERIS)"
     },
     {
-        "value": "ign",
-        "label": "Institut national de l'information géographique et forestière (IGN)"
+        "id": "ign",
+        "text": "Institut national de l'information géographique et forestière (IGN)"
     },
     {
-        "value": "nra",
-        "label": "Institut National de la Recherche Agronomique (INRA)"
+        "id": "nra",
+        "text": "Institut National de la Recherche Agronomique (INRA)"
     },
     {
-        "value": "erm",
-        "label": "Institut National de la Santé et de la Recherche Médicale (INSERM)"
+        "id": "erm",
+        "text": "Institut National de la Santé et de la Recherche Médicale (INSERM)"
     },
     {
-        "value": "iaf",
-        "label": "Institut National de Recherche en Informatique et en Automatique (INRIA)"
+        "id": "iaf",
+        "text": "Institut National de Recherche en Informatique et en Automatique (INRIA)"
     },
     {
-        "value": "bou",
-        "label": "Institut National des Sciences Appliquées Centre Val de Loire (INSA Centre Val de Loire)"
+        "id": "bou",
+        "text": "Institut National des Sciences Appliquées Centre Val de Loire (INSA Centre Val de Loire)"
     },
     {
-        "value": "sal",
-        "label": "Institut National des Sciences Appliquées de Lyon (INSA Lyon)"
+        "id": "sal",
+        "text": "Institut National des Sciences Appliquées de Lyon (INSA Lyon)"
     },
     {
-        "value": "sar",
-        "label": "Institut National des Sciences Appliquées de Rennes (INSA Rennes)"
+        "id": "sar",
+        "text": "Institut National des Sciences Appliquées de Rennes (INSA Rennes)"
     },
     {
-        "value": "sao",
-        "label": "Institut National des Sciences Appliquées de Rouen (INSA Rouen)"
+        "id": "sao",
+        "text": "Institut National des Sciences Appliquées de Rouen (INSA Rouen)"
     },
     {
-        "value": "sas",
-        "label": "Institut National des Sciences Appliquées de Strasbourg (INSA Strasbourg)"
+        "id": "sas",
+        "text": "Institut National des Sciences Appliquées de Strasbourg (INSA Strasbourg)"
     },
     {
-        "value": "sat",
-        "label": "Institut National des Sciences Appliquées de Toulouse (INSA Toulouse)"
+        "id": "sat",
+        "text": "Institut National des Sciences Appliquées de Toulouse (INSA Toulouse)"
     },
     {
-        "value": "pto",
-        "label": "Institut national polytechnique de Toulouse (INPT)"
+        "id": "pto",
+        "text": "Institut national polytechnique de Toulouse (INPT)"
     },
     {
-        "value": "jfc",
-        "label": "Institut national universitaire Champollion (CUFR Albi)"
+        "id": "jfc",
+        "text": "Institut national universitaire Champollion (CUFR Albi)"
     },
     {
-        "value": "ipc",
-        "label": "Institut Paoli Calmettes"
+        "id": "ipc",
+        "text": "Institut Paoli Calmettes"
     },
     {
-        "value": "pas",
-        "label": "Institut Pasteur"
+        "id": "pas",
+        "text": "Institut Pasteur"
     },
     {
-        "value": "sab",
-        "label": "Institut Polytechnique LaSalle Beauvais - ESITPA"
+        "id": "sab",
+        "text": "Institut Polytechnique LaSalle Beauvais - ESITPA"
     },
     {
-        "value": "isc",
-        "label": "Institut Supérieur de Commerce (ISC Paris)"
+        "id": "isc",
+        "text": "Institut Supérieur de Commerce (ISC Paris)"
     },
     {
-        "value": "aee",
-        "label": "Institut Supérieur de l'Aéronautique et de l'Espace (ISAE-SUPAERO)"
+        "id": "aee",
+        "text": "Institut Supérieur de l'Aéronautique et de l'Espace (ISAE-SUPAERO)"
     },
     {
-        "value": "sum",
-        "label": "Institut supérieur de mécanique de Paris (SupMeca)"
+        "id": "sum",
+        "text": "Institut supérieur de mécanique de Paris (SupMeca)"
     },
     {
-        "value": "isi",
-        "label": "Institut supérieur international du parfum, de la cosmétique et de l'aromatique alimentaire (ISIPCA)"
+        "id": "isi",
+        "text": "Institut supérieur international du parfum, de la cosmétique et de l'aromatique alimentaire (ISIPCA)"
     },
     {
-        "value": "ill",
-        "label": "Joint ILL-ESRF Library (Institut Max von Laue-Paul Langevin)"
+        "id": "ill",
+        "text": "Joint ILL-ESRF Library (Institut Max von Laue-Paul Langevin)"
     },
     {
-        "value": "lpc",
-        "label": "Laboratoire central des ponts et chaussées"
+        "id": "lpc",
+        "text": "Laboratoire central des ponts et chaussées"
     },
     {
-        "value": "lne",
-        "label": "Laboratoire National de Métrologie et d'Essais (LNE)"
+        "id": "lne",
+        "text": "Laboratoire National de Métrologie et d'Essais (LNE)"
     },
     {
-        "value": "msa",
-        "label": "Montpellier SupAgro"
+        "id": "msa",
+        "text": "Montpellier SupAgro"
     },
     {
-        "value": "nhn",
-        "label": "Muséum National d'Histoire Naturelle (MNHN)"
+        "id": "nhn",
+        "text": "Muséum National d'Histoire Naturelle (MNHN)"
     },
     {
-        "value": "obm",
-        "label": "Observatoire de Paris-Meudon (OBSPM)"
+        "id": "obm",
+        "text": "Observatoire de Paris-Meudon (OBSPM)"
     },
     {
-        "value": "era",
-        "label": "Office National d'Etudes et de Recherches Aérospatiales (ONERA)- The French Aerospace Lab"
+        "id": "era",
+        "text": "Office National d'Etudes et de Recherches Aérospatiales (ONERA)- The French Aerospace Lab"
     },
     {
-        "value": "nvn",
-        "label": "ONIRIS -Ecole Nationale Vétérinaire, Agroalimentaire et de l'Alimentation Nantes Atlantique (ONIRIS)"
+        "id": "nvn",
+        "text": "ONIRIS -Ecole Nationale Vétérinaire, Agroalimentaire et de l'Alimentation Nantes Atlantique (ONIRIS)"
     },
     {
-        "value": "ocd",
-        "label": "Organisation de Coopération et de Développement Economiques (OCDE)"
+        "id": "ocd",
+        "text": "Organisation de Coopération et de Développement Economiques (OCDE)"
     },
     {
-        "value": "plv",
-        "label": "Pôle universitaire Léonard de Vinci"
+        "id": "plv",
+        "text": "Pôle universitaire Léonard de Vinci"
     },
     {
-        "value": "ssa",
-        "label": "Service de santé des Armées"
+        "id": "ssa",
+        "text": "Service de santé des Armées"
     },
     {
-        "value": "ske",
-        "label": "SKEMA Business School"
+        "id": "ske",
+        "text": "SKEMA Business School"
     },
     {
-        "value": "sbu",
-        "label": "Sorbonne Université"
+        "id": "sbu",
+        "text": "Sorbonne Université"
     },
     {
-        "value": "tpt",
-        "label": "Télécom ParisTech"
+        "id": "tpt",
+        "text": "Télécom ParisTech"
     },
     {
-        "value": "tsp",
-        "label": "Télécom SudParis & Télécom Ecole de Management"
+        "id": "tsp",
+        "text": "Télécom SudParis & Télécom Ecole de Management"
     },
     {
-        "value": "ucr",
-        "label": "Unicancer"
+        "id": "ucr",
+        "text": "Unicancer"
     },
     {
-        "value": "lax",
-        "label": "UniLaSalle Rouen"
+        "id": "lax",
+        "text": "UniLaSalle Rouen"
     },
     {
-        "value": "ucl",
-        "label": "Université catholique de Lille (UCL)"
+        "id": "ucl",
+        "text": "Université catholique de Lille (UCL)"
     },
     {
-        "value": "ly1",
-        "label": "Université Claude Bernard (Lyon I)"
+        "id": "ly1",
+        "text": "Université Claude Bernard (Lyon I)"
     },
     {
-        "value": "ucf",
-        "label": "Université Clermont-Auvergne (UCA)"
+        "id": "ucf",
+        "text": "Université Clermont-Auvergne (UCA)"
     },
     {
-        "value": "axm",
-        "label": "Université d'Aix-Marseille"
+        "id": "axm",
+        "text": "Université d'Aix-Marseille"
     },
     {
-        "value": "uan",
-        "label": "Université d'Angers"
+        "id": "uan",
+        "text": "Université d'Angers"
     },
     {
-        "value": "uar",
-        "label": "Université d'Artois"
+        "id": "uar",
+        "text": "Université d'Artois"
     },
     {
-        "value": "uav",
-        "label": "Université d'Avignon et des Pays de Vaucluse"
+        "id": "uav",
+        "text": "Université d'Avignon et des Pays de Vaucluse"
     },
     {
-        "value": "uev",
-        "label": "Université d'Evry-Val-d'Essonne"
+        "id": "uev",
+        "text": "Université d'Evry-Val-d'Essonne"
     },
     {
-        "value": "uor",
-        "label": "Université d'Orléans"
+        "id": "uor",
+        "text": "Université d'Orléans"
     },
     {
-        "value": "bor",
-        "label": "Université de Bordeaux"
+        "id": "bor",
+        "text": "Université de Bordeaux"
     },
     {
-        "value": "ub1",
-        "label": "Université de Bordeaux I"
+        "id": "ub1",
+        "text": "Université de Bordeaux I"
     },
     {
-        "value": "ub2",
-        "label": "Université de Bordeaux II Victor Ségalen"
+        "id": "ub2",
+        "text": "Université de Bordeaux II Victor Ségalen"
     },
     {
-        "value": "ub4",
-        "label": "Université de Bordeaux IV Montesquieu"
+        "id": "ub4",
+        "text": "Université de Bordeaux IV Montesquieu"
     },
     {
-        "value": "udi",
-        "label": "Université de Bourgogne"
+        "id": "udi",
+        "text": "Université de Bourgogne"
     },
     {
-        "value": "ubo",
-        "label": "Université de Bretagne occvalueentale (UBO)"
+        "id": "ubo",
+        "text": "Université de Bretagne occidentale (UBO)"
     },
     {
-        "value": "ubs",
-        "label": "Université de Bretagne-Sud (UBS)"
+        "id": "ubs",
+        "text": "Université de Bretagne-Sud (UBS)"
     },
     {
-        "value": "uca",
-        "label": "Université de Caen Basse-Normandie"
+        "id": "uca",
+        "text": "Université de Caen Basse-Normandie"
     },
     {
-        "value": "cpo",
-        "label": "Université de Cergy-Pontoise"
+        "id": "cpo",
+        "text": "Université de Cergy-Pontoise"
     },
     {
-        "value": "uco",
-        "label": "Université de Corse Pasquale Paoli"
+        "id": "uco",
+        "text": "Université de Corse Pasquale Paoli"
     },
     {
-        "value": "ufc",
-        "label": "Université de Franche-Comté"
+        "id": "ufc",
+        "text": "Université de Franche-Comté"
     },
     {
-        "value": "mul",
-        "label": "Université de Haute-Alsace"
+        "id": "mul",
+        "text": "Université de Haute-Alsace"
     },
     {
-        "value": "guy",
-        "label": "Université de la Guyane"
+        "id": "guy",
+        "text": "Université de la Guyane"
     },
     {
-        "value": "unc",
-        "label": "Université de la Nouvelle-Calédonie"
+        "id": "unc",
+        "text": "Université de la Nouvelle-Calédonie"
     },
     {
-        "value": "ufp",
-        "label": "Université de la Polynésie Française - Tahiti"
+        "id": "ufp",
+        "text": "Université de la Polynésie Française - Tahiti"
     },
     {
-        "value": "ure",
-        "label": "Université de La Réunion"
+        "id": "ure",
+        "text": "Université de La Réunion"
     },
     {
-        "value": "uro",
-        "label": "Université de La Rochelle"
+        "id": "uro",
+        "text": "Université de La Rochelle"
     },
     {
-        "value": "li0",
-        "label": "Université de Lille"
+        "id": "li0",
+        "text": "Université de Lille"
     },
     {
-        "value": "li1",
-        "label": "Université de Lille I Sciences et technologies"
+        "id": "li1",
+        "text": "Université de Lille I Sciences et technologies"
     },
     {
-        "value": "li2",
-        "label": "Université de Lille II Droit et Santé"
+        "id": "li2",
+        "text": "Université de Lille II Droit et Santé"
     },
     {
-        "value": "li3",
-        "label": "Université de Lille III Sciences humaines et sociales"
+        "id": "li3",
+        "text": "Université de Lille III Sciences humaines et sociales"
     },
     {
-        "value": "lim",
-        "label": "Université de Limoges (UNILIM)"
+        "id": "lim",
+        "text": "Université de Limoges (UNILIM)"
     },
     {
-        "value": "udl",
-        "label": "Université de Lorraine"
+        "id": "udl",
+        "text": "Université de Lorraine"
     },
     {
-        "value": "mon",
-        "label": "Université de Montpellier"
+        "id": "mon",
+        "text": "Université de Montpellier"
     },
     {
-        "value": "nan",
-        "label": "Université de Nantes"
+        "id": "nan",
+        "text": "Université de Nantes"
     },
     {
-        "value": "nsa",
-        "label": "Université de Nice Sophia Antipolis (UNICE)"
+        "id": "nsa",
+        "text": "Université de Nice Sophia Antipolis (UNICE)"
     },
     {
-        "value": "uni",
-        "label": "Université de Nîmes (UNIMES)"
+        "id": "uni",
+        "text": "Université de Nîmes (UNIMES)"
     },
     {
-        "value": "p10",
-        "label": "Université de Paris Ouest Nanterre La Défense (Paris X)"
+        "id": "p10",
+        "text": "Université de Paris Ouest Nanterre La Défense (Paris X)"
     },
     {
-        "value": "p13",
-        "label": "Université de Paris XIII Paris Nord"
+        "id": "p13",
+        "text": "Université de Paris XIII Paris Nord"
     },
     {
-        "value": "pau",
-        "label": "Université de Pau et des Pays de l'Adour"
+        "id": "pau",
+        "text": "Université de Pau et des Pays de l'Adour"
     },
     {
-        "value": "per",
-        "label": "Université de Perpignan Via Domitia"
+        "id": "per",
+        "text": "Université de Perpignan Via Domitia"
     },
     {
-        "value": "ujv",
-        "label": "Université de Picardie Jules Verne"
+        "id": "ujv",
+        "text": "Université de Picardie Jules Verne"
     },
     {
-        "value": "upo",
-        "label": "Université de Poitiers"
+        "id": "upo",
+        "text": "Université de Poitiers"
     },
     {
-        "value": "rei",
-        "label": "Université de Reims Champagne-Ardenne"
+        "id": "rei",
+        "text": "Université de Reims Champagne-Ardenne"
     },
     {
-        "value": "ur1",
-        "label": "Université de Rennes I"
+        "id": "ur1",
+        "text": "Université de Rennes I"
     },
     {
-        "value": "ur2",
-        "label": "Université de Rennes II Haute-Bretagne"
+        "id": "ur2",
+        "text": "Université de Rennes II Haute-Bretagne"
     },
     {
-        "value": "rou",
-        "label": "Université de Rouen"
+        "id": "rou",
+        "text": "Université de Rouen"
     },
     {
-        "value": "sav",
-        "label": "Université de Savoie"
+        "id": "sav",
+        "text": "Université de Savoie"
     },
     {
-        "value": "str",
-        "label": "Université de Strasbourg (UNISTRA)"
+        "id": "str",
+        "text": "Université de Strasbourg (UNISTRA)"
     },
     {
-        "value": "tbm",
-        "label": "Université de technologie de Belfort-Montbéliard (UTBM)"
+        "id": "tbm",
+        "text": "Université de technologie de Belfort-Montbéliard (UTBM)"
     },
     {
-        "value": "utc",
-        "label": "Université de technologie de Compiègne"
+        "id": "utc",
+        "text": "Université de technologie de Compiègne"
     },
     {
-        "value": "tro",
-        "label": "Université de technologie de Troyes"
+        "id": "tro",
+        "text": "Université de technologie de Troyes"
     },
     {
-        "value": "tov",
-        "label": "Université de Toulon"
+        "id": "tov",
+        "text": "Université de Toulon"
     },
     {
-        "value": "ut1",
-        "label": "Université de Toulouse I Capitole"
+        "id": "ut1",
+        "text": "Université de Toulouse I Capitole"
     },
     {
-        "value": "ut2",
-        "label": "Université de Toulouse Jean Jaurès (Toulouse II)"
+        "id": "ut2",
+        "text": "Université de Toulouse Jean Jaurès (Toulouse II)"
     },
     {
-        "value": "uvh",
-        "label": "Université de Valenciennes et du Hainaut-Cambrésis"
+        "id": "uvh",
+        "text": "Université de Valenciennes et du Hainaut-Cambrésis"
     },
     {
-        "value": "vsq",
-        "label": "Université de Versailles St Quentin en Yvelines (UVSQ )"
+        "id": "vsq",
+        "text": "Université de Versailles St Quentin en Yvelines (UVSQ )"
     },
     {
-        "value": "uat",
-        "label": "Université des Antilles"
+        "id": "uat",
+        "text": "Université des Antilles"
     },
     {
-        "value": "uag",
-        "label": "Université des Antilles et de la Guyane"
+        "id": "uag",
+        "text": "Université des Antilles et de la Guyane"
     },
     {
-        "value": "hav",
-        "label": "Université du Havre"
+        "id": "hav",
+        "text": "Université du Havre"
     },
     {
-        "value": "lco",
-        "label": "Université du Littoral Côte d'Opale (ULCO)"
+        "id": "lco",
+        "text": "Université du Littoral Côte d'Opale (ULCO)"
     },
     {
-        "value": "uma",
-        "label": "Université du Maine"
+        "id": "uma",
+        "text": "Université du Maine"
     },
     {
-        "value": "uto",
-        "label": "Université François Rabelais (Tours)"
+        "id": "uto",
+        "text": "Université François Rabelais (Tours)"
     },
     {
-        "value": "uga",
-        "label": "Université Grenoble Alpes"
+        "id": "uga",
+        "text": "Université Grenoble Alpes"
     },
     {
-        "value": "ste",
-        "label": "Université Jean Monnet Saint-Etienne"
+        "id": "ste",
+        "text": "Université Jean Monnet Saint-Etienne"
     },
     {
-        "value": "ly3",
-        "label": "Université Jean Moulin (Lyon III)"
+        "id": "ly3",
+        "text": "Université Jean Moulin (Lyon III)"
     },
     {
-        "value": "ugr",
-        "label": "Université Joseph Fourier (Grenoble I)"
+        "id": "ugr",
+        "text": "Université Joseph Fourier (Grenoble I)"
     },
     {
-        "value": "ly2",
-        "label": "Université Louis Lumière (Lyon II)"
+        "id": "ly2",
+        "text": "Université Louis Lumière (Lyon II)"
     },
     {
-        "value": "up1",
-        "label": "Université Panthéon-Sorbonne (Paris I)"
+        "id": "up1",
+        "text": "Université Panthéon-Sorbonne (Paris I)"
     },
     {
-        "value": "upd",
-        "label": "Université Paris Descartes (Paris V)"
+        "id": "upd",
+        "text": "Université Paris Descartes (Paris V)"
     },
     {
-        "value": "dvalue",
-        "label": "Université Paris Dvalueerot (Paris VII)"
+        "id": "did",
+        "text": "Université Paris Diderot (Paris VII)"
     },
     {
-        "value": "mlv",
-        "label": "Université Paris Est Marne-la-Vallée (UPEM)"
+        "id": "mlv",
+        "text": "Université Paris Est Marne-la-Vallée (UPEM)"
     },
     {
-        "value": "p11",
-        "label": "Université Paris Sud (Paris XI) (PSUD)"
+        "id": "p11",
+        "text": "Université Paris Sud (Paris XI) (PSUD)"
     },
     {
-        "value": "up9",
-        "label": "Université Paris-Dauphine (Paris IX)"
+        "id": "up9",
+        "text": "Université Paris-Dauphine (Paris IX)"
     },
     {
-        "value": "p12",
-        "label": "Université Paris-Est Créteil Val de Marne (Paris XII) (UPEC)"
+        "id": "p12",
+        "text": "Université Paris-Est Créteil Val de Marne (Paris XII) (UPEC)"
     },
     {
-        "value": "ups",
-        "label": "Université Paul Sabatier (Toulouse III )"
+        "id": "ups",
+        "text": "Université Paul Sabatier (Toulouse III )"
     },
     {
-        "value": "mo3",
-        "label": "Université Paul Valéry (Montpellier III)"
+        "id": "mo3",
+        "text": "Université Paul Valéry (Montpellier III)"
     },
     {
-        "value": "up6",
-        "label": "Université Pierre et Marie Curie (Paris VI) (UPMC)"
+        "id": "up6",
+        "text": "Université Pierre et Marie Curie (Paris VI) (UPMC)"
     },
     {
-        "value": "up3",
-        "label": "Université Sorbonne Nouvelle (Paris III)"
+        "id": "up3",
+        "text": "Université Sorbonne Nouvelle (Paris III)"
     },
     {
-        "value": "up8",
-        "label": "Université Vincennes-Saint Denis (Paris VIII)"
+        "id": "up8",
+        "text": "Université Vincennes-Saint Denis (Paris VIII)"
     },
     {
-        "value": "vas",
-        "label": "VetAgro Sup"
+        "id": "vas",
+        "text": "VetAgro Sup"
     }
 ]

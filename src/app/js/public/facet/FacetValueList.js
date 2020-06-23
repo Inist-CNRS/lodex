@@ -106,23 +106,13 @@ export const FacetValueList = ({
                         sort={onSortChange(sortFacetValue, name)}
                     />
                 </div>
-                <div style={styles.totalHeader}>
-                    <SortButton
-                        name="count"
-                        label={polyglot.t('count')}
-                        sortDir={sort.sortDir}
-                        sortBy={sort.sortBy}
-                        sort={onSortChange(sortFacetValue, name)}
-                    />
-                </div>
             </div>
             <div>
-                {facetValues.map(({ value, count }) => (
+                {facetValues.map(({ value }) => (
                     <FacetValueItem
                         key={value}
                         name={name}
                         value={value}
-                        count={count}
                         page={page}
                     />
                 ))}

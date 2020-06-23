@@ -87,8 +87,6 @@ const getIcon = icon => {
 const MenuItem = ({
     config,
     polyglot,
-    hasGraph,
-    graphDrawer,
     searchDrawer,
     advancedDrawer,
     canBeSearched,
@@ -115,31 +113,6 @@ const MenuItem = ({
                     {icon}
                     {label}
                 </NavLink>
-            );
-        case 'graphs':
-            return (
-                hasGraph && (
-                    <NavLink
-                        to="/graph"
-                        onClick={onClick(config.role, true)}
-                        className={classnames(
-                            'nav-item',
-                            styles.menuItem,
-                            styles.link,
-                            {
-                                [styles.drawerActive]: graphDrawer === 'open',
-                            },
-                        )}
-                        isActive={(location, params) =>
-                            get(location, 'url') === '/graph' &&
-                            get(params, 'pathname') !== '/graph'
-                        }
-                        activeClassName={styles.active}
-                    >
-                        {icon}
-                        {label}
-                    </NavLink>
-                )
             );
         case 'search':
             return (

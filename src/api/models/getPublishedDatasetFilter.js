@@ -1,12 +1,16 @@
 import compose from 'lodash.compose';
 
 export const addMatchToFilters = (match, searchableFieldNames) => filters => {
-    
-    if (filters.$and !== undefined) {
-        let filtersStr = JSON.stringify(filters);
+
+    let filtersStr = JSON.stringify(filters);
+    if (filters.$and !== undefined && filtersStr.includes('zY0l')) {
         let result = filtersStr.match(/({"versions.zY0l":")+([a-z]{3})+("})/);
         let idc = result[2];
-        let testStr = filtersStr.replace('{"versions.zY0l":"' + idc + '"}', '{"versions.zY0l":{"$regex":"' + idc + '","$options":"i"}}');
+
+        let testStr = filtersStr.replace(
+            '{"versions.zY0l":"' + idc + '"}',
+            '{"versions.zY0l":{"$regex":"' + idc + '","$options":"i"}}',
+        );
         filters = JSON.parse(testStr);
     }
     if (!match || !searchableFieldNames || !searchableFieldNames.length) {
@@ -21,11 +25,15 @@ export const addMatchToFilters = (match, searchableFieldNames) => filters => {
 
 export const addRegexToFilters = (match, searchableFieldNames) => filters => {
 
-    if (filters.$and !== undefined) {
-        let filtersStr = JSON.stringify(filters);
+    let filtersStr = JSON.stringify(filters);
+    if (filters.$and !== undefined && filtersStr.includes('zY0l')) {
         let result = filtersStr.match(/({"versions.zY0l":")+([a-z]{3})+("})/);
         let idc = result[2];
-        let testStr = filtersStr.replace('{"versions.zY0l":"' + idc + '"}', '{"versions.zY0l":{"$regex":"' + idc + '","$options":"i"}}');
+
+        let testStr = filtersStr.replace(
+            '{"versions.zY0l":"' + idc + '"}',
+            '{"versions.zY0l":{"$regex":"' + idc + '","$options":"i"}}',
+        );
         filters = JSON.parse(testStr);
     }
 
@@ -129,29 +137,15 @@ const getPublishedDatasetFilter = ({
     invertedFacets,
     regexSearch = false,
 }) => {
-    console.log('regexsearchinng ', regexSearch)
     const addSearchFilters = regexSearch
         ? addRegexToFilters
         : addMatchToFilters;
-    console.log('addSearchFilters5 ? ', addSearchFilters)
-        console.log('///////////// ', facets, facetFieldNames, invertedFacets)
-/*
-    console.log(
-        'regexsearch ',
-        compose(
-            addKeyToFilters('uri', uri),
-            addFieldsToFilters(matchableFields),
-            addSearchFilters(match, searchableFieldNames),
-            addFacetToFilters(facets, facetFieldNames, invertedFacets),
-        )({ removedAt: { $exists: false } }),
-    );*/
     return compose(
         addKeyToFilters('uri', uri),
         addFieldsToFilters(matchableFields),
         addSearchFilters(match, searchableFieldNames),
         addFacetToFilters(facets, facetFieldNames, invertedFacets),
     )({ removedAt: { $exists: false } });
-
 };
 
 export default getPublishedDatasetFilter;

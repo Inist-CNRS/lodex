@@ -55,6 +55,12 @@ const SearchBar = ({
 }) => {
     const refTextField = useRef(null);
 
+    if (
+        typeof window === 'undefined' ||
+        window.sessionStorage.getItem('PanistIdc') === null
+    ) {
+        value = polyglot.t('selectEtab');
+    }
     useEffect(() => {
         setTimeout(() => {
             refTextField.current.input.focus();

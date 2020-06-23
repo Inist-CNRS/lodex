@@ -147,11 +147,7 @@ export default (
                 window.sessionStorage.getItem('PanistIdc') === null &&
                 field.label === 'Couverture'
             ) {
-                return (
-                    <p style={styles.message}>
-                        Veuillez séléctioner votre établissement
-                    </p>
-                );
+                return <p style={styles.message}>{polyglot.t('selectEtab')}</p>;
             }
             if (
                 formatData != undefined &&

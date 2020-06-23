@@ -1,9 +1,11 @@
 import React from 'react';
 import Select from 'react-select';
-
 const liEtab = require('../../../config/listInstitutions.json');
 
-const options = liEtab;
+const strOptions = JSON.stringify(liEtab)
+    .replace(/"id"/g, '"value"')
+    .replace(/"text"/g, '"label"');
+const options = JSON.parse(strOptions);
 
 class DropDownEtabSelect extends React.Component {
     state = {
@@ -26,7 +28,7 @@ class DropDownEtabSelect extends React.Component {
         let etabName = window.sessionStorage.getItem('PanistEtabName');
         if (etabName !== null) return etabName;
 
-        return 'Séléctionnez votre établissement';
+        return 'Séléctionnez ici votre établissement';
     };
 
     render() {

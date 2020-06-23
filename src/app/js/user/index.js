@@ -278,7 +278,6 @@ export const getLoadContributedResourcePageRequest = (
 ) => {
     const encodedPage = encodeURIComponent(page);
     const encodedPerPage = encodeURIComponent(perPage);
-console.log('Filter ', filter);
     return getRequest(state, {
         url: `/api/publishedDataset/${filter}?page=${encodedPage}&perPage=${encodedPerPage}`,
     });
