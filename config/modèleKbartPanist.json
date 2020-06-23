@@ -55,6 +55,35 @@
         "name": "XXRn"
     },
     {
+        "label": "",
+        "format": {
+            "args": {
+                "level": 1
+            },
+            "name": "title"
+        },
+        "width": "100",
+        "cover": "dataset",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "Revue de sommaire PANIST"
+                    }
+                ]
+            }
+        ],
+        "position": 2,
+        "count": 0,
+        "display_in_home": true,
+        "overview": 100,
+        "scheme": "http://purl.org/dc/terms/title",
+        "name": "ExFk"
+    },
+    {
         "cover": "collection",
         "label": "Couverture",
         "display_in_list": false,
@@ -118,7 +147,7 @@
             }
         ],
         "classes": [],
-        "position": 2,
+        "position": 3,
         "overview": 0,
         "format": {
             "name": "istexSummary",
@@ -131,35 +160,6 @@
         },
         "count": 46766,
         "name": "BZSn"
-    },
-    {
-        "label": "",
-        "format": {
-            "args": {
-                "level": 1
-            },
-            "name": "title"
-        },
-        "width": "100",
-        "cover": "dataset",
-        "transformers": [
-            {
-                "operation": "VALUE",
-                "args": [
-                    {
-                        "name": "value",
-                        "type": "string",
-                        "value": "Revue de sommaire ISTEX"
-                    }
-                ]
-            }
-        ],
-        "position": 2,
-        "count": 0,
-        "display_in_home": true,
-        "overview": 100,
-        "scheme": "http://purl.org/dc/terms/title",
-        "name": "ExFk"
     },
     {
         "cover": "collection",
@@ -180,7 +180,7 @@
             }
         ],
         "classes": [],
-        "position": 3,
+        "position": 4,
         "overview": 0,
         "scheme": "http://purl.org/dc/terms/contributor",
         "count": 44315,
@@ -228,7 +228,7 @@
             }
         ],
         "classes": [],
-        "position": 4,
+        "position": 5,
         "overview": 0,
         "display_in_home": false,
         "isFacet": true,
@@ -255,7 +255,7 @@
             }
         ],
         "classes": [],
-        "position": 5,
+        "position": 6,
         "isFacet": true,
         "count": 46766,
         "width": "100",
@@ -283,7 +283,7 @@
             }
         ],
         "classes": [],
-        "position": 6,
+        "position": 7,
         "overview": 0,
         "format": {
             "args": {
@@ -304,7 +304,7 @@
     {
         "label": "Description",
         "scheme": "http://purl.org/dc/terms/description",
-        "position": 6,
+        "position": 8,
         "cover": "dataset",
         "transformers": [
             {
@@ -313,7 +313,7 @@
                     {
                         "name": "value",
                         "type": "string",
-                        "value": "Ce jeu correspond au choix de documenter des données ISTEX et plus particulièrement la liste des ressources acquises (journal, book series, serie, etc.). Pour le moment, nous ne présentons que les ressources présentes dans les fichiers kbart."
+                        "value": "Ce jeu correspond au choix de documenter des données PANIST et plus particulièrement la liste des ressources acquises (journal, book series, serie, etc.). Pour le moment, nous ne présentons que les ressources présentes dans les fichiers kbart."
                     }
                 ]
             }
@@ -351,7 +351,7 @@
             }
         ],
         "classes": [],
-        "position": 7,
+        "position": 9,
         "isFacet": true,
         "overview": 0,
         "count": 47806,
@@ -388,7 +388,7 @@
             }
         ],
         "classes": [],
-        "position": 8,
+        "position": 10,
         "overview": 3,
         "count": 8659,
         "format": {
@@ -430,7 +430,7 @@
             }
         ],
         "classes": [],
-        "position": 9,
+        "position": 11,
         "overview": 0,
         "count": 7735,
         "width": "100",
@@ -472,7 +472,7 @@
             }
         ],
         "classes": [],
-        "position": 10,
+        "position": 12,
         "overview": 2,
         "scheme": "http://purl.org/ontology/bibo/isbn",
         "width": "100",
@@ -514,7 +514,7 @@
             }
         ],
         "classes": [],
-        "position": 11,
+        "position": 13,
         "overview": 0,
         "scheme": "https://data.istex.fr/ontology/istex/#eISBN",
         "width": "100",
@@ -566,7 +566,7 @@
             }
         ],
         "classes": [],
-        "position": 12,
+        "position": 14,
         "overview": 0,
         "format": {
             "name": "link",
@@ -617,7 +617,7 @@
             }
         ],
         "classes": [],
-        "position": 13,
+        "position": 15,
         "overview": 0,
         "scheme": "http://purl.org/co/precededBy",
         "format": {
@@ -659,7 +659,7 @@
                 "diameter": 500
             }
         },
-        "position": 13,
+        "position": 16,
         "cover": "dataset",
         "transformers": [
             {
@@ -719,7 +719,7 @@
             }
         ],
         "classes": [],
-        "position": 14,
+        "position": 17,
         "overview": 0,
         "count": 251,
         "format": {
@@ -766,7 +766,7 @@
             }
         ],
         "classes": [],
-        "position": 15,
+        "position": 18,
         "isFacet": true,
         "count": 8704,
         "width": "50",
@@ -802,7 +802,7 @@
             }
         ],
         "classes": [],
-        "position": 16,
+        "position": 19,
         "isFacet": true,
         "count": 8707,
         "width": "50",
@@ -848,7 +848,7 @@
             }
         ],
         "classes": [],
-        "position": 17,
+        "position": 20,
         "overview": 0,
         "count": 2366,
         "format": {
@@ -903,7 +903,7 @@
             }
         ],
         "classes": [],
-        "position": 18,
+        "position": 21,
         "overview": 0,
         "format": {
             "name": "resourcesGrid",
@@ -948,9 +948,9 @@
             }
         ],
         "classes": [],
-        "position": 18,
+        "position": 22,
         "overview": 0,
-        "display_in_home": true,
+        "display_in_home": false,
         "format": {
             "name": "list",
             "args": {
@@ -994,7 +994,7 @@
             }
         ],
         "classes": [],
-        "position": 19,
+        "position": 23,
         "overview": 0,
         "count": 8694,
         "format": {
@@ -1058,7 +1058,7 @@
             }
         ],
         "classes": [],
-        "position": 20,
+        "position": 24,
         "count": 47962,
         "width": "50",
         "scheme": "http://purl.org/dc/terms/rights",
@@ -1093,7 +1093,7 @@
             }
         ],
         "classes": [],
-        "position": 21,
+        "position": 25,
         "isFacet": true,
         "count": 362,
         "width": "50",
@@ -1104,7 +1104,7 @@
         "label": "Editeur scientifique",
         "cover": "document",
         "contribution": true,
-        "position": 22,
+        "position": 26,
         "transformers": [
             {
                 "operation": "COLUMN",
@@ -1172,7 +1172,7 @@
             }
         ],
         "classes": [],
-        "position": 23,
+        "position": 27,
         "overview": 0,
         "count": 2365,
         "scheme": "http://purl.org/dc/terms/identifier",
@@ -1197,7 +1197,7 @@
             }
         ],
         "classes": [],
-        "position": 23,
+        "position": 28,
         "overview": 0,
         "scheme": "http://schema.org/image",
         "format": {
@@ -1207,7 +1207,7 @@
             "name": "image"
         },
         "count": 0,
-        "display_in_home": true,
+        "display_in_home": false,
         "width": "50",
         "name": "4cMz"
     },
@@ -1240,7 +1240,7 @@
             }
         ],
         "classes": [],
-        "position": 24,
+        "position": 29,
         "overview": 0,
         "count": 47696,
         "scheme": "http://schema.org/productID",
@@ -1264,10 +1264,10 @@
             }
         ],
         "classes": [],
-        "position": 25,
+        "position": 30,
         "overview": 0,
-        "name": "zY0l",
-        "isFacet": true
+        "isFacet": true,
+        "name": "zY0l"
     },
     {
         "cover": "dataset",
@@ -1288,7 +1288,7 @@
             }
         ],
         "classes": [],
-        "position": 27,
+        "position": 31,
         "overview": 0,
         "scheme": "http://purl.org/dc/terms/license",
         "language": "fr",
@@ -1300,7 +1300,7 @@
             "name": "linkImage"
         },
         "count": 0,
-        "display_in_home": true,
+        "display_in_home": false,
         "width": "50",
         "name": "r5xj"
     },
@@ -1323,7 +1323,7 @@
             }
         ],
         "classes": [],
-        "position": 31,
+        "position": 32,
         "overview": 0,
         "scheme": "http://purl.org/dc/terms/creator",
         "count": 0,
@@ -1344,13 +1344,13 @@
                     {
                         "name": "value",
                         "type": "string",
-                        "value": "Plateforme ISTEX"
+                        "value": "Plateforme PANIST"
                     }
                 ]
             }
         ],
         "classes": [],
-        "position": 32,
+        "position": 33,
         "overview": 0,
         "scheme": "http://purl.org/dc/terms/publisher",
         "count": 0,
@@ -1371,13 +1371,13 @@
                     {
                         "name": "value",
                         "type": "string",
-                        "value": "2018-11-07"
+                        "value": "2020-06-23"
                     }
                 ]
             }
         ],
         "classes": [],
-        "position": 33,
+        "position": 34,
         "overview": 0,
         "scheme": "http://purl.org/dc/terms/created",
         "count": 0,
@@ -1398,13 +1398,13 @@
                     {
                         "name": "value",
                         "type": "string",
-                        "value": "2019-01-14"
+                        "value": "2020-06-23"
                     }
                 ]
             }
         ],
         "classes": [],
-        "position": 34,
+        "position": 35,
         "overview": 0,
         "scheme": "http://purl.org/dc/terms/modified",
         "completes": null,
