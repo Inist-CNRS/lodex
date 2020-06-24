@@ -20,7 +20,7 @@ class VegaLiteView extends Component {
         let spec;
 
         try {
-            spec = JSON.parse(specTemplate);
+            spec = this.retroCompatibilityCheck(JSON.parse(specTemplate), data);
         } catch (e) {
             return <InvalidFormat format={field.format} value={e.message} />;
         }
@@ -29,6 +29,16 @@ class VegaLiteView extends Component {
                 <VegaLite spec={spec || {}} data={data} />
             </div>
         );
+    }
+
+    retroCompatibilityCheck(spec) {
+        // TODO Add compatibility for Area Charts
+        if (!spec.hasOwnProperty('data')) {
+            spec.data = {
+                name: 'values'
+            }
+        }
+        return spec
     }
 }
 
