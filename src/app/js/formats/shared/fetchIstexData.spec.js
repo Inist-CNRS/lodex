@@ -14,7 +14,7 @@ describe('fetchIstexData', () => {
                 }),
             ).toEqual({
                 url:
-                    'https://api.istex.fr/document/?q=value&from=35&size=5&output=id,arkIstex,title,publicationDate,author,host.genre,host.title',
+                    'https://api.istex.fr/document/?q=value&from=35&size=5&output=id,arkIstex,title,publicationDate,author,host.genre,host.title,host.pages.first,host.pages.last,host.volume,host.issue',
             });
         });
     });
@@ -31,7 +31,7 @@ describe('fetchIstexData', () => {
                 }),
             ).toEqual({
                 url:
-                    'https://api.istex.fr/document/?q=host.issn%3D%22value%22&from=35&size=5&output=id,arkIstex,title,publicationDate,author,host.genre,host.title',
+                    'https://api.istex.fr/document/?q=host.issn%3D%22value%22&from=35&size=5&output=id,arkIstex,title,publicationDate,author,host.genre,host.title,host.pages.first,host.pages.last,host.volume,host.issue',
             });
         });
     });

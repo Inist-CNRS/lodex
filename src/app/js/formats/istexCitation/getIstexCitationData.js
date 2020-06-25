@@ -1,14 +1,10 @@
 import get from 'lodash.get';
 
 import composeAsync from '../../../../common/lib/composeAsync';
-import { parseFetchResult } from '../shared/fetchIstexData';
+import { parseFetchResult, output } from '../shared/fetchIstexData';
 import fetch from '../../lib/fetch';
 import { HOST_TITLE } from '../istexSummary/constants';
-import {
-    buildIstexQuery,
-    getFilterQuery,
-    documentOutput,
-} from '../istexSummary/getIstexData';
+import { buildIstexQuery, getFilterQuery } from '../istexSummary/getIstexData';
 
 export const getCitationUrl = ({ resource, field, searchedField }) => {
     const value = resource[field.name];
@@ -20,8 +16,7 @@ export const getCitationUrl = ({ resource, field, searchedField }) => {
     return buildIstexQuery({
         query: getFilterQuery(searchedField, value),
         facet: `${HOST_TITLE}[10]`,
-        output: 'refBibs',
-        rankBy: 'qualityOverRelevance',
+        output,
         size: 10,
     });
 };
@@ -46,7 +41,7 @@ export const getCitationDocumentUrl = ({
             searchedField,
             value,
         )} AND ${HOST_TITLE}:"${name}"`,
-        output: documentOutput.join(','),
+        output,
         sortBy: documentSortBy,
         size: 10,
     }),
