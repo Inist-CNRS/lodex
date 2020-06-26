@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import VegaLite from 'react-vega-lite';
+import {VegaLite} from 'react-vega';
 import InvalidFormat from '../InvalidFormat';
 import injectData from '../injectData';
 import { field as fieldPropTypes } from '../../propTypes';
@@ -20,7 +20,7 @@ class VegaLiteView extends Component {
         let spec;
 
         try {
-            spec = JSON.parse(specTemplate);
+            spec = this.retroCompatibilityCheck(JSON.parse(specTemplate));
         } catch (e) {
             return <InvalidFormat format={field.format} value={e.message} />;
         }
@@ -29,6 +29,15 @@ class VegaLiteView extends Component {
                 <VegaLite spec={spec || {}} data={data} />
             </div>
         );
+    }
+    // function use for add property to spec if missing
+    retroCompatibilityCheck(spec) {
+        if (!spec.hasOwnProperty('data')) {
+            spec.data = {
+                name: 'values'
+            }
+        }
+        return spec
     }
 }
 
