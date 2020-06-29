@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import EnhancedTextarea from 'material-ui/TextField/EnhancedTextarea';
 
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import updateAdminArgs from '../shared/updateAdminArgs';
+import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 
 const styles = {
     container: {

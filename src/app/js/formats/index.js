@@ -24,7 +24,7 @@ import title from './title';
 import paragraph from './paragraph';
 import parallelCoordinatesChart from './parallel-coordinates';
 import sentence from './sentence';
-import vegaLite from './vega-lite/components/custom-chart';
+import vegaLite from './vega-lite';
 import resource from './lodex-resource';
 import lodexField from './lodex-field';
 import cartography from './cartography';
