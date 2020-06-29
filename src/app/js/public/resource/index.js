@@ -84,7 +84,7 @@ export const createResourceError = createAction(CREATE_RESOURCE_ERROR);
 export const defaultState = {
     resource: null,
     error: null,
-    loading: false,
+    loading: true,
     saving: false,
     addingField: false,
     hiding: false,
@@ -93,6 +93,10 @@ export const defaultState = {
 
 export default handleActions(
     {
+        [combineActions('@@INIT', PRE_LOAD_RESOURCE)]: state => ({
+            ...state,
+            loading: true,
+        }),
         LOAD_RESOURCE: state => ({
             ...state,
             resource: null,
