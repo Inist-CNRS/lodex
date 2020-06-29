@@ -24,7 +24,7 @@ import title from './title';
 import paragraph from './paragraph';
 import parallelCoordinatesChart from './parallel-coordinates';
 import sentence from './sentence';
-import vegaLite from './vega-lite';
+import vegaLite from './vega-lite/components/custom-chart';
 import resource from './lodex-resource';
 import lodexField from './lodex-field';
 import cartography from './cartography';
@@ -39,6 +39,7 @@ import streamgraph from './streamgraph';
 import hierarchy from './hierarchy';
 import checkPredicate from './checkPredicate';
 import istexCitation from './istexCitation';
+import vegaLiteBasicBarChart from './vega-lite/components/bar-chart';
 
 const components = {
     asterPlotChart,
@@ -77,6 +78,7 @@ const components = {
     streamgraph,
     hierarchy,
     istexCitation,
+    vegaLiteBasicBarChart,
 };
 
 export const FORMATS = Object.keys(components).sort();

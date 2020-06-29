@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import TextField from 'material-ui/TextField';
+import EnhancedTextarea from 'material-ui/TextField/EnhancedTextarea';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import updateAdminArgs from '../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
+import { polyglot as polyglotPropTypes } from '../../../../propTypes';
+import updateAdminArgs from '../../../shared/updateAdminArgs';
+import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 
 const styles = {
     container: {
@@ -101,7 +101,10 @@ class VegaLiteAdmin extends Component {
                 >
                     {polyglot.t('vega_validator')}
                 </a>
-                <TextField
+                <EnhancedTextarea
+                    multiline
+                    rows={6}
+                    rowsMax={12}
                     onChange={this.setSpecTemplate}
                     style={styles.input}
                     value={specTemplate}
