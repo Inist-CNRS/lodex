@@ -27,11 +27,17 @@ function CustomActionVegaLite(props) {
             editor: false,
         };
     }
-    return <Vega {...props} actions={actions} mode="vega-lite" />;
+
+    let spec = props.spec;
+    spec.data = props.data;
+
+    return <Vega spec={spec} actions={actions} mode="vega-lite" />;
 }
 
 CustomActionVegaLite.propTypes = {
     user: PropTypes.any,
+    spec: PropTypes.any.isRequired,
+    data: PropTypes.any.isRequired,
 };
 
 const mapStateToProps = state => {
