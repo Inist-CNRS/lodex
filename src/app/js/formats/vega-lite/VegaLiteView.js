@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import {VegaLite} from 'react-vega';
 import InvalidFormat from '../InvalidFormat';
 import injectData from '../injectData';
 import { field as fieldPropTypes } from '../../propTypes';
+import { CustomActionVegaLite } from './component/vega-component';
 
 const styles = {
     container: {
@@ -24,20 +24,22 @@ class VegaLiteView extends Component {
         } catch (e) {
             return <InvalidFormat format={field.format} value={e.message} />;
         }
+
         return (
             <div style={styles.container}>
-                <VegaLite spec={spec || {}} data={data} />
+                <CustomActionVegaLite spec={spec || {}} data={data} />
             </div>
         );
     }
-    // function use for add property to spec if missing
+
     retroCompatibilityCheck(spec) {
+        // eslint-disable-next-line no-prototype-builtins
         if (!spec.hasOwnProperty('data')) {
             spec.data = {
-                name: 'values'
-            }
+                name: 'values',
+            };
         }
-        return spec
+        return spec;
     }
 }
 
