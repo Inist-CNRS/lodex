@@ -28,7 +28,7 @@ function CustomActionVega(props) {
         };
     }
 
-    let spec = props.spec;
+    const spec = props.spec;
     spec.data = props.data;
 
     return <Vega spec={spec} actions={actions} mode="vega" />;
