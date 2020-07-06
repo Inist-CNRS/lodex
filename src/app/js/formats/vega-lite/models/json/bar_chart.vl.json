@@ -1,0 +1,53 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "mark": {
+    "type": "bar",
+    "size": 20
+  },
+  "encoding": {
+    "x": {
+      "field": "_id",
+      "type": "nominal",
+      "axis": {
+        "labelAngle": 0
+      },
+      "title": "Title"
+    },
+    "y": {
+      "field": "value",
+      "type": "quantitative",
+      "axis": {
+        "labelAngle": 0
+      },
+      "scale": {
+        "type": "linear"
+      },
+      "title": "Value"
+    },
+    "color": {
+      "field": "_id",
+      "scale": {
+        "range": [
+          "#1071AE"
+        ]
+      },
+      "type": "nominal",
+      "legend": null
+    },
+    "tooltip": [
+      {
+        "field": "_id",
+        "type": "nominal",
+        "title": "Category"
+      },
+      {
+        "field": "value",
+        "type": "quantitative",
+        "title": "Value"
+      }
+    ]
+  },
+  "data": {
+    "name": "values"
+  }
+}

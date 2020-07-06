@@ -31,7 +31,13 @@ function CustomActionVegaLite(props) {
     const spec = props.spec;
     spec.data = props.data;
 
-    return <Vega spec={spec} actions={actions} mode="vega-lite" />;
+    return (
+        <Vega
+            spec={JSON.parse(JSON.stringify(spec))}
+            actions={actions}
+            mode="vega-lite"
+        />
+    );
 }
 
 CustomActionVegaLite.propTypes = {

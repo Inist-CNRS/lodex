@@ -130,6 +130,7 @@
         "node-polyglot": "2.3.0",
         "qs": "6.5.2",
         "react": "16.12.0",
+        "react-container-dimensions": "1.4.1",
         "react-dom": "16.12.0",
         "react-event-timeline": "1.6.3",
         "react-helmet": "5.2.1",

@@ -3,7 +3,8 @@ import merge from '../lib/merge';
 
 import asterPlotChart from './asterPlotChart';
 import code from './code';
-import globalBarchart from './distributionChart/global-bar-chart/';
+//import globalBarchart from './distributionChart/global-bar-chart/';
+import globalBarchart from './vega-lite/component/bar-chart/';
 import globalPiechart from './distributionChart/global-pie-chart/';
 import globalRadarchart from './distributionChart/global-radar-chart/';
 import emphasedNumber from './emphased-number/';
