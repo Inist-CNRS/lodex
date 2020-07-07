@@ -23,7 +23,7 @@ describe('BasicChart', () => {
         expect(basicChart.padding).toStrictEqual({
             left: 0,
             right: 0,
-            top: 0,
+            top: 10,
             bottom: 0,
         });
     });
