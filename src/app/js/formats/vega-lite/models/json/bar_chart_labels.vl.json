@@ -1,0 +1,28 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "mark": {
+    "type": "text",
+    "color": "black",
+    "fontSize": 10,
+    "fontWeight": "bold",
+    "baseline": "middle",
+    "align": "left",
+    "dx": 3
+  },
+  "encoding": {
+    "x": {
+      "field": "value",
+      "type": "quantitative",
+      "axis": null
+    },
+    "y": {
+      "field": "_id",
+      "type": "nominal",
+      "title": ""
+    },
+    "text": {
+      "field": "value",
+      "type": "quantitative"
+    }
+  }
+}

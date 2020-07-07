@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isAdmin } from '../../../../user';
+import deepClone from 'lodash.clonedeep';
 
 function CustomActionVegaLite(props) {
     let actions;
@@ -31,19 +32,13 @@ function CustomActionVegaLite(props) {
     const spec = props.spec;
     spec.data = props.data;
 
-    return (
-        <Vega
-            spec={JSON.parse(JSON.stringify(spec))}
-            actions={actions}
-            mode="vega-lite"
-        />
-    );
+    return <Vega spec={deepClone(spec)} actions={actions} mode="vega-lite" />;
 }
 
 CustomActionVegaLite.propTypes = {
     user: PropTypes.any,
     spec: PropTypes.any.isRequired,
-    data: PropTypes.any.isRequired,
+    data: PropTypes.any,
 };
 
 const mapStateToProps = state => {

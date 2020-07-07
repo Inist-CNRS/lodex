@@ -11,6 +11,7 @@ import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
+import ToolTips from '../ToolTips';
 
 // set frond-end styles
 const styles = {
@@ -46,6 +47,10 @@ export const defaultArgs = {
     scale: 'linear',
     categoryMargin: 20,
     valueMargin: 20,
+    tooltip: false,
+    tooltipCategory: 'Category',
+    tooltipValue: 'Value',
+    labels: false,
 };
 
 class BarChartAdmin extends Component {
@@ -65,6 +70,11 @@ class BarChartAdmin extends Component {
             valueMargin: PropTypes.number,
             scale: PropTypes.oneOf(['log', 'linear']),
             direction: PropTypes.oneOf(['horizontal', 'vertical']),
+            barSize: PropTypes.number,
+            tooltip: PropTypes.bool,
+            tooltipCategory: PropTypes.string,
+            tooltipValue: PropTypes.string,
+            labels: PropTypes.bool,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -81,6 +91,8 @@ class BarChartAdmin extends Component {
     constructor(props) {
         super(props);
         this.setColors = this.setColors.bind(this);
+        this.setTooltipValue = this.setTooltipValue.bind(this);
+        this.setTooltipCategory = this.setTooltipCategory.bind(this);
         this.state = {
             colors: this.props.args.colors || defaultArgs.colors,
         };
@@ -132,6 +144,26 @@ class BarChartAdmin extends Component {
         );
     };
 
+    setBarSize = (_, barSize) => {
+        updateAdminArgs('barSize', barSize, this.props);
+    };
+
+    toggleTooltip = () => {
+        updateAdminArgs('tooltip', !this.props.args.tooltip, this.props);
+    };
+
+    toggleLabels = () => {
+        updateAdminArgs('labels', !this.props.args.labels, this.props);
+    };
+
+    setTooltipCategory(tooltipCategory) {
+        updateAdminArgs('tooltipCategory', tooltipCategory, this.props);
+    }
+
+    setTooltipValue(tooltipValue) {
+        updateAdminArgs('tooltipValue', tooltipValue, this.props);
+    }
+
     render() {
         const {
             p: polyglot,
@@ -144,6 +176,11 @@ class BarChartAdmin extends Component {
                 direction,
                 categoryMargin,
                 valueMargin,
+                barSize,
+                tooltip,
+                tooltipCategory,
+                tooltipValue,
+                labels,
             },
             showMaxSize = true,
             showMaxValue = true,
@@ -161,6 +198,15 @@ class BarChartAdmin extends Component {
                     showMaxValue={showMaxValue}
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
+                />
+                <ToolTips
+                    checked={tooltip}
+                    onChange={this.toggleTooltip}
+                    onCategoryTitleChange={this.setTooltipCategory}
+                    categoryTitle={tooltipCategory}
+                    onValueTitleChange={this.setTooltipValue}
+                    valueTitle={tooltipValue}
+                    polyglot={polyglot}
                 />
                 <ColorPickerParamsAdmin
                     colors={this.state.colors}
@@ -214,6 +260,12 @@ class BarChartAdmin extends Component {
                     style={styles.input}
                     checked={axisRoundValue}
                 />
+                <Checkbox
+                    label={polyglot.t('toggle_labels')}
+                    onCheck={this.toggleLabels}
+                    style={styles.input}
+                    checked={labels}
+                />
                 <SelectField
                     floatingLabelText={polyglot.t('scale')}
                     onChange={this.setScale}
@@ -226,6 +278,12 @@ class BarChartAdmin extends Component {
                     />
                     <MenuItem value="log" primaryText={polyglot.t('log')} />
                 </SelectField>
+                <TextField
+                    floatingLabelText={polyglot.t('bar_size')}
+                    onChange={this.setBarSize}
+                    style={styles.input}
+                    value={barSize}
+                />
             </div>
         );
     }

@@ -18,9 +18,34 @@ class BasicChart {
         this.padding = {
             left: 0,
             right: 0,
-            top: 0,
+            top: 10,
             bottom: 0,
         };
+        this.tooltip = {
+            toggle: false,
+            category: {
+                field: '_id',
+                type: 'nominal',
+                title: 'Category',
+            },
+            value: {
+                field: 'value',
+                type: 'quantitative',
+                title: 'Value',
+            },
+        };
+    }
+
+    setTooltip(bool) {
+        this.tooltip.toggle = bool;
+    }
+
+    setTooltipCategory(title) {
+        this.tooltip.category.title = title;
+    }
+
+    setTooltipValue(title) {
+        this.tooltip.value.title = title;
     }
 
     /**

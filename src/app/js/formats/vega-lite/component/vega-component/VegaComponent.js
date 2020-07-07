@@ -43,7 +43,7 @@ function CustomActionVega(props) {
 CustomActionVega.propTypes = {
     user: PropTypes.any,
     spec: PropTypes.any.isRequired,
-    data: PropTypes.any.isRequired,
+    data: PropTypes.any,
 };
 
 const mapStateToProps = state => {

@@ -41,6 +41,11 @@ class BarChartView extends Component {
         barChartSpec.setColor(this.props.colors);
         barChartSpec.setPadding(PADDING_LEFT, this.props.categoryMargin);
         barChartSpec.setPadding(PADDING_BOTTOM, this.props.valueMargin);
+        barChartSpec.setRoundValue(this.props.axisRoundValue);
+        barChartSpec.setTooltip(this.props.tooltip);
+        barChartSpec.setTooltipCategory(this.props.tooltipCategory);
+        barChartSpec.setTooltipValue(this.props.tooltipValue);
+        barChartSpec.setLabels(this.props.labels);
 
         const diagCat = this.props.diagonalCategoryAxis;
         if (diagCat) barChartSpec.setLabelAngle(AXIS_X, -45);
@@ -56,8 +61,8 @@ class BarChartView extends Component {
                         spec.width =
                             width -
                             (this.props.direction !== 'vertical'
-                                ? width / 4.25
-                                : width / 12);
+                                ? width * 0.26 + (width <= 820 ? 80 : 0)
+                                : width * 0.09);
                         spec.height =
                             (this.props.direction !== 'vertical' ? 20 : 0) *
                                 this.props.params.maxSize +
@@ -79,10 +84,15 @@ BarChartView.propTypes = {
     orderBy: PropTypes.string.isRequired,
     diagonalCategoryAxis: PropTypes.bool.isRequired,
     diagonalValueAxis: PropTypes.bool.isRequired,
-    categoryMargin: PropTypes.number.isRequired,
-    valueMargin: PropTypes.number.isRequired,
+    categoryMargin: PropTypes.string.isRequired,
+    valueMargin: PropTypes.string.isRequired,
     scale: PropTypes.string.isRequired,
     params: PropTypes.any.isRequired,
+    axisRoundValue: PropTypes.bool.isRequired,
+    tooltip: PropTypes.bool.isRequired,
+    tooltipCategory: PropTypes.string.isRequired,
+    tooltipValue: PropTypes.string.isRequired,
+    labels: PropTypes.string.isRequired,
 };
 
 BarChartView.defaultProps = {

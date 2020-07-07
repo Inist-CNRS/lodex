@@ -18,6 +18,7 @@ class BarChart extends BasicChart {
     constructor() {
         super();
         this.model = require('./json/bar_chart.vl.json');
+        this.labelsModel = require('./json/bar_chart_labels.vl.json');
         this.scale = 'linear';
         this.labelAngle = {
             x: 0,
@@ -34,10 +35,20 @@ class BarChart extends BasicChart {
         this.orderBy = VALUES_ASC;
         this.direction = AXIS_HORIZONTAL;
         this.size = 20;
+        this.round = false;
+        this.labels = false;
+    }
+
+    setRoundValue(round) {
+        this.round = round;
     }
 
     setSize(size) {
         this.size = size;
+    }
+
+    setLabels(labels) {
+        this.labels = labels;
     }
 
     /**
@@ -123,6 +134,7 @@ class BarChart extends BasicChart {
 
     buildSpec() {
         let model = this.model;
+        let labelsModel = this.labelsModel;
         model.encoding.color.scale.range = this.colors;
         model.encoding.y.scale.type = this.scale;
         model.encoding.x.type = this.type.x;
@@ -134,48 +146,92 @@ class BarChart extends BasicChart {
 
         switch (this.orderBy) {
             case VALUES_ASC:
-                model.encoding.x.sort =
+                labelsModel.encoding.y.sort = model.encoding.x.sort =
                     this.direction === AXIS_VERTICAL ? 'y' : 'x';
                 break;
             case VALUES_DESC:
-                model.encoding.x.sort =
+                labelsModel.encoding.y.sort = model.encoding.x.sort =
                     this.direction === AXIS_VERTICAL ? '-y' : '-x';
                 break;
             case LABEL_ASC:
-                model.encoding.x.sort =
+                labelsModel.encoding.y.sort = model.encoding.x.sort =
                     this.direction === AXIS_VERTICAL ? 'x' : 'y';
                 break;
             case LABEL_DESC:
-                model.encoding.x.sort =
+                labelsModel.encoding.y.sort = model.encoding.x.sort =
                     this.direction === AXIS_VERTICAL ? '-x' : '-y';
                 break;
             default:
                 break;
         }
 
-        let x, y;
-        if (this.direction === AXIS_VERTICAL) {
-            x = model.encoding.x;
-            y = model.encoding.y;
-        } else {
-            y = model.encoding.x;
-            x = model.encoding.y;
+        if (this.round) {
+            model.encoding.x.axis.tickMinStep = 1;
+            model.encoding.y.axis.tickMinStep = 1;
         }
 
-        return {
-            mark: {
-                type: model.mark.type,
-            },
-            encoding: {
-                x: x,
-                y: y,
-                color: model.encoding.color,
-                tooltip: model.encoding.tooltip,
-            },
-            data: {
-                name: this.model.data.name,
-            },
+        let x, y, lx, ly;
+        if (this.direction === AXIS_VERTICAL) {
+            x = model.encoding.x;
+            lx = labelsModel.encoding.y;
+            y = model.encoding.y;
+            ly = labelsModel.encoding.x;
+            labelsModel.mark.align = 'center';
+            labelsModel.mark.baseline = 'bottom';
+        } else {
+            y = model.encoding.x;
+            ly = labelsModel.encoding.y;
+            x = model.encoding.y;
+            lx = labelsModel.encoding.x;
+        }
+
+        const labelsEncoding = {
+            x: lx,
+            y: ly,
+            text: labelsModel.encoding.text,
         };
+
+        const encoding = {
+            x: x,
+            y: y,
+            color: model.encoding.color,
+        };
+
+        if (this.tooltip.toggle) {
+            encoding.tooltip = [this.tooltip.category, this.tooltip.value];
+        }
+
+        if (!this.labels) {
+            return {
+                mark: {
+                    type: model.mark.type,
+                },
+                encoding: encoding,
+                padding: this.padding,
+                data: {
+                    name: this.model.data.name,
+                },
+            };
+        } else {
+            return {
+                layer: [
+                    {
+                        mark: {
+                            type: model.mark.type,
+                        },
+                        encoding: encoding,
+                    },
+                    {
+                        mark: labelsModel.mark,
+                        encoding: labelsEncoding,
+                    },
+                ],
+                padding: this.padding,
+                data: {
+                    name: this.model.data.name,
+                },
+            };
+        }
     }
 }
 

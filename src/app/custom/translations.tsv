@@ -466,3 +466,7 @@
 "clear_all"	"Clear All"	"Tout supprimer"
 "similar"	"similar"	"similaire"
 "istexCitation"	"Other - ISTEX Citation"	"Autre - RefBibs ISTEX"
+"toggle_tooltip"	"Display Tooltip"	"Afficher le tooltip"
+"tooltip_category"	"Tooltip: Category title"	"Tooltip: Titre des categorie"
+"tooltip_value"	"Tooltip: Value title"	"Tooltip: Titre des valeurs"
+"toggle_labels"	"display labels"	"afficher les labels"
