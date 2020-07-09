@@ -37,8 +37,8 @@ export const defaultArgs = {
     colorScheme: schemeOrRd[9],
     flipAxis: false,
     tooltip: false,
-    tooltipSource: 'Category',
-    tooltipTarget: 'Value',
+    tooltipSource: 'Source',
+    tooltipTarget: 'Target',
     tooltipWeight: 'Weight',
 };
 

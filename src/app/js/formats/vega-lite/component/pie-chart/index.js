@@ -1,7 +1,7 @@
 import DefaultFormat from '../../../DefaultFormat';
-import Component from './BarChartView';
-import AdminComponent, { defaultArgs } from './BarChartAdmin';
-import Icon from './BarChartIcon';
+import Component from './PieChartView';
+import AdminComponent, { defaultArgs } from './PieChartAdmin';
+import Icon from './PieChartIcon';
 
 export default {
     ...DefaultFormat,

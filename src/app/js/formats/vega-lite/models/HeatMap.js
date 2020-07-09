@@ -48,7 +48,7 @@ class HeatMap extends BasicChart {
         this.flip = flip;
     }
 
-    buildSpec() {
+    buildSpec(widthIn) {
         const layer1 = this.model.layer[0];
 
         layer1.encoding.color.scale.range = this.colors;
@@ -76,6 +76,9 @@ class HeatMap extends BasicChart {
         }
 
         this.model.padding = this.padding;
+
+        this.model.width = this.model.height =
+            widthIn * (widthIn <= 920 ? 0.5 : 0.7);
 
         return this.model;
     }

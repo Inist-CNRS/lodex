@@ -1,0 +1,39 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "A simple pie chart with labels.",
+  "data": {
+    "values": [
+      {"_id": "04 - 10 pays et plus", "value": 7},
+      {"_id": "03 - 5 à 9 pays", "value": 57},
+      {"_id": "01 - 1 seul pays", "value": 123},
+      {"_id": "02 - 2 à 4 pays", "value": 297}
+    ]
+  },
+  "encoding": {
+    "theta": {"field": "value", "type": "quantitative", "stack": true},
+    "color": {
+      "field": "_id",
+      "type": "nominal",
+      "legend": {
+        "orient": "none",
+        "title": null,
+        "columns": 1,
+        "legendX": 250,
+        "legendY": 80
+      },
+      "scale": {
+        "range": [
+          "#1071AE"
+        ]
+      }
+    }
+  },
+  "layer": [
+    {"mark": {"type": "arc", "outerRadius": 80}},
+    {
+      "mark": {"type": "text", "radius": 90, "fill": "black"},
+      "encoding": {"text": {"field": "value", "type": "nominal"}}
+    }
+  ],
+  "view": {"stroke": null}
+}

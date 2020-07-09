@@ -1,7 +1,7 @@
 import DefaultFormat from '../../../DefaultFormat';
 import Component from './HeatMapView';
 import AdminComponent, { defaultArgs } from './HeatMapAdmin';
-import Icon from '../../VegaLiteIcon';
+import Icon from './HeatmapIcon';
 
 export default {
     ...DefaultFormat,

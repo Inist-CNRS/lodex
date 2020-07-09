@@ -74,6 +74,9 @@ describe('BasicChart', () => {
                     type: 'nominal',
                 },
             },
+            height: {
+                step: 20,
+            },
             mark: {
                 type: 'bar',
             },
@@ -83,8 +86,9 @@ describe('BasicChart', () => {
                 right: 0,
                 top: 10,
             },
+            width: 70,
         };
-        expect(barChart.buildSpec()).toStrictEqual(defaultBuild);
+        expect(barChart.buildSpec(200)).toStrictEqual(defaultBuild);
     });
 
     it('Testing default and updated order', function() {

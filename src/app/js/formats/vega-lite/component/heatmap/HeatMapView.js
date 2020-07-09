@@ -17,6 +17,7 @@ const styles = {
 
 class HeatMapView extends Component {
     render() {
+        const data = this.props.data;
         const heatMap = new HeatMap();
 
         heatMap.setColor(this.props.colorScheme.join(' '));
@@ -26,20 +27,12 @@ class HeatMapView extends Component {
         heatMap.setTooltipTarget(this.props.tooltipTarget);
         heatMap.setTooltipValue(this.props.tooltipWeight);
 
-        const spec = heatMap.buildSpec();
-
         return (
             <div style={styles.container}>
                 <ContainerDimensions>
                     {({ width }) => {
-                        spec.width = width * (width <= 800 ? 0.5 : 0.7);
-                        spec.height = width * (width <= 800 ? 0.5 : 0.7);
-                        return (
-                            <CustomActionVegaLite
-                                spec={spec}
-                                data={this.props.data}
-                            />
-                        );
+                        const spec = heatMap.buildSpec(width);
+                        return <CustomActionVegaLite spec={spec} data={data} />;
                     }}
                 </ContainerDimensions>
             </div>
