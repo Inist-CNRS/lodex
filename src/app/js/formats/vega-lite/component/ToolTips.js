@@ -18,6 +18,9 @@ class ToolTips extends Component {
         onValueTitleChange: PropTypes.func.isRequired,
         valueTitle: PropTypes.string.isRequired,
         polyglot: polyglotPropTypes.isRequired,
+        thirdValue: PropTypes.bool.isRequired,
+        thirdValueTitle: PropTypes.string,
+        onThirdValueChange: PropTypes.func,
     };
 
     constructor(props) {
@@ -27,6 +30,10 @@ class ToolTips extends Component {
             checked: this.props.checked,
             categoryTitle: this.props.categoryTitle,
             valueTitle: this.props.valueTitle,
+            thirdValueTitle:
+                this.props.thirdValueTitle === undefined
+                    ? ''
+                    : this.props.thirdValueTitle,
         };
     }
 
@@ -36,6 +43,7 @@ class ToolTips extends Component {
             checked: target.checked,
             categoryTitle: this.state.categoryTitle,
             valueTitle: this.state.valueTitle,
+            thirdValueTitle: this.state.thirdValueTitle,
         });
         this.props.onChange(target.checked);
     }
@@ -46,6 +54,7 @@ class ToolTips extends Component {
             checked: this.state.checked,
             categoryTitle: target.value,
             valueTitle: this.state.valueTitle,
+            thirdValueTitle: this.state.thirdValueTitle,
         });
         this.props.onCategoryTitleChange(target.value);
     }
@@ -56,18 +65,48 @@ class ToolTips extends Component {
             checked: this.state.checked,
             categoryTitle: this.state.categoryTitle,
             valueTitle: target.value,
+            thirdValueTitle: this.state.thirdValueTitle,
         });
         this.props.onValueTitleChange(target.value);
     }
 
+    onThirdValueChange(e) {
+        const target = e.target;
+        this.setState({
+            checked: this.state.checked,
+            categoryTitle: this.state.categoryTitle,
+            valueTitle: this.state.valueTitle,
+            thirdValueTitle: target.value,
+        });
+        this.props.onThirdValueChange(target.value);
+    }
+
     createUserInterface() {
         const checked = this.state.checked;
+
+        const thirdValue = () => {
+            if (this.props.thirdValue) {
+                return (
+                    <TextField
+                        floatingLabelText={this.props.polyglot.t(
+                            'tooltip_third_3',
+                        )}
+                        value={this.state.thirdValueTitle}
+                        onChange={this.onThirdValueChange.bind(this)}
+                        style={styles.input}
+                    />
+                );
+            }
+        };
+
         if (checked) {
             return (
                 <div>
                     <TextField
                         floatingLabelText={this.props.polyglot.t(
-                            'tooltip_category',
+                            this.props.thirdValue
+                                ? 'tooltip_third_1'
+                                : 'tooltip_category',
                         )}
                         value={this.state.categoryTitle}
                         onChange={this.onCategoryTitleChange.bind(this)}
@@ -75,12 +114,15 @@ class ToolTips extends Component {
                     />
                     <TextField
                         floatingLabelText={this.props.polyglot.t(
-                            'tooltip_value',
+                            this.props.thirdValue
+                                ? 'tooltip_third_2'
+                                : 'tooltip_value',
                         )}
                         value={this.state.valueTitle}
                         onChange={this.onValueTitleChange.bind(this)}
                         style={styles.input}
                     />
+                    {thirdValue()}
                 </div>
             );
         }

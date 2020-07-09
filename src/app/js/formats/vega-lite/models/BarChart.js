@@ -132,7 +132,7 @@ class BarChart extends BasicChart {
         this.direction = axisDirection;
     }
 
-    buildSpec() {
+    buildSpec(widthIn) {
         let model = this.model;
         let labelsModel = this.labelsModel;
         model.encoding.color.scale.range = this.colors;
@@ -176,8 +176,6 @@ class BarChart extends BasicChart {
             lx = labelsModel.encoding.y;
             y = model.encoding.y;
             ly = labelsModel.encoding.x;
-            labelsModel.mark.align = 'center';
-            labelsModel.mark.baseline = 'bottom';
         } else {
             y = model.encoding.x;
             ly = labelsModel.encoding.y;
@@ -201,35 +199,63 @@ class BarChart extends BasicChart {
             encoding.tooltip = [this.tooltip.category, this.tooltip.value];
         }
 
+        let width, height;
+
+        if (this.direction === AXIS_VERTICAL) {
+            width = widthIn - widthIn * 0.09 - (!this.labels ? 30 : 0);
+            height = 300;
+            encoding.size = {
+                value: this.size,
+            };
+        } else {
+            width = widthIn - widthIn * 0.25 - (widthIn <= 800 ? 80 : 0);
+            height = { step: this.size };
+        }
+
         if (!this.labels) {
             return {
-                mark: {
-                    type: model.mark.type,
-                },
+                mark: model.mark,
                 encoding: encoding,
                 padding: this.padding,
                 data: {
                     name: this.model.data.name,
                 },
+                width: width,
+                height: height,
             };
         } else {
+            const mark = labelsModel.mark;
+            if (this.direction !== AXIS_VERTICAL) {
+                mark.dx = 4;
+                mark.dy = 0;
+                mark.baseline = 'middle';
+                mark.align = 'left';
+            } else {
+                mark.dx = 0;
+                mark.baseline = 'bottom';
+                mark.align = 'center';
+            }
+
             return {
                 layer: [
                     {
-                        mark: {
-                            type: model.mark.type,
-                        },
+                        mark: model.mark,
                         encoding: encoding,
                     },
                     {
-                        mark: labelsModel.mark,
+                        mark: mark,
                         encoding: labelsEncoding,
                     },
                 ],
                 padding: this.padding,
+                config: {
+                    view: { strokeWidth: 0 },
+                },
                 data: {
                     name: this.model.data.name,
                 },
+                width: width,
+                height: height,
             };
         }
     }

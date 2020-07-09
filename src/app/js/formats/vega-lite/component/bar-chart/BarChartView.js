@@ -46,27 +46,18 @@ class BarChartView extends Component {
         barChartSpec.setTooltipCategory(this.props.tooltipCategory);
         barChartSpec.setTooltipValue(this.props.tooltipValue);
         barChartSpec.setLabels(this.props.labels);
+        barChartSpec.setSize(this.props.barSize);
 
-        const diagCat = this.props.diagonalCategoryAxis;
-        if (diagCat) barChartSpec.setLabelAngle(AXIS_X, -45);
-        const diagVal = this.props.diagonalValueAxis;
-        if (diagVal) barChartSpec.setLabelAngle(AXIS_Y, -45);
-
-        let spec = barChartSpec.buildSpec();
+        if (this.props.diagonalCategoryAxis)
+            barChartSpec.setLabelAngle(AXIS_X, -45);
+        if (this.props.diagonalValueAxis)
+            barChartSpec.setLabelAngle(AXIS_Y, -45);
 
         return (
             <div style={styles.container}>
                 <ContainerDimensions>
                     {({ width }) => {
-                        spec.width =
-                            width -
-                            (this.props.direction !== 'vertical'
-                                ? width * 0.26 + (width <= 820 ? 80 : 0)
-                                : width * 0.09);
-                        spec.height =
-                            (this.props.direction !== 'vertical' ? 20 : 0) *
-                                this.props.params.maxSize +
-                            300;
+                        const spec = barChartSpec.buildSpec(width);
                         return <CustomActionVegaLite spec={spec} data={data} />;
                     }}
                 </ContainerDimensions>
@@ -93,6 +84,7 @@ BarChartView.propTypes = {
     tooltipCategory: PropTypes.string.isRequired,
     tooltipValue: PropTypes.string.isRequired,
     labels: PropTypes.string.isRequired,
+    barSize: PropTypes.number.isRequired,
 };
 
 BarChartView.defaultProps = {

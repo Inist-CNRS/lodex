@@ -6,8 +6,7 @@
     "fontSize": 10,
     "fontWeight": "bold",
     "baseline": "middle",
-    "align": "left",
-    "dx": 3
+    "align": "left"
   },
   "encoding": {
     "x": {

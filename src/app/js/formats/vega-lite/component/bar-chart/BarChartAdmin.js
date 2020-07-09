@@ -207,6 +207,7 @@ class BarChartAdmin extends Component {
                     onValueTitleChange={this.setTooltipValue}
                     valueTitle={tooltipValue}
                     polyglot={polyglot}
+                    thirdValue={false}
                 />
                 <ColorPickerParamsAdmin
                     colors={this.state.colors}
