@@ -15,8 +15,12 @@ class PieChart extends BasicChart {
                 this.tooltip.value,
             ];
 
-        this.model.width = this.model.height =
+        this.model.width = widthIn * (widthIn <= 920 ? 0.5 : 0.7);
+
+        this.model.encoding.color.legend.legendX =
             widthIn * (widthIn <= 920 ? 0.5 : 0.7);
+
+        this.model.height = 300;
 
         return this.model;
     }

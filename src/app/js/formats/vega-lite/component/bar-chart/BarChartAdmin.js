@@ -51,6 +51,7 @@ export const defaultArgs = {
     tooltipCategory: 'Category',
     tooltipValue: 'Value',
     labels: false,
+    barSize: 20,
 };
 
 class BarChartAdmin extends Component {

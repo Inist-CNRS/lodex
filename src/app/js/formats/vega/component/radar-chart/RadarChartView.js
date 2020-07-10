@@ -17,7 +17,16 @@ const styles = {
 
 class RadarChartView extends Component {
     render() {
-        const data = this.props.data;
+        let data = this.props.data;
+
+        if (data === undefined) {
+            data = {};
+        } else {
+            data.values.forEach(e => {
+                e.category = 0;
+            });
+        }
+
         const radarChart = new RadarChart();
         radarChart.setColors(this.props.colors.split(' '));
 
@@ -54,9 +63,6 @@ const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
         return {};
     }
-    formatData.forEach(e => {
-        e.category = 0;
-    });
     return {
         data: {
             values: formatData,
