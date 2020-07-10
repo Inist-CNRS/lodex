@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import ContainerDimensions from 'react-container-dimensions';
 import PieChart from '../../models/PieChart';
-import { CustomActionVegaLite } from '../vega-component';
+import { CustomActionVegaLite } from '../vega-lite-component';
 
 const styles = {
     container: {

@@ -16,7 +16,7 @@ import {
     PADDING_LEFT,
 } from '../../chartsUtils';
 import BarChart from '../../models/BarChart';
-import { CustomActionVegaLite } from '../vega-component';
+import { CustomActionVegaLite } from '../vega-lite-component';
 
 const styles = {
     container: {

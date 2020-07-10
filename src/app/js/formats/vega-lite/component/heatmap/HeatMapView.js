@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CustomActionVegaLite } from '../vega-component';
+import { CustomActionVegaLite } from '../vega-lite-component';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';

@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import InvalidFormat from '../InvalidFormat';
 import injectData from '../injectData';
 import { field as fieldPropTypes } from '../../propTypes';
-import { CustomActionVegaLite } from './component/vega-component';
+import { CustomActionVegaLite } from './component/vega-lite-component';
 
 const styles = {
     container: {
