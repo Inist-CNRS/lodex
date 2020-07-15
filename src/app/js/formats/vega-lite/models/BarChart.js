@@ -208,7 +208,11 @@ class BarChart extends BasicChart {
                 value: parseInt(this.size),
             };
         } else {
-            width = widthIn - widthIn * 0.25 - (widthIn <= 800 ? 80 : 0);
+            width =
+                widthIn -
+                widthIn * 0.25 -
+                (widthIn <= 800 ? 80 : 0) -
+                (this.labelAngle.x !== 0 ? 80 : 0);
             height = { step: parseInt(this.size) };
         }
 

@@ -471,5 +471,5 @@
 "tooltip_value"	"Tooltip: Value title"	"Info-bulle : Titre des valeurs"
 "toggle_labels"	"display labels"	"afficher les labels"
 "tooltip_third_1"	"Tooltip: source"	"Info-bulle : source"
-"tooltip_third_2"	"Tooltip: target"	"Info-bulle : distination"
+"tooltip_third_2"	"Tooltip: target"	"Info-bulle : destination"
 "tooltip_third_3"	"Tooltip: weight"	"Info-bulle : poids"

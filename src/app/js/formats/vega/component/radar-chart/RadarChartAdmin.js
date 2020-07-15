@@ -10,6 +10,7 @@ import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
+import ToolTips from '../../../vega-lite/component/ToolTips';
 
 const styles = {
     container: {
@@ -31,6 +32,9 @@ export const defaultArgs = {
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
     axisRoundValue: true,
     scale: 'linear',
+    tooltip: false,
+    tooltipCategory: 'Category',
+    tooltipValue: 'Value',
 };
 
 class RadarChartAdmin extends Component {
@@ -45,6 +49,9 @@ class RadarChartAdmin extends Component {
             colors: PropTypes.string,
             axisRoundValue: PropTypes.bool,
             scale: PropTypes.oneOf(['log', 'linear']),
+            tooltip: PropTypes.bool,
+            tooltipCategory: PropTypes.string,
+            tooltipValue: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -61,6 +68,8 @@ class RadarChartAdmin extends Component {
     constructor(props) {
         super(props);
         this.setColors = this.setColors.bind(this);
+        this.setTooltipValue = this.setTooltipValue.bind(this);
+        this.setTooltipCategory = this.setTooltipCategory.bind(this);
         this.state = {
             colors: this.props.args.colors || defaultArgs.colors,
         };
@@ -90,6 +99,18 @@ class RadarChartAdmin extends Component {
         );
     }
 
+    toggleTooltip = () => {
+        updateAdminArgs('tooltip', !this.props.args.tooltip, this.props);
+    };
+
+    setTooltipCategory(tooltipCategory) {
+        updateAdminArgs('tooltipCategory', tooltipCategory, this.props);
+    }
+
+    setTooltipValue(tooltipValue) {
+        updateAdminArgs('tooltipValue', tooltipValue, this.props);
+    }
+
     render() {
         const {
             p: polyglot,
@@ -98,7 +119,14 @@ class RadarChartAdmin extends Component {
             showMinValue = true,
             showOrderBy = true,
         } = this.props;
-        const { params, axisRoundValue, scale } = this.props.args;
+        const {
+            params,
+            axisRoundValue,
+            scale,
+            tooltip,
+            tooltipValue,
+            tooltipCategory,
+        } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -110,6 +138,16 @@ class RadarChartAdmin extends Component {
                     showMaxValue={showMaxValue}
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
+                />
+                <ToolTips
+                    checked={tooltip}
+                    onChange={this.toggleTooltip}
+                    onCategoryTitleChange={this.setTooltipCategory}
+                    categoryTitle={tooltipCategory}
+                    onValueTitleChange={this.setTooltipValue}
+                    valueTitle={tooltipValue}
+                    polyglot={polyglot}
+                    thirdValue={false}
                 />
                 <ColorPickerParamsAdmin
                     colors={this.state.colors}

@@ -19,9 +19,7 @@ class RadarChartView extends Component {
     render() {
         let data = this.props.data;
 
-        if (data === undefined) {
-            data = {};
-        } else {
+        if (data !== undefined) {
             data.values.forEach(e => {
                 e.category = 0;
             });
@@ -29,6 +27,9 @@ class RadarChartView extends Component {
 
         const radarChart = new RadarChart();
         radarChart.setColors(this.props.colors.split(' '));
+        radarChart.setTooltip(this.props.tooltip);
+        radarChart.setTooltipCategory(this.props.tooltipCategory);
+        radarChart.setTooltipValue(this.props.tooltipValue);
 
         return (
             <div style={styles.container}>
@@ -53,6 +54,9 @@ RadarChartView.propTypes = {
     resource: PropTypes.object.isRequired,
     data: PropTypes.any,
     colors: PropTypes.string.isRequired,
+    tooltip: PropTypes.bool.isRequired,
+    tooltipCategory: PropTypes.string.isRequired,
+    tooltipValue: PropTypes.string.isRequired,
 };
 
 RadarChartView.defaultProps = {
@@ -61,7 +65,11 @@ RadarChartView.defaultProps = {
 
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
-        return {};
+        return {
+            data: {
+                values: [],
+            },
+        };
     }
     return {
         data: {
