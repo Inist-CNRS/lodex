@@ -205,11 +205,11 @@ class BarChart extends BasicChart {
             width = widthIn - widthIn * 0.09 - (!this.labels ? 30 : 0);
             height = 300;
             encoding.size = {
-                value: this.size,
+                value: parseInt(this.size),
             };
         } else {
             width = widthIn - widthIn * 0.25 - (widthIn <= 800 ? 80 : 0);
-            height = { step: this.size };
+            height = { step: parseInt(this.size) };
         }
 
         if (!this.labels) {
