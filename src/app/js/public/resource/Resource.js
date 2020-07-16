@@ -107,7 +107,7 @@ export class ResourceComponent extends Component {
             />
         );
 
-        if (!resource) {
+        if (!resource && !loading) {
             return (
                 <div className="not-found">
                     <Card>

@@ -21,6 +21,7 @@ services:
             - mongo
         ports:
             - 3000:3000
+            - 9229:9229
         command: npm run development:api
 
     dev-server: ## Enable hot-reload in development
