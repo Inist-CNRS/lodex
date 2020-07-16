@@ -20,6 +20,11 @@ class PieChartView extends Component {
         const data = this.props.data;
         const pieChart = new PieChart();
 
+        let count = 1;
+        data.values.forEach(e => {
+            e.order = count++;
+        });
+
         pieChart.setTooltip(this.props.tooltip);
         pieChart.setTooltipCategory(this.props.tooltipCategory);
         pieChart.setTooltipValue(this.props.tooltipValue);
@@ -54,7 +59,11 @@ PieChartView.defaultProps = {
 
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
-        return {};
+        return {
+            data: {
+                values: [],
+            },
+        };
     }
     return {
         data: {

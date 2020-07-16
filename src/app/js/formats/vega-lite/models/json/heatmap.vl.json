@@ -43,7 +43,8 @@
         "labelPadding": 10,
         "title": ""
       },
-      "type": "nominal"
+      "type": "nominal",
+      "sort": "x"
     },
     "y": {
       "field": "target",
@@ -52,7 +53,8 @@
         "title": "",
         "labelPadding": 10
       },
-      "type": "nominal"
+      "type": "nominal",
+      "sort": "y"
     }
   },
   "layer": [

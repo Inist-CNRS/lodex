@@ -41,7 +41,7 @@ class RadarChartView extends Component {
                                 e.values = data.values;
                             }
                         });
-                        return <CustomActionVega spec={spec} data={data} />;
+                        return <CustomActionVega spec={spec} />;
                     }}
                 </ContainerDimensions>
             </div>

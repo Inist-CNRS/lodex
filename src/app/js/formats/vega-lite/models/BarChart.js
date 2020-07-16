@@ -202,7 +202,11 @@ class BarChart extends BasicChart {
         let width, height;
 
         if (this.direction === AXIS_VERTICAL) {
-            width = widthIn - widthIn * 0.09 - (!this.labels ? 30 : 0);
+            width =
+                widthIn -
+                widthIn * 0.09 -
+                (!this.labels ? 30 : 0) -
+                (this.padding.right + this.padding.left);
             height = 300;
             encoding.size = {
                 value: parseInt(this.size),
@@ -212,7 +216,8 @@ class BarChart extends BasicChart {
                 widthIn -
                 widthIn * 0.25 -
                 (widthIn <= 800 ? 80 : 0) -
-                (this.labelAngle.x !== 0 ? 80 : 0);
+                (this.labelAngle.x !== 0 ? 80 : 0) -
+                (this.padding.right + this.padding.left);
             height = { step: parseInt(this.size) };
         }
 

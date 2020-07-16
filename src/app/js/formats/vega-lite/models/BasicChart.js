@@ -56,16 +56,16 @@ class BasicChart {
     setPadding(side, size) {
         switch (side) {
             case PADDING_LEFT:
-                this.padding.left = size;
+                this.padding.left = parseInt(size);
                 break;
             case PADDING_RIGHT:
-                this.padding.right = size;
+                this.padding.right = parseInt(size);
                 break;
             case PADDING_TOP:
-                this.padding.top = size;
+                this.padding.top = parseInt(size);
                 break;
             case PADDING_BOTTOM:
-                this.padding.bottom = size;
+                this.padding.bottom = parseInt(size);
                 break;
             default:
                 throw 'Illegal state: The side given is not a valid side !';

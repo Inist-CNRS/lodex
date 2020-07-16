@@ -1,4 +1,5 @@
 import BasicChart from './BasicChart';
+import { LABEL_ASC, LABEL_DESC } from '../chartsUtils';
 
 class HeatMap extends BasicChart {
     constructor() {
@@ -30,6 +31,8 @@ class HeatMap extends BasicChart {
                 type: 'quantitative',
             },
         };
+
+        this.orderBy = LABEL_ASC;
     }
 
     setTooltipValue(title) {
@@ -42,6 +45,10 @@ class HeatMap extends BasicChart {
 
     setTooltipTarget(title) {
         this.tooltip.target.title = title;
+    }
+
+    setOrderBy(orderBy) {
+        this.orderBy = orderBy;
     }
 
     flipAxis(flip) {
@@ -73,6 +80,17 @@ class HeatMap extends BasicChart {
                 this.tooltip.target,
                 this.tooltip.weight,
             ];
+        }
+
+        switch (this.orderBy) {
+            case LABEL_ASC:
+                this.model.encoding.x.sort = 'x';
+                this.model.encoding.y.sort = 'y';
+                break;
+            case LABEL_DESC:
+                this.model.encoding.x.sort = '-x';
+                this.model.encoding.y.sort = '-y';
+                break;
         }
 
         this.model.padding = this.padding;

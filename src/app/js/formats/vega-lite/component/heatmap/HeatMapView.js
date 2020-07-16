@@ -7,6 +7,7 @@ import HeatMap from '../../models/HeatMap';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
 import ContainerDimensions from 'react-container-dimensions';
+import { lodexOrderToIdOrder } from '../../chartsUtils';
 
 const styles = {
     container: {
@@ -21,6 +22,7 @@ class HeatMapView extends Component {
         const heatMap = new HeatMap();
 
         heatMap.setColor(this.props.colorScheme.join(' '));
+        heatMap.setOrderBy(lodexOrderToIdOrder(this.props.params.orderBy));
         heatMap.flipAxis(this.props.flipAxis);
         heatMap.setTooltip(this.props.tooltip);
         heatMap.setTooltipCategory(this.props.tooltipSource);
@@ -44,6 +46,7 @@ HeatMapView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
     data: PropTypes.any,
+    params: PropTypes.any.isRequired,
     colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
     flipAxis: PropTypes.bool.isRequired,
     tooltip: PropTypes.bool.isRequired,

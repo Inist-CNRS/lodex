@@ -26,6 +26,9 @@
           "#1071AE"
         ]
       }
+    },
+    "order": {
+      "field": "order", "type": "quantitative"
     }
   },
   "layer": [
