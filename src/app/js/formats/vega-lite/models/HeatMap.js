@@ -56,15 +56,14 @@ class HeatMap extends BasicChart {
     }
 
     buildSpec(widthIn) {
-        const layer1 = this.model.layer[0];
-
-        layer1.encoding.color.scale.range = this.colors;
-
-        layer1.encoding.color.condition.value = this.colors[
-            this.colors.length - 1
-        ];
-
-        this.model.layer[0] = layer1;
+        this.model.layer.forEach(e => {
+            if (e.mark.type === 'rect') {
+                e.encoding.color.scale.range = this.colors;
+                e.encoding.color.condition.value = this.colors[
+                    this.colors.length - 1
+                ];
+            }
+        });
 
         if (this.flip) {
             const field = this.model.encoding.x.field;

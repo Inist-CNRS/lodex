@@ -226,9 +226,6 @@ class BarChart extends BasicChart {
                 mark: model.mark,
                 encoding: encoding,
                 padding: this.padding,
-                data: {
-                    name: this.model.data.name,
-                },
                 width: width,
                 height: height,
             };
@@ -259,9 +256,6 @@ class BarChart extends BasicChart {
                 padding: this.padding,
                 config: {
                     view: { strokeWidth: 0 },
-                },
-                data: {
-                    name: this.model.data.name,
                 },
                 width: width,
                 height: height,

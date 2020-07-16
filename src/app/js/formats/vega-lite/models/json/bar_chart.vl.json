@@ -1,5 +1,4 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "mark": {
     "type": "bar"
   },
@@ -45,8 +44,5 @@
         "title": "Value"
       }
     ]
-  },
-  "data": {
-    "name": "values"
   }
 }
