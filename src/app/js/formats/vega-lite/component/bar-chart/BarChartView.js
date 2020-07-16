@@ -39,8 +39,18 @@ class BarChartView extends Component {
         barChartSpec.setOrderBy(lodexOrderToIdOrder(this.props.params.orderBy));
         barChartSpec.setScale(lodexScaleToIdScale(this.props.scale));
         barChartSpec.setColor(this.props.colors);
-        barChartSpec.setPadding(PADDING_LEFT, this.props.categoryMargin);
-        barChartSpec.setPadding(PADDING_BOTTOM, this.props.valueMargin);
+        barChartSpec.setPadding(
+            PADDING_LEFT,
+            this.props.direction === 'vertical'
+                ? this.props.valueMargin
+                : this.props.categoryMargin,
+        );
+        barChartSpec.setPadding(
+            PADDING_BOTTOM,
+            this.props.direction === 'vertical'
+                ? this.props.categoryMargin
+                : this.props.valueMargin,
+        );
         barChartSpec.setRoundValue(this.props.axisRoundValue);
         barChartSpec.setTooltip(this.props.tooltip);
         barChartSpec.setTooltipCategory(this.props.tooltipCategory);
