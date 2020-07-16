@@ -14,7 +14,13 @@ import {
 } from '../chartsUtils';
 import BasicChart from './BasicChart';
 
+/**
+ * Class use for create bar chart spec
+ */
 class BarChart extends BasicChart {
+    /**
+     * Init all required parameters
+     */
     constructor() {
         super();
         this.model = require('./json/bar_chart.vl.json');
@@ -39,14 +45,26 @@ class BarChart extends BasicChart {
         this.labels = false;
     }
 
+    /**
+     * round the value or not
+     * @param round new round status
+     */
     setRoundValue(round) {
         this.round = round;
     }
 
+    /**
+     * Set bar size
+     * @param size new size
+     */
     setSize(size) {
         this.size = size;
     }
 
+    /**
+     * Add label on the bar for display her value or not
+     * @param labels new labels status
+     */
     setLabels(labels) {
         this.labels = labels;
     }
@@ -132,6 +150,10 @@ class BarChart extends BasicChart {
         this.direction = axisDirection;
     }
 
+    /**
+     * Function use for rebuild the edited spec
+     * @param widthIn
+     */
     buildSpec(widthIn) {
         let model = this.model;
         let labelsModel = this.labelsModel;

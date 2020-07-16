@@ -1,11 +1,21 @@
 import BasicChart from './BasicChart';
 
+/**
+ * Class use for create pie chart spec
+ */
 class PieChart extends BasicChart {
+    /**
+     * Init all required parameters
+     */
     constructor() {
         super();
         this.model = require('./json/pie_chart.vl.json');
     }
 
+    /**
+     * Function use for rebuild the edited spec
+     * @param widthIn
+     */
     buildSpec(widthIn) {
         this.model.encoding.color.scale.range = this.colors;
 

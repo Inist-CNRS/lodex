@@ -1,7 +1,13 @@
 import BasicChart from './BasicChart';
 import { LABEL_ASC, LABEL_DESC } from '../chartsUtils';
 
+/**
+ * Class use for create heatmap spec
+ */
 class HeatMap extends BasicChart {
+    /**
+     * Init all required parameters
+     */
     constructor() {
         super();
         this.model = require('./json/heatmap.vl.json');
@@ -35,26 +41,50 @@ class HeatMap extends BasicChart {
         this.orderBy = LABEL_ASC;
     }
 
+    /**
+     * Set the display name of the weight
+     * @param title new name
+     */
     setTooltipValue(title) {
         this.tooltip.weight.title = title;
     }
 
+    /**
+     * Set the display name of the source
+     * @param title new name
+     */
     setTooltipCategory(title) {
         this.tooltip.source.title = title;
     }
 
+    /**
+     * Set the display name of the target
+     * @param title new name
+     */
     setTooltipTarget(title) {
         this.tooltip.target.title = title;
     }
 
+    /**
+     * Change the value order
+     * @param orderBy order wanted (use factoryUtils const) [default value: VALUES_ASC]
+     */
     setOrderBy(orderBy) {
         this.orderBy = orderBy;
     }
 
+    /**
+     * Swap x and y axis
+     * @param flip new flip status
+     */
     flipAxis(flip) {
         this.flip = flip;
     }
 
+    /**
+     * Function use for rebuild the edited spec
+     * @param widthIn
+     */
     buildSpec(widthIn) {
         this.model.layer.forEach(e => {
             if (e.mark.type === 'rect') {

@@ -18,20 +18,29 @@ const styles = {
 class PieChartView extends Component {
     render() {
         const data = this.props.data;
+
+        // Create a new bar chart instance
+
         const pieChart = new PieChart();
+
+        // enable the orderBy in vega-lite
 
         let count = 1;
         data.values.forEach(e => {
             e.order = count++;
         });
 
+        // Set all barchart parameter the chosen by the administrator
+
         pieChart.setTooltip(this.props.tooltip);
         pieChart.setTooltipCategory(this.props.tooltipCategory);
         pieChart.setTooltipValue(this.props.tooltipValue);
         pieChart.setColor(this.props.colors);
 
+        // return the finish chart
         return (
             <div style={styles.container}>
+                {/* Make the chart responsive */}
                 <ContainerDimensions>
                     {({ width }) => {
                         const spec = pieChart.buildSpec(width);

@@ -28,7 +28,12 @@ const styles = {
 class BarChartView extends Component {
     render() {
         let data = this.props.data;
+
+        // Create a new bar chart instance
+
         let barChartSpec = new BarChart();
+
+        // Set all barchart parameter the chosen by the administrator
 
         barChartSpec.setAxisDirection(
             this.props.direction === 'vertical'
@@ -63,8 +68,10 @@ class BarChartView extends Component {
         if (this.props.diagonalValueAxis)
             barChartSpec.setLabelAngle(AXIS_Y, -45);
 
+        // return the finish chart
         return (
             <div style={styles.container}>
+                {/* Make the chart responsive */}
                 <ContainerDimensions>
                     {({ width }) => {
                         const spec = barChartSpec.buildSpec(width);

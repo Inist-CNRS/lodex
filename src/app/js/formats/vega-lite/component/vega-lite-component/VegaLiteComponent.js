@@ -5,6 +5,11 @@ import { connect } from 'react-redux';
 import { isAdmin } from '../../../../user';
 import deepClone from 'lodash.clonedeep';
 
+/**
+ * small component use to handle vega lite display
+ * @param props args taken by the component
+ * @returns {*} React-Vega component
+ */
 function CustomActionVegaLite(props) {
     let actions;
     if (isAdmin(props.user)) {
@@ -35,12 +40,21 @@ function CustomActionVegaLite(props) {
     return <Vega spec={deepClone(spec)} actions={actions} mode="vega-lite" />;
 }
 
+/**
+ * Element required in the props
+ * @type {{data: Requireable<any>, user: Requireable<any>, spec: Validator<NonNullable<any>>}}
+ */
 CustomActionVegaLite.propTypes = {
     user: PropTypes.any,
     spec: PropTypes.any.isRequired,
     data: PropTypes.any,
 };
 
+/**
+ * Function use to get the user state
+ * @param state application state
+ * @returns {{user: *}} user state
+ */
 const mapStateToProps = state => {
     return {
         user: state.user,

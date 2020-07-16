@@ -19,23 +19,33 @@ class RadarChartView extends Component {
     render() {
         let data = this.props.data;
 
+        // format the data for the vega template
+
         if (data !== undefined) {
             data.values.forEach(e => {
                 e.category = 0;
             });
         }
 
+        // Create a new bar chart instance
+
         const radarChart = new RadarChart();
+
+        // Set all barchart parameter the chosen by the administrator
+
         radarChart.setColors(this.props.colors.split(' '));
         radarChart.setTooltip(this.props.tooltip);
         radarChart.setTooltipCategory(this.props.tooltipCategory);
         radarChart.setTooltipValue(this.props.tooltipValue);
 
+        // return the finish chart
         return (
             <div style={styles.container}>
+                {/* Make the chart responsive */}
                 <ContainerDimensions>
                     {({ width }) => {
                         const spec = radarChart.buildSpec(width);
+                        /* add the data into the vega chart  */
                         spec.data.forEach(e => {
                             if (e.name === 'table') {
                                 e.values = data.values;

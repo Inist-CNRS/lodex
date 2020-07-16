@@ -19,7 +19,12 @@ const styles = {
 class HeatMapView extends Component {
     render() {
         const data = this.props.data;
+
+        // Create a new heat map instance
+
         const heatMap = new HeatMap();
+
+        // Set all barchart parameter the chosen by the administrator
 
         heatMap.setColor(this.props.colorScheme.join(' '));
         heatMap.setOrderBy(lodexOrderToIdOrder(this.props.params.orderBy));
@@ -29,9 +34,11 @@ class HeatMapView extends Component {
         heatMap.setTooltipTarget(this.props.tooltipTarget);
         heatMap.setTooltipValue(this.props.tooltipWeight);
 
+        // return the finish chart
         return (
             <div style={styles.container}>
                 <ContainerDimensions>
+                    {/* Make the chart responsive */}
                     {({ width }) => {
                         const spec = heatMap.buildSpec(width);
                         return <CustomActionVegaLite spec={spec} data={data} />;
