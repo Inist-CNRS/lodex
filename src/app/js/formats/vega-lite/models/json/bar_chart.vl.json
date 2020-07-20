@@ -31,18 +31,6 @@
       },
       "type": "nominal",
       "legend": null
-    },
-    "tooltip": [
-      {
-        "field": "_id",
-        "type": "nominal",
-        "title": "Category"
-      },
-      {
-        "field": "value",
-        "type": "quantitative",
-        "title": "Value"
-      }
-    ]
+    }
   }
 }

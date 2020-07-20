@@ -192,6 +192,10 @@ class BarChart extends BasicChart {
             model.encoding.y.axis.tickMinStep = 1;
         }
 
+        if (widthIn <= 300) {
+            model.encoding.x.axis.labelLimit = 120;
+        }
+
         let x, y, lx, ly;
         if (this.direction === AXIS_VERTICAL) {
             x = model.encoding.x;
