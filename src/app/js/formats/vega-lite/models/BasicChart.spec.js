@@ -55,4 +55,44 @@ describe('BasicChart', () => {
         let basicChart = new BasicChart();
         expect(basicChart.buildSpec).toThrow(Error);
     });
+
+    it('Test tooltip', function() {
+        let basicChart = new BasicChart();
+        expect(basicChart.tooltip).toStrictEqual({
+            toggle: false,
+            category: {
+                field: '_id',
+                type: 'nominal',
+                title: 'Category',
+            },
+            value: {
+                field: 'value',
+                type: 'quantitative',
+                title: 'Value',
+            },
+        });
+
+        basicChart.setTooltip(true);
+        expect(basicChart.tooltip.toggle).toBe(true);
+
+        basicChart.setTooltipCategory('TestCategory');
+        expect(basicChart.tooltip.category.title).toBe('TestCategory');
+
+        basicChart.setTooltipValue('TestValue');
+        expect(basicChart.tooltip.value.title).toBe('TestValue');
+
+        expect(basicChart.tooltip).toStrictEqual({
+            toggle: true,
+            category: {
+                field: '_id',
+                type: 'nominal',
+                title: 'TestCategory',
+            },
+            value: {
+                field: 'value',
+                type: 'quantitative',
+                title: 'TestValue',
+            },
+        });
+    });
 });

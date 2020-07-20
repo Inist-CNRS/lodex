@@ -53,6 +53,7 @@ describe('BasicChart', () => {
                 x: {
                     axis: {
                         labelAngle: 0,
+                        labelLimit: 120,
                     },
                     field: 'value',
                     scale: {

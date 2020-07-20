@@ -23,17 +23,17 @@ class HeatMap extends BasicChart {
             toggle: false,
             source: {
                 field: 'source',
-                title: 'Sous-domaine x',
+                title: 'Source',
                 type: 'nominal',
             },
             target: {
                 field: 'target',
-                title: 'Sous-domaine y',
+                title: 'Target',
                 type: 'nominal',
             },
             weight: {
                 field: 'weight',
-                title: 'Nb publis',
+                title: 'Weight',
                 type: 'quantitative',
             },
         };
