@@ -75,7 +75,8 @@ class BarChartView extends Component {
                 <ContainerDimensions>
                     {({ width }) => {
                         const spec = barChartSpec.buildSpec(width);
-                        return <CustomActionVegaLite spec={spec} data={data} />;
+                        spec.data = data;
+                        return <CustomActionVegaLite spec={spec} />;
                     }}
                 </ContainerDimensions>
             </div>

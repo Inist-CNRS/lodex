@@ -41,7 +41,8 @@ class HeatMapView extends Component {
                     {/* Make the chart responsive */}
                     {({ width }) => {
                         const spec = heatMap.buildSpec(width);
-                        return <CustomActionVegaLite spec={spec} data={data} />;
+                        spec.data = data;
+                        return <CustomActionVegaLite spec={spec} />;
                     }}
                 </ContainerDimensions>
             </div>

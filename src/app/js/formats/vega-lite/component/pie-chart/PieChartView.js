@@ -44,7 +44,8 @@ class PieChartView extends Component {
                 <ContainerDimensions>
                     {({ width }) => {
                         const spec = pieChart.buildSpec(width);
-                        return <CustomActionVegaLite spec={spec} data={data} />;
+                        spec.data = data;
+                        return <CustomActionVegaLite spec={spec} />;
                     }}
                 </ContainerDimensions>
             </div>

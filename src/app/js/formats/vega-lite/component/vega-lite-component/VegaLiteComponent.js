@@ -34,10 +34,9 @@ function CustomActionVegaLite(props) {
         };
     }
 
-    const spec = props.spec;
-    spec.data = props.data;
-
-    return <Vega spec={deepClone(spec)} actions={actions} mode="vega-lite" />;
+    return (
+        <Vega spec={deepClone(props.spec)} actions={actions} mode="vega-lite" />
+    );
 }
 
 /**
