@@ -53,7 +53,6 @@ describe('BasicChart', () => {
                 x: {
                     axis: {
                         labelAngle: 0,
-                        labelLimit: 120,
                     },
                     field: 'value',
                     scale: {
@@ -65,6 +64,7 @@ describe('BasicChart', () => {
                 y: {
                     axis: {
                         labelAngle: 0,
+                        labelLimit: 120,
                     },
                     field: '_id',
                     sort: 'x',
