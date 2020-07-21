@@ -24,10 +24,13 @@ class VegaLiteView extends Component {
         } catch (e) {
             return <InvalidFormat format={field.format} value={e.message} />;
         }
+        if (spec) {
+            spec.data = data;
+        }
 
         return (
             <div style={styles.container}>
-                <CustomActionVegaLite spec={spec || {}} data={data} />
+                <CustomActionVegaLite spec={spec || {}} />
             </div>
         );
     }
