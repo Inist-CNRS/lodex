@@ -8,6 +8,7 @@ import ContainerDimensions from 'react-container-dimensions';
 import { CustomActionVega } from '../vega-component';
 import RadarChart from '../../models/RadarChart';
 import { VEGA_DATA_INJECT_TYPE_A } from '../../../vega-lite/chartsUtils';
+import deepClone from 'lodash.clonedeep';
 
 const styles = {
     container: {
@@ -18,7 +19,7 @@ const styles = {
 
 class RadarChartView extends Component {
     render() {
-        let data = this.props.data;
+        const data = this.props.data;
 
         // format the data for the vega template
 
@@ -30,7 +31,7 @@ class RadarChartView extends Component {
 
         // Create a new bar chart instance
 
-        const radarChart = new RadarChart();
+        const radarChart = deepClone(new RadarChart());
 
         // Set all barchart parameter the chosen by the administrator
 

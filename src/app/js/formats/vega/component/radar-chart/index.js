@@ -5,7 +5,7 @@ import Icon from './RadarChartIcon';
 
 export default {
     ...DefaultFormat,
-    Component: Component,
+    Component,
     AdminComponent,
     defaultArgs,
     Icon,

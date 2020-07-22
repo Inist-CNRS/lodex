@@ -18,6 +18,7 @@ import {
 } from '../../chartsUtils';
 import BarChart from '../../models/BarChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
+import deepClone from 'lodash.clonedeep';
 
 const styles = {
     container: {
@@ -28,11 +29,11 @@ const styles = {
 
 class BarChartView extends Component {
     render() {
-        let data = this.props.data;
+        const data = this.props.data;
 
         // Create a new bar chart instance
 
-        let barChartSpec = new BarChart();
+        const barChartSpec = deepClone(new BarChart());
 
         // Set all barchart parameter the chosen by the administrator
 
