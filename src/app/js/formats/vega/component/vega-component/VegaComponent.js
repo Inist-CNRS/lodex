@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isAdmin } from '../../../../user';
 import deepClone from 'lodash.clonedeep';
+import { VEGA_DATA_INJECT_TYPE_A } from '../../../vega-lite/chartsUtils';
 
 /**
  * small component use to handle vega lite display
@@ -34,6 +35,20 @@ function CustomActionVega(props) {
         };
     }
 
+    const spec = props.spec;
+
+    switch (props.injectType) {
+        case VEGA_DATA_INJECT_TYPE_A:
+            spec.data.forEach(e => {
+                if (e.name === 'table') {
+                    e.values = props.data.values;
+                }
+            });
+            break;
+        default:
+            throw new Error('Invalid data injection type');
+    }
+
     return <Vega spec={deepClone(props.spec)} actions={actions} mode="vega" />;
 }
 
@@ -45,6 +60,7 @@ CustomActionVega.propTypes = {
     user: PropTypes.any,
     spec: PropTypes.any.isRequired,
     data: PropTypes.any,
+    injectType: PropTypes.number.isRequired,
 };
 
 /**

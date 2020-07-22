@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import ContainerDimensions from 'react-container-dimensions';
 import PieChart from '../../models/PieChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
+import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../../chartsUtils';
 
 const styles = {
     container: {
@@ -44,8 +45,13 @@ class PieChartView extends Component {
                 <ContainerDimensions>
                     {({ width }) => {
                         const spec = pieChart.buildSpec(width);
-                        spec.data = data;
-                        return <CustomActionVegaLite spec={spec} />;
+                        return (
+                            <CustomActionVegaLite
+                                spec={spec}
+                                data={data}
+                                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                            />
+                        );
                     }}
                 </ContainerDimensions>
             </div>

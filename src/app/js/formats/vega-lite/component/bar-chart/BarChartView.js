@@ -14,6 +14,7 @@ import {
     lodexScaleToIdScale,
     PADDING_BOTTOM,
     PADDING_LEFT,
+    VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../../chartsUtils';
 import BarChart from '../../models/BarChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
@@ -75,8 +76,13 @@ class BarChartView extends Component {
                 <ContainerDimensions>
                     {({ width }) => {
                         const spec = barChartSpec.buildSpec(width);
-                        spec.data = data;
-                        return <CustomActionVegaLite spec={spec} />;
+                        return (
+                            <CustomActionVegaLite
+                                spec={spec}
+                                data={data}
+                                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                            />
+                        );
                     }}
                 </ContainerDimensions>
             </div>

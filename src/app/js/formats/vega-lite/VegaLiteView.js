@@ -6,6 +6,7 @@ import InvalidFormat from '../InvalidFormat';
 import injectData from '../injectData';
 import { field as fieldPropTypes } from '../../propTypes';
 import { CustomActionVegaLite } from './component/vega-lite-component';
+import { VEGA_LITE_DATA_INJECT_TYPE_A } from './chartsUtils';
 
 const styles = {
     container: {
@@ -24,13 +25,14 @@ class VegaLiteView extends Component {
         } catch (e) {
             return <InvalidFormat format={field.format} value={e.message} />;
         }
-        if (spec) {
-            spec.data = data;
-        }
 
         return (
             <div style={styles.container}>
-                <CustomActionVegaLite spec={spec || {}} />
+                <CustomActionVegaLite
+                    spec={spec || {}}
+                    data={data}
+                    injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                />
             </div>
         );
     }

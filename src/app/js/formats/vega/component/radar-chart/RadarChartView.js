@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import ContainerDimensions from 'react-container-dimensions';
 import { CustomActionVega } from '../vega-component';
 import RadarChart from '../../models/RadarChart';
+import { VEGA_DATA_INJECT_TYPE_A } from '../../../vega-lite/chartsUtils';
 
 const styles = {
     container: {
@@ -45,13 +46,13 @@ class RadarChartView extends Component {
                 <ContainerDimensions>
                     {({ width }) => {
                         const spec = radarChart.buildSpec(width);
-                        /* add the data into the vega chart  */
-                        spec.data.forEach(e => {
-                            if (e.name === 'table') {
-                                e.values = data.values;
-                            }
-                        });
-                        return <CustomActionVega spec={spec} />;
+                        return (
+                            <CustomActionVega
+                                spec={spec}
+                                data={data}
+                                injectType={VEGA_DATA_INJECT_TYPE_A}
+                            />
+                        );
                     }}
                 </ContainerDimensions>
             </div>

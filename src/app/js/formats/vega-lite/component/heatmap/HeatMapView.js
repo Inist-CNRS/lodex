@@ -7,7 +7,10 @@ import HeatMap from '../../models/HeatMap';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
 import ContainerDimensions from 'react-container-dimensions';
-import { lodexOrderToIdOrder } from '../../chartsUtils';
+import {
+    lodexOrderToIdOrder,
+    VEGA_LITE_DATA_INJECT_TYPE_A,
+} from '../../chartsUtils';
 
 const styles = {
     container: {
@@ -41,8 +44,13 @@ class HeatMapView extends Component {
                     {/* Make the chart responsive */}
                     {({ width }) => {
                         const spec = heatMap.buildSpec(width);
-                        spec.data = data;
-                        return <CustomActionVegaLite spec={spec} />;
+                        return (
+                            <CustomActionVegaLite
+                                spec={spec}
+                                data={data}
+                                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                            />
+                        );
                     }}
                 </ContainerDimensions>
             </div>
