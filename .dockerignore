@@ -11,3 +11,4 @@
 !jest.config.js
 !jsconfig.json
 !typings.json
+!docker-entrypoint.sh

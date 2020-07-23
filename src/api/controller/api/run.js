@@ -50,13 +50,15 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     ].join('/');
 
     const connectionStringURI = `mongodb://${config.mongo.host}/${config.mongo.dbName}`;
+    const field = parseFieldsParams(fieldsParams);
     const environment = {
         ...localConfig,
+        field,
     };
     const host = getCleanHost();
     const query = {
         orderBy,
-        field: parseFieldsParams(fieldsParams),
+        field,
         ...ctx.query,
         connectionStringURI,
         host,
