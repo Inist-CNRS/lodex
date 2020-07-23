@@ -1,0 +1,32 @@
+{
+  "encoding": {
+    "theta": {"field": "value", "type": "quantitative", "stack": true},
+    "color": {
+      "field": "_id",
+      "type": "nominal",
+      "legend": {
+        "orient": "none",
+        "title": null,
+        "columns": 1,
+        "legendX": 250,
+        "legendY": 80
+      },
+      "scale": {
+        "range": [
+          "#1071AE"
+        ]
+      }
+    },
+    "order": {
+      "field": "order", "type": "quantitative"
+    }
+  },
+  "layer": [
+    {"mark": {"type": "arc", "outerRadius": 80}},
+    {
+      "mark": {"type": "text", "radius": 90, "fill": "black"},
+      "encoding": {"text": {"field": "value", "type": "nominal"}}
+    }
+  ],
+  "view": {"stroke": null}
+}

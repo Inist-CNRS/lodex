@@ -1,0 +1,138 @@
+{
+  "transform": [
+    {
+      "filter": {
+        "not": "datum.source === datum.target"
+      }
+    },
+    {
+      "window": [
+        {
+          "op": "max",
+          "field": "weight",
+          "as": "max_weight"
+        }
+      ],
+      "frame": [
+        null,
+        null
+      ]
+    },
+    {
+      "window": [
+        {
+          "op": "mean",
+          "field": "weight",
+          "as": "mean_weight"
+        }
+      ],
+      "frame": [
+        null,
+        null
+      ]
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "source",
+      "title": "",
+      "axis": {
+        "orient": "top",
+        "labelAlign": "left",
+        "labelPadding": 10,
+        "title": ""
+      },
+      "type": "nominal",
+      "sort": "x"
+    },
+    "y": {
+      "field": "target",
+      "title": "",
+      "axis": {
+        "title": "",
+        "labelPadding": 10
+      },
+      "type": "nominal",
+      "sort": "y"
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rect"
+      },
+      "encoding": {
+        "color": {
+          "field": "weight",
+          "title": "Nb publis",
+          "type": "quantitative",
+          "condition": {
+            "test": "datum['weight'] === datum['max_weight']",
+            "value": "#f20038"
+          },
+          "scale": {
+            "range": [
+              "#d8ffec",
+              "#cae9a7",
+              "#eff8ce",
+              "#ffffbf",
+              "#ffedbe",
+              "#fec894",
+              "#fcddd3",
+              "#f7d5d3",
+              "#eab2bf",
+              "#f5b8c6",
+              "#f20038"
+            ]
+          },
+          "legend": null
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text"
+      },
+      "encoding": {
+        "text": {
+          "field": "weight",
+          "title": "Nb publis",
+          "type": "quantitative"
+        },
+        "color": {
+          "condition": {
+            "test": "datum['weight'] < datum['max_weight']",
+            "value": "black"
+          },
+          "value": "white"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "strokeWidth": 1,
+      "stroke": "black"
+    },
+    "scale": {
+      "bandPaddingInner": 0.1,
+      "bandPaddingOuter": 0.1
+    },
+    "text": {
+      "baseline": "middle",
+      "align": "center",
+      "font": "Quicksand, sans-serif",
+      "fontSize": 9
+    },
+    "axis": {
+      "labelLimit": 200,
+      "labelBaseline": "middle",
+      "labelFont": "Quicksand, sans-serif",
+      "labelFontSize": 12,
+      "tickSize": 0,
+      "grid": false,
+      "gridOpacity": 0.2,
+      "titleFont": "Quicksand, sans-serif"
+    }
+  }
+}
