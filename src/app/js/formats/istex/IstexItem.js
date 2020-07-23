@@ -51,7 +51,7 @@ export const IstexItemComponent = ({
                 <Link href={url}>{title}</Link>
             </div>
             {authors && (
-                <div className={styles.authors}> {authors.join(';')} </div>
+                <div className={styles.authors}> {authors.join(', ')} </div>
             )}
             <div className={styles.metadata}>
                 {publicationDate}
