@@ -1,0 +1,50 @@
+{
+  "data": {
+    "url": "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries-sans-antarctica.json",
+    "format": {"type": "topojson", "feature": "countries1"}
+  },
+  "transform": [
+    {
+      "lookup": "id",
+      "from": {
+        "data": {
+          "values": []
+        },
+        "key": "_id",
+        "fields": ["value"]
+      },
+      "default": "0"
+    }
+  ],
+  "projection": {"type": "mercator"},
+  "mark": {"type": "geoshape", "stroke": "grey", "cursor": "crosshair"},
+  "encoding": {
+    "color": {
+      "condition": {
+        "selection": "maps", "value": "#C25140"
+      },
+      "field": "value",
+      "type": "quantitative",
+      "scale": {
+        "range": [
+          "#f7f4f9",
+          "#e7e1ef",
+          "#d4b9da",
+          "#c994c7",
+          "#df65b0",
+          "#e7298a",
+          "#ce1256",
+          "#980043",
+          "#67001f"
+        ]
+      }
+    }
+  },
+  "selection": {
+    "maps": {
+      "type": "multi",
+      "on": "mouseover", "empty": "none"
+    }
+  },
+  "view": {"fill": "#a4d3ff", "cornerRadius": 16, "cursor": "crosshair"}
+}

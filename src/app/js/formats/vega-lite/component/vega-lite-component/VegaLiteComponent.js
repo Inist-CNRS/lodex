@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isAdmin } from '../../../../user';
 import deepClone from 'lodash.clonedeep';
-import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../../chartsUtils';
+import {
+    VEGA_LITE_DATA_INJECT_TYPE_A,
+    VEGA_LITE_DATA_INJECT_TYPE_B,
+} from '../../chartsUtils';
 
 /**
  * small component use to handle vega lite display
@@ -40,6 +43,13 @@ function CustomActionVegaLite(props) {
     switch (props.injectType) {
         case VEGA_LITE_DATA_INJECT_TYPE_A:
             spec.data = props.data;
+            break;
+        case VEGA_LITE_DATA_INJECT_TYPE_B:
+            spec.transform.forEach(e => {
+                if (e.lookup === 'id') {
+                    e.from.data.values = props.data.values;
+                }
+            });
             break;
         default:
             throw new Error('Invalid data injection type');

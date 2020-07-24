@@ -27,7 +27,7 @@ import sentence from './sentence';
 import vegaLite from './vega-lite';
 import resource from './lodex-resource';
 import lodexField from './lodex-field';
-import cartography from './cartography';
+import cartography from './vega-lite/component/cartography';
 import heatmap from './vega-lite/component/heatmap';
 import network from './network';
 import redirect from './redirect';
