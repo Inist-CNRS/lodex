@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import deepClone from 'lodash.clonedeep';
 import ContainerDimensions from 'react-container-dimensions';
 import { CustomActionVegaLite } from '../vega-lite-component';
-import { VEGA_LITE_DATA_INJECT_TYPE_B } from '../../chartsUtils';
+import { VEGA_LITE_DATA_INJECT_TYPE_B } from '../../../chartsUtils';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
 import Cartography from '../../models/Cartography';
@@ -26,7 +26,7 @@ class CartographyView extends Component {
 
         const cartography = deepClone(new Cartography());
 
-        // Set all barchart parameter the chosen by the administrator
+        // Set all cartography parameter the chosen by the administrator
 
         cartography.setTooltip(this.props.tooltip);
         cartography.setTooltipCategory(this.props.tooltipCategory);

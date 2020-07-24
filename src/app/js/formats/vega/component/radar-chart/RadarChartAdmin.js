@@ -10,7 +10,7 @@ import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
-import ToolTips from '../../../vega-lite/component/ToolTips';
+import ToolTips from '../../../shared/ToolTips';
 
 const styles = {
     container: {

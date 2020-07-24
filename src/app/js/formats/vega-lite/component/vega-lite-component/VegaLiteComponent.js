@@ -7,7 +7,7 @@ import deepClone from 'lodash.clonedeep';
 import {
     VEGA_LITE_DATA_INJECT_TYPE_A,
     VEGA_LITE_DATA_INJECT_TYPE_B,
-} from '../../chartsUtils';
+} from '../../../chartsUtils';
 
 /**
  * small component use to handle vega lite display

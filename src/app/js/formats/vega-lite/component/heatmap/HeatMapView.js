@@ -11,7 +11,7 @@ import deepClone from 'lodash.clonedeep';
 import {
     lodexOrderToIdOrder,
     VEGA_LITE_DATA_INJECT_TYPE_A,
-} from '../../chartsUtils';
+} from '../../../chartsUtils';
 
 const styles = {
     container: {
@@ -28,7 +28,7 @@ class HeatMapView extends Component {
 
         const heatMap = deepClone(new HeatMap());
 
-        // Set all barchart parameter the chosen by the administrator
+        // Set all heat map parameter the chosen by the administrator
 
         heatMap.setColor(this.props.colorScheme.join(' '));
         heatMap.setOrderBy(lodexOrderToIdOrder(this.props.params.orderBy));

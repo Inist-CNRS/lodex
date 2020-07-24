@@ -7,7 +7,7 @@ import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSe
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import ToolTips from '../ToolTips';
+import ToolTips from '../../../shared/ToolTips';
 
 const styles = {
     container: {

@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import ContainerDimensions from 'react-container-dimensions';
 import PieChart from '../../models/PieChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
-import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../../chartsUtils';
+import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
 import deepClone from 'lodash.clonedeep';
 
 const styles = {
@@ -21,7 +21,7 @@ class PieChartView extends Component {
     render() {
         const data = this.props.data;
 
-        // Create a new bar chart instance
+        // Create a new pie chart instance
 
         const pieChart = deepClone(new PieChart());
 
@@ -32,7 +32,7 @@ class PieChartView extends Component {
             e.order = count++;
         });
 
-        // Set all barchart parameter the chosen by the administrator
+        // Set all pie chart parameter the chosen by the administrator
 
         pieChart.setTooltip(this.props.tooltip);
         pieChart.setTooltipCategory(this.props.tooltipCategory);

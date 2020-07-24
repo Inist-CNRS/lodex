@@ -13,7 +13,7 @@ import {
     LABEL_DESC,
     VALUES_ASC,
     VALUES_DESC,
-} from '../chartsUtils';
+} from '../../chartsUtils';
 
 describe('BasicChart', () => {
     it('Default values should filled with all default values', function() {
