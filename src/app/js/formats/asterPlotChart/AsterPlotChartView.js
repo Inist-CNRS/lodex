@@ -26,7 +26,7 @@ const sortByKey = (key = '') => (dataA, dataB) => {
 const prepareData = (data = [], history, polyglot) =>
     data
         .map(d => {
-            const title = getShortText(d['target-title']);
+            const title = getShortText(d['target_title']);
             const weight = get(d, 'weight', 0);
             const value = getPercentValue(weight);
             const label = `<div>${title}<br/><br/>${value}% ${polyglot.t(
