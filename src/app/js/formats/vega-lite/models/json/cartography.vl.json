@@ -21,7 +21,7 @@
   "encoding": {
     "color": {
       "condition": {
-        "selection": "maps", "value": "#C25140"
+        "selection": "maps", "value": "#4eb3d3"
       },
       "field": "value",
       "type": "quantitative",
@@ -37,6 +37,9 @@
           "#980043",
           "#67001f"
         ]
+      },
+      "legend": {
+        "title": ""
       }
     }
   },

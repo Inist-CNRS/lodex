@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { schemeBlues, schemeOrRd } from 'd3-scale-chromatic';
+import { schemeOrRd } from 'd3-scale-chromatic';
 
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
@@ -18,10 +18,7 @@ const styles = {
     },
     input: {
         marginLeft: '1rem',
-        width: '40%',
-    },
-    input2: {
-        width: '100%',
+        width: '87%',
     },
     previewDefaultColor: color => ({
         display: 'inline-block',
@@ -39,7 +36,6 @@ export const defaultArgs = {
         orderBy: 'value/asc',
     },
     colorScheme: schemeOrRd[9],
-    hoverColorScheme: schemeBlues[9],
     tooltip: false,
     tooltipCategory: 'Category',
     tooltipValue: 'Value',
@@ -55,7 +51,6 @@ class CartographyAdmin extends Component {
                 orderBy: PropTypes.string,
             }),
             colorScheme: PropTypes.arrayOf(PropTypes.string),
-            hoverColorScheme: PropTypes.arrayOf(PropTypes.string),
             tooltip: PropTypes.bool,
             tooltipCategory: PropTypes.string,
             tooltipValue: PropTypes.string,
@@ -84,14 +79,6 @@ class CartographyAdmin extends Component {
         updateAdminArgs('colorScheme', colorScheme.split(','), this.props);
     };
 
-    setHoverColorScheme = (_, __, hoverColorScheme) => {
-        updateAdminArgs(
-            'hoverColorScheme',
-            hoverColorScheme.split(','),
-            this.props,
-        );
-    };
-
     toggleTooltip = () => {
         updateAdminArgs('tooltip', !this.props.args.tooltip, this.props);
     };
@@ -110,7 +97,6 @@ class CartographyAdmin extends Component {
             args: {
                 params,
                 colorScheme,
-                hoverColorScheme,
                 tooltip,
                 tooltipCategory,
                 tooltipValue,
@@ -137,12 +123,6 @@ class CartographyAdmin extends Component {
                     onChange={this.setColorScheme}
                     style={styles.input}
                     value={colorScheme}
-                />
-                <GradientSchemeSelector
-                    label={polyglot.t('hover_color_scheme')}
-                    onChange={this.setHoverColorScheme}
-                    style={styles.input}
-                    value={hoverColorScheme}
                 />
                 <ToolTips
                     checked={tooltip}

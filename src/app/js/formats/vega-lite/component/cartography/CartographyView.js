@@ -36,13 +36,6 @@ class CartographyView extends Component {
                 ? this.props.colorScheme.join(' ')
                 : schemeOrRd[9],
         );
-        cartography.setHoverColor(
-            this.props.hoverColorScheme !== undefined
-                ? this.props.hoverColorScheme[
-                      Math.round(this.props.hoverColorScheme.length / 2)
-                  ]
-                : schemeOrRd[9],
-        );
 
         // return the finish chart
         return (
@@ -73,7 +66,6 @@ CartographyView.propTypes = {
     tooltipCategory: PropTypes.string.isRequired,
     tooltipValue: PropTypes.string.isRequired,
     colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
-    hoverColorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const mapStateToProps = (state, { formatData }) => {
