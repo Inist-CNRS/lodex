@@ -1,14 +1,15 @@
-import { field as fieldPropTypes } from '../../../../propTypes';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import injectData from '../../../injectData';
-import { connect } from 'react-redux';
-import React, { Component } from 'react';
-import ContainerDimensions from 'react-container-dimensions';
-import PieChart from '../../models/PieChart';
-import { CustomActionVegaLite } from '../vega-lite-component';
-import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
 import deepClone from 'lodash.clonedeep';
+import ContainerDimensions from 'react-container-dimensions';
+import { CustomActionVegaLite } from '../vega-lite-component';
+import { VEGA_LITE_DATA_INJECT_TYPE_B } from '../../../chartsUtils';
+import { field as fieldPropTypes } from '../../../../propTypes';
+import injectData from '../../../injectData';
+import Cartography from '../../models/Cartography';
+import { schemeOrRd } from 'd3-scale-chromatic';
 
 const styles = {
     container: {
@@ -17,27 +18,24 @@ const styles = {
     },
 };
 
-class PieChartView extends Component {
+class CartographyView extends Component {
     render() {
         const data = this.props.data;
 
-        // Create a new pie chart instance
+        // Create a new cartography instance
 
-        const pieChart = deepClone(new PieChart());
+        const cartography = deepClone(new Cartography());
 
-        // enable the orderBy in vega-lite
+        // Set all cartography parameter the chosen by the administrator
 
-        let count = 1;
-        data.values.forEach(e => {
-            e.order = count++;
-        });
-
-        // Set all pie chart parameter the chosen by the administrator
-
-        pieChart.setTooltip(this.props.tooltip);
-        pieChart.setTooltipCategory(this.props.tooltipCategory);
-        pieChart.setTooltipValue(this.props.tooltipValue);
-        pieChart.setColor(this.props.colors);
+        cartography.setTooltip(this.props.tooltip);
+        cartography.setTooltipCategory(this.props.tooltipCategory);
+        cartography.setTooltipValue(this.props.tooltipValue);
+        cartography.setColor(
+            this.props.colorScheme !== undefined
+                ? this.props.colorScheme.join(' ')
+                : schemeOrRd[9],
+        );
 
         // return the finish chart
         return (
@@ -45,12 +43,12 @@ class PieChartView extends Component {
                 {/* Make the chart responsive */}
                 <ContainerDimensions>
                     {({ width }) => {
-                        const spec = pieChart.buildSpec(width);
+                        const spec = cartography.buildSpec(width);
                         return (
                             <CustomActionVegaLite
                                 spec={spec}
                                 data={data}
-                                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                                injectType={VEGA_LITE_DATA_INJECT_TYPE_B}
                             />
                         );
                     }}
@@ -60,18 +58,14 @@ class PieChartView extends Component {
     }
 }
 
-PieChartView.propTypes = {
+CartographyView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
     data: PropTypes.any,
-    colors: PropTypes.string.isRequired,
     tooltip: PropTypes.bool.isRequired,
     tooltipCategory: PropTypes.string.isRequired,
     tooltipValue: PropTypes.string.isRequired,
-};
-
-PieChartView.defaultProps = {
-    className: null,
+    colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const mapStateToProps = (state, { formatData }) => {
@@ -89,4 +83,4 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-export default compose(injectData(), connect(mapStateToProps))(PieChartView);
+export default compose(injectData(), connect(mapStateToProps))(CartographyView);

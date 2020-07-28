@@ -4,10 +4,10 @@ import {
     PADDING_LEFT,
     PADDING_RIGHT,
     PADDING_TOP,
-} from '../chartsUtils';
+} from '../../chartsUtils';
 
 /**
- * Very basic impl of the vega charts (common class for all chart)
+ * Very basic impl of the vega lite charts (common class for all chart)
  */
 class BasicChart {
     /**

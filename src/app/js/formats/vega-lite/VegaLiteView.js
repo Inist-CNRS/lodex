@@ -6,7 +6,7 @@ import InvalidFormat from '../InvalidFormat';
 import injectData from '../injectData';
 import { field as fieldPropTypes } from '../../propTypes';
 import { CustomActionVegaLite } from './component/vega-lite-component';
-import { VEGA_LITE_DATA_INJECT_TYPE_A } from './chartsUtils';
+import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../chartsUtils';
 
 const styles = {
     container: {
@@ -21,7 +21,7 @@ class VegaLiteView extends Component {
         let spec;
 
         try {
-            spec = this.retroCompatibilityCheck(JSON.parse(specTemplate));
+            spec = JSON.parse(specTemplate);
         } catch (e) {
             return <InvalidFormat format={field.format} value={e.message} />;
         }
@@ -35,16 +35,6 @@ class VegaLiteView extends Component {
                 />
             </div>
         );
-    }
-
-    retroCompatibilityCheck(spec) {
-        // eslint-disable-next-line no-prototype-builtins
-        if (!spec.hasOwnProperty('data')) {
-            spec.data = {
-                name: 'values',
-            };
-        }
-        return spec;
     }
 }
 

@@ -4,7 +4,7 @@ import {
     PADDING_LEFT,
     PADDING_RIGHT,
     PADDING_TOP,
-} from '../chartsUtils';
+} from '../../chartsUtils';
 
 describe('BasicChart', () => {
     it('Default color need to be equals to MULTICHROMATIC_DEFAULT_COLORSET(transformed in to an array)', function() {

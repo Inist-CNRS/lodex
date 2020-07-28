@@ -11,7 +11,7 @@ import {
     SCALE_LOG,
     VALUES_ASC,
     VALUES_DESC,
-} from '../chartsUtils';
+} from '../../chartsUtils';
 import BasicChart from './BasicChart';
 
 /**

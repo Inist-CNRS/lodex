@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isAdmin } from '../../../../user';
 import deepClone from 'lodash.clonedeep';
-import { VEGA_DATA_INJECT_TYPE_A } from '../../../vega-lite/chartsUtils';
+import { VEGA_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
 
 /**
  * small component use to handle vega lite display
