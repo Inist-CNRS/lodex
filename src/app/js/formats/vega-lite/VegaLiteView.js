@@ -30,13 +30,13 @@ class VegaLiteView extends Component {
         return (
             <div style={styles.container}>
                 <ContainerDimensions>
-                    {({ width, height }) => {
+                    {({ width }) => {
                         if (spec !== undefined) {
-                            if (this.props.width !== undefined)
+                            if (this.props.width !== '')
                                 spec.width = width * (this.props.width / 100);
 
-                            if (this.props.height !== undefined)
-                                spec.height = height * (this.props.width / 100);
+                            if (this.props.height !== '')
+                                spec.height = 300 * (this.props.height / 100);
                         }
                         return (
                             <CustomActionVegaLite
@@ -57,8 +57,8 @@ VegaLiteView.propTypes = {
     resource: PropTypes.object.isRequired,
     data: PropTypes.any,
     specTemplate: PropTypes.string.isRequired,
-    width: PropTypes.number,
-    height: PropTypes.number,
+    width: PropTypes.string,
+    height: PropTypes.string,
 };
 
 VegaLiteView.defaultProps = {

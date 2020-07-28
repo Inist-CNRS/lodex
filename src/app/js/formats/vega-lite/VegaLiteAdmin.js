@@ -37,8 +37,8 @@ export const defaultArgs = {
     },
     specTemplate:
         '{"width": 600, "autosize": {"type": "fit", "contains": "padding" }, "mark": "bar", "encoding": { "x": {"field": "_id", "type": "ordinal"}, "y": {"field": "value", "type": "quantitative"} }, "data": {"name": "values"} }',
-    width: undefined,
-    height: undefined,
+    width: '',
+    height: '',
 };
 
 class VegaLiteAdmin extends Component {
@@ -149,7 +149,7 @@ class VegaLiteAdmin extends Component {
                 <TextField
                     type="number"
                     min={10}
-                    max={200}
+                    max={800}
                     step={10}
                     floatingLabelText={polyglot.t('vegalite_height')}
                     onChange={this.setHeight}
