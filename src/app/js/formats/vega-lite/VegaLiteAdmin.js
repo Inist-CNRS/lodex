@@ -86,6 +86,12 @@ class VegaLiteAdmin extends Component {
         window.open('https://vega.github.io/editor/#/edited');
     };
 
+    sizeStep = () => {
+        window.open(
+            'https://vega.github.io/vega-lite/docs/size.html#specifying-width-and-height-per-discrete-step',
+        );
+    };
+
     render() {
         const {
             p: polyglot,
@@ -121,6 +127,14 @@ class VegaLiteAdmin extends Component {
                     style={styles.input}
                     value={specTemplate}
                 />
+                <a
+                    onClick={() => {
+                        this.sizeStep();
+                    }}
+                    style={(styles.pointer, styles.link)}
+                >
+                    {polyglot.t('vega_size_step')}
+                </a>
                 <TextField
                     type="number"
                     min={10}
