@@ -473,3 +473,5 @@
 "tooltip_third_1"	"Tooltip: source"	"Info-bulle : source"
 "tooltip_third_2"	"Tooltip: target"	"Info-bulle : destination"
 "tooltip_third_3"	"Tooltip: weight"	"Info-bulle : poids"
+"vegalite_width"	"Responsive width (optional)"	"Largeur responsive (optionelle)"
+"vegalite_height"	"Responsive height (optional)"	"Heuteur responsive (optionelle)"
