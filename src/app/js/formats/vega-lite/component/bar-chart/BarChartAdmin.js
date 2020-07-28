@@ -11,7 +11,7 @@ import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
-import ToolTips from '../ToolTips';
+import ToolTips from '../../../shared/ToolTips';
 
 // set frond-end styles
 const styles = {

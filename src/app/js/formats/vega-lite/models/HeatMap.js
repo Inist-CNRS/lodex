@@ -1,5 +1,5 @@
 import BasicChart from './BasicChart';
-import { LABEL_ASC, LABEL_DESC } from '../chartsUtils';
+import { LABEL_ASC, LABEL_DESC } from '../../chartsUtils';
 
 /**
  * Class use for create heatmap spec

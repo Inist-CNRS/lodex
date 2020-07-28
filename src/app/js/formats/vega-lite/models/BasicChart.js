@@ -1,7 +1,7 @@
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
 
 /**
- * Very basic impl of the vega charts (common class for all chart)
+ * Very basic impl of the vega lite charts (common class for all chart)
  */
 class BasicChart {
     /**

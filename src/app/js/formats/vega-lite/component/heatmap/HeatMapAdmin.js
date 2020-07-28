@@ -7,7 +7,7 @@ import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import Checkbox from 'material-ui/Checkbox';
-import ToolTips from '../ToolTips';
+import ToolTips from '../../../shared/ToolTips';
 
 const styles = {
     container: {

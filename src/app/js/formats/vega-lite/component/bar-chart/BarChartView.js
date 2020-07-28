@@ -13,7 +13,7 @@ import {
     lodexOrderToIdOrder,
     lodexScaleToIdScale,
     VEGA_LITE_DATA_INJECT_TYPE_A,
-} from '../../chartsUtils';
+} from '../../../chartsUtils';
 import BarChart from '../../models/BarChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import deepClone from 'lodash.clonedeep';
@@ -33,7 +33,7 @@ class BarChartView extends Component {
 
         const barChartSpec = deepClone(new BarChart());
 
-        // Set all barchart parameter the chosen by the administrator
+        // Set all bar chart parameter the chosen by the administrator
 
         barChartSpec.setAxisDirection(
             this.props.direction === 'vertical'
