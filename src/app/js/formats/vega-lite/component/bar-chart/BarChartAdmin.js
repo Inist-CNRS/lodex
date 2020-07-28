@@ -45,8 +45,6 @@ export const defaultArgs = {
     diagonalValueAxis: false,
     direction: 'horizontal',
     scale: 'linear',
-    categoryMargin: 20,
-    valueMargin: 20,
     tooltip: false,
     tooltipCategory: 'Category',
     tooltipValue: 'Value',
@@ -67,8 +65,6 @@ class BarChartAdmin extends Component {
             axisRoundValue: PropTypes.bool,
             diagonalCategoryAxis: PropTypes.bool,
             diagonalValueAxis: PropTypes.bool,
-            categoryMargin: PropTypes.number,
-            valueMargin: PropTypes.number,
             scale: PropTypes.oneOf(['log', 'linear']),
             direction: PropTypes.oneOf(['horizontal', 'vertical']),
             barSize: PropTypes.number,
@@ -121,14 +117,6 @@ class BarChartAdmin extends Component {
         updateAdminArgs('direction', direction, this.props);
     };
 
-    setCategoryMargin = (_, categoryMargin) => {
-        updateAdminArgs('categoryMargin', categoryMargin, this.props);
-    };
-
-    setValueMargin = (_, valueMargin) => {
-        updateAdminArgs('valueMargin', valueMargin, this.props);
-    };
-
     toggleDiagonalValueAxis = () => {
         updateAdminArgs(
             'diagonalValueAxis',
@@ -175,8 +163,6 @@ class BarChartAdmin extends Component {
                 diagonalCategoryAxis,
                 scale,
                 direction,
-                categoryMargin,
-                valueMargin,
                 barSize,
                 tooltip,
                 tooltipCategory,
@@ -230,20 +216,6 @@ class BarChartAdmin extends Component {
                         primaryText={polyglot.t('vertical')}
                     />
                 </SelectField>
-                <TextField
-                    type="number"
-                    floatingLabelText={polyglot.t('category_margin')}
-                    onChange={this.setCategoryMargin}
-                    style={styles.input}
-                    value={categoryMargin}
-                />
-                <TextField
-                    type="number"
-                    floatingLabelText={polyglot.t('value_margin')}
-                    onChange={this.setValueMargin}
-                    style={styles.input}
-                    value={valueMargin}
-                />
                 <Checkbox
                     label={polyglot.t('diagonal_category_axis')}
                     onCheck={this.toggleDiagonalCategoryAxis}

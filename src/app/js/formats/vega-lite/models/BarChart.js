@@ -23,6 +23,12 @@ class BarChart extends BasicChart {
      */
     constructor() {
         super();
+        this.padding = {
+            left: 10,
+            right: 0,
+            top: 10,
+            bottom: 0,
+        };
         this.model = require('./json/bar_chart.vl.json');
         this.labelsModel = require('./json/bar_chart_labels.vl.json');
         this.scale = 'linear';

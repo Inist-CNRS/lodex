@@ -1,10 +1,4 @@
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
-import {
-    PADDING_BOTTOM,
-    PADDING_LEFT,
-    PADDING_RIGHT,
-    PADDING_TOP,
-} from '../chartsUtils';
 
 /**
  * Very basic impl of the vega charts (common class for all chart)
@@ -58,30 +52,6 @@ class BasicChart {
      */
     setTooltipValue(title) {
         this.tooltip.value.title = title;
-    }
-
-    /**
-     * Charge/update the size of the padding
-     * @param side the corresponding side [PADDING_LEFT, PADDING_RIGHT, PADDING_TOP, PADDING_BOTTOM]
-     * @param size the new size
-     */
-    setPadding(side, size) {
-        switch (side) {
-            case PADDING_LEFT:
-                this.padding.left = parseInt(size);
-                break;
-            case PADDING_RIGHT:
-                this.padding.right = parseInt(size);
-                break;
-            case PADDING_TOP:
-                this.padding.top = parseInt(size);
-                break;
-            case PADDING_BOTTOM:
-                this.padding.bottom = parseInt(size);
-                break;
-            default:
-                throw 'Illegal state: The side given is not a valid side !';
-        }
     }
 
     /**
