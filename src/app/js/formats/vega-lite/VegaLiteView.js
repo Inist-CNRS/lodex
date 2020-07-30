@@ -7,6 +7,7 @@ import injectData from '../injectData';
 import { field as fieldPropTypes } from '../../propTypes';
 import { CustomActionVegaLite } from './component/vega-lite-component';
 import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../chartsUtils';
+import ContainerDimensions from 'react-container-dimensions';
 
 const styles = {
     container: {
@@ -28,11 +29,24 @@ class VegaLiteView extends Component {
 
         return (
             <div style={styles.container}>
-                <CustomActionVegaLite
-                    spec={spec || {}}
-                    data={data}
-                    injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
-                />
+                <ContainerDimensions>
+                    {({ width }) => {
+                        if (spec !== undefined) {
+                            if (this.props.width !== '')
+                                spec.width = width * (this.props.width / 100);
+
+                            if (this.props.height !== '')
+                                spec.height = 300 * (this.props.height / 100);
+                        }
+                        return (
+                            <CustomActionVegaLite
+                                spec={spec || {}}
+                                data={data}
+                                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                            />
+                        );
+                    }}
+                </ContainerDimensions>
             </div>
         );
     }
@@ -43,6 +57,8 @@ VegaLiteView.propTypes = {
     resource: PropTypes.object.isRequired,
     data: PropTypes.any,
     specTemplate: PropTypes.string.isRequired,
+    width: PropTypes.string,
+    height: PropTypes.string,
 };
 
 VegaLiteView.defaultProps = {
