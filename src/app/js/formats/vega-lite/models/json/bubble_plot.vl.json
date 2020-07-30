@@ -63,7 +63,6 @@
       "labelPadding": 5,
       "labelFont": "Quicksand, sans-serif",
       "labelFontSize": 13,
-      "labelOverlap": true,
       "titleColor": "black",
       "titleFont": "Quicksand, sans-serif",
       "titleFontWeight": "bold",

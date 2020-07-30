@@ -9,6 +9,8 @@ class BubblePlot extends HeatMap {
     buildSpec(widthIn) {
         this.model.encoding.color.scale.range = this.colors;
 
+        this.model.encoding.x.axis.labelAngle = -35;
+
         this.commonWithBubblePlot();
 
         this.model.width = widthIn * 0.6;
