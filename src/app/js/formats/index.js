@@ -39,6 +39,7 @@ import streamgraph from './streamgraph';
 import hierarchy from './hierarchy';
 import checkPredicate from './checkPredicate';
 import istexCitation from './istexCitation';
+import bubblePlot from './vega-lite/component/bubble-plot';
 
 const components = {
     asterPlotChart,
@@ -77,6 +78,7 @@ const components = {
     streamgraph,
     hierarchy,
     istexCitation,
+    bubblePlot,
 };
 
 export const FORMATS = Object.keys(components).sort();

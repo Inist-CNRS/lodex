@@ -81,27 +81,12 @@ class HeatMap extends BasicChart {
         this.flip = flip;
     }
 
-    /**
-     * Function use for rebuild the edited spec
-     * @param widthIn
-     */
-    buildSpec(widthIn) {
-        this.model.layer.forEach(e => {
-            if (e.mark.type === 'rect') {
-                e.encoding.color.scale.range = this.colors;
-                e.encoding.color.condition.value = this.colors[
-                    this.colors.length - 1
-                ];
-            }
-        });
-
+    commonWithBubblePlot() {
         if (this.flip) {
             const field = this.model.encoding.x.field;
             this.model.encoding.x.field = this.model.encoding.y.field;
             this.model.encoding.y.field = field;
         }
-
-        this.model.encoding.x.axis.labelAngle = -45;
 
         if (this.tooltip.toggle) {
             this.model.encoding.tooltip = [
@@ -123,6 +108,25 @@ class HeatMap extends BasicChart {
         }
 
         this.model.padding = this.padding;
+    }
+
+    /**
+     * Function use for rebuild the edited spec
+     * @param widthIn
+     */
+    buildSpec(widthIn) {
+        this.model.layer.forEach(e => {
+            if (e.mark.type === 'rect') {
+                e.encoding.color.scale.range = this.colors;
+                e.encoding.color.condition.value = this.colors[
+                    this.colors.length - 1
+                ];
+            }
+        });
+
+        this.model.encoding.x.axis.labelAngle = -45;
+
+        this.commonWithBubblePlot();
 
         this.model.width = this.model.height =
             widthIn * (widthIn <= 920 ? 0.5 : 0.7);

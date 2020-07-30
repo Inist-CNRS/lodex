@@ -1,0 +1,83 @@
+{
+  "mark": {
+    "type": "circle",
+    "opacity": 0.8
+  },
+  "encoding": {
+    "x": {
+      "field": "source",
+      "type": "nominal",
+      "axis": {
+        "labelAngle": 0,
+        "title": ""
+      }
+    },
+    "y": {
+      "field": "target",
+      "type": "nominal",
+      "axis": {
+        "title": ""
+      }
+    },
+    "size": {
+      "field": "weight",
+      "type": "quantitative",
+      "legend": null,
+      "scale": {
+        "range": [
+          0,
+          500
+        ]
+      }
+    },
+    "color": {
+      "field": "target",
+      "type": "nominal",
+      "title": "",
+      "legend": null,
+      "scale": {
+        "range": [
+          "#d7191c",
+          "#fdae61",
+          "#ffffbf",
+          "#abdda4",
+          "#2b83ba"
+        ]
+      }
+    }
+  },
+  "config": {
+    "point": {
+      "opacity": 1
+    },
+    "mark": {
+      "tooltip": null
+    },
+    "text": {
+      "font": "Quicksand, sans-serif",
+      "fontSize": 12
+    },
+    "axis": {
+      "tickColor": "#bebec8",
+      "tickSize": 5,
+      "labelPadding": 5,
+      "labelFont": "Quicksand, sans-serif",
+      "labelFontSize": 13,
+      "labelOverlap": true,
+      "titleColor": "black",
+      "titleFont": "Quicksand, sans-serif",
+      "titleFontWeight": "bold",
+      "titleFontSize": 15,
+      "titlePadding": 15,
+      "grid": true,
+      "gridDash": [
+        7,
+        5
+      ],
+      "gridOpacity": 0.5
+    },
+    "view": {
+      "strokeWidth": 3
+    }
+  }
+}
