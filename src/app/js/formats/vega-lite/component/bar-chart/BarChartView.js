@@ -12,8 +12,6 @@ import {
     AXIS_Y,
     lodexOrderToIdOrder,
     lodexScaleToIdScale,
-    PADDING_BOTTOM,
-    PADDING_LEFT,
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
 import BarChart from '../../models/BarChart';
@@ -46,18 +44,6 @@ class BarChartView extends Component {
         barChartSpec.setOrderBy(lodexOrderToIdOrder(this.props.params.orderBy));
         barChartSpec.setScale(lodexScaleToIdScale(this.props.scale));
         barChartSpec.setColor(this.props.colors);
-        barChartSpec.setPadding(
-            PADDING_LEFT,
-            this.props.direction === 'vertical'
-                ? this.props.valueMargin
-                : this.props.categoryMargin,
-        );
-        barChartSpec.setPadding(
-            PADDING_BOTTOM,
-            this.props.direction === 'vertical'
-                ? this.props.categoryMargin
-                : this.props.valueMargin,
-        );
         barChartSpec.setRoundValue(this.props.axisRoundValue);
         barChartSpec.setTooltip(this.props.tooltip);
         barChartSpec.setTooltipCategory(this.props.tooltipCategory);
@@ -100,8 +86,6 @@ BarChartView.propTypes = {
     orderBy: PropTypes.string.isRequired,
     diagonalCategoryAxis: PropTypes.bool.isRequired,
     diagonalValueAxis: PropTypes.bool.isRequired,
-    categoryMargin: PropTypes.string.isRequired,
-    valueMargin: PropTypes.string.isRequired,
     scale: PropTypes.string.isRequired,
     params: PropTypes.any.isRequired,
     axisRoundValue: PropTypes.bool.isRequired,

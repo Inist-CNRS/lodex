@@ -80,11 +80,11 @@ describe('BasicChart', () => {
             },
             padding: {
                 bottom: 0,
-                left: 0,
+                left: 10,
                 right: 0,
                 top: 10,
             },
-            width: 70,
+            width: 60,
         };
         expect(barChart.buildSpec(200)).toStrictEqual(defaultBuild);
     });
