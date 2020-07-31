@@ -1,0 +1,21 @@
+{
+  "selection": {
+    "hover2": {
+      "type": "single",
+      "on": "mouseover",
+      "empty": "all",
+      "fields": ["_id"]
+    }
+  },
+  "mark": {
+    "type": "text",
+    "radius": 100,
+    "fill": "black"
+  },
+  "encoding": {
+    "text": {
+      "field": "value",
+      "type": "nominal"
+    }
+  }
+}

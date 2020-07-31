@@ -8,6 +8,7 @@ import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
 import ToolTips from '../../../shared/ToolTips';
+import Checkbox from 'material-ui/Checkbox';
 
 const styles = {
     container: {
@@ -30,6 +31,7 @@ export const defaultArgs = {
     tooltip: false,
     tooltipCategory: 'Category',
     tooltipValue: 'Value',
+    labels: false,
 };
 
 class PieChartAdmin extends Component {
@@ -45,6 +47,7 @@ class PieChartAdmin extends Component {
             tooltip: PropTypes.bool,
             tooltipCategory: PropTypes.string,
             tooltipValue: PropTypes.string,
+            labels: PropTypes.bool,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -74,6 +77,10 @@ class PieChartAdmin extends Component {
         updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
     }
 
+    toggleLabels = () => {
+        updateAdminArgs('labels', !this.props.args.labels, this.props);
+    };
+
     toggleTooltip = () => {
         updateAdminArgs('tooltip', !this.props.args.tooltip, this.props);
     };
@@ -89,7 +96,7 @@ class PieChartAdmin extends Component {
     render() {
         const {
             p: polyglot,
-            args: { params, tooltip, tooltipCategory, tooltipValue },
+            args: { params, tooltip, tooltipCategory, tooltipValue, labels },
             showMaxSize = true,
             showMaxValue = true,
             showMinValue = true,
@@ -106,6 +113,12 @@ class PieChartAdmin extends Component {
                     showMaxValue={showMaxValue}
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
+                />
+                <Checkbox
+                    label={polyglot.t('toggle_labels')}
+                    onCheck={this.toggleLabels}
+                    style={styles.input}
+                    checked={labels}
                 />
                 <ToolTips
                     checked={tooltip}

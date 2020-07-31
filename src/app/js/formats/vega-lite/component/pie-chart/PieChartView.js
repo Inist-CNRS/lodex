@@ -38,6 +38,7 @@ class PieChartView extends Component {
         pieChart.setTooltipCategory(this.props.tooltipCategory);
         pieChart.setTooltipValue(this.props.tooltipValue);
         pieChart.setColor(this.props.colors);
+        pieChart.setLabels(this.props.labels);
 
         // return the finish chart
         return (
@@ -68,6 +69,7 @@ PieChartView.propTypes = {
     tooltip: PropTypes.bool.isRequired,
     tooltipCategory: PropTypes.string.isRequired,
     tooltipValue: PropTypes.string.isRequired,
+    labels: PropTypes.bool.isRequired,
 };
 
 PieChartView.defaultProps = {
