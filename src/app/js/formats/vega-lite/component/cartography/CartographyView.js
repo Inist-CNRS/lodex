@@ -31,6 +31,7 @@ class CartographyView extends Component {
         cartography.setTooltip(this.props.tooltip);
         cartography.setTooltipCategory(this.props.tooltipCategory);
         cartography.setTooltipValue(this.props.tooltipValue);
+        cartography.setWorldPosition(this.props.worldPosition);
         cartography.setColor(
             this.props.colorScheme !== undefined
                 ? this.props.colorScheme.join(' ')
@@ -66,6 +67,7 @@ CartographyView.propTypes = {
     tooltipCategory: PropTypes.string.isRequired,
     tooltipValue: PropTypes.string.isRequired,
     colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
+    worldPosition: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, { formatData }) => {
