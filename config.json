@@ -6,7 +6,7 @@
         "password": "secret"
     },
     "#pluginsAPI" : "http://lodex-extended:31976",
-    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v6.1.3/public/",
+    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v6.3.0/public/",
     "routinesCache": false,
     "routines": [
         "all-documents",
