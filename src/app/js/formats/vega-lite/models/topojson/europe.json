@@ -8388,19 +8388,6 @@
       "geometries": [
         {
           "arcs": [
-            [77,78,79,80],
-            [[186]],[[187]],[[188]],[[-80,189]],
-            [-78,196],
-            [-125,149]
-          ],
-          "type": "MultiPolygon",
-          "properties": {
-            "name": "United Kingdom"
-          },
-          "id": "GBR"
-        },
-        {
-          "arcs": [
             [
               0,
               1,
@@ -8411,9 +8398,32 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Albania"
+            "type": "Sovereigncountry",
+            "geounit": "Albania"
           },
           "id": "ALB"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Country",
+            "geounit": "Aland"
+          },
+          "id": "ALA"
+        },
+        {
+          "arcs": [
+            [
+              5,
+              6
+            ]
+          ],
+          "type": "Polygon",
+          "properties": {
+            "type": "Sovereigncountry",
+            "geounit": "Andorra"
+          },
+          "id": "AND"
         },
         {
           "arcs": [
@@ -8431,9 +8441,38 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Austria"
+            "type": "Sovereigncountry",
+            "geounit": "Austria"
           },
           "id": "AUT"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Geounit",
+            "geounit": "BrusselsCapitalRegion"
+          },
+          "id": "BE-BRU"
+        },
+        {
+          "arcs": [
+            [
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ]
+          ],
+          "type": "Polygon",
+          "properties": {
+            "type": "Geounit",
+            "geounit": "FlemishRegion"
+          },
+          "id": "BE-VLG"
         },
         {
           "arcs": [
@@ -8447,9 +8486,48 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Bulgaria"
+            "type": "Sovereigncountry",
+            "geounit": "Bulgaria"
           },
           "id": "BGR"
+        },
+        {
+          "arcs": [
+            [
+              35,
+              36,
+              37,
+              38
+            ]
+          ],
+          "type": "Polygon",
+          "properties": {
+            "type": "Geounit",
+            "geounit": "BosniaandHerzegovina"
+          },
+          "id": "BIH"
+        },
+        {
+          "arcs": [
+            [
+              -34,
+              39,
+              -32,
+              40,
+              41,
+              42,
+              43,
+              44,
+              -36,
+              45
+            ]
+          ],
+          "type": "Polygon",
+          "properties": {
+            "type": "Geounit",
+            "geounit": "RepublicSrpska"
+          },
+          "id": "BA-SRP"
         },
         {
           "arcs": [
@@ -8463,9 +8541,29 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Belarus"
+            "type": "Sovereigncountry",
+            "geounit": "Belarus"
           },
           "id": "BLR"
+        },
+        {
+          "arcs": [
+            [
+              51,
+              -17,
+              52,
+              53,
+              54,
+              55,
+              -19
+            ]
+          ],
+          "type": "Polygon",
+          "properties": {
+            "type": "Geounit",
+            "geounit": "WalloonRegion"
+          },
+          "id": "BE-WAL"
         },
         {
           "arcs": [
@@ -8480,7 +8578,8 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Switzerland"
+            "type": "Sovereigncountry",
+            "geounit": "Switzerland"
           },
           "id": "CHE"
         },
@@ -8495,7 +8594,8 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Czech Republic"
+            "type": "Sovereigncountry",
+            "geounit": "CzechRepublic"
           },
           "id": "CZE"
         },
@@ -8517,9 +8617,18 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Germany"
+            "type": "Sovereigncountry",
+            "geounit": "Germany"
           },
           "id": "DEU"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Geosubunit",
+            "geounit": "Denmark"
+          },
+          "id": "DNK"
         },
         {
           "arcs": [
@@ -8547,7 +8656,8 @@
           ],
           "type": "MultiPolygon",
           "properties": {
-            "name": "Denmark"
+            "type": "Country",
+            "geounit": "Denmark"
           },
           "id": "DNK"
         },
@@ -8562,9 +8672,10 @@
           ],
           "type": "Polygon",
           "properties": {
-            "type": "name",
-            "name": "England"
-          }
+            "type": "Geounit",
+            "geounit": "England"
+          },
+          "id": "GBR"
         },
         {
           "arcs": [
@@ -8585,7 +8696,8 @@
           ],
           "type": "MultiPolygon",
           "properties": {
-            "name": "Estonia"
+            "type": "Sovereigncountry",
+            "geounit": "Estonia"
           },
           "id": "EST"
         },
@@ -8607,7 +8719,8 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Spain"
+            "type": "Geosubunit",
+            "geounit": "Spain"
           },
           "id": "ESP"
         },
@@ -8622,9 +8735,18 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Finland"
+            "type": "Country",
+            "geounit": "Finland"
           },
           "id": "FIN"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Dependency",
+            "geounit": "FaroeIslands"
+          },
+          "id": "FRO"
         },
         {
           "arcs": [
@@ -8651,9 +8773,48 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "France"
+            "type": "Geounit",
+            "geounit": "France"
           },
           "id": "FRA"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Geosubunit",
+            "geounit": "Guernsey"
+          },
+          "id": "GGY"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Geosubunit",
+            "geounit": "Guernsey"
+          },
+          "id": "GGY"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Geosubunit",
+            "geounit": "Guernsey"
+          },
+          "id": "GGY"
+        },
+        {
+          "arcs": [
+            [
+              -92,
+              106
+            ]
+          ],
+          "type": "Polygon",
+          "properties": {
+            "type": "Dependency",
+            "geounit": "Gibraltar"
+          },
+          "id": "ENG"
         },
         {
           "arcs": [
@@ -8688,7 +8849,8 @@
           ],
           "type": "MultiPolygon",
           "properties": {
-            "name": "Greece"
+            "type": "Sovereigncountry",
+            "geounit": "Greece"
           },
           "id": "GRC"
         },
@@ -8719,7 +8881,8 @@
           ],
           "type": "MultiPolygon",
           "properties": {
-            "name": "Croatia"
+            "type": "Sovereigncountry",
+            "geounit": "Croatia"
           },
           "id": "HRV"
         },
@@ -8737,9 +8900,18 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Hungary"
+            "type": "Sovereigncountry",
+            "geounit": "Hungary"
           },
           "id": "HUN"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Country",
+            "geounit": "IsleofMan"
+          },
+          "id": "IMN"
         },
         {
           "arcs": [
@@ -8750,7 +8922,8 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Ireland"
+            "type": "Sovereigncountry",
+            "geounit": "Ireland"
           },
           "id": "IRL"
         },
@@ -8762,9 +8935,26 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Iceland"
+            "type": "Sovereigncountry",
+            "geounit": "Iceland"
           },
           "id": "ISL"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Geosubunit",
+            "geounit": "Italy"
+          },
+          "id": "ITA"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Geosubunit",
+            "geounit": "Italy"
+          },
+          "id": "ITA"
         },
         {
           "arcs": [
@@ -8784,9 +8974,18 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Italy"
+            "type": "Geosubunit",
+            "geounit": "Italy"
           },
           "id": "ITA"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Country",
+            "geounit": "Jersey"
+          },
+          "id": "JEY"
         },
         {
           "arcs": [
@@ -8799,9 +8998,24 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Kosovo"
+            "type": "Sovereigncountry",
+            "geounit": "Kosovo"
           },
-          "id": "CS-KM"
+          "id": "XKX"
+        },
+        {
+          "arcs": [
+            [
+              -58,
+              -13
+            ]
+          ],
+          "type": "Polygon",
+          "properties": {
+            "type": "Sovereigncountry",
+            "geounit": "Liechtenstein"
+          },
+          "id": "DEU"
         },
         {
           "arcs": [
@@ -8815,7 +9029,8 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Lithuania"
+            "type": "Sovereigncountry",
+            "geounit": "Lithuania"
           },
           "id": "LTU"
         },
@@ -8829,7 +9044,8 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Luxembourg"
+            "type": "Sovereigncountry",
+            "geounit": "Luxembourg"
           },
           "id": "LUX"
         },
@@ -8847,9 +9063,24 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Latvia"
+            "type": "Sovereigncountry",
+            "geounit": "Latvia"
           },
           "id": "LVA"
+        },
+        {
+          "arcs": [
+            [
+              143,
+              -104
+            ]
+          ],
+          "type": "Polygon",
+          "properties": {
+            "type": "Sovereigncountry",
+            "geounit": "Monaco"
+          },
+          "id": "MCO"
         },
         {
           "arcs": [
@@ -8860,9 +9091,10 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Moldova"
+            "type": "Sovereigncountry",
+            "geounit": "Moldova"
           },
-          "id": "MDA"
+          "id": "RON"
         },
         {
           "arcs": [
@@ -8876,9 +9108,18 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Macedonia"
+            "type": "Sovereigncountry",
+            "geounit": "Macedonia"
           },
           "id": "MKD"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Sovereigncountry",
+            "geounit": "Malta"
+          },
+          "id": "MLT"
         },
         {
           "arcs": [
@@ -8893,9 +9134,32 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Montenegro"
+            "type": "Sovereigncountry",
+            "geounit": "Montenegro"
           },
           "id": "MNE"
+        },
+        {
+          "arcs": [
+            [
+              -125,
+              149
+            ]
+          ],
+          "type": "Polygon",
+          "properties": {
+            "type": "Geounit",
+            "geounit": "NorthernIreland"
+          },
+          "id": "GBR"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Geounit",
+            "geounit": "JanMayen"
+          },
+          "id": "SJM"
         },
         {
           "arcs": [
@@ -8918,7 +9182,8 @@
           ],
           "type": "MultiPolygon",
           "properties": {
-            "name": "Netherlands"
+            "type": "Geocore",
+            "geounit": "Netherlands"
           },
           "id": "NLD"
         },
@@ -8950,9 +9215,40 @@
           ],
           "type": "MultiPolygon",
           "properties": {
-            "name": "Norway"
+            "type": "Geounit",
+            "geounit": "Norway"
           },
           "id": "NOR"
+        },
+        {
+          "arcs": [
+            [
+              [
+                158
+              ]
+            ],
+            [
+              [
+                159
+              ]
+            ],
+            [
+              [
+                160
+              ]
+            ],
+            [
+              [
+                161
+              ]
+            ]
+          ],
+          "type": "MultiPolygon",
+          "properties": {
+            "type": "Geounit",
+            "geounit": "Svalbard"
+          },
+          "id": "SJM"
         },
         {
           "arcs": [
@@ -8971,7 +9267,8 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Poland"
+            "type": "Sovereigncountry",
+            "geounit": "Poland"
           },
           "id": "POL"
         },
@@ -8984,7 +9281,8 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Portugal"
+            "type": "Geounit",
+            "geounit": "Portugal"
           },
           "id": "PRT"
         },
@@ -9003,7 +9301,8 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Romania"
+            "type": "Sovereigncountry",
+            "geounit": "Romania"
           },
           "id": "ROU"
         },
@@ -9064,7 +9363,8 @@
           ],
           "type": "MultiPolygon",
           "properties": {
-            "name": "Russia"
+            "type": "Geosubunit",
+            "geounit": "Russia"
           },
           "id": "RUS"
         },
@@ -9080,9 +9380,49 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Russia"
+            "type": "Geosubunit",
+            "geounit": "Russia"
           },
           "id": "RUS"
+        },
+        {
+          "arcs": [
+            [
+              [
+                186
+              ]
+            ],
+            [
+              [
+                187
+              ]
+            ],
+            [
+              [
+                188
+              ]
+            ],
+            [
+              [
+                -80,
+                189
+              ]
+            ]
+          ],
+          "type": "MultiPolygon",
+          "properties": {
+            "type": "Geounit",
+            "geounit": "Scotland"
+          },
+          "id": "GBR"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Sovereigncountry",
+            "geounit": "SanMarino"
+          },
+          "id": "SMR"
         },
         {
           "arcs": [
@@ -9098,9 +9438,27 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Serbia"
+            "type": "Geounit",
+            "geounit": "Serbia"
           },
           "id": "SRB"
+        },
+        {
+          "arcs": [
+            [
+              -172,
+              -191,
+              -42,
+              -117,
+              -122
+            ]
+          ],
+          "type": "Polygon",
+          "properties": {
+            "type": "Geounit",
+            "geounit": "Vojvodina"
+          },
+          "id": "YU-VO"
         },
         {
           "arcs": [
@@ -9114,7 +9472,8 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Slovakia"
+            "type": "Sovereigncountry",
+            "geounit": "Slovakia"
           },
           "id": "SVK"
         },
@@ -9130,7 +9489,8 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Slovenia"
+            "type": "Sovereigncountry",
+            "geounit": "Slovenia"
           },
           "id": "SVN"
         },
@@ -9151,7 +9511,8 @@
           ],
           "type": "MultiPolygon",
           "properties": {
-            "name": "Sweden"
+            "type": "Sovereigncountry",
+            "geounit": "Sweden"
           },
           "id": "SWE"
         },
@@ -9171,9 +9532,32 @@
           ],
           "type": "Polygon",
           "properties": {
-            "name": "Ukraine"
+            "type": "Sovereigncountry",
+            "geounit": "Ukraine"
           },
           "id": "UKR"
+        },
+        {
+          "type": null,
+          "properties": {
+            "type": "Sovereigncountry",
+            "geounit": "Vatican"
+          },
+          "id": "VAT"
+        },
+        {
+          "arcs": [
+            [
+              -78,
+              196
+            ]
+          ],
+          "type": "Polygon",
+          "properties": {
+            "type": "Geounit",
+            "geounit": "Wales"
+          },
+          "id": "GBR"
         }
       ]
     }
