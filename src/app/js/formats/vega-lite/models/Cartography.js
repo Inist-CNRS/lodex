@@ -32,8 +32,19 @@ class Cartography extends BasicChart {
             ];
 
         if (this.worldPosition === 'europe') {
-            this.model.projection.scale = 280;
-            this.model.projection.translate = [230, 545];
+            if (widthIn >= 550) {
+                this.model.projection.scale = 300 - 100 * (450 / widthIn);
+                this.model.projection.translate = [
+                    250 - 30 * (450 / widthIn),
+                    585 - 200 * (450 / widthIn),
+                ];
+            } else {
+                this.model.projection.scale = 280 - 140 * (450 / widthIn);
+                this.model.projection.translate = [
+                    230 - 80 * (450 / widthIn),
+                    545 - 260 * (450 / widthIn),
+                ];
+            }
             this.model.data.url =
                 'https://raw.githubusercontent.com/Inist-CNRS/lodex/cartography-addition/src/app/js/formats/vega-lite/models/topojson/europe.json';
             this.model.data.format.feature = 'continent_Europe_subunits';
