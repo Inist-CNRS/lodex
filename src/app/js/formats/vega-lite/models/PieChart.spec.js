@@ -56,7 +56,6 @@ describe('PieChart', () => {
                             bind: 'legend',
                             empty: 'all',
                             fields: ['_id'],
-                            on: 'mouseover',
                             type: 'single',
                         },
                         hover1: {
