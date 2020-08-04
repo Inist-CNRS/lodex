@@ -10,6 +10,7 @@ import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ToolTips from '../../../shared/ToolTips';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import { MAP_EUROPE, MAP_WORLD } from '../../../chartsUtils';
 
 const styles = {
     container: {
@@ -41,7 +42,7 @@ export const defaultArgs = {
     tooltip: false,
     tooltipCategory: 'Category',
     tooltipValue: 'Value',
-    worldPosition: 'world',
+    worldPosition: MAP_WORLD,
 };
 
 class CartographyAdmin extends Component {
@@ -57,7 +58,7 @@ class CartographyAdmin extends Component {
             tooltip: PropTypes.bool,
             tooltipCategory: PropTypes.string,
             tooltipValue: PropTypes.string,
-            worldPosition: PropTypes.oneOf(['world', 'europe']),
+            worldPosition: PropTypes.oneOf([MAP_WORLD, MAP_EUROPE]),
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,

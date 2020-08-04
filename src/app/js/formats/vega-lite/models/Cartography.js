@@ -1,4 +1,5 @@
 import BasicChart from './BasicChart';
+import { MAP_EUROPE } from '../../chartsUtils';
 
 /**
  * Class use for create cartography spec
@@ -31,7 +32,7 @@ class Cartography extends BasicChart {
                 this.tooltip.value,
             ];
 
-        if (this.worldPosition === 'europe') {
+        if (this.worldPosition === MAP_EUROPE) {
             if (widthIn >= 550) {
                 this.model.projection.scale = 300 - 100 * (450 / widthIn);
                 this.model.projection.translate = [

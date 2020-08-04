@@ -42,6 +42,9 @@ export const VEGA_LITE_DATA_INJECT_TYPE_B = 17;
 // Data injection for Radar Chart
 export const VEGA_DATA_INJECT_TYPE_A = 18;
 
+export const MAP_EUROPE = 'europe';
+export const MAP_WORLD = 'world';
+
 // function use to convert scale give by lodex to an normalized id
 export const lodexScaleToIdScale = scale => {
     switch (scale) {
