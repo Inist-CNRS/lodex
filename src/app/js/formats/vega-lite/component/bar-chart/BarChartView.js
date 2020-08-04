@@ -62,7 +62,10 @@ class BarChartView extends Component {
                 {/* Make the chart responsive */}
                 <ContainerDimensions>
                     {({ width }) => {
-                        const spec = barChartSpec.buildSpec(width);
+                        const spec = barChartSpec.buildSpec(
+                            width,
+                            data.values.length,
+                        );
                         return (
                             <CustomActionVegaLite
                                 spec={spec}
@@ -102,7 +105,11 @@ BarChartView.defaultProps = {
 
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
-        return {};
+        return {
+            data: {
+                values: [],
+            },
+        };
     }
     return {
         data: {
