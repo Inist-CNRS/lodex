@@ -44,6 +44,7 @@ export const VEGA_DATA_INJECT_TYPE_A = 18;
 
 export const MAP_EUROPE = 'europe';
 export const MAP_WORLD = 'world';
+export const MAP_FRANCE = 'france';
 
 // function use to convert scale give by lodex to an normalized id
 export const lodexScaleToIdScale = scale => {

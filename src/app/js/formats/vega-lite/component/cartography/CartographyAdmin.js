@@ -10,7 +10,7 @@ import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ToolTips from '../../../shared/ToolTips';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import { MAP_EUROPE, MAP_WORLD } from '../../../chartsUtils';
+import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../chartsUtils';
 
 const styles = {
     container: {
@@ -58,7 +58,7 @@ class CartographyAdmin extends Component {
             tooltip: PropTypes.bool,
             tooltipCategory: PropTypes.string,
             tooltipValue: PropTypes.string,
-            worldPosition: PropTypes.oneOf([MAP_WORLD, MAP_EUROPE]),
+            worldPosition: PropTypes.oneOf([MAP_WORLD, MAP_EUROPE, MAP_FRANCE]),
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -135,12 +135,16 @@ class CartographyAdmin extends Component {
                     value={worldPosition}
                 >
                     <MenuItem
-                        value="world"
+                        value={MAP_WORLD}
                         primaryText={polyglot.t('world_position_world')}
                     />
                     <MenuItem
-                        value="europe"
+                        value={MAP_EUROPE}
                         primaryText={polyglot.t('world_position_europe')}
+                    />
+                    <MenuItem
+                        value={MAP_FRANCE}
+                        primaryText={polyglot.t('world_position_france')}
                     />
                 </SelectField>
                 <GradientSchemeSelector

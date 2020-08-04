@@ -1,5 +1,5 @@
 import BasicChart from './BasicChart';
-import { MAP_EUROPE } from '../../chartsUtils';
+import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../chartsUtils';
 
 /**
  * Class use for create cartography spec
@@ -26,29 +26,93 @@ class Cartography extends BasicChart {
     buildSpec(widthIn) {
         this.model.encoding.color.scale.range = this.colors;
 
-        if (this.tooltip.toggle)
-            this.model.encoding.tooltip = [
-                this.tooltip.category,
-                this.tooltip.value,
-            ];
-
-        if (this.worldPosition === MAP_EUROPE) {
-            if (widthIn >= 550) {
-                this.model.projection.scale = 300 - 100 * (450 / widthIn);
-                this.model.projection.translate = [
-                    250 - 30 * (450 / widthIn),
-                    585 - 200 * (450 / widthIn),
+        if (this.tooltip.toggle) {
+            if (
+                this.worldPosition === MAP_WORLD ||
+                this.worldPosition === MAP_EUROPE
+            ) {
+                this.model.encoding.tooltip = [
+                    this.tooltip.category,
+                    this.tooltip.value,
                 ];
             } else {
-                this.model.projection.scale = 280 - 140 * (450 / widthIn);
-                this.model.projection.translate = [
-                    230 - 80 * (450 / widthIn),
-                    545 - 260 * (450 / widthIn),
+                this.tooltip.category.field = 'properties.NAME_0';
+                this.model.encoding.tooltip = [
+                    this.tooltip.category,
+                    {
+                        field: 'properties.NAME_1',
+                        type: 'nominal',
+                        title: 'Région',
+                    },
+                    {
+                        field: 'properties.NAME_2',
+                        type: 'nominal',
+                        title: 'Département',
+                    },
+                    this.tooltip.value,
                 ];
             }
-            this.model.data.url =
-                'https://raw.githubusercontent.com/Inist-CNRS/lodex/cartography-addition/src/app/js/formats/vega-lite/models/topojson/europe.json';
-            this.model.data.format.feature = 'continent_Europe_subunits';
+        }
+
+        switch (this.worldPosition) {
+            case MAP_EUROPE:
+                {
+                    if (widthIn >= 550) {
+                        this.model.projection.scale =
+                            300 - 100 * (450 / widthIn);
+                        this.model.projection.translate = [
+                            250 - 30 * (450 / widthIn),
+                            585 - 200 * (450 / widthIn),
+                        ];
+                    } else {
+                        this.model.projection.scale =
+                            280 - 140 * (450 / widthIn);
+                        this.model.projection.translate = [
+                            230 - 80 * (450 / widthIn),
+                            545 - 260 * (450 / widthIn),
+                        ];
+                    }
+                    this.model.data.url =
+                        'https://raw.githubusercontent.com/Inist-CNRS/lodex/cartography-addition/src/app/js/formats/vega-lite/models/topojson/europe.json';
+                    this.model.data.format.feature =
+                        'continent_Europe_subunits';
+                }
+                break;
+            case MAP_FRANCE:
+                {
+                    if (widthIn >= 850) {
+                        this.model.projection.scale =
+                            1800 - 100 * (450 / widthIn);
+                        this.model.projection.translate = [
+                            400 - 30 * (450 / widthIn),
+                            1925 - 100 * (450 / widthIn),
+                        ];
+                    } else if (widthIn >= 550) {
+                        this.model.projection.scale =
+                            1400 - 80 * (450 / widthIn);
+                        this.model.projection.translate = [
+                            280 - 80 * (450 / widthIn),
+                            1475 - 80 * (450 / widthIn),
+                        ];
+                    } else {
+                        this.model.projection.scale =
+                            1400 - 480 * (450 / widthIn);
+                        this.model.projection.translate = [
+                            280 - 110 * (450 / widthIn),
+                            1475 - 510 * (450 / widthIn),
+                        ];
+                    }
+                    this.model.data.url =
+                        'https://raw.githubusercontent.com/Inist-CNRS/lodex/cartography-addition/src/app/js/formats/vega-lite/models/topojson/fr-departments.json';
+                    this.model.data.format.feature = 'FRA_adm2';
+
+                    this.model.transform.forEach(e => {
+                        if (e.lookup === 'id') {
+                            e.lookup = 'properties.HASC_2';
+                        }
+                    });
+                }
+                break;
         }
 
         this.model.width = widthIn - widthIn * 0.1 - 30;
