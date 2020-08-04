@@ -240,7 +240,7 @@ class BarChart extends BasicChart {
                 (!this.labels ? 30 : 0) -
                 (this.padding.right + this.padding.left);
             height = 300;
-            if (dataNumber * (this.size + 4) >= width) {
+            if (dataNumber * (parseInt(this.size) + 4) >= width) {
                 encoding.size = {
                     value: width / (dataNumber + 1),
                 };
