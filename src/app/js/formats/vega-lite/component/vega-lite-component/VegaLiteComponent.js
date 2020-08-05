@@ -7,6 +7,7 @@ import deepClone from 'lodash.clonedeep';
 import {
     VEGA_LITE_DATA_INJECT_TYPE_A,
     VEGA_LITE_DATA_INJECT_TYPE_B,
+    VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../../chartsUtils';
 
 /**
@@ -47,6 +48,13 @@ function CustomActionVegaLite(props) {
         case VEGA_LITE_DATA_INJECT_TYPE_B:
             spec.transform.forEach(e => {
                 if (e.lookup === 'id') {
+                    e.from.data.values = props.data.values;
+                }
+            });
+            break;
+        case VEGA_LITE_DATA_INJECT_TYPE_C:
+            spec.transform.forEach(e => {
+                if (e.lookup === 'properties.HASC_2') {
                     e.from.data.values = props.data.values;
                 }
             });

@@ -38,6 +38,7 @@ export const CATEGORIES = 15;
 // Data injection for Bar, Pie, HeatMap chart
 export const VEGA_LITE_DATA_INJECT_TYPE_A = 16;
 export const VEGA_LITE_DATA_INJECT_TYPE_B = 17;
+export const VEGA_LITE_DATA_INJECT_TYPE_C = 19;
 
 // Data injection for Radar Chart
 export const VEGA_DATA_INJECT_TYPE_A = 18;
