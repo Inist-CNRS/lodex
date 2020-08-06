@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
 import ContainerDimensions from 'react-container-dimensions';
 import { CustomActionVega } from '../vega-component';
@@ -31,7 +31,7 @@ class FlowMapView extends Component {
                 {/* Make the chart responsive */}
                 <ContainerDimensions>
                     {({ width }) => {
-                        const spec = flowMap.buildSpec(width);
+                        const spec = flowMap.buildSpec(width, this.props.p);
                         return (
                             <CustomActionVega
                                 spec={spec}
@@ -50,6 +50,7 @@ FlowMapView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
     data: PropTypes.any,
+    p: polyglotPropTypes.isRequired,
 };
 
 FlowMapView.defaultProps = {
