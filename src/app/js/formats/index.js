@@ -40,6 +40,7 @@ import hierarchy from './hierarchy';
 import checkPredicate from './checkPredicate';
 import istexCitation from './istexCitation';
 import bubblePlot from './vega-lite/component/bubble-plot';
+import flowMap from './vega/component/flow-map';
 
 const components = {
     asterPlotChart,
@@ -79,6 +80,7 @@ const components = {
     hierarchy,
     istexCitation,
     bubblePlot,
+    flowMap,
 };
 
 export const FORMATS = Object.keys(components).sort();
