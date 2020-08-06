@@ -57,7 +57,14 @@ class Cartography extends BasicChart {
         switch (this.worldPosition) {
             case MAP_EUROPE:
                 {
-                    if (widthIn >= 550) {
+                    if (widthIn >= 850) {
+                        this.model.projection.scale =
+                            300 - 225 * (450 / widthIn);
+                        this.model.projection.translate = [
+                            350 - 30 * (450 / widthIn),
+                            650 - 200 * (450 / widthIn),
+                        ];
+                    } else if (widthIn >= 550) {
                         this.model.projection.scale =
                             300 - 100 * (450 / widthIn);
                         this.model.projection.translate = [

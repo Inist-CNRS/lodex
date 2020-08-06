@@ -478,5 +478,6 @@
 "vega_size_step"	"Leave the corresponding field empty if you use 'step'"	"Laisser vide le champ correspondant si vous utilisez 'step'"
 "bubblePlot"	"Graph - Bubble Plot"	"Graphique - Diagramme a bulles"
 "world_position"	"World Projection"	"Projection du monde"
-"world_position_world"	"World Projection"	"Projection modial"
-"world_position_europe"	"Europe Projection"	"Projection europeen"
+"world_position_world"	"Worldwide Projection"	"Projection modiale"
+"world_position_europe"	"European Projection"	"Projection européenne"
+"world_position_france"	"French Projection"	"Projection français"
