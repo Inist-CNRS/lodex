@@ -1,7 +1,7 @@
 import DefaultFormat from '../../../DefaultFormat';
 import Component from './FlowMapView';
 import AdminComponent, { defaultArgs } from './FlowMapAdmin';
-import Icon from './RadarChartIcon';
+import Icon from './FlowMapIcon';
 
 export default {
     ...DefaultFormat,

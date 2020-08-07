@@ -477,4 +477,4 @@
 "vegalite_height"	"Responsive height (optional) [10~800]"	"Hauteur responsive (optionelle) [10~800]"
 "vega_size_step"	"Leave the corresponding field empty if you use 'step'"	"Laisser vide le champ correspondant si vous utilisez 'step'"
 "bubblePlot"	"Graph - Bubble Plot"	"Graphique - Diagramme a bulles"
-"flowMap"	"Graph - Flow Map"	"Graphique - Carte de flux"
+"flowMap"	"Graph - Flow Map"	"Graphique - Cartographie de flux"
