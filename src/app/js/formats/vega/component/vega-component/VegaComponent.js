@@ -61,7 +61,7 @@ function CustomActionVega(props) {
                     });
                 });
                 spec.data.forEach(e => {
-                    if (e.name === 'routes' || e.name === 'traffic') {
+                    if (e.name === 'routes' || e.name === 'link_data') {
                         e.values = data.values;
                     }
                 });
