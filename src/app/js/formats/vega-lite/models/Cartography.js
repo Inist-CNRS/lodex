@@ -96,17 +96,17 @@ class Cartography extends BasicChart {
                         ];
                     } else if (widthIn >= 550) {
                         this.model.projection.scale =
-                            1400 - 80 * (450 / widthIn);
+                            1200 - 80 * (450 / widthIn);
                         this.model.projection.translate = [
                             280 - 80 * (450 / widthIn),
-                            1475 - 80 * (450 / widthIn),
+                            1275 - 80 * (450 / widthIn),
                         ];
                     } else {
                         this.model.projection.scale =
-                            1400 - 480 * (450 / widthIn);
+                            1200 - 480 * (450 / widthIn);
                         this.model.projection.translate = [
                             280 - 110 * (450 / widthIn),
-                            1475 - 510 * (450 / widthIn),
+                            1275 - 510 * (450 / widthIn),
                         ];
                     }
                     this.model.data.url =
