@@ -54,6 +54,7 @@ describe('PieChart', () => {
                     selection: {
                         click: {
                             bind: 'legend',
+                            on: 'mouseover',
                             empty: 'all',
                             fields: ['_id'],
                             type: 'single',

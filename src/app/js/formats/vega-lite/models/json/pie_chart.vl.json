@@ -51,6 +51,7 @@
         },
         "click": {
           "type": "single",
+          "on": "mouseover",
           "empty": "all",
           "fields": [
             "_id"
