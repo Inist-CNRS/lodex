@@ -1,4 +1,5 @@
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
+import { SCALE_LINEAR } from '../../chartsUtils';
 
 /**
  * Class use for create radar chart spec
@@ -19,6 +20,11 @@ class RadarChart {
                 title: 'Value',
             },
         };
+        this.scales = SCALE_LINEAR;
+    }
+
+    setScale(scales) {
+        this.scales = scales;
     }
 
     /**
@@ -82,6 +88,12 @@ class RadarChart {
                 }
             });
         }
+
+        this.model.scales.forEach(e => {
+            if (e.name === 'radial') {
+                e.type = this.scales === SCALE_LINEAR ? 'linear' : 'symlog';
+            }
+        });
 
         this.model.width = widthIn - widthIn * 0.06;
         this.model.height = widthIn - widthIn * 0.24;
