@@ -1,0 +1,1054 @@
+{
+  "values": [
+    {
+      "iata": "ARE",
+      "name": "United Arab Emirates",
+      "latitude": 23.424076,
+      "longitude": 53.847818
+    },
+    {
+      "iata": "AFG",
+      "name": "Afghanistan",
+      "latitude": 33.93911,
+      "longitude": 67.709953
+    },
+    {
+      "iata": "ALB",
+      "name": "Albania",
+      "latitude": 41.153332,
+      "longitude": 20.168331
+    },
+    {
+      "iata": "ARM",
+      "name": "Armenia",
+      "latitude": 40.069099,
+      "longitude": 45.038189
+    },
+    {
+      "iata": "AGO",
+      "name": "Angola",
+      "latitude": -11.202692,
+      "longitude": 17.873887
+    },
+    {
+      "iata": "ARG",
+      "name": "Argentina",
+      "latitude": -38.416097,
+      "longitude": -63.616672
+    },
+    {
+      "iata": "AUT",
+      "name": "Austria",
+      "latitude": 47.516231,
+      "longitude": 14.550072
+    },
+    {
+      "iata": "AUS",
+      "name": "Australia",
+      "latitude": -25.274398,
+      "longitude": 133.775136
+    },
+    {
+      "iata": "AZE",
+      "name": "Azerbaijan",
+      "latitude": 40.143105,
+      "longitude": 47.576927
+    },
+    {
+      "iata": "BIH",
+      "name": "Bosnia and Herzegovina",
+      "latitude": 43.915886,
+      "longitude": 17.679076
+    },
+    {
+      "iata": "BGD",
+      "name": "Bangladesh",
+      "latitude": 23.684994,
+      "longitude": 90.356331
+    },
+    {
+      "iata": "BEL",
+      "name": "Belgium",
+      "latitude": 50.503887,
+      "longitude": 4.469936
+    },
+    {
+      "iata": "BFA",
+      "name": "Burkina Faso",
+      "latitude": 12.238333,
+      "longitude": -1.561593
+    },
+    {
+      "iata": "BGR",
+      "name": "Bulgaria",
+      "latitude": 42.733883,
+      "longitude": 25.48583
+    },
+    {
+      "iata": "BDI",
+      "name": "Burundi",
+      "latitude": -3.373056,
+      "longitude": 29.918886
+    },
+    {
+      "iata": "BEN",
+      "name": "Benin",
+      "latitude": 9.30769,
+      "longitude": 2.315834
+    },
+    {
+      "iata": "BMU",
+      "name": "Bermuda",
+      "latitude": 32.321384,
+      "longitude": -64.75737
+    },
+    {
+      "iata": "BRN",
+      "name": "Brunei",
+      "latitude": 4.535277,
+      "longitude": 114.727669
+    },
+    {
+      "iata": "BOL",
+      "name": "Bolivia",
+      "latitude": -16.290154,
+      "longitude": -63.588653
+    },
+    {
+      "iata": "BRA",
+      "name": "Brazil",
+      "latitude": -14.235004,
+      "longitude": -51.92528
+    },
+    {
+      "iata": "BHS",
+      "name": "Bahamas",
+      "latitude": 25.03428,
+      "longitude": -77.39628
+    },
+    {
+      "iata": "BTN",
+      "name": "Bhutan",
+      "latitude": 27.514162,
+      "longitude": 90.433601
+    },
+    {
+      "iata": "BWA",
+      "name": "Botswana",
+      "latitude": -22.328474,
+      "longitude": 24.684866
+    },
+    {
+      "iata": "BLR",
+      "name": "Belarus",
+      "latitude": 53.709807,
+      "longitude": 27.953389
+    },
+    {
+      "iata": "BLZ",
+      "name": "Belize",
+      "latitude": 17.189877,
+      "longitude": -88.49765
+    },
+    {
+      "iata": "CAN",
+      "name": "Canada",
+      "latitude": 56.130366,
+      "longitude": -106.346771
+    },
+    {
+      "iata": "COD",
+      "name": "Congo [DRC]",
+      "latitude": -4.038333,
+      "longitude": 21.758664
+    },
+    {
+      "iata": "CAF",
+      "name": "Central African Republic",
+      "latitude": 6.611111,
+      "longitude": 20.939444
+    },
+    {
+      "iata": "COG",
+      "name": "Congo [Republic]",
+      "latitude": -0.228021,
+      "longitude": 15.827659
+    },
+    {
+      "iata": "CHE",
+      "name": "Switzerland",
+      "latitude": 46.818188,
+      "longitude": 8.227512
+    },
+    {
+      "iata": "CIV",
+      "name": "Côte d'Ivoire",
+      "latitude": 7.539989,
+      "longitude": -5.54708
+    },
+    {
+      "iata": "CHL",
+      "name": "Chile",
+      "latitude": -35.675147,
+      "longitude": -71.542969
+    },
+    {
+      "iata": "CMR",
+      "name": "Cameroon",
+      "latitude": 7.369722,
+      "longitude": 12.354722
+    },
+    {
+      "iata": "CHN",
+      "name": "China",
+      "latitude": 35.86166,
+      "longitude": 104.195397
+    },
+    {
+      "iata": "COL",
+      "name": "Colombia",
+      "latitude": 4.570868,
+      "longitude": -74.297333
+    },
+    {
+      "iata": "CRI",
+      "name": "Costa Rica",
+      "latitude": 9.748917,
+      "longitude": -83.753428
+    },
+    {
+      "iata": "CUB",
+      "name": "Cuba",
+      "latitude": 21.521757,
+      "longitude": -77.781167
+    },
+    {
+      "iata": "CYP",
+      "name": "Cyprus",
+      "latitude": 35.126413,
+      "longitude": 33.429859
+    },
+    {
+      "iata": "CZE",
+      "name": "Czech Republic",
+      "latitude": 49.817492,
+      "longitude": 15.472962
+    },
+    {
+      "iata": "DEU",
+      "name": "Germany",
+      "latitude": 51.165691,
+      "longitude": 10.451526
+    },
+    {
+      "iata": "DJI",
+      "name": "Djibouti",
+      "latitude": 11.825138,
+      "longitude": 42.590275
+    },
+    {
+      "iata": "DNK",
+      "name": "Denmark",
+      "latitude": 56.26392,
+      "longitude": 9.501785
+    },
+    {
+      "iata": "DOM",
+      "name": "Dominican Republic",
+      "latitude": 18.735693,
+      "longitude": -70.162651
+    },
+    {
+      "iata": "DZA",
+      "name": "Algeria",
+      "latitude": 28.033886,
+      "longitude": 1.659626
+    },
+    {
+      "iata": "ECU",
+      "name": "Ecuador",
+      "latitude": -1.831239,
+      "longitude": -78.183406
+    },
+    {
+      "iata": "EST",
+      "name": "Estonia",
+      "latitude": 58.595272,
+      "longitude": 25.013607
+    },
+    {
+      "iata": "EGY",
+      "name": "Egypt",
+      "latitude": 26.820553,
+      "longitude": 30.802498
+    },
+    {
+      "iata": "ESH",
+      "name": "Western Sahara",
+      "latitude": 24.215527,
+      "longitude": -12.885834
+    },
+    {
+      "iata": "ERI",
+      "name": "Eritrea",
+      "latitude": 15.179384,
+      "longitude": 39.782334
+    },
+    {
+      "iata": "ESP",
+      "name": "Spain",
+      "latitude": 40.463667,
+      "longitude": -3.74922
+    },
+    {
+      "iata": "ETH",
+      "name": "Ethiopia",
+      "latitude": 9.145,
+      "longitude": 40.489673
+    },
+    {
+      "iata": "FIN",
+      "name": "Finland",
+      "latitude": 61.92411,
+      "longitude": 25.748151
+    },
+    {
+      "iata": "FJI",
+      "name": "Fiji",
+      "latitude": -16.578193,
+      "longitude": 179.414413
+    },
+    {
+      "iata": "FLK",
+      "name": "Falkland Islands [Islas Malvinas]",
+      "latitude": -51.796253,
+      "longitude": -59.523613
+    },
+    {
+      "iata": "FRA",
+      "name": "France",
+      "latitude": 46.227638,
+      "longitude": 2.213749
+    },
+    {
+      "iata": "GAB",
+      "name": "Gabon",
+      "latitude": -0.803689,
+      "longitude": 11.609444
+    },
+    {
+      "iata": "GBR",
+      "name": "United Kingdom",
+      "latitude": 55.378051,
+      "longitude": -3.435973
+    },
+    {
+      "iata": "GEO",
+      "name": "Georgia",
+      "latitude": 42.315407,
+      "longitude": 43.356892
+    },
+    {
+      "iata": "GUF",
+      "name": "French Guiana",
+      "latitude": 3.933889,
+      "longitude": -53.125782
+    },
+    {
+      "iata": "GHA",
+      "name": "Ghana",
+      "latitude": 7.946527,
+      "longitude": -1.023194
+    },
+    {
+      "iata": "GRL",
+      "name": "Greenland",
+      "latitude": 71.706936,
+      "longitude": -42.604303
+    },
+    {
+      "iata": "GMB",
+      "name": "Gambia",
+      "latitude": 13.443182,
+      "longitude": -15.310139
+    },
+    {
+      "iata": "GIN",
+      "name": "Guinea",
+      "latitude": 9.945587,
+      "longitude": -9.696645
+    },
+    {
+      "iata": "GNQ",
+      "name": "Equatorial Guinea",
+      "latitude": 1.650801,
+      "longitude": 10.267895
+    },
+    {
+      "iata": "GRC",
+      "name": "Greece",
+      "latitude": 39.074208,
+      "longitude": 21.824312
+    },
+    {
+      "iata": "GTM",
+      "name": "Guatemala",
+      "latitude": 15.783471,
+      "longitude": -90.230759
+    },
+    {
+      "iata": "GNB",
+      "name": "Guinea-Bissau",
+      "latitude": 11.803749,
+      "longitude": -15.180413
+    },
+    {
+      "iata": "GUY",
+      "name": "Guyana",
+      "latitude": 4.860416,
+      "longitude": -58.93018
+    },
+    {
+      "iata": "HND",
+      "name": "Honduras",
+      "latitude": 15.199999,
+      "longitude": -86.241905
+    },
+    {
+      "iata": "HRV",
+      "name": "Croatia",
+      "latitude": 45.1,
+      "longitude": 15.2
+    },
+    {
+      "iata": "HTI",
+      "name": "Haiti",
+      "latitude": 18.971187,
+      "longitude": -72.285215
+    },
+    {
+      "iata": "HUN",
+      "name": "Hungary",
+      "latitude": 47.162494,
+      "longitude": 19.503304
+    },
+    {
+      "iata": "IDN",
+      "name": "Indonesia",
+      "latitude": -0.789275,
+      "longitude": 113.921327
+    },
+    {
+      "iata": "IRL",
+      "name": "Ireland",
+      "latitude": 53.41291,
+      "longitude": -8.24389
+    },
+    {
+      "iata": "ISR",
+      "name": "Israel",
+      "latitude": 31.046051,
+      "longitude": 34.851612
+    },
+    {
+      "iata": "IND",
+      "name": "India",
+      "latitude": 20.593684,
+      "longitude": 78.96288
+    },
+    {
+      "iata": "IRQ",
+      "name": "Iraq",
+      "latitude": 33.223191,
+      "longitude": 43.679291
+    },
+    {
+      "iata": "IRN",
+      "name": "Iran",
+      "latitude": 32.427908,
+      "longitude": 53.688046
+    },
+    {
+      "iata": "ISL",
+      "name": "Iceland",
+      "latitude": 64.963051,
+      "longitude": -19.020835
+    },
+    {
+      "iata": "ITA",
+      "name": "Italy",
+      "latitude": 41.87194,
+      "longitude": 12.56738
+    },
+    {
+      "iata": "JAM",
+      "name": "Jamaica",
+      "latitude": 18.109581,
+      "longitude": -77.297508
+    },
+    {
+      "iata": "JOR",
+      "name": "Jordan",
+      "latitude": 30.585164,
+      "longitude": 36.238414
+    },
+    {
+      "iata": "JPN",
+      "name": "Japan",
+      "latitude": 36.204824,
+      "longitude": 138.252924
+    },
+    {
+      "iata": "KEN",
+      "name": "Kenya",
+      "latitude": -0.023559,
+      "longitude": 37.906193
+    },
+    {
+      "iata": "KGZ",
+      "name": "Kyrgyzstan",
+      "latitude": 41.20438,
+      "longitude": 74.766098
+    },
+    {
+      "iata": "KHM",
+      "name": "Cambodia",
+      "latitude": 12.565679,
+      "longitude": 104.990963
+    },
+    {
+      "iata": "PRK",
+      "name": "North Korea",
+      "latitude": 40.339852,
+      "longitude": 127.510093
+    },
+    {
+      "iata": "KOR",
+      "name": "South Korea",
+      "latitude": 35.907757,
+      "longitude": 127.766922
+    },
+    {
+      "iata": "KWT",
+      "name": "Kuwait",
+      "latitude": 29.31166,
+      "longitude": 47.481766
+    },
+    {
+      "iata": "KAZ",
+      "name": "Kazakhstan",
+      "latitude": 48.019573,
+      "longitude": 66.923684
+    },
+    {
+      "iata": "LAO",
+      "name": "Laos",
+      "latitude": 19.85627,
+      "longitude": 102.495496
+    },
+    {
+      "iata": "LBN",
+      "name": "Lebanon",
+      "latitude": 33.854721,
+      "longitude": 35.862285
+    },
+    {
+      "iata": "LKA",
+      "name": "Sri Lanka",
+      "latitude": 7.873054,
+      "longitude": 80.771797
+    },
+    {
+      "iata": "LBR",
+      "name": "Liberia",
+      "latitude": 6.428055,
+      "longitude": -9.429499
+    },
+    {
+      "iata": "LSO",
+      "name": "Lesotho",
+      "latitude": -29.609988,
+      "longitude": 28.233608
+    },
+    {
+      "iata": "LTU",
+      "name": "Lithuania",
+      "latitude": 55.169438,
+      "longitude": 23.881275
+    },
+    {
+      "iata": "LUX",
+      "name": "Luxembourg",
+      "latitude": 49.815273,
+      "longitude": 6.129583
+    },
+    {
+      "iata": "LVA",
+      "name": "Latvia",
+      "latitude": 56.879635,
+      "longitude": 24.603189
+    },
+    {
+      "iata": "LBY",
+      "name": "Libya",
+      "latitude": 26.3351,
+      "longitude": 17.228331
+    },
+    {
+      "iata": "MAR",
+      "name": "Morocco",
+      "latitude": 31.791702,
+      "longitude": -7.09262
+    },
+    {
+      "iata": "MDA",
+      "name": "Moldova",
+      "latitude": 47.411631,
+      "longitude": 28.369885
+    },
+    {
+      "iata": "MNE",
+      "name": "Montenegro",
+      "latitude": 42.708678,
+      "longitude": 19.37439
+    },
+    {
+      "iata": "MDG",
+      "name": "Madagascar",
+      "latitude": -18.766947,
+      "longitude": 46.869107
+    },
+    {
+      "iata": "MKD",
+      "name": "Macedonia [FYROM]",
+      "latitude": 41.608635,
+      "longitude": 21.745275
+    },
+    {
+      "iata": "MLI",
+      "name": "Mali",
+      "latitude": 17.570692,
+      "longitude": -3.996166
+    },
+    {
+      "iata": "MMR",
+      "name": "Myanmar [Burma]",
+      "latitude": 21.913965,
+      "longitude": 95.956223
+    },
+    {
+      "iata": "MNG",
+      "name": "Mongolia",
+      "latitude": 46.862496,
+      "longitude": 103.846656
+    },
+    {
+      "iata": "MRT",
+      "name": "Mauritania",
+      "latitude": 21.00789,
+      "longitude": -10.940835
+    },
+    {
+      "iata": "MLT",
+      "name": "Malta",
+      "latitude": 35.937496,
+      "longitude": 14.375416
+    },
+    {
+      "iata": "MWI",
+      "name": "Malawi",
+      "latitude": -13.254308,
+      "longitude": 34.301525
+    },
+    {
+      "iata": "MEX",
+      "name": "Mexico",
+      "latitude": 23.634501,
+      "longitude": -102.552784
+    },
+    {
+      "iata": "MYS",
+      "name": "Malaysia",
+      "latitude": 4.210484,
+      "longitude": 101.975766
+    },
+    {
+      "iata": "MOZ",
+      "name": "Mozambique",
+      "latitude": -18.665695,
+      "longitude": 35.529562
+    },
+    {
+      "iata": "NAM",
+      "name": "Namibia",
+      "latitude": -22.95764,
+      "longitude": 18.49041
+    },
+    {
+      "iata": "NCL",
+      "name": "New Caledonia",
+      "latitude": -20.904305,
+      "longitude": 165.618042
+    },
+    {
+      "iata": "NER",
+      "name": "Niger",
+      "latitude": 17.607789,
+      "longitude": 8.081666
+    },
+    {
+      "iata": "NGA",
+      "name": "Nigeria",
+      "latitude": 9.081999,
+      "longitude": 8.675277
+    },
+    {
+      "iata": "NIC",
+      "name": "Nicaragua",
+      "latitude": 12.865416,
+      "longitude": -85.207229
+    },
+    {
+      "iata": "NLD",
+      "name": "Netherlands",
+      "latitude": 52.132633,
+      "longitude": 5.291266
+    },
+    {
+      "iata": "NOR",
+      "name": "Norway",
+      "latitude": 60.472024,
+      "longitude": 8.468946
+    },
+    {
+      "iata": "NPL",
+      "name": "Nepal",
+      "latitude": 28.394857,
+      "longitude": 84.124008
+    },
+    {
+      "iata": "NZL",
+      "name": "New Zealand",
+      "latitude": -40.900557,
+      "longitude": 174.885971
+    },
+    {
+      "iata": "OMN",
+      "name": "Oman",
+      "latitude": 21.512583,
+      "longitude": 55.923255
+    },
+    {
+      "iata": "PAN",
+      "name": "Panama",
+      "latitude": 8.537981,
+      "longitude": -80.782127
+    },
+    {
+      "iata": "PER",
+      "name": "Peru",
+      "latitude": -9.189967,
+      "longitude": -75.015152
+    },
+    {
+      "iata": "PNG",
+      "name": "Papua New Guinea",
+      "latitude": -6.314993,
+      "longitude": 143.95555
+    },
+    {
+      "iata": "PHL",
+      "name": "Philippines",
+      "latitude": 12.879721,
+      "longitude": 121.774017
+    },
+    {
+      "iata": "PAK",
+      "name": "Pakistan",
+      "latitude": 30.375321,
+      "longitude": 69.345116
+    },
+    {
+      "iata": "POL",
+      "name": "Poland",
+      "latitude": 51.919438,
+      "longitude": 19.145136
+    },
+    {
+      "iata": "PRI",
+      "name": "Puerto Rico",
+      "latitude": 18.220833,
+      "longitude": -66.590149
+    },
+    {
+      "iata": "PSE",
+      "name": "Palestinian Territories",
+      "latitude": 31.952162,
+      "longitude": 35.233154
+    },
+    {
+      "iata": "PRT",
+      "name": "Portugal",
+      "latitude": 39.399872,
+      "longitude": -8.224454
+    },
+    {
+      "iata": "PRY",
+      "name": "Paraguay",
+      "latitude": -23.442503,
+      "longitude": -58.443832
+    },
+    {
+      "iata": "QAT",
+      "name": "Qatar",
+      "latitude": 25.354826,
+      "longitude": 51.183884
+    },
+    {
+      "iata": "ROU",
+      "name": "Romania",
+      "latitude": 45.943161,
+      "longitude": 24.96676
+    },
+    {
+      "iata": "SRB",
+      "name": "Serbia",
+      "latitude": 44.016521,
+      "longitude": 21.005859
+    },
+    {
+      "iata": "RUS",
+      "name": "Russia",
+      "latitude": 61.52401,
+      "longitude": 105.318756
+    },
+    {
+      "iata": "RWA",
+      "name": "Rwanda",
+      "latitude": -1.940278,
+      "longitude": 29.873888
+    },
+    {
+      "iata": "SAU",
+      "name": "Saudi Arabia",
+      "latitude": 23.885942,
+      "longitude": 45.079162
+    },
+    {
+      "iata": "SLB",
+      "name": "Solomon Islands",
+      "latitude": -9.64571,
+      "longitude": 160.156194
+    },
+    {
+      "iata": "SDN",
+      "name": "Sudan",
+      "latitude": 12.862807,
+      "longitude": 30.217636
+    },
+    {
+      "iata": "SWE",
+      "name": "Sweden",
+      "latitude": 60.128161,
+      "longitude": 18.643501
+    },
+    {
+      "iata": "SVN",
+      "name": "Slovenia",
+      "latitude": 46.151241,
+      "longitude": 14.995463
+    },
+    {
+      "iata": "SVK",
+      "name": "Slovakia",
+      "latitude": 48.669026,
+      "longitude": 19.699024
+    },
+    {
+      "iata": "SLE",
+      "name": "Sierra Leone",
+      "latitude": 8.460555,
+      "longitude": -11.779889
+    },
+    {
+      "iata": "SEN",
+      "name": "Senegal",
+      "latitude": 14.497401,
+      "longitude": -14.452362
+    },
+    {
+      "iata": "SOM",
+      "name": "Somalia",
+      "latitude": 5.152149,
+      "longitude": 46.199616
+    },
+    {
+      "iata": "SUR",
+      "name": "Suriname",
+      "latitude": 3.919305,
+      "longitude": -56.027783
+    },
+    {
+      "iata": "SLV",
+      "name": "El Salvador",
+      "latitude": 13.794185,
+      "longitude": -88.89653
+    },
+    {
+      "iata": "SYR",
+      "name": "Syria",
+      "latitude": 34.802075,
+      "longitude": 38.996815
+    },
+    {
+      "iata": "SWZ",
+      "name": "Swaziland",
+      "latitude": -26.522503,
+      "longitude": 31.465866
+    },
+    {
+      "iata": "TCD",
+      "name": "Chad",
+      "latitude": 15.454166,
+      "longitude": 18.732207
+    },
+    {
+      "iata": "ATF",
+      "name": "French Southern Territories",
+      "latitude": -49.280366,
+      "longitude": 69.348557
+    },
+    {
+      "iata": "TGO",
+      "name": "Togo",
+      "latitude": 8.619543,
+      "longitude": 0.824782
+    },
+    {
+      "iata": "THA",
+      "name": "Thailand",
+      "latitude": 15.870032,
+      "longitude": 100.992541
+    },
+    {
+      "iata": "TJK",
+      "name": "Tajikistan",
+      "latitude": 38.861034,
+      "longitude": 71.276093
+    },
+    {
+      "iata": "TLS",
+      "name": "Timor-Leste",
+      "latitude": -8.874217,
+      "longitude": 125.727539
+    },
+    {
+      "iata": "TKM",
+      "name": "Turkmenistan",
+      "latitude": 38.969719,
+      "longitude": 59.556278
+    },
+    {
+      "iata": "TUN",
+      "name": "Tunisia",
+      "latitude": 33.886917,
+      "longitude": 9.537499
+    },
+    {
+      "iata": "TUR",
+      "name": "Turkey",
+      "latitude": 38.963745,
+      "longitude": 35.243322
+    },
+    {
+      "iata": "TTO",
+      "name": "Trinidad and Tobago",
+      "latitude": 10.691803,
+      "longitude": -61.222503
+    },
+    {
+      "iata": "TWN",
+      "name": "Taiwan",
+      "latitude": 23.69781,
+      "longitude": 120.960515
+    },
+    {
+      "iata": "TZA",
+      "name": "Tanzania",
+      "latitude": -6.369028,
+      "longitude": 34.888822
+    },
+    {
+      "iata": "UKR",
+      "name": "Ukraine",
+      "latitude": 48.379433,
+      "longitude": 31.16558
+    },
+    {
+      "iata": "UGA",
+      "name": "Uganda",
+      "latitude": 1.373333,
+      "longitude": 32.290275
+    },
+    {
+      "iata": "USA",
+      "name": "United States",
+      "latitude": 37.09024,
+      "longitude": -95.712891
+    },
+    {
+      "iata": "URY",
+      "name": "Uruguay",
+      "latitude": -32.522779,
+      "longitude": -55.765835
+    },
+    {
+      "iata": "UZB",
+      "name": "Uzbekistan",
+      "latitude": 41.377491,
+      "longitude": 64.585262
+    },
+    {
+      "iata": "VEN",
+      "name": "Venezuela",
+      "latitude": 6.42375,
+      "longitude": -66.58973
+    },
+    {
+      "iata": "VNM",
+      "name": "Vietnam",
+      "latitude": 14.058324,
+      "longitude": 108.277199
+    },
+    {
+      "iata": "VUT",
+      "name": "Vanuatu",
+      "latitude": -15.376706,
+      "longitude": 166.959158
+    },
+    {
+      "iata": "YEM",
+      "name": "Yemen",
+      "latitude": 15.552727,
+      "longitude": 48.516388
+    },
+    {
+      "iata": "ZAF",
+      "name": "South Africa",
+      "latitude": -30.559482,
+      "longitude": 22.937506
+    },
+    {
+      "iata": "ZMB",
+      "name": "Zambia",
+      "latitude": -13.133897,
+      "longitude": 27.849332
+    },
+    {
+      "iata": "ZWE",
+      "name": "Zimbabwe",
+      "latitude": -19.015438,
+      "longitude": 29.154857
+    }
+  ]
+}

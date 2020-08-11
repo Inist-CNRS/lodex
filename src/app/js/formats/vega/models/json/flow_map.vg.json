@@ -148,7 +148,7 @@
   "data": [
     {
       "name": "geo_data",
-      "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/cartography-addition/src/app/js/formats/vega-lite/models/topojson/world-countries-sans-antarctica.min.json",
+      "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega-lite/models/topojson/world-countries-sans-antarctica.min.json",
       "format": {
         "type": "topojson",
         "feature": "countries1"
@@ -175,7 +175,7 @@
     },
     {
       "name": "node_data",
-      "url": "https://raw.githubusercontent.com/AlasDiablo/data-manipulation-for-lodex/master/out/countriesCoordinate.json",
+      "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/vega-flowmap/src/app/js/formats/vega/models/json/countriesCoordinate.json",
       "format": {
         "type": "json",
         "property": "values"
