@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
 import ContainerDimensions from 'react-container-dimensions';
 import { CustomActionVega } from '../vega-component';
@@ -10,6 +10,7 @@ import deepClone from 'lodash.clonedeep';
 import FlowMap from '../../models/FlowMap';
 import { VEGA_DATA_INJECT_TYPE_B } from '../../../chartsUtils';
 import { schemeBlues } from 'd3-scale-chromatic';
+import MouseIcon from '../../../shared/MouseIcon';
 
 const styles = {
     container: {
@@ -54,6 +55,7 @@ class FlowMapView extends Component {
                         );
                     }}
                 </ContainerDimensions>
+                <MouseIcon polyglot={this.props.p} />
             </div>
         );
     }
@@ -68,6 +70,7 @@ FlowMapView.propTypes = {
     tooltipValue: PropTypes.string.isRequired,
     color: PropTypes.string.isRequired,
     colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
 FlowMapView.defaultProps = {
