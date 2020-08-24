@@ -1,6 +1,10 @@
 {
   "encoding": {
-    "theta": {"field": "value", "type": "quantitative", "stack": true},
+    "theta": {
+      "field": "value",
+      "type": "quantitative",
+      "stack": true
+    },
     "color": {
       "field": "_id",
       "type": "nominal",
@@ -18,15 +22,50 @@
       }
     },
     "order": {
-      "field": "order", "type": "quantitative"
+      "field": "order",
+      "type": "quantitative"
+    },
+    "opacity": {
+      "condition": {
+        "selection": {
+          "or": [
+            "hover1",
+            "click"
+          ]
+        },
+        "value": 1
+      },
+      "value": 0.2
     }
   },
   "layer": [
-    {"mark": {"type": "arc", "outerRadius": 80}},
     {
-      "mark": {"type": "text", "radius": 90, "fill": "black"},
-      "encoding": {"text": {"field": "value", "type": "nominal"}}
+      "selection": {
+        "hover1": {
+          "type": "single",
+          "on": "mouseover",
+          "empty": "all",
+          "fields": [
+            "_id"
+          ]
+        },
+        "click": {
+          "type": "single",
+          "on": "mouseover",
+          "empty": "all",
+          "fields": [
+            "_id"
+          ],
+          "bind": "legend"
+        }
+      },
+      "mark": {
+        "type": "arc",
+        "outerRadius": 80
+      }
     }
   ],
-  "view": {"stroke": null}
+  "view": {
+    "stroke": null
+  }
 }

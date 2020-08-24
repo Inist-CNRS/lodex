@@ -25,6 +25,15 @@ describe('PieChart', () => {
                     },
                     type: 'nominal',
                 },
+                opacity: {
+                    condition: {
+                        selection: {
+                            or: ['hover1', 'click'],
+                        },
+                        value: 1,
+                    },
+                    value: 0.2,
+                },
                 order: {
                     field: 'order',
                     type: 'quantitative',
@@ -42,18 +51,20 @@ describe('PieChart', () => {
                         outerRadius: 80,
                         type: 'arc',
                     },
-                },
-                {
-                    encoding: {
-                        text: {
-                            field: 'value',
-                            type: 'nominal',
+                    selection: {
+                        click: {
+                            bind: 'legend',
+                            on: 'mouseover',
+                            empty: 'all',
+                            fields: ['_id'],
+                            type: 'single',
                         },
-                    },
-                    mark: {
-                        fill: 'black',
-                        radius: 90,
-                        type: 'text',
+                        hover1: {
+                            empty: 'all',
+                            fields: ['_id'],
+                            on: 'mouseover',
+                            type: 'single',
+                        },
                     },
                 },
             ],
