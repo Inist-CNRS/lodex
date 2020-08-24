@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import ContainerDimensions from 'react-container-dimensions';
 import { CustomActionVega } from '../vega-component';
 import RadarChart from '../../models/RadarChart';
-import { VEGA_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
+import { lodexScaleToIdScale, VEGA_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
 import deepClone from 'lodash.clonedeep';
 
 const styles = {
@@ -39,6 +39,7 @@ class RadarChartView extends Component {
         radarChart.setTooltip(this.props.tooltip);
         radarChart.setTooltipCategory(this.props.tooltipCategory);
         radarChart.setTooltipValue(this.props.tooltipValue);
+        radarChart.setScale(lodexScaleToIdScale(this.props.scale));
 
         // return the finish chart
         return (
@@ -69,6 +70,7 @@ RadarChartView.propTypes = {
     tooltip: PropTypes.bool.isRequired,
     tooltipCategory: PropTypes.string.isRequired,
     tooltipValue: PropTypes.string.isRequired,
+    scale: PropTypes.string.isRequired,
 };
 
 RadarChartView.defaultProps = {
