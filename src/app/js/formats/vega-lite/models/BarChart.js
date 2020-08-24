@@ -160,7 +160,7 @@ class BarChart extends BasicChart {
      * Function use for rebuild the edited spec
      * @param widthIn
      */
-    buildSpec(widthIn) {
+    buildSpec(widthIn, dataNumber) {
         let model = this.model;
         let labelsModel = this.labelsModel;
         model.encoding.color.scale.range = this.colors;
@@ -240,9 +240,15 @@ class BarChart extends BasicChart {
                 (!this.labels ? 30 : 0) -
                 (this.padding.right + this.padding.left);
             height = 300;
-            encoding.size = {
-                value: parseInt(this.size),
-            };
+            if (dataNumber * (parseInt(this.size) + 4) >= width) {
+                encoding.size = {
+                    value: width / (dataNumber + 1),
+                };
+            } else {
+                encoding.size = {
+                    value: parseInt(this.size),
+                };
+            }
         } else {
             width =
                 widthIn -

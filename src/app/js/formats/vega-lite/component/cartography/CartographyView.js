@@ -5,7 +5,11 @@ import compose from 'recompose/compose';
 import deepClone from 'lodash.clonedeep';
 import ContainerDimensions from 'react-container-dimensions';
 import { CustomActionVegaLite } from '../vega-lite-component';
-import { VEGA_LITE_DATA_INJECT_TYPE_B } from '../../../chartsUtils';
+import {
+    MAP_FRANCE,
+    VEGA_LITE_DATA_INJECT_TYPE_B,
+    VEGA_LITE_DATA_INJECT_TYPE_C,
+} from '../../../chartsUtils';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
 import Cartography from '../../models/Cartography';
@@ -31,6 +35,7 @@ class CartographyView extends Component {
         cartography.setTooltip(this.props.tooltip);
         cartography.setTooltipCategory(this.props.tooltipCategory);
         cartography.setTooltipValue(this.props.tooltipValue);
+        cartography.setWorldPosition(this.props.worldPosition);
         cartography.setColor(
             this.props.colorScheme !== undefined
                 ? this.props.colorScheme.join(' ')
@@ -48,7 +53,11 @@ class CartographyView extends Component {
                             <CustomActionVegaLite
                                 spec={spec}
                                 data={data}
-                                injectType={VEGA_LITE_DATA_INJECT_TYPE_B}
+                                injectType={
+                                    this.props.worldPosition === MAP_FRANCE
+                                        ? VEGA_LITE_DATA_INJECT_TYPE_C
+                                        : VEGA_LITE_DATA_INJECT_TYPE_B
+                                }
                             />
                         );
                     }}
@@ -66,6 +75,7 @@ CartographyView.propTypes = {
     tooltipCategory: PropTypes.string.isRequired,
     tooltipValue: PropTypes.string.isRequired,
     colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
+    worldPosition: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, { formatData }) => {

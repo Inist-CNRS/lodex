@@ -10,6 +10,12 @@ class PieChart extends BasicChart {
     constructor() {
         super();
         this.model = require('./json/pie_chart.vl.json');
+        this.modelLabels = require('./json/pie_chart_labels.vl.json');
+        this.labels = false;
+    }
+
+    setLabels(labels) {
+        this.labels = labels;
     }
 
     /**
@@ -18,6 +24,12 @@ class PieChart extends BasicChart {
      */
     buildSpec(widthIn) {
         this.model.encoding.color.scale.range = this.colors;
+
+        if (this.labels) {
+            this.model.layer.push(this.modelLabels);
+
+            this.model.encoding.opacity.condition.selection.or.push('hover2');
+        }
 
         if (this.tooltip.toggle)
             this.model.encoding.tooltip = [

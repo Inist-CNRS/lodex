@@ -8,6 +8,9 @@ import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ToolTips from '../../../shared/ToolTips';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../chartsUtils';
 
 const styles = {
     container: {
@@ -39,6 +42,7 @@ export const defaultArgs = {
     tooltip: false,
     tooltipCategory: 'Category',
     tooltipValue: 'Value',
+    worldPosition: MAP_WORLD,
 };
 
 class CartographyAdmin extends Component {
@@ -54,6 +58,7 @@ class CartographyAdmin extends Component {
             tooltip: PropTypes.bool,
             tooltipCategory: PropTypes.string,
             tooltipValue: PropTypes.string,
+            worldPosition: PropTypes.oneOf([MAP_WORLD, MAP_EUROPE, MAP_FRANCE]),
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -74,6 +79,10 @@ class CartographyAdmin extends Component {
     }
 
     setParams = params => updateAdminArgs('params', params, this.props);
+
+    setWorldPosition = (_, __, worldPosition) => {
+        updateAdminArgs('worldPosition', worldPosition, this.props);
+    };
 
     setColorScheme = (_, __, colorScheme) => {
         updateAdminArgs('colorScheme', colorScheme.split(','), this.props);
@@ -100,6 +109,7 @@ class CartographyAdmin extends Component {
                 tooltip,
                 tooltipCategory,
                 tooltipValue,
+                worldPosition,
             },
             showMaxSize = false,
             showMaxValue = false,
@@ -118,6 +128,25 @@ class CartographyAdmin extends Component {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
+                <SelectField
+                    floatingLabelText={polyglot.t('world_position')}
+                    onChange={this.setWorldPosition}
+                    style={styles.input}
+                    value={worldPosition}
+                >
+                    <MenuItem
+                        value={MAP_WORLD}
+                        primaryText={polyglot.t('world_position_world')}
+                    />
+                    <MenuItem
+                        value={MAP_EUROPE}
+                        primaryText={polyglot.t('world_position_europe')}
+                    />
+                    <MenuItem
+                        value={MAP_FRANCE}
+                        primaryText={polyglot.t('world_position_france')}
+                    />
+                </SelectField>
                 <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}
                     onChange={this.setColorScheme}
