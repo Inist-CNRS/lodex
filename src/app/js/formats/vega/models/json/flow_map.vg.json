@@ -175,7 +175,7 @@
     },
     {
       "name": "node_data",
-      "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/vega-flowmap/src/app/js/formats/vega/models/json/countriesCoordinate.json",
+      "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega/models/json/countriesCoordinate.min.json",
       "format": {
         "type": "json",
         "property": "values"

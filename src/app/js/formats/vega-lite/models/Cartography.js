@@ -80,7 +80,7 @@ class Cartography extends BasicChart {
                         ];
                     }
                     this.model.data.url =
-                        'https://raw.githubusercontent.com/Inist-CNRS/lodex/cartography-addition/src/app/js/formats/vega-lite/models/topojson/europe.json';
+                        'https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega-lite/models/topojson/europe.min.json';
                     this.model.data.format.feature =
                         'continent_Europe_subunits';
                 }
@@ -110,7 +110,7 @@ class Cartography extends BasicChart {
                         ];
                     }
                     this.model.data.url =
-                        'https://raw.githubusercontent.com/Inist-CNRS/lodex/cartography-addition/src/app/js/formats/vega-lite/models/topojson/fr-departments.json';
+                        'https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega-lite/models/topojson/fr-departments.min.json';
                     this.model.data.format.feature = 'FRA_adm2';
 
                     this.model.transform.forEach(e => {
