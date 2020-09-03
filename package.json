@@ -51,15 +51,15 @@
         "@babel/preset-react": "7.0.0",
         "@babel/register": "7.0.0",
         "@ezs/analytics": "1.8.0",
-        "@ezs/basics": "1.4.4",
-        "@ezs/booster": "1.2.2",
-        "@ezs/conditor": "1.9.11",
-        "@ezs/core": "1.12.1",
-        "@ezs/istex": "1.0.20",
+        "@ezs/basics": "1.4.5",
+        "@ezs/booster": "1.2.3",
+        "@ezs/conditor": "1.9.12",
+        "@ezs/core": "1.12.3",
+        "@ezs/istex": "1.1.0",
         "@ezs/lodex": "1.5.6",
-        "@ezs/loterre": "1.0.10",
+        "@ezs/loterre": "1.0.12",
         "@ezs/sparql": "1.0.14",
-        "@ezs/storage": "1.2.3",
+        "@ezs/storage": "1.2.4",
         "@ezs/transformers": "1.2.4",
         "@fortawesome/fontawesome-svg-core": "1.2.25",
         "@fortawesome/free-solid-svg-icons": "5.11.2",
@@ -203,6 +203,6 @@
         "jest": "24.9.0",
         "nodemon": "2.0.2",
         "prettier": "1.19.1",
-        "webpack-dev-server": "3.10.1"
+        "webpack-dev-server": "3.11.0"
     }
 }
