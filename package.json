@@ -75,7 +75,7 @@
         "compression-webpack-plugin": "5.0.2",
         "config": "2.0.1",
         "connected-react-router": "4.4.1",
-        "copy-webpack-plugin": "6.1.0",
+        "copy-webpack-plugin": "4.6.0",
         "d3": "5.14.2",
         "d3-array": "2.4.0",
         "d3-scale": "2.2.2",
