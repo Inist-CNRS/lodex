@@ -1,5 +1,5 @@
 FROM node:10-alpine AS build
-RUN apk add --no-cache make gcc g++ python
+RUN apk add --no-cache make gcc g++ python bash git openssh
 RUN mkdir /app
 COPY package.json /app
 WORKDIR /app

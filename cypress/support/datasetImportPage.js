@@ -122,7 +122,7 @@ export const checkListOfSupportedFileFormats = () => {
         .contains('AUTO')
         .click({ force: true });
     cy.wait(300);
-    cy.get('span[role=menuitem]').should('have.length', 18);
+    cy.get('span[role=menuitem]').should('have.length', 19);
     checkParserItem('CSV - with semicolon');
     checkParserItem('XML - TEI document');
     checkParserItem('ZIP file from dl.istex.fr');
