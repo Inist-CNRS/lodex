@@ -72,7 +72,7 @@
         "cli-truncate": "1.1.0",
         "comma-number": "2.0.1",
         "common-tags": "1.8.0",
-        "compression-webpack-plugin": "5.0.2",
+        "compression-webpack-plugin": "2.0.0",
         "config": "2.0.1",
         "connected-react-router": "4.4.1",
         "copy-webpack-plugin": "4.6.0",
