@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import memoize from 'lodash.memoize';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
+import FileDownload from 'material-ui/svg-icons/file/file-download';
+import Link from '../../lib/components/Link';
 
 import fetchPaginatedDataForComponent from '../../lib/fetchPaginatedDataForComponent';
 import Alert from '../../lib/components/Alert';
@@ -13,6 +15,7 @@ import {
 } from '../../propTypes';
 import { fetchForIstexFormat } from '../shared/fetchIstexData';
 import IstexItem from './IstexItem';
+import { ISTEX_SITE_URL } from '../../../../../src/common/externals';
 
 const styles = {
     text: memoize(status =>
@@ -50,14 +53,15 @@ export const IstexView = ({
                     total: data ? data.total : 0,
                 })}
             </span>
-            <a
+            <Link
                 style={styles.dl}
-                href={'https://dl.istex.fr/?q='.concat(
+                href={`${ISTEX_SITE_URL}/?q=`.concat(
                     encodeURIComponent(resource[field.name]),
                 )}
+                target="_blank"
             >
-                {polyglot.t('download')}
-            </a>
+                <FileDownload tooltip={polyglot.t('download')} />
+            </Link>
             {error && (
                 <Alert>
                     <p>{polyglot.t(error)}</p>

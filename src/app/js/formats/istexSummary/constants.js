@@ -9,6 +9,7 @@ export const HOST_EISSN = 'host.eissn';
 export const HOST_ISBN = 'host.isbn';
 export const HOST_EISBN = 'host.eisbn';
 export const HOST_TITLE = 'host.title';
+export const HOST_TITLE_RAW = 'host.title.raw';
 
 export const SEARCHED_FIELD_VALUES = [
     CUSTOM_ISTEX_QUERY,

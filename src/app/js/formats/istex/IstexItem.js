@@ -48,7 +48,7 @@ export const IstexItemComponent = ({
         <div className={styles.article}>
             <div className={styles.title}>
                 <Book size="20" className={styles.titleIcon} />
-                <Link href={url}>{title}</Link>
+                <Link href={url} target="_blank">{title}</Link>
             </div>
             {authors && (
                 <div className={styles.authors}> {authors.join(', ')} </div>

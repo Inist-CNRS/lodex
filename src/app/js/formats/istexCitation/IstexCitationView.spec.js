@@ -5,7 +5,7 @@ import { StyleSheetTestUtils } from 'aphrodite';
 import { IstexCitationView, IstexDocument } from './IstexCitationView';
 import composeRenderProps from '../../lib/composeRenderProps';
 import { parseCitationData } from './getIstexCitationData';
-import IstexList from '../istexSummary/IstexList';
+import IstexCitationList from '../istexCitation/IstexCitationList';
 import JournalFold from './JournalFold';
 import InvalidFormat from '../InvalidFormat';
 import { CUSTOM_ISTEX_QUERY } from '../istexSummary/constants';
@@ -37,9 +37,9 @@ describe('IstexCitationView', () => {
         const wrapper = shallow(<IstexCitationView {...defaultProps} />);
 
         expect(composeRenderProps).toHaveBeenCalledWith([
-            IstexList,
+            IstexCitationList,
             JournalFold,
-            IstexList,
+            IstexCitationList,
             IstexDocument,
         ]);
 
