@@ -6,7 +6,7 @@
         "password": "secret"
     },
     "#pluginsAPI" : "http://lodex-extended:31976",
-    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v6.5.0/public/",
+    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v6.5.3/public/",
     "routinesCache": false,
     "routines": [
         "all-documents",
@@ -43,6 +43,7 @@
         "csv-comma",
         "tsv",
         "tsv-double-quotes",
+        "tsv-wos",
         "rdf",
         "skos",
         "json",
@@ -54,7 +55,6 @@
         "tei",
         "xml",
         "corpus",
-        "wos",
         "zip-raw",
         "zip"
     ],

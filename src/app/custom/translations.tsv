@@ -399,6 +399,7 @@
 "csv-alternative"	"TXT - with comma separator"	"TXT - séparé par des virgules"
 "tsv"	"TSV - with tabulation"	"TSV - avec des tabulations"
 "tsv-double-quotes"	"TSV - with tabulation annd double quotes"	"TSV - avec des tabulations et des guillemets"
+"tsv-wos"	"TSV - from the Web Of Science"	"TSV - du Web Of Science"
 "rdf"	"TXT - N-Quads triples"	"TXT - triplets RDF en N-Quads"
 "skos"	"XML - SKOS thesaurus"	"XML - vocabulaire SKOS"
 "json"	"JSON - with an array"	"JSON - avec un tableau"
