@@ -53,13 +53,14 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     const field = parseFieldsParams(fieldsParams);
     const environment = {
         ...localConfig,
+        ...ctx.query, // like lodex-extended server
         field,
     };
     const host = getCleanHost();
     const query = {
         orderBy,
         field,
-        ...ctx.query,
+        ...ctx.query, //usefull ?
         connectionStringURI,
         host,
     };
