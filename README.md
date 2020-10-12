@@ -62,6 +62,7 @@ make install
 make run-dev
 ```
 
+Once the project is started, you can acces it using `admin` / `secret` credentials on `http://localhost:3000/`.
 
 ## Testing
 
