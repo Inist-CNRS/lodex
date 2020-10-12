@@ -8,7 +8,6 @@ import { selectors as fieldPreviewSelectors } from './preview/field';
 import { selectors as publishSelectors } from './publish';
 import { selectors as removedResourcesSelectors } from './removedResources';
 import { selectors as uploadSelectors } from './upload';
-import { selectors as contributedResourcesSelectors } from './contributedResources';
 import { selectors as clearSelectors } from './clear';
 import { selectors as progressSelectors } from './progress/reducer';
 import { selectors as loaderSelectors } from './loader';
@@ -40,10 +39,7 @@ export const fromRemovedResources = createGlobalSelectors(
 export const fromUpload = createGlobalSelectors(s => s.upload, uploadSelectors);
 export const fromImport = createGlobalSelectors(s => s.import, importSelectors);
 export const fromClear = createGlobalSelectors(s => s.clear, clearSelectors);
-export const fromContributedResources = createGlobalSelectors(
-    s => s.contributedResources,
-    contributedResourcesSelectors,
-);
+
 export const fromProgress = createGlobalSelectors(
     s => s.progress,
     progressSelectors,

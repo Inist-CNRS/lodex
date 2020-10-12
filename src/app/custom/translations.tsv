@@ -247,7 +247,6 @@
 "none"	"None"	"Aucun"
 "description"	"Description"	"Description"
 "navigate_to_published_data"	"Go to my published data"	"Aller aux données publiées"
-"moderation"	"Moderation"	"Modération"
 "auto_generate_uri"	"Leave empty to autogenerate URI"	"Laisser vide pour générer automatiquement un URI"
 "required"	"Required"	"Requis"
 "invalid_uri"	"Uri must either start with uid: or ark: or be a valid url"	"Une Uri doit toujours commencer par uid: ou ark: ou doit être une URL valide"

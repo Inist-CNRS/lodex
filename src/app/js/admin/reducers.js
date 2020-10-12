@@ -13,7 +13,6 @@ import publishReducer from './publish';
 import removedResources from './removedResources';
 import upload from './upload';
 import user from '../user';
-import contributedResources from './contributedResources';
 import clear from './clear';
 import characteristic from '../characteristic';
 import progress from './progress/reducer';
@@ -34,7 +33,6 @@ const reducer = combineReducers({
     upload,
     user,
     clear,
-    contributedResources,
     characteristic,
     progress,
     loaders,
