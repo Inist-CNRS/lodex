@@ -177,7 +177,7 @@ export const uploadUrl = async ctx => {
     const { url, parserName } = ctx.request.body;
     const [extension] = url.match(/[^.]*$/);
 
-    const parseStream = ctx.getParser(
+    const parseStream = await ctx.getParser(
         !parserName || parserName === 'automatic' ? extension : parserName,
     );
 
