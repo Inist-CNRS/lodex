@@ -266,18 +266,6 @@ export const getLoadFacetValuesRequest = (
         })}`,
     });
 
-export const getLoadContributedResourcePageRequest = (
-    state,
-    { page, perPage, filter },
-) => {
-    const encodedPage = encodeURIComponent(page);
-    const encodedPerPage = encodeURIComponent(perPage);
-
-    return getRequest(state, {
-        url: `/api/publishedDataset/${filter}?page=${encodedPage}&perPage=${encodedPerPage}`,
-    });
-};
-
 export const getChangeFieldStatusRequest = (state, { uri, field, status }) =>
     getRequest(state, {
         method: 'PUT',
@@ -395,7 +383,6 @@ export const selectors = {
     getClearPublishedRequest,
     getLoadExportersRequest,
     getChangeFieldStatusRequest,
-    getLoadContributedResourcePageRequest,
     getLoadFacetValuesRequest,
     getExportFieldsRequest,
     getExportFieldsReadyRequest,
