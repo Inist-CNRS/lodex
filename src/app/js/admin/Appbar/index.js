@@ -6,6 +6,7 @@ import compose from 'recompose/compose';
 import AppBar from 'material-ui/AppBar';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
+import classnames from 'classnames';
 
 import SignOutButton from './SignOutButton';
 import SignInButton from './SignInButton';
@@ -17,6 +18,9 @@ import { fromUser } from '../../sharedSelectors';
 import { fromPublication, fromParsing } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';
+import { Route, Switch } from 'react-router';
+import { NavLink } from 'react-router-dom';
+import PrivateRoute from '../PrivateRoute';
 
 const styles = {
     appBar: {
@@ -30,7 +34,7 @@ const styles = {
         marginRight: '1rem',
     },
     button: {
-        color: 'white',
+        color: 'black',
     },
     loading: {
         margin: 8,
@@ -43,12 +47,33 @@ const styles = {
     },
 };
 
+const SubAppBar = translate(({ p: polyglot }) => {
+    return (
+        <Switch>
+            <PrivateRoute path="/data">
+                <ul>
+                    <li>
+                        <Link to="/data">Dataset</Link>
+                    </li>
+                    <li>
+                        <FlatButton
+                            label={polyglot.t('removed_resources')}
+                            containerElement={<Link to="/data/removed" />}
+                            style={{ ...styles.button }}
+                        />
+                    </li>
+                </ul>
+            </PrivateRoute>
+            <PrivateRoute path="/display">DISPLAY</PrivateRoute>
+        </Switch>
+    );
+});
+
 const AppbarComponent = ({
     hasPublishedDataset,
     hasLoadedDataset,
     isLoading,
     isAdmin,
-    p: polyglot,
 }) => {
     const LeftElement = isLoading ? (
         <CircularProgress
@@ -63,53 +88,36 @@ const AppbarComponent = ({
 
     const RightElement = (
         <div style={styles.buttons}>
-            {isAdmin && (
-                <UploadButton
-                    label={polyglot.t(
-                        hasPublishedDataset
-                            ? 'upload_additional_file'
-                            : 'upload_another_file',
-                    )}
-                />
-            )}
-            {isAdmin && hasPublishedDataset && (
-                <FlatButton
-                    label={polyglot.t('removed_resources')}
-                    containerElement={<Link to="/removed" />}
-                    style={styles.button}
-                />
-            )}
-            {isAdmin ? (
-                <ModelMenu hasPublishedDataset={hasPublishedDataset} />
-            ) : (
-                <SignInButton />
-            )}
-            {isAdmin && <Settings />}
+            <Link style={styles.button} to="/data">
+                Data
+            </Link>
+            <Link style={styles.button} to="/display">
+                Display
+            </Link>
+            {!isAdmin && <SignInButton />}
+
             {isAdmin && <SignOutButton />}
             {isAdmin && !hasPublishedDataset && <PublicationButton />}
         </div>
     );
 
     return (
-        <AppBar
-            className="appbar"
-            title={
-                <div style={styles.title}>
-                    <Link to="/" style={styles.linkToHome}>
-                        Lodex
-                    </Link>
-                    <small>
-                        -{' '}
-                        {hasLoadedDataset
-                            ? polyglot.t('modelize-your-data')
-                            : polyglot.t('semantic-publication-system')}
-                    </small>
-                </div>
-            }
-            iconElementLeft={LeftElement}
-            iconElementRight={RightElement}
-            style={styles.appBar}
-        />
+        <div>
+            <AppBar
+                className="appbar"
+                title={
+                    <div style={styles.title}>
+                        <Link to="/" style={styles.linkToHome}>
+                            Lodex
+                        </Link>
+                    </div>
+                }
+                iconElementLeft={LeftElement}
+                iconElementRight={RightElement}
+                style={styles.appBar}
+            />
+            <SubAppBar hasPublishedDataset={hasPublishedDataset} />
+        </div>
     );
 };
 

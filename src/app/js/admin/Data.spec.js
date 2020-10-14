@@ -4,12 +4,12 @@ import { shallow } from 'enzyme';
 import Loading from '../lib/components/Loading';
 import ParsingResult from './parsing/ParsingResult';
 import Upload from './upload/Upload';
-import { AdminComponent } from './Admin';
+import { DataComponent } from './Data';
 
-describe('<Admin />', () => {
+describe('<Data />', () => {
     it('should render spinner when loading', () => {
         const wrapper = shallow(
-            <AdminComponent
+            <DataComponent
                 hasUploadedFile
                 loadingParsingResult
                 p={{ t: () => {} }}
@@ -20,14 +20,14 @@ describe('<Admin />', () => {
 
     it('should render the ParsingResult', () => {
         const wrapper = shallow(
-            <AdminComponent hasUploadedFile p={{ t: () => {} }} />,
+            <DataComponent hasUploadedFile p={{ t: () => {} }} />,
         );
         expect(wrapper.contains(<ParsingResult />)).toEqual(true);
     });
 
     it('should render the Upload when no file uploaded', () => {
         const wrapper = shallow(
-            <AdminComponent
+            <DataComponent
                 canUploadFile
                 loadParsingResult={() => {}}
                 loadPublication={() => {}}

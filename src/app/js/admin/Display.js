@@ -15,7 +15,8 @@ import Loading from '../lib/components/Loading';
 import Card from '../lib/components/Card';
 import Statistics from './Statistics';
 import theme from '../theme';
-import { preLoadLoaders } from './loader/';
+import { preLoadLoaders } from './loader';
+import ModelMenu from './Appbar/ModelMenu';
 
 const styles = {
     punchLine: {
@@ -25,7 +26,7 @@ const styles = {
     },
 };
 
-export const AdminComponent = ({
+export const DisplayComponent = ({
     loadingParsingResult,
     hasPublishedDataset,
     canUploadFile,
@@ -33,7 +34,7 @@ export const AdminComponent = ({
 }) => {
     if (loadingParsingResult) {
         return (
-            <Loading className="admin">
+            <Loading className="display">
                 {polyglot.t('loading_parsing_results')}
             </Loading>
         );
@@ -41,7 +42,7 @@ export const AdminComponent = ({
 
     if (hasPublishedDataset) {
         return (
-            <div className="admin">
+            <div className="display">
                 <Card>
                     <Published />
                 </Card>
@@ -50,22 +51,19 @@ export const AdminComponent = ({
     }
 
     if (canUploadFile) {
-        return <Upload className="admin" />;
+        return <Upload className="display" />;
     }
 
     return (
-        <Card className="admin">
-            <ParsingResult />
+        <Card className="display">
+            <ModelMenu hasPublishedDataset={hasPublishedDataset} />
             <Statistics />
             <PublicationPreview />
-            <div style={styles.punchLine}>
-                {polyglot.t('publish-punchline')}
-            </div>
         </Card>
     );
 };
 
-AdminComponent.propTypes = {
+DisplayComponent.propTypes = {
     loadingParsingResult: PropTypes.bool.isRequired,
     hasPublishedDataset: PropTypes.bool.isRequired,
     canUploadFile: PropTypes.bool.isRequired,
@@ -93,4 +91,4 @@ export default compose(
         },
     }),
     translate,
-)(AdminComponent);
+)(DisplayComponent);

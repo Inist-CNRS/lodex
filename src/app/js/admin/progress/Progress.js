@@ -11,7 +11,7 @@ import { loadProgress, clearProgress } from './reducer';
 import { PENDING } from '../../../../common/progressStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-export class Progress extends Component {
+export class ProgressComponent extends Component {
     UNSAFE_componentWillMount() {
         this.props.loadProgress();
     }
@@ -83,7 +83,7 @@ export class Progress extends Component {
     }
 }
 
-Progress.propTypes = {
+ProgressComponent.propTypes = {
     status: PropTypes.string.isRequired,
     target: PropTypes.number.isRequired,
     progress: PropTypes.number.isRequired,
@@ -94,7 +94,7 @@ Progress.propTypes = {
     p: polyglotPropTypes,
 };
 
-Progress.defaultProps = {
+ProgressComponent.defaultProps = {
     symbol: null,
 };
 
@@ -110,4 +110,4 @@ const mapDispatchToProps = {
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
-)(Progress);
+)(ProgressComponent);

@@ -13,7 +13,6 @@ export const AppComponent = ({ children }) => (
         </Helmet>
         <AppBar />
         <Progress />
-
         <div className="body">{children}</div>
     </div>
 );
