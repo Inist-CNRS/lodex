@@ -1,7 +1,7 @@
 import React from 'react';
 import { FieldArray } from 'redux-form';
-import Step from './Step';
 
+import Step from './Step';
 import TransformerList from '../TransformerList';
 
 export const StepTransformComponent = props => (
