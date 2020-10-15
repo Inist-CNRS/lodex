@@ -73,7 +73,7 @@ PureButtonWithDialog.propTypes = {
     show: PropTypes.bool,
     style: PropTypes.object,
     dialog: PropTypes.node.isRequired,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
     icon: PropTypes.node,
     className: PropTypes.string,
     actions: PropTypes.arrayOf(PropTypes.node),

@@ -291,12 +291,14 @@ Search.propTypes = {
             ]),
         ),
     ),
-    datasetInvertedFacets: PropTypes.arrayOf(
-        PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number,
-            PropTypes.bool,
-        ]),
+    datasetInvertedFacets: PropTypes.objectOf(
+        PropTypes.arrayOf(
+            PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number,
+                PropTypes.bool,
+            ]),
+        ),
     ),
     datasetOpenedFacets: PropTypes.objectOf(PropTypes.bool),
 };
