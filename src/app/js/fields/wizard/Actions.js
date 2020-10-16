@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import { Button } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import {
@@ -24,13 +23,15 @@ export const ActionsComponent = ({
     if (field.name === 'uri') {
         return (
             <div>
-                <RaisedButton
+                <Button
+                    variant="contained"
                     className="btn-save"
                     label={polyglot.t('save')}
-                    secondary
+                    color="secondary"
                     onClick={onSave}
                 />
-                <FlatButton
+                <Button
+                    variant="text"
                     className="btn-exit-column-edition"
                     label={polyglot.t('cancel')}
                     onClick={onCancel}
@@ -42,21 +43,24 @@ export const ActionsComponent = ({
     if (step === 0) {
         return (
             <div>
-                <FlatButton
+                <Button
+                    variant="text"
                     className="btn-next"
                     label={polyglot.t('next')}
                     onClick={onNextStep}
                 />
-                <RaisedButton
+                <Button
+                    variant="contained"
                     className="btn-save"
                     label={polyglot.t('save')}
-                    primary
+                    color="primary"
                     onClick={onSave}
                 />
-                <FlatButton
+                <Button
+                    variant="text"
                     className="btn-exit-column-edition"
                     label={polyglot.t('cancel')}
-                    secondary
+                    color="secondary"
                     onClick={onCancel}
                 />
             </div>
@@ -66,20 +70,23 @@ export const ActionsComponent = ({
     if (step === stepsCount - 1) {
         return (
             <div>
-                <FlatButton
+                <Button
+                    variant="text"
                     className="btn-previous"
                     label={polyglot.t('previous')}
                     onClick={onPreviousStep}
                 />
-                <RaisedButton
+                <Button
+                    variant="contained"
                     className="btn-save"
                     label={polyglot.t('save')}
                     onClick={onSave}
-                    primary
+                    color="primary"
                 />
-                <FlatButton
+                <Button
+                    variant="text"
                     className="btn-exit-column-edition"
-                    secondary
+                    color="secondary"
                     label={polyglot.t('cancel')}
                     onClick={onCancel}
                 />
@@ -89,26 +96,30 @@ export const ActionsComponent = ({
 
     return (
         <div>
-            <FlatButton
+            <Button
+                variant="text"
                 className="btn-previous"
                 label={polyglot.t('previous')}
                 onClick={onPreviousStep}
             />
-            <FlatButton
+            <Button
+                variant="text"
                 className="btn-next"
                 label={polyglot.t('next')}
                 onClick={onNextStep}
             />
-            <RaisedButton
+            <Button
+                variant="contained"
                 className="btn-save"
                 label={polyglot.t('save')}
-                primary
+                color="primary"
                 onClick={onSave}
             />
-            <FlatButton
+            <Button
+                variant="text"
                 className="btn-exit-column-edition"
                 label={polyglot.t('cancel')}
-                secondary
+                color="secondary"
                 onClick={onCancel}
             />
         </div>

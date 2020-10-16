@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
-import TextField from 'material-ui/TextField';
-import IconButton from 'material-ui/IconButton';
+import { IconButton, TextField } from '@material-ui/core';
 import { faSearch, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

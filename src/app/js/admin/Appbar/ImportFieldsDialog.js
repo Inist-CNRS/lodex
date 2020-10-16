@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import { red300 } from 'material-ui/styles/colors';
+import { Dialog, Button } from '@material-ui/core';
+import { red } from '@material-ui/core/colors';
 
 import { importFields as importFieldsAction } from '../import';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromImport } from '../selectors';
-import { RaisedButton } from 'material-ui';
 
 const styles = {
     input: {
@@ -27,7 +25,7 @@ const styles = {
         top: '12px',
     },
     error: {
-        color: red300,
+        color: red[300],
     },
 };
 
@@ -50,12 +48,13 @@ class ImportFieldsDialogComponent extends Component {
         const { failed, onClose, p: polyglot } = this.props;
 
         const actions = [
-            <RaisedButton
+            <Button
+                variant="contained"
                 key="confirm"
                 className="btn-save"
                 containerElement="label"
                 label={polyglot.t('confirm')}
-                primary
+                color="primary"
                 style={styles.button}
             >
                 <input
@@ -64,10 +63,11 @@ class ImportFieldsDialogComponent extends Component {
                     onChange={this.handleFileUpload}
                     style={styles.input}
                 />
-            </RaisedButton>,
-            <FlatButton
-                secondary
+            </Button>,
+            <Button
+                color="secondary"
                 key="cancel"
+                variant="text"
                 className="btn-cancel"
                 label={polyglot.t('cancel')}
                 onClick={onClose}
@@ -75,7 +75,12 @@ class ImportFieldsDialogComponent extends Component {
         ];
 
         return (
-            <Dialog actions={actions} className="dialog-import-fields" open>
+            <Dialog
+                actions={actions}
+                classes={{}}
+                className="dialog-import-fields"
+                open
+            >
                 {!failed && polyglot.t('confirm_import_fields')}
                 {failed && (
                     <span style={styles.error}>

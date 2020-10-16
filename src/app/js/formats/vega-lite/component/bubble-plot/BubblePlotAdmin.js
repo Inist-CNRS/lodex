@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
+import { Checkbox } from '@material-ui/core';
+
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import Checkbox from 'material-ui/Checkbox';
 import ToolTips from '../../../shared/ToolTips';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';

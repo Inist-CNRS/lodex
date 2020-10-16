@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
+import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -93,14 +93,16 @@ export class ModelMenuComponent extends Component {
         return (
             <div style={styles.container}>
                 {hasPublishedDataset ? (
-                    <FlatButton
+                    <Button
+                        variant="text"
                         label={polyglot.t('view_fields')}
                         containerElement={<Link to="/ontology" />}
                         disabled={location.pathname === '/ontology'}
                         style={styles.button}
                     />
                 ) : (
-                    <FlatButton
+                    <Button
+                        variant="text"
                         className="btn-import-fields"
                         label={polyglot.t('import_fields')}
                         onClick={this.handleImportFields}

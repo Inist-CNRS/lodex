@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
+import { Select, MenuItem } from '@material-ui/core';
 
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ToolTips from '../../../shared/ToolTips';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
 import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../chartsUtils';
 
 const styles = {
@@ -128,25 +127,22 @@ class CartographyAdmin extends Component {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-                <SelectField
+                <Select
                     floatingLabelText={polyglot.t('world_position')}
                     onChange={this.setWorldPosition}
                     style={styles.input}
                     value={worldPosition}
                 >
-                    <MenuItem
-                        value={MAP_WORLD}
-                        primaryText={polyglot.t('world_position_world')}
-                    />
-                    <MenuItem
-                        value={MAP_EUROPE}
-                        primaryText={polyglot.t('world_position_europe')}
-                    />
-                    <MenuItem
-                        value={MAP_FRANCE}
-                        primaryText={polyglot.t('world_position_france')}
-                    />
-                </SelectField>
+                    <MenuItem value={MAP_WORLD}>
+                        {polyglot.t('world_position_world')}
+                    </MenuItem>
+                    <MenuItem value={MAP_EUROPE}>
+                        {polyglot.t('world_position_europe')}
+                    </MenuItem>
+                    <MenuItem value={MAP_FRANCE}>
+                        {polyglot.t('world_position_france')}
+                    </MenuItem>
+                </Select>
                 <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}
                     onChange={this.setColorScheme}

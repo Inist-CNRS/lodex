@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
-import TextField from 'material-ui/TextField';
+import { MenuItem, Select, TextField } from '@material-ui/core';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -51,25 +49,22 @@ class UriAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <SelectField
+                <Select
                     floatingLabelText={polyglot.t('uri_format_select_type')}
                     onChange={this.setType}
                     style={styles.input}
                     value={type}
                 >
-                    <MenuItem
-                        value="value"
-                        primaryText={polyglot.t('uri_format_column')}
-                    />
-                    <MenuItem
-                        value="text"
-                        primaryText={polyglot.t('uri_format_custom')}
-                    />
-                    <MenuItem
-                        value="column"
-                        primaryText={polyglot.t('uri_format_another_column')}
-                    />
-                </SelectField>
+                    <MenuItem value="value">
+                        {polyglot.t('uri_format_column')}
+                    </MenuItem>
+                    <MenuItem value="text">
+                        {polyglot.t('uri_format_custom')}
+                    </MenuItem>
+                    <MenuItem value="column">
+                        {polyglot.t('uri_format_another_column')}
+                    </MenuItem>
+                </Select>
 
                 {type !== 'value' && (
                     <TextField

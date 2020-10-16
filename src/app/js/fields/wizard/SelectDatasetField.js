@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { Select, MenuItem } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import { fromParsing } from '../../admin/selectors';
 
+import { fromParsing } from '../../admin/selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -23,7 +22,7 @@ export const SelectDatasetFieldComponent = ({
     label,
     id,
 }) => (
-    <SelectField
+    <Select
         id={id}
         onChange={handleChange}
         style={styles.select}
@@ -35,10 +34,11 @@ export const SelectDatasetFieldComponent = ({
                 key={`id_${datasetField}`}
                 className={`column-${datasetField}`}
                 value={datasetField}
-                primaryText={datasetField}
-            />
+            >
+                {datasetField}
+            </MenuItem>
         ))}
-    </SelectField>
+    </Select>
 );
 
 SelectDatasetFieldComponent.propTypes = {

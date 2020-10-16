@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import Dialog from 'material-ui/Dialog';
-import { Stepper } from 'material-ui/Stepper';
+import { Stepper, Dialog } from '@material-ui/core';
 
 import {
     editField as editFieldAction,
     saveField as saveFieldAction,
 } from '../';
+
 import { field as fieldPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import StepValue from './StepValue';

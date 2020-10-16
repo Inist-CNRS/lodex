@@ -5,13 +5,9 @@ Could not use it from npm at the time as it has not been compiled correctly
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import IconButton from 'material-ui/IconButton';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
-import TextField from 'material-ui/TextField';
-
-import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
-import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
+import { IconButton, MenuItem, Select, TextField } from '@material-ui/core';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
 
 const styles = {
     container: {
@@ -171,20 +167,18 @@ class Pagination extends Component {
                 <div style={styles.elements}>
                     <div style={styles.label}>{`${texts.page} `}</div>
                     {pages.length < 11 && (
-                        <SelectField
+                        <Select
                             onChange={this.handleChangePageFromSelect}
                             value={currentPage}
                             style={styles.input}
                             underlineStyle={styles.underline}
                         >
                             {pages.map(page => (
-                                <MenuItem
-                                    primaryText={page + 1}
-                                    value={page}
-                                    key={`page-${page}`}
-                                />
+                                <MenuItem value={page} key={`page-${page}`}>
+                                    {page + 1}
+                                </MenuItem>
                             ))}
-                        </SelectField>
+                        </Select>
                     )}
                     {pages.length > 10 && (
                         <TextField
@@ -198,17 +192,17 @@ class Pagination extends Component {
                 </div>
                 <div style={styles.elements}>
                     <div style={styles.label}>{`${texts.perPage} `}</div>
-                    <SelectField
+                    <Select
                         onChange={this.handleChangePerPage}
                         value={perPage}
                         style={styles.input}
                         underlineStyle={styles.underline}
                     >
-                        <MenuItem value={10} primaryText="10" />
-                        <MenuItem value={20} primaryText="20" />
-                        <MenuItem value={50} primaryText="50" />
-                        <MenuItem value={100} primaryText="100" />
-                    </SelectField>
+                        <MenuItem value={10}>10</MenuItem>
+                        <MenuItem value={20}>20</MenuItem>
+                        <MenuItem value={50}>50</MenuItem>
+                        <MenuItem value={100}>100</MenuItem>
+                    </Select>
                 </div>
                 {navigationArrow}
             </div>

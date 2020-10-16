@@ -1,9 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Folder from 'material-ui/svg-icons/file/folder';
-import FolderOpen from 'material-ui/svg-icons/file/folder-open';
-import Button from 'material-ui/FlatButton';
-import { CircularProgress } from 'material-ui';
+import Folder from '@material-ui/icons/Folder';
+import FolderOpen from '@material-ui/icons/FolderOpen';
+import { CircularProgress, Button } from '@material-ui/core';
 import { StyleSheetTestUtils } from 'aphrodite';
 
 import FetchFold from './FetchFold';

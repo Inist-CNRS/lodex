@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import TextField from 'material-ui/TextField';
+import { Select, MenuItem, TextField } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -58,7 +56,7 @@ export class IstexCitationAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <SelectField
+                <Select
                     className="searched_field"
                     floatingLabelText={polyglot.t('searched_field')}
                     onChange={this.setSearchedField}
@@ -66,13 +64,11 @@ export class IstexCitationAdmin extends Component {
                     value={searchedField}
                 >
                     {SEARCHED_FIELD_VALUES.map(value => (
-                        <MenuItem
-                            key={value}
-                            value={value}
-                            primaryText={polyglot.t(value)}
-                        />
+                        <MenuItem key={value} value={value}>
+                            {polyglot.t(value)}
+                        </MenuItem>
                     ))}
-                </SelectField>
+                </Select>
                 <TextField
                     className="document_sort_by"
                     floatingLabelText={polyglot.t('document_sort_by')}

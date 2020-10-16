@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import TextField from 'material-ui/TextField';
-import config from '../../../../../../config.json';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import ContentClear from 'material-ui/svg-icons/content/clear';
-import SelectFormat from '../../SelectFormat';
+import { TextField } from '@material-ui/core';
+import ContentAdd from '@material-ui/icons/Add';
+import ContentClear from '@material-ui/icons/Clear';
 
+import config from '../../../../../../config.json';
+import SelectFormat from '../../SelectFormat';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { FORMATS, getAdminComponent } from '../../';
 

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Dialog from 'material-ui/Dialog';
+import { Dialog, LinearProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
-import LinearProgress from 'material-ui/LinearProgress';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 

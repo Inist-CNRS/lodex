@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import TextField from 'material-ui/TextField';
-import CheckBox from 'material-ui/Checkbox';
+import { TextField, Checkbox } from '@material-ui/core';
 
 import {
     facetValue as facetValuePropType,
     polyglot as polyglotPropType,
 } from '../../propTypes';
+
 import { fromFacet } from '../selectors';
 import FacetValueItem from './FacetValueItem';
 import Pagination from '../../lib/components/Pagination';
@@ -79,7 +79,7 @@ export const FacetValueList = ({
     sortFacetValue,
 }) => (
     <div className="facet-value-list" style={styles.list}>
-        <CheckBox
+        <Checkbox
             label={polyglot.t('exclude')}
             checked={inverted}
             onCheck={onInvertChange(invertFacet, name)}

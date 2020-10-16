@@ -3,10 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card';
-import Divider from 'material-ui/Divider';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+
+import {
+    Card,
+    CardHeader,
+    CardContent,
+    CardActions,
+    Divider,
+    Select,
+    MenuItem,
+} from '@material-ui/core';
 
 import {
     polyglot as polyglotPropTypes,
@@ -43,34 +49,31 @@ export class OntologyComponent extends Component {
             <Card>
                 <CardHeader title={<h3>{polyglot.t('model')}</h3>} />
                 <Divider />
-                <CardText>
-                    <SelectField
+                <CardContent>
+                    <Select
                         autoWidth
                         value={filter}
                         onChange={this.handleFilterChange}
                         style={{ width: 400 }}
                         className="select-filter"
                     >
-                        <MenuItem
-                            value={ALL}
-                            primaryText={polyglot.t('model_filter_all')}
-                        />
-                        <MenuItem
-                            value={'document'}
-                            primaryText={polyglot.t('model_filter_document')}
-                        />
-                        <MenuItem
-                            value={'dataset'}
-                            primaryText={polyglot.t('model_filter_dataset')}
-                        />
-                    </SelectField>
+                        <MenuItem value={ALL}>
+                            {polyglot.t('model_filter_all')}
+                        </MenuItem>
+                        <MenuItem value={'document'}>
+                            {polyglot.t('model_filter_document')}
+                        </MenuItem>
+                        <MenuItem value={'dataset'}>
+                            {polyglot.t('model_filter_dataset')}
+                        </MenuItem>
+                    </Select>
                     {(filter === ALL || filter === COVER_DATASET) && (
                         <OntologyTable title="dataset" />
                     )}
                     {(filter === ALL || filter != COVER_DATASET) && (
                         <OntologyTable title="document" />
                     )}
-                </CardText>
+                </CardContent>
                 <CardActions>
                     <ExportFieldsButton />
                     <ExportFieldsReadyButton />

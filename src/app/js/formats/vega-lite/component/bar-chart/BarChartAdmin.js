@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { TextField, Select, MenuItem, Checkbox } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
-import Checkbox from 'material-ui/Checkbox';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
@@ -201,21 +198,19 @@ class BarChartAdmin extends Component {
                     onChange={this.setColors}
                     polyglot={polyglot}
                 />
-                <SelectField
+                <Select
                     floatingLabelText={polyglot.t('direction')}
                     onChange={this.setDirection}
                     style={styles.input}
                     value={direction}
                 >
-                    <MenuItem
-                        value="horizontal"
-                        primaryText={polyglot.t('horizontal')}
-                    />
-                    <MenuItem
-                        value="vertical"
-                        primaryText={polyglot.t('vertical')}
-                    />
-                </SelectField>
+                    <MenuItem value="horizontal">
+                        {polyglot.t('horizontal')}
+                    </MenuItem>
+                    <MenuItem value="vertical">
+                        {polyglot.t('vertical')}
+                    </MenuItem>
+                </Select>
                 <Checkbox
                     label={polyglot.t('diagonal_category_axis')}
                     onCheck={this.toggleDiagonalCategoryAxis}
@@ -240,18 +235,15 @@ class BarChartAdmin extends Component {
                     style={styles.input}
                     checked={labels}
                 />
-                <SelectField
+                <Select
                     floatingLabelText={polyglot.t('scale')}
                     onChange={this.setScale}
                     style={styles.input}
                     value={scale}
                 >
-                    <MenuItem
-                        value="linear"
-                        primaryText={polyglot.t('linear')}
-                    />
-                    <MenuItem value="log" primaryText={polyglot.t('log')} />
-                </SelectField>
+                    <MenuItem value="linear">{polyglot.t('linear')}</MenuItem>
+                    <MenuItem value="log">{polyglot.t('log')}</MenuItem>
+                </Select>
                 <TextField
                     floatingLabelText={polyglot.t('bar_size')}
                     onChange={this.setBarSize}

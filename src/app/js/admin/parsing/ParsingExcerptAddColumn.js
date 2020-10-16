@@ -4,8 +4,7 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import memoize from 'lodash.memoize';
-
-import RaisedButton from 'material-ui/RaisedButton';
+import { Button } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -27,14 +26,15 @@ export const ParsingExcerptAddColumnComponent = ({
     p: polyglot,
     atTop,
 }) => (
-    <RaisedButton
+    <Button
+        variant="contained"
         className={`btn-excerpt-add-column btn-excerpt-add-column-${name.replace(
             ' ',
             '-',
         )}`}
         label={polyglot.t('add_to_publication')}
         onClick={handleAddColumn}
-        primary
+        color="primary"
         style={styles.button(atTop)}
     />
 );

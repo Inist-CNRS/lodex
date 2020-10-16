@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
+import { Dialog, Button, TextField } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
@@ -101,14 +99,15 @@ class ClearDialogComponent extends Component {
                 className="btn-save"
                 label={polyglot.t('confirm')}
                 onClick={this.handleClear(type)}
-                primary
+                color="primary"
                 error={hasFailed}
                 disabled={!validName}
                 loading={isClearing}
             />,
-            <FlatButton
+            <Button
                 key="cancel"
-                secondary
+                color="secondary"
+                variant="text"
                 className="btn-cancel"
                 label={polyglot.t('cancel')}
                 onClick={onClose}

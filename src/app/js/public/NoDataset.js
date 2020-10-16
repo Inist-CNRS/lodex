@@ -1,12 +1,11 @@
 import React from 'react';
 import translate from 'redux-polyglot/translate';
-import { CardText } from 'material-ui/Card';
+import { CardContent, Card } from '@material-ui/core';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import Card from '../lib/components/Card';
 
 const NoDatasetComponent = ({ p: polyglot }) => (
-    <Card>
-        <CardText>{polyglot.t('no_dataset')}</CardText>
+    <Card style={{ marginTop: '0.5rem' }}>
+        <CardContent>{polyglot.t('no_dataset')}</CardContent>
     </Card>
 );
 

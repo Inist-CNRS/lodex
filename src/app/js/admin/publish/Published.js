@@ -1,10 +1,8 @@
 import React from 'react';
 import translate from 'redux-polyglot/translate';
-import { CardText } from 'material-ui/Card';
-import RaisedButton from 'material-ui/RaisedButton';
+import { Button, CardContent, Card } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import Card from '../../lib/components/Card';
 import theme from '../../theme';
 
 const styles = {
@@ -21,18 +19,19 @@ const styles = {
 };
 
 const PublishedComponent = ({ p: polyglot }) => (
-    <Card className="data-published">
-        <CardText style={styles.container}>
+    <Card className="data-published" style={{ marginTop: '0.5rem' }}>
+        <CardContent style={styles.container}>
             <div style={styles.text}>{polyglot.t('published')}</div>
-        </CardText>
-        <CardText style={styles.container}>
-            <RaisedButton
+        </CardContent>
+        <CardContent style={styles.container}>
+            <Button
+                variant="contained"
                 className="btn-navigate-to-published-data"
                 href="/"
                 label={polyglot.t('navigate_to_published_data')}
-                primary
+                color="primary"
             />
-        </CardText>
+        </CardContent>
     </Card>
 );
 

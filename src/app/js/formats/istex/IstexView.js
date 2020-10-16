@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import memoize from 'lodash.memoize';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import FileDownload from 'material-ui/svg-icons/file/file-download';
+import FileDownload from '@material-ui/icons/GetApp';
 import Link from '../../lib/components/Link';
 
 import fetchPaginatedDataForComponent from '../../lib/fetchPaginatedDataForComponent';

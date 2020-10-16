@@ -40,7 +40,7 @@ export class PublishButtonComponent extends Component {
             <div>
                 <ButtonWithStatus
                     raised
-                    labelColor={theme.green.primary}
+                    color="primary"
                     className="btn-publish"
                     loading={isPublishing}
                     error={error}
