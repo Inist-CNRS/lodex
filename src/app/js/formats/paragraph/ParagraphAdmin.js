@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { Select, MenuItem } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -43,7 +42,7 @@ class ParagraphAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <SelectField
+                <Select
                     floatingLabelText={polyglot.t(
                         'list_format_select_image_width',
                     )}
@@ -53,31 +52,23 @@ class ParagraphAdmin extends Component {
                     style={styles.input}
                     value={paragraphWidth}
                 >
-                    <MenuItem
-                        value="10%"
-                        primaryText={polyglot.t('ten_percent')}
-                    />
-                    <MenuItem
-                        value="20%"
-                        primaryText={polyglot.t('twenty_percent')}
-                    />
-                    <MenuItem
-                        value="30%"
-                        primaryText={polyglot.t('thirty_percent')}
-                    />
-                    <MenuItem
-                        value="50%"
-                        primaryText={polyglot.t('fifty_percent')}
-                    />
-                    <MenuItem
-                        value="80%"
-                        primaryText={polyglot.t('eighty_percent')}
-                    />
-                    <MenuItem
-                        value="100%"
-                        primaryText={polyglot.t('hundred_percent')}
-                    />
-                </SelectField>
+                    <MenuItem value="10%">{polyglot.t('ten_percent')}</MenuItem>
+                    <MenuItem value="20%">
+                        {polyglot.t('twenty_percent')}
+                    </MenuItem>
+                    <MenuItem value="30%">
+                        {polyglot.t('thirty_percent')}
+                    </MenuItem>
+                    <MenuItem value="50%">
+                        {polyglot.t('fifty_percent')}
+                    </MenuItem>
+                    <MenuItem value="80%">
+                        {polyglot.t('eighty_percent')}
+                    </MenuItem>
+                    <MenuItem value="100%">
+                        {polyglot.t('hundred_percent')}
+                    </MenuItem>
+                </Select>
             </div>
         );
     }

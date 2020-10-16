@@ -1,17 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { lightGreenA400, red400 } from 'material-ui/styles/colors';
-import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-
-import Warning from 'material-ui/svg-icons/alert/warning';
-import Success from 'material-ui/svg-icons/action/done';
+import { lightGreen, red } from '@material-ui/core/colors';
+import { CircularProgress, Button } from '@material-ui/core';
+import Warning from '@material-ui/icons/Warning';
+import Success from '@material-ui/icons/Done';
 
 const getIcon = (error, loading, success) => {
-    if (loading) return <CircularProgress size={20} />;
-    if (error) return <Warning color={red400} />;
-    if (success) return <Success color={lightGreenA400} />;
+    if (loading) return <CircularProgress variant="indeterminate" size={20} />;
+    if (error) return <Warning color={red[400]} />;
+    if (success) return <Success color={lightGreen.A400} />;
     return null;
 };
 
@@ -24,15 +21,17 @@ const ButtonWithStatus = ({
     ...props
 }) =>
     raised ? (
-        <RaisedButton
+        <Button
+            variant="contained"
             disabled={disabled || loading}
-            icon={getIcon(error, loading, success)}
+            startIcon={getIcon(error, loading, success)}
             {...props}
         />
     ) : (
-        <FlatButton
+        <Button
+            variant="text"
             disabled={disabled || loading}
-            icon={getIcon(error, loading, success)}
+            startIcon={getIcon(error, loading, success)}
             {...props}
         />
     );
@@ -43,7 +42,6 @@ ButtonWithStatus.propTypes = {
     disabled: PropTypes.bool,
     loading: PropTypes.bool.isRequired,
     success: PropTypes.bool,
-    labelPosition: PropTypes.oneOf(['after', 'before']),
 };
 
 ButtonWithStatus.defaultProps = {
@@ -51,7 +49,6 @@ ButtonWithStatus.defaultProps = {
     error: false,
     disabled: false,
     success: false,
-    labelPosition: 'before',
 };
 
 export default ButtonWithStatus;

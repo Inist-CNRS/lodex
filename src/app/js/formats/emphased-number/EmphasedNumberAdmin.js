@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { Select, MenuItem } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
+
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
-
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../colorUtils';
 
 const styles = {
@@ -69,7 +68,7 @@ class EmphasedNumberAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <SelectField
+                <Select
                     floatingLabelText={polyglot.t('list_format_select_size')}
                     onChange={(event, index, newValue) =>
                         this.setSize(newValue)
@@ -77,11 +76,11 @@ class EmphasedNumberAdmin extends Component {
                     style={styles.input}
                     value={size}
                 >
-                    <MenuItem value={1} primaryText={polyglot.t('size1')} />
-                    <MenuItem value={2} primaryText={polyglot.t('size2')} />
-                    <MenuItem value={3} primaryText={polyglot.t('size3')} />
-                    <MenuItem value={4} primaryText={polyglot.t('size4')} />
-                </SelectField>
+                    <MenuItem value={1}>{polyglot.t('size1')}</MenuItem>
+                    <MenuItem value={2}>{polyglot.t('size2')}</MenuItem>
+                    <MenuItem value={3}>{polyglot.t('size3')}</MenuItem>
+                    <MenuItem value={4}>{polyglot.t('size4')}</MenuItem>
+                </Select>
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}

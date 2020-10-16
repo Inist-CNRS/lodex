@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import FileDownload from 'material-ui/svg-icons/file/file-download';
+import FileDownload from '@material-ui/icons/GetApp';
 import Link from '../../lib/components/Link';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';

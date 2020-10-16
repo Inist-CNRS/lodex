@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { Select, MenuItem } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -42,7 +41,7 @@ class AdminComponent extends Component {
 
         return (
             <div style={styles.container}>
-                <SelectField
+                <Select
                     floatingLabelText={polyglot.t('list_of_language')}
                     onChange={(event, index, newValue) =>
                         this.setLanguageToHighlight(newValue)
@@ -50,13 +49,13 @@ class AdminComponent extends Component {
                     style={styles.input}
                     value={languageToHighlight}
                 >
-                    <MenuItem value="xml" primaryText="XML" />
-                    <MenuItem value="json" primaryText="JSON" />
-                    <MenuItem value="ini" primaryText="INI" />
-                    <MenuItem value="shell" primaryText="Shell" />
-                    <MenuItem value="sql" primaryText="SQL" />
-                    <MenuItem value="javascript" primaryText="Javascript" />
-                </SelectField>
+                    <MenuItem value="xml">{'XML'}</MenuItem>
+                    <MenuItem value="json">{'JSON'}</MenuItem>
+                    <MenuItem value="ini">{'INI'}</MenuItem>
+                    <MenuItem value="shell">{'Shell'}</MenuItem>
+                    <MenuItem value="sql">{'SQL'}</MenuItem>
+                    <MenuItem value="javascript">{'Javascript'}</MenuItem>
+                </Select>
             </div>
         );
     }

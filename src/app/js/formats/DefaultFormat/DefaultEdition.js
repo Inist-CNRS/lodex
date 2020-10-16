@@ -4,10 +4,10 @@ import { change } from 'redux-form';
 import get from 'lodash.get';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import { Button } from '@material-ui/core';
 
 import { formField as formFieldPropTypes } from '../../propTypes';
 import FormTextField from '../../lib/components/FormTextField';
-import RaisedButton from 'material-ui/RaisedButton';
 
 class DefaultEditon extends Component {
     convertValue = () => {
@@ -25,9 +25,10 @@ class DefaultEditon extends Component {
             return (
                 <div>
                     <p>{polyglot.t('bad_format_edit_value', { label })}</p>
-                    <RaisedButton
+                    <Button
+                        variant="contained"
                         className="convert-to-value"
-                        primary
+                        color="primary"
                         label={polyglot.t('convert_to_value')}
                         onClick={this.convertValue}
                     />

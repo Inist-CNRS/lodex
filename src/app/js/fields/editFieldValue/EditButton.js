@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
+import EditIcon from '@material-ui/icons/Edit';
 import withHandlers from 'recompose/withHandlers';
 
 import EditFieldForm, { FORM_NAME } from './EditFieldForm';
@@ -19,7 +19,7 @@ import { openEditFieldValue, closeEditFieldValue } from '../';
 import { COVER_DATASET } from '../../../../common/cover';
 import { saveResource } from '../../public/resource';
 import { updateCharacteristics } from '../../characteristic';
-import { grey400 } from 'material-ui/styles/colors';
+import { grey } from '@material-ui/core/colors';
 
 import stylesToClassname from '../../lib/stylesToClassName';
 
@@ -27,7 +27,7 @@ const styles = stylesToClassname(
     {
         name: {
             float: 'right',
-            color: grey400,
+            color: grey[400],
             fontSize: '1rem',
         },
     },

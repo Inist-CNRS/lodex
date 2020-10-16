@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
-
+import { Button } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
-import FlatButton from 'material-ui/FlatButton';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportFieldsReady as exportFieldsAction } from '../../exportFieldsReady';
@@ -22,8 +21,9 @@ export const ExportFieldsReadyButtonComponent = ({
     handleClick,
     p: polyglot,
 }) => (
-    <FlatButton
-        primary
+    <Button
+        variant="text"
+        color="primary"
         onClick={handleClick}
         label={polyglot.t('export_fields_ready')}
         style={styles.button}

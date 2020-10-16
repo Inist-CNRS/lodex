@@ -3,17 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
+import LinkIcon from '@material-ui/icons/Link';
+import { TextField } from '@material-ui/core';
 import URL from 'url';
 
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes.js';
+
 import { fromFormat } from '../../public/selectors';
 import { loadFormatData } from '../../formats/reducer';
 import Loading from '../../lib/components/Loading';
-import LinkIcon from 'material-ui/svg-icons/content/link';
-import TextField from 'material-ui/TextField';
 import { isURL } from '../../../../common/uris.js';
 import Link from '../../lib/components/Link';
 

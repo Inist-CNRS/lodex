@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
+import { Checkbox } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
@@ -8,7 +9,6 @@ import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
 import ToolTips from '../../../shared/ToolTips';
-import Checkbox from 'material-ui/Checkbox';
 
 const styles = {
     container: {

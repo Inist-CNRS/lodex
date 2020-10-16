@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
-import TextField from 'material-ui/TextField';
+import { MenuItem, Select, TextField } from '@material-ui/core';
 
 const styles = {
     container: {
@@ -46,22 +44,20 @@ class DefaultAdminComponentWithLabel extends Component {
 
         return (
             <div style={styles.container}>
-                <SelectField
+                <Select
                     floatingLabelText="Select a format"
                     onChange={this.setType}
                     style={styles.input}
                     value={type}
                 >
-                    <MenuItem value="value" primaryText="The column content" />
-                    <MenuItem
-                        value="text"
-                        primaryText="A custom text (same for all resources)"
-                    />
-                    <MenuItem
-                        value="column"
-                        primaryText="Another column content"
-                    />
-                </SelectField>
+                    <MenuItem value="value">{'The column content'}</MenuItem>
+                    <MenuItem value="text">
+                        {'A custom text (same for all resources)'}
+                    </MenuItem>
+                    <MenuItem value="column">
+                        {'Another column content'}
+                    </MenuItem>
+                </Select>
 
                 {type !== 'value' && (
                     <TextField

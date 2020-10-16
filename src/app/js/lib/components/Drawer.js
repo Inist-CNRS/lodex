@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Drawer from 'material-ui/Drawer';
-import IconButton from 'material-ui/IconButton';
-import FlatButton from 'material-ui/FlatButton';
-import CloseIcon from 'material-ui/svg-icons/content/clear';
+import { IconButton, Button, Drawer } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Clear';
 
 const styles = {
     container: {
@@ -33,7 +31,11 @@ class LodexDrawer extends Component {
         const { open } = this.state;
         return (
             <div>
-                <FlatButton label={label} onClick={this.toggleOpen} />
+                <Button
+                    variant="text"
+                    label={label}
+                    onClick={this.toggleOpen}
+                />
                 <Drawer open={open}>
                     {
                         <div style={styles.container}>

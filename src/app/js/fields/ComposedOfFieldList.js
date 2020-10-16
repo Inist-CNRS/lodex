@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
+import { Button } from '@material-ui/core';
 
 import ComposedOfFieldListItem from './ComposedOfFieldListItem';
 
@@ -16,16 +16,20 @@ export const ComposedOfFieldListComponent = ({ fields }) => (
                 fieldName={fieldName}
             />
         ))}
-        <FlatButton
+        <Button
+            variant="text"
             className="add-composite-field"
-            label="+"
             onClick={() => addFields(fields)}
-        />
-        <FlatButton
+        >
+            +
+        </Button>
+        <Button
+            variant="text"
             className="remove-composite-field"
-            label="-"
             onClick={() => removeField(fields)}
-        />
+        >
+            -
+        </Button>
     </div>
 );
 

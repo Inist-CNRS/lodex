@@ -1,5 +1,5 @@
 import React from 'react';
-import Checkbox from 'material-ui/Checkbox';
+import { Checkbox } from '@material-ui/core';
 import memoize from 'lodash.memoize';
 import { formField as formFieldPropTypes } from '../../propTypes';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import Warning from 'material-ui/svg-icons/alert/warning';
+import Warning from '@material-ui/icons/Warning';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';

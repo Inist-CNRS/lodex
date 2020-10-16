@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import AppBar from 'material-ui/AppBar';
-import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
+import { AppBar, CircularProgress, Button, Toolbar } from '@material-ui/core';
 
 import SignOutButton from './SignOutButton';
 import SignInButton from './SignInButton';
@@ -52,6 +50,7 @@ const AppbarComponent = ({
 }) => {
     const LeftElement = isLoading ? (
         <CircularProgress
+            variant="indeterminate"
             color="#fff"
             size={30}
             thickness={2}
@@ -73,7 +72,8 @@ const AppbarComponent = ({
                 />
             )}
             {isAdmin && hasPublishedDataset && (
-                <FlatButton
+                <Button
+                    variant="text"
                     label={polyglot.t('removed_resources')}
                     containerElement={<Link to="/removed" />}
                     style={styles.button}
@@ -106,10 +106,13 @@ const AppbarComponent = ({
                     </small>
                 </div>
             }
-            iconElementLeft={LeftElement}
-            iconElementRight={RightElement}
             style={styles.appBar}
-        />
+        >
+            <Toolbar>
+                {LeftElement}
+                {RightElement}
+            </Toolbar>
+        </AppBar>
     );
 };
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { Select, MenuItem } from '@material-ui/core';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -23,29 +22,24 @@ export const SelectFieldToAddComponent = ({
     onSelectField,
     p: polyglot,
 }) => (
-    <SelectField
+    <Select
         className="select-field"
         floatingLabelText={polyglot.t('select_contribution_field')}
         fullWidth
         value={selectedField}
         onChange={(_, __, value) => onSelectField(value)}
     >
-        <MenuItem
-            value="new"
-            className="new"
-            primaryText={polyglot.t('new_contribution_field')}
-        />
+        <MenuItem value="new" className="new">
+            {polyglot.t('new_contribution_field')}
+        </MenuItem>
         {contributionFields
             .filter(({ name }) => !resource[name])
             .map(({ name, label }) => (
-                <MenuItem
-                    key={name}
-                    className={name}
-                    value={name}
-                    primaryText={label}
-                />
+                <MenuItem key={name} className={name} value={name}>
+                    {label}
+                </MenuItem>
             ))}
-    </SelectField>
+    </Select>
 );
 
 SelectFieldToAddComponent.defaultProps = {

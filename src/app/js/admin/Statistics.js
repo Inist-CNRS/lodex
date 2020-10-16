@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import memoize from 'lodash.memoize';
-import CircularProgress from 'material-ui/CircularProgress';
+import { CircularProgress } from '@material-ui/core';
 
 import { fromParsing, fromPublicationPreview } from './selectors';
 import { fromFields } from '../sharedSelectors';
@@ -49,6 +49,7 @@ export const StatisticsComponent = ({
     <div style={styles.container}>
         <hr style={styles.line} />
         <CircularProgress
+            variant="indeterminate"
             className="publication-preview-is-computing"
             style={styles.progress(isComputing)}
             size={20}

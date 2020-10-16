@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+import { Dialog, Button } from '@material-ui/core';
 
 import { publishConfirm, publishCancel } from './';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -27,15 +26,17 @@ export const ConfirmPublicationComponent = ({
     p: polyglot,
 }) => {
     const actions = [
-        <FlatButton
-            primary
+        <Button
+            variant="text"
+            color="primary"
             key="confirm"
             className="confirm"
             label={polyglot.t('force_publish')}
             onClick={confirmPublication}
         />,
-        <FlatButton
-            secondary
+        <Button
+            variant="text"
+            color="secondary"
             key="cancel"
             className="cancel"
             label={polyglot.t('cancel')}

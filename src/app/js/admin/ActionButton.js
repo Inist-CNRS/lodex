@@ -4,10 +4,13 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import ActionDescription from 'material-ui/svg-icons/action/description';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import ContentClear from 'material-ui/svg-icons/content/clear';
+import { Popover } from '@material-ui/core';
+
+import {
+    Add as ContentAdd,
+    Description as ActionDescription,
+    Clear as ContentClear,
+} from '@material-ui/icons/Add';
 
 import FloatingActionButton from '../lib/components/FloatingActionButton';
 import { fromFields } from '../sharedSelectors';
@@ -129,18 +132,17 @@ export class ActionButtonComponent extends Component {
         const { showPopover, showCancel } = this.state;
 
         const tooltip = showCancel ? 'Cancel' : 'Add a column';
+
         return (
             <FloatingActionButton
                 className="btn-add-column"
-                secondary={showCancel}
-                primary={!showCancel}
+                color={showCancel ? 'secondary' : 'primary'}
                 tooltip={tooltip}
                 onClick={this.handleClick}
                 style={styles.actionButton(!showPopover)}
             >
                 <Popover
                     open={showPopover}
-                    animation={PopoverAnimationVertical}
                     anchorEl={this.anchor}
                     anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
                     autoCloseWhenOffScreen={false}

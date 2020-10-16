@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { TextField, Select, MenuItem } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -99,29 +97,25 @@ const RoutineParamsAdmin = ({
                 />
             )}
             {showOrderBy && (
-                <SelectField
+                <Select
                     floatingLabelText={polyglot.t('order_by')}
                     onChange={setOrderBy}
                     style={styles.input}
                     value={orderBy}
                 >
-                    <MenuItem
-                        value="_id/asc"
-                        primaryText={polyglot.t('label_asc')}
-                    />
-                    <MenuItem
-                        value="_id/desc"
-                        primaryText={polyglot.t('label_desc')}
-                    />
-                    <MenuItem
-                        value="value/asc"
-                        primaryText={polyglot.t('value_asc')}
-                    />
-                    <MenuItem
-                        value="value/desc"
-                        primaryText={polyglot.t('value_desc')}
-                    />
-                </SelectField>
+                    <MenuItem value="_id/asc">
+                        {polyglot.t('label_asc')}
+                    </MenuItem>
+                    <MenuItem value="_id/desc">
+                        {polyglot.t('label_desc')}
+                    </MenuItem>
+                    <MenuItem value="value/asc">
+                        {polyglot.t('value_asc')}
+                    </MenuItem>
+                    <MenuItem value="value/desc">
+                        {polyglot.t('value_desc')}
+                    </MenuItem>
+                </Select>
             )}
             {showUri && (
                 <TextField

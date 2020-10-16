@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, TextField } from 'material-ui';
+import { Checkbox, TextField } from '@material-ui/core';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {

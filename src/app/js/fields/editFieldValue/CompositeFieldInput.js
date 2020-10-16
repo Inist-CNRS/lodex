@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import Subheader from 'material-ui/Subheader';
+import { ListSubheader } from '@material-ui/core';
 import { Field } from 'redux-form';
 
 import { getEditionComponent } from '../../formats';
@@ -44,7 +44,7 @@ export const CompositeFieldInputComponent = ({
     compositeFields,
 }) => (
     <div>
-        <Subheader>{label}</Subheader>
+        <ListSubheader>{label}</ListSubheader>
         <div style={style.list}>
             {isRootFieldEditable ? (
                 <Field

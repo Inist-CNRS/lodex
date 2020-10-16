@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { ListItem } from 'material-ui/List';
+import { ListItem } from '@material-ui/core';
 import { connect } from 'react-redux';
 
 import { field as fieldPropType } from '../../propTypes';

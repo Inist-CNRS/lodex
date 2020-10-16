@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import { Fab } from '@material-ui/core';
+import ContentAdd from '@material-ui/icons/Add';
 
 import { fromResource } from '../selectors';
 import CreateResourceForm from './CreateResourceForm';
@@ -31,14 +31,14 @@ const CreateResource = ({ handleOpen, p, ...props }) => (
         label={p.t('create_resource')}
         className="create-resource"
         openButton={
-            <FloatingActionButton
+            <Fab
                 className="create-resource"
                 onClick={handleOpen}
                 style={styles.button}
                 title={p.t('create_resource')}
             >
                 <ContentAdd />
-            </FloatingActionButton>
+            </Fab>
         }
     />
 );

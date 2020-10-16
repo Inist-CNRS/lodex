@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import TextField from 'material-ui/TextField';
+import { Select, MenuItem, TextField } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -74,7 +72,7 @@ export class IstexSummaryAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <SelectField
+                <Select
                     className="searched_field"
                     floatingLabelText={polyglot.t('searched_field')}
                     onChange={this.setSearchedField}
@@ -82,14 +80,12 @@ export class IstexSummaryAdmin extends Component {
                     value={searchedField}
                 >
                     {SEARCHED_FIELD_VALUES.map(value => (
-                        <MenuItem
-                            key={value}
-                            value={value}
-                            primaryText={polyglot.t(value)}
-                        />
+                        <MenuItem key={value} value={value}>
+                            {polyglot.t(value)}
+                        </MenuItem>
                     ))}
-                </SelectField>
-                <SelectField
+                </Select>
+                <Select
                     className="year_sort_dir"
                     floatingLabelText={polyglot.t('year_sort_dir')}
                     onChange={this.setSortDir}
@@ -97,13 +93,11 @@ export class IstexSummaryAdmin extends Component {
                     value={sortDir}
                 >
                     {SORT_YEAR_VALUES.map(value => (
-                        <MenuItem
-                            key={value}
-                            value={value}
-                            primaryText={polyglot.t(value)}
-                        />
+                        <MenuItem key={value} value={value}>
+                            {polyglot.t(value)}
+                        </MenuItem>
                     ))}
-                </SelectField>
+                </Select>
                 <TextField
                     className="year_threshold"
                     type="number"
