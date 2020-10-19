@@ -70,7 +70,7 @@ class ColorPickerParamsAdmin extends Component {
         return (
             <>
                 <TextField
-                    floatingLabelText={
+                    label={
                         monochromatic
                             ? this.props.polyglot.t('Color')
                             : this.props.polyglot.t('colors_set')

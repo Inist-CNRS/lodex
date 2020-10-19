@@ -43,9 +43,7 @@ class ParagraphAdmin extends Component {
         return (
             <div style={styles.container}>
                 <Select
-                    floatingLabelText={polyglot.t(
-                        'list_format_select_image_width',
-                    )}
+                    label={polyglot.t('list_format_select_image_width')}
                     onChange={(event, index, newValue) =>
                         this.setWidth(newValue)
                     }

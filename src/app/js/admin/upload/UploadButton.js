@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { Dialog, Button } from '@material-ui/core';
+import {
+    Dialog,
+    Button,
+    DialogContent,
+    DialogActions,
+} from '@material-ui/core';
 import ArchiveIcon from '@material-ui/icons/Archive';
 
 import UploadDialog from './UploadDialog';
@@ -32,9 +37,10 @@ const UploadButtonComponent = ({
             variant="text"
             key="cancel"
             color="secondary"
-            label={polyglot.t('cancel')}
             onClick={handleClose}
-        />,
+        >
+            {polyglot.t('cancel')}
+        </Button>,
     ];
 
     return (
@@ -45,28 +51,27 @@ const UploadButtonComponent = ({
                     style={styles.button}
                     className="open-upload"
                     startIcon={<ArchiveIcon />}
-                    label={label}
                     color="primary"
                     onClick={handleOpen}
-                />
+                >
+                    {label}
+                </Button>
             ) : (
                 <Button
                     variant="text"
                     style={styles.button}
                     className="open-upload"
-                    label={label}
                     color="primary"
                     onClick={handleOpen}
-                />
+                >
+                    {label}
+                </Button>
             )}
-            <Dialog
-                actions={actions}
-                modal={false}
-                open={open}
-                onRequestClose={handleClose}
-                autoScrollBodyContent
-            >
-                <UploadDialog />
+            <Dialog open={open} onClose={handleClose} scroll="body">
+                <DialogContent>
+                    <UploadDialog />
+                </DialogContent>
+                <DialogActions>{actions}</DialogActions>
             </Dialog>
         </span>
     );

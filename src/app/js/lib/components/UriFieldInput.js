@@ -12,10 +12,8 @@ export const UriFieldInputComponent = ({ p: polyglot, input }) => (
         key="uri"
         name="uri"
         component={FormTextField}
-        floatingLabelText="uri"
-        floatingLabelFixed
         fullWidth
-        hintText={polyglot.t('auto_generate_uri')}
+        placeholder={polyglot.t('auto_generate_uri')}
         label="uri"
         {...input}
     />

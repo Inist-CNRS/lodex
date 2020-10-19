@@ -45,13 +45,13 @@ class TrelloTimelineAdmin extends Component {
         return (
             <div style={styles.container}>
                 <TextField
-                    floatingLabelText="Trello key"
+                    label="Trello key"
                     onChange={(event, newValue) => this.setKey(newValue)}
                     style={styles.input}
                     value={trelloKey}
                 />
                 <TextField
-                    floatingLabelText="Trello Token"
+                    label="Trello Token"
                     onChange={(event, newValue) => this.setToken(newValue)}
                     style={styles.input}
                     value={trelloToken}

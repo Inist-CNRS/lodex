@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { Stepper, Dialog } from '@material-ui/core';
+import {
+    Stepper,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    DialogActions,
+} from '@material-ui/core';
 
 import {
     editField as editFieldAction,
@@ -33,10 +39,6 @@ const styles = {
         flexGrow: 1,
         maxHeight: '55vh',
         overflowY: 'auto',
-    },
-    modal: {
-        maxWidth: '100%',
-        transform: 'translate(0px, 8px)',
     },
     column: {
         minWidth: '10rem',
@@ -181,38 +183,34 @@ class FieldEditionWizardComponent extends Component {
         );
 
         return (
-            <Dialog
-                open={!!field}
-                actions={actions}
-                title={title}
-                contentStyle={styles.modal}
-                autoScrollBodyContent
-                repositionOnUpdate={false}
-                className="wizard"
-            >
-                {field && (
-                    <div style={styles.container}>
-                        <div id="field_form" style={styles.form}>
-                            {field.name !== 'uri' ? (
-                                <Stepper
-                                    linear={false}
-                                    activeStep={step}
-                                    orientation="vertical"
-                                >
-                                    {steps}
-                                </Stepper>
-                            ) : (
-                                <StepUri field={field} fields={fields} />
-                            )}
+            <Dialog open={!!field} scroll="body" className="wizard">
+                <DialogTitle>{title}</DialogTitle>
+                <DialogContent>
+                    {field && (
+                        <div style={styles.container}>
+                            <div id="field_form" style={styles.form}>
+                                {field.name !== 'uri' ? (
+                                    <Stepper
+                                        linear={false}
+                                        activeStep={step}
+                                        orientation="vertical"
+                                    >
+                                        {steps}
+                                    </Stepper>
+                                ) : (
+                                    <StepUri field={field} fields={fields} />
+                                )}
+                            </div>
+                            <FieldExcerpt
+                                className="publication-excerpt-for-edition"
+                                colStyle={styles.column}
+                                onHeaderClick={null}
+                                isPreview
+                            />
                         </div>
-                        <FieldExcerpt
-                            className="publication-excerpt-for-edition"
-                            colStyle={styles.column}
-                            onHeaderClick={null}
-                            isPreview
-                        />
-                    </div>
-                )}
+                    )}
+                </DialogContent>
+                <DialogActions>{actions}</DialogActions>
             </Dialog>
         );
     }

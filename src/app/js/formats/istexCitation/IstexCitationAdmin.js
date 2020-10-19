@@ -58,7 +58,7 @@ export class IstexCitationAdmin extends Component {
             <div style={styles.container}>
                 <Select
                     className="searched_field"
-                    floatingLabelText={polyglot.t('searched_field')}
+                    label={polyglot.t('searched_field')}
                     onChange={this.setSearchedField}
                     style={styles.input}
                     value={searchedField}
@@ -71,7 +71,7 @@ export class IstexCitationAdmin extends Component {
                 </Select>
                 <TextField
                     className="document_sort_by"
-                    floatingLabelText={polyglot.t('document_sort_by')}
+                    label={polyglot.t('document_sort_by')}
                     onChange={this.setDocumentSortBy}
                     style={styles.input}
                     value={documentSortBy}

@@ -10,6 +10,7 @@ import { List, Popover, Button } from '@material-ui/core';
 import { fromFields } from '../../sharedSelectors';
 import ValidationField from './ValidationField';
 import { editField as editFieldAction } from '../../fields';
+
 import {
     polyglot as polyglotPropTypes,
     validationField as validationFieldPropType,
@@ -37,15 +38,16 @@ const ValidationButtonComponent = ({
         <Button
             color="secondary"
             variant="contained"
-            label={polyglot.t('show_publication_errors')}
             onClick={handleShowErrorsClick}
-        />
+        >
+            {polyglot.t('show_publication_errors')}
+        </Button>
         <Popover
             open={popover.show}
             anchorEl={popover.anchorEl}
             anchorOrigin={anchorOrigin}
             targetOrigin={targetOrigin}
-            onRequestClose={handleHideErrors}
+            onClose={handleHideErrors}
         >
             <List className="validation">
                 {fields.map(field => (

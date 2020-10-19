@@ -76,7 +76,7 @@ class LodexFieldAdmin extends Component {
         return (
             <div style={styles.container}>
                 <TextField
-                    floatingLabelText={polyglot.t('param_labels')}
+                    label={polyglot.t('param_labels')}
                     multiLine={true}
                     onChange={this.setRequest}
                     style={styles.input}

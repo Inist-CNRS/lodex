@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
 import PropTypes from 'prop-types';
-import { Checkbox } from '@material-ui/core';
+import { Checkbox, FormControlLabel } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
@@ -153,11 +153,15 @@ class HeatMapAdmin extends Component {
                     style={styles.input}
                     value={colorScheme}
                 />
-                <Checkbox
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleFlipAxis}
+                            style={styles.input}
+                            checked={flipAxis}
+                        />
+                    }
                     label={polyglot.t('flip_axis')}
-                    onCheck={this.toggleFlipAxis}
-                    style={styles.input}
-                    checked={flipAxis}
                 />
             </div>
         );

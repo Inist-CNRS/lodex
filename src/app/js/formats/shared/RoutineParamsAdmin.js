@@ -74,7 +74,7 @@ const RoutineParamsAdmin = ({
         <>
             {showMaxSize && (
                 <TextField
-                    floatingLabelText={polyglot.t('max_fields')}
+                    label={polyglot.t('max_fields')}
                     onChange={setMaxSize}
                     style={styles.input}
                     value={maxSize}
@@ -82,7 +82,7 @@ const RoutineParamsAdmin = ({
             )}
             {showMinValue && (
                 <TextField
-                    floatingLabelText={polyglot.t('min_value')}
+                    label={polyglot.t('min_value')}
                     onChange={setMinValue}
                     style={styles.input}
                     value={minValue}
@@ -90,7 +90,7 @@ const RoutineParamsAdmin = ({
             )}
             {showMaxValue && (
                 <TextField
-                    floatingLabelText={polyglot.t('max_value')}
+                    label={polyglot.t('max_value')}
                     onChange={setMaxValue}
                     style={styles.input}
                     value={maxValue}
@@ -98,7 +98,7 @@ const RoutineParamsAdmin = ({
             )}
             {showOrderBy && (
                 <Select
-                    floatingLabelText={polyglot.t('order_by')}
+                    label={polyglot.t('order_by')}
                     onChange={setOrderBy}
                     style={styles.input}
                     value={orderBy}
@@ -119,7 +119,7 @@ const RoutineParamsAdmin = ({
             )}
             {showUri && (
                 <TextField
-                    floatingLabelText={polyglot.t('uri')}
+                    label={polyglot.t('uri')}
                     onChange={setUri}
                     style={styles.input}
                     value={uri}

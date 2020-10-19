@@ -9,7 +9,7 @@ const dropDownMenuProps = { autoWidth: true };
 const SelectFormat = ({ formats, value, onChange, p: polyglot }) => (
     <Select
         className="select-format"
-        floatingLabelText={polyglot.t('select_a_format')}
+        label={polyglot.t('select_a_format')}
         onChange={(event, index, newValue) => onChange(newValue)}
         value={value}
         dropDownMenuProps={dropDownMenuProps}

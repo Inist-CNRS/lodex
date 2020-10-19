@@ -25,10 +25,11 @@ export const ExcerptRemoveColumnComponent = ({
                 className={`btn-excerpt-remove-column btn-excerpt-remove-column-${getFieldClassName(
                     { name },
                 )}`}
-                label={polyglot.t('remove_from_publication')}
                 onClick={removeColumn}
                 color="secondary"
-            />
+            >
+                {polyglot.t('remove_from_publication')}
+            </Button>
         ) : null}
     </TableCell>
 );

@@ -64,7 +64,7 @@ import ColorScalePreview from '../../lib/components/ColorScalePreview';
 const getColorSchemeSelector = schemes => {
     const ColorSchemeSelector = ({ value = [], style, label, onChange }) => (
         <Select
-            floatingLabelText={label}
+            label={label}
             onChange={onChange}
             style={style}
             value={value.join(',')}

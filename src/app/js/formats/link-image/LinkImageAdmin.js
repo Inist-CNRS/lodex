@@ -62,7 +62,7 @@ class LinkImageAdmin extends Component {
         return (
             <div style={styles.container}>
                 <Select
-                    floatingLabelText={polyglot.t('Select a format')}
+                    label={polyglot.t('Select a format')}
                     onChange={this.setType}
                     style={styles.input}
                     value={type}
@@ -75,7 +75,7 @@ class LinkImageAdmin extends Component {
                     </MenuItem>
                 </Select>
                 <TextField
-                    floatingLabelText={
+                    label={
                         type !== 'text'
                             ? polyglot.t('Custom URL')
                             : polyglot.t("Column's name")
@@ -85,7 +85,7 @@ class LinkImageAdmin extends Component {
                     value={value}
                 />
                 <TextField
-                    floatingLabelText={polyglot.t('height_px')}
+                    label={polyglot.t('height_px')}
                     type="number"
                     onChange={this.setMaxHeight}
                     style={styles.input}

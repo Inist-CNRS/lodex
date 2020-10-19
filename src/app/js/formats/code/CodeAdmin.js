@@ -42,7 +42,7 @@ class AdminComponent extends Component {
         return (
             <div style={styles.container}>
                 <Select
-                    floatingLabelText={polyglot.t('list_of_language')}
+                    label={polyglot.t('list_of_language')}
                     onChange={(event, index, newValue) =>
                         this.setLanguageToHighlight(newValue)
                     }

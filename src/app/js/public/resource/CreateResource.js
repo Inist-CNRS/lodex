@@ -36,6 +36,7 @@ const CreateResource = ({ handleOpen, p, ...props }) => (
                 onClick={handleOpen}
                 style={styles.button}
                 title={p.t('create_resource')}
+                color="primary"
             >
                 <ContentAdd />
             </Fab>

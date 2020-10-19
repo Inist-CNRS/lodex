@@ -45,7 +45,7 @@ class DefaultAdminComponentWithLabel extends Component {
         return (
             <div style={styles.container}>
                 <Select
-                    floatingLabelText="Select a format"
+                    label="Select a format"
                     onChange={this.setType}
                     style={styles.input}
                     value={type}
@@ -61,7 +61,7 @@ class DefaultAdminComponentWithLabel extends Component {
 
                 {type !== 'value' && (
                     <TextField
-                        floatingLabelText={
+                        label={
                             type !== 'text' ? 'Custom text' : "Column's name"
                         }
                         onChange={this.setValue}

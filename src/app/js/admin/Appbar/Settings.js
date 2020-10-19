@@ -86,46 +86,47 @@ class SettingsComponent extends Component {
             hasLoadedDataset,
             hasPublishedDataset,
         } = this.props;
+
         const {
             open,
             anchorEl,
             showClearPublished,
             showClearDataset,
         } = this.state;
+
         return (
             <div style={styles.container}>
                 <Button
                     variant="text"
                     className="btn-danger-zone"
                     onClick={this.handleTouchTap}
-                    label={polyglot.t('clear')}
                     endIcon={<ArrowDown />}
                     style={styles.button}
-                />
-                <Popover
-                    open={open}
-                    anchorEl={anchorEl}
-                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                    targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                    onRequestClose={this.handleRequestClose}
                 >
-                    <Menu>
-                        <MenuItem
-                            className="btn-clear-published"
-                            onClick={this.handleClearPublished}
-                            disabled={!hasPublishedDataset}
-                        >
-                            {polyglot.t('clear_publish')}
-                        </MenuItem>
-                        <MenuItem
-                            className="btn-clear-dataset"
-                            onClick={this.handleClearDataset}
-                            disabled={!hasLoadedDataset}
-                        >
-                            {polyglot.t('clear_dataset')}
-                        </MenuItem>
-                    </Menu>
-                </Popover>
+                    {polyglot.t('clear')}
+                </Button>
+                <Menu
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={open}
+                    onClose={this.handleRequestClose}
+                    onBackdropClick={this.handleRequestClose}
+                >
+                    <MenuItem
+                        className="btn-clear-published"
+                        onClick={this.handleClearPublished}
+                        disabled={!hasPublishedDataset}
+                    >
+                        {polyglot.t('clear_publish')}
+                    </MenuItem>
+                    <MenuItem
+                        className="btn-clear-dataset"
+                        onClick={this.handleClearDataset}
+                        disabled={!hasLoadedDataset}
+                    >
+                        {polyglot.t('clear_dataset')}
+                    </MenuItem>
+                </Menu>
                 {showClearPublished && (
                     <ClearDialog
                         type="published"

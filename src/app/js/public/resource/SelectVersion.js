@@ -59,7 +59,6 @@ export class SelectVersionComponent extends Component {
 
     render() {
         const { versions, selectedVersion, p: polyglot } = this.props;
-
         const { showMenu, anchorEl } = this.state;
 
         const format = getFormat(polyglot.t('latest'), versions.length);
@@ -69,21 +68,20 @@ export class SelectVersionComponent extends Component {
                 <Button
                     variant="text"
                     className="select-version"
-                    label={format(versions[selectedVersion], selectedVersion)}
                     onClick={this.handleClick}
                     endIcon={<ArrowDown />}
-                />
-                <Popover
-                    open={showMenu}
-                    onRequestClose={this.handleRequestClose}
-                    anchorEl={anchorEl}
-                    anchorOrigin={staticProps.anchorOrigin}
-                    targetOrigin={staticProps.targetOrigin}
                 >
-                    <Menu onChange={this.handleVersionClick}>
-                        {this.getMenuItems(versions, format)}
-                    </Menu>
-                </Popover>
+                    {format(versions[selectedVersion], selectedVersion)}
+                </Button>
+                <Menu
+                    onChange={this.handleVersionClick}
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={showMenu}
+                    onClose={this.handleRequestClose}
+                >
+                    {this.getMenuItems(versions, format)}
+                </Menu>
             </div>
         );
     }

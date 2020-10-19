@@ -55,11 +55,12 @@ export const PureButtonWithDialogForm = ({
         <Button
             variant="text"
             className={classnames(className, 'dialog-button')}
-            label={label}
             color="primary"
             onClick={handleOpen}
             style={buttonStyle}
-        />
+        >
+            {label}
+        </Button>
     ),
     p: polyglot,
 }) => {
@@ -71,18 +72,20 @@ export const PureButtonWithDialogForm = ({
             raised
             key="save"
             className={classnames(className, 'save')}
-            label={polyglot.t('save')}
             color="primary"
             loading={saving}
             onClick={handleSubmit}
-        />,
+        >
+            {polyglot.t('save')}
+        </ButtonWithStatus>,
         <Button
             variant="text"
             color="secondary"
             key="cancel"
-            label={polyglot.t('cancel')}
             onClick={handleClose}
-        />,
+        >
+            {polyglot.t('cancel')}
+        </Button>,
     ];
 
     return (
@@ -92,9 +95,9 @@ export const PureButtonWithDialogForm = ({
             actions={actions}
             dialog={form}
             open={open}
-            label={label}
             className={className}
             handleClose={handleClose}
+            label={label}
         />
     );
 };

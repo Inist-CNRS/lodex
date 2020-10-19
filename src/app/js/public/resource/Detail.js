@@ -161,9 +161,10 @@ export const DetailComponent = ({ fields, resource, title, description }) => {
                     <CardActions style={styles.actions}>
                         <Button
                             href={`${getCleanHost()}/${resource.uri} `}
-                            label={resource.uri}
-                            color={'primary'}
-                        />
+                            color="primary"
+                        >
+                            {resource.uri}
+                        </Button>
                         <SelectVersion />
                         <AddField style={{ marginLeft: 'auto' }} />
                         <HideResource />

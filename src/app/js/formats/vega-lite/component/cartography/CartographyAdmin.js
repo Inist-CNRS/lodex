@@ -128,7 +128,7 @@ class CartographyAdmin extends Component {
                     showOrderBy={showOrderBy}
                 />
                 <Select
-                    floatingLabelText={polyglot.t('world_position')}
+                    label={polyglot.t('world_position')}
                     onChange={this.setWorldPosition}
                     style={styles.input}
                     value={worldPosition}

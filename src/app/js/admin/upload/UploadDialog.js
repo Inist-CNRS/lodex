@@ -77,7 +77,7 @@ export const UploadDialogComponent = ({
                     <StepLabel>{polyglot.t('select_parser')}</StepLabel>
                     <StepContent>
                         <Select
-                            floatingLabelText={polyglot.t('parser_name')}
+                            label={polyglot.t('parser_name')}
                             value={parserName}
                             onChange={onChangeParserName}
                             fullWidth
@@ -95,12 +95,12 @@ export const UploadDialogComponent = ({
                         <Button
                             variant="contained"
                             className="btn-upload-dataset"
-                            containerElement="label"
+                            component="label"
                             color="primary"
                             fullWidth
-                            label={polyglot.t('upload_file')}
                             style={styles.button}
                         >
+                            {polyglot.t('upload_file')}
                             <input
                                 name="file"
                                 type="file"
@@ -120,24 +120,25 @@ export const UploadDialogComponent = ({
                                 fullWidth
                                 value={url}
                                 onChange={onChangeUrl}
-                                errorText={
+                                error={
                                     url &&
                                     !isUrlValid &&
                                     polyglot.t('invalid_url')
                                 }
-                                hintText="URL"
+                                placeholder="URL"
                             />
                             <Button
                                 variant="contained"
                                 onClick={onUrlUpload}
                                 disabled={!isUrlValid}
                                 className="btn-upload-url"
-                                containerElement="label"
+                                component="label"
                                 color="primary"
                                 fullWidth
-                                label={polyglot.t('upload_url')}
                                 style={styles.button}
-                            />
+                            >
+                                {polyglot.t('upload_url')}
+                            </Button>
                         </div>
                     </StepContent>
                 </Step>
