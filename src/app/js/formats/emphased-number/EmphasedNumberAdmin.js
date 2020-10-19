@@ -69,7 +69,7 @@ class EmphasedNumberAdmin extends Component {
         return (
             <div style={styles.container}>
                 <Select
-                    floatingLabelText={polyglot.t('list_format_select_size')}
+                    label={polyglot.t('list_format_select_size')}
                     onChange={(event, index, newValue) =>
                         this.setSize(newValue)
                     }

@@ -28,9 +28,10 @@ const PublishedComponent = ({ p: polyglot }) => (
                 variant="contained"
                 className="btn-navigate-to-published-data"
                 href="/"
-                label={polyglot.t('navigate_to_published_data')}
                 color="primary"
-            />
+            >
+                {polyglot.t('navigate_to_published_data')}
+            </Button>
         </CardContent>
     </Card>
 );

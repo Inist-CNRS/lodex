@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Dialog, Button } from '@material-ui/core';
+import {
+    Dialog,
+    Button,
+    DialogContent,
+    DialogActions,
+} from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 
 import { importFields as importFieldsAction } from '../import';
@@ -52,11 +57,11 @@ class ImportFieldsDialogComponent extends Component {
                 variant="contained"
                 key="confirm"
                 className="btn-save"
-                containerElement="label"
-                label={polyglot.t('confirm')}
+                component="label"
                 color="primary"
                 style={styles.button}
             >
+                {polyglot.t('confirm')}
                 <input
                     name="file_model"
                     type="file"
@@ -69,24 +74,23 @@ class ImportFieldsDialogComponent extends Component {
                 key="cancel"
                 variant="text"
                 className="btn-cancel"
-                label={polyglot.t('cancel')}
                 onClick={onClose}
-            />,
+            >
+                {polyglot.t('cancel')}
+            </Button>,
         ];
 
         return (
-            <Dialog
-                actions={actions}
-                classes={{}}
-                className="dialog-import-fields"
-                open
-            >
-                {!failed && polyglot.t('confirm_import_fields')}
-                {failed && (
-                    <span style={styles.error}>
-                        {polyglot.t('import_fields_failed')}
-                    </span>
-                )}
+            <Dialog className="dialog-import-fields" open>
+                <DialogContent>
+                    {!failed && polyglot.t('confirm_import_fields')}
+                    {failed && (
+                        <span style={styles.error}>
+                            {polyglot.t('import_fields_failed')}
+                        </span>
+                    )}
+                </DialogContent>
+                <DialogActions>{actions}</DialogActions>
             </Dialog>
         );
     }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { TextField, Checkbox } from '@material-ui/core';
+import { TextField, Checkbox, FormControlLabel } from '@material-ui/core';
 
 import {
     facetValue as facetValuePropType,
@@ -79,14 +79,18 @@ export const FacetValueList = ({
     sortFacetValue,
 }) => (
     <div className="facet-value-list" style={styles.list}>
-        <Checkbox
+        <FormControlLabel
+            control={
+                <Checkbox
+                    checked={inverted}
+                    onChange={onInvertChange(invertFacet, name)}
+                    className="exclude-facet"
+                />
+            }
             label={polyglot.t('exclude')}
-            checked={inverted}
-            onCheck={onInvertChange(invertFacet, name)}
-            className="exclude-facet"
         />
         <TextField
-            hintText={polyglot.t('filter_value', { field: label })}
+            placeholder={polyglot.t('filter_value', { field: label })}
             value={filter}
             onChange={onFilterChange(
                 changeFacetValue,
@@ -100,20 +104,22 @@ export const FacetValueList = ({
                 <div style={styles.valueHeader}>
                     <SortButton
                         name="value"
-                        label={polyglot.t('value')}
                         sortDir={sort.sortDir}
                         sortBy={sort.sortBy}
                         sort={onSortChange(sortFacetValue, name)}
-                    />
+                    >
+                        {polyglot.t('value')}
+                    </SortButton>
                 </div>
                 <div style={styles.totalHeader}>
                     <SortButton
                         name="count"
-                        label={polyglot.t('count')}
                         sortDir={sort.sortDir}
                         sortBy={sort.sortBy}
                         sort={onSortChange(sortFacetValue, name)}
-                    />
+                    >
+                        {polyglot.t('count')}
+                    </SortButton>
                 </div>
             </div>
             <div>

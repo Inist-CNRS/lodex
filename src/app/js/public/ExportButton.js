@@ -76,12 +76,13 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
                     variant="text"
                     color="primary"
                     onClick={handleOpen}
-                    label={buttonLabel}
                     startIcon={
                         <FontAwesomeIcon icon={faExternalLinkAlt} height={20} />
                     }
                     className="export"
-                />
+                >
+                    {buttonLabel}
+                </Button>
             ) : (
                 <IconButton
                     tooltip={buttonLabel}
@@ -92,28 +93,27 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
                     <FontAwesomeIcon icon={faExternalLinkAlt} height={20} />
                 </IconButton>
             )}
-            <Popover
-                open={popover.open}
-                anchorEl={popover.anchorEl}
-                anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                onRequestClose={handleClose}
-            >
-                <div className={styles.menuContainer}>
-                    <h3 className={styles.menuTitle}>{menuTitle}</h3>
-                    <Menu className={styles.menuList}>
-                        {exporters.map(({ exportID, label }) => (
-                            <ExportItem
-                                key={exportID}
-                                label={label}
-                                exportID={exportID}
-                                uri={uri}
-                                onClick={handleExport}
-                            />
-                        ))}
-                    </Menu>
-                </div>
-            </Popover>
+
+            <div className={styles.menuContainer}>
+                <h3 className={styles.menuTitle}>{menuTitle}</h3>
+                <Menu
+                    className={styles.menuList}
+                    anchorEl={popover.anchorEl}
+                    keepMounted
+                    open={popover.open}
+                    onClose={handleClose}
+                >
+                    {exporters.map(({ exportID, label }) => (
+                        <ExportItem
+                            key={exportID}
+                            label={label}
+                            exportID={exportID}
+                            uri={uri}
+                            onClick={handleExport}
+                        />
+                    ))}
+                </Menu>
+            </div>
         </>
     );
 };

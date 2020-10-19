@@ -26,16 +26,18 @@ export const ActionsComponent = ({
                 <Button
                     variant="contained"
                     className="btn-save"
-                    label={polyglot.t('save')}
                     color="secondary"
                     onClick={onSave}
-                />
+                >
+                    {polyglot.t('save')}
+                </Button>
                 <Button
                     variant="text"
                     className="btn-exit-column-edition"
-                    label={polyglot.t('cancel')}
                     onClick={onCancel}
-                />
+                >
+                    {polyglot.t('cancel')}
+                </Button>
             </div>
         );
     }
@@ -46,23 +48,26 @@ export const ActionsComponent = ({
                 <Button
                     variant="text"
                     className="btn-next"
-                    label={polyglot.t('next')}
                     onClick={onNextStep}
-                />
+                >
+                    {polyglot.t('next')}
+                </Button>
                 <Button
                     variant="contained"
                     className="btn-save"
-                    label={polyglot.t('save')}
                     color="primary"
                     onClick={onSave}
-                />
+                >
+                    {polyglot.t('save')}
+                </Button>
                 <Button
                     variant="text"
                     className="btn-exit-column-edition"
-                    label={polyglot.t('cancel')}
                     color="secondary"
                     onClick={onCancel}
-                />
+                >
+                    {polyglot.t('cancel')}
+                </Button>
             </div>
         );
     }
@@ -73,23 +78,26 @@ export const ActionsComponent = ({
                 <Button
                     variant="text"
                     className="btn-previous"
-                    label={polyglot.t('previous')}
                     onClick={onPreviousStep}
-                />
+                >
+                    {polyglot.t('previous')}
+                </Button>
                 <Button
                     variant="contained"
                     className="btn-save"
-                    label={polyglot.t('save')}
                     onClick={onSave}
                     color="primary"
-                />
+                >
+                    {polyglot.t('save')}
+                </Button>
                 <Button
                     variant="text"
                     className="btn-exit-column-edition"
                     color="secondary"
-                    label={polyglot.t('cancel')}
                     onClick={onCancel}
-                />
+                >
+                    {polyglot.t('cancel')}
+                </Button>
             </div>
         );
     }
@@ -99,29 +107,29 @@ export const ActionsComponent = ({
             <Button
                 variant="text"
                 className="btn-previous"
-                label={polyglot.t('previous')}
                 onClick={onPreviousStep}
-            />
-            <Button
-                variant="text"
-                className="btn-next"
-                label={polyglot.t('next')}
-                onClick={onNextStep}
-            />
+            >
+                {polyglot.t('previous')}
+            </Button>
+            <Button variant="text" className="btn-next" onClick={onNextStep}>
+                {polyglot.t('next')}
+            </Button>
             <Button
                 variant="contained"
                 className="btn-save"
-                label={polyglot.t('save')}
                 color="primary"
                 onClick={onSave}
-            />
+            >
+                {polyglot.t('save')}
+            </Button>
             <Button
                 variant="text"
                 className="btn-exit-column-edition"
-                label={polyglot.t('cancel')}
                 color="secondary"
                 onClick={onCancel}
-            />
+            >
+                {polyglot.t('cancel')}
+            </Button>
         </div>
     );
 };

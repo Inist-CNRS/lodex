@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem, Checkbox, TextField } from '@material-ui/core';
+import {
+    Select,
+    MenuItem,
+    Checkbox,
+    TextField,
+    FormControlLabel,
+} from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -87,9 +93,7 @@ class RessourcesGridAdmin extends Component {
                     polyglot={polyglot}
                 />
                 <Select
-                    floatingLabelText={polyglot.t(
-                        'list_format_select_image_width',
-                    )}
+                    label={polyglot.t('list_format_select_image_width')}
                     onChange={(event, index, newValue) =>
                         this.setWidth(newValue)
                     }
@@ -113,15 +117,19 @@ class RessourcesGridAdmin extends Component {
                         {polyglot.t('hundred_percent')}
                     </MenuItem>
                 </Select>
-                <Checkbox
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleAllowToLoadMore}
+                            style={styles.input}
+                            checked={allowToLoadMore}
+                        />
+                    }
                     label={polyglot.t('allow_to_load_more')}
-                    onCheck={this.toggleAllowToLoadMore}
-                    style={styles.input}
-                    checked={allowToLoadMore}
                 />
                 {allowToLoadMore && (
                     <TextField
-                        floatingLabelText={polyglot.t('items_per_page')}
+                        label={polyglot.t('items_per_page')}
                         onChange={this.setPageSize}
                         style={styles.input}
                         value={pageSize}

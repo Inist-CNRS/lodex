@@ -37,11 +37,12 @@ const GraphLink = ({ link, children, p: polyglot }) => (
                 color="primary"
                 fullWidth
                 style={styles.detailsButton}
-                containerElement={<Link to={link} />}
+                component={props => <Link to={link} {...props} />}
                 to={link}
-                label={polyglot.t('view_details')}
                 endIcon={<Forward style={styles.icon} />}
-            />
+            >
+                {polyglot.t('view_details')}
+            </Button>
         </CardActions>
     </Card>
 );

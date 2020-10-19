@@ -50,7 +50,7 @@ class UriAdmin extends Component {
         return (
             <div style={styles.container}>
                 <Select
-                    floatingLabelText={polyglot.t('uri_format_select_type')}
+                    label={polyglot.t('uri_format_select_type')}
                     onChange={this.setType}
                     style={styles.input}
                     value={type}
@@ -68,7 +68,7 @@ class UriAdmin extends Component {
 
                 {type !== 'value' && (
                     <TextField
-                        floatingLabelText={
+                        label={
                             type !== 'text'
                                 ? polyglot.t('uri_format_custom_value')
                                 : polyglot.t('uri_format_another_column_value')

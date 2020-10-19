@@ -16,11 +16,14 @@ class DefaultEditon extends Component {
             meta: { form },
             input: { name, value },
         } = this.props;
+
         change(form, name, value.join(';'));
     };
+
     render() {
         const { input, value, label, p: polyglot } = this.props;
         const currentValue = get(input, 'value', value);
+
         if (Array.isArray(currentValue)) {
             return (
                 <div>
@@ -29,12 +32,14 @@ class DefaultEditon extends Component {
                         variant="contained"
                         className="convert-to-value"
                         color="primary"
-                        label={polyglot.t('convert_to_value')}
                         onClick={this.convertValue}
-                    />
+                    >
+                        {polyglot.t('convert_to_value')}
+                    </Button>
                 </div>
             );
         }
+
         return <FormTextField {...this.props} value={currentValue} />;
     }
 }

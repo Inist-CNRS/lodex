@@ -79,7 +79,7 @@ class ListAdmin extends Component {
                     args={subFormatOptions}
                 />
                 <Select
-                    floatingLabelText={polyglot.t('list_format_select_type')}
+                    label={polyglot.t('list_format_select_type')}
                     onChange={(event, index, newValue) =>
                         this.setType(newValue)
                     }

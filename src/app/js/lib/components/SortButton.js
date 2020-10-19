@@ -23,7 +23,6 @@ const SortButton = ({ name, label, sortBy, sortDir, sort }) => (
         variant="text"
         className={`sort_${name}`}
         onClick={sort}
-        label={isLongText(label) ? getShortText(label) : label}
         endIcon={
             sortBy === name && (
                 <ArrowUp
@@ -36,7 +35,9 @@ const SortButton = ({ name, label, sortBy, sortDir, sort }) => (
             )
         }
         style={styles.sortButton}
-    />
+    >
+        {isLongText(label) ? getShortText(label) : label}
+    </Button>
 );
 
 SortButton.defaultProps = {

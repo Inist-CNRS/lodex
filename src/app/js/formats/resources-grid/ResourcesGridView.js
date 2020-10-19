@@ -122,7 +122,6 @@ class ResourcesGridView extends Component {
                     <div className={styles.button}>
                         <Button
                             variant="contained"
-                            label={polyglot.t('see_more')}
                             onClick={this.handleMore}
                             startIcon={
                                 fetch ? (
@@ -132,7 +131,9 @@ class ResourcesGridView extends Component {
                                     />
                                 ) : null
                             }
-                        />
+                        >
+                            {polyglot.t('see_more')}
+                        </Button>
                     </div>
                 )}
             </div>

@@ -72,7 +72,7 @@ const SearchBar = ({
             <TextField
                 ref={refTextField}
                 className={styles.text}
-                hintText={polyglot.t('search')}
+                placeholder={polyglot.t('search')}
                 onChange={onChange}
                 value={value}
                 underlineStyle={muiStyles.searchTextUnderline}

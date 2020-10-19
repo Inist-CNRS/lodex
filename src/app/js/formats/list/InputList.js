@@ -53,8 +53,9 @@ class InputList extends Component {
                         className="convert-to-list"
                         color="primary"
                         onClick={this.convertToList}
-                        label={polyglot.t('convert_to_list')}
-                    />
+                    >
+                        {polyglot.t('convert_to_list')}
+                    </Button>
                 </div>
             );
         }

@@ -74,10 +74,11 @@ const AppbarComponent = ({
             {isAdmin && hasPublishedDataset && (
                 <Button
                     variant="text"
-                    label={polyglot.t('removed_resources')}
-                    containerElement={<Link to="/removed" />}
+                    component={props => <Link to="/removed" {...props} />}
                     style={styles.button}
-                />
+                >
+                    {polyglot.t('removed_resources')}
+                </Button>
             )}
             {isAdmin ? (
                 <ModelMenu hasPublishedDataset={hasPublishedDataset} />

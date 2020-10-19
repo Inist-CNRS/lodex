@@ -207,7 +207,7 @@ class SparqlTextFieldAdmin extends Component {
         return (
             <div style={styles.inline}>
                 <TextField
-                    floatingLabelText={polyglot.t('sparql_attribute')}
+                    label={polyglot.t('sparql_attribute')}
                     type="string"
                     onChange={e => this.setAttribute(e.target.value, key)}
                     style={styles.subformatInput}
@@ -239,7 +239,7 @@ class SparqlTextFieldAdmin extends Component {
         return (
             <div style={styles.container}>
                 <TextField
-                    floatingLabelText={polyglot.t('sparql_endpoint')}
+                    label={polyglot.t('sparql_endpoint')}
                     style={styles.input}
                     value={endpoint}
                     onChange={this.setEndpoint}
@@ -254,7 +254,7 @@ class SparqlTextFieldAdmin extends Component {
                     ))}
                 </datalist>
                 <TextField
-                    floatingLabelText={polyglot.t('sparql_request')}
+                    label={polyglot.t('sparql_request')}
                     multiLine={true}
                     onChange={this.setRequest}
                     style={styles.input}
@@ -270,7 +270,7 @@ class SparqlTextFieldAdmin extends Component {
                     {polyglot.t('sparql_validator')}
                 </a>
                 <TextField
-                    floatingLabelText={polyglot.t('max_value')}
+                    label={polyglot.t('max_value')}
                     type="number"
                     onChange={this.setMaxValue}
                     style={styles.input}
@@ -286,7 +286,7 @@ class SparqlTextFieldAdmin extends Component {
                     {polyglot.t('hidden_info')}
                 </label>
                 <TextField
-                    floatingLabelText={polyglot.t('sparql_list_separator')}
+                    label={polyglot.t('sparql_list_separator')}
                     type="string"
                     onChange={this.setSeparator}
                     style={styles.input}

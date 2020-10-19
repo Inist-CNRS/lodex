@@ -74,7 +74,7 @@ export class IstexSummaryAdmin extends Component {
             <div style={styles.container}>
                 <Select
                     className="searched_field"
-                    floatingLabelText={polyglot.t('searched_field')}
+                    label={polyglot.t('searched_field')}
                     onChange={this.setSearchedField}
                     style={styles.input}
                     value={searchedField}
@@ -87,7 +87,7 @@ export class IstexSummaryAdmin extends Component {
                 </Select>
                 <Select
                     className="year_sort_dir"
-                    floatingLabelText={polyglot.t('year_sort_dir')}
+                    label={polyglot.t('year_sort_dir')}
                     onChange={this.setSortDir}
                     style={styles.input}
                     value={sortDir}
@@ -101,14 +101,14 @@ export class IstexSummaryAdmin extends Component {
                 <TextField
                     className="year_threshold"
                     type="number"
-                    floatingLabelText={polyglot.t('year_threshold')}
+                    label={polyglot.t('year_threshold')}
                     onChange={this.setYearThreshold}
                     style={styles.input}
                     value={yearThreshold}
                 />
                 <TextField
                     className="document_sort_by"
-                    floatingLabelText={polyglot.t('document_sort_by')}
+                    label={polyglot.t('document_sort_by')}
                     onChange={this.setDocumentSortBy}
                     style={styles.input}
                     value={documentSortBy}

@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { Button, Dialog } from '@material-ui/core';
+
+import {
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+} from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-
-const styles = {
-    modal: {
-        transform: 'translate(0px, 8px)',
-    },
-};
 
 export const PureButtonWithDialog = ({
     handleClose,
@@ -23,22 +24,20 @@ export const PureButtonWithDialog = ({
     icon,
     p: polyglot,
     actions = [
-        <Button
-            variant="text"
-            key="cancel"
-            label={polyglot.t('close')}
-            onClick={handleClose}
-        />,
+        <Button variant="text" key="cancel" onClick={handleClose}>
+            {polyglot.t('close')}
+        </Button>,
     ],
     openButton = (
         <Button
             variant="text"
             color="primary"
             className={className}
-            label={label}
             startIcon={icon}
             onClick={handleOpen}
-        />
+        >
+            {label}
+        </Button>
     ),
 }) => {
     if (!show) {
@@ -48,19 +47,16 @@ export const PureButtonWithDialog = ({
     return (
         <span style={style}>
             {openButton}
-            <Dialog
-                title={label}
-                actions={actions}
-                modal={false}
-                open={open}
-                onRequestClose={handleClose}
-                autoScrollBodyContent
-                contentStyle={styles.modal}
-                bodyClassName="dialog-body"
-                contentClassName="dialog-content"
-                actionsContainerClassName="dialog-actions"
-            >
-                {dialog}
+            <Dialog open={open} onClose={handleClose} scroll="body">
+                <DialogTitle>{label}</DialogTitle>
+                <DialogContent>
+                    <div className="dialog-body">
+                        <div className="dialog-content">{dialog}</div>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <div className="dialog-actions">{actions}</div>
+                </DialogActions>
             </Dialog>
         </span>
     );

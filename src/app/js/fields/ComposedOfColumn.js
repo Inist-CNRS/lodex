@@ -30,7 +30,7 @@ const ComposedOfColumn = ({
         <Select
             onChange={handleSelectColumn}
             style={styles.select}
-            hintText={polyglot.t('select_a_column')}
+            placeholder={polyglot.t('select_a_column')}
             value={column}
             required
         >

@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, LinearProgress } from '@material-ui/core';
+import {
+    Dialog,
+    LinearProgress,
+    DialogTitle,
+    DialogContent,
+} from '@material-ui/core';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -49,25 +54,17 @@ export class Progress extends Component {
 
         if (error) {
             return (
-                <Dialog
-                    title={polyglot.t(status)}
-                    actions={[]}
-                    modal={false}
-                    open={status !== PENDING}
-                    onRequestClose={clearProgress}
-                >
-                    <div>{polyglot.t('progress_error')}</div>
+                <Dialog open={status !== PENDING} onClose={clearProgress}>
+                    <DialogTitle>{polyglot.t(status)}</DialogTitle>
+                    <DialogContent>
+                        <div>{polyglot.t('progress_error')}</div>
+                    </DialogContent>
                 </Dialog>
             );
         }
 
         return (
-            <Dialog
-                title={polyglot.t(status)}
-                actions={[]}
-                modal={false}
-                open={status !== PENDING}
-            >
+            <Dialog title={polyglot.t(status)} open={status !== PENDING}>
                 <div className="progress">
                     <LinearProgress
                         mode="determinate"

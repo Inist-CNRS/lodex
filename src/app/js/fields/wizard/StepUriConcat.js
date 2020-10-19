@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Button, TextField } from '@material-ui/core';
+import { Switch, Button, TextField, FormControlLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -36,13 +36,17 @@ export const StepValueConcatComponent = ({
     handleRemoveColumn,
 }) => (
     <div>
-        <Switch
-            className="radio_concat"
+        <FormControlLabel
+            control={
+                <Switch
+                    className="radio_concat"
+                    value="concat"
+                    onClick={handleSelect}
+                    checked={selected}
+                    style={styles.radio}
+                />
+            }
             label={polyglot.t('multi_field_concat')}
-            value="concat"
-            onClick={handleSelect}
-            checked={selected}
-            style={styles.radio}
         />
         {selected && (
             <div style={styles.inset}>
@@ -63,11 +67,9 @@ export const StepValueConcatComponent = ({
                         handleRemoveColumn={handleRemoveColumn}
                     />
                 ))}
-                <Button
-                    variant="text"
-                    label={polyglot.t('add_column')}
-                    onClick={handleAddColumn}
-                />
+                <Button variant="text" onClick={handleAddColumn}>
+                    {polyglot.t('add_column')}
+                </Button>
             </div>
         )}
     </div>

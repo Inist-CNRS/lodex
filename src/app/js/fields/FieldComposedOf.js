@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Button } from '@material-ui/core';
+import { Switch, Button, FormControlLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -75,10 +75,14 @@ class FieldComposedOf extends Component {
                     {polyglot.t('wizard_composed_of')}
                 </div>
                 <div style={styles.inset}>
-                    <Switch
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={isComposedOf}
+                                onChange={this.handleSwitch}
+                            />
+                        }
                         label="is_composite_field"
-                        checked={isComposedOf}
-                        onChange={this.handleSwitch}
                     />
                     {isComposedOf &&
                         columns.map((col, index) => (
@@ -99,9 +103,10 @@ class FieldComposedOf extends Component {
                         <Button
                             variant="text"
                             className="btn-add-composition-column"
-                            label={polyglot.t('add_composition_column')}
                             onClick={this.handleAddColumn}
-                        />
+                        >
+                            {polyglot.t('add_composition_column')}
+                        </Button>
                     )}
                 </div>
             </div>

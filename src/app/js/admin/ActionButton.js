@@ -147,7 +147,7 @@ export class ActionButtonComponent extends Component {
                     anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
                     autoCloseWhenOffScreen={false}
                     targetOrigin={{ horizontal: 'middle', vertical: 'top' }}
-                    onRequestClose={this.handleClick}
+                    onClose={this.handleClick}
                     style={styles.popover}
                 >
                     <FloatingActionButton
@@ -158,7 +158,6 @@ export class ActionButtonComponent extends Component {
                     >
                         <ActionDescription />
                     </FloatingActionButton>
-
                     <FloatingActionButton
                         className="btn-add-free-column"
                         label={polyglot.t('add_column')}

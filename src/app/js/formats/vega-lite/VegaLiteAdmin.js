@@ -140,7 +140,7 @@ class VegaLiteAdmin extends Component {
                     min={10}
                     max={200}
                     step={10}
-                    floatingLabelText={polyglot.t('vegalite_width')}
+                    label={polyglot.t('vegalite_width')}
                     onChange={this.setWidth}
                     style={styles.input2}
                     value={width}
@@ -151,7 +151,7 @@ class VegaLiteAdmin extends Component {
                     min={10}
                     max={800}
                     step={10}
-                    floatingLabelText={polyglot.t('vegalite_height')}
+                    label={polyglot.t('vegalite_height')}
                     onChange={this.setHeight}
                     style={styles.input2}
                     value={height}

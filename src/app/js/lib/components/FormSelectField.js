@@ -10,9 +10,9 @@ const FormSelectField = ({
     ...props
 }) => (
     <Select
-        floatingLabelText={label}
-        hintText={hint}
-        errorText={touched && error}
+        label={label}
+        placeholder={hint}
+        error={touched && error}
         {...input}
         onChange={(event, index, value) => input.onChange(value)}
         {...props}

@@ -45,11 +45,12 @@ export class PublishButtonComponent extends Component {
                     loading={isPublishing}
                     error={error}
                     success={published}
-                    label={polyglot.t('publish')}
                     onClick={this.handleClick}
                     disabled={!canPublish}
                     style={styles.button}
-                />
+                >
+                    {polyglot.t('publish')}
+                </ButtonWithStatus>
                 <ConfirmPublication />
             </div>
         );

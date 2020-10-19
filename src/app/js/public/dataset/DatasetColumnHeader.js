@@ -16,10 +16,11 @@ const DatasetColumnHeader = ({ name, label, sortBy, sortDir, sortDataset }) => (
                 className={`sort_${name}`}
                 sort={sortDataset}
                 name={name}
-                label={label}
                 sortBy={sortBy}
                 sortDir={sortDir}
-            />
+            >
+                {label}
+            </SortButton>
         )}
     </TableCell>
 );

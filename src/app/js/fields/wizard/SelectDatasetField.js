@@ -26,7 +26,7 @@ export const SelectDatasetFieldComponent = ({
         id={id}
         onChange={handleChange}
         style={styles.select}
-        floatingLabelText={polyglot.t(label)}
+        label={polyglot.t(label)}
         value={column}
     >
         {datasetFields.map(datasetField => (

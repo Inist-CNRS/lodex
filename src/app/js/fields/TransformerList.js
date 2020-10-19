@@ -47,8 +47,9 @@ const TransformerList = ({
                 variant="text"
                 className="add-transformer"
                 onClick={() => fields.push({})}
-                label={polyglot.t('add_transformer')}
-            />
+            >
+                {polyglot.t('add_transformer')}
+            </Button>
         </ListSubheader>
         {touched && error && <span>{error}</span>}
         {fields.map((fieldName, index) => (

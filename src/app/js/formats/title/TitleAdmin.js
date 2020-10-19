@@ -64,7 +64,7 @@ class TitleAdmin extends Component {
         return (
             <div style={styles.container}>
                 <Select
-                    floatingLabelText={polyglot.t('list_format_select_level')}
+                    label={polyglot.t('list_format_select_level')}
                     onChange={(event, index, newValue) =>
                         this.setLevel(newValue)
                     }

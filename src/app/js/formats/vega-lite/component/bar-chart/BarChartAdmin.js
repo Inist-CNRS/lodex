@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Select, MenuItem, Checkbox } from '@material-ui/core';
+import {
+    TextField,
+    Select,
+    MenuItem,
+    Checkbox,
+    FormControlLabel,
+} from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
@@ -199,7 +205,7 @@ class BarChartAdmin extends Component {
                     polyglot={polyglot}
                 />
                 <Select
-                    floatingLabelText={polyglot.t('direction')}
+                    label={polyglot.t('direction')}
                     onChange={this.setDirection}
                     style={styles.input}
                     value={direction}
@@ -211,32 +217,48 @@ class BarChartAdmin extends Component {
                         {polyglot.t('vertical')}
                     </MenuItem>
                 </Select>
-                <Checkbox
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleDiagonalCategoryAxis}
+                            style={styles.input}
+                            checked={diagonalCategoryAxis}
+                        />
+                    }
                     label={polyglot.t('diagonal_category_axis')}
-                    onCheck={this.toggleDiagonalCategoryAxis}
-                    style={styles.input}
-                    checked={diagonalCategoryAxis}
                 />
-                <Checkbox
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleDiagonalValueAxis}
+                            style={styles.input}
+                            checked={diagonalValueAxis}
+                        />
+                    }
                     label={polyglot.t('diagonal_value_axis')}
-                    onCheck={this.toggleDiagonalValueAxis}
-                    style={styles.input}
-                    checked={diagonalValueAxis}
                 />
-                <Checkbox
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.setAxisRoundValue}
+                            style={styles.input}
+                            checked={axisRoundValue}
+                        />
+                    }
                     label={polyglot.t('axis_round_value')}
-                    onCheck={this.setAxisRoundValue}
-                    style={styles.input}
-                    checked={axisRoundValue}
                 />
-                <Checkbox
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleLabels}
+                            style={styles.input}
+                            checked={labels}
+                        />
+                    }
                     label={polyglot.t('toggle_labels')}
-                    onCheck={this.toggleLabels}
-                    style={styles.input}
-                    checked={labels}
                 />
                 <Select
-                    floatingLabelText={polyglot.t('scale')}
+                    label={polyglot.t('scale')}
                     onChange={this.setScale}
                     style={styles.input}
                     value={scale}
@@ -245,7 +267,7 @@ class BarChartAdmin extends Component {
                     <MenuItem value="log">{polyglot.t('log')}</MenuItem>
                 </Select>
                 <TextField
-                    floatingLabelText={polyglot.t('bar_size')}
+                    label={polyglot.t('bar_size')}
                     onChange={this.setBarSize}
                     style={styles.input}
                     value={barSize}

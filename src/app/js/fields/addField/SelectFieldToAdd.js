@@ -24,7 +24,7 @@ export const SelectFieldToAddComponent = ({
 }) => (
     <Select
         className="select-field"
-        floatingLabelText={polyglot.t('select_contribution_field')}
+        label={polyglot.t('select_contribution_field')}
         fullWidth
         value={selectedField}
         onChange={(_, __, value) => onSelectField(value)}

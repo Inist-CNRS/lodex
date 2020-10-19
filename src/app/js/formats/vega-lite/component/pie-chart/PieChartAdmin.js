@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { Checkbox } from '@material-ui/core';
+import { Checkbox, FormControlLabel } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
@@ -114,11 +114,15 @@ class PieChartAdmin extends Component {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-                <Checkbox
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleLabels}
+                            style={styles.input}
+                            checked={labels}
+                        />
+                    }
                     label={polyglot.t('toggle_labels')}
-                    onCheck={this.toggleLabels}
-                    style={styles.input}
-                    checked={labels}
                 />
                 <ToolTips
                     checked={tooltip}

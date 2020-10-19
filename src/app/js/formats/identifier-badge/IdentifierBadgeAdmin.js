@@ -72,9 +72,7 @@ class IdentifierBadgeAdmin extends Component {
         return (
             <div style={styles.container}>
                 <Select
-                    floatingLabelText={polyglot.t(
-                        'list_format_select_identifier',
-                    )}
+                    label={polyglot.t('list_format_select_identifier')}
                     onChange={(event, index, newValue) =>
                         this.setTypid(newValue)
                     }
