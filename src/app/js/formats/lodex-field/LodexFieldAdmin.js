@@ -51,8 +51,8 @@ class LodexFieldAdmin extends Component {
         args: defaultArgs,
     };
 
-    setRequest = (_, label) => {
-        const labelArray = label.split(';');
+    setRequest = e => {
+        const labelArray = (e.target.value || '').split(';');
         const { param, ...args } = this.props.args;
         const newArgs = { ...args, param: { ...param, labelArray } };
         this.props.onChange(newArgs);
@@ -77,7 +77,7 @@ class LodexFieldAdmin extends Component {
             <div style={styles.container}>
                 <TextField
                     label={polyglot.t('param_labels')}
-                    multiLine={true}
+                    multiline
                     onChange={this.setRequest}
                     style={styles.input}
                     value={label}

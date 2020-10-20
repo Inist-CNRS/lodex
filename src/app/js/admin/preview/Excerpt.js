@@ -38,7 +38,7 @@ const styles = {
     },
 };
 
-const getColStyle = memoize(style => Object.assign(styles.header, style));
+const getColStyle = memoize(style => ({ ...styles.header, ...style }));
 
 export const ExcerptComponent = ({
     colStyle,
@@ -53,12 +53,10 @@ export const ExcerptComponent = ({
 }) => (
     <Table
         className={className}
-        selectable={false}
-        fixedHeader={false}
         style={styles.table(isPreview)}
         onCellClick={onCellClick}
     >
-        <TableHead displaySelectAll={false} adjustForCheckbox={false}>
+        <TableHead>
             <TableRow onCellClick={onHeaderClick}>
                 {columns.map(field => (
                     <TableCell
@@ -78,7 +76,7 @@ export const ExcerptComponent = ({
                 ))}
             </TableRow>
         </TableHead>
-        <TableBody displayRowCheckbox={false}>
+        <TableBody>
             {lines.map((line, index) => (
                 <ExcerptLine
                     key={`${line.uri}-${index}` || index}
@@ -90,7 +88,7 @@ export const ExcerptComponent = ({
                 <TableRow>
                     {columns.map(c => (
                         <ExcerptRemoveColumn
-                            key={`remove_column_${c}`}
+                            key={`remove_column_${c._id}`}
                             field={c}
                         />
                     ))}

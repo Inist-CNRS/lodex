@@ -34,8 +34,9 @@ class ColorPickerParamsAdmin extends Component {
 
     handleChangeText(e) {
         this.setState({
-            colors: e.target.value.split(' ').map(color => ({ color })),
+            colors: (e.target.value || '').split(' ').map(color => ({ color })),
         });
+
         this.props.onChange(e.target.value);
     }
 

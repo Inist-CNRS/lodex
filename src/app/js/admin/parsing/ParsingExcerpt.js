@@ -45,8 +45,8 @@ export const ParsingExcerptComponent = ({
     const total = lines.length;
 
     return (
-        <Table selectable={false} fixedHeader={false} style={styles.table}>
-            <TableHead displaySelectAll={false} adjustForCheckbox={false}>
+        <Table style={styles.table}>
+            <TableHead>
                 <TableRow>
                     {columns.map(column => (
                         <ParsingExcerptHeaderColumn
@@ -56,10 +56,9 @@ export const ParsingExcerptComponent = ({
                     ))}
                 </TableRow>
             </TableHead>
-            <TableBody style={styles.body} displayRowCheckbox={false}>
+            <TableBody style={styles.body}>
                 {lines.map((line, index) => (
                     <TableRow
-                        displayBorder={false}
                         key={`${line._id}_data_row`}
                         style={getRowStyle(index, total)}
                     >

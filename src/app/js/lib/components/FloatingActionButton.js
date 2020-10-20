@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Fab } from '@material-ui/core';
+import { Fab, Tooltip } from '@material-ui/core';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
 import withHandlers from 'recompose/withHandlers';
 import pure from 'recompose/pure';
-import Tooltip from './Tooltip';
 
 const styles = {
     container: {
@@ -24,7 +23,7 @@ export const FloatingActionButtonComponent = ({
     tooltip,
     ...props
 }) => (
-    <div style={Object.assign({}, styles.container, style)}>
+    <div style={{ ...styles.container, ...style }}>
         <Fab
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}

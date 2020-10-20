@@ -34,8 +34,8 @@ class DefaultAdminComponentWithLabel extends Component {
         this.props.onChange(newArgs);
     };
 
-    setValue = (_, value) => {
-        const newArgs = { ...this.props.args, value };
+    setValue = e => {
+        const newArgs = { ...this.props.args, value: e.target.value };
         this.props.onChange(newArgs);
     };
 

@@ -255,7 +255,7 @@ class SparqlTextFieldAdmin extends Component {
                 </datalist>
                 <TextField
                     label={polyglot.t('sparql_request')}
-                    multiLine={true}
+                    multiline
                     onChange={this.setRequest}
                     style={styles.input}
                     value={request}

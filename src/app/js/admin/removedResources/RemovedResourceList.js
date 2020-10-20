@@ -63,15 +63,8 @@ export class RemovedResourceListComponent extends Component {
 
         return (
             <CardContent className="removed_resources">
-                <Table
-                    selectable={false}
-                    fixedHeader={false}
-                    style={styles.table}
-                >
-                    <TableHead
-                        displaySelectAll={false}
-                        adjustForCheckbox={false}
-                    >
+                <Table style={styles.table}>
+                    <TableHead>
                         <TableRow>
                             <TableCell>{polyglot.t('removed_at')}</TableCell>
                             <TableCell>
@@ -83,7 +76,7 @@ export class RemovedResourceListComponent extends Component {
                             ))}
                         </TableRow>
                     </TableHead>
-                    <TableBody displayRowCheckbox={false}>
+                    <TableBody>
                         {resources.map(data => (
                             <TableRow key={data.uri}>
                                 <TableCell>

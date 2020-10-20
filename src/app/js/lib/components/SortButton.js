@@ -26,11 +26,10 @@ const SortButton = ({ name, label, sortBy, sortDir, sort }) => (
         endIcon={
             sortBy === name && (
                 <ArrowUp
-                    style={Object.assign(
-                        {},
-                        styles.iconSortBy,
-                        styles[sortDir],
-                    )}
+                    style={{
+                        ...styles.iconSortBy,
+                        ...styles[sortDir],
+                    }}
                 />
             )
         }

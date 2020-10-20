@@ -22,12 +22,12 @@ const polyglot = new Polyglot({
     phrases: phrasesFor(locale),
 });
 
-const muiTheme = createMuiTheme(customTheme, {
+const theme = createMuiTheme(customTheme, {
     userAgent: navigator.userAgent,
 });
 
 const App = props => (
-    <MuiThemeProvider theme={muiTheme}>
+    <MuiThemeProvider theme={theme}>
         <FieldProvider {...props}>
             {({ resource, field, formatData }) => (
                 <IstexSummaryView

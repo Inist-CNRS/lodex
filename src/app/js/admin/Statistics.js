@@ -68,7 +68,6 @@ export const StatisticsComponent = ({
             })}
         </div>
         <hr style={styles.line} />
-
         <ActionButton
             onAddNewColumn={handleAddColumn}
             onShowExistingColumns={handleShowExistingColumns}

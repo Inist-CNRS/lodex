@@ -99,9 +99,10 @@ export const updateCharacteristics = async ctx => {
         requestedNewCharacteristics,
     );
 
-    ctx.body.characteristics = await ctx.publishedCharacteristic.addNewVersion(
-        Object.assign({}, characteristics, newCharacteristics),
-    );
+    ctx.body.characteristics = await ctx.publishedCharacteristic.addNewVersion({
+        ...characteristics,
+        ...newCharacteristics,
+    });
 };
 
 export const createCharacteristic = async ctx => {

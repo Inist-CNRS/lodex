@@ -52,14 +52,14 @@ class SentenceAdmin extends Component {
                 <TextField
                     key="prefix"
                     label={polyglot.t('prefix')}
-                    onChange={(event, newValue) => this.setPrefix(newValue)}
+                    onChange={e => this.setPrefix(e.target.value)}
                     style={styles.input}
                     value={prefix}
                 />
                 <TextField
                     key="suffix"
                     label={polyglot.t('suffix')}
-                    onChange={(event, newValue) => this.setSuffix(newValue)}
+                    onChange={e => this.setSuffix(e.target.value)}
                     style={styles.input}
                     value={suffix}
                 />

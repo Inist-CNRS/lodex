@@ -8,12 +8,10 @@ import { ISTEX_API_URL } from '../../../../common/externals';
 import Link from '../../lib/components/Link';
 
 const styles = {
-    text: memoize(status =>
-        Object.assign({
-            fontSize: '1rem',
-            textDecoration: status === REJECTED ? 'line-through' : 'none',
-        }),
-    ),
+    text: memoize(status => ({
+        fontSize: '1rem',
+        textDecoration: status === REJECTED ? 'line-through' : 'none',
+    })),
 };
 
 const IstexView = ({ fieldStatus, field, resource }) => {

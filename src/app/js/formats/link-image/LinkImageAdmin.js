@@ -42,13 +42,13 @@ class LinkImageAdmin extends Component {
         this.props.onChange(newArgs);
     };
 
-    setValue = (_, value) => {
-        const newArgs = { ...this.props.args, value };
+    setValue = e => {
+        const newArgs = { ...this.props.args, value: e.target.value };
         this.props.onChange(newArgs);
     };
 
-    setMaxHeight = (_, maxHeight) => {
-        maxHeight = Math.max(maxHeight, 1);
+    setMaxHeight = e => {
+        const maxHeight = Math.max(e.target.value, 1);
         const newArgs = { ...this.props.args, maxHeight };
         this.props.onChange(newArgs);
     };

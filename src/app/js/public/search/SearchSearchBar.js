@@ -45,7 +45,7 @@ const SearchSearchBar = ({
         <SearchBar
             className="search-searchbar"
             value={localQuery}
-            onChange={handleSearch}
+            onChange={e => handleSearch(e.target.value)}
             onClear={handleClearSearch}
             actions={
                 <>

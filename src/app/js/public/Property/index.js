@@ -32,15 +32,12 @@ import shouldDisplayField from '../../fields/shouldDisplayField';
 
 const styles = {
     container: memoize(
-        (style, width) =>
-            Object.assign(
-                {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width: `${width || 100}%`,
-                },
-                style,
-            ),
+        (style, width) => ({
+            display: 'flex',
+            flexDirection: 'column',
+            width: `${width || 100}%`,
+            ...style,
+        }),
         (style, value) => ({ style, value }),
     ),
     label: (status, isSub) => ({

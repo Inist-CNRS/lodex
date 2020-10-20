@@ -69,12 +69,12 @@ class RessourcesGridAdmin extends Component {
             this.props,
         );
 
-    setPageSize = (_, pageSize) => {
+    setPageSize = e => {
         const { args, onChange } = this.props;
 
         onChange({
             ...args,
-            pageSize: parseInt(pageSize, 10),
+            pageSize: parseInt(e.target.value, 10),
         });
     };
 

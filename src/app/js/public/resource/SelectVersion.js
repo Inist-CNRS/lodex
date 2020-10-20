@@ -16,11 +16,6 @@ const getFormat = (latest, length) => (dateString, index) =>
         index === length - 1 ? ` (${latest})` : ''
     }`;
 
-const staticProps = {
-    anchorOrigin: { horizontal: 'left', vertical: 'bottom' },
-    targetOrigin: { horizontal: 'left', vertical: 'top' },
-};
-
 export class SelectVersionComponent extends Component {
     constructor(props) {
         super(props);

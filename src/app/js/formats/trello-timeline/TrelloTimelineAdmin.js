@@ -46,13 +46,13 @@ class TrelloTimelineAdmin extends Component {
             <div style={styles.container}>
                 <TextField
                     label="Trello key"
-                    onChange={(event, newValue) => this.setKey(newValue)}
+                    onChange={e => this.setKey(e.target.value)}
                     style={styles.input}
                     value={trelloKey}
                 />
                 <TextField
                     label="Trello Token"
-                    onChange={(event, newValue) => this.setToken(newValue)}
+                    onChange={e => this.setToken(e.target.value)}
                     style={styles.input}
                     value={trelloToken}
                 />

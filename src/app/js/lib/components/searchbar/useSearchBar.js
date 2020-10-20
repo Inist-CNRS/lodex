@@ -18,7 +18,7 @@ const useSearchBar = (
         [],
     );
 
-    const search = (_, value) => {
+    const search = value => {
         setQuery(value);
         debouncedSearch(value);
     };

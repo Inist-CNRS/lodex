@@ -45,8 +45,8 @@ export class IstexCitationAdmin extends Component {
         updateAdminArgs('searchedField', searchedField, this.props);
     };
 
-    setDocumentSortBy = (_, documentSortBy) =>
-        updateAdminArgs('documentSortBy', documentSortBy, this.props);
+    setDocumentSortBy = e =>
+        updateAdminArgs('documentSortBy', e.target.value, this.props);
 
     render() {
         const {

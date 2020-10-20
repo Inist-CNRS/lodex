@@ -81,11 +81,11 @@ export class Progress extends Component {
 
 Progress.propTypes = {
     status: PropTypes.string.isRequired,
-    target: PropTypes.number.isRequired,
-    progress: PropTypes.number.isRequired,
+    target: PropTypes.number,
+    progress: PropTypes.number,
     symbol: PropTypes.string,
     loadProgress: PropTypes.func.isRequired,
-    error: PropTypes.bool.isRequired,
+    error: PropTypes.bool,
     clearProgress: PropTypes.func.isRequired,
     p: polyglotPropTypes,
 };

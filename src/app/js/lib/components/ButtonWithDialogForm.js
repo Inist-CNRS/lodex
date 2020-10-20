@@ -67,6 +67,7 @@ export const PureButtonWithDialogForm = ({
     if (!show) {
         return null;
     }
+
     const actions = [
         <ButtonWithStatus
             raised

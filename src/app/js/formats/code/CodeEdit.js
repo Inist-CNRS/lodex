@@ -6,7 +6,7 @@ const CodeEdit = ({ input, label, meta: { touched, error }, ...custom }) => (
     <TextField
         placeholder={label}
         label={label}
-        multiLine
+        multiline
         rows={4}
         error={touched && !!error}
         helperText={touched && error}

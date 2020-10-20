@@ -136,8 +136,8 @@ class BarChartAdmin extends Component {
         );
     };
 
-    setBarSize = (_, barSize) => {
-        updateAdminArgs('barSize', barSize, this.props);
+    setBarSize = e => {
+        updateAdminArgs('barSize', e.target.value, this.props);
     };
 
     toggleTooltip = () => {
