@@ -182,6 +182,7 @@ ResourceComponent.defaultProps = {
     titleKey: null,
     prevResource: null,
     nextResource: null,
+    removed: false,
 };
 
 ResourceComponent.propTypes = {

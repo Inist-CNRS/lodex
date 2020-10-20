@@ -27,8 +27,9 @@ export default function configureStore(
         connectRouter(history),
     )(rootReducer);
 
-    const storage = compose(filter('user'))(adapter(window.sessionStorage));
-
+    const storage = compose(filter(['user', 'search']))(
+        adapter(window.sessionStorage),
+    );
     const middlewares = applyMiddleware(
         routerMiddleware(history),
         sagaMiddleware,

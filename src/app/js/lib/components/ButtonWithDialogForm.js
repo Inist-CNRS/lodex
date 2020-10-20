@@ -107,7 +107,7 @@ PureButtonWithDialogForm.defaultProps = {
 
 PureButtonWithDialogForm.propTypes = {
     handleClose: PropTypes.func.isRequired,
-    handleOpen: PropTypes.func.isRequired,
+    handleOpen: PropTypes.func,
     handleSubmit: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     saving: PropTypes.bool.isRequired,
@@ -117,9 +117,9 @@ PureButtonWithDialogForm.propTypes = {
     style: PropTypes.object,
     form: PropTypes.node.isRequired,
     icon: PropTypes.node,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
     className: PropTypes.string.isRequired,
-    openButton: PropTypes.element.isRequired,
+    openButton: PropTypes.element,
 };
 
 const mapDispatchToProps = { submit: submitAction };

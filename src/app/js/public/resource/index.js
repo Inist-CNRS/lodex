@@ -291,7 +291,7 @@ const getResourceLastVersion = (state, resource = state.resource) => {
 
 const hasBeenRemoved = (state, resource = state.resource) => {
     if (!resource) {
-        return null;
+        return false;
     }
 
     return !!resource.removedAt;
