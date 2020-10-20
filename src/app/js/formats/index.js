@@ -3,9 +3,9 @@ import merge from '../lib/merge';
 
 import asterPlotChart from './asterPlotChart';
 import code from './code';
-import globalBarchart from './distributionChart/global-bar-chart/';
-import globalPiechart from './distributionChart/global-pie-chart/';
-import globalRadarchart from './distributionChart/global-radar-chart/';
+import globalBarchart from './vega-lite/component/bar-chart/';
+import globalPiechart from './vega-lite/component/pie-chart';
+import globalRadarchart from './vega/component/radar-chart';
 import emphasedNumber from './emphased-number/';
 import identifierBadge from './identifier-badge/';
 import resourcesGrid from './resources-grid/';
@@ -27,8 +27,8 @@ import sentence from './sentence';
 import vegaLite from './vega-lite';
 import resource from './lodex-resource';
 import lodexField from './lodex-field';
-import cartography from './cartography';
-import heatmap from './heatmap';
+import cartography from './vega-lite/component/cartography';
+import heatmap from './vega-lite/component/heatmap';
 import network from './network';
 import redirect from './redirect';
 import bubbleChart from './bubbleChart';
@@ -38,6 +38,9 @@ import istexSummary from './istexSummary';
 import streamgraph from './streamgraph';
 import hierarchy from './hierarchy';
 import checkPredicate from './checkPredicate';
+import istexCitation from './istexCitation';
+import bubblePlot from './vega-lite/component/bubble-plot';
+import flowMap from './vega/component/flow-map';
 
 const components = {
     asterPlotChart,
@@ -75,6 +78,9 @@ const components = {
     istexSummary,
     streamgraph,
     hierarchy,
+    istexCitation,
+    bubblePlot,
+    flowMap,
 };
 
 export const FORMATS = Object.keys(components).sort();

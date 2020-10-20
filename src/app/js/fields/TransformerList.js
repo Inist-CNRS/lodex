@@ -9,7 +9,11 @@ import memoize from 'lodash.memoize';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import TransformerListItem from './TransformerListItem';
-import { getTransformerMetas } from '../../../common/transformers';
+
+import {
+    getTransformerMetas,
+    hasRegistredTransformer,
+} from '../../../common/transformers';
 
 const styles = {
     header: {
@@ -20,7 +24,14 @@ const styles = {
 
 const showTransformer = memoize(
     (operation, type) =>
-        !type || !operation || getTransformerMetas(operation).type === type,
+        !type ||
+        !operation ||
+        /**
+         * We need to display the transformer in case it doesn't exist anymore
+         * This way we can change it for legacy model imports
+         */
+        !hasRegistredTransformer(operation) ||
+        getTransformerMetas(operation).type === type,
     (operation, type) => `${operation}_${type}`,
 );
 
@@ -40,7 +51,6 @@ const TransformerList = ({
             />
         </Subheader>
         {touched && error && <span>{error}</span>}
-
         {fields.map((fieldName, index) => (
             <TransformerListItem
                 key={fieldName}
@@ -59,6 +69,7 @@ TransformerList.propTypes = {
         map: PropTypes.func.isRequired,
         get: PropTypes.func.isRequired,
         remove: PropTypes.func.isRequired,
+        push: PropTypes.func.isRequired,
     }).isRequired,
     meta: PropTypes.shape({
         touched: PropTypes.bool,

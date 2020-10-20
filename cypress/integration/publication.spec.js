@@ -82,6 +82,19 @@ describe('Dataset Publication', () => {
                 .should('be.visible');
         });
 
+        it('should allow to fix obsolete imported model before publish dataset', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/simple.csv');
+            datasetImportPage.importModel('model/concat-obsolete.json');
+
+            cy.contains('Errors').click();
+            cy.contains('Operation UNKNOWN-OPERATION does not exist').click();
+
+            datasetImportPage.setOperationTypeInWizard('BOOLEAN');
+            datasetImportPage.publish();
+        });
+
         it('should allow to load a file multiple times', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();

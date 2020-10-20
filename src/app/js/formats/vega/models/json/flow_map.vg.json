@@ -1,0 +1,461 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Interactive map of countries connections.",
+  "width": 900,
+  "height": 560,
+  "padding": {
+    "top": 25,
+    "left": 0,
+    "right": 0,
+    "bottom": 0
+  },
+  "autosize": "none",
+  "signals": [
+    {
+      "name": "scale",
+      "value": 140,
+      "on": [
+        {
+          "events": {
+            "type": "wheel",
+            "consume": true
+          },
+          "update": "clamp(scale * pow(1.0005, -event.deltaY * pow(16, event.deltaMode)), 100, 3000)"
+        }
+      ]
+    },
+    {
+      "name": "translateX",
+      "update": "width / 2"
+    },
+    {
+      "name": "translateY",
+      "update": "height / 1.5"
+    },
+    {
+      "name": "angles",
+      "value": [
+        0,
+        0
+      ],
+      "on": [
+        {
+          "events": "mousedown",
+          "update": "[rotateX, centerY]"
+        }
+      ]
+    },
+    {
+      "name": "cloned",
+      "value": null,
+      "on": [
+        {
+          "events": "mousedown",
+          "update": "copy('projection')"
+        }
+      ]
+    },
+    {
+      "name": "start",
+      "value": null,
+      "on": [
+        {
+          "events": "mousedown",
+          "update": "invert(cloned, xy())"
+        }
+      ]
+    },
+    {
+      "name": "drag",
+      "value": null,
+      "on": [
+        {
+          "events": "[mousedown, window:mouseup] > window:mousemove",
+          "update": "invert(cloned, xy())"
+        }
+      ]
+    },
+    {
+      "name": "delta",
+      "value": null,
+      "on": [
+        {
+          "events": {
+            "signal": "drag"
+          },
+          "update": "[drag[0] - start[0], start[1] - drag[1]]"
+        }
+      ]
+    },
+    {
+      "name": "rotateX",
+      "value": 0,
+      "on": [
+        {
+          "events": {
+            "signal": "delta"
+          },
+          "update": "angles[0] + delta[0]"
+        }
+      ]
+    },
+    {
+      "name": "centerY",
+      "value": 0,
+      "on": [
+        {
+          "events": {
+            "signal": "delta"
+          },
+          "update": "clamp(angles[1] + delta[1], -60, 60)"
+        }
+      ]
+    },
+    {
+      "name": "hover",
+      "value": null,
+      "on": [
+        {
+          "events": "@cell:mouseover",
+          "update": "datum"
+        },
+        {
+          "events": "@cell:mouseout",
+          "update": "null"
+        }
+      ]
+    },
+    {
+      "name": "title",
+      "value": "",
+      "update": "hover ? hover.name + ' (' + hover.iata + ')' : ''"
+    },
+    {
+      "name": "cell_stroke",
+      "value": null,
+      "on": [
+        {
+          "events": "dblclick",
+          "update": "cell_stroke ? null : 'brown'"
+        },
+        {
+          "events": "mousedown!",
+          "update": "cell_stroke"
+        }
+      ]
+    }
+  ],
+  "data": [
+    {
+      "name": "geo_data",
+      "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega-lite/models/topojson/world-countries-sans-antarctica.min.json",
+      "format": {
+        "type": "topojson",
+        "feature": "countries1"
+      },
+      "transform": [
+        {
+          "type": "geopath",
+          "projection": "projection"
+        }
+      ]
+    },
+    {
+      "name": "link_data",
+      "values": [],
+      "format": {
+        "type": "json"
+      },
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.origin == datum.destination"
+        }
+      ]
+    },
+    {
+      "name": "node_data",
+      "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega/models/json/countriesCoordinate.min.json",
+      "format": {
+        "type": "json",
+        "property": "values"
+      },
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "link_data",
+          "key": "origin",
+          "fields": [
+            "iata"
+          ],
+          "as": [
+            "link_data"
+          ]
+        },
+        {
+          "type": "filter",
+          "expr": "datum.link_data != null"
+        },
+        {
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": [
+            "longitude",
+            "latitude"
+          ]
+        },
+        {
+          "type": "filter",
+          "expr": "datum.x != null && datum.y != null"
+        },
+        {
+          "type": "voronoi",
+          "x": "x",
+          "y": "y"
+        },
+        {
+          "type": "collect",
+          "sort": {
+            "field": "link_data.nb_links",
+            "order": "descending"
+          }
+        }
+      ]
+    },
+    {
+      "name": "routes",
+      "values": [],
+      "format": {
+        "type": "json"
+      },
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "hover && hover.iata == datum.origin"
+        },
+        {
+          "type": "filter",
+          "expr": "datum.origin != datum.destination"
+        },
+        {
+          "type": "lookup",
+          "from": "node_data",
+          "key": "iata",
+          "fields": [
+            "origin",
+            "destination"
+          ],
+          "as": [
+            "source",
+            "target"
+          ]
+        },
+        {
+          "type": "filter",
+          "expr": "datum.source && datum.target"
+        },
+        {
+          "type": "linkpath",
+          "shape": "curve"
+        },
+        {
+          "type": "formula",
+          "expr": "(datum.count / 2) < 1 ? 1 : (datum.count / 2)",
+          "as": "pathSize"
+        }
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "type": "mercator",
+      "scale": {
+        "signal": "scale"
+      },
+      "rotate": [
+        {
+          "signal": "rotateX"
+        },
+        0,
+        0
+      ],
+      "center": [
+        0,
+        {
+          "signal": "centerY"
+        }
+      ],
+      "translate": [
+        {
+          "signal": "translateX"
+        },
+        {
+          "signal": "translateY"
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "quantize",
+      "domain": [
+        0,
+        60
+      ],
+      "range": [
+        "#fff7f3",
+        "#fde0dd",
+        "#fcc5c0",
+        "#fa9fb5",
+        "#f768a1",
+        "#dd3497",
+        "#ae017e",
+        "#7a0177",
+        "#49006a"
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "type": "path",
+      "from": {
+        "data": "geo_data"
+      },
+      "encode": {
+        "enter": {
+          "fill": {
+            "value": "#ffffd9"
+          },
+          "stroke": {
+            "value": "grey"
+          }
+        },
+        "update": {
+          "path": {
+            "field": "path"
+          }
+        }
+      }
+    },
+    {
+      "type": "symbol",
+      "from": {
+        "data": "node_data"
+      },
+      "encode": {
+        "enter": {
+          "size": {
+            "value": 64
+          },
+          "fillOpacity": {
+            "value": 0.8
+          },
+          "stroke": {
+            "value": "grey"
+          },
+          "strokeWidth": {
+            "value": 1.5
+          }
+        },
+        "update": {
+          "fill": {
+            "scale": "color",
+            "field": "link_data.count"
+          },
+          "x": {
+            "field": "x"
+          },
+          "y": {
+            "field": "y"
+          }
+        }
+      }
+    },
+    {
+      "type": "path",
+      "name": "cell",
+      "from": {
+        "data": "node_data"
+      },
+      "encode": {
+        "enter": {
+          "fill": {
+            "value": "transparent"
+          },
+          "strokeWidth": {
+            "value": 0.35
+          },
+          "tooltip": {
+            "signal": "{'Category': datum.name, 'Value': datum.link_data.count}"
+          }
+        },
+        "update": {
+          "path": {
+            "field": "path"
+          },
+          "stroke": {
+            "signal": "cell_stroke"
+          }
+        }
+      }
+    },
+    {
+      "type": "path",
+      "name": "route",
+      "interactive": false,
+      "from": {
+        "data": "routes"
+      },
+      "encode": {
+        "enter": {
+          "path": {
+            "field": "path"
+          },
+          "stroke": {
+            "value": "#ee4bd4"
+          },
+          "strokeOpacity": {
+            "value": 0.35
+          },
+          "strokeWidth": {
+            "field": "pathSize"
+          },
+          "strokeCap": {
+            "value": "round"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "encode": {
+        "encode": {
+          "x": {
+            "value": 895
+          },
+          "y": {
+            "value": 0
+          },
+          "fill": {
+            "value": "black"
+          },
+          "fontSize": {
+            "value": 20
+          },
+          "align": {
+            "value": "right"
+          }
+        },
+        "update": {
+          "text": {
+            "signal": "title"
+          }
+        }
+      }
+    }
+  ],
+  "background": "#a4d3ff"
+}

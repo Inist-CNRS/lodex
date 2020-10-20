@@ -88,6 +88,15 @@ export const setUriColumnValue = (value = 'generate') => {
     cy.get('.wizard').should('not.exist');
 };
 
+export const setOperationTypeInWizard = (value = 'DEFAULT') => {
+    cy.get('.wizard', { timeout: 2000 }).should('be.visible');
+    cy.contains('Transformations applied on the value').click();
+    cy.get('.operation').click();
+    cy.contains(value).click();
+    cy.get('.btn-save').click();
+    cy.get('.wizard').should('not.exist');
+};
+
 export const publish = () => {
     cy.get('.btn-publish button').click();
     cy.get('.data-published').should('be.visible');
@@ -122,7 +131,7 @@ export const checkListOfSupportedFileFormats = () => {
         .contains('AUTO')
         .click({ force: true });
     cy.wait(300);
-    cy.get('span[role=menuitem]').should('have.length', 18);
+    cy.get('span[role=menuitem]').should('have.length', 20);
     checkParserItem('CSV - with semicolon');
     checkParserItem('XML - TEI document');
     checkParserItem('ZIP file from dl.istex.fr');

@@ -5,7 +5,7 @@ import Icon from './VegaLiteIcon';
 
 export default {
     ...DefaultFormat,
-    Component: Component,
+    Component,
     AdminComponent,
     defaultArgs,
     Icon,

@@ -21,6 +21,7 @@ services:
             - mongo
         ports:
             - 3000:3000
+            - 9229:9229  # Enable Nodemon inspect to attach to Docker Node
         command: npm run development:api
 
     dev-server: ## Enable hot-reload in development
@@ -38,3 +39,5 @@ services:
     mongo:
         image: mongo:3.4.1
         command: '--smallfiles'
+        ports:
+            - 27017:27017

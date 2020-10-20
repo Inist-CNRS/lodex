@@ -39,22 +39,44 @@ export const IstexItemComponent = ({
     authors,
     hostTitle,
     hostGenre,
+    hostPagesFirst,
+    hostPagesLast,
+    hostVolume,
+    hostIssue,
 }) => (
     <article>
         <div className={styles.article}>
             <div className={styles.title}>
                 <Book size="20" className={styles.titleIcon} />
-                <Link href={url}>{title}</Link>
+                <Link href={url} target="_blank">{title}</Link>
             </div>
             {authors && (
-                <div className={styles.authors}> {authors.join(';')} </div>
+                <div className={styles.authors}> {authors.join(', ')} </div>
             )}
             <div className={styles.metadata}>
                 {publicationDate}
                 ,&nbsp;
                 {hostTitle}
-                &nbsp;-&nbsp;
-                <span className={styles.genre}>{hostGenre}</span>
+                {hostVolume && (
+                    <>
+                        ,&nbsp;vol.&nbsp;
+                        {hostVolume}
+                    </>
+                )}
+                {hostIssue && (
+                    <>
+                        ,&nbsp;n°
+                        {hostIssue}
+                    </>
+                )}
+                {(hostPagesFirst || hostPagesFirst) && (
+                    <>
+                        ,&nbsp;pp.&nbsp;
+                        {hostPagesFirst}-{hostPagesLast}
+                    </>
+                )}
+                &nbsp;
+                <span className={styles.genre}>({hostGenre})</span>
             </div>
         </div>
     </article>
@@ -67,6 +89,10 @@ IstexItemComponent.propTypes = {
     authors: PropTypes.arrayOf(PropTypes.string),
     hostTitle: PropTypes.string.isRequired,
     hostGenre: PropTypes.string.isRequired,
+    hostPagesFirst: PropTypes.string,
+    hostPagesLast: PropTypes.string,
+    hostVolume: PropTypes.string.isRequired,
+    hostIssue: PropTypes.string,
 };
 
 export default IstexItemComponent;

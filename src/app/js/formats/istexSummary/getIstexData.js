@@ -2,7 +2,7 @@ import get from 'lodash.get';
 import omit from 'lodash.omit';
 
 import composeAsync from '../../../../common/lib/composeAsync';
-import { parseFetchResult } from '../shared/fetchIstexData';
+import { parseFetchResult, output } from '../shared/fetchIstexData';
 import { ISTEX_API_URL } from '../../../../common/externals';
 import fetch from '../../lib/fetch';
 import alphabeticalSort from '../../lib/alphabeticalSort';
@@ -15,7 +15,7 @@ const defaultQueryOptions = {
     size: 0,
 };
 
-const buildIstexQuery = (options = defaultQueryOptions) => {
+export const buildIstexQuery = (options = defaultQueryOptions) => {
     const opts = { ...defaultQueryOptions, ...options };
     const params = {
         ...omit(opts, ['query']),
@@ -33,7 +33,7 @@ const buildIstexQuery = (options = defaultQueryOptions) => {
     return `${ISTEX_API_URL}/document/?${queryParams}`;
 };
 
-const getFilterQuery = (searchedField, value) =>
+export const getFilterQuery = (searchedField, value) =>
     searchedField === CUSTOM_ISTEX_QUERY
         ? `(${value})`
         : `${searchedField}:"${value}"`;
@@ -236,16 +236,6 @@ export const getIssueData = ({ value, year, volume, searchedField }) =>
 const getIssueQuery = issue =>
     issue === 'other' ? '-host.issue.raw:*' : `host.issue.raw:"${issue}"`;
 
-const documentOutput = [
-    'id',
-    'arkIstex',
-    'title',
-    'publicationDate',
-    'author',
-    'host.genre',
-    'host.title',
-];
-
 export const getDocumentUrl = ({
     value,
     year,
@@ -261,7 +251,7 @@ export const getDocumentUrl = ({
         )} AND publicationDate:"${year}" AND ${getVolumeQuery(
             volume,
         )} AND ${getIssueQuery(issue)}`,
-        output: documentOutput.join(','),
+        output,
         sortBy: documentSortBy,
         size: 10,
     }),

@@ -1,0 +1,14 @@
+# Ignore all files by default
+*
+
+# White list only the required files
+!package-lock.json
+!package.json
+!src/
+!config/
+!config.json
+!babel.config.js
+!jest.config.js
+!jsconfig.json
+!typings.json
+!docker-entrypoint.sh

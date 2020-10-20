@@ -1,0 +1,26 @@
+{
+  "mark": {
+    "type": "text",
+    "color": "black",
+    "fontSize": 10,
+    "fontWeight": "bold",
+    "baseline": "middle",
+    "align": "left"
+  },
+  "encoding": {
+    "x": {
+      "field": "value",
+      "type": "quantitative",
+      "axis": null
+    },
+    "y": {
+      "field": "_id",
+      "type": "nominal",
+      "title": ""
+    },
+    "text": {
+      "field": "value",
+      "type": "quantitative"
+    }
+  }
+}

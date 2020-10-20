@@ -1,0 +1,71 @@
+{
+  "encoding": {
+    "theta": {
+      "field": "value",
+      "type": "quantitative",
+      "stack": true
+    },
+    "color": {
+      "field": "_id",
+      "type": "nominal",
+      "legend": {
+        "orient": "none",
+        "title": null,
+        "columns": 1,
+        "legendX": 250,
+        "legendY": 80
+      },
+      "scale": {
+        "range": [
+          "#1071AE"
+        ]
+      }
+    },
+    "order": {
+      "field": "order",
+      "type": "quantitative"
+    },
+    "opacity": {
+      "condition": {
+        "selection": {
+          "or": [
+            "hover1",
+            "click"
+          ]
+        },
+        "value": 1
+      },
+      "value": 0.2
+    }
+  },
+  "layer": [
+    {
+      "selection": {
+        "hover1": {
+          "type": "single",
+          "on": "mouseover",
+          "empty": "all",
+          "fields": [
+            "_id"
+          ]
+        },
+        "click": {
+          "type": "single",
+          "on": "mouseover",
+          "empty": "all",
+          "fields": [
+            "_id"
+          ],
+          "bind": "legend"
+        }
+      },
+      "mark": {
+        "type": "arc",
+        "outerRadius": 80
+      }
+    }
+  ],
+  "view": {
+    "stroke": null
+  }
+}

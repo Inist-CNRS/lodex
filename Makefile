@@ -50,6 +50,8 @@ start: run ## Start the project (alias of make run)
 
 ## Development =================================================================
 
+run-debug: ## Run the project in dev mode + lodex-extended server
+	docker-compose -f docker-compose.debug.yml up --force-recreate
 run-dev: ## Run the project in dev mode
 	docker-compose -f docker-compose.dev.yml up --force-recreate
 start-dev: run-dev ## Start the project (alias of make run-dev)

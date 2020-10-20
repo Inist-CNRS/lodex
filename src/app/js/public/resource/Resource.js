@@ -107,7 +107,7 @@ export class ResourceComponent extends Component {
             />
         );
 
-        if (!resource) {
+        if (!resource && !loading) {
             return (
                 <div className="not-found">
                     <Card>
@@ -182,6 +182,7 @@ ResourceComponent.defaultProps = {
     titleKey: null,
     prevResource: null,
     nextResource: null,
+    removed: false,
 };
 
 ResourceComponent.propTypes = {

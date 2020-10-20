@@ -1,0 +1,36 @@
+{
+  "mark": {
+    "type": "bar"
+  },
+  "encoding": {
+    "x": {
+      "field": "_id",
+      "type": "nominal",
+      "axis": {
+        "labelAngle": 0
+      },
+      "title": "Title"
+    },
+    "y": {
+      "field": "value",
+      "type": "quantitative",
+      "axis": {
+        "labelAngle": 0
+      },
+      "scale": {
+        "type": "linear"
+      },
+      "title": "Value"
+    },
+    "color": {
+      "field": "_id",
+      "scale": {
+        "range": [
+          "#1071AE"
+        ]
+      },
+      "type": "nominal",
+      "legend": null
+    }
+  }
+}

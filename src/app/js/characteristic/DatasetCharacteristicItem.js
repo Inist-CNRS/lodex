@@ -42,7 +42,7 @@ export const DatasetCharacteristicItemComponent = ({
 
 DatasetCharacteristicItemComponent.propTypes = {
     resource: PropTypes.shape({
-        uri: PropTypes.string.isRequired,
+        uri: PropTypes.string,
     }).isRequired,
     field: fieldPropTypes.isRequired,
     style: PropTypes.shape({}).isRequired,

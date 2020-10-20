@@ -17,6 +17,9 @@ const styles = {
     input: {
         width: '100%',
     },
+    input2: {
+        width: '96%',
+    },
     previewDefaultColor: color => ({
         display: 'inline-block',
         backgroundColor: color,
@@ -33,7 +36,9 @@ export const defaultArgs = {
         orderBy: 'value/asc',
     },
     specTemplate:
-        '{"width": 600, "autosize": {"type": "fit", "contains": "padding" }, "mark": "bar", "encoding": { "x": {"field": "_id", "type": "ordinal"}, "y": {"field": "value", "type": "quantitative"} } }',
+        '{"width": 600, "autosize": {"type": "fit", "contains": "padding" }, "mark": "bar", "encoding": { "x": {"field": "_id", "type": "ordinal"}, "y": {"field": "value", "type": "quantitative"} }, "data": {"name": "values"} }',
+    width: '',
+    height: '',
 };
 
 class VegaLiteAdmin extends Component {
@@ -46,6 +51,8 @@ class VegaLiteAdmin extends Component {
                 orderBy: PropTypes.string,
             }),
             specTemplate: PropTypes.string,
+            width: PropTypes.number,
+            height: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -67,8 +74,22 @@ class VegaLiteAdmin extends Component {
         updateAdminArgs('specTemplate', specTemplate, this.props);
     };
 
+    setWidth = (_, width) => {
+        updateAdminArgs('width', width, this.props);
+    };
+
+    setHeight = (_, height) => {
+        updateAdminArgs('height', height, this.props);
+    };
+
     validator = () => {
         window.open('https://vega.github.io/editor/#/edited');
+    };
+
+    sizeStep = () => {
+        window.open(
+            'https://vega.github.io/vega-lite/docs/size.html#specifying-width-and-height-per-discrete-step',
+        );
     };
 
     render() {
@@ -80,7 +101,7 @@ class VegaLiteAdmin extends Component {
             showMinValue = true,
             showOrderBy = true,
         } = this.props;
-        const { specTemplate } = this.props.args;
+        const { specTemplate, width, height } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -106,6 +127,36 @@ class VegaLiteAdmin extends Component {
                     style={styles.input}
                     value={specTemplate}
                 />
+                <a
+                    onClick={() => {
+                        this.sizeStep();
+                    }}
+                    style={(styles.pointer, styles.link)}
+                >
+                    {polyglot.t('vega_size_step')}
+                </a>
+                <TextField
+                    type="number"
+                    min={10}
+                    max={200}
+                    step={10}
+                    floatingLabelText={polyglot.t('vegalite_width')}
+                    onChange={this.setWidth}
+                    style={styles.input2}
+                    value={width}
+                />
+                <p>%</p>
+                <TextField
+                    type="number"
+                    min={10}
+                    max={800}
+                    step={10}
+                    floatingLabelText={polyglot.t('vegalite_height')}
+                    onChange={this.setHeight}
+                    style={styles.input2}
+                    value={height}
+                />
+                <p>%</p>
             </div>
         );
     }
