@@ -8,12 +8,12 @@ import ContentAdd from '@material-ui/icons/Add';
 import { fromResource } from '../selectors';
 import CreateResourceForm from './CreateResourceForm';
 import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
+import { fromUser } from '../../sharedSelectors';
 import {
     createResourceOpen,
     createResourceCancel,
     CREATE_RESOURCE_FORM_NAME,
 } from './';
-import { fromUser } from '../../sharedSelectors';
 
 const styles = {
     button: {

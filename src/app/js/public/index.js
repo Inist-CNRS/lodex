@@ -18,7 +18,7 @@ import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import customTheme from './customTheme';
 
-const muiTheme = createMuiTheme(customTheme);
+const theme = createMuiTheme(customTheme);
 
 const locale = getLocale();
 const initialState = {
@@ -39,7 +39,7 @@ const store = configureStore(
 
 hydrate(
     <Provider {...{ store }}>
-        <MuiThemeProvider theme={muiTheme}>
+        <MuiThemeProvider theme={theme}>
             <Routes history={history} />
         </MuiThemeProvider>
     </Provider>,

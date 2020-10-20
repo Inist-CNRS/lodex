@@ -7,12 +7,10 @@ import { field as fieldPropTypes } from '../../propTypes';
 import { getSiteUrl } from '../shared/fetchIstexData';
 
 const styles = {
-    text: memoize(status =>
-        Object.assign({
-            fontSize: '1rem',
-            textDecoration: status === REJECTED ? 'line-through' : 'none',
-        }),
-    ),
+    text: memoize(status => ({
+        fontSize: '1rem',
+        textDecoration: status === REJECTED ? 'line-through' : 'none',
+    })),
 };
 
 const IstexSummaryList = ({ fieldStatus, field, resource }) => {

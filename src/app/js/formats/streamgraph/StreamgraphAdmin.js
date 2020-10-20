@@ -70,12 +70,12 @@ class StreamgraphAdmin extends Component {
         updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
     }
 
-    setMaxLegendLength = (_, maxLegendLength) => {
-        updateAdminArgs('maxLegendLength', maxLegendLength, this.props);
+    setMaxLegendLength = e => {
+        updateAdminArgs('maxLegendLength', e.target.value, this.props);
     };
 
-    setHeight = (_, height) => {
-        updateAdminArgs('height', height, this.props);
+    setHeight = e => {
+        updateAdminArgs('height', e.target.value, this.props);
     };
 
     render() {

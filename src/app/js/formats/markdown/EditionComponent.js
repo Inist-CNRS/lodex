@@ -14,7 +14,7 @@ const FormTextField = props => {
             {...input}
             placeholder={label}
             label={label}
-            multiLine
+            multiline
             rows={4}
             error={touched && !!error}
             helperText={touched && error}

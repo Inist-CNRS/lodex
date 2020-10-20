@@ -11,13 +11,8 @@ import { getCleanHost } from '../../../../common/uris';
 class EmbedButton extends Component {
     state = { open: false };
 
-    handleOpen = () => {
-        this.setState({ open: true });
-    };
-
-    handleClose = () => {
-        this.setState({ open: false });
-    };
+    handleOpen = () => this.setState({ open: true });
+    handleClose = () => this.setState({ open: false });
 
     renderOpenButton = () => {
         const { className, p: polyglot } = this.props;

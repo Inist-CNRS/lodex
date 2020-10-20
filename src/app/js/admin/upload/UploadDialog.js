@@ -172,7 +172,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     onUrlUpload: uploadUrl,
     onFileLoad: e => uploadFile(e.target.files[0]),
-    onChangeUrl: (_, value) => changeUploadUrl(value),
+    onChangeUrl: e => changeUploadUrl(e.target.value),
     onChangeParserName: (_, idx, val) => changeParserName(val),
 };
 

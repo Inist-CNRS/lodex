@@ -10,7 +10,7 @@ const styles = {
     },
 };
 
-const getStyle = memoize(style => Object.assign({}, styles.alert, style));
+const getStyle = memoize(style => ({ ...styles.alert, ...style }));
 
 const Alert = ({ children, style }) => (
     <div className="alert" style={getStyle(style)}>

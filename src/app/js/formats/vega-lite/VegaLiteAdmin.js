@@ -70,16 +70,16 @@ class VegaLiteAdmin extends Component {
         updateAdminArgs('params', params, this.props);
     };
 
-    setSpecTemplate = (_, specTemplate) => {
-        updateAdminArgs('specTemplate', specTemplate, this.props);
+    setSpecTemplate = e => {
+        updateAdminArgs('specTemplate', e.target.value, this.props);
     };
 
-    setWidth = (_, width) => {
-        updateAdminArgs('width', width, this.props);
+    setWidth = e => {
+        updateAdminArgs('width', e.target.value, this.props);
     };
 
-    setHeight = (_, height) => {
-        updateAdminArgs('height', height, this.props);
+    setHeight = e => {
+        updateAdminArgs('height', e.target.value, this.props);
     };
 
     validator = () => {
@@ -128,9 +128,7 @@ class VegaLiteAdmin extends Component {
                     value={specTemplate}
                 />
                 <a
-                    onClick={() => {
-                        this.sizeStep();
-                    }}
+                    onClick={() => this.sizeStep()}
                     style={(styles.pointer, styles.link)}
                 >
                     {polyglot.t('vega_size_step')}

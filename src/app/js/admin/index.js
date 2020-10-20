@@ -21,7 +21,7 @@ import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import theme from '../theme';
 
-const muiTheme = createMuiTheme({
+const adminTheme = createMuiTheme({
     palette: {
         accent1Color: theme.orange.primary,
         primary1Color: theme.green.primary,
@@ -48,7 +48,7 @@ const store = configureStore(
 
 render(
     <Provider {...{ store }}>
-        <MuiThemeProvider theme={muiTheme}>
+        <MuiThemeProvider theme={adminTheme}>
             <ConnectedRouter history={history} onUpdate={scrollToTop}>
                 <Routes />
             </ConnectedRouter>

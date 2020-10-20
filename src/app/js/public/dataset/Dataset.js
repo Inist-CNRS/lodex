@@ -88,15 +88,8 @@ export class DatasetComponent extends Component {
                         </div>
                     </div>
                 </div>
-                <Table
-                    selectable={false}
-                    fixedHeader={false}
-                    style={styles.table}
-                >
-                    <TableHead
-                        displaySelectAll={false}
-                        adjustForCheckbox={false}
-                    >
+                <Table style={styles.table}>
+                    <TableHead>
                         <TableRow>
                             {columns.map(c => (
                                 <DatasetColumnHeader
@@ -107,7 +100,7 @@ export class DatasetComponent extends Component {
                             ))}
                         </TableRow>
                     </TableHead>
-                    <TableBody displayRowCheckbox={false}>
+                    <TableBody>
                         {!dataset.length ? (
                             <TableRow>
                                 <TableCell>{polyglot.t('no_result')}</TableCell>

@@ -20,9 +20,9 @@ const RoutineParamsAdmin = ({
     showMinValue,
     showOrderBy,
 }) => {
-    const setMaxSize = (_, newMaxSize) => {
+    const setMaxSize = e => {
         onChange({
-            maxSize: newMaxSize,
+            maxSize: e.target.value,
             maxValue,
             minValue,
             orderBy,
@@ -30,21 +30,21 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const setMaxValue = (_, newMaxValue) => {
+    const setMaxValue = e => {
         onChange({
             maxSize,
-            maxValue: newMaxValue,
+            maxValue: e.target.value,
             minValue,
             orderBy,
             uri,
         });
     };
 
-    const setMinValue = (_, newMinValue) => {
+    const setMinValue = e => {
         onChange({
             maxSize,
             maxValue,
-            minValue: newMinValue,
+            minValue: e.target.value,
             orderBy,
             uri,
         });
@@ -60,13 +60,13 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const setUri = (_, newUri) => {
+    const setUri = e => {
         onChange({
             maxSize,
             maxValue,
             minValue,
             orderBy,
-            uri: newUri,
+            uri: e.target.value,
         });
     };
 

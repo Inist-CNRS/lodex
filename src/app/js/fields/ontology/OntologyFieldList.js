@@ -6,7 +6,7 @@ import OntologyField from './OntologyField';
 import { COVER_DATASET } from '../../../../common/cover';
 
 const OntologyFieldList = SortableContainer(({ items }) => (
-    <TableBody displayRowCheckbox={false}>
+    <TableBody>
         {items.map(field => (
             <OntologyField
                 key={field.name}

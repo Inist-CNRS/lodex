@@ -54,15 +54,15 @@ export class IstexSummaryAdmin extends Component {
         updateAdminArgs('sortDir', sortDir, this.props);
     };
 
-    setYearThreshold = (_, yearThreshold) =>
+    setYearThreshold = e =>
         updateAdminArgs(
             'yearThreshold',
-            parseInt(yearThreshold, 10),
+            parseInt(e.target.value, 10),
             this.props,
         );
 
-    setDocumentSortBy = (_, documentSortBy) =>
-        updateAdminArgs('documentSortBy', documentSortBy, this.props);
+    setDocumentSortBy = e =>
+        updateAdminArgs('documentSortBy', e.target.value, this.props);
 
     render() {
         const {

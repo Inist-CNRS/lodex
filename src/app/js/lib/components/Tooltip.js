@@ -7,8 +7,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import transitions from '@material-ui/core/styles/transitions';
+import { withTheme } from '@material-ui/styles';
 
-function getStyles(props, context, state) {
+function getStyles(props, state) {
     const verticalPosition = props.verticalPosition;
     const horizontalPosition = props.horizontalPosition;
     const touchMarginOffset = props.touch ? 10 : 0;
@@ -33,20 +34,20 @@ function getStyles(props, context, state) {
         rootWhenShownTop = 36;
     }
 
-    const { baseTheme, zIndex, tooltip, borderRadius } = context.muiTheme;
-
+    const { typography, zIndex, palette, shape } = props.theme;
+    console.log('t', props.theme);
     const styles = {
         root: {
             position: 'absolute',
-            fontFamily: baseTheme.fontFamily,
+            fontFamily: typography.fontFamily,
             fontSize: '10px',
             lineHeight: '22px',
             padding: '0 8px',
             zIndex: zIndex.tooltip,
-            color: tooltip.color,
+            color: palette.textColor,
             overflow: 'hidden',
             top: -10000,
-            borderRadius,
+            borderRadius: shape.borderRadius,
             userSelect: 'none',
             opacity: 0,
             right: horizontalPosition === 'left' ? 70 : null,
@@ -145,10 +146,6 @@ class Tooltip extends Component {
         verticalPosition: PropTypes.oneOf(['top', 'bottom', 'middle']),
     };
 
-    static contextTypes = {
-        muiTheme: PropTypes.object.isRequired,
-    };
-
     state = {
         offsetWidth: null,
     };
@@ -201,35 +198,30 @@ class Tooltip extends Component {
             ...other
         } = this.props;
 
-        const { prepareStyles } = this.context.muiTheme;
-        const styles = getStyles(this.props, this.context, this.state);
+        const styles = getStyles(this.props, this.state);
 
         return (
             <div
                 {...other}
                 ref="tooltip"
-                style={prepareStyles(
-                    Object.assign(
-                        styles.root,
-                        this.props.show && styles.rootWhenShown,
-                        this.props.touch && styles.rootWhenTouched,
-                        this.props.style,
-                    ),
-                )}
+                style={{
+                    ...styles.root,
+                    ...(this.props.show && styles.rootWhenShown),
+                    ...(this.props.touch && styles.rootWhenTouched),
+                    ...this.props.style,
+                }}
             >
                 <div
                     ref="ripple"
-                    style={prepareStyles(
-                        Object.assign(
-                            styles.ripple,
-                            this.props.show && styles.rippleWhenShown,
-                        ),
-                    )}
+                    style={{
+                        ...styles.ripple,
+                        ...(this.props.show && styles.rippleWhenShown),
+                    }}
                 />
-                <span style={prepareStyles(styles.label)}>{label}</span>
+                <span style={styles.label}>{label}</span>
             </div>
         );
     }
 }
 
-export default Tooltip;
+export default withTheme(Tooltip);

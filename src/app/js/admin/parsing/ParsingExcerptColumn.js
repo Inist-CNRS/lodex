@@ -15,7 +15,7 @@ const styles = {
 
 export const ParsingExcerptColumnComponent = ({ children, style, value }) =>
     isLongText(value) ? (
-        <TableCell style={Object.assign(styles.col, style)} title={value}>
+        <TableCell style={{ ...styles.col, ...style }} title={value}>
             {getShortText(value)}
             {children}
         </TableCell>

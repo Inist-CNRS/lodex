@@ -41,10 +41,7 @@ class OntologyTable extends Component {
             <div className={`ontology-table-${title}`}>
                 <h4>{polyglot.t(title)}</h4>
                 <Table fixedHeader={false} style={styles.table}>
-                    <TableHead
-                        displaySelectAll={false}
-                        adjustForCheckbox={false}
-                    >
+                    <TableHead>
                         <TableRow>
                             <TableCell />
                             <TableCell>{polyglot.t('identifier')}</TableCell>

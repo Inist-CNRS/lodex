@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-
 import { Popover } from '@material-ui/core';
 
 import {
     Add as ContentAdd,
     Description as ActionDescription,
     Clear as ContentClear,
-} from '@material-ui/icons/Add';
+} from '@material-ui/icons';
 
 import FloatingActionButton from '../lib/components/FloatingActionButton';
 import { fromFields } from '../sharedSelectors';
@@ -144,9 +143,8 @@ export class ActionButtonComponent extends Component {
                 <Popover
                     open={showPopover}
                     anchorEl={this.anchor}
-                    anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
-                    autoCloseWhenOffScreen={false}
-                    targetOrigin={{ horizontal: 'middle', vertical: 'top' }}
+                    anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+                    targetOrigin={{ horizontal: 'center', vertical: 'top' }}
                     onClose={this.handleClick}
                     style={styles.popover}
                 >

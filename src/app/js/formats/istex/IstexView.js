@@ -18,12 +18,10 @@ import IstexItem from './IstexItem';
 import { ISTEX_SITE_URL } from '../../../../../src/common/externals';
 
 const styles = {
-    text: memoize(status =>
-        Object.assign({
-            fontSize: '1rem',
-            textDecoration: status === REJECTED ? 'line-through' : 'none',
-        }),
-    ),
+    text: memoize(status => ({
+        fontSize: '1rem',
+        textDecoration: status === REJECTED ? 'line-through' : 'none',
+    })),
     header: {
         borderBottom: '1px solid lightgrey',
         marginBottom: '1rem',
