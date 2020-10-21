@@ -10,7 +10,6 @@ const styles = {
     container: {
         position: 'relative',
     },
-    tooltip: {},
 };
 
 export const FloatingActionButtonComponent = ({
@@ -22,8 +21,8 @@ export const FloatingActionButtonComponent = ({
     style,
     tooltip,
     ...props
-}) => (
-    <div style={{ ...styles.container, ...style }}>
+}) => {
+    const button = (
         <Fab
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -31,18 +30,25 @@ export const FloatingActionButtonComponent = ({
         >
             {children}
         </Fab>
-        {tooltip && (
-            <Tooltip
-                show={showTooltip}
-                label={tooltip}
-                style={styles.tooltip}
-                horizontalPosition="left"
-                verticalPosition="middle"
-                touch
-            />
-        )}
-    </div>
-);
+    );
+
+    return (
+        <div style={{ ...styles.container, ...style }}>
+            {tooltip ? (
+                <Tooltip
+                    open={showTooltip}
+                    title={tooltip}
+                    placement="left-end"
+                    touch
+                >
+                    {button}
+                </Tooltip>
+            ) : (
+                button
+            )}
+        </div>
+    );
+};
 
 FloatingActionButtonComponent.propTypes = {
     children: PropTypes.node.isRequired,
