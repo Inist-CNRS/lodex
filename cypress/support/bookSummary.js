@@ -85,7 +85,7 @@ export const configureYearSort = dir => {
     cy.get('.year_sort_dir button')
         .scrollIntoView()
         .click();
-    cy.get('span[role="menuitem"]')
+    cy.get('li[role="menuitem"]')
         .contains(dir)
         .click();
 };
