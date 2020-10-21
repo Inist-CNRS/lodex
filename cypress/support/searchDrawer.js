@@ -57,13 +57,9 @@ export const getFacet = name =>
 
 export const getFacetItem = (name, value) =>
     getFacet(name)
-        .parentsUntil('.search .search-facets > div')
-        .last()
-        .next() // .facet-value-list next to the .facet-item
+        .parentsUntil('.facet-item')
         .find('.facet-value-item')
-        .contains(value)
-        .parentsUntil('.facet-value-item')
-        .last();
+        .contains(value);
 
 export const getFacetExcludeItem = name =>
     getFacet(name)

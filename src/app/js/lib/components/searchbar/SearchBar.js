@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
-import { IconButton, TextField } from '@material-ui/core';
+import { IconButton, TextField, RootRef } from '@material-ui/core';
 import { faSearch, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -56,7 +56,7 @@ const SearchBar = ({
 
     useEffect(() => {
         setTimeout(() => {
-            refTextField.current.input.focus();
+            refTextField.current.focus();
         }, 300);
     }, [refTextField]);
 
@@ -69,15 +69,16 @@ const SearchBar = ({
                     height={20}
                 />
             </div>
-            <TextField
-                ref={refTextField}
-                className={styles.text}
-                placeholder={polyglot.t('search')}
-                onChange={onChange}
-                value={value}
-                underlineStyle={muiStyles.searchTextUnderline}
-                underlineFocusStyle={muiStyles.searchTextUnderline}
-            />
+            <RootRef rootRef={refTextField}>
+                <TextField
+                    className={styles.text}
+                    placeholder={polyglot.t('search')}
+                    onChange={onChange}
+                    value={value}
+                    underlineStyle={muiStyles.searchTextUnderline}
+                    underlineFocusStyle={muiStyles.searchTextUnderline}
+                />
+            </RootRef>
             <div className={styles.actions}>
                 <IconButton
                     className="searchbar-clear"

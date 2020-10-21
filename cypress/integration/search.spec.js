@@ -32,7 +32,7 @@ describe('Search', () => {
             searchDrawer.checkResultsCount(10);
             cy.get('.export').click();
             cy.wait(300);
-            cy.get('span[role="menuitem"]')
+            cy.get('li[role="menuitem"]')
                 .should('have.length', 8)
                 .contains('JSON')
                 .should('be.visible');
