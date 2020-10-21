@@ -36,11 +36,10 @@ export class PublishButtonComponent extends Component {
             published,
         } = this.props;
         return (
-            <div>
+            <div className="btn-publish">
                 <ButtonWithStatus
                     raised
                     color="primary"
-                    className="btn-publish"
                     loading={isPublishing}
                     error={error}
                     success={published}
