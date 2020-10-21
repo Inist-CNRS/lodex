@@ -52,17 +52,21 @@ describe('getCustomPage CustomPage', () => {
     });
 
     it('should render nothing if could not fetch page data', async () => {
-        const response = Promise.resolve({ error: new Error('nope') });
+        const wait = () => new Promise(resolve => setTimeout(resolve)); //Will wait for component to re-render after the setState of the error
+        let response = Promise.resolve({ error: new Error('nope') });
         fetch.mockImplementation(() => response);
         const wrapper = shallow(<CustomPage {...defaultProps} />);
         expect(fetch).toHaveBeenCalledWith({
             url: '/customPage/?page=custom%2Fpage',
         });
         await response;
+
         wrapper.update();
-        expect(wrapper.find('div')).toHaveLength(0);
-        expect(wrapper.find(CircularProgress)).toHaveLength(0);
-        const scripts = wrapper.find('script');
-        expect(scripts).toHaveLength(0);
+        return wait().then(() => {
+            expect(wrapper.find('div')).toHaveLength(0);
+            expect(wrapper.find(CircularProgress)).toHaveLength(0);
+            const scripts = wrapper.find('script');
+            expect(scripts).toHaveLength(0);
+        });
     });
 });
