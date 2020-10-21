@@ -11,56 +11,69 @@ describe('<ButtonWithStatus />', () => {
     describe('<ButtonWithStatus raised={false} />', () => {
         it('should render a Button without icon by default', () => {
             const wrapper = shallow(<ButtonWithStatus>Foo</ButtonWithStatus>);
-            const button = wrapper.find(Button);
 
-            expect(button.prop('disabled')).toEqual(false);
-            expect(button.prop('icon')).toBeNull();
-
-            expect(button.prop('label')).toEqual('Foo');
+            expect(wrapper.props()).toEqual({
+                variant: 'text',
+                disabled: false,
+                startIcon: null,
+                children: 'Foo',
+            });
         });
 
         it('should render a Button with a CircularProgress icon when loading', () => {
             const wrapper = shallow(
                 <ButtonWithStatus loading>Foo</ButtonWithStatus>,
             );
-            const button = wrapper.find(Button);
 
-            expect(button.prop('disabled')).toEqual(true);
-            expect(button.prop('icon')).toEqual(
-                <CircularProgress variant="indeterminate" size={20} />,
-            );
+            expect(wrapper.props()).toEqual({
+                variant: 'text',
+                disabled: true,
+                startIcon: (
+                    <CircularProgress variant="indeterminate" size={20} />
+                ),
+                children: 'Foo',
+            });
         });
 
         it('should render a Button with a Warning icon when it has error', () => {
             const wrapper = shallow(
                 <ButtonWithStatus error>Foo</ButtonWithStatus>,
             );
-            const button = wrapper.find(Button);
 
-            expect(button.prop('icon')).toEqual(<Warning color={red[400]} />);
+            expect(wrapper.props()).toEqual({
+                variant: 'text',
+                disabled: false,
+                startIcon: <Warning color={red[400]} />,
+                children: 'Foo',
+            });
         });
 
         it('should render a Button with a Success icon when it has success', () => {
             const wrapper = shallow(
                 <ButtonWithStatus success>Foo</ButtonWithStatus>,
             );
-            const button = wrapper.find(Button);
 
-            expect(button.prop('icon')).toEqual(
-                <Success color={lightGreen.A400} />,
-            );
+            expect(wrapper.props()).toEqual({
+                variant: 'text',
+                disabled: false,
+                startIcon: <Success color={lightGreen.A400} />,
+                children: 'Foo',
+            });
         });
     });
+
     describe('<ButtonWithStatus raised={true} />', () => {
         it('should render a Button without icon by default', () => {
             const wrapper = shallow(
                 <ButtonWithStatus raised>Foo</ButtonWithStatus>,
             );
-            const button = wrapper.find(Button);
 
-            expect(button.prop('disabled')).toEqual(false);
-            expect(button.prop('icon')).toBeNull();
-            expect(button.prop('label')).toEqual('Foo');
+            expect(wrapper.props()).toEqual({
+                variant: 'contained',
+                disabled: false,
+                startIcon: null,
+                children: 'Foo',
+            });
         });
 
         it('should render a Button with a CircularProgress icon when loading', () => {
@@ -69,12 +82,15 @@ describe('<ButtonWithStatus />', () => {
                     Foo
                 </ButtonWithStatus>,
             );
-            const button = wrapper.find(Button);
 
-            expect(button.prop('disabled')).toEqual(true);
-            expect(button.prop('icon')).toEqual(
-                <CircularProgress variant="indeterminate" size={20} />,
-            );
+            expect(wrapper.props()).toEqual({
+                variant: 'contained',
+                disabled: true,
+                startIcon: (
+                    <CircularProgress variant="indeterminate" size={20} />
+                ),
+                children: 'Foo',
+            });
         });
 
         it('should render a Button with a Warning icon when it has error', () => {
@@ -83,18 +99,23 @@ describe('<ButtonWithStatus />', () => {
                     Foo
                 </ButtonWithStatus>,
             );
-            const button = wrapper.find(Button);
 
-            expect(button.prop('icon')).toEqual(<Warning color={red[400]} />);
+            expect(wrapper.props()).toEqual({
+                variant: 'contained',
+                disabled: false,
+                startIcon: <Warning color={red[400]} />,
+                children: 'Foo',
+            });
         });
 
         it('should render a Button with a Success icon when it has success', () => {
             const wrapper = shallow(<ButtonWithStatus raised success />);
-            const button = wrapper.find(Button);
 
-            expect(button.prop('icon')).toEqual(
-                <Success color={lightGreen.A400} />,
-            );
+            expect(wrapper.props()).toEqual({
+                variant: 'contained',
+                disabled: false,
+                startIcon: <Success color={lightGreen.A400} />,
+            });
         });
     });
 });

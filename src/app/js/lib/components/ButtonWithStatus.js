@@ -49,6 +49,7 @@ ButtonWithStatus.defaultProps = {
     error: false,
     disabled: false,
     success: false,
+    loading: false,
 };
 
 export default ButtonWithStatus;

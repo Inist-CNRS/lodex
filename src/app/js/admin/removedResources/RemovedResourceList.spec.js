@@ -1,8 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import moment from 'moment';
-
-import { TableCell, TableCell } from '@material-ui/core';
+import { TableCell, TableBody } from '@material-ui/core';
 
 import { RemovedResourceListComponent as RemovedResourceList } from './RemovedResourceList';
 import Pagination from '../../lib/components/Pagination';
@@ -111,8 +110,7 @@ describe('<RemovedResourceList />', () => {
                 total={3}
             />,
         );
-
-        const cells = wrapper.find(TableCell);
+        const cells = wrapper.find(TableBody).find(TableCell);
         expect(
             cells
                 .at(0)
