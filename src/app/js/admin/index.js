@@ -23,10 +23,18 @@ import theme from '../theme';
 
 const adminTheme = createMuiTheme({
     palette: {
-        accent1Color: theme.orange.primary,
-        primary1Color: theme.green.primary,
+        secondary: {
+            main: theme.orange.primary,
+        },
+        primary: {
+            main: theme.green.primary,
+            contrastText: '#ffffff',
+        },
+        contrastThreshold: 3,
         primary2Color: theme.purple.primary,
-        textColor: '#5F6368',
+        text: {
+            primary: '#5F6368',
+        },
     },
 });
 
