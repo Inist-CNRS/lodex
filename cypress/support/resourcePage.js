@@ -1,7 +1,7 @@
 import { getDialogTitle, getDialogContent, getDialogActions } from './dialog';
 
 export const openCreateResourceForm = () => {
-    cy.get('.create-resource button')
+    cy.get('button.create-resource')
         .should('exist')
         .click();
 
