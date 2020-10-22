@@ -26,7 +26,7 @@ const styles = {
         boxShadow: 'none',
         display: 'flex',
         flexDirection: 'column',
-        paddingTop: 8,
+        padding: 10,
     },
     button: {
         marginBottom: 8,
@@ -144,9 +144,10 @@ export class ActionButtonComponent extends Component {
                     open={showPopover}
                     anchorEl={this.anchor}
                     anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-                    targetOrigin={{ horizontal: 'center', vertical: 'top' }}
+                    transformOrigin={{ horizontal: 'center', vertical: 'top' }}
                     onClose={this.handleClick}
                     style={styles.popover}
+                    PaperProps={{ component: 'div', style: styles.popover }}
                 >
                     <FloatingActionButton
                         className="btn-add-column-from-dataset"
