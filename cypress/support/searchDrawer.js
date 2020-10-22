@@ -53,13 +53,12 @@ export const getFacetsOrder = facets => {
 };
 
 export const getFacet = name =>
-    cy.get('.search .search-facets .facet-item').contains(name);
+    cy
+        .get('.search .search-facets .facet-item')
+        .contains('span', name)
+        .parentsUntil('.facet-item');
 
-export const getFacetItem = (name, value) =>
-    getFacet(name)
-        .parentsUntil('.facet-item')
-        .find('.facet-value-item')
-        .contains(value);
+export const getFacetItem = (name, value) => getFacet(name).contains(value);
 
 export const getFacetExcludeItem = name =>
     getFacet(name)
@@ -85,11 +84,7 @@ export const clearFacet = value => {
 };
 
 export const checkFacetsItem = (name, facets) => {
-    const facetValueItems = getFacet(name)
-        .parentsUntil('.search .search-facets > div')
-        .last()
-        .next() // .facet-value-list next to the .facet-item
-        .find('.facet-value-item');
+    const facetValueItems = getFacet(name).find('.facet-value-item');
 
     facetValueItems.each((facetValueItem, index) => {
         cy.wrap(facetValueItem)
@@ -101,6 +96,7 @@ export const checkFacetsItem = (name, facets) => {
 export const sortFacet = (name, sortName) => {
     getFacet(name)
         .get(`.sort_${sortName}`)
+        .first()
         .click();
     cy.wait(500);
 };
