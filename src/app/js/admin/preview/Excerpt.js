@@ -51,20 +51,17 @@ export const ExcerptComponent = ({
     p: polyglot,
     isPreview = false,
 }) => (
-    <Table
-        className={className}
-        style={styles.table(isPreview)}
-        onCellClick={onCellClick}
-    >
+    <Table className={className} style={styles.table(isPreview)}>
         <TableHead>
-            <TableRow onCellClick={onHeaderClick}>
-                {columns.map(field => (
+            <TableRow>
+                {columns.map((field, index) => (
                     <TableCell
                         key={field.name}
                         className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
                             field,
                         )}`}
                         style={getColStyle(colStyle)}
+                        onClick={() => onHeaderClick(index)}
                         tooltip={
                             areHeadersClickable
                                 ? polyglot.t('click_to_edit_publication_field')
@@ -90,6 +87,7 @@ export const ExcerptComponent = ({
                         <ExcerptRemoveColumn
                             key={`remove_column_${c._id}`}
                             field={c}
+                            onClick={onCellClick}
                         />
                     ))}
                 </TableRow>
@@ -123,14 +121,14 @@ export default compose(
         areHeadersClickable: typeof onHeaderClick === 'function',
     })),
     withHandlers({
-        onHeaderClick: ({ onHeaderClick }) => (_, __, col) => {
+        onHeaderClick: ({ onHeaderClick }) => col => {
             if (onHeaderClick) {
-                onHeaderClick(col - 1);
+                onHeaderClick(col);
             }
         },
-        onCellClick: ({ onHeaderClick }) => (_, col) => {
+        onCellClick: ({ onHeaderClick }) => col => {
             if (onHeaderClick) {
-                onHeaderClick(col - 1);
+                onHeaderClick(col);
             }
         },
     }),
