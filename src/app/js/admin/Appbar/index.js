@@ -92,9 +92,8 @@ const AppbarComponent = ({
     );
 
     return (
-        <AppBar
-            className="appbar"
-            title={
+        <AppBar className="appbar" style={styles.appBar}>
+            <Toolbar>
                 <div style={styles.title}>
                     <Link to="/" style={styles.linkToHome}>
                         Lodex
@@ -106,10 +105,6 @@ const AppbarComponent = ({
                             : polyglot.t('semantic-publication-system')}
                     </small>
                 </div>
-            }
-            style={styles.appBar}
-        >
-            <Toolbar>
                 {LeftElement}
                 {RightElement}
             </Toolbar>

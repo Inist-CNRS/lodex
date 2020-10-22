@@ -46,7 +46,7 @@ export const waitForLoading = () => {
 
 export const getFacetsOrder = facets => {
     facets.forEach((name, index) => {
-        cy.get(`.search .search-facets > div:nth-child(${index + 1})`)
+        cy.get(`.search .search-facets > li:nth-child(${index + 1})`)
             .contains(name)
             .should('be.visible');
     });
@@ -62,7 +62,7 @@ export const getFacetItem = (name, value) => getFacet(name).contains(value);
 
 export const getFacetExcludeItem = name =>
     getFacet(name)
-        .parentsUntil('.search-facets > div')
+        .parentsUntil('.search-facets > li')
         .last()
         .next() // .facet-value-list next to the .facet-item
         .find('.exclude-facet');
