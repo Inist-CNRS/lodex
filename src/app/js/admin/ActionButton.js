@@ -94,7 +94,9 @@ export class ActionButtonComponent extends Component {
         );
     };
 
-    handleShowExistingColumns = () => {
+    handleShowExistingColumns = event => {
+        event.preventDefault();
+        event.stopPropagation();
         this.setState(
             {
                 showPopover: !this.state.showPopover,
@@ -108,22 +110,30 @@ export class ActionButtonComponent extends Component {
     };
 
     handleClick = () => {
-        this.setState(
-            {
-                showPopover: this.state.showExistingColumns
-                    ? false
-                    : !this.state.showPopover,
-                showCancel: this.state.showExistingColumns
-                    ? false
-                    : !this.state.showCancel,
-            },
-            () => {
-                if (!this.state.showPopover) {
+        if (!this.state.showCancel) {
+            this.setState({
+                showPopover: true,
+                showCancel: true,
+            });
+        } else {
+            this.setState(
+                {
+                    showPopover: false,
+                    showCancel: false,
+                },
+                () => {
                     this.setState({ showExistingColumns: false });
                     this.props.onHideExistingColumns();
-                }
-            },
-        );
+                },
+            );
+        }
+    };
+
+    handleClosePopover = () => {
+        this.setState({
+            showPopover: false,
+            showCancel: false,
+        });
     };
 
     render() {
@@ -145,7 +155,7 @@ export class ActionButtonComponent extends Component {
                     anchorEl={this.anchor}
                     anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
                     transformOrigin={{ horizontal: 'center', vertical: 'top' }}
-                    onClose={this.handleClick}
+                    onClose={this.handleClosePopover}
                     style={styles.popover}
                     PaperProps={{ component: 'div', style: styles.popover }}
                 >
