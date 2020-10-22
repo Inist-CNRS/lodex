@@ -4,15 +4,16 @@ export default {
     palette: {
         primary: {
             main: theme.green.primary,
-            contrastText: '#ffffff',
+            contrastText: theme.white.primary,
         },
         contrastThreshold: 3,
         secondary: {
             main: theme.orange.primary,
         },
+        //TODO : find this usage or remove
         primary2Color: theme.purple.primary,
         text: {
-            primary: '#5F6368',
+            primary: theme.black.secondary,
         },
     },
     typography: {
