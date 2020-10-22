@@ -120,7 +120,7 @@ export const importModel = (filename, mimeType = 'application/json') => {
 };
 
 const checkParserItem = label => {
-    cy.get('span[role=menuitem]')
+    cy.get('li[role=option]')
         .contains(label)
         .scrollIntoView()
         .should('be.visible');
@@ -131,7 +131,7 @@ export const checkListOfSupportedFileFormats = () => {
         .contains('AUTO')
         .click({ force: true });
     cy.wait(300);
-    cy.get('span[role=menuitem]').should('have.length', 20);
+    cy.get('li[role=option]').should('have.length', 20);
     checkParserItem('CSV - with semicolon');
     checkParserItem('XML - TEI document');
     checkParserItem('ZIP file from dl.istex.fr');
