@@ -1,7 +1,7 @@
 export const getStats = () => cy.get('.stats');
 
 export const createResource = resource => {
-    cy.get('.create-resource button').click();
+    cy.get('button.create-resource').click();
 
     Object.entries(resource).forEach(([field, value]) => {
         cy.get('label')
@@ -11,7 +11,7 @@ export const createResource = resource => {
             .type(value);
     });
 
-    cy.get('.create-resource.save button').click();
+    cy.get('button.create-resource.save').click();
     cy.location('pathname').should('not.equal', '/graph');
 };
 
