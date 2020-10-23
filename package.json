@@ -1,6 +1,6 @@
 {
     "engines": {
-        "node": ">= 10"
+        "node": ">= 12"
     },
     "name": "lodex",
     "version": "11.16.3",
@@ -40,7 +40,7 @@
     },
     "homepage": "https://github.com/Inist-CNRS/lodex#readme",
     "dependencies": {
-        "@babel/cli": "7.1.5",
+        "@babel/cli": "7.8.4",
         "@babel/core": "7.1.6",
         "@babel/plugin-proposal-class-properties": "7.1.0",
         "@babel/plugin-proposal-object-rest-spread": "7.0.0",
@@ -49,7 +49,7 @@
         "@babel/polyfill": "7.0.0",
         "@babel/preset-env": "7.1.6",
         "@babel/preset-react": "7.0.0",
-        "@babel/register": "7.0.0",
+        "@babel/register": "7.9.0",
         "@ezs/analytics": "1.9.2",
         "@ezs/basics": "1.4.12",
         "@ezs/booster": "1.2.4",
@@ -92,7 +92,7 @@
         "inist-roadmap": "1.2.0",
         "js-sentencecase": "1.2.1",
         "json-csv": "2.0.2",
-        "jsonld": "1.1.0",
+        "jsonld": "3.2.0",
         "jsonwebtoken": "8.4.0",
         "kcors": "2.2.2",
         "koa": "2.6.2",
@@ -180,7 +180,7 @@
         "vega-voronoi": "4.1.2",
         "vega-wordcloud": "4.1.0",
         "webpack": "4.41.2",
-        "webpack-bundle-analyzer": "3.6.0",
+        "webpack-bundle-analyzer": "3.6.1",
         "webpack-cli": "3.3.10",
         "winston": "3.2.1",
         "xml-writer": "1.7.0"

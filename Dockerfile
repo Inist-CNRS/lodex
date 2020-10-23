@@ -1,11 +1,11 @@
-FROM node:10-alpine AS build
+FROM node:12-alpine AS build
 RUN apk add --no-cache make gcc g++ python bash git openssh
 RUN mkdir /app
 COPY package.json /app
 WORKDIR /app
 RUN npm install --production && npm cache clean --force
 
-FROM node:10-alpine AS release
+FROM node:12-alpine AS release
 RUN apk add --no-cache su-exec
 COPY --from=build /app /app
 COPY . /app/
