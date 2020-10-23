@@ -16,7 +16,7 @@ const FormSelectField = ({
     meta: { touched, error },
     ...props
 }) => (
-    <FormControl>
+    <FormControl fullWidth>
         <InputLabel>{label}</InputLabel>
         <Select
             error={touched && error}

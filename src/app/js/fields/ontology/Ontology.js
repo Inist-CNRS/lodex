@@ -51,7 +51,7 @@ export class OntologyComponent extends Component {
                 <CardHeader title={<h3>{polyglot.t('model')}</h3>} />
                 <Divider />
                 <CardContent>
-                    <FormControl>
+                    <FormControl fullWidth>
                         <Select
                             autoWidth
                             value={filter}

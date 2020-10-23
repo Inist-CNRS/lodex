@@ -55,7 +55,7 @@ class UriAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="urladmin-input-label">
                         {polyglot.t('uri_format_select_type')}
                     </InputLabel>

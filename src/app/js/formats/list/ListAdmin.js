@@ -78,7 +78,7 @@ class ListAdmin extends Component {
                     onChange={this.setSubFormatOptions}
                     args={subFormatOptions}
                 />
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="listadmin-type-input-label">
                         {polyglot.t('list_format_select_type')}
                     </InputLabel>

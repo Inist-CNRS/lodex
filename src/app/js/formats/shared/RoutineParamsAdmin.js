@@ -103,7 +103,7 @@ const RoutineParamsAdmin = ({
                 />
             )}
             {showOrderBy && (
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="routine-params-admin-input-label">
                         {polyglot.t('order_by')}
                     </InputLabel>

@@ -7,6 +7,8 @@ import {
     FormControl,
     InputLabel,
 } from '@material-ui/core';
+import translate from 'redux-polyglot/translate';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 
 const styles = {
     container: {
@@ -29,6 +31,7 @@ class DefaultAdminComponentWithLabel extends Component {
             value: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
+        p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
@@ -46,25 +49,28 @@ class DefaultAdminComponentWithLabel extends Component {
     };
 
     render() {
-        const { type, value } = this.props.args;
+        const {
+            p: polyglot,
+            args: { type, value },
+        } = this.props;
 
         return (
             <div style={styles.container}>
-                <FormControl>
-                    <InputLabel>{'Select a format'}</InputLabel>
+                <FormControl fullWidth>
+                    <InputLabel>{polyglot.t('select_a_format')}</InputLabel>
                     <Select
                         onChange={this.setType}
                         style={styles.input}
                         value={type}
                     >
                         <MenuItem value="value">
-                            {'The column content'}
+                            {polyglot.t('item_column_content')}
                         </MenuItem>
                         <MenuItem value="text">
-                            {'A custom text (same for all resources)'}
+                            {polyglot.t('item_custom_text')}
                         </MenuItem>
                         <MenuItem value="column">
-                            {'Another column content'}
+                            {polyglot.t('item_other_column_content')}
                         </MenuItem>
                     </Select>
                 </FormControl>
@@ -83,4 +89,4 @@ class DefaultAdminComponentWithLabel extends Component {
     }
 }
 
-export default DefaultAdminComponentWithLabel;
+export default translate(DefaultAdminComponentWithLabel);

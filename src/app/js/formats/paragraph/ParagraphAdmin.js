@@ -42,7 +42,7 @@ class ParagraphAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="paragraph-admin-width-input-label">
                         {polyglot.t('list_format_select_image_width')}
                     </InputLabel>

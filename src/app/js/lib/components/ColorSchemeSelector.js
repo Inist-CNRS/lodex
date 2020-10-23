@@ -63,7 +63,7 @@ import ColorScalePreview from '../../lib/components/ColorScalePreview';
 
 const getColorSchemeSelector = schemes => {
     const ColorSchemeSelector = ({ value = [], style, label, onChange }) => (
-        <FormControl>
+        <FormControl fullWidth>
             <InputLabel id="colorscheme-input-label">{label}</InputLabel>
             <Select
                 labelId="colorscheme-input-label"

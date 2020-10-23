@@ -171,7 +171,7 @@ class RadarChartAdmin extends Component {
                     }
                     label={polyglot.t('axis_round_value')}
                 />
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="radarchart-admin-scale-label-input">
                         {polyglot.t('scale')}
                     </InputLabel>

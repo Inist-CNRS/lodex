@@ -22,7 +22,7 @@ export const SelectFieldToAddComponent = ({
     onSelectField,
     p: polyglot,
 }) => (
-    <FormControl>
+    <FormControl fullWidth>
         <InputLabel id="select-field-to-add-input-label">
             {polyglot.t('select_contribution_field')}
         </InputLabel>

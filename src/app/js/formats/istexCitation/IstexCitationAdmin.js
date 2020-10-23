@@ -62,7 +62,7 @@ export class IstexCitationAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="istex-citation-admin-input-label">
                         {polyglot.t('searched_field')}
                     </InputLabel>
