@@ -34,7 +34,7 @@ const ComposedOfColumn = ({
     p: polyglot,
 }) => (
     <div style={styles.compositionContainer}>
-        <FormControl>
+        <FormControl fullWidth>
             <Select
                 onChange={e => handleSelectColumn(e.target.value)}
                 style={styles.select}

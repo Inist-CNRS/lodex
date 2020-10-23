@@ -41,7 +41,7 @@ class AdminComponent extends Component {
 
         return (
             <div style={styles.container}>
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="coreadmin-input-label">
                         {polyglot.t('list_of_language')}
                     </InputLabel>

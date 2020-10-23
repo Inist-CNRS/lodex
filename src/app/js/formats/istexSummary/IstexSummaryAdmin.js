@@ -78,7 +78,7 @@ export class IstexSummaryAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="istex-summary-searchfield-input-label">
                         {polyglot.t('searched_field')}
                     </InputLabel>
@@ -96,7 +96,7 @@ export class IstexSummaryAdmin extends Component {
                         ))}
                     </Select>
                 </FormControl>
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="istex-summary-yearsort-input-label">
                         {polyglot.t('year_sort_dir')}
                     </InputLabel>

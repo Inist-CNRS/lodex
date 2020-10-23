@@ -63,7 +63,7 @@ class TitleAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="title-admin-input-label">
                         {polyglot.t('list_format_select_level')}
                     </InputLabel>

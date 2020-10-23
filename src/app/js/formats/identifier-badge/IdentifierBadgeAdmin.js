@@ -71,7 +71,7 @@ class IdentifierBadgeAdmin extends Component {
         ));
         return (
             <div style={styles.container}>
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="identifier-badge-admin-input-label">
                         {polyglot.t('list_format_select_identifier')}
                     </InputLabel>

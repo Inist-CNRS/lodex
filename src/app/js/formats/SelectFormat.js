@@ -5,7 +5,7 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
 const SelectFormat = ({ formats, value, onChange, p: polyglot }) => (
-    <FormControl>
+    <FormControl fullWidth>
         <InputLabel id="select-form-input-label">
             {polyglot.t('select_a_format')}
         </InputLabel>

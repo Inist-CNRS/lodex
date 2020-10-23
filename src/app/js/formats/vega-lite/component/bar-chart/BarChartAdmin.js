@@ -206,7 +206,7 @@ class BarChartAdmin extends Component {
                     onChange={this.setColors}
                     polyglot={polyglot}
                 />
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="barchat-admin-direction-input-label">
                         {polyglot.t('direction')}
                     </InputLabel>
@@ -264,7 +264,7 @@ class BarChartAdmin extends Component {
                     }
                     label={polyglot.t('toggle_labels')}
                 />
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="barchart-admin-scale-input-label">
                         {polyglot.t('scale')}
                     </InputLabel>

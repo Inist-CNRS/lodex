@@ -67,9 +67,9 @@ class LinkImageAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="linkimage-admin-input-label">
-                        {polyglot.t('Select a format')}
+                        {polyglot.t('select_a_format')}
                     </InputLabel>
                     <Select
                         labelId="linkimage-admin-input-label"
@@ -78,12 +78,10 @@ class LinkImageAdmin extends Component {
                         value={type}
                     >
                         <MenuItem value="text">
-                            {polyglot.t('Another column content')}
+                            {polyglot.t('item_other_column_content')}
                         </MenuItem>
                         <MenuItem value="column">
-                            {polyglot.t(
-                                'A custom URL (same for all resources)',
-                            )}
+                            {polyglot.t('item_custom_url')}
                         </MenuItem>
                     </Select>
                 </FormControl>

@@ -68,7 +68,7 @@ class EmphasedNumberAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="emphased-number-admin-input-label">
                         {polyglot.t('list_format_select_size')}
                     </InputLabel>

@@ -46,7 +46,7 @@ class PDFAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="pdf-admin-input-label">
                         {polyglot.t('list_format_select_image_width')}
                     </InputLabel>

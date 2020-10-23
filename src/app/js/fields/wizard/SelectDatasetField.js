@@ -22,7 +22,7 @@ export const SelectDatasetFieldComponent = ({
     label,
     id,
 }) => (
-    <FormControl id="select-dataset-input-label">
+    <FormControl id="select-dataset-input-label" fullWidth>
         <InputLabel>{polyglot.t(label)}</InputLabel>
         <Select
             id={id}

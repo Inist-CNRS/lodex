@@ -94,7 +94,7 @@ class RessourcesGridAdmin extends Component {
                     onChange={this.setParams}
                     polyglot={polyglot}
                 />
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="resourcesgrid-admin-input-label">
                         {polyglot.t('list_format_select_image_width')}
                     </InputLabel>

@@ -127,7 +127,7 @@ class CartographyAdmin extends Component {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="cartography-worldposition-input-label">
                         {polyglot.t('world_position')}
                     </InputLabel>
