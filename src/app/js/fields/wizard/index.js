@@ -191,7 +191,7 @@ class FieldEditionWizardComponent extends Component {
                             <div id="field_form" style={styles.form}>
                                 {field.name !== 'uri' ? (
                                     <Stepper
-                                        linear={false}
+                                        nonLinear
                                         activeStep={step}
                                         orientation="vertical"
                                     >

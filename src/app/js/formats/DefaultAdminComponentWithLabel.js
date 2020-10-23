@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { MenuItem, Select, TextField } from '@material-ui/core';
+import {
+    MenuItem,
+    Select,
+    TextField,
+    FormControl,
+    InputLabel,
+} from '@material-ui/core';
 
 const styles = {
     container: {
@@ -29,8 +35,8 @@ class DefaultAdminComponentWithLabel extends Component {
         args: defaultArgs,
     };
 
-    setType = (event, index, type) => {
-        const newArgs = { ...this.props.args, type };
+    setType = e => {
+        const newArgs = { ...this.props.args, type: e.target.value };
         this.props.onChange(newArgs);
     };
 
@@ -44,21 +50,24 @@ class DefaultAdminComponentWithLabel extends Component {
 
         return (
             <div style={styles.container}>
-                <Select
-                    label="Select a format"
-                    onChange={this.setType}
-                    style={styles.input}
-                    value={type}
-                >
-                    <MenuItem value="value">{'The column content'}</MenuItem>
-                    <MenuItem value="text">
-                        {'A custom text (same for all resources)'}
-                    </MenuItem>
-                    <MenuItem value="column">
-                        {'Another column content'}
-                    </MenuItem>
-                </Select>
-
+                <FormControl>
+                    <InputLabel>{'Select a format'}</InputLabel>
+                    <Select
+                        onChange={this.setType}
+                        style={styles.input}
+                        value={type}
+                    >
+                        <MenuItem value="value">
+                            {'The column content'}
+                        </MenuItem>
+                        <MenuItem value="text">
+                            {'A custom text (same for all resources)'}
+                        </MenuItem>
+                        <MenuItem value="column">
+                            {'Another column content'}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
                 {type !== 'value' && (
                     <TextField
                         label={

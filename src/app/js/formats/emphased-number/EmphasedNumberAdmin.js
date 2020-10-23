@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem } from '@material-ui/core';
+import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -68,19 +68,22 @@ class EmphasedNumberAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <Select
-                    label={polyglot.t('list_format_select_size')}
-                    onChange={(event, index, newValue) =>
-                        this.setSize(newValue)
-                    }
-                    style={styles.input}
-                    value={size}
-                >
-                    <MenuItem value={1}>{polyglot.t('size1')}</MenuItem>
-                    <MenuItem value={2}>{polyglot.t('size2')}</MenuItem>
-                    <MenuItem value={3}>{polyglot.t('size3')}</MenuItem>
-                    <MenuItem value={4}>{polyglot.t('size4')}</MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel id="emphased-number-admin-input-label">
+                        {polyglot.t('list_format_select_size')}
+                    </InputLabel>
+                    <Select
+                        labelId="emphased-number-admin-input-label"
+                        onChange={e => this.setSize(e.target.value)}
+                        style={styles.input}
+                        value={size}
+                    >
+                        <MenuItem value={1}>{polyglot.t('size1')}</MenuItem>
+                        <MenuItem value={2}>{polyglot.t('size2')}</MenuItem>
+                        <MenuItem value={3}>{polyglot.t('size3')}</MenuItem>
+                        <MenuItem value={4}>{polyglot.t('size4')}</MenuItem>
+                    </Select>
+                </FormControl>
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}

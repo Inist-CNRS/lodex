@@ -88,7 +88,8 @@ class Pagination extends Component {
         this.setState({ pages, count });
     };
 
-    handleChangePerPage = (e, idx, perPage) => {
+    handleChangePerPage = e => {
+        const perPage = e.target.value;
         const count = Math.ceil(this.props.total / perPage);
         let currentPage = this.props.currentPage;
 
@@ -111,8 +112,8 @@ class Pagination extends Component {
         this.props.onChange(currentPage, this.props.perPage);
     };
 
-    handleChangePageFromSelect = (e, idx, page) => {
-        this.handleChangePage(page);
+    handleChangePageFromSelect = e => {
+        this.handleChangePage(e.target.value);
     };
 
     handleChangePageFromText = e => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem } from '@material-ui/core';
+import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
 import { scaleQuantize } from 'd3-scale';
 
 import {
@@ -63,24 +63,27 @@ import ColorScalePreview from '../../lib/components/ColorScalePreview';
 
 const getColorSchemeSelector = schemes => {
     const ColorSchemeSelector = ({ value = [], style, label, onChange }) => (
-        <Select
-            label={label}
-            onChange={onChange}
-            style={style}
-            value={value.join(',')}
-        >
-            {schemes.map(scheme => (
-                <MenuItem key={scheme} value={scheme.join(',')}>
-                    {
-                        <ColorScalePreview
-                            colorScale={scaleQuantize()
-                                .domain([0, 100])
-                                .range(scheme)}
-                        />
-                    }
-                </MenuItem>
-            ))}
-        </Select>
+        <FormControl>
+            <InputLabel id="colorscheme-input-label">{label}</InputLabel>
+            <Select
+                labelId="colorscheme-input-label"
+                onChange={onChange}
+                style={style}
+                value={value.join(',')}
+            >
+                {schemes.map(scheme => (
+                    <MenuItem key={scheme} value={scheme.join(',')}>
+                        {
+                            <ColorScalePreview
+                                colorScale={scaleQuantize()
+                                    .domain([0, 100])
+                                    .range(scheme)}
+                            />
+                        }
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
     );
     ColorSchemeSelector.propTypes = {
         value: PropTypes.arrayOf(PropTypes.string),

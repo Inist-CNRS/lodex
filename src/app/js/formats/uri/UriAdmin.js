@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { MenuItem, Select, TextField } from '@material-ui/core';
+import {
+    MenuItem,
+    Select,
+    TextField,
+    FormControl,
+    InputLabel,
+} from '@material-ui/core';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -31,13 +37,13 @@ class UriAdmin extends Component {
         args: defaultArgs,
     };
 
-    setType = (_, __, type) => {
-        const newArgs = { ...this.props.args, type };
+    setType = e => {
+        const newArgs = { ...this.props.args, type: e.target.value };
         this.props.onChange(newArgs);
     };
 
-    setValue = (_, value) => {
-        const newArgs = { ...this.props.args, value };
+    setValue = e => {
+        const newArgs = { ...this.props.args, value: e.target.value };
         this.props.onChange(newArgs);
     };
 
@@ -49,23 +55,27 @@ class UriAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <Select
-                    label={polyglot.t('uri_format_select_type')}
-                    onChange={this.setType}
-                    style={styles.input}
-                    value={type}
-                >
-                    <MenuItem value="value">
-                        {polyglot.t('uri_format_column')}
-                    </MenuItem>
-                    <MenuItem value="text">
-                        {polyglot.t('uri_format_custom')}
-                    </MenuItem>
-                    <MenuItem value="column">
-                        {polyglot.t('uri_format_another_column')}
-                    </MenuItem>
-                </Select>
-
+                <FormControl>
+                    <InputLabel id="urladmin-input-label">
+                        {polyglot.t('uri_format_select_type')}
+                    </InputLabel>
+                    <Select
+                        labelId="urladmin-input-label"
+                        onChange={this.setType}
+                        style={styles.input}
+                        value={type}
+                    >
+                        <MenuItem value="value">
+                            {polyglot.t('uri_format_column')}
+                        </MenuItem>
+                        <MenuItem value="text">
+                            {polyglot.t('uri_format_custom')}
+                        </MenuItem>
+                        <MenuItem value="column">
+                            {polyglot.t('uri_format_another_column')}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
                 {type !== 'value' && (
                     <TextField
                         label={

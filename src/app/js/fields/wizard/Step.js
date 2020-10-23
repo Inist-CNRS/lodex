@@ -5,10 +5,18 @@ import withProps from 'recompose/withProps';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import { reduxForm } from 'redux-form';
-import { Step, StepButton, StepContent } from '@material-ui/core';
+import { Step, StepButton, StepContent, makeStyles } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';
+
+const useStyles = makeStyles(theme => ({
+    button: {
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
+        textAlign: 'left',
+    },
+}));
 
 export const StepComponent = ({
     id,
@@ -23,21 +31,27 @@ export const StepComponent = ({
     label,
     children,
     p: polyglot,
-}) => (
-    <Step
-        id={id}
-        active={active}
-        completed={completed}
-        disabled={disabled}
-        icon={icon}
-        index={index}
-        last={last}
-        style={style}
-    >
-        <StepButton onClick={handleSelectStep}>{polyglot.t(label)}</StepButton>
-        <StepContent>{children}</StepContent>
-    </Step>
-);
+}) => {
+    const classes = useStyles();
+
+    return (
+        <Step
+            id={id}
+            active={active}
+            completed={completed}
+            disabled={disabled}
+            icon={icon}
+            index={index}
+            last={last}
+            style={style}
+        >
+            <StepButton className={classes.button} onClick={handleSelectStep}>
+                {polyglot.t(label)}
+            </StepButton>
+            <StepContent>{children}</StepContent>
+        </Step>
+    );
+};
 
 StepComponent.propTypes = {
     id: PropTypes.string,

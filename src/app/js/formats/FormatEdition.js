@@ -37,7 +37,6 @@ class FormatEdition extends Component {
 
     render() {
         const { name, args } = this.state;
-
         const AdminComponent = getAdminComponent(name);
 
         return (

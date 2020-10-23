@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem } from '@material-ui/core';
+import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -71,16 +71,19 @@ class IdentifierBadgeAdmin extends Component {
         ));
         return (
             <div style={styles.container}>
-                <Select
-                    label={polyglot.t('list_format_select_identifier')}
-                    onChange={(event, index, newValue) =>
-                        this.setTypid(newValue)
-                    }
-                    style={styles.input}
-                    value={typid}
-                >
-                    {items}
-                </Select>
+                <FormControl>
+                    <InputLabel id="identifier-badge-admin-input-label">
+                        {polyglot.t('list_format_select_identifier')}
+                    </InputLabel>
+                    <Select
+                        labelId="identifier-badge-admin-input-label"
+                        onChange={e => this.setTypid(e.target.value)}
+                        style={styles.input}
+                        value={typid}
+                    >
+                        {items}
+                    </Select>
+                </FormControl>
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}

@@ -6,6 +6,8 @@ import {
     Checkbox,
     TextField,
     FormControlLabel,
+    FormControl,
+    InputLabel,
 } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
@@ -92,31 +94,36 @@ class RessourcesGridAdmin extends Component {
                     onChange={this.setParams}
                     polyglot={polyglot}
                 />
-                <Select
-                    label={polyglot.t('list_format_select_image_width')}
-                    onChange={(event, index, newValue) =>
-                        this.setWidth(newValue)
-                    }
-                    style={styles.input}
-                    value={spaceWidth}
-                >
-                    <MenuItem value="10%">{polyglot.t('ten_percent')}</MenuItem>
-                    <MenuItem value="20%">
-                        {polyglot.t('twenty_percent')}
-                    </MenuItem>
-                    <MenuItem value="30%">
-                        {polyglot.t('thirty_percent')}
-                    </MenuItem>
-                    <MenuItem value="50%">
-                        {polyglot.t('fifty_percent')}
-                    </MenuItem>
-                    <MenuItem value="80%">
-                        {polyglot.t('eighty_percent')}
-                    </MenuItem>
-                    <MenuItem value="100%">
-                        {polyglot.t('hundred_percent')}
-                    </MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel id="resourcesgrid-admin-input-label">
+                        {polyglot.t('list_format_select_image_width')}
+                    </InputLabel>
+                    <Select
+                        labelId="resourcesgrid-admin-input-label"
+                        onChange={e => this.setWidth(e.target.value)}
+                        style={styles.input}
+                        value={spaceWidth}
+                    >
+                        <MenuItem value="10%">
+                            {polyglot.t('ten_percent')}
+                        </MenuItem>
+                        <MenuItem value="20%">
+                            {polyglot.t('twenty_percent')}
+                        </MenuItem>
+                        <MenuItem value="30%">
+                            {polyglot.t('thirty_percent')}
+                        </MenuItem>
+                        <MenuItem value="50%">
+                            {polyglot.t('fifty_percent')}
+                        </MenuItem>
+                        <MenuItem value="80%">
+                            {polyglot.t('eighty_percent')}
+                        </MenuItem>
+                        <MenuItem value="100%">
+                            {polyglot.t('hundred_percent')}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
                 <FormControlLabel
                     control={
                         <Checkbox
