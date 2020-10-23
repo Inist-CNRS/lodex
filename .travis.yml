@@ -9,7 +9,7 @@ services:
     - docker
 
 node_js:
-    - 10
+    - 12
 
 addons:
   apt:
