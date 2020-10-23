@@ -33,34 +33,29 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
 
 const fillStepValueConcatColumn = (value, index) => {
     cy.get(`#select-column-${index}`).click();
-    cy.get('div[role="menu"]')
+    cy.get('[role="listbox"]')
         .contains(value)
         .click();
 };
 
 const fillStepDisplayFormat = format => {
-    cy.get('#step-value-format').click();
-    cy.get(`div[role="menu"] div[data-value="${format}"]`)
-        .parent()
-        .click();
+    cy.get('#step-value-format .select-format').click();
+    cy.get(`[role="listbox"] li[data-value="${format}"]`).click();
 };
 
 export const addColumn = (columnName, options = {}) => {
     const name = columnName.replace(' ', '-');
-    cy.get('.btn-add-column button').click();
-    cy.get('.btn-add-column-from-dataset button').click();
+    cy.get('button.btn-add-column').click();
+    cy.get('button.btn-add-column-from-dataset').click();
     cy.get(
-        [
-            '.btn-excerpt-add-column',
-            `.btn-excerpt-add-column-${name}`,
-            ' ',
-            'button',
-        ].join(''),
+        ['.btn-excerpt-add-column', `.btn-excerpt-add-column-${name}`].join(''),
     ).click();
 
     if (options.composedOf && options.composedOf.length > 1) {
-        cy.get('#step-value').click();
-        cy.get('#step-value-concat input[type="radio"]').click();
+        cy.get('#step-value')
+            .click()
+            .scrollIntoView();
+        cy.get('#step-value-concat input[value="concat"]').click();
 
         options.composedOf.forEach(fillStepValueConcatColumn);
     }

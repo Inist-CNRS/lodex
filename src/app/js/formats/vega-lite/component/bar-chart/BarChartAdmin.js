@@ -6,6 +6,8 @@ import {
     MenuItem,
     Checkbox,
     FormControlLabel,
+    FormControl,
+    InputLabel,
 } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
@@ -112,12 +114,12 @@ class BarChartAdmin extends Component {
         );
     };
 
-    setScale = (_, __, scale) => {
-        updateAdminArgs('scale', scale, this.props);
+    setScale = e => {
+        updateAdminArgs('scale', e.target.value, this.props);
     };
 
-    setDirection = (_, __, direction) => {
-        updateAdminArgs('direction', direction, this.props);
+    setDirection = e => {
+        updateAdminArgs('direction', e.target.value, this.props);
     };
 
     toggleDiagonalValueAxis = () => {
@@ -204,19 +206,24 @@ class BarChartAdmin extends Component {
                     onChange={this.setColors}
                     polyglot={polyglot}
                 />
-                <Select
-                    label={polyglot.t('direction')}
-                    onChange={this.setDirection}
-                    style={styles.input}
-                    value={direction}
-                >
-                    <MenuItem value="horizontal">
-                        {polyglot.t('horizontal')}
-                    </MenuItem>
-                    <MenuItem value="vertical">
-                        {polyglot.t('vertical')}
-                    </MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel id="barchat-admin-direction-input-label">
+                        {polyglot.t('direction')}
+                    </InputLabel>
+                    <Select
+                        labelId="barchat-admin-direction-input-label"
+                        onChange={this.setDirection}
+                        style={styles.input}
+                        value={direction}
+                    >
+                        <MenuItem value="horizontal">
+                            {polyglot.t('horizontal')}
+                        </MenuItem>
+                        <MenuItem value="vertical">
+                            {polyglot.t('vertical')}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -257,15 +264,22 @@ class BarChartAdmin extends Component {
                     }
                     label={polyglot.t('toggle_labels')}
                 />
-                <Select
-                    label={polyglot.t('scale')}
-                    onChange={this.setScale}
-                    style={styles.input}
-                    value={scale}
-                >
-                    <MenuItem value="linear">{polyglot.t('linear')}</MenuItem>
-                    <MenuItem value="log">{polyglot.t('log')}</MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel id="barchart-admin-scale-input-label">
+                        {polyglot.t('scale')}
+                    </InputLabel>
+                    <Select
+                        labelId="barchart-admin-scale-input-label"
+                        onChange={this.setScale}
+                        style={styles.input}
+                        value={scale}
+                    >
+                        <MenuItem value="linear">
+                            {polyglot.t('linear')}
+                        </MenuItem>
+                        <MenuItem value="log">{polyglot.t('log')}</MenuItem>
+                    </Select>
+                </FormControl>
                 <TextField
                     label={polyglot.t('bar_size')}
                     onChange={this.setBarSize}

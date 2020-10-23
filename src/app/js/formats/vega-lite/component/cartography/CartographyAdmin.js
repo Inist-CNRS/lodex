@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
-import { Select, MenuItem } from '@material-ui/core';
+import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
 
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
@@ -79,8 +79,8 @@ class CartographyAdmin extends Component {
 
     setParams = params => updateAdminArgs('params', params, this.props);
 
-    setWorldPosition = (_, __, worldPosition) => {
-        updateAdminArgs('worldPosition', worldPosition, this.props);
+    setWorldPosition = e => {
+        updateAdminArgs('worldPosition', e.target.value, this.props);
     };
 
     setColorScheme = (_, __, colorScheme) => {
@@ -127,22 +127,27 @@ class CartographyAdmin extends Component {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-                <Select
-                    label={polyglot.t('world_position')}
-                    onChange={this.setWorldPosition}
-                    style={styles.input}
-                    value={worldPosition}
-                >
-                    <MenuItem value={MAP_WORLD}>
-                        {polyglot.t('world_position_world')}
-                    </MenuItem>
-                    <MenuItem value={MAP_EUROPE}>
-                        {polyglot.t('world_position_europe')}
-                    </MenuItem>
-                    <MenuItem value={MAP_FRANCE}>
-                        {polyglot.t('world_position_france')}
-                    </MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel id="cartography-worldposition-input-label">
+                        {polyglot.t('world_position')}
+                    </InputLabel>
+                    <Select
+                        labelId="cartography-worldposition-input-label"
+                        onChange={this.setWorldPosition}
+                        style={styles.input}
+                        value={worldPosition}
+                    >
+                        <MenuItem value={MAP_WORLD}>
+                            {polyglot.t('world_position_world')}
+                        </MenuItem>
+                        <MenuItem value={MAP_EUROPE}>
+                            {polyglot.t('world_position_europe')}
+                        </MenuItem>
+                        <MenuItem value={MAP_FRANCE}>
+                            {polyglot.t('world_position_france')}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
                 <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}
                     onChange={this.setColorScheme}

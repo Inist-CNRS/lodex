@@ -15,7 +15,10 @@ import StepValueConcat from './StepValueConcat';
 
 export const StepValueComponent = ({ field, handleChange, ...props }) => (
     <Step id="step-value" label="field_wizard_step_value" {...props}>
-        <StepValueValue field={field} onChange={handleChange} />
+        <StepValueValue
+            field={field}
+            onChange={e => handleChange(e.target.value)}
+        />
         <StepValueColumn field={field} onChange={handleChange} />
         <StepValueConcat field={field} onChange={handleChange} />
     </Step>

@@ -1,8 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IconButton, MenuItem, Select } from '@material-ui/core';
 import IconDelete from '@material-ui/icons/Delete';
 import translate from 'redux-polyglot/translate';
+
+import {
+    IconButton,
+    MenuItem,
+    Select,
+    FormHelperText,
+    FormControl,
+} from '@material-ui/core';
 
 import {
     polyglot as polyglotPropTypes,
@@ -27,23 +34,25 @@ const ComposedOfColumn = ({
     p: polyglot,
 }) => (
     <div style={styles.compositionContainer}>
-        <Select
-            onChange={handleSelectColumn}
-            style={styles.select}
-            placeholder={polyglot.t('select_a_column')}
-            value={column}
-            required
-        >
-            {fields.map(f => (
-                <MenuItem
-                    className={`composite-field-${index}-${f.name}`}
-                    key={`composite-field-${index}-${f.name}`}
-                    value={f.name}
-                >
-                    {f.label}
-                </MenuItem>
-            ))}
-        </Select>
+        <FormControl>
+            <Select
+                onChange={e => handleSelectColumn(e.target.value)}
+                style={styles.select}
+                value={column}
+                required
+            >
+                {fields.map(f => (
+                    <MenuItem
+                        className={`composite-field-${index}-${f.name}`}
+                        key={`composite-field-${index}-${f.name}`}
+                        value={f.name}
+                    >
+                        {f.label}
+                    </MenuItem>
+                ))}
+            </Select>
+            <FormHelperText>{polyglot.t('select_a_column')}</FormHelperText>
+        </FormControl>
         {index > 1 && (
             <IconButton
                 className={`btn-remove-composite-field btn-remove-composite-field-${index}`}

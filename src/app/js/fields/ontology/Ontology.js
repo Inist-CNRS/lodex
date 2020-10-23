@@ -12,6 +12,7 @@ import {
     Divider,
     Select,
     MenuItem,
+    FormControl,
 } from '@material-ui/core';
 
 import {
@@ -39,7 +40,7 @@ export class OntologyComponent extends Component {
         this.props.preLoadPublication();
     }
 
-    handleFilterChange = (_, __, filter) => this.setState({ filter });
+    handleFilterChange = e => this.setState({ filter: e.target.value });
 
     render() {
         const { p: polyglot } = this.props;
@@ -50,23 +51,25 @@ export class OntologyComponent extends Component {
                 <CardHeader title={<h3>{polyglot.t('model')}</h3>} />
                 <Divider />
                 <CardContent>
-                    <Select
-                        autoWidth
-                        value={filter}
-                        onChange={this.handleFilterChange}
-                        style={{ width: 400 }}
-                        className="select-filter"
-                    >
-                        <MenuItem value={ALL}>
-                            {polyglot.t('model_filter_all')}
-                        </MenuItem>
-                        <MenuItem value={'document'}>
-                            {polyglot.t('model_filter_document')}
-                        </MenuItem>
-                        <MenuItem value={'dataset'}>
-                            {polyglot.t('model_filter_dataset')}
-                        </MenuItem>
-                    </Select>
+                    <FormControl>
+                        <Select
+                            autoWidth
+                            value={filter}
+                            onChange={this.handleFilterChange}
+                            style={{ width: 400 }}
+                            className="select-filter"
+                        >
+                            <MenuItem value={ALL}>
+                                {polyglot.t('model_filter_all')}
+                            </MenuItem>
+                            <MenuItem value={'document'}>
+                                {polyglot.t('model_filter_document')}
+                            </MenuItem>
+                            <MenuItem value={'dataset'}>
+                                {polyglot.t('model_filter_dataset')}
+                            </MenuItem>
+                        </Select>
+                    </FormControl>
                     {(filter === ALL || filter === COVER_DATASET) && (
                         <OntologyTable title="dataset" />
                     )}

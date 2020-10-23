@@ -38,7 +38,7 @@ class FieldComposedOf extends Component {
         });
     };
 
-    handleSelectColumn = index => (event, key, column) => {
+    handleSelectColumn = index => column => {
         const { columns, isComposedOf, onChange } = this.props;
         onChange({
             isComposedOf,

@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { MenuItem, Select, TextField } from '@material-ui/core';
+import {
+    MenuItem,
+    Select,
+    TextField,
+    FormControl,
+    InputLabel,
+} from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -37,8 +43,8 @@ class LinkImageAdmin extends Component {
         args: defaultArgs,
     };
 
-    setType = (event, index, type) => {
-        const newArgs = { ...this.props.args, type };
+    setType = e => {
+        const newArgs = { ...this.props.args, type: e.target.value };
         this.props.onChange(newArgs);
     };
 
@@ -61,19 +67,26 @@ class LinkImageAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <Select
-                    label={polyglot.t('Select a format')}
-                    onChange={this.setType}
-                    style={styles.input}
-                    value={type}
-                >
-                    <MenuItem value="text">
-                        {polyglot.t('Another column content')}
-                    </MenuItem>
-                    <MenuItem value="column">
-                        {polyglot.t('A custom URL (same for all resources)')}
-                    </MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel id="linkimage-admin-input-label">
+                        {polyglot.t('Select a format')}
+                    </InputLabel>
+                    <Select
+                        labelId="linkimage-admin-input-label"
+                        onChange={this.setType}
+                        style={styles.input}
+                        value={type}
+                    >
+                        <MenuItem value="text">
+                            {polyglot.t('Another column content')}
+                        </MenuItem>
+                        <MenuItem value="column">
+                            {polyglot.t(
+                                'A custom URL (same for all resources)',
+                            )}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
                 <TextField
                     label={
                         type !== 'text'

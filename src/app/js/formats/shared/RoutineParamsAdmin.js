@@ -1,6 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Select, MenuItem } from '@material-ui/core';
+import {
+    TextField,
+    Select,
+    MenuItem,
+    FormControl,
+    InputLabel,
+} from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -50,12 +56,12 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const setOrderBy = (_, __, newOrderBy) => {
+    const setOrderBy = e => {
         onChange({
             maxSize,
             maxValue,
             minValue,
-            orderBy: newOrderBy,
+            orderBy: e.target.value,
             uri,
         });
     };
@@ -97,25 +103,30 @@ const RoutineParamsAdmin = ({
                 />
             )}
             {showOrderBy && (
-                <Select
-                    label={polyglot.t('order_by')}
-                    onChange={setOrderBy}
-                    style={styles.input}
-                    value={orderBy}
-                >
-                    <MenuItem value="_id/asc">
-                        {polyglot.t('label_asc')}
-                    </MenuItem>
-                    <MenuItem value="_id/desc">
-                        {polyglot.t('label_desc')}
-                    </MenuItem>
-                    <MenuItem value="value/asc">
-                        {polyglot.t('value_asc')}
-                    </MenuItem>
-                    <MenuItem value="value/desc">
-                        {polyglot.t('value_desc')}
-                    </MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel id="routine-params-admin-input-label">
+                        {polyglot.t('order_by')}
+                    </InputLabel>
+                    <Select
+                        labelId="routine-params-admin-input-label"
+                        onChange={setOrderBy}
+                        style={styles.input}
+                        value={orderBy}
+                    >
+                        <MenuItem value="_id/asc">
+                            {polyglot.t('label_asc')}
+                        </MenuItem>
+                        <MenuItem value="_id/desc">
+                            {polyglot.t('label_desc')}
+                        </MenuItem>
+                        <MenuItem value="value/asc">
+                            {polyglot.t('value_asc')}
+                        </MenuItem>
+                        <MenuItem value="value/desc">
+                            {polyglot.t('value_desc')}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
             )}
             {showUri && (
                 <TextField

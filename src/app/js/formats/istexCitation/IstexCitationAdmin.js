@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { Select, MenuItem, TextField } from '@material-ui/core';
+import {
+    Select,
+    MenuItem,
+    TextField,
+    FormControl,
+    InputLabel,
+} from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -41,8 +47,8 @@ export class IstexCitationAdmin extends Component {
         args: defaultArgs,
     };
 
-    setSearchedField = (event, index, searchedField) => {
-        updateAdminArgs('searchedField', searchedField, this.props);
+    setSearchedField = e => {
+        updateAdminArgs('searchedField', e.target.value, this.props);
     };
 
     setDocumentSortBy = e =>
@@ -56,19 +62,24 @@ export class IstexCitationAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <Select
-                    className="searched_field"
-                    label={polyglot.t('searched_field')}
-                    onChange={this.setSearchedField}
-                    style={styles.input}
-                    value={searchedField}
-                >
-                    {SEARCHED_FIELD_VALUES.map(value => (
-                        <MenuItem key={value} value={value}>
-                            {polyglot.t(value)}
-                        </MenuItem>
-                    ))}
-                </Select>
+                <FormControl>
+                    <InputLabel id="istex-citation-admin-input-label">
+                        {polyglot.t('searched_field')}
+                    </InputLabel>
+                    <Select
+                        className="searched_field"
+                        labelId="istex-citation-admin-input-label"
+                        onChange={this.setSearchedField}
+                        style={styles.input}
+                        value={searchedField}
+                    >
+                        {SEARCHED_FIELD_VALUES.map(value => (
+                            <MenuItem key={value} value={value}>
+                                {polyglot.t(value)}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 <TextField
                     className="document_sort_by"
                     label={polyglot.t('document_sort_by')}

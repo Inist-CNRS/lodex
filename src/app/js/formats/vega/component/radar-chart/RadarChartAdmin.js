@@ -5,6 +5,8 @@ import {
     MenuItem,
     Checkbox,
     FormControlLabel,
+    FormControl,
+    InputLabel,
 } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
@@ -90,8 +92,8 @@ class RadarChartAdmin extends Component {
         );
     };
 
-    setScale = (_, __, scale) => {
-        updateAdminArgs('scale', scale, this.props);
+    setScale = e => {
+        updateAdminArgs('scale', e.target.value, this.props);
     };
 
     setColors(colors) {
@@ -122,6 +124,7 @@ class RadarChartAdmin extends Component {
             showMinValue = true,
             showOrderBy = true,
         } = this.props;
+
         const {
             params,
             axisRoundValue,
@@ -168,15 +171,22 @@ class RadarChartAdmin extends Component {
                     }
                     label={polyglot.t('axis_round_value')}
                 />
-                <Select
-                    label={polyglot.t('scale')}
-                    onChange={this.setScale}
-                    style={styles.input}
-                    value={scale}
-                >
-                    <MenuItem value="linear">{polyglot.t('linear')}</MenuItem>
-                    <MenuItem value="log">{polyglot.t('log')}</MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel id="radarchart-admin-scale-label-input">
+                        {polyglot.t('scale')}
+                    </InputLabel>
+                    <Select
+                        labelId="radarchart-admin-scale-label-input"
+                        onChange={this.setScale}
+                        style={styles.input}
+                        value={scale}
+                    >
+                        <MenuItem value="linear">
+                            {polyglot.t('linear')}
+                        </MenuItem>
+                        <MenuItem value="log">{polyglot.t('log')}</MenuItem>
+                    </Select>
+                </FormControl>
             </div>
         );
     }
