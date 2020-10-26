@@ -111,6 +111,7 @@
 "add_column"	"Add a new column"	"Ajouter une nouvelle colonne"
 "add_column"	"Add a new column"	"Ajouter une nouvelle colonne"
 "no_dataset"	"No dataset"	"Aucun jeu de données"
+"no_option"	"No options"	"Aucune sélection"
 "scheme"	"scheme"	"schéma"
 "format"	"format"	"format"
 "item_column_content"	"The column content"	"Le contenu de la colonne"

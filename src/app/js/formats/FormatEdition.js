@@ -17,7 +17,7 @@ class FormatEdition extends Component {
         super(props);
 
         this.state = {
-            name: props.input.value.name,
+            name: props.input.value.name || '',
             args: merge(
                 getFormatInitialArgs(props.input.value.name),
                 props.input.value.args,
