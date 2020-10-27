@@ -12,6 +12,16 @@ import {
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
+const dialogStyle = {
+    container: {
+        margin: '0px auto',
+        marginTop: 10,
+        marginBottom: 100,
+        maxHeight: '100vh',
+    },
+    content: { maxHeight: 'calc(100vh - 298px)' },
+};
+
 export const PureButtonWithDialog = ({
     handleClose,
     handleOpen,
@@ -47,9 +57,14 @@ export const PureButtonWithDialog = ({
     return (
         <span style={style}>
             {openButton}
-            <Dialog open={open} onClose={handleClose} scroll="body">
+            <Dialog
+                style={dialogStyle.container}
+                open={open}
+                onClose={handleClose}
+                scroll="body"
+            >
                 <DialogTitle>{label}</DialogTitle>
-                <DialogContent>
+                <DialogContent style={dialogStyle.content}>
                     <div className="dialog-body">
                         <div className="dialog-content">{dialog}</div>
                     </div>
