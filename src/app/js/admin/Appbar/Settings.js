@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Menu, MenuItem, Popover } from '@material-ui/core';
+import { Button, Menu, MenuItem } from '@material-ui/core';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -12,11 +12,6 @@ import ClearDialog from './ClearDialog';
 import { fromPublication, fromParsing } from '../selectors';
 
 const styles = {
-    container: {
-        display: 'inline-block',
-        marginLeft: 4,
-        marginRight: 4,
-    },
     button: {
         color: 'white',
     },
@@ -95,16 +90,18 @@ class SettingsComponent extends Component {
         } = this.state;
 
         return (
-            <div style={styles.container}>
-                <Button
-                    variant="text"
-                    className="btn-danger-zone"
-                    onClick={this.handleTouchTap}
-                    endIcon={<ArrowDown />}
-                    style={styles.button}
-                >
-                    {polyglot.t('clear')}
-                </Button>
+            <>
+                {(hasPublishedDataset || hasLoadedDataset) && (
+                    <Button
+                        variant="text"
+                        className="btn-danger-zone"
+                        onClick={this.handleTouchTap}
+                        endIcon={<ArrowDown />}
+                        style={styles.button}
+                    >
+                        {polyglot.t('clear')}
+                    </Button>
+                )}
                 <Menu
                     anchorEl={anchorEl}
                     keepMounted
@@ -139,7 +136,7 @@ class SettingsComponent extends Component {
                         onClose={this.handleCloseDataset}
                     />
                 )}
-            </div>
+            </>
         );
     }
 }

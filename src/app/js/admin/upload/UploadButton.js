@@ -31,6 +31,7 @@ const UploadButtonComponent = ({
     handleOpen,
     handleClose,
     p: polyglot,
+    children,
 }) => {
     const actions = [
         <Button
@@ -45,7 +46,9 @@ const UploadButtonComponent = ({
 
     return (
         <span>
-            {raised ? (
+            {children ? (
+                React.cloneElement(children, { onClick: handleOpen })
+            ) : raised ? (
                 <Button
                     variant="contained"
                     style={styles.button}

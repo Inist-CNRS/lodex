@@ -44,7 +44,8 @@ export const StatisticsComponent = ({
     p: polyglot,
     totalLoadedColumns,
     totalLoadedLines,
-    totalPublishedColumns,
+    totalPublishedResources,
+    mode = 'data',
 }) => (
     <div style={styles.container}>
         <hr style={styles.line} />
@@ -54,25 +55,32 @@ export const StatisticsComponent = ({
             style={styles.progress(isComputing)}
             size={20}
         />
-        <div style={styles.item}>
-            {polyglot.t('parsing_summary', { count: totalLoadedLines })}
-        </div>
-        <div style={styles.item}>
-            {polyglot.t('parsing_summary_columns', {
-                count: totalLoadedColumns,
-            })}
-        </div>
-        <div style={styles.item}>
-            {polyglot.t('publication_summary_columns', {
-                count: totalPublishedColumns,
-            })}
-        </div>
+        {mode === 'data' ? (
+            <>
+                <div style={styles.item}>
+                    {polyglot.t('parsing_summary', { count: totalLoadedLines })}
+                </div>
+                <div style={styles.item}>
+                    {polyglot.t('parsing_summary_columns', {
+                        count: totalLoadedColumns,
+                    })}
+                </div>
+            </>
+        ) : (
+            <div style={styles.item}>
+                {polyglot.t('publication_summary_resources', {
+                    count: totalPublishedResources,
+                })}
+            </div>
+        )}
         <hr style={styles.line} />
-        <ActionButton
-            onAddNewColumn={handleAddColumn}
-            onShowExistingColumns={handleShowExistingColumns}
-            onHideExistingColumns={handleHideExistingColumns}
-        />
+        {mode === 'display' && (
+            <ActionButton
+                onAddNewColumn={handleAddColumn}
+                onShowExistingColumns={handleShowExistingColumns}
+                onHideExistingColumns={handleHideExistingColumns}
+            />
+        )}
     </div>
 );
 
@@ -84,14 +92,15 @@ StatisticsComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     totalLoadedColumns: PropTypes.number.isRequired,
     totalLoadedLines: PropTypes.number.isRequired,
-    totalPublishedColumns: PropTypes.number.isRequired,
+    totalPublishedResources: PropTypes.number.isRequired,
+    mode: PropTypes.oneOf(['data', 'display']),
 };
 
 const mapStateToProps = state => ({
     isComputing: fromPublicationPreview.isComputing(state),
     totalLoadedColumns: fromParsing.getParsedExcerptColumns(state).length,
     totalLoadedLines: fromParsing.getTotalLoadedLines(state),
-    totalPublishedColumns: fromFields.getFields(state).length,
+    totalPublishedResources: fromFields.getFields(state).length,
 });
 
 const mapDispatchToProps = {

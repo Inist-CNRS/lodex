@@ -68,7 +68,6 @@ export class ParsingResultComponent extends Component {
                 <div style={styles.titleContainer}>
                     <div style={styles.title}>{polyglot.t('parsing')}</div>
                 </div>
-
                 <ParsingExcerpt
                     columns={excerptColumns}
                     lines={excerptLines}
