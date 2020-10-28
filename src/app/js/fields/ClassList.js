@@ -33,7 +33,7 @@ const ClassList = ({ fields, p: polyglot }) => (
             <Fab
                 className="add-class"
                 onClick={() => fields.push()}
-                mini
+                size="small"
                 style={styles.add}
             >
                 <ContentAdd />
@@ -59,7 +59,7 @@ ClassList.propTypes = {
         push: PropTypes.func.isRequired,
     }).isRequired,
     p: polyglotPropTypes.isRequired,
-    onChangeClass: PropTypes.func.isRequired,
+    onChangeClass: PropTypes.func,
 };
 
 export default compose(translate, pure)(ClassList);

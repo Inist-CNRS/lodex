@@ -43,6 +43,7 @@ export const StepComponent = ({
             icon={icon}
             index={index}
             last={last}
+            orientation="vertical"
             style={style}
         >
             <StepButton className={classes.button} onClick={handleSelectStep}>
