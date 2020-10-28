@@ -88,7 +88,7 @@ export const checkFacetsItem = (name, facets) => {
 
     facetValueItems.each((facetValueItem, index) => {
         cy.wrap(facetValueItem)
-            .contains(facets[index])
+            .contains('span', facets[index])
             .should('exist');
     });
 };
