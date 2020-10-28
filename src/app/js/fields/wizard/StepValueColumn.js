@@ -61,7 +61,7 @@ StepValueColumnComponent.propTypes = {
 };
 
 StepValueColumnComponent.defaultProps = {
-    column: undefined,
+    column: '',
 };
 
 const mapStateToProps = state => {

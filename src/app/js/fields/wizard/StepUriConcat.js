@@ -88,7 +88,7 @@ StepValueConcatComponent.propTypes = {
 };
 
 StepValueConcatComponent.defaultProps = {
-    columns: [null, null],
+    columns: ['', ''],
 };
 
 const mapStateToProps = state => {

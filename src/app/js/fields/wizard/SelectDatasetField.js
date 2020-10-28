@@ -53,7 +53,7 @@ SelectDatasetFieldComponent.propTypes = {
     id: PropTypes.string,
 };
 SelectDatasetFieldComponent.defaultProps = {
-    column: undefined,
+    column: '',
     id: 'select_column',
 };
 

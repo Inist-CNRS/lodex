@@ -57,7 +57,7 @@ ConcatFieldComponent.propTypes = {
 };
 
 ConcatFieldComponent.defaultProps = {
-    column: null,
+    column: '',
 };
 
 const mapStateToProps = state => ({

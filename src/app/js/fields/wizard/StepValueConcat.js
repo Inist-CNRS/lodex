@@ -32,6 +32,7 @@ export const StepValueConcatComponent = ({
     handleChange,
     handleAddColumn,
     handleRemoveColumn,
+    ...props
 }) => (
     <div id="step-value-concat">
         <FormControlLabel
@@ -76,7 +77,7 @@ StepValueConcatComponent.propTypes = {
 };
 
 StepValueConcatComponent.defaultProps = {
-    columns: [null, null],
+    columns: ['', ''],
 };
 
 const mapStateToProps = state => {
@@ -92,7 +93,7 @@ const mapStateToProps = state => {
         const args = get(valueTransformer, 'args', []);
         return {
             selected: true,
-            columns: args.map(({ value }) => value),
+            columns: args.map(({ value }) => value || ''),
             args,
         };
     }
@@ -110,17 +111,17 @@ export default compose(
                     {
                         name: 'column',
                         type: 'column',
-                        value: null,
+                        value: '',
                     },
                     {
                         name: 'column',
                         type: 'column',
-                        value: null,
+                        value: '',
                     },
                 ],
             });
         },
-        handleChange: ({ onChange, args }) => (event, key, value, index) => {
+        handleChange: ({ onChange, args }) => (value, event, key, index) => {
             onChange({
                 operation: 'CONCAT',
                 args: [
@@ -142,7 +143,7 @@ export default compose(
                     {
                         name: 'column',
                         type: 'column',
-                        value: null,
+                        value: '',
                     },
                 ],
             });
