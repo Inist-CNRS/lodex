@@ -8,7 +8,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import ArchiveIcon from '@material-ui/icons/Archive';
@@ -38,11 +38,14 @@ const styles = {
         display: 'flex',
         textAlign: 'center',
         padding: 20,
-        color: 'inherit',
+        color: '#ddd',
         textDecoration: 'none',
         '&::before': {
             content: 'ssss',
         },
+    },
+    activeLinkContainer: {
+        color: '#000',
     },
 };
 
@@ -53,7 +56,7 @@ const InnerSidebarComponent = ({
 }) => (
     <>
         {/* <Route path="/display">
-            <div style={styles.root}>
+            <div style={styles.root} className="sidebar">
                 <Box style={styles.linkContainer}>
                     <p>
                         <HomeIcon fontSize="large" />
@@ -78,34 +81,40 @@ const InnerSidebarComponent = ({
             </div>
         </Route> */}
         <Route path="/data">
-            <div style={styles.root}>
-                <Link to="/data" style={styles.linkContainer}>
+            <div style={styles.root} className="sidebar">
+                <NavLink
+                    to="/data"
+                    activeStyle={styles.activeLinkContainer}
+                    style={styles.linkContainer}
+                >
                     <Box>
                         <p>
                             <GridOnIcon fontSize="large" />
                             <br />
-                            Data
+                            {polyglot.t('data')}
                         </p>
                     </Box>
-                </Link>
+                </NavLink>
                 {hasLoadedDataset && (
                     <UploadButton>
                         <Box
                             style={{
                                 ...styles.linkContainer,
                                 cursor: 'pointer',
+                                color: '#000',
                             }}
                         >
                             <p>
                                 <AddBoxIcon fontSize="large" />
                                 <br />
-                                Add more
+                                <span>{polyglot.t('add_more')}</span>
                             </p>
                         </Box>
                     </UploadButton>
                 )}
                 {hasPublishedDataset && (
-                    <Link
+                    <NavLink
+                        activeStyle={styles.activeLinkContainer}
                         style={{ ...styles.linkContainer, marginTop: 'auto' }}
                         to="/data/removed"
                     >
@@ -113,10 +122,10 @@ const InnerSidebarComponent = ({
                             <p>
                                 <DeleteIcon fontSize="large" />
                                 <br />
-                                Bin
+                                {polyglot.t('removed_resources')}
                             </p>
                         </Box>
-                    </Link>
+                    </NavLink>
                 )}
             </div>
         </Route>

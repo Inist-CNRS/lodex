@@ -9,7 +9,6 @@ describe('Book Summary Format', () => {
         teardown();
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
-
         datasetImportPage.importDataset('dataset/book.csv');
         datasetImportPage.importModel('model/book.json');
         datasetImportPage.publish();

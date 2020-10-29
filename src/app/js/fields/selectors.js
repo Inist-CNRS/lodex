@@ -57,6 +57,8 @@ const getFieldsForPreview = createSelector(
 
 const getParams = (_, params) => params;
 
+const getEditedFieldName = state => state.editedFieldName;
+
 const getEditedField = state => state.byName[state.editedFieldName];
 
 export const getCollectionFields = createSelector(getFields, fields =>
@@ -400,6 +402,7 @@ export default {
     isAdding,
     getError,
     getFacetFields,
+    getEditedFieldName,
     hasFacetFields,
     hasSearchableFields,
     getNbColumns,

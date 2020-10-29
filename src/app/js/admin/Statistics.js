@@ -58,7 +58,9 @@ export const StatisticsComponent = ({
         {mode === 'data' ? (
             <>
                 <div style={styles.item}>
-                    {polyglot.t('parsing_summary', { count: totalLoadedLines })}
+                    {polyglot.t('parsing_summary_lines', {
+                        count: totalLoadedLines,
+                    })}
                 </div>
                 <div style={styles.item}>
                     {polyglot.t('parsing_summary_columns', {

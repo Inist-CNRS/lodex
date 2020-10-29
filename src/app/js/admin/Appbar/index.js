@@ -56,13 +56,6 @@ const AppbarComponent = ({
     isAdmin,
     p: polyglot,
 }) => {
-    console.log({
-        hasPublishedDataset,
-        hasLoadedDataset,
-        isLoading,
-        isAdmin,
-        p: polyglot,
-    });
     const leftElement = (
         <div style={styles.buttons}>
             {isAdmin && hasLoadedDataset && (
@@ -73,7 +66,7 @@ const AppbarComponent = ({
                         style={styles.button}
                         startIcon={<StorageIcon />}
                     >
-                        {polyglot.t('data')}
+                        <span>{polyglot.t('data')}</span>
                     </Button>
                     <Button
                         variant="text"
@@ -81,7 +74,7 @@ const AppbarComponent = ({
                         style={styles.button}
                         startIcon={<AspectRatioIcon />}
                     >
-                        {polyglot.t('display')}
+                        <span>{polyglot.t('display')}</span>
                     </Button>
                 </>
             )}

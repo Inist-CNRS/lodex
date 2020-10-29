@@ -1,4 +1,5 @@
 import { fillInputWithFixture } from './forms';
+import * as adminNavigation from './adminNavigation';
 
 export const openImportDialog = () => {
     cy.get('.upload.admin button').click();
@@ -19,7 +20,10 @@ export const importDataset = (filename, mimeType = 'text/csv') => {
 };
 
 export const importMoreDataset = (filename, mimeType = 'text/csv') => {
-    cy.get('.appbar button.open-upload').click();
+    cy.get('.sidebar')
+        .contains('Add more')
+        .click();
+
     fillInputWithFixture(
         '.btn-upload-dataset input[type=file]',
         filename,
@@ -94,7 +98,7 @@ export const setOperationTypeInWizard = (value = 'DEFAULT') => {
 
 export const publish = () => {
     cy.get('.btn-publish button').click();
-    cy.wait(500);
+    adminNavigation.goToData();
     cy.get('.data-published').should('be.visible');
 };
 
@@ -106,11 +110,15 @@ export const goToPublishedResources = () => {
 };
 
 export const goToModel = () => {
-    cy.get('.appbar a[href="#/ontology"]').click();
-    cy.location('hash').should('equal', '#/ontology');
+    adminNavigation.goToDisplay();
+
+    cy.get('button')
+        .contains('Export model')
+        .should('be.visible');
 };
 
 export const importModel = (filename, mimeType = 'application/json') => {
+    adminNavigation.goToDisplay();
     cy.get('button.btn-import-fields').click();
     fillInputWithFixture('input[name="file_model"]', filename, mimeType);
 };
