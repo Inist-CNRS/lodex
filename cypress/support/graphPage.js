@@ -34,20 +34,15 @@ export const getFacet = name => cy.get('.facet-item').contains(name);
 
 export const getFacetItem = (name, value) =>
     getFacet(name)
-        .parentsUntil('.graph-facets > div')
-        .last()
-        .next() // .facet-value-list next to the .facet-item
+        .parent()
         .find('.facet-value-item')
-        .contains(value)
-        .parentsUntil('.facet-value-item')
-        .last();
+        .contains('span', value)
+        .parent();
 
 export const getFacetExcludeItem = name =>
     getFacet(name)
-        .parentsUntil('.graph-facets > div')
-        .last()
-        .next() // .facet-value-list next to the .facet-item
-        .find('.exclude-facet');
+        .parent()
+        .find('.facet-value-list .exclude-facet');
 
 export const setFacet = (name, value) => {
     getFacet(name).click();

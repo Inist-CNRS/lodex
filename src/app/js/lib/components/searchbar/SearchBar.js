@@ -74,6 +74,9 @@ const SearchBar = ({
                     className={styles.text}
                     placeholder={polyglot.t('search')}
                     onChange={onChange}
+                    onFocus={(event, toto) => {
+                        event.nativeEvent.target.select();
+                    }}
                     value={value}
                     underlineStyle={muiStyles.searchTextUnderline}
                     underlineFocusStyle={muiStyles.searchTextUnderline}
