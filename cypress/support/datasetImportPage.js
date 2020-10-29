@@ -94,6 +94,7 @@ export const setOperationTypeInWizard = (value = 'DEFAULT') => {
 
 export const publish = () => {
     cy.get('.btn-publish button').click();
+    cy.wait(500);
     cy.get('.data-published').should('be.visible');
 };
 
