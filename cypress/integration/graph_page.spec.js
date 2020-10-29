@@ -39,6 +39,7 @@ describe('Graph Page', () => {
         graphPage.getStats().should('have.text', 'Found 4 on 50');
 
         graphPage.getFacet('Publication Year').click();
+        cy.wait(500);
         graphPage
             .getFacetItem('Publication Year', '2011')
             .find('input[type=checkbox]')

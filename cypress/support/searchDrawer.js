@@ -53,19 +53,18 @@ export const getFacetsOrder = facets => {
 };
 
 export const getFacet = name =>
-    cy
-        .get('.search .search-facets .facet-item')
-        .contains('span', name)
-        .parentsUntil('.facet-item');
+    cy.get('.search .search-facets .facet-item').contains('span', name);
 
-export const getFacetItem = (name, value) => getFacet(name).contains(value);
+export const getFacetItem = (name, value) =>
+    getFacet(name)
+        .parent()
+        .contains('span', value)
+        .parent();
 
 export const getFacetExcludeItem = name =>
     getFacet(name)
-        .parentsUntil('.search-facets > li')
-        .last()
-        .next() // .facet-value-list next to the .facet-item
-        .find('.exclude-facet');
+        .next()
+        .find('.facet-value-list .exclude-facet');
 
 export const setFacet = (name, value) => {
     getFacet(name).click();

@@ -36,6 +36,7 @@ export const getFacetItem = (name, value) =>
     getFacet(name)
         .parent()
         .find('.facet-value-item')
+        .parent()
         .contains('span', value)
         .parent();
 
