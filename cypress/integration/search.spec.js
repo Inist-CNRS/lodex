@@ -156,6 +156,7 @@ describe('Search', () => {
         it('should allow to sort facet', () => {
             menu.openSearchDrawer();
             searchDrawer.getFacet('Première mise en ligne en').click();
+            cy.wait(500);
             searchDrawer.checkFacetsItem('Première mise en ligne en (10)', [
                 '2011',
                 '1988',

@@ -83,7 +83,9 @@ export const clearFacet = value => {
 };
 
 export const checkFacetsItem = (name, facets) => {
-    const facetValueItems = getFacet(name).find('.facet-value-item');
+    const facetValueItems = getFacet(name)
+        .next()
+        .find('.facet-value-item');
 
     facetValueItems.each((facetValueItem, index) => {
         cy.wrap(facetValueItem)
