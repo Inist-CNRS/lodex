@@ -56,7 +56,9 @@ const SearchBar = ({
 
     useEffect(() => {
         setTimeout(() => {
-            refTextField.current.focus();
+            refTextField &&
+                refTextField.current &&
+                refTextField.current.focus();
         }, 300);
     }, [refTextField]);
 
@@ -74,9 +76,9 @@ const SearchBar = ({
                     className={styles.text}
                     placeholder={polyglot.t('search')}
                     onChange={onChange}
-                    onFocus={(event, toto) => {
-                        event.nativeEvent.target.select();
-                    }}
+                    onFocus={(event, toto) =>
+                        console.log('onFocus', event, toto)
+                    }
                     value={value}
                     underlineStyle={muiStyles.searchTextUnderline}
                     underlineFocusStyle={muiStyles.searchTextUnderline}
