@@ -1,6 +1,7 @@
 export const changeFormat = (field, format) => {
     cy.get(`.${field} .configure-field`).click();
-    cy.get('#step-value-format>div>div>.select-format')
+    cy.get('#step-value-format .select-format')
+        .first()
         .scrollIntoView()
         .click();
 

@@ -4,6 +4,7 @@ import * as adminPage from '../support/adminPage';
 import * as datasetImportPage from '../support/datasetImportPage';
 import { fillInputWithFixture } from '../support/forms';
 import * as searchDrawer from '../support/searchDrawer';
+import * as adminNavigation from '../support/adminNavigation';
 
 describe('Dataset Publication', () => {
     beforeEach(teardown);
@@ -43,6 +44,7 @@ describe('Dataset Publication', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
+            adminNavigation.goToDisplay();
             datasetImportPage.addColumn('Column 1');
 
             cy.get('.publication-excerpt')

@@ -6,6 +6,7 @@ import { render } from 'react-dom';
 import { createHashHistory } from 'history';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+import { Route, Redirect } from 'react-router';
 
 import {
     ThemeProvider as MuiThemeProvider,
@@ -13,13 +14,18 @@ import {
 } from '@material-ui/core/styles';
 
 import rootReducer from './reducers';
-import Routes from './Routes';
 import sagas from './sagas';
 import configureStore from '../configureStore';
 import scrollToTop from '../lib/scrollToTop';
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import theme from '../theme';
+import App from './App';
+import RemovedResourcePage from './removedResources/RemovedResourcePage';
+import Login from '../user/Login';
+import PrivateRoute from './PrivateRoute';
+import { Display } from './Display';
+import { Data } from './Data';
 
 const adminTheme = createMuiTheme({
     palette: {
@@ -31,7 +37,7 @@ const adminTheme = createMuiTheme({
             contrastText: theme.white.primary,
         },
         contrastThreshold: 3,
-        //TODO : find this usage or remove
+        // @TODO: find this usage or remove
         primary2Color: theme.purple.primary,
         text: {
             primary: theme.black.secondary,
@@ -56,10 +62,24 @@ const store = configureStore(
 );
 
 render(
-    <Provider {...{ store }}>
+    <Provider store={store}>
         <MuiThemeProvider theme={adminTheme}>
             <ConnectedRouter history={history} onUpdate={scrollToTop}>
-                <Routes />
+                <App>
+                    <Route
+                        path="/"
+                        exact
+                        render={() => <Redirect to="/data" />}
+                    />
+                    <PrivateRoute
+                        path="/data/removed"
+                        exact
+                        component={RemovedResourcePage}
+                    />
+                    <PrivateRoute path="/data" exact component={Data} />
+                    <PrivateRoute path="/display" exact component={Display} />
+                    <Route path="/login" exact component={Login} />
+                </App>
             </ConnectedRouter>
         </MuiThemeProvider>
     </Provider>,

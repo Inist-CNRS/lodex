@@ -10,16 +10,14 @@ import ImportFieldsDialog from './ImportFieldsDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportFields as exportFieldsAction } from '../../exportFields';
 import { exportFieldsReady as exportFieldsReadyAction } from '../../exportFieldsReady';
-import Link from '../../lib/components/Link';
 
 const styles = {
     container: {
-        display: 'inline-block',
-        marginLeft: 4,
-        marginRight: 4,
+        textAlign: 'right',
+        paddingBottom: 20,
     },
     button: {
-        color: 'white',
+        color: 'black',
     },
 };
 
@@ -28,7 +26,6 @@ export class ModelMenuComponent extends Component {
         hasPublishedDataset: PropTypes.bool.isRequired,
         exportFields: PropTypes.func.isRequired,
         exportFieldsReady: PropTypes.func.isRequired,
-        location: PropTypes.shape({ pathname: PropTypes.string }),
         p: polyglotPropTypes.isRequired,
     };
 
@@ -87,30 +84,19 @@ export class ModelMenuComponent extends Component {
     };
 
     render() {
-        const { hasPublishedDataset, location, p: polyglot } = this.props;
+        const { hasPublishedDataset, p: polyglot } = this.props;
         const { showImportFieldsConfirmation } = this.state;
 
         return (
             <div style={styles.container}>
-                {hasPublishedDataset ? (
-                    <Button
-                        variant="text"
-                        component={props => <Link to="/ontology" {...props} />}
-                        disabled={location.pathname === '/ontology'}
-                        style={styles.button}
-                    >
-                        {polyglot.t('view_fields')}
-                    </Button>
-                ) : (
-                    <Button
-                        variant="text"
-                        className="btn-import-fields"
-                        onClick={this.handleImportFields}
-                        style={styles.button}
-                    >
-                        {polyglot.t('import_fields')}
-                    </Button>
-                )}
+                <Button
+                    variant="text"
+                    className="btn-import-fields"
+                    onClick={this.handleImportFields}
+                    style={styles.button}
+                >
+                    {polyglot.t('import_fields')}
+                </Button>
                 {!hasPublishedDataset && showImportFieldsConfirmation && (
                     <ImportFieldsDialog
                         onClose={this.handleImportFieldsClose}

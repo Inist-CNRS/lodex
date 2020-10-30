@@ -15,6 +15,7 @@ import {
     polyglot as polyglotPropTypes,
     validationField as validationFieldPropType,
 } from '../../propTypes';
+import { useHistory } from 'react-router';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };
@@ -33,34 +34,44 @@ const ValidationButtonComponent = ({
     handleShowErrorsClick,
     p: polyglot,
     popover,
-}) => (
-    <div style={styles.container}>
-        <Button
-            color="secondary"
-            variant="contained"
-            onClick={handleShowErrorsClick}
-        >
-            {polyglot.t('show_publication_errors')}
-        </Button>
-        <Popover
-            open={popover.show}
-            anchorEl={popover.anchorEl}
-            anchorOrigin={anchorOrigin}
-            targetOrigin={targetOrigin}
-            onClose={handleHideErrors}
-        >
-            <List className="validation">
-                {fields.map(field => (
-                    <ValidationField
-                        key={field.name}
-                        field={field}
-                        onEditField={handleEditField}
-                    />
-                ))}
-            </List>
-        </Popover>
-    </div>
-);
+}) => {
+    const history = useHistory();
+
+    // @TODO: Find a better way to handle fix error from data tab
+    const redirectAndHandleEditField = (...args) => {
+        history.push('/display');
+        setTimeout(() => handleEditField(...args), 0);
+    };
+
+    return (
+        <div style={styles.container}>
+            <Button
+                color="secondary"
+                variant="contained"
+                onClick={handleShowErrorsClick}
+            >
+                {polyglot.t('show_publication_errors')}
+            </Button>
+            <Popover
+                open={popover.show}
+                anchorEl={popover.anchorEl}
+                anchorOrigin={anchorOrigin}
+                targetOrigin={targetOrigin}
+                onClose={handleHideErrors}
+            >
+                <List className="validation">
+                    {fields.map(field => (
+                        <ValidationField
+                            key={field.name}
+                            field={field}
+                            onEditField={redirectAndHandleEditField}
+                        />
+                    ))}
+                </List>
+            </Popover>
+        </div>
+    );
+};
 
 ValidationButtonComponent.propTypes = {
     popover: PropTypes.object,

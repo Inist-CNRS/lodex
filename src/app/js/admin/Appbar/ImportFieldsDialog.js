@@ -27,7 +27,7 @@ const styles = {
         cursor: 'pointer',
     },
     button: {
-        top: '12px',
+        marginTop: '12px',
     },
     error: {
         color: red[300],
@@ -75,6 +75,7 @@ class ImportFieldsDialogComponent extends Component {
                 variant="text"
                 className="btn-cancel"
                 onClick={onClose}
+                style={styles.button}
             >
                 {polyglot.t('cancel')}
             </Button>,

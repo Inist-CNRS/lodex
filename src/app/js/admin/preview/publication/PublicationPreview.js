@@ -13,6 +13,7 @@ const styles = {
     container: {
         position: 'relative',
         display: 'flex',
+        maxHeight: 400,
     },
     content: {
         overflow: 'auto',

@@ -2,6 +2,7 @@ import { teardown, logoutAndLoginAs } from '../support/authentication';
 import * as menu from '../support/menu';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as configureField from '../support/configureField';
+import * as adminNavigation from '../support/adminNavigation';
 
 describe('Transformers & Formats', () => {
     beforeEach(teardown);
@@ -12,6 +13,8 @@ describe('Transformers & Formats', () => {
             menu.goToAdminDashboard();
 
             datasetImportPage.importDataset('dataset/simple.csv');
+
+            adminNavigation.goToDisplay();
             datasetImportPage.setUriColumnValue();
             datasetImportPage.addColumn('Column 1', {
                 composedOf: ['Column 1', 'Column 2'],

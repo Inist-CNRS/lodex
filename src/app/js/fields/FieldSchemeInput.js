@@ -46,7 +46,7 @@ export const FieldSchemeInputComponent = ({
         component={FormAutoCompleteField}
         label={polyglot.t('scheme')}
         fullWidth
-        targetOrigin={styles.targetOrigin}
+        style={styles.targetOrigin}
         getFetchRequest={getSchemeSearchRequest}
         parseResponse={response =>
             getSchemeMenuItemsDataFromResponse(response).map(
