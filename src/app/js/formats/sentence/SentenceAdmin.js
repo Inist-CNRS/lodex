@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
+import { TextField } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -51,15 +51,15 @@ class SentenceAdmin extends Component {
             <div style={styles.container}>
                 <TextField
                     key="prefix"
-                    floatingLabelText={polyglot.t('prefix')}
-                    onChange={(event, newValue) => this.setPrefix(newValue)}
+                    label={polyglot.t('prefix')}
+                    onChange={e => this.setPrefix(e.target.value)}
                     style={styles.input}
                     value={prefix}
                 />
                 <TextField
                     key="suffix"
-                    floatingLabelText={polyglot.t('suffix')}
-                    onChange={(event, newValue) => this.setSuffix(newValue)}
+                    label={polyglot.t('suffix')}
+                    onChange={e => this.setSuffix(e.target.value)}
                     style={styles.input}
                     value={suffix}
                 />

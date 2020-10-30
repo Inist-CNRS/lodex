@@ -1,7 +1,7 @@
 export const getStats = () => cy.get('.stats');
 
 export const createResource = resource => {
-    cy.get('.create-resource button').click();
+    cy.get('button.create-resource').click();
 
     Object.entries(resource).forEach(([field, value]) => {
         cy.get('label')
@@ -11,7 +11,7 @@ export const createResource = resource => {
             .type(value);
     });
 
-    cy.get('.create-resource.save button').click();
+    cy.get('button.create-resource.save').click();
     cy.location('pathname').should('not.equal', '/graph');
 };
 
@@ -34,20 +34,16 @@ export const getFacet = name => cy.get('.facet-item').contains(name);
 
 export const getFacetItem = (name, value) =>
     getFacet(name)
-        .parentsUntil('.graph-facets > div')
-        .last()
-        .next() // .facet-value-list next to the .facet-item
+        .parent()
         .find('.facet-value-item')
-        .contains(value)
-        .parentsUntil('.facet-value-item')
-        .last();
+        .parent()
+        .contains('span', value)
+        .parent();
 
 export const getFacetExcludeItem = name =>
     getFacet(name)
-        .parentsUntil('.graph-facets > div')
-        .last()
-        .next() // .facet-value-list next to the .facet-item
-        .find('.exclude-facet');
+        .parent()
+        .find('.facet-value-list .exclude-facet');
 
 export const setFacet = (name, value) => {
     getFacet(name).click();

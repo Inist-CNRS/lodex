@@ -3,9 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
+import {
+    Dialog,
+    Button,
+    TextField,
+    DialogContent,
+    DialogActions,
+    DialogTitle,
+} from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
@@ -17,12 +22,6 @@ import {
 
 import { fromClear } from '../selectors';
 import { getHost } from '../../../../common/uris';
-
-const styles = {
-    dialog: {
-        padding: 0,
-    },
-};
 
 const baseUrl = getHost();
 
@@ -44,17 +43,10 @@ class ClearDialogComponent extends Component {
 
     getInstanceName = () => /\/\/([a-z0-9-]+)./.exec(baseUrl)[1];
 
-    handleChangeField = (_, value) => {
+    handleChangeField = e => {
         const instanceName = this.getInstanceName();
-
-        if (instanceName !== value) {
-            return this.setState({
-                validName: false,
-            });
-        }
-
-        return this.setState({
-            validName: true,
+        this.setState({
+            validName: instanceName === e.target.value,
         });
     };
 
@@ -92,6 +84,7 @@ class ClearDialogComponent extends Component {
             isClearing,
             hasFailed,
         } = this.props;
+
         const { validName } = this.state;
 
         const actions = [
@@ -99,44 +92,49 @@ class ClearDialogComponent extends Component {
                 raised
                 key="submit"
                 className="btn-save"
-                label={polyglot.t('confirm')}
                 onClick={this.handleClear(type)}
-                primary
+                color="primary"
                 error={hasFailed}
                 disabled={!validName}
                 loading={isClearing}
-            />,
-            <FlatButton
+            >
+                {polyglot.t('confirm')}
+            </ButtonWithStatus>,
+            <Button
                 key="cancel"
-                secondary
+                color="secondary"
+                variant="text"
                 className="btn-cancel"
-                label={polyglot.t('cancel')}
                 onClick={onClose}
-            />,
+            >
+                {polyglot.t('cancel')}
+            </Button>,
         ];
         return (
-            <Dialog
-                open
-                title={polyglot.t(
-                    type === 'dataset' ? 'clear_dataset' : 'clear_publish',
-                )}
-                actions={actions}
-                contentStyle={styles.dialog}
-            >
-                <b>{polyglot.t('listen_up')}</b>
-                <br />
-                <br />
-                <div>
-                    {polyglot.t('enter_name')} :<b> {this.getInstanceName()}</b>
-                    <TextField
-                        name="field-name-instance"
-                        hintText={polyglot.t('instance_name')}
-                        fullWidth
-                        onChange={this.handleChangeField}
-                        onKeyPress={e => this.handleKeyPress(e, type)}
-                        errorText={hasFailed && polyglot.t('error')}
-                    />
-                </div>
+            <Dialog open>
+                <DialogTitle>
+                    {polyglot.t(
+                        type === 'dataset' ? 'clear_dataset' : 'clear_publish',
+                    )}
+                </DialogTitle>
+                <DialogContent>
+                    <b>{polyglot.t('listen_up')}</b>
+                    <br />
+                    <br />
+                    <div>
+                        {polyglot.t('enter_name')} :
+                        <b> {this.getInstanceName()}</b>
+                        <TextField
+                            name="field-name-instance"
+                            placeholder={polyglot.t('instance_name')}
+                            fullWidth
+                            onChange={this.handleChangeField}
+                            onKeyPress={e => this.handleKeyPress(e, type)}
+                            error={hasFailed && polyglot.t('error')}
+                        />
+                    </div>
+                </DialogContent>
+                <DialogActions>{actions}</DialogActions>
             </Dialog>
         );
     }

@@ -2,10 +2,21 @@ import theme from '../theme';
 
 export default {
     palette: {
-        accent1Color: theme.orange.primary,
-        primary1Color: theme.green.primary,
+        primary: {
+            main: theme.green.primary,
+            contrastText: theme.white.primary,
+        },
+        contrastThreshold: 3,
+        secondary: {
+            main: theme.orange.primary,
+        },
+        //TODO : find this usage or remove
         primary2Color: theme.purple.primary,
-        textColor: '#5F6368',
+        text: {
+            primary: theme.black.secondary,
+        },
     },
-    fontFamily: 'Quicksand, sans-serif',
+    typography: {
+        fontFamily: 'Quicksand, sans-serif',
+    },
 };

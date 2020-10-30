@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import translate from 'redux-polyglot/translate';
-import IconButton from 'material-ui/IconButton';
-import LockOutlineIcon from 'material-ui/svg-icons/action/lock-outline';
+import { IconButton } from '@material-ui/core';
+import LockOutlineIcon from '@material-ui/icons/LockOutlined';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { toggleLogin as toggleLoginAction } from '../../user';

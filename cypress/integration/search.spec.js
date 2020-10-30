@@ -32,7 +32,7 @@ describe('Search', () => {
             searchDrawer.checkResultsCount(10);
             cy.get('.export').click();
             cy.wait(300);
-            cy.get('span[role="menuitem"]')
+            cy.get('li[role="menuitem"]')
                 .should('have.length', 8)
                 .contains('JSON')
                 .should('be.visible');
@@ -156,7 +156,8 @@ describe('Search', () => {
         it('should allow to sort facet', () => {
             menu.openSearchDrawer();
             searchDrawer.getFacet('Première mise en ligne en').click();
-            searchDrawer.checkFacetsItem('Première mise en ligne en', [
+            cy.wait(500);
+            searchDrawer.checkFacetsItem('Première mise en ligne en (10)', [
                 '2011',
                 '1988',
                 '2008',
@@ -169,7 +170,8 @@ describe('Search', () => {
                 '2004',
             ]);
             searchDrawer.sortFacet('Première mise en ligne en', 'value');
-            searchDrawer.checkFacetsItem('Première mise en ligne en', [
+
+            searchDrawer.checkFacetsItem('Première mise en ligne en (10)', [
                 '2011',
                 '2008',
                 '2007',
@@ -181,8 +183,8 @@ describe('Search', () => {
                 '1926',
                 '1853',
             ]);
-            searchDrawer.sortFacet('Première mise en ligne en', 'value');
-            searchDrawer.checkFacetsItem('Première mise en ligne en', [
+            searchDrawer.sortFacet('Première mise en ligne en (10)', 'value');
+            searchDrawer.checkFacetsItem('Première mise en ligne en (10)', [
                 '1853',
                 '1926',
                 '1939',
@@ -194,8 +196,8 @@ describe('Search', () => {
                 '2008',
                 '2011',
             ]);
-            searchDrawer.sortFacet('Première mise en ligne en', 'count');
-            searchDrawer.checkFacetsItem('Première mise en ligne en', [
+            searchDrawer.sortFacet('Première mise en ligne en (10)', 'count');
+            searchDrawer.checkFacetsItem('Première mise en ligne en (10)', [
                 '2011',
                 '1988',
                 '2008',
@@ -207,8 +209,8 @@ describe('Search', () => {
                 '1926',
                 '2004',
             ]);
-            searchDrawer.sortFacet('Première mise en ligne en', 'count');
-            searchDrawer.checkFacetsItem('Première mise en ligne en', [
+            searchDrawer.sortFacet('Première mise en ligne en (10)', 'count');
+            searchDrawer.checkFacetsItem('Première mise en ligne en (10)', [
                 '2008',
                 '1853',
                 '1984',

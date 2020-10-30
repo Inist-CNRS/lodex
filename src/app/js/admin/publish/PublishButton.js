@@ -10,7 +10,6 @@ import { fromPublish, fromPublication } from '../selectors';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import ConfirmPublication from './ConfirmPublication';
 import { fromFields } from '../../sharedSelectors';
-import theme from '../../theme';
 
 const styles = {
     title: {
@@ -37,19 +36,19 @@ export class PublishButtonComponent extends Component {
             published,
         } = this.props;
         return (
-            <div>
+            <div className="btn-publish">
                 <ButtonWithStatus
                     raised
-                    labelColor={theme.green.primary}
-                    className="btn-publish"
+                    color="primary"
                     loading={isPublishing}
                     error={error}
                     success={published}
-                    label={polyglot.t('publish')}
                     onClick={this.handleClick}
                     disabled={!canPublish}
                     style={styles.button}
-                />
+                >
+                    {polyglot.t('publish')}
+                </ButtonWithStatus>
                 <ConfirmPublication />
             </div>
         );

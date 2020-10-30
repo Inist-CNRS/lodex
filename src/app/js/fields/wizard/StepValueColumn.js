@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RadioButton from 'material-ui/RadioButton';
+import { Switch, FormControlLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -29,12 +29,16 @@ export const StepValueColumnComponent = ({
     selected,
 }) => (
     <div id="step-value-colmun">
-        <RadioButton
+        <FormControlLabel
+            control={
+                <Switch
+                    value="column"
+                    onChange={handleSelect}
+                    checked={selected}
+                    style={styles.radio}
+                />
+            }
             label={polyglot.t('a_column')}
-            value="column"
-            onClick={handleSelect}
-            checked={selected}
-            style={styles.radio}
         />
         {selected && (
             <div style={styles.inset}>
@@ -57,7 +61,7 @@ StepValueColumnComponent.propTypes = {
 };
 
 StepValueColumnComponent.defaultProps = {
-    column: undefined,
+    column: '',
 };
 
 const mapStateToProps = state => {

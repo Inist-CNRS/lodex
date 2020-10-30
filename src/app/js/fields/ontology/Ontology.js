@@ -3,10 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card';
-import Divider from 'material-ui/Divider';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+
+import {
+    Card,
+    CardHeader,
+    CardContent,
+    CardActions,
+    Divider,
+    Select,
+    MenuItem,
+    FormControl,
+} from '@material-ui/core';
 
 import {
     polyglot as polyglotPropTypes,
@@ -33,7 +40,7 @@ export class OntologyComponent extends Component {
         this.props.preLoadPublication();
     }
 
-    handleFilterChange = (_, __, filter) => this.setState({ filter });
+    handleFilterChange = e => this.setState({ filter: e.target.value });
 
     render() {
         const { p: polyglot } = this.props;
@@ -43,34 +50,33 @@ export class OntologyComponent extends Component {
             <Card>
                 <CardHeader title={<h3>{polyglot.t('model')}</h3>} />
                 <Divider />
-                <CardText>
-                    <SelectField
-                        autoWidth
-                        value={filter}
-                        onChange={this.handleFilterChange}
-                        style={{ width: 400 }}
-                        className="select-filter"
-                    >
-                        <MenuItem
-                            value={ALL}
-                            primaryText={polyglot.t('model_filter_all')}
-                        />
-                        <MenuItem
-                            value={'document'}
-                            primaryText={polyglot.t('model_filter_document')}
-                        />
-                        <MenuItem
-                            value={'dataset'}
-                            primaryText={polyglot.t('model_filter_dataset')}
-                        />
-                    </SelectField>
+                <CardContent>
+                    <FormControl fullWidth>
+                        <Select
+                            autoWidth
+                            value={filter}
+                            onChange={this.handleFilterChange}
+                            style={{ width: 400 }}
+                            className="select-filter"
+                        >
+                            <MenuItem value={ALL}>
+                                {polyglot.t('model_filter_all')}
+                            </MenuItem>
+                            <MenuItem value={'document'}>
+                                {polyglot.t('model_filter_document')}
+                            </MenuItem>
+                            <MenuItem value={'dataset'}>
+                                {polyglot.t('model_filter_dataset')}
+                            </MenuItem>
+                        </Select>
+                    </FormControl>
                     {(filter === ALL || filter === COVER_DATASET) && (
                         <OntologyTable title="dataset" />
                     )}
                     {(filter === ALL || filter != COVER_DATASET) && (
                         <OntologyTable title="document" />
                     )}
-                </CardText>
+                </CardContent>
                 <CardActions>
                     <ExportFieldsButton />
                     <ExportFieldsReadyButton />

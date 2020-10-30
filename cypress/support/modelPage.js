@@ -1,6 +1,6 @@
 export const changeFilter = value => {
-    cy.get('.select-filter button').click();
-    cy.get('div[role="menu"] span[role="menuitem"]')
+    cy.get('.select-filter').click();
+    cy.get('ul[role=listbox] li[role="option"]')
         .contains(value)
         .click();
 };

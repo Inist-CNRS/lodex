@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
+import { TextField } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -70,12 +70,12 @@ class StreamgraphAdmin extends Component {
         updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
     }
 
-    setMaxLegendLength = (_, maxLegendLength) => {
-        updateAdminArgs('maxLegendLength', maxLegendLength, this.props);
+    setMaxLegendLength = e => {
+        updateAdminArgs('maxLegendLength', e.target.value, this.props);
     };
 
-    setHeight = (_, height) => {
-        updateAdminArgs('height', height, this.props);
+    setHeight = e => {
+        updateAdminArgs('height', e.target.value, this.props);
     };
 
     render() {
@@ -105,13 +105,13 @@ class StreamgraphAdmin extends Component {
                     polyglot={polyglot}
                 />
                 <TextField
-                    floatingLabelText={polyglot.t('max_char_number_in_legends')}
+                    label={polyglot.t('max_char_number_in_legends')}
                     onChange={this.setMaxLegendLength}
                     style={styles.input}
                     value={maxLegendLength}
                 />
                 <TextField
-                    floatingLabelText={polyglot.t('height_px')}
+                    label={polyglot.t('height_px')}
                     onChange={this.setHeight}
                     style={styles.input}
                     value={height}

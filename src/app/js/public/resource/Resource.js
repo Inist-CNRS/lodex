@@ -5,16 +5,14 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router-dom';
 import translate from 'redux-polyglot/translate';
-import HomeIcon from 'material-ui/svg-icons/action/home';
-import { CardText, CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import HomeIcon from '@material-ui/icons/Home';
+import { CardContent, CardActions, Card, Button } from '@material-ui/core';
 import { Swipeable } from 'react-swipeable';
 import get from 'lodash.get';
 import isEqual from 'lodash.isequal';
 
 import { fromResource, fromSearch } from '../selectors';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
-import Card from '../../lib/components/Card';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -98,25 +96,28 @@ export class ResourceComponent extends Component {
         const backToListLabel =
             (datasetTitleKey && characteristics[datasetTitleKey]) ||
             polyglot.t('back_to_list');
+
         const backToListButton = (
-            <FlatButton
+            <Button
+                variant="text"
                 className="btn-back-to-list"
-                containerElement={<Link to="/graph" />}
-                label={backToListLabel}
-                icon={<HomeIcon />}
-            />
+                component={props => <Link to="/graph" {...props} />}
+                startIcon={<HomeIcon />}
+            >
+                {backToListLabel}
+            </Button>
         );
 
         if (!resource && !loading) {
             return (
                 <div className="not-found">
-                    <Card>
+                    <Card style={{ marginTop: '0.5rem' }}>
                         <CardActions>{backToListButton}</CardActions>
                     </Card>
-                    <Card>
-                        <CardText>
+                    <Card style={{ marginTop: '0.5rem' }}>
+                        <CardContent>
                             <h1>{polyglot.t('not_found')}</h1>
-                        </CardText>
+                        </CardContent>
                     </Card>
                 </div>
             );

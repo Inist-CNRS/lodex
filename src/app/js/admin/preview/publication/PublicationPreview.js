@@ -54,9 +54,7 @@ export class PublicationPreviewComponent extends Component {
                         {polyglot.t('publication_preview')}
                     </div>
                 </div>
-
                 <PublicationExcerpt onHeaderClick={editColumn} />
-
                 <PublicationEditionModal
                     onExitEdition={this.handleExitColumEdition}
                 />

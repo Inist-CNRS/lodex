@@ -33,7 +33,7 @@ export const clickOnChart = name => {
     cy.get('.graph-link')
         .contains(name)
         .click();
-    cy.wait(500);
+    cy.wait(1000);
 };
 
 export const goToChart = name => {

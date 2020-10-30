@@ -78,14 +78,15 @@ export const openConfigure = () => {
 
 export const saveConfiguration = () => {
     cy.get('.configure-field.save').click();
+    cy.wait(300);
     cy.get('.configure-field.save').should('not.be.visible');
 };
 
 export const configureYearSort = dir => {
-    cy.get('.year_sort_dir button')
+    cy.get('.year_sort_dir')
         .scrollIntoView()
         .click();
-    cy.get('span[role="menuitem"]')
+    cy.get('ul[role=listbox] li[role=option]')
         .contains(dir)
         .click();
 };

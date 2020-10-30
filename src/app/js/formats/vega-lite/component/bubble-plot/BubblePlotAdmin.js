@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
+import { Checkbox, FormControlLabel } from '@material-ui/core';
+
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import Checkbox from 'material-ui/Checkbox';
 import ToolTips from '../../../shared/ToolTips';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
@@ -137,11 +138,15 @@ class BubblePlotAdmin extends Component {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-                <Checkbox
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleFlipAxis}
+                            style={styles.input}
+                            checked={flipAxis}
+                        />
+                    }
                     label={polyglot.t('flip_axis')}
-                    onCheck={this.toggleFlipAxis}
-                    style={styles.input}
-                    checked={flipAxis}
                 />
                 <ToolTips
                     checked={tooltip}

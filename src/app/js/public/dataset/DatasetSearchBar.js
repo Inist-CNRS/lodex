@@ -43,7 +43,7 @@ const DatasetSearchBar = ({
         <SearchBar
             className="dataset-searchbar"
             value={localQuery}
-            onChange={handleSearch}
+            onChange={e => handleSearch(e.target.value)}
             onClear={handleClearSearch}
             actions={
                 <ToggleFacetsButton

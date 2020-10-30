@@ -13,8 +13,9 @@ export const AppComponent = ({ children }) => (
         </Helmet>
         <AppBar />
         <Progress />
-
-        <div className="body">{children}</div>
+        <div className="body" style={{ paddingTop: 80 }}>
+            {children}
+        </div>
     </div>
 );
 

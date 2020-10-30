@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Book from 'material-ui/svg-icons/av/library-books';
+import Book from '@material-ui/icons/LibraryBooks';
 
 import Link from '../../lib/components/Link';
 import stylesToClassname from '../../lib/stylesToClassName';
@@ -48,7 +48,9 @@ export const IstexItemComponent = ({
         <div className={styles.article}>
             <div className={styles.title}>
                 <Book size="20" className={styles.titleIcon} />
-                <Link href={url} target="_blank">{title}</Link>
+                <Link href={url} target="_blank">
+                    {title}
+                </Link>
             </div>
             {authors && (
                 <div className={styles.authors}> {authors.join(', ')} </div>

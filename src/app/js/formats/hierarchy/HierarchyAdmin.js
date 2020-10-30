@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import TextField from 'material-ui/TextField';
+import { TextField } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -126,19 +126,19 @@ class HierarchyAdmin extends Component {
                     monochromatic={true}
                 />
                 <TextField
-                    floatingLabelText={polyglot.t('max_char_number_in_labels')}
+                    label={polyglot.t('max_char_number_in_labels')}
                     onChange={this.setMaxLabelLength}
                     style={styles.input}
                     value={this.props.args.params.maxLabelLength}
                 />
                 <TextField
-                    floatingLabelText={polyglot.t('label_offset')}
+                    label={polyglot.t('label_offset')}
                     onChange={this.setLabelOffset}
                     style={styles.input}
                     value={this.props.args.params.labelOffset}
                 />
                 <TextField
-                    floatingLabelText={polyglot.t('minimum_scale_value')}
+                    label={polyglot.t('minimum_scale_value')}
                     onChange={this.setMinimumScaleValue}
                     style={styles.input}
                     value={this.props.args.params.minimumScaleValue}

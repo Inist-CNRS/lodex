@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
+import { Popover } from '@material-ui/core';
 
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import ActionDescription from 'material-ui/svg-icons/action/description';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import ContentClear from 'material-ui/svg-icons/content/clear';
+import {
+    Add as ContentAdd,
+    Description as ActionDescription,
+    Clear as ContentClear,
+} from '@material-ui/icons';
 
 import FloatingActionButton from '../lib/components/FloatingActionButton';
 import { fromFields } from '../sharedSelectors';
@@ -24,7 +26,7 @@ const styles = {
         boxShadow: 'none',
         display: 'flex',
         flexDirection: 'column',
-        paddingTop: 8,
+        padding: 10,
     },
     button: {
         marginBottom: 8,
@@ -92,7 +94,9 @@ export class ActionButtonComponent extends Component {
         );
     };
 
-    handleShowExistingColumns = () => {
+    handleShowExistingColumns = event => {
+        event.preventDefault();
+        event.stopPropagation();
         this.setState(
             {
                 showPopover: !this.state.showPopover,
@@ -106,22 +110,30 @@ export class ActionButtonComponent extends Component {
     };
 
     handleClick = () => {
-        this.setState(
-            {
-                showPopover: this.state.showExistingColumns
-                    ? false
-                    : !this.state.showPopover,
-                showCancel: this.state.showExistingColumns
-                    ? false
-                    : !this.state.showCancel,
-            },
-            () => {
-                if (!this.state.showPopover) {
+        if (!this.state.showCancel) {
+            this.setState({
+                showPopover: true,
+                showCancel: true,
+            });
+        } else {
+            this.setState(
+                {
+                    showPopover: false,
+                    showCancel: false,
+                },
+                () => {
                     this.setState({ showExistingColumns: false });
                     this.props.onHideExistingColumns();
-                }
-            },
-        );
+                },
+            );
+        }
+    };
+
+    handleClosePopover = () => {
+        this.setState({
+            showPopover: false,
+            showCancel: false,
+        });
     };
 
     render() {
@@ -129,24 +141,23 @@ export class ActionButtonComponent extends Component {
         const { showPopover, showCancel } = this.state;
 
         const tooltip = showCancel ? 'Cancel' : 'Add a column';
+
         return (
             <FloatingActionButton
                 className="btn-add-column"
-                secondary={showCancel}
-                primary={!showCancel}
+                color={showCancel ? 'secondary' : 'primary'}
                 tooltip={tooltip}
                 onClick={this.handleClick}
                 style={styles.actionButton(!showPopover)}
             >
                 <Popover
                     open={showPopover}
-                    animation={PopoverAnimationVertical}
                     anchorEl={this.anchor}
-                    anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
-                    autoCloseWhenOffScreen={false}
-                    targetOrigin={{ horizontal: 'middle', vertical: 'top' }}
-                    onRequestClose={this.handleClick}
+                    anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+                    transformOrigin={{ horizontal: 'center', vertical: 'top' }}
+                    onClose={this.handleClosePopover}
                     style={styles.popover}
+                    PaperProps={{ component: 'div', style: styles.popover }}
                 >
                     <FloatingActionButton
                         className="btn-add-column-from-dataset"
@@ -156,7 +167,6 @@ export class ActionButtonComponent extends Component {
                     >
                         <ActionDescription />
                     </FloatingActionButton>
-
                     <FloatingActionButton
                         className="btn-add-free-column"
                         label={polyglot.t('add_column')}

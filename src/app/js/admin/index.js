@@ -6,8 +6,11 @@ import { render } from 'react-dom';
 import { createHashHistory } from 'history';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+import {
+    ThemeProvider as MuiThemeProvider,
+    createMuiTheme,
+} from '@material-ui/core/styles';
 
 import rootReducer from './reducers';
 import Routes from './Routes';
@@ -18,12 +21,21 @@ import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import theme from '../theme';
 
-const muiTheme = getMuiTheme({
+const adminTheme = createMuiTheme({
     palette: {
-        accent1Color: theme.orange.primary,
-        primary1Color: theme.green.primary,
+        secondary: {
+            main: theme.orange.primary,
+        },
+        primary: {
+            main: theme.green.primary,
+            contrastText: theme.white.primary,
+        },
+        contrastThreshold: 3,
+        //TODO : find this usage or remove
         primary2Color: theme.purple.primary,
-        textColor: '#5F6368',
+        text: {
+            primary: theme.black.secondary,
+        },
     },
 });
 
@@ -45,7 +57,7 @@ const store = configureStore(
 
 render(
     <Provider {...{ store }}>
-        <MuiThemeProvider muiTheme={muiTheme}>
+        <MuiThemeProvider theme={adminTheme}>
             <ConnectedRouter history={history} onUpdate={scrollToTop}>
                 <Routes />
             </ConnectedRouter>

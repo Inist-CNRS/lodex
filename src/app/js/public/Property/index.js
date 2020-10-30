@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
-import { grey500 } from 'material-ui/styles/colors';
+import { grey } from '@material-ui/core/colors';
 import memoize from 'lodash.memoize';
 import get from 'lodash.get';
 
@@ -32,19 +32,16 @@ import shouldDisplayField from '../../fields/shouldDisplayField';
 
 const styles = {
     container: memoize(
-        (style, width) =>
-            Object.assign(
-                {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width: `${width || 100}%`,
-                },
-                style,
-            ),
+        (style, width) => ({
+            display: 'flex',
+            flexDirection: 'column',
+            width: `${width || 100}%`,
+            ...style,
+        }),
         (style, value) => ({ style, value }),
     ),
     label: (status, isSub) => ({
-        color: grey500,
+        color: grey[500],
         flexGrow: 2,
         fontWeight: 'bold',
         fontSize: isSub === true ? '1rem' : '1.25rem',

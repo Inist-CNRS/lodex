@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RadioButton from 'material-ui/RadioButton';
-import FlatButton from 'material-ui/FlatButton';
+import { Switch, Button, TextField, FormControlLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
-import TextField from 'material-ui/TextField';
 import get from 'lodash.get';
 
 import { FIELD_FORM_NAME } from '../';
@@ -38,13 +36,17 @@ export const StepValueConcatComponent = ({
     handleRemoveColumn,
 }) => (
     <div>
-        <RadioButton
-            className="radio_concat"
+        <FormControlLabel
+            control={
+                <Switch
+                    className="radio_concat"
+                    value="concat"
+                    onClick={handleSelect}
+                    checked={selected}
+                    style={styles.radio}
+                />
+            }
             label={polyglot.t('multi_field_concat')}
-            value="concat"
-            onClick={handleSelect}
-            checked={selected}
-            style={styles.radio}
         />
         {selected && (
             <div style={styles.inset}>
@@ -65,10 +67,9 @@ export const StepValueConcatComponent = ({
                         handleRemoveColumn={handleRemoveColumn}
                     />
                 ))}
-                <FlatButton
-                    label={polyglot.t('add_column')}
-                    onClick={handleAddColumn}
-                />
+                <Button variant="text" onClick={handleAddColumn}>
+                    {polyglot.t('add_column')}
+                </Button>
             </div>
         )}
     </div>
@@ -87,7 +88,7 @@ StepValueConcatComponent.propTypes = {
 };
 
 StepValueConcatComponent.defaultProps = {
-    columns: [null, null],
+    columns: ['', ''],
 };
 
 const mapStateToProps = state => {

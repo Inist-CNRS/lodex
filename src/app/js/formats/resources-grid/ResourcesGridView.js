@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import RaisedButton from 'material-ui/RaisedButton';
-import CircularProgress from 'material-ui/CircularProgress';
+import { Button, CircularProgress } from '@material-ui/core';
 import memoize from 'lodash.memoize';
 
 import LodexResource from '../shared/LodexResource';
+import injectData from '../injectData';
+import stylesToClassname from '../../lib/stylesToClassName';
+
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import injectData from '../injectData';
-import stylesToClassname from '../../lib/stylesToClassName';
 
 const createStyles = memoize(spaceWidth =>
     stylesToClassname(
@@ -120,11 +120,20 @@ class ResourcesGridView extends Component {
                 </ul>
                 {allowToLoadMore && more < total && (
                     <div className={styles.button}>
-                        <RaisedButton
-                            label={polyglot.t('see_more')}
+                        <Button
+                            variant="contained"
                             onClick={this.handleMore}
-                            icon={fetch ? <CircularProgress size={20} /> : null}
-                        />
+                            startIcon={
+                                fetch ? (
+                                    <CircularProgress
+                                        variant="indeterminate"
+                                        size={20}
+                                    />
+                                ) : null
+                            }
+                        >
+                            {polyglot.t('see_more')}
+                        </Button>
                     </div>
                 )}
             </div>

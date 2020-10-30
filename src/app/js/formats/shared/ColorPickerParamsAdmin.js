@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
+import { TextField } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -34,8 +34,9 @@ class ColorPickerParamsAdmin extends Component {
 
     handleChangeText(e) {
         this.setState({
-            colors: e.target.value.split(' ').map(color => ({ color })),
+            colors: (e.target.value || '').split(' ').map(color => ({ color })),
         });
+
         this.props.onChange(e.target.value);
     }
 
@@ -70,7 +71,7 @@ class ColorPickerParamsAdmin extends Component {
         return (
             <>
                 <TextField
-                    floatingLabelText={
+                    label={
                         monochromatic
                             ? this.props.polyglot.t('Color')
                             : this.props.polyglot.t('colors_set')

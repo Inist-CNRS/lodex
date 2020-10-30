@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import TextField from 'material-ui/TextField';
+import { TextField } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -70,16 +70,16 @@ class VegaLiteAdmin extends Component {
         updateAdminArgs('params', params, this.props);
     };
 
-    setSpecTemplate = (_, specTemplate) => {
-        updateAdminArgs('specTemplate', specTemplate, this.props);
+    setSpecTemplate = e => {
+        updateAdminArgs('specTemplate', e.target.value, this.props);
     };
 
-    setWidth = (_, width) => {
-        updateAdminArgs('width', width, this.props);
+    setWidth = e => {
+        updateAdminArgs('width', e.target.value, this.props);
     };
 
-    setHeight = (_, height) => {
-        updateAdminArgs('height', height, this.props);
+    setHeight = e => {
+        updateAdminArgs('height', e.target.value, this.props);
     };
 
     validator = () => {
@@ -128,9 +128,7 @@ class VegaLiteAdmin extends Component {
                     value={specTemplate}
                 />
                 <a
-                    onClick={() => {
-                        this.sizeStep();
-                    }}
+                    onClick={() => this.sizeStep()}
                     style={(styles.pointer, styles.link)}
                 >
                     {polyglot.t('vega_size_step')}
@@ -140,7 +138,7 @@ class VegaLiteAdmin extends Component {
                     min={10}
                     max={200}
                     step={10}
-                    floatingLabelText={polyglot.t('vegalite_width')}
+                    label={polyglot.t('vegalite_width')}
                     onChange={this.setWidth}
                     style={styles.input2}
                     value={width}
@@ -151,7 +149,7 @@ class VegaLiteAdmin extends Component {
                     min={10}
                     max={800}
                     step={10}
-                    floatingLabelText={polyglot.t('vegalite_height')}
+                    label={polyglot.t('vegalite_height')}
                     onChange={this.setHeight}
                     style={styles.input2}
                     value={height}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
+import { TextField } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 const styles = {
@@ -45,14 +45,14 @@ class TrelloTimelineAdmin extends Component {
         return (
             <div style={styles.container}>
                 <TextField
-                    floatingLabelText="Trello key"
-                    onChange={(event, newValue) => this.setKey(newValue)}
+                    label="Trello key"
+                    onChange={e => this.setKey(e.target.value)}
                     style={styles.input}
                     value={trelloKey}
                 />
                 <TextField
-                    floatingLabelText="Trello Token"
-                    onChange={(event, newValue) => this.setToken(newValue)}
+                    label="Trello Token"
+                    onChange={e => this.setToken(e.target.value)}
                     style={styles.input}
                     value={trelloToken}
                 />

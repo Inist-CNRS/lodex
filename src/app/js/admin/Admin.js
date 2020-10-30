@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
+import { Card } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import withInitialData from './withInitialData';
@@ -12,7 +13,6 @@ import PublicationPreview from './preview/publication/PublicationPreview';
 import Published from './publish/Published';
 import Upload from './upload/Upload';
 import Loading from '../lib/components/Loading';
-import Card from '../lib/components/Card';
 import Statistics from './Statistics';
 import theme from '../theme';
 import { preLoadLoaders } from './loader/';
@@ -42,7 +42,7 @@ export const AdminComponent = ({
     if (hasPublishedDataset) {
         return (
             <div className="admin">
-                <Card>
+                <Card style={{ marginTop: '0.5rem' }}>
                     <Published />
                 </Card>
             </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import IconButton from 'material-ui/IconButton';
-import CodeIcon from 'material-ui/svg-icons/action/code';
+import { IconButton } from '@material-ui/core';
+import CodeIcon from '@material-ui/icons/Code';
 import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -11,13 +11,8 @@ import { getCleanHost } from '../../../../common/uris';
 class EmbedButton extends Component {
     state = { open: false };
 
-    handleOpen = () => {
-        this.setState({ open: true });
-    };
-
-    handleClose = () => {
-        this.setState({ open: false });
-    };
+    handleOpen = () => this.setState({ open: true });
+    handleClose = () => this.setState({ open: false });
 
     renderOpenButton = () => {
         const { className, p: polyglot } = this.props;

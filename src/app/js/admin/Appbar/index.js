@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import AppBar from 'material-ui/AppBar';
-import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
+import { AppBar, CircularProgress, Button, Toolbar } from '@material-ui/core';
 
 import SignOutButton from './SignOutButton';
 import SignInButton from './SignInButton';
@@ -52,6 +50,7 @@ const AppbarComponent = ({
 }) => {
     const LeftElement = isLoading ? (
         <CircularProgress
+            variant="indeterminate"
             color="#fff"
             size={30}
             thickness={2}
@@ -73,11 +72,13 @@ const AppbarComponent = ({
                 />
             )}
             {isAdmin && hasPublishedDataset && (
-                <FlatButton
-                    label={polyglot.t('removed_resources')}
-                    containerElement={<Link to="/removed" />}
+                <Button
+                    variant="text"
+                    component={props => <Link to="/removed" {...props} />}
                     style={styles.button}
-                />
+                >
+                    {polyglot.t('removed_resources')}
+                </Button>
             )}
             {isAdmin ? (
                 <ModelMenu hasPublishedDataset={hasPublishedDataset} />
@@ -91,9 +92,8 @@ const AppbarComponent = ({
     );
 
     return (
-        <AppBar
-            className="appbar"
-            title={
+        <AppBar className="appbar" style={styles.appBar}>
+            <Toolbar>
                 <div style={styles.title}>
                     <Link to="/" style={styles.linkToHome}>
                         Lodex
@@ -105,11 +105,10 @@ const AppbarComponent = ({
                             : polyglot.t('semantic-publication-system')}
                     </small>
                 </div>
-            }
-            iconElementLeft={LeftElement}
-            iconElementRight={RightElement}
-            style={styles.appBar}
-        />
+                {LeftElement}
+                {RightElement}
+            </Toolbar>
+        </AppBar>
     );
 };
 

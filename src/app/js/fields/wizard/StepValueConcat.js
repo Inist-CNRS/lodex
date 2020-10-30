@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RadioButton from 'material-ui/RadioButton';
-import FlatButton from 'material-ui/FlatButton';
+import { Switch, Button, FormControlLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -33,14 +32,19 @@ export const StepValueConcatComponent = ({
     handleChange,
     handleAddColumn,
     handleRemoveColumn,
+    ...props
 }) => (
     <div id="step-value-concat">
-        <RadioButton
+        <FormControlLabel
+            control={
+                <Switch
+                    value="concat"
+                    onChange={handleSelect}
+                    checked={selected}
+                    style={styles.radio}
+                />
+            }
             label={polyglot.t('multi_field_concat')}
-            value="concat"
-            onClick={handleSelect}
-            checked={selected}
-            style={styles.radio}
         />
         {selected && (
             <div style={styles.inset}>
@@ -54,10 +58,9 @@ export const StepValueConcatComponent = ({
                         handleRemoveColumn={handleRemoveColumn}
                     />
                 ))}
-                <FlatButton
-                    label={polyglot.t('add_column')}
-                    onClick={handleAddColumn}
-                />
+                <Button variant="text" onClick={handleAddColumn}>
+                    {polyglot.t('add_column')}
+                </Button>
             </div>
         )}
     </div>
@@ -74,7 +77,7 @@ StepValueConcatComponent.propTypes = {
 };
 
 StepValueConcatComponent.defaultProps = {
-    columns: [null, null],
+    columns: ['', ''],
 };
 
 const mapStateToProps = state => {
@@ -90,7 +93,7 @@ const mapStateToProps = state => {
         const args = get(valueTransformer, 'args', []);
         return {
             selected: true,
-            columns: args.map(({ value }) => value),
+            columns: args.map(({ value }) => value || ''),
             args,
         };
     }
@@ -108,17 +111,17 @@ export default compose(
                     {
                         name: 'column',
                         type: 'column',
-                        value: null,
+                        value: '',
                     },
                     {
                         name: 'column',
                         type: 'column',
-                        value: null,
+                        value: '',
                     },
                 ],
             });
         },
-        handleChange: ({ onChange, args }) => (event, key, value, index) => {
+        handleChange: ({ onChange, args }) => (value, event, key, index) => {
             onChange({
                 operation: 'CONCAT',
                 args: [
@@ -140,7 +143,7 @@ export default compose(
                     {
                         name: 'column',
                         type: 'column',
-                        value: null,
+                        value: '',
                     },
                 ],
             });

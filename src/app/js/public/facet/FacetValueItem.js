@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Checkbox from 'material-ui/Checkbox';
-import { ListItem } from 'material-ui/List';
+import {
+    ListItem,
+    Checkbox,
+    FormControlLabel,
+    ListItemText,
+} from '@material-ui/core';
 
 import { fromFacet } from '../selectors';
 import FacetActionsContext from './FacetActionsContext';
@@ -18,9 +22,6 @@ const styles = {
     listItem: {
         fontSize: '1rem',
     },
-    innerDiv: {
-        padding: '0 5px',
-    },
 };
 
 const onCheck = (toggleFacetValue, name, value) => () =>
@@ -29,21 +30,26 @@ const onCheck = (toggleFacetValue, name, value) => () =>
 const FacetValueItem = ({ name, value, count, isChecked }) => (
     <FacetActionsContext.Consumer>
         {({ toggleFacetValue }) => (
-            <ListItem
-                className="facet-value-item"
-                style={styles.listItem}
-                innerDivStyle={styles.innerDiv}
-                primaryText={
+            <ListItem className="facet-value-item" style={styles.listItem}>
+                <ListItemText>
                     <div style={styles.container}>
-                        <Checkbox
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={isChecked}
+                                    onChange={onCheck(
+                                        toggleFacetValue,
+                                        name,
+                                        value,
+                                    )}
+                                />
+                            }
                             label={value}
-                            checked={isChecked}
-                            onCheck={onCheck(toggleFacetValue, name, value)}
                         />
                         <span style={styles.count}>{count}</span>
                     </div>
-                }
-            />
+                </ListItemText>
+            </ListItem>
         )}
     </FacetActionsContext.Consumer>
 );

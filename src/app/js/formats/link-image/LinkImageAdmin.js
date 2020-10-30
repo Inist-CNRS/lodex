@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
-import TextField from 'material-ui/TextField';
+import {
+    MenuItem,
+    Select,
+    TextField,
+    FormControl,
+    InputLabel,
+} from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -39,18 +43,18 @@ class LinkImageAdmin extends Component {
         args: defaultArgs,
     };
 
-    setType = (event, index, type) => {
-        const newArgs = { ...this.props.args, type };
+    setType = e => {
+        const newArgs = { ...this.props.args, type: e.target.value };
         this.props.onChange(newArgs);
     };
 
-    setValue = (_, value) => {
-        const newArgs = { ...this.props.args, value };
+    setValue = e => {
+        const newArgs = { ...this.props.args, value: e.target.value };
         this.props.onChange(newArgs);
     };
 
-    setMaxHeight = (_, maxHeight) => {
-        maxHeight = Math.max(maxHeight, 1);
+    setMaxHeight = e => {
+        const maxHeight = Math.max(e.target.value, 1);
         const newArgs = { ...this.props.args, maxHeight };
         this.props.onChange(newArgs);
     };
@@ -63,25 +67,26 @@ class LinkImageAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <SelectField
-                    floatingLabelText={polyglot.t('Select a format')}
-                    onChange={this.setType}
-                    style={styles.input}
-                    value={type}
-                >
-                    <MenuItem
-                        value="text"
-                        primaryText={polyglot.t('Another column content')}
-                    />
-                    <MenuItem
-                        value="column"
-                        primaryText={polyglot.t(
-                            'A custom URL (same for all resources)',
-                        )}
-                    />
-                </SelectField>
+                <FormControl fullWidth>
+                    <InputLabel id="linkimage-admin-input-label">
+                        {polyglot.t('select_a_format')}
+                    </InputLabel>
+                    <Select
+                        labelId="linkimage-admin-input-label"
+                        onChange={this.setType}
+                        style={styles.input}
+                        value={type}
+                    >
+                        <MenuItem value="text">
+                            {polyglot.t('item_other_column_content')}
+                        </MenuItem>
+                        <MenuItem value="column">
+                            {polyglot.t('item_custom_url')}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
                 <TextField
-                    floatingLabelText={
+                    label={
                         type !== 'text'
                             ? polyglot.t('Custom URL')
                             : polyglot.t("Column's name")
@@ -91,7 +96,7 @@ class LinkImageAdmin extends Component {
                     value={value}
                 />
                 <TextField
-                    floatingLabelText={polyglot.t('height_px')}
+                    label={polyglot.t('height_px')}
                     type="number"
                     onChange={this.setMaxHeight}
                     style={styles.input}

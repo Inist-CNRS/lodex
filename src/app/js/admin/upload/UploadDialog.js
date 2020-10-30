@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { Step, Stepper, StepLabel, StepContent } from 'material-ui/Stepper';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+
+import {
+    Step,
+    Stepper,
+    StepLabel,
+    StepContent,
+    Select,
+    MenuItem,
+    Button,
+    TextField,
+} from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { uploadFile, changeUploadUrl, changeParserName, uploadUrl } from './';
@@ -59,7 +65,9 @@ export const UploadDialogComponent = ({
         .map(loader => loader.name)
         .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
         .map(pn => (
-            <MenuItem key={pn} value={pn} primaryText={polyglot.t(pn)} />
+            <MenuItem key={pn} value={pn}>
+                {polyglot.t(pn)}
+            </MenuItem>
         ));
 
     return (
@@ -68,39 +76,38 @@ export const UploadDialogComponent = ({
                 <Step active>
                     <StepLabel>{polyglot.t('select_parser')}</StepLabel>
                     <StepContent>
-                        <SelectField
-                            floatingLabelText={polyglot.t('parser_name')}
+                        <Select
+                            label={polyglot.t('parser_name')}
                             value={parserName}
                             onChange={onChangeParserName}
                             fullWidth
                         >
-                            <MenuItem
-                                key={'automatic'}
-                                value={'automatic'}
-                                primaryText={polyglot.t('automatic-parser')}
-                            />
+                            <MenuItem key={'automatic'} value={'automatic'}>
+                                {polyglot.t('automatic-parser')}
+                            </MenuItem>
                             {parserNames}
-                        </SelectField>
+                        </Select>
                     </StepContent>
                 </Step>
                 <Step active>
                     <StepLabel>{polyglot.t('select_file')}</StepLabel>
                     <StepContent>
-                        <RaisedButton
+                        <Button
+                            variant="contained"
                             className="btn-upload-dataset"
-                            containerElement="label"
-                            primary
+                            component="label"
+                            color="primary"
                             fullWidth
-                            label={polyglot.t('upload_file')}
                             style={styles.button}
                         >
+                            {polyglot.t('upload_file')}
                             <input
                                 name="file"
                                 type="file"
                                 onChange={onFileLoad}
                                 style={styles.input}
                             />
-                        </RaisedButton>
+                        </Button>
                         <div style={styles.divider}>
                             <hr style={styles.dividerHr} />
                             <div style={styles.dividerLabel}>
@@ -113,23 +120,25 @@ export const UploadDialogComponent = ({
                                 fullWidth
                                 value={url}
                                 onChange={onChangeUrl}
-                                errorText={
+                                error={
                                     url &&
                                     !isUrlValid &&
                                     polyglot.t('invalid_url')
                                 }
-                                hintText="URL"
+                                placeholder="URL"
                             />
-                            <RaisedButton
+                            <Button
+                                variant="contained"
                                 onClick={onUrlUpload}
                                 disabled={!isUrlValid}
                                 className="btn-upload-url"
-                                containerElement="label"
-                                primary
+                                component="label"
+                                color="primary"
                                 fullWidth
-                                label={polyglot.t('upload_url')}
                                 style={styles.button}
-                            />
+                            >
+                                {polyglot.t('upload_url')}
+                            </Button>
                         </div>
                     </StepContent>
                 </Step>
@@ -163,7 +172,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     onUrlUpload: uploadUrl,
     onFileLoad: e => uploadFile(e.target.files[0]),
-    onChangeUrl: (_, value) => changeUploadUrl(value),
+    onChangeUrl: e => changeUploadUrl(e.target.value),
     onChangeParserName: (_, idx, val) => changeParserName(val),
 };
 

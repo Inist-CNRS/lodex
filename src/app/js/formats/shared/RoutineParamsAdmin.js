@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import {
+    TextField,
+    Select,
+    MenuItem,
+    FormControl,
+    InputLabel,
+} from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -22,9 +26,9 @@ const RoutineParamsAdmin = ({
     showMinValue,
     showOrderBy,
 }) => {
-    const setMaxSize = (_, newMaxSize) => {
+    const setMaxSize = e => {
         onChange({
-            maxSize: newMaxSize,
+            maxSize: e.target.value,
             maxValue,
             minValue,
             orderBy,
@@ -32,43 +36,43 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const setMaxValue = (_, newMaxValue) => {
+    const setMaxValue = e => {
         onChange({
             maxSize,
-            maxValue: newMaxValue,
+            maxValue: e.target.value,
             minValue,
             orderBy,
             uri,
         });
     };
 
-    const setMinValue = (_, newMinValue) => {
+    const setMinValue = e => {
         onChange({
             maxSize,
             maxValue,
-            minValue: newMinValue,
+            minValue: e.target.value,
             orderBy,
             uri,
         });
     };
 
-    const setOrderBy = (_, __, newOrderBy) => {
+    const setOrderBy = e => {
         onChange({
             maxSize,
             maxValue,
             minValue,
-            orderBy: newOrderBy,
+            orderBy: e.target.value,
             uri,
         });
     };
 
-    const setUri = (_, newUri) => {
+    const setUri = e => {
         onChange({
             maxSize,
             maxValue,
             minValue,
             orderBy,
-            uri: newUri,
+            uri: e.target.value,
         });
     };
 
@@ -76,7 +80,7 @@ const RoutineParamsAdmin = ({
         <>
             {showMaxSize && (
                 <TextField
-                    floatingLabelText={polyglot.t('max_fields')}
+                    label={polyglot.t('max_fields')}
                     onChange={setMaxSize}
                     style={styles.input}
                     value={maxSize}
@@ -84,7 +88,7 @@ const RoutineParamsAdmin = ({
             )}
             {showMinValue && (
                 <TextField
-                    floatingLabelText={polyglot.t('min_value')}
+                    label={polyglot.t('min_value')}
                     onChange={setMinValue}
                     style={styles.input}
                     value={minValue}
@@ -92,40 +96,41 @@ const RoutineParamsAdmin = ({
             )}
             {showMaxValue && (
                 <TextField
-                    floatingLabelText={polyglot.t('max_value')}
+                    label={polyglot.t('max_value')}
                     onChange={setMaxValue}
                     style={styles.input}
                     value={maxValue}
                 />
             )}
             {showOrderBy && (
-                <SelectField
-                    floatingLabelText={polyglot.t('order_by')}
-                    onChange={setOrderBy}
-                    style={styles.input}
-                    value={orderBy}
-                >
-                    <MenuItem
-                        value="_id/asc"
-                        primaryText={polyglot.t('label_asc')}
-                    />
-                    <MenuItem
-                        value="_id/desc"
-                        primaryText={polyglot.t('label_desc')}
-                    />
-                    <MenuItem
-                        value="value/asc"
-                        primaryText={polyglot.t('value_asc')}
-                    />
-                    <MenuItem
-                        value="value/desc"
-                        primaryText={polyglot.t('value_desc')}
-                    />
-                </SelectField>
+                <FormControl fullWidth>
+                    <InputLabel id="routine-params-admin-input-label">
+                        {polyglot.t('order_by')}
+                    </InputLabel>
+                    <Select
+                        labelId="routine-params-admin-input-label"
+                        onChange={setOrderBy}
+                        style={styles.input}
+                        value={orderBy}
+                    >
+                        <MenuItem value="_id/asc">
+                            {polyglot.t('label_asc')}
+                        </MenuItem>
+                        <MenuItem value="_id/desc">
+                            {polyglot.t('label_desc')}
+                        </MenuItem>
+                        <MenuItem value="value/asc">
+                            {polyglot.t('value_asc')}
+                        </MenuItem>
+                        <MenuItem value="value/desc">
+                            {polyglot.t('value_desc')}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
             )}
             {showUri && (
                 <TextField
-                    floatingLabelText={polyglot.t('uri')}
+                    label={polyglot.t('uri')}
                     onChange={setUri}
                     style={styles.input}
                     value={uri}

@@ -8,8 +8,10 @@ import mount from 'koa-mount';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 import { Helmet } from 'react-helmet';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import {
+    ThemeProvider as MuiThemeProvider,
+    createMuiTheme,
+} from '@material-ui/core/styles';
 import { END } from 'redux-saga';
 import fs from 'fs';
 import { StyleSheetServer } from 'aphrodite/no-important';
@@ -146,7 +148,7 @@ const renderHtml = (store, muiTheme, url, context, history) =>
         renderToString(
             <StaticRouter location={url} context={context}>
                 <Provider {...{ store }}>
-                    <MuiThemeProvider muiTheme={muiTheme}>
+                    <MuiThemeProvider theme={muiTheme}>
                         <Routes history={history} />
                     </MuiThemeProvider>
                 </Provider>
@@ -156,7 +158,7 @@ const renderHtml = (store, muiTheme, url, context, history) =>
 
 export const getRenderingData = async (
     history,
-    muiTheme,
+    theme,
     token,
     cookie,
     locale,
@@ -172,7 +174,7 @@ export const getRenderingData = async (
 
     const sagaPromise = store.runSaga(sagas).done;
     const context = {};
-    const { html, css } = renderHtml(store, muiTheme, url, context, history);
+    const { html, css } = renderHtml(store, theme, url, context, history);
     store.dispatch(END);
 
     await sagaPromise;
@@ -214,7 +216,7 @@ const handleRender = async (ctx, next) => {
         initialEntries: [url],
     });
 
-    const muiTheme = getMuiTheme(customTheme, {
+    const theme = createMuiTheme(customTheme, {
         userAgent: headers['user-agent'],
     });
 
@@ -226,7 +228,7 @@ const handleRender = async (ctx, next) => {
         redirect,
     } = await getRenderingData(
         history,
-        muiTheme,
+        theme,
         ctx.state.headerToken,
         ctx.request.header.cookie,
         getLocale(ctx),

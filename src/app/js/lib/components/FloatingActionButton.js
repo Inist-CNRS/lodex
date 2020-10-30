@@ -1,17 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
+import { Fab, Tooltip } from '@material-ui/core';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
 import withHandlers from 'recompose/withHandlers';
 import pure from 'recompose/pure';
-import Tooltip from './Tooltip';
 
 const styles = {
     container: {
         position: 'relative',
     },
-    tooltip: {},
 };
 
 export const FloatingActionButtonComponent = ({
@@ -23,27 +21,34 @@ export const FloatingActionButtonComponent = ({
     style,
     tooltip,
     ...props
-}) => (
-    <div style={Object.assign({}, styles.container, style)}>
-        <FloatingActionButton
+}) => {
+    const button = (
+        <Fab
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             {...props}
         >
             {children}
-        </FloatingActionButton>
-        {tooltip && (
-            <Tooltip
-                show={showTooltip}
-                label={tooltip}
-                style={styles.tooltip}
-                horizontalPosition="left"
-                verticalPosition="middle"
-                touch
-            />
-        )}
-    </div>
-);
+        </Fab>
+    );
+
+    return (
+        <div style={{ ...styles.container, ...style }}>
+            {tooltip ? (
+                <Tooltip
+                    open={showTooltip}
+                    title={tooltip}
+                    placement="left-end"
+                    touch
+                >
+                    {button}
+                </Tooltip>
+            ) : (
+                button
+            )}
+        </div>
+    );
+};
 
 FloatingActionButtonComponent.propTypes = {
     children: PropTypes.node.isRequired,

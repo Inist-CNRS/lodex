@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import { grey500 } from 'material-ui/styles/colors';
+import { CardActions, Button } from '@material-ui/core';
+import { grey } from '@material-ui/core/colors';
 import memoize from 'lodash.memoize';
 import { Helmet } from 'react-helmet';
 import get from 'lodash.get';
@@ -77,7 +76,7 @@ const styles = {
         textAlign: 'justify',
     },
     label: {
-        color: grey500,
+        color: grey[500],
         flexGrow: 2,
         fontWeight: 'bold',
         fontSize: '1.25rem',
@@ -160,11 +159,12 @@ export const DetailComponent = ({ fields, resource, title, description }) => {
                         ))}
                     </div>
                     <CardActions style={styles.actions}>
-                        <FlatButton
+                        <Button
                             href={`${getCleanHost()}/${resource.uri} `}
-                            label={resource.uri}
-                            primary={true}
-                        />
+                            color="primary"
+                        >
+                            {resource.uri}
+                        </Button>
                         <SelectVersion />
                         <AddField style={{ marginLeft: 'auto' }} />
                         <HideResource />

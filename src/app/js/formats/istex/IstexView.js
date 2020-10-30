@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import memoize from 'lodash.memoize';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import FileDownload from 'material-ui/svg-icons/file/file-download';
+import FileDownload from '@material-ui/icons/GetApp';
 import Link from '../../lib/components/Link';
 
 import fetchPaginatedDataForComponent from '../../lib/fetchPaginatedDataForComponent';
@@ -18,12 +18,10 @@ import IstexItem from './IstexItem';
 import { ISTEX_SITE_URL } from '../../../../../src/common/externals';
 
 const styles = {
-    text: memoize(status =>
-        Object.assign({
-            fontSize: '1rem',
-            textDecoration: status === REJECTED ? 'line-through' : 'none',
-        }),
-    ),
+    text: memoize(status => ({
+        fontSize: '1rem',
+        textDecoration: status === REJECTED ? 'line-through' : 'none',
+    })),
     header: {
         borderBottom: '1px solid lightgrey',
         marginBottom: '1rem',

@@ -9,10 +9,10 @@ import memoize from 'lodash.memoize';
 import {
     Table,
     TableBody,
-    TableHeader,
-    TableHeaderColumn,
+    TableHead,
+    TableCell,
     TableRow,
-} from 'material-ui/Table';
+} from '@material-ui/core';
 
 import {
     polyglot as polyglotPropTypes,
@@ -38,7 +38,7 @@ const styles = {
     },
 };
 
-const getColStyle = memoize(style => Object.assign(styles.header, style));
+const getColStyle = memoize(style => ({ ...styles.header, ...style }));
 
 export const ExcerptComponent = ({
     colStyle,
@@ -51,22 +51,17 @@ export const ExcerptComponent = ({
     p: polyglot,
     isPreview = false,
 }) => (
-    <Table
-        className={className}
-        selectable={false}
-        fixedHeader={false}
-        style={styles.table(isPreview)}
-        onCellClick={onCellClick}
-    >
-        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-            <TableRow onCellClick={onHeaderClick}>
-                {columns.map(field => (
-                    <TableHeaderColumn
+    <Table className={className} style={styles.table(isPreview)}>
+        <TableHead>
+            <TableRow>
+                {columns.map((field, index) => (
+                    <TableCell
                         key={field.name}
                         className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
                             field,
                         )}`}
                         style={getColStyle(colStyle)}
+                        onClick={() => onHeaderClick(index)}
                         tooltip={
                             areHeadersClickable
                                 ? polyglot.t('click_to_edit_publication_field')
@@ -74,11 +69,11 @@ export const ExcerptComponent = ({
                         }
                     >
                         <ExcerptHeader field={field} />
-                    </TableHeaderColumn>
+                    </TableCell>
                 ))}
             </TableRow>
-        </TableHeader>
-        <TableBody displayRowCheckbox={false}>
+        </TableHead>
+        <TableBody>
             {lines.map((line, index) => (
                 <ExcerptLine
                     key={`${line.uri}-${index}` || index}
@@ -90,8 +85,9 @@ export const ExcerptComponent = ({
                 <TableRow>
                     {columns.map(c => (
                         <ExcerptRemoveColumn
-                            key={`remove_column_${c}`}
+                            key={`remove_column_${c._id}`}
                             field={c}
+                            onClick={onCellClick}
                         />
                     ))}
                 </TableRow>
@@ -125,14 +121,14 @@ export default compose(
         areHeadersClickable: typeof onHeaderClick === 'function',
     })),
     withHandlers({
-        onHeaderClick: ({ onHeaderClick }) => (_, __, col) => {
+        onHeaderClick: ({ onHeaderClick }) => col => {
             if (onHeaderClick) {
-                onHeaderClick(col - 1);
+                onHeaderClick(col);
             }
         },
-        onCellClick: ({ onHeaderClick }) => (_, col) => {
+        onCellClick: ({ onHeaderClick }) => col => {
             if (onHeaderClick) {
-                onHeaderClick(col - 1);
+                onHeaderClick(col);
             }
         },
     }),

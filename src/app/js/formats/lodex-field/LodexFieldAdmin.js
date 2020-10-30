@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import TextField from 'material-ui/TextField';
+import { TextField } from '@material-ui/core';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -51,8 +51,8 @@ class LodexFieldAdmin extends Component {
         args: defaultArgs,
     };
 
-    setRequest = (_, label) => {
-        const labelArray = label.split(';');
+    setRequest = e => {
+        const labelArray = (e.target.value || '').split(';');
         const { param, ...args } = this.props.args;
         const newArgs = { ...args, param: { ...param, labelArray } };
         this.props.onChange(newArgs);
@@ -76,8 +76,8 @@ class LodexFieldAdmin extends Component {
         return (
             <div style={styles.container}>
                 <TextField
-                    floatingLabelText={polyglot.t('param_labels')}
-                    multiLine={true}
+                    label={polyglot.t('param_labels')}
+                    multiline
                     onChange={this.setRequest}
                     style={styles.input}
                     value={label}

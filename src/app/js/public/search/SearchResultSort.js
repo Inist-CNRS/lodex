@@ -36,11 +36,12 @@ const SearchResultSort = ({ fields, fieldNames, sort, sortBy, sortDir }) => {
                     key={field.name}
                     className={`sort_${field.name}`}
                     name={field.name}
-                    label={field.label}
                     sort={() => handleSort(field.name)}
                     sortBy={sortBy}
                     sortDir={sortDir}
-                />
+                >
+                    {field.label}
+                </SortButton>
             ))}
         </>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TableHeaderColumn } from 'material-ui/Table';
+import { TableCell } from '@material-ui/core';
 import { connect } from 'react-redux';
 
 import { sortDataset as sortDatasetAction } from './';
@@ -8,7 +8,7 @@ import { fromDataset } from '../selectors';
 import SortButton from '../../lib/components/SortButton';
 
 const DatasetColumnHeader = ({ name, label, sortBy, sortDir, sortDataset }) => (
-    <TableHeaderColumn>
+    <TableCell>
         {label === 'uri' ? (
             <span>#</span>
         ) : (
@@ -16,12 +16,13 @@ const DatasetColumnHeader = ({ name, label, sortBy, sortDir, sortDataset }) => (
                 className={`sort_${name}`}
                 sort={sortDataset}
                 name={name}
-                label={label}
                 sortBy={sortBy}
                 sortDir={sortDir}
-            />
+            >
+                {label}
+            </SortButton>
         )}
-    </TableHeaderColumn>
+    </TableCell>
 );
 
 DatasetColumnHeader.defaultProps = {

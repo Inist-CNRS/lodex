@@ -19,7 +19,8 @@ export const changeUploadUrl = createAction(CHANGE_UPLOAD_URL);
 export const changeParserName = createAction(CHANGE_PARSER_NAME);
 
 const validateUrl = url =>
-    url.startsWith('http://') || url.startsWith('https://');
+    console.log({ url }) ||
+    (url && (url.startsWith('http://') || url.startsWith('https://')));
 
 export const defaultState = {
     error: false,
