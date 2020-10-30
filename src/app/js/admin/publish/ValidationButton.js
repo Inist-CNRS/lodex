@@ -38,9 +38,9 @@ const ValidationButtonComponent = ({
     const history = useHistory();
 
     // @TODO: Find a better way to handle fix error from data tab
-    const redirectAndHandleEditField = () => {
+    const redirectAndHandleEditField = (...args) => {
         history.push('/display');
-        setTimeout(handleEditField, 0);
+        setTimeout(() => handleEditField(...args), 0);
     };
 
     return (

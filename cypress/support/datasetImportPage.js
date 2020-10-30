@@ -43,7 +43,9 @@ const fillStepValueConcatColumn = (value, index) => {
 };
 
 const fillStepDisplayFormat = format => {
-    cy.get('#step-value-format .select-format').click();
+    cy.get('#step-value-format .select-format')
+        .first()
+        .click();
     cy.get(`[role="listbox"] li[data-value="${format}"]`).click();
 };
 
