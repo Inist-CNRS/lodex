@@ -30,6 +30,7 @@ describe('Graph Page', () => {
 
         graphPage.searchFor('Biodiversity');
         graphPage.setFacet('Publication Year', '2011');
+        cy.wait(500);
         graphPage.getStats().should('have.text', 'Found 4 on 50');
 
         menu.openChartDrawer();
