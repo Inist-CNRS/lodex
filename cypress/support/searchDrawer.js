@@ -99,7 +99,7 @@ export const sortFacet = (name, sortName) => {
         .get(`.sort_${sortName}`)
         .first()
         .click();
-    cy.wait(500);
+    cy.wait(1000);
 };
 
 export const checkMoreResultsExist = () => {
