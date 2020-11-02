@@ -16,9 +16,6 @@ const styles = {
     inset: {
         paddingLeft: 40,
     },
-    radio: {
-        marginTop: 12,
-    },
     select: {
         width: '100%',
     },
@@ -41,7 +38,6 @@ export const StepValueConcatComponent = ({
                     value="concat"
                     onChange={handleSelect}
                     checked={selected}
-                    style={styles.radio}
                 />
             }
             label={polyglot.t('multi_field_concat')}

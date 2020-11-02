@@ -16,9 +16,6 @@ const styles = {
     inset: {
         paddingLeft: 40,
     },
-    radio: {
-        marginTop: 12,
-    },
 };
 
 export const StepValueColumnComponent = ({
@@ -35,7 +32,6 @@ export const StepValueColumnComponent = ({
                     value="column"
                     onChange={handleSelect}
                     checked={selected}
-                    style={styles.radio}
                 />
             }
             label={polyglot.t('a_column')}
