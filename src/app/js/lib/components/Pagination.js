@@ -33,9 +33,6 @@ const styles = {
         display: 'inline-block',
         width: '100%',
     },
-    underline: {
-        display: 'none',
-    },
 };
 
 const texts = {
@@ -172,7 +169,6 @@ class Pagination extends Component {
                             onChange={this.handleChangePageFromSelect}
                             value={currentPage}
                             style={styles.input}
-                            underlineStyle={styles.underline}
                         >
                             {pages.map(page => (
                                 <MenuItem value={page} key={`page-${page}`}>
@@ -197,7 +193,6 @@ class Pagination extends Component {
                         onChange={this.handleChangePerPage}
                         value={perPage}
                         style={styles.input}
-                        underlineStyle={styles.underline}
                     >
                         <MenuItem value={10}>10</MenuItem>
                         <MenuItem value={20}>20</MenuItem>

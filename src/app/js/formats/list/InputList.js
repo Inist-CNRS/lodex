@@ -29,8 +29,6 @@ const styles = stylesToClassname(
     'input-list',
 );
 
-const underlineStyle = { position: 'relative' };
-
 class InputList extends Component {
     convertToList = () => {
         const { fields, all } = this.props;
@@ -69,7 +67,6 @@ class InputList extends Component {
                         <Field
                             {...this.props}
                             className={styles.input}
-                            underlineStyle={underlineStyle}
                             name={name}
                             component={ItemComponent}
                             resource={{ [name]: all[index] }}
