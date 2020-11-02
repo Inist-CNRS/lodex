@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { ListItem, ListItemText } from '@material-ui/core';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { connect } from 'react-redux';
 
 import { field as fieldPropType } from '../../propTypes';
@@ -11,6 +13,15 @@ import FacetValueList from './FacetValueList';
 import FacetActionsContext from './FacetActionsContext';
 
 const onClick = (openFacet, field) => () => openFacet({ name: field.name });
+
+const FacetTitle = ({ title, total, isOpen }) => {
+    return (
+        <>
+            <span>{`${title} ${total ? `(${total})` : ''}`}</span>
+            {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </>
+    );
+};
 
 const FacetItem = ({ className, isOpen, field, total, page }) => (
     <FacetActionsContext.Consumer>
@@ -27,13 +38,21 @@ const FacetItem = ({ className, isOpen, field, total, page }) => (
                 open={isOpen}
             >
                 <ListItemText
-                    primary={`${field.label} ${total ? `(${total})` : ''}`}
-                    secondary={
-                        <FacetValueList
-                            name={field.name}
-                            label={field.label}
-                            page={page}
+                    primary={
+                        <FacetTitle
+                            title={field.label}
+                            total={total}
+                            isOpen={isOpen}
                         />
+                    }
+                    secondary={
+                        isOpen && (
+                            <FacetValueList
+                                name={field.name}
+                                label={field.label}
+                                page={page}
+                            />
+                        )
                     }
                 />
             </ListItem>

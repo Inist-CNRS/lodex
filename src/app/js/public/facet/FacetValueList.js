@@ -80,6 +80,7 @@ export const FacetValueList = ({
 }) => (
     <div className="facet-value-list" style={styles.list}>
         <FormControlLabel
+            fullWidth
             control={
                 <Checkbox
                     checked={inverted}
@@ -92,6 +93,7 @@ export const FacetValueList = ({
         <TextField
             placeholder={polyglot.t('filter_value', { field: label })}
             value={filter}
+            fullWidth
             onChange={onFilterChange(
                 changeFacetValue,
                 name,
