@@ -1,11 +1,11 @@
-import Component from './IdentifierBadgeView';
+import IdentifierBadgeView from './IdentifierBadgeView';
 import AdminComponent, { defaultArgs } from './IdentifierBadgeAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
     ...DefaultFormat,
-    Component,
-    ListComponent: Component,
+    Component: IdentifierBadgeView,
+    ListComponent: IdentifierBadgeView,
     AdminComponent,
     defaultArgs,
     predicate: value =>

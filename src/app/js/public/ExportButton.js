@@ -93,9 +93,7 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
                     <FontAwesomeIcon icon={faExternalLinkAlt} height={20} />
                 </IconButton>
             )}
-
             <div className={styles.menuContainer}>
-                <h3 className={styles.menuTitle}>{menuTitle}</h3>
                 <Menu
                     className={styles.menuList}
                     anchorEl={popover.anchorEl}
@@ -103,6 +101,7 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
                     open={popover.open}
                     onClose={handleClose}
                 >
+                    <h3 className={styles.menuTitle}>{menuTitle}</h3>
                     {exporters.map(({ exportID, label }) => (
                         <ExportItem
                             key={exportID}

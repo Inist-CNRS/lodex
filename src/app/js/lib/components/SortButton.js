@@ -18,14 +18,14 @@ const styles = {
     },
 };
 
-const SortButton = ({ name, label, sortBy, sortDir, sort }) => (
+const SortButton = ({ name, children, sortBy, sortDir, sort }) => (
     <Button
         variant="text"
         className={`sort_${name}`}
         onClick={sort}
         style={styles.sortButton}
     >
-        {isLongText(label) ? getShortText(label) : label}
+        {isLongText(children) ? getShortText(children) : children}
         {sortBy === name && (
             <ArrowUp
                 style={{
@@ -44,7 +44,7 @@ SortButton.defaultProps = {
 
 SortButton.propTypes = {
     name: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
+    children: PropTypes.string.isRequired,
     sortDir: PropTypes.oneOf(['ASC', 'DESC']),
     sortBy: PropTypes.string,
     sort: PropTypes.func.isRequired,

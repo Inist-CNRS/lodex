@@ -24,6 +24,7 @@ const styles = stylesToClassname(
         },
         searchIconContainer: {
             marginTop: '8px',
+            paddingRight: 10,
         },
         searchIcon: {
             color: theme.black.secondary,
@@ -37,12 +38,6 @@ const styles = stylesToClassname(
     },
     'searchbar',
 );
-
-const muiStyles = {
-    searchTextUnderline: {
-        borderColor: theme.orange.primary,
-    },
-};
 
 const SearchBar = ({
     className,
@@ -80,8 +75,6 @@ const SearchBar = ({
                         event && event.target && event.target.select();
                     }}
                     value={value}
-                    underlineStyle={muiStyles.searchTextUnderline}
-                    underlineFocusStyle={muiStyles.searchTextUnderline}
                 />
             </RootRef>
             <div className={styles.actions}>
