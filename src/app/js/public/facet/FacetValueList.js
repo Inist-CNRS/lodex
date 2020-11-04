@@ -22,6 +22,8 @@ const styles = {
     },
     listHeader: {
         display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     valueHeader: {
         marginLeft: '24px',

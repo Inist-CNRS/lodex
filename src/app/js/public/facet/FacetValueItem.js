@@ -14,6 +14,8 @@ import FacetActionsContext from './FacetActionsContext';
 const styles = {
     container: {
         display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     count: {
         alignSelf: 'flex-start',
@@ -21,6 +23,7 @@ const styles = {
     },
     listItem: {
         fontSize: '1rem',
+        padding: 0,
     },
 };
 
