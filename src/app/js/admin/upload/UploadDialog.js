@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import { DropzoneAreaBase } from 'material-ui-dropzone';
 
 import {
     Step,
@@ -92,6 +93,18 @@ export const UploadDialogComponent = ({
                 <Step active>
                     <StepLabel>{polyglot.t('select_file')}</StepLabel>
                     <StepContent>
+                        <DropzoneAreaBase
+                            filesLimit={1}
+                            onAdd={fileObjs =>
+                                console.log('Added Files:', fileObjs)
+                            }
+                            onDelete={fileObj =>
+                                console.log('Removed File:', fileObj)
+                            }
+                            onAlert={(message, variant) =>
+                                console.log(`${variant}: ${message}`)
+                            }
+                        />
                         <Button
                             variant="contained"
                             className="btn-upload-dataset"
