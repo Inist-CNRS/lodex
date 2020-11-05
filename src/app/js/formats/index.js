@@ -1,6 +1,6 @@
 import get from 'lodash.get';
-import merge from '../lib/merge';
 
+import merge from '../lib/merge';
 import asterPlotChart from './asterPlotChart';
 import code from './code';
 import globalBarchart from './vega-lite/component/bar-chart/';

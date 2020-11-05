@@ -2,30 +2,34 @@ import omit from 'lodash.omit';
 import { createSelector } from 'reselect';
 import get from 'lodash.get';
 
+import * as overview from '../../../common/overview';
+import { getProps } from '../lib/selectors';
+
 import {
     getTransformersMetas,
     getTransformerMetas,
 } from '../../../common/transformers';
+
 import {
     COVER_COLLECTION,
     COVER_DOCUMENT,
     COVER_DATASET,
 } from '../../../common/cover';
-import * as overview from '../../../common/overview';
-import { getProps } from '../lib/selectors';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 
 export const getFields = ({ byName, list = [] }) =>
     list.map(name => byName[name]).sort((f1, f2) => f1.position - f2.position);
 
+const getOntologyFieldsFilter = type =>
+    type === COVER_DATASET
+        ? ({ cover }) => cover === COVER_DATASET
+        : ({ cover }) => cover !== COVER_DATASET;
+
 const getOntologyFields = createSelector(
     getFields,
     (_, type) => type,
-    (fields, type) =>
-        type === COVER_DATASET
-            ? fields.filter(({ cover }) => cover === COVER_DATASET)
-            : fields.filter(({ cover }) => cover !== COVER_DATASET),
+    (fields, type) => fields.filter(getOntologyFieldsFilter(type)),
 );
 
 const getState = state => state.list;
@@ -73,6 +77,30 @@ const getDocumentFields = createSelector(getFields, fields =>
 
 const getDatasetFields = createSelector(getFields, fields =>
     fields.filter(f => f.cover === COVER_DATASET),
+);
+
+const getFromFilterFields = createSelector(
+    getFields,
+    (_, type) => type,
+    (fields, type) => {
+        // Keep this version in case we need to use the "cover" filtering version
+        //
+        // if (type !== 'graph') {
+        //     return fields.filter(getOntologyFieldsFilter(type));
+        // }
+        //
+        // return fields.filter(f => !!f.display_in_graph);
+
+        if (type === 'dataset') {
+            return fields.filter(f => !!f.display_in_home);
+        }
+
+        if (type === 'document') {
+            return fields.filter(f => !!f.display_in_resource);
+        }
+
+        return fields.filter(f => !!f.display_in_graph);
+    },
 );
 
 const getComposedFields = createSelector(getFields, fields =>
@@ -373,6 +401,7 @@ export default {
     getNbFields,
     hasPublicationFields,
     getTransformers,
+    getFromFilterFields,
     getTransformerArgs,
     getLineColGetter,
     getCompositeFieldsByField,

@@ -77,7 +77,7 @@ render(
                         component={RemovedResourcePage}
                     />
                     <PrivateRoute path="/data" exact component={Data} />
-                    <PrivateRoute path="/display" exact component={Display} />
+                    <PrivateRoute path="/display" component={Display} />
                     <Route path="/login" exact component={Login} />
                 </App>
             </ConnectedRouter>

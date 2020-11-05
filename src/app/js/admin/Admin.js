@@ -5,6 +5,11 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Card } from '@material-ui/core';
 
+/**
+ * @TODO: Remove this file
+ * THis file is useless now but we keep it to reproduce features
+ */
+
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import withInitialData from './withInitialData';
 import { fromParsing, fromPublication, fromUpload } from './selectors';

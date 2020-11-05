@@ -41,9 +41,6 @@ export const EditOntologyFieldFormComponent = ({
         <FieldLabelInput />
         <FieldSchemeInput />
         <FieldLanguageInput field={field} />
-        <FieldDisplayInResourceInput />
-        {field.cover === 'dataset' && <FieldDisplayInGraphInput />}
-        {field.cover === 'dataset' && <FieldDisplayInHomeInput />}
         <FieldOverviewInput />
         <FieldFormatInput />
         <FieldWidthInput />
