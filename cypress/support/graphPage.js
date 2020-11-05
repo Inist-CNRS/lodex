@@ -31,22 +31,23 @@ export const searchFor = text => {
 };
 
 export const getFacet = name => cy.get('.facet-item').contains(name);
+export const getExpandedFacet = name =>
+    cy.get('.facet-item').contains('span', name);
 
 export const getFacetItem = (name, value) =>
-    getFacet(name)
-        .parent()
-        .find('.facet-value-item')
-        .parent()
+    getExpandedFacet(name)
+        .next()
         .contains('span', value)
         .parent();
 
 export const getFacetExcludeItem = name =>
-    getFacet(name)
+    getExpandedFacet(name)
         .parent()
         .find('.facet-value-list .exclude-facet');
 
 export const setFacet = (name, value) => {
     getFacet(name).click();
+    cy.wait(1000);
     getFacetItem(name, value).click();
     waitForLoading();
     getFacet(name).click();

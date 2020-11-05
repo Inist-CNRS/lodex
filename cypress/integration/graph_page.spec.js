@@ -4,7 +4,7 @@ import * as menu from '../support/menu';
 import * as graphPage from '../support/graphPage';
 import * as searchDrawer from '../support/searchDrawer';
 
-describe.skip('Graph Page', () => {
+describe('Graph Page', () => {
     beforeEach(() => {
         teardown();
         menu.openAdvancedDrawer();
@@ -77,7 +77,7 @@ describe.skip('Graph Page', () => {
         menu.closeSearchDrawer();
         graphPage.setFacetExclude('Publication Year');
         graphPage.browseResults();
-        searchDrawer.getFacet('Publication Year').click();
+        searchDrawer.getFacet('Publication Year (14)').click();
         searchDrawer.searchInput().should('have.value', 'Biodiversity');
         searchDrawer
             .getFacetExcludeItem('Publication Year')
