@@ -30,6 +30,10 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
         mimeType,
     );
 
+    cy.get('.progress').should('exist');
+    cy.wait(300);
+    cy.get('.progress').should('not.exist');
+
     cy.get('.data-published a')
         .contains('Go to my published data')
         .should('be.visible');

@@ -21,10 +21,12 @@ export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 export const getFields = ({ byName, list = [] }) =>
     list.map(name => byName[name]).sort((f1, f2) => f1.position - f2.position);
 
-const getOntologyFieldsFilter = type =>
+const getOntologyFieldsFilter = (type, keepUriField = false) =>
     type === COVER_DATASET
-        ? ({ cover }) => cover === COVER_DATASET
-        : ({ cover }) => cover !== COVER_DATASET;
+        ? ({ cover, name }) =>
+              (name === 'uri' && keepUriField) || cover === COVER_DATASET
+        : ({ cover, name }) =>
+              (name === 'uri' && keepUriField) || cover !== COVER_DATASET;
 
 const getOntologyFields = createSelector(
     getFields,
@@ -83,23 +85,24 @@ const getFromFilterFields = createSelector(
     getFields,
     (_, type) => type,
     (fields, type) => {
-        // Keep this version in case we need to use the "cover" filtering version
-        //
-        // if (type !== 'graph') {
-        //     return fields.filter(getOntologyFieldsFilter(type));
-        // }
-        //
-        // return fields.filter(f => !!f.display_in_graph);
-
-        if (type === 'dataset') {
-            return fields.filter(f => !!f.display_in_home);
-        }
-
-        if (type === 'document') {
-            return fields.filter(f => !!f.display_in_resource);
+        if (type !== 'graph') {
+            return fields.filter(getOntologyFieldsFilter(type, true));
         }
 
         return fields.filter(f => !!f.display_in_graph);
+
+        // Don't known what I should use ? Cover or display_in_X ?
+        // In any case, dragndrop is based on cover, so it fail if I use only display
+        //
+        // if (type === 'dataset') {
+        //     return fields.filter(f => !!f.display_in_home);
+        // }
+
+        // if (type === 'document') {
+        //     return fields.filter(f => !!f.display_in_resource);
+        // }
+
+        // return fields.filter(f => !!f.display_in_graph);
     },
 );
 
