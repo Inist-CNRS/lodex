@@ -94,8 +94,9 @@ export const setUriColumnValue = (value = 'generate') => {
 };
 
 export const setOperationTypeInWizard = (value = 'DEFAULT') => {
-    cy.get('.wizard', { timeout: 2000 }).should('be.visible');
+    cy.get('.wizard', { timeout: 5000 }).should('be.visible');
     cy.contains('Transformations applied on the value').click();
+    cy.get('.wizard', { timeout: 5000 }).should('be.visible');
     cy.get('.operation').click();
     cy.contains(value).click();
     cy.get('.btn-save').click();

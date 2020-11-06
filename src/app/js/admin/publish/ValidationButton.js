@@ -16,6 +16,7 @@ import {
     validationField as validationFieldPropType,
 } from '../../propTypes';
 import { useHistory } from 'react-router';
+import { COVER_DATASET } from '../../../../common/cover';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };
@@ -39,8 +40,14 @@ const ValidationButtonComponent = ({
 
     // @TODO: Find a better way to handle fix error from data tab
     const redirectAndHandleEditField = (...args) => {
-        history.push('/display');
-        setTimeout(() => handleEditField(...args), 0);
+        const field = fields.find(({ name }) => name === args[0]);
+        history.push(
+            `/display/${
+                field && field.cover === COVER_DATASET ? 'home' : 'resource'
+            }`,
+        );
+
+        setTimeout(() => handleEditField(...args), 1000);
     };
 
     return (

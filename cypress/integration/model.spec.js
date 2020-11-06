@@ -21,9 +21,7 @@ describe('Model Page', () => {
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
         datasetImportPage.goToModel();
-        cy.get('.ontology-table-dataset h4')
-            .contains('Dataset')
-            .should('be.visible');
+        cy.contains('h4', 'Dataset').should('be.visible');
         modelPage.checkDatasetFieldOrder(['Title', 'Description']);
 
         modelPage.dragDatasetField(1, 2);
@@ -43,14 +41,12 @@ describe('Model Page', () => {
         menu.goToAdminDashboard();
         datasetImportPage.goToModel();
 
-        cy.get('.ontology-table-dataset h4')
-            .contains('Dataset')
-            .should('be.visible');
-        modelPage.changeFilter('List of fields dedicated to each resource');
+        cy.contains('h4', 'Dataset').should('be.visible');
+        cy.get('.sidebar')
+            .contains('a', 'Resource pages')
+            .click();
         cy.get('.ontology-table-dataset').should('not.exist');
-        cy.get('.ontology-table-document h4')
-            .contains('Document')
-            .should('be.visible');
+        cy.contains('h4', 'Document').should('be.visible');
 
         modelPage.checkDocumentFieldOrder(['uri', 'Column 1', 'Column 2']);
 

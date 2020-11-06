@@ -86,7 +86,9 @@ const getFromFilterFields = createSelector(
     (_, type) => type,
     (fields, type) => {
         if (type !== 'graph') {
-            return fields.filter(getOntologyFieldsFilter(type, true));
+            return fields.filter(
+                getOntologyFieldsFilter(type, type === 'document'),
+            );
         }
 
         return fields.filter(f => !!f.display_in_graph);

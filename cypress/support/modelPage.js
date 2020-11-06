@@ -1,10 +1,3 @@
-export const changeFilter = value => {
-    cy.get('.select-filter').click();
-    cy.get('ul[role=listbox] li[role="option"]')
-        .contains(value)
-        .click();
-};
-
 export const checkFieldOrder = type => names => {
     cy.get(`.ontology-table-${type} table tbody tr`).should(
         'have.length',

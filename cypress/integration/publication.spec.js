@@ -47,6 +47,10 @@ describe('Dataset Publication', () => {
             adminNavigation.goToDisplay();
             datasetImportPage.addColumn('Column 1');
 
+            cy.get('.sidebar')
+                .contains('a', 'Resource pages')
+                .click();
+
             cy.get('.publication-excerpt')
                 .contains('Row 1')
                 .should('be.visible');
@@ -68,6 +72,10 @@ describe('Dataset Publication', () => {
             menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.importModel('model/concat.json');
+
+            cy.get('.sidebar')
+                .contains('a', 'Resource pages')
+                .click();
 
             cy.contains('["Row 1","Test 1"]').should('be.visible');
             cy.contains('["Row 2","Test 2"]').should('be.visible');
