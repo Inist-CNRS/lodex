@@ -74,7 +74,7 @@ export const UploadDialogComponent = ({
         <div>
             <Stepper linear={false} orientation="vertical">
                 <Step active>
-                    <StepLabel>{polyglot.t('select_parser')}</StepLabel>
+                    <StepLabel>{polyglot.t('select_loader')}</StepLabel>
                     <StepContent>
                         <Select
                             label={polyglot.t('parser_name')}
@@ -83,7 +83,7 @@ export const UploadDialogComponent = ({
                             fullWidth
                         >
                             <MenuItem key={'automatic'} value={'automatic'}>
-                                {polyglot.t('automatic-parser')}
+                                {polyglot.t('automatic-loader')}
                             </MenuItem>
                             {parserNames}
                         </Select>

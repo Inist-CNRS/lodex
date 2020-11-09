@@ -125,7 +125,7 @@ export const importModel = (filename, mimeType = 'application/json') => {
     fillInputWithFixture('input[name="file_model"]', filename, mimeType);
 };
 
-const checkParserItem = label => {
+const checkLoaderItem = label => {
     cy.get('li[role=option]')
         .contains(label)
         .scrollIntoView()
@@ -138,9 +138,9 @@ export const checkListOfSupportedFileFormats = () => {
         .click({ force: true });
     cy.wait(300);
     cy.get('li[role=option]>span').should('have.length', 21);
-    checkParserItem('CSV - with semicolon');
-    checkParserItem('XML - TEI document');
-    checkParserItem('ZIP - file from dl.istex.fr');
-    checkParserItem('JSON - from Lodex API');
-    checkParserItem('XML - ATOM feed');
+    checkLoaderItem('CSV - with semicolon');
+    checkLoaderItem('XML - TEI document');
+    checkLoaderItem('ZIP - file from dl.istex.fr');
+    checkLoaderItem('JSON - from Lodex API');
+    checkLoaderItem('XML - ATOM feed');
 };
