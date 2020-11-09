@@ -44,16 +44,14 @@ const onPageChange = (changeFacetValue, filter, name) => (
         filter,
     });
 
-const onFilterChange = (changeFacetValue, name, currentPage, perPage) => (
-    _,
-    filter,
-) =>
+const onFilterChange = (changeFacetValue, name, currentPage, perPage) => e => {
     changeFacetValue({
         name,
         currentPage,
         perPage,
-        filter,
+        filter: e.target.value,
     });
+};
 
 const onInvertChange = (invertFacet, name) => (_, inverted) =>
     invertFacet({ name, inverted });

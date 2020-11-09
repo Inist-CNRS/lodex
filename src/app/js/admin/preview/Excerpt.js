@@ -31,6 +31,7 @@ const styles = {
         display: 'block',
         overflowX: 'auto',
         width: 'auto',
+        minHeight: 500,
         borderLeft: separated ? 'none' : '1px solid rgb(224, 224, 224)',
     })),
     cell: {
@@ -74,13 +75,6 @@ export const ExcerptComponent = ({
             </TableRow>
         </TableHead>
         <TableBody>
-            {lines.map((line, index) => (
-                <ExcerptLine
-                    key={`${line.uri}-${index}` || index}
-                    line={line}
-                    columns={columns}
-                />
-            ))}
             {areHeadersClickable && (
                 <TableRow>
                     {columns.map(c => (
@@ -92,6 +86,13 @@ export const ExcerptComponent = ({
                     ))}
                 </TableRow>
             )}
+            {lines.map((line, index) => (
+                <ExcerptLine
+                    key={`${line.uri}-${index}` || index}
+                    line={line}
+                    columns={columns}
+                />
+            ))}
         </TableBody>
     </Table>
 );

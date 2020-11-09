@@ -17,16 +17,17 @@ function getIconFromLabel(labels) {
         width: 18,
         height: 18,
     };
+
     if (labels.indexOf('sprint-review') !== -1) {
-        return <Alarm iconStyle={smallIcon} style={smallIcon} />;
+        return <Alarm style={smallIcon} />;
     } else if (labels.indexOf('communication') !== -1) {
-        return <RecordVoiceOver iconStyle={smallIcon} style={smallIcon} />;
+        return <RecordVoiceOver style={smallIcon} />;
     } else if (labels.indexOf('objectif') !== -1) {
-        return <TrendingUp iconStyle={smallIcon} style={smallIcon} />;
+        return <TrendingUp style={smallIcon} />;
     } else if (labels.indexOf('reunion') !== -1) {
-        return <DateRange iconStyle={smallIcon} style={smallIcon} />;
+        return <DateRange style={smallIcon} />;
     }
-    return <Bookmark iconStyle={smallIcon} style={smallIcon} />;
+    return <Bookmark style={smallIcon} />;
 }
 
 const SeeMoreStyle = {

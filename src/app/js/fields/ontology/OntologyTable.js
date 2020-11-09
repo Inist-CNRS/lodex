@@ -43,7 +43,7 @@ class OntologyTable extends Component {
                 <Table fixedHeader={false} style={styles.table}>
                     <TableHead>
                         <TableRow>
-                            <TableCell />
+                            <TableCell style={{ minWidth: 150 }} />
                             <TableCell>{polyglot.t('identifier')}</TableCell>
                             <TableCell>{polyglot.t('label')}</TableCell>
                             <TableCell>{polyglot.t('cover')}</TableCell>

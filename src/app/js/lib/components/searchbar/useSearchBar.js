@@ -24,7 +24,7 @@ const useSearchBar = (
     };
 
     const clearSearch = () => {
-        search(null, '');
+        search('');
         onSearchClear();
     };
 

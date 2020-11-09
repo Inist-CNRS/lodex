@@ -36,10 +36,6 @@ ExportFieldsReadyButtonComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-ExportFieldsReadyButtonComponent.defaultProps = {
-    iconStyle: null,
-};
-
 const mapDispatchToProps = {
     exportFields: exportFieldsAction,
 };
@@ -47,9 +43,7 @@ const mapDispatchToProps = {
 export default compose(
     connect(undefined, mapDispatchToProps),
     withHandlers({
-        handleClick: ({ exportFields }) => () => {
-            exportFields();
-        },
+        handleClick: ({ exportFields }) => () => exportFields(),
     }),
     translate,
 )(ExportFieldsReadyButtonComponent);

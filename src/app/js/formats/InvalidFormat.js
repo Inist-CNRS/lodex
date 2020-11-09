@@ -62,7 +62,7 @@ const InvalidFormat = ({ p: polyglot, format, value }) => (
                 <strong>{polyglot.t('bad_format_error')}</strong>
             </span>
             <span className={styles.titleLogo}>
-                <Warning iconStyle={iconStyle} style={iconStyle} />
+                <Warning style={iconStyle} />
             </span>
         </div>
         <p className={styles.details}>{polyglot.t('bad_format_details')}</p>
