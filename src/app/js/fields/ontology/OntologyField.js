@@ -36,6 +36,9 @@ const styles = {
     },
     actionCol: {
         overflow: 'visible',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
 };
 

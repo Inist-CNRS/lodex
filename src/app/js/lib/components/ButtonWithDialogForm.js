@@ -47,7 +47,7 @@ export const PureButtonWithDialogForm = ({
             tooltip={label}
             onClick={handleOpen}
             style={buttonStyle}
-            iconStyle={{ color: 'inherit' }}
+            style={{ color: 'inherit' }}
         >
             {saving ? <CircularProgress variant="indeterminate" /> : icon}
         </IconButton>

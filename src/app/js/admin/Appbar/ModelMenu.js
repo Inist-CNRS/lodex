@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import { Button, Snackbar } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -35,6 +36,7 @@ export class ModelMenuComponent extends Component {
         this.state = {
             open: false,
             showImportFieldsConfirmation: false,
+            showSuccessAlert: false,
         };
     }
 
@@ -57,6 +59,7 @@ export class ModelMenuComponent extends Component {
     handleImportFieldsClose = () => {
         this.setState({
             showImportFieldsConfirmation: false,
+            showSuccessAlert: true,
         });
     };
 
@@ -85,7 +88,7 @@ export class ModelMenuComponent extends Component {
 
     render() {
         const { hasPublishedDataset, p: polyglot } = this.props;
-        const { showImportFieldsConfirmation } = this.state;
+        const { showImportFieldsConfirmation, showSuccessAlert } = this.state;
 
         return (
             <div style={styles.container}>
@@ -102,6 +105,15 @@ export class ModelMenuComponent extends Component {
                         onClose={this.handleImportFieldsClose}
                     />
                 )}
+                <Snackbar
+                    open={showSuccessAlert}
+                    autoHideDuration={60000}
+                    onClose={() => this.setState({ showSuccessAlert: false })}
+                >
+                    <Alert variant="filled" severity="success">
+                        {polyglot.t('model_imported_with_success')}
+                    </Alert>
+                </Snackbar>
             </div>
         );
     }

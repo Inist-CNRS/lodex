@@ -19,7 +19,7 @@ const dialogStyle = {
         marginBottom: 100,
         maxHeight: '100vh',
     },
-    content: { maxHeight: 'calc(100vh - 298px)' },
+    content: { maxHeight: 'calc(100vh - 298px)', width: 600 },
 };
 
 export const PureButtonWithDialog = ({

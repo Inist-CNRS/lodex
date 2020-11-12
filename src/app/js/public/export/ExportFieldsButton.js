@@ -33,10 +33,6 @@ ExportFieldsButtonComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-ExportFieldsButtonComponent.defaultProps = {
-    iconStyle: null,
-};
-
 const mapDispatchToProps = {
     exportFields: exportFieldsAction,
 };

@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+
 import {
     Stepper,
     Dialog,
@@ -31,6 +34,7 @@ const styles = {
     container: {
         display: 'flex',
         paddingBottom: '1rem',
+        width: 800,
     },
     form: {
         borderRight: '1px solid rgb(224, 224, 224)',
@@ -48,6 +52,11 @@ const styles = {
         display: 'flex',
     },
     titleLabel: {},
+    closeButton: {
+        position: 'absolute',
+        right: 10,
+        top: 10,
+    },
 };
 
 class FieldEditionWizardComponent extends Component {
@@ -183,8 +192,22 @@ class FieldEditionWizardComponent extends Component {
         );
 
         return (
-            <Dialog open={!!field} scroll="body" className="wizard">
-                <DialogTitle>{title}</DialogTitle>
+            <Dialog
+                open={!!field}
+                scroll="body"
+                className="wizard"
+                maxWidth="800"
+            >
+                <DialogTitle>
+                    {title}
+                    <IconButton
+                        aria-label="close"
+                        style={styles.closeButton}
+                        onClick={this.handleCancel}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
                 <DialogContent>
                     {field && (
                         <div style={styles.container}>
