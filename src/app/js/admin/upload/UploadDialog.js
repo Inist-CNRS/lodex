@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { uploadFile, changeUploadUrl, changeParserName, uploadUrl } from './';
+import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
 import { fromUpload, fromLoaders } from '../selectors';
 
 const styles = {
@@ -52,16 +52,16 @@ const styles = {
 
 export const UploadDialogComponent = ({
     url,
-    parserName,
+    loaderName,
     isUrlValid,
     onChangeUrl,
-    onChangeParserName,
+    onChangeLoaderName,
     onFileLoad,
     onUrlUpload,
     p: polyglot,
     loaders,
 }) => {
-    const parserNames = loaders
+    const loaderNames = loaders
         .map(loader => loader.name)
         .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
         .map(pn => (
@@ -77,15 +77,15 @@ export const UploadDialogComponent = ({
                     <StepLabel>{polyglot.t('select_loader')}</StepLabel>
                     <StepContent>
                         <Select
-                            label={polyglot.t('parser_name')}
-                            value={parserName}
-                            onChange={onChangeParserName}
+                            label={polyglot.t('loader_name')}
+                            value={loaderName}
+                            onChange={onChangeLoaderName}
                             fullWidth
                         >
                             <MenuItem key={'automatic'} value={'automatic'}>
                                 {polyglot.t('automatic-loader')}
                             </MenuItem>
-                            {parserNames}
+                            {loaderNames}
                         </Select>
                     </StepContent>
                 </Step>
@@ -149,12 +149,12 @@ export const UploadDialogComponent = ({
 
 UploadDialogComponent.propTypes = {
     url: PropTypes.string.isRequired,
-    parserName: PropTypes.string.isRequired,
+    loaderName: PropTypes.string.isRequired,
     isUrlValid: PropTypes.bool,
     onChangeUrl: PropTypes.func.isRequired,
     onFileLoad: PropTypes.func.isRequired,
     onUrlUpload: PropTypes.func.isRequired,
-    onChangeParserName: PropTypes.func.isRequired,
+    onChangeLoaderName: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
@@ -165,7 +165,7 @@ UploadDialogComponent.defaultProps = {
 const mapStateToProps = state => ({
     url: fromUpload.getUrl(state),
     isUrlValid: fromUpload.isUrlValid(state),
-    parserName: fromUpload.getParserName(state),
+    loaderName: fromUpload.getLoaderName(state),
     loaders: fromLoaders.getLoaders(state),
 });
 
@@ -173,7 +173,7 @@ const mapDispatchToProps = {
     onUrlUpload: uploadUrl,
     onFileLoad: e => uploadFile(e.target.files[0]),
     onChangeUrl: e => changeUploadUrl(e.target.value),
-    onChangeParserName: (_, idx, val) => changeParserName(val),
+    onChangeLoaderName: (_, idx, val) => changeLoaderName(val),
 };
 
 export default compose(

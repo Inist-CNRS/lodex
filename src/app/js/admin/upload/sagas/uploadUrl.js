@@ -9,10 +9,10 @@ import { preventUnload, allowUnload } from './unload';
 export function* handleUploadUrl() {
     preventUnload();
     const url = yield select(fromUpload.getUrl);
-    const parserName = yield select(fromUpload.getParserName);
+    const loaderName = yield select(fromUpload.getLoaderName);
     const request = yield select(fromUser.getUploadUrlRequest, {
         url,
-        parserName,
+        loaderName,
     });
     const { error } = yield call(fetch, request);
 
