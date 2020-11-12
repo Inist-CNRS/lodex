@@ -285,13 +285,13 @@ export const getClearUploadRequest = state =>
         url: '/api/upload/clear',
     });
 
-export const getUploadUrlRequest = (state, { url, parserName }) =>
+export const getUploadUrlRequest = (state, { url, loaderName }) =>
     getRequest(state, {
         method: 'POST',
         url: '/api/upload/url',
         body: {
             url,
-            parserName,
+            loaderName,
         },
     });
 
