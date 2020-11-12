@@ -88,6 +88,7 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
                     tooltip={buttonLabel}
                     onClick={handleOpen}
                     className="export"
+                    color="primary"
                 >
                     <FontAwesomeIcon icon={faExternalLinkAlt} height={20} />
                 </IconButton>

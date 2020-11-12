@@ -39,9 +39,11 @@ export const AppliedFacetListComponent = ({
                     }),
                 )}
                 {facets.length && (
-                    <Chip style={styles.chip} onClick={clearAll}>
-                        {polyglot.t('clear_all')}
-                    </Chip>
+                    <Chip
+                        style={styles.chip}
+                        onClick={clearAll}
+                        label={polyglot.t('clear_all')}
+                    />
                 )}
             </div>
         ) : null}
