@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -7,7 +7,12 @@ import translate from 'redux-polyglot/translate';
 import PublicationExcerpt from './PublicationExcerpt';
 import PublicationEditionModal from '../../../fields/wizard';
 import { editField, loadField } from '../../../fields';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { fromFields } from '../../../sharedSelectors';
+
+import {
+    polyglot as polyglotPropTypes,
+    field as fieldPropTypes,
+} from '../../../propTypes';
 
 const styles = {
     container: {
@@ -34,41 +39,45 @@ const styles = {
     },
 };
 
-export class PublicationPreviewComponent extends Component {
-    UNSAFE_componentWillMount() {
-        this.props.loadField();
-    }
+const PublicationPreviewComponent = ({
+    fields,
+    loadField,
+    editColumn,
+    p: polyglot,
+}) => {
+    useEffect(() => {
+        loadField();
+    }, []);
 
-    handleExitColumEdition = event => {
-        event.preventDefault();
-        event.stopPropagation();
-        this.props.editColumn(null);
+    const handleExitColumEdition = e => {
+        e.preventDefault();
+        e.stopPropagation();
+        editColumn(null);
     };
 
-    render() {
-        const { editColumn, p: polyglot } = this.props;
-
-        return (
-            <div style={styles.container} className="publication-preview">
-                <div style={styles.titleContainer}>
-                    <div style={styles.title}>
-                        {polyglot.t('publication_preview')}
-                    </div>
+    return (
+        <div style={styles.container} className="publication-preview">
+            <div style={styles.titleContainer}>
+                <div style={styles.title}>
+                    {polyglot.t('publication_preview')}
                 </div>
-                <PublicationExcerpt onHeaderClick={editColumn} />
-                <PublicationEditionModal
-                    onExitEdition={this.handleExitColumEdition}
-                />
             </div>
-        );
-    }
-}
+            <PublicationExcerpt onHeaderClick={editColumn} fields={fields} />
+            <PublicationEditionModal onExitEdition={handleExitColumEdition} />
+        </div>
+    );
+};
 
 PublicationPreviewComponent.propTypes = {
     editColumn: PropTypes.func.isRequired,
     loadField: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
 };
+
+const mapStateToProps = (state, { filter }) => ({
+    fields: fromFields.getFromFilterFields(state, filter),
+});
 
 const mapDispatchToProps = {
     editColumn: editField,
@@ -76,6 +85,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(null, mapDispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     translate,
 )(PublicationPreviewComponent);

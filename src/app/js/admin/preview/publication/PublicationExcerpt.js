@@ -1,13 +1,11 @@
 import { connect } from 'react-redux';
 
 import Excerpt from '../Excerpt';
-
 import { fromPublicationPreview } from '../../selectors';
-import { fromFields } from '../../../sharedSelectors';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, { fields }) => ({
     lines: fromPublicationPreview.getPublicationPreview(state),
-    columns: fromFields.getFields(state),
+    columns: fields,
 });
 
 export default connect(mapStateToProps)(Excerpt);

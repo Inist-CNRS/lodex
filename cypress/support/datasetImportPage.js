@@ -30,6 +30,10 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
         mimeType,
     );
 
+    cy.get('.progress').should('exist');
+    cy.wait(300);
+    cy.get('.progress').should('not.exist');
+
     cy.get('.data-published a')
         .contains('Go to my published data')
         .should('be.visible');
@@ -90,8 +94,9 @@ export const setUriColumnValue = (value = 'generate') => {
 };
 
 export const setOperationTypeInWizard = (value = 'DEFAULT') => {
-    cy.get('.wizard', { timeout: 2000 }).should('be.visible');
+    cy.get('.wizard', { timeout: 5000 }).should('be.visible');
     cy.contains('Transformations applied on the value').click();
+    cy.get('.wizard', { timeout: 5000 }).should('be.visible');
     cy.get('.operation').click();
     cy.contains(value).click();
     cy.get('.btn-save').click();

@@ -1,17 +1,16 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
-// import HomeIcon from '@material-ui/icons/Home';
-// import DescriptionIcon from '@material-ui/icons/Description';
-// import EqualizerIcon from '@material-ui/icons/Equalizer';
+import HomeIcon from '@material-ui/icons/Home';
+import DescriptionIcon from '@material-ui/icons/Description';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 import GridOnIcon from '@material-ui/icons/GridOn';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import ArchiveIcon from '@material-ui/icons/Archive';
 import { compose } from 'recompose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -55,31 +54,43 @@ const InnerSidebarComponent = ({
     p: polyglot,
 }) => (
     <>
-        {/* <Route path="/display">
+        <Route path="/display">
             <div style={styles.root} className="sidebar">
                 <Box style={styles.linkContainer}>
-                    <p>
+                    <NavLink
+                        style={{ color: '#ccc' }}
+                        activeStyle={{ color: 'black' }}
+                        to="/display/home"
+                    >
                         <HomeIcon fontSize="large" />
                         <br />
-                        Home page
-                    </p>
+                        {polyglot.t('home')}
+                    </NavLink>
                 </Box>
                 <Box style={styles.linkContainer}>
-                    <p>
+                    <NavLink
+                        style={{ color: '#ccc' }}
+                        activeStyle={{ color: 'black' }}
+                        to="/display/resource"
+                    >
                         <DescriptionIcon fontSize="large" />
                         <br />
-                        Resource pages
-                    </p>
+                        {polyglot.t('resource_pages')}
+                    </NavLink>
                 </Box>
                 <Box style={styles.linkContainer}>
-                    <p>
+                    <NavLink
+                        style={{ color: '#ccc' }}
+                        activeStyle={{ color: 'black' }}
+                        to="/display/graph"
+                    >
                         <EqualizerIcon fontSize="large" />
                         <br />
-                        Graph
-                    </p>
+                        {polyglot.t('graph_pages')}
+                    </NavLink>
                 </Box>
             </div>
-        </Route> */}
+        </Route>
         <Route path="/data">
             <div style={styles.root} className="sidebar">
                 <NavLink

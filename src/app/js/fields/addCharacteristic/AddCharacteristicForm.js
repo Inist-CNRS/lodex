@@ -86,10 +86,15 @@ AddCharacteristicFormComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, { displayPage }) => ({
     addCharacteristicError: fromFields.getError(state),
     saving: fromFields.isSaving(state),
     fields: fromFields.getDatasetFields(state),
+    initialValues: {
+        display_in_resource: displayPage === 'resource',
+        display_in_graph: displayPage === 'graph',
+        display_in_home: displayPage === 'home',
+    },
 });
 
 const mapDispatchToProps = {
@@ -107,5 +112,6 @@ export default compose(
     reduxForm({
         form: NEW_CHARACTERISTIC_FORM_NAME,
         validate,
+        enableReinitialize: true,
     }),
 )(AddCharacteristicFormComponent);

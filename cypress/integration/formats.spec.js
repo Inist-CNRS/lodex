@@ -15,6 +15,10 @@ describe('Transformers & Formats', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
 
             adminNavigation.goToDisplay();
+            cy.get('.sidebar')
+                .contains('a', 'Resource pages')
+                .click();
+
             datasetImportPage.setUriColumnValue();
             datasetImportPage.addColumn('Column 1', {
                 composedOf: ['Column 1', 'Column 2'],
