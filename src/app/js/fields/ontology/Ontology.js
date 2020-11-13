@@ -40,7 +40,7 @@ const OntologyComponent = ({
                     <AddCharacteristic displayPage={filter} />
                 </Grid>
             </Grid>
-            <Grid row>
+            <Grid container direction="row">
                 <Grid item>
                     <OntologyTable filter={filter} />
                 </Grid>

@@ -48,7 +48,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.addColumn('Column 1');
 
             cy.get('.sidebar')
-                .contains('a', 'Resource pages')
+                .contains('a', 'Resources')
                 .click();
 
             cy.get('.publication-excerpt')
@@ -74,7 +74,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/concat.json');
 
             cy.get('.sidebar')
-                .contains('a', 'Resource pages')
+                .contains('a', 'Resources')
                 .click();
 
             cy.contains('["Row 1","Test 1"]').should('be.visible');

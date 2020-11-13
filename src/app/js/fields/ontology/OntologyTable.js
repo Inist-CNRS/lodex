@@ -40,7 +40,7 @@ class OntologyTable extends Component {
 
         return (
             <div className={`ontology-table-${filter}`}>
-                <Table fixedHeader={false} style={styles.table}>
+                <Table style={styles.table}>
                     <TableHead>
                         <TableRow>
                             <TableCell style={{ minWidth: 150 }} />

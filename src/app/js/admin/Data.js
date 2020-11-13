@@ -42,7 +42,6 @@ export const DataComponent = ({ hasPublishedDataset, canUploadFile }) => {
 };
 
 DataComponent.propTypes = {
-    loadingParsingResult: PropTypes.bool.isRequired,
     hasPublishedDataset: PropTypes.bool.isRequired,
     canUploadFile: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,

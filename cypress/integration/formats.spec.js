@@ -16,7 +16,7 @@ describe('Transformers & Formats', () => {
 
             adminNavigation.goToDisplay();
             cy.get('.sidebar')
-                .contains('a', 'Resource pages')
+                .contains('a', 'Resources')
                 .click();
 
             datasetImportPage.setUriColumnValue();

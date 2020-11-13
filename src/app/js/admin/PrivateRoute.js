@@ -15,7 +15,7 @@ const PrivateRoute = ({ isAdmin, component: Component, ...rest }) => (
 
 PrivateRoute.propTypes = {
     isAdmin: PropTypes.bool.isRequired,
-    component: PropTypes.element.isRequired,
+    component: PropTypes.elementType.isRequired,
 };
 
 const mapStateToProps = state => ({

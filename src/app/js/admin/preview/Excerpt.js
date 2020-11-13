@@ -107,7 +107,7 @@ ExcerptComponent.propTypes = {
     onCellClick: PropTypes.func.isRequired,
     onHeaderClick: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    loadField: PropTypes.func.isRequired,
+    loadField: PropTypes.func,
 };
 
 ExcerptComponent.defaultProps = {
