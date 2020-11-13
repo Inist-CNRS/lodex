@@ -39,7 +39,6 @@ export const FloatingActionButtonComponent = ({
                     open={showTooltip}
                     title={tooltip}
                     placement="left-end"
-                    touch
                 >
                     {button}
                 </Tooltip>

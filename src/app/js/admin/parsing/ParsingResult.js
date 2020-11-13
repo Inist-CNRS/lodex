@@ -9,6 +9,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { reloadParsingResult } from './';
 import { fromParsing } from '../selectors';
 import ParsingExcerpt from './ParsingExcerpt';
+import Loading from '../../lib/components/Loading';
 
 const styles = {
     container: {
@@ -62,7 +63,16 @@ export class ParsingResultComponent extends Component {
             p: polyglot,
             showAddColumns,
             maxLines,
+            loadingParsingResult,
         } = this.props;
+
+        if (loadingParsingResult) {
+            return (
+                <Loading className="admin">
+                    {polyglot.t('loading_parsing_results')}
+                </Loading>
+            );
+        }
 
         return (
             <div className="parsingResult" style={styles.container}>
@@ -86,10 +96,12 @@ ParsingResultComponent.propTypes = {
     handleClearParsing: PropTypes.func.isRequired,
     showAddColumns: PropTypes.bool.isRequired,
     maxLines: PropTypes.number,
+    loadingParsingResult: PropTypes.bool.isRequired,
 };
 
 ParsingResultComponent.defaultProps = {
     maxLines: 10,
+    showAddColumns: false,
 };
 
 const mapStateToProps = state => ({
