@@ -2,6 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+import { NavLink } from 'react-router-dom';
+
+import {
+    Route,
+    useRouteMatch,
+    Redirect,
+    Switch,
+    useParams,
+} from 'react-router';
 
 import PublicationPreview from './preview/publication/PublicationPreview';
 import Statistics from './Statistics';
@@ -11,16 +20,17 @@ import ModelMenu from './Appbar/ModelMenu';
 import ParsingResult from './parsing/ParsingResult';
 import withInitialData from './withInitialData';
 
-const DisplayRouteComponent = ({
-    filter,
-    showAddColumns,
-    hasPublishedDataset,
-}) => {
-    if (hasPublishedDataset) {
-        return <Ontology filter={filter} />;
-    }
+const AddResource = () => {
+    return 'foooo';
+};
 
-    return (
+const DisplayRouteComponent = ({ showAddColumns, hasPublishedDataset }) => {
+    const { filter } = useParams();
+    const { path, url } = useRouteMatch();
+
+    const pageComponent = hasPublishedDataset ? (
+        <Ontology filter={filter} />
+    ) : (
         <div>
             <ModelMenu hasPublishedDataset={hasPublishedDataset} />
             <div style={{ paddingBottom: 30 }}>
@@ -33,6 +43,24 @@ const DisplayRouteComponent = ({
             </div>
         </div>
     );
+
+    if (filter === 'document') {
+        return (
+            <Switch>
+                <Route exact path={`${path}/main`}>
+                    <div>{pageComponent}</div>
+                </Route>
+                <Route exact path={`${path}/add`}>
+                    <AddResource />
+                </Route>
+                <Route>
+                    <Redirect to={`${url}/main`} />
+                </Route>
+            </Switch>
+        );
+    }
+
+    return pageComponent;
 };
 
 DisplayRouteComponent.propTypes = {

@@ -64,7 +64,6 @@ StepComponent.propTypes = {
     last: PropTypes.bool,
     style: PropTypes.object,
     icon: PropTypes.node,
-
     handleSelectStep: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
@@ -82,11 +81,21 @@ StepComponent.defaultProps = {
 };
 
 export default compose(
-    withProps(({ field }) => ({ initialValues: field })),
+    withProps(({ field, filter }) => {
+        const fieldFilterAttributes = filter
+            ? {
+                  cover: filter === 'dataset' ? 'dataset' : 'collection',
+                  display_in_resource: filter === 'document',
+                  display_in_graph: filter === 'graph',
+                  display_in_home: filter === 'dataset',
+              }
+            : {};
+
+        return { initialValues: { ...field, ...fieldFilterAttributes } };
+    }),
     withHandlers({
-        handleSelectStep: ({ index, onSelectStep }) => () => {
-            onSelectStep(index);
-        },
+        handleSelectStep: ({ index, onSelectStep }) => () =>
+            onSelectStep(index),
     }),
     reduxForm({
         form: FIELD_FORM_NAME,

@@ -1,19 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import StorageIcon from '@material-ui/icons/Storage';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
-
-import {
-    AppBar,
-    CircularProgress,
-    Button,
-    Toolbar,
-    Menu,
-    MenuItem,
-} from '@material-ui/core';
+import { AppBar, CircularProgress, Button, Toolbar } from '@material-ui/core';
 
 import SignOutButton from './SignOutButton';
 import PublicationButton from '../publish/PublicationButton';
@@ -39,7 +32,11 @@ const styles = {
     },
     button: {
         color: 'white',
-        minWidth: 100,
+        borderRadius: 0,
+        marginRight: 30,
+    },
+    activeButton: {
+        borderBottom: '3px solid #fff',
     },
     linksContainer: {
         display: 'flex',
@@ -60,22 +57,26 @@ const AppbarComponent = ({
         <div style={styles.buttons}>
             {isAdmin && hasLoadedDataset && (
                 <>
-                    <Button
+                    <NavLink
+                        to="/data"
+                        component={Button}
                         variant="text"
-                        component={props => <Link to="/data" {...props} />}
                         style={styles.button}
                         startIcon={<StorageIcon />}
+                        activeStyle={styles.activeButton}
                     >
                         <span>{polyglot.t('data')}</span>
-                    </Button>
-                    <Button
+                    </NavLink>
+                    <NavLink
+                        to="/display"
+                        component={Button}
                         variant="text"
-                        component={props => <Link to="/display" {...props} />}
                         style={styles.button}
                         startIcon={<AspectRatioIcon />}
+                        activeStyle={styles.activeButton}
                     >
                         <span>{polyglot.t('display')}</span>
-                    </Button>
+                    </NavLink>
                 </>
             )}
         </div>

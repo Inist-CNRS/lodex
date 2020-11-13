@@ -29,6 +29,7 @@ import StepSearch from './StepSearch';
 import StepSemantics from './StepSemantics';
 import FieldExcerpt from '../../admin/preview/field/FieldExcerpt';
 import Actions from './Actions';
+import { PropType } from 'redux-polyglot';
 
 const styles = {
     container: {
@@ -110,7 +111,7 @@ class FieldEditionWizardComponent extends Component {
     };
 
     render() {
-        const { field, fields } = this.props;
+        const { field, fields, filter } = this.props;
 
         const { step } = this.state;
 
@@ -121,52 +122,58 @@ class FieldEditionWizardComponent extends Component {
         if (field && field.name !== 'uri') {
             steps = [
                 <StepIdentity
-                    key={'identity'}
+                    key="identity"
                     id="step-identity"
                     index={0}
                     active={step === 0}
                     field={field}
                     fields={fields}
+                    filter={filter}
                     onSelectStep={this.handleSelectStep}
                 />,
                 <StepValue
-                    key={'value'}
+                    key="value"
                     index={1}
                     active={step === 1}
                     field={field}
                     fields={fields}
+                    filter={filter}
                     onSelectStep={this.handleSelectStep}
                 />,
                 <StepTransforms
-                    key={'transformations'}
+                    key="transformations"
                     index={2}
                     active={step === 2}
                     field={field}
                     fields={fields}
+                    filter={filter}
                     onSelectStep={this.handleSelectStep}
                 />,
                 <StepSemantics
-                    key={'semantics'}
+                    key="semantics"
                     index={3}
                     active={step === 3}
                     field={field}
                     fields={fields}
+                    filter={filter}
                     onSelectStep={this.handleSelectStep}
                 />,
                 <StepDisplay
-                    key={'display'}
+                    key="display"
                     index={4}
                     active={step === 4}
                     field={field}
                     fields={fields}
+                    filter={filter}
                     onSelectStep={this.handleSelectStep}
                 />,
                 <StepSearch
-                    key={'search'}
+                    key="search"
                     index={5}
                     active={step === 5}
                     field={field}
                     fields={fields}
+                    filter={filter}
                     onSelectStep={this.handleSelectStep}
                 />,
             ];
@@ -239,12 +246,16 @@ class FieldEditionWizardComponent extends Component {
     }
 }
 
+FieldEditionWizardComponent.propTypes = {
+    filter: PropType.string,
+};
+
 const mapStateToProps = state => {
     const field = fromFields.getEditedField(state);
 
     return {
         field,
-        initialValues: field ? fromFields.getEditedField(state) : null,
+        initialValues: field || null,
         fields: field ? fromFields.getFieldsExceptEdited(state) : null,
     };
 };
