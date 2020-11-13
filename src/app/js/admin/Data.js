@@ -15,8 +15,6 @@ import withInitialData from './withInitialData';
 import { preLoadLoaders } from './loader/';
 
 export const DataComponent = ({ hasPublishedDataset, canUploadFile }) => {
-    console.log('hasPublishedDataset:', hasPublishedDataset);
-    console.log('canUploadFile:', canUploadFile);
     if (hasPublishedDataset) {
         return (
             <div className="admin">
