@@ -62,7 +62,7 @@ export const putField = async (ctx, id) => {
         await indexSearchableFields();
     } catch (error) {
         ctx.status = 403;
-        ctx.body = { error: error.massage };
+        ctx.body = { error: error.message };
         return;
     }
 

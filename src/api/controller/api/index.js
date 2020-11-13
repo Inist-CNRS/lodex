@@ -23,6 +23,7 @@ import breadcrumbs from './breadcrumb';
 import menu from './menu';
 import loader from './loader';
 import translate from './translate';
+import resource from './resource';
 
 const app = new Koa();
 
@@ -99,6 +100,7 @@ app.use(async (ctx, next) => {
 });
 app.use(mount('/characteristic', characteristic));
 app.use(mount('/field', fieldRoutes));
+app.use(mount('/resource', resource));
 app.use(mount('/parsing', parsing));
 app.use(mount('/publish', publish));
 app.use(mount('/upload', upload));
