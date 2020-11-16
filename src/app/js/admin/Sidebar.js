@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import DescriptionIcon from '@material-ui/icons/Description';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
@@ -25,6 +25,15 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        background: '#333',
+        textAlign: 'center',
+    },
+    sidebarNavLink: {
+        color: '#fff',
+        textDecoration: 'none',
+    },
+    sidebarNavLinkActive: {
+        color: '#7DBD42',
     },
     subSidebar: {
         width: 240,
@@ -32,27 +41,27 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        background: '#333',
+        background: '#555',
     },
-    iconLinkContainer: {
-        fontSize: 18,
-        width: 125,
-        height: 125,
-        lineHeight: '20px',
-        alignItems: 'center',
-        justifyContent: 'center',
-        display: 'flex',
-        textAlign: 'center',
-        padding: 20,
+    subSidebarNavLink: {
         textDecoration: 'none',
-    },
-    linkContainer: {
         color: '#888',
         fontSize: 18,
         padding: 36,
         minHeight: 54,
         textAlign: 'center',
         display: 'block',
+    },
+    iconLinkContainer: {
+        width: 125,
+        height: 125,
+        alignItems: 'center',
+        justifyContent: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        textAlign: 'center',
+        padding: 20,
+        textDecoration: 'none',
     },
 };
 
@@ -66,8 +75,8 @@ const InnerSidebarComponent = ({
             <div style={styles.sidebar} className="sidebar">
                 <Box style={styles.iconLinkContainer}>
                     <NavLink
-                        style={{ color: '#333' }}
-                        activeStyle={{ color: '#7DBD42' }}
+                        style={styles.sidebarNavLink}
+                        activeStyle={styles.sidebarNavLinkActive}
                         to="/display/dataset"
                     >
                         <HomeIcon fontSize="large" />
@@ -77,8 +86,8 @@ const InnerSidebarComponent = ({
                 </Box>
                 <Box style={styles.iconLinkContainer}>
                     <NavLink
-                        style={{ color: '#333' }}
-                        activeStyle={{ color: '#7DBD42' }}
+                        style={styles.sidebarNavLink}
+                        activeStyle={styles.sidebarNavLinkActive}
                         to="/display/document"
                     >
                         <DescriptionIcon fontSize="large" />
@@ -88,8 +97,8 @@ const InnerSidebarComponent = ({
                 </Box>
                 <Box style={styles.iconLinkContainer}>
                     <NavLink
-                        style={{ color: '#333' }}
-                        activeStyle={{ color: '#7DBD42' }}
+                        style={styles.sidebarNavLink}
+                        activeStyle={styles.sidebarNavLinkActive}
                         to="/display/graph"
                     >
                         <EqualizerIcon fontSize="large" />
@@ -102,7 +111,7 @@ const InnerSidebarComponent = ({
                 <div style={styles.subSidebar} className="sub-sidebar">
                     <div>
                         <NavLink
-                            style={styles.linkContainer}
+                            style={styles.subSidebarNavLink}
                             activeStyle={{ color: 'white' }}
                             to="/display/document/main"
                         >
