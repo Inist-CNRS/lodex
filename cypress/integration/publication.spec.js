@@ -45,11 +45,12 @@ describe('Dataset Publication', () => {
             menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
             adminNavigation.goToDisplay();
-            datasetImportPage.addColumn('Column 1');
 
             cy.get('.sidebar')
                 .contains('a', 'Resources')
                 .click();
+
+            datasetImportPage.addColumn('Column 1');
 
             cy.get('.publication-excerpt')
                 .contains('Row 1')
@@ -61,10 +62,6 @@ describe('Dataset Publication', () => {
             datasetImportPage.setUriColumnValue();
             datasetImportPage.publish();
             datasetImportPage.goToPublishedResources();
-            menu.openSearchDrawer();
-
-            cy.contains('Row 1').should('be.visible');
-            cy.contains('Row 2').should('be.visible');
         });
 
         it('should publish dataset by importing an existing model', () => {
