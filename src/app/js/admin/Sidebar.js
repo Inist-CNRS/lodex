@@ -16,7 +16,6 @@ import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import PrivateRoute from './PrivateRoute';
 import { fromPublication, fromParsing } from './selectors';
-import UploadButton from './upload/UploadButton';
 
 const styles = {
     sidebar: {
@@ -123,54 +122,55 @@ const InnerSidebarComponent = ({
             </Route>
         </Route>
         <Route path="/data">
-            <div style={styles.sidebar} className="sidebar">
-                <NavLink
-                    to="/data"
-                    activeStyle={styles.activeIconLinkContainer}
-                    style={styles.iconLinkContainer}
-                >
-                    <Box>
-                        <p>
-                            <GridOnIcon fontSize="large" />
-                            <br />
-                            {polyglot.t('data')}
-                        </p>
-                    </Box>
-                </NavLink>
-                {hasLoadedDataset && (
-                    <UploadButton>
-                        <Box
-                            style={{
-                                ...styles.iconLinkContainer,
-                                cursor: 'pointer',
-                                color: '#000',
-                            }}
-                        >
-                            <p>
-                                <AddBoxIcon fontSize="large" />
-                                <br />
-                                <span>{polyglot.t('add_more')}</span>
-                            </p>
-                        </Box>
-                    </UploadButton>
-                )}
-                {hasPublishedDataset && (
+            <div style={styles.root} className="sidebar">
+                <Box style={styles.linkContainer}>
                     <NavLink
-                        activeStyle={styles.activeIconLinkContainer}
-                        style={{
-                            ...styles.iconLinkContainer,
-                            marginTop: 'auto',
-                        }}
-                        to="/data/removed"
+                        style={{ color: '#333' }}
+                        activeStyle={{ color: '#7DBD42' }}
+                        to="/data/existing"
                     >
                         <Box>
                             <p>
-                                <DeleteIcon fontSize="large" />
+                                <GridOnIcon fontSize="large" />
                                 <br />
-                                {polyglot.t('removed_resources')}
+                                {polyglot.t('data')}
                             </p>
                         </Box>
                     </NavLink>
+                </Box>
+                {hasLoadedDataset && (
+                    <Box style={styles.linkContainer}>
+                        <NavLink
+                            style={{ color: '#333' }}
+                            activeStyle={{ color: '#7DBD42' }}
+                            to="/data/add"
+                        >
+                            <Box>
+                                <p>
+                                    <AddBoxIcon fontSize="large" />
+                                    <br />
+                                    {polyglot.t('add_more')}
+                                </p>
+                            </Box>
+                        </NavLink>
+                    </Box>
+                )}
+                {hasPublishedDataset && (
+                    <Box style={styles.linkContainer}>
+                        <NavLink
+                            style={{ color: '#333', marginTop: 'auto' }}
+                            activeStyle={{ color: '#7DBD42' }}
+                            to="/data/removed"
+                        >
+                            <Box>
+                                <p>
+                                    <DeleteIcon fontSize="large" />
+                                    <br />
+                                    {polyglot.t('removed_resources')}
+                                </p>
+                            </Box>
+                        </NavLink>
+                    </Box>
                 )}
             </div>
         </Route>
