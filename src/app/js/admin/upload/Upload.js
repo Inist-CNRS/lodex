@@ -85,89 +85,70 @@ export const UploadComponent = ({
             ) : (
                 <span />
             )}
-            <Stepper linear={false} orientation="vertical">
-                <Step active>
-                    <StepLabel>{polyglot.t('select_loader')}</StepLabel>
-                    <StepContent>
-                        <Select
-                            label={polyglot.t('loader_name')}
-                            value={loaderName}
-                            onChange={onChangeLoaderName}
-                            fullWidth
-                        >
-                            <MenuItem key={'automatic'} value={'automatic'}>
-                                {polyglot.t('automatic-loader')}
-                            </MenuItem>
-                            {loaderNames}
-                        </Select>
-                    </StepContent>
-                </Step>
-                <Step active>
-                    <StepLabel>{polyglot.t('select_file')}</StepLabel>
-                    <StepContent>
-                        <DropzoneAreaBase
-                            filesLimit={1}
-                            onAdd={fileObjs =>
-                                console.log('Added Files:', fileObjs)
-                            }
-                            onDelete={fileObj =>
-                                console.log('Removed File:', fileObj)
-                            }
-                            onAlert={(message, variant) =>
-                                console.log(`${variant}: ${message}`)
-                            }
-                        />
-                        <Button
-                            variant="contained"
-                            className="btn-upload-dataset"
-                            component="label"
-                            color="primary"
-                            fullWidth
-                            style={styles.button}
-                        >
-                            {polyglot.t('upload_file')}
-                            <input
-                                name="file"
-                                type="file"
-                                onChange={onFileLoad}
-                                style={styles.input}
-                            />
-                        </Button>
-                        <div style={styles.divider}>
-                            <hr style={styles.dividerHr} />
-                            <div style={styles.dividerLabel}>
-                                {polyglot.t('or')}
-                            </div>
-                            <hr style={styles.dividerHr} />
-                        </div>
-                        <div>
-                            <TextField
-                                fullWidth
-                                value={url}
-                                onChange={onChangeUrl}
-                                error={
-                                    url &&
-                                    !isUrlValid &&
-                                    polyglot.t('invalid_url')
-                                }
-                                placeholder="URL"
-                            />
-                            <Button
-                                variant="contained"
-                                onClick={onUrlUpload}
-                                disabled={!isUrlValid}
-                                className="btn-upload-url"
-                                component="label"
-                                color="primary"
-                                fullWidth
-                                style={styles.button}
-                            >
-                                {polyglot.t('upload_url')}
-                            </Button>
-                        </div>
-                    </StepContent>
-                </Step>
-            </Stepper>
+            <DropzoneAreaBase
+                filesLimit={1}
+                dropzoneText={polyglot.t('import_file_text')}
+                showPreviewsInDropzone
+                showFileNamesInPreview
+                onAdd={fileObjs => console.log('Added Files:', fileObjs)}
+                onDelete={fileObj => console.log('Removed File:', fileObj)}
+                onAlert={(message, variant) =>
+                    console.log(`${variant}: ${message}`)
+                }
+            />
+            <Select
+                label={polyglot.t('loader_name')}
+                value={loaderName}
+                onChange={onChangeLoaderName}
+                fullWidth
+            >
+                <MenuItem key={'automatic'} value={'automatic'}>
+                    {polyglot.t('automatic-loader')}
+                </MenuItem>
+                {loaderNames}
+            </Select>
+            <Button
+                variant="contained"
+                className="btn-upload-dataset"
+                component="label"
+                color="primary"
+                fullWidth
+                style={styles.button}
+            >
+                {polyglot.t('upload_file')}
+                <input
+                    name="file"
+                    type="file"
+                    onChange={onFileLoad}
+                    style={styles.input}
+                />
+            </Button>
+            <div style={styles.divider}>
+                <hr style={styles.dividerHr} />
+                <div style={styles.dividerLabel}>{polyglot.t('or')}</div>
+                <hr style={styles.dividerHr} />
+            </div>
+            <div>
+                <TextField
+                    fullWidth
+                    value={url}
+                    onChange={onChangeUrl}
+                    error={url && !isUrlValid && polyglot.t('invalid_url')}
+                    placeholder="URL"
+                />
+                <Button
+                    variant="contained"
+                    onClick={onUrlUpload}
+                    disabled={!isUrlValid}
+                    className="btn-upload-url"
+                    component="label"
+                    color="primary"
+                    fullWidth
+                    style={styles.button}
+                >
+                    {polyglot.t('upload_url')}
+                </Button>
+            </div>
         </div>
     );
 };
