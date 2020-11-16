@@ -103,6 +103,11 @@ export const getLoginRequest = (state, credentials) =>
         method: 'POST',
     });
 
+export const getLoadResourcesRequest = state =>
+    getRequest(state, {
+        url: '/api/resource',
+    });
+
 export const getLoadFieldRequest = state =>
     getRequest(state, {
         url: '/api/field',
@@ -404,6 +409,7 @@ export const selectors = {
     getSaveFieldRequest,
     getUpdateFieldRequest,
     getCreateFieldRequest,
+    getLoadResourcesRequest,
     getLoadFieldRequest,
     getUploadUrlRequest,
     getUrlRequest,

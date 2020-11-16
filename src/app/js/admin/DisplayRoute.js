@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { NavLink } from 'react-router-dom';
 
 import {
     Route,
@@ -21,12 +20,24 @@ import ParsingResult from './parsing/ParsingResult';
 import withInitialData from './withInitialData';
 
 const AddResource = () => {
-    return 'foooo';
+    return 'Add Resource';
+};
+
+const EditResource = () => {
+    const { url, params } = useRouteMatch();
+
+    console.log({ params });
+
+    if (false /* Handlenon existing resourceId here */) {
+        return <Redirect to={`${url}/main`} />;
+    }
+
+    return 'edit';
 };
 
 const DisplayRouteComponent = ({ showAddColumns, hasPublishedDataset }) => {
     const { filter } = useParams();
-    const { path, url } = useRouteMatch();
+    const { url, path } = useRouteMatch();
 
     const pageComponent = hasPublishedDataset ? (
         <Ontology filter={filter} />
@@ -52,6 +63,9 @@ const DisplayRouteComponent = ({ showAddColumns, hasPublishedDataset }) => {
                 </Route>
                 <Route exact path={`${path}/add`}>
                     <AddResource />
+                </Route>
+                <Route exact path={`${path}/:resourceId`}>
+                    <EditResource />
                 </Route>
                 <Route>
                     <Redirect to={`${url}/main`} />

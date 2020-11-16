@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -16,6 +16,7 @@ import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import PrivateRoute from './PrivateRoute';
 import { fromPublication, fromParsing } from './selectors';
+import { loadResources as loadResourcesAction } from '../resource';
 
 const styles = {
     sidebar: {
@@ -65,70 +66,103 @@ const styles = {
     },
 };
 
+const DocumentMenu = compose(
+    connect(s => ({ resource: s.resource }), {
+        loadResources: loadResourcesAction,
+    }),
+    translate,
+)(({ p: polyglot, resource, loadResources }) => {
+    useEffect(() => {
+        loadResources();
+    }, []);
+
+    // console.log({ resources, resourcesLoading });
+
+    if (resource.loading) {
+        return null;
+    }
+
+    return (
+        <div style={styles.subSidebar} className="sub-sidebar">
+            <div>
+                <NavLink
+                    style={styles.subSidebarNavLink}
+                    activeStyle={{ color: 'white' }}
+                    to="/display/document/main"
+                >
+                    {polyglot.t('main_resource')}
+                </NavLink>
+            </div>
+            {resource.resources.map(r => (
+                <div key={r._id}>
+                    <NavLink
+                        style={styles.subSidebarNavLink}
+                        activeStyle={{ color: 'white' }}
+                        to={`/display/document/${r._id}`}
+                    >
+                        {r.label}
+                    </NavLink>
+                </div>
+            ))}
+            <div>
+                <NavLink
+                    style={styles.subSidebarNavLink}
+                    activeStyle={{ color: 'white' }}
+                    to="/display/document/add"
+                >
+                    + {polyglot.t('new_resource')}
+                </NavLink>
+            </div>
+        </div>
+    );
+});
+
 const InnerSidebarComponent = ({
     hasPublishedDataset,
     hasLoadedDataset,
     p: polyglot,
-}) => (
-    <>
-        <Route path="/display">
-            <div style={styles.sidebar} className="sidebar">
-                <Box style={styles.iconLinkContainer}>
-                    <NavLink
-                        style={styles.sidebarNavLink}
-                        activeStyle={styles.sidebarNavLinkActive}
-                        to="/display/dataset"
-                    >
-                        <HomeIcon fontSize="large" />
-                        <br />
-                        {polyglot.t('home')}
-                    </NavLink>
-                </Box>
-                <Box style={styles.iconLinkContainer}>
-                    <NavLink
-                        style={styles.sidebarNavLink}
-                        activeStyle={styles.sidebarNavLinkActive}
-                        to="/display/document"
-                    >
-                        <DescriptionIcon fontSize="large" />
-                        <br />
-                        {polyglot.t('resource_pages')}
-                    </NavLink>
-                </Box>
-                <Box style={styles.iconLinkContainer}>
-                    <NavLink
-                        style={styles.sidebarNavLink}
-                        activeStyle={styles.sidebarNavLinkActive}
-                        to="/display/graph"
-                    >
-                        <EqualizerIcon fontSize="large" />
-                        <br />
-                        {polyglot.t('graph_pages')}
-                    </NavLink>
-                </Box>
-            </div>
-            <Route path="/display/document">
-                <div style={styles.subSidebar} className="sub-sidebar">
-                    <div>
+}) => {
+    return (
+        <>
+            <Route path="/display">
+                <div style={styles.sidebar} className="sidebar">
+                    <Box style={styles.iconLinkContainer}>
                         <NavLink
-                            style={styles.subSidebarNavLink}
-                            activeStyle={{ color: 'white' }}
-                            to="/display/document/main"
+                            style={styles.sidebarNavLink}
+                            activeStyle={styles.sidebarNavLinkActive}
+                            to="/display/dataset"
                         >
-                            {polyglot.t('main_resource')}
+                            <HomeIcon fontSize="large" />
+                            <br />
+                            {polyglot.t('home')}
                         </NavLink>
-                    </div>
-                    {/* <div>
+                    </Box>
+                    <Box style={styles.iconLinkContainer}>
                         <NavLink
-                            style={styles.linkContainer}
-                            activeStyle={{ color: 'white' }}
-                            to="/display/document/add"
+                            style={styles.sidebarNavLink}
+                            activeStyle={styles.sidebarNavLinkActive}
+                            to="/display/document"
                         >
-                            + {polyglot.t('new_resource')}
+                            <DescriptionIcon fontSize="large" />
+                            <br />
+                            {polyglot.t('resource_pages')}
                         </NavLink>
-                    </div> */}
+                    </Box>
+                    <Box style={styles.iconLinkContainer}>
+                        <NavLink
+                            style={styles.sidebarNavLink}
+                            activeStyle={styles.sidebarNavLinkActive}
+                            to="/display/graph"
+                        >
+                            <EqualizerIcon fontSize="large" />
+                            <br />
+                            {polyglot.t('graph_pages')}
+                        </NavLink>
+                    </Box>
                 </div>
-            </Route>
+                <Route path="/display/document">
+                    <DocumentMenu />
+                </Route>
         </Route>
         <Route path="/data">
             <div style={styles.root} className="sidebar">
@@ -187,9 +221,9 @@ const InnerSidebarComponent = ({
 );
 
 InnerSidebarComponent.propTypes = {
+    p: polyglotPropTypes.isRequired,
     hasPublishedDataset: PropTypes.bool.isRequired,
     hasLoadedDataset: PropTypes.bool.isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({

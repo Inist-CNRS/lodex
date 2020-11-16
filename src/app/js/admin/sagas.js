@@ -17,6 +17,7 @@ import clearSaga from './clear/sagas';
 import progressSaga from './progress/sagas';
 import characteristicSaga from '../characteristic/sagas';
 import loaderSaga from './loader/sagas';
+import resourceSaga from '../resource/sagas';
 
 export default function*() {
     yield fork(exportSaga);
@@ -36,4 +37,5 @@ export default function*() {
     yield fork(progressSaga);
     yield fork(characteristicSaga);
     yield fork(loaderSaga);
+    yield fork(resourceSaga);
 }
