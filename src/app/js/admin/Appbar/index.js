@@ -55,7 +55,7 @@ const AppbarComponent = ({
 }) => {
     const leftElement = (
         <div style={styles.buttons}>
-            {isAdmin && hasLoadedDataset && (
+            {isAdmin && (
                 <>
                     <NavLink
                         to="/data"
@@ -67,16 +67,18 @@ const AppbarComponent = ({
                     >
                         <span>{polyglot.t('data')}</span>
                     </NavLink>
-                    <NavLink
-                        to="/display"
-                        component={Button}
-                        variant="text"
-                        style={styles.button}
-                        startIcon={<AspectRatioIcon />}
-                        activeStyle={styles.activeButton}
-                    >
-                        <span>{polyglot.t('display')}</span>
-                    </NavLink>
+                    {hasLoadedDataset && (
+                        <NavLink
+                            to="/display"
+                            component={Button}
+                            variant="text"
+                            style={styles.button}
+                            startIcon={<AspectRatioIcon />}
+                            activeStyle={styles.activeButton}
+                        >
+                            <span>{polyglot.t('display')}</span>
+                        </NavLink>
+                    )}
                 </>
             )}
         </div>

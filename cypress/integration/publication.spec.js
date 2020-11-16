@@ -15,7 +15,7 @@ describe('Dataset Publication', () => {
             menu.goToAdminDashboard();
             adminPage.checkListOfSupportedFileFormats();
 
-            datasetImportPage.openImportDialog();
+            datasetImportPage.openImport();
             cy.wait(300);
 
             datasetImportPage.checkListOfSupportedFileFormats();
@@ -24,7 +24,7 @@ describe('Dataset Publication', () => {
         it('should receive a csv file and preview its data in a table', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
-            datasetImportPage.openImportDialog();
+            datasetImportPage.openImport();
 
             fillInputWithFixture(
                 '.btn-upload-dataset input[type=file]',
