@@ -54,6 +54,7 @@ export const defaultArgs = {
     tooltipCategory: 'Category',
     tooltipValue: 'Value',
     labels: false,
+    labelOverlap: false,
     barSize: 20,
 };
 
@@ -77,6 +78,7 @@ class BarChartAdmin extends Component {
             tooltipCategory: PropTypes.string,
             tooltipValue: PropTypes.string,
             labels: PropTypes.bool,
+            labelOverlap: PropTypes.bool,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -150,6 +152,14 @@ class BarChartAdmin extends Component {
         updateAdminArgs('labels', !this.props.args.labels, this.props);
     };
 
+    toggleLabelOverlap = () => {
+        updateAdminArgs(
+            'labelOverlap',
+            !this.props.args.labelOverlap,
+            this.props,
+        );
+    };
+
     setTooltipCategory(tooltipCategory) {
         updateAdminArgs('tooltipCategory', tooltipCategory, this.props);
     }
@@ -173,6 +183,7 @@ class BarChartAdmin extends Component {
                 tooltipCategory,
                 tooltipValue,
                 labels,
+                labelOverlap,
             },
             showMaxSize = true,
             showMaxValue = true,
@@ -263,6 +274,16 @@ class BarChartAdmin extends Component {
                         />
                     }
                     label={polyglot.t('toggle_labels')}
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleLabelOverlap}
+                            style={styles.input}
+                            checked={labelOverlap}
+                        />
+                    }
+                    label={polyglot.t('toggle_label_overlap')}
                 />
                 <FormControl fullWidth>
                     <InputLabel id="barchart-admin-scale-input-label">
