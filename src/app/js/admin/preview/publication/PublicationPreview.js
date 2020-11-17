@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
 import PublicationExcerpt from './PublicationExcerpt';
-import PublicationEditionModal from '../../../fields/wizard';
+import PublicationModalWizard from '../../../fields/wizard';
 import { editField, loadField } from '../../../fields';
 import { fromFields } from '../../../sharedSelectors';
 
@@ -41,6 +41,7 @@ const styles = {
 
 const PublicationPreviewComponent = ({
     fields,
+    filter,
     loadField,
     editColumn,
     p: polyglot,
@@ -63,7 +64,10 @@ const PublicationPreviewComponent = ({
                 </div>
             </div>
             <PublicationExcerpt onHeaderClick={editColumn} fields={fields} />
-            <PublicationEditionModal onExitEdition={handleExitColumEdition} />
+            <PublicationModalWizard
+                filter={filter}
+                onExitEdition={handleExitColumEdition}
+            />
         </div>
     );
 };
@@ -73,6 +77,7 @@ PublicationPreviewComponent.propTypes = {
     loadField: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    filter: PropTypes.string,
 };
 
 const mapStateToProps = (state, { filter }) => ({

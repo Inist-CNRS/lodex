@@ -8,25 +8,13 @@ const DisplayComponent = () => {
 
     return (
         <Switch>
-            <Route
-                path={`${path}/home`}
-                exact
-                component={() => <DisplayRoute filter="dataset" />}
-            />
-            <Route
-                path={`${path}/resource`}
-                exact
-                component={() => <DisplayRoute filter="document" />}
-            />
-            <Route
-                path={`${path}/graph`}
-                exact
-                component={() => <DisplayRoute filter="graph" />}
-            />
+            <Route path={`${path}/:filter`}>
+                <DisplayRoute />
+            </Route>
             <Route
                 path={path}
                 exact
-                render={() => <Redirect to={`${path}/home`} />}
+                render={() => <Redirect to={`${path}/dataset`} />}
             />
         </Switch>
     );

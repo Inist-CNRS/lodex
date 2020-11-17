@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import DescriptionIcon from '@material-ui/icons/Description';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
@@ -8,7 +8,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { compose } from 'recompose';
@@ -19,15 +19,23 @@ import { fromPublication, fromParsing } from './selectors';
 import UploadButton from './upload/UploadButton';
 
 const styles = {
-    root: {
-        width: 140,
+    sidebar: {
+        width: 160,
         paddingTop: 100,
         marginLeft: -10,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     },
-    linkContainer: {
+    subSidebar: {
+        width: 240,
+        paddingTop: 100,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        background: '#333',
+    },
+    iconLinkContainer: {
         fontSize: 18,
         width: 125,
         height: 125,
@@ -37,14 +45,15 @@ const styles = {
         display: 'flex',
         textAlign: 'center',
         padding: 20,
-        color: '#ddd',
         textDecoration: 'none',
-        '&::before': {
-            content: 'ssss',
-        },
     },
-    activeLinkContainer: {
-        color: '#000',
+    linkContainer: {
+        color: '#888',
+        fontSize: 18,
+        padding: 36,
+        minHeight: 54,
+        textAlign: 'center',
+        display: 'block',
     },
 };
 
@@ -55,33 +64,33 @@ const InnerSidebarComponent = ({
 }) => (
     <>
         <Route path="/display">
-            <div style={styles.root} className="sidebar">
-                <Box style={styles.linkContainer}>
+            <div style={styles.sidebar} className="sidebar">
+                <Box style={styles.iconLinkContainer}>
                     <NavLink
-                        style={{ color: '#ccc' }}
-                        activeStyle={{ color: 'black' }}
-                        to="/display/home"
+                        style={{ color: '#333' }}
+                        activeStyle={{ color: '#7DBD42' }}
+                        to="/display/dataset"
                     >
                         <HomeIcon fontSize="large" />
                         <br />
                         {polyglot.t('home')}
                     </NavLink>
                 </Box>
-                <Box style={styles.linkContainer}>
+                <Box style={styles.iconLinkContainer}>
                     <NavLink
-                        style={{ color: '#ccc' }}
-                        activeStyle={{ color: 'black' }}
-                        to="/display/resource"
+                        style={{ color: '#333' }}
+                        activeStyle={{ color: '#7DBD42' }}
+                        to="/display/document"
                     >
                         <DescriptionIcon fontSize="large" />
                         <br />
                         {polyglot.t('resource_pages')}
                     </NavLink>
                 </Box>
-                <Box style={styles.linkContainer}>
+                <Box style={styles.iconLinkContainer}>
                     <NavLink
-                        style={{ color: '#ccc' }}
-                        activeStyle={{ color: 'black' }}
+                        style={{ color: '#333' }}
+                        activeStyle={{ color: '#7DBD42' }}
                         to="/display/graph"
                     >
                         <EqualizerIcon fontSize="large" />
@@ -90,13 +99,35 @@ const InnerSidebarComponent = ({
                     </NavLink>
                 </Box>
             </div>
+            <Route path="/display/document">
+                <div style={styles.subSidebar} className="sub-sidebar">
+                    <div>
+                        <NavLink
+                            style={styles.linkContainer}
+                            activeStyle={{ color: 'white' }}
+                            to="/display/document/main"
+                        >
+                            {polyglot.t('main_resource')}
+                        </NavLink>
+                    </div>
+                    {/* <div>
+                        <NavLink
+                            style={styles.linkContainer}
+                            activeStyle={{ color: 'white' }}
+                            to="/display/document/add"
+                        >
+                            + {polyglot.t('new_resource')}
+                        </NavLink>
+                    </div> */}
+                </div>
+            </Route>
         </Route>
         <Route path="/data">
-            <div style={styles.root} className="sidebar">
+            <div style={styles.sidebar} className="sidebar">
                 <NavLink
                     to="/data"
-                    activeStyle={styles.activeLinkContainer}
-                    style={styles.linkContainer}
+                    activeStyle={styles.activeIconLinkContainer}
+                    style={styles.iconLinkContainer}
                 >
                     <Box>
                         <p>
@@ -110,7 +141,7 @@ const InnerSidebarComponent = ({
                     <UploadButton>
                         <Box
                             style={{
-                                ...styles.linkContainer,
+                                ...styles.iconLinkContainer,
                                 cursor: 'pointer',
                                 color: '#000',
                             }}
@@ -125,8 +156,11 @@ const InnerSidebarComponent = ({
                 )}
                 {hasPublishedDataset && (
                     <NavLink
-                        activeStyle={styles.activeLinkContainer}
-                        style={{ ...styles.linkContainer, marginTop: 'auto' }}
+                        activeStyle={styles.activeIconLinkContainer}
+                        style={{
+                            ...styles.iconLinkContainer,
+                            marginTop: 'auto',
+                        }}
                         to="/data/removed"
                     >
                         <Box>

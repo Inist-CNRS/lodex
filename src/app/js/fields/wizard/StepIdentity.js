@@ -14,6 +14,7 @@ import {
 } from '../../propTypes';
 
 import ClassList from '../ClassList';
+import { PropType } from 'redux-polyglot';
 
 export const StepIdentityComponent = ({ field, p: polyglot, ...props }) => (
     <Step id="step-identity" label="field_wizard_step_identity" {...props}>
@@ -37,6 +38,7 @@ export const StepIdentityComponent = ({ field, p: polyglot, ...props }) => (
 StepIdentityComponent.propTypes = {
     field: fieldPropTypes.isRequired,
     p: polyglotPropTypes.isRequired,
+    filter: PropType.string,
 };
 
 export default compose(translate)(StepIdentityComponent);
