@@ -26,9 +26,7 @@ const styles = {
         width: '200%',
         justifyContent: 'space-between',
     },
-    input: {
-        width: '100%',
-    },
+    input: {},
     previewDefaultColor: color => ({
         display: 'inline-block',
         backgroundColor: color,
