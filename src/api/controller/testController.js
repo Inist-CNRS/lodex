@@ -16,6 +16,7 @@ app.use(
         await ctx.db.collection('publishedCharacteristic').remove({});
         await ctx.db.collection('field').remove({});
         await ctx.db.collection('dataset').remove({});
+        await ctx.db.collection('subresource').remove({});
 
         ctx.body = { status: 'ok' };
     }),
