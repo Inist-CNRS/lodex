@@ -11,10 +11,9 @@ export const setup = async (ctx, next) => {
     }
 };
 
-export const postResource = async ctx => {
+export const postSubresource = async ctx => {
     const newResource = ctx.request.body;
-    const result = await ctx.resource.create(newResource);
-
+    const result = await ctx.subresource.create(newResource);
     if (result) {
         ctx.body = result;
         return;
@@ -23,11 +22,11 @@ export const postResource = async ctx => {
     ctx.status = 500;
 };
 
-export const putResource = async (ctx, id) => {
+export const putSubresource = async (ctx, id) => {
     const newResource = ctx.request.body;
 
     try {
-        ctx.body = await ctx.resource.update(id, newResource);
+        ctx.body = await ctx.subresource.update(id, newResource);
     } catch (error) {
         ctx.status = 403;
         ctx.body = { error: error.message };
@@ -35,17 +34,22 @@ export const putResource = async (ctx, id) => {
     }
 };
 
-export const getAllResources = async ctx => {
-    ctx.body = await ctx.resource.findAll();
+export const getSubresource = async (ctx, id) => {
+    ctx.body = await ctx.subresource.findOne(id);
+};
+
+export const getAllSubresources = async ctx => {
+    ctx.body = await ctx.subresource.findAll();
 };
 
 const app = new Koa();
 
 app.use(setup);
 
-app.use(route.get('/', getAllResources));
+app.use(route.get('/', getAllSubresources));
+app.use(route.get('/:id', getSubresource));
 app.use(koaBodyParser());
-app.use(route.post('/', postResource));
-app.use(route.put('/:id', putResource));
+app.use(route.post('/', postSubresource));
+app.use(route.put('/:id', putSubresource));
 
 export default app;

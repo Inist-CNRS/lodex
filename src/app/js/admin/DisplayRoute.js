@@ -18,22 +18,8 @@ import Ontology from '../fields/ontology/Ontology';
 import ModelMenu from './Appbar/ModelMenu';
 import ParsingResult from './parsing/ParsingResult';
 import withInitialData from './withInitialData';
-
-const AddResource = () => {
-    return 'Add Resource';
-};
-
-const EditResource = () => {
-    const { url, params } = useRouteMatch();
-
-    console.log({ params });
-
-    if (false /* Handlenon existing resourceId here */) {
-        return <Redirect to={`${url}/main`} />;
-    }
-
-    return 'edit';
-};
+import { AddSubresource } from './subresource/AddSubresource';
+import { EditSubresource } from './subresource/EditSubresource';
 
 const DisplayRouteComponent = ({ showAddColumns, hasPublishedDataset }) => {
     const { filter } = useParams();
@@ -62,10 +48,10 @@ const DisplayRouteComponent = ({ showAddColumns, hasPublishedDataset }) => {
                     <div>{pageComponent}</div>
                 </Route>
                 <Route exact path={`${path}/add`}>
-                    <AddResource />
+                    <AddSubresource />
                 </Route>
                 <Route exact path={`${path}/:resourceId`}>
-                    <EditResource />
+                    <EditSubresource />
                 </Route>
                 <Route>
                     <Redirect to={`${url}/main`} />

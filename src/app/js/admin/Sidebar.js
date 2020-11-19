@@ -16,7 +16,6 @@ import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import PrivateRoute from './PrivateRoute';
 import { fromPublication, fromParsing } from './selectors';
-import { loadResources as loadResourcesAction } from '../resource';
 
 const styles = {
     sidebar: {
@@ -67,55 +66,41 @@ const styles = {
 };
 
 const DocumentMenu = compose(
-    connect(s => ({ resource: s.resource }), {
-        loadResources: loadResourcesAction,
-    }),
+    connect(s => ({ subresource: s.subresource })),
     translate,
-)(({ p: polyglot, resource, loadResources }) => {
-    useEffect(() => {
-        loadResources();
-    }, []);
-
-    // console.log({ resources, resourcesLoading });
-
-    if (resource.loading) {
-        return null;
-    }
-
-    return (
-        <div style={styles.subSidebar} className="sub-sidebar">
-            <div>
-                <NavLink
-                    style={styles.subSidebarNavLink}
-                    activeStyle={{ color: 'white' }}
-                    to="/display/document/main"
-                >
-                    {polyglot.t('main_resource')}
-                </NavLink>
-            </div>
-            {resource.resources.map(r => (
-                <div key={r._id}>
-                    <NavLink
-                        style={styles.subSidebarNavLink}
-                        activeStyle={{ color: 'white' }}
-                        to={`/display/document/${r._id}`}
-                    >
-                        {r.label}
-                    </NavLink>
-                </div>
-            ))}
-            <div>
-                <NavLink
-                    style={styles.subSidebarNavLink}
-                    activeStyle={{ color: 'white' }}
-                    to="/display/document/add"
-                >
-                    + {polyglot.t('new_resource')}
-                </NavLink>
-            </div>
+)(({ p: polyglot, subresource }) => (
+    <div style={styles.subSidebar} className="sub-sidebar">
+        <div>
+            <NavLink
+                style={styles.subSidebarNavLink}
+                activeStyle={{ color: 'white' }}
+                to="/display/document/main"
+            >
+                {polyglot.t('main_resource')}
+            </NavLink>
         </div>
-    );
-});
+        {(subresource.subresources || []).map(r => (
+            <div key={r._id}>
+                <NavLink
+                    style={styles.subSidebarNavLink}
+                    activeStyle={{ color: 'white' }}
+                    to={`/display/document/${r._id}`}
+                >
+                    {r.name}
+                </NavLink>
+            </div>
+        ))}
+        <div>
+            <NavLink
+                style={styles.subSidebarNavLink}
+                activeStyle={{ color: 'white' }}
+                to="/display/document/add"
+            >
+                + {polyglot.t('new_resource')}
+            </NavLink>
+        </div>
+    </div>
+));
 
 const InnerSidebarComponent = ({
     hasPublishedDataset,

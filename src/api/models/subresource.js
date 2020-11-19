@@ -2,13 +2,15 @@ import { ObjectID } from 'mongodb';
 import omit from 'lodash.omit';
 
 export default async db => {
-    const collection = db.collection('resource');
+    const collection = db.collection('subresource');
+
+    collection.findOneById = async id =>
+        collection.findOne({ _id: new ObjectID(id) });
 
     collection.findAll = async () => collection.find({}).toArray();
 
     collection.create = async data => {
         const { insertedId } = await collection.insertOne(data);
-
         return collection.findOne({ _id: insertedId });
     };
 
