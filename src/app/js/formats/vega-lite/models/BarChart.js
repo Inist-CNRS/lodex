@@ -180,7 +180,6 @@ class BarChart extends BasicChart {
         model.encoding.y.title = this.title.y;
         model.encoding.x.axis.labelAngle = this.labelAngle.x;
         model.encoding.y.axis.labelAngle = this.labelAngle.y;
-        model.labelOverlap = this.labelOverlap;
 
         switch (this.orderBy) {
             case VALUES_ASC:
@@ -201,6 +200,10 @@ class BarChart extends BasicChart {
                 break;
             default:
                 break;
+        }
+
+        if (this.labelOverlap) {
+            model.encoding.x.axis.labelOverlap = true;
         }
 
         if (this.round) {
