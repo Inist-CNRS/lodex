@@ -96,7 +96,7 @@ const DocumentMenu = compose(
                 activeStyle={{ color: 'white' }}
                 to="/display/document/add"
             >
-                + {polyglot.t('new_resource')}
+                + {polyglot.t('new_subresource')}
             </NavLink>
         </div>
     </div>
