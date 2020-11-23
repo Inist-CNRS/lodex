@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { NavLink } from 'react-router-dom';
 
 import {
     Route,
@@ -19,14 +18,12 @@ import Ontology from '../fields/ontology/Ontology';
 import ModelMenu from './Appbar/ModelMenu';
 import ParsingResult from './parsing/ParsingResult';
 import withInitialData from './withInitialData';
-
-const AddResource = () => {
-    return 'foooo';
-};
+import { AddSubresource } from './subresource/AddSubresource';
+import { EditSubresource } from './subresource/EditSubresource';
 
 const DisplayRouteComponent = ({ showAddColumns, hasPublishedDataset }) => {
     const { filter } = useParams();
-    const { path, url } = useRouteMatch();
+    const { url, path } = useRouteMatch();
 
     const pageComponent = hasPublishedDataset ? (
         <Ontology filter={filter} />
@@ -51,7 +48,10 @@ const DisplayRouteComponent = ({ showAddColumns, hasPublishedDataset }) => {
                     <div>{pageComponent}</div>
                 </Route>
                 <Route exact path={`${path}/add`}>
-                    <AddResource />
+                    <AddSubresource />
+                </Route>
+                <Route exact path={`${path}/:resourceId`}>
+                    <EditSubresource />
                 </Route>
                 <Route>
                     <Redirect to={`${url}/main`} />

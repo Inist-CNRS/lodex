@@ -18,7 +18,6 @@ const styles = {
         padding: '100px 20px',
         flex: 1,
         overflowX: 'hidden',
-        boxShadow: '0 0 8px 0 #ccc',
         background: 'white',
     },
 };

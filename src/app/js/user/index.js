@@ -103,6 +103,25 @@ export const getLoginRequest = (state, credentials) =>
         method: 'POST',
     });
 
+export const getLoadSubresourcesRequest = state =>
+    getRequest(state, {
+        url: '/api/subresource',
+    });
+
+export const getCreateSubresourceRequest = (state, body) =>
+    getRequest(state, {
+        url: '/api/subresource',
+        method: 'POST',
+        body,
+    });
+
+export const getUpdateSubresourceRequest = (state, { _id, ...body }) =>
+    getRequest(state, {
+        url: `/api/subresource/${_id}`,
+        method: 'PUT',
+        body,
+    });
+
 export const getLoadFieldRequest = state =>
     getRequest(state, {
         url: '/api/field',
@@ -387,6 +406,7 @@ export const selectors = {
     getExportFieldsRequest,
     getExportFieldsReadyRequest,
     getCreateResourceRequest,
+    getUpdateSubresourceRequest,
     getAddFieldToResourceRequest,
     getHideResourceRequest,
     getSaveResourceRequest,
@@ -404,6 +424,8 @@ export const selectors = {
     getSaveFieldRequest,
     getUpdateFieldRequest,
     getCreateFieldRequest,
+    getLoadSubresourcesRequest,
+    getCreateSubresourceRequest,
     getLoadFieldRequest,
     getUploadUrlRequest,
     getUrlRequest,

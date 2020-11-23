@@ -12,6 +12,7 @@ describe('withInitialData HOC', () => {
         hasUploadedFile: true,
         loadParsingResult: jest.fn(),
         loadPublication: jest.fn(),
+        loadSubresources: jest.fn(),
         p: { t: () => {} },
         isLoading: false,
     };
@@ -21,6 +22,7 @@ describe('withInitialData HOC', () => {
         expect(defaultProps.loadParsingResult).toHaveBeenCalled();
         expect(defaultProps.loadParsingResult).toHaveBeenCalled();
         expect(defaultProps.loadPublication).toHaveBeenCalled();
+        expect(defaultProps.loadSubresources).toHaveBeenCalled();
     });
 
     it('should render AdminComponent when isLoading is false', () => {
