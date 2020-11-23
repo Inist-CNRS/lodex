@@ -3,20 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
+import { withRouter, useRouteMatch } from 'react-router';
 
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import Alert from '../../lib/components/Alert';
 
-import {
-    Step,
-    Stepper,
-    StepLabel,
-    StepContent,
-    Select,
-    MenuItem,
-    Button,
-    TextField,
-} from '@material-ui/core';
+import { Select, MenuItem, Button, TextField } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
@@ -54,7 +46,7 @@ const styles = {
 };
 
 export const UploadComponent = ({
-    isFirstFile,
+    history,
     error,
     url,
     loaderName,
@@ -66,6 +58,9 @@ export const UploadComponent = ({
     p: polyglot,
     loaders,
 }) => {
+    let { path } = useRouteMatch();
+    const successRedirectPath = '/data/existing';
+    console.log('paths', path, successRedirectPath);
     const loaderNames = loaders
         .map(loader => loader.name)
         .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
@@ -74,6 +69,20 @@ export const UploadComponent = ({
                 {polyglot.t(pn)}
             </MenuItem>
         ));
+
+    const onFileAdded = (...params) => {
+        onFileLoad(...params);
+        if (path != successRedirectPath) {
+            history.push(successRedirectPath);
+        }
+    };
+
+    const onUrlAdded = (...params) => {
+        onUrlUpload(...params);
+        if (path != successRedirectPath) {
+            history.push(successRedirectPath);
+        }
+    };
 
     return (
         <div>
@@ -119,7 +128,7 @@ export const UploadComponent = ({
                 <input
                     name="file"
                     type="file"
-                    onChange={onFileLoad}
+                    onChange={onFileAdded}
                     style={styles.input}
                 />
             </Button>
@@ -138,7 +147,7 @@ export const UploadComponent = ({
                 />
                 <Button
                     variant="contained"
-                    onClick={onUrlUpload}
+                    onClick={onUrlAdded}
                     disabled={!isUrlValid}
                     className="btn-upload-url"
                     component="label"
@@ -154,6 +163,9 @@ export const UploadComponent = ({
 };
 
 UploadComponent.propTypes = {
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired,
+    }),
     className: PropTypes.string,
     error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     url: PropTypes.string.isRequired,
@@ -188,5 +200,6 @@ const mapDispatchToProps = {
 
 export default compose(
     translate,
+    withRouter,
     connect(mapStateToProps, mapDispatchToProps),
 )(UploadComponent);

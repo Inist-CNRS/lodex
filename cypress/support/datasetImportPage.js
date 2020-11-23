@@ -22,7 +22,7 @@ export const importDataset = (filename, mimeType = 'text/csv') => {
 export const importMoreDataset = (filename, mimeType = 'text/csv') => {
     cy.get('.sidebar')
         .contains('Add more')
-        .click();
+        .click({ force: true });
 
     fillInputWithFixture(
         '.btn-upload-dataset input[type=file]',

@@ -8,6 +8,7 @@ import translate from 'redux-polyglot/translate';
 import Upload from './upload/Upload';
 import { fromParsing } from './selectors';
 import { preLoadLoaders } from './loader';
+import withInitialData from './withInitialData';
 
 export const DataAddRouteComponent = ({ canUploadFile }) => {
     return (
@@ -31,6 +32,7 @@ const mapDispatchToProps = {
 };
 
 export const DataAddRoute = compose(
+    withInitialData,
     connect(mapStateToProps, mapDispatchToProps),
     lifecycle({
         componentWillMount() {

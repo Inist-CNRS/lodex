@@ -7,17 +7,26 @@ import translate from 'redux-polyglot/translate';
 
 import ParsingResult from './parsing/ParsingResult';
 import Statistics from './Statistics';
-import { fromPublication } from './selectors';
+import { fromParsing, fromPublication } from './selectors';
 import Published from './publish/Published';
+import Upload from './upload/Upload';
 import withInitialData from './withInitialData';
 
-export const DataRouteComponent = ({ hasPublishedDataset }) => {
+export const DataRouteComponent = ({ canUploadFile, hasPublishedDataset }) => {
     if (hasPublishedDataset) {
         return (
             <div className="admin">
                 <Card style={{ marginTop: '0.5rem' }}>
                     <Published />
                 </Card>
+            </div>
+        );
+    }
+
+    if (canUploadFile) {
+        return (
+            <div style={{ margin: '0 100px' }}>
+                <Upload className="admin" isFirstFile={canUploadFile} />
             </div>
         );
     }
@@ -31,10 +40,12 @@ export const DataRouteComponent = ({ hasPublishedDataset }) => {
 };
 
 DataRouteComponent.propTypes = {
+    canUploadFile: PropTypes.bool.isRequired,
     hasPublishedDataset: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
+    canUploadFile: fromParsing.canUpload(state),
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 

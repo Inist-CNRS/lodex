@@ -1,23 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Switch, Route, useRouteMatch, Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import { fromParsing } from './selectors';
+import withInitialData from './withInitialData';
 
 import { DataRoute } from './DataRoute';
 import { DataAddRoute } from './DataAddRoute';
 import RemovedResourcePage from './removedResources/RemovedResourcePage';
 
-const DataComponent = ({ canUploadFile }) => {
+const DataComponent = () => {
     let { path } = useRouteMatch();
     return (
         <Switch>
             <Route
                 path={`${path}/existing`}
                 exact
-                component={() =>
-                    canUploadFile ? <DataAddRoute /> : <DataRoute />
-                }
+                component={() => <DataRoute />}
             />
             <Route
                 path={`${path}/add`}
@@ -38,11 +35,7 @@ const DataComponent = ({ canUploadFile }) => {
     );
 };
 
-DataComponent.propTypes = {
-    canUploadFile: PropTypes.bool.isRequired,
-};
-
 const mapStateToProps = state => ({
-    canUploadFile: fromParsing.canUpload(state),
+    withInitialData,
 });
 export const Data = connect(mapStateToProps)(DataComponent);
