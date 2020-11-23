@@ -169,6 +169,13 @@ export default handleActions(
                     list: [...state.list.slice(0, -1)],
                 };
             }
+
+            if (typeof payload === 'number') {
+                console.warn(
+                    'Edit field using an index is deprecated, please use the field name instead',
+                );
+            }
+
             return {
                 ...state,
                 editedFieldName:
