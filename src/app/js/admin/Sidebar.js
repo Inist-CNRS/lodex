@@ -27,6 +27,9 @@ const styles = {
         alignItems: 'center',
         background: '#333',
         textAlign: 'center',
+        position: 'sticky',
+        top: 0,
+        height: '100vh',
     },
     sidebarNavLink: {
         color: '#fff',
@@ -42,6 +45,9 @@ const styles = {
         flexDirection: 'column',
         alignItems: 'center',
         background: '#555',
+        position: 'sticky',
+        top: 0,
+        height: '100vh',
     },
     subSidebarNavLink: {
         textDecoration: 'none',
