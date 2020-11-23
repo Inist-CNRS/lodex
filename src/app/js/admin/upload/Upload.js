@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { withRouter, useRouteMatch } from 'react-router';
+import { withRouter } from 'react-router';
 
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import Alert from '../../lib/components/Alert';
@@ -58,9 +58,8 @@ export const UploadComponent = ({
     p: polyglot,
     loaders,
 }) => {
-    let { path } = useRouteMatch();
+    const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
-    console.log('paths', path, successRedirectPath);
     const loaderNames = loaders
         .map(loader => loader.name)
         .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
