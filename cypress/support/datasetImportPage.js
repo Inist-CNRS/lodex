@@ -141,7 +141,7 @@ export const checkListOfSupportedFileFormats = () => {
     cy.get('div')
         .contains('AUTO')
         .click({ force: true });
-    cy.wait(300);
+    cy.wait(500);
     cy.get('li[role=option]>span').should('have.length', 21);
     checkLoaderItem('CSV - with semicolon');
     checkLoaderItem('XML - TEI document');

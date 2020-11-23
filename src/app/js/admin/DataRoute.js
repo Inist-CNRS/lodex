@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { compose } from 'recompose';
+import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 
@@ -10,6 +10,7 @@ import Statistics from './Statistics';
 import { fromParsing, fromPublication } from './selectors';
 import Published from './publish/Published';
 import Upload from './upload/Upload';
+import { preLoadLoaders } from './loader';
 import withInitialData from './withInitialData';
 
 export const DataRouteComponent = ({ canUploadFile, hasPublishedDataset }) => {
@@ -49,8 +50,17 @@ const mapStateToProps = state => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 
+const mapDispatchToProps = {
+    preLoadLoaders,
+};
+
 export const DataRoute = compose(
     withInitialData,
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
+    lifecycle({
+        componentWillMount() {
+            this.props.preLoadLoaders();
+        },
+    }),
     translate,
 )(DataRouteComponent);
