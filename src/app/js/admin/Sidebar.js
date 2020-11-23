@@ -148,62 +148,66 @@ const InnerSidebarComponent = ({
                 <Route path="/display/document">
                     <DocumentMenu />
                 </Route>
-        </Route>
-        <Route path="/data">
-            <div style={styles.root} className="sidebar">
-                <Box style={styles.linkContainer}>
-                    <NavLink
-                        style={{ color: '#333' }}
-                        activeStyle={{ color: '#7DBD42' }}
-                        to="/data/existing"
-                    >
-                        <Box>
-                            <p>
-                                <GridOnIcon fontSize="large" />
-                                <br />
-                                {polyglot.t('data')}
-                            </p>
+            </Route>
+            <Route path="/data">
+                <div style={styles.sidebar} className="sidebar">
+                    <Box style={styles.iconLinkContainer}>
+                        <NavLink
+                            style={styles.sidebarNavLink}
+                            activeStyle={styles.sidebarNavLinkActive}
+                            to="/data/existing"
+                        >
+                            <Box>
+                                <p>
+                                    <GridOnIcon fontSize="large" />
+                                    <br />
+                                    {polyglot.t('data')}
+                                </p>
+                            </Box>
+                        </NavLink>
+                    </Box>
+                    {hasLoadedDataset && (
+                        <Box style={styles.iconLinkContainer}>
+                            <NavLink
+                                style={styles.sidebarNavLink}
+                                activeStyle={styles.sidebarNavLinkActive}
+                                to="/data/add"
+                            >
+                                <Box>
+                                    <p>
+                                        <AddBoxIcon fontSize="large" />
+                                        <br />
+                                        {polyglot.t('add_more')}
+                                    </p>
+                                </Box>
+                            </NavLink>
                         </Box>
-                    </NavLink>
-                </Box>
-                {hasLoadedDataset && (
-                    <Box style={styles.linkContainer}>
-                        <NavLink
-                            style={{ color: '#333' }}
-                            activeStyle={{ color: '#7DBD42' }}
-                            to="/data/add"
-                        >
-                            <Box>
-                                <p>
-                                    <AddBoxIcon fontSize="large" />
-                                    <br />
-                                    {polyglot.t('add_more')}
-                                </p>
-                            </Box>
-                        </NavLink>
-                    </Box>
-                )}
-                {hasPublishedDataset && (
-                    <Box style={styles.linkContainer}>
-                        <NavLink
-                            style={{ color: '#333', marginTop: 'auto' }}
-                            activeStyle={{ color: '#7DBD42' }}
-                            to="/data/removed"
-                        >
-                            <Box>
-                                <p>
-                                    <DeleteIcon fontSize="large" />
-                                    <br />
-                                    {polyglot.t('removed_resources')}
-                                </p>
-                            </Box>
-                        </NavLink>
-                    </Box>
-                )}
-            </div>
-        </Route>
-    </>
-);
+                    )}
+                    {hasPublishedDataset && (
+                        <Box style={styles.iconLinkContainer}>
+                            <NavLink
+                                style={{
+                                    marginTop: 'auto',
+                                    ...styles.sidebarNavLink,
+                                }}
+                                activeStyle={styles.sidebarNavLinkActive}
+                                to="/data/removed"
+                            >
+                                <Box>
+                                    <p>
+                                        <DeleteIcon fontSize="large" />
+                                        <br />
+                                        {polyglot.t('removed_resources')}
+                                    </p>
+                                </Box>
+                            </NavLink>
+                        </Box>
+                    )}
+                </div>
+            </Route>
+        </>
+    );
+};
 
 InnerSidebarComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
