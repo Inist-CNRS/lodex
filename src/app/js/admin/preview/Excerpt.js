@@ -62,7 +62,7 @@ export const ExcerptComponent = ({
                             field,
                         )}`}
                         style={getColStyle(colStyle)}
-                        onClick={() => onHeaderClick(index)}
+                        onClick={() => onHeaderClick(field.name)}
                         tooltip={
                             areHeadersClickable
                                 ? polyglot.t('click_to_edit_publication_field')
