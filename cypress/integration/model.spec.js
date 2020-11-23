@@ -43,7 +43,7 @@ describe('Model Page', () => {
 
         cy.contains('h4', 'Dataset').should('be.visible');
         cy.get('.sidebar')
-            .contains('a', 'Resources')
+            .contains('a', 'Resource pages')
             .click();
         cy.get('.ontology-table-dataset').should('not.exist');
         cy.contains('h4', 'Document').should('be.visible');
