@@ -1,12 +1,12 @@
 import { fillInputWithFixture } from './forms';
 import * as adminNavigation from './adminNavigation';
 
-export const openImportDialog = () => {
-    cy.get('.upload.admin button').click();
+export const openImport = () => {
+    adminNavigation.goToData();
+    cy.location('pathname').should('equal', '/data/existing');
 };
 
 export const importDataset = (filename, mimeType = 'text/csv') => {
-    openImportDialog();
     fillInputWithFixture(
         '.btn-upload-dataset input[type=file]',
         filename,
@@ -22,7 +22,7 @@ export const importDataset = (filename, mimeType = 'text/csv') => {
 export const importMoreDataset = (filename, mimeType = 'text/csv') => {
     cy.get('.sidebar')
         .contains('Add more')
-        .click();
+        .click({ force: true });
 
     fillInputWithFixture(
         '.btn-upload-dataset input[type=file]',
@@ -141,7 +141,7 @@ export const checkListOfSupportedFileFormats = () => {
     cy.get('div')
         .contains('AUTO')
         .click({ force: true });
-    cy.wait(300);
+    cy.wait(500);
     cy.get('li[role=option]>span').should('have.length', 21);
     checkLoaderItem('CSV - with semicolon');
     checkLoaderItem('XML - TEI document');

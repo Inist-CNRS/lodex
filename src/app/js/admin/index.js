@@ -21,7 +21,6 @@ import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import theme from '../theme';
 import App from './App';
-import RemovedResourcePage from './removedResources/RemovedResourcePage';
 import Login from '../user/Login';
 import PrivateRoute from './PrivateRoute';
 import { Display } from './Display';
@@ -71,12 +70,7 @@ render(
                         exact
                         render={() => <Redirect to="/data" />}
                     />
-                    <PrivateRoute
-                        path="/data/removed"
-                        exact
-                        component={RemovedResourcePage}
-                    />
-                    <PrivateRoute path="/data" exact component={Data} />
+                    <PrivateRoute path="/data" component={Data} />
                     <PrivateRoute path="/display" component={Display} />
                     <Route path="/login" exact component={Login} />
                 </App>

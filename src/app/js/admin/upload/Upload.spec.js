@@ -12,6 +12,7 @@ describe('<Upload />', () => {
             error: false,
             onFileLoad() {},
             loaders: [],
+            history: { location: { pathname: '/data/existing' } },
         };
         const wrapper = shallow(<Upload {...props} />);
 
@@ -34,6 +35,7 @@ describe('<Upload />', () => {
             error: 'Boom',
             onFileLoad() {},
             loaders: [],
+            history: { location: { pathname: '/data/existing' } },
         };
         const wrapper = shallow(<Upload {...props} />);
 

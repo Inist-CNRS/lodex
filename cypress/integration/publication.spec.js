@@ -13,9 +13,6 @@ describe('Dataset Publication', () => {
         it('should get the list of possible loaders', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
-            adminPage.checkListOfSupportedFileFormats();
-
-            datasetImportPage.openImportDialog();
             cy.wait(300);
 
             datasetImportPage.checkListOfSupportedFileFormats();
@@ -24,7 +21,7 @@ describe('Dataset Publication', () => {
         it('should receive a csv file and preview its data in a table', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
-            datasetImportPage.openImportDialog();
+            cy.wait(300);
 
             fillInputWithFixture(
                 '.btn-upload-dataset input[type=file]',
@@ -108,7 +105,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.importModel('model/concat.json');
             datasetImportPage.publish();
-
+            cy.wait(300);
             datasetImportPage.importMoreDataset('dataset/simple.csv');
             datasetImportPage.importMoreDataset('dataset/simple.csv');
             datasetImportPage.importMoreDataset('dataset/simple.csv');

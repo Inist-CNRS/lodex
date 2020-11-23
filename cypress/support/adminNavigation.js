@@ -3,7 +3,7 @@ export const goToData = () => {
         .contains('Data')
         .click({ force: true }); // avoid bug due of detached DOM element
 
-    cy.location('hash').should('equal', '#/data');
+    cy.location('hash').should('equal', '#/data/existing');
 };
 
 export const goToDisplay = () => {

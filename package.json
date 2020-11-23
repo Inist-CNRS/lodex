@@ -127,6 +127,7 @@
         "lodash.unset": "^4.5.2",
         "lodash.upperfirst": "^4.3.1",
         "markdown-it": "^8.4.2",
+        "material-ui-dropzone": "3.5.0",
         "memorystream": "0.3.1",
         "mime-types": "2.1.26",
         "moment": "^2.22.2",
