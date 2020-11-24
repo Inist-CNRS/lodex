@@ -13,6 +13,7 @@ export default {
     },
     green: {
         primary: '#7dbd42',
+        secondary: 'rgba(125, 189, 66, .7)',
     },
     purple: {
         primary: '#b22f90',

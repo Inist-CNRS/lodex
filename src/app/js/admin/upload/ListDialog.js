@@ -4,8 +4,6 @@ import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
 import {
-    Select,
-    MenuItem,
     Button,
     TextField,
     List,
@@ -15,59 +13,28 @@ import {
     DialogContent,
     DialogActions,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
+import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-const styles = {
-    button: {
-        marginLeft: 4,
-        marginRight: 4,
-    },
-    input: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        opacity: 0,
-        width: '100%',
+const useStyles = makeStyles({
+    item: {
         cursor: 'pointer',
+        '&:hover': {
+            backgroundColor: theme.black.veryLight,
+        },
     },
-    divider: {
-        display: 'flex',
-        margin: '10px',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    dividerLabel: {
-        margin: '1rem',
-    },
-    dividerHr: {
-        flexGrow: 2,
-        marginLeft: '1rem',
-        marginRight: '1rem',
+    selectedItem: {
+        backgroundColor: theme.green.secondary,
+        '&:hover': {
+            backgroundColor: theme.green.primary,
+        },
     },
     list: {
         width: 1000,
     },
-};
-
-const ListItemComponent = ({ value, title, comment }) => {
-    return (
-        <ListItem
-            value={value}
-            onClick={() => changeValue(value)}
-            className={classnames('facet-item')}
-        >
-            <ListItemText
-                primary={title}
-                secondary={
-                    <div dangerouslySetInnerHTML={{ __html: comment }} />
-                }
-            />
-        </ListItem>
-    );
-};
+});
 
 export const ListDialogComponent = ({
     p: polyglot,
@@ -78,35 +45,38 @@ export const ListDialogComponent = ({
     handleClose,
     actions,
 }) => {
+    const classes = useStyles();
+
     const changeValue = newValue => {
         setLoader(newValue);
         handleClose();
     };
-    console.log('loaders', loaders);
+
     const loaderNames = loaders
         .map(loader => loader.name)
         .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
         .map(pn => (
             <ListItemComponent
-                key={value}
+                key={pn}
                 value={pn}
                 title={polyglot.t(pn)}
                 comment={polyglot.t(`${pn}-comment`)}
+                selected={value === pn}
+                changeValue={changeValue}
             />
         ));
 
     return (
         <Dialog open={open} onClose={handleClose} scroll="body" maxWidth="xl">
             <DialogContent>
-                <List
-                    style={styles.list}
-                    className={classnames(styles.list, {})}
-                >
+                <List className={classnames(classes.list)}>
                     <ListItemComponent
                         key={'automatic'}
                         value={'automatic'}
                         title={polyglot.t('automatic-loader')}
+                        selected={value === 'automatic'}
                         comment={polyglot.t('automatic-loader-comment')}
+                        changeValue={changeValue}
                     />
                     {loaderNames}
                 </List>
@@ -120,6 +90,41 @@ ListDialogComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     loaders: PropTypes.array,
     setLoader: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+};
+
+const ListItemComponent = ({
+    value,
+    title,
+    comment,
+    selected,
+    changeValue,
+}) => {
+    const classes = useStyles();
+    console.log(value, selected);
+    return (
+        <ListItem
+            value={value}
+            onClick={() => changeValue(value)}
+            className={classnames(classes.item, {
+                [classes.selectedItem]: selected,
+            })}
+        >
+            <ListItemText
+                primary={title}
+                primaryTypographyProps={{ style: { fontWeight: 'bold' } }}
+                secondary={
+                    <span dangerouslySetInnerHTML={{ __html: comment }} />
+                }
+            />
+        </ListItem>
+    );
+};
+
+ListItemComponent.propTypes = {
+    selected: PropTypes.bool,
+    comment: PropTypes.string,
+    title: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
 };
 

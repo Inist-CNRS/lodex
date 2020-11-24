@@ -8,7 +8,7 @@ import { withRouter } from 'react-router';
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import Alert from '../../lib/components/Alert';
 
-import { Select, MenuItem, Button, TextField } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
@@ -61,14 +61,6 @@ export const UploadComponent = ({
 }) => {
     const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
-    const loaderNames = loaders
-        .map(loader => loader.name)
-        .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
-        .map(pn => (
-            <MenuItem key={pn} value={pn}>
-                {polyglot.t(pn)}
-            </MenuItem>
-        ));
 
     const onFileAdded = (...params) => {
         onFileLoad(...params);
@@ -105,17 +97,6 @@ export const UploadComponent = ({
                     console.log(`${variant}: ${message}`)
                 }
             />
-            <Select
-                label={polyglot.t('loader_name')}
-                value={loaderName}
-                onChange={onChangeLoaderName}
-                fullWidth
-            >
-                <MenuItem key={'automatic'} value={'automatic'}>
-                    {polyglot.t('automatic-loader')}
-                </MenuItem>
-                {loaderNames}
-            </Select>
             <LoaderSelect
                 loaders={loaders}
                 setLoader={onChangeLoaderName}
