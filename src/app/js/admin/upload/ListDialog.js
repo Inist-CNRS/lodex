@@ -1,19 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import translate from 'redux-polyglot/translate';
+import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
-import { withRouter } from 'react-router';
-
-import { DropzoneAreaBase } from 'material-ui-dropzone';
-import Alert from '../../lib/components/Alert';
-
-import { Select, MenuItem, Button, TextField } from '@material-ui/core';
+import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
 import { fromUpload, fromLoaders } from '../selectors';
-import LoaderSelect from './LoaderSelect';
 
 const styles = {
     button: {
@@ -46,9 +44,7 @@ const styles = {
     },
 };
 
-export const UploadComponent = ({
-    history,
-    error,
+export const ListDialogComponent = ({
     url,
     loaderName,
     isUrlValid,
@@ -58,81 +54,53 @@ export const UploadComponent = ({
     onUrlUpload,
     p: polyglot,
     loaders,
+    open,
+    actions,
+    handleClose,
 }) => {
-    const path = history.location.pathname;
-    const successRedirectPath = '/data/existing';
     const loaderNames = loaders
         .map(loader => loader.name)
         .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
         .map(pn => (
-            <MenuItem key={pn} value={pn}>
-                {polyglot.t(pn)}
-            </MenuItem>
+            <MenuItem key={pn} value={pn} primaryText={polyglot.t(pn)} />
         ));
 
-    const onFileAdded = (...params) => {
-        onFileLoad(...params);
-        if (path != successRedirectPath) {
-            history.push(successRedirectPath);
-        }
-    };
-
-    const onUrlAdded = (...params) => {
-        onUrlUpload(...params);
-        if (path != successRedirectPath) {
-            history.push(successRedirectPath);
-        }
-    };
-
     return (
-        <div>
-            {error ? (
-                <Alert>
-                    <p>Error uploading given file: </p>
-                    <p>{error}</p>
-                </Alert>
-            ) : (
-                <span />
-            )}
-            <DropzoneAreaBase
-                filesLimit={1}
-                dropzoneText={polyglot.t('import_file_text')}
-                showPreviewsInDropzone
-                showFileNamesInPreview
-                onAdd={fileObjs => console.log('Added Files:', fileObjs)}
-                onDelete={fileObj => console.log('Removed File:', fileObj)}
-                onAlert={(message, variant) =>
-                    console.log(`${variant}: ${message}`)
-                }
-            />
-            <Select
-                label={polyglot.t('loader_name')}
+        <Dialog
+            actions={actions}
+            modal={false}
+            open={open}
+            onRequestClose={handleClose}
+            autoScrollBodyContent
+        >
+            <SelectField
+                floatingLabelText={polyglot.t('loader_name')}
                 value={loaderName}
                 onChange={onChangeLoaderName}
                 fullWidth
             >
-                <MenuItem key={'automatic'} value={'automatic'}>
-                    {polyglot.t('automatic-loader')}
-                </MenuItem>
+                <MenuItem
+                    key={'automatic'}
+                    value={'automatic'}
+                    primaryText={polyglot.t('automatic-loader')}
+                />
                 {loaderNames}
-            </Select>
-            <LoaderSelect />
-            <Button
-                variant="contained"
+            </SelectField>
+            <RaisedButton
                 className="btn-upload-dataset"
-                component="label"
-                color="primary"
+                containerElement="label"
+                primary
                 fullWidth
+                label={polyglot.t('upload_file')}
                 style={styles.button}
             >
-                {polyglot.t('upload_file')}
                 <input
                     name="file"
                     type="file"
-                    onChange={onFileAdded}
+                    onChange={onFileLoad}
                     style={styles.input}
                 />
-            </Button>
+            </RaisedButton>
             <div style={styles.divider}>
                 <hr style={styles.dividerHr} />
                 <div style={styles.dividerLabel}>{polyglot.t('or')}</div>
@@ -143,32 +111,25 @@ export const UploadComponent = ({
                     fullWidth
                     value={url}
                     onChange={onChangeUrl}
-                    error={url && !isUrlValid && polyglot.t('invalid_url')}
-                    placeholder="URL"
+                    errorText={url && !isUrlValid && polyglot.t('invalid_url')}
+                    hintText="URL"
                 />
-                <Button
-                    variant="contained"
-                    onClick={onUrlAdded}
+                <RaisedButton
+                    onClick={onUrlUpload}
                     disabled={!isUrlValid}
                     className="btn-upload-url"
-                    component="label"
-                    color="primary"
+                    containerElement="label"
+                    primary
                     fullWidth
+                    label={polyglot.t('upload_url')}
                     style={styles.button}
-                >
-                    {polyglot.t('upload_url')}
-                </Button>
+                />
             </div>
-        </div>
+        </Dialog>
     );
 };
 
-UploadComponent.propTypes = {
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }),
-    className: PropTypes.string,
-    error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+ListDialogComponent.propTypes = {
     url: PropTypes.string.isRequired,
     loaderName: PropTypes.string.isRequired,
     isUrlValid: PropTypes.bool,
@@ -179,10 +140,8 @@ UploadComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-UploadComponent.defaultProps = {
-    className: null,
+ListDialogComponent.defaultProps = {
     isUrlValid: true,
-    error: false,
 };
 
 const mapStateToProps = state => ({
@@ -195,12 +154,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     onUrlUpload: uploadUrl,
     onFileLoad: e => uploadFile(e.target.files[0]),
-    onChangeUrl: e => changeUploadUrl(e.target.value),
+    onChangeUrl: (_, value) => changeUploadUrl(value),
     onChangeLoaderName: (_, idx, val) => changeLoaderName(val),
 };
 
 export default compose(
     translate,
-    withRouter,
     connect(mapStateToProps, mapDispatchToProps),
-)(UploadComponent);
+)(ListDialogComponent);
