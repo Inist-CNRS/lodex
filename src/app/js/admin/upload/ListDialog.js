@@ -1,14 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { connect } from 'react-redux';
+import classnames from 'classnames';
 import compose from 'recompose/compose';
-
-import { Select, MenuItem, Button, TextField } from '@material-ui/core';
+import {
+    Select,
+    MenuItem,
+    Button,
+    TextField,
+    List,
+    ListItem,
+    ListItemText,
+    Dialog,
+    DialogContent,
+    DialogActions,
+} from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
-import { fromUpload, fromLoaders } from '../selectors';
 
 const styles = {
     button: {
@@ -39,117 +47,80 @@ const styles = {
         marginLeft: '1rem',
         marginRight: '1rem',
     },
+    list: {
+        width: 1000,
+    },
+};
+
+const ListItemComponent = ({ value, title, comment }) => {
+    return (
+        <ListItem
+            value={value}
+            onClick={() => changeValue(value)}
+            className={classnames('facet-item')}
+        >
+            <ListItemText
+                primary={title}
+                secondary={
+                    <div dangerouslySetInnerHTML={{ __html: comment }} />
+                }
+            />
+        </ListItem>
+    );
 };
 
 export const ListDialogComponent = ({
-    url,
-    loaderName,
-    isUrlValid,
-    onChangeUrl,
-    onChangeLoaderName,
-    onFileLoad,
-    onUrlUpload,
     p: polyglot,
     loaders,
+    value,
+    setLoader,
+    open,
+    handleClose,
+    actions,
 }) => {
+    const changeValue = newValue => {
+        setLoader(newValue);
+        handleClose();
+    };
+    console.log('loaders', loaders);
     const loaderNames = loaders
         .map(loader => loader.name)
         .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
         .map(pn => (
-            <MenuItem key={pn} value={pn}>
-                {polyglot.t(pn)}
-            </MenuItem>
+            <ListItemComponent
+                key={value}
+                value={pn}
+                title={polyglot.t(pn)}
+                comment={polyglot.t(`${pn}-comment`)}
+            />
         ));
 
     return (
-        <div>
-            <Select
-                label={polyglot.t('loader_name')}
-                value={loaderName}
-                onChange={onChangeLoaderName}
-                fullWidth
-            >
-                <MenuItem key={'automatic'} value={'automatic'}>
-                    {polyglot.t('automatic-loader')}
-                </MenuItem>
-                {loaderNames}
-            </Select>
-            <Button
-                variant="contained"
-                className="btn-upload-dataset"
-                component="label"
-                color="primary"
-                fullWidth
-                style={styles.button}
-            >
-                {polyglot.t('upload_file')}
-                <input
-                    name="file"
-                    type="file"
-                    onChange={onFileLoad}
-                    style={styles.input}
-                />
-            </Button>
-            <div style={styles.divider}>
-                <hr style={styles.dividerHr} />
-                <div style={styles.dividerLabel}>{polyglot.t('or')}</div>
-                <hr style={styles.dividerHr} />
-            </div>
-            <div>
-                <TextField
-                    fullWidth
-                    value={url}
-                    onChange={onChangeUrl}
-                    error={url && !isUrlValid && polyglot.t('invalid_url')}
-                    placeholder="URL"
-                />
-                <Button
-                    variant="contained"
-                    onClick={onUrlUpload}
-                    disabled={!isUrlValid}
-                    className="btn-upload-url"
-                    component="label"
-                    color="primary"
-                    fullWidth
-                    style={styles.button}
+        <Dialog open={open} onClose={handleClose} scroll="body" maxWidth="xl">
+            <DialogContent>
+                <List
+                    style={styles.list}
+                    className={classnames(styles.list, {})}
                 >
-                    {polyglot.t('upload_url')}
-                </Button>
-            </div>
-        </div>
+                    <ListItemComponent
+                        key={'automatic'}
+                        value={'automatic'}
+                        title={polyglot.t('automatic-loader')}
+                        comment={polyglot.t('automatic-loader-comment')}
+                    />
+                    {loaderNames}
+                </List>
+            </DialogContent>
+            <DialogActions>{actions}</DialogActions>
+        </Dialog>
     );
 };
 
 ListDialogComponent.propTypes = {
-    url: PropTypes.string.isRequired,
-    loaderName: PropTypes.string.isRequired,
-    isUrlValid: PropTypes.bool,
-    onChangeUrl: PropTypes.func.isRequired,
-    onFileLoad: PropTypes.func.isRequired,
-    onUrlUpload: PropTypes.func.isRequired,
-    onChangeLoaderName: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    loaders: PropTypes.array,
+    setLoader: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
 };
 
-ListDialogComponent.defaultProps = {
-    isUrlValid: true,
-};
-
-const mapStateToProps = state => ({
-    url: fromUpload.getUrl(state),
-    isUrlValid: fromUpload.isUrlValid(state),
-    loaderName: fromUpload.getLoaderName(state),
-    loaders: fromLoaders.getLoaders(state),
-});
-
-const mapDispatchToProps = {
-    onUrlUpload: uploadUrl,
-    onFileLoad: e => uploadFile(e.target.files[0]),
-    onChangeUrl: e => changeUploadUrl(e.target.value),
-    onChangeLoaderName: (_, idx, val) => changeLoaderName(val),
-};
-
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(ListDialogComponent);
+export default compose(translate)(ListDialogComponent);

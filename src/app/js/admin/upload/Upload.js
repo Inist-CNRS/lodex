@@ -116,7 +116,11 @@ export const UploadComponent = ({
                 </MenuItem>
                 {loaderNames}
             </Select>
-            <LoaderSelect />
+            <LoaderSelect
+                loaders={loaders}
+                setLoader={onChangeLoaderName}
+                value={loaderName}
+            />
             <Button
                 variant="contained"
                 className="btn-upload-dataset"
@@ -171,6 +175,7 @@ UploadComponent.propTypes = {
     error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     url: PropTypes.string.isRequired,
     loaderName: PropTypes.string.isRequired,
+    loaders: PropTypes.array,
     isUrlValid: PropTypes.bool,
     onChangeUrl: PropTypes.func.isRequired,
     onFileLoad: PropTypes.func.isRequired,
@@ -196,7 +201,8 @@ const mapDispatchToProps = {
     onUrlUpload: uploadUrl,
     onFileLoad: e => uploadFile(e.target.files[0]),
     onChangeUrl: e => changeUploadUrl(e.target.value),
-    onChangeLoaderName: (_, idx, val) => changeLoaderName(val),
+    onChangeLoaderName: val =>
+        changeLoaderName(Array.isArray(val) ? val[0] : val),
 };
 
 export default compose(

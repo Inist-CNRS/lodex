@@ -1,15 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import ArchiveIcon from 'material-ui/svg-icons/content/archive';
-
+import ArchiveIcon from '@material-ui/icons/Archive';
+import { Button } from '@material-ui/core';
 import ListDialog from './ListDialog';
-import { fromUpload } from '../selectors';
-import { openUpload, closeUpload } from './';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -20,76 +15,64 @@ const styles = {
     },
 };
 
-const LoaderSelectComponent = ({
-    open,
-    label,
-    raised,
-    handleOpen,
-    handleClose,
-    p: polyglot,
-}) => {
+const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     const actions = [
-        <FlatButton
+        <Button
+            variant="text"
             key="cancel"
-            secondary
-            label={polyglot.t('cancel')}
+            color="secondary"
             onClick={handleClose}
-        />,
+        >
+            {polyglot.t('cancel')}
+        </Button>,
     ];
 
     return (
-        <span>
-            {raised ? (
-                <RaisedButton
-                    style={styles.button}
-                    className="open-upload"
-                    icon={<ArchiveIcon />}
-                    label={label}
-                    primary
-                    onClick={handleOpen}
-                />
-            ) : (
-                <FlatButton
-                    style={styles.button}
-                    className="open-upload"
-                    label={label}
-                    primary
-                    onClick={handleOpen}
-                />
-            )}
+        <div>
+            <Button
+                variant="contained"
+                style={styles.button}
+                className="open-loaders"
+                color="primary"
+                onClick={handleOpen}
+                fullWidth
+            >
+                {polyglot.t('loader_name')} :{' '}
+                {value === 'automatic'
+                    ? polyglot.t('automatic-loader')
+                    : polyglot.t(value)}
+            </Button>
             <ListDialog
-                actions={actions}
                 open={open}
                 handleClose={handleClose}
+                actions={actions}
+                loaders={loaders}
+                setLoader={setLoader}
+                value={value}
             />
-        </span>
+        </div>
     );
 };
 
 LoaderSelectComponent.propTypes = {
-    open: PropTypes.bool.isRequired,
-    raised: PropTypes.bool,
-    label: PropTypes.string.isRequired,
-    handleOpen: PropTypes.func.isRequired,
-    handleClose: PropTypes.func.isRequired,
+    loaders: PropTypes.array,
+    setLoader: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 LoaderSelectComponent.defaultProps = {
-    raised: false,
+    value: 'automatic',
 };
 
-const mapStateToProps = state => ({
-    open: fromUpload.isOpen(state),
-    saving: fromUpload.isUploadPending(state),
-});
-
-const mapDispatchToProps = {
-    handleOpen: openUpload,
-    handleClose: closeUpload,
-};
-
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(LoaderSelectComponent);
+export default compose(translate)(LoaderSelectComponent);
