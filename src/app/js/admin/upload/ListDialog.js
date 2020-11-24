@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import Dialog from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+
+import { Select, MenuItem, Button, TextField } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
@@ -54,53 +51,45 @@ export const ListDialogComponent = ({
     onUrlUpload,
     p: polyglot,
     loaders,
-    open,
-    actions,
-    handleClose,
 }) => {
     const loaderNames = loaders
         .map(loader => loader.name)
         .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
         .map(pn => (
-            <MenuItem key={pn} value={pn} primaryText={polyglot.t(pn)} />
+            <MenuItem key={pn} value={pn}>
+                {polyglot.t(pn)}
+            </MenuItem>
         ));
 
     return (
-        <Dialog
-            actions={actions}
-            modal={false}
-            open={open}
-            onRequestClose={handleClose}
-            autoScrollBodyContent
-        >
-            <SelectField
-                floatingLabelText={polyglot.t('loader_name')}
+        <div>
+            <Select
+                label={polyglot.t('loader_name')}
                 value={loaderName}
                 onChange={onChangeLoaderName}
                 fullWidth
             >
-                <MenuItem
-                    key={'automatic'}
-                    value={'automatic'}
-                    primaryText={polyglot.t('automatic-loader')}
-                />
+                <MenuItem key={'automatic'} value={'automatic'}>
+                    {polyglot.t('automatic-loader')}
+                </MenuItem>
                 {loaderNames}
-            </SelectField>
-            <RaisedButton
+            </Select>
+            <Button
+                variant="contained"
                 className="btn-upload-dataset"
-                containerElement="label"
-                primary
+                component="label"
+                color="primary"
                 fullWidth
-                label={polyglot.t('upload_file')}
                 style={styles.button}
             >
+                {polyglot.t('upload_file')}
                 <input
                     name="file"
                     type="file"
                     onChange={onFileLoad}
                     style={styles.input}
                 />
-            </RaisedButton>
+            </Button>
             <div style={styles.divider}>
                 <hr style={styles.dividerHr} />
                 <div style={styles.dividerLabel}>{polyglot.t('or')}</div>
@@ -111,21 +100,23 @@ export const ListDialogComponent = ({
                     fullWidth
                     value={url}
                     onChange={onChangeUrl}
-                    errorText={url && !isUrlValid && polyglot.t('invalid_url')}
-                    hintText="URL"
+                    error={url && !isUrlValid && polyglot.t('invalid_url')}
+                    placeholder="URL"
                 />
-                <RaisedButton
+                <Button
+                    variant="contained"
                     onClick={onUrlUpload}
                     disabled={!isUrlValid}
                     className="btn-upload-url"
-                    containerElement="label"
-                    primary
+                    component="label"
+                    color="primary"
                     fullWidth
-                    label={polyglot.t('upload_url')}
                     style={styles.button}
-                />
+                >
+                    {polyglot.t('upload_url')}
+                </Button>
             </div>
-        </Dialog>
+        </div>
     );
 };
 
@@ -154,7 +145,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     onUrlUpload: uploadUrl,
     onFileLoad: e => uploadFile(e.target.files[0]),
-    onChangeUrl: (_, value) => changeUploadUrl(value),
+    onChangeUrl: e => changeUploadUrl(e.target.value),
     onChangeLoaderName: (_, idx, val) => changeLoaderName(val),
 };
 
