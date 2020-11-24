@@ -192,6 +192,7 @@ const FilterComponent = ({ loaders, filter, setFilter, p: polyglot }) => {
                         }
                         color="primary"
                         onClick={() => setFilter(allFilters[key])}
+                        className="format-category"
                     >
                         {polyglot.t(key)}
                     </Button>

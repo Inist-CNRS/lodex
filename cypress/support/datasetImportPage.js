@@ -131,7 +131,7 @@ export const importModel = (filename, mimeType = 'application/json') => {
 };
 
 const checkLoaderItem = label => {
-    cy.get('li[role=option]')
+    cy.get('li>div')
         .contains(label)
         .scrollIntoView()
         .should('be.visible');
@@ -142,10 +142,28 @@ export const checkListOfSupportedFileFormats = () => {
         .contains('AUTO')
         .click({ force: true });
     cy.wait(500);
-    cy.get('li[role=option]>span').should('have.length', 21);
+    cy.get('li>div>span').should('have.length', 21);
+    cy.get('button.format-category').should('have.length', 6);
     checkLoaderItem('CSV - with semicolon');
     checkLoaderItem('XML - TEI document');
     checkLoaderItem('ZIP - file from dl.istex.fr');
     checkLoaderItem('JSON - from Lodex API');
     checkLoaderItem('XML - ATOM feed');
+    cy.get('button')
+        .contains('Cancel')
+        .click({ force: true });
+};
+
+export const checkListOfFiltererFileFormats = () => {
+    cy.get('div')
+        .contains('AUTO')
+        .click({ force: true });
+    cy.wait(500);
+    cy.get('button')
+        .contains('TSV')
+        .click();
+    cy.get('li>div>span').should('have.length', 4);
+    cy.get('button')
+        .contains('Cancel')
+        .click({ force: true });
 };
