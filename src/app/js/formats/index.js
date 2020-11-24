@@ -39,6 +39,7 @@ import streamgraph from './streamgraph';
 import hierarchy from './hierarchy';
 import checkPredicate from './checkPredicate';
 import istexCitation from './istexCitation';
+import istexRefbibs from './istexRefbibs';
 import bubblePlot from './vega-lite/component/bubble-plot';
 import flowMap from './vega/component/flow-map';
 
@@ -81,6 +82,7 @@ const components = {
     istexCitation,
     bubblePlot,
     flowMap,
+    istexRefbibs,
 };
 
 export const FORMATS = Object.keys(components).sort();
