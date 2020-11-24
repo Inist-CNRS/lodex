@@ -44,7 +44,6 @@ const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
                 direction="row"
                 justify="center"
                 style={{ width: '100%', marginBottom: 25, marginTop: 25 }}
-                onClick={handleOpen}
             >
                 <Box
                     style={{
@@ -63,6 +62,7 @@ const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
                         style={styles.button}
                         className="open-loaders"
                         color="primary"
+                        onClick={handleOpen}
                         fullWidth
                     >
                         {value === 'automatic'
