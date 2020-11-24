@@ -86,25 +86,12 @@ const getFromFilterFields = createSelector(
     (_, type) => type,
     (fields, type) => {
         if (type !== 'graph') {
-            return fields.filter(
-                getOntologyFieldsFilter(type, type === 'document'),
-            );
+            return fields
+                .filter(getOntologyFieldsFilter(type, type === 'document'))
+                .filter(f => !f.display_in_graph);
         }
 
         return fields.filter(f => !!f.display_in_graph);
-
-        // Don't known what I should use ? Cover or display_in_X ?
-        // In any case, dragndrop is based on cover, so it fail if I use only display
-        //
-        // if (type === 'dataset') {
-        //     return fields.filter(f => !!f.display_in_home);
-        // }
-
-        // if (type === 'document') {
-        //     return fields.filter(f => !!f.display_in_resource);
-        // }
-
-        // return fields.filter(f => !!f.display_in_graph);
     },
 );
 
