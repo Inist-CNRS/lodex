@@ -81,6 +81,7 @@ export const ListDialogComponent = ({
         <Dialog open={open} onClose={handleClose} scroll="body" maxWidth="xl">
             <DialogTitle>
                 <FilterComponent
+                    p={polyglot}
                     loaders={loaders}
                     filter={filteredLoaders}
                     setFilter={setFilter}
@@ -145,24 +146,30 @@ ListItemComponent.propTypes = {
     value: PropTypes.string.isRequired,
 };
 
-const FilterComponent = ({ loaders, filter, setFilter }) => {
+const FilterComponent = ({ loaders, filter, setFilter, p: polyglot }) => {
     const allFilters = {
-        all: loaders.map(l => l.name),
-        csv: loaders.filter(l => l.name.startsWith('csv')).map(l => l.name),
-        tsv: loaders.filter(l => l.name.startsWith('tsv')).map(l => l.name),
-        XML: loaders
+        allFormat: loaders.map(l => l.name),
+        csvFormat: loaders
+            .filter(l => l.name.startsWith('csv'))
+            .map(l => l.name),
+        tsvFormat: loaders
+            .filter(l => l.name.startsWith('tsv'))
+            .map(l => l.name),
+        xmlFormat: loaders
             .filter(l =>
                 ['xml', 'rss', 'atom', 'mods', 'tei', 'skos'].includes(l.name),
             )
             .map(l => l.name),
-        JSON: loaders.filter(l => l.name.startsWith('json')).map(l => l.name),
+        jsonFormat: loaders
+            .filter(l => l.name.startsWith('json'))
+            .map(l => l.name),
     };
-    allFilters.Other = allFilters.all.filter(
+    allFilters.otherFormat = allFilters.allFormat.filter(
         l =>
-            !allFilters.csv.includes(l) &&
-            !allFilters.tsv.includes(l) &&
-            !allFilters.XML.includes(l) &&
-            !allFilters.JSON.includes(l),
+            !allFilters.csvFormat.includes(l) &&
+            !allFilters.tsvFormat.includes(l) &&
+            !allFilters.xmlFormat.includes(l) &&
+            !allFilters.jsonFormat.includes(l),
     );
 
     return (
@@ -186,7 +193,7 @@ const FilterComponent = ({ loaders, filter, setFilter }) => {
                         color="primary"
                         onClick={() => setFilter(allFilters[key])}
                     >
-                        {key}
+                        {polyglot.t(key)}
                     </Button>
                 </Box>
             ))}
@@ -198,6 +205,7 @@ FilterComponent.propTypes = {
     filter: PropTypes.array,
     setFilter: PropTypes.func.isRequired,
     loaders: PropTypes.array.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
 FilterComponent.defaultProps = {
