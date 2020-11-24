@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import ArchiveIcon from '@material-ui/icons/Archive';
-import { Button } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+import { Grid, Box, Typography, Button } from '@material-ui/core';
 import ListDialog from './ListDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -39,19 +39,42 @@ const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
 
     return (
         <div>
-            <Button
-                variant="contained"
-                style={styles.button}
-                className="open-loaders"
-                color="primary"
+            <Grid
+                container={true}
+                direction="row"
+                justify="center"
+                style={{ width: '100%', marginBottom: 25, marginTop: 25 }}
                 onClick={handleOpen}
-                fullWidth
             >
-                {polyglot.t('loader_name')} :{' '}
-                {value === 'automatic'
-                    ? polyglot.t('automatic-loader')
-                    : polyglot.t(value)}
-            </Button>
+                <Box
+                    style={{
+                        display: 'grid',
+                        alignContent: 'center',
+                        marginRight: 20,
+                    }}
+                >
+                    <Typography variant="h6">
+                        {polyglot.t('loader_name')}
+                    </Typography>
+                </Box>
+                <Box>
+                    <Button
+                        variant="contained"
+                        style={styles.button}
+                        className="open-loaders"
+                        color="primary"
+                        fullWidth
+                    >
+                        {value === 'automatic'
+                            ? polyglot.t('automatic-loader')
+                            : polyglot.t(value)}
+                        <SearchIcon
+                            fontSize="large"
+                            style={{ marginLeft: 20 }}
+                        />
+                    </Button>
+                </Box>
+            </Grid>
             <ListDialog
                 open={open}
                 handleClose={handleClose}
