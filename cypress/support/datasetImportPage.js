@@ -7,11 +7,9 @@ export const openImport = () => {
 };
 
 export const importDataset = (filename, mimeType = 'text/csv') => {
-    fillInputWithFixture(
-        '.btn-upload-dataset input[type=file]',
-        filename,
-        mimeType,
-    );
+    fillInputWithFixture('input[type=file]', filename, mimeType);
+    cy.wait(300);
+    cy.get('.btn-upload-dataset').click({ force: true });
 
     cy.get('.progress').should('exist');
     cy.wait(300);
@@ -24,11 +22,9 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
         .contains('Add more')
         .click({ force: true });
 
-    fillInputWithFixture(
-        '.btn-upload-dataset input[type=file]',
-        filename,
-        mimeType,
-    );
+    fillInputWithFixture('input[type=file]', filename, mimeType);
+    cy.wait(300);
+    cy.get('.btn-upload-dataset').click({ force: true });
 
     cy.get('.progress').should('exist');
     cy.wait(300);
