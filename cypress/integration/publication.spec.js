@@ -16,6 +16,7 @@ describe('Dataset Publication', () => {
             cy.wait(300);
 
             datasetImportPage.checkListOfSupportedFileFormats();
+            datasetImportPage.checkListOfFiltererFileFormats();
         });
 
         it('should receive a csv file and preview its data in a table', () => {
