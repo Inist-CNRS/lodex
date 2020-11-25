@@ -1,19 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { withRouter } from 'react-router';
-
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import Alert from '../../lib/components/Alert';
-
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField, FormControl, InputLabel } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
 import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
+import theme from '../../theme';
 
 const styles = {
     button: {
@@ -21,13 +20,10 @@ const styles = {
         marginRight: 4,
     },
     input: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        opacity: 0,
-        width: '100%',
+        margin: '10px 4px',
+    },
+    link: {
+        color: theme.green.primary,
         cursor: 'pointer',
     },
     divider: {
@@ -59,11 +55,21 @@ export const UploadComponent = ({
     p: polyglot,
     loaders,
 }) => {
+    const [files, setFiles] = useState([]);
+    const [useUrl, setUseUrl] = useState(false);
     const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
 
-    const onFileAdded = (...params) => {
-        onFileLoad(...params);
+    const onFileAdded = list => {
+        if (!list || list.length === 0) return;
+
+        setFiles([...list]);
+    };
+
+    const onFileUploaded = () => {
+        if (files.length === 0) return;
+
+        onFileLoad(files[0].file);
         if (path != successRedirectPath) {
             history.push(successRedirectPath);
         }
@@ -77,7 +83,7 @@ export const UploadComponent = ({
     };
 
     return (
-        <div>
+        <div style={{ width: 800, margin: 'auto' }}>
             {error ? (
                 <Alert>
                     <p>Error uploading given file: </p>
@@ -86,63 +92,81 @@ export const UploadComponent = ({
             ) : (
                 <span />
             )}
-            <DropzoneAreaBase
-                filesLimit={1}
-                dropzoneText={polyglot.t('import_file_text')}
-                showPreviewsInDropzone
-                showFileNamesInPreview
-                onAdd={fileObjs => console.log('Added Files:', fileObjs)}
-                onDelete={fileObj => console.log('Removed File:', fileObj)}
-                onAlert={(message, variant) =>
-                    console.log(`${variant}: ${message}`)
-                }
-            />
+            {!useUrl && (
+                <DropzoneAreaBase
+                    filesLimit={1}
+                    dropzoneText={
+                        files.length
+                            ? files[0].file.name
+                            : polyglot.t('import_file_text')
+                    }
+                    showPreviewsInDropzone
+                    showFileNamesInPreview
+                    onAdd={fileObjs => onFileAdded(fileObjs)}
+                    onDelete={fileObj => console.log('Removed File:', fileObj)}
+                    onAlert={(message, variant) =>
+                        console.log(`${variant}: ${message}`)
+                    }
+                />
+            )}
             <LoaderSelect
                 loaders={loaders}
                 setLoader={onChangeLoaderName}
                 value={loaderName}
             />
-            <Button
-                variant="contained"
-                className="btn-upload-dataset"
-                component="label"
-                color="primary"
-                fullWidth
-                style={styles.button}
-            >
-                {polyglot.t('upload_file')}
-                <input
-                    name="file"
-                    type="file"
-                    onChange={onFileAdded}
-                    style={styles.input}
-                />
-            </Button>
-            <div style={styles.divider}>
-                <hr style={styles.dividerHr} />
-                <div style={styles.dividerLabel}>{polyglot.t('or')}</div>
-                <hr style={styles.dividerHr} />
-            </div>
-            <div>
-                <TextField
-                    fullWidth
-                    value={url}
-                    onChange={onChangeUrl}
-                    error={url && !isUrlValid && polyglot.t('invalid_url')}
-                    placeholder="URL"
-                />
+            {!useUrl && (
                 <Button
                     variant="contained"
-                    onClick={onUrlAdded}
-                    disabled={!isUrlValid}
-                    className="btn-upload-url"
+                    className="btn-upload-dataset"
                     component="label"
                     color="primary"
                     fullWidth
                     style={styles.button}
+                    disabled={files.length === 0}
+                    onClick={onFileUploaded}
                 >
-                    {polyglot.t('upload_url')}
+                    {polyglot.t('upload_file')}
                 </Button>
+            )}
+            {useUrl && (
+                <div>
+                    <TextField
+                        fullWidth
+                        style={styles.input}
+                        value={url}
+                        onChange={onChangeUrl}
+                        placeholder="URL"
+                        error={!!url && !isUrlValid}
+                        helperText={
+                            url && !isUrlValid && polyglot.t('invalid_url')
+                        }
+                    />
+                    <Button
+                        variant="contained"
+                        disabled={!isUrlValid}
+                        className="btn-upload-url"
+                        component="label"
+                        color="primary"
+                        fullWidth
+                        style={styles.button}
+                        disabled={!url || !isUrlValid}
+                        onClick={onUrlAdded}
+                    >
+                        {polyglot.t('upload_url')}
+                    </Button>
+                </div>
+            )}
+            <div style={styles.divider}>
+                <hr style={styles.dividerHr} />
+                <div style={styles.dividerLabel}>{polyglot.t('or')}</div>
+                <a
+                    onClick={() => setUseUrl(!useUrl)}
+                    style={{ ...styles.dividerLabel, ...styles.link }}
+                >
+                    {useUrl ? polyglot.t('not_use_url') : polyglot.t('use_url')}
+                </a>
+
+                <hr style={styles.dividerHr} />
             </div>
         </div>
     );
@@ -180,7 +204,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     onUrlUpload: uploadUrl,
-    onFileLoad: e => uploadFile(e.target.files[0]),
+    onFileLoad: uploadFile,
     onChangeUrl: e => changeUploadUrl(e.target.value),
     onChangeLoaderName: val =>
         changeLoaderName(Array.isArray(val) ? val[0] : val),
