@@ -69,7 +69,7 @@ export const UploadComponent = ({
     const onFileUploaded = () => {
         if (files.length === 0) return;
 
-        onFileLoad(files[0]);
+        onFileLoad(files[0].file);
         if (path != successRedirectPath) {
             history.push(successRedirectPath);
         }

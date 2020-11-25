@@ -118,7 +118,7 @@
 "item_custom_text"	"A custom text (same for all resources)"	"Un texte custom (identique pour toutes les ressources)"
 "value"	"value"	"valeur"
 "exit_column_edition"	"Back to preview"	"Retour à l'aperçu"
-"upload_file"	"Upload a file"	"Importer un fichier"
+"upload_file"	"Upload the file"	"Importer le fichier"
 "annotate_field"	"Annotate another field"	"Annoter un autre champ"
 "completes_field_none"	"None"	"Aucun"
 "completes_field_X"	"annotates %{field}"	"annote %{field}"
