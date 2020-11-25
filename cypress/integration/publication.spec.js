@@ -23,13 +23,8 @@ describe('Dataset Publication', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
             cy.wait(300);
-
-            fillInputWithFixture(
-                '.btn-upload-dataset input[type=file]',
-                'dataset/simple.csv',
-                'text/csv',
-            );
-
+            datasetImportPage.importDataset('dataset/simple.csv');
+            cy.wait(500);
             cy.get('tbody').should(
                 'have.text',
                 ['1', 'Row 1', 'Test 1', '2', 'Row 2', 'Test 2'].join(''),
