@@ -103,7 +103,7 @@ export default compose(
                 ],
             });
         },
-        handleChange: ({ onChange, setColumn }) => (event, key, value) => {
+        handleChange: ({ onChange, setColumn }) => value => {
             setColumn(value);
             onChange({
                 operation: 'COLUMN',
