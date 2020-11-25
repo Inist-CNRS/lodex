@@ -123,59 +123,28 @@ class FieldEditionWizardComponent extends Component {
                 <StepIdentity
                     key="identity"
                     id="step-identity"
-                    index={0}
-                    active={step === 0}
-                    field={field}
-                    fields={fields}
-                    filter={filter}
-                    onSelectStep={this.handleSelectStep}
+                    isSubresourceField={field.subresourceId}
                 />,
-                <StepValue
-                    key="value"
-                    index={1}
-                    active={step === 1}
-                    field={field}
-                    fields={fields}
-                    filter={filter}
-                    onSelectStep={this.handleSelectStep}
-                />,
+                !field.subresourceId && <StepValue key="value" />,
                 <StepTransforms
                     key="transformations"
-                    index={2}
-                    active={step === 2}
-                    field={field}
-                    fields={fields}
-                    filter={filter}
-                    onSelectStep={this.handleSelectStep}
+                    isSubresourceField={!!field.subresourceId}
                 />,
-                <StepSemantics
-                    key="semantics"
-                    index={3}
-                    active={step === 3}
-                    field={field}
-                    fields={fields}
-                    filter={filter}
-                    onSelectStep={this.handleSelectStep}
-                />,
-                <StepDisplay
-                    key="display"
-                    index={4}
-                    active={step === 4}
-                    field={field}
-                    fields={fields}
-                    filter={filter}
-                    onSelectStep={this.handleSelectStep}
-                />,
-                <StepSearch
-                    key="search"
-                    index={5}
-                    active={step === 5}
-                    field={field}
-                    fields={fields}
-                    filter={filter}
-                    onSelectStep={this.handleSelectStep}
-                />,
-            ];
+                !field.subresourceId && <StepSemantics key="semantics" />,
+                <StepDisplay key="display" />,
+                <StepSearch key="search" />,
+            ]
+                .filter(x => x)
+                .map((el, index) =>
+                    React.cloneElement(el, {
+                        index,
+                        active: step === index,
+                        fields,
+                        field,
+                        filter,
+                        onSelectStep: this.handleSelectStep,
+                    }),
+                );
         }
 
         const actions = (

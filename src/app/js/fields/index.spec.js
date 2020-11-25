@@ -63,6 +63,7 @@ describe('field reducer', () => {
                 },
             });
         });
+
         it('should handle the ADD_FIELD action with name', () => {
             const state = reducer(
                 {
@@ -72,7 +73,7 @@ describe('field reducer', () => {
                     },
                     list: ['name1', 'name2'],
                 },
-                addField('target_col'),
+                addField({ name: 'target_col' }),
             );
 
             expect(state).toEqual({

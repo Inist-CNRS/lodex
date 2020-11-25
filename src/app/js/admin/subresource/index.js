@@ -7,6 +7,7 @@ export const CREATE_SUBRESOURCE = 'CREATE_SUBRESOURCE';
 export const UPDATE_SUBRESOURCE = 'UPDATE_SUBRESOURCE';
 export const CREATE_SUBRESOURCE_OPTIMISTIC = 'CREATE_SUBRESOURCE_OPTIMISTIC';
 export const UPDATE_SUBRESOURCE_OPTIMISTIC = 'UPDATE_SUBRESOURCE_OPTIMISTIC';
+export const DELETE_SUBRESOURCE = 'DELETE_SUBRESOURCE';
 
 export const loadSubresources = createAction(LOAD_SUBRESOURCES);
 export const loadSubresourcesError = createAction(LOAD_SUBRESOURCES_ERROR);
@@ -19,6 +20,7 @@ export const createSubresourceOptimistic = createAction(
 export const updateSubresourceOptimistic = createAction(
     UPDATE_SUBRESOURCE_OPTIMISTIC,
 );
+export const deleteSubresource = createAction(DELETE_SUBRESOURCE);
 
 export const initialState = {
     error: null,

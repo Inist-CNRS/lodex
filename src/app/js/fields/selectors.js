@@ -71,6 +71,13 @@ export const getCollectionFields = createSelector(getFields, fields =>
     fields.filter(f => f.cover === COVER_COLLECTION),
 );
 
+export const getSubresourceFields = createSelector(
+    getFields,
+    (_, subresourceId) => subresourceId,
+    (fields, subresourceId) =>
+        fields.filter(f => f.subresourceId === subresourceId),
+);
+
 const getDocumentFields = createSelector(getFields, fields =>
     fields
         .filter(f => f.display_in_resource || f.contribution)
@@ -85,10 +92,13 @@ const getFromFilterFields = createSelector(
     getFields,
     (_, type) => type,
     (fields, type) => {
+        console.log('type', type);
+
         if (type !== 'graph') {
             return fields
                 .filter(getOntologyFieldsFilter(type, type === 'document'))
-                .filter(f => !f.display_in_graph);
+                .filter(f => !f.display_in_graph)
+                .filter(f => !f.subresourceId);
         }
 
         return fields.filter(f => !!f.display_in_graph);
@@ -422,6 +432,7 @@ export default {
     isSaving,
     isAdding,
     getError,
+    getSubresourceFields,
     getFacetFields,
     getEditedFieldName,
     hasFacetFields,

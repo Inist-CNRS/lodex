@@ -111,7 +111,7 @@ export const defaultState = {
     invalidProperties: [],
 };
 
-const getDefaultField = (name, index) => ({
+const getDefaultField = (name, index, rest = {}) => ({
     cover: 'collection',
     label: name || `newField ${index + 1}`,
     name: 'new',
@@ -134,19 +134,24 @@ const getDefaultField = (name, index) => ({
     classes: [],
     position: index,
     overview: 0,
+    ...rest,
 });
 
 export default handleActions(
     {
-        ADD_FIELD: (state, { payload: name }) => ({
-            ...state,
-            editedFieldName: 'new',
-            list: [...state.list, 'new'],
-            byName: {
-                ...state.byName,
-                new: getDefaultField(name, state.list.length),
-            },
-        }),
+        ADD_FIELD: (state, { payload }) => {
+            const { name, ...rest } = payload || {};
+
+            return {
+                ...state,
+                editedFieldName: 'new',
+                list: [...state.list, 'new'],
+                byName: {
+                    ...state.byName,
+                    new: getDefaultField(name, state.list.length, rest),
+                },
+            };
+        },
         LOAD_FIELD: state => ({ ...state, loading: true }),
         LOAD_FIELD_SUCCESS: (state, { payload: fields }) => {
             const { catalog, list } = getCatalogFromArray(fields, 'name');

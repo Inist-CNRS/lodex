@@ -106,7 +106,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    handleAddColumn: addField,
+    handleAddColumn: name => addField({ name }),
     handleShowExistingColumns: showAddColumns,
     handleHideExistingColumns: hideAddColumns,
 };

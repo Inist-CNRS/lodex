@@ -7,6 +7,7 @@ import {
     loadSubresourcesError,
     loadSubresources,
     UPDATE_SUBRESOURCE,
+    DELETE_SUBRESOURCE,
     createSubresourceOptimistic,
     updateSubresourceOptimistic,
 } from '.';
@@ -59,20 +60,35 @@ export function* handleUpdateSubresource({ payload: resource }) {
     return yield put(loadSubresources());
 }
 
-export function* watchLoadResourcesRequest() {
+export function* handleDeleteSubresource({ payload: id }) {
+    const request = yield select(fromUser.getDeleteSubresourceRequest, id);
+    const { error } = yield call(fetchSaga, request);
+    if (error) {
+        return;
+    }
+
+    return yield put(loadSubresources());
+}
+
+export function* watchLoadSubresourcesRequest() {
     yield takeLatest(LOAD_SUBRESOURCES, handleLoadSubresourcesRequest);
 }
 
-export function* watchCreateResource() {
+export function* watchCreateSubresource() {
     yield takeLatest(CREATE_SUBRESOURCE, handleCreateSubresource);
 }
 
-export function* watchUpdateResource() {
+export function* watchUpdateSubresource() {
     yield takeLatest(UPDATE_SUBRESOURCE, handleUpdateSubresource);
 }
 
+export function* watchDeleteSubresource() {
+    yield takeLatest(DELETE_SUBRESOURCE, handleDeleteSubresource);
+}
+
 export default function*() {
-    yield fork(watchLoadResourcesRequest);
-    yield fork(watchCreateResource);
-    yield fork(watchUpdateResource);
+    yield fork(watchLoadSubresourcesRequest);
+    yield fork(watchCreateSubresource);
+    yield fork(watchUpdateSubresource);
+    yield fork(watchDeleteSubresource);
 }

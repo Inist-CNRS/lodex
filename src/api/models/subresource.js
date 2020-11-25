@@ -14,6 +14,9 @@ export default async db => {
         return collection.findOne({ _id: insertedId });
     };
 
+    collection.delete = async id =>
+        collection.remove({ _id: new ObjectID(id) });
+
     collection.update = async (id, data) => {
         const objectId = new ObjectID(id);
 

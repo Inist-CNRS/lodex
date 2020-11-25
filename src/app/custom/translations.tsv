@@ -533,3 +533,6 @@
 "new_resource"	"New resource"	"Nouvelle ressource"
 "import_file_text"	"Drop your file on this page"	"Glisser un fichier sur cette page"
 "new_subresource"	"New subresource"	"Nouvelle sous-ressource"
+"delete"	"Delete"	"Supprimer"
+"confirm_delete_subresource"	"This subresource will be definitively deleted, Are you sure?"	"Cette sous-resource va être supprimée. Êtes-vous sûr de vouloir continuer ?"
+"no_field_for_subresource"	"No field set for this Subresource"	"Aucun champs renseigné pour cette sous-ressource"

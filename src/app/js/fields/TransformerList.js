@@ -38,6 +38,7 @@ const TransformerList = ({
     fields,
     meta: { touched, error },
     type,
+    hideFirstTransformers,
     p: polyglot,
 }) => (
     <div>
@@ -59,13 +60,17 @@ const TransformerList = ({
                 onRemove={() => fields.remove(index)}
                 operation={fields.get(index).operation}
                 type={type}
-                show={showTransformer(fields.get(index).operation, type)}
+                show={
+                    showTransformer(fields.get(index).operation, type) &&
+                    (!hideFirstTransformers || index >= hideFirstTransformers)
+                }
             />
         ))}
     </div>
 );
 
 TransformerList.propTypes = {
+    hideFirstTransformers: PropTypes.number,
     fields: PropTypes.shape({
         map: PropTypes.func.isRequired,
         get: PropTypes.func.isRequired,
