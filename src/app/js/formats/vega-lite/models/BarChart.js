@@ -49,6 +49,7 @@ class BarChart extends BasicChart {
         this.size = 20;
         this.round = false;
         this.labels = false;
+        this.labelOverlap = false;
     }
 
     /**
@@ -73,6 +74,14 @@ class BarChart extends BasicChart {
      */
     setLabels(labels) {
         this.labels = labels;
+    }
+
+    /**
+     * Set labelOverlap
+     * @param labelOverlap flag
+     */
+    setLabelOverlap(labelOverlap) {
+        this.labelOverlap = Boolean(labelOverlap);
     }
 
     /**
@@ -191,6 +200,10 @@ class BarChart extends BasicChart {
                 break;
             default:
                 break;
+        }
+
+        if (this.labelOverlap) {
+            model.encoding.x.axis.labelOverlap = true;
         }
 
         if (this.round) {
