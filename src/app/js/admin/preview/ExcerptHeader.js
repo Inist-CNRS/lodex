@@ -22,6 +22,17 @@ const getStyle = memoize(field =>
         : null,
 );
 
+const titleStyle = {
+    titleBlock: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    titleId: {
+        fontWeight: 'lighter',
+        fontStyle: 'italic',
+    },
+};
+
 const ensureTextIsShort = text =>
     isLongText(text) ? getShortText(text) : text;
 
@@ -50,7 +61,12 @@ const ExcerptHeaderComponent = ({
     p: polyglot,
 }) => (
     <div style={getStyle(field)}>
-        {ensureTextIsShort(field.label || field.name)}
+        <p style={titleStyle.titleBlock}>
+            <span>{ensureTextIsShort(field.label)}</span>
+            <span style={titleStyle.titleId}>
+                ( {ensureTextIsShort(field.name)} )
+            </span>
+        </p>
         {completedField && (
             <div className={`completes_${getFieldClassName(completedField)}`}>
                 {polyglot.t('completes_field_X', {
