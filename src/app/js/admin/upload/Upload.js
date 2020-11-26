@@ -95,6 +95,7 @@ export const UploadComponent = ({
             {!useUrl && (
                 <DropzoneAreaBase
                     filesLimit={1}
+                    maxFileSize={1 * 1024 * 1024 * 1024}
                     dropzoneText={
                         files.length
                             ? files[0].file.name
