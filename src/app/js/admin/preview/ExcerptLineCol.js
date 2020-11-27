@@ -62,7 +62,7 @@ ExcerptLineColComponent.defaultProps = {
 
 const mapStateToProps = (state, { field, line }) => {
     const getLineCol = fromFields.getLineColGetter(state, field);
-    const value = getLineCol(line) || '';
+    const value = `${getLineCol(line) || ''}`;
 
     return {
         value: typeof value === 'object' ? JSON.stringify(value) : value,

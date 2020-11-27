@@ -68,11 +68,10 @@ export const ParsingExcerptComponent = ({
                                 showAddColumns &&
                                 (index === total - 3 ||
                                     (total < 3 && index === 0));
-
                             return (
                                 <ParsingExcerptColumn
                                     key={`${column}_${line._id}`}
-                                    value={line[column]}
+                                    value={`${line[column] || ''}`}
                                 >
                                     {showAddColumnButton && (
                                         <ParsingExcerptAddColumn
