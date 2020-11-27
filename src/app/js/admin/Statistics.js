@@ -44,7 +44,7 @@ export const StatisticsComponent = ({
     p: polyglot,
     totalLoadedColumns,
     totalLoadedLines,
-    totalPublishedResources,
+    totalPublishedFields,
     mode = 'data',
 }) => (
     <div style={styles.container}>
@@ -59,19 +59,19 @@ export const StatisticsComponent = ({
             <>
                 <div style={styles.item}>
                     {polyglot.t('parsing_summary_lines', {
-                        count: totalLoadedLines,
+                        smart_count: totalLoadedLines,
                     })}
                 </div>
                 <div style={styles.item}>
                     {polyglot.t('parsing_summary_columns', {
-                        count: totalLoadedColumns,
+                        smart_count: totalLoadedColumns,
                     })}
                 </div>
             </>
         ) : (
             <div style={styles.item}>
-                {polyglot.t('publication_summary_resources', {
-                    count: totalPublishedResources,
+                {polyglot.t('publication_summary_fields', {
+                    smart_count: totalPublishedFields,
                 })}
             </div>
         )}
@@ -94,15 +94,26 @@ StatisticsComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     totalLoadedColumns: PropTypes.number.isRequired,
     totalLoadedLines: PropTypes.number.isRequired,
-    totalPublishedResources: PropTypes.number.isRequired,
+    totalPublishedFields: PropTypes.number.isRequired,
     mode: PropTypes.oneOf(['data', 'display']),
+    filter: PropTypes.string,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, { filter }) => ({
     isComputing: fromPublicationPreview.isComputing(state),
     totalLoadedColumns: fromParsing.getParsedExcerptColumns(state).length,
     totalLoadedLines: fromParsing.getTotalLoadedLines(state),
-    totalPublishedResources: fromFields.getFields(state).length,
+    totalPublishedFields: fromFields.getFields(state).filter(f => {
+        console.log(f);
+        if (!filter) {
+            return true;
+        }
+        return filter === 'document'
+            ? f.cover === 'collection' && !f.display_in_graph
+            : filter === 'graph'
+            ? f.display_in_graph
+            : f.cover === 'dataset' && !f.display_in_graph;
+    }).length,
 });
 
 const mapDispatchToProps = {
