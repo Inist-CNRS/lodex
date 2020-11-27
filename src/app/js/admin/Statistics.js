@@ -104,7 +104,6 @@ const mapStateToProps = (state, { filter }) => ({
     totalLoadedColumns: fromParsing.getParsedExcerptColumns(state).length,
     totalLoadedLines: fromParsing.getTotalLoadedLines(state),
     totalPublishedFields: fromFields.getFields(state).filter(f => {
-        console.log(f);
         if (!filter) {
             return true;
         }
