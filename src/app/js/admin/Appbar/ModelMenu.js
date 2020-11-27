@@ -9,6 +9,7 @@ import { withRouter } from 'react-router';
 
 import ImportFieldsDialog from './ImportFieldsDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { importFieldsClosed as importFieldsClosedAction } from '../import';
 import { exportFields as exportFieldsAction } from '../../exportFields';
 import { exportFieldsReady as exportFieldsReadyAction } from '../../exportFieldsReady';
 
@@ -56,10 +57,11 @@ export class ModelMenuComponent extends Component {
         });
     };
 
-    handleImportFieldsClose = () => {
+    handleImportFieldsClose = sucess => {
+        this.props.importFieldsClosed();
         this.setState({
             showImportFieldsConfirmation: false,
-            showSuccessAlert: true,
+            showSuccessAlert: sucess === true,
         });
     };
 
@@ -120,6 +122,7 @@ export class ModelMenuComponent extends Component {
 }
 
 const mapDispatchToProps = {
+    importFieldsClosed: importFieldsClosedAction,
     exportFields: exportFieldsAction,
     exportFieldsReady: exportFieldsReadyAction,
 };

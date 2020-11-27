@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -34,68 +34,66 @@ const styles = {
     },
 };
 
-class ImportFieldsDialogComponent extends Component {
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps.succeeded) {
-            this.props.onClose();
+const ImportFieldsDialogComponent = ({
+    failed,
+    onClose,
+    p: polyglot,
+    importFields,
+    succeeded,
+}) => {
+    useEffect(() => {
+        if (succeeded) {
+            onClose(true);
         }
-    }
+    }, [onClose, succeeded]);
 
-    storeFieldsInputRef = input => {
-        this.fieldsImportInput = input;
+    const handleFileUpload = event => {
+        importFields(event.target.files[0]);
     };
 
-    handleFileUpload = event => {
-        this.props.importFields(event.target.files[0]);
-    };
+    const actions = [
+        <Button
+            variant="contained"
+            key="confirm"
+            className="btn-save"
+            component="label"
+            color="primary"
+            style={styles.button}
+        >
+            {polyglot.t('confirm')}
+            <input
+                name="file_model"
+                type="file"
+                onChange={handleFileUpload}
+                style={styles.input}
+            />
+        </Button>,
+        <Button
+            color="secondary"
+            key="cancel"
+            variant="text"
+            className="btn-cancel"
+            onClick={onClose}
+            style={styles.button}
+        >
+            {polyglot.t('cancel')}
+        </Button>,
+    ];
 
-    render() {
-        const { failed, onClose, p: polyglot } = this.props;
-
-        const actions = [
-            <Button
-                variant="contained"
-                key="confirm"
-                className="btn-save"
-                component="label"
-                color="primary"
-                style={styles.button}
-            >
-                {polyglot.t('confirm')}
-                <input
-                    name="file_model"
-                    type="file"
-                    onChange={this.handleFileUpload}
-                    style={styles.input}
-                />
-            </Button>,
-            <Button
-                color="secondary"
-                key="cancel"
-                variant="text"
-                className="btn-cancel"
-                onClick={onClose}
-                style={styles.button}
-            >
-                {polyglot.t('cancel')}
-            </Button>,
-        ];
-
-        return (
-            <Dialog className="dialog-import-fields" open>
-                <DialogContent>
-                    {!failed && polyglot.t('confirm_import_fields')}
-                    {failed && (
-                        <span style={styles.error}>
-                            {polyglot.t('import_fields_failed')}
-                        </span>
-                    )}
-                </DialogContent>
-                <DialogActions>{actions}</DialogActions>
-            </Dialog>
-        );
-    }
-}
+    return (
+        <Dialog className="dialog-import-fields" open>
+            <DialogContent>
+                {!failed && polyglot.t('confirm_import_fields')}
+                {failed && (
+                    <span style={styles.error}>
+                        {polyglot.t('import_fields_failed')}
+                    </span>
+                )}
+            </DialogContent>
+            <DialogActions>{actions}</DialogActions>
+        </Dialog>
+    );
+};
 
 ImportFieldsDialogComponent.propTypes = {
     succeeded: PropTypes.bool.isRequired,
