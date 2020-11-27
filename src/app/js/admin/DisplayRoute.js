@@ -66,7 +66,6 @@ const DisplayRouteComponent = ({ showAddColumns, hasPublishedDataset }) => {
 DisplayRouteComponent.propTypes = {
     hasPublishedDataset: PropTypes.bool.isRequired,
     showAddColumns: PropTypes.bool.isRequired,
-    filter: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({

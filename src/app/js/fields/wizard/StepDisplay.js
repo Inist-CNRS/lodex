@@ -41,7 +41,7 @@ const mapStateToProps = state => {
     return {
         fields: fromFields.getFields(state),
         format: values && values.format,
-        transformers: values ? values.transformers : [],
+        transformers: values && values.transformers ? values.transformers : [],
         cover: values && values.cover,
     };
 };

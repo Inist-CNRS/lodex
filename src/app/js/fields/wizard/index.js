@@ -29,7 +29,6 @@ import StepSearch from './StepSearch';
 import StepSemantics from './StepSemantics';
 import FieldExcerpt from '../../admin/preview/field/FieldExcerpt';
 import Actions from './Actions';
-import { PropType } from 'redux-polyglot';
 
 const styles = {
     container: {
@@ -203,7 +202,7 @@ class FieldEditionWizardComponent extends Component {
                 open={!!field}
                 scroll="body"
                 className="wizard"
-                maxWidth="800"
+                maxWidth="xl"
             >
                 <DialogTitle>
                     {title}
@@ -247,7 +246,7 @@ class FieldEditionWizardComponent extends Component {
 }
 
 FieldEditionWizardComponent.propTypes = {
-    filter: PropType.string,
+    filter: PropTypes.string,
 };
 
 const mapStateToProps = state => {
