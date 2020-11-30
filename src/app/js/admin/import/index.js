@@ -3,10 +3,12 @@ import { createAction, handleActions } from 'redux-actions';
 export const IMPORT_FIELDS = 'IMPORT_FIELDS';
 export const IMPORT_FIELDS_ERROR = 'IMPORT_FIELDS_ERROR';
 export const IMPORT_FIELDS_SUCCESS = 'IMPORT_FIELDS_SUCCESS';
+export const IMPORT_FIELDS_CLOSED = 'IMPORT_FIELDS_CLOSED';
 
 export const importFields = createAction(IMPORT_FIELDS);
 export const importFieldsError = createAction(IMPORT_FIELDS_ERROR);
 export const importFieldsSuccess = createAction(IMPORT_FIELDS_SUCCESS);
+export const importFieldsClosed = createAction(IMPORT_FIELDS_CLOSED);
 
 export const initialState = {
     status: null,
@@ -25,6 +27,10 @@ export default handleActions(
             ...state,
             status: 'success',
             loading: false,
+        }),
+        IMPORT_FIELDS_CLOSED: state => ({
+            ...state,
+            status: null,
         }),
     },
     initialState,

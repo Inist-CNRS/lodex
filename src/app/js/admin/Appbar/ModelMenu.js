@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
@@ -9,8 +9,7 @@ import { withRouter } from 'react-router';
 
 import ImportFieldsDialog from './ImportFieldsDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { exportFields as exportFieldsAction } from '../../exportFields';
-import { exportFieldsReady as exportFieldsReadyAction } from '../../exportFieldsReady';
+import { importFieldsClosed as importFieldsClosedAction } from '../import';
 
 const styles = {
     container: {
@@ -22,106 +21,62 @@ const styles = {
     },
 };
 
-export class ModelMenuComponent extends Component {
-    static propTypes = {
-        hasPublishedDataset: PropTypes.bool.isRequired,
-        exportFields: PropTypes.func.isRequired,
-        exportFieldsReady: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
+export const ModelMenuComponent = ({
+    importFieldsClosed,
+    hasPublishedDataset,
+    p: polyglot,
+}) => {
+    const [open, setOpen] = useState(false);
+    const [
+        showImportFieldsConfirmation,
+        setShowImportFieldsConfirmation,
+    ] = useState(false);
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+
+    const handleImportFieldsClose = sucess => {
+        importFieldsClosed();
+        setShowImportFieldsConfirmation(false);
+        setShowSuccessAlert(sucess === true);
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            open: false,
-            showImportFieldsConfirmation: false,
-            showSuccessAlert: false,
-        };
-    }
-
-    handleTouchTap = event => {
-        // This prevents ghost click.
-        event.preventDefault();
-
-        this.setState({
-            open: true,
-            anchorEl: event.currentTarget,
-        });
+    const handleImportFields = () => {
+        setOpen(false);
+        setShowImportFieldsConfirmation(true);
     };
 
-    handleRequestClose = () => {
-        this.setState({
-            open: false,
-        });
-    };
+    return (
+        <div style={styles.container}>
+            <Button
+                variant="text"
+                className="btn-import-fields"
+                onClick={handleImportFields}
+                style={styles.button}
+            >
+                {polyglot.t('import_fields')}
+            </Button>
+            {!hasPublishedDataset && showImportFieldsConfirmation && (
+                <ImportFieldsDialog onClose={handleImportFieldsClose} />
+            )}
+            <Snackbar
+                open={showSuccessAlert}
+                autoHideDuration={60000}
+                onClose={() => setShowSuccessAlert(false)}
+            >
+                <Alert variant="filled" severity="success">
+                    {polyglot.t('model_imported_with_success')}
+                </Alert>
+            </Snackbar>
+        </div>
+    );
+};
 
-    handleImportFieldsClose = () => {
-        this.setState({
-            showImportFieldsConfirmation: false,
-            showSuccessAlert: true,
-        });
-    };
-
-    handleImportFields = () => {
-        this.setState({
-            open: false,
-            showImportFieldsConfirmation: true,
-        });
-    };
-
-    handleExportFields = () => {
-        this.setState({
-            open: false,
-        });
-
-        this.props.exportFields();
-    };
-
-    handleExportFieldsReady = () => {
-        this.setState({
-            open: false,
-        });
-
-        this.props.exportFieldsReady();
-    };
-
-    render() {
-        const { hasPublishedDataset, p: polyglot } = this.props;
-        const { showImportFieldsConfirmation, showSuccessAlert } = this.state;
-
-        return (
-            <div style={styles.container}>
-                <Button
-                    variant="text"
-                    className="btn-import-fields"
-                    onClick={this.handleImportFields}
-                    style={styles.button}
-                >
-                    {polyglot.t('import_fields')}
-                </Button>
-                {!hasPublishedDataset && showImportFieldsConfirmation && (
-                    <ImportFieldsDialog
-                        onClose={this.handleImportFieldsClose}
-                    />
-                )}
-                <Snackbar
-                    open={showSuccessAlert}
-                    autoHideDuration={60000}
-                    onClose={() => this.setState({ showSuccessAlert: false })}
-                >
-                    <Alert variant="filled" severity="success">
-                        {polyglot.t('model_imported_with_success')}
-                    </Alert>
-                </Snackbar>
-            </div>
-        );
-    }
-}
+ModelMenuComponent.propTypes = {
+    hasPublishedDataset: PropTypes.bool.isRequired,
+    p: polyglotPropTypes.isRequired,
+};
 
 const mapDispatchToProps = {
-    exportFields: exportFieldsAction,
-    exportFieldsReady: exportFieldsReadyAction,
+    importFieldsClosed: importFieldsClosedAction,
 };
 
 export default compose(
