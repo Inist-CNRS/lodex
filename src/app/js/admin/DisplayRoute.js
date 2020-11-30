@@ -50,7 +50,7 @@ const DisplayRouteComponent = ({ showAddColumns, hasPublishedDataset }) => {
                 <Route exact path={`${path}/add`}>
                     <AddSubresource />
                 </Route>
-                <Route exact path={`${path}/:resourceId`}>
+                <Route exact path={`${path}/:subresourceId`}>
                     <EditSubresource />
                 </Route>
                 <Route>

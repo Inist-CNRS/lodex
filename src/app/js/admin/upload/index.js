@@ -19,7 +19,7 @@ export const changeUploadUrl = createAction(CHANGE_UPLOAD_URL);
 export const changeLoaderName = createAction(CHANGE_LOADER_NAME);
 
 const validateUrl = url =>
-    !!(url && (url.startsWith('http://') || url.startsWith('https://')));
+    url && (url.startsWith('http://') || url.startsWith('https://'));
 
 export const defaultState = {
     error: false,

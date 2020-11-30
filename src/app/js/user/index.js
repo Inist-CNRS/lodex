@@ -122,6 +122,12 @@ export const getUpdateSubresourceRequest = (state, { _id, ...body }) =>
         body,
     });
 
+export const getDeleteSubresourceRequest = (state, id) =>
+    getRequest(state, {
+        url: `/api/subresource/${id}`,
+        method: 'DELETE',
+    });
+
 export const getLoadFieldRequest = state =>
     getRequest(state, {
         url: '/api/field',
@@ -434,6 +440,7 @@ export const selectors = {
     getReorderFieldRequest,
     getProgressRequest,
     getIstexRequest,
+    getDeleteSubresourceRequest,
     getMenuRequest,
     getBreadcrumbRequest,
     getLoadLoadersRequest,

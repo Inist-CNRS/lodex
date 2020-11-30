@@ -34,6 +34,17 @@ export const putSubresource = async (ctx, id) => {
     }
 };
 
+export const deleteSubresource = async (ctx, id) => {
+    try {
+        await ctx.subresource.delete(id);
+        ctx.body = true;
+    } catch (error) {
+        ctx.status = 403;
+        ctx.body = { error: error.message };
+        return;
+    }
+};
+
 export const getSubresource = async (ctx, id) => {
     ctx.body = await ctx.subresource.findOne(id);
 };
@@ -51,5 +62,6 @@ app.use(route.get('/:id', getSubresource));
 app.use(koaBodyParser());
 app.use(route.post('/', postSubresource));
 app.use(route.put('/:id', putSubresource));
+app.use(route.delete('/:id', deleteSubresource));
 
 export default app;

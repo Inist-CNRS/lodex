@@ -20,11 +20,21 @@ const TextField = ({
     />
 );
 
-const SubresourceFormComponent = ({ handleSubmit, pristine, submitting }) => (
-    <form onSubmit={handleSubmit}>
+const SubresourceFormComponent = ({
+    handleSubmit,
+    pristine,
+    submitting,
+    additionnalActions,
+}) => (
+    <form onSubmit={handleSubmit} style={{ maxWidth: 800 }}>
         <Grid container align="center">
             <Grid item style={{ padding: 8 }}>
-                <Field name="name" component={TextField} label="Name" />
+                <Field
+                    name="name"
+                    component={TextField}
+                    label="Name"
+                    fullWidth
+                />
             </Grid>
         </Grid>
         <Grid container align="center">
@@ -37,10 +47,15 @@ const SubresourceFormComponent = ({ handleSubmit, pristine, submitting }) => (
                 />
             </Grid>
             <Grid item xs={6} style={{ padding: 8 }}>
-                <Field name="path" component={TextField} label="Path" />
+                <Field
+                    name="path"
+                    component={TextField}
+                    label="Path"
+                    fullWidth
+                />
             </Grid>
         </Grid>
-        <Grid container align="center">
+        <Grid container align="center" justify="space-between">
             <Grid item style={{ padding: 8 }}>
                 <Button
                     variant="contained"
@@ -51,6 +66,11 @@ const SubresourceFormComponent = ({ handleSubmit, pristine, submitting }) => (
                     OK
                 </Button>
             </Grid>
+            {additionnalActions && (
+                <Grid item style={{ padding: 8 }}>
+                    {additionnalActions}
+                </Grid>
+            )}
         </Grid>
     </form>
 );

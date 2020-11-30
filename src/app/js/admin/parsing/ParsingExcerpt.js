@@ -99,7 +99,7 @@ ParsingExcerptComponent.propTypes = {
 };
 
 const mapDispatchToProps = {
-    handleAddColumn: addField,
+    handleAddColumn: name => addField({ name }),
 };
 
 export default compose(

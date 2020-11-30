@@ -25,7 +25,7 @@ export const StepValueColumnComponent = ({
     p: polyglot,
     selected,
 }) => (
-    <div id="step-value-colmun">
+    <div id="step-value-column">
         <FormControlLabel
             control={
                 <Switch

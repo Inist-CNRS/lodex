@@ -53,7 +53,7 @@ export const applyTransformation = documentTransformers => async doc => {
     return resultWithSanitizedUri;
 };
 
-export default (context, fields) => {
+export default (context, fields, subresource = null) => {
     const documentTransformers = getDocumentTransformations(context, fields);
     return applyTransformation(documentTransformers);
 };
