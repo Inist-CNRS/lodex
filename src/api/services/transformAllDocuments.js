@@ -12,6 +12,8 @@ export default async function transformAllDocument(
             lodex_published: { $exists: false },
         });
         const transformedDataset = await Promise.all(dataset.map(transformer));
+
+        console.log({ dataset, transformedDataset });
         await insertBatch(transformedDataset);
         progress.incrementProgress(dataset.length);
         handled += dataset.length;

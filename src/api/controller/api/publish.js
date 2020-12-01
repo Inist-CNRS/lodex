@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import get from 'lodash.get';
+
 import publishDocuments from '../../services/publishDocuments';
 import publishCharacteristics from '../../services/publishCharacteristics';
 import publishFacets from './publishFacets';
@@ -74,7 +75,6 @@ app.use(route.get('/verifyUri', verifyUri));
 
 app.use(route.post('/', preparePublish));
 app.use(route.post('/', handlePublishError));
-
 app.use(route.post('/', doPublish));
 
 app.use(route.delete('/', clearPublished));

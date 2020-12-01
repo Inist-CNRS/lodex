@@ -4,53 +4,118 @@ import transformAllDocuments from './transformAllDocuments';
 import progress from './progress';
 import { PUBLISH_DOCUMENT } from '../../common/progressStatus';
 
-export const getVersionInitializer = transformDocument => async (
-    doc,
+export const versionTransformerDecorator = transformDocument => async (
+    document,
     _,
     __,
     publicationDate = new Date(),
 ) => {
-    const transformedDoc = await transformDocument(doc);
+    const doc = await transformDocument(document);
 
     return {
-        uri: transformedDoc.uri,
+        uri: doc.uri,
         versions: [
             {
-                ...omit(transformedDoc, ['uri']),
+                ...omit(doc, ['uri']),
                 publicationDate,
             },
         ],
     };
 };
 
-export const publishDocumentsFactory = ({
-    getVersionInitializer,
-    getDocumentTransformer,
-    transformAllDocuments,
-}) =>
-    async function publishDocuments(ctx, count, fields) {
-        const collectionCoverFields = fields.filter(
-            c => c.cover === 'collection',
-        );
+// export const publishDocumentsFactory = ({
+//     versionTransformerDecorator,
+//     getDocumentTransformer,
+//     transformAllDocuments,
+// }) =>
+//     async function publishDocuments(ctx, count, fields) {
+//         const collectionCoverFields = fields.filter(
+//             c => c.cover === 'collection',
+//         );
 
-        const transformDocument = getDocumentTransformer(
-            ctx.dataset.findBy,
-            collectionCoverFields,
-        );
+//         const transformDocument = getDocumentTransformer(
+//             ctx.dataset.findBy,
+//             collectionCoverFields,
+//         );
 
-        const initializeVersion = getVersionInitializer(transformDocument);
+//         progress.start(PUBLISH_DOCUMENT, count);
+//         await transformAllDocuments(
+//             count,
+//             ctx.dataset.findLimitFromSkip,
+//             ctx.publishedDataset.insertBatch,
+//             versionTransformerDecorator(transformDocument),
+//         );
+//     };
 
-        progress.start(PUBLISH_DOCUMENT, count);
-        await transformAllDocuments(
-            count,
-            ctx.dataset.findLimitFromSkip,
-            ctx.publishedDataset.insertBatch,
-            initializeVersion,
-        );
-    };
+// export default publishDocumentsFactory({
+//     versionTransformerDecorator,
+//     getDocumentTransformer,
+//     transformAllDocuments,
+// });
 
-export default publishDocumentsFactory({
-    getVersionInitializer,
-    getDocumentTransformer,
-    transformAllDocuments,
-});
+const groupSubresourceFields = fields =>
+    fields.reduce((acc, field) => {
+        if (!acc[field.subresourceId]) {
+            acc[field.subresourceId] = [];
+        }
+
+        acc[field.subresourceId].push(field);
+        return acc;
+    }, {});
+
+export default async (ctx, count, fields) => {
+    const mainResourceFields = fields.filter(
+        c => c.cover === 'collection' && !c.subresourceId,
+    );
+
+    const subresourceFields = fields.filter(
+        c => c.cover === 'collection' && c.subresourceId,
+    );
+
+    const groupedSubresourceFields = groupSubresourceFields(subresourceFields);
+
+    const transformMainResourceDocument = getDocumentTransformer(
+        ctx.dataset.findBy,
+        mainResourceFields,
+    );
+
+    progress.start(PUBLISH_DOCUMENT, count);
+
+    // === Start Dev Playground
+
+    console.log({
+        fields,
+        groupedSubresourceFields,
+        subresourceFields,
+    });
+
+    await Promise.all(
+        Object.keys(groupedSubresourceFields).map(subresourceId => {
+            const subresourceFields = groupedSubresourceFields[subresourceId];
+            const subresourceDocumentTransformer = getDocumentTransformer(
+                ctx.dataset.findBy,
+                subresourceFields.map(field =>
+                    field.name.endsWith('_uri')
+                        ? { ...field, position: 0, name: 'uri' }
+                        : field,
+                ),
+            );
+
+            return transformAllDocuments(
+                count,
+                ctx.dataset.findLimitFromSkip,
+                ctx.publishedDataset.insertBatch,
+                versionTransformerDecorator(subresourceDocumentTransformer),
+            );
+        }),
+    );
+
+    // === End Dev Playground
+
+    await transformAllDocuments(
+        count,
+        ctx.dataset.findLimitFromSkip,
+        ctx.publishedDataset.insertBatch,
+        versionTransformerDecorator(transformMainResourceDocument),
+    );
+};
