@@ -31,6 +31,7 @@ const SubresourceFormComponent = ({
             <Grid item style={{ padding: 8 }}>
                 <Field
                     name="name"
+                    autoFocus
                     component={TextField}
                     label="Name"
                     fullWidth

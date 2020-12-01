@@ -39,7 +39,7 @@ const useStyles = makeStyles({
         boxSizing: 'border-box',
         borderBottom: `3px solid ${theme.green.primary}`,
         '&:hover': {
-            transition: 'all ease-in-out 500ms',
+            transition: 'all ease-in-out 400ms',
             borderBottom: `3px solid ${theme.white.primary}`,
             color: theme.white.primary,
         },
