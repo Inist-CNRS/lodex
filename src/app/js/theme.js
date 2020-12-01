@@ -4,6 +4,8 @@ export default {
         secondary: 'rgb(95, 99, 104)',
         light: 'rgb(95, 99, 104, 0.5)',
         veryLight: 'rgb(95, 99, 104, 0.1)',
+        test: 'rgba(0, 0, 0, .3)',
+        transparent: 'rgba(0, 0, 0, .1)',
     },
     white: {
         primary: '#fff',
