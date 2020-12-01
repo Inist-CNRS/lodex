@@ -3,6 +3,7 @@ RUN apk add --no-cache make gcc g++ python bash git openssh
 WORKDIR /app
 # see .dockerignore to know all copied files
 COPY . /app/
+ENV NODE_ENV="production"
 RUN mkdir /app/upload && \
     cp /app/config/production-dist.js /app/config/production.js && \
     npm install --production && \
@@ -28,9 +29,7 @@ RUN echo '{ \
     sed -i -e "s/daemon:x:2:2/daemon:x:1:1/" /etc/passwd && \
     sed -i -e "s/daemon:x:2:/daemon:x:1:/" /etc/group && \
     sed -i -e "s/bin:x:1:1/bin:x:2:2/" /etc/passwd && \
-    sed -i -e "s/bin:x:1:/bin:x:2:/" /etc/group && \
-    mkdir -p /sbin/.npm /sbin/.config && \
-    chown -R daemon:daemon /app /sbin/.npm /sbin/.config
+    sed -i -e "s/bin:x:1:/bin:x:2:/" /etc/group
 
 WORKDIR /app
 ENV NODE_ENV="production"
