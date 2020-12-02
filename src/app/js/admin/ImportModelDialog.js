@@ -11,9 +11,9 @@ import {
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 
-import { importFields as importFieldsAction } from '../import';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { fromImport } from '../selectors';
+import { importFields as importFieldsAction } from './import';
+import { polyglot as polyglotPropTypes } from '../propTypes';
+import { fromImport } from './selectors';
 
 const styles = {
     input: {
@@ -34,7 +34,7 @@ const styles = {
     },
 };
 
-const ImportFieldsDialogComponent = ({
+const ImportModelDialogComponent = ({
     failed,
     onClose,
     p: polyglot,
@@ -95,7 +95,7 @@ const ImportFieldsDialogComponent = ({
     );
 };
 
-ImportFieldsDialogComponent.propTypes = {
+ImportModelDialogComponent.propTypes = {
     succeeded: PropTypes.bool.isRequired,
     failed: PropTypes.bool.isRequired,
     importFields: PropTypes.func.isRequired,
@@ -115,4 +115,4 @@ const mapDispatchToProps = {
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
-)(ImportFieldsDialogComponent);
+)(ImportModelDialogComponent);

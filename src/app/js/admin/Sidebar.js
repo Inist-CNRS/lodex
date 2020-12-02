@@ -19,6 +19,7 @@ import { compose } from 'recompose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import PrivateRoute from './PrivateRoute';
+import ImportModelButton from './ImportModelButton.js';
 import { fromPublication, fromParsing } from './selectors';
 import theme from './../theme';
 
@@ -200,6 +201,9 @@ const InnerSidebarComponent = ({
                             <EqualizerIcon />
                             {polyglot.t('graph_pages')}
                         </NavLink>
+                    </Box>
+                    <Box className={classes.iconLinkContainer}>
+                        <ImportModelButton className={classes.sidebarNavLink} />
                     </Box>
                 </div>
                 <Route path="/display/document">
