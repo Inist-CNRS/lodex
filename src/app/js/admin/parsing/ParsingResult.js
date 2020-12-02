@@ -33,16 +33,6 @@ const styles = {
     listItem: {
         whiteSpace: 'nowrap',
     },
-    titleContainer: {
-        alignSelf: 'center',
-        flexGrow: 0,
-        flexShrink: 0,
-        width: 50,
-    },
-    title: {
-        textTransform: 'uppercase',
-        transform: 'rotate(-90deg)',
-    },
     button: {
         float: 'right',
         marginRight: '2rem',
@@ -76,9 +66,6 @@ export class ParsingResultComponent extends Component {
 
         return (
             <div className="parsingResult" style={styles.container}>
-                <div style={styles.titleContainer}>
-                    <div style={styles.title}>{polyglot.t('parsing')}</div>
-                </div>
                 <ParsingExcerpt
                     columns={excerptColumns}
                     lines={excerptLines.slice(0, maxLines)}

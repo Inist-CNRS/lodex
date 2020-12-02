@@ -31,7 +31,6 @@ const styles = {
         display: 'block',
         overflowX: 'auto',
         width: 'auto',
-        minHeight: 500,
         borderLeft: separated ? 'none' : '1px solid rgb(224, 224, 224)',
     })),
     cell: {

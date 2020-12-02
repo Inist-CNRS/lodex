@@ -9,15 +9,13 @@ import { CircularProgress } from '@material-ui/core';
 import { fromParsing, fromPublicationPreview } from './selectors';
 import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import ActionButton from './ActionButton';
-import { addField } from '../fields';
-import { showAddColumns, hideAddColumns } from './parsing';
 
 const styles = {
     progress: memoize(isComputing => ({
         visibility: isComputing ? 'visible' : 'hidden',
     })),
     container: {
+        height: 72,
         alignItems: 'center',
         paddingTop: '0.5rem',
         position: 'relative',
@@ -37,9 +35,6 @@ const styles = {
 };
 
 export const StatisticsComponent = ({
-    handleAddColumn,
-    handleShowExistingColumns,
-    handleHideExistingColumns,
     isComputing,
     p: polyglot,
     totalLoadedColumns,
@@ -76,20 +71,10 @@ export const StatisticsComponent = ({
             </div>
         )}
         <hr style={styles.line} />
-        {mode === 'display' && (
-            <ActionButton
-                onAddNewColumn={handleAddColumn}
-                onShowExistingColumns={handleShowExistingColumns}
-                onHideExistingColumns={handleHideExistingColumns}
-            />
-        )}
     </div>
 );
 
 StatisticsComponent.propTypes = {
-    handleAddColumn: PropTypes.func.isRequired,
-    handleShowExistingColumns: PropTypes.func.isRequired,
-    handleHideExistingColumns: PropTypes.func.isRequired,
     isComputing: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     totalLoadedColumns: PropTypes.number.isRequired,
@@ -105,13 +90,7 @@ const mapStateToProps = state => ({
     totalPublishedResources: fromFields.getFields(state).length,
 });
 
-const mapDispatchToProps = {
-    handleAddColumn: name => addField({ name }),
-    handleShowExistingColumns: showAddColumns,
-    handleHideExistingColumns: hideAddColumns,
-};
-
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps),
     translate,
 )(StatisticsComponent);
