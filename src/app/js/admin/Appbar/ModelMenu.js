@@ -12,7 +12,7 @@ import { withRouter } from 'react-router';
 import AddFromDatasetIcon from './AddFromDatasetIcon';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { addField } from '../../fields';
-import { showAddColumns, hideAddColumns } from '../parsing';
+import { showAddColumns } from '../parsing';
 
 const useStyles = makeStyles({
     container: {
@@ -33,17 +33,11 @@ const useStyles = makeStyles({
 });
 
 export const ModelMenuComponent = ({
-    handleAddColumn,
+    handleAddNewColumn,
     handleShowExistingColumns,
-    handleHideExistingColumns,
     p: polyglot,
 }) => {
     const classes = useStyles();
-
-    const handleAddNewColumn = () => {
-        handleHideExistingColumns();
-        handleAddColumn();
-    };
 
     return (
         <div className={classes.container}>
@@ -76,16 +70,14 @@ export const ModelMenuComponent = ({
 };
 
 ModelMenuComponent.propTypes = {
-    handleAddColumn: PropTypes.func.isRequired,
+    handleAddNewColumn: PropTypes.func.isRequired,
     handleShowExistingColumns: PropTypes.func.isRequired,
-    handleHideExistingColumns: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapDispatchToProps = {
-    handleAddColumn: name => addField({ name }),
+    handleAddNewColumn: name => addField({ name }),
     handleShowExistingColumns: showAddColumns,
-    handleHideExistingColumns: hideAddColumns,
 };
 
 export default compose(
