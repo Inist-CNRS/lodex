@@ -238,7 +238,7 @@ const InnerSidebarComponent = ({
                     {hasPublishedDataset && (
                         <Box className={classes.iconLinkContainer}>
                             <NavLink
-                                className={classNames(
+                                className={classnames(
                                     classes.sidebarDeleteNavLink,
                                     classes.sidebarNavLink,
                                 )}
