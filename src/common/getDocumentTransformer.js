@@ -54,7 +54,7 @@ export const applyTransformation = documentTransformers => async doc => {
     return sanitizeUris(result);
 };
 
-export default (context, fields, subresource = null) => {
+export default (context, fields) => {
     const documentTransformers = getDocumentTransformations(context, fields);
     return applyTransformation(documentTransformers);
 };

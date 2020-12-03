@@ -11,9 +11,11 @@ export default async function transformAllDocument(
         const dataset = await findLimitFromSkip(1000, handled, {
             lodex_published: { $exists: false },
         });
-        const transformedDataset = await Promise.all(dataset.map(transformer));
 
-        console.log({ dataset, transformedDataset });
+        const transformedDataset = (
+            await Promise.all(dataset.map(transformer))
+        ).filter(x => x);
+
         await insertBatch(transformedDataset);
         progress.incrementProgress(dataset.length);
         handled += dataset.length;

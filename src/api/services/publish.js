@@ -10,23 +10,11 @@ export default async ctx => {
 
     await ctx.publishDocuments(ctx, count, collectionCoverFields);
 
-    // =================================
-    // const collectionCoverSubresourceFields = fields.filter(
-    //     c => c.cover === 'collection' && c.subresourceId,
-    // );
-    // console.log({ collectionCoverSubresourceFields });
-    // await ctx.publishSubresourceDocuments(
-    //     ctx,
-    //     count,
-    //     collectionCoverSubresourceFields,
-    // );
-    // =================================
-
-    // const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
-    // await ctx.publishCharacteristics(ctx, datasetCoverFields, count);
-    // await ctx.publishFacets(ctx, fields, true);
-    // await ctx.publishFacets(ctx, fields, true);
+    const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
+    await ctx.publishCharacteristics(ctx, datasetCoverFields, count);
+    await ctx.publishFacets(ctx, fields, true);
+    await ctx.publishFacets(ctx, fields, true);
     progress.start(CREATE_INDEX, null);
-    // await indexSearchableFields();
+    await indexSearchableFields();
     progress.finish();
 };

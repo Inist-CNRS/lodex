@@ -49,6 +49,19 @@ export default async db => {
             ),
         );
 
+    collection.insertBatchIgnoreDuplicate = documents =>
+        Promise.all(
+            chunk(documents, 1000).map(data =>
+                collection.insert(data, { ordered: false }).catch(e => {
+                    if (e.code === 11000 /* duplicate error */) {
+                        return;
+                    }
+
+                    throw e;
+                }),
+            ),
+        );
+
     collection.getFindCursor = ({ filter, meta, sort }) => {
         const cursor = meta
             ? collection.find(filter, meta)

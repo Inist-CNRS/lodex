@@ -1,4 +1,6 @@
 import omit from 'lodash.omit';
+import get from 'lodash.get';
+
 import getDocumentTransformer from './getDocumentTransformer';
 import transformAllDocuments from './transformAllDocuments';
 import progress from './progress';
@@ -53,6 +55,15 @@ export const versionTransformerDecorator = transformDocument => async (
 //     transformAllDocuments,
 // });
 
+const groupSubresourcesById = subresources =>
+    subresources.reduce(
+        (acc, subresource) => ({
+            ...acc,
+            [subresource._id]: subresource,
+        }),
+        {},
+    );
+
 const groupSubresourceFields = fields =>
     fields.reduce((acc, field) => {
         if (!acc[field.subresourceId]) {
@@ -72,6 +83,7 @@ export default async (ctx, count, fields) => {
         c => c.cover === 'collection' && c.subresourceId,
     );
 
+    const subresources = groupSubresourcesById(await ctx.subresource.findAll());
     const groupedSubresourceFields = groupSubresourceFields(subresourceFields);
 
     const transformMainResourceDocument = getDocumentTransformer(
@@ -82,12 +94,6 @@ export default async (ctx, count, fields) => {
     progress.start(PUBLISH_DOCUMENT, count);
 
     // === Start Dev Playground
-
-    console.log({
-        fields,
-        groupedSubresourceFields,
-        subresourceFields,
-    });
 
     await Promise.all(
         Object.keys(groupedSubresourceFields).map(subresourceId => {
@@ -101,11 +107,22 @@ export default async (ctx, count, fields) => {
                 ),
             );
 
+            const subresourceTransformer = (...args) => {
+                // Remove empty subresource
+                if (!get(args[0], subresources[subresourceId].path)) {
+                    return false;
+                }
+
+                return versionTransformerDecorator(
+                    subresourceDocumentTransformer,
+                )(...args);
+            };
+
             return transformAllDocuments(
                 count,
                 ctx.dataset.findLimitFromSkip,
-                ctx.publishedDataset.insertBatch,
-                versionTransformerDecorator(subresourceDocumentTransformer),
+                ctx.publishedDataset.insertBatchIgnoreDuplicate,
+                subresourceTransformer,
             );
         }),
     );

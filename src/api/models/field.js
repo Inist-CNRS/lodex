@@ -275,6 +275,22 @@ export default async db => {
                             },
                         ],
                     },
+                    { operation: 'STRING' },
+                    {
+                        operation: 'REPLACE_REGEX',
+                        args: [
+                            {
+                                name: 'searchValue',
+                                type: 'string',
+                                value: '^(.*)$',
+                            },
+                            {
+                                name: 'replaceValue',
+                                type: 'string',
+                                value: `${subresource._id}/$1`,
+                            },
+                        ],
+                    },
                 ],
                 position: 1,
             });

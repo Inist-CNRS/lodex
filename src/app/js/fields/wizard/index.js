@@ -126,7 +126,7 @@ class FieldEditionWizardComponent extends Component {
                 <StepIdentity
                     key="identity"
                     id="step-identity"
-                    isSubresourceField={field.subresourceId}
+                    isSubresourceField={!!field.subresourceId}
                 />,
                 !field.subresourceId && <StepValue key="value" />,
                 <StepTransforms
