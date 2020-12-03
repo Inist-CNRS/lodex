@@ -6,11 +6,13 @@ import Alert from '@material-ui/lab/Alert';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
+import classnames from 'classnames';
 import { withRouter } from 'react-router';
 
 import ImportModelDialog from './ImportModelDialog';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { importFieldsClosed as importFieldsClosedAction } from './import';
+import { fromPublication } from './selectors';
 
 const useStyles = makeStyles({
     container: {
@@ -20,6 +22,7 @@ const useStyles = makeStyles({
 });
 
 export const ImportModelButtonComponent = ({
+    className,
     importFieldsClosed,
     hasPublishedDataset,
     p: polyglot,
@@ -46,10 +49,9 @@ export const ImportModelButtonComponent = ({
     return (
         <div className={classes.container}>
             <Button
-                variant="outlined"
-                className="btn-import-fields"
+                variant="text"
+                className={classnames(className, 'btn-import-fields')}
                 onClick={handleImportFields}
-                color="primary"
             >
                 {polyglot.t('import_fields')}
             </Button>
@@ -74,12 +76,16 @@ ImportModelButtonComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+const mapStateToProps = state => ({
+    hasPublishedDataset: fromPublication.hasPublishedDataset(state),
+});
+
 const mapDispatchToProps = {
     importFieldsClosed: importFieldsClosedAction,
 };
 
 export default compose(
     withRouter,
-    connect(null, mapDispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     translate,
 )(ImportModelButtonComponent);

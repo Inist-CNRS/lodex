@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { Box } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -50,13 +50,12 @@ const useStyles = makeStyles({
             backgroundColor: theme.black.light,
         },
     },
-    subSidebarCallToAction: {
+    sidebarCallToAction: {
         color: theme.white.primary,
         textDecoration: 'none',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        width: '85%',
         margin: 20,
         padding: '10px 10px',
         border: `3px dashed ${theme.white.transparent}`,
@@ -135,9 +134,9 @@ const DocumentMenu = compose(
                 </NavLink>
             </Box>
             {(subresource.subresources || []).map(r => (
-                <>
+                <Fragment key={r._id}>
                     <hr className={classes.separator} />
-                    <Box key={r._id} className={classes.iconSubLinkContainer}>
+                    <Box className={classes.iconSubLinkContainer}>
                         <NavLink
                             className={classes.sidebarNavLink}
                             activeStyle={subSidebarNavLinkActiveStyle}
@@ -146,11 +145,11 @@ const DocumentMenu = compose(
                             {r.name}
                         </NavLink>
                     </Box>
-                </>
+                </Fragment>
             ))}
             <Box className={classes.iconSubLinkContainer}>
                 <NavLink
-                    className={classes.subSidebarCallToAction}
+                    className={classes.sidebarCallToAction}
                     activeStyle={subSidebarNavLinkActiveStyle}
                     to="/display/document/add"
                 >
@@ -203,7 +202,9 @@ const InnerSidebarComponent = ({
                         </NavLink>
                     </Box>
                     <Box className={classes.iconLinkContainer}>
-                        <ImportModelButton className={classes.sidebarNavLink} />
+                        <ImportModelButton
+                            className={classes.sidebarCallToAction}
+                        />
                     </Box>
                 </div>
                 <Route path="/display/document">
