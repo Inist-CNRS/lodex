@@ -18,7 +18,7 @@ describe('Subresource Page', () => {
 
         cy.get('.sidebar')
             .contains('a', 'Resource pages')
-            .click();
+            .click({ force: true });
     });
 
     it('should allow to add a subresource', () => {
