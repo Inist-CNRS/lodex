@@ -28,7 +28,7 @@ const styles = {
         cursor: 'pointer',
     },
     table: memoize(separated => ({
-        display: 'block',
+        display: 'table',
         overflowX: 'auto',
         width: 'auto',
         minWidth: '100%',

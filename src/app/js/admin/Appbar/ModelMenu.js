@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import { Add as AddNewIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -50,7 +51,10 @@ export const ModelMenuComponent = ({
                 variant="contained"
                 color="primary"
                 onClick={handleShowExistingColumns}
-                className={classes.containedButton}
+                className={classnames(
+                    classes.containedButton,
+                    'btn-add-field-from-dataset',
+                )}
             >
                 <AddFromDatasetIcon className={classes.icon} />
                 {polyglot.t('from_original_dataset')}
@@ -59,7 +63,10 @@ export const ModelMenuComponent = ({
                 variant="contained"
                 color="primary"
                 onClick={handleAddNewColumn}
-                className={classes.containedButton}
+                className={classnames(
+                    classes.containedButton,
+                    'btn-add-free-field',
+                )}
             >
                 <AddNewIcon className={classes.icon} />
                 {polyglot.t('new_field')}

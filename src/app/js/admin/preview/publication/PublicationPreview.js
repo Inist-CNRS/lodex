@@ -18,6 +18,7 @@ const styles = {
     container: {
         position: 'relative',
         display: 'flex',
+        overflowY: 'auto',
         maxHeight: 'calc(100vh - 100px - 76px - 72px)',
     },
     content: {

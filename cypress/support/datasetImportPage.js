@@ -51,8 +51,7 @@ const fillStepDisplayFormat = format => {
 
 export const addColumn = (columnName, options = {}) => {
     const name = columnName.replace(' ', '-');
-    cy.get('button.btn-add-column').click();
-    cy.get('button.btn-add-column-from-dataset').click();
+    cy.get('button.btn-add-field-from-dataset').click();
     cy.get(
         ['.btn-excerpt-add-column', `.btn-excerpt-add-column-${name}`].join(''),
     ).click();

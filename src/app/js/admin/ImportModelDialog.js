@@ -10,12 +10,14 @@ import {
     DialogActions,
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/core/styles';
+import classnames from 'classnames';
 
 import { importFields as importFieldsAction } from './import';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { fromImport } from './selectors';
 
-const styles = {
+const useStyles = makeStyles({
     input: {
         position: 'absolute',
         top: 0,
@@ -32,7 +34,12 @@ const styles = {
     error: {
         color: red[300],
     },
-};
+    dialog: {
+        '& > div > div': {
+            overflowY: 'unset',
+        },
+    },
+});
 
 const ImportModelDialogComponent = ({
     failed,
@@ -41,6 +48,7 @@ const ImportModelDialogComponent = ({
     importFields,
     succeeded,
 }) => {
+    const classes = useStyles();
     useEffect(() => {
         if (succeeded) {
             onClose(true);
@@ -55,37 +63,38 @@ const ImportModelDialogComponent = ({
         <Button
             variant="contained"
             key="confirm"
-            className="btn-save"
             component="label"
             color="primary"
-            style={styles.button}
+            className={classnames(classes.button, 'btn-save')}
         >
             {polyglot.t('confirm')}
             <input
                 name="file_model"
                 type="file"
                 onChange={handleFileUpload}
-                style={styles.input}
+                className={classes.input}
             />
         </Button>,
         <Button
             color="secondary"
             key="cancel"
             variant="text"
-            className="btn-cancel"
             onClick={onClose}
-            style={styles.button}
+            className={classnames(classes.button, 'btn-cancel')}
         >
             {polyglot.t('cancel')}
         </Button>,
     ];
 
     return (
-        <Dialog className="dialog-import-fields" open>
+        <Dialog
+            className={classnames(classes.dialog, 'dialog-import-fields')}
+            open
+        >
             <DialogContent>
                 {!failed && polyglot.t('confirm_import_fields')}
                 {failed && (
-                    <span style={styles.error}>
+                    <span className={classes.error}>
                         {polyglot.t('import_fields_failed')}
                     </span>
                 )}
