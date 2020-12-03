@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import memoize from 'lodash.memoize';
 import { CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -21,7 +20,7 @@ const useStyles = makeStyles({
         visibility: 'hidden',
     },
     container: {
-        height: 72,
+        height: 30,
         alignItems: 'center',
         position: 'relative',
         display: 'flex',
@@ -32,6 +31,8 @@ const useStyles = makeStyles({
         paddingLeft: '1rem',
         paddingRight: '1rem',
         backgroundColor: theme.black.veryLight,
+        lineHeight: '30px',
+        height: '100%',
     },
 });
 

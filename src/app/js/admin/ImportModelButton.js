@@ -19,6 +19,9 @@ const useStyles = makeStyles({
         textAlign: 'right',
         paddingBottom: 20,
     },
+    buttonText: {
+        textTransform: 'none',
+    },
 });
 
 export const ImportModelButtonComponent = ({
@@ -50,7 +53,11 @@ export const ImportModelButtonComponent = ({
         <div className={classes.container}>
             <Button
                 variant="text"
-                className={classnames(className, 'btn-import-fields')}
+                className={classnames(
+                    className,
+                    classes.buttonText,
+                    'btn-import-fields',
+                )}
                 onClick={handleImportFields}
             >
                 {polyglot.t('import_fields')}
