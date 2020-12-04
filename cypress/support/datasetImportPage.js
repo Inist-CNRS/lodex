@@ -123,6 +123,7 @@ export const importModel = (filename, mimeType = 'application/json') => {
     adminNavigation.goToDisplay();
     cy.get('button.btn-import-fields').click();
     fillInputWithFixture('input[name="file_model"]', filename, mimeType);
+    cy.wait(300);
 };
 
 const checkLoaderItem = label => {
