@@ -133,11 +133,9 @@ class FieldEditionWizardComponent extends Component {
                     key="transformations"
                     isSubresourceField={!!field.subresourceId}
                 />,
-                !field.subresourceId && (
-                    <StepSemantics key="semantics" fields={fields} />
-                ),
-                <StepDisplay key="display" />,
-                <StepSearch key="search" />,
+                !field.subresourceId && <StepSemantics key="semantics" />,
+                !field.subresourceId && <StepDisplay key="display" />,
+                !field.subresourceId && <StepSearch key="search" />,
             ]
                 .filter(x => x)
                 .map((el, index) =>
