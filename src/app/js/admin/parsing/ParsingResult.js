@@ -15,6 +15,7 @@ const styles = {
     container: {
         position: 'relative',
         display: 'flex',
+        maxHeight: 'calc(((100vh - 100px) - 76px) - 72px)',
     },
     card: {
         marginTop: 0,
