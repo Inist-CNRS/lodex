@@ -12,7 +12,7 @@ RUN npm install --production && \
 COPY ./src /app/src
 COPY ./config /app/config
 COPY ./config.json ./babel.config.js ./jest.config.js ./jsconfig.json ./typings.json /app/
-RUN mkdir /app/upload
+RUN mkdir /tmp/upload
 WORKDIR /app
 
 ARG node_env="production"

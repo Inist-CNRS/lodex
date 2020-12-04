@@ -4,8 +4,7 @@ WORKDIR /app
 # see .dockerignore to know all copied files
 COPY . /app/
 ENV NODE_ENV="production"
-RUN mkdir /app/upload && \
-    cp /app/config/production-dist.js /app/config/production.js && \
+RUN cp /app/config/production-dist.js /app/config/production.js && \
     npm install --production && \
     npm run build && \
     npm cache clean --force  && \
