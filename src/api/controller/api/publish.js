@@ -35,18 +35,42 @@ export const doPublish = async ctx => {
 };
 
 export const verifyUri = async ctx => {
-    const uriField = await ctx.field.findOneByName('uri');
-    if (get(uriField, 'transformers[0].operation') === 'AUTOGENERATE_URI') {
+    const [uriField, subresources, fields] = await Promise.all([
+        ctx.field.findOneByName('uri'),
+        ctx.subresource.findAll(),
+        ctx.field.findAll(),
+    ]);
+
+    if (
+        get(uriField, 'transformers[0].operation') === 'AUTOGENERATE_URI' &&
+        subresources.length === 0
+    ) {
         ctx.body = { valid: true };
         return;
     }
 
-    const fields = get(uriField, 'transformers[0].args')
+    const uriFields = get(uriField, 'transformers[0].args')
         .filter(({ type }) => type === 'column')
         .map(({ value }) => value);
 
+    const fieldsSubresources = fields.reduce((acc, field) => {
+        if (
+            field.subresourceId &&
+            typeof acc[field.subresourceId] === 'undefined'
+        ) {
+            acc[field.subresourceId] = subresources.find(
+                s => s._id + '' === field.subresourceId,
+            );
+        }
+
+        return acc;
+    }, {});
+
     ctx.body = {
-        nbInvalidUri: await ctx.dataset.countNotUnique(fields),
+        nbInvalidUri: await ctx.dataset.countNotUnique(uriFields),
+        nbInvalidSubresourceUri: await ctx.dataset.countNotUniqueSubresources(
+            fieldsSubresources,
+        ),
     };
 };
 

@@ -17,7 +17,7 @@ export function* handlePublishRequest() {
 
     const {
         error: verifyError,
-        response: { nbInvalidUri },
+        response: { nbInvalidUri, nbInvalidSubresourceUri },
     } = yield call(fetchSaga, verifyUriRequest);
 
     if (verifyError) {
@@ -25,8 +25,11 @@ export function* handlePublishRequest() {
         return;
     }
 
-    if (nbInvalidUri > 0) {
-        yield put(publishWarn(nbInvalidUri));
+    const countInvalidSubresourceUri = Object.keys(nbInvalidSubresourceUri)
+        .length;
+
+    if (nbInvalidUri > 0 || countInvalidSubresourceUri > 0) {
+        yield put(publishWarn({ nbInvalidUri, nbInvalidSubresourceUri }));
         const { cancel } = yield race({
             cancel: take(PUBLISH_CANCEL),
             ok: take(PUBLISH_CONFIRM),

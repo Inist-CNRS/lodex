@@ -20,6 +20,7 @@ export const defaultState = {
     error: null,
     loading: false,
     nbInvalidUri: 0,
+    nbInvalidSubresourceUri: {},
 };
 
 export default handleActions(
@@ -39,9 +40,13 @@ export default handleActions(
             error: error.message || error,
             loading: false,
         }),
-        PUBLISH_WARN: (state, { payload: nbInvalidUri }) => ({
+        PUBLISH_WARN: (
+            state,
+            { payload: { nbInvalidUri, nbInvalidSubresourceUri } },
+        ) => ({
             ...state,
             nbInvalidUri,
+            nbInvalidSubresourceUri,
         }),
         PUBLISH_CONFIRM: state => ({
             ...state,
@@ -63,9 +68,12 @@ export default handleActions(
 export const getIsPublishing = state => state.loading;
 export const getPublishingError = state => state.error;
 export const getNbInvalidUri = state => state.nbInvalidUri;
+export const getNbInvalidSubresourceUri = state =>
+    state.nbInvalidSubresourceUri;
 
 export const selectors = {
     getIsPublishing,
     getPublishingError,
     getNbInvalidUri,
+    getNbInvalidSubresourceUri,
 };

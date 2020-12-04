@@ -25,36 +25,6 @@ export const versionTransformerDecorator = transformDocument => async (
     };
 };
 
-// export const publishDocumentsFactory = ({
-//     versionTransformerDecorator,
-//     getDocumentTransformer,
-//     transformAllDocuments,
-// }) =>
-//     async function publishDocuments(ctx, count, fields) {
-//         const collectionCoverFields = fields.filter(
-//             c => c.cover === 'collection',
-//         );
-
-//         const transformDocument = getDocumentTransformer(
-//             ctx.dataset.findBy,
-//             collectionCoverFields,
-//         );
-
-//         progress.start(PUBLISH_DOCUMENT, count);
-//         await transformAllDocuments(
-//             count,
-//             ctx.dataset.findLimitFromSkip,
-//             ctx.publishedDataset.insertBatch,
-//             versionTransformerDecorator(transformDocument),
-//         );
-//     };
-
-// export default publishDocumentsFactory({
-//     versionTransformerDecorator,
-//     getDocumentTransformer,
-//     transformAllDocuments,
-// });
-
 const groupSubresourcesById = subresources =>
     subresources.reduce(
         (acc, subresource) => ({
@@ -93,11 +63,11 @@ export default async (ctx, count, fields) => {
 
     progress.start(PUBLISH_DOCUMENT, count);
 
-    // === Start Dev Playground
-
     await Promise.all(
         Object.keys(groupedSubresourceFields).map(subresourceId => {
             const subresourceFields = groupedSubresourceFields[subresourceId];
+            const subresource = subresources[subresourceId];
+
             const subresourceDocumentTransformer = getDocumentTransformer(
                 ctx.dataset.findBy,
                 subresourceFields.map(field =>
@@ -109,7 +79,7 @@ export default async (ctx, count, fields) => {
 
             const subresourceTransformer = (...args) => {
                 // Remove empty subresource
-                if (!get(args[0], subresources[subresourceId].path)) {
+                if (!get(args[0], subresource.path)) {
                     return false;
                 }
 
@@ -126,8 +96,6 @@ export default async (ctx, count, fields) => {
             );
         }),
     );
-
-    // === End Dev Playground
 
     await transformAllDocuments(
         count,

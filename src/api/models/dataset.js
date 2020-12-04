@@ -1,6 +1,7 @@
 import chunk from 'lodash.chunk';
 
 import countNotUnique from './countNotUnique';
+import countNotUniqueSubresources from './countNotUniqueSubresources';
 
 export default db => {
     const collection = db.collection('dataset');
@@ -24,6 +25,10 @@ export default db => {
             .toArray();
 
     collection.countNotUnique = countNotUnique(collection);
+
+    collection.countNotUniqueSubresources = countNotUniqueSubresources(
+        collection,
+    );
 
     collection.ensureIsUnique = async fieldName =>
         (await collection.countNotUnique(fieldName)) === 0;

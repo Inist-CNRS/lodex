@@ -17,13 +17,13 @@ import { fromPublish } from '../selectors';
 
 const styles = {
     container: {
-        display: 'flex',
         paddingBottom: '1rem',
     },
 };
 
 export const ConfirmPublicationComponent = ({
     nbInvalidUri,
+    nbInvalidSubresourceUri,
     confirmPublication,
     cancelPublication,
     p: polyglot,
@@ -49,12 +49,33 @@ export const ConfirmPublicationComponent = ({
         </Button>,
     ];
 
+    const nbInvalidSubresources = Object.keys(nbInvalidSubresourceUri).length;
+
     return (
         <Dialog open={nbInvalidUri > 0}>
             <DialogTitle>{polyglot.t('warn_publication')}</DialogTitle>
             <DialogContent>
                 <div style={styles.container} id="confirm-publication">
                     <p>{polyglot.t('duplicated_uri', { nbInvalidUri })}</p>
+                    {nbInvalidSubresources > 0 && (
+                        <div>
+                            <p>
+                                {polyglot.t('duplicated_subresource', {
+                                    nbInvalidSubresources,
+                                })}
+                            </p>
+                            <ul>
+                                {Object.keys(nbInvalidSubresourceUri).map(
+                                    name => (
+                                        <li key={name}>
+                                            {name}:{' '}
+                                            {nbInvalidSubresourceUri[name]}
+                                        </li>
+                                    ),
+                                )}
+                            </ul>
+                        </div>
+                    )}
                 </div>
             </DialogContent>
             <DialogActions>{actions}</DialogActions>
@@ -64,6 +85,7 @@ export const ConfirmPublicationComponent = ({
 
 ConfirmPublicationComponent.propTypes = {
     nbInvalidUri: PropTypes.number.isRequired,
+    nbInvalidSubresourceUri: PropTypes.number.isRequired,
     confirmPublication: PropTypes.func.isRequired,
     cancelPublication: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -71,6 +93,7 @@ ConfirmPublicationComponent.propTypes = {
 
 const mapStateToProps = state => ({
     nbInvalidUri: fromPublish.getNbInvalidUri(state),
+    nbInvalidSubresourceUri: fromPublish.getNbInvalidSubresourceUri(state),
 });
 
 const mapDispatchToProps = {
