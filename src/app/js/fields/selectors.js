@@ -92,8 +92,6 @@ const getFromFilterFields = createSelector(
     getFields,
     (_, type) => type,
     (fields, type) => {
-        console.log('type', type);
-
         if (type !== 'graph') {
             return fields
                 .filter(getOntologyFieldsFilter(type, type === 'document'))

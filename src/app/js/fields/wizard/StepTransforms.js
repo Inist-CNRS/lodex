@@ -1,6 +1,6 @@
 import React from 'react';
 import { FieldArray } from 'redux-form';
-import { PropType } from 'redux-polyglot';
+import PropTypes from 'prop-types';
 
 import Step from './Step';
 import TransformerList from '../TransformerList';
@@ -21,7 +21,7 @@ export const StepTransformComponent = ({ isSubresourceField, ...props }) => (
 );
 
 StepTransformComponent.propTypes = {
-    isSubresourceField: PropType.bool,
+    isSubresourceField: PropTypes.bool,
 };
 
 export default StepTransformComponent;

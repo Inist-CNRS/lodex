@@ -22,7 +22,7 @@ describe('Subresource Page', () => {
     });
 
     it('should allow to add a subresource', () => {
-        cy.contains('a', 'New subresource').click();
+        cy.contains('a', 'New subresource').click({ force: true });
 
         cy.url().should('contain', '/display/document/add');
 
