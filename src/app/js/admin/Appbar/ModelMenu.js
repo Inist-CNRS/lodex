@@ -56,7 +56,7 @@ export const ModelMenuComponent = ({
             <Button
                 variant="contained"
                 color="primary"
-                onClick={handleAddNewColumn}
+                onClick={() => handleAddNewColumn()}
                 className={classnames(
                     classes.containedButton,
                     'btn-add-free-field',
