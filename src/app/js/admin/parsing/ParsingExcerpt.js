@@ -43,7 +43,8 @@ export const ParsingExcerptComponent = ({
     showAddColumns,
 }) => {
     const total = lines.length;
-
+    console.log('columns', columns);
+    console.log('lines', lines);
     return (
         <Table style={styles.table}>
             <TableHead>
