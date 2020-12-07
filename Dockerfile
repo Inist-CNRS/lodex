@@ -1,5 +1,5 @@
 FROM node:12-alpine AS build
-RUN apk add --no-cache make gcc g++ python bash git openssh
+RUN apk add --no-cache make gcc g++ python bash git openssh jq
 WORKDIR /app
 # see .dockerignore to know all copied files
 COPY . /app/
