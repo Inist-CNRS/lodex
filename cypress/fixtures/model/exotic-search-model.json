@@ -2,7 +2,6 @@
     {
         "cover": "collection",
         "label": "uri",
-        "display_on_list": true,
         "transformers": [
             {
                 "operation": "AUTOGENERATE_URI",
@@ -205,10 +204,7 @@
         "position": 8,
         "scheme": "http://dbpedia.org/ontology/lifeExpectancy",
         "composedOf": {
-            "fields": [
-                "dImS",
-                "MnXd"
-            ]
+            "fields": ["dImS", "MnXd"]
         },
         "name": "TQuZ"
     },

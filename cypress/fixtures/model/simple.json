@@ -3,7 +3,6 @@
         "cover": "collection",
         "label": "uri",
         "name": "uri",
-        "display_on_list": true,
         "transformers": [
             {
                 "operation": "COLUMN",

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Publication n°1",
+    "most_found_animal_species": {
+      "id": 90,
+      "name": "Canidae"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Publication n°2",
+    "most_found_animal_species": {
+      "id": 91,
+      "name": "Felinae"
+    }
+  },
+  {
+    "id": 3,
+    "name": "Publication n°3",
+    "most_found_animal_species": {
+      "id": 90,
+      "name": "Canidae"
+    }
+  }
+]
