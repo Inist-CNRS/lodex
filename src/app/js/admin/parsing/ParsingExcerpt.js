@@ -15,6 +15,7 @@ const styles = {
         display: 'block',
         overflowX: 'auto',
         width: 'auto',
+        minWidth: '100%',
         borderLeft: '1px solid rgb(224, 224, 224)',
     },
     body: {

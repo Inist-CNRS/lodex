@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { Box } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -6,6 +6,10 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 import GridOnIcon from '@material-ui/icons/GridOn';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PlusIcon from '@material-ui/icons/Add';
+import MainResourceIcon from '@material-ui/icons/InsertDriveFile';
+import { makeStyles } from '@material-ui/core/styles';
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router';
 import { NavLink } from 'react-router-dom';
@@ -15,140 +19,192 @@ import { compose } from 'recompose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import PrivateRoute from './PrivateRoute';
+import ImportModelButton from './ImportModelButton.js';
 import { fromPublication, fromParsing } from './selectors';
+import theme from './../theme';
 
-const styles = {
+const useStyles = makeStyles({
     sidebar: {
-        width: 160,
-        paddingTop: 100,
-        marginLeft: -10,
+        paddingTop: 64,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        background: '#333',
+        backgroundColor: theme.black.veryDark,
         textAlign: 'center',
         position: 'sticky',
         top: 0,
         height: '100vh',
     },
     sidebarNavLink: {
-        color: '#fff',
+        color: theme.white.primary,
         textDecoration: 'none',
-    },
-    sidebarNavLinkActive: {
-        color: '#7DBD42',
-    },
-    subSidebar: {
-        width: 240,
-        paddingTop: 100,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        background: '#555',
+        width: '100%',
+        padding: 20,
+        '&:hover': {
+            transition: 'all ease-in-out 400ms',
+            textDecoration: 'none',
+            color: theme.white.primary,
+            backgroundColor: theme.black.light,
+        },
+    },
+    sidebarCallToAction: {
+        color: theme.white.primary,
+        textDecoration: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        margin: 20,
+        padding: '10px 10px',
+        border: `3px dashed ${theme.white.transparent}`,
+        borderRadius: 10,
+        '&:hover': {
+            transition: 'all ease-in-out 400ms',
+            textDecoration: 'none',
+            color: theme.white.primary,
+            backgroundColor: theme.black.light,
+        },
+    },
+    sidebarDeleteNavLink: {
+        marginTop: 'auto',
+    },
+    subSidebar: {
+        width: 200,
+        paddingTop: 64,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundColor: theme.black.dark,
         position: 'sticky',
         top: 0,
         height: '100vh',
     },
-    subSidebarNavLink: {
-        textDecoration: 'none',
-        color: '#888',
-        fontSize: 18,
-        padding: 36,
-        minHeight: 54,
-        textAlign: 'center',
-        display: 'block',
-    },
     iconLinkContainer: {
         width: 125,
-        height: 125,
         alignItems: 'center',
         justifyContent: 'center',
         display: 'flex',
         flexDirection: 'column',
         textAlign: 'center',
-        padding: 20,
         textDecoration: 'none',
     },
+    iconSubLinkContainer: {
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        textAlign: 'center',
+        textDecoration: 'none',
+    },
+    separator: {
+        width: '90%',
+        border: 'none',
+        borderTop: `1px solid ${theme.white.transparent}`,
+    },
+});
+
+const sidebarNavLinkActiveStyle = {
+    color: theme.white.primary,
+    backgroundColor: theme.black.dark,
+};
+
+const subSidebarNavLinkActiveStyle = {
+    color: theme.white.primary,
+    backgroundColor: theme.white.transparent,
 };
 
 const DocumentMenu = compose(
     connect(s => ({ subresource: s.subresource })),
     translate,
-)(({ p: polyglot, subresource }) => (
-    <div style={styles.subSidebar} className="sub-sidebar">
-        <div>
-            <NavLink
-                style={styles.subSidebarNavLink}
-                activeStyle={{ color: 'white' }}
-                to="/display/document/main"
-            >
-                {polyglot.t('main_resource')}
-            </NavLink>
-        </div>
-        {(subresource.subresources || []).map(r => (
-            <div key={r._id}>
+)(({ p: polyglot, subresource }) => {
+    const classes = useStyles();
+    return (
+        <div className={classnames(classes.subSidebar, 'sub-sidebar')}>
+            <Box className={classes.iconSubLinkContainer}>
                 <NavLink
-                    style={styles.subSidebarNavLink}
-                    activeStyle={{ color: 'white' }}
-                    to={`/display/document/${r._id}`}
+                    className={classes.sidebarNavLink}
+                    activeStyle={subSidebarNavLinkActiveStyle}
+                    to="/display/document/main"
                 >
-                    {r.name}
+                    <MainResourceIcon />
+                    {polyglot.t('main_resource')}
                 </NavLink>
-            </div>
-        ))}
-        <div>
-            <NavLink
-                style={styles.subSidebarNavLink}
-                activeStyle={{ color: 'white' }}
-                to="/display/document/add"
-            >
-                + {polyglot.t('new_subresource')}
-            </NavLink>
+            </Box>
+            {(subresource.subresources || []).map(r => (
+                <Fragment key={r._id}>
+                    <hr className={classes.separator} />
+                    <Box className={classes.iconSubLinkContainer}>
+                        <NavLink
+                            className={classes.sidebarNavLink}
+                            activeStyle={subSidebarNavLinkActiveStyle}
+                            to={`/display/document/${r._id}`}
+                        >
+                            {r.name}
+                        </NavLink>
+                    </Box>
+                </Fragment>
+            ))}
+            <Box className={classes.iconSubLinkContainer}>
+                <NavLink
+                    className={classes.sidebarCallToAction}
+                    activeStyle={subSidebarNavLinkActiveStyle}
+                    to="/display/document/add"
+                >
+                    <PlusIcon />
+                    {polyglot.t('new_subresource')}
+                </NavLink>
+            </Box>
         </div>
-    </div>
-));
+    );
+});
 
 const InnerSidebarComponent = ({
     hasPublishedDataset,
     hasLoadedDataset,
     p: polyglot,
 }) => {
+    const classes = useStyles();
     return (
         <>
             <Route path="/display">
-                <div style={styles.sidebar} className="sidebar">
-                    <Box style={styles.iconLinkContainer}>
+                <div className={classnames(classes.sidebar, 'sidebar')}>
+                    <Box className={classes.iconLinkContainer}>
                         <NavLink
-                            style={styles.sidebarNavLink}
-                            activeStyle={styles.sidebarNavLinkActive}
+                            className={classes.sidebarNavLink}
+                            activeStyle={sidebarNavLinkActiveStyle}
                             to="/display/dataset"
                         >
-                            <HomeIcon fontSize="large" />
-                            <br />
+                            <HomeIcon />
                             {polyglot.t('home')}
                         </NavLink>
                     </Box>
-                    <Box style={styles.iconLinkContainer}>
+                    <Box className={classes.iconLinkContainer}>
                         <NavLink
-                            style={styles.sidebarNavLink}
-                            activeStyle={styles.sidebarNavLinkActive}
+                            className={classes.sidebarNavLink}
+                            activeStyle={sidebarNavLinkActiveStyle}
                             to="/display/document"
                         >
-                            <DescriptionIcon fontSize="large" />
-                            <br />
+                            <DescriptionIcon />
                             {polyglot.t('resource_pages')}
                         </NavLink>
                     </Box>
-                    <Box style={styles.iconLinkContainer}>
+                    <Box className={classes.iconLinkContainer}>
                         <NavLink
-                            style={styles.sidebarNavLink}
-                            activeStyle={styles.sidebarNavLinkActive}
+                            className={classes.sidebarNavLink}
+                            activeStyle={sidebarNavLinkActiveStyle}
                             to="/display/graph"
                         >
-                            <EqualizerIcon fontSize="large" />
-                            <br />
+                            <EqualizerIcon />
                             {polyglot.t('graph_pages')}
                         </NavLink>
+                    </Box>
+                    <Box className={classes.iconLinkContainer}>
+                        <ImportModelButton
+                            className={classes.sidebarCallToAction}
+                        />
                     </Box>
                 </div>
                 <Route path="/display/document">
@@ -156,56 +212,41 @@ const InnerSidebarComponent = ({
                 </Route>
             </Route>
             <Route path="/data">
-                <div style={styles.sidebar} className="sidebar">
-                    <Box style={styles.iconLinkContainer}>
+                <div className={classnames(classes.sidebar, 'sidebar')}>
+                    <Box className={classes.iconLinkContainer}>
                         <NavLink
-                            style={styles.sidebarNavLink}
-                            activeStyle={styles.sidebarNavLinkActive}
+                            className={classes.sidebarNavLink}
+                            activeStyle={sidebarNavLinkActiveStyle}
                             to="/data/existing"
                         >
-                            <Box>
-                                <p>
-                                    <GridOnIcon fontSize="large" />
-                                    <br />
-                                    {polyglot.t('data')}
-                                </p>
-                            </Box>
+                            <GridOnIcon />
+                            {polyglot.t('data')}
                         </NavLink>
                     </Box>
                     {hasLoadedDataset && (
-                        <Box style={styles.iconLinkContainer}>
+                        <Box className={classes.iconLinkContainer}>
                             <NavLink
-                                style={styles.sidebarNavLink}
-                                activeStyle={styles.sidebarNavLinkActive}
+                                className={classes.sidebarNavLink}
+                                activeStyle={sidebarNavLinkActiveStyle}
                                 to="/data/add"
                             >
-                                <Box>
-                                    <p>
-                                        <AddBoxIcon fontSize="large" />
-                                        <br />
-                                        {polyglot.t('add_more')}
-                                    </p>
-                                </Box>
+                                <AddBoxIcon />
+                                {polyglot.t('add_more')}
                             </NavLink>
                         </Box>
                     )}
                     {hasPublishedDataset && (
-                        <Box style={styles.iconLinkContainer}>
+                        <Box className={classes.iconLinkContainer}>
                             <NavLink
-                                style={{
-                                    marginTop: 'auto',
-                                    ...styles.sidebarNavLink,
-                                }}
-                                activeStyle={styles.sidebarNavLinkActive}
+                                className={classnames(
+                                    classes.sidebarDeleteNavLink,
+                                    classes.sidebarNavLink,
+                                )}
+                                activeStyle={sidebarNavLinkActiveStyle}
                                 to="/data/removed"
                             >
-                                <Box>
-                                    <p>
-                                        <DeleteIcon fontSize="large" />
-                                        <br />
-                                        {polyglot.t('removed_resources')}
-                                    </p>
-                                </Box>
+                                <DeleteIcon />
+                                {polyglot.t('removed_resources')}
                             </NavLink>
                         </Box>
                     )}

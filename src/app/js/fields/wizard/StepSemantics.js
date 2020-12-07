@@ -7,16 +7,15 @@ import FieldComposedOf from '../FieldComposedOf';
 import FieldAnnotation from '../FieldAnnotation';
 import FieldSchemeInput from '../FieldSchemeInput';
 
-export const StepSemanticsComponent = ({ field, fields, ...props }) => (
+export const StepSemanticsComponent = ({ fields, ...props }) => (
     <Step id="step-semantics" label="field_wizard_step_semantic" {...props}>
         <FieldSchemeInput />
-        <FieldAnnotation field={field} fields={fields} />
-        <FieldComposedOf field={field} fields={fields} />
+        <FieldAnnotation fields={fields} />
+        <FieldComposedOf fields={fields} />
     </Step>
 );
 
 StepSemanticsComponent.propTypes = {
-    field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
 };
 

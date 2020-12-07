@@ -30,13 +30,17 @@ const DisplayRouteComponent = ({ showAddColumns, hasPublishedDataset }) => {
     ) : (
         <div>
             <ModelMenu hasPublishedDataset={hasPublishedDataset} />
-            <div style={{ paddingBottom: 30 }}>
+            <div>
                 <div style={{ display: showAddColumns ? 'block' : 'none' }}>
                     <ParsingResult showAddColumns maxLines={3} />
                 </div>
-                {showAddColumns && <Statistics mode="display" />}
+                {showAddColumns && (
+                    <Statistics mode="display" filter={filter} />
+                )}
                 <PublicationPreview filter={filter} />
-                {!showAddColumns && <Statistics mode="display" />}
+                {!showAddColumns && (
+                    <Statistics mode="display" filter={filter} />
+                )}
             </div>
         </div>
     );

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import { hideAddColumns } from '../../admin/parsing';
 
 import {
     Stepper,
@@ -103,10 +104,12 @@ class FieldEditionWizardComponent extends Component {
 
     handleCancel = () => {
         this.props.editField(undefined);
+        this.props.handleHideExistingColumns();
     };
 
     handleSave = () => {
         this.props.saveField();
+        this.props.handleHideExistingColumns();
     };
 
     render() {
@@ -130,7 +133,9 @@ class FieldEditionWizardComponent extends Component {
                     key="transformations"
                     isSubresourceField={!!field.subresourceId}
                 />,
-                !field.subresourceId && <StepSemantics key="semantics" />,
+                !field.subresourceId && (
+                    <StepSemantics key="semantics" fields={fields} />
+                ),
                 <StepDisplay key="display" />,
                 <StepSearch key="search" />,
             ]
@@ -216,6 +221,7 @@ class FieldEditionWizardComponent extends Component {
 
 FieldEditionWizardComponent.propTypes = {
     filter: PropTypes.string,
+    handleHideExistingColumns: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {
@@ -231,6 +237,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     editField: editFieldAction,
     saveField: saveFieldAction,
+    handleHideExistingColumns: hideAddColumns,
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(

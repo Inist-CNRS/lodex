@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { PropTypes } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import translate from 'redux-polyglot/translate';

@@ -7,6 +7,7 @@ import compose from 'recompose/compose';
 import StorageIcon from '@material-ui/icons/Storage';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import { AppBar, CircularProgress, Button, Toolbar } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import SignOutButton from './SignOutButton';
 import PublicationButton from '../publish/PublicationButton';
@@ -15,10 +16,11 @@ import { fromUser } from '../../sharedSelectors';
 import { fromPublication, fromParsing } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';
+import theme from './../../theme';
 
-const styles = {
+const useStyles = makeStyles({
     linkToHome: {
-        color: 'white',
+        color: `${theme.white.primary} !important`,
         textDecoration: 'none',
         marginRight: '1rem',
         textTransform: 'uppercase',
@@ -31,19 +33,29 @@ const styles = {
         paddingLeft: 100,
     },
     button: {
-        color: 'white',
+        color: theme.white.primary,
         borderRadius: 0,
-        marginRight: 30,
-    },
-    activeButton: {
-        borderBottom: '3px solid #fff',
+        padding: '0 20px',
+        boxSizing: 'border-box',
+        borderBottom: `3px solid ${theme.green.primary}`,
+        '&:hover': {
+            transition: 'all ease-in-out 400ms',
+            borderBottom: `3px solid ${theme.white.primary}`,
+            color: theme.white.primary,
+        },
     },
     linksContainer: {
         display: 'flex',
         justifyContent: 'space-between',
         flex: 1,
-        alignItems: 'center',
+        alignItems: 'stretch',
+        height: 64,
     },
+});
+
+const activeButtonStyle = {
+    borderBottom: `3px solid ${theme.white.primary}`,
+    backgroundColor: theme.black.transparent,
 };
 
 const AppbarComponent = ({
@@ -53,17 +65,18 @@ const AppbarComponent = ({
     isAdmin,
     p: polyglot,
 }) => {
+    const classes = useStyles();
     const leftElement = (
-        <div style={styles.buttons}>
+        <div className={classes.buttons}>
             {isAdmin && (
                 <>
                     <NavLink
                         to="/data"
                         component={Button}
                         variant="text"
-                        style={styles.button}
+                        className={classes.button}
                         startIcon={<StorageIcon />}
-                        activeStyle={styles.activeButton}
+                        activeStyle={activeButtonStyle}
                     >
                         <span>{polyglot.t('data')}</span>
                     </NavLink>
@@ -72,9 +85,9 @@ const AppbarComponent = ({
                             to="/display"
                             component={Button}
                             variant="text"
-                            style={styles.button}
+                            className={classes.button}
                             startIcon={<AspectRatioIcon />}
-                            activeStyle={styles.activeButton}
+                            activeStyle={activeButtonStyle}
                         >
                             <span>{polyglot.t('display')}</span>
                         </NavLink>
@@ -99,7 +112,7 @@ const AppbarComponent = ({
                     color="#fff"
                     size={30}
                     thickness={2}
-                    style={styles.loading}
+                    className={classes.loading}
                 />
             )}
         </>
@@ -108,10 +121,10 @@ const AppbarComponent = ({
     return (
         <AppBar className="appbar">
             <Toolbar>
-                <Link to="/" style={styles.linkToHome}>
+                <Link to="/" className={classes.linkToHome}>
                     Lodex
                 </Link>
-                <div style={styles.linksContainer}>
+                <div className={classes.linksContainer}>
                     {leftElement}
                     {rightElement}
                 </div>

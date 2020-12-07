@@ -18,20 +18,11 @@ const styles = {
     container: {
         position: 'relative',
         display: 'flex',
-        maxHeight: 610,
+        overflowY: 'auto',
+        maxHeight: 'calc(100vh - 100px - 76px - 72px)',
     },
     content: {
         overflow: 'auto',
-    },
-    titleContainer: {
-        alignSelf: 'center',
-        flexGrow: 0,
-        flexShrink: 0,
-        width: 50,
-    },
-    title: {
-        textTransform: 'uppercase',
-        transform: 'rotate(-90deg)',
     },
     button: {
         float: 'right',
@@ -58,11 +49,6 @@ const PublicationPreviewComponent = ({
 
     return (
         <div style={styles.container} className="publication-preview">
-            <div style={styles.titleContainer}>
-                <div style={styles.title}>
-                    {polyglot.t('publication_preview')}
-                </div>
-            </div>
             <PublicationExcerpt onHeaderClick={editColumn} fields={fields} />
             <PublicationModalWizard
                 filter={filter}

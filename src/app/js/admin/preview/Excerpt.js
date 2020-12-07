@@ -28,11 +28,11 @@ const styles = {
         cursor: 'pointer',
     },
     table: memoize(separated => ({
-        display: 'block',
+        display: separated ? 'block' : 'table',
         overflowX: 'auto',
         width: 'auto',
-        minHeight: 500,
-        borderLeft: separated ? 'none' : '1px solid rgb(224, 224, 224)',
+        minWidth: separated ? 'unset' : '100%',
+        border: separated ? 'none' : '1px solid rgb(224, 224, 224)',
     })),
     cell: {
         cursor: 'pointer',
