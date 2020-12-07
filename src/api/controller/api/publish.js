@@ -68,7 +68,7 @@ export const verifyUri = async ctx => {
 
     ctx.body = {
         nbInvalidUri: await ctx.dataset.countNotUnique(uriFields),
-        nbInvalidSubresourceUri: await ctx.dataset.countNotUniqueSubresources(
+        nbInvalidSubresourceUriMap: await ctx.dataset.countNotUniqueSubresources(
             fieldsSubresources,
         ),
     };

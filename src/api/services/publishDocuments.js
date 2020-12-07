@@ -44,7 +44,11 @@ const groupSubresourceFields = fields =>
         return acc;
     }, {});
 
-export default async (ctx, count, fields) => {
+export const publishDocumentsFactory = ({
+    versionTransformerDecorator,
+    getDocumentTransformer,
+    transformAllDocuments,
+}) => async (ctx, count, fields) => {
     const mainResourceFields = fields.filter(
         c => c.cover === 'collection' && !c.subresourceId,
     );
@@ -104,3 +108,9 @@ export default async (ctx, count, fields) => {
         versionTransformerDecorator(transformMainResourceDocument),
     );
 };
+
+export default publishDocumentsFactory({
+    versionTransformerDecorator,
+    getDocumentTransformer,
+    transformAllDocuments,
+});

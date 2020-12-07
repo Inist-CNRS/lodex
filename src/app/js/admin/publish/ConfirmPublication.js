@@ -23,7 +23,7 @@ const styles = {
 
 export const ConfirmPublicationComponent = ({
     nbInvalidUri,
-    nbInvalidSubresourceUri,
+    nbInvalidSubresourceUriMap,
     confirmPublication,
     cancelPublication,
     p: polyglot,
@@ -49,7 +49,8 @@ export const ConfirmPublicationComponent = ({
         </Button>,
     ];
 
-    const nbInvalidSubresources = Object.keys(nbInvalidSubresourceUri).length;
+    const nbInvalidSubresources = Object.keys(nbInvalidSubresourceUriMap)
+        .length;
 
     return (
         <Dialog open={nbInvalidUri > 0}>
@@ -65,11 +66,11 @@ export const ConfirmPublicationComponent = ({
                                 })}
                             </p>
                             <ul>
-                                {Object.keys(nbInvalidSubresourceUri).map(
+                                {Object.keys(nbInvalidSubresourceUriMap).map(
                                     name => (
                                         <li key={name}>
                                             {name}:{' '}
-                                            {nbInvalidSubresourceUri[name]}
+                                            {nbInvalidSubresourceUriMap[name]}
                                         </li>
                                     ),
                                 )}
@@ -85,7 +86,7 @@ export const ConfirmPublicationComponent = ({
 
 ConfirmPublicationComponent.propTypes = {
     nbInvalidUri: PropTypes.number.isRequired,
-    nbInvalidSubresourceUri: PropTypes.number.isRequired,
+    nbInvalidSubresourceUriMap: PropTypes.number.isRequired,
     confirmPublication: PropTypes.func.isRequired,
     cancelPublication: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -93,7 +94,9 @@ ConfirmPublicationComponent.propTypes = {
 
 const mapStateToProps = state => ({
     nbInvalidUri: fromPublish.getNbInvalidUri(state),
-    nbInvalidSubresourceUri: fromPublish.getNbInvalidSubresourceUri(state),
+    nbInvalidSubresourceUriMap: fromPublish.getNbInvalidSubresourceUriMap(
+        state,
+    ),
 });
 
 const mapDispatchToProps = {

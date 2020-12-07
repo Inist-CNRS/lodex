@@ -1,5 +1,9 @@
 import { call, put, select, race, take } from 'redux-saga/effects';
+
 import fetchSaga from '../../lib/sagas/fetchSaga';
+import { fromUser } from '../../sharedSelectors';
+import { handlePublishRequest } from './sagas';
+import { FINISH_PROGRESS, ERROR_PROGRESS } from '../progress/reducer';
 
 import {
     publishError,
@@ -8,9 +12,6 @@ import {
     PUBLISH_CONFIRM,
     PUBLISH_CANCEL,
 } from './';
-import { fromUser } from '../../sharedSelectors';
-import { handlePublishRequest } from './sagas';
-import { FINISH_PROGRESS, ERROR_PROGRESS } from '../progress/reducer';
 
 describe('publication saga', () => {
     describe('handlePublishRequest', () => {
@@ -29,9 +30,14 @@ describe('publication saga', () => {
         });
 
         it('should select getPublishRequest', () => {
-            expect(saga.next({ response: { nbInvalidUri: 0 } }).value).toEqual(
-                select(fromUser.getPublishRequest),
-            );
+            expect(
+                saga.next({
+                    response: {
+                        nbInvalidUri: 0,
+                        nbInvalidSubresourceUriMap: {},
+                    },
+                }).value,
+            ).toEqual(select(fromUser.getPublishRequest));
         });
 
         it('should call fetchSaga with the request', () => {
@@ -59,7 +65,9 @@ describe('publication saga', () => {
             const failedSaga = handlePublishRequest();
             failedSaga.next();
             failedSaga.next();
-            failedSaga.next({ response: { nbInvalidUri: 0 } });
+            failedSaga.next({
+                response: { nbInvalidUri: 0, nbInvalidSubresourceUriMap: {} },
+            });
             failedSaga.next();
             expect(failedSaga.next({ error: 'foo' }).value).toEqual(
                 put(publishError('foo')),
@@ -70,7 +78,9 @@ describe('publication saga', () => {
             const failedSaga = handlePublishRequest();
             failedSaga.next();
             failedSaga.next();
-            failedSaga.next({ response: { nbInvalidUri: 0 } });
+            failedSaga.next({
+                response: { nbInvalidUri: 0, nbInvalidSubresourceUriMap: {} },
+            });
             failedSaga.next();
             expect(failedSaga.next({}).value).toEqual(
                 race({
@@ -102,8 +112,20 @@ describe('publication saga', () => {
         });
 
         it('should put publishWarn', () => {
-            expect(saga.next({ response: { nbInvalidUri: 5 } }).value).toEqual(
-                put(publishWarn(5)),
+            expect(
+                saga.next({
+                    response: {
+                        nbInvalidUri: 5,
+                        nbInvalidSubresourceUriMap: {},
+                    },
+                }).value,
+            ).toEqual(
+                put(
+                    publishWarn({
+                        nbInvalidUri: 5,
+                        nbInvalidSubresourceUriMap: {},
+                    }),
+                ),
             );
         });
 
@@ -137,8 +159,20 @@ describe('publication saga', () => {
         });
 
         it('should put publishWarn', () => {
-            expect(saga.next({ response: { nbInvalidUri: 5 } }).value).toEqual(
-                put(publishWarn(5)),
+            expect(
+                saga.next({
+                    response: {
+                        nbInvalidUri: 5,
+                        nbInvalidSubresourceUriMap: {},
+                    },
+                }).value,
+            ).toEqual(
+                put(
+                    publishWarn({
+                        nbInvalidUri: 5,
+                        nbInvalidSubresourceUriMap: {},
+                    }),
+                ),
             );
         });
 
