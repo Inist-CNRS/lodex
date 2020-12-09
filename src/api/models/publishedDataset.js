@@ -104,6 +104,7 @@ export default async db => {
         invertedFacets,
         searchableFieldNames,
         facetFieldNames,
+        excludeSubresources = false,
     }) => {
         const filter = getPublishedDatasetFilter({
             match,
@@ -111,6 +112,7 @@ export default async db => {
             facets,
             facetFieldNames,
             invertedFacets,
+            excludeSubresources,
         });
 
         const meta = getMeta(match, searchableFieldNames);
@@ -135,6 +137,7 @@ export default async db => {
             facets,
             facetFieldNames,
             regexSearch: true,
+            excludeSubresources,
         });
 
         return await collection.findLimitFromSkip({
@@ -365,10 +368,17 @@ export default async db => {
                   .toArray()
                   .then(result => (result[0] ? result[0].value : 0));
 
-    collection.countAll = async () =>
-        collection.count({
+    collection.countAll = async ({ excludeSubresources = false } = {}) => {
+        const filter = {
             removedAt: { $exists: false },
-        });
+        };
+
+        if (excludeSubresources) {
+            filter.subresourceId = null;
+        }
+
+        return collection.count(filter);
+    };
 
     collection.create = async (resource, publicationDate = new Date()) => {
         const { uri, ...version } = resource;

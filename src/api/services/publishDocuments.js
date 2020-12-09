@@ -6,16 +6,15 @@ import transformAllDocuments from './transformAllDocuments';
 import progress from './progress';
 import { PUBLISH_DOCUMENT } from '../../common/progressStatus';
 
-export const versionTransformerDecorator = transformDocument => async (
-    document,
-    _,
-    __,
-    publicationDate = new Date(),
-) => {
+export const versionTransformerDecorator = (
+    transformDocument,
+    subresourceId = null,
+) => async (document, _, __, publicationDate = new Date()) => {
     const doc = await transformDocument(document);
 
     return {
         uri: doc.uri,
+        subresourceId,
         versions: [
             {
                 ...omit(doc, ['uri']),
@@ -89,6 +88,7 @@ export const publishDocumentsFactory = ({
 
                 return versionTransformerDecorator(
                     subresourceDocumentTransformer,
+                    subresourceId,
                 )(...args);
             };
 

@@ -142,7 +142,6 @@ export class ResourceComponent extends Component {
                 <div className="resource">
                     {removed && <RemovedDetail />}
                     {!removed && <Detail backToListLabel={backToListLabel} />}
-
                     {prevResource && (
                         <div
                             className={classnames(
@@ -209,6 +208,7 @@ ResourceComponent.propTypes = {
 
 const mapStateToProps = state => {
     const resource = fromResource.getResourceLastVersion(state);
+
     return {
         resource,
         removed: fromResource.hasBeenRemoved(state),
