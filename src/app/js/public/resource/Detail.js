@@ -208,10 +208,17 @@ const mapStateToProps = state => {
     const descriptionKey = fromFields.getResourceDescriptionFieldName(state);
     const title = get(resource, titleKey);
     const description = get(resource, descriptionKey);
+    const fields = fromFields.getResourceFields(state, resource);
+
+    const subresourceFilteredFields = fields.filter(
+        field =>
+            (!resource.subresourceId && !field.subresourceId) ||
+            field.subresourceId === resource.subresourceId,
+    );
 
     return {
         resource,
-        fields: fromFields.getResourceFields(state, resource),
+        fields: subresourceFilteredFields,
         title,
         description,
     };

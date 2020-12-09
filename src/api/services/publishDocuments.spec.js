@@ -186,6 +186,7 @@ describe('publishDocuments', () => {
                 ),
             ).toEqual({
                 uri: 'transformedUri',
+                subresourceId: null,
                 versions: [
                     {
                         transformed: 'data',

@@ -111,17 +111,24 @@ const getPublishedDatasetFilter = ({
     facetFieldNames,
     invertedFacets,
     regexSearch = false,
+    excludeSubresources = false,
 }) => {
     const addSearchFilters = regexSearch
         ? addRegexToFilters
         : addMatchToFilters;
 
-    return compose(
+    const filters = compose(
         addKeyToFilters('uri', uri),
         addFieldsToFilters(matchableFields),
         addSearchFilters(match, searchableFieldNames),
         addFacetToFilters(facets, facetFieldNames, invertedFacets),
     )({ removedAt: { $exists: false } });
+
+    if (excludeSubresources) {
+        filters.subresourceId = null;
+    }
+
+    return filters;
 };
 
 export default getPublishedDatasetFilter;

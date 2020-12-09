@@ -36,9 +36,12 @@ export const getPage = async ctx => {
         invertedFacets,
         searchableFieldNames,
         facetFieldNames,
+        excludeSubresources: true,
     });
 
-    const fullTotal = await ctx.publishedDataset.countAll();
+    const fullTotal = await ctx.publishedDataset.countAll({
+        excludeSubresources: true,
+    });
 
     ctx.body = {
         total,

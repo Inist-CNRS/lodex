@@ -57,13 +57,16 @@ describe('publishedDataset', () => {
                 invertedFacets: [],
                 searchableFieldNames: ['searchable1', 'searchable2'],
                 facetFieldNames: ['facet1', 'facet2'],
+                excludeSubresources: true,
             });
         });
 
         it('should call ctx.publishedDataset.count', async () => {
             await getPage(ctx);
 
-            expect(ctx.publishedDataset.countAll).toHaveBeenCalledWith();
+            expect(ctx.publishedDataset.countAll).toHaveBeenCalledWith({
+                excludeSubresources: true,
+            });
         });
 
         it('should return only the last version of each doc', async () => {
