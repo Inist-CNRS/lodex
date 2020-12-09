@@ -2,7 +2,6 @@
     {
         "cover": "collection",
         "label": "uri",
-        "display_on_list": true,
         "transformers": [
             {
                 "operation": "AUTOGENERATE_URI",

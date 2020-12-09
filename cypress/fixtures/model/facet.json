@@ -2,15 +2,18 @@
     {
         "cover": "collection",
         "label": "uri",
-        "display_on_list": true,
-        "transformers": [{
-            "operation": "COLUMN",
-            "args": [{
-                "name": "column",
-                "type": "column",
-                "value": "ARK"
-            }]
-        }],
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "ARK"
+                    }
+                ]
+            }
+        ],
         "position": 0,
         "count": 0,
         "name": "uri"
@@ -24,18 +27,22 @@
         "transformers": [
             {
                 "operation": "COLUMN",
-                "args": [{
-                    "name": "column",
-                    "type": "column",
-                    "value": "Affiliation(s)"
-                }]
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "Affiliation(s)"
+                    }
+                ]
             },
             {
-                "args": [{
-                    "name": "separator",
-                    "type": "string",
-                    "value": ";"
-                }],
+                "args": [
+                    {
+                        "name": "separator",
+                        "type": "string",
+                        "value": ";"
+                    }
+                ],
                 "operation": "SPLIT"
             }
         ],

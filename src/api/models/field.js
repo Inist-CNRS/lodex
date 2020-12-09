@@ -233,9 +233,66 @@ export default async db => {
                 cover: COVER_COLLECTION,
                 label: URI_FIELD_NAME,
                 name: URI_FIELD_NAME,
-                display_on_list: true,
                 transformers: [],
                 position: 0,
+            });
+        }
+    };
+
+    collection.initializeSubresourceModel = async subresource => {
+        const uriColumn = await collection.findOne({
+            name: `${subresource._id}_${URI_FIELD_NAME}`,
+            subresourceId: subresource._id,
+        });
+
+        if (!uriColumn) {
+            await collection.insertOne({
+                cover: COVER_COLLECTION,
+                label: URI_FIELD_NAME,
+                name: `${subresource._id}_${URI_FIELD_NAME}`,
+                subresourceId: subresource._id,
+                transformers: [
+                    {
+                        operation: 'COLUMN',
+                        args: [
+                            {
+                                name: 'column',
+                                type: 'column',
+                                value: subresource.path,
+                            },
+                        ],
+                    },
+                    {
+                        operation: 'PARSE',
+                    },
+                    {
+                        operation: 'GET',
+                        args: [
+                            {
+                                name: 'path',
+                                type: 'string',
+                                value: subresource.identifier,
+                            },
+                        ],
+                    },
+                    { operation: 'STRING' },
+                    {
+                        operation: 'REPLACE_REGEX',
+                        args: [
+                            {
+                                name: 'searchValue',
+                                type: 'string',
+                                value: '^(.*)$',
+                            },
+                            {
+                                name: 'replaceValue',
+                                type: 'string',
+                                value: `${subresource._id}/$1`,
+                            },
+                        ],
+                    },
+                ],
+                position: 1,
             });
         }
     };

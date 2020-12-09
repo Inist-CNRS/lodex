@@ -83,7 +83,7 @@ export const setUriColumnValue = (value = 'generate') => {
         .trigger('mouseover')
         .click();
     cy.get('.wizard', { timeout: 2000 }).should('be.visible');
-    cy.get(`.radio_generate input[value="${value}"]`).click();
+    cy.get(`.radio_generate input[value="${value}"]`).click({ force: true });
     cy.get('.btn-save').click();
     cy.get('.wizard').should('not.exist');
 };

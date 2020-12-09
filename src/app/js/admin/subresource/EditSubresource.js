@@ -4,7 +4,7 @@ import { compose, branch, renderComponent, withProps } from 'recompose';
 import withHandlers from 'recompose/withHandlers';
 import { reduxForm } from 'redux-form';
 import { Redirect, withRouter } from 'react-router';
-import { Button } from '@material-ui/core';
+import { Button, makeStyles } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import { Add as ContentAdd } from '@material-ui/icons';
 
@@ -24,6 +24,17 @@ import {
 
 import SubresourceExcerpt from './SubresourceExcerpt';
 import { fromFields } from '../../sharedSelectors';
+
+const useStyles = makeStyles({
+    addFieldButton: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '100px',
+        textAlign: 'center',
+    },
+});
 
 const DeleteSubresourceButton = translate(({ p: polyglot, onClick }) => (
     <Button
@@ -124,18 +135,11 @@ const SubresourceFieldTable = compose(
         { editField: editFieldAction },
     ),
 )(({ fields, editField, p: polyglot }) => {
+    const classes = useStyles();
+
     if (!fields.length) {
         return (
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: '100px',
-                    textAlign: 'center',
-                }}
-            >
+            <div id="add-subresource-field" className={classes.addFieldButton}>
                 <div>
                     <h2 style={{ color: '#888' }}>
                         {polyglot.t('no_field_for_subresource')}

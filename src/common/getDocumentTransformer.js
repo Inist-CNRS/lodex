@@ -24,7 +24,10 @@ export const sanitizeUris = doc => {
         return doc;
     }
 
-    if (doc.uri.startsWith('ark:') || doc.uri.startsWith('uid:')) {
+    if (
+        (doc.uri + '').startsWith('ark:') ||
+        (doc.uri + '').startsWith('uid:')
+    ) {
         return doc;
     }
 
@@ -40,7 +43,6 @@ export const applyTransformation = documentTransformers => async doc => {
     );
 
     const partialDocs = await Promise.all(partialDocsPromises);
-
     const result = partialDocs.reduce(
         (newDoc, partialDoc) => ({
             ...newDoc,
@@ -49,11 +51,10 @@ export const applyTransformation = documentTransformers => async doc => {
         {},
     );
 
-    const resultWithSanitizedUri = sanitizeUris(result);
-    return resultWithSanitizedUri;
+    return sanitizeUris(result);
 };
 
-export default (context, fields, subresource = null) => {
+export default (context, fields) => {
     const documentTransformers = getDocumentTransformations(context, fields);
     return applyTransformation(documentTransformers);
 };

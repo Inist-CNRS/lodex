@@ -1,56 +1,116 @@
 import omit from 'lodash.omit';
+import get from 'lodash.get';
+
 import getDocumentTransformer from './getDocumentTransformer';
 import transformAllDocuments from './transformAllDocuments';
 import progress from './progress';
 import { PUBLISH_DOCUMENT } from '../../common/progressStatus';
 
-export const getVersionInitializer = transformDocument => async (
-    doc,
+export const versionTransformerDecorator = transformDocument => async (
+    document,
     _,
     __,
     publicationDate = new Date(),
 ) => {
-    const transformedDoc = await transformDocument(doc);
+    const doc = await transformDocument(document);
 
     return {
-        uri: transformedDoc.uri,
+        uri: doc.uri,
         versions: [
             {
-                ...omit(transformedDoc, ['uri']),
+                ...omit(doc, ['uri']),
                 publicationDate,
             },
         ],
     };
 };
 
+const groupSubresourcesById = subresources =>
+    subresources.reduce(
+        (acc, subresource) => ({
+            ...acc,
+            [subresource._id]: subresource,
+        }),
+        {},
+    );
+
+const groupSubresourceFields = fields =>
+    fields.reduce((acc, field) => {
+        if (!acc[field.subresourceId]) {
+            acc[field.subresourceId] = [];
+        }
+
+        acc[field.subresourceId].push(field);
+        return acc;
+    }, {});
+
 export const publishDocumentsFactory = ({
-    getVersionInitializer,
+    versionTransformerDecorator,
     getDocumentTransformer,
     transformAllDocuments,
-}) =>
-    async function publishDocuments(ctx, count, fields) {
-        const collectionCoverFields = fields.filter(
-            c => c.cover === 'collection',
-        );
+}) => async (ctx, count, fields) => {
+    const mainResourceFields = fields.filter(
+        c => c.cover === 'collection' && !c.subresourceId,
+    );
 
-        const transformDocument = getDocumentTransformer(
-            ctx.dataset.findBy,
-            collectionCoverFields,
-        );
+    const subresourceFields = fields.filter(
+        c => c.cover === 'collection' && c.subresourceId,
+    );
 
-        const initializeVersion = getVersionInitializer(transformDocument);
+    const subresources = groupSubresourcesById(await ctx.subresource.findAll());
+    const groupedSubresourceFields = groupSubresourceFields(subresourceFields);
 
-        progress.start(PUBLISH_DOCUMENT, count);
-        await transformAllDocuments(
-            count,
-            ctx.dataset.findLimitFromSkip,
-            ctx.publishedDataset.insertBatch,
-            initializeVersion,
-        );
-    };
+    const transformMainResourceDocument = getDocumentTransformer(
+        ctx.dataset.findBy,
+        mainResourceFields,
+    );
+
+    progress.start(PUBLISH_DOCUMENT, count);
+
+    await Promise.all(
+        Object.keys(groupedSubresourceFields).map(subresourceId => {
+            const subresourceFields = groupedSubresourceFields[subresourceId];
+            const subresource = subresources[subresourceId];
+
+            const subresourceDocumentTransformer = getDocumentTransformer(
+                ctx.dataset.findBy,
+                subresourceFields.map(field =>
+                    field.name.endsWith('_uri')
+                        ? { ...field, position: 0, name: 'uri' }
+                        : field,
+                ),
+            );
+
+            const subresourceTransformer = (...args) => {
+                // Remove empty subresource
+                if (!get(args[0], subresource.path)) {
+                    return false;
+                }
+
+                return versionTransformerDecorator(
+                    subresourceDocumentTransformer,
+                )(...args);
+            };
+
+            return transformAllDocuments(
+                count,
+                ctx.dataset.findLimitFromSkip,
+                ctx.publishedDataset.insertBatchIgnoreDuplicate,
+                subresourceTransformer,
+            );
+        }),
+    );
+
+    await transformAllDocuments(
+        count,
+        ctx.dataset.findLimitFromSkip,
+        ctx.publishedDataset.insertBatch,
+        versionTransformerDecorator(transformMainResourceDocument),
+    );
+};
 
 export default publishDocumentsFactory({
-    getVersionInitializer,
+    versionTransformerDecorator,
     getDocumentTransformer,
     transformAllDocuments,
 });
