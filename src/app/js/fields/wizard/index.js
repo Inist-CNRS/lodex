@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { hideAddColumns } from '../../admin/parsing';
 
 import {
     Stepper,
@@ -19,6 +18,7 @@ import {
     saveField as saveFieldAction,
 } from '../';
 
+import { hideAddColumns } from '../../admin/parsing';
 import { field as fieldPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import StepValue from './StepValue';
@@ -114,7 +114,6 @@ class FieldEditionWizardComponent extends Component {
 
     render() {
         const { field, fields, filter } = this.props;
-
         const { step } = this.state;
 
         if (!field) return null;
@@ -130,7 +129,7 @@ class FieldEditionWizardComponent extends Component {
                 />,
                 !field.subresourceId && <StepValue key="value" />,
                 <StepTransforms
-                    key="transformations"
+                    key="transformers"
                     isSubresourceField={!!field.subresourceId}
                 />,
                 !field.subresourceId && <StepSemantics key="semantics" />,

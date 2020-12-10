@@ -11,6 +11,7 @@ import { formValueSelector } from 'redux-form';
 import { FIELD_FORM_NAME } from '../';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import SelectDatasetField from './SelectDatasetField';
+import { isSubresourceTransformation } from './StepValueSubresource';
 
 const styles = {
     inset: {
@@ -75,7 +76,7 @@ const mapStateToProps = state => {
 
     if (valueTransformer) {
         return {
-            selected: true,
+            selected: !isSubresourceTransformation(transformers),
             column:
                 (valueTransformer.args &&
                     valueTransformer.args[0] &&
@@ -92,29 +93,33 @@ export default compose(
     withState('column', 'setColumn', ({ column }) => column),
     withHandlers({
         handleSelect: ({ onChange, column }) => () => {
-            onChange({
-                operation: 'COLUMN',
-                args: [
-                    {
-                        name: 'column',
-                        type: 'column',
-                        value: column,
-                    },
-                ],
-            });
+            onChange([
+                {
+                    operation: 'COLUMN',
+                    args: [
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value: column,
+                        },
+                    ],
+                },
+            ]);
         },
         handleChange: ({ onChange, setColumn }) => value => {
             setColumn(value);
-            onChange({
-                operation: 'COLUMN',
-                args: [
-                    {
-                        name: 'column',
-                        type: 'column',
-                        value,
-                    },
-                ],
-            });
+            onChange([
+                {
+                    operation: 'COLUMN',
+                    args: [
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value,
+                        },
+                    ],
+                },
+            ]);
         },
     }),
     translate,

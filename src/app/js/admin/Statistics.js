@@ -99,6 +99,7 @@ const mapStateToProps = (state, { filter }) => ({
         if (!filter) {
             return true;
         }
+
         return filter === 'document'
             ? (f.cover === 'collection' || f.cover === 'document') &&
                   !f.display_in_graph

@@ -1,16 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { compose, branch, renderComponent, withProps } from 'recompose';
 import withHandlers from 'recompose/withHandlers';
 import { reduxForm } from 'redux-form';
 import { Redirect, withRouter } from 'react-router';
-import { Button, makeStyles } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import { Add as ContentAdd } from '@material-ui/icons';
+
+import {
+    compose,
+    branch,
+    renderComponent,
+    withProps,
+    withState,
+} from 'recompose';
+
+import {
+    Button,
+    makeStyles,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+} from '@material-ui/core';
 
 import PublicationModalWizard from '../../fields/wizard';
 import SubresourceForm from './SubresourceForm';
 import FloatingActionButton from '../../lib/components/FloatingActionButton';
+import SubresourceExcerpt from './SubresourceExcerpt';
+import { fromFields } from '../../sharedSelectors';
 
 import {
     updateSubresource as updateSubresourceAction,
@@ -21,9 +37,6 @@ import {
     addField as addFieldAction,
     editField as editFieldAction,
 } from '../../fields';
-
-import SubresourceExcerpt from './SubresourceExcerpt';
-import { fromFields } from '../../sharedSelectors';
 
 const useStyles = makeStyles({
     addFieldButton: {
@@ -36,18 +49,35 @@ const useStyles = makeStyles({
     },
 });
 
-const DeleteSubresourceButton = translate(({ p: polyglot, onClick }) => (
-    <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => {
-            if (confirm(polyglot.t('confirm_delete_subresource'))) {
-                onClick();
-            }
-        }}
-    >
-        {polyglot.t('delete')}
-    </Button>
+const DeleteSubresourceButton = compose(
+    translate,
+    withState('showDeletePopup', 'setShowDeletePopup', false),
+)(({ p: polyglot, onClick, showDeletePopup, setShowDeletePopup }) => (
+    <>
+        <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => setShowDeletePopup(true)}
+        >
+            {polyglot.t('delete')}
+        </Button>
+        {showDeletePopup && (
+            <Dialog open>
+                <DialogTitle>
+                    {polyglot.t('confirm_delete_subresource')}
+                </DialogTitle>
+                <DialogContent>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={onClick}
+                    >
+                        OK
+                    </Button>
+                </DialogContent>
+            </Dialog>
+        )}
+    </>
 ));
 
 const EditSubresourceForm = compose(

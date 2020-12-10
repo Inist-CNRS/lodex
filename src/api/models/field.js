@@ -140,6 +140,14 @@ export default async db => {
     collection.removeById = id =>
         collection.remove({ _id: new ObjectID(id), name: { $ne: 'uri' } });
 
+    collection.removeBySubresource = subresourceId =>
+        collection.remove({
+            $or: [
+                { subresourceId: new ObjectID(subresourceId) },
+                { subresourceId },
+            ],
+        });
+
     collection.addContributionField = async (
         field,
         contributor,
