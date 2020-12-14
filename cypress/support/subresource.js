@@ -1,7 +1,7 @@
 const defaultSubresource = {
-    name: 'Foo',
-    identifier: 'Bar',
-    path: 'Path',
+    name: 'Animals',
+    identifier: 'id',
+    path: 'most_found_animal_species',
 };
 
 export const fillSubcategoryFormAndSubmit = values => {
@@ -37,7 +37,7 @@ export const createSubresource = (subresource = defaultSubresource) => {
     fillSubcategoryFormAndSubmit(subresource);
 
     cy.get('.sub-sidebar')
-        .contains('Foo')
+        .contains('Animals')
         .should('be.visible');
 
     cy.url().should('not.contain', '/display/document/add');

@@ -114,8 +114,8 @@ const EditSubresourceForm = compose(
     }),
 )(SubresourceForm);
 
-const createDefaultSubresourceField = subresourceId => ({
-    subresourceId,
+const createDefaultSubresourceField = subresource => ({
+    subresourceId: subresource._id,
     transformers: [
         {
             operation: 'COLUMN',
@@ -123,7 +123,7 @@ const createDefaultSubresourceField = subresourceId => ({
                 {
                     name: 'column',
                     type: 'column',
-                    value: 'most_found_animal_species',
+                    value: subresource.path,
                 },
             ],
         },
@@ -137,14 +137,21 @@ const createDefaultSubresourceField = subresourceId => ({
 
 const AddSubresourceFieldButton = compose(
     withRouter,
-    connect(null, { addField: addFieldAction, editField: editFieldAction }),
-)(({ addField, editField, match }) => (
+    connect(
+        (state, { match }) => ({
+            subresource: state.subresource.subresources.find(
+                s => s._id === match.params.subresourceId,
+            ),
+        }),
+        { addField: addFieldAction, editField: editFieldAction },
+    ),
+)(({ addField, editField, subresource }) => (
     <>
         <FloatingActionButton
             onClick={() =>
-                addField(
-                    createDefaultSubresourceField(match.params.subresourceId),
-                )
+                console.log(JSON.stringify({ subresource })) ||
+                (subresource &&
+                    addField(createDefaultSubresourceField(subresource)))
             }
         >
             <ContentAdd />
@@ -158,6 +165,7 @@ const AddSubresourceFieldButton = compose(
 
 const SubresourceFieldTable = compose(
     translate,
+
     connect(
         (state, { subresourceId }) => ({
             fields: fromFields.getSubresourceFields(state, subresourceId),
