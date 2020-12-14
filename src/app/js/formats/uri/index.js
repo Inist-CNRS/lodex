@@ -9,5 +9,9 @@ export default {
     ListComponent: Component,
     AdminComponent,
     defaultArgs,
-    predicate: value => value == null || value === '' || isLink(value),
+    predicate: value =>
+        value == null ||
+        value === '' ||
+        isLink(value) ||
+        (Array.isArray(value) && value.every(isLink)),
 };
