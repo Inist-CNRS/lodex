@@ -56,17 +56,27 @@ export const UploadComponent = ({
     loaders,
 }) => {
     const [files, setFiles] = useState([]);
+    const [dropping, setDropping] = useState(false);
     const [useUrl, setUseUrl] = useState(false);
     const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
 
-    const onFileAdded = list => {
+    const handleAdding = () => {
+        setDropping(true);
+    };
+
+    const handleAddRejected = () => {
+        setDropping(false);
+    };
+
+    const handleFileAdded = list => {
+        setDropping(false);
         if (!list || list.length === 0) return;
 
         setFiles([...list]);
     };
 
-    const onFileUploaded = () => {
+    const handleFileUploaded = () => {
         if (files.length === 0) return;
 
         onFileLoad(files[0].file);
@@ -75,7 +85,7 @@ export const UploadComponent = ({
         }
     };
 
-    const onUrlAdded = (...params) => {
+    const handleUrlAdded = (...params) => {
         onUrlUpload(...params);
         if (path != successRedirectPath) {
             history.push(successRedirectPath);
@@ -97,14 +107,17 @@ export const UploadComponent = ({
                     filesLimit={1}
                     maxFileSize={1 * 1024 * 1024 * 1024}
                     dropzoneText={
-                        files.length
+                        dropping
+                            ? 'ADDING'
+                            : files.length
                             ? files[0].file.name
                             : polyglot.t('import_file_text')
                     }
                     showPreviewsInDropzone
                     showFileNamesInPreview
-                    onAdd={fileObjs => onFileAdded(fileObjs)}
-                    onDelete={fileObj => console.log('Removed File:', fileObj)}
+                    onAdd={fileObjs => handleFileAdded(fileObjs)}
+                    onDrop={handleAdding}
+                    onDropRejected={handleAddRejected}
                     onAlert={(message, variant) =>
                         console.log(`${variant}: ${message}`)
                     }
@@ -124,7 +137,7 @@ export const UploadComponent = ({
                     fullWidth
                     style={styles.button}
                     disabled={files.length === 0}
-                    onClick={onFileUploaded}
+                    onClick={handleFileUploaded}
                 >
                     {polyglot.t('upload_file')}
                 </Button>
@@ -151,7 +164,7 @@ export const UploadComponent = ({
                         fullWidth
                         style={styles.button}
                         disabled={!url || !isUrlValid}
-                        onClick={onUrlAdded}
+                        onClick={handleUrlAdded}
                     >
                         {polyglot.t('upload_url')}
                     </Button>
