@@ -117,6 +117,7 @@
 "value"	"value"	"valeur"
 "exit_column_edition"	"Back to preview"	"Retour à l'aperçu"
 "upload_file"	"Upload the file"	"Importer le fichier"
+"inspect_file"	"Inspecting file"	"Inspection du fichier"
 "annotate_field"	"Annotate another field"	"Annoter un autre champ"
 "completes_field_none"	"None"	"Aucun"
 "completes_field_X"	"annotates %{field}"	"annote %{field}"
