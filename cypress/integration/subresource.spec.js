@@ -59,7 +59,7 @@ describe('Subresource Page', () => {
             '1 subresource(s) are duplicated will not be published',
         ).should('exist');
 
-        cy.contains('Foo: 2').should('exist');
+        cy.contains('Animals: 1').should('exist');
     });
 
     it('should successfully publish subresources', () => {

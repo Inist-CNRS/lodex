@@ -39,6 +39,7 @@ export const putSubresource = async (ctx, id) => {
 export const deleteSubresource = async (ctx, id) => {
     try {
         await ctx.subresource.delete(id);
+        await ctx.field.removeBySubresource(id);
         ctx.body = true;
     } catch (error) {
         ctx.status = 403;

@@ -89,28 +89,32 @@ export default compose(
     connect(mapStateToProps),
     withHandlers({
         handleSelect: ({ onChange, value }) => () => {
-            onChange({
-                operation: 'VALUE',
-                args: [
-                    {
-                        name: 'value',
-                        type: 'string',
-                        value,
-                    },
-                ],
-            });
+            onChange([
+                {
+                    operation: 'VALUE',
+                    args: [
+                        {
+                            name: 'value',
+                            type: 'string',
+                            value,
+                        },
+                    ],
+                },
+            ]);
         },
         handleChange: ({ onChange }) => event => {
-            onChange({
-                operation: 'VALUE',
-                args: [
-                    {
-                        name: 'value',
-                        type: 'string',
-                        value: event.target.value,
-                    },
-                ],
-            });
+            onChange([
+                {
+                    operation: 'VALUE',
+                    args: [
+                        {
+                            name: 'value',
+                            type: 'string',
+                            value: event.target.value,
+                        },
+                    ],
+                },
+            ]);
         },
     }),
     translate,

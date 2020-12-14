@@ -101,54 +101,62 @@ export default compose(
     connect(mapStateToProps),
     withHandlers({
         handleSelect: ({ onChange }) => () => {
-            onChange({
-                operation: 'CONCAT',
-                args: [
-                    {
-                        name: 'column',
-                        type: 'column',
-                        value: '',
-                    },
-                    {
-                        name: 'column',
-                        type: 'column',
-                        value: '',
-                    },
-                ],
-            });
+            onChange([
+                {
+                    operation: 'CONCAT',
+                    args: [
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value: '',
+                        },
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value: '',
+                        },
+                    ],
+                },
+            ]);
         },
         handleChange: ({ onChange, args }) => (value, event, key, index) => {
-            onChange({
-                operation: 'CONCAT',
-                args: [
-                    ...args.slice(0, index),
-                    {
-                        name: 'column',
-                        type: 'column',
-                        value,
-                    },
-                    ...args.slice(index + 1),
-                ],
-            });
+            onChange([
+                {
+                    operation: 'CONCAT',
+                    args: [
+                        ...args.slice(0, index),
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value,
+                        },
+                        ...args.slice(index + 1),
+                    ],
+                },
+            ]);
         },
         handleAddColumn: ({ onChange, args }) => {
-            onChange({
-                operation: 'CONCAT',
-                args: [
-                    ...args,
-                    {
-                        name: 'column',
-                        type: 'column',
-                        value: '',
-                    },
-                ],
-            });
+            onChange([
+                {
+                    operation: 'CONCAT',
+                    args: [
+                        ...args,
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value: '',
+                        },
+                    ],
+                },
+            ]);
         },
         handleRemoveColumn: ({ onChange, args }) => index => {
-            onChange({
-                operation: 'CONCAT',
-                args: [...args.slice(0, index), ...args.slice(index + 1)],
-            });
+            onChange([
+                {
+                    operation: 'CONCAT',
+                    args: [...args.slice(0, index), ...args.slice(index + 1)],
+                },
+            ]);
         },
     }),
     translate,
