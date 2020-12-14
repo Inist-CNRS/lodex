@@ -158,11 +158,10 @@ export const UploadComponent = ({
                 <Button
                     variant="contained"
                     disabled={!isUrlValid}
-                    className="btn-upload-url"
                     component="label"
                     color="primary"
                     fullWidth
-                    className={classes.button}
+                    className={classnames(classes.button, 'btn-upload-url')}
                     disabled={!url || !isUrlValid}
                     onClick={handleUrlAdded}
                 >
@@ -171,11 +170,10 @@ export const UploadComponent = ({
             ) : (
                 <Button
                     variant="contained"
-                    className="btn-upload-dataset"
                     component="label"
                     color="primary"
                     fullWidth
-                    className={classes.button}
+                    className={classnames(classes.button, 'btn-upload-dataset')}
                     disabled={files.length === 0}
                     onClick={handleFileUploaded}
                 >
