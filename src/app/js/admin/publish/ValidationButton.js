@@ -22,7 +22,8 @@ const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };
 const styles = {
     container: {
-        display: 'inline-block',
+        display: 'flex',
+        alignItems: 'center',
         marginLeft: 4,
         marginRight: 4,
     },
