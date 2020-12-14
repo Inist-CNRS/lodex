@@ -152,7 +152,6 @@ export default compose(
             });
         },
         handleSeparatorChange: ({ onChange, args }) => event => {
-            console.log('EEE', event, value);
             onChange({
                 operation: 'CONCAT_URI',
                 args: [
