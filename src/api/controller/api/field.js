@@ -9,6 +9,7 @@ import { validateField } from '../../models/field';
 import publishFacets from './publishFacets';
 import {
     SCOPE_DATASET,
+    SCOPE_GRAPHIC,
     SCOPE_COLLECTION,
     SCOPE_DOCUMENT,
 } from '../../../common/scope';
@@ -156,31 +157,41 @@ export const reorderField = async ctx => {
     const fieldsData = fields.map(name => fieldsDict[name]);
 
     try {
-        const cover = fieldsData.reduce((prev, { cover }) => {
+        const scope = fieldsData.reduce((prev, { scope }) => {
             if (!prev) {
-                return cover;
+                return scope;
             }
 
             if (prev === SCOPE_DATASET) {
-                if (cover === SCOPE_DATASET) {
+                if (scope === SCOPE_DATASET) {
                     return prev;
                 }
 
                 throw new Error(
-                    'Bad cover: trying to mix characteristic with other fields',
+                    'Bad scope: trying to mix home fields with other fields',
                 );
             }
 
-            if (cover === SCOPE_COLLECTION || cover === SCOPE_DOCUMENT) {
+            if (prev === SCOPE_GRAPHIC) {
+                if (scope === SCOPE_GRAPHIC) {
+                    return prev;
+                }
+
+                throw new Error(
+                    'Bad scope: trying to mix graphic fields with other fields',
+                );
+            }
+
+            if (scope === SCOPE_COLLECTION || scope === SCOPE_DOCUMENT) {
                 return SCOPE_COLLECTION;
             }
 
             throw new Error(
-                'Bad cover: trying to mix characteristic with other fields',
+                'Bad scope: trying to mix ressource fields with other fields',
             );
         }, null);
 
-        if (cover === SCOPE_COLLECTION) {
+        if (scope === SCOPE_COLLECTION) {
             if (fieldsData[0].name !== 'uri') {
                 throw new Error('Uri must always be the first field');
             }

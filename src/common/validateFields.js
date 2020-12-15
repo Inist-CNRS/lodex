@@ -1,15 +1,15 @@
-import { SCOPES, SCOPE_DOCUMENT, SCOPE_DATASET } from './scope';
+import { SCOPES, SCOPE_COLLECTION, SCOPE_DOCUMENT } from './scope';
 import knownTransformers from './transformers';
 import languagesList from './languages';
 import isUndefinedOrEmpty from './lib/isUndefinedOrEmpty';
 
-export const validateCover = (field, isContribution) => {
+export const validateScope = (field, isContribution) => {
     const result = {
-        name: 'cover',
+        name: 'scope',
         isValid: true,
     };
 
-    if (!field.cover) {
+    if (!field.scope) {
         return {
             ...result,
             isValid: false,
@@ -17,19 +17,19 @@ export const validateCover = (field, isContribution) => {
         };
     }
 
-    if (isContribution && field.cover !== SCOPE_DOCUMENT) {
+    if (isContribution && field.scope !== SCOPE_DOCUMENT) {
         return {
             ...result,
             isValid: false,
-            error: 'invalid_contribution_cover',
+            error: 'invalid_contribution_scope',
         };
     }
 
-    if (!SCOPES.includes(field.cover)) {
+    if (!SCOPES.includes(field.scope)) {
         return {
             ...result,
             isValid: false,
-            error: 'invalid_cover',
+            error: 'invalid_scope',
         };
     }
 
@@ -60,9 +60,17 @@ export const validatePosition = field => {
 
     if (
         field.position === 0 &&
-        field.cover !== SCOPE_DATASET &&
+        field.scope === SCOPE_COLLECTION &&
         field.name !== 'uri'
     ) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'uri_must_come_first',
+        };
+    }
+
+    if (field.position === 0 && field.scope === SCOPE_DOCUMENT) {
         return {
             ...result,
             isValid: false,

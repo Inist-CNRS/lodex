@@ -84,10 +84,10 @@ const styles = stylesToClassname(
     'graph-summary',
 );
 
-const PureGraphSummary = ({ graphFields, closeDrawer }) => (
+const PureGraphSummary = ({ graphicFields, closeDrawer }) => (
     <div className={styles.container}>
         <div className={classnames('graph-summary', styles.links)}>
-            {graphFields.map(field => {
+            {graphicFields.map(field => {
                 const Icon = getIconComponent(field);
                 return (
                     <Link
@@ -119,12 +119,12 @@ const PureGraphSummary = ({ graphFields, closeDrawer }) => (
 );
 
 PureGraphSummary.propTypes = {
-    graphFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    graphicFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     closeDrawer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-    graphFields: fromFields.getGraphFields(state),
+    graphicFields: fromFields.getGraphicFields(state),
 });
 
 export default connect(mapStateToProps)(PureGraphSummary);

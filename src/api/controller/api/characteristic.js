@@ -5,7 +5,7 @@ import get from 'lodash.get';
 import set from 'lodash.set';
 import deepCopy from 'lodash.clonedeep';
 
-import { SCOPE_DATASET } from '../../../common/scope';
+import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../common/scope';
 
 const app = new Koa();
 

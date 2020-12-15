@@ -14,6 +14,7 @@ import {
     SCOPE_COLLECTION,
     SCOPE_DOCUMENT,
     SCOPE_DATASET,
+    SCOPE_GRAPHIC,
 } from '../../../common/scope';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
@@ -22,11 +23,13 @@ export const getFields = ({ byName, list = [] }) =>
     list.map(name => byName[name]).sort((f1, f2) => f1.position - f2.position);
 
 const getOntologyFieldsFilter = (type, keepUriField = false) =>
-    type === SCOPE_DATASET
-        ? ({ cover, name }) =>
-              (name === 'uri' && keepUriField) || cover === SCOPE_DATASET
-        : ({ cover, name }) =>
-              (name === 'uri' && keepUriField) || cover !== SCOPE_DATASET;
+    type === SCOPE_COLLECTION || type === SCOPE_DOCUMENT
+        ? ({ scope, name }) =>
+              (name === 'uri' && keepUriField) ||
+              scope === SCOPE_COLLECTION ||
+              scope === SCOPE_DOCUMENT
+        : ({ scope, name }) =>
+              (name === 'uri' && keepUriField) || scope === type;
 
 const getOntologyFields = createSelector(
     getFields,
@@ -68,7 +71,7 @@ const getEditedFieldName = state => state.editedFieldName;
 const getEditedField = state => state.byName[state.editedFieldName];
 
 export const getCollectionFields = createSelector(getFields, fields =>
-    fields.filter(f => f.cover === SCOPE_COLLECTION),
+    fields.filter(f => f.scope === SCOPE_COLLECTION),
 );
 
 export const getSubresourceFields = createSelector(
@@ -79,27 +82,26 @@ export const getSubresourceFields = createSelector(
 );
 
 const getDocumentFields = createSelector(getFields, fields =>
-    fields
-        .filter(f => f.display_in_resource || f.contribution)
-        .filter(f => f.cover === SCOPE_DOCUMENT),
+    fields.filter(
+        f => f.display && f.contribution && f.scope === SCOPE_DOCUMENT,
+    ),
 );
 
 const getDatasetFields = createSelector(getFields, fields =>
-    fields.filter(f => f.cover === SCOPE_DATASET),
+    fields.filter(f => f.scope === SCOPE_DATASET),
+);
+
+const getGraphicFields = createSelector(getFields, fields =>
+    fields.filter(f => f.scope === SCOPE_GRAPHIC),
 );
 
 const getFromFilterFields = createSelector(
     getFields,
     (_, type) => type,
     (fields, type) => {
-        if (type !== 'graph') {
-            return fields
-                .filter(getOntologyFieldsFilter(type, type === 'document'))
-                .filter(f => !f.display_in_graph)
-                .filter(f => !f.subresourceId);
-        }
-
-        return fields.filter(f => !!f.display_in_graph);
+        return fields
+            .filter(getOntologyFieldsFilter(type, type === SCOPE_DOCUMENT))
+            .filter(f => !f.subresourceId);
     },
 );
 
@@ -123,8 +125,8 @@ const getRootCollectionFields = createSelector(
     getCollectionFieldsExceptComposite,
     allFields =>
         allFields
-            .filter(f => f.display_in_resource || f.contribution)
-            .filter(f => f.cover === SCOPE_COLLECTION && !f.completes),
+            .filter(f => f.display || f.contribution)
+            .filter(f => f.scope === SCOPE_COLLECTION && !f.completes),
 );
 
 const getResourceFields = createSelector(
@@ -142,10 +144,6 @@ const getResourceFields = createSelector(
 
 const getListFields = createSelector(getCollectionFields, fields =>
     fields.filter(f => f.name === 'uri').filter(f => !f.composedOf),
-);
-
-const getGraphFields = createSelector(getDatasetFields, fields =>
-    fields.filter(f => f.display_in_graph),
 );
 
 const getAllListFields = createSelector(getCollectionFields, fields =>
@@ -279,7 +277,7 @@ const getSelectedField = ({ selectedField }) => selectedField;
 
 const getFieldToAdd = ({ byName, selectedField }) => {
     if (selectedField === 'new') {
-        return { cover: 'document' };
+        return { scope: SCOPE_DOCUMENT };
     }
     const field = byName[selectedField];
     if (!field) {
@@ -407,7 +405,7 @@ export default {
     getCompositeFieldsByField,
     getCompositeFieldsNamesByField,
     getListFields,
-    getGraphFields,
+    getGraphicFields,
     getAllListFields,
     getCollectionFieldsExceptComposite,
     getRootCollectionFields,

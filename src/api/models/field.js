@@ -8,7 +8,7 @@ import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../common/scope';
 import generateUid from '../services/generateUid';
 
 export const buildInvalidPropertiesMessage = name =>
-    `Invalid data for field ${name} which need a name, a label, a cover, a valid scheme if specified and a transformers array`;
+    `Invalid data for field ${name} which need a name, a label, a scope, a valid scheme if specified and a transformers array`;
 
 export const buildInvalidTransformersMessage = name =>
     `Invalid transformers for field ${name}: transformers must have a valid operation and an args array`;
@@ -86,7 +86,7 @@ export default async db => {
     collection.findAll = async () =>
         collection
             .find({})
-            .sort({ position: 1, cover: 1 })
+            .sort({ position: 1, scope: 1 })
             .toArray();
 
     collection.findSearchableNames = async () => {
@@ -208,7 +208,7 @@ export default async db => {
         await validateField(
             {
                 ...field,
-                cover: SCOPE_DOCUMENT,
+                scope: SCOPE_DOCUMENT,
                 name,
                 position,
             },
@@ -219,7 +219,7 @@ export default async db => {
             const fieldData = {
                 ...pick(field, ['name', 'label', 'scheme']),
                 name,
-                cover: SCOPE_DOCUMENT,
+                scope: SCOPE_DOCUMENT,
                 contribution: true,
                 position,
                 transformers: [
@@ -253,7 +253,7 @@ export default async db => {
                 {
                     $set: {
                         ...pick(field, ['label', 'scheme']),
-                        cover: SCOPE_DOCUMENT,
+                        scope: SCOPE_DOCUMENT,
                         contribution: true,
                     },
                 },
@@ -270,7 +270,7 @@ export default async db => {
             {
                 $set: {
                     ...pick(field, ['label', 'scheme']),
-                    cover: SCOPE_DOCUMENT,
+                    scope: SCOPE_DOCUMENT,
                     contribution: true,
                 },
                 $addToSet: {
@@ -287,7 +287,7 @@ export default async db => {
 
         if (!uriColumn) {
             await collection.insertOne({
-                cover: SCOPE_COLLECTION,
+                scope: SCOPE_COLLECTION,
                 label: URI_FIELD_NAME,
                 name: URI_FIELD_NAME,
                 transformers: [
