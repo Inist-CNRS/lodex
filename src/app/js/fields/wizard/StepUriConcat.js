@@ -85,6 +85,7 @@ StepValueConcatComponent.propTypes = {
 
 StepValueConcatComponent.defaultProps = {
     columns: ['', ''],
+    separator: '',
 };
 
 const mapStateToProps = state => {
@@ -103,7 +104,7 @@ const mapStateToProps = state => {
             columns:
                 get(valueTransformer, 'args', [])
                     .slice(1)
-                    .map(({ value }) => value) || [],
+                    .map(({ value }) => value || '') || [],
             args: valueTransformer.args || [],
         };
     }
@@ -126,17 +127,17 @@ export default compose(
                     {
                         name: 'column',
                         type: 'column',
-                        value: null,
+                        value: '',
                     },
                     {
                         name: 'column',
                         type: 'column',
-                        value: null,
+                        value: '',
                     },
                 ],
             });
         },
-        handleChange: ({ onChange, args }) => (event, key, value, index) => {
+        handleChange: ({ onChange, args }) => (value, event, key, index) => {
             onChange({
                 operation: 'CONCAT_URI',
                 args: [
@@ -150,11 +151,15 @@ export default compose(
                 ],
             });
         },
-        handleSeparatorChange: ({ onChange, args }) => (event, value) => {
+        handleSeparatorChange: ({ onChange, args }) => event => {
             onChange({
                 operation: 'CONCAT_URI',
                 args: [
-                    { name: 'separator', type: 'string', value },
+                    {
+                        name: 'separator',
+                        type: 'string',
+                        value: event.target.value,
+                    },
                     ...args.slice(1),
                 ],
             });
@@ -167,7 +172,7 @@ export default compose(
                     {
                         name: 'column',
                         type: 'column',
-                        value: null,
+                        value: '',
                     },
                 ],
             });
