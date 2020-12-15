@@ -22,6 +22,11 @@ import PrivateRoute from './PrivateRoute';
 import ImportModelButton from './ImportModelButton.js';
 import { fromPublication, fromParsing } from './selectors';
 import theme from './../theme';
+import {
+    SCOPE_COLLECTION,
+    SCOPE_DATASET,
+    SCOPE_GRAPHIC,
+} from '../../../common/scope';
 
 const useStyles = makeStyles({
     sidebar: {
@@ -175,7 +180,7 @@ const InnerSidebarComponent = ({
                         <NavLink
                             className={classes.sidebarNavLink}
                             activeStyle={sidebarNavLinkActiveStyle}
-                            to="/display/dataset"
+                            to={`/display/${SCOPE_DATASET}`}
                         >
                             <HomeIcon />
                             {polyglot.t('home')}
@@ -185,7 +190,7 @@ const InnerSidebarComponent = ({
                         <NavLink
                             className={classes.sidebarNavLink}
                             activeStyle={sidebarNavLinkActiveStyle}
-                            to="/display/document"
+                            to={`/display/${SCOPE_DOCUMENT}`}
                         >
                             <DescriptionIcon />
                             {polyglot.t('resource_pages')}
@@ -195,7 +200,7 @@ const InnerSidebarComponent = ({
                         <NavLink
                             className={classes.sidebarNavLink}
                             activeStyle={sidebarNavLinkActiveStyle}
-                            to="/display/graph"
+                            to={`/display/${SCOPE_GRAPHIC}`}
                         >
                             <EqualizerIcon />
                             {polyglot.t('graph_pages')}
@@ -207,7 +212,7 @@ const InnerSidebarComponent = ({
                         />
                     </Box>
                 </div>
-                <Route path="/display/document">
+                <Route path={`/display/${SCOPE_DOCUMENT}`}>
                     <DocumentMenu />
                 </Route>
             </Route>
