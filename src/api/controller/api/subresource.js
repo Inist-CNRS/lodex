@@ -28,6 +28,9 @@ export const putSubresource = async (ctx, id) => {
     const newResource = ctx.request.body;
 
     try {
+        await ctx.field.initializeSubresourceModel({ ...newResource, _id: id });
+        await ctx.field.updateSubresourcePaths({ ...newResource, _id: id });
+
         ctx.body = await ctx.subresource.update(id, newResource);
     } catch (error) {
         ctx.status = 403;

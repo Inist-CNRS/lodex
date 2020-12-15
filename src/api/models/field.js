@@ -1,6 +1,6 @@
 import omit from 'lodash.omit';
 import pick from 'lodash.pick';
-import { ObjectID } from 'mongodb';
+import { ObjectID, ObjectId } from 'mongodb';
 
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
 import { URI_FIELD_NAME } from '../../common/uris';
@@ -28,6 +28,55 @@ export const validateField = (data, isContribution) => {
 
     return data;
 };
+
+const createSubresourceUriField = subresource => ({
+    cover: COVER_COLLECTION,
+    label: URI_FIELD_NAME,
+    name: `${subresource._id}_${URI_FIELD_NAME}`,
+    subresourceId: subresource._id,
+    transformers: [
+        {
+            operation: 'COLUMN',
+            args: [
+                {
+                    name: 'column',
+                    type: 'column',
+                    value: subresource.path,
+                },
+            ],
+        },
+        {
+            operation: 'PARSE',
+        },
+        {
+            operation: 'GET',
+            args: [
+                {
+                    name: 'path',
+                    type: 'string',
+                    value: subresource.identifier,
+                },
+            ],
+        },
+        { operation: 'STRING' },
+        {
+            operation: 'REPLACE_REGEX',
+            args: [
+                {
+                    name: 'searchValue',
+                    type: 'string',
+                    value: '^(.*)$',
+                },
+                {
+                    name: 'replaceValue',
+                    type: 'string',
+                    value: `${subresource._id}/$1`,
+                },
+            ],
+        },
+    ],
+    position: 1,
+});
 
 export default async db => {
     const collection = db.collection('field');
@@ -248,61 +297,54 @@ export default async db => {
     };
 
     collection.initializeSubresourceModel = async subresource => {
-        const uriColumn = await collection.findOne({
-            name: `${subresource._id}_${URI_FIELD_NAME}`,
-            subresourceId: subresource._id,
-        });
+        const newField = createSubresourceUriField(subresource);
 
-        if (!uriColumn) {
-            await collection.insertOne({
-                cover: COVER_COLLECTION,
-                label: URI_FIELD_NAME,
+        await collection.updateOne(
+            {
                 name: `${subresource._id}_${URI_FIELD_NAME}`,
-                subresourceId: subresource._id,
+            },
+            newField,
+            {
+                upsert: true,
+            },
+        );
+    };
+
+    collection.updateSubresourcePaths = async subresource => {
+        const fields = await collection
+            .find({ subresourceId: subresource._id })
+            .toArray();
+
+        const updatedFields = fields.map(field => {
+            const [columnTransformer, ...transformers] = field.transformers;
+
+            return {
+                ...field,
                 transformers: [
                     {
-                        operation: 'COLUMN',
+                        ...columnTransformer,
                         args: [
                             {
-                                name: 'column',
-                                type: 'column',
+                                ...columnTransformer.args[0],
                                 value: subresource.path,
                             },
                         ],
                     },
-                    {
-                        operation: 'PARSE',
-                    },
-                    {
-                        operation: 'GET',
-                        args: [
-                            {
-                                name: 'path',
-                                type: 'string',
-                                value: subresource.identifier,
-                            },
-                        ],
-                    },
-                    { operation: 'STRING' },
-                    {
-                        operation: 'REPLACE_REGEX',
-                        args: [
-                            {
-                                name: 'searchValue',
-                                type: 'string',
-                                value: '^(.*)$',
-                            },
-                            {
-                                name: 'replaceValue',
-                                type: 'string',
-                                value: `${subresource._id}/$1`,
-                            },
-                        ],
-                    },
+                    ...transformers,
                 ],
-                position: 1,
-            });
-        }
+            };
+        });
+
+        await Promise.all(
+            updatedFields.map(uf =>
+                collection.updateOne(
+                    {
+                        _id: new ObjectId(uf._id),
+                    },
+                    uf,
+                ),
+            ),
+        );
     };
 
     collection.getHighestPosition = async () => {
