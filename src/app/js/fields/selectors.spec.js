@@ -5,10 +5,10 @@ import selectors, {
 } from './selectors';
 
 import {
-    COVER_DATASET,
-    COVER_COLLECTION,
-    COVER_DOCUMENT,
-} from '../../../common/cover';
+    SCOPE_DATASET,
+    SCOPE_COLLECTION,
+    SCOPE_DOCUMENT,
+} from '../../../common/scope';
 
 describe('field selectors', () => {
     describe('getFields', () => {
@@ -34,24 +34,24 @@ describe('field selectors', () => {
         const state = {
             list: ['name1', 'name2', 'name3', 'name4'],
             byName: {
-                name1: { name: 'name1', cover: COVER_DATASET },
-                name2: { name: 'name2', cover: COVER_DATASET },
-                name3: { name: 'name3', cover: COVER_COLLECTION },
-                name4: { name: 'name4', cover: COVER_DOCUMENT },
+                name1: { name: 'name1', cover: SCOPE_DATASET },
+                name2: { name: 'name2', cover: SCOPE_DATASET },
+                name3: { name: 'name3', cover: SCOPE_COLLECTION },
+                name4: { name: 'name4', cover: SCOPE_DOCUMENT },
             },
         };
 
         it('should return array of all dataset fields if second args is dataset', () => {
-            expect(selectors.getOntologyFields(state, COVER_DATASET)).toEqual([
-                { name: 'name1', cover: COVER_DATASET },
-                { name: 'name2', cover: COVER_DATASET },
+            expect(selectors.getOntologyFields(state, SCOPE_DATASET)).toEqual([
+                { name: 'name1', cover: SCOPE_DATASET },
+                { name: 'name2', cover: SCOPE_DATASET },
             ]);
         });
 
         it('should return array of all document and collection fields if second args is not dataset', () => {
             expect(selectors.getOntologyFields(state, 'other')).toEqual([
-                { name: 'name3', cover: COVER_COLLECTION },
-                { name: 'name4', cover: COVER_DOCUMENT },
+                { name: 'name3', cover: SCOPE_COLLECTION },
+                { name: 'name4', cover: SCOPE_DOCUMENT },
             ]);
         });
     });

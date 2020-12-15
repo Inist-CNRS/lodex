@@ -12,10 +12,10 @@ import {
 import publishFacets from './publishFacets';
 import { validateField } from '../../models/field';
 import {
-    COVER_DATASET,
-    COVER_COLLECTION,
-    COVER_DOCUMENT,
-} from '../../../common/cover';
+    SCOPE_DATASET,
+    SCOPE_COLLECTION,
+    SCOPE_DOCUMENT,
+} from '../../../common/scope';
 import indexSearchableFields from '../../services/indexSearchableFields';
 
 jest.mock('../../services/indexSearchableFields');
@@ -408,9 +408,9 @@ describe('field routes', () => {
     describe('reorderField', () => {
         it('should update field position based on index in array when all cover are dataset', async () => {
             const fieldsByName = {
-                a: { cover: COVER_DATASET },
-                b: { cover: COVER_DATASET },
-                c: { cover: COVER_DATASET },
+                a: { cover: SCOPE_DATASET },
+                b: { cover: SCOPE_DATASET },
+                c: { cover: SCOPE_DATASET },
             };
             const ctx = {
                 request: {
@@ -441,9 +441,9 @@ describe('field routes', () => {
 
         it('should update field position based on index in array when all cover are collection or document and first one is uri', async () => {
             const fieldsByName = {
-                a: { cover: COVER_COLLECTION, name: 'uri' },
-                b: { cover: COVER_DOCUMENT },
-                c: { cover: COVER_COLLECTION },
+                a: { cover: SCOPE_COLLECTION, name: 'uri' },
+                b: { cover: SCOPE_DOCUMENT },
+                c: { cover: SCOPE_COLLECTION },
             };
             const ctx = {
                 request: {
@@ -474,9 +474,9 @@ describe('field routes', () => {
 
         it('should throw an error if dataset is mixed with other cover', async () => {
             const fieldsByName = {
-                a: { cover: COVER_DATASET },
-                b: { cover: COVER_DOCUMENT },
-                c: { cover: COVER_COLLECTION },
+                a: { cover: SCOPE_DATASET },
+                b: { cover: SCOPE_DOCUMENT },
+                c: { cover: SCOPE_COLLECTION },
             };
             const ctx = {
                 request: {
@@ -508,9 +508,9 @@ describe('field routes', () => {
 
         it('should throw an error if cover is not dataset and first field is not uri', async () => {
             const fieldsByName = {
-                a: { cover: COVER_COLLECTION, name: 'a' },
-                b: { cover: COVER_DOCUMENT, name: 'uri' },
-                c: { cover: COVER_COLLECTION, name: 'c' },
+                a: { cover: SCOPE_COLLECTION, name: 'a' },
+                b: { cover: SCOPE_DOCUMENT, name: 'uri' },
+                c: { cover: SCOPE_COLLECTION, name: 'c' },
             };
             const ctx = {
                 request: {

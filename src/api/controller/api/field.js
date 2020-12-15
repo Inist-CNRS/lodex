@@ -8,10 +8,10 @@ import streamToString from 'stream-to-string';
 import { validateField } from '../../models/field';
 import publishFacets from './publishFacets';
 import {
-    COVER_DATASET,
-    COVER_COLLECTION,
-    COVER_DOCUMENT,
-} from '../../../common/cover';
+    SCOPE_DATASET,
+    SCOPE_COLLECTION,
+    SCOPE_DOCUMENT,
+} from '../../../common/scope';
 import indexSearchableFields from '../../services/indexSearchableFields';
 
 export const setup = async (ctx, next) => {
@@ -161,8 +161,8 @@ export const reorderField = async ctx => {
                 return cover;
             }
 
-            if (prev === COVER_DATASET) {
-                if (cover === COVER_DATASET) {
+            if (prev === SCOPE_DATASET) {
+                if (cover === SCOPE_DATASET) {
                     return prev;
                 }
 
@@ -171,8 +171,8 @@ export const reorderField = async ctx => {
                 );
             }
 
-            if (cover === COVER_COLLECTION || cover === COVER_DOCUMENT) {
-                return COVER_COLLECTION;
+            if (cover === SCOPE_COLLECTION || cover === SCOPE_DOCUMENT) {
+                return SCOPE_COLLECTION;
             }
 
             throw new Error(
@@ -180,7 +180,7 @@ export const reorderField = async ctx => {
             );
         }, null);
 
-        if (cover === COVER_COLLECTION) {
+        if (cover === SCOPE_COLLECTION) {
             if (fieldsData[0].name !== 'uri') {
                 throw new Error('Uri must always be the first field');
             }

@@ -1,4 +1,4 @@
-import { COVER_DOCUMENT, COVER_COLLECTION, COVER_DATASET } from './cover';
+import { SCOPE_DOCUMENT, SCOPE_COLLECTION, SCOPE_DATASET } from './scope';
 import {
     validateCompletesField,
     validateComposedOf,
@@ -125,21 +125,21 @@ describe('validateField', () => {
 
     describe('validateCover', () => {
         it('should return valid result if cover is part of valid cover', () => {
-            expect(validateCover({ cover: COVER_COLLECTION })).toEqual({
+            expect(validateCover({ cover: SCOPE_COLLECTION })).toEqual({
                 name: 'cover',
                 isValid: true,
             });
         });
 
-        it('should return valid result if cover is COVER_DOCUMENT and contribution is true', () => {
-            expect(validateCover({ cover: COVER_DOCUMENT }, true)).toEqual({
+        it('should return valid result if cover is SCOPE_DOCUMENT and contribution is true', () => {
+            expect(validateCover({ cover: SCOPE_DOCUMENT }, true)).toEqual({
                 name: 'cover',
                 isValid: true,
             });
         });
 
-        it('should return invalid result if cover is not COVER_DOCUMENT and contribution is true', () => {
-            expect(validateCover({ cover: COVER_COLLECTION }, true)).toEqual({
+        it('should return invalid result if cover is not SCOPE_DOCUMENT and contribution is true', () => {
+            expect(validateCover({ cover: SCOPE_COLLECTION }, true)).toEqual({
                 name: 'cover',
                 isValid: false,
                 error: 'invalid_contribution_cover',
@@ -181,7 +181,7 @@ describe('validateField', () => {
         it('should return invalid result if position is 0 and cover is no dataset and field is not uri', () => {
             expect(
                 validatePosition(
-                    { position: 0, name: 'foo', cover: COVER_COLLECTION },
+                    { position: 0, name: 'foo', cover: SCOPE_COLLECTION },
                     true,
                 ),
             ).toEqual({
@@ -194,7 +194,7 @@ describe('validateField', () => {
         it('should return valid result if position is 0 and cover dataset and field is not uri', () => {
             expect(
                 validatePosition(
-                    { position: 0, name: 'foo', cover: COVER_DATASET },
+                    { position: 0, name: 'foo', cover: SCOPE_DATASET },
                     true,
                 ),
             ).toEqual({

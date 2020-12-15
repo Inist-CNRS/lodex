@@ -11,10 +11,10 @@ import {
 } from '../../../common/transformers';
 
 import {
-    COVER_COLLECTION,
-    COVER_DOCUMENT,
-    COVER_DATASET,
-} from '../../../common/cover';
+    SCOPE_COLLECTION,
+    SCOPE_DOCUMENT,
+    SCOPE_DATASET,
+} from '../../../common/scope';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 
@@ -22,11 +22,11 @@ export const getFields = ({ byName, list = [] }) =>
     list.map(name => byName[name]).sort((f1, f2) => f1.position - f2.position);
 
 const getOntologyFieldsFilter = (type, keepUriField = false) =>
-    type === COVER_DATASET
+    type === SCOPE_DATASET
         ? ({ cover, name }) =>
-              (name === 'uri' && keepUriField) || cover === COVER_DATASET
+              (name === 'uri' && keepUriField) || cover === SCOPE_DATASET
         : ({ cover, name }) =>
-              (name === 'uri' && keepUriField) || cover !== COVER_DATASET;
+              (name === 'uri' && keepUriField) || cover !== SCOPE_DATASET;
 
 const getOntologyFields = createSelector(
     getFields,
@@ -68,7 +68,7 @@ const getEditedFieldName = state => state.editedFieldName;
 const getEditedField = state => state.byName[state.editedFieldName];
 
 export const getCollectionFields = createSelector(getFields, fields =>
-    fields.filter(f => f.cover === COVER_COLLECTION),
+    fields.filter(f => f.cover === SCOPE_COLLECTION),
 );
 
 export const getSubresourceFields = createSelector(
@@ -81,11 +81,11 @@ export const getSubresourceFields = createSelector(
 const getDocumentFields = createSelector(getFields, fields =>
     fields
         .filter(f => f.display_in_resource || f.contribution)
-        .filter(f => f.cover === COVER_DOCUMENT),
+        .filter(f => f.cover === SCOPE_DOCUMENT),
 );
 
 const getDatasetFields = createSelector(getFields, fields =>
-    fields.filter(f => f.cover === COVER_DATASET),
+    fields.filter(f => f.cover === SCOPE_DATASET),
 );
 
 const getFromFilterFields = createSelector(
@@ -124,7 +124,7 @@ const getRootCollectionFields = createSelector(
     allFields =>
         allFields
             .filter(f => f.display_in_resource || f.contribution)
-            .filter(f => f.cover === COVER_COLLECTION && !f.completes),
+            .filter(f => f.cover === SCOPE_COLLECTION && !f.completes),
 );
 
 const getResourceFields = createSelector(

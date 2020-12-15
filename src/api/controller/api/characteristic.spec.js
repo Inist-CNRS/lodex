@@ -1,5 +1,5 @@
 import { updateCharacteristics, createCharacteristic } from './characteristic';
-import { COVER_DATASET } from '../../../common/cover';
+import { SCOPE_DATASET } from '../../../common/scope';
 
 describe('characteristic routes', () => {
     describe('updateCharacteristics', () => {
@@ -470,7 +470,7 @@ describe('characteristic routes', () => {
             expect(ctx.field.getHighestPosition).toHaveBeenCalled();
             expect(ctx.field.create).toHaveBeenCalledWith({
                 data: 'field data',
-                cover: COVER_DATASET,
+                cover: SCOPE_DATASET,
                 position: 5,
                 transformers: [
                     {

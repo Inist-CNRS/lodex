@@ -13,7 +13,7 @@ import getQueryString from '../lib/getQueryString';
 import fetchSaga from '../lib/sagas/fetchSaga';
 import { fromDataset, fromFormat } from '../public/selectors';
 import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
-import { COVER_DATASET } from '../../../common/cover';
+import { SCOPE_DATASET } from '../../../common/scope';
 
 describe('format sagas', () => {
     describe('handleFilterFormatDataRequest', () => {
@@ -56,7 +56,7 @@ describe('format sagas', () => {
                 value: select(fromFields.getFieldByName, 'name'),
                 done: false,
             });
-            expect(it.next({ cover: COVER_DATASET })).toEqual({
+            expect(it.next({ cover: SCOPE_DATASET })).toEqual({
                 value: select(
                     fromCharacteristic.getCharacteristicByName,
                     'name',

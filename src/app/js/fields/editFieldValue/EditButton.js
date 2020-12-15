@@ -16,7 +16,7 @@ import {
 import getFieldClassName from '../../lib/getFieldClassName';
 import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 import { openEditFieldValue, closeEditFieldValue } from '../';
-import { COVER_DATASET } from '../../../../common/cover';
+import { SCOPE_DATASET } from '../../../../common/scope';
 import { saveResource } from '../../public/resource';
 import { updateCharacteristics } from '../../characteristic';
 import { grey } from '@material-ui/core/colors';
@@ -38,10 +38,10 @@ const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
     open: fromFields.isFieldEdited(state, field.name),
     show:
         fromUser.isAdmin(state) &&
-        (field.cover === COVER_DATASET ||
+        (field.cover === SCOPE_DATASET ||
             fromResource.isLastVersionSelected(state)),
     saving:
-        field.cover === COVER_DATASET
+        field.cover === SCOPE_DATASET
             ? fromCharacteristic.isSaving(state)
             : fromResource.isSaving(state),
     form: (
@@ -79,7 +79,7 @@ export default compose(
             saveResource,
             field,
         }) => resource =>
-            field.cover === COVER_DATASET
+            field.cover === SCOPE_DATASET
                 ? updateCharacteristics(resource)
                 : saveResource({ field, resource }),
         handleClose: ({ closeEditFieldValue }) => closeEditFieldValue,

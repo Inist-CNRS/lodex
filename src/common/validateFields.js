@@ -1,4 +1,4 @@
-import { COVERS, COVER_DOCUMENT, COVER_DATASET } from './cover';
+import { SCOPES, SCOPE_DOCUMENT, SCOPE_DATASET } from './scope';
 import knownTransformers from './transformers';
 import languagesList from './languages';
 import isUndefinedOrEmpty from './lib/isUndefinedOrEmpty';
@@ -17,7 +17,7 @@ export const validateCover = (field, isContribution) => {
         };
     }
 
-    if (isContribution && field.cover !== COVER_DOCUMENT) {
+    if (isContribution && field.cover !== SCOPE_DOCUMENT) {
         return {
             ...result,
             isValid: false,
@@ -25,7 +25,7 @@ export const validateCover = (field, isContribution) => {
         };
     }
 
-    if (!COVERS.includes(field.cover)) {
+    if (!SCOPES.includes(field.cover)) {
         return {
             ...result,
             isValid: false,
@@ -60,7 +60,7 @@ export const validatePosition = field => {
 
     if (
         field.position === 0 &&
-        field.cover !== COVER_DATASET &&
+        field.cover !== SCOPE_DATASET &&
         field.name !== 'uri'
     ) {
         return {

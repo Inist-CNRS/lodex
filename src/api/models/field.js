@@ -4,7 +4,7 @@ import { ObjectID, ObjectId } from 'mongodb';
 
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
 import { URI_FIELD_NAME } from '../../common/uris';
-import { COVER_DOCUMENT, COVER_COLLECTION } from '../../common/cover';
+import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../common/scope';
 import generateUid from '../services/generateUid';
 
 export const buildInvalidPropertiesMessage = name =>
@@ -208,7 +208,7 @@ export default async db => {
         await validateField(
             {
                 ...field,
-                cover: COVER_DOCUMENT,
+                cover: SCOPE_DOCUMENT,
                 name,
                 position,
             },
@@ -219,7 +219,7 @@ export default async db => {
             const fieldData = {
                 ...pick(field, ['name', 'label', 'scheme']),
                 name,
-                cover: COVER_DOCUMENT,
+                cover: SCOPE_DOCUMENT,
                 contribution: true,
                 position,
                 transformers: [
@@ -253,7 +253,7 @@ export default async db => {
                 {
                     $set: {
                         ...pick(field, ['label', 'scheme']),
-                        cover: COVER_DOCUMENT,
+                        cover: SCOPE_DOCUMENT,
                         contribution: true,
                     },
                 },
@@ -270,7 +270,7 @@ export default async db => {
             {
                 $set: {
                     ...pick(field, ['label', 'scheme']),
-                    cover: COVER_DOCUMENT,
+                    cover: SCOPE_DOCUMENT,
                     contribution: true,
                 },
                 $addToSet: {
@@ -287,7 +287,7 @@ export default async db => {
 
         if (!uriColumn) {
             await collection.insertOne({
-                cover: COVER_COLLECTION,
+                cover: SCOPE_COLLECTION,
                 label: URI_FIELD_NAME,
                 name: URI_FIELD_NAME,
                 transformers: [

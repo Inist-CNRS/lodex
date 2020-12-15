@@ -15,7 +15,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';
 import { fromFields } from '../../sharedSelectors';
 import FieldWidthInput from '../FieldWidthInput';
-import { COVERS, COVER_DATASET } from '../../../../common/cover';
+import { SCOPES, SCOPE_DATASET } from '../../../../common/scope';
 
 export const StepDisplayComponent = ({
     cover,
@@ -25,8 +25,8 @@ export const StepDisplayComponent = ({
 }) => (
     <Step id="step-display" label="field_wizard_step_display" {...props}>
         {keepMeta && <FieldDisplayInResourceInput />}
-        {keepMeta && cover === COVER_DATASET && <FieldDisplayInGraphInput />}
-        {keepMeta && cover === COVER_DATASET && <FieldDisplayInHomeInput />}
+        {keepMeta && cover === SCOPE_DATASET && <FieldDisplayInGraphInput />}
+        {keepMeta && cover === SCOPE_DATASET && <FieldDisplayInHomeInput />}
         {keepMeta && <FieldOverviewInput />}
         <FieldFormatInput />
         <FieldWidthInput />
@@ -35,7 +35,7 @@ export const StepDisplayComponent = ({
 
 StepDisplayComponent.propTypes = {
     transformers: PropTypes.arrayOf(PropTypes.object).isRequired,
-    cover: PropTypes.oneOf(COVERS),
+    cover: PropTypes.oneOf(SCOPES),
     format: PropTypes.object,
     p: polyglotPropTypes.isRequired,
     keepMeta: PropTypes.bool,
