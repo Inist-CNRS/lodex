@@ -186,7 +186,6 @@ const SubresourceFieldTable = compose(
     ),
 )(({ fields, editField, p: polyglot, subresourceId }) => {
     const classes = useStyles();
-    console.log(fields);
     if (fields.length <= 1) {
         return (
             <div id="add-subresource-field" className={classes.noFieldZone}>
