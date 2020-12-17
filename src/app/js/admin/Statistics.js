@@ -102,7 +102,8 @@ const mapStateToProps = (state, { filter }) => ({
 
         return filter === 'document'
             ? (f.cover === 'collection' || f.cover === 'document') &&
-                  !f.display_in_graph
+                  !f.display_in_graph &&
+                  !f.subresourceId
             : filter === 'graph'
             ? f.display_in_graph
             : f.cover === 'dataset' && !f.display_in_graph;
