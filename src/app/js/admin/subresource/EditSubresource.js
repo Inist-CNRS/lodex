@@ -149,9 +149,8 @@ const AddSubresourceFieldButton = compose(
     <>
         <FloatingActionButton
             onClick={() =>
-                console.log(JSON.stringify({ subresource })) ||
-                (subresource &&
-                    addField(createDefaultSubresourceField(subresource)))
+                subresource &&
+                addField(createDefaultSubresourceField(subresource))
             }
         >
             <ContentAdd />
@@ -165,7 +164,6 @@ const AddSubresourceFieldButton = compose(
 
 const SubresourceFieldTable = compose(
     translate,
-
     connect(
         (state, { subresourceId }) => ({
             fields: fromFields.getSubresourceFields(state, subresourceId),

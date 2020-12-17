@@ -55,7 +55,7 @@ export const ExcerptComponent = ({
     <Table className={className} style={styles.table(isPreview)}>
         <TableHead>
             <TableRow>
-                {columns.map((field, index) => (
+                {columns.map(field => (
                     <TableCell
                         key={field.name}
                         className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(

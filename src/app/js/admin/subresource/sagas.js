@@ -14,6 +14,7 @@ import {
 
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
+import { loadPublication } from '../publication';
 
 export function* handleLoadSubresourcesRequest() {
     const request = yield select(fromUser.getLoadSubresourcesRequest);
@@ -56,6 +57,7 @@ export function* handleUpdateSubresource({ payload: resource }) {
     }
 
     yield put(updateSubresourceOptimistic(response));
+    yield put(loadPublication({ forcePostComputation: true }));
 
     return yield put(loadSubresources());
 }
