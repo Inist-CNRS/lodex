@@ -106,6 +106,10 @@ const mapStateToProps = (state, { filter }) => ({
                   !f.subresourceId
             : filter === 'graph'
             ? f.display_in_graph
+            : filter === f.subresourceId
+            ? (f.cover === 'collection' || f.cover === 'document') &&
+              filter === f.subresourceId &&
+              !(f.name.endsWith('_uri') && f.label === 'uri')
             : f.cover === 'dataset' && !f.display_in_graph;
     }).length,
 });
