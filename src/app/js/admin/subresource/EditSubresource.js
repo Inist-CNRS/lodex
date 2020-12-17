@@ -4,7 +4,7 @@ import withHandlers from 'recompose/withHandlers';
 import { reduxForm } from 'redux-form';
 import { Redirect, withRouter } from 'react-router';
 import translate from 'redux-polyglot/translate';
-import { Add as ContentAdd } from '@material-ui/icons';
+import { Add as AddNewIcon } from '@material-ui/icons';
 
 import {
     compose,
@@ -24,9 +24,9 @@ import {
 
 import PublicationModalWizard from '../../fields/wizard';
 import SubresourceForm from './SubresourceForm';
-import FloatingActionButton from '../../lib/components/FloatingActionButton';
 import SubresourceExcerpt from './SubresourceExcerpt';
 import { fromFields } from '../../sharedSelectors';
+import Statistics from '../Statistics';
 
 import {
     updateSubresource as updateSubresourceAction,
@@ -39,13 +39,19 @@ import {
 } from '../../fields';
 
 const useStyles = makeStyles({
-    addFieldButton: {
+    noFieldZone: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '100px',
+        marginTop: 100,
         textAlign: 'center',
+    },
+    addFieldButton: {
+        marginBottom: 20,
+    },
+    icon: {
+        marginRight: 10,
     },
 });
 
@@ -136,6 +142,7 @@ const createDefaultSubresourceField = subresource => ({
 });
 
 const AddSubresourceFieldButton = compose(
+    translate,
     withRouter,
     connect(
         (state, { match }) => ({
@@ -145,22 +152,29 @@ const AddSubresourceFieldButton = compose(
         }),
         { addField: addFieldAction, editField: editFieldAction },
     ),
-)(({ addField, editField, subresource }) => (
-    <>
-        <FloatingActionButton
-            onClick={() =>
-                subresource &&
-                addField(createDefaultSubresourceField(subresource))
-            }
-        >
-            <ContentAdd />
-        </FloatingActionButton>
-        <PublicationModalWizard
-            filter="document"
-            onExitEdition={() => editField(null)}
-        />
-    </>
-));
+)(({ addField, editField, subresource, p: polyglot }) => {
+    const classes = useStyles();
+    return (
+        <>
+            <Button
+                variant="contained"
+                color="primary"
+                className={classes.addFieldButton}
+                onClick={() =>
+                    subresource &&
+                    addField(createDefaultSubresourceField(subresource))
+                }
+            >
+                <AddNewIcon className={classes.icon} />
+                {polyglot.t('new_field')}
+            </Button>
+            <PublicationModalWizard
+                filter="document"
+                onExitEdition={() => editField(null)}
+            />
+        </>
+    );
+});
 
 const SubresourceFieldTable = compose(
     translate,
@@ -170,12 +184,11 @@ const SubresourceFieldTable = compose(
         }),
         { editField: editFieldAction },
     ),
-)(({ fields, editField, p: polyglot }) => {
+)(({ fields, editField, p: polyglot, subresourceId }) => {
     const classes = useStyles();
-
-    if (!fields.length) {
+    if (fields.length <= 1) {
         return (
-            <div id="add-subresource-field" className={classes.addFieldButton}>
+            <div id="add-subresource-field" className={classes.noFieldZone}>
                 <div>
                     <h2 style={{ color: '#888' }}>
                         {polyglot.t('no_field_for_subresource')}
@@ -190,10 +203,11 @@ const SubresourceFieldTable = compose(
 
     return (
         <div style={{ margin: '50px 0' }}>
-            <SubresourceExcerpt onHeaderClick={editField} fields={fields} />
             <div style={{ float: 'right' }}>
                 <AddSubresourceFieldButton />
             </div>
+            <SubresourceExcerpt onHeaderClick={editField} fields={fields} />
+            <Statistics mode="display" filter={subresourceId} />
         </div>
     );
 });

@@ -4,6 +4,8 @@ import translate from 'redux-polyglot/translate';
 import { propTypes as reduxFormPropTypes, Field } from 'redux-form';
 import { TextField as MUITextField, Grid, Button } from '@material-ui/core';
 
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+
 const TextField = ({
     label,
     input,
@@ -25,6 +27,7 @@ const SubresourceFormComponent = ({
     pristine,
     submitting,
     additionnalActions,
+    p: polyglot,
 }) => (
     <form onSubmit={handleSubmit} style={{ maxWidth: 800 }}>
         <Grid container align="center">
@@ -33,7 +36,7 @@ const SubresourceFormComponent = ({
                     name="name"
                     autoFocus
                     component={TextField}
-                    label="Name"
+                    label={polyglot.t('subresource_name')}
                     fullWidth
                 />
             </Grid>
@@ -43,7 +46,7 @@ const SubresourceFormComponent = ({
                 <Field
                     name="identifier"
                     component={TextField}
-                    label="Identifier"
+                    label={polyglot.t('subresource_id')}
                     fullWidth
                 />
             </Grid>
@@ -51,7 +54,7 @@ const SubresourceFormComponent = ({
                 <Field
                     name="path"
                     component={TextField}
-                    label="Path"
+                    label={polyglot.t('subresource_path')}
                     fullWidth
                 />
             </Grid>
@@ -76,6 +79,9 @@ const SubresourceFormComponent = ({
     </form>
 );
 
-SubresourceFormComponent.propTypes = reduxFormPropTypes;
+SubresourceFormComponent.propTypes = {
+    ...reduxFormPropTypes,
+    p: polyglotPropTypes.isRequired,
+};
 
 export default compose(translate)(SubresourceFormComponent);
