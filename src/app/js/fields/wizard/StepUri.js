@@ -40,7 +40,9 @@ const mapDispatchToProps = (dispatch, { field: { transformers } }) => ({
 
         newTransformers = [
             Array.isArray(valueTransformer)
-                ? valueTransformer[0]
+                ? valueTransformer.length > 0
+                    ? valueTransformer[0]
+                    : null
                 : valueTransformer,
             ...transformers.slice(firstTransformerIsValueTransformer ? 1 : 0),
         ];
