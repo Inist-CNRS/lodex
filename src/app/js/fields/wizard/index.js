@@ -132,7 +132,9 @@ class FieldEditionWizardComponent extends Component {
                     key="transformers"
                     isSubresourceField={!!field.subresourceId}
                 />,
-                !field.subresourceId && <StepSemantics key="semantics" />,
+                !field.subresourceId && (
+                    <StepSemantics fields={fields} key="semantics" />
+                ),
                 !field.subresourceId && <StepDisplay key="display" />,
                 !field.subresourceId && <StepSearch key="search" />,
             ]
