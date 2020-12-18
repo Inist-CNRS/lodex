@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { change } from 'redux-form';
 
 import Step from './Step';
-import { field as fieldPropTypes } from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';
 
 import StepValueValue from './StepValueValue';
@@ -13,18 +12,17 @@ import StepValueColumn from './StepValueColumn';
 import StepValueConcat from './StepValueConcat';
 import StepValueSubresource from './StepValueSubresource';
 
-export const StepValueComponent = ({ field, handleChange, ...props }) => (
+export const StepValueComponent = ({ handleChange, ...props }) => (
     <Step id="step-value" label="field_wizard_step_value" {...props}>
-        <StepValueValue field={field} onChange={handleChange} />
-        <StepValueColumn field={field} onChange={handleChange} />
-        <StepValueConcat field={field} onChange={handleChange} />
-        <StepValueSubresource field={field} onChange={handleChange} />
+        <StepValueValue onChange={handleChange} />
+        <StepValueColumn onChange={handleChange} />
+        <StepValueConcat onChange={handleChange} />
+        <StepValueSubresource onChange={handleChange} />
     </Step>
 );
 
 StepValueComponent.propTypes = {
     handleChange: PropTypes.func.isRequired,
-    field: fieldPropTypes.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
