@@ -25,10 +25,10 @@ import {
     createReadStream,
 } from '../../services/fsHelpers';
 import saveParsedStream from '../../services/saveParsedStream';
-import safePipe from '../../services/safePipe';
 import publishFacets from './publishFacets';
 
 const loaders = new Script('loaders', '../app/custom/loaders');
+const log = e => global.console.error('Error in pipeline.', e);
 
 export const getLoader = async loaderName => {
     const currentLoader = await loaders.get(loaderName);
@@ -38,18 +38,13 @@ export const getLoader = async loaderName => {
 
     const [, , , script] = currentLoader;
 
+    // ezs is safe : errors do not break the pipeline
     return stream =>
-        safePipe(stream, [
-            ezs('delegate', { script }),
-            ezs((data, feed) => {
-                if (data instanceof Error) {
-                    global.console.error('Error in pipeline.', data);
-                    feed.end();
-                } else {
-                    feed.send(data);
-                }
-            }),
-        ]);
+        stream
+            .pipe(ezs('metrics', { stage: loaderName, bucket: 'input' }))
+            .pipe(ezs('delegate', { script }))
+            .pipe(ezs('metrics', { stage: loaderName, bucket: 'output' }))
+            .pipe(ezs.catch(e => log(e)));
 };
 
 export const requestToStream = asyncBusboyImpl => async req => {
