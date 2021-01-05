@@ -3,6 +3,7 @@ import * as menu from '../support/menu';
 import * as navigationPage from '../support/adminNavigation';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as subresourcePage from '../support/subresource';
+import * as searchDrawer from '../support/searchDrawer';
 
 describe('Subresource Page', () => {
     const dataset = 'dataset/subresources-data.json';
@@ -75,11 +76,66 @@ describe('Subresource Page', () => {
 
         cy.wait(500);
         cy.get('div[role="dialog"] div[role="progressbar"]', {
-            timeout: 30000,
+            timeout: 10000,
         }).should('not.be.visible');
 
         navigationPage.goToData();
         cy.get('.data-published').should('be.visible');
         datasetImportPage.goToPublishedResources();
+    });
+
+    it('should allow to create link to subresource', () => {
+        subresourcePage.createSubresource();
+        subresourcePage.addField('name', 'myField');
+        cy.get('.btn-save').click();
+        cy.get('div[role="none presentation"]').should('not.exist');
+
+        cy.contains('.publication-excerpt-column', 'myField').should('exist');
+
+        cy.get('.sub-sidebar')
+            .contains('a', 'Main resource')
+            .click();
+
+        cy.url().should('contain', '/display/document/main');
+        cy.wait(200); // fix unexpected refresh after page change
+
+        cy.contains('New field').click();
+        cy.get('.wizard', { timeout: 10000 }).should('be.visible');
+
+        cy.get('#step-value')
+            .click()
+            .scrollIntoView();
+
+        cy.get('#step-value-subresource input[value="subresource"]').click();
+
+        cy.get('#step-display')
+            .click()
+            .scrollIntoView();
+
+        datasetImportPage.fillStepDisplayFormat('link');
+
+        cy.get('.btn-save').click();
+        cy.get('div[role="none presentation"]').should('not.exist');
+
+        cy.contains('From a column').click();
+        datasetImportPage.addColumn('name', { display: { syndication: 1 } });
+
+        cy.contains('button', 'Publish').click();
+        cy.contains('Publish anyway?').click();
+
+        cy.wait(500);
+        cy.get('div[role="dialog"] div[role="progressbar"]', {
+            timeout: 10000,
+        }).should('not.be.visible');
+
+        navigationPage.goToData();
+        cy.get('.data-published').should('be.visible');
+        datasetImportPage.goToPublishedResources();
+
+        menu.openSearchDrawer();
+        searchDrawer.findSearchResultByTitle('Publication n°1').click();
+
+        cy.location('pathname').should('not.equal', '/');
+        cy.contains('a', 'uid:/').should('be.visible');
     });
 });
