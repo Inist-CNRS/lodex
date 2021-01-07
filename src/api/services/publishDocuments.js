@@ -43,6 +43,28 @@ const groupSubresourceFields = fields =>
         return acc;
     }, {});
 
+const getSubresourceTransformer = (
+    ctx,
+    subresourceFields,
+    removeFirstTransformer = false,
+) => {
+    const fields = subresourceFields.map(sf => ({
+        ...sf,
+        transformers: removeFirstTransformer
+            ? sf.transformers.slice(1)
+            : sf.transformers,
+    }));
+
+    return getDocumentTransformer(
+        ctx.dataset.findBy,
+        fields.map(field =>
+            field.name.endsWith('_uri')
+                ? { ...field, position: 0, name: 'uri' }
+                : field,
+        ),
+    );
+};
+
 export const publishDocumentsFactory = ({
     versionTransformerDecorator,
     getDocumentTransformer,
@@ -71,32 +93,56 @@ export const publishDocumentsFactory = ({
             const subresourceFields = groupedSubresourceFields[subresourceId];
             const subresource = subresources[subresourceId];
 
-            const subresourceDocumentTransformer = getDocumentTransformer(
-                ctx.dataset.findBy,
-                subresourceFields.map(field =>
-                    field.name.endsWith('_uri')
-                        ? { ...field, position: 0, name: 'uri' }
-                        : field,
-                ),
-            );
+            const datasetChunkExtractor = dataset =>
+                dataset.reduce((acc, curr) => {
+                    let data;
 
-            const subresourceTransformer = (...args) => {
-                // Remove empty subresource
-                if (!get(args[0], subresource.path)) {
-                    return false;
-                }
+                    try {
+                        data = JSON.parse(get(curr, subresource.path));
+                    } catch (e) {
+                        return acc;
+                    }
 
-                return versionTransformerDecorator(
-                    subresourceDocumentTransformer,
-                    subresourceId,
-                )(...args);
-            };
+                    // Remove empty subresource
+                    if (!data) {
+                        return acc;
+                    }
+
+                    if (Array.isArray(data)) {
+                        return [
+                            ...acc,
+                            ...data.map(d =>
+                                versionTransformerDecorator(
+                                    getSubresourceTransformer(
+                                        ctx,
+                                        subresourceFields,
+                                        true,
+                                    ),
+                                    subresourceId,
+                                )(JSON.stringify(d)),
+                            ),
+                        ];
+                    }
+
+                    return [
+                        ...acc,
+                        versionTransformerDecorator(
+                            getSubresourceTransformer(
+                                ctx,
+                                subresourceFields,
+                                false,
+                            ),
+                            subresourceId,
+                        )(curr),
+                    ];
+                }, []);
 
             return transformAllDocuments(
                 count,
                 ctx.dataset.findLimitFromSkip,
                 ctx.publishedDataset.insertBatchIgnoreDuplicate,
-                subresourceTransformer,
+                x => x, // disable default transformer (do it in extractor)
+                datasetChunkExtractor,
             );
         }),
     );

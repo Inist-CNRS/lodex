@@ -10,6 +10,19 @@ import Link from '../../lib/components/Link';
 const UriView = ({ className, resource, field, fields, type, value }) => {
     const uri = resource[field.name];
 
+    if (Array.isArray(uri)) {
+        return uri.map(uriItem => (
+            <div key={uriItem}>
+                <Link
+                    className={className}
+                    to={getResourceUri({ uri: uriItem })}
+                >
+                    {uriItem}
+                </Link>
+            </div>
+        ));
+    }
+
     if (!uri || typeof uri !== 'string') {
         return <InvalidFormat format={field.format} value={uri} />;
     }

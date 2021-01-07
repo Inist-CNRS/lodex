@@ -42,11 +42,16 @@ const fillStepValueConcatColumn = (value, index) => {
         .click();
 };
 
-const fillStepDisplayFormat = format => {
+export const fillStepDisplayFormat = format => {
     cy.get('#step-value-format .select-format')
         .first()
         .click();
     cy.get(`[role="listbox"] li[data-value="${format}"]`).click();
+};
+
+export const fillStepDisplaySyndication = syndication => {
+    cy.get('.field-overview').click();
+    cy.get(`[role="listbox"] li[data-value="${syndication}"]`).click();
 };
 
 export const addColumn = (columnName, options = {}) => {
@@ -67,10 +72,14 @@ export const addColumn = (columnName, options = {}) => {
 
     if (options.display) {
         cy.get('#step-display').click();
-        const { format } = options.display;
+        const { format, syndication } = options.display;
 
         if (format) {
             fillStepDisplayFormat(format);
+        }
+
+        if (syndication) {
+            fillStepDisplaySyndication(1);
         }
     }
 
