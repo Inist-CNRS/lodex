@@ -4,7 +4,7 @@ import 'url-api-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { createHashHistory } from 'history';
-import { Provider } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Redirect } from 'react-router';
 
@@ -25,6 +25,8 @@ import Login from '../user/Login';
 import PrivateRoute from './PrivateRoute';
 import { Display } from './Display';
 import { Data } from './Data';
+import { dumpDataset } from './dump/index';
+import compose from 'recompose/compose';
 
 const adminTheme = createMuiTheme({
     palette: {
@@ -60,6 +62,17 @@ const store = configureStore(
     history,
 );
 
+const Settingss = props => {
+    console.log({ props });
+    return (
+        <span>
+            Settings<button onClick={() => props.dumpDataset()}>OK</button>
+        </span>
+    );
+};
+
+const Settings = compose(connect(undefined, { dumpDataset }))(Settingss);
+
 render(
     <Provider store={store}>
         <MuiThemeProvider theme={adminTheme}>
@@ -72,6 +85,7 @@ render(
                     />
                     <PrivateRoute path="/data" component={Data} />
                     <PrivateRoute path="/display" component={Display} />
+                    <PrivateRoute path="/settings" component={Settings} />
                     <Route path="/login" exact component={Login} />
                 </App>
             </ConnectedRouter>
