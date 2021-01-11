@@ -25,12 +25,12 @@ export const chunkStream = chunkSize => {
     );
 };
 
-export default insertMany => stream =>
+export default upsertMany => stream =>
     new Promise((resolve, reject) => {
         safePipe(stream, [
             chunkStream(defaultChunkSize),
             through(function(chunk) {
-                insertMany(chunk)
+                upsertMany(chunk)
                     .then(data => {
                         this.emit('data', data);
                         progress.incrementProgress(defaultChunkSize);

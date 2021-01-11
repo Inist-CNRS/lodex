@@ -4,7 +4,16 @@ import {
 } from './publishDocuments';
 
 const fields = [
-    { name: 'uri', cover: 'collection' },
+    {
+        name: 'uri',
+        cover: 'collection',
+        transformers: [
+            {
+                operation: 'COLUMN',
+                args: [{ name: 'column', type: 'column', value: 'uri' }],
+            },
+        ],
+    },
     { name: 'field2', cover: 'collection' },
     { name: 'field3', cover: 'dataset' },
 ];

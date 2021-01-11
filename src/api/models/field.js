@@ -290,7 +290,12 @@ export default async db => {
                 cover: COVER_COLLECTION,
                 label: URI_FIELD_NAME,
                 name: URI_FIELD_NAME,
-                transformers: [],
+                transformers: [
+                    {
+                        operation: 'AUTOGENERATE_URI',
+                        args: [],
+                    },
+                ],
                 position: 0,
             });
         }

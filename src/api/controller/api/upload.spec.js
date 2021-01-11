@@ -256,6 +256,7 @@ describe('upload', () => {
                 .fn()
                 .mockImplementation(() => 'dataset count'),
             uploadFile: jest.fn(),
+            initDatasetUri: 'initDatasetUri',
         };
 
         beforeAll(async () => {
@@ -277,7 +278,10 @@ describe('upload', () => {
         });
 
         it('should have called saveParsedStream with parsedStream', () => {
-            expect(ctx.saveParsedStream).toHaveBeenCalledWith('parsedStream');
+            expect(ctx.saveParsedStream).toHaveBeenCalledWith(
+                'parsedStream',
+                ctx.initDatasetUri,
+            );
         });
 
         it('should have set ctx.body.totalLines to `dataset count`', () => {

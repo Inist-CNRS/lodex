@@ -1,13 +1,20 @@
 const saveParsedStreamFactory = ctx =>
-    async function saveParsedStream(parsedStream) {
+    async function saveParsedStream(parsedStream, postSaveCallback = null) {
         const publishedCount = await ctx.publishedDataset.count();
+
         if (publishedCount === 0) {
-            await ctx.dataset.remove({});
             await ctx.saveStream(parsedStream);
             await ctx.field.initializeModel();
 
+            if (typeof postSaveCallback === 'function') {
+                await postSaveCallback();
+            }
+
             return ctx.dataset.count();
         }
+
+        // When dataset is already published
+        // Next imports will "auto-publish" automatically
         try {
             await ctx.dataset.updateMany(
                 {},
@@ -20,6 +27,10 @@ const saveParsedStreamFactory = ctx =>
                 { multi: true },
             );
             await ctx.saveStream(parsedStream);
+
+            if (typeof postSaveCallback === 'function') {
+                await postSaveCallback();
+            }
 
             const fields = await ctx.field.findAll();
             const collectionCoverFields = fields.filter(
