@@ -17,12 +17,17 @@ import { fromFields } from '../../sharedSelectors';
 import FieldWidthInput from '../FieldWidthInput';
 import { COVERS, COVER_DATASET } from '../../../../common/cover';
 
-export const StepDisplayComponent = ({ cover, p: polyglot, ...props }) => (
+export const StepDisplayComponent = ({
+    cover,
+    keepMeta = true,
+    p: polyglot,
+    ...props
+}) => (
     <Step id="step-display" label="field_wizard_step_display" {...props}>
-        <FieldDisplayInResourceInput />
-        {cover === COVER_DATASET && <FieldDisplayInGraphInput />}
-        {cover === COVER_DATASET && <FieldDisplayInHomeInput />}
-        <FieldOverviewInput />
+        {keepMeta && <FieldDisplayInResourceInput />}
+        {keepMeta && cover === COVER_DATASET && <FieldDisplayInGraphInput />}
+        {keepMeta && cover === COVER_DATASET && <FieldDisplayInHomeInput />}
+        {keepMeta && <FieldOverviewInput />}
         <FieldFormatInput />
         <FieldWidthInput />
     </Step>
@@ -33,6 +38,7 @@ StepDisplayComponent.propTypes = {
     cover: PropTypes.oneOf(COVERS),
     format: PropTypes.object,
     p: polyglotPropTypes.isRequired,
+    keepMeta: PropTypes.bool,
 };
 
 const mapStateToProps = state => {
