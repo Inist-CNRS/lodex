@@ -2,12 +2,8 @@ import Koa from 'koa';
 import route from 'koa-route';
 import mount from 'koa-mount';
 import jwt from 'koa-jwt';
-import { auth, mongo } from 'config';
+import { auth } from 'config';
 import get from 'lodash.get';
-import backup from 'mongodb-backup';
-import mime from 'mime';
-import fs from 'fs';
-import os from 'os';
 
 import ezMasterConfig from '../../services/ezMasterConfig';
 import characteristic from './characteristic';
@@ -28,6 +24,7 @@ import menu from './menu';
 import loader from './loader';
 import translate from './translate';
 import subresource from './subresource';
+import dump from './dump';
 
 const app = new Koa();
 
@@ -110,55 +107,6 @@ app.use(mount('/upload', upload));
 app.use(mount('/dataset', dataset));
 app.use(route.get('/progress', progress));
 app.use(mount('/loader', loader));
-
-const streamEnd = fd =>
-    new Promise((resolve, reject) => {
-        fd.on('end', () => {
-            resolve();
-        });
-        fd.on('finish', () => {
-            resolve();
-        });
-        fd.on('error', reject);
-    });
-
-const dump = async ctx => {
-    const filename =
-        Date.now().toString(36) +
-        Math.random()
-            .toString(36)
-            .substring(2) +
-        '.tar';
-    const pathname = `${os.tmpdir()}/${filename}`;
-
-    await new Promise(resolve =>
-        backup({
-            uri: `mongodb://${mongo.host}/${mongo.dbName}`,
-            root: os.tmpdir(),
-            collections: ['dataset', 'field', 'subresource'],
-            tar: filename,
-            parser: 'json',
-            callback: resolve,
-        }),
-    );
-
-    const mimetype = mime.lookup(pathname);
-    ctx.set('Content-disposition', `attachment; filename=${filename}`);
-    ctx.set('Content-type', mimetype);
-    ctx.status = 200;
-
-    try {
-        const readStream = fs.createReadStream(pathname);
-        readStream.pipe(ctx.res);
-
-        await streamEnd(readStream).then(
-            () => new Promise(r => fs.unlink(pathname, r)),
-        );
-    } catch (e) {
-        ctx.status = 500;
-    }
-};
-
 app.use(route.get('/dump', dump));
 
 app.use(async ctx => {

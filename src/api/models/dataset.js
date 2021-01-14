@@ -1,6 +1,8 @@
 import chunk from 'lodash.chunk';
 import groupBy from 'lodash.groupby';
 import omit from 'lodash.omit';
+import JSONStream from 'jsonstream';
+import { Transform } from 'stream';
 
 import { URI_FIELD_NAME } from '../../common/uris';
 import countNotUnique from './countNotUnique';
@@ -78,6 +80,18 @@ export default db => {
                     ),
             ].filter(x => x),
         );
+    };
+
+    collection.dumpAsJsonStream = async () => {
+        const omitMongoId = new Transform({ objectMode: true });
+        omitMongoId._transform = function(data, enc, cb) {
+            this.push(omit(data, ['_id']));
+            cb();
+        };
+
+        return (await collection.find({}).stream())
+            .pipe(omitMongoId)
+            .pipe(JSONStream.stringify());
     };
 
     collection.findBy = async (fieldName, value) => {

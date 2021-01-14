@@ -4,7 +4,7 @@ import 'url-api-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { createHashHistory } from 'history';
-import { connect, Provider } from 'react-redux';
+import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Redirect } from 'react-router';
 
@@ -25,8 +25,7 @@ import Login from '../user/Login';
 import PrivateRoute from './PrivateRoute';
 import { Display } from './Display';
 import { Data } from './Data';
-import { dumpDataset } from './dump/index';
-import compose from 'recompose/compose';
+import Settings from './Settings';
 
 const adminTheme = createMuiTheme({
     palette: {
@@ -61,17 +60,6 @@ const store = configureStore(
     window.__PRELOADED_STATE__ || initialState,
     history,
 );
-
-const Settingss = props => {
-    console.log({ props });
-    return (
-        <span>
-            Settings<button onClick={() => props.dumpDataset()}>OK</button>
-        </span>
-    );
-};
-
-const Settings = compose(connect(undefined, { dumpDataset }))(Settingss);
 
 render(
     <Provider store={store}>

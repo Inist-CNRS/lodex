@@ -1,24 +1,14 @@
 import { call, select, takeLatest, fork } from 'redux-saga/effects';
 
 import { DUMP_DATASET } from './';
-
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import downloadFile from '../../lib/downloadFile';
 
 export function* handleDumpDatasetRequest() {
     const request = yield select(fromUser.getDumpDatasetRequest);
-    const { error, response, filename } = yield call(
-        fetchSaga,
-        request,
-        [],
-        'blob',
-    );
+    const { response, filename } = yield call(fetchSaga, request, [], 'blob');
 
-    console.log({ response });
-    if (error) {
-        console.log({ error });
-    }
     yield call(downloadFile, response, filename);
 }
 
