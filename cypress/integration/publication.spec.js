@@ -25,10 +25,13 @@ describe('Dataset Publication', () => {
             cy.wait(300);
             datasetImportPage.importDataset('dataset/simple.csv');
             cy.wait(500);
-            cy.get('tbody').should(
-                'have.text',
-                ['1', 'Row 1', 'Test 1', '2', 'Row 2', 'Test 2'].join(''),
-            );
+            cy.get('tbody tr')
+                .eq(0)
+                .should('contains.text', ['1', 'Row 1', 'Test 1'].join(''));
+
+            cy.get('tbody tr')
+                .eq(1)
+                .should('contains.text', ['2', 'Row 2', 'Test 2'].join(''));
         });
     });
 
@@ -102,12 +105,12 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/concat.json');
             datasetImportPage.publish();
             cy.wait(300);
-            datasetImportPage.importMoreDataset('dataset/simple.csv');
-            datasetImportPage.importMoreDataset('dataset/simple.csv');
-            datasetImportPage.importMoreDataset('dataset/simple.csv');
-            datasetImportPage.importMoreDataset('dataset/simple.csv');
-            datasetImportPage.importMoreDataset('dataset/simple.csv');
-            datasetImportPage.importMoreDataset('dataset/simple.csv');
+            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
 
             datasetImportPage.goToPublishedResources();
 

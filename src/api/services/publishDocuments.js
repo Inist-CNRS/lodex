@@ -5,6 +5,7 @@ import getDocumentTransformer from './getDocumentTransformer';
 import transformAllDocuments from './transformAllDocuments';
 import progress from './progress';
 import { PUBLISH_DOCUMENT } from '../../common/progressStatus';
+import { URI_FIELD_NAME } from '../../common/uris';
 
 export const versionTransformerDecorator = (
     transformDocument,
@@ -70,9 +71,31 @@ export const publishDocumentsFactory = ({
     getDocumentTransformer,
     transformAllDocuments,
 }) => async (ctx, count, fields) => {
-    const mainResourceFields = fields.filter(
-        c => c.cover === 'collection' && !c.subresourceId,
-    );
+    const mainResourceFields = fields
+        .filter(c => c.cover === 'collection' && !c.subresourceId)
+        .map(field => {
+            // Replace uri field transformer to take value "as it"
+            // Uri has already been generated during dataset import
+            if (field.name === URI_FIELD_NAME) {
+                return {
+                    ...field,
+                    transformers: [
+                        {
+                            operation: 'COLUMN',
+                            args: [
+                                {
+                                    name: 'column',
+                                    type: 'column',
+                                    value: 'uri',
+                                },
+                            ],
+                        },
+                    ],
+                };
+            }
+
+            return field;
+        });
 
     const subresourceFields = fields.filter(
         c => c.cover === 'collection' && c.subresourceId,

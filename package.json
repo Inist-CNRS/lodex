@@ -127,6 +127,7 @@
         "lodash.uniq": "^4.5.0",
         "lodash.unset": "^4.5.2",
         "lodash.upperfirst": "^4.3.1",
+        "lodash.groupby": "4.6.0",
         "markdown-it": "^8.4.2",
         "material-ui-dropzone": "3.5.0",
         "memorystream": "0.3.1",

@@ -5,7 +5,6 @@ describe('saveParsedStream', () => {
         const parsedStream = 'parsedStream';
         const ctx = {
             dataset: {
-                remove: jest.fn(),
                 count: jest.fn().mockImplementation(() => 'count'),
                 updateMany: jest.fn(),
             },
@@ -30,10 +29,6 @@ describe('saveParsedStream', () => {
 
         it('should have called publishedDataset.count', () => {
             expect(ctx.publishedDataset.count).toHaveBeenCalled();
-        });
-
-        it('should have called dataset.remove', () => {
-            expect(ctx.dataset.remove).toHaveBeenCalled();
         });
 
         it('should have called saveStream with parsedStream', () => {
