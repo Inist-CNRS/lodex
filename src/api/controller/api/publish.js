@@ -58,9 +58,13 @@ export const verifyUri = async ctx => {
             field.subresourceId &&
             typeof acc[field.subresourceId] === 'undefined'
         ) {
-            acc[field.subresourceId] = subresources.find(
+            const fieldConfig = subresources.find(
                 s => s._id + '' === field.subresourceId,
             );
+
+            if (fieldConfig) {
+                acc[field.subresourceId] = fieldConfig;
+            }
         }
 
         return acc;

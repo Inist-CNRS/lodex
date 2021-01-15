@@ -9,8 +9,6 @@ import { preLoadPublication } from '../';
 import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
 import OntologyTable from './OntologyTable';
 import { SCOPES, SCOPE_DATASET } from '../../../../common/scope';
-import ExportFieldsButton from '../../public/export/ExportFieldsButton';
-import ExportFieldsReadyButton from '../../public/export/ExportFieldsReadyButton';
 import redirectToDashboardIfNoField from '../../admin/redirectToDashboardIfNoField';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -35,8 +33,6 @@ const OntologyComponent = ({
                     <h4>{polyglot.t(filter)}</h4>
                 </Grid>
                 <Grid item>
-                    <ExportFieldsButton />
-                    <ExportFieldsReadyButton />
                     <AddCharacteristic displayPage={filter} />
                 </Grid>
             </Grid>

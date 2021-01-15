@@ -6,6 +6,7 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import StorageIcon from '@material-ui/icons/Storage';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { AppBar, CircularProgress, Button, Toolbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -106,7 +107,7 @@ const AppbarComponent = ({
                         component={Button}
                         variant="text"
                         className={classes.button}
-                        startIcon={<StorageIcon />}
+                        startIcon={<SettingsIcon />}
                         activeStyle={activeButtonStyle}
                     >
                         <span>{polyglot.t('settings')}</span>
