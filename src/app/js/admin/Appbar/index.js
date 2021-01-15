@@ -101,6 +101,16 @@ const AppbarComponent = ({
         <>
             {isAdmin && (
                 <div style={{ display: 'flex' }}>
+                    <NavLink
+                        to="/settings"
+                        component={Button}
+                        variant="text"
+                        className={classes.button}
+                        startIcon={<StorageIcon />}
+                        activeStyle={activeButtonStyle}
+                    >
+                        <span>{polyglot.t('settings')}</span>
+                    </NavLink>
                     <Settings />
                     <SignOutButton />
                     {!hasPublishedDataset && <PublicationButton />}

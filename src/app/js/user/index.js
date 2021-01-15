@@ -255,6 +255,12 @@ export const getClearDatasetRequest = state =>
         method: 'DELETE',
     });
 
+export const getDumpDatasetRequest = state =>
+    getRequest(state, {
+        url: '/api/dump',
+        method: 'GET',
+    });
+
 export const getAddFieldToResourceRequest = (state, data) =>
     getRequest(state, {
         url: '/api/publishedDataset/add_field',
@@ -410,6 +416,7 @@ export const selectors = {
     getChangeFieldStatusRequest,
     getLoadFacetValuesRequest,
     getExportFieldsRequest,
+    getDumpDatasetRequest,
     getExportFieldsReadyRequest,
     getCreateResourceRequest,
     getUpdateSubresourceRequest,

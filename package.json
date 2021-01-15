@@ -140,6 +140,7 @@
         "node-object-hash": "^1.4.1",
         "node-polyglot": "^2.3.0",
         "qs": "^6.5.2",
+        "jsonstream": "1.0.3",
         "react": "^16.14.0",
         "react-container-dimensions": "^1.4.1",
         "react-dom": "^16.14.0",

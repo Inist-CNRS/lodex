@@ -185,6 +185,7 @@
 "field_wizard_step_search"	"Search related"	"Recherche"
 "field_wizard_step_semantic"	"Semantics"	"Sémantiques"
 "previous"	"Previous"	"Précédent"
+"export_raw_dataset"	"Export raw dataset"	"Exporter le dataset"
 "next"	"Next"	"Suivant"
 "a_value"	"An arbitrary value"	"Une valeur arbitraire"
 "enter_a_value"	"Enter the value"	"Entrer une valeur"
@@ -541,3 +542,4 @@
 "subresource_name"	"Name"	"Nom"
 "subresource_id"	"Identifier"	"Identifiant"
 "subresource_path"	"Path"	"Chemin"
+"settings"	"Settings"	"Paramètres"
