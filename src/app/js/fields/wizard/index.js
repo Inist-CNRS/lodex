@@ -135,7 +135,7 @@ class FieldEditionWizardComponent extends Component {
                 !field.subresourceId && (
                     <StepSemantics fields={fields} key="semantics" />
                 ),
-                !field.subresourceId && <StepDisplay key="display" />,
+                <StepDisplay keepMeta={!field.subresourceId} key="display" />,
                 !field.subresourceId && <StepSearch key="search" />,
             ]
                 .filter(x => x)
