@@ -20,6 +20,7 @@ import ParsingResult from './parsing/ParsingResult';
 import withInitialData from './withInitialData';
 import { AddSubresource } from './subresource/AddSubresource';
 import { EditSubresource } from './subresource/EditSubresource';
+import { SCOPE_DOCUMENT } from '../../../common/scope';
 
 const DisplayRouteComponent = ({ showAddColumns, hasPublishedDataset }) => {
     const { filter } = useParams();
@@ -45,7 +46,7 @@ const DisplayRouteComponent = ({ showAddColumns, hasPublishedDataset }) => {
         </div>
     );
 
-    if (filter === 'document') {
+    if (filter === SCOPE_DOCUMENT) {
         return (
             <Switch>
                 <Route exact path={`${path}/main`}>

@@ -1,3 +1,5 @@
+import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
+
 const saveParsedStreamFactory = ctx =>
     async function saveParsedStream(parsedStream, postSaveCallback = null) {
         const publishedCount = await ctx.publishedDataset.count();
@@ -34,7 +36,7 @@ const saveParsedStreamFactory = ctx =>
 
             const fields = await ctx.field.findAll();
             const collectionScopeFields = fields.filter(
-                c => c.scope === 'collection',
+                c => c.scope === SCOPE_COLLECTION || c.scope === SCOPE_DOCUMENT,
             );
 
             const count = await ctx.dataset.count({

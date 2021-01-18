@@ -6,6 +6,7 @@ import transformAllDocuments from './transformAllDocuments';
 import progress from './progress';
 import { PUBLISH_DOCUMENT } from '../../common/progressStatus';
 import { URI_FIELD_NAME } from '../../common/uris';
+import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
 
 export const versionTransformerDecorator = (
     transformDocument,
@@ -72,7 +73,11 @@ export const publishDocumentsFactory = ({
     transformAllDocuments,
 }) => async (ctx, count, fields) => {
     const mainResourceFields = fields
-        .filter(c => c.scope === 'collection' && !c.subresourceId)
+        .filter(
+            c =>
+                (c.scope === SCOPE_COLLECTION || c.scope === SCOPE_DOCUMENT) &&
+                !c.subresourceId,
+        )
         .map(field => {
             // Replace uri field transformer to take value "as it"
             // Uri has already been generated during dataset import
@@ -98,7 +103,9 @@ export const publishDocumentsFactory = ({
         });
 
     const subresourceFields = fields.filter(
-        c => c.scope === 'collection' && c.subresourceId,
+        c =>
+            (c.scope === SCOPE_COLLECTION || c.scope === SCOPE_DOCUMENT) &&
+            c.subresourceId,
     );
 
     const subresources = groupSubresourcesById(await ctx.subresource.findAll());
