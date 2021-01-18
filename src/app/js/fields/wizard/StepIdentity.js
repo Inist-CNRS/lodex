@@ -2,10 +2,9 @@ import React from 'react';
 import translate from 'redux-polyglot/translate';
 import { Field, FieldArray } from 'redux-form';
 import PropTypes from 'prop-types';
-import { MenuItem, TextField as MUITextField } from '@material-ui/core';
+import { TextField as MUITextField } from '@material-ui/core';
 
 import Step from './Step';
-import FormSelectField from '../../lib/components/FormSelectField';
 import FieldLanguageInput from '../FieldLanguageInput';
 import FieldLabelInput from '../FieldLabelInput';
 import ClassList from '../ClassList';
@@ -52,19 +51,7 @@ export const StepIdentityComponent = ({
                     fullWidth
                 />
             )}
-            <Field
-                name="scope"
-                component={FormSelectField}
-                label={polyglot.t('select_scope')}
-                fullWidth
-            >
-                <MenuItem value="dataset">
-                    {polyglot.t('scope_dataset')}
-                </MenuItem>
-                <MenuItem value="collection">
-                    {polyglot.t('scope_collection')}
-                </MenuItem>
-            </Field>
+            <Field name="scope" component={TextField} type="hidden" />
             <FieldArray name="classes" component={ClassList} type="classes" />
             <FieldLanguageInput field={field} />
         </Step>

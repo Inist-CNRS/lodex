@@ -42,7 +42,6 @@
 "fieldScheme"	"Scheme"	"Schéma"
 "select_an_operation"	"Select an operation"	"Choisir une opération"
 "scope"	"Coverage"	"Couverture"
-"select_scope"	"Select a coverage"	"Choisir une couverture"
 "scope_dataset"	"Apply to whole dataset"	"Appliquer à tout le jeu de données"
 "scope_collection"	"Different for each resource"	"Différente pour chaque ressource"
 "scope_document"	"Only present on certain resource"	"Présente uniquement sur certaines ressources"
