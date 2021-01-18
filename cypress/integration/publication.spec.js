@@ -1,8 +1,6 @@
 import { teardown } from '../support/authentication';
 import * as menu from '../support/menu';
-import * as adminPage from '../support/adminPage';
 import * as datasetImportPage from '../support/datasetImportPage';
-import { fillInputWithFixture } from '../support/forms';
 import * as searchDrawer from '../support/searchDrawer';
 import * as adminNavigation from '../support/adminNavigation';
 
@@ -85,7 +83,7 @@ describe('Dataset Publication', () => {
                 .should('be.visible');
         });
 
-        it('should allow to fix obsolete imported model before publish dataset', () => {
+        it.skip('should allow to fix obsolete imported model before publish dataset', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
