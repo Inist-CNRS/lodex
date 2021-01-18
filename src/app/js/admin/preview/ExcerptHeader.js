@@ -4,8 +4,9 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
 import memoize from 'lodash.memoize';
-import { SCOPE_DATASET } from '../../../../common/scope';
+import HiddenIcon from '@material-ui/icons/VisibilityOff';
 
+import { SCOPE_DATASET } from '../../../../common/scope';
 import { fromFields } from '../../sharedSelectors';
 import {
     polyglot as polyglotPropTypes,
@@ -31,11 +32,18 @@ const titleStyle = {
     titleId: {
         fontWeight: 'lighter',
         fontStyle: 'italic',
+        display: 'flex',
+    },
+    hidden: {
+        marginLeft: 5,
     },
 };
 
 const ensureTextIsShort = text =>
     isLongText(text) ? getShortText(text) : text;
+
+const isVisible = field =>
+    field.display ? null : <HiddenIcon style={titleStyle.hidden} />;
 
 const ComposedOf = ({ compositeFields, polyglot }) => {
     if (!compositeFields.length) {
@@ -65,7 +73,7 @@ const ExcerptHeaderComponent = ({
         <p style={titleStyle.titleBlock}>
             <span>{ensureTextIsShort(field.label)}</span>
             <span style={titleStyle.titleId}>
-                ( {ensureTextIsShort(field.name)} )
+                ( {ensureTextIsShort(field.name)} ) {isVisible(field)}
             </span>
         </p>
         {completedField && (
