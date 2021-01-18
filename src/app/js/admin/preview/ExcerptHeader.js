@@ -4,6 +4,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
 import memoize from 'lodash.memoize';
+import { SCOPE_DATASET } from '../../../../common/scope';
 
 import { fromFields } from '../../sharedSelectors';
 import {
@@ -14,7 +15,7 @@ import getFieldClassName from '../../lib/getFieldClassName';
 import { isLongText, getShortText } from '../../lib/longTexts';
 
 const getStyle = memoize(field =>
-    field.scope === 'dataset'
+    field.scope === SCOPE_DATASET
         ? {
               fontWeight: 'bold',
               color: 'black',

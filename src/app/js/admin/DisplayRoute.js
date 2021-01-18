@@ -30,7 +30,10 @@ const DisplayRouteComponent = ({ showAddColumns, hasPublishedDataset }) => {
         <Ontology filter={filter} />
     ) : (
         <div>
-            <ModelMenu hasPublishedDataset={hasPublishedDataset} />
+            <ModelMenu
+                hasPublishedDataset={hasPublishedDataset}
+                filter={filter}
+            />
             <div>
                 <div style={{ display: showAddColumns ? 'block' : 'none' }}>
                     <ParsingResult showAddColumns maxLines={3} />

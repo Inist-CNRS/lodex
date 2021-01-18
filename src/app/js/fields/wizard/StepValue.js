@@ -6,23 +6,29 @@ import { change } from 'redux-form';
 
 import Step from './Step';
 import { FIELD_FORM_NAME } from '../';
+import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../../common/scope';
 
 import StepValueValue from './StepValueValue';
 import StepValueColumn from './StepValueColumn';
 import StepValueConcat from './StepValueConcat';
 import StepValueSubresource from './StepValueSubresource';
 
-export const StepValueComponent = ({ handleChange, ...props }) => (
+export const StepValueComponent = ({ handleChange, filter, ...props }) => (
     <Step id="step-value" label="field_wizard_step_value" {...props}>
         <StepValueValue onChange={handleChange} />
-        <StepValueColumn onChange={handleChange} />
-        <StepValueConcat onChange={handleChange} />
-        <StepValueSubresource onChange={handleChange} />
+        {filter !== SCOPE_DATASET && filter !== SCOPE_GRAPHIC && (
+            <>
+                <StepValueColumn onChange={handleChange} />
+                <StepValueConcat onChange={handleChange} />
+                <StepValueSubresource onChange={handleChange} />
+            </>
+        )}
     </Step>
 );
 
 StepValueComponent.propTypes = {
     handleChange: PropTypes.func.isRequired,
+    filter: PropTypes.string,
 };
 
 const mapDispatchToProps = dispatch => ({

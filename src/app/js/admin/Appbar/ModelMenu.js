@@ -13,6 +13,7 @@ import AddFromDatasetIcon from './AddFromDatasetIcon';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { addField } from '../../fields';
 import { showAddColumns } from '../parsing';
+import { SCOPE_DOCUMENT } from '../../../../common/scope';
 
 const useStyles = makeStyles({
     container: {
@@ -35,24 +36,27 @@ const useStyles = makeStyles({
 export const ModelMenuComponent = ({
     handleAddNewColumn,
     handleShowExistingColumns,
+    filter,
     p: polyglot,
 }) => {
     const classes = useStyles();
 
     return (
         <div className={classes.container}>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={handleShowExistingColumns}
-                className={classnames(
-                    classes.containedButton,
-                    'btn-add-field-from-dataset',
-                )}
-            >
-                <AddFromDatasetIcon className={classes.icon} />
-                {polyglot.t('from_original_dataset')}
-            </Button>
+            {filter === SCOPE_DOCUMENT && (
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleShowExistingColumns}
+                    className={classnames(
+                        classes.containedButton,
+                        'btn-add-field-from-dataset',
+                    )}
+                >
+                    <AddFromDatasetIcon className={classes.icon} />
+                    {polyglot.t('from_original_dataset')}
+                </Button>
+            )}
             <Button
                 variant="contained"
                 color="primary"
@@ -72,6 +76,7 @@ export const ModelMenuComponent = ({
 ModelMenuComponent.propTypes = {
     handleAddNewColumn: PropTypes.func.isRequired,
     handleShowExistingColumns: PropTypes.func.isRequired,
+    filter: PropTypes.string,
     p: polyglotPropTypes.isRequired,
 };
 
