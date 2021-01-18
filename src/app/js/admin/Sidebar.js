@@ -23,7 +23,7 @@ import ImportModelButton from './ImportModelButton.js';
 import { fromPublication, fromParsing } from './selectors';
 import theme from './../theme';
 import {
-    SCOPE_COLLECTION,
+    SCOPE_DOCUMENT,
     SCOPE_DATASET,
     SCOPE_GRAPHIC,
 } from '../../../common/scope';

@@ -279,7 +279,7 @@ export const isListValid = list =>
 
 export const validateField = (field, isContribution = false, fields = []) => {
     const properties = [
-        validateCover(field, isContribution),
+        validateScope(field, isContribution),
         validateScheme(field),
         validatePosition(field),
         validateTransformers(field, isContribution),

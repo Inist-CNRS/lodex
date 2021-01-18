@@ -6,12 +6,12 @@ export default async ctx => {
     const count = await ctx.dataset.count({});
 
     const fields = await ctx.field.findAll();
-    const collectionCoverFields = fields.filter(c => c.scope === 'collection');
+    const collectionScopeFields = fields.filter(c => c.scope === 'collection');
 
-    await ctx.publishDocuments(ctx, count, collectionCoverFields);
+    await ctx.publishDocuments(ctx, count, collectionScopeFields);
 
-    const datasetCoverFields = fields.filter(c => c.scope === 'dataset');
-    await ctx.publishCharacteristics(ctx, datasetCoverFields, count);
+    const datasetScopeFields = fields.filter(c => c.scope === 'dataset');
+    await ctx.publishCharacteristics(ctx, datasetScopeFields, count);
     await ctx.publishFacets(ctx, fields, true);
     await ctx.publishFacets(ctx, fields, true);
     progress.start(CREATE_INDEX, null);
