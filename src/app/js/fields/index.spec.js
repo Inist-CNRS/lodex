@@ -53,7 +53,7 @@ describe('field reducer', () => {
                         label: 'newField 3',
                         scope: 'collection',
                         name: 'new',
-                        display_in_resource: true,
+                        display: true,
                         searchable: true,
                         transformers: [],
                         position: 2,
@@ -87,7 +87,7 @@ describe('field reducer', () => {
                         label: 'target_col',
                         scope: 'collection',
                         name: 'new',
-                        display_in_resource: true,
+                        display: true,
                         searchable: true,
                         transformers: [
                             {

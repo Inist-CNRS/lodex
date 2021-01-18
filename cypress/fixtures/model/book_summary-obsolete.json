@@ -14,7 +14,8 @@
     {
         "scope": "collection",
         "label": "Title",
-        "display": true,
+        "display_in_list": true,
+        "display_in_resource": true,
         "searchable": true,
         "transformers": [
             {
@@ -37,7 +38,8 @@
     {
         "scope": "collection",
         "label": "URL",
-        "display": true,
+        "display_in_list": "",
+        "display_in_resource": true,
         "searchable": "",
         "transformers": [
             {
@@ -67,7 +69,8 @@
     {
         "scope": "collection",
         "label": "ISSN",
-        "display": true,
+        "display_in_list": true,
+        "display_in_resource": true,
         "searchable": "",
         "transformers": [
             {
@@ -91,7 +94,8 @@
     {
         "scope": "collection",
         "label": "eISSN",
-        "display": true,
+        "display_in_list": "",
+        "display_in_resource": true,
         "searchable": true,
         "transformers": [
             {
@@ -114,7 +118,8 @@
     {
         "scope": "collection",
         "label": "Première mise en ligne en",
-        "display": true,
+        "display_in_list": "",
+        "display_in_resource": true,
         "searchable": "",
         "transformers": [
             {
@@ -139,7 +144,8 @@
     {
         "scope": "collection",
         "label": "Dernière mise en ligne en",
-        "display": true,
+        "display_in_list": "",
+        "display_in_resource": true,
         "searchable": "",
         "transformers": [
             {
@@ -163,7 +169,8 @@
     {
         "scope": "collection",
         "label": "Couverture",
-        "display": true,
+        "display_in_list": "",
+        "display_in_resource": true,
         "searchable": "",
         "transformers": [
             {
@@ -187,7 +194,8 @@
     {
         "scope": "collection",
         "label": "Editeur",
-        "display": true,
+        "display_in_list": "",
+        "display_in_resource": true,
         "searchable": "",
         "transformers": [
             {
@@ -211,7 +219,8 @@
     {
         "scope": "collection",
         "label": "Access",
-        "display": true,
+        "display_in_list": "",
+        "display_in_resource": true,
         "searchable": "",
         "transformers": [
             {
@@ -234,7 +243,8 @@
     {
         "scope": "collection",
         "label": "Type",
-        "display": true,
+        "display_in_list": "",
+        "display_in_resource": true,
         "searchable": "",
         "transformers": [
             {
@@ -279,12 +289,14 @@
         ],
         "position": 11,
         "count": 0,
-        "display": true,
+        "display_in_home": true,
         "name": "ExFk"
     },
     {
         "scope": "dataset",
         "label": "Titres",
+        "display_in_list": "",
+        "display_in_resource": "",
         "searchable": true,
         "transformers": [
             {
@@ -301,7 +313,7 @@
         "classes": [],
         "position": 12,
         "overview": 0,
-        "display": true,
+        "display_in_home": true,
         "count": 0,
         "format": {
             "args": {
@@ -335,7 +347,7 @@
             "name": "istexSummary"
         },
         "count": 64,
-        "display": true,
+        "display_in_resource": true,
         "name": "afRt"
     },
     {
@@ -359,7 +371,7 @@
             "args": {},
             "name": "istex"
         },
-        "display": true,
+        "display_in_resource": true,
         "count": 0,
         "name": "zEVz"
     },

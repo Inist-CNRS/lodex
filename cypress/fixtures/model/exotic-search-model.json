@@ -14,8 +14,7 @@
     {
         "scope": "collection",
         "label": "Label",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -39,8 +38,7 @@
     {
         "scope": "collection",
         "label": "Type",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -63,8 +61,7 @@
     {
         "scope": "collection",
         "label": "Sous-type",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -88,8 +85,7 @@
     {
         "scope": "collection",
         "label": "Date",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -111,8 +107,7 @@
     {
         "scope": "collection",
         "label": "Nationalité",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -135,8 +130,7 @@
     {
         "scope": "collection",
         "label": "Naissance",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -157,8 +151,7 @@
     {
         "scope": "collection",
         "label": "Mort",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -181,8 +174,7 @@
     {
         "scope": "collection",
         "label": "Vie",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -211,8 +203,7 @@
     {
         "scope": "collection",
         "label": "Groupe",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -235,8 +226,7 @@
     {
         "scope": "collection",
         "label": "Créateur",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -258,8 +248,7 @@
     {
         "scope": "collection",
         "label": "Réalisateur",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -281,8 +270,7 @@
     {
         "scope": "collection",
         "label": "Bande-originale",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -303,8 +291,7 @@
     {
         "scope": "collection",
         "label": "Genre",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -327,8 +314,7 @@
     {
         "scope": "collection",
         "label": "Membres",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -349,8 +335,7 @@
     {
         "scope": "collection",
         "label": "Sous-genre",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -374,8 +359,7 @@
     {
         "scope": "collection",
         "label": "Sous-genre",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -399,8 +383,7 @@
     {
         "scope": "collection",
         "label": "Description",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -428,8 +411,7 @@
     {
         "scope": "collection",
         "label": "Video",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -453,8 +435,7 @@
     {
         "scope": "collection",
         "label": "Image",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -478,8 +459,7 @@
     {
         "scope": "collection",
         "label": "Musique",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -503,8 +483,7 @@
     {
         "scope": "collection",
         "label": "Couleur",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {

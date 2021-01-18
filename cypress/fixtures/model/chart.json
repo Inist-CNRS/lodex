@@ -14,8 +14,7 @@
     {
         "scope": "collection",
         "label": "Title",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -44,8 +43,7 @@
     {
         "scope": "collection",
         "label": "Publication Year",
-        "display_in_list": "",
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -75,8 +73,7 @@
     {
         "scope": "collection",
         "label": "Web of Science Category(ies)",
-        "display_in_list": "",
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -136,7 +133,7 @@
             "name": "globalBarchart"
         },
         "width": "",
-        "scope": "dataset",
+        "scope": "graphic",
         "transformers": [
             {
                 "operation": "VALUE",
@@ -150,7 +147,7 @@
             }
         ],
         "position": 4,
-        "display_in_graph": true,
+        "display": true,
         "count": 0,
         "name": "cRJu"
     },
@@ -182,7 +179,7 @@
             },
             "name": "bubbleChart"
         },
-        "scope": "dataset",
+        "scope": "graphic",
         "transformers": [
             {
                 "operation": "VALUE",
@@ -196,7 +193,7 @@
             }
         ],
         "position": 5,
-        "display_in_graph": true,
+        "display": true,
         "width": "",
         "count": 0,
         "name": "JkBk"
@@ -214,7 +211,7 @@
             "name": "globalPiechart"
         },
         "position": 6,
-        "scope": "dataset",
+        "scope": "graphic",
         "transformers": [
             {
                 "operation": "VALUE",
@@ -227,7 +224,7 @@
                 ]
             }
         ],
-        "display_in_graph": true,
+        "display": true,
         "name": "ax5a",
         "count": 0
     },
@@ -246,7 +243,7 @@
             "name": "globalRadarchart"
         },
         "position": 7,
-        "scope": "dataset",
+        "scope": "graphic",
         "transformers": [
             {
                 "operation": "VALUE",
@@ -259,7 +256,7 @@
                 ]
             }
         ],
-        "display_in_graph": true,
+        "display": true,
         "name": "QC65",
         "count": 0
     }

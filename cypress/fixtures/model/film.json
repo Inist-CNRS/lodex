@@ -22,8 +22,6 @@
     {
         "scope": "dataset",
         "label": "Dataset Name",
-        "display_in_list": true,
-        "display_in_resource": true,
         "searchable": true,
         "transformers": [
             {
@@ -45,14 +43,12 @@
         },
         "name": "WXc1",
         "count": 0,
-        "display_in_home": true,
+        "display": true,
         "overview": 100
     },
     {
         "scope": "dataset",
         "label": "Dataset Description",
-        "display_in_list": true,
-        "display_in_resource": true,
         "searchable": true,
         "transformers": [
             {
@@ -77,7 +73,7 @@
         },
         "name": "Doay",
         "count": 0,
-        "display_in_home": true,
+        "display": true,
         "overview": 200
     },
     {
@@ -102,8 +98,6 @@
             },
             "name": "title"
         },
-        "display_in_list": true,
-        "display_in_resource": true,
         "searchable": true,
         "position": 3,
         "name": "Q98n",
@@ -133,7 +127,7 @@
             }
         ],
         "position": 4,
-        "display_in_home": true,
+        "display": true,
         "count": 30,
         "name": "MzM2"
     },
@@ -163,9 +157,8 @@
             }
         ],
         "scheme": "http://schema.org/actor",
-        "display_in_list": false,
         "searchable": true,
-        "display_in_resource": true,
+        "display": true,
         "position": 5,
         "format": {
             "args": {
@@ -182,8 +175,7 @@
     {
         "scope": "collection",
         "label": "rating",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -205,8 +197,7 @@
     {
         "scope": "collection",
         "label": "imdb",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -234,8 +225,7 @@
     {
         "scope": "collection",
         "label": "director firstName",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -257,8 +247,7 @@
     {
         "scope": "collection",
         "label": "director lastname",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -280,8 +269,7 @@
     {
         "scope": "collection",
         "label": "Director",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -336,8 +324,7 @@
             }
         ],
         "scheme": "http://schema.org/releaseDate",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "isFacet": true,
         "position": 11,
@@ -353,8 +340,7 @@
     {
         "scope": "collection",
         "label": "Rating Source",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -399,7 +385,7 @@
         "position": 12,
         "name": "vPYU",
         "count": 0,
-        "display_in_home": true,
+        "display": true,
         "width": "100"
     },
     {
@@ -424,12 +410,11 @@
                 ]
             }
         ],
-        "scope": "dataset",
+        "scope": "graphic",
         "position": 13,
         "name": "xkNT",
         "count": 0,
-        "display_in_home": true,
-        "width": "",
-        "display_in_graph": true
+        "display": true,
+        "width": ""
     }
 ]

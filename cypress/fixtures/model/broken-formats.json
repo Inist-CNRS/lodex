@@ -20,8 +20,7 @@
     {
         "scope": "collection",
         "label": "Column 1",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -58,8 +57,7 @@
     {
         "scope": "collection",
         "label": "Column 2",
-        "display_in_list": "",
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
