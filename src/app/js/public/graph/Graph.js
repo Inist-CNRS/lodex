@@ -20,7 +20,6 @@ import FacetList from '../facet/FacetList';
 import DatasetSearchBar from '../dataset/DatasetSearchBar';
 import AppliedFacetList from '../dataset/AppliedDatasetFacetList';
 import EditButton from '../../fields/editFieldValue/EditButton';
-import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
 import CompositeProperty from '../Property/CompositeProperty';
 import DatasetStats from '../dataset/DatasetStats';
@@ -135,10 +134,6 @@ class Graph extends Component {
                                             {' '}
                                             {graphField.label}
                                             <EditButton
-                                                field={graphField}
-                                                resource={resource}
-                                            />
-                                            <EditOntologyFieldButton
                                                 field={graphField}
                                                 resource={resource}
                                             />

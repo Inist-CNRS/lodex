@@ -146,7 +146,7 @@ describe('field routes', () => {
 
             await importFields(asyncBusboyImpl)(ctx);
             expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
-            expect(ctx.restoreFields).toHaveBeenCalledWith('file0');
+            expect(ctx.restoreFields).toHaveBeenCalledWith('file0', ctx);
             expect(ctx.status).toEqual(200);
         });
 
