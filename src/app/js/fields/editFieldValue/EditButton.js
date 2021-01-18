@@ -34,7 +34,10 @@ const styles = stylesToClassname(
     'field-edit-button',
 );
 
-const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
+const mapStateToProps = (
+    state,
+    { field, resource, onSaveProperty, p, warningMessage },
+) => ({
     open: fromFields.isFieldEdited(state, field.name),
     show:
         fromUser.isAdmin(state) &&
@@ -49,6 +52,7 @@ const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
             field={field}
             onSaveProperty={onSaveProperty}
             resource={resource}
+            warningMessage={warningMessage}
         />
     ),
     formName: FORM_NAME,
