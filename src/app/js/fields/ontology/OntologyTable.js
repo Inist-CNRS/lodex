@@ -46,7 +46,7 @@ class OntologyTable extends Component {
                             <TableCell style={{ minWidth: 150 }} />
                             <TableCell>{polyglot.t('identifier')}</TableCell>
                             <TableCell>{polyglot.t('label')}</TableCell>
-                            <TableCell>{polyglot.t('cover')}</TableCell>
+                            <TableCell>{polyglot.t('scope')}</TableCell>
                             <TableCell>{polyglot.t('scheme')}</TableCell>
                             <TableCell>
                                 {polyglot.t('count_of_field')}

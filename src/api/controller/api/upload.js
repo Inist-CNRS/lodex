@@ -65,7 +65,6 @@ export const uploadFile = ctx => async loaderName => {
     progress.start(SAVING_DATASET, 0);
     const { filename, totalChunks, extension } = ctx.resumable;
     const mergedStream = ctx.mergeChunks(filename, totalChunks);
-
     const parseStream = await ctx.getLoader(
         !loaderName || loaderName === 'automatic' ? extension : loaderName,
     );

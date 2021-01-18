@@ -1,6 +1,6 @@
 [
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "uri",
         "transformers": [
             {
@@ -12,10 +12,9 @@
         "name": "uri"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Label",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -37,10 +36,9 @@
         "overview": 1
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Type",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -61,10 +59,9 @@
         "name": "AMx5"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Sous-type",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -86,10 +83,9 @@
         "name": "V9AO"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Date",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -109,10 +105,9 @@
         "name": "48Az"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Nationalité",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -133,10 +128,9 @@
         "name": "vpiz"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Naissance",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -155,10 +149,9 @@
         "name": "dImS"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Mort",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -179,10 +172,9 @@
         "name": "MnXd"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Vie",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -209,10 +201,9 @@
         "name": "TQuZ"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Groupe",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -233,10 +224,9 @@
         "name": "Orcf"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Créateur",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -256,10 +246,9 @@
         "name": "mJWq"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Réalisateur",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -279,10 +268,9 @@
         "name": "qHD2"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Bande-originale",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -301,10 +289,9 @@
         "name": "qI34"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Genre",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -325,10 +312,9 @@
         "name": "7kvE"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Membres",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -347,10 +333,9 @@
         "name": "lzFf"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Sous-genre",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -372,10 +357,9 @@
         "name": "rMVO"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Sous-genre",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -397,10 +381,9 @@
         "name": "lfCa"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Description",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -426,10 +409,9 @@
         "name": "LKz3"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Video",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -451,10 +433,9 @@
         "name": "oriN"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Image",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -476,10 +457,9 @@
         "name": "UxIo"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Musique",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": false,
         "transformers": [
             {
@@ -501,10 +481,9 @@
         "name": "z3LU"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Couleur",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {

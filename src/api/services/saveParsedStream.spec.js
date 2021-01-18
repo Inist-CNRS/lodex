@@ -64,8 +64,8 @@ describe('saveParsedStream', () => {
                 findAll: jest
                     .fn()
                     .mockImplementation(() => [
-                        { cover: 'collection' },
-                        { cover: 'dataset' },
+                        { scope: 'collection' },
+                        { scope: 'dataset' },
                     ]),
             },
             saveStream: jest.fn(),
@@ -116,14 +116,14 @@ describe('saveParsedStream', () => {
 
         it('should have called publishDocuments', () => {
             expect(ctx.publishDocuments).toHaveBeenCalledWith(ctx, 'count', [
-                { cover: 'collection' },
+                { scope: 'collection' },
             ]);
         });
 
         it('should have called publishFacets', () => {
             expect(ctx.publishFacets).toHaveBeenCalledWith(
                 ctx,
-                [{ cover: 'collection' }, { cover: 'dataset' }],
+                [{ scope: 'collection' }, { scope: 'dataset' }],
                 false,
             );
         });
@@ -154,8 +154,8 @@ describe('saveParsedStream', () => {
                 findAll: jest
                     .fn()
                     .mockImplementation(() => [
-                        { cover: 'collection' },
-                        { cover: 'dataset' },
+                        { scope: 'collection' },
+                        { scope: 'dataset' },
                     ]),
             },
             saveStream: jest.fn(),
@@ -206,7 +206,7 @@ describe('saveParsedStream', () => {
 
         it('should have called publishDocuments', () => {
             expect(ctx.publishDocuments).toHaveBeenCalledWith(ctx, 'count', [
-                { cover: 'collection' },
+                { scope: 'collection' },
             ]);
         });
 

@@ -6,9 +6,9 @@ import publishFacets from './publishFacets';
 describe('publish', () => {
     describe('doPublish', () => {
         const fields = [
-            { name: 'uri', cover: 'collection' },
-            { name: 'field2', cover: 'collection' },
-            { name: 'field3', cover: 'dataset' },
+            { name: 'uri', scope: 'collection' },
+            { name: 'field2', scope: 'collection' },
+            { name: 'field3', scope: 'dataset' },
         ];
 
         const publishedDataset = [
@@ -62,8 +62,8 @@ describe('publish', () => {
 
         it('should call publishDocuments', () => {
             expect(ctx.publishDocuments).toHaveBeenCalledWith(ctx, 'count', [
-                { name: 'uri', cover: 'collection' },
-                { name: 'field2', cover: 'collection' },
+                { name: 'uri', scope: 'collection' },
+                { name: 'field2', scope: 'collection' },
             ]);
         });
 
@@ -73,7 +73,7 @@ describe('publish', () => {
                 [
                     {
                         name: 'field3',
-                        cover: 'dataset',
+                        scope: 'dataset',
                     },
                 ],
                 'count',

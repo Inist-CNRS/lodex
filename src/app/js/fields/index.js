@@ -12,6 +12,8 @@ import fieldSelectors, {
     NEW_CHARACTERISTIC_FORM_NAME as formName,
 } from './selectors';
 
+import { SCOPE_COLLECTION } from '../../../common/scope';
+
 export const selectors = fieldSelectors;
 export const NEW_CHARACTERISTIC_FORM_NAME = formName;
 
@@ -112,10 +114,10 @@ export const defaultState = {
 };
 
 const getDefaultField = (name, index, rest = {}) => ({
-    cover: 'collection',
+    scope: SCOPE_COLLECTION,
     label: name || `newField ${index + 1}`,
     name: 'new',
-    display_in_resource: true,
+    display: true,
     searchable: true,
     transformers: name
         ? [

@@ -84,10 +84,8 @@ export default compose(
     withProps(({ field, filter }) => {
         const fieldFilterAttributes = filter
             ? {
-                  cover: filter === 'dataset' ? 'dataset' : 'collection',
-                  display_in_resource: filter === 'document',
-                  display_in_graph: filter === 'graph',
-                  display_in_home: filter === 'dataset',
+                  scope: filter,
+                  display: field ? field.display : true,
               }
             : {};
 

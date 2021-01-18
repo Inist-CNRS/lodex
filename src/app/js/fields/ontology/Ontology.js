@@ -8,7 +8,7 @@ import { Grid } from '@material-ui/core';
 import { preLoadPublication } from '../';
 import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
 import OntologyTable from './OntologyTable';
-import { COVER_DATASET, COVER_DOCUMENT } from '../../../../common/cover';
+import { SCOPES, SCOPE_DATASET } from '../../../../common/scope';
 import ExportFieldsButton from '../../public/export/ExportFieldsButton';
 import ExportFieldsReadyButton from '../../public/export/ExportFieldsReadyButton';
 import redirectToDashboardIfNoField from '../../admin/redirectToDashboardIfNoField';
@@ -16,7 +16,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const OntologyComponent = ({
     p: polyglot,
-    filter = 'dataset',
+    filter = SCOPE_DATASET,
     preLoadPublication,
 }) => {
     useEffect(() => {
@@ -51,7 +51,7 @@ const OntologyComponent = ({
 
 OntologyComponent.propTypes = {
     preLoadPublication: PropTypes.func.isRequired,
-    filter: PropTypes.oneOf(['graph', COVER_DATASET, COVER_DOCUMENT]),
+    filter: PropTypes.oneOf(SCOPES),
     p: polyglotPropTypes.isRequired,
 };
 

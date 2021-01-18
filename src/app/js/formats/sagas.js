@@ -20,7 +20,7 @@ import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
 import { APPLY_FILTER, facetActionTypes } from '../public/dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
-import { COVER_DATASET } from '../../../common/cover';
+import { SCOPE_DATASET } from '../../../common/scope';
 import { ISTEX_API_URL } from '../../../common/externals';
 
 const isSparqlQuery = url =>
@@ -107,7 +107,7 @@ export function* handleLoadFormatDataRequest({
         return;
     }
 
-    if (field.cover === COVER_DATASET && withFacets) {
+    if (field.scope === SCOPE_DATASET && withFacets) {
         yield handleFilterFormatDataRequest({ payload: { filter } });
         return;
     }
@@ -128,7 +128,7 @@ export function* handleLoadFormatDataRequest({
 
 export function* loadFormatDataForName(name, filter) {
     const field = yield select(fromFields.getFieldByName, name);
-    if (!field || field.cover !== COVER_DATASET) {
+    if (!field || field.scope !== SCOPE_DATASET) {
         return;
     }
     const url = yield select(fromCharacteristic.getCharacteristicByName, name);

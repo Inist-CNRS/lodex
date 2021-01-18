@@ -12,10 +12,11 @@ import {
 import publishFacets from './publishFacets';
 import { validateField } from '../../models/field';
 import {
-    COVER_DATASET,
-    COVER_COLLECTION,
-    COVER_DOCUMENT,
-} from '../../../common/cover';
+    SCOPE_DATASET,
+    SCOPE_GRAPHIC,
+    SCOPE_COLLECTION,
+    SCOPE_DOCUMENT,
+} from '../../../common/scope';
 import indexSearchableFields from '../../services/indexSearchableFields';
 
 jest.mock('../../services/indexSearchableFields');
@@ -406,11 +407,11 @@ describe('field routes', () => {
     });
 
     describe('reorderField', () => {
-        it('should update field position based on index in array when all cover are dataset', async () => {
+        it('should update field position based on index in array when all scope are dataset', async () => {
             const fieldsByName = {
-                a: { cover: COVER_DATASET },
-                b: { cover: COVER_DATASET },
-                c: { cover: COVER_DATASET },
+                a: { scope: SCOPE_DATASET },
+                b: { scope: SCOPE_DATASET },
+                c: { scope: SCOPE_DATASET },
             };
             const ctx = {
                 request: {
@@ -439,11 +440,11 @@ describe('field routes', () => {
             expect(ctx.body).toEqual(['updated a', 'updated b', 'updated c']);
         });
 
-        it('should update field position based on index in array when all cover are collection or document and first one is uri', async () => {
+        it('should update field position based on index in array when all scope are collection or document and first one is uri', async () => {
             const fieldsByName = {
-                a: { cover: COVER_COLLECTION, name: 'uri' },
-                b: { cover: COVER_DOCUMENT },
-                c: { cover: COVER_COLLECTION },
+                a: { scope: SCOPE_COLLECTION, name: 'uri' },
+                b: { scope: SCOPE_DOCUMENT },
+                c: { scope: SCOPE_COLLECTION },
             };
             const ctx = {
                 request: {
@@ -472,11 +473,11 @@ describe('field routes', () => {
             expect(ctx.body).toEqual(['updated a', 'updated b', 'updated c']);
         });
 
-        it('should throw an error if dataset is mixed with other cover', async () => {
+        it('should throw an error if dataset is mixed with other scope', async () => {
             const fieldsByName = {
-                a: { cover: COVER_DATASET },
-                b: { cover: COVER_DOCUMENT },
-                c: { cover: COVER_COLLECTION },
+                a: { scope: SCOPE_DATASET },
+                b: { scope: SCOPE_DOCUMENT },
+                c: { scope: SCOPE_COLLECTION },
             };
             const ctx = {
                 request: {
@@ -500,17 +501,51 @@ describe('field routes', () => {
 
             expect(ctx.status).toBe(400);
             expect(ctx.body.error).toBe(
-                'Bad cover: trying to mix characteristic with other fields',
+                'Bad scope: trying to mix home fields with other fields',
             );
 
             expect(ctx.field.updatePosition).not.toHaveBeenCalled();
         });
 
-        it('should throw an error if cover is not dataset and first field is not uri', async () => {
+        it('should throw an error if graphic is mixed with other scope', async () => {
             const fieldsByName = {
-                a: { cover: COVER_COLLECTION, name: 'a' },
-                b: { cover: COVER_DOCUMENT, name: 'uri' },
-                c: { cover: COVER_COLLECTION, name: 'c' },
+                a: { scope: SCOPE_GRAPHIC },
+                b: { scope: SCOPE_DOCUMENT },
+                c: { scope: SCOPE_DATASET },
+            };
+            const ctx = {
+                request: {
+                    body: {
+                        fields: ['a', 'b', 'c'],
+                    },
+                },
+                field: {
+                    updatePosition: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve(`updated field`),
+                        ),
+                    findByNames: jest
+                        .fn()
+                        .mockImplementation(() => fieldsByName),
+                },
+            };
+
+            await reorderField(ctx, 'id');
+
+            expect(ctx.status).toBe(400);
+            expect(ctx.body.error).toBe(
+                'Bad scope: trying to mix graphic fields with other fields',
+            );
+
+            expect(ctx.field.updatePosition).not.toHaveBeenCalled();
+        });
+
+        it('should throw an error if scope is collection and first field is not uri', async () => {
+            const fieldsByName = {
+                a: { scope: SCOPE_COLLECTION, name: 'a' },
+                b: { scope: SCOPE_DOCUMENT, name: 'uri' },
+                c: { scope: SCOPE_COLLECTION, name: 'c' },
             };
             const ctx = {
                 request: {

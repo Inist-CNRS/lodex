@@ -4,7 +4,7 @@ import fieldFactory, {
     buildInvalidTransformersMessage,
 } from './field';
 import { URI_FIELD_NAME } from '../../common/uris';
-import { COVER_DOCUMENT, COVER_COLLECTION } from '../../common/cover';
+import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../common/scope';
 
 describe('field', () => {
     describe('fieldFactory', () => {
@@ -139,7 +139,7 @@ describe('field', () => {
                 expect(fieldCollection.insertOne).toHaveBeenCalledWith({
                     label: 'label',
                     name: 'nameArg',
-                    cover: COVER_DOCUMENT,
+                    scope: SCOPE_DOCUMENT,
                     contribution: true,
                     position: 10,
                     transformers: [
@@ -172,7 +172,7 @@ describe('field', () => {
                 expect(fieldCollection.insertOne).toHaveBeenCalledWith({
                     label: 'label',
                     name: 'nameArg',
-                    cover: COVER_DOCUMENT,
+                    scope: SCOPE_DOCUMENT,
                     contribution: true,
                     contributors: [contributor],
                     position: 10,
@@ -212,7 +212,7 @@ describe('field', () => {
                     {
                         $set: {
                             label: 'label',
-                            cover: COVER_DOCUMENT,
+                            scope: SCOPE_DOCUMENT,
                             contribution: true,
                         },
                     },
@@ -240,7 +240,7 @@ describe('field', () => {
                     {
                         $set: {
                             label: 'label',
-                            cover: COVER_DOCUMENT,
+                            scope: SCOPE_DOCUMENT,
                             contribution: true,
                         },
                         $addToSet: {
@@ -264,7 +264,7 @@ describe('field', () => {
                 await field.initializeModel();
 
                 expect(fieldCollection.insertOne).toHaveBeenCalledWith({
-                    cover: COVER_COLLECTION,
+                    scope: SCOPE_COLLECTION,
                     label: URI_FIELD_NAME,
                     name: URI_FIELD_NAME,
                     transformers: [
@@ -414,7 +414,7 @@ describe('field', () => {
     describe('validateField', () => {
         it('should return field if valid', async () => {
             const field = {
-                cover: 'dataset',
+                scope: 'dataset',
                 label: 'label',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
@@ -426,7 +426,7 @@ describe('field', () => {
 
         it('should return field if no transformers', async () => {
             const field = {
-                cover: 'dataset',
+                scope: 'dataset',
                 label: 'label',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
@@ -438,9 +438,9 @@ describe('field', () => {
             );
         });
 
-        it('should throw an error if no cover', () => {
+        it('should throw an error if no scope', () => {
             const field = {
-                cover: undefined,
+                scope: undefined,
                 label: 'label',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
@@ -453,9 +453,9 @@ describe('field', () => {
             );
         });
 
-        it('should throw an error if cover is unknown', () => {
+        it('should throw an error if scope is unknown', () => {
             const field = {
-                cover: 'invalid_cover',
+                scope: 'invalid_scope',
                 label: 'label',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
@@ -470,7 +470,7 @@ describe('field', () => {
 
         it('should throw an error if scheme is not a valid url', () => {
             const field = {
-                cover: 'dataset',
+                scope: 'dataset',
                 label: 'label',
                 name: 'name',
                 scheme: 'ftp://purl.org/dc/terms/title',
@@ -485,7 +485,7 @@ describe('field', () => {
 
         it('should throw an error if transformer has no args', () => {
             const field = {
-                cover: 'dataset',
+                scope: 'dataset',
                 label: 'label',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
@@ -500,7 +500,7 @@ describe('field', () => {
 
         it('should throw an error if transformer operation has unknown operation', () => {
             const field = {
-                cover: 'dataset',
+                scope: 'dataset',
                 label: 'label',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
@@ -518,7 +518,7 @@ describe('field', () => {
 
         it('should return field even if no transformers if isContribution is true', async () => {
             const field = {
-                cover: 'document',
+                scope: 'document',
                 label: 'label',
                 name: 'name',
                 position: 1,

@@ -1,15 +1,15 @@
-import { COVERS, COVER_DOCUMENT, COVER_DATASET } from './cover';
+import { SCOPES, SCOPE_COLLECTION, SCOPE_DOCUMENT } from './scope';
 import knownTransformers from './transformers';
 import languagesList from './languages';
 import isUndefinedOrEmpty from './lib/isUndefinedOrEmpty';
 
-export const validateCover = (field, isContribution) => {
+export const validateScope = (field, isContribution) => {
     const result = {
-        name: 'cover',
+        name: 'scope',
         isValid: true,
     };
 
-    if (!field.cover) {
+    if (!field.scope) {
         return {
             ...result,
             isValid: false,
@@ -17,19 +17,19 @@ export const validateCover = (field, isContribution) => {
         };
     }
 
-    if (isContribution && field.cover !== COVER_DOCUMENT) {
+    if (isContribution && field.scope !== SCOPE_DOCUMENT) {
         return {
             ...result,
             isValid: false,
-            error: 'invalid_contribution_cover',
+            error: 'invalid_contribution_scope',
         };
     }
 
-    if (!COVERS.includes(field.cover)) {
+    if (!SCOPES.includes(field.scope)) {
         return {
             ...result,
             isValid: false,
-            error: 'invalid_cover',
+            error: 'invalid_scope',
         };
     }
 
@@ -60,9 +60,17 @@ export const validatePosition = field => {
 
     if (
         field.position === 0 &&
-        field.cover !== COVER_DATASET &&
+        field.scope === SCOPE_COLLECTION &&
         field.name !== 'uri'
     ) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'uri_must_come_first',
+        };
+    }
+
+    if (field.position === 0 && field.scope === SCOPE_DOCUMENT) {
         return {
             ...result,
             isValid: false,
@@ -271,7 +279,7 @@ export const isListValid = list =>
 
 export const validateField = (field, isContribution = false, fields = []) => {
     const properties = [
-        validateCover(field, isContribution),
+        validateScope(field, isContribution),
         validateScheme(field),
         validatePosition(field),
         validateTransformers(field, isContribution),

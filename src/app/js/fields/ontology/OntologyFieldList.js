@@ -3,7 +3,7 @@ import { SortableContainer } from 'react-sortable-hoc';
 import { TableBody } from '@material-ui/core';
 
 import OntologyField from './OntologyField';
-import { COVER_DATASET } from '../../../../common/cover';
+import { SCOPE_DATASET } from '../../../../common/scope';
 
 const OntologyFieldList = SortableContainer(({ items }) => (
     <TableBody>
@@ -12,9 +12,7 @@ const OntologyFieldList = SortableContainer(({ items }) => (
                 key={field.name}
                 field={field}
                 index={field.position}
-                collection={
-                    field.cover === COVER_DATASET ? 'dataset' : 'document'
-                }
+                collection={field.scope}
                 disabled={field.name === 'uri'}
             />
         ))}

@@ -3,13 +3,13 @@ import React from 'react';
 import FormCheckboxField from '../lib/components/FormCheckboxField';
 import FieldInput from '../lib/components/FieldInput';
 
-const FieldDisplayInHomeInput = () => (
+const FieldDisplayInput = () => (
     <FieldInput
-        className="display_in_home"
-        name="display_in_home"
+        className="display"
+        name="display"
         component={FormCheckboxField}
-        labelKey="field_display_in_home"
+        labelKey="field_display"
     />
 );
 
-export default FieldDisplayInHomeInput;
+export default FieldDisplayInput;

@@ -1,10 +1,10 @@
-import { COVER_DOCUMENT, COVER_COLLECTION, COVER_DATASET } from './cover';
+import { SCOPE_DOCUMENT, SCOPE_COLLECTION, SCOPE_GRAPHIC } from './scope';
 import {
     validateCompletesField,
     validateComposedOf,
     validateComposedOfFields,
     validateComposedOfField,
-    validateCover,
+    validateScope,
     validateField,
     validateLanguage,
     validatePosition,
@@ -23,7 +23,7 @@ describe('validateField', () => {
             name: undefined,
             properties: [
                 {
-                    name: 'cover',
+                    name: 'scope',
                     isValid: false,
                     error: 'required',
                 },
@@ -67,7 +67,7 @@ describe('validateField', () => {
         const field = {
             name: 'field name',
             label: 'field label',
-            cover: 'collection',
+            scope: 'collection',
             position: 1,
             transformers: [{ operation: 'COLUMN', args: [{ value: 'a' }] }],
         };
@@ -78,7 +78,7 @@ describe('validateField', () => {
             name: 'field name',
             properties: [
                 {
-                    name: 'cover',
+                    name: 'scope',
                     isValid: true,
                 },
                 {
@@ -123,40 +123,47 @@ describe('validateField', () => {
         });
     });
 
-    describe('validateCover', () => {
-        it('should return valid result if cover is part of valid cover', () => {
-            expect(validateCover({ cover: COVER_COLLECTION })).toEqual({
-                name: 'cover',
+    describe('validateScope', () => {
+        it('should return valid result if scope is part of valid scope : collection', () => {
+            expect(validateScope({ scope: SCOPE_COLLECTION })).toEqual({
+                name: 'scope',
                 isValid: true,
             });
         });
 
-        it('should return valid result if cover is COVER_DOCUMENT and contribution is true', () => {
-            expect(validateCover({ cover: COVER_DOCUMENT }, true)).toEqual({
-                name: 'cover',
+        it('should return valid result if scope is part of valid scope : graphic', () => {
+            expect(validateScope({ scope: SCOPE_GRAPHIC })).toEqual({
+                name: 'scope',
                 isValid: true,
             });
         });
 
-        it('should return invalid result if cover is not COVER_DOCUMENT and contribution is true', () => {
-            expect(validateCover({ cover: COVER_COLLECTION }, true)).toEqual({
-                name: 'cover',
-                isValid: false,
-                error: 'invalid_contribution_cover',
+        it('should return valid result if scope is SCOPE_DOCUMENT and contribution is true', () => {
+            expect(validateScope({ scope: SCOPE_DOCUMENT }, true)).toEqual({
+                name: 'scope',
+                isValid: true,
             });
         });
 
-        it('should return invalid error if cover is at less than 2 char long', () => {
-            expect(validateCover({ cover: 'UNKNOWN' })).toEqual({
-                name: 'cover',
+        it('should return invalid result if scope is not SCOPE_DOCUMENT and contribution is true', () => {
+            expect(validateScope({ scope: SCOPE_COLLECTION }, true)).toEqual({
+                name: 'scope',
                 isValid: false,
-                error: 'invalid_cover',
+                error: 'invalid_contribution_scope',
             });
         });
 
-        it('should return required error if cover is absent', () => {
-            expect(validateCover({})).toEqual({
-                name: 'cover',
+        it('should return invalid error if scope is not part of valid scope', () => {
+            expect(validateScope({ scope: 'UNKNOWN' })).toEqual({
+                name: 'scope',
+                isValid: false,
+                error: 'invalid_scope',
+            });
+        });
+
+        it('should return required error if scope is absent', () => {
+            expect(validateScope({})).toEqual({
+                name: 'scope',
                 isValid: false,
                 error: 'required',
             });
@@ -171,17 +178,23 @@ describe('validateField', () => {
             });
         });
 
-        it('should return valid result if position is 0 and field is uri', () => {
-            expect(validatePosition({ position: 0, name: 'uri' })).toEqual({
+        it('should return valid result if position is 0 and scope is collection and field is uri', () => {
+            expect(
+                validatePosition({
+                    position: 0,
+                    name: 'uri',
+                    scope: SCOPE_COLLECTION,
+                }),
+            ).toEqual({
                 name: 'position',
                 isValid: true,
             });
         });
 
-        it('should return invalid result if position is 0 and cover is no dataset and field is not uri', () => {
+        it('should return invalid result if position is 0 and scope is SCOPE_COLLECTION and field is not uri', () => {
             expect(
                 validatePosition(
-                    { position: 0, name: 'foo', cover: COVER_COLLECTION },
+                    { position: 0, name: 'foo', scope: SCOPE_COLLECTION },
                     true,
                 ),
             ).toEqual({
@@ -191,10 +204,10 @@ describe('validateField', () => {
             });
         });
 
-        it('should return valid result if position is 0 and cover dataset and field is not uri', () => {
+        it('should return valid result if position is 0 and scope is not SCOPE_COLLECTION', () => {
             expect(
                 validatePosition(
-                    { position: 0, name: 'foo', cover: COVER_DATASET },
+                    { position: 0, name: 'toto', scope: SCOPE_GRAPHIC },
                     true,
                 ),
             ).toEqual({

@@ -30,7 +30,7 @@ describe('Home Page', () => {
             'Dataset Description',
             'Nombre de films',
             'Liste des films',
-            'Répartition par réalisateurs',
+            //TODO  with Graph Links 'Répartition par réalisateurs',
         ]);
         homePage.checkCharacteristic('mzm2', '30');
     });

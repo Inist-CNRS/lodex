@@ -283,7 +283,7 @@ NavBar.propTypes = {
 const mapStateToProps = state => ({
     role: fromUser.getRole(state),
     canBeSearched: fromFields.canBeSearched(state),
-    hasGraph: fromFields.getGraphFields(state).length > 0,
+    hasGraph: fromFields.getGraphicFields(state).length > 0,
     leftMenu: fromMenu.getLeftMenu(state),
     rightMenu: fromMenu.getRightMenu(state),
     advancedMenu: fromMenu.getAdvancedMenu(state),

@@ -29,6 +29,7 @@ import GraphLink from '../graph/GraphLink';
 import Link from '../../lib/components/Link';
 import { getPredicate } from '../../formats';
 import shouldDisplayField from '../../fields/shouldDisplayField';
+import { SCOPE_GRAPHIC } from '../../../../common/scope';
 
 const styles = {
     container: memoize(
@@ -108,7 +109,7 @@ export const PropertyComponent = ({
             field={field}
             resource={resource}
             fieldStatus={fieldStatus}
-            graphLink={!!field.display_in_graph}
+            graphLink={field.scope === SCOPE_GRAPHIC}
         />,
         <CompositeProperty
             key="composite"
@@ -125,11 +126,14 @@ export const PropertyComponent = ({
     ];
 
     const formatName = get(field, 'format.name', 'none');
-    const format = field.display_in_graph ? (
-        <GraphLink link={`/graph/${field.name}`}>{formatChildren}</GraphLink>
-    ) : (
-        <div>{formatChildren}</div>
-    );
+    const format =
+        field.scope === SCOPE_GRAPHIC ? (
+            <GraphLink link={`/graph/${field.name}`}>
+                {formatChildren}
+            </GraphLink>
+        ) : (
+            <div>{formatChildren}</div>
+        );
     return (
         <div
             className={classnames(

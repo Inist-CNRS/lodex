@@ -8,10 +8,11 @@ import streamToString from 'stream-to-string';
 import { validateField } from '../../models/field';
 import publishFacets from './publishFacets';
 import {
-    COVER_DATASET,
-    COVER_COLLECTION,
-    COVER_DOCUMENT,
-} from '../../../common/cover';
+    SCOPE_DATASET,
+    SCOPE_GRAPHIC,
+    SCOPE_COLLECTION,
+    SCOPE_DOCUMENT,
+} from '../../../common/scope';
 import indexSearchableFields from '../../services/indexSearchableFields';
 
 export const setup = async (ctx, next) => {
@@ -156,31 +157,41 @@ export const reorderField = async ctx => {
     const fieldsData = fields.map(name => fieldsDict[name]);
 
     try {
-        const cover = fieldsData.reduce((prev, { cover }) => {
+        const scope = fieldsData.reduce((prev, { scope }) => {
             if (!prev) {
-                return cover;
+                return scope;
             }
 
-            if (prev === COVER_DATASET) {
-                if (cover === COVER_DATASET) {
+            if (prev === SCOPE_DATASET) {
+                if (scope === SCOPE_DATASET) {
                     return prev;
                 }
 
                 throw new Error(
-                    'Bad cover: trying to mix characteristic with other fields',
+                    'Bad scope: trying to mix home fields with other fields',
                 );
             }
 
-            if (cover === COVER_COLLECTION || cover === COVER_DOCUMENT) {
-                return COVER_COLLECTION;
+            if (prev === SCOPE_GRAPHIC) {
+                if (scope === SCOPE_GRAPHIC) {
+                    return prev;
+                }
+
+                throw new Error(
+                    'Bad scope: trying to mix graphic fields with other fields',
+                );
+            }
+
+            if (scope === SCOPE_COLLECTION || scope === SCOPE_DOCUMENT) {
+                return SCOPE_COLLECTION;
             }
 
             throw new Error(
-                'Bad cover: trying to mix characteristic with other fields',
+                'Bad scope: trying to mix ressource fields with other fields',
             );
         }, null);
 
-        if (cover === COVER_COLLECTION) {
+        if (scope === SCOPE_COLLECTION) {
             if (fieldsData[0].name !== 'uri') {
                 throw new Error('Uri must always be the first field');
             }

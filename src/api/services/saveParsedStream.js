@@ -1,3 +1,5 @@
+import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
+
 const saveParsedStreamFactory = ctx =>
     async function saveParsedStream(parsedStream, postSaveCallback = null) {
         const publishedCount = await ctx.publishedDataset.count();
@@ -33,15 +35,15 @@ const saveParsedStreamFactory = ctx =>
             }
 
             const fields = await ctx.field.findAll();
-            const collectionCoverFields = fields.filter(
-                c => c.cover === 'collection',
+            const collectionScopeFields = fields.filter(
+                c => c.scope === SCOPE_COLLECTION || c.scope === SCOPE_DOCUMENT,
             );
 
             const count = await ctx.dataset.count({
                 lodex_published: { $exists: false },
             });
 
-            await ctx.publishDocuments(ctx, count, collectionCoverFields);
+            await ctx.publishDocuments(ctx, count, collectionScopeFields);
             await ctx.publishFacets(ctx, fields, false);
 
             return ctx.dataset.count();

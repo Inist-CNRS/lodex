@@ -11,6 +11,7 @@ import { fromParsing, fromPublicationPreview } from './selectors';
 import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import theme from './../theme';
+import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../../common/scope';
 
 const useStyles = makeStyles({
     progress: {
@@ -100,17 +101,14 @@ const mapStateToProps = (state, { filter }) => ({
             return true;
         }
 
-        return filter === 'document'
-            ? (f.cover === 'collection' || f.cover === 'document') &&
-                  !f.display_in_graph &&
+        return filter === SCOPE_DOCUMENT
+            ? (f.scope === SCOPE_COLLECTION || f.scope === SCOPE_DOCUMENT) &&
                   !f.subresourceId
-            : filter === 'graph'
-            ? f.display_in_graph
             : filter === f.subresourceId
-            ? (f.cover === 'collection' || f.cover === 'document') &&
+            ? (f.scope === SCOPE_COLLECTION || f.scope === SCOPE_DOCUMENT) &&
               filter === f.subresourceId &&
               !(f.name.endsWith('_uri') && f.label === 'uri')
-            : f.cover === 'dataset' && !f.display_in_graph;
+            : f.scope === filter;
     }).length,
 });
 

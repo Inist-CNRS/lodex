@@ -1,6 +1,6 @@
 [
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "uri",
         "transformers": [
             {
@@ -19,10 +19,9 @@
         "name": "uri"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Affiliation(s)",
-        "display_in_list": "",
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {

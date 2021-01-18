@@ -1,6 +1,6 @@
 [
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "uri",
         "transformers": [
             {
@@ -20,10 +20,8 @@
         "name": "uri"
     },
     {
-        "cover": "dataset",
+        "scope": "dataset",
         "label": "Dataset Name",
-        "display_in_list": true,
-        "display_in_resource": true,
         "searchable": true,
         "transformers": [
             {
@@ -45,14 +43,12 @@
         },
         "name": "WXc1",
         "count": 0,
-        "display_in_home": true,
+        "display": true,
         "overview": 100
     },
     {
-        "cover": "dataset",
+        "scope": "dataset",
         "label": "Dataset Description",
-        "display_in_list": true,
-        "display_in_resource": true,
         "searchable": true,
         "transformers": [
             {
@@ -77,11 +73,11 @@
         },
         "name": "Doay",
         "count": 0,
-        "display_in_home": true,
+        "display": true,
         "overview": 200
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "title",
         "transformers": [
             {
@@ -102,8 +98,6 @@
             },
             "name": "title"
         },
-        "display_in_list": true,
-        "display_in_resource": true,
         "searchable": true,
         "position": 3,
         "name": "Q98n",
@@ -119,7 +113,7 @@
             },
             "name": "emphasedNumber"
         },
-        "cover": "dataset",
+        "scope": "dataset",
         "transformers": [
             {
                 "operation": "VALUE",
@@ -133,12 +127,12 @@
             }
         ],
         "position": 4,
-        "display_in_home": true,
+        "display": true,
         "count": 30,
         "name": "MzM2"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "actors",
         "transformers": [
             {
@@ -163,9 +157,8 @@
             }
         ],
         "scheme": "http://schema.org/actor",
-        "display_in_list": false,
         "searchable": true,
-        "display_in_resource": true,
+        "display": true,
         "position": 5,
         "format": {
             "args": {
@@ -180,10 +173,9 @@
         "count": 29
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "rating",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -203,10 +195,9 @@
         "name": "bZE+"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "imdb",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -232,10 +223,9 @@
         "name": "jB7h"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "director firstName",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -255,10 +245,9 @@
         "scheme": "http://xmlns.com/foaf/0.1/#term_firstName"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "director lastname",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -278,10 +267,9 @@
         "scheme": "http://xmlns.com/foaf/0.1/#term_lastName"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Director",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -321,7 +309,7 @@
         "overview": 2
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "year",
         "transformers": [
             {
@@ -336,8 +324,7 @@
             }
         ],
         "scheme": "http://schema.org/releaseDate",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "isFacet": true,
         "position": 11,
@@ -351,10 +338,9 @@
         "name": "xqgM"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Rating Source",
-        "display_in_list": false,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -395,11 +381,11 @@
                 ]
             }
         ],
-        "cover": "dataset",
+        "scope": "dataset",
         "position": 12,
         "name": "vPYU",
         "count": 0,
-        "display_in_home": true,
+        "display": true,
         "width": "100"
     },
     {
@@ -424,12 +410,11 @@
                 ]
             }
         ],
-        "cover": "dataset",
+        "scope": "graphic",
         "position": 13,
         "name": "xkNT",
         "count": 0,
-        "display_in_home": true,
-        "width": "",
-        "display_in_graph": true
+        "display": true,
+        "width": ""
     }
 ]

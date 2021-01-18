@@ -15,7 +15,7 @@ import EditOntologyFieldButton from './EditOntologyFieldButton';
 import languages from '../../../../common/languages';
 import { fromCharacteristic } from '../../sharedSelectors';
 import EditButton from '../editFieldValue/EditButton';
-import { COVER_DATASET } from '../../../../common/cover';
+import { SCOPE_DATASET } from '../../../../common/scope';
 import * as overview from '../../../../common/overview';
 import Link from '../../lib/components/Link';
 
@@ -46,7 +46,7 @@ const OntologyFieldComponent = ({ field, characteristics, p: polyglot }) => (
     <TableRow>
         <TableCell style={styles.actionCol}>
             <DragButton disabled={field.name === 'uri'} />
-            {field.cover === COVER_DATASET && (
+            {field.scope === SCOPE_DATASET && (
                 <EditButton
                     field={field}
                     resource={{ ...characteristics, name: field.name }}
@@ -72,7 +72,7 @@ const OntologyFieldComponent = ({ field, characteristics, p: polyglot }) => (
                 <span style={styles.badge}>detail 2</span>
             )}
         </TableCell>
-        <TableCell>{polyglot.t(`cover_${field.cover}`)}</TableCell>
+        <TableCell>{polyglot.t(`scope_${field.scope}`)}</TableCell>
         <TableCell>
             {field.scheme && <Link href={field.scheme}>{field.scheme}</Link>}
         </TableCell>

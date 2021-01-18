@@ -8,25 +8,21 @@ import { getFormValues } from 'redux-form';
 import Step from './Step';
 import FieldFormatInput from '../FieldFormatInput';
 import FieldOverviewInput from '../FieldOverviewInput';
-import FieldDisplayInResourceInput from '../FieldDisplayInResourceInput';
-import FieldDisplayInGraphInput from '../FieldDisplayInGraphInput';
-import FieldDisplayInHomeInput from '../FieldDisplayInHomeInput';
+import FieldDisplayInput from '../FieldDisplay';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';
 import { fromFields } from '../../sharedSelectors';
 import FieldWidthInput from '../FieldWidthInput';
-import { COVERS, COVER_DATASET } from '../../../../common/cover';
+import { SCOPES } from '../../../../common/scope';
 
 export const StepDisplayComponent = ({
-    cover,
+    scope,
     keepMeta = true,
     p: polyglot,
     ...props
 }) => (
     <Step id="step-display" label="field_wizard_step_display" {...props}>
-        {keepMeta && <FieldDisplayInResourceInput />}
-        {keepMeta && cover === COVER_DATASET && <FieldDisplayInGraphInput />}
-        {keepMeta && cover === COVER_DATASET && <FieldDisplayInHomeInput />}
+        {keepMeta && <FieldDisplayInput />}
         {keepMeta && <FieldOverviewInput />}
         <FieldFormatInput />
         <FieldWidthInput />
@@ -35,7 +31,7 @@ export const StepDisplayComponent = ({
 
 StepDisplayComponent.propTypes = {
     transformers: PropTypes.arrayOf(PropTypes.object).isRequired,
-    cover: PropTypes.oneOf(COVERS),
+    scope: PropTypes.oneOf(SCOPES),
     format: PropTypes.object,
     p: polyglotPropTypes.isRequired,
     keepMeta: PropTypes.bool,
@@ -48,7 +44,7 @@ const mapStateToProps = state => {
         fields: fromFields.getFields(state),
         format: values && values.format,
         transformers: values && values.transformers ? values.transformers : [],
-        cover: values && values.cover,
+        scope: values && values.scope,
     };
 };
 
