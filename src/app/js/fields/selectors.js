@@ -71,7 +71,9 @@ const getEditedFieldName = state => state.editedFieldName;
 const getEditedField = state => state.byName[state.editedFieldName];
 
 export const getCollectionFields = createSelector(getFields, fields =>
-    fields.filter(f => f.scope === SCOPE_COLLECTION),
+    fields.filter(
+        f => f.scope === SCOPE_COLLECTION || f.scope === SCOPE_DOCUMENT,
+    ),
 );
 
 export const getSubresourceFields = createSelector(
@@ -126,7 +128,12 @@ const getRootCollectionFields = createSelector(
     allFields =>
         allFields
             .filter(f => f.display || f.contribution)
-            .filter(f => f.scope === SCOPE_COLLECTION && !f.completes),
+            .filter(
+                f =>
+                    (f.scope === SCOPE_COLLECTION ||
+                        f.scope === SCOPE_DOCUMENT) &&
+                    !f.completes,
+            ),
 );
 
 const getResourceFields = createSelector(
