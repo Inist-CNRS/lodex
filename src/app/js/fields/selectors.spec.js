@@ -48,8 +48,8 @@ describe('field selectors', () => {
             ]);
         });
 
-        it('should return array of all document and collection fields if second args is not dataset', () => {
-            expect(selectors.getOntologyFields(state, 'other')).toEqual([
+        it('should return array of all document and collection fields if second args is document or collection', () => {
+            expect(selectors.getOntologyFields(state, 'document')).toEqual([
                 { name: 'name3', scope: SCOPE_COLLECTION },
                 { name: 'name4', scope: SCOPE_DOCUMENT },
             ]);

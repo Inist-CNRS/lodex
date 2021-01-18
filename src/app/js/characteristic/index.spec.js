@@ -113,16 +113,19 @@ describe('characteristic', () => {
                 const fields = [
                     {
                         name: 'lothal',
+                        scope: 'dataset',
                         completes: false,
                         display: true,
                     },
                     {
                         name: 'mandalore',
+                        scope: 'dataset',
                         completes: false,
                         display: false,
                     },
                     {
                         name: 'malachor',
+                        scope: 'dataset',
                         completes: false,
                         display: true,
                     },
