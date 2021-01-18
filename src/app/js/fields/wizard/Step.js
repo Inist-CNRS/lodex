@@ -85,9 +85,7 @@ export default compose(
         const fieldFilterAttributes = filter
             ? {
                   scope: filter,
-                  display_in_resource: filter === 'document',
-                  display_in_graph: filter === 'graph',
-                  display_in_home: filter === 'dataset',
+                  display: field ? field.display : true,
               }
             : {};
 

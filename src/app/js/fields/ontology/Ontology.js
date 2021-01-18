@@ -8,7 +8,7 @@ import { Grid } from '@material-ui/core';
 import { preLoadPublication } from '../';
 import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
 import OntologyTable from './OntologyTable';
-import { SCOPE_DATASET, SCOPE_DOCUMENT } from '../../../../common/scope';
+import { SCOPES } from '../../../../common/scope';
 import ExportFieldsButton from '../../public/export/ExportFieldsButton';
 import ExportFieldsReadyButton from '../../public/export/ExportFieldsReadyButton';
 import redirectToDashboardIfNoField from '../../admin/redirectToDashboardIfNoField';
@@ -51,7 +51,7 @@ const OntologyComponent = ({
 
 OntologyComponent.propTypes = {
     preLoadPublication: PropTypes.func.isRequired,
-    filter: PropTypes.oneOf(['graph', SCOPE_DATASET, SCOPE_DOCUMENT]),
+    filter: PropTypes.oneOf(SCOPES),
     p: polyglotPropTypes.isRequired,
 };
 

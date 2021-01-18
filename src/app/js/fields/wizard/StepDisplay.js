@@ -8,14 +8,12 @@ import { getFormValues } from 'redux-form';
 import Step from './Step';
 import FieldFormatInput from '../FieldFormatInput';
 import FieldOverviewInput from '../FieldOverviewInput';
-import FieldDisplayInResourceInput from '../FieldDisplayInResourceInput';
-import FieldDisplayInGraphInput from '../FieldDisplayInGraphInput';
-import FieldDisplayInHomeInput from '../FieldDisplayInHomeInput';
+import FieldDisplayInput from '../FieldDisplay';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';
 import { fromFields } from '../../sharedSelectors';
 import FieldWidthInput from '../FieldWidthInput';
-import { SCOPES, SCOPE_DATASET } from '../../../../common/scope';
+import { SCOPES } from '../../../../common/scope';
 
 export const StepDisplayComponent = ({
     scope,
@@ -24,9 +22,7 @@ export const StepDisplayComponent = ({
     ...props
 }) => (
     <Step id="step-display" label="field_wizard_step_display" {...props}>
-        {keepMeta && <FieldDisplayInResourceInput />}
-        {keepMeta && scope === SCOPE_DATASET && <FieldDisplayInGraphInput />}
-        {keepMeta && scope === SCOPE_DATASET && <FieldDisplayInHomeInput />}
+        {keepMeta && <FieldDisplayInput />}
         {keepMeta && <FieldOverviewInput />}
         <FieldFormatInput />
         <FieldWidthInput />
