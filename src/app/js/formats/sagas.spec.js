@@ -56,7 +56,7 @@ describe('format sagas', () => {
                 value: select(fromFields.getFieldByName, 'name'),
                 done: false,
             });
-            expect(it.next({ cover: SCOPE_DATASET })).toEqual({
+            expect(it.next({ scope: SCOPE_DATASET })).toEqual({
                 value: select(
                     fromCharacteristic.getCharacteristicByName,
                     'name',
@@ -101,13 +101,13 @@ describe('format sagas', () => {
             });
         });
 
-        it('should not call loadFormatData if field cover is not dataset', () => {
+        it('should not call loadFormatData if field scope is not dataset', () => {
             const it = loadFormatDataForName('name', { filter: 'data' });
             expect(it.next()).toEqual({
                 value: select(fromFields.getFieldByName, 'name'),
                 done: false,
             });
-            expect(it.next({ cover: 'not dataset' })).toEqual({
+            expect(it.next({ scope: 'not dataset' })).toEqual({
                 value: undefined,
                 done: true,
             });

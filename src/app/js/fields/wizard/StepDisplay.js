@@ -18,15 +18,15 @@ import FieldWidthInput from '../FieldWidthInput';
 import { SCOPES, SCOPE_DATASET } from '../../../../common/scope';
 
 export const StepDisplayComponent = ({
-    cover,
+    scope,
     keepMeta = true,
     p: polyglot,
     ...props
 }) => (
     <Step id="step-display" label="field_wizard_step_display" {...props}>
         {keepMeta && <FieldDisplayInResourceInput />}
-        {keepMeta && cover === SCOPE_DATASET && <FieldDisplayInGraphInput />}
-        {keepMeta && cover === SCOPE_DATASET && <FieldDisplayInHomeInput />}
+        {keepMeta && scope === SCOPE_DATASET && <FieldDisplayInGraphInput />}
+        {keepMeta && scope === SCOPE_DATASET && <FieldDisplayInHomeInput />}
         {keepMeta && <FieldOverviewInput />}
         <FieldFormatInput />
         <FieldWidthInput />
@@ -35,7 +35,7 @@ export const StepDisplayComponent = ({
 
 StepDisplayComponent.propTypes = {
     transformers: PropTypes.arrayOf(PropTypes.object).isRequired,
-    cover: PropTypes.oneOf(SCOPES),
+    scope: PropTypes.oneOf(SCOPES),
     format: PropTypes.object,
     p: polyglotPropTypes.isRequired,
     keepMeta: PropTypes.bool,
@@ -48,7 +48,7 @@ const mapStateToProps = state => {
         fields: fromFields.getFields(state),
         format: values && values.format,
         transformers: values && values.transformers ? values.transformers : [],
-        cover: values && values.cover,
+        scope: values && values.scope,
     };
 };
 

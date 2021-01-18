@@ -72,7 +72,7 @@ export const publishDocumentsFactory = ({
     transformAllDocuments,
 }) => async (ctx, count, fields) => {
     const mainResourceFields = fields
-        .filter(c => c.cover === 'collection' && !c.subresourceId)
+        .filter(c => c.scope === 'collection' && !c.subresourceId)
         .map(field => {
             // Replace uri field transformer to take value "as it"
             // Uri has already been generated during dataset import
@@ -98,7 +98,7 @@ export const publishDocumentsFactory = ({
         });
 
     const subresourceFields = fields.filter(
-        c => c.cover === 'collection' && c.subresourceId,
+        c => c.scope === 'collection' && c.subresourceId,
     );
 
     const subresources = groupSubresourcesById(await ctx.subresource.findAll());

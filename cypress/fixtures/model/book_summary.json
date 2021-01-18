@@ -1,6 +1,6 @@
 [
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "uri",
         "transformers": [
             {
@@ -12,7 +12,7 @@
         "name": "uri"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Title",
         "display_in_list": true,
         "display_in_resource": true,
@@ -36,7 +36,7 @@
         "name": "XXRn"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "URL",
         "display_in_list": "",
         "display_in_resource": true,
@@ -67,7 +67,7 @@
         "overview": 2
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "ISSN",
         "display_in_list": true,
         "display_in_resource": true,
@@ -92,7 +92,7 @@
         "overview": 3
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "eISSN",
         "display_in_list": "",
         "display_in_resource": true,
@@ -116,7 +116,7 @@
         "name": "Encb"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Première mise en ligne en",
         "display_in_list": "",
         "display_in_resource": true,
@@ -142,7 +142,7 @@
         "overview": 4
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Dernière mise en ligne en",
         "display_in_list": "",
         "display_in_resource": true,
@@ -167,7 +167,7 @@
         "name": "ZLPq"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Couverture",
         "display_in_list": "",
         "display_in_resource": true,
@@ -192,7 +192,7 @@
         "name": "XG29"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Editeur",
         "display_in_list": "",
         "display_in_resource": true,
@@ -217,7 +217,7 @@
         "name": "UVFW"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Access",
         "display_in_list": "",
         "display_in_resource": true,
@@ -241,7 +241,7 @@
         "name": "Fr7z"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Type",
         "display_in_list": "",
         "display_in_resource": true,
@@ -274,7 +274,7 @@
             "name": "title"
         },
         "width": "100",
-        "cover": "dataset",
+        "scope": "dataset",
         "transformers": [
             {
                 "operation": "VALUE",
@@ -293,7 +293,7 @@
         "name": "ExFk"
     },
     {
-        "cover": "dataset",
+        "scope": "dataset",
         "label": "Titres",
         "display_in_list": "",
         "display_in_resource": "",
@@ -327,7 +327,7 @@
     },
     {
         "label": "Articles",
-        "cover": "collection",
+        "scope": "collection",
         "contribution": true,
         "position": 13,
         "transformers": [
@@ -352,7 +352,7 @@
     },
     {
         "label": "Dans ISTEX",
-        "cover": "document",
+        "scope": "document",
         "contribution": true,
         "position": 14,
         "transformers": [
@@ -377,7 +377,7 @@
     },
     {
         "label": "Editeur",
-        "cover": "document",
+        "scope": "document",
         "contribution": true,
         "position": 15,
         "transformers": [

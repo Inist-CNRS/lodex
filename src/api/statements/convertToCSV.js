@@ -1,4 +1,5 @@
 import omit from 'lodash.omit';
+import { SCOPE_DATASET } from '../../common/scope';
 
 import { VALIDATED } from '../../common/propositionStatus';
 
@@ -26,12 +27,12 @@ export const getLastVersionFactory = defaultDocument =>
     };
 
 export const getCsvFieldFactory = getCharacteristicByName => ({
-    cover,
+    scope,
     label,
     name,
 }) => ({
     filter: value =>
-        cover === 'dataset' ? getCharacteristicByName(name) : value,
+        scope === SCOPE_DATASET ? getCharacteristicByName(name) : value,
     label: label || name,
     name,
     quoted: true,

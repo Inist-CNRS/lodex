@@ -107,7 +107,7 @@ export function* handleLoadFormatDataRequest({
         return;
     }
 
-    if (field.cover === SCOPE_DATASET && withFacets) {
+    if (field.scope === SCOPE_DATASET && withFacets) {
         yield handleFilterFormatDataRequest({ payload: { filter } });
         return;
     }
@@ -128,7 +128,7 @@ export function* handleLoadFormatDataRequest({
 
 export function* loadFormatDataForName(name, filter) {
     const field = yield select(fromFields.getFieldByName, name);
-    if (!field || field.cover !== SCOPE_DATASET) {
+    if (!field || field.scope !== SCOPE_DATASET) {
         return;
     }
     const url = yield select(fromCharacteristic.getCharacteristicByName, name);

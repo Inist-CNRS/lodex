@@ -33,15 +33,15 @@ const saveParsedStreamFactory = ctx =>
             }
 
             const fields = await ctx.field.findAll();
-            const collectionCoverFields = fields.filter(
-                c => c.cover === 'collection',
+            const collectionScopeFields = fields.filter(
+                c => c.scope === 'collection',
             );
 
             const count = await ctx.dataset.count({
                 lodex_published: { $exists: false },
             });
 
-            await ctx.publishDocuments(ctx, count, collectionCoverFields);
+            await ctx.publishDocuments(ctx, count, collectionScopeFields);
             await ctx.publishFacets(ctx, fields, false);
 
             return ctx.dataset.count();

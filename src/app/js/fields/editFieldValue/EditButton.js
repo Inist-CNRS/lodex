@@ -38,10 +38,10 @@ const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
     open: fromFields.isFieldEdited(state, field.name),
     show:
         fromUser.isAdmin(state) &&
-        (field.cover === SCOPE_DATASET ||
+        (field.scope === SCOPE_DATASET ||
             fromResource.isLastVersionSelected(state)),
     saving:
-        field.cover === SCOPE_DATASET
+        field.scope === SCOPE_DATASET
             ? fromCharacteristic.isSaving(state)
             : fromResource.isSaving(state),
     form: (
@@ -79,7 +79,7 @@ export default compose(
             saveResource,
             field,
         }) => resource =>
-            field.cover === SCOPE_DATASET
+            field.scope === SCOPE_DATASET
                 ? updateCharacteristics(resource)
                 : saveResource({ field, resource }),
         handleClose: ({ closeEditFieldValue }) => closeEditFieldValue,

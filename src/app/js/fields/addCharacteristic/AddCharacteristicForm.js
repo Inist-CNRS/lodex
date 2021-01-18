@@ -91,7 +91,7 @@ const mapStateToProps = (state, { displayPage }) => ({
     saving: fromFields.isSaving(state),
     fields: fromFields.getDatasetFields(state),
     initialValues: {
-        cover: displayPage === 'dataset' ? 'dataset' : 'collection',
+        scope: displayPage === 'dataset' ? 'dataset' : 'collection',
         display_in_resource: displayPage === 'document',
         display_in_graph: displayPage === 'graph',
         display_in_home: displayPage === 'dataset',

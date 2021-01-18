@@ -13,7 +13,7 @@ const OntologyFieldList = SortableContainer(({ items }) => (
                 field={field}
                 index={field.position}
                 collection={
-                    field.cover === SCOPE_DATASET ? 'dataset' : 'document'
+                    field.scope === SCOPE_DATASET ? 'dataset' : 'document'
                 }
                 disabled={field.name === 'uri'}
             />

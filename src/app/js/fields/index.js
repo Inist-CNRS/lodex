@@ -112,7 +112,7 @@ export const defaultState = {
 };
 
 const getDefaultField = (name, index, rest = {}) => ({
-    cover: 'collection',
+    scope: 'collection',
     label: name || `newField ${index + 1}`,
     name: 'new',
     display_in_resource: true,

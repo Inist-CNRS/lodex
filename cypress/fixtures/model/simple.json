@@ -1,6 +1,6 @@
 [
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "uri",
         "name": "uri",
         "transformers": [
@@ -18,7 +18,7 @@
         "position": 0
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Column 1",
         "display_in_list": true,
         "display_in_resource": true,
@@ -47,7 +47,7 @@
         }
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Column 2",
         "display_in_list": true,
         "display_in_resource": true,

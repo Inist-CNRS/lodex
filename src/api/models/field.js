@@ -30,7 +30,7 @@ export const validateField = (data, isContribution) => {
 };
 
 const createSubresourceUriField = subresource => ({
-    cover: COVER_COLLECTION,
+    scope: SCOPE_COLLECTION,
     label: URI_FIELD_NAME,
     name: `${subresource._id}_${URI_FIELD_NAME}`,
     subresourceId: subresource._id,

@@ -470,7 +470,7 @@ describe('characteristic routes', () => {
             expect(ctx.field.getHighestPosition).toHaveBeenCalled();
             expect(ctx.field.create).toHaveBeenCalledWith({
                 data: 'field data',
-                cover: SCOPE_DATASET,
+                scope: SCOPE_DATASET,
                 position: 5,
                 transformers: [
                     {

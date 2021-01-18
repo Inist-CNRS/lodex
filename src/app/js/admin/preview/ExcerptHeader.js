@@ -14,7 +14,7 @@ import getFieldClassName from '../../lib/getFieldClassName';
 import { isLongText, getShortText } from '../../lib/longTexts';
 
 const getStyle = memoize(field =>
-    field.cover === 'dataset'
+    field.scope === 'dataset'
         ? {
               fontWeight: 'bold',
               color: 'black',

@@ -51,7 +51,7 @@ describe('field reducer', () => {
                     name1: { name: 'name1', label: 'foo' },
                     new: {
                         label: 'newField 3',
-                        cover: 'collection',
+                        scope: 'collection',
                         name: 'new',
                         display_in_resource: true,
                         searchable: true,
@@ -85,7 +85,7 @@ describe('field reducer', () => {
                     name1: { name: 'name1', label: 'foo' },
                     new: {
                         label: 'target_col',
-                        cover: 'collection',
+                        scope: 'collection',
                         name: 'new',
                         display_in_resource: true,
                         searchable: true,

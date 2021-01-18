@@ -46,7 +46,7 @@ const OntologyFieldComponent = ({ field, characteristics, p: polyglot }) => (
     <TableRow>
         <TableCell style={styles.actionCol}>
             <DragButton disabled={field.name === 'uri'} />
-            {field.cover === SCOPE_DATASET && (
+            {field.scope === SCOPE_DATASET && (
                 <EditButton
                     field={field}
                     resource={{ ...characteristics, name: field.name }}
@@ -72,7 +72,7 @@ const OntologyFieldComponent = ({ field, characteristics, p: polyglot }) => (
                 <span style={styles.badge}>detail 2</span>
             )}
         </TableCell>
-        <TableCell>{polyglot.t(`cover_${field.cover}`)}</TableCell>
+        <TableCell>{polyglot.t(`scope_${field.scope}`)}</TableCell>
         <TableCell>
             {field.scheme && <Link href={field.scheme}>{field.scheme}</Link>}
         </TableCell>

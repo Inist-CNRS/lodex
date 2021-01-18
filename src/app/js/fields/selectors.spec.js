@@ -34,24 +34,24 @@ describe('field selectors', () => {
         const state = {
             list: ['name1', 'name2', 'name3', 'name4'],
             byName: {
-                name1: { name: 'name1', cover: SCOPE_DATASET },
-                name2: { name: 'name2', cover: SCOPE_DATASET },
-                name3: { name: 'name3', cover: SCOPE_COLLECTION },
-                name4: { name: 'name4', cover: SCOPE_DOCUMENT },
+                name1: { name: 'name1', scope: SCOPE_DATASET },
+                name2: { name: 'name2', scope: SCOPE_DATASET },
+                name3: { name: 'name3', scope: SCOPE_COLLECTION },
+                name4: { name: 'name4', scope: SCOPE_DOCUMENT },
             },
         };
 
         it('should return array of all dataset fields if second args is dataset', () => {
             expect(selectors.getOntologyFields(state, SCOPE_DATASET)).toEqual([
-                { name: 'name1', cover: SCOPE_DATASET },
-                { name: 'name2', cover: SCOPE_DATASET },
+                { name: 'name1', scope: SCOPE_DATASET },
+                { name: 'name2', scope: SCOPE_DATASET },
             ]);
         });
 
         it('should return array of all document and collection fields if second args is not dataset', () => {
             expect(selectors.getOntologyFields(state, 'other')).toEqual([
-                { name: 'name3', cover: SCOPE_COLLECTION },
-                { name: 'name4', cover: SCOPE_DOCUMENT },
+                { name: 'name3', scope: SCOPE_COLLECTION },
+                { name: 'name4', scope: SCOPE_DOCUMENT },
             ]);
         });
     });
@@ -175,16 +175,16 @@ describe('field selectors', () => {
                         first: {
                             name: 'first',
                             foo: 'bar',
-                            cover: 'collection',
+                            scope: 'collection',
                         },
                         second: {
                             name: 'second',
                             foo: 'bar2',
-                            cover: 'dataset',
+                            scope: 'dataset',
                         },
                     },
                 }),
-            ).toEqual([{ name: 'first', foo: 'bar', cover: 'collection' }]);
+            ).toEqual([{ name: 'first', foo: 'bar', scope: 'collection' }]);
         });
     });
 
@@ -197,16 +197,16 @@ describe('field selectors', () => {
                         first: {
                             name: 'first',
                             foo: 'bar',
-                            cover: 'collection',
+                            scope: 'collection',
                         },
                         second: {
                             name: 'second',
                             foo: 'bar2',
-                            cover: 'dataset',
+                            scope: 'dataset',
                         },
                     },
                 }),
-            ).toEqual([{ name: 'second', foo: 'bar2', cover: 'dataset' }]);
+            ).toEqual([{ name: 'second', foo: 'bar2', scope: 'dataset' }]);
         });
     });
 
@@ -381,7 +381,7 @@ describe('getFieldToAdd', () => {
             byName: {
                 name: {
                     field: 'data',
-                    cover: 'collection',
+                    scope: 'collection',
                     _id: 'who cares',
                     contributors: 'some random guy',
                 },
@@ -391,11 +391,11 @@ describe('getFieldToAdd', () => {
 
         expect(selectors.getFieldToAdd(state)).toEqual({
             field: 'data',
-            cover: 'collection',
+            scope: 'collection',
         });
     });
 
-    it('should return { cover: document } if selectedField is new', () => {
+    it('should return { scope: document } if selectedField is new', () => {
         const state = {
             byName: {
                 name: {
@@ -407,7 +407,7 @@ describe('getFieldToAdd', () => {
         };
 
         expect(selectors.getFieldToAdd(state)).toEqual({
-            cover: 'document',
+            scope: 'document',
         });
     });
 

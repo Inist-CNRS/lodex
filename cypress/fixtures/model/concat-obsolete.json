@@ -1,6 +1,6 @@
 [
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "uri",
         "transformers": [
             {
@@ -12,7 +12,7 @@
         "name": "uri"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Column 1",
         "display_in_list": true,
         "display_in_resource": true,
@@ -49,7 +49,7 @@
         "name": "gL4k"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Column 2",
         "display_in_list": true,
         "display_in_resource": true,
@@ -77,7 +77,7 @@
         "name": "gL5k"
     },
     {
-        "cover": "dataset",
+        "scope": "dataset",
         "label": "Title",
         "display_in_list": false,
         "display_in_resource": false,
@@ -105,7 +105,7 @@
         "display_in_home": true
     },
     {
-        "cover": "dataset",
+        "scope": "dataset",
         "label": "Description",
         "display_in_list": "",
         "display_in_resource": "",

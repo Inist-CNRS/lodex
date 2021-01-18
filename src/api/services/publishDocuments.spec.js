@@ -6,7 +6,7 @@ import {
 const fields = [
     {
         name: 'uri',
-        cover: 'collection',
+        scope: 'collection',
         transformers: [
             {
                 operation: 'COLUMN',
@@ -14,8 +14,8 @@ const fields = [
             },
         ],
     },
-    { name: 'field2', cover: 'collection' },
-    { name: 'field3', cover: 'dataset' },
+    { name: 'field2', scope: 'collection' },
+    { name: 'field3', scope: 'dataset' },
 ];
 
 const getCtx = ({ subresources } = {}) => ({
@@ -147,7 +147,7 @@ describe('publishDocuments', () => {
                     ...fields,
                     {
                         name: 'field2',
-                        cover: 'collection',
+                        scope: 'collection',
                         collectionId: 'unknown',
                     },
                 ]);
@@ -164,7 +164,7 @@ describe('publishDocuments', () => {
                     ...fields,
                     {
                         name: 'field2',
-                        cover: 'collection',
+                        scope: 'collection',
                         subresourceId: 'sub1',
                     },
                 ]);

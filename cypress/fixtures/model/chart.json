@@ -1,6 +1,6 @@
 [
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "uri",
         "transformers": [
             {
@@ -12,7 +12,7 @@
         "name": "uri"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Title",
         "display_in_list": true,
         "display_in_resource": true,
@@ -42,7 +42,7 @@
         "name": "No04"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Publication Year",
         "display_in_list": "",
         "display_in_resource": true,
@@ -73,7 +73,7 @@
         "name": "Bzu3"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Web of Science Category(ies)",
         "display_in_list": "",
         "display_in_resource": true,
@@ -136,7 +136,7 @@
             "name": "globalBarchart"
         },
         "width": "",
-        "cover": "dataset",
+        "scope": "dataset",
         "transformers": [
             {
                 "operation": "VALUE",
@@ -182,7 +182,7 @@
             },
             "name": "bubbleChart"
         },
-        "cover": "dataset",
+        "scope": "dataset",
         "transformers": [
             {
                 "operation": "VALUE",
@@ -214,7 +214,7 @@
             "name": "globalPiechart"
         },
         "position": 6,
-        "cover": "dataset",
+        "scope": "dataset",
         "transformers": [
             {
                 "operation": "VALUE",
@@ -246,7 +246,7 @@
             "name": "globalRadarchart"
         },
         "position": 7,
-        "cover": "dataset",
+        "scope": "dataset",
         "transformers": [
             {
                 "operation": "VALUE",

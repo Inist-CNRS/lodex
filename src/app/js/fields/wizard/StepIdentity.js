@@ -53,16 +53,16 @@ export const StepIdentityComponent = ({
                 />
             )}
             <Field
-                name="cover"
+                name="scope"
                 component={FormSelectField}
-                label={polyglot.t('select_cover')}
+                label={polyglot.t('select_scope')}
                 fullWidth
             >
                 <MenuItem value="dataset">
-                    {polyglot.t('cover_dataset')}
+                    {polyglot.t('scope_dataset')}
                 </MenuItem>
                 <MenuItem value="collection">
-                    {polyglot.t('cover_collection')}
+                    {polyglot.t('scope_collection')}
                 </MenuItem>
             </Field>
             <FieldArray name="classes" component={ClassList} type="classes" />

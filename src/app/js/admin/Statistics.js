@@ -102,10 +102,10 @@ const mapStateToProps = (state, { filter }) => ({
         }
 
         return filter === SCOPE_DOCUMENT
-            ? (f.cover === SCOPE_COLLECTION || f.cover === SCOPE_DOCUMENT) &&
+            ? (f.scope === SCOPE_COLLECTION || f.scope === SCOPE_DOCUMENT) &&
                   !f.subresourceId
             : filter === f.subresourceId
-            ? (f.cover === SCOPE_COLLECTION || f.cover === SCOPE_DOCUMENT) &&
+            ? (f.scope === SCOPE_COLLECTION || f.scope === SCOPE_DOCUMENT) &&
               filter === f.subresourceId &&
               !(f.name.endsWith('_uri') && f.label === 'uri')
             : f.scope === filter;

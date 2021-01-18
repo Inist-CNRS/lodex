@@ -64,7 +64,7 @@ describe('convertToCSV', () => {
 
         it('should return an object with the specified label', () => {
             const result = getCsvField({
-                cover: 'collection',
+                scope: 'collection',
                 label: 'Foo',
                 name: 'foo',
             });
@@ -75,7 +75,7 @@ describe('convertToCSV', () => {
 
         it('should return an object with name as label when label is not specified', () => {
             const result = getCsvField({
-                cover: 'collection',
+                scope: 'collection',
                 name: 'foo',
             });
 
@@ -83,18 +83,18 @@ describe('convertToCSV', () => {
             expect(result.label).toEqual('foo');
         });
 
-        it('should return object with filter returning the field value when field cover is `collection`', () => {
+        it('should return object with filter returning the field value when field scope is `collection`', () => {
             const result = getCsvField({
-                cover: 'collection',
+                scope: 'collection',
                 name: 'foo',
             });
 
             expect(result.filter('bar')).toEqual('bar');
         });
 
-        it('should return object.filter returning getCharacteristicByName result if field cover is dataset', () => {
+        it('should return object.filter returning getCharacteristicByName result if field scope is dataset', () => {
             const result = getCsvField({
-                cover: 'dataset',
+                scope: 'dataset',
                 name: 'foo',
             });
 

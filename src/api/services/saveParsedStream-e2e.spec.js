@@ -21,7 +21,7 @@ import publishFacets from '../controller/api/publishFacets';
 const fixtures = {
     field: [
         {
-            cover: 'collection',
+            scope: 'collection',
             label: 'uri',
             name: 'uri',
             transformers: [
@@ -38,7 +38,7 @@ const fixtures = {
             ],
         },
         {
-            cover: 'collection',
+            scope: 'collection',
             label: 'Stronger than',
             name: 'STRONGER',
             isFacet: true,
@@ -61,7 +61,7 @@ const fixtures = {
             ],
         },
         {
-            cover: 'collection',
+            scope: 'collection',
             label: 'name',
             name: 'NAME',
             transformers: [

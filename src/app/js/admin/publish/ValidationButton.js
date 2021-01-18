@@ -44,7 +44,7 @@ const ValidationButtonComponent = ({
         const field = fields.find(({ name }) => name === args[0]);
         history.push(
             `/display/${
-                field && field.cover === SCOPE_DATASET ? 'home' : 'resource'
+                field && field.scope === SCOPE_DATASET ? 'home' : 'resource'
             }`,
         );
 
