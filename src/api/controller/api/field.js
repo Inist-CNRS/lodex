@@ -1,23 +1,80 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
-import omit from 'lodash.omit';
 import asyncBusboy from 'async-busboy';
+import backup from 'mongodb-backup';
+import restore from 'mongodb-restore';
+import moment from 'moment';
 import streamToString from 'stream-to-string';
 
 import { validateField } from '../../models/field';
 import publishFacets from './publishFacets';
+import indexSearchableFields from '../../services/indexSearchableFields';
+import { mongoConnectionString } from '../../services/mongoClient';
+
 import {
     SCOPE_DATASET,
     SCOPE_GRAPHIC,
     SCOPE_COLLECTION,
     SCOPE_DOCUMENT,
 } from '../../../common/scope';
-import indexSearchableFields from '../../services/indexSearchableFields';
+
+const sortByFieldUri = (a, b) =>
+    (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
+
+export const restoreFields = (fileStream, ctx) => {
+    if (!fileStream.filename.endsWith('.tar')) {
+        return streamToString(fileStream)
+            .then(fieldsString => JSON.parse(fieldsString))
+            .then(fields => {
+                ctx.field
+                    .remove({})
+                    .then(() =>
+                        Promise.all(
+                            fields
+                                .sort(sortByFieldUri)
+                                .map(({ name, ...field }, index) =>
+                                    ctx.field.create(
+                                        { ...field, position: index },
+                                        name,
+                                        false,
+                                    ),
+                                ),
+                        ),
+                    );
+            });
+    }
+
+    return new Promise((resolve, reject) =>
+        restore({
+            uri: mongoConnectionString,
+            stream: fileStream,
+            drop: true,
+            callback: function(err) {
+                err ? reject(err) : resolve();
+            },
+        }),
+    );
+};
+
+export const backupFields = writeStream =>
+    new Promise((resolve, reject) =>
+        backup({
+            uri: mongoConnectionString,
+            collections: ['field', 'subresource'],
+            stream: writeStream,
+            callback: err => {
+                err ? reject(err) : resolve();
+            },
+        }),
+    );
 
 export const setup = async (ctx, next) => {
     ctx.validateField = validateField;
     ctx.publishFacets = publishFacets;
+    ctx.restoreFields = restoreFields;
+    ctx.backupFields = backupFields;
+
     try {
         await next();
     } catch (error) {
@@ -78,69 +135,37 @@ export const removeField = async (ctx, id) => {
 };
 
 export const exportFields = async ctx => {
-    const fields = await ctx.field.findAll();
-
-    ctx.attachment('lodex_export.json');
-    ctx.type = 'application/json';
-
-    ctx.body = JSON.stringify(
-        fields.map(f => omit(f, ['_id'])),
-        null,
-        4,
-    );
-};
-
-const simplifyTransformers = field => {
-    field.transformers = [
-        {
-            operation: 'COLUMN',
-            args: [
-                {
-                    name: 'column',
-                    type: 'column',
-                    value: field.label,
-                },
-            ],
-        },
-    ];
-    return field;
-};
-
-export const getUploadedFields = (
-    asyncBusboyImpl,
-    streamToStringImpl,
-) => async req => {
-    const {
-        files: [fieldsStream],
-    } = await asyncBusboyImpl(req);
-
-    return JSON.parse(await streamToStringImpl(fieldsStream));
-};
-
-export const importFields = getUploadedFieldsImpl => async ctx => {
-    const fields = await getUploadedFieldsImpl(ctx.req);
-
-    await ctx.field.remove({});
-    await Promise.all(
-        fields
-            .sort(
-                (a, b) =>
-                    (a.name === 'uri' ? -1 : a.position) -
-                    (b.name === 'uri' ? -1 : b.position),
-            )
-            .map(({ name, ...field }, index) =>
-                ctx.field.create({ ...field, position: index }, name, false),
-            ),
-    );
+    const filename = `model_${moment().format('YYYY-MM-DD-HHmmss')}.tar`;
 
     ctx.status = 200;
+    ctx.set('Content-disposition', `attachment; filename=${filename}`);
+    ctx.set('Content-type', 'application/x-tar');
+
+    try {
+        await ctx.backupFields(ctx.res);
+    } catch (e) {
+        ctx.status = 500;
+        ctx.body = e.message;
+    }
+};
+
+export const importFields = asyncBusboyImpl => async ctx => {
+    const { files } = await asyncBusboyImpl(ctx.req);
+    const fileStream = files[0];
+
+    try {
+        await ctx.restoreFields(fileStream, ctx);
+        ctx.status = 200;
+    } catch (e) {
+        ctx.status = 500;
+        ctx.body = e.message;
+    }
 };
 
 export const reorderField = async ctx => {
     const { fields } = ctx.request.body;
 
     const fieldsDict = await ctx.field.findByNames(fields);
-
     const fieldsData = fields.map(name => fieldsDict[name]);
 
     try {
@@ -204,12 +229,7 @@ app.use(setup);
 
 app.use(route.get('/', getAllField));
 app.use(route.get('/export', exportFields));
-app.use(
-    route.post(
-        '/import',
-        importFields(getUploadedFields(asyncBusboy, streamToString)),
-    ),
-);
+app.use(route.post('/import', importFields(asyncBusboy)));
 app.use(koaBodyParser());
 app.use(route.post('/', postField));
 app.use(route.put('/reorder', reorderField));

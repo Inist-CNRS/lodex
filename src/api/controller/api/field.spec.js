@@ -1,3 +1,7 @@
+import publishFacets from './publishFacets';
+import { validateField } from '../../models/field';
+import indexSearchableFields from '../../services/indexSearchableFields';
+
 import {
     setup,
     getAllField,
@@ -7,16 +11,16 @@ import {
     putField,
     removeField,
     reorderField,
+    backupFields,
+    restoreFields,
 } from './field';
-import publishFacets from './publishFacets';
-import { validateField } from '../../models/field';
+
 import {
     SCOPE_DATASET,
     SCOPE_GRAPHIC,
     SCOPE_COLLECTION,
     SCOPE_DOCUMENT,
 } from '../../../common/scope';
-import indexSearchableFields from '../../services/indexSearchableFields';
 
 jest.mock('../../services/indexSearchableFields');
 
@@ -24,6 +28,7 @@ describe('field routes', () => {
     beforeAll(() => {
         indexSearchableFields.mockImplementation(() => null);
     });
+
     describe('setup', () => {
         it('should add validateField to ctx and call next', async () => {
             const ctx = {};
@@ -34,6 +39,8 @@ describe('field routes', () => {
             expect(ctx).toEqual({
                 publishFacets,
                 validateField,
+                backupFields,
+                restoreFields,
             });
         });
 
@@ -50,6 +57,8 @@ describe('field routes', () => {
                 validateField,
                 body: { error: 'Boom' },
                 status: 500,
+                backupFields,
+                restoreFields,
             });
         });
     });
@@ -73,152 +82,86 @@ describe('field routes', () => {
     });
 
     describe('exportFields', () => {
-        it('should call ctx.field.findAll and pass the result to ctx.body with correct headers', async () => {
-            const ctx = {
-                field: {
-                    findAll: jest.fn().mockImplementation(() =>
-                        Promise.resolve([
-                            { name: 'field1', _id: 'id1' },
-                            { name: 'field2', _id: 'id2' },
-                        ]),
-                    ),
-                },
-                attachment: jest.fn(),
-            };
+        const ctx = {
+            req: 'request',
+            set: jest.fn(),
+            res: 'result',
+            backupFields: jest
+                .fn()
+                .mockImplementation(() => Promise.resolve('BACKUP OK')),
+        };
+
+        beforeEach(() => {
+            ctx.backupFields.mockClear();
+            ctx.set.mockClear();
+        });
+
+        it('should call rawBody and return 200 in ctx.status', async () => {
+            await exportFields(ctx);
+
+            expect(ctx.set.mock.calls[0][0]).toBe('Content-disposition');
+            expect(
+                ctx.set.mock.calls[0][1].startsWith(
+                    'attachment; filename=model_',
+                ) && ctx.set.mock.calls[0][1].endsWith('.tar'),
+            ).toBeTruthy();
+
+            expect(ctx.set.mock.calls[1]).toEqual([
+                'Content-type',
+                'application/x-tar',
+            ]);
+
+            expect(ctx.backupFields).toHaveBeenCalledWith('result');
+        });
+
+        it('should return 500 in ctx.status and error message in ctx.body on error', async () => {
+            ctx.backupFields.mockImplementation(() => {
+                throw new Error('Error!');
+            });
 
             await exportFields(ctx);
-            expect(ctx.field.findAll).toHaveBeenCalled();
-            expect(ctx.body).toEqual(
-                JSON.stringify(
-                    [{ name: 'field1' }, { name: 'field2' }],
-                    null,
-                    4,
-                ),
-            );
-            expect(ctx.attachment).toHaveBeenCalledWith('lodex_export.json');
-            expect(ctx.type).toBe('application/json');
+            expect(ctx.status).toBe(500);
+            expect(ctx.body).toBe('Error!');
         });
     });
 
     describe('importFields', () => {
-        let getUploadedFields;
-
         const ctx = {
             req: 'request',
-            field: {
-                create: jest.fn(),
-                remove: jest.fn(),
-            },
+            set: jest.fn(),
+            restoreFields: jest
+                .fn()
+                .mockImplementation(() => Promise.resolve('RESTORE OK')),
         };
 
         beforeEach(() => {
-            getUploadedFields = jest.fn().mockImplementation(() => [
-                { name: 'field1', label: 'Field 1' },
-                { name: 'field2', label: 'Field 2' },
-            ]);
-            ctx.field.create.mockClear();
-            ctx.field.remove.mockClear();
+            ctx.restoreFields.mockClear();
+            ctx.set.mockClear();
         });
 
-        it('should call rawBody', async () => {
-            await importFields(getUploadedFields)(ctx);
-            expect(getUploadedFields).toHaveBeenCalledWith('request');
-        });
+        it('should call rawBody and return 200 in ctx.status', async () => {
+            const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
+                files: ['file0'],
+            }));
 
-        it('should call ctx.field.remove', async () => {
-            await importFields(getUploadedFields)(ctx);
-            expect(ctx.field.remove).toHaveBeenCalled();
-        });
-
-        it('should call ctx.field.create for each field', async () => {
-            await importFields(getUploadedFields)(ctx);
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 1', position: 0 },
-                'field1',
-                false,
-            );
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 2', position: 1 },
-                'field2',
-                false,
-            );
-        });
-
-        it('should pass the position ctx.field.create if available', async () => {
-            getUploadedFields = jest.fn(() => [
-                { name: 'field1', label: 'Field 1', position: 0 },
-                { name: 'field2', label: 'Field 2', position: 1 },
-            ]);
-
-            await importFields(getUploadedFields)(ctx);
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 1', position: 0 },
-                'field1',
-                false,
-            );
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 2', position: 1 },
-                'field2',
-                false,
-            );
-        });
-
-        it('should rearrange the position to avoid gap', async () => {
-            getUploadedFields = jest.fn().mockImplementation(() => [
-                { name: 'field1', label: 'Field 1', position: 5 },
-                { name: 'field2', label: 'Field 2', position: 6 },
-            ]);
-
-            await importFields(getUploadedFields)(ctx);
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 1', position: 0 },
-                'field1',
-                false,
-            );
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 2', position: 1 },
-                'field2',
-                false,
-            );
-        });
-
-        it('should ensure uri is first', async () => {
-            getUploadedFields = jest.fn().mockImplementation(() => [
-                { name: 'field1', label: 'Field 1', position: 5 },
-                { name: 'field2', label: 'Field 2', position: 6 },
-                { name: 'uri', label: 'Uri', position: 10 },
-            ]);
-
-            await importFields(getUploadedFields)(ctx);
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Uri', position: 0 },
-                'uri',
-                false,
-            );
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 1', position: 1 },
-                'field1',
-                false,
-            );
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 2', position: 2 },
-                'field2',
-                false,
-            );
-        });
-
-        it('should set ctx.status to 200', async () => {
-            await importFields(getUploadedFields)(ctx);
+            await importFields(asyncBusboyImpl)(ctx);
+            expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
+            expect(ctx.restoreFields).toHaveBeenCalledWith('file0', ctx);
             expect(ctx.status).toEqual(200);
+        });
+
+        it('should return 500 in ctx.status and error message in ctx.body on error', async () => {
+            const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
+                files: ['file0'],
+            }));
+
+            ctx.restoreFields.mockImplementation(() => {
+                throw new Error('Error!');
+            });
+
+            await importFields(asyncBusboyImpl)(ctx);
+            expect(ctx.status).toBe(500);
+            expect(ctx.body).toBe('Error!');
         });
     });
 
