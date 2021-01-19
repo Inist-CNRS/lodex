@@ -8,14 +8,9 @@ import { bindActionCreators } from 'redux';
 import { grey } from '@material-ui/core/colors';
 import memoize from 'lodash.memoize';
 import get from 'lodash.get';
+import translate from 'redux-polyglot/translate';
 
 import { fromResource } from '../selectors';
-import { field as fieldPropTypes } from '../../propTypes';
-import CompositeProperty from './CompositeProperty';
-import propositionStatus, {
-    REJECTED,
-} from '../../../../common/propositionStatus';
-
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from '../resource';
 import PropertyContributor from './PropertyContributor';
@@ -30,6 +25,16 @@ import Link from '../../lib/components/Link';
 import { getPredicate } from '../../formats';
 import shouldDisplayField from '../../fields/shouldDisplayField';
 import { SCOPE_GRAPHIC } from '../../../../common/scope';
+import CompositeProperty from './CompositeProperty';
+
+import propositionStatus, {
+    REJECTED,
+} from '../../../../common/propositionStatus';
+
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
 
 const styles = {
     container: memoize(
@@ -95,6 +100,7 @@ export const PropertyComponent = ({
     changeStatus,
     style,
     parents,
+    p: polyglot,
 }) => {
     if (!shouldDisplayField(resource, field, fieldStatus, predicate, isAdmin)) {
         return null;
@@ -153,7 +159,13 @@ export const PropertyComponent = ({
                         {field.label}
                         {isAdmin && (
                             <span style={styles.editButton}>
-                                <EditButton field={field} resource={resource} />
+                                <EditButton
+                                    field={field}
+                                    resource={resource}
+                                    warningMessage={polyglot.t(
+                                        'warning_frontend_modification',
+                                    )}
+                                />
                             </span>
                         )}
                     </span>
@@ -206,6 +218,7 @@ PropertyComponent.propTypes = {
     resource: PropTypes.shape({}).isRequired,
     parents: PropTypes.arrayOf(PropTypes.string).isRequired,
     style: PropTypes.object,
+    p: polyglotPropTypes.isRequired,
 };
 
 PropertyComponent.defaultProps = {
@@ -236,6 +249,7 @@ const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>
     );
 
 const Property = compose(
+    translate,
     connect(mapStateToProps, mapDispatchToProps),
     withProps(({ field, parents = [] }) => ({
         parents: [field.name, ...parents],

@@ -136,6 +136,9 @@ class Graph extends Component {
                                             <EditButton
                                                 field={graphField}
                                                 resource={resource}
+                                                warningMessage={polyglot.t(
+                                                    'warning_frontend_modification',
+                                                )}
                                             />
                                         </>
                                     }
