@@ -124,7 +124,7 @@ export const goToModel = () => {
     adminNavigation.goToDisplay();
 
     cy.get('button')
-        .contains('Export model')
+        .contains('add characteristic')
         .should('be.visible');
 };
 

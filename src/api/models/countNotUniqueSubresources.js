@@ -3,8 +3,9 @@ import memoize from 'lodash.memoize';
 const countNotUniqueSubresources = collection => async subresources => {
     const count = await collection.count();
 
-    const countDiffBySubresource = await Object.values(subresources).reduce(
-        async (acc, subresource) => {
+    const countDiffBySubresource = await Object.values(subresources)
+        .filter(x => x)
+        .reduce(async (acc, subresource) => {
             const map = await acc;
 
             const [{ distinct }] = await collection
@@ -21,9 +22,7 @@ const countNotUniqueSubresources = collection => async subresources => {
 
             const diff = count - distinct;
             return diff === 0 ? map : { ...map, [subresource.name]: diff };
-        },
-        Promise.resolve({}),
-    );
+        }, Promise.resolve({}));
 
     return countDiffBySubresource;
 };

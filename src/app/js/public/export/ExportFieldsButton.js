@@ -9,21 +9,8 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportFields as exportFieldsAction } from '../../exportFields';
 
-const styles = {
-    button: {
-        marginLeft: 4,
-        marginRight: 4,
-        marginTop: 4,
-    },
-};
-
 export const ExportFieldsButtonComponent = ({ handleClick, p: polyglot }) => (
-    <Button
-        variant="text"
-        color="primary"
-        onClick={handleClick}
-        style={styles.button}
-    >
+    <Button variant="contained" color="primary" onClick={handleClick}>
         {polyglot.t('export_fields')}
     </Button>
 );
@@ -40,9 +27,7 @@ const mapDispatchToProps = {
 export default compose(
     connect(undefined, mapDispatchToProps),
     withHandlers({
-        handleClick: ({ exportFields }) => () => {
-            exportFields();
-        },
+        handleClick: ({ exportFields }) => exportFields,
     }),
     translate,
 )(ExportFieldsButtonComponent);
