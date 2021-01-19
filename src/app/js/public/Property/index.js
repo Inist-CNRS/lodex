@@ -15,13 +15,13 @@ import CompositeProperty from './CompositeProperty';
 import propositionStatus, {
     REJECTED,
 } from '../../../../common/propositionStatus';
+
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from '../resource';
 import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
 import { fromUser } from '../../sharedSelectors';
 import EditButton from '../../fields/editFieldValue/EditButton';
-import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
 import getFieldClassName from '../../lib/getFieldClassName';
 import addSchemePrefix from '../../lib/addSchemePrefix';
 import Format from '../Format';
@@ -154,7 +154,6 @@ export const PropertyComponent = ({
                         {isAdmin && (
                             <span style={styles.editButton}>
                                 <EditButton field={field} resource={resource} />
-                                <EditOntologyFieldButton field={field} />
                             </span>
                         )}
                     </span>

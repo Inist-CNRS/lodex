@@ -1,7 +1,6 @@
 import { teardown, logoutAndLoginAs } from '../support/authentication';
 import * as menu from '../support/menu';
 import * as datasetImportPage from '../support/datasetImportPage';
-import * as configureField from '../support/configureField';
 import * as adminNavigation from '../support/adminNavigation';
 
 describe('Transformers & Formats', () => {
@@ -87,25 +86,6 @@ describe('Transformers & Formats', () => {
                     cy.get('.detail')
                         .find('.invalid-format')
                         .should('have.length', 2);
-
-                    configureField.changeFormat(
-                        'format_markdown',
-                        'Text - Content List',
-                    );
-                    cy.get('.detail')
-                        .find('.property')
-                        .should('have.length', 2);
-
-                    cy.get('.detail')
-                        .find('.invalid-format')
-                        .should('have.length', 1);
-
-                    cy.get('.detail')
-                        .find('.format_list li')
-                        .contains('item1');
-                    cy.get('.detail')
-                        .find('.format_list li')
-                        .contains('item2');
                 });
             });
 
@@ -144,7 +124,7 @@ describe('Transformers & Formats', () => {
                         .contains('value');
                 });
 
-                it('should display an error message describing the issue and changing the format should fix it', () => {
+                it('should display an error message describing the issue', () => {
                     cy.get('.detail')
                         .find('.property')
                         .should('have.length', 2);
@@ -152,19 +132,6 @@ describe('Transformers & Formats', () => {
                     cy.get('.detail')
                         .find('.invalid-format')
                         .should('have.length', 2);
-
-                    configureField.changeFormat('format_list', 'Text - Title');
-                    cy.get('.detail')
-                        .find('.property')
-                        .should('have.length', 2);
-
-                    cy.get('.detail')
-                        .find('.invalid-format')
-                        .should('have.length', 1);
-
-                    cy.get('.detail')
-                        .find('.format_title h1')
-                        .contains('value');
                 });
             });
         });
