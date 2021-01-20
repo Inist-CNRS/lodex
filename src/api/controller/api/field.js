@@ -49,7 +49,7 @@ export const restoreFields = (fileStream, ctx) => {
         restore({
             uri: mongoConnectionString,
             stream: fileStream,
-            drop: true,
+            dropCollections: ['field', 'subresource'],
             callback: function(err) {
                 err ? reject(err) : resolve();
             },
