@@ -12,10 +12,8 @@ export const fillSubcategoryFormAndSubmit = values => {
     cy.get('button[type="submit"]').click();
 };
 
-export const addField = (name, label) => {
-    cy.contains('div', 'No field set for this Subresource').within(() => {
-        cy.get('button').click();
-    });
+export const addField = (name, label, save = true) => {
+    cy.contains('button', 'New field').click();
 
     cy.get('div[role="none presentation"]')
         .should('exist')
@@ -27,6 +25,12 @@ export const addField = (name, label) => {
         .find(`input[name="label"]`)
         .clear()
         .type(label);
+
+    if (save) {
+        cy.get('.btn-save').click();
+        cy.get('div[role="none presentation"]').should('not.exist');
+        cy.contains('.publication-excerpt-column', label).should('exist');
+    }
 };
 
 export const createSubresource = (subresource = defaultSubresource) => {

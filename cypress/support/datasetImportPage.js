@@ -87,16 +87,6 @@ export const addColumn = (columnName, options = {}) => {
     cy.get('.wizard').should('not.exist');
 };
 
-export const setUriColumnValue = (value = 'generate') => {
-    cy.get('.publication-excerpt .publication-excerpt-column-uri')
-        .trigger('mouseover')
-        .click();
-    cy.get('.wizard', { timeout: 2000 }).should('be.visible');
-    cy.get(`.radio_generate input[value="${value}"]`).click({ force: true });
-    cy.get('.btn-save').click();
-    cy.get('.wizard').should('not.exist');
-};
-
 export const setOperationTypeInWizard = (value = 'DEFAULT') => {
     cy.get('.wizard', { timeout: 5000 }).should('be.visible');
     cy.contains('Transformations applied on the value').click();
