@@ -22,6 +22,7 @@ import ExcerptHeader from './ExcerptHeader';
 import ExcerptRemoveColumn from './ExcerptRemoveColumn';
 import ExcerptLine from './ExcerptLine';
 import getFieldClassName from '../../lib/getFieldClassName';
+import { URI_FIELD_NAME } from '../../../../common/uris';
 
 const styles = {
     header: {
@@ -62,7 +63,10 @@ export const ExcerptComponent = ({
                             field,
                         )}`}
                         style={getColStyle(colStyle)}
-                        onClick={() => onHeaderClick(field.name)}
+                        onClick={() =>
+                            field.name !== URI_FIELD_NAME &&
+                            onHeaderClick(field.name)
+                        }
                         tooltip={
                             areHeadersClickable
                                 ? polyglot.t('click_to_edit_publication_field')

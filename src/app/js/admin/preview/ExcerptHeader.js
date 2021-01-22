@@ -8,21 +8,29 @@ import HiddenIcon from '@material-ui/icons/VisibilityOff';
 
 import { SCOPE_DATASET } from '../../../../common/scope';
 import { fromFields } from '../../sharedSelectors';
+import getFieldClassName from '../../lib/getFieldClassName';
+import { isLongText, getShortText } from '../../lib/longTexts';
+import { URI_FIELD_NAME } from '../../../../common/uris';
+
 import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
 } from '../../propTypes';
-import getFieldClassName from '../../lib/getFieldClassName';
-import { isLongText, getShortText } from '../../lib/longTexts';
 
-const getStyle = memoize(field =>
-    field.scope === SCOPE_DATASET
-        ? {
-              fontWeight: 'bold',
-              color: 'black',
-          }
-        : null,
-);
+const getStyle = memoize(field => {
+    if (field.scope === SCOPE_DATASET) {
+        return {
+            fontWeight: 'bold',
+            color: 'black',
+        };
+    }
+
+    if (field.name === URI_FIELD_NAME) {
+        return { cursor: 'initial' };
+    }
+
+    return null;
+});
 
 const titleStyle = {
     titleBlock: {
