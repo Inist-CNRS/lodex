@@ -68,6 +68,7 @@ export const ImportModelButtonComponent = ({
             <Snackbar
                 open={showSuccessAlert}
                 autoHideDuration={60000}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                 onClose={() => setShowSuccessAlert(false)}
             >
                 <Alert variant="filled" severity="success">
