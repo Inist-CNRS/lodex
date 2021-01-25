@@ -15,6 +15,7 @@ import {
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { loadPublication } from '../publication';
+import { IMPORT_FIELDS_SUCCESS } from '../import';
 
 export function* handleLoadSubresourcesRequest() {
     const request = yield select(fromUser.getLoadSubresourcesRequest);
@@ -73,7 +74,10 @@ export function* handleDeleteSubresource({ payload: id }) {
 }
 
 export function* watchLoadSubresourcesRequest() {
-    yield takeLatest(LOAD_SUBRESOURCES, handleLoadSubresourcesRequest);
+    yield takeLatest(
+        [LOAD_SUBRESOURCES, IMPORT_FIELDS_SUCCESS],
+        handleLoadSubresourcesRequest,
+    );
 }
 
 export function* watchCreateSubresource() {
