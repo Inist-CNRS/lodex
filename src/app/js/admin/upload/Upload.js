@@ -130,6 +130,12 @@ export const UploadComponent = ({
                     }
                     showPreviewsInDropzone
                     showFileNamesInPreview
+                    alertSnackbarProps={{
+                        anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'center',
+                        },
+                    }}
                     onAdd={fileObjs => handleFileAdded(fileObjs)}
                     onDrop={handleAdding}
                     onDropRejected={handleAddRejected}
