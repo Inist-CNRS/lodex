@@ -12,6 +12,7 @@ import { FIELD_FORM_NAME } from '../';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import SelectDatasetField from './SelectDatasetField';
 import { isSubresourceTransformation } from './StepValueSubresource';
+import { isSubresourceFieldTransformation } from './StepValueSubresourceField';
 
 const styles = {
     inset: {
@@ -76,7 +77,9 @@ const mapStateToProps = state => {
 
     if (valueTransformer) {
         return {
-            selected: !isSubresourceTransformation(transformers),
+            selected:
+                !isSubresourceTransformation(transformers) &&
+                !isSubresourceFieldTransformation(transformers),
             column:
                 (valueTransformer.args &&
                     valueTransformer.args[0] &&

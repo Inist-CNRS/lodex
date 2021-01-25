@@ -7,13 +7,12 @@ import Lodex from '@ezs/lodex';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
-import fetch from 'fetch-with-proxy';
 import URL from 'url';
-import qs from 'qs';
 
 import Script from '../../services/script';
 import localConfig from '../../../../config.json';
 import { getCleanHost } from '../../../common/uris';
+import { mongoConnectionString } from '../../services/mongoClient';
 
 ezs.use(Lodex);
 ezs.use(Booster);
@@ -48,7 +47,6 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         String(ctx.query.sortDir || 'asc').toLowerCase(),
     ].join('/');
 
-    const connectionStringURI = `mongodb://${config.mongo.host}/${config.mongo.dbName}`;
     const environment = {
         ...localConfig,
     };
@@ -57,9 +55,10 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         orderBy,
         field: parseFieldsParams(fieldsParams),
         ...ctx.query,
-        connectionStringURI,
+        connectionStringURI: mongoConnectionString,
         host,
     };
+
     const input = new PassThrough({ objectMode: true });
     const commands = ezs.parseString(script, environment);
     const errorHandle = err => {

@@ -12,6 +12,7 @@ import StepValueValue from './StepValueValue';
 import StepValueColumn from './StepValueColumn';
 import StepValueConcat from './StepValueConcat';
 import StepValueSubresource from './StepValueSubresource';
+import StepValueSubresourceField from './StepValueSubresourceField';
 
 export const StepValueComponent = ({ handleChange, filter, ...props }) => (
     <Step id="step-value" label="field_wizard_step_value" {...props}>
@@ -21,6 +22,7 @@ export const StepValueComponent = ({ handleChange, filter, ...props }) => (
                 <StepValueColumn onChange={handleChange} />
                 <StepValueConcat onChange={handleChange} />
                 <StepValueSubresource onChange={handleChange} />
+                <StepValueSubresourceField onChange={handleChange} />
             </>
         )}
     </Step>

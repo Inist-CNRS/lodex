@@ -11,16 +11,22 @@ const UriView = ({ className, resource, field, fields, type, value }) => {
     const uri = resource[field.name];
 
     if (Array.isArray(uri)) {
-        return uri.map(uriItem => (
-            <div key={uriItem}>
-                <Link
-                    className={className}
-                    to={getResourceUri({ uri: uriItem })}
-                >
-                    {uriItem}
-                </Link>
-            </div>
-        ));
+        return uri.map((uriItem, index) => {
+            const label = getLabel(field, resource, fields, type, value);
+
+            const currentLabel = Array.isArray(label) ? label[index] : label;
+
+            return (
+                <div key={uriItem}>
+                    <Link
+                        className={className}
+                        to={getResourceUri({ uri: uriItem })}
+                    >
+                        {currentLabel}
+                    </Link>
+                </div>
+            );
+        });
     }
 
     if (!uri || typeof uri !== 'string') {

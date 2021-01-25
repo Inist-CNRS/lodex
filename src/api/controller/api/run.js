@@ -14,11 +14,11 @@ import qs from 'qs';
 import Script from '../../services/script';
 import localConfig from '../../../../config.json';
 import { getCleanHost } from '../../../common/uris';
+import { mongoConnectionString } from '../../services/mongoClient';
 
 ezs.use(Lodex);
 ezs.use(Booster);
 ezs.use(Storage);
-
 
 const scripts = new Script('routines', '../app/custom/routines');
 
@@ -49,7 +49,6 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         String(ctx.query.sortDir || 'asc').toLowerCase(),
     ].join('/');
 
-    const connectionStringURI = `mongodb://${config.mongo.host}/${config.mongo.dbName}`;
     const field = parseFieldsParams(fieldsParams);
     const environment = {
         ...localConfig,
@@ -61,7 +60,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         orderBy,
         field,
         ...ctx.query, //usefull ?
-        connectionStringURI,
+        connectionStringURI: mongoConnectionString,
         host,
     };
     const input = new PassThrough({ objectMode: true });

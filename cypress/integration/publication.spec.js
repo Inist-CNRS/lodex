@@ -53,7 +53,6 @@ describe('Dataset Publication', () => {
                 .contains('Row 2')
                 .should('be.visible');
 
-            datasetImportPage.setUriColumnValue();
             datasetImportPage.publish();
             datasetImportPage.goToPublishedResources();
         });

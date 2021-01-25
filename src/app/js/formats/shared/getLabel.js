@@ -4,7 +4,7 @@ export default (field, resource, fields, type, value) => {
             return value;
 
         case 'column': {
-            return resource[field.name];
+            return resource[value];
         }
 
         case 'value':
