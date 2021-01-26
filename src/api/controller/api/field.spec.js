@@ -13,6 +13,7 @@ import {
     reorderField,
     backupFields,
     restoreFields,
+    translateOldField,
 } from './field';
 
 import {
@@ -448,5 +449,161 @@ describe('field routes', () => {
     });
     afterAll(() => {
         indexSearchableFields.mockClear();
+    });
+});
+
+describe('translateOldField', () => {
+    it("should keep field identical when it's a new field", async () => {
+        const oldField = {
+            scope: 'collection',
+            display: true,
+            label: 'Catégories Inist',
+            searchable: true,
+            transformers: [
+                {
+                    operation: 'VALUE',
+                    args: [
+                        {
+                            name: 'value',
+                            type: 'string',
+                            value: '/api/run/tree-by/ptPw',
+                        },
+                    ],
+                },
+            ],
+            classes: [],
+            position: 36,
+            format: {
+                name: 'network',
+                args: {
+                    params: {
+                        maxSize: 200,
+                        orderBy: 'value/asc',
+                    },
+                    colors: '#FE9A2E',
+                    nodeColor: '#FE9A2E',
+                },
+            },
+            count: 0,
+            width: '100',
+        };
+
+        const newField = translateOldField(oldField);
+        expect(newField).toEqual(oldField);
+    });
+
+    it('should return null when field is null', async () => {
+        const oldField = null;
+
+        const newField = translateOldField(oldField);
+        expect(newField).toBeNull();
+    });
+
+    it('should convert cover to scope and all displays to display when not only graphical', async () => {
+        const oldField = {
+            cover: 'dataset',
+            display_in_home: true,
+            display_in_graph: true,
+            label: 'Catégories Inist',
+            searchable: true,
+            transformers: [
+                {
+                    operation: 'VALUE',
+                    args: [
+                        {
+                            name: 'value',
+                            type: 'string',
+                            value: '/api/run/tree-by/ptPw',
+                        },
+                    ],
+                },
+            ],
+            classes: [],
+            position: 36,
+            format: {
+                name: 'network',
+                args: {
+                    params: {
+                        maxSize: 200,
+                        orderBy: 'value/asc',
+                    },
+                    colors: '#FE9A2E',
+                    nodeColor: '#FE9A2E',
+                },
+            },
+            count: 0,
+            width: '100',
+        };
+        const expected = {
+            scope: 'dataset',
+            display: true,
+            label: 'Catégories Inist',
+            searchable: true,
+            transformers: [
+                {
+                    operation: 'VALUE',
+                    args: [
+                        {
+                            name: 'value',
+                            type: 'string',
+                            value: '/api/run/tree-by/ptPw',
+                        },
+                    ],
+                },
+            ],
+            classes: [],
+            position: 36,
+            format: {
+                name: 'network',
+                args: {
+                    params: {
+                        maxSize: 200,
+                        orderBy: 'value/asc',
+                    },
+                    colors: '#FE9A2E',
+                    nodeColor: '#FE9A2E',
+                },
+            },
+            count: 0,
+            width: '100',
+        };
+
+        const newField = translateOldField(oldField);
+        expect(newField).toEqual(expected);
+    });
+
+    it('should convert cover to SCOPE_GRAPHIC when only graphical display', async () => {
+        const oldField = {
+            cover: 'dataset',
+            display_in_home: false,
+            display_in_graph: true,
+            label: 'Catégories Inist',
+        };
+        const expected = {
+            scope: 'graphic',
+            display: true,
+            label: 'Catégories Inist',
+        };
+
+        const newField = translateOldField(oldField);
+        expect(newField).toEqual(expected);
+    });
+
+    it('should convert display to false when none of displays are true', async () => {
+        const oldField = {
+            cover: 'collection',
+            display_in_home: false,
+            display_in_graph: false,
+            display_in_resource: false,
+            label: 'Catégories Inist',
+        };
+        const expected = {
+            scope: 'collection',
+            display: false,
+            label: 'Catégories Inist',
+        };
+
+        const newField = translateOldField(oldField);
+        expect(newField).toEqual(expected);
     });
 });
