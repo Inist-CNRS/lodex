@@ -14,8 +14,8 @@ import { FINISH_PROGRESS, ERROR_PROGRESS } from '../progress/reducer';
 
 export function* handlePublishRequest() {
     const verifyUriRequest = yield select(fromUser.getVerifyUriRequest);
-
     const verifyResponse = yield call(fetchSaga, verifyUriRequest);
+
     const {
         error: verifyError,
         response: { nbInvalidUri, nbInvalidSubresourceUriMap },
@@ -30,7 +30,9 @@ export function* handlePublishRequest() {
         ? Object.keys(nbInvalidSubresourceUriMap).length
         : 0;
 
-    if (nbInvalidUri > 0 || countInvalidSubresourceUri > 0) {
+    const needWarn = nbInvalidUri > 0 || countInvalidSubresourceUri > 0;
+
+    if (needWarn) {
         yield put(publishWarn({ nbInvalidUri, nbInvalidSubresourceUriMap }));
         const { cancel } = yield race({
             cancel: take(PUBLISH_CANCEL),
@@ -48,7 +50,10 @@ export function* handlePublishRequest() {
     if (error) {
         yield put(publishError(error));
         return;
+    } else if (needWarn) {
+        yield put(publishSuccess());
     }
+
     const { progressError } = yield race({
         progressFinish: take(FINISH_PROGRESS),
         progressError: take(ERROR_PROGRESS),

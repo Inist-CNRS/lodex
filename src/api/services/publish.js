@@ -26,5 +26,6 @@ export default async ctx => {
     await ctx.publishFacets(ctx, fields, true);
     progress.start(CREATE_INDEX, null);
     await indexSearchableFields();
+
     progress.finish();
 };
