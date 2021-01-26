@@ -177,7 +177,7 @@
 "field_wizard_step_value"	"How the value is generated"	"Comment la valeur est créée"
 "field_wizard_step_tranforms"	"Transformations applied on the value"	"Transformations appliquées à cette valeur"
 "field_wizard_step_identity"	"General informations"	"Informations génerales"
-"field_wizard_step_display"	"How and where it is displayed"	"Comment et où elle est affichée"
+"field_wizard_step_display"	"How it is displayed"	"Comment elle est affichée"
 "field_wizard_step_search"	"Search related"	"Recherche"
 "field_wizard_step_semantic"	"Semantics"	"Sémantiques"
 "previous"	"Previous"	"Précédent"
