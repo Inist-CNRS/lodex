@@ -82,7 +82,7 @@ describe('Dataset Publication', () => {
                 .should('be.visible');
         });
 
-        it.skip('should allow to fix obsolete imported model before publish dataset', () => {
+        it('should allow to fix obsolete imported model before publish dataset', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');

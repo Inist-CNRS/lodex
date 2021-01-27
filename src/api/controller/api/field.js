@@ -27,21 +27,22 @@ export const restoreFields = (fileStream, ctx) => {
         return streamToString(fileStream)
             .then(fieldsString => JSON.parse(fieldsString))
             .then(fields => {
-                ctx.field
-                    .remove({})
-                    .then(() =>
-                        Promise.all(
-                            fields
-                                .sort(sortByFieldUri)
-                                .map(({ name, ...field }, index) =>
-                                    ctx.field.create(
-                                        { ...field, position: index },
-                                        name,
-                                        false,
-                                    ),
+                ctx.field.remove({}).then(() =>
+                    Promise.all(
+                        fields
+                            .sort(sortByFieldUri)
+                            .map(({ name, ...field }, index) =>
+                                ctx.field.create(
+                                    {
+                                        ...translateOldField(field),
+                                        position: index,
+                                    },
+                                    name,
+                                    false,
                                 ),
-                        ),
-                    );
+                            ),
+                    ),
+                );
             });
     }
 
@@ -55,6 +56,26 @@ export const restoreFields = (fileStream, ctx) => {
             },
         }),
     );
+};
+
+export const translateOldField = oldField => {
+    if (!oldField || !!oldField.scope) {
+        return oldField;
+    }
+    const {
+        display_in_home,
+        display_in_resource,
+        display_in_graph,
+        display_in_list,
+        cover,
+        ...newField
+    } = oldField;
+    const scope = display_in_graph && !display_in_home ? SCOPE_GRAPHIC : cover;
+    const display =
+        display_in_home || display_in_resource || display_in_graph
+            ? true
+            : false;
+    return { scope, display, ...newField };
 };
 
 export const backupFields = writeStream =>

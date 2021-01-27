@@ -16,7 +16,7 @@ import {
     validationField as validationFieldPropType,
 } from '../../propTypes';
 import { useHistory } from 'react-router';
-import { SCOPE_DATASET } from '../../../../common/scope';
+import { SCOPE_DATASET, SCOPE_DOCUMENT } from '../../../../common/scope';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };
@@ -44,7 +44,9 @@ const ValidationButtonComponent = ({
         const field = fields.find(({ name }) => name === args[0]);
         history.push(
             `/display/${
-                field && field.scope === SCOPE_DATASET ? 'home' : 'resource'
+                field && field.scope === SCOPE_DATASET
+                    ? SCOPE_DATASET
+                    : SCOPE_DOCUMENT
             }`,
         );
 
