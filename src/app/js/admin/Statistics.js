@@ -92,11 +92,11 @@ StatisticsComponent.propTypes = {
     mode: PropTypes.oneOf(['data', 'display']),
 };
 
-const mapStateToProps = (state, { filter }) => ({
+const mapStateToProps = (state, { filter, fields }) => ({
     isComputing: fromPublicationPreview.isComputing(state),
     totalLoadedColumns: fromParsing.getParsedExcerptColumns(state).length,
     totalLoadedLines: fromParsing.getTotalLoadedLines(state),
-    totalPublishedFields: fromFields.getFields(state).filter(f => {
+    totalPublishedFields: (fields || fromFields.getFields(state)).filter(f => {
         if (!filter) {
             return true;
         }

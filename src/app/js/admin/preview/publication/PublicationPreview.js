@@ -66,8 +66,8 @@ PublicationPreviewComponent.propTypes = {
     filter: PropTypes.string,
 };
 
-const mapStateToProps = (state, { filter }) => ({
-    fields: fromFields.getFromFilterFields(state, filter),
+const mapStateToProps = (state, { filter, fields }) => ({
+    fields: fields || fromFields.getFromFilterFields(state, filter),
 });
 
 const mapDispatchToProps = {
