@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -54,120 +54,159 @@ const buildLocationFromResource = resource =>
 
 const navigate = (history, location) => history.push(location);
 
-const ResourceComponent = ({
-    preLoadResource,
-    preLoadPublication,
-    history,
-    resource,
-    datasetTitleKey,
-    characteristics,
-    loading,
-    removed,
-    p: polyglot,
-    prevResource,
-    nextResource,
-    match,
-}) => {
-    const [lastResourceUri, setLastResourceUri] = useState();
+export class ResourceComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { lastResourceUri: null };
+    }
 
-    useEffect(() => {
-        preLoadResource();
-        preLoadPublication();
+    preload() {
+        this.props.preLoadResource();
+        this.props.preLoadPublication();
+    }
+
+    UNSAFE_componentWillMount() {
+        this.preload();
+    }
+
+    componentDidUpdate() {
+        const { match } = this.props;
+
+        if (match.params.uri === this.state.lastResourceUri) {
+            return;
+        }
+
+        this.preload();
 
         // Is not a subresource
-        if (!match.params.uri.includes('%2F')) {
-            setLastResourceUri(match.params.uri);
+        if (
+            match.params &&
+            match.params.uri &&
+            !match.params.uri.includes('%2F')
+        ) {
+            this.setState({ lastResourceUri: match.params.uri });
         }
-    }, [match.params.uri]);
-
-    if (loading) {
-        return (
-            <Loading className="resource">
-                {polyglot.t('loading_resource')}
-            </Loading>
-        );
     }
 
-    const backToListLabel =
-        (datasetTitleKey && characteristics[datasetTitleKey]) ||
-        polyglot.t('back_to_list');
+    render() {
+        const {
+            history,
+            resource,
+            datasetTitleKey,
+            characteristics,
+            loading,
+            removed,
+            p: polyglot,
+            prevResource,
+            nextResource,
+            match,
+        } = this.props;
 
-    const backToListButton = (
-        <Button
-            variant="text"
-            className="btn-back-to-list"
-            component={props => <Link to="/graph" {...props} />}
-            startIcon={<HomeIcon />}
-        >
-            {backToListLabel}
-        </Button>
-    );
+        if (loading) {
+            return (
+                <Loading className="resource">
+                    {polyglot.t('loading_resource')}
+                </Loading>
+            );
+        }
 
-    if (!resource && !loading) {
-        return (
-            <div className="not-found">
-                <Card style={{ marginTop: '0.5rem' }}>
-                    <CardActions>{backToListButton}</CardActions>
-                </Card>
-                <Card style={{ marginTop: '0.5rem' }}>
-                    <CardContent>
-                        <h1>{polyglot.t('not_found')}</h1>
-                    </CardContent>
-                </Card>
-            </div>
-        );
-    }
+        const backToListLabel =
+            (datasetTitleKey && characteristics[datasetTitleKey]) ||
+            polyglot.t('back_to_list');
 
-    const goBackButton = lastResourceUri &&
-        lastResourceUri !== match.params.uri && (
+        const backToListButton = (
             <Button
                 variant="text"
-                onClick={history.goBack}
-                startIcon={<BackIcon />}
+                className="btn-back-to-list"
+                component={props => <Link to="/graph" {...props} />}
+                startIcon={<HomeIcon />}
             >
-                {polyglot.t('back_to_resource')}
+                {backToListLabel}
             </Button>
         );
 
-    const swipeableConfig = {
-        preventDefaultTouchmoveEvent: true,
-        trackMouse: false,
-    };
-
-    const prevLocation = buildLocationFromResource(prevResource);
-    const nextLocation = buildLocationFromResource(nextResource);
-
-    const navigatePrev = () => navigate(history, prevLocation);
-    const navigateNext = () => navigate(history, nextLocation);
-
-    return (
-        <Swipeable
-            {...swipeableConfig}
-            onSwipedRight={navigatePrev}
-            onSwipedLeft={navigateNext}
-        >
-            <div className="resource">
-                {goBackButton && (
+        if (!resource && !loading) {
+            return (
+                <div className="not-found">
                     <Card style={{ marginTop: '0.5rem' }}>
-                        <CardActions>{goBackButton}</CardActions>
+                        <CardActions>{backToListButton}</CardActions>
                     </Card>
-                )}
-                {removed && <RemovedDetail />}
-                {!removed && <Detail backToListLabel={backToListLabel} />}
-                {prevResource && (
-                    <div className={classnames(navStyles.nav, navStyles.left)}>
-                        <NavButton direction={PREV} navigate={navigatePrev} />
-                    </div>
-                )}
-                {nextResource && (
-                    <div className={classnames(navStyles.nav, navStyles.right)}>
-                        <NavButton direction={NEXT} navigate={navigateNext} />
-                    </div>
-                )}
-            </div>
-        </Swipeable>
-    );
-};
+                    <Card style={{ marginTop: '0.5rem' }}>
+                        <CardContent>
+                            <h1>{polyglot.t('not_found')}</h1>
+                        </CardContent>
+                    </Card>
+                </div>
+            );
+        }
+
+        const goBackButton = this.state.lastResourceUri &&
+            this.state.lastResourceUri !== match.params.uri && (
+                <Button
+                    variant="text"
+                    onClick={history.goBack}
+                    startIcon={<BackIcon />}
+                >
+                    {polyglot.t('back_to_resource')}
+                </Button>
+            );
+
+        const swipeableConfig = {
+            preventDefaultTouchmoveEvent: true,
+            trackMouse: false,
+        };
+
+        const prevLocation = buildLocationFromResource(prevResource);
+        const nextLocation = buildLocationFromResource(nextResource);
+
+        const navigatePrev = () => navigate(history, prevLocation);
+        const navigateNext = () => navigate(history, nextLocation);
+
+        return (
+            <Swipeable
+                {...swipeableConfig}
+                onSwipedRight={navigatePrev}
+                onSwipedLeft={navigateNext}
+            >
+                <div className="resource">
+                    {goBackButton && (
+                        <Card style={{ marginTop: '0.5rem' }}>
+                            <CardActions>{goBackButton}</CardActions>
+                        </Card>
+                    )}
+                    {removed && <RemovedDetail />}
+                    {!removed && <Detail backToListLabel={backToListLabel} />}
+                    {prevResource && (
+                        <div
+                            className={classnames(
+                                navStyles.nav,
+                                navStyles.left,
+                            )}
+                        >
+                            <NavButton
+                                direction={PREV}
+                                navigate={navigatePrev}
+                            />
+                        </div>
+                    )}
+                    {nextResource && (
+                        <div
+                            className={classnames(
+                                navStyles.nav,
+                                navStyles.right,
+                            )}
+                        >
+                            <NavButton
+                                direction={NEXT}
+                                navigate={navigateNext}
+                            />
+                        </div>
+                    )}
+                </div>
+            </Swipeable>
+        );
+    }
+}
 
 ResourceComponent.defaultProps = {
     characteristics: null,
