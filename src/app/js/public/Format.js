@@ -68,7 +68,11 @@ FormatComponent.defaultProps = {
 };
 
 const mapStateToProps = (state, { field }) => ({
-    fields: fromFields.getCollectionFields(state),
+    fields: [
+        ...fromFields.getCollectionFields(state),
+        ...fromFields.getDatasetFields(state),
+        ...fromFields.getGraphicFields(state),
+    ],
     token: fromUser.getToken(state),
     colorSet: getColorSetFromField(field),
 });
