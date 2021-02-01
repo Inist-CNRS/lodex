@@ -27,22 +27,17 @@ export const restoreFields = (fileStream, ctx) => {
         return streamToString(fileStream)
             .then(fieldsString => JSON.parse(fieldsString))
             .then(fields => {
-                ctx.field.remove({}).then(() =>
-                    Promise.all(
-                        fields
-                            .sort(sortByFieldUri)
-                            .map(({ name, ...field }, index) =>
-                                ctx.field.create(
-                                    {
-                                        ...translateOldField(field),
-                                        position: index,
-                                    },
-                                    name,
-                                    false,
+                ctx.field
+                    .remove({})
+                    .then(() =>
+                        Promise.all(
+                            fields
+                                .sort(sortByFieldUri)
+                                .map((field, index) =>
+                                    translateOldField(ctx, field, index),
                                 ),
-                            ),
-                    ),
-                );
+                        ),
+                    );
             });
     }
 
@@ -58,16 +53,14 @@ export const restoreFields = (fileStream, ctx) => {
     );
 };
 
-export const translateOldField = oldField => {
-    if (!oldField || !!oldField.scope) {
-        return oldField;
-    }
+export const translateOldField = (ctx, oldField, index) => {
     const {
         display_in_home,
         display_in_resource,
         display_in_graph,
         display_in_list,
         cover,
+        name,
         ...newField
     } = oldField;
     const scope = display_in_graph && !display_in_home ? SCOPE_GRAPHIC : cover;
@@ -75,7 +68,55 @@ export const translateOldField = oldField => {
         display_in_home || display_in_resource || display_in_graph
             ? true
             : false;
-    return { scope, display, ...newField };
+
+    if (display_in_graph && display_in_home) {
+        ctx.field.create(
+            {
+                scope: SCOPE_GRAPHIC,
+                display,
+                ...newField,
+                position: index,
+            },
+            name,
+            false,
+        );
+
+        return ctx.field.create(
+            {
+                scope,
+                display,
+                ...newField,
+                label: `Copy of ${newField.label}`,
+                transformers: [
+                    {
+                        operation: 'VALUE',
+                        args: [
+                            {
+                                name: 'value',
+                                type: 'string',
+                                value: `Copy of ${newField.label}`,
+                            },
+                        ],
+                    },
+                ],
+                format: { name: 'fieldClone', args: { value: name } },
+                position: index + 1,
+            },
+            '',
+            false,
+        );
+    }
+
+    return ctx.field.create(
+        {
+            scope,
+            display,
+            ...newField,
+            position: index,
+        },
+        name,
+        false,
+    );
 };
 
 export const backupFields = writeStream =>

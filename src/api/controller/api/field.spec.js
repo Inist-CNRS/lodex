@@ -452,7 +452,8 @@ describe('field routes', () => {
     });
 });
 
-describe('translateOldField', () => {
+describe.skip('translateOldField', () => {
+    //TODO migrate this in e2e
     it("should keep field identical when it's a new field", async () => {
         const oldField = {
             scope: 'collection',

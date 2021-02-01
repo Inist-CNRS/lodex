@@ -23,7 +23,6 @@ export default async ctx => {
     );
     await ctx.publishCharacteristics(ctx, datasetScopeFields, count);
     await ctx.publishFacets(ctx, fields, true);
-    await ctx.publishFacets(ctx, fields, true);
     progress.start(CREATE_INDEX, null);
     await indexSearchableFields();
 

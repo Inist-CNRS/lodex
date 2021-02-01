@@ -10,6 +10,7 @@ import emphasedNumber from './emphased-number/';
 import identifierBadge from './identifier-badge/';
 import resourcesGrid from './resources-grid/';
 import email from './email';
+import fieldClone from './fieldClone';
 import html from './html';
 import image from './image';
 import pdf from './pdf';
@@ -51,6 +52,7 @@ const components = {
     emphasedNumber,
     identifierBadge,
     email,
+    fieldClone,
     html,
     image,
     pdf,

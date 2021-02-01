@@ -10,7 +10,7 @@ const styles = {
     },
     colorpicker: {
         width: '100%',
-        'margin-bottom': '15px',
+        marginBottom: '15px',
     },
 };
 
