@@ -86,7 +86,7 @@ export const isValidClonableField = (field, filter) => {
     }
 
     if (
-        filter === SCOPE_DATASET &&
+        (filter === SCOPE_DATASET || filter === SCOPE_GRAPHIC) &&
         field.scope !== SCOPE_DATASET &&
         field.scope !== SCOPE_GRAPHIC
     ) {
@@ -94,7 +94,7 @@ export const isValidClonableField = (field, filter) => {
     }
 
     if (
-        filter === SCOPE_DOCUMENT &&
+        (filter === SCOPE_DOCUMENT || filter === SCOPE_COLLECTION) &&
         field.scope !== SCOPE_DOCUMENT &&
         field.scope !== SCOPE_COLLECTION
     ) {
