@@ -11,7 +11,7 @@ const FieldCloneView = ({ className, resource, field, fields, value }) => {
     if (
         !clonedField ||
         typeof clonedField !== 'object' ||
-        clonedField.format.name === 'fieldClone'
+        (clonedField.format && clonedField.format.name === 'fieldClone')
     ) {
         return <InvalidFormat format={field.format} value={value} />;
     }

@@ -69,7 +69,7 @@ FieldCloneAdmin.defaultProps = {
 const mapStateToProps = state => ({
     fields: fromFields
         .getFields(state)
-        .filter(f => f && f.format && f.format.name !== 'fieldClone'),
+        .filter(f => !f.format || (f.format && f.format.name !== 'fieldClone')),
 });
 
 export default compose(connect(mapStateToProps), translate)(FieldCloneAdmin);
