@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -6,10 +6,9 @@ import compose from 'recompose/compose';
 import { withRouter } from 'react-router-dom';
 import translate from 'redux-polyglot/translate';
 import HomeIcon from '@material-ui/icons/Home';
+import BackIcon from '@material-ui/icons/ArrowBack';
 import { CardContent, CardActions, Card, Button } from '@material-ui/core';
 import { Swipeable } from 'react-swipeable';
-import get from 'lodash.get';
-import isEqual from 'lodash.isequal';
 
 import { fromResource, fromSearch } from '../selectors';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
@@ -55,20 +54,37 @@ const buildLocationFromResource = resource =>
 
 const navigate = (history, location) => history.push(location);
 
-export class ResourceComponent extends Component {
-    UNSAFE_componentWillMount() {
+export class ResourceComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { lastResourceUri: null };
+    }
+
+    preload() {
         this.props.preLoadResource();
         this.props.preLoadPublication();
     }
 
-    componentDidUpdate(prevProps) {
+    UNSAFE_componentWillMount() {
+        this.preload();
+    }
+
+    componentDidUpdate() {
+        const { match } = this.props;
+
+        if (match.params.uri === this.state.lastResourceUri) {
+            return;
+        }
+
+        this.preload();
+
+        // Is not a subresource
         if (
-            !isEqual(
-                get(this.props, 'match.params', {}),
-                get(prevProps, 'match.params', {}),
-            )
+            match.params &&
+            match.params.uri &&
+            !match.params.uri.includes('%2F')
         ) {
-            this.props.preLoadResource();
+            this.setState({ lastResourceUri: match.params.uri });
         }
     }
 
@@ -83,6 +99,7 @@ export class ResourceComponent extends Component {
             p: polyglot,
             prevResource,
             nextResource,
+            match,
         } = this.props;
 
         if (loading) {
@@ -122,6 +139,18 @@ export class ResourceComponent extends Component {
                 </div>
             );
         }
+
+        const goBackButton = this.state.lastResourceUri &&
+            this.state.lastResourceUri !== match.params.uri && (
+                <Button
+                    variant="text"
+                    onClick={history.goBack}
+                    startIcon={<BackIcon />}
+                >
+                    {polyglot.t('back_to_resource')}
+                </Button>
+            );
+
         const swipeableConfig = {
             preventDefaultTouchmoveEvent: true,
             trackMouse: false,
@@ -140,6 +169,11 @@ export class ResourceComponent extends Component {
                 onSwipedLeft={navigateNext}
             >
                 <div className="resource">
+                    {goBackButton && (
+                        <Card style={{ marginTop: '0.5rem' }}>
+                            <CardActions>{goBackButton}</CardActions>
+                        </Card>
+                    )}
                     {removed && <RemovedDetail />}
                     {!removed && <Detail backToListLabel={backToListLabel} />}
                     {prevResource && (
@@ -187,7 +221,10 @@ ResourceComponent.defaultProps = {
 
 ResourceComponent.propTypes = {
     characteristics: PropTypes.shape({}),
-    resource: PropTypes.shape({ uri: PropTypes.string.isRequired }),
+    resource: PropTypes.shape({
+        uri: PropTypes.string.isRequired,
+        subresourceId: PropTypes.string,
+    }),
     p: polyglotPropTypes.isRequired,
     datasetTitleKey: PropTypes.string,
     loading: PropTypes.bool.isRequired,
@@ -196,6 +233,7 @@ ResourceComponent.propTypes = {
     preLoadPublication: PropTypes.func.isRequired,
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
+        goBack: PropTypes.func.isRequired,
     }),
     match: PropTypes.shape({
         params: PropTypes.shape({
