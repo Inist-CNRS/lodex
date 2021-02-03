@@ -69,6 +69,10 @@ class CartographyAdmin extends Component {
 
     static defaultProps = {
         args: defaultArgs,
+        showMaxSize: false,
+        showMaxValue: false,
+        showMinValue: false,
+        showOrderBy: false,
     };
 
     constructor(props) {
@@ -83,8 +87,12 @@ class CartographyAdmin extends Component {
         updateAdminArgs('worldPosition', e.target.value, this.props);
     };
 
-    setColorScheme = (_, __, colorScheme) => {
-        updateAdminArgs('colorScheme', colorScheme.split(','), this.props);
+    setColorScheme = (_, colorScheme) => {
+        updateAdminArgs(
+            'colorScheme',
+            colorScheme.props.value.split(','),
+            this.props,
+        );
     };
 
     toggleTooltip = () => {

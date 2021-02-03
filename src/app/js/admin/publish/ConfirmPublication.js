@@ -86,7 +86,7 @@ export const ConfirmPublicationComponent = ({
 
 ConfirmPublicationComponent.propTypes = {
     nbInvalidUri: PropTypes.number.isRequired,
-    nbInvalidSubresourceUriMap: PropTypes.number.isRequired,
+    nbInvalidSubresourceUriMap: PropTypes.object.isRequired,
     confirmPublication: PropTypes.func.isRequired,
     cancelPublication: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
