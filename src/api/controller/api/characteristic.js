@@ -5,8 +5,6 @@ import get from 'lodash.get';
 import set from 'lodash.set';
 import deepCopy from 'lodash.clonedeep';
 
-import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../common/scope';
-
 const app = new Koa();
 
 const isCompositeField = field =>
@@ -113,7 +111,6 @@ export const createCharacteristic = async ctx => {
     const field = await ctx.field.create({
         ...fieldData,
         position: highestPosition + 1,
-        scope: SCOPE_DATASET,
         transformers: [
             {
                 operation: 'VALUE',
