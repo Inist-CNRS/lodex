@@ -1,13 +1,10 @@
 import { call, put, take, race, select, takeLatest } from 'redux-saga/effects';
 
-import {
-    PUBLISH,
-    publishSuccess,
-    publishError,
-} from './';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { FINISH_PROGRESS, ERROR_PROGRESS } from '../progress/reducer';
+
+import { PUBLISH, publishSuccess, publishError } from './';
 
 export function* handlePublishRequest() {
     try {

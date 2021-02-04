@@ -10,7 +10,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportFields as exportFieldsAction } from '../../exportFields';
 
 export const ExportFieldsButtonComponent = ({ handleClick, p: polyglot }) => (
-    <Button variant="contained" color="primary" onClick={handleClick}>
+    <Button variant="contained" color="primary" fullWidth onClick={handleClick}>
         {polyglot.t('export_fields')}
     </Button>
 );

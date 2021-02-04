@@ -20,7 +20,7 @@ export default async function transformAllDocument(
         ).filter(x => x);
 
         await insertBatch(transformedDataset);
-        progress.incrementProgress(dataset.length);
+        progress.incrementProgress(transformedDataset.length);
         handled += dataset.length;
     }
 }
