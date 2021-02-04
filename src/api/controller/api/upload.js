@@ -72,14 +72,12 @@ export const uploadFile = ctx => async loaderName => {
     const parsedStream = parseStream(mergedStream);
     try {
         await ctx.saveParsedStream(parsedStream, ctx.initDatasetUri);
+        progress.finish();
     } catch (error) {
         progress.throw(error);
-        return;
     }
 
     await ctx.clearChunks(filename, totalChunks);
-
-    progress.finish();
 };
 
 export const prepareUpload = async (ctx, next) => {

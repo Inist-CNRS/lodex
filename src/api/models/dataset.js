@@ -41,16 +41,19 @@ export default db => {
     collection.ensureIsUnique = async fieldName =>
         (await collection.countNotUnique(fieldName)) === 0;
 
-    collection.bulkUpdate = async (items, getFilter, upsert = false) =>
-        collection.bulkWrite(
-            items.map(item => ({
-                updateOne: {
-                    filter: getFilter(item),
-                    update: { $set: item },
-                    upsert,
-                },
-            })),
-        );
+    collection.bulkUpdate = async (items, getFilter, upsert = false) => {
+        if (items.length) {
+            collection.bulkWrite(
+                items.map(item => ({
+                    updateOne: {
+                        filter: getFilter(item),
+                        update: { $set: item },
+                        upsert,
+                    },
+                })),
+            );
+        }
+    };
 
     collection.upsertBatch = (documents, getFilter) =>
         Promise.all(

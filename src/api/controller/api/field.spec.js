@@ -13,7 +13,6 @@ import {
     reorderField,
     backupFields,
     restoreFields,
-    translateOldField,
 } from './field';
 
 import {
