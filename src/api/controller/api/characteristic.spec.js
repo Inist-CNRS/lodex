@@ -445,6 +445,7 @@ describe('characteristic routes', () => {
                 body: {
                     value: 'value',
                     data: 'field data',
+                    scope: 'dataset',
                 },
             },
             publishedCharacteristic: {
@@ -461,7 +462,6 @@ describe('characteristic routes', () => {
                 getHighestPosition: jest.fn().mockImplementation(() => 4),
                 create: jest.fn().mockImplementation(() => ({
                     name: 'newField',
-                    scope: 'dataset',
                 })),
             },
         };
@@ -506,7 +506,7 @@ describe('characteristic routes', () => {
             });
         });
 
-        it('shopuld set field and characteristics in body', async () => {
+        it('should set field and characteristics in body', async () => {
             await createCharacteristic(ctx);
             expect(ctx.body).toEqual({
                 field: {
