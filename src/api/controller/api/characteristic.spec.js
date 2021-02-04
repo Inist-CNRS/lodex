@@ -461,6 +461,7 @@ describe('characteristic routes', () => {
                 getHighestPosition: jest.fn().mockImplementation(() => 4),
                 create: jest.fn().mockImplementation(() => ({
                     name: 'newField',
+                    scope: 'dataset',
                 })),
             },
         };
