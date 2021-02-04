@@ -69,6 +69,10 @@ class HeatMapAdmin extends Component {
 
     static defaultProps = {
         args: defaultArgs,
+        showMaxSize: false,
+        showMaxValue: false,
+        showMinValue: false,
+        showOrderBy: false,
     };
 
     constructor(props) {
@@ -82,8 +86,12 @@ class HeatMapAdmin extends Component {
         updateAdminArgs('params', params, this.props);
     };
 
-    handleColorSchemeChange = (event, index, colorScheme) => {
-        updateAdminArgs('colorScheme', colorScheme.split(','), this.props);
+    handleColorSchemeChange = (_, colorScheme) => {
+        updateAdminArgs(
+            'colorScheme',
+            colorScheme.props.value.split(','),
+            this.props,
+        );
     };
 
     toggleFlipAxis = () => {

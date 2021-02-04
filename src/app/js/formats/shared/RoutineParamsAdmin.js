@@ -140,6 +140,10 @@ const RoutineParamsAdmin = ({
     );
 };
 
+RoutineParamsAdmin.defaultProps = {
+    showUri: false,
+};
+
 RoutineParamsAdmin.propTypes = {
     params: PropTypes.shape({
         maxSize: PropTypes.number,

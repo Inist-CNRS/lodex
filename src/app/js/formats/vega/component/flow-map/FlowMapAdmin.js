@@ -58,6 +58,10 @@ class FlowMapAdmin extends Component {
 
     static defaultProps = {
         args: defaultArgs,
+        showMaxSize: false,
+        showMaxValue: false,
+        showMinValue: false,
+        showOrderBy: false,
     };
 
     constructor(props) {
@@ -82,8 +86,12 @@ class FlowMapAdmin extends Component {
         );
     }
 
-    setColorScheme = (_, __, colorScheme) => {
-        updateAdminArgs('colorScheme', colorScheme.split(','), this.props);
+    setColorScheme = (_, colorScheme) => {
+        updateAdminArgs(
+            'colorScheme',
+            colorScheme.props.value.split(','),
+            this.props,
+        );
     };
 
     toggleTooltip = () => {
