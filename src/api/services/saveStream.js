@@ -25,10 +25,17 @@ export const chunkStream = chunkSize => {
     );
 };
 
-export default upsertMany => stream =>
+export default upsertMany => (stream, modifier) =>
     new Promise((resolve, reject) => {
         safePipe(stream, [
             chunkStream(defaultChunkSize),
+            through(function(chunk) {
+                typeof modifier !== 'function'
+                    ? this.queue(chunk)
+                    : modifier(chunk)
+                          .then(this.queue)
+                          .catch(error => this.emit('error', error));
+            }),
             through(function(chunk) {
                 upsertMany(chunk)
                     .then(data => {

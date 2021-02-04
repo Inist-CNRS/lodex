@@ -1,36 +1,38 @@
 import getDocumentTransformer from '../../common/getDocumentTransformer';
 import { URI_FIELD_NAME } from '../../common/uris';
+import saveStream from './saveStream';
 import progress from './progress';
 import { INITIALIZING_URI } from '../../common/progressStatus';
 
 const initDatasetUriFactory = ctx =>
     async function initDatasetUri() {
+        progress.start(INITIALIZING_URI);
         const count = await ctx.dataset.countWithoutUri();
-        progress.start(INITIALIZING_URI, count);
         const fields = await ctx.field.findAll();
         const transformUri = getDocumentTransformer(
             ctx.dataset.findBy,
             fields.filter(f => f.name === URI_FIELD_NAME),
         );
 
-        let handled = 0;
-        while (handled < count) {
-            const dataset = await ctx.dataset.findLimitFromSkip(1000, handled, {
-                uri: { $exists: false },
-            });
-            const transformedDataset = await Promise.all(
-                dataset.map(async item => {
-                    const uriObject = await transformUri(item);
-                    return { ...item, ...uriObject };
-                }),
-            );
+        const setURI = async chunk => {
+            const transformedChunk = [];
+            for (const document of chunk) {
+                const uriObject = await transformUri(document);
+                transformedChunk.push({ ...document, ...uriObject });
+            }
+            return transformedChunk;
+        };
 
-            await ctx.dataset.bulkUpdate(transformedDataset, item => ({
+        const stream = ctx.dataset
+            .find({
+                uri: { $exists: false },
+            })
+            .stream();
+        await saveStream(data =>
+            ctx.dataset.upsertBatch(data, item => ({
                 _id: item._id,
-            }));
-            handled += dataset.length;
-            progress.setProgress(handled);
-        }
+            })),
+        )(stream, setURI);
     };
 
 export default initDatasetUriFactory;
