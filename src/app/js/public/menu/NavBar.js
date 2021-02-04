@@ -284,7 +284,7 @@ const mapStateToProps = state => ({
     role: fromUser.getRole(state),
     canBeSearched: fromFields.canBeSearched(state),
     hasGraph:
-        fromFields.getGraphicFields(state).filter(f => !!display).length > 0,
+        fromFields.getGraphicFields(state).filter(f => !!f.display).length > 0,
     leftMenu: fromMenu.getLeftMenu(state),
     rightMenu: fromMenu.getRightMenu(state),
     advancedMenu: fromMenu.getAdvancedMenu(state),
