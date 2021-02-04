@@ -445,6 +445,7 @@ describe('characteristic routes', () => {
                 body: {
                     value: 'value',
                     data: 'field data',
+                    scope: 'dataset',
                 },
             },
             publishedCharacteristic: {
@@ -505,7 +506,7 @@ describe('characteristic routes', () => {
             });
         });
 
-        it('shopuld set field and characteristics in body', async () => {
+        it('should set field and characteristics in body', async () => {
             await createCharacteristic(ctx);
             expect(ctx.body).toEqual({
                 field: {
