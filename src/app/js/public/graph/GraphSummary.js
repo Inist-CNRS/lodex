@@ -124,7 +124,7 @@ PureGraphSummary.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    graphicFields: fromFields.getGraphicFields(state),
+    graphicFields: fromFields.getGraphicFields(state).filter(f => !!f.display),
 });
 
 export default connect(mapStateToProps)(PureGraphSummary);
