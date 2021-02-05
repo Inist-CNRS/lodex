@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -21,6 +21,8 @@ import { preLoadPublication } from '../../fields';
 import Link from '../../lib/components/Link';
 import stylesToClassname from '../../lib/stylesToClassName';
 import NavButton, { NEXT, PREV } from '../../lib/components/NavButton';
+import isEqual from 'lodash.isequal';
+import get from 'lodash.get';
 
 const navStyles = stylesToClassname(
     {
@@ -60,29 +62,29 @@ export class ResourceComponent extends React.Component {
         this.state = { lastResourceUri: null };
     }
 
-    preload() {
+    UNSAFE_componentWillMount() {
         this.props.preLoadResource();
         this.props.preLoadPublication();
     }
 
-    UNSAFE_componentWillMount() {
-        this.preload();
-    }
-
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         const { match } = this.props;
 
-        if (match.params.uri === this.state.lastResourceUri) {
-            return;
+        if (
+            !isEqual(
+                get(match, 'params', {}),
+                get(prevProps, 'match.params', {}),
+            )
+        ) {
+            this.props.preLoadResource();
         }
-
-        this.preload();
 
         // Is not a subresource
         if (
             match.params &&
             match.params.uri &&
-            !match.params.uri.includes('%2F')
+            !match.params.uri.includes('%2F') &&
+            match.params.uri !== this.state.lastResourceUri
         ) {
             this.setState({ lastResourceUri: match.params.uri });
         }
