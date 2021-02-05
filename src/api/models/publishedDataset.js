@@ -399,24 +399,18 @@ export default async db => {
             return;
         }
 
-        const textIndex = fields.reduce(
-            (acc, name) => ({
-                ...acc,
-                [`versions.${name}`]: 'text',
-            }),
-            {},
-        );
-
         try {
-            await collection.createIndex(textIndex, {
-                name: 'match_index',
-            });
-        } catch (error) {
             await collection.dropIndex('match_index');
-            await collection.createIndex(textIndex, {
-                name: 'match_index',
-            });
+        } catch (error) {
+            //Needed for old indexes
         }
+
+        await collection.createIndex(
+            { '$**': 'text' },
+            {
+                name: 'match_index',
+            },
+        );
     };
 
     return collection;
