@@ -22,12 +22,13 @@ const FormAutoCompleteField = ({
     ...props
 }) => {
     const source = dataSource || [];
+
     return (
         <FormControl fullWidth>
             <Autocomplete
                 id="autocomplete"
                 options={source}
-                getOptionLabel={option => option.value}
+                getOptionLabel={option => option.text}
                 renderInput={params => <TextField {...params} label={label} />}
                 onChange={handleValueChosen}
                 onInputChange={handleComplete}

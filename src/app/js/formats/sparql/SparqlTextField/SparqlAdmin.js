@@ -123,19 +123,22 @@ class SparqlTextFieldAdmin extends Component {
         args: defaultArgs,
     };
 
-    setEndpoint = (_, endpoint) => {
+    setEndpoint = e => {
+        const endpoint = e.target.value;
         const { sparql, ...args } = this.props.args;
         const newArgs = { ...args, sparql: { ...sparql, endpoint } };
         this.props.onChange(newArgs);
     };
 
-    setRequest = (_, request) => {
+    setRequest = e => {
+        const request = e.target.value;
         const { sparql, ...args } = this.props.args;
         const newArgs = { ...args, sparql: { ...sparql, request } };
         this.props.onChange(newArgs);
     };
 
-    setMaxValue = (_, maxValue) => {
+    setMaxValue = e => {
+        let maxValue = e.target.value;
         if (maxValue < 1) {
             maxValue = 1;
         }
@@ -150,7 +153,8 @@ class SparqlTextFieldAdmin extends Component {
         this.props.onChange(newState);
     };
 
-    setSeparator = (_, separator) => {
+    setSeparator = e => {
+        const separator = e.target.value;
         const { sparql, ...args } = this.props.args;
         const newArgs = { ...args, sparql: { ...sparql, separator } };
         this.props.onChange(newArgs);
@@ -197,7 +201,7 @@ class SparqlTextFieldAdmin extends Component {
     };
 
     validator = () => {
-        window.open('http://sparql.org/query-validator.html');
+        window.open('https://edmo.seadatanet.org/sparql/query-validator.html');
     };
 
     loadSubformat = (result, key) => {
@@ -294,9 +298,7 @@ class SparqlTextFieldAdmin extends Component {
                 />
                 <div style={{ width: '100%' }}>
                     <div
-                        onClick={() => {
-                            this.addSubformat();
-                        }}
+                        onClick={() => this.addSubformat()}
                         style={styles.pointer}
                     >
                         <ContentAdd style={{ verticalAlign: 'sub' }} />
@@ -312,9 +314,9 @@ class SparqlTextFieldAdmin extends Component {
                                 }
                             >
                                 <ContentClear
-                                    onClick={() => {
-                                        this.removeSubformat({ key });
-                                    }}
+                                    onClick={() =>
+                                        this.removeSubformat({ key })
+                                    }
                                     style={styles.subformatPointer}
                                 />
                                 {this.loadSubformat(result, key)}
