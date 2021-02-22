@@ -171,11 +171,6 @@ export class ResourceComponent extends React.Component {
                 onSwipedLeft={navigateNext}
             >
                 <div className="resource">
-                    {goBackButton && (
-                        <Card style={{ marginTop: '0.5rem' }}>
-                            <CardActions>{goBackButton}</CardActions>
-                        </Card>
-                    )}
                     {removed && <RemovedDetail />}
                     {!removed && <Detail backToListLabel={backToListLabel} />}
                     {prevResource && (
@@ -203,6 +198,11 @@ export class ResourceComponent extends React.Component {
                                 navigate={navigateNext}
                             />
                         </div>
+                    )}
+                    {goBackButton && (
+                        <Card style={{ marginTop: '0.5rem' }}>
+                            <CardActions>{goBackButton}</CardActions>
+                        </Card>
                     )}
                 </div>
             </Swipeable>
