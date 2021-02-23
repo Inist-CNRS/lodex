@@ -1,5 +1,6 @@
 import { ObjectID } from 'mongodb';
 import omit from 'lodash.omit';
+import { castIdsFactory } from './utils';
 
 export default async db => {
     const collection = db.collection('subresource');
@@ -32,6 +33,8 @@ export default async db => {
             )
             .then(result => result.value);
     };
+
+    collection.castIds = castIdsFactory(collection);
 
     return collection;
 };

@@ -41,17 +41,25 @@ export const restoreFields = (fileStream, ctx) => {
             });
     }
 
-    return new Promise((resolve, reject) =>
-        restore({
-            uri: mongoConnectionString,
-            stream: fileStream,
-            parser: 'json',
-            dropCollections: ['field', 'subresource'],
-            callback: function(err) {
-                err ? reject(err) : resolve();
-            },
-        }),
-    );
+    const restoreTask = () =>
+        new Promise((resolve, reject) =>
+            restore({
+                uri: mongoConnectionString,
+                stream: fileStream,
+                parser: 'json',
+                dropCollections: ['field', 'subresource'],
+                callback: function(err) {
+                    err ? reject(err) : resolve();
+                },
+            }),
+        );
+
+    return ctx.field
+        .remove({})
+        .then(restoreTask)
+        .then(() =>
+            Promise.all([ctx.field.castIds(), ctx.subresource.castIds()]),
+        );
 };
 
 export const translateOldField = (ctx, oldField, index) => {
