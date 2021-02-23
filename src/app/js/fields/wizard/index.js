@@ -42,7 +42,6 @@ const styles = {
         marginRight: '1rem',
         paddingRight: '1rem',
         flexGrow: 1,
-        maxHeight: '55vh',
         overflowY: 'auto',
     },
     column: {
@@ -57,6 +56,9 @@ const styles = {
         position: 'absolute',
         right: 10,
         top: 10,
+    },
+    dialogContent: {
+        height: 'calc(90vh - 64px - 52px)',
     },
 };
 
@@ -189,7 +191,7 @@ class FieldEditionWizardComponent extends Component {
                         <CloseIcon />
                     </IconButton>
                 </DialogTitle>
-                <DialogContent>
+                <DialogContent style={styles.dialogContent}>
                     {field && (
                         <div style={styles.container}>
                             <div id="field_form" style={styles.form}>
