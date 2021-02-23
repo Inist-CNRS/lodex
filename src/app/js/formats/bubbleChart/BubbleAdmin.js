@@ -68,8 +68,8 @@ class BubbleAdmin extends Component {
         updateAdminArgs('colors', colors, this.props);
     }
 
-    setDiameter = (_, diameter) => {
-        updateAdminArgs('diameter', diameter, this.props);
+    setDiameter = e => {
+        updateAdminArgs('diameter', e.target.value, this.props);
     };
 
     render() {
