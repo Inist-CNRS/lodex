@@ -6,6 +6,7 @@ import { validateField as validateFieldIsomorphic } from '../../common/validateF
 import { URI_FIELD_NAME } from '../../common/uris';
 import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../common/scope';
 import generateUid from '../services/generateUid';
+import { castIdsFactory } from './utils';
 
 export const buildInvalidPropertiesMessage = name =>
     `Invalid data for field ${name} which need a name, a label, a scope, a valid scheme if specified and a transformers array`;
@@ -390,6 +391,8 @@ export default async db => {
 
         return fields[name];
     };
+
+    collection.castIds = castIdsFactory(collection);
 
     return collection;
 };
