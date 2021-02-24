@@ -14,6 +14,7 @@ import removedResources from './removedResources';
 import upload from './upload';
 import user from '../user';
 import clear from './clear';
+import dump from './dump';
 import characteristic from '../characteristic';
 import progress from './progress/reducer';
 import loaders from './loader';
@@ -25,6 +26,7 @@ const reducer = combineReducers({
     form,
     i18n,
     import: importReducer,
+    dump,
     polyglot,
     parsing,
     publication,
