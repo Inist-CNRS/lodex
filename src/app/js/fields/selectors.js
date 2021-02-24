@@ -127,7 +127,7 @@ const getRootCollectionFields = createSelector(
     getCollectionFieldsExceptComposite,
     allFields =>
         allFields
-            .filter(f => f.display || f.contribution)
+            .filter(f => f.display)
             .filter(
                 f =>
                     (f.scope === SCOPE_COLLECTION ||
