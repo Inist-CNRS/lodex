@@ -28,8 +28,19 @@ const FormAutoCompleteField = ({
             <Autocomplete
                 id="autocomplete"
                 options={source}
+                freeSolo
                 getOptionLabel={option => option.text}
-                renderInput={params => <TextField {...params} label={label} />}
+                renderInput={params => (
+                    <TextField
+                        {...params}
+                        label={label}
+                        helperText={
+                            input.value
+                                ? `(${polyglot.t('actually')} ${input.value})`
+                                : undefined
+                        }
+                    />
+                )}
                 onChange={handleValueChosen}
                 onInputChange={handleComplete}
                 noOptionsText={polyglot.t('no_option')}
