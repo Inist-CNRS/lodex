@@ -32,7 +32,7 @@ const styles = {
         display: separated ? 'block' : 'table',
         overflowX: 'auto',
         width: 'auto',
-        minWidth: separated ? 'unset' : '100%',
+        minWidth: separated ? '150px' : '100%',
         border: separated ? 'none' : '1px solid rgb(224, 224, 224)',
     })),
     cell: {
