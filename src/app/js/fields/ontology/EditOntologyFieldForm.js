@@ -19,6 +19,7 @@ import FieldIsFacetInput from '../FieldIsFacetInput';
 import FieldComposedOf from '../FieldComposedOf';
 import FieldAnnotation from '../FieldAnnotation';
 import InvalidFieldProperties from '../InvalidFieldProperties';
+import FieldDisplayInput from '../FieldDisplay';
 
 export const FORM_NAME = 'ONTOLOGY_FIELD_FORM';
 
@@ -43,6 +44,9 @@ export const EditOntologyFieldFormComponent = ({
         <FieldWidthInput />
         <FieldIsSearchableInput />
         <FieldIsFacetInput />
+        <div>
+            <FieldDisplayInput />
+        </div>
         <FieldComposedOf fields={fields} FORM_NAME={FORM_NAME} />
         <FieldAnnotation fields={fields} />
     </form>
