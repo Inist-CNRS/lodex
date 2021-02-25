@@ -4,9 +4,13 @@ import PropTypes from 'prop-types';
 import { field as fieldPropTypes } from '../../propTypes';
 import InvalidFormat from '../InvalidFormat';
 import { getViewComponent } from './..';
+import getColorSetFromField from '../../lib/getColorSetFromField';
 
 const FieldCloneView = ({ className, resource, field, fields, value }) => {
     const clonedField = fields.find(item => item.name === value);
+
+    const colorSet = getColorSetFromField(clonedField);
+    const otherProps = { colorSet: colorSet ? colorSet : undefined };
 
     if (
         !clonedField ||
@@ -25,6 +29,7 @@ const FieldCloneView = ({ className, resource, field, fields, value }) => {
             fields={fields}
             resource={resource}
             {...args}
+            {...otherProps}
         />
     );
 };

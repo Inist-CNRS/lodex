@@ -95,7 +95,7 @@ export const translateOldField = (ctx, oldField, index) => {
                 scope,
                 display,
                 ...newField,
-                label: `Copy of ${newField.label}`,
+                label: newField.label,
                 transformers: [
                     {
                         operation: 'VALUE',
@@ -103,7 +103,7 @@ export const translateOldField = (ctx, oldField, index) => {
                             {
                                 name: 'value',
                                 type: 'string',
-                                value: `Copy of ${newField.label}`,
+                                value: newField.label,
                             },
                         ],
                     },
