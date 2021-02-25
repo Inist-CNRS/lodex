@@ -81,7 +81,7 @@ describe('Model Page', () => {
                 'Dataset Description',
                 'Nombre de films',
                 'Liste des films',
-                'Copy of Répartition par créateurs',
+                'Répartition par créateurs',
             ]);
 
             cy.get('.property_label')
@@ -131,10 +131,6 @@ describe('Model Page', () => {
             cy.get('.graph-summary-label')
                 .contains('Répartition par réalisateurs uniques')
                 .should('be.visible');
-
-            cy.get('.graph-summary-label')
-                .contains('Copy of Répartition par réalisateurs uniques')
-                .should('not.be.visible');
 
             menu.goToChart('Répartition par créateurs');
         });
