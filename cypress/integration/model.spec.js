@@ -132,10 +132,6 @@ describe('Model Page', () => {
                 .contains('Répartition par réalisateurs uniques')
                 .should('be.visible');
 
-            cy.get('.graph-summary-label')
-                .contains('Répartition par réalisateurs uniques')
-                .should('not.be.visible');
-
             menu.goToChart('Répartition par créateurs');
         });
     });
