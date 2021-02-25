@@ -21,7 +21,7 @@ class ColorPickerParamsAdmin extends Component {
         colors: PropTypes.string,
         onChange: PropTypes.func.isRequired,
         polyglot: polyglotPropTypes.isRequired,
-        monochromatic: PropTypes.bool.isRequired,
+        monochromatic: PropTypes.bool,
     };
 
     constructor(props) {
