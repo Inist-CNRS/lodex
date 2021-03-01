@@ -3,14 +3,12 @@ export const SCOPE_GRAPHIC = 'graphic';
 export const SCOPE_COLLECTION = 'collection';
 export const SCOPE_DOCUMENT = 'document';
 
-export const sameScope = (scopeA, scopeB) => {
+export const isSimilarScope = scopeA => scopeB => {
     if (scopeA === scopeB) {
         return true;
     }
-    if (
-        (scopeA === SCOPE_DOCUMENT || scopeA === SCOPE_COLLECTION) &&
-        (scopeB === SCOPE_DOCUMENT || scopeB === SCOPE_COLLECTION)
-    ) {
+    const similarScopes = [SCOPE_DOCUMENT, SCOPE_COLLECTION];
+    if (similarScopes.includes(scopeA) && similarScopes.includes(scopeB)) {
         return true;
     }
     return false;
