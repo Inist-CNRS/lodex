@@ -94,7 +94,7 @@ const getDatasetFields = createSelector(getFields, fields =>
 );
 
 const getGraphicFields = createSelector(getFields, fields =>
-    fields.filter(f => f.scope === SCOPE_GRAPHIC),
+    fields.filter(f => f.scope === SCOPE_GRAPHIC && !f.completes),
 );
 
 const getFromFilterFields = createSelector(

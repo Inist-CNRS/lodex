@@ -24,7 +24,7 @@ import GraphLink from '../graph/GraphLink';
 import Link from '../../lib/components/Link';
 import { getPredicate } from '../../formats';
 import shouldDisplayField from '../../fields/shouldDisplayField';
-import { SCOPE_GRAPHIC } from '../../../../common/scope';
+import { SCOPE_GRAPHIC, SCOPE_DATASET } from '../../../../common/scope';
 import CompositeProperty from './CompositeProperty';
 
 import propositionStatus, {
@@ -133,7 +133,11 @@ export const PropertyComponent = ({
 
     const formatName = get(field, 'format.name', 'none');
     const format =
-        field.scope === SCOPE_GRAPHIC ? (
+        (field.scope === SCOPE_GRAPHIC && !field.completes) ||
+        (field.scope === SCOPE_DATASET &&
+            !field.completes &&
+            field.format &&
+            field.format.name === 'fieldClone') ? (
             <GraphLink link={`/graph/${field.name}`}>
                 {formatChildren}
             </GraphLink>
