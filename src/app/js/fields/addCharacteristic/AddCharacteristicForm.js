@@ -42,6 +42,7 @@ export const AddCharacteristicFormComponent = ({
     fields,
     addCharacteristicError,
     onSubmit,
+    initialValues,
     p: polyglot,
 }) => (
     <form id="add_characteristic_form" onSubmit={onSubmit}>
@@ -66,7 +67,7 @@ export const AddCharacteristicFormComponent = ({
         <FieldSchemeInput name="scheme" />
         <FieldFormatInput name="format" />
         <FieldWidthInput name="width" />
-        <FieldAnnotation fields={fields} />
+        <FieldAnnotation fields={fields} scope={initialValues.scope} />
         <FieldComposedOf
             fields={fields}
             FORM_NAME={NEW_CHARACTERISTIC_FORM_NAME}

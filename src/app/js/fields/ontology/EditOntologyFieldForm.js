@@ -48,7 +48,7 @@ export const EditOntologyFieldFormComponent = ({
             <FieldDisplayInput />
         </div>
         <FieldComposedOf fields={fields} FORM_NAME={FORM_NAME} />
-        <FieldAnnotation fields={fields} />
+        <FieldAnnotation fields={fields} scope={field.scope} />
     </form>
 );
 

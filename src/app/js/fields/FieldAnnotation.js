@@ -10,6 +10,7 @@ import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
 } from '../propTypes';
+import { sameScope } from '../../../common/scope';
 
 const styles = {
     complete: {
@@ -21,7 +22,7 @@ const styles = {
     },
 };
 
-const FieldAnnotation = ({ fields, p: polyglot }) => (
+const FieldAnnotation = ({ fields, scope, p: polyglot }) => (
     <div>
         <div style={styles.header}>{polyglot.t('annotate_field')}</div>
         <Field
@@ -35,21 +36,24 @@ const FieldAnnotation = ({ fields, p: polyglot }) => (
             <MenuItem value={null}>
                 {polyglot.t('completes_field_none')}
             </MenuItem>
-            {fields.map(f => (
-                <MenuItem
-                    className={`completes-${getFieldClassName(f)}`}
-                    key={f.name}
-                    value={f.name}
-                >
-                    {f.label}
-                </MenuItem>
-            ))}
+            {fields
+                .filter(f => sameScope(f.scope, scope))
+                .map(f => (
+                    <MenuItem
+                        className={`completes-${getFieldClassName(f)}`}
+                        key={f.name}
+                        value={f.name}
+                    >
+                        {f.label}
+                    </MenuItem>
+                ))}
         </Field>
     </div>
 );
 
 FieldAnnotation.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    scope: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
