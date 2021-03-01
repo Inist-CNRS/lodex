@@ -21,6 +21,7 @@ export function* handleUploadUrl() {
         yield put(uploadError(error));
         return;
     }
+
     yield put(uploadSuccess());
 }
 
