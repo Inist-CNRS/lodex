@@ -86,6 +86,14 @@ describe('Subresource Page', () => {
 
         datasetImportPage.fillStepDisplayFormat('link');
 
+        cy.get('#step-search')
+            .click()
+            .scrollIntoView();
+
+        cy.contains(
+            'Searchable - global full text search will target this field',
+        ).click();
+
         cy.get('.btn-save').click();
         cy.get('div[role="none presentation"]').should('not.exist');
 
@@ -175,6 +183,14 @@ describe('Subresource Page', () => {
             .within(() => {
                 cy.get('input').type(fieldName);
             });
+
+        cy.get('#step-search')
+            .click()
+            .scrollIntoView();
+
+        cy.contains(
+            'Searchable - global full text search will target this field',
+        ).click();
 
         cy.get('.btn-save').click();
         cy.get('div[role="none presentation"]').should('not.exist');

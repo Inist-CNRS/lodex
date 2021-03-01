@@ -23,7 +23,9 @@ describe('Transformers & Formats', () => {
                 display: {
                     format: 'list',
                 },
+                searchable: true,
             });
+
             datasetImportPage.publish();
 
             datasetImportPage.goToPublishedResources();

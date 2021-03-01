@@ -54,7 +54,7 @@ describe('field reducer', () => {
                         scope: 'collection',
                         name: 'new',
                         display: true,
-                        searchable: true,
+                        searchable: false,
                         transformers: [],
                         position: 2,
                         overview: 0,
@@ -88,7 +88,7 @@ describe('field reducer', () => {
                         scope: 'collection',
                         name: 'new',
                         display: true,
-                        searchable: true,
+                        searchable: false,
                         transformers: [
                             {
                                 operation: 'COLUMN',
