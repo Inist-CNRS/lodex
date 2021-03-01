@@ -8,10 +8,7 @@ export const isSimilarScope = scopeA => scopeB => {
         return true;
     }
     const similarScopes = [SCOPE_DOCUMENT, SCOPE_COLLECTION];
-    if (similarScopes.includes(scopeA) && similarScopes.includes(scopeB)) {
-        return true;
-    }
-    return false;
+    return similarScopes.includes(scopeA) && similarScopes.includes(scopeB);
 };
 
 export const SCOPES = [
