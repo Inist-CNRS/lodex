@@ -20,7 +20,7 @@ import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
 import { APPLY_FILTER, facetActionTypes } from '../public/dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
-import { SCOPE_DATASET } from '../../../common/scope';
+import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../common/scope';
 import { ISTEX_API_URL } from '../../../common/externals';
 
 const isSparqlQuery = url =>
@@ -128,7 +128,7 @@ export function* handleLoadFormatDataRequest({
 
 export function* loadFormatDataForName(name, filter) {
     const field = yield select(fromFields.getFieldByName, name);
-    if (!field || field.scope !== SCOPE_DATASET) {
+    if (!field || ![SCOPE_DATASET, SCOPE_GRAPHIC].includes(field.scope)) {
         return;
     }
     const url = yield select(fromCharacteristic.getCharacteristicByName, name);
