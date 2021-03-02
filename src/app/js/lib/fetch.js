@@ -11,8 +11,10 @@ export default ({ url, ...config }, mode = 'json') => {
             }
             if (response.status >= 200 && response.status < 300) {
                 if (mode === 'blob') {
-                    const filename = response.headers.get("content-disposition").match(/filename\*?=['"]?(?:UTF-\d['"]*)?([^;\r\n"']*)['"]?;?/).slice(1, 2);
-                    return response.blob().then(blob => ({ response: blob, filename }));
+                    const filename = 'tutu.csv'; //response.headers.get("content-disposition").match(/filename\*?=['"]?(?:UTF-\d['"]*)?([^;\r\n"']*)['"]?;?/).slice(1, 2);
+                    return response
+                        .blob()
+                        .then(blob => ({ response: blob, filename }));
                 }
 
                 return response
