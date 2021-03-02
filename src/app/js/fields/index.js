@@ -118,7 +118,7 @@ const getDefaultField = (name, index, rest = {}) => ({
     label: name || `newField ${index + 1}`,
     name: 'new',
     display: true,
-    searchable: true,
+    searchable: false,
     transformers: name
         ? [
               {

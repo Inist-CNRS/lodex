@@ -83,6 +83,16 @@ export const addColumn = (columnName, options = {}) => {
         }
     }
 
+    if (options.searchable) {
+        cy.get('#step-search')
+            .click()
+            .scrollIntoView();
+
+        cy.contains(
+            'Searchable - global full text search will target this field',
+        ).click();
+    }
+
     cy.get('.btn-save').click();
     cy.get('.wizard').should('not.exist');
 };
