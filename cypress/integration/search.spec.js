@@ -33,8 +33,8 @@ describe('Search', () => {
             cy.get('.export').click();
             cy.wait(300);
             cy.get('li[role="menuitem"]')
-                .should('have.length', 8)
-                .contains('JSON')
+                .should('have.length', 3)
+                .contains('CSV')
                 .should('be.visible');
         });
 
