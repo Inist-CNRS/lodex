@@ -53,7 +53,7 @@ export const ConfirmPublicationComponent = ({
         .length;
 
     return (
-        <Dialog open={nbInvalidUri > 0}>
+        <Dialog open={nbInvalidUri > 0 || nbInvalidSubresources > 0}>
             <DialogTitle>{polyglot.t('warn_publication')}</DialogTitle>
             <DialogContent>
                 <div style={styles.container} id="confirm-publication">
