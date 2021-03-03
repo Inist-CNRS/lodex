@@ -3,7 +3,6 @@ import { SortableContainer } from 'react-sortable-hoc';
 import { TableBody } from '@material-ui/core';
 
 import OntologyField from './OntologyField';
-import { SCOPE_DATASET } from '../../../../common/scope';
 
 const OntologyFieldList = SortableContainer(({ items }) => (
     <TableBody>
@@ -12,7 +11,7 @@ const OntologyFieldList = SortableContainer(({ items }) => (
                 key={field.name}
                 field={field}
                 index={field.position}
-                collection={field.scope}
+                collection="DRAG_GROUP" // make it dynamic to group by draggable zone
                 disabled={field.name === 'uri'}
             />
         ))}
