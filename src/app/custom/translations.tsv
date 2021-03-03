@@ -457,6 +457,7 @@
 "PUBLISH_FACET"	"Publishing facet"	"Publication des facettes"
 "PUBLISH_DOCUMENT"	"Publishing documents"	"Publication des documents"
 "STARTING"	"Starting"	"Démarrage"
+"INDEXATION"	"Indexing..."	"Indexation..."
 "UPLOADING_DATASET"	"Uploading the dataset"	"Chargement du jeu de données"
 "SAVING_DATASET"	"Saving the dataset"	"Sauvegarde du jeu de données"
 "INITIALIZING_URI"	"Initializing all URI"	"Initialisation des URI"

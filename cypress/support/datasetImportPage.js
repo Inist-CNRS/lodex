@@ -13,8 +13,9 @@ export const importDataset = (filename, mimeType = 'text/csv') => {
 
     cy.get('.progress').should('exist');
     cy.wait(300);
-    cy.get('.progress', { timeout: 3000 }).should('not.exist');
-    cy.get('tbody').should('exist');
+    cy.get('.progress', { timeout: 6000 }).should('not.exist');
+
+    cy.get('tbody', { timeout: 6000 }).should('exist');
 };
 
 export const importMoreDataset = (filename, mimeType = 'text/csv') => {

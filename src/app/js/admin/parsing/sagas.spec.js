@@ -2,15 +2,23 @@ import { call, put, select } from 'redux-saga/effects';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
-import { loadParsingResultError, loadParsingResultSuccess } from './';
+import {
+    loadParsingResultError,
+    loadParsingResultSuccess,
+    LOAD_PARSING_RESULT,
+} from './';
 
 import { fromUser } from '../../sharedSelectors';
 
 import { handleLoadParsingResult } from './sagas';
+import { UPLOAD_SUCCESS } from '../upload';
+import { clearProgress, updateProgress } from '../progress/reducer';
+import { INDEXATION } from '../../../../common/progressStatus';
+import { delay } from 'redux-saga';
 
 describe('parsing saga', () => {
     describe('handleLoadParsingResult', () => {
-        const saga = handleLoadParsingResult();
+        const saga = handleLoadParsingResult({ type: LOAD_PARSING_RESULT });
 
         it('should select getLoadParsingResultRequest', () => {
             expect(saga.next().value).toEqual(
@@ -31,12 +39,32 @@ describe('parsing saga', () => {
         });
 
         it('should put loadParsingResultError action with error if any', () => {
-            const failedSaga = handleLoadParsingResult();
+            const failedSaga = handleLoadParsingResult({
+                type: LOAD_PARSING_RESULT,
+            });
             failedSaga.next();
             failedSaga.next();
             expect(failedSaga.next({ error: 'foo' }).value).toEqual(
                 put(loadParsingResultError('foo')),
             );
+        });
+
+        it('should add a delay with progress if action type is UPLOAD_SUCCESS', () => {
+            const saga = handleLoadParsingResult({
+                type: UPLOAD_SUCCESS,
+            });
+
+            expect(saga.next().value).toEqual(
+                select(fromUser.getLoadParsingResultRequest),
+            );
+
+            expect(saga.next().value).toEqual(
+                put(updateProgress({ status: INDEXATION })),
+            );
+
+            expect(saga.next().value).toEqual(call(delay, 5000));
+
+            expect(saga.next().value).toEqual(put(clearProgress()));
         });
     });
 });
