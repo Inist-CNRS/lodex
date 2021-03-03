@@ -11,7 +11,38 @@ export default ({ url, ...config }, mode = 'json') => {
             }
             if (response.status >= 200 && response.status < 300) {
                 if (mode === 'blob') {
-                    const filename = 'tutu.csv'; //response.headers.get("content-disposition").match(/filename\*?=['"]?(?:UTF-\d['"]*)?([^;\r\n"']*)['"]?;?/).slice(1, 2);
+                    // TODO
+                    // This header is missing in new api calls, so we don't use it anymore
+                    // But maybe it can be fixed elsewere in a better way
+                    const contentDisposition = response.headers.get(
+                        'content-disposition',
+                    );
+                    let filename = 'export.csv';
+                    if (contentDisposition) {
+                        filename = contentDisposition
+                            .match(
+                                /filename\*?=['"]?(?:UTF-\d['"]*)?([^;\r\n"']*)['"]?;?/,
+                            )
+                            .slice(1, 2);
+                    } else {
+                        const paths = new URL(fullUrl).pathname.split('/');
+                        const exportType = paths[paths.length - 1];
+                        const exportExtent = {
+                            jsonallvalue: 'json',
+                            jsonld: 'json',
+                            nquads: 'n-quads',
+                            'extended-nquads': 'n-quads',
+                            'extended-nquads-compressed': 'gzip',
+                            kbart: 'tsv',
+                            raw: 'json',
+                        };
+                        filename = `export.${
+                            exportExtent[exportType]
+                                ? exportExtent[exportType]
+                                : exportType
+                        }`;
+                    }
+
                     return response
                         .blob()
                         .then(blob => ({ response: blob, filename }));
