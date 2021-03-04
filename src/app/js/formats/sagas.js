@@ -107,7 +107,7 @@ export function* handleLoadFormatDataRequest({
         return;
     }
 
-    if (field.scope === SCOPE_DATASET && withFacets) {
+    if ([SCOPE_DATASET, SCOPE_GRAPHIC].includes(field.scope) && withFacets) {
         yield handleFilterFormatDataRequest({ payload: { filter } });
         return;
     }
