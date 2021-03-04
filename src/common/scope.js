@@ -4,11 +4,14 @@ export const SCOPE_COLLECTION = 'collection';
 export const SCOPE_DOCUMENT = 'document';
 
 export const isSimilarScope = scopeA => scopeB => {
-    if (scopeA === scopeB) {
+    if (scopeA === scopeB.scope) {
         return true;
     }
     const similarScopes = [SCOPE_DOCUMENT, SCOPE_COLLECTION];
-    return similarScopes.includes(scopeA) && similarScopes.includes(scopeB);
+    return (
+        similarScopes.includes(scopeA.scope) &&
+        similarScopes.includes(scopeB.scope)
+    );
 };
 
 export const SCOPES = [
