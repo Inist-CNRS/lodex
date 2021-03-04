@@ -10,6 +10,7 @@ services:
         environment:
             DEBUG: ${DEBUG}
             NODE_ENV: ${NODE_ENV}
+            NODE_OPTIONS: ${NODE_OPTIONS}
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
             no_proxy: 'localhost,127.0.0.1,'

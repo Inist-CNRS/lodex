@@ -7,6 +7,7 @@ services:
         environment:
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
+            NODE_OPTIONS: ${NODE_OPTIONS}
             EZMASTER_MONGODB_HOST_PORT: 'mongo:27017'
             EZMASTER_TECHNICAL_NAME: 'lodex'
             no_proxy: 'localhost,127.0.0.1,'
