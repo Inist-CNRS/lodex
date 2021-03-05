@@ -148,11 +148,10 @@ export const checkListOfSupportedFileFormats = () => {
         .contains('AUTO')
         .click({ force: true });
     cy.wait(500);
-    cy.get('li>div>span').should('have.length', 21);
+    cy.get('li>div>span').should('have.length', 20);
     cy.get('button.format-category').should('have.length', 6);
     checkLoaderItem('CSV - with semicolon');
     checkLoaderItem('XML - TEI document');
-    checkLoaderItem('ZIP - file from dl.istex.fr');
     checkLoaderItem('JSON - from Lodex API');
     checkLoaderItem('XML - ATOM feed');
     cy.get('button')
