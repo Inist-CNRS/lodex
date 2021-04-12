@@ -53,15 +53,6 @@ export const IstexRefbibsView = ({
                     total: data ? data.total : 0,
                 })}
             </span>
-            <Link
-                style={styles.dl}
-                href={`${ISTEX_SITE_URL}/?q=`.concat(
-                    encodeURIComponent(resource[field.name]),
-                )}
-                target="_blank"
-            >
-                <FileDownload tooltip={polyglot.t('download')} />
-            </Link>
             {error && (
                 <Alert>
                     <p>{polyglot.t(error)}</p>
