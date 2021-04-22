@@ -51,3 +51,6 @@ cypress/screenshots
 
 # Webpack Bundle Analyzer
 stats.json
+
+## Webstorm
+.idea
