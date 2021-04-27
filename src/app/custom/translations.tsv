@@ -311,6 +311,7 @@
 "list_format_select_level"	"Choose title level"	"Niveau du titre"
 "dataset"	"Dataset"	"Jeu de données"
 "paragraph"	"Text - Paragraph"	"Texte - Paragraphe"
+"latex"	"Text - LaTeX"	"Texte - LaTeX"
 "identifier"	"Identifier"	"Identifiant"
 "count_of_field"	"Number of documents"	"Nb. de doc."
 "resource"	"Lodex - Resource"	"Lodex - Ressource"
