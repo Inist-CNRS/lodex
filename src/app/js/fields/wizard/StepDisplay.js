@@ -8,21 +8,22 @@ import { getFormValues } from 'redux-form';
 import Step from './Step';
 import FieldFormatInput from '../FieldFormatInput';
 import FieldOverviewInput from '../FieldOverviewInput';
-import FieldDisplayInResourceInput from '../FieldDisplayInResourceInput';
-import FieldDisplayInGraphInput from '../FieldDisplayInGraphInput';
-import FieldDisplayInHomeInput from '../FieldDisplayInHomeInput';
+import FieldDisplayInput from '../FieldDisplay';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';
 import { fromFields } from '../../sharedSelectors';
 import FieldWidthInput from '../FieldWidthInput';
-import { COVERS, COVER_DATASET } from '../../../../common/cover';
+import { SCOPES } from '../../../../common/scope';
 
-export const StepDisplayComponent = ({ cover, p: polyglot, ...props }) => (
+export const StepDisplayComponent = ({
+    scope,
+    keepMeta = true,
+    p: polyglot,
+    ...props
+}) => (
     <Step id="step-display" label="field_wizard_step_display" {...props}>
-        <FieldDisplayInResourceInput />
-        {cover === COVER_DATASET && <FieldDisplayInGraphInput />}
-        {cover === COVER_DATASET && <FieldDisplayInHomeInput />}
-        <FieldOverviewInput />
+        {keepMeta && <FieldDisplayInput />}
+        {keepMeta && <FieldOverviewInput />}
         <FieldFormatInput />
         <FieldWidthInput />
     </Step>
@@ -30,9 +31,10 @@ export const StepDisplayComponent = ({ cover, p: polyglot, ...props }) => (
 
 StepDisplayComponent.propTypes = {
     transformers: PropTypes.arrayOf(PropTypes.object).isRequired,
-    cover: PropTypes.oneOf(COVERS),
+    scope: PropTypes.oneOf(SCOPES),
     format: PropTypes.object,
     p: polyglotPropTypes.isRequired,
+    keepMeta: PropTypes.bool,
 };
 
 const mapStateToProps = state => {
@@ -41,8 +43,8 @@ const mapStateToProps = state => {
     return {
         fields: fromFields.getFields(state),
         format: values && values.format,
-        transformers: values ? values.transformers : [],
-        cover: values && values.cover,
+        transformers: values && values.transformers ? values.transformers : [],
+        scope: values && values.scope,
     };
 };
 

@@ -1,5 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
+import { SCOPE_DATASET } from '../../../common/scope';
 
 export const SET_CHARACTERISTIC_VALUE = 'SET_CHARACTERISTIC_VALUE';
 
@@ -104,7 +105,12 @@ const getRootCharacteristics = createSelector(
                 ...field,
                 value: characteristics[field.name],
             }))
-            .filter(field => !field.completes && !!field.display_in_home),
+            .filter(
+                field =>
+                    !field.completes &&
+                    field.scope === SCOPE_DATASET &&
+                    !!field.display,
+            ),
 );
 
 const getCharacteristicByName = createSelector(

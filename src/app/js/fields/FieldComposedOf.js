@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Toggle from 'material-ui/Toggle';
-import FlatButton from 'material-ui/FlatButton';
+import { Switch, Button, FormControlLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -31,7 +30,7 @@ const styles = {
 };
 
 class FieldComposedOf extends Component {
-    handleToggle = () => {
+    handleSwitch = () => {
         const { onChange, isComposedOf } = this.props;
         onChange({
             isComposedOf: !isComposedOf,
@@ -39,7 +38,7 @@ class FieldComposedOf extends Component {
         });
     };
 
-    handleSelectColumn = index => (event, key, column) => {
+    handleSelectColumn = index => column => {
         const { columns, isComposedOf, onChange } = this.props;
         onChange({
             isComposedOf,
@@ -76,10 +75,14 @@ class FieldComposedOf extends Component {
                     {polyglot.t('wizard_composed_of')}
                 </div>
                 <div style={styles.inset}>
-                    <Toggle
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={isComposedOf}
+                                onChange={this.handleSwitch}
+                            />
+                        }
                         label="is_composite_field"
-                        toggled={isComposedOf}
-                        onToggle={this.handleToggle}
                     />
                     {isComposedOf &&
                         columns.map((col, index) => (
@@ -97,11 +100,13 @@ class FieldComposedOf extends Component {
                             />
                         ))}
                     {isComposedOf && (
-                        <FlatButton
+                        <Button
+                            variant="text"
                             className="btn-add-composition-column"
-                            label={polyglot.t('add_composition_column')}
                             onClick={this.handleAddColumn}
-                        />
+                        >
+                            {polyglot.t('add_composition_column')}
+                        </Button>
                     )}
                 </div>
             </div>

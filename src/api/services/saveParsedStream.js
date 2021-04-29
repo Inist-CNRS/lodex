@@ -1,13 +1,22 @@
+import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
+
 const saveParsedStreamFactory = ctx =>
-    async function saveParsedStream(parsedStream) {
+    async function saveParsedStream(parsedStream, postSaveCallback = null) {
         const publishedCount = await ctx.publishedDataset.count();
+
         if (publishedCount === 0) {
-            await ctx.dataset.remove({});
             await ctx.saveStream(parsedStream);
             await ctx.field.initializeModel();
 
+            if (typeof postSaveCallback === 'function') {
+                await postSaveCallback();
+            }
+
             return ctx.dataset.count();
         }
+
+        // When dataset is already published
+        // Next imports will "auto-publish" automatically
         try {
             await ctx.dataset.updateMany(
                 {},
@@ -21,16 +30,20 @@ const saveParsedStreamFactory = ctx =>
             );
             await ctx.saveStream(parsedStream);
 
+            if (typeof postSaveCallback === 'function') {
+                await postSaveCallback();
+            }
+
             const fields = await ctx.field.findAll();
-            const collectionCoverFields = fields.filter(
-                c => c.cover === 'collection',
+            const collectionScopeFields = fields.filter(
+                c => c.scope === SCOPE_COLLECTION || c.scope === SCOPE_DOCUMENT,
             );
 
             const count = await ctx.dataset.count({
                 lodex_published: { $exists: false },
             });
 
-            await ctx.publishDocuments(ctx, count, collectionCoverFields);
+            await ctx.publishDocuments(ctx, count, collectionScopeFields);
             await ctx.publishFacets(ctx, fields, false);
 
             return ctx.dataset.count();

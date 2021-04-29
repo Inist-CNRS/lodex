@@ -8,6 +8,8 @@
 !config/
 !config.json
 !babel.config.js
+!modclean.config.js
+!lodex-extended-sync
 !jest.config.js
 !jsconfig.json
 !typings.json

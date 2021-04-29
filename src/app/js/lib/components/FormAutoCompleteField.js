@@ -1,10 +1,11 @@
 import React from 'react';
-import omit from 'lodash.omit';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
-import AutoComplete from 'material-ui/AutoComplete';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { FormControl, FormHelperText, TextField } from '@material-ui/core';
+import translate from 'redux-polyglot/translate';
 
 import { fetch as fetchAction } from '../../fetch';
 import { formField as formFieldPropTypes } from '../../propTypes';
@@ -17,18 +18,39 @@ const FormAutoCompleteField = ({
     input,
     label,
     meta: { error },
+    p: polyglot,
     ...props
-}) => (
-    <AutoComplete
-        floatingLabelText={error ? error.message || error : label}
-        onUpdateInput={handleComplete}
-        onNewRequest={handleValueChosen}
-        dataSource={dataSource}
-        searchText={input.value}
-        {...omit(props, ['getFetchRequest', 'parseResponse', 'handleSearch'])}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-    />
-);
+}) => {
+    const source = dataSource || [];
+
+    return (
+        <FormControl fullWidth>
+            <Autocomplete
+                id="autocomplete"
+                options={source}
+                freeSolo
+                getOptionLabel={option => option.text}
+                renderInput={params => (
+                    <TextField
+                        {...params}
+                        label={label}
+                        helperText={
+                            input.value
+                                ? `(${polyglot.t('actually')} ${input.value})`
+                                : undefined
+                        }
+                    />
+                )}
+                onChange={handleValueChosen}
+                onInputChange={handleComplete}
+                noOptionsText={polyglot.t('no_option')}
+            />
+            <FormHelperText>
+                {error ? error.message || error : label}
+            </FormHelperText>
+        </FormControl>
+    );
+};
 
 FormAutoCompleteField.propTypes = formFieldPropTypes;
 
@@ -48,8 +70,8 @@ const mapDispatchToProps = (dispatch, { input: { name }, getFetchRequest }) =>
     );
 
 const handleValueChosen = ({ allowNewItem, input: { onChange } }) => (
+    event,
     value,
-    index,
 ) => {
     // Material UI doc: index is the index in dataSource of the list item selected,
     // or -1 if enter is pressed in the TextField
@@ -64,7 +86,7 @@ const handleComplete = ({
     allowNewItem,
     input: { onChange },
     handleSearch,
-}) => searchText => {
+}) => (event, searchText) => {
     if (allowNewItem) {
         onChange(searchText);
         handleSearch(searchText);
@@ -74,4 +96,5 @@ const handleComplete = ({
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({ handleValueChosen, handleComplete }),
+    translate,
 )(FormAutoCompleteField);

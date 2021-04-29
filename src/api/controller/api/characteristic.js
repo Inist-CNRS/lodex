@@ -5,8 +5,6 @@ import get from 'lodash.get';
 import set from 'lodash.set';
 import deepCopy from 'lodash.clonedeep';
 
-import { COVER_DATASET } from '../../../common/cover';
-
 const app = new Koa();
 
 const isCompositeField = field =>
@@ -99,9 +97,10 @@ export const updateCharacteristics = async ctx => {
         requestedNewCharacteristics,
     );
 
-    ctx.body.characteristics = await ctx.publishedCharacteristic.addNewVersion(
-        Object.assign({}, characteristics, newCharacteristics),
-    );
+    ctx.body.characteristics = await ctx.publishedCharacteristic.addNewVersion({
+        ...characteristics,
+        ...newCharacteristics,
+    });
 };
 
 export const createCharacteristic = async ctx => {
@@ -112,7 +111,6 @@ export const createCharacteristic = async ctx => {
     const field = await ctx.field.create({
         ...fieldData,
         position: highestPosition + 1,
-        cover: COVER_DATASET,
         transformers: [
             {
                 operation: 'VALUE',

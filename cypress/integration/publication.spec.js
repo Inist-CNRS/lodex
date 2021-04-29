@@ -1,9 +1,8 @@
 import { teardown } from '../support/authentication';
 import * as menu from '../support/menu';
-import * as adminPage from '../support/adminPage';
 import * as datasetImportPage from '../support/datasetImportPage';
-import { fillInputWithFixture } from '../support/forms';
 import * as searchDrawer from '../support/searchDrawer';
+import * as adminNavigation from '../support/adminNavigation';
 
 describe('Dataset Publication', () => {
     beforeEach(teardown);
@@ -12,29 +11,25 @@ describe('Dataset Publication', () => {
         it('should get the list of possible loaders', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
-            adminPage.checkListOfSupportedFileFormats();
-
-            datasetImportPage.openImportDialog();
             cy.wait(300);
 
             datasetImportPage.checkListOfSupportedFileFormats();
+            datasetImportPage.checkListOfFiltererFileFormats();
         });
 
         it('should receive a csv file and preview its data in a table', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
-            datasetImportPage.openImportDialog();
+            cy.wait(300);
+            datasetImportPage.importDataset('dataset/simple.csv');
+            cy.wait(500);
+            cy.get('tbody tr')
+                .eq(0)
+                .should('contains.text', ['1', 'Row 1', 'Test 1'].join(''));
 
-            fillInputWithFixture(
-                '.btn-upload-dataset input[type=file]',
-                'dataset/simple.csv',
-                'text/csv',
-            );
-
-            cy.get('tbody').should(
-                'have.text',
-                ['1', 'Row 1', 'Test 1', '2', 'Row 2', 'Test 2'].join(''),
-            );
+            cy.get('tbody tr')
+                .eq(1)
+                .should('contains.text', ['2', 'Row 2', 'Test 2'].join(''));
         });
     });
 
@@ -43,6 +38,12 @@ describe('Dataset Publication', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
+            adminNavigation.goToDisplay();
+
+            cy.get('.sidebar')
+                .contains('a', 'Resource pages')
+                .click();
+
             datasetImportPage.addColumn('Column 1');
 
             cy.get('.publication-excerpt')
@@ -52,13 +53,8 @@ describe('Dataset Publication', () => {
                 .contains('Row 2')
                 .should('be.visible');
 
-            datasetImportPage.setUriColumnValue();
             datasetImportPage.publish();
             datasetImportPage.goToPublishedResources();
-            menu.openSearchDrawer();
-
-            cy.contains('Row 1').should('be.visible');
-            cy.contains('Row 2').should('be.visible');
         });
 
         it('should publish dataset by importing an existing model', () => {
@@ -66,6 +62,10 @@ describe('Dataset Publication', () => {
             menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.importModel('model/concat.json');
+
+            cy.get('.sidebar')
+                .contains('a', 'Resource pages')
+                .click();
 
             cy.contains('["Row 1","Test 1"]').should('be.visible');
             cy.contains('["Row 2","Test 2"]').should('be.visible');
@@ -101,13 +101,13 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.importModel('model/concat.json');
             datasetImportPage.publish();
-
-            datasetImportPage.importMoreDataset('dataset/simple.csv');
-            datasetImportPage.importMoreDataset('dataset/simple.csv');
-            datasetImportPage.importMoreDataset('dataset/simple.csv');
-            datasetImportPage.importMoreDataset('dataset/simple.csv');
-            datasetImportPage.importMoreDataset('dataset/simple.csv');
-            datasetImportPage.importMoreDataset('dataset/simple.csv');
+            cy.wait(300);
+            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
 
             datasetImportPage.goToPublishedResources();
 

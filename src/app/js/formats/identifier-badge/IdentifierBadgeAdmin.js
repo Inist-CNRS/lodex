@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
+
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import { resolvers } from '.';
-
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../colorUtils';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 
@@ -66,26 +65,25 @@ class IdentifierBadgeAdmin extends Component {
             args: { typid },
         } = this.props;
         const items = Object.keys(resolvers).map(resolverID => (
-            <MenuItem
-                key={`resolver_${resolverID}`}
-                value={resolverID}
-                primaryText={polyglot.t(resolverID)}
-            />
+            <MenuItem key={`resolver_${resolverID}`} value={resolverID}>
+                {polyglot.t(resolverID)}
+            </MenuItem>
         ));
         return (
             <div style={styles.container}>
-                <SelectField
-                    floatingLabelText={polyglot.t(
-                        'list_format_select_identifier',
-                    )}
-                    onChange={(event, index, newValue) =>
-                        this.setTypid(newValue)
-                    }
-                    style={styles.input}
-                    value={typid}
-                >
-                    {items}
-                </SelectField>
+                <FormControl fullWidth>
+                    <InputLabel id="identifier-badge-admin-input-label">
+                        {polyglot.t('list_format_select_identifier')}
+                    </InputLabel>
+                    <Select
+                        labelId="identifier-badge-admin-input-label"
+                        onChange={e => this.setTypid(e.target.value)}
+                        style={styles.input}
+                        value={typid}
+                    >
+                        {items}
+                    </Select>
+                </FormControl>
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}

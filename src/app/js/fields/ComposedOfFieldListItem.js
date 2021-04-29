@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MenuItem from 'material-ui/MenuItem';
+import { MenuItem } from '@material-ui/core';
 import { Field } from 'redux-form';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -26,12 +26,9 @@ export const ComposedOfFieldListItemComponent = ({
         label={polyglot.t('select_a_field')}
     >
         {availableFields.map(f => (
-            <MenuItem
-                key={f.name}
-                className={`field_${f.name}`}
-                value={f.name}
-                primaryText={f.label}
-            />
+            <MenuItem key={f.name} className={`field_${f.name}`} value={f.name}>
+                {f.label}
+            </MenuItem>
         ))}
     </Field>
 );

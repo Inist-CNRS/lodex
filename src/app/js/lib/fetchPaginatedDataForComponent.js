@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CircularProgress from 'material-ui/CircularProgress';
+import { CircularProgress } from '@material-ui/core';
 
 import Pagination from './components/Pagination';
 
@@ -75,7 +75,7 @@ export default fetchProps => Component =>
             return (
                 <div style={styles.container}>
                     {isLoading ? (
-                        <CircularProgress />
+                        <CircularProgress variant="indeterminate" />
                     ) : (
                         <Component {...this.props} data={data} error={error} />
                     )}

@@ -5,42 +5,39 @@ import { connect } from 'react-redux';
 import { change } from 'redux-form';
 
 import Step from './Step';
-import { field as fieldPropTypes } from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';
-import { getTransformerMetas } from '../../../../common/transformers';
+import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../../common/scope';
 
 import StepValueValue from './StepValueValue';
 import StepValueColumn from './StepValueColumn';
 import StepValueConcat from './StepValueConcat';
+import StepValueSubresource from './StepValueSubresource';
+import StepValueSubresourceField from './StepValueSubresourceField';
 
-export const StepValueComponent = ({ field, handleChange, ...props }) => (
+export const StepValueComponent = ({ handleChange, filter, ...props }) => (
     <Step id="step-value" label="field_wizard_step_value" {...props}>
-        <StepValueValue field={field} onChange={handleChange} />
-        <StepValueColumn field={field} onChange={handleChange} />
-        <StepValueConcat field={field} onChange={handleChange} />
+        <StepValueValue onChange={handleChange} />
+        {filter !== SCOPE_DATASET && filter !== SCOPE_GRAPHIC && (
+            <>
+                <StepValueColumn onChange={handleChange} />
+                <StepValueConcat onChange={handleChange} />
+                <StepValueSubresource onChange={handleChange} />
+                <StepValueSubresourceField onChange={handleChange} />
+            </>
+        )}
     </Step>
 );
 
 StepValueComponent.propTypes = {
     handleChange: PropTypes.func.isRequired,
-    field: fieldPropTypes.isRequired,
+    filter: PropTypes.string,
 };
 
-const mapDispatchToProps = (dispatch, { field: { transformers } }) => ({
-    handleChange: valueTransformer => {
-        let newTransformers = [];
-        const firstTransformerIsValueTransformer =
-            transformers &&
-            transformers[0] &&
-            transformers[0].operation &&
-            getTransformerMetas(transformers[0].operation).type === 'value';
-
-        newTransformers = [
-            valueTransformer,
-            ...transformers.slice(firstTransformerIsValueTransformer ? 1 : 0),
-        ];
-
-        dispatch(change(FIELD_FORM_NAME, 'transformers', newTransformers));
+const mapDispatchToProps = dispatch => ({
+    handleChange: valueTransformers => {
+        return dispatch(
+            change(FIELD_FORM_NAME, 'transformers', valueTransformers),
+        );
     },
 });
 

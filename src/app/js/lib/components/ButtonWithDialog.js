@@ -1,15 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
+
+import {
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+} from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-const styles = {
-    modal: {
-        transform: 'translate(0px, 8px)',
+const dialogStyle = {
+    container: {
+        margin: '0px auto',
+        marginTop: 10,
+        marginBottom: 100,
+        maxHeight: '100vh',
     },
+    content: { maxHeight: 'calc(100vh - 298px)', width: 600 },
 };
 
 export const PureButtonWithDialog = ({
@@ -24,20 +34,20 @@ export const PureButtonWithDialog = ({
     icon,
     p: polyglot,
     actions = [
-        <FlatButton
-            key="cancel"
-            label={polyglot.t('close')}
-            onClick={handleClose}
-        />,
+        <Button variant="text" key="cancel" onClick={handleClose}>
+            {polyglot.t('close')}
+        </Button>,
     ],
     openButton = (
-        <FlatButton
-            primary
+        <Button
+            variant="text"
+            color="primary"
             className={className}
-            label={label}
-            icon={icon}
+            startIcon={icon}
             onClick={handleOpen}
-        />
+        >
+            {label}
+        </Button>
     ),
 }) => {
     if (!show) {
@@ -48,18 +58,20 @@ export const PureButtonWithDialog = ({
         <span style={style}>
             {openButton}
             <Dialog
-                title={label}
-                actions={actions}
-                modal={false}
+                style={dialogStyle.container}
                 open={open}
-                onRequestClose={handleClose}
-                autoScrollBodyContent
-                contentStyle={styles.modal}
-                bodyClassName="dialog-body"
-                contentClassName="dialog-content"
-                actionsContainerClassName="dialog-actions"
+                onClose={handleClose}
+                scroll="body"
             >
-                {dialog}
+                <DialogTitle>{label}</DialogTitle>
+                <DialogContent style={dialogStyle.content}>
+                    <div className="dialog-body">
+                        <div className="dialog-content">{dialog}</div>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <div className="dialog-actions">{actions}</div>
+                </DialogActions>
             </Dialog>
         </span>
     );

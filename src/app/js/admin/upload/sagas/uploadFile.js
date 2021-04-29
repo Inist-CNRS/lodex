@@ -14,10 +14,10 @@ export function* handleUploadFile(action) {
     }
     try {
         preventUnload();
-        const parserName = yield select(fromUpload.getParserName);
+        const loaderName = yield select(fromUpload.getLoaderName);
         const token = yield select(fromUser.getToken);
         const { file, cancel } = yield race({
-            file: call(loadDatasetFile, action.payload, token, parserName),
+            file: call(loadDatasetFile, action.payload, token, loaderName),
             cancel: take([LOCATION_CHANGE]),
         });
 

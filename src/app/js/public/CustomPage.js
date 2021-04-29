@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import CircularProgress from 'material-ui/CircularProgress';
+import { CircularProgress } from '@material-ui/core';
 
 import fetch from '../lib/fetch';
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -38,7 +38,7 @@ export class CustomPage extends Component {
         }
 
         if (!html) {
-            return <CircularProgress />;
+            return <CircularProgress variant="indeterminate" />;
         }
 
         return (

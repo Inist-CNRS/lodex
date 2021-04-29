@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, TextField } from 'material-ui';
+import { Checkbox, TextField, FormControlLabel } from '@material-ui/core';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -118,9 +118,7 @@ class ToolTips extends Component {
             if (this.props.thirdValue) {
                 return (
                     <TextField
-                        floatingLabelText={this.props.polyglot.t(
-                            'tooltip_third_3',
-                        )}
+                        label={this.props.polyglot.t('tooltip_third_3')}
                         value={this.state.thirdValueTitle}
                         onChange={this.onThirdValueChange.bind(this)}
                         style={styles.input}
@@ -133,7 +131,7 @@ class ToolTips extends Component {
             return (
                 <div>
                     <TextField
-                        floatingLabelText={this.props.polyglot.t(
+                        label={this.props.polyglot.t(
                             this.props.thirdValue
                                 ? 'tooltip_third_1'
                                 : 'tooltip_category',
@@ -143,7 +141,7 @@ class ToolTips extends Component {
                         style={styles.input}
                     />
                     <TextField
-                        floatingLabelText={this.props.polyglot.t(
+                        label={this.props.polyglot.t(
                             this.props.thirdValue
                                 ? 'tooltip_third_2'
                                 : 'tooltip_value',
@@ -164,10 +162,14 @@ class ToolTips extends Component {
     render() {
         return (
             <>
-                <Checkbox
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.onCheck}
+                            checked={this.props.checked}
+                        />
+                    }
                     label={this.props.polyglot.t('toggle_tooltip')}
-                    onCheck={this.onCheck}
-                    checked={this.props.checked}
                 />
                 {this.createUserInterface()}
             </>

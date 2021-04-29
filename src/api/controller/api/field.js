@@ -1,22 +1,152 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
-import omit from 'lodash.omit';
 import asyncBusboy from 'async-busboy';
+import backup from 'mongodb-backup';
+import restore from 'mongodb-restore';
+import moment from 'moment';
 import streamToString from 'stream-to-string';
 
 import { validateField } from '../../models/field';
 import publishFacets from './publishFacets';
-import {
-    COVER_DATASET,
-    COVER_COLLECTION,
-    COVER_DOCUMENT,
-} from '../../../common/cover';
 import indexSearchableFields from '../../services/indexSearchableFields';
+import { mongoConnectionString } from '../../services/mongoClient';
+
+import {
+    SCOPE_DATASET,
+    SCOPE_GRAPHIC,
+    SCOPE_COLLECTION,
+    SCOPE_DOCUMENT,
+} from '../../../common/scope';
+
+const sortByFieldUri = (a, b) =>
+    (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
+
+export const restoreFields = (fileStream, ctx) => {
+    if (!fileStream.filename.endsWith('.tar')) {
+        return streamToString(fileStream)
+            .then(fieldsString => JSON.parse(fieldsString))
+            .then(fields => {
+                ctx.field
+                    .remove({})
+                    .then(() =>
+                        Promise.all(
+                            fields
+                                .sort(sortByFieldUri)
+                                .map((field, index) =>
+                                    translateOldField(ctx, field, index),
+                                ),
+                        ),
+                    );
+            });
+    }
+
+    const restoreTask = () =>
+        new Promise((resolve, reject) =>
+            restore({
+                uri: mongoConnectionString,
+                stream: fileStream,
+                parser: 'json',
+                dropCollections: ['field', 'subresource'],
+                callback: function(err) {
+                    err ? reject(err) : resolve();
+                },
+            }),
+        );
+
+    return ctx.field
+        .remove({})
+        .then(restoreTask)
+        .then(() =>
+            Promise.all([ctx.field.castIds(), ctx.subresource.castIds()]),
+        );
+};
+
+export const translateOldField = (ctx, oldField, index) => {
+    const {
+        display_in_home,
+        display_in_resource,
+        display_in_graph,
+        display_in_list,
+        cover,
+        name,
+        ...newField
+    } = oldField;
+    const scope = display_in_graph && !display_in_home ? SCOPE_GRAPHIC : cover;
+    const display =
+        display_in_home || display_in_resource || display_in_graph
+            ? true
+            : false;
+
+    if (display_in_graph && display_in_home) {
+        ctx.field.create(
+            {
+                scope: SCOPE_GRAPHIC,
+                display,
+                ...newField,
+                position: index,
+            },
+            name,
+            false,
+        );
+
+        return ctx.field.create(
+            {
+                scope,
+                display,
+                ...newField,
+                label: newField.label,
+                transformers: [
+                    {
+                        operation: 'VALUE',
+                        args: [
+                            {
+                                name: 'value',
+                                type: 'string',
+                                value: newField.label,
+                            },
+                        ],
+                    },
+                ],
+                format: { name: 'fieldClone', args: { value: name } },
+                position: index + 1,
+            },
+            '',
+            false,
+        );
+    }
+
+    return ctx.field.create(
+        {
+            scope,
+            display,
+            ...newField,
+            position: index,
+        },
+        name,
+        false,
+    );
+};
+
+export const backupFields = writeStream =>
+    new Promise((resolve, reject) =>
+        backup({
+            uri: mongoConnectionString,
+            collections: ['field', 'subresource'],
+            stream: writeStream,
+            parser: 'json',
+            callback: err => {
+                err ? reject(err) : resolve();
+            },
+        }),
+    );
 
 export const setup = async (ctx, next) => {
     ctx.validateField = validateField;
     ctx.publishFacets = publishFacets;
+    ctx.restoreFields = restoreFields;
+    ctx.backupFields = backupFields;
+
     try {
         await next();
     } catch (error) {
@@ -62,7 +192,7 @@ export const putField = async (ctx, id) => {
         await indexSearchableFields();
     } catch (error) {
         ctx.status = 403;
-        ctx.body = { error: error.massage };
+        ctx.body = { error: error.message };
         return;
     }
 
@@ -77,110 +207,75 @@ export const removeField = async (ctx, id) => {
 };
 
 export const exportFields = async ctx => {
-    const fields = await ctx.field.findAll();
-
-    ctx.attachment('lodex_export.json');
-    ctx.type = 'application/json';
-
-    ctx.body = JSON.stringify(
-        fields.map(f => omit(f, ['_id'])),
-        null,
-        4,
-    );
-};
-
-const simplifyTransformers = field => {
-    field.transformers = [
-        {
-            operation: 'COLUMN',
-            args: [
-                {
-                    name: 'column',
-                    type: 'column',
-                    value: field.label,
-                },
-            ],
-        },
-    ];
-    return field;
-};
-
-export const exportFieldsReady = async ctx => {
-    const fields = await ctx.field.findAll();
-
-    ctx.attachment('lodex_model.json');
-    ctx.type = 'application/json';
-
-    ctx.body = JSON.stringify(
-        fields.map(f => omit(f, ['_id'])).map(simplifyTransformers),
-        null,
-        4,
-    );
-};
-
-export const getUploadedFields = (
-    asyncBusboyImpl,
-    streamToStringImpl,
-) => async req => {
-    const {
-        files: [fieldsStream],
-    } = await asyncBusboyImpl(req);
-
-    return JSON.parse(await streamToStringImpl(fieldsStream));
-};
-
-export const importFields = getUploadedFieldsImpl => async ctx => {
-    const fields = await getUploadedFieldsImpl(ctx.req);
-
-    await ctx.field.remove({});
-    await Promise.all(
-        fields
-            .sort(
-                (a, b) =>
-                    (a.name === 'uri' ? -1 : a.position) -
-                    (b.name === 'uri' ? -1 : b.position),
-            )
-            .map(({ name, ...field }, index) =>
-                ctx.field.create({ ...field, position: index }, name, false),
-            ),
-    );
+    const filename = `model_${moment().format('YYYY-MM-DD-HHmmss')}.tar`;
 
     ctx.status = 200;
+    ctx.set('Content-disposition', `attachment; filename=${filename}`);
+    ctx.set('Content-type', 'application/x-tar');
+
+    try {
+        await ctx.backupFields(ctx.res);
+    } catch (e) {
+        ctx.status = 500;
+        ctx.body = e.message;
+    }
+};
+
+export const importFields = asyncBusboyImpl => async ctx => {
+    const { files } = await asyncBusboyImpl(ctx.req);
+    const fileStream = files[0];
+
+    try {
+        await ctx.restoreFields(fileStream, ctx);
+        ctx.status = 200;
+    } catch (e) {
+        ctx.status = 500;
+        ctx.body = e.message;
+    }
 };
 
 export const reorderField = async ctx => {
     const { fields } = ctx.request.body;
 
     const fieldsDict = await ctx.field.findByNames(fields);
-
     const fieldsData = fields.map(name => fieldsDict[name]);
 
     try {
-        const cover = fieldsData.reduce((prev, { cover }) => {
+        const scope = fieldsData.reduce((prev, { scope }) => {
             if (!prev) {
-                return cover;
+                return scope;
             }
 
-            if (prev === COVER_DATASET) {
-                if (cover === COVER_DATASET) {
+            if (prev === SCOPE_DATASET) {
+                if (scope === SCOPE_DATASET) {
                     return prev;
                 }
 
                 throw new Error(
-                    'Bad cover: trying to mix characteristic with other fields',
+                    'Bad scope: trying to mix home fields with other fields',
                 );
             }
 
-            if (cover === COVER_COLLECTION || cover === COVER_DOCUMENT) {
-                return COVER_COLLECTION;
+            if (prev === SCOPE_GRAPHIC) {
+                if (scope === SCOPE_GRAPHIC) {
+                    return prev;
+                }
+
+                throw new Error(
+                    'Bad scope: trying to mix graphic fields with other fields',
+                );
+            }
+
+            if (scope === SCOPE_COLLECTION || scope === SCOPE_DOCUMENT) {
+                return SCOPE_COLLECTION;
             }
 
             throw new Error(
-                'Bad cover: trying to mix characteristic with other fields',
+                'Bad scope: trying to mix ressource fields with other fields',
             );
         }, null);
 
-        if (cover === COVER_COLLECTION) {
+        if (scope === SCOPE_COLLECTION) {
             if (fieldsData[0].name !== 'uri') {
                 throw new Error('Uri must always be the first field');
             }
@@ -206,13 +301,7 @@ app.use(setup);
 
 app.use(route.get('/', getAllField));
 app.use(route.get('/export', exportFields));
-app.use(route.get('/export/ready', exportFieldsReady));
-app.use(
-    route.post(
-        '/import',
-        importFields(getUploadedFields(asyncBusboy, streamToString)),
-    ),
-);
+app.use(route.post('/import', importFields(asyncBusboy)));
 app.use(koaBodyParser());
 app.use(route.post('/', postField));
 app.use(route.put('/reorder', reorderField));

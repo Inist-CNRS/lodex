@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
+import { IconButton, Popover, Menu, Button } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
-
 import translate from 'redux-polyglot/translate';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -14,13 +10,14 @@ import compose from 'recompose/compose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { fromExport } from './selectors';
+import theme from '../theme';
+import ExportItem from './export/ExportMenuItem';
+import stylesToClassname from '../lib/stylesToClassName';
+
 import {
     preLoadExporters,
     exportPublishedDataset as exportPublishedDatasetAction,
 } from './export';
-import theme from '../theme';
-import ExportItem from './export/ExportMenuItem';
-import stylesToClassname from '../lib/stylesToClassName';
 
 const styles = stylesToClassname(
     {
@@ -75,48 +72,47 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
     return (
         <>
             {withText ? (
-                <FlatButton
-                    primary
+                <Button
+                    variant="text"
+                    color="primary"
                     onClick={handleOpen}
-                    label={buttonLabel}
-                    icon={
+                    startIcon={
                         <FontAwesomeIcon icon={faExternalLinkAlt} height={20} />
                     }
                     className="export"
-                />
+                >
+                    {buttonLabel}
+                </Button>
             ) : (
                 <IconButton
                     tooltip={buttonLabel}
                     onClick={handleOpen}
-                    iconStyle={{ color: theme.green.primary }}
                     className="export"
+                    color="primary"
                 >
                     <FontAwesomeIcon icon={faExternalLinkAlt} height={20} />
                 </IconButton>
             )}
-            <Popover
-                open={popover.open}
-                anchorEl={popover.anchorEl}
-                anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                onRequestClose={handleClose}
-                animation={PopoverAnimationVertical}
-            >
-                <div className={styles.menuContainer}>
+            <div className={styles.menuContainer}>
+                <Menu
+                    className={styles.menuList}
+                    anchorEl={popover.anchorEl}
+                    keepMounted
+                    open={popover.open}
+                    onClose={handleClose}
+                >
                     <h3 className={styles.menuTitle}>{menuTitle}</h3>
-                    <Menu className={styles.menuList}>
-                        {exporters.map(({ exportID, label }) => (
-                            <ExportItem
-                                key={exportID}
-                                label={label}
-                                exportID={exportID}
-                                uri={uri}
-                                onClick={handleExport}
-                            />
-                        ))}
-                    </Menu>
-                </div>
-            </Popover>
+                    {exporters.map(({ exportID, label }) => (
+                        <ExportItem
+                            key={exportID}
+                            label={label}
+                            exportID={exportID}
+                            uri={uri}
+                            onClick={handleExport}
+                        />
+                    ))}
+                </Menu>
+            </div>
         </>
     );
 };

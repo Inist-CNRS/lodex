@@ -5,10 +5,18 @@ import withProps from 'recompose/withProps';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import { reduxForm } from 'redux-form';
-import { Step, StepButton, StepContent } from 'material-ui/Stepper';
+import { Step, StepButton, StepContent, makeStyles } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';
+
+const useStyles = makeStyles(theme => ({
+    button: {
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
+        textAlign: 'left',
+    },
+}));
 
 export const StepComponent = ({
     id,
@@ -23,21 +31,28 @@ export const StepComponent = ({
     label,
     children,
     p: polyglot,
-}) => (
-    <Step
-        id={id}
-        active={active}
-        completed={completed}
-        disabled={disabled}
-        icon={icon}
-        index={index}
-        last={last}
-        style={style}
-    >
-        <StepButton onClick={handleSelectStep}>{polyglot.t(label)}</StepButton>
-        <StepContent>{children}</StepContent>
-    </Step>
-);
+}) => {
+    const classes = useStyles();
+
+    return (
+        <Step
+            id={id}
+            active={active}
+            completed={completed}
+            disabled={disabled}
+            icon={icon}
+            index={index}
+            last={last}
+            orientation="vertical"
+            style={style}
+        >
+            <StepButton className={classes.button} onClick={handleSelectStep}>
+                {polyglot.t(label)}
+            </StepButton>
+            <StepContent>{children}</StepContent>
+        </Step>
+    );
+};
 
 StepComponent.propTypes = {
     id: PropTypes.string,
@@ -49,7 +64,6 @@ StepComponent.propTypes = {
     last: PropTypes.bool,
     style: PropTypes.object,
     icon: PropTypes.node,
-
     handleSelectStep: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
@@ -67,11 +81,19 @@ StepComponent.defaultProps = {
 };
 
 export default compose(
-    withProps(({ field }) => ({ initialValues: field })),
+    withProps(({ field, filter }) => {
+        const fieldFilterAttributes = filter
+            ? {
+                  scope: filter,
+                  display: field ? field.display : true,
+              }
+            : {};
+
+        return { initialValues: { ...field, ...fieldFilterAttributes } };
+    }),
     withHandlers({
-        handleSelectStep: ({ index, onSelectStep }) => () => {
-            onSelectStep(index);
-        },
+        handleSelectStep: ({ index, onSelectStep }) => () =>
+            onSelectStep(index),
     }),
     reduxForm({
         form: FIELD_FORM_NAME,

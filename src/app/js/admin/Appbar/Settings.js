@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+import { Button, Menu, MenuItem } from '@material-ui/core';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import ArrowDown from '@material-ui/icons/KeyboardArrowDown';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -15,11 +12,6 @@ import ClearDialog from './ClearDialog';
 import { fromPublication, fromParsing } from '../selectors';
 
 const styles = {
-    container: {
-        display: 'inline-block',
-        marginLeft: 4,
-        marginRight: 4,
-    },
     button: {
         color: 'white',
     },
@@ -89,45 +81,49 @@ class SettingsComponent extends Component {
             hasLoadedDataset,
             hasPublishedDataset,
         } = this.props;
+
         const {
             open,
             anchorEl,
             showClearPublished,
             showClearDataset,
         } = this.state;
+
         return (
-            <div style={styles.container}>
-                <FlatButton
-                    className="btn-danger-zone"
-                    onClick={this.handleTouchTap}
-                    label={polyglot.t('clear')}
-                    labelPosition="before"
-                    icon={<ArrowDown />}
-                    style={styles.button}
-                />
-                <Popover
-                    open={open}
+            <>
+                {(hasPublishedDataset || hasLoadedDataset) && (
+                    <Button
+                        variant="text"
+                        className="btn-danger-zone"
+                        onClick={this.handleTouchTap}
+                        endIcon={<ArrowDown />}
+                        style={styles.button}
+                    >
+                        {polyglot.t('clear')}
+                    </Button>
+                )}
+                <Menu
                     anchorEl={anchorEl}
-                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                    targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                    animation={PopoverAnimationVertical}
-                    onRequestClose={this.handleRequestClose}
+                    keepMounted
+                    open={open}
+                    onClose={this.handleRequestClose}
+                    onBackdropClick={this.handleRequestClose}
                 >
-                    <Menu>
-                        <MenuItem
-                            className="btn-clear-published"
-                            primaryText={polyglot.t('clear_publish')}
-                            onClick={this.handleClearPublished}
-                            disabled={!hasPublishedDataset}
-                        />
-                        <MenuItem
-                            className="btn-clear-dataset"
-                            primaryText={polyglot.t('clear_dataset')}
-                            onClick={this.handleClearDataset}
-                            disabled={!hasLoadedDataset}
-                        />
-                    </Menu>
-                </Popover>
+                    <MenuItem
+                        className="btn-clear-published"
+                        onClick={this.handleClearPublished}
+                        disabled={!hasPublishedDataset}
+                    >
+                        {polyglot.t('clear_publish')}
+                    </MenuItem>
+                    <MenuItem
+                        className="btn-clear-dataset"
+                        onClick={this.handleClearDataset}
+                        disabled={!hasLoadedDataset}
+                    >
+                        {polyglot.t('clear_dataset')}
+                    </MenuItem>
+                </Menu>
                 {showClearPublished && (
                     <ClearDialog
                         type="published"
@@ -140,7 +136,7 @@ class SettingsComponent extends Component {
                         onClose={this.handleCloseDataset}
                     />
                 )}
-            </div>
+            </>
         );
     }
 }

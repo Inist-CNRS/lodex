@@ -45,6 +45,11 @@ const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
     const colorStyle = {
         backgroundColor: colors.split(' ')[0],
     };
+
+    if ((identifier || '').trim() === '') {
+        return null;
+    }
+
     return (
         <Link href={target}>
             <span className={styles.key}>{typid}</span>

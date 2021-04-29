@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { List } from 'material-ui/List';
+import { List } from '@material-ui/core';
 
 import { field as fieldPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
@@ -22,10 +22,11 @@ const styles = stylesToClassname(
             height: '0px',
             padding: '0px !important',
             transition: 'max-height 300ms ease-in-out, opacity 600ms ease',
+            overflowY: 'auto',
             '@media (min-width: 992px)': {
                 opacity: '1',
                 height: '100%',
-                maxHeight: '10000px',
+                maxHeight: '70vh',
                 minWidth: '300px',
                 flex: 1,
             },

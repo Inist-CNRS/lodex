@@ -26,9 +26,9 @@ export default handleActions(
             ...state,
             [name]: { data },
         }),
-        [LOAD_RESOURCE_SUCCESS]: (state, { payload: { prefetchedData } }) => ({
+        [LOAD_RESOURCE_SUCCESS]: (state, { payload }) => ({
             ...state,
-            ...prefetchedData,
+            ...(payload && payload.prefetchedData),
         }),
         [LOAD_FORMAT_DATA_ERROR]: (state, { payload: { name, error } }) => ({
             ...state,

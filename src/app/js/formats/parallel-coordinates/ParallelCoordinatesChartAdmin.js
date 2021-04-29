@@ -26,10 +26,14 @@ const ParallelCoordinatesChartAdmin = ({
     showMinValue,
 }) => {
     const setParams = params => {
-        updateAdminArgs('params', Object.assign({}, args.params, params), {
-            args,
-            onChange,
-        });
+        updateAdminArgs(
+            'params',
+            { ...args.params, ...params },
+            {
+                args,
+                onChange,
+            },
+        );
     };
 
     const setColors = colors => {

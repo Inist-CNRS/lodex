@@ -23,6 +23,8 @@ import breadcrumbs from './breadcrumb';
 import menu from './menu';
 import loader from './loader';
 import translate from './translate';
+import subresource from './subresource';
+import dump from './dump';
 
 const app = new Koa();
 
@@ -67,7 +69,6 @@ app.use(mount('/export', exportPublishedDataset));
 app.use(mount('/facet', facet));
 app.use(mount('/run', run));
 app.use(route.get('/publication', publication));
-
 app.use(mount('/publishedDataset', publishedDataset));
 
 app.use(async (ctx, next) => {
@@ -99,12 +100,14 @@ app.use(async (ctx, next) => {
 });
 app.use(mount('/characteristic', characteristic));
 app.use(mount('/field', fieldRoutes));
+app.use(mount('/subresource', subresource));
 app.use(mount('/parsing', parsing));
 app.use(mount('/publish', publish));
 app.use(mount('/upload', upload));
 app.use(mount('/dataset', dataset));
 app.use(route.get('/progress', progress));
 app.use(mount('/loader', loader));
+app.use(route.get('/dump', dump));
 
 app.use(async ctx => {
     ctx.status = 404;

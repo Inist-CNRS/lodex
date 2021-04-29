@@ -5,7 +5,6 @@ describe('saveParsedStream', () => {
         const parsedStream = 'parsedStream';
         const ctx = {
             dataset: {
-                remove: jest.fn(),
                 count: jest.fn().mockImplementation(() => 'count'),
                 updateMany: jest.fn(),
             },
@@ -30,10 +29,6 @@ describe('saveParsedStream', () => {
 
         it('should have called publishedDataset.count', () => {
             expect(ctx.publishedDataset.count).toHaveBeenCalled();
-        });
-
-        it('should have called dataset.remove', () => {
-            expect(ctx.dataset.remove).toHaveBeenCalled();
         });
 
         it('should have called saveStream with parsedStream', () => {
@@ -69,8 +64,8 @@ describe('saveParsedStream', () => {
                 findAll: jest
                     .fn()
                     .mockImplementation(() => [
-                        { cover: 'collection' },
-                        { cover: 'dataset' },
+                        { scope: 'collection' },
+                        { scope: 'dataset' },
                     ]),
             },
             saveStream: jest.fn(),
@@ -121,14 +116,14 @@ describe('saveParsedStream', () => {
 
         it('should have called publishDocuments', () => {
             expect(ctx.publishDocuments).toHaveBeenCalledWith(ctx, 'count', [
-                { cover: 'collection' },
+                { scope: 'collection' },
             ]);
         });
 
         it('should have called publishFacets', () => {
             expect(ctx.publishFacets).toHaveBeenCalledWith(
                 ctx,
-                [{ cover: 'collection' }, { cover: 'dataset' }],
+                [{ scope: 'collection' }, { scope: 'dataset' }],
                 false,
             );
         });
@@ -159,8 +154,8 @@ describe('saveParsedStream', () => {
                 findAll: jest
                     .fn()
                     .mockImplementation(() => [
-                        { cover: 'collection' },
-                        { cover: 'dataset' },
+                        { scope: 'collection' },
+                        { scope: 'dataset' },
                     ]),
             },
             saveStream: jest.fn(),
@@ -211,7 +206,7 @@ describe('saveParsedStream', () => {
 
         it('should have called publishDocuments', () => {
             expect(ctx.publishDocuments).toHaveBeenCalledWith(ctx, 'count', [
-                { cover: 'collection' },
+                { scope: 'collection' },
             ]);
         });
 

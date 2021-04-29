@@ -103,6 +103,31 @@ export const getLoginRequest = (state, credentials) =>
         method: 'POST',
     });
 
+export const getLoadSubresourcesRequest = state =>
+    getRequest(state, {
+        url: '/api/subresource',
+    });
+
+export const getCreateSubresourceRequest = (state, body) =>
+    getRequest(state, {
+        url: '/api/subresource',
+        method: 'POST',
+        body,
+    });
+
+export const getUpdateSubresourceRequest = (state, { _id, ...body }) =>
+    getRequest(state, {
+        url: `/api/subresource/${_id}`,
+        method: 'PUT',
+        body,
+    });
+
+export const getDeleteSubresourceRequest = (state, id) =>
+    getRequest(state, {
+        url: `/api/subresource/${id}`,
+        method: 'DELETE',
+    });
+
 export const getLoadFieldRequest = state =>
     getRequest(state, {
         url: '/api/field',
@@ -230,6 +255,12 @@ export const getClearDatasetRequest = state =>
         method: 'DELETE',
     });
 
+export const getDumpDatasetRequest = state =>
+    getRequest(state, {
+        url: '/api/dump',
+        method: 'GET',
+    });
+
 export const getAddFieldToResourceRequest = (state, data) =>
     getRequest(state, {
         url: '/api/publishedDataset/add_field',
@@ -285,13 +316,13 @@ export const getClearUploadRequest = state =>
         url: '/api/upload/clear',
     });
 
-export const getUploadUrlRequest = (state, { url, parserName }) =>
+export const getUploadUrlRequest = (state, { url, loaderName }) =>
     getRequest(state, {
         method: 'POST',
         url: '/api/upload/url',
         body: {
             url,
-            parserName,
+            loaderName,
         },
     });
 
@@ -385,8 +416,10 @@ export const selectors = {
     getChangeFieldStatusRequest,
     getLoadFacetValuesRequest,
     getExportFieldsRequest,
+    getDumpDatasetRequest,
     getExportFieldsReadyRequest,
     getCreateResourceRequest,
+    getUpdateSubresourceRequest,
     getAddFieldToResourceRequest,
     getHideResourceRequest,
     getSaveResourceRequest,
@@ -404,6 +437,8 @@ export const selectors = {
     getSaveFieldRequest,
     getUpdateFieldRequest,
     getCreateFieldRequest,
+    getLoadSubresourcesRequest,
+    getCreateSubresourceRequest,
     getLoadFieldRequest,
     getUploadUrlRequest,
     getUrlRequest,
@@ -412,6 +447,7 @@ export const selectors = {
     getReorderFieldRequest,
     getProgressRequest,
     getIstexRequest,
+    getDeleteSubresourceRequest,
     getMenuRequest,
     getBreadcrumbRequest,
     getLoadLoadersRequest,

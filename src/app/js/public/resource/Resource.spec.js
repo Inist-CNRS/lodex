@@ -5,6 +5,7 @@ import Loading from '../../lib/components/Loading';
 import { ResourceComponent } from './Resource';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
+import { render } from '../../../../test-utils';
 
 describe('<Resource />', () => {
     const defaultProps = {
@@ -12,7 +13,8 @@ describe('<Resource />', () => {
         preLoadResource: () => null,
         preLoadPublication: () => null,
         p: { t: v => v },
-        match: {},
+        history: { goBack: () => {} },
+        match: { params: { uri: 'FOO' } },
     };
 
     it('should display Loading if loading prop is true', () => {
@@ -101,10 +103,15 @@ describe('<Resource />', () => {
             resource: 'resource',
         };
 
-        const wrapper = shallow(<ResourceComponent {...props} />);
+        const { rerender } = render(<ResourceComponent {...props} />);
         expect(preLoadResource).toHaveBeenCalledTimes(1);
 
-        wrapper.setProps({ ...props, match: { params: { uri: 'changed' } } });
+        rerender(
+            <ResourceComponent
+                {...props}
+                match={{ params: { uri: 'changed' } }}
+            />,
+        );
         expect(preLoadResource).toHaveBeenCalledTimes(2);
     });
 
@@ -118,13 +125,16 @@ describe('<Resource />', () => {
             resource: 'resource',
         };
 
-        const wrapper = shallow(<ResourceComponent {...props} />);
+        const { rerender } = render(<ResourceComponent {...props} />);
         expect(preLoadResource).toHaveBeenCalledTimes(1);
 
-        wrapper.setProps({
-            ...props,
-            match: { params: { naan: 'naan', rest: 'changed' } },
-        });
+        rerender(
+            <ResourceComponent
+                {...props}
+                match={{ params: { naan: 'naan', rest: 'changed' } }}
+            />,
+        );
+
         expect(preLoadResource).toHaveBeenCalledTimes(2);
     });
 });

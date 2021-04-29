@@ -5,23 +5,18 @@ import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
-import { grey500 } from 'material-ui/styles/colors';
+import { grey } from '@material-ui/core/colors';
 import memoize from 'lodash.memoize';
 import get from 'lodash.get';
+import translate from 'redux-polyglot/translate';
 
 import { fromResource } from '../selectors';
-import { field as fieldPropTypes } from '../../propTypes';
-import CompositeProperty from './CompositeProperty';
-import propositionStatus, {
-    REJECTED,
-} from '../../../../common/propositionStatus';
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from '../resource';
 import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
 import { fromUser } from '../../sharedSelectors';
 import EditButton from '../../fields/editFieldValue/EditButton';
-import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
 import getFieldClassName from '../../lib/getFieldClassName';
 import addSchemePrefix from '../../lib/addSchemePrefix';
 import Format from '../Format';
@@ -29,22 +24,30 @@ import GraphLink from '../graph/GraphLink';
 import Link from '../../lib/components/Link';
 import { getPredicate } from '../../formats';
 import shouldDisplayField from '../../fields/shouldDisplayField';
+import { SCOPE_GRAPHIC, SCOPE_DATASET } from '../../../../common/scope';
+import CompositeProperty from './CompositeProperty';
+
+import propositionStatus, {
+    REJECTED,
+} from '../../../../common/propositionStatus';
+
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
 
 const styles = {
     container: memoize(
-        (style, width) =>
-            Object.assign(
-                {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width: `${width || 100}%`,
-                },
-                style,
-            ),
+        (style, width) => ({
+            display: 'flex',
+            flexDirection: 'column',
+            width: `${width || 100}%`,
+            ...style,
+        }),
         (style, value) => ({ style, value }),
     ),
     label: (status, isSub) => ({
-        color: grey500,
+        color: grey[500],
         flexGrow: 2,
         fontWeight: 'bold',
         fontSize: isSub === true ? '1rem' : '1.25rem',
@@ -97,6 +100,7 @@ export const PropertyComponent = ({
     changeStatus,
     style,
     parents,
+    p: polyglot,
 }) => {
     if (!shouldDisplayField(resource, field, fieldStatus, predicate, isAdmin)) {
         return null;
@@ -111,7 +115,7 @@ export const PropertyComponent = ({
             field={field}
             resource={resource}
             fieldStatus={fieldStatus}
-            graphLink={!!field.display_in_graph}
+            graphLink={field.scope === SCOPE_GRAPHIC}
         />,
         <CompositeProperty
             key="composite"
@@ -128,11 +132,18 @@ export const PropertyComponent = ({
     ];
 
     const formatName = get(field, 'format.name', 'none');
-    const format = field.display_in_graph ? (
-        <GraphLink link={`/graph/${field.name}`}>{formatChildren}</GraphLink>
-    ) : (
-        <div>{formatChildren}</div>
-    );
+    const format =
+        (field.scope === SCOPE_GRAPHIC && !field.completes) ||
+        (field.scope === SCOPE_DATASET &&
+            !field.completes &&
+            field.format &&
+            field.format.name === 'fieldClone') ? (
+            <GraphLink link={`/graph/${field.name}`}>
+                {formatChildren}
+            </GraphLink>
+        ) : (
+            <div>{formatChildren}</div>
+        );
     return (
         <div
             className={classnames(
@@ -152,8 +163,13 @@ export const PropertyComponent = ({
                         {field.label}
                         {isAdmin && (
                             <span style={styles.editButton}>
-                                <EditButton field={field} resource={resource} />
-                                <EditOntologyFieldButton field={field} />
+                                <EditButton
+                                    field={field}
+                                    resource={resource}
+                                    warningMessage={polyglot.t(
+                                        'warning_frontend_modification',
+                                    )}
+                                />
                             </span>
                         )}
                     </span>
@@ -206,6 +222,7 @@ PropertyComponent.propTypes = {
     resource: PropTypes.shape({}).isRequired,
     parents: PropTypes.arrayOf(PropTypes.string).isRequired,
     style: PropTypes.object,
+    p: polyglotPropTypes.isRequired,
 };
 
 PropertyComponent.defaultProps = {
@@ -236,6 +253,7 @@ const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>
     );
 
 const Property = compose(
+    translate,
     connect(mapStateToProps, mapDispatchToProps),
     withProps(({ field, parents = [] }) => ({
         parents: [field.name, ...parents],

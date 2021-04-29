@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import MenuItem from 'material-ui/MenuItem';
+import { MenuItem } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import FormSelectField from '../lib/components/FormSelectField';
@@ -10,6 +10,7 @@ import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
 } from '../propTypes';
+import { isSimilarScope } from '../../../common/scope';
 
 const styles = {
     complete: {
@@ -21,7 +22,7 @@ const styles = {
     },
 };
 
-const FieldAnnotation = ({ fields, p: polyglot }) => (
+const FieldAnnotation = ({ fields, scope, p: polyglot }) => (
     <div>
         <div style={styles.header}>{polyglot.t('annotate_field')}</div>
         <Field
@@ -32,17 +33,17 @@ const FieldAnnotation = ({ fields, p: polyglot }) => (
             hint={polyglot.t('select_a_column')}
             fullWidth
         >
-            <MenuItem
-                value={null}
-                primaryText={polyglot.t('completes_field_none')}
-            />
-            {fields.map(f => (
+            <MenuItem value={null}>
+                {polyglot.t('completes_field_none')}
+            </MenuItem>
+            {fields.filter(isSimilarScope(scope)).map(f => (
                 <MenuItem
                     className={`completes-${getFieldClassName(f)}`}
                     key={f.name}
                     value={f.name}
-                    primaryText={f.label}
-                />
+                >
+                    {f.label}
+                </MenuItem>
             ))}
         </Field>
     </div>
@@ -50,6 +51,7 @@ const FieldAnnotation = ({ fields, p: polyglot }) => (
 
 FieldAnnotation.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    scope: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 

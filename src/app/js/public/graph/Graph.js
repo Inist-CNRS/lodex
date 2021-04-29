@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { Card, CardTitle } from 'material-ui/Card';
-import RaisedButton from 'material-ui/RaisedButton';
+import { Card, CardHeader, Button } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { grey500 } from 'material-ui/styles/colors';
+import { grey } from '@material-ui/core/colors';
 
 import {
     field as fieldPropTypes,
@@ -21,7 +20,6 @@ import FacetList from '../facet/FacetList';
 import DatasetSearchBar from '../dataset/DatasetSearchBar';
 import AppliedFacetList from '../dataset/AppliedDatasetFacetList';
 import EditButton from '../../fields/editFieldValue/EditButton';
-import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
 import CompositeProperty from '../Property/CompositeProperty';
 import DatasetStats from '../dataset/DatasetStats';
@@ -69,7 +67,7 @@ const muiStyles = {
     graphTitle: {
         display: 'flex',
         alignItems: 'center',
-        color: grey500,
+        color: grey[500],
         fontWeight: 'bold',
         fontSize: '1.25rem',
     },
@@ -128,20 +126,23 @@ class Graph extends Component {
                                 className="graph"
                                 style={muiStyles.graphContainer}
                             >
-                                <CardTitle
+                                <CardHeader
                                     className="title"
                                     style={muiStyles.graphTitle}
-                                >
-                                    {graphField.label}
-                                    <EditButton
-                                        field={graphField}
-                                        resource={resource}
-                                    />
-                                    <EditOntologyFieldButton
-                                        field={graphField}
-                                        resource={resource}
-                                    />
-                                </CardTitle>
+                                    title={
+                                        <>
+                                            {' '}
+                                            {graphField.label}
+                                            <EditButton
+                                                field={graphField}
+                                                resource={resource}
+                                                warningMessage={polyglot.t(
+                                                    'warning_frontend_modification',
+                                                )}
+                                            />
+                                        </>
+                                    }
+                                />
                                 <Format
                                     field={graphField}
                                     resource={resource}
@@ -159,16 +160,18 @@ class Graph extends Component {
                                 />
                             </Card>
                         )}
-                        <RaisedButton
+                        <Button
+                            variant="contained"
                             className="browse-result"
                             onClick={onSearch}
-                            label={polyglot.t('browse_results')}
-                            primary
+                            color="primary"
                             fullWidth
-                            icon={
+                            startIcon={
                                 <FontAwesomeIcon icon={faSearch} height={20} />
                             }
-                        />
+                        >
+                            {polyglot.t('browse_results')}
+                        </Button>
                     </div>
                 </div>
             </div>

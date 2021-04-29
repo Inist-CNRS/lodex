@@ -1,8 +1,7 @@
 [
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "uri",
-        "display_on_list": true,
         "transformers": [
             {
                 "operation": "COLUMN",
@@ -19,10 +18,9 @@
         "name": "uri"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Title",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -43,10 +41,9 @@
         "name": "XXRn"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "URL",
-        "display_in_list": "",
-        "display_in_resource": true,
+        "display": true,
         "searchable": "",
         "transformers": [
             {
@@ -73,10 +70,9 @@
         "name": "j7uI"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "ISSN",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": "",
         "transformers": [
             {

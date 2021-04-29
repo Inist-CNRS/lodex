@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import TextField from 'material-ui/TextField';
-import CheckBox from 'material-ui/Checkbox';
+import { TextField, Checkbox, FormControlLabel } from '@material-ui/core';
 
 import {
     facetValue as facetValuePropType,
     polyglot as polyglotPropType,
 } from '../../propTypes';
+
 import { fromFacet } from '../selectors';
 import FacetValueItem from './FacetValueItem';
 import Pagination from '../../lib/components/Pagination';
@@ -22,6 +22,8 @@ const styles = {
     },
     listHeader: {
         display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     valueHeader: {
         marginLeft: '24px',
@@ -42,16 +44,14 @@ const onPageChange = (changeFacetValue, filter, name) => (
         filter,
     });
 
-const onFilterChange = (changeFacetValue, name, currentPage, perPage) => (
-    _,
-    filter,
-) =>
+const onFilterChange = (changeFacetValue, name, currentPage, perPage) => e => {
     changeFacetValue({
         name,
         currentPage,
         perPage,
-        filter,
+        filter: e.target.value,
     });
+};
 
 const onInvertChange = (invertFacet, name) => (_, inverted) =>
     invertFacet({ name, inverted });
@@ -79,15 +79,21 @@ export const FacetValueList = ({
     sortFacetValue,
 }) => (
     <div className="facet-value-list" style={styles.list}>
-        <CheckBox
+        <FormControlLabel
+            fullWidth
+            control={
+                <Checkbox
+                    checked={inverted}
+                    onChange={onInvertChange(invertFacet, name)}
+                    className="exclude-facet"
+                />
+            }
             label={polyglot.t('exclude')}
-            checked={inverted}
-            onCheck={onInvertChange(invertFacet, name)}
-            className="exclude-facet"
         />
         <TextField
-            hintText={polyglot.t('filter_value', { field: label })}
+            placeholder={polyglot.t('filter_value', { field: label })}
             value={filter}
+            fullWidth
             onChange={onFilterChange(
                 changeFacetValue,
                 name,
@@ -100,20 +106,22 @@ export const FacetValueList = ({
                 <div style={styles.valueHeader}>
                     <SortButton
                         name="value"
-                        label={polyglot.t('value')}
                         sortDir={sort.sortDir}
                         sortBy={sort.sortBy}
                         sort={onSortChange(sortFacetValue, name)}
-                    />
+                    >
+                        {polyglot.t('value')}
+                    </SortButton>
                 </div>
                 <div style={styles.totalHeader}>
                     <SortButton
                         name="count"
-                        label={polyglot.t('count')}
                         sortDir={sort.sortDir}
                         sortBy={sort.sortBy}
                         sort={onSortChange(sortFacetValue, name)}
-                    />
+                    >
+                        {polyglot.t('count')}
+                    </SortButton>
                 </div>
             </div>
             <div>

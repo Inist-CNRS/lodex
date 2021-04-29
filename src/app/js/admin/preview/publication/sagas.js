@@ -13,6 +13,7 @@ import {
 } from '../../../fields';
 import { fromParsing } from '../../selectors';
 import { LOAD_PARSING_RESULT_SUCCESS } from '../../parsing';
+import { COMPUTE_PUBLICATION } from '../../publication';
 
 export function* handleComputePublicationPreview() {
     try {
@@ -42,6 +43,7 @@ export default function* watchComputePreview() {
             LOAD_FIELD_SUCCESS,
             REMOVE_FIELD_SUCCESS,
             SAVE_FIELD_SUCCESS,
+            COMPUTE_PUBLICATION,
         ],
         handleComputePublicationPreview,
     );

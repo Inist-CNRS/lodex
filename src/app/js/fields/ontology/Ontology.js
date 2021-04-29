@@ -1,90 +1,54 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card';
-import Divider from 'material-ui/Divider';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { Grid } from '@material-ui/core';
 
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../../propTypes';
 import { preLoadPublication } from '../';
 import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
 import OntologyTable from './OntologyTable';
-import { COVER_DATASET } from '../../../../common/cover';
-import ExportFieldsButton from '../../public/export/ExportFieldsButton';
-import ExportFieldsReadyButton from '../../public/export/ExportFieldsReadyButton';
-
+import { SCOPES, SCOPE_DATASET } from '../../../../common/scope';
 import redirectToDashboardIfNoField from '../../admin/redirectToDashboardIfNoField';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-const ALL = 'all';
+const OntologyComponent = ({
+    p: polyglot,
+    filter = SCOPE_DATASET,
+    preLoadPublication,
+}) => {
+    useEffect(() => {
+        preLoadPublication();
+    }, []);
 
-export class OntologyComponent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { filter: COVER_DATASET };
-    }
-
-    UNSAFE_componentWillMount() {
-        this.props.preLoadPublication();
-    }
-
-    handleFilterChange = (_, __, filter) => this.setState({ filter });
-
-    render() {
-        const { p: polyglot } = this.props;
-        const { filter } = this.state;
-
-        return (
-            <Card>
-                <CardHeader title={<h3>{polyglot.t('model')}</h3>} />
-                <Divider />
-                <CardText>
-                    <SelectField
-                        autoWidth
-                        value={filter}
-                        onChange={this.handleFilterChange}
-                        style={{ width: 400 }}
-                        className="select-filter"
-                    >
-                        <MenuItem
-                            value={ALL}
-                            primaryText={polyglot.t('model_filter_all')}
-                        />
-                        <MenuItem
-                            value={'document'}
-                            primaryText={polyglot.t('model_filter_document')}
-                        />
-                        <MenuItem
-                            value={'dataset'}
-                            primaryText={polyglot.t('model_filter_dataset')}
-                        />
-                    </SelectField>
-                    {(filter === ALL || filter === COVER_DATASET) && (
-                        <OntologyTable title="dataset" />
-                    )}
-                    {(filter === ALL || filter != COVER_DATASET) && (
-                        <OntologyTable title="document" />
-                    )}
-                </CardText>
-                <CardActions>
-                    <ExportFieldsButton />
-                    <ExportFieldsReadyButton />
-                    <AddCharacteristic />
-                </CardActions>
-            </Card>
-        );
-    }
-}
+    return (
+        <div>
+            <Grid
+                container
+                justify="space-between"
+                alignItems="center"
+                style={{ paddingBottom: 20 }}
+            >
+                <Grid item>
+                    <h4>{polyglot.t(filter)}</h4>
+                </Grid>
+                <Grid item>
+                    <AddCharacteristic displayPage={filter} />
+                </Grid>
+            </Grid>
+            <Grid container direction="row">
+                <Grid item>
+                    <OntologyTable filter={filter} />
+                </Grid>
+            </Grid>
+        </div>
+    );
+};
 
 OntologyComponent.propTypes = {
     preLoadPublication: PropTypes.func.isRequired,
+    filter: PropTypes.oneOf(SCOPES),
     p: polyglotPropTypes.isRequired,
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
 };
 
 const mapDispatchToProps = {

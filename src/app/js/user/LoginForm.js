@@ -40,7 +40,6 @@ export const LoginFormComponent = ({
                 <p>{error}</p>
             </Alert>
         )}
-
         <Field
             name="username"
             component={FormTextField}
@@ -49,7 +48,6 @@ export const LoginFormComponent = ({
             autoFocus
             fullWidth
         />
-
         <Field
             name="password"
             type="password"

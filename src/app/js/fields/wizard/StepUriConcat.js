@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RadioButton from 'material-ui/RadioButton';
-import FlatButton from 'material-ui/FlatButton';
+import { Switch, Button, TextField, FormControlLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
-import TextField from 'material-ui/TextField';
 import get from 'lodash.get';
 
 import { FIELD_FORM_NAME } from '../';
@@ -17,9 +15,6 @@ import ConcatField from './ConcatField';
 const styles = {
     inset: {
         paddingLeft: 40,
-    },
-    radio: {
-        marginTop: 12,
     },
     select: {
         width: '100%',
@@ -38,13 +33,16 @@ export const StepValueConcatComponent = ({
     handleRemoveColumn,
 }) => (
     <div>
-        <RadioButton
-            className="radio_concat"
+        <FormControlLabel
+            control={
+                <Switch
+                    className="radio_concat"
+                    value="concat"
+                    onClick={handleSelect}
+                    checked={selected}
+                />
+            }
             label={polyglot.t('multi_field_concat')}
-            value="concat"
-            onClick={handleSelect}
-            checked={selected}
-            style={styles.radio}
         />
         {selected && (
             <div style={styles.inset}>
@@ -65,10 +63,9 @@ export const StepValueConcatComponent = ({
                         handleRemoveColumn={handleRemoveColumn}
                     />
                 ))}
-                <FlatButton
-                    label={polyglot.t('add_column')}
-                    onClick={handleAddColumn}
-                />
+                <Button variant="text" onClick={handleAddColumn}>
+                    {polyglot.t('add_column')}
+                </Button>
             </div>
         )}
     </div>
@@ -87,7 +84,8 @@ StepValueConcatComponent.propTypes = {
 };
 
 StepValueConcatComponent.defaultProps = {
-    columns: [null, null],
+    columns: ['', ''],
+    separator: '',
 };
 
 const mapStateToProps = state => {
@@ -106,7 +104,7 @@ const mapStateToProps = state => {
             columns:
                 get(valueTransformer, 'args', [])
                     .slice(1)
-                    .map(({ value }) => value) || [],
+                    .map(({ value }) => value || '') || [],
             args: valueTransformer.args || [],
         };
     }
@@ -129,17 +127,17 @@ export default compose(
                     {
                         name: 'column',
                         type: 'column',
-                        value: null,
+                        value: '',
                     },
                     {
                         name: 'column',
                         type: 'column',
-                        value: null,
+                        value: '',
                     },
                 ],
             });
         },
-        handleChange: ({ onChange, args }) => (event, key, value, index) => {
+        handleChange: ({ onChange, args }) => (value, event, key, index) => {
             onChange({
                 operation: 'CONCAT_URI',
                 args: [
@@ -153,11 +151,15 @@ export default compose(
                 ],
             });
         },
-        handleSeparatorChange: ({ onChange, args }) => (event, value) => {
+        handleSeparatorChange: ({ onChange, args }) => event => {
             onChange({
                 operation: 'CONCAT_URI',
                 args: [
-                    { name: 'separator', type: 'string', value },
+                    {
+                        name: 'separator',
+                        type: 'string',
+                        value: event.target.value,
+                    },
                     ...args.slice(1),
                 ],
             });
@@ -170,7 +172,7 @@ export default compose(
                     {
                         name: 'column',
                         type: 'column',
-                        value: null,
+                        value: '',
                     },
                 ],
             });

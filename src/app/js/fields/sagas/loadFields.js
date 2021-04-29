@@ -8,7 +8,6 @@ import { fromUser } from '../../sharedSelectors';
 
 export function* handleLoadField() {
     const request = yield select(fromUser.getLoadFieldRequest);
-
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

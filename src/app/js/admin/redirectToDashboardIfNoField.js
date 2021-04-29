@@ -14,6 +14,6 @@ export default compose(
     connect(mapStateToProps),
     branch(
         ({ isLoading, nbFields }) => !isLoading && nbFields === 0,
-        renderComponent(() => <Redirect to="/dashboard" />),
+        renderComponent(() => <Redirect to="/" />),
     ),
 );

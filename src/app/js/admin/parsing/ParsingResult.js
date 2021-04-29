@@ -3,17 +3,19 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { grey400 } from 'material-ui/styles/colors';
+import { grey } from '@material-ui/core/colors';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { reloadParsingResult } from './';
 import { fromParsing } from '../selectors';
 import ParsingExcerpt from './ParsingExcerpt';
+import Loading from '../../lib/components/Loading';
 
 const styles = {
     container: {
         position: 'relative',
         display: 'flex',
+        maxHeight: 'calc(((100vh - 100px) - 76px) - 72px)',
     },
     card: {
         marginTop: 0,
@@ -23,7 +25,7 @@ const styles = {
         display: 'flex',
     },
     list: {
-        borderRight: `solid 1px ${grey400}`,
+        borderRight: `solid 1px ${grey[400]}`,
         listStyleType: 'none',
         margin: 0,
         padding: 0,
@@ -31,16 +33,6 @@ const styles = {
     },
     listItem: {
         whiteSpace: 'nowrap',
-    },
-    titleContainer: {
-        alignSelf: 'center',
-        flexGrow: 0,
-        flexShrink: 0,
-        width: 50,
-    },
-    title: {
-        textTransform: 'uppercase',
-        transform: 'rotate(-90deg)',
     },
     button: {
         float: 'right',
@@ -61,17 +53,23 @@ export class ParsingResultComponent extends Component {
             excerptLines,
             p: polyglot,
             showAddColumns,
+            maxLines,
+            loadingParsingResult,
         } = this.props;
+
+        if (loadingParsingResult) {
+            return (
+                <Loading className="admin">
+                    {polyglot.t('loading_parsing_results')}
+                </Loading>
+            );
+        }
 
         return (
             <div className="parsingResult" style={styles.container}>
-                <div style={styles.titleContainer}>
-                    <div style={styles.title}>{polyglot.t('parsing')}</div>
-                </div>
-
                 <ParsingExcerpt
                     columns={excerptColumns}
-                    lines={excerptLines}
+                    lines={excerptLines.slice(0, maxLines)}
                     showAddColumns={showAddColumns}
                 />
             </div>
@@ -85,13 +83,19 @@ ParsingResultComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     handleClearParsing: PropTypes.func.isRequired,
     showAddColumns: PropTypes.bool.isRequired,
+    maxLines: PropTypes.number,
+    loadingParsingResult: PropTypes.bool.isRequired,
+};
+
+ParsingResultComponent.defaultProps = {
+    maxLines: 10,
+    showAddColumns: false,
 };
 
 const mapStateToProps = state => ({
     excerptColumns: fromParsing.getParsedExcerptColumns(state),
     excerptLines: fromParsing.getExcerptLines(state),
     loadingParsingResult: fromParsing.isParsingLoading(state),
-    showAddColumns: fromParsing.showAddColumns(state),
 });
 
 const mapDispatchToProps = {

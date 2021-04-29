@@ -1,8 +1,7 @@
 [
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "uri",
-        "display_on_list": true,
         "transformers": [
             {
                 "operation": "AUTOGENERATE_URI",
@@ -13,10 +12,9 @@
         "name": "uri"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Title",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -37,10 +35,9 @@
         "name": "XXRn"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "URL",
-        "display_in_list": "",
-        "display_in_resource": true,
+        "display": true,
         "searchable": "",
         "transformers": [
             {
@@ -68,10 +65,9 @@
         "overview": 2
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "ISSN",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": "",
         "transformers": [
             {
@@ -93,10 +89,9 @@
         "overview": 3
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "eISSN",
-        "display_in_list": "",
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -117,10 +112,9 @@
         "name": "Encb"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Première mise en ligne en",
-        "display_in_list": "",
-        "display_in_resource": true,
+        "display": true,
         "searchable": "",
         "transformers": [
             {
@@ -143,10 +137,9 @@
         "overview": 4
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Dernière mise en ligne en",
-        "display_in_list": "",
-        "display_in_resource": true,
+        "display": true,
         "searchable": "",
         "transformers": [
             {
@@ -168,10 +161,9 @@
         "name": "ZLPq"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Couverture",
-        "display_in_list": "",
-        "display_in_resource": true,
+        "display": true,
         "searchable": "",
         "transformers": [
             {
@@ -193,10 +185,9 @@
         "name": "XG29"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Editeur",
-        "display_in_list": "",
-        "display_in_resource": true,
+        "display": true,
         "searchable": "",
         "transformers": [
             {
@@ -218,10 +209,9 @@
         "name": "UVFW"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Access",
-        "display_in_list": "",
-        "display_in_resource": true,
+        "display": true,
         "searchable": "",
         "transformers": [
             {
@@ -242,10 +232,9 @@
         "name": "Fr7z"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Type",
-        "display_in_list": "",
-        "display_in_resource": true,
+        "display": true,
         "searchable": "",
         "transformers": [
             {
@@ -275,7 +264,7 @@
             "name": "title"
         },
         "width": "100",
-        "cover": "dataset",
+        "scope": "dataset",
         "transformers": [
             {
                 "operation": "VALUE",
@@ -290,14 +279,12 @@
         ],
         "position": 11,
         "count": 0,
-        "display_in_home": true,
+        "display": true,
         "name": "ExFk"
     },
     {
-        "cover": "dataset",
+        "scope": "dataset",
         "label": "Titres",
-        "display_in_list": "",
-        "display_in_resource": "",
         "searchable": true,
         "transformers": [
             {
@@ -314,7 +301,7 @@
         "classes": [],
         "position": 12,
         "overview": 0,
-        "display_in_home": true,
+        "display": true,
         "count": 0,
         "format": {
             "args": {
@@ -328,7 +315,7 @@
     },
     {
         "label": "Articles",
-        "cover": "collection",
+        "scope": "collection",
         "contribution": true,
         "position": 13,
         "transformers": [
@@ -348,12 +335,12 @@
             "name": "istexSummary"
         },
         "count": 64,
-        "display_in_resource": true,
+        "display": true,
         "name": "afRt"
     },
     {
         "label": "Dans ISTEX",
-        "cover": "document",
+        "scope": "document",
         "contribution": true,
         "position": 14,
         "transformers": [
@@ -372,13 +359,13 @@
             "args": {},
             "name": "istex"
         },
-        "display_in_resource": true,
+        "display": true,
         "count": 0,
         "name": "zEVz"
     },
     {
         "label": "Editeur",
-        "cover": "document",
+        "scope": "document",
         "contribution": true,
         "position": 15,
         "transformers": [
@@ -396,11 +383,7 @@
         "format": {
             "args": {
                 "param": {
-                    "labelArray": [
-                        "W0zn",
-                        "V8Si",
-                        "gEbL"
-                    ]
+                    "labelArray": ["W0zn", "V8Si", "gEbL"]
                 }
             },
             "name": "lodexField"

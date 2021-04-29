@@ -30,6 +30,7 @@ describe('Graph Page', () => {
 
         graphPage.searchFor('Biodiversity');
         graphPage.setFacet('Publication Year', '2011');
+        cy.wait(400);
         graphPage.getStats().should('have.text', 'Found 4 on 50');
 
         menu.openChartDrawer();
@@ -39,6 +40,7 @@ describe('Graph Page', () => {
         graphPage.getStats().should('have.text', 'Found 4 on 50');
 
         graphPage.getFacet('Publication Year').click();
+        cy.wait(500);
         graphPage
             .getFacetItem('Publication Year', '2011')
             .find('input[type=checkbox]')
@@ -75,7 +77,7 @@ describe('Graph Page', () => {
         menu.closeSearchDrawer();
         graphPage.setFacetExclude('Publication Year');
         graphPage.browseResults();
-        searchDrawer.getFacet('Publication Year').click();
+        searchDrawer.getFacet('Publication Year (14)').click();
         searchDrawer.searchInput().should('have.value', 'Biodiversity');
         searchDrawer
             .getFacetExcludeItem('Publication Year')

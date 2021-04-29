@@ -1,0 +1,20 @@
+[
+    {
+        "scope": "collection",
+        "label": "uri",
+        "name": "uri",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "URI"
+                    }
+                ]
+            }
+        ],
+        "position": 0
+    }
+]

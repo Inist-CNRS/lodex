@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Folder from 'material-ui/svg-icons/file/folder';
-import FolderOpen from 'material-ui/svg-icons/file/folder-open';
-import Arrow from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import Button from 'material-ui/FlatButton';
-import CircularProgress from 'material-ui/CircularProgress';
+import Folder from '@material-ui/icons/Folder';
+import FolderOpen from '@material-ui/icons/FolderOpen';
+import Arrow from '@material-ui/icons/KeyboardArrowDown';
+import { Button, CircularProgress } from '@material-ui/core';
 import get from 'lodash.get';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -43,6 +42,7 @@ const styles = stylesToClassname(
 
 const circularProgress = (
     <CircularProgress
+        variant="indeterminate"
         size={20}
         innerStyle={{
             display: 'flex',

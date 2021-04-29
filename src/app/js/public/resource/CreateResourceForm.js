@@ -65,6 +65,7 @@ CreateResourceFormComponent.propTypes = {
 
 const mapStateToProps = state => {
     const fields = fromFields.getCollectionFieldsExceptComposite(state);
+
     return {
         fields,
         error: fromResource.getError(state),

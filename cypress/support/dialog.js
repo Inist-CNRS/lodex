@@ -1,7 +1,7 @@
-export const getDialog = () => cy.get('.dialog-body').should('exist');
+export const getDialog = () => cy.get('div[role=dialog]').should('exist');
 
 export const getDialogTitle = () =>
-    cy.get('.dialog-content h3').should('exist');
+    cy.get('div[role=dialog] h2').should('exist');
 
 export const getDialogContent = () => cy.get('.dialog-content').should('exist');
 

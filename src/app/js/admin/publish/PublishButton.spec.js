@@ -17,7 +17,7 @@ describe('<Publish />', () => {
         );
 
         const button = wrapper.find(ButtonWithStatus).at(0);
-        expect(button.prop('label')).toEqual('publish');
+        expect(button.prop('children')).toEqual('publish');
         expect(button.prop('loading')).toEqual(true);
         expect(button.prop('error')).toEqual(true);
         expect(button.prop('success')).toEqual(true);

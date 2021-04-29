@@ -1,8 +1,7 @@
 [
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "uri",
-        "display_on_list": true,
         "transformers": [
             {
                 "operation": "AUTOGENERATE_URI",
@@ -13,10 +12,9 @@
         "name": "uri"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Column 1",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -50,10 +48,9 @@
         "name": "gL4k"
     },
     {
-        "cover": "collection",
+        "scope": "collection",
         "label": "Column 2",
-        "display_in_list": true,
-        "display_in_resource": true,
+        "display": true,
         "searchable": true,
         "transformers": [
             {
@@ -78,10 +75,8 @@
         "name": "gL5k"
     },
     {
-        "cover": "dataset",
+        "scope": "dataset",
         "label": "Title",
-        "display_in_list": false,
-        "display_in_resource": false,
         "searchable": false,
         "transformers": [
             {
@@ -103,13 +98,11 @@
             "name": "None"
         },
         "name": "gL6k",
-        "display_in_home": true
+        "display": true
     },
     {
-        "cover": "dataset",
+        "scope": "dataset",
         "label": "Description",
-        "display_in_list": "",
-        "display_in_resource": "",
         "searchable": true,
         "transformers": [
             {
@@ -127,6 +120,6 @@
         "position": 4,
         "overview": 0,
         "name": "a0ea",
-        "display_in_home": true
+        "display": true
     }
 ]

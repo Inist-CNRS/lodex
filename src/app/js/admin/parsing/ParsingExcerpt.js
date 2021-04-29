@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
-
-import { Table, TableBody, TableHeader, TableRow } from 'material-ui/Table';
+import { Table, TableBody, TableHead, TableRow } from '@material-ui/core';
 
 import { addField } from '../../fields';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
@@ -16,6 +15,7 @@ const styles = {
         display: 'block',
         overflowX: 'auto',
         width: 'auto',
+        minWidth: '100%',
         borderLeft: '1px solid rgb(224, 224, 224)',
     },
     body: {
@@ -46,8 +46,8 @@ export const ParsingExcerptComponent = ({
     const total = lines.length;
 
     return (
-        <Table selectable={false} fixedHeader={false} style={styles.table}>
-            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+        <Table style={styles.table}>
+            <TableHead>
                 <TableRow>
                     {columns.map(column => (
                         <ParsingExcerptHeaderColumn
@@ -56,11 +56,10 @@ export const ParsingExcerptComponent = ({
                         />
                     ))}
                 </TableRow>
-            </TableHeader>
-            <TableBody style={styles.body} displayRowCheckbox={false}>
+            </TableHead>
+            <TableBody style={styles.body}>
                 {lines.map((line, index) => (
                     <TableRow
-                        displayBorder={false}
                         key={`${line._id}_data_row`}
                         style={getRowStyle(index, total)}
                     >
@@ -70,11 +69,10 @@ export const ParsingExcerptComponent = ({
                                 showAddColumns &&
                                 (index === total - 3 ||
                                     (total < 3 && index === 0));
-
                             return (
                                 <ParsingExcerptColumn
                                     key={`${column}_${line._id}`}
-                                    value={line[column]}
+                                    value={`${line[column] || ''}`}
                                 >
                                     {showAddColumnButton && (
                                         <ParsingExcerptAddColumn
@@ -102,7 +100,7 @@ ParsingExcerptComponent.propTypes = {
 };
 
 const mapDispatchToProps = {
-    handleAddColumn: addField,
+    handleAddColumn: name => addField({ name }),
 };
 
 export default compose(

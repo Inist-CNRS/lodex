@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RadioButton from 'material-ui/RadioButton';
+import { Switch, FormControlLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -11,13 +11,12 @@ import { formValueSelector } from 'redux-form';
 import { FIELD_FORM_NAME } from '../';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import SelectDatasetField from './SelectDatasetField';
+import { isSubresourceTransformation } from './StepValueSubresource';
+import { isSubresourceFieldTransformation } from './StepValueSubresourceField';
 
 const styles = {
     inset: {
         paddingLeft: 40,
-    },
-    radio: {
-        marginTop: 12,
     },
 };
 
@@ -28,13 +27,16 @@ export const StepValueColumnComponent = ({
     p: polyglot,
     selected,
 }) => (
-    <div id="step-value-colmun">
-        <RadioButton
+    <div id="step-value-column">
+        <FormControlLabel
+            control={
+                <Switch
+                    value="column"
+                    onChange={handleSelect}
+                    checked={selected}
+                />
+            }
             label={polyglot.t('a_column')}
-            value="column"
-            onClick={handleSelect}
-            checked={selected}
-            style={styles.radio}
         />
         {selected && (
             <div style={styles.inset}>
@@ -57,7 +59,7 @@ StepValueColumnComponent.propTypes = {
 };
 
 StepValueColumnComponent.defaultProps = {
-    column: undefined,
+    column: '',
 };
 
 const mapStateToProps = state => {
@@ -75,7 +77,9 @@ const mapStateToProps = state => {
 
     if (valueTransformer) {
         return {
-            selected: true,
+            selected:
+                !isSubresourceTransformation(transformers) &&
+                !isSubresourceFieldTransformation(transformers),
             column:
                 (valueTransformer.args &&
                     valueTransformer.args[0] &&
@@ -92,29 +96,33 @@ export default compose(
     withState('column', 'setColumn', ({ column }) => column),
     withHandlers({
         handleSelect: ({ onChange, column }) => () => {
-            onChange({
-                operation: 'COLUMN',
-                args: [
-                    {
-                        name: 'column',
-                        type: 'column',
-                        value: column,
-                    },
-                ],
-            });
+            onChange([
+                {
+                    operation: 'COLUMN',
+                    args: [
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value: column,
+                        },
+                    ],
+                },
+            ]);
         },
-        handleChange: ({ onChange, setColumn }) => (event, key, value) => {
+        handleChange: ({ onChange, setColumn }) => value => {
             setColumn(value);
-            onChange({
-                operation: 'COLUMN',
-                args: [
-                    {
-                        name: 'column',
-                        type: 'column',
-                        value,
-                    },
-                ],
-            });
+            onChange([
+                {
+                    operation: 'COLUMN',
+                    args: [
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value,
+                        },
+                    ],
+                },
+            ]);
         },
     }),
     translate,

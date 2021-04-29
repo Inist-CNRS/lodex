@@ -7,7 +7,7 @@ export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
 export const OPEN_UPLOAD = 'OPEN_UPLOAD';
 export const CLOSE_UPLOAD = 'CLOSE_UPLOAD';
 export const CHANGE_UPLOAD_URL = 'CHANGE_UPLOAD_URL';
-export const CHANGE_PARSER_NAME = 'CHANGE_PARSER_NAME';
+export const CHANGE_LOADER_NAME = 'CHANGE_LOADER_NAME';
 
 export const uploadFile = createAction(UPLOAD_FILE);
 export const uploadUrl = createAction(UPLOAD_URL);
@@ -16,10 +16,10 @@ export const uploadError = createAction(UPLOAD_ERROR);
 export const openUpload = createAction(OPEN_UPLOAD);
 export const closeUpload = createAction(CLOSE_UPLOAD);
 export const changeUploadUrl = createAction(CHANGE_UPLOAD_URL);
-export const changeParserName = createAction(CHANGE_PARSER_NAME);
+export const changeLoaderName = createAction(CHANGE_LOADER_NAME);
 
 const validateUrl = url =>
-    url.startsWith('http://') || url.startsWith('https://');
+    url && (url.startsWith('http://') || url.startsWith('https://'));
 
 export const defaultState = {
     error: false,
@@ -27,7 +27,7 @@ export const defaultState = {
     open: false,
     isUrlValid: false,
     url: '',
-    parserName: 'automatic',
+    loaderName: 'automatic',
 };
 
 export default handleActions(
@@ -63,9 +63,9 @@ export default handleActions(
             url,
             validUrl: validateUrl(url),
         }),
-        CHANGE_PARSER_NAME: (state, { payload: parserName }) => ({
+        CHANGE_LOADER_NAME: (state, { payload: loaderName }) => ({
             ...state,
-            parserName,
+            loaderName,
         }),
     },
     defaultState,
@@ -75,7 +75,7 @@ export const getUpload = state => state;
 export const isUploadPending = state => state.status === 'PENDING';
 export const isOpen = state => state.open;
 export const getUrl = ({ url }) => url;
-export const getParserName = ({ parserName }) => parserName;
+export const getLoaderName = ({ loaderName }) => loaderName;
 export const isUrlValid = ({ validUrl }) => validUrl;
 
 export const selectors = {
@@ -83,6 +83,6 @@ export const selectors = {
     isUploadPending,
     isOpen,
     getUrl,
-    getParserName,
+    getLoaderName,
     isUrlValid,
 };

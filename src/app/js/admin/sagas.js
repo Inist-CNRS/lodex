@@ -1,7 +1,6 @@
 import { fork } from 'redux-saga/effects';
 
 import exportSaga from '../exportFields/sagas';
-import exportReadySaga from '../exportFieldsReady/sagas';
 import importSaga from './import/sagas';
 import fieldsSaga from '../fields/sagas';
 import parsingSaga from './parsing/sagas';
@@ -17,10 +16,13 @@ import clearSaga from './clear/sagas';
 import progressSaga from './progress/sagas';
 import characteristicSaga from '../characteristic/sagas';
 import loaderSaga from './loader/sagas';
+import subresourceSaga from './subresource/sagas';
+import dumpSaga from './dump/sagas';
+import navigationSaga from './navigation/sagas';
 
 export default function*() {
     yield fork(exportSaga);
-    yield fork(exportReadySaga);
+
     yield fork(fetchSaga);
     yield fork(fieldsSaga);
     yield fork(importSaga);
@@ -36,4 +38,7 @@ export default function*() {
     yield fork(progressSaga);
     yield fork(characteristicSaga);
     yield fork(loaderSaga);
+    yield fork(subresourceSaga);
+    yield fork(dumpSaga);
+    yield fork(navigationSaga);
 }

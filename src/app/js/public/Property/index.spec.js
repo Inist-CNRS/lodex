@@ -128,6 +128,7 @@ describe('Property', () => {
                     const wrapper = shallow(
                         <PropertyComponent
                             {...defaultProps}
+                            p={{ t: x => x }}
                             isAdmin={true}
                             resource={{ field: value }}
                         />,

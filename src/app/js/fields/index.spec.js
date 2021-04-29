@@ -51,10 +51,10 @@ describe('field reducer', () => {
                     name1: { name: 'name1', label: 'foo' },
                     new: {
                         label: 'newField 3',
-                        cover: 'collection',
+                        scope: 'collection',
                         name: 'new',
-                        display_in_resource: true,
-                        searchable: true,
+                        display: true,
+                        searchable: false,
                         transformers: [],
                         position: 2,
                         overview: 0,
@@ -63,6 +63,7 @@ describe('field reducer', () => {
                 },
             });
         });
+
         it('should handle the ADD_FIELD action with name', () => {
             const state = reducer(
                 {
@@ -72,7 +73,7 @@ describe('field reducer', () => {
                     },
                     list: ['name1', 'name2'],
                 },
-                addField('target_col'),
+                addField({ name: 'target_col' }),
             );
 
             expect(state).toEqual({
@@ -84,10 +85,10 @@ describe('field reducer', () => {
                     name1: { name: 'name1', label: 'foo' },
                     new: {
                         label: 'target_col',
-                        cover: 'collection',
+                        scope: 'collection',
                         name: 'new',
-                        display_in_resource: true,
-                        searchable: true,
+                        display: true,
+                        searchable: false,
                         transformers: [
                             {
                                 operation: 'COLUMN',

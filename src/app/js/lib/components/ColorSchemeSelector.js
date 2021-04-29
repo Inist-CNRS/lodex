@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
 import { scaleQuantize } from 'd3-scale';
+
 import {
     schemeBlues,
     schemeOrRd,
@@ -63,26 +63,27 @@ import ColorScalePreview from '../../lib/components/ColorScalePreview';
 
 const getColorSchemeSelector = schemes => {
     const ColorSchemeSelector = ({ value = [], style, label, onChange }) => (
-        <SelectField
-            floatingLabelText={label}
-            onChange={onChange}
-            style={style}
-            value={value.join(',')}
-        >
-            {schemes.map(scheme => (
-                <MenuItem
-                    key={scheme}
-                    value={scheme.join(',')}
-                    primaryText={
-                        <ColorScalePreview
-                            colorScale={scaleQuantize()
-                                .domain([0, 100])
-                                .range(scheme)}
-                        />
-                    }
-                />
-            ))}
-        </SelectField>
+        <FormControl fullWidth>
+            <InputLabel id="colorscheme-input-label">{label}</InputLabel>
+            <Select
+                labelId="colorscheme-input-label"
+                onChange={onChange}
+                style={style}
+                value={value.join(',')}
+            >
+                {schemes.map(scheme => (
+                    <MenuItem key={scheme} value={scheme.join(',')}>
+                        {
+                            <ColorScalePreview
+                                colorScale={scaleQuantize()
+                                    .domain([0, 100])
+                                    .range(scheme)}
+                            />
+                        }
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
     );
     ColorSchemeSelector.propTypes = {
         value: PropTypes.arrayOf(PropTypes.string),

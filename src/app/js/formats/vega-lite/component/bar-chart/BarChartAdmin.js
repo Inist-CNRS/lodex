@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import {
+    TextField,
+    Select,
+    MenuItem,
+    Checkbox,
+    FormControlLabel,
+    FormControl,
+    InputLabel,
+} from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
-import Checkbox from 'material-ui/Checkbox';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
@@ -21,9 +26,7 @@ const styles = {
         width: '200%',
         justifyContent: 'space-between',
     },
-    input: {
-        width: '100%',
-    },
+    input: {},
     previewDefaultColor: color => ({
         display: 'inline-block',
         backgroundColor: color,
@@ -49,6 +52,7 @@ export const defaultArgs = {
     tooltipCategory: 'Category',
     tooltipValue: 'Value',
     labels: false,
+    labelOverlap: false,
     barSize: 20,
 };
 
@@ -72,6 +76,7 @@ class BarChartAdmin extends Component {
             tooltipCategory: PropTypes.string,
             tooltipValue: PropTypes.string,
             labels: PropTypes.bool,
+            labelOverlap: PropTypes.bool,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -109,12 +114,12 @@ class BarChartAdmin extends Component {
         );
     };
 
-    setScale = (_, __, scale) => {
-        updateAdminArgs('scale', scale, this.props);
+    setScale = e => {
+        updateAdminArgs('scale', e.target.value, this.props);
     };
 
-    setDirection = (_, __, direction) => {
-        updateAdminArgs('direction', direction, this.props);
+    setDirection = e => {
+        updateAdminArgs('direction', e.target.value, this.props);
     };
 
     toggleDiagonalValueAxis = () => {
@@ -133,8 +138,8 @@ class BarChartAdmin extends Component {
         );
     };
 
-    setBarSize = (_, barSize) => {
-        updateAdminArgs('barSize', barSize, this.props);
+    setBarSize = e => {
+        updateAdminArgs('barSize', e.target.value, this.props);
     };
 
     toggleTooltip = () => {
@@ -143,6 +148,14 @@ class BarChartAdmin extends Component {
 
     toggleLabels = () => {
         updateAdminArgs('labels', !this.props.args.labels, this.props);
+    };
+
+    toggleLabelOverlap = () => {
+        updateAdminArgs(
+            'labelOverlap',
+            !this.props.args.labelOverlap,
+            this.props,
+        );
     };
 
     setTooltipCategory(tooltipCategory) {
@@ -168,6 +181,7 @@ class BarChartAdmin extends Component {
                 tooltipCategory,
                 tooltipValue,
                 labels,
+                labelOverlap,
             },
             showMaxSize = true,
             showMaxValue = true,
@@ -201,59 +215,92 @@ class BarChartAdmin extends Component {
                     onChange={this.setColors}
                     polyglot={polyglot}
                 />
-                <SelectField
-                    floatingLabelText={polyglot.t('direction')}
-                    onChange={this.setDirection}
-                    style={styles.input}
-                    value={direction}
-                >
-                    <MenuItem
-                        value="horizontal"
-                        primaryText={polyglot.t('horizontal')}
-                    />
-                    <MenuItem
-                        value="vertical"
-                        primaryText={polyglot.t('vertical')}
-                    />
-                </SelectField>
-                <Checkbox
+                <FormControl fullWidth>
+                    <InputLabel id="barchat-admin-direction-input-label">
+                        {polyglot.t('direction')}
+                    </InputLabel>
+                    <Select
+                        labelId="barchat-admin-direction-input-label"
+                        onChange={this.setDirection}
+                        style={styles.input}
+                        value={direction}
+                    >
+                        <MenuItem value="horizontal">
+                            {polyglot.t('horizontal')}
+                        </MenuItem>
+                        <MenuItem value="vertical">
+                            {polyglot.t('vertical')}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleDiagonalCategoryAxis}
+                            style={styles.input}
+                            checked={diagonalCategoryAxis}
+                        />
+                    }
                     label={polyglot.t('diagonal_category_axis')}
-                    onCheck={this.toggleDiagonalCategoryAxis}
-                    style={styles.input}
-                    checked={diagonalCategoryAxis}
                 />
-                <Checkbox
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleDiagonalValueAxis}
+                            style={styles.input}
+                            checked={diagonalValueAxis}
+                        />
+                    }
                     label={polyglot.t('diagonal_value_axis')}
-                    onCheck={this.toggleDiagonalValueAxis}
-                    style={styles.input}
-                    checked={diagonalValueAxis}
                 />
-                <Checkbox
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.setAxisRoundValue}
+                            style={styles.input}
+                            checked={axisRoundValue}
+                        />
+                    }
                     label={polyglot.t('axis_round_value')}
-                    onCheck={this.setAxisRoundValue}
-                    style={styles.input}
-                    checked={axisRoundValue}
                 />
-                <Checkbox
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleLabels}
+                            style={styles.input}
+                            checked={labels}
+                        />
+                    }
                     label={polyglot.t('toggle_labels')}
-                    onCheck={this.toggleLabels}
-                    style={styles.input}
-                    checked={labels}
                 />
-                <SelectField
-                    floatingLabelText={polyglot.t('scale')}
-                    onChange={this.setScale}
-                    style={styles.input}
-                    value={scale}
-                >
-                    <MenuItem
-                        value="linear"
-                        primaryText={polyglot.t('linear')}
-                    />
-                    <MenuItem value="log" primaryText={polyglot.t('log')} />
-                </SelectField>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleLabelOverlap}
+                            style={styles.input}
+                            checked={labelOverlap}
+                        />
+                    }
+                    label={polyglot.t('toggle_label_overlap')}
+                />
+                <FormControl fullWidth>
+                    <InputLabel id="barchart-admin-scale-input-label">
+                        {polyglot.t('scale')}
+                    </InputLabel>
+                    <Select
+                        labelId="barchart-admin-scale-input-label"
+                        onChange={this.setScale}
+                        style={styles.input}
+                        value={scale}
+                    >
+                        <MenuItem value="linear">
+                            {polyglot.t('linear')}
+                        </MenuItem>
+                        <MenuItem value="log">{polyglot.t('log')}</MenuItem>
+                    </Select>
+                </FormControl>
                 <TextField
-                    floatingLabelText={polyglot.t('bar_size')}
+                    label={polyglot.t('bar_size')}
                     onChange={this.setBarSize}
                     style={styles.input}
                     value={barSize}

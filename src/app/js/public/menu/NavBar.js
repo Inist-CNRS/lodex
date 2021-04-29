@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { PropTypes } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import translate from 'redux-polyglot/translate';
@@ -283,7 +283,8 @@ NavBar.propTypes = {
 const mapStateToProps = state => ({
     role: fromUser.getRole(state),
     canBeSearched: fromFields.canBeSearched(state),
-    hasGraph: fromFields.getGraphFields(state).length > 0,
+    hasGraph:
+        fromFields.getGraphicFields(state).filter(f => !!f.display).length > 0,
     leftMenu: fromMenu.getLeftMenu(state),
     rightMenu: fromMenu.getRightMenu(state),
     advancedMenu: fromMenu.getAdvancedMenu(state),

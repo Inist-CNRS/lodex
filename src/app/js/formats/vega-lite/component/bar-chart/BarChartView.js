@@ -49,6 +49,7 @@ class BarChartView extends Component {
         barChartSpec.setTooltipCategory(this.props.tooltipCategory);
         barChartSpec.setTooltipValue(this.props.tooltipValue);
         barChartSpec.setLabels(this.props.labels);
+        barChartSpec.setLabelOverlap(this.props.labelOverlap);
         barChartSpec.setSize(this.props.barSize);
 
         if (this.props.diagonalCategoryAxis)
@@ -96,6 +97,7 @@ BarChartView.propTypes = {
     tooltipCategory: PropTypes.string.isRequired,
     tooltipValue: PropTypes.string.isRequired,
     labels: PropTypes.string.isRequired,
+    labelOverlap: PropTypes.string.isRequired,
     barSize: PropTypes.number.isRequired,
 };
 

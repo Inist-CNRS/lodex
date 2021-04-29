@@ -279,13 +279,14 @@ const getResourceLastVersion = (state, resource = state.resource) => {
     if (!resource) {
         return null;
     }
-    const { versions, uri } = resource;
+    const { versions, uri, subresourceId } = resource;
     if (!versions) {
         return null;
     }
     return {
         ...versions[versions.length - 1],
         uri,
+        subresourceId,
     };
 };
 
@@ -390,13 +391,14 @@ const getResourceSelectedVersion = createSelector(
         if (!resource) {
             return null;
         }
-        const { versions, uri } = resource;
+        const { versions, uri, subresourceId } = resource;
         if (!versions) {
             return null;
         }
         return {
             ...versions[selectedVersion],
             uri,
+            subresourceId,
         };
     },
 );

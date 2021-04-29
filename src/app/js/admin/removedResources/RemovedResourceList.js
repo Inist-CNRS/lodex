@@ -5,16 +5,14 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import moment from 'moment';
 
-import { CardText } from 'material-ui/Card';
-
 import {
+    CardContent,
     Table,
     TableBody,
-    TableHeader,
-    TableHeaderColumn,
+    TableHead,
+    TableCell,
     TableRow,
-    TableRowColumn,
-} from 'material-ui/Table';
+} from '@material-ui/core';
 
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import Loading from '../../lib/components/Loading';
@@ -64,55 +62,45 @@ export class RemovedResourceListComponent extends Component {
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
 
         return (
-            <CardText className="removed_resources">
-                <Table
-                    selectable={false}
-                    fixedHeader={false}
-                    style={styles.table}
-                >
-                    <TableHeader
-                        displaySelectAll={false}
-                        adjustForCheckbox={false}
-                    >
+            <CardContent className="removed_resources">
+                <Table style={styles.table}>
+                    <TableHead>
                         <TableRow>
-                            <TableHeaderColumn>
-                                {polyglot.t('removed_at')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
+                            <TableCell>{polyglot.t('removed_at')}</TableCell>
+                            <TableCell>
                                 {polyglot.t('removed_reason')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn />
+                            </TableCell>
+                            <TableCell />
                             {columns.map(({ name, label }) => (
-                                <TableHeaderColumn key={name}>
-                                    {label}
-                                </TableHeaderColumn>
+                                <TableCell key={name}>{label}</TableCell>
                             ))}
                         </TableRow>
-                    </TableHeader>
-                    <TableBody displayRowCheckbox={false}>
+                    </TableHead>
+                    <TableBody>
                         {resources.map(data => (
                             <TableRow key={data.uri}>
-                                <TableRowColumn>
+                                <TableCell>
                                     {moment(data.removedAt).format('L')}
-                                </TableRowColumn>
-                                <TableRowColumn>{data.reason}</TableRowColumn>
-                                <TableRowColumn>
+                                </TableCell>
+                                <TableCell>{data.reason}</TableCell>
+                                <TableCell>
                                     <ButtonWithStatus
                                         raised
                                         className="btn-restore-resource"
                                         loading={loading}
-                                        label={polyglot.t('restore')}
                                         onClick={this.handleRestoreResourceClick(
                                             data.uri,
                                         )}
-                                        primary
+                                        color="primary"
                                         data={data.uri}
-                                    />
-                                </TableRowColumn>
+                                    >
+                                        {polyglot.t('restore')}
+                                    </ButtonWithStatus>
+                                </TableCell>
                                 {columns.map(({ name }) => (
-                                    <TableRowColumn key={data[name]}>
+                                    <TableCell key={data[name]}>
                                         {data[name]}
-                                    </TableRowColumn>
+                                    </TableCell>
                                 ))}
                             </TableRow>
                         ))}
@@ -129,7 +117,7 @@ export class RemovedResourceListComponent extends Component {
                         showing: polyglot.t('showing'),
                     }}
                 />
-            </CardText>
+            </CardContent>
         );
     }
 }

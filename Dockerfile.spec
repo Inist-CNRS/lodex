@@ -2,6 +2,7 @@ FROM node:12
 
 RUN mkdir /app
 COPY ./package.json /app
+COPY ./package-lock.json /app
 
 WORKDIR /app
 

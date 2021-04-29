@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
+import EditIcon from '@material-ui/icons/Edit';
 import withHandlers from 'recompose/withHandlers';
 
 import EditFieldForm, { FORM_NAME } from './EditFieldForm';
@@ -16,10 +16,10 @@ import {
 import getFieldClassName from '../../lib/getFieldClassName';
 import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 import { openEditFieldValue, closeEditFieldValue } from '../';
-import { COVER_DATASET } from '../../../../common/cover';
+import { SCOPE_DATASET } from '../../../../common/scope';
 import { saveResource } from '../../public/resource';
 import { updateCharacteristics } from '../../characteristic';
-import { grey400 } from 'material-ui/styles/colors';
+import { grey } from '@material-ui/core/colors';
 
 import stylesToClassname from '../../lib/stylesToClassName';
 
@@ -27,21 +27,24 @@ const styles = stylesToClassname(
     {
         name: {
             float: 'right',
-            color: grey400,
+            color: grey[400],
             fontSize: '1rem',
         },
     },
     'field-edit-button',
 );
 
-const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
+const mapStateToProps = (
+    state,
+    { field, resource, onSaveProperty, p, warningMessage },
+) => ({
     open: fromFields.isFieldEdited(state, field.name),
     show:
         fromUser.isAdmin(state) &&
-        (field.cover === COVER_DATASET ||
+        (field.scope === SCOPE_DATASET ||
             fromResource.isLastVersionSelected(state)),
     saving:
-        field.cover === COVER_DATASET
+        field.scope === SCOPE_DATASET
             ? fromCharacteristic.isSaving(state)
             : fromResource.isSaving(state),
     form: (
@@ -49,6 +52,7 @@ const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
             field={field}
             onSaveProperty={onSaveProperty}
             resource={resource}
+            warningMessage={warningMessage}
         />
     ),
     formName: FORM_NAME,
@@ -79,7 +83,7 @@ export default compose(
             saveResource,
             field,
         }) => resource =>
-            field.cover === COVER_DATASET
+            field.scope === SCOPE_DATASET
                 ? updateCharacteristics(resource)
                 : saveResource({ field, resource }),
         handleClose: ({ closeEditFieldValue }) => closeEditFieldValue,

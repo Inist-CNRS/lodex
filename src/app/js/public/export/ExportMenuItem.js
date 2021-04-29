@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import MenuItem from 'material-ui/MenuItem';
+import { MenuItem } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const ExportMenuItem = ({ label, p: polyglot, handleClick }) => (
-    <MenuItem primaryText={polyglot.t(label)} onClick={handleClick} />
+    <MenuItem onClick={handleClick}>{polyglot.t(label)}</MenuItem>
 );
 
 ExportMenuItem.propTypes = {

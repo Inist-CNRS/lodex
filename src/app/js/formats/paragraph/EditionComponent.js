@@ -8,15 +8,17 @@ const FormTextField = props => {
         label,
         meta: { touched, error },
     } = props;
+
     return (
         <DefaultEdition
             {...props}
             {...input}
-            hintText={label}
-            floatingLabelText={label}
-            multiLine
+            placeholder={label}
+            label={label}
+            multiline
             rows={4}
-            errorText={touched && error}
+            error={touched && !!error}
+            helperText={touched && error}
         />
     );
 };

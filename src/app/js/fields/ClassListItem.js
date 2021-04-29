@@ -4,9 +4,8 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton';
-import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
+import { IconButton, MenuItem } from '@material-ui/core';
+import ActionDeleteIcon from '@material-ui/icons/Delete';
 import FormAutoCompleteField from '../lib/components/FormAutoCompleteField';
 import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -57,7 +56,7 @@ export const ClassListItem = ({
                 style={styles.field}
                 allowNewItem
                 fullWidth
-                hintText={polyglot.t('enter_class')}
+                placeholder={polyglot.t('enter_class')}
                 label={`${polyglot.t('class')} ${parseInt(
                     /\d+/.exec(fieldName)[0],
                     10,

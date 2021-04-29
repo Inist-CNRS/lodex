@@ -14,9 +14,11 @@ import removedResources from './removedResources';
 import upload from './upload';
 import user from '../user';
 import clear from './clear';
+import dump from './dump';
 import characteristic from '../characteristic';
 import progress from './progress/reducer';
 import loaders from './loader';
+import subresource from './subresource';
 
 const reducer = combineReducers({
     fetch: fetchReducer,
@@ -24,6 +26,7 @@ const reducer = combineReducers({
     form,
     i18n,
     import: importReducer,
+    dump,
     polyglot,
     parsing,
     publication,
@@ -36,6 +39,7 @@ const reducer = combineReducers({
     characteristic,
     progress,
     loaders,
+    subresource,
 });
 
 export default reducer;

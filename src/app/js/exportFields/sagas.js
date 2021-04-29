@@ -5,18 +5,23 @@ import { fromUser } from '../sharedSelectors';
 import { EXPORT_FIELDS, exportFieldsError } from './';
 import downloadFile from '../lib/downloadFile';
 
-export function* handleExportPublishedDatasetSuccess() {
+export function* handleExportFields() {
     const request = yield select(fromUser.getExportFieldsRequest);
-    const { error, response } = yield call(fetchSaga, request, [], 'blob');
+    const { error, response, filename } = yield call(
+        fetchSaga,
+        request,
+        [],
+        'blob',
+    );
 
     if (error) {
         yield put(exportFieldsError(error));
         return;
     }
 
-    yield call(downloadFile, response, 'lodex_export.json');
+    yield call(downloadFile, response, filename[0]);
 }
 
 export default function*() {
-    yield takeEvery(EXPORT_FIELDS, handleExportPublishedDatasetSuccess);
+    yield takeEvery(EXPORT_FIELDS, handleExportFields);
 }

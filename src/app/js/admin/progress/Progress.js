@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Dialog from 'material-ui/Dialog';
+import {
+    Dialog,
+    LinearProgress,
+    DialogTitle,
+    DialogContent,
+} from '@material-ui/core';
 import { connect } from 'react-redux';
-import LinearProgress from 'material-ui/LinearProgress';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 
@@ -11,7 +15,7 @@ import { loadProgress, clearProgress } from './reducer';
 import { PENDING } from '../../../../common/progressStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-export class Progress extends Component {
+export class ProgressComponent extends Component {
     UNSAFE_componentWillMount() {
         this.props.loadProgress();
     }
@@ -50,51 +54,46 @@ export class Progress extends Component {
 
         if (error) {
             return (
-                <Dialog
-                    title={polyglot.t(status)}
-                    actions={[]}
-                    modal={false}
-                    open={status !== PENDING}
-                    onRequestClose={clearProgress}
-                >
-                    <div>{polyglot.t('progress_error')}</div>
+                <Dialog open={status !== PENDING} onClose={clearProgress}>
+                    <DialogTitle>{polyglot.t(status)}</DialogTitle>
+                    <DialogContent>
+                        <div>{polyglot.t('progress_error')}</div>
+                    </DialogContent>
                 </Dialog>
             );
         }
 
         return (
-            <Dialog
-                title={polyglot.t(status)}
-                actions={[]}
-                modal={false}
-                open={status !== PENDING}
-            >
-                <div className="progress">
-                    <LinearProgress
-                        mode="determinate"
-                        min={0}
-                        max={target || 0}
-                        value={progress || 0}
-                    />
-                    {this.renderProgressText()}
-                </div>
+            <Dialog open={status !== PENDING}>
+                <DialogTitle>{polyglot.t(status)}</DialogTitle>
+                <DialogContent>
+                    <div className="progress">
+                        <LinearProgress
+                            mode="determinate"
+                            min={0}
+                            max={target || 0}
+                            value={progress || 0}
+                        />
+                        {this.renderProgressText()}
+                    </div>
+                </DialogContent>
             </Dialog>
         );
     }
 }
 
-Progress.propTypes = {
+ProgressComponent.propTypes = {
     status: PropTypes.string.isRequired,
-    target: PropTypes.number.isRequired,
-    progress: PropTypes.number.isRequired,
+    target: PropTypes.number,
+    progress: PropTypes.number,
     symbol: PropTypes.string,
     loadProgress: PropTypes.func.isRequired,
-    error: PropTypes.bool.isRequired,
+    error: PropTypes.bool,
     clearProgress: PropTypes.func.isRequired,
     p: polyglotPropTypes,
 };
 
-Progress.defaultProps = {
+ProgressComponent.defaultProps = {
     symbol: null,
 };
 
@@ -110,4 +109,4 @@ const mapDispatchToProps = {
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
-)(Progress);
+)(ProgressComponent);

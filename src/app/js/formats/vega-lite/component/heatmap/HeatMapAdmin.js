@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
 import PropTypes from 'prop-types';
+import { Checkbox, FormControlLabel } from '@material-ui/core';
+
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
-import Checkbox from 'material-ui/Checkbox';
 import ToolTips from '../../../shared/ToolTips';
 
 const styles = {
@@ -68,6 +69,10 @@ class HeatMapAdmin extends Component {
 
     static defaultProps = {
         args: defaultArgs,
+        showMaxSize: false,
+        showMaxValue: false,
+        showMinValue: false,
+        showOrderBy: false,
     };
 
     constructor(props) {
@@ -81,8 +86,12 @@ class HeatMapAdmin extends Component {
         updateAdminArgs('params', params, this.props);
     };
 
-    handleColorSchemeChange = (event, index, colorScheme) => {
-        updateAdminArgs('colorScheme', colorScheme.split(','), this.props);
+    handleColorSchemeChange = (_, colorScheme) => {
+        updateAdminArgs(
+            'colorScheme',
+            colorScheme.props.value.split(','),
+            this.props,
+        );
     };
 
     toggleFlipAxis = () => {
@@ -152,11 +161,15 @@ class HeatMapAdmin extends Component {
                     style={styles.input}
                     value={colorScheme}
                 />
-                <Checkbox
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleFlipAxis}
+                            style={styles.input}
+                            checked={flipAxis}
+                        />
+                    }
                     label={polyglot.t('flip_axis')}
-                    onCheck={this.toggleFlipAxis}
-                    style={styles.input}
-                    checked={flipAxis}
                 />
             </div>
         );

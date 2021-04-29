@@ -1,13 +1,13 @@
 import getDocumentTransformer from './getDocumentTransformer';
 
 export const publishCharacteristicsFactory = ({ getDocumentTransformer }) =>
-    async function publishCharacteristics(ctx, datasetCoverFields, count) {
-        if (!datasetCoverFields.length) {
+    async function publishCharacteristics(ctx, datasetScopeFields, count) {
+        if (!datasetScopeFields.length) {
             return;
         }
         const getPublishedCharacteristics = getDocumentTransformer(
             ctx.dataset.findBy,
-            datasetCoverFields,
+            datasetScopeFields,
         );
 
         const [lastResource] = await ctx.dataset.findLimitFromSkip(

@@ -4,20 +4,16 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import {
-    Table,
-    TableHeader,
-    TableHeaderColumn,
-    TableRow,
-} from 'material-ui/Table';
+import { Table, TableHead, TableCell, TableRow } from '@material-ui/core';
+
+import { changePosition } from '../';
+import OntologyFieldList from './OntologyFieldList';
+import { fromFields } from '../../sharedSelectors';
 
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import { changePosition } from '../';
-import OntologyFieldList from './OntologyFieldList';
-import { fromFields } from '../../sharedSelectors';
 
 const styles = {
     table: {
@@ -31,47 +27,33 @@ const styles = {
 
 class OntologyTable extends Component {
     handleSortEnd = ({ oldIndex, newIndex }) => {
-        const { handleChangePosition, title } = this.props;
+        const { handleChangePosition, filter } = this.props;
         handleChangePosition({
             newPosition: newIndex,
             oldPosition: oldIndex,
-            type: title,
+            type: filter,
         });
     };
 
     render() {
-        const { title, fields, p: polyglot } = this.props;
+        const { filter, fields, p: polyglot } = this.props;
 
         return (
-            <div className={`ontology-table-${title}`}>
-                <h4>{polyglot.t(title)}</h4>
-                <Table fixedHeader={false} style={styles.table}>
-                    <TableHeader
-                        displaySelectAll={false}
-                        adjustForCheckbox={false}
-                    >
+            <div className={`ontology-table-${filter}`}>
+                <Table style={styles.table}>
+                    <TableHead>
                         <TableRow>
-                            <TableHeaderColumn />
-                            <TableHeaderColumn>
-                                {polyglot.t('identifier')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('label')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('cover')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('scheme')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
+                            <TableCell style={{ minWidth: 150 }} />
+                            <TableCell>{polyglot.t('identifier')}</TableCell>
+                            <TableCell>{polyglot.t('label')}</TableCell>
+                            <TableCell>{polyglot.t('scope')}</TableCell>
+                            <TableCell>{polyglot.t('scheme')}</TableCell>
+                            <TableCell>
                                 {polyglot.t('count_of_field')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('language')}
-                            </TableHeaderColumn>
+                            </TableCell>
+                            <TableCell>{polyglot.t('language')}</TableCell>
                         </TableRow>
-                    </TableHeader>
+                    </TableHead>
                     <OntologyFieldList
                         lockAxis="y"
                         useDragHandle
@@ -87,12 +69,12 @@ class OntologyTable extends Component {
 OntologyTable.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     handleChangePosition: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
+    filter: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = (state, { title }) => ({
-    fields: fromFields.getOntologyFields(state, title),
+const mapStateToProps = (state, { filter }) => ({
+    fields: fromFields.getFromFilterFields(state, filter),
 });
 
 const mapDispatchToProps = {

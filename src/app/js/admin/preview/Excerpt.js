@@ -9,10 +9,10 @@ import memoize from 'lodash.memoize';
 import {
     Table,
     TableBody,
-    TableHeader,
-    TableHeaderColumn,
+    TableHead,
+    TableCell,
     TableRow,
-} from 'material-ui/Table';
+} from '@material-ui/core';
 
 import {
     polyglot as polyglotPropTypes,
@@ -22,23 +22,25 @@ import ExcerptHeader from './ExcerptHeader';
 import ExcerptRemoveColumn from './ExcerptRemoveColumn';
 import ExcerptLine from './ExcerptLine';
 import getFieldClassName from '../../lib/getFieldClassName';
+import { URI_FIELD_NAME } from '../../../../common/uris';
 
 const styles = {
     header: {
         cursor: 'pointer',
     },
     table: memoize(separated => ({
-        display: 'block',
+        display: separated ? 'block' : 'table',
         overflowX: 'auto',
         width: 'auto',
-        borderLeft: separated ? 'none' : '1px solid rgb(224, 224, 224)',
+        minWidth: separated ? '150px' : '100%',
+        border: separated ? 'none' : '1px solid rgb(224, 224, 224)',
     })),
     cell: {
         cursor: 'pointer',
     },
 };
 
-const getColStyle = memoize(style => Object.assign(styles.header, style));
+const getColStyle = memoize(style => ({ ...styles.header, ...style }));
 
 export const ExcerptComponent = ({
     colStyle,
@@ -51,22 +53,20 @@ export const ExcerptComponent = ({
     p: polyglot,
     isPreview = false,
 }) => (
-    <Table
-        className={className}
-        selectable={false}
-        fixedHeader={false}
-        style={styles.table(isPreview)}
-        onCellClick={onCellClick}
-    >
-        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-            <TableRow onCellClick={onHeaderClick}>
+    <Table className={className} style={styles.table(isPreview)}>
+        <TableHead>
+            <TableRow>
                 {columns.map(field => (
-                    <TableHeaderColumn
+                    <TableCell
                         key={field.name}
                         className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
                             field,
                         )}`}
                         style={getColStyle(colStyle)}
+                        onClick={() =>
+                            field.name !== URI_FIELD_NAME &&
+                            onHeaderClick(field.name)
+                        }
                         tooltip={
                             areHeadersClickable
                                 ? polyglot.t('click_to_edit_publication_field')
@@ -74,11 +74,22 @@ export const ExcerptComponent = ({
                         }
                     >
                         <ExcerptHeader field={field} />
-                    </TableHeaderColumn>
+                    </TableCell>
                 ))}
             </TableRow>
-        </TableHeader>
-        <TableBody displayRowCheckbox={false}>
+        </TableHead>
+        <TableBody>
+            {areHeadersClickable && (
+                <TableRow>
+                    {columns.map(c => (
+                        <ExcerptRemoveColumn
+                            key={`remove_column_${c._id}`}
+                            field={c}
+                            onClick={onCellClick}
+                        />
+                    ))}
+                </TableRow>
+            )}
             {lines.map((line, index) => (
                 <ExcerptLine
                     key={`${line.uri}-${index}` || index}
@@ -86,16 +97,6 @@ export const ExcerptComponent = ({
                     columns={columns}
                 />
             ))}
-            {areHeadersClickable && (
-                <TableRow>
-                    {columns.map(c => (
-                        <ExcerptRemoveColumn
-                            key={`remove_column_${c}`}
-                            field={c}
-                        />
-                    ))}
-                </TableRow>
-            )}
         </TableBody>
     </Table>
 );
@@ -110,7 +111,7 @@ ExcerptComponent.propTypes = {
     onCellClick: PropTypes.func.isRequired,
     onHeaderClick: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    loadField: PropTypes.func.isRequired,
+    loadField: PropTypes.func,
 };
 
 ExcerptComponent.defaultProps = {
@@ -125,14 +126,14 @@ export default compose(
         areHeadersClickable: typeof onHeaderClick === 'function',
     })),
     withHandlers({
-        onHeaderClick: ({ onHeaderClick }) => (_, __, col) => {
+        onHeaderClick: ({ onHeaderClick }) => col => {
             if (onHeaderClick) {
-                onHeaderClick(col - 1);
+                onHeaderClick(col);
             }
         },
-        onCellClick: ({ onHeaderClick }) => (_, col) => {
+        onCellClick: ({ onHeaderClick }) => col => {
             if (onHeaderClick) {
-                onHeaderClick(col - 1);
+                onHeaderClick(col);
             }
         },
     }),

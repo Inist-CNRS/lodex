@@ -9,7 +9,6 @@ describe('Book Summary Format', () => {
         teardown();
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
-
         datasetImportPage.importDataset('dataset/book.csv');
         datasetImportPage.importModel('model/book.json');
         datasetImportPage.publish();
@@ -61,25 +60,8 @@ describe('Book Summary Format', () => {
             ]);
         });
 
-        it('should allow to configure format', () => {
-            bookSummary.checkYears([2003, 2002, 2001, 2000, 1999, 1998, 1997]);
-            bookSummary.openConfigure();
-            bookSummary.configureYearSort('From oldest to youngest');
-            bookSummary.saveConfiguration();
-            bookSummary.checkYears([1997, 1998, 1999, 2000, 2001, 2002, 2003]);
-            bookSummary.openConfigure();
-            bookSummary.configureYearThreshold(5);
-            bookSummary.saveConfiguration();
-            bookSummary.checkYears(['1997-1999', '2000-2003']);
-            bookSummary.openConfigure();
-            bookSummary.configureYearSort('From youngest to oldest');
-            bookSummary.saveConfiguration();
-            bookSummary.checkYears(['2000-2003', '1997-1999']);
-        });
-
         it('should allow to embed the summary into an external website', () => {
             bookSummary.openEmbedDialog();
-
             cy.contains('embedded-istex-summary').should('exist');
         });
     });

@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
-import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
+import { CircularProgress, Button } from '@material-ui/core';
 
 import {
     facetActions,
@@ -165,16 +164,17 @@ class Search extends Component {
                 {loading ? (
                     <>
                         <CircularProgress
+                            variant="indeterminate"
                             size={20}
                             className={styles.loading}
                         />{' '}
                         {polyglot.t('loading')}
                     </>
                 ) : (
-                    <FlatButton fullWidth onClick={loadMore}>
+                    <Button variant="text" fullWidth onClick={loadMore}>
                         {polyglot.t('search_load_more')} ({results.length} /{' '}
                         {total})
-                    </FlatButton>
+                    </Button>
                 )}
             </div>
         );

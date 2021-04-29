@@ -1,20 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router-dom';
 import translate from 'redux-polyglot/translate';
-import HomeIcon from 'material-ui/svg-icons/action/home';
-import { CardText, CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import HomeIcon from '@material-ui/icons/Home';
+import BackIcon from '@material-ui/icons/ArrowBack';
+import { CardContent, CardActions, Card, Button } from '@material-ui/core';
 import { Swipeable } from 'react-swipeable';
-import get from 'lodash.get';
-import isEqual from 'lodash.isequal';
 
 import { fromResource, fromSearch } from '../selectors';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
-import Card from '../../lib/components/Card';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -24,6 +21,8 @@ import { preLoadPublication } from '../../fields';
 import Link from '../../lib/components/Link';
 import stylesToClassname from '../../lib/stylesToClassName';
 import NavButton, { NEXT, PREV } from '../../lib/components/NavButton';
+import isEqual from 'lodash.isequal';
+import get from 'lodash.get';
 
 const navStyles = stylesToClassname(
     {
@@ -57,20 +56,37 @@ const buildLocationFromResource = resource =>
 
 const navigate = (history, location) => history.push(location);
 
-export class ResourceComponent extends Component {
+export class ResourceComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { lastResourceUri: null };
+    }
+
     UNSAFE_componentWillMount() {
         this.props.preLoadResource();
         this.props.preLoadPublication();
     }
 
     componentDidUpdate(prevProps) {
+        const { match } = this.props;
+
         if (
             !isEqual(
-                get(this.props, 'match.params', {}),
+                get(match, 'params', {}),
                 get(prevProps, 'match.params', {}),
             )
         ) {
             this.props.preLoadResource();
+        }
+
+        // Is not a subresource
+        if (
+            match.params &&
+            match.params.uri &&
+            !match.params.uri.includes('%2F') &&
+            match.params.uri !== this.state.lastResourceUri
+        ) {
+            this.setState({ lastResourceUri: match.params.uri });
         }
     }
 
@@ -85,6 +101,7 @@ export class ResourceComponent extends Component {
             p: polyglot,
             prevResource,
             nextResource,
+            match,
         } = this.props;
 
         if (loading) {
@@ -98,29 +115,44 @@ export class ResourceComponent extends Component {
         const backToListLabel =
             (datasetTitleKey && characteristics[datasetTitleKey]) ||
             polyglot.t('back_to_list');
+
         const backToListButton = (
-            <FlatButton
+            <Button
+                variant="text"
                 className="btn-back-to-list"
-                containerElement={<Link to="/graph" />}
-                label={backToListLabel}
-                icon={<HomeIcon />}
-            />
+                component={props => <Link to="/graph" {...props} />}
+                startIcon={<HomeIcon />}
+            >
+                {backToListLabel}
+            </Button>
         );
 
         if (!resource && !loading) {
             return (
                 <div className="not-found">
-                    <Card>
+                    <Card style={{ marginTop: '0.5rem' }}>
                         <CardActions>{backToListButton}</CardActions>
                     </Card>
-                    <Card>
-                        <CardText>
+                    <Card style={{ marginTop: '0.5rem' }}>
+                        <CardContent>
                             <h1>{polyglot.t('not_found')}</h1>
-                        </CardText>
+                        </CardContent>
                     </Card>
                 </div>
             );
         }
+
+        const goBackButton = this.state.lastResourceUri &&
+            this.state.lastResourceUri !== match.params.uri && (
+                <Button
+                    variant="text"
+                    onClick={history.goBack}
+                    startIcon={<BackIcon />}
+                >
+                    {polyglot.t('back_to_resource')}
+                </Button>
+            );
+
         const swipeableConfig = {
             preventDefaultTouchmoveEvent: true,
             trackMouse: false,
@@ -141,7 +173,6 @@ export class ResourceComponent extends Component {
                 <div className="resource">
                     {removed && <RemovedDetail />}
                     {!removed && <Detail backToListLabel={backToListLabel} />}
-
                     {prevResource && (
                         <div
                             className={classnames(
@@ -168,6 +199,11 @@ export class ResourceComponent extends Component {
                             />
                         </div>
                     )}
+                    {goBackButton && (
+                        <Card style={{ marginTop: '0.5rem' }}>
+                            <CardActions>{goBackButton}</CardActions>
+                        </Card>
+                    )}
                 </div>
             </Swipeable>
         );
@@ -187,7 +223,10 @@ ResourceComponent.defaultProps = {
 
 ResourceComponent.propTypes = {
     characteristics: PropTypes.shape({}),
-    resource: PropTypes.shape({ uri: PropTypes.string.isRequired }),
+    resource: PropTypes.shape({
+        uri: PropTypes.string.isRequired,
+        subresourceId: PropTypes.string,
+    }),
     p: polyglotPropTypes.isRequired,
     datasetTitleKey: PropTypes.string,
     loading: PropTypes.bool.isRequired,
@@ -196,6 +235,7 @@ ResourceComponent.propTypes = {
     preLoadPublication: PropTypes.func.isRequired,
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
+        goBack: PropTypes.func.isRequired,
     }),
     match: PropTypes.shape({
         params: PropTypes.shape({
@@ -208,6 +248,7 @@ ResourceComponent.propTypes = {
 
 const mapStateToProps = state => {
     const resource = fromResource.getResourceLastVersion(state);
+
     return {
         resource,
         removed: fromResource.hasBeenRemoved(state),

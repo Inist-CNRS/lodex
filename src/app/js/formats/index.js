@@ -1,6 +1,6 @@
 import get from 'lodash.get';
-import merge from '../lib/merge';
 
+import merge from '../lib/merge';
 import asterPlotChart from './asterPlotChart';
 import code from './code';
 import globalBarchart from './vega-lite/component/bar-chart/';
@@ -10,6 +10,7 @@ import emphasedNumber from './emphased-number/';
 import identifierBadge from './identifier-badge/';
 import resourcesGrid from './resources-grid/';
 import email from './email';
+import fieldClone from './fieldClone';
 import html from './html';
 import image from './image';
 import pdf from './pdf';
@@ -52,6 +53,7 @@ const components = {
     emphasedNumber,
     identifierBadge,
     email,
+    fieldClone,
     html,
     image,
     pdf,

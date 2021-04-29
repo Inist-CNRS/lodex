@@ -4,12 +4,13 @@ import {
     LOAD_PUBLICATION,
     loadPublicationSuccess,
     loadPublicationError,
+    computePublication,
 } from './';
 import { PUBLISH_SUCCESS } from '../publish';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
-export function* handleLoadPublicationRequest() {
+export function* handleLoadPublicationRequest({ payload }) {
     const request = yield select(fromUser.getLoadPublicationRequest);
 
     const { error, response: publication } = yield call(fetchSaga, request);
@@ -18,7 +19,11 @@ export function* handleLoadPublicationRequest() {
         return yield put(loadPublicationError(error));
     }
 
-    return yield put(loadPublicationSuccess(publication));
+    yield put(loadPublicationSuccess(publication));
+
+    if (payload && payload.forcePostComputation) {
+        yield put(computePublication());
+    }
 }
 
 export function* watchLoadPublicationRequest() {

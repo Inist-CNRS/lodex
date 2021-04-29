@@ -14,14 +14,12 @@ import FieldLanguageInput from '../FieldLanguageInput';
 import FieldOverviewInput from '../FieldOverviewInput';
 import FieldFormatInput from '../FieldFormatInput';
 import FieldWidthInput from '../FieldWidthInput';
-import FieldDisplayInResourceInput from '../FieldDisplayInResourceInput';
-import FieldDisplayInGraphInput from '../FieldDisplayInGraphInput';
-import FieldDisplayInHomeInput from '../FieldDisplayInHomeInput';
 import FieldIsSearchableInput from '../FieldIsSearchableInput';
 import FieldIsFacetInput from '../FieldIsFacetInput';
 import FieldComposedOf from '../FieldComposedOf';
 import FieldAnnotation from '../FieldAnnotation';
 import InvalidFieldProperties from '../InvalidFieldProperties';
+import FieldDisplayInput from '../FieldDisplay';
 
 export const FORM_NAME = 'ONTOLOGY_FIELD_FORM';
 
@@ -41,16 +39,16 @@ export const EditOntologyFieldFormComponent = ({
         <FieldLabelInput />
         <FieldSchemeInput />
         <FieldLanguageInput field={field} />
-        <FieldDisplayInResourceInput />
-        {field.cover === 'dataset' && <FieldDisplayInGraphInput />}
-        {field.cover === 'dataset' && <FieldDisplayInHomeInput />}
         <FieldOverviewInput />
         <FieldFormatInput />
         <FieldWidthInput />
         <FieldIsSearchableInput />
         <FieldIsFacetInput />
+        <div>
+            <FieldDisplayInput />
+        </div>
         <FieldComposedOf fields={fields} FORM_NAME={FORM_NAME} />
-        <FieldAnnotation fields={fields} />
+        <FieldAnnotation fields={fields} scope={field.scope} />
     </form>
 );
 

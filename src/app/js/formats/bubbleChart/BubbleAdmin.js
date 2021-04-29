@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
+import { TextField } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -68,8 +68,8 @@ class BubbleAdmin extends Component {
         updateAdminArgs('colors', colors, this.props);
     }
 
-    setDiameter = (_, diameter) => {
-        updateAdminArgs('diameter', diameter, this.props);
+    setDiameter = e => {
+        updateAdminArgs('diameter', e.target.value, this.props);
     };
 
     render() {
@@ -100,7 +100,7 @@ class BubbleAdmin extends Component {
                     polyglot={polyglot}
                 />
                 <TextField
-                    floatingLabelText={polyglot.t('diameter')}
+                    label={polyglot.t('diameter')}
                     onChange={this.setDiameter}
                     style={styles.input}
                     value={diameter}

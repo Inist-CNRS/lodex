@@ -18,6 +18,7 @@ describe('mongoClient middleware', () => {
             'db',
             'dataset',
             'field',
+            'subresource',
             'publishedCharacteristic',
             'publishedDataset',
             'publishedFacet',

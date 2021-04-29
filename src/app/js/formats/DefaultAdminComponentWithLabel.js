@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
-import TextField from 'material-ui/TextField';
+import {
+    MenuItem,
+    Select,
+    TextField,
+    FormControl,
+    InputLabel,
+} from '@material-ui/core';
+import translate from 'redux-polyglot/translate';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 
 const styles = {
     container: {
@@ -25,47 +31,52 @@ class DefaultAdminComponentWithLabel extends Component {
             value: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
+        p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
         args: defaultArgs,
     };
 
-    setType = (event, index, type) => {
-        const newArgs = { ...this.props.args, type };
+    setType = e => {
+        const newArgs = { ...this.props.args, type: e.target.value };
         this.props.onChange(newArgs);
     };
 
-    setValue = (_, value) => {
-        const newArgs = { ...this.props.args, value };
+    setValue = e => {
+        const newArgs = { ...this.props.args, value: e.target.value };
         this.props.onChange(newArgs);
     };
 
     render() {
-        const { type, value } = this.props.args;
+        const {
+            p: polyglot,
+            args: { type, value },
+        } = this.props;
 
         return (
             <div style={styles.container}>
-                <SelectField
-                    floatingLabelText="Select a format"
-                    onChange={this.setType}
-                    style={styles.input}
-                    value={type}
-                >
-                    <MenuItem value="value" primaryText="The column content" />
-                    <MenuItem
-                        value="text"
-                        primaryText="A custom text (same for all resources)"
-                    />
-                    <MenuItem
-                        value="column"
-                        primaryText="Another column content"
-                    />
-                </SelectField>
-
+                <FormControl fullWidth>
+                    <InputLabel>{polyglot.t('select_a_format')}</InputLabel>
+                    <Select
+                        onChange={this.setType}
+                        style={styles.input}
+                        value={type}
+                    >
+                        <MenuItem value="value">
+                            {polyglot.t('item_column_content')}
+                        </MenuItem>
+                        <MenuItem value="text">
+                            {polyglot.t('item_custom_text')}
+                        </MenuItem>
+                        <MenuItem value="column">
+                            {polyglot.t('item_other_column_content')}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
                 {type !== 'value' && (
                     <TextField
-                        floatingLabelText={
+                        label={
                             type !== 'text' ? 'Custom text' : "Column's name"
                         }
                         onChange={this.setValue}
@@ -78,4 +89,4 @@ class DefaultAdminComponentWithLabel extends Component {
     }
 }
 
-export default DefaultAdminComponentWithLabel;
+export default translate(DefaultAdminComponentWithLabel);

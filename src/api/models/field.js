@@ -1,14 +1,15 @@
 import omit from 'lodash.omit';
 import pick from 'lodash.pick';
-import { ObjectID } from 'mongodb';
+import { ObjectID, ObjectId } from 'mongodb';
 
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
 import { URI_FIELD_NAME } from '../../common/uris';
-import { COVER_DOCUMENT, COVER_COLLECTION } from '../../common/cover';
+import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../common/scope';
 import generateUid from '../services/generateUid';
+import { castIdsFactory } from './utils';
 
 export const buildInvalidPropertiesMessage = name =>
-    `Invalid data for field ${name} which need a name, a label, a cover, a valid scheme if specified and a transformers array`;
+    `Invalid data for field ${name} which need a name, a label, a scope, a valid scheme if specified and a transformers array`;
 
 export const buildInvalidTransformersMessage = name =>
     `Invalid transformers for field ${name}: transformers must have a valid operation and an args array`;
@@ -29,6 +30,55 @@ export const validateField = (data, isContribution) => {
     return data;
 };
 
+const createSubresourceUriField = subresource => ({
+    scope: SCOPE_COLLECTION,
+    label: URI_FIELD_NAME,
+    name: `${subresource._id}_${URI_FIELD_NAME}`,
+    subresourceId: subresource._id,
+    transformers: [
+        {
+            operation: 'COLUMN',
+            args: [
+                {
+                    name: 'column',
+                    type: 'column',
+                    value: subresource.path,
+                },
+            ],
+        },
+        {
+            operation: 'PARSE',
+        },
+        {
+            operation: 'GET',
+            args: [
+                {
+                    name: 'path',
+                    type: 'string',
+                    value: subresource.identifier,
+                },
+            ],
+        },
+        { operation: 'STRING' },
+        {
+            operation: 'REPLACE_REGEX',
+            args: [
+                {
+                    name: 'searchValue',
+                    type: 'string',
+                    value: '^(.*)$',
+                },
+                {
+                    name: 'replaceValue',
+                    type: 'string',
+                    value: `${subresource._id}/$1`,
+                },
+            ],
+        },
+    ],
+    position: 1,
+});
+
 export default async db => {
     const collection = db.collection('field');
 
@@ -37,7 +87,7 @@ export default async db => {
     collection.findAll = async () =>
         collection
             .find({})
-            .sort({ position: 1, cover: 1 })
+            .sort({ position: 1, scope: 1 })
             .toArray();
 
     collection.findSearchableNames = async () => {
@@ -140,6 +190,14 @@ export default async db => {
     collection.removeById = id =>
         collection.remove({ _id: new ObjectID(id), name: { $ne: 'uri' } });
 
+    collection.removeBySubresource = subresourceId =>
+        collection.remove({
+            $or: [
+                { subresourceId: new ObjectID(subresourceId) },
+                { subresourceId },
+            ],
+        });
+
     collection.addContributionField = async (
         field,
         contributor,
@@ -151,7 +209,7 @@ export default async db => {
         await validateField(
             {
                 ...field,
-                cover: COVER_DOCUMENT,
+                scope: SCOPE_DOCUMENT,
                 name,
                 position,
             },
@@ -162,7 +220,7 @@ export default async db => {
             const fieldData = {
                 ...pick(field, ['name', 'label', 'scheme']),
                 name,
-                cover: COVER_DOCUMENT,
+                scope: SCOPE_DOCUMENT,
                 contribution: true,
                 position,
                 transformers: [
@@ -196,7 +254,7 @@ export default async db => {
                 {
                     $set: {
                         ...pick(field, ['label', 'scheme']),
-                        cover: COVER_DOCUMENT,
+                        scope: SCOPE_DOCUMENT,
                         contribution: true,
                     },
                 },
@@ -213,7 +271,7 @@ export default async db => {
             {
                 $set: {
                     ...pick(field, ['label', 'scheme']),
-                    cover: COVER_DOCUMENT,
+                    scope: SCOPE_DOCUMENT,
                     contribution: true,
                 },
                 $addToSet: {
@@ -230,14 +288,69 @@ export default async db => {
 
         if (!uriColumn) {
             await collection.insertOne({
-                cover: COVER_COLLECTION,
+                scope: SCOPE_COLLECTION,
                 label: URI_FIELD_NAME,
                 name: URI_FIELD_NAME,
-                display_on_list: true,
-                transformers: [],
+                transformers: [
+                    {
+                        operation: 'AUTOGENERATE_URI',
+                        args: [],
+                    },
+                ],
                 position: 0,
             });
         }
+    };
+
+    collection.initializeSubresourceModel = async subresource => {
+        const newField = createSubresourceUriField(subresource);
+
+        await collection.updateOne(
+            {
+                name: `${subresource._id}_${URI_FIELD_NAME}`,
+            },
+            newField,
+            {
+                upsert: true,
+            },
+        );
+    };
+
+    collection.updateSubresourcePaths = async subresource => {
+        const fields = await collection
+            .find({ subresourceId: subresource._id })
+            .toArray();
+
+        const updatedFields = fields.map(field => {
+            const [columnTransformer, ...transformers] = field.transformers;
+
+            return {
+                ...field,
+                transformers: [
+                    {
+                        ...columnTransformer,
+                        args: [
+                            {
+                                ...columnTransformer.args[0],
+                                value: subresource.path,
+                            },
+                        ],
+                    },
+                    ...transformers,
+                ],
+            };
+        });
+
+        await Promise.all(
+            updatedFields.map(uf =>
+                collection.updateOne(
+                    {
+                        _id: new ObjectId(uf._id),
+                    },
+                    uf,
+                ),
+            ),
+        );
     };
 
     collection.getHighestPosition = async () => {
@@ -278,6 +391,8 @@ export default async db => {
 
         return fields[name];
     };
+
+    collection.castIds = castIdsFactory(collection);
 
     return collection;
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CircularProgress from 'material-ui/CircularProgress';
+import { CircularProgress } from '@material-ui/core';
 
 const styles = {
     container: {
@@ -19,7 +19,11 @@ const styles = {
 const Loading = ({ children }) => (
     <div className="loading" style={styles.container}>
         <div style={styles.textContainer}>
-            <CircularProgress style={styles.progress} size={20} />
+            <CircularProgress
+                variant="indeterminate"
+                style={styles.progress}
+                size={20}
+            />
             {children}
         </div>
     </div>

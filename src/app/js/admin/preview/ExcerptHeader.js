@@ -4,26 +4,54 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
 import memoize from 'lodash.memoize';
+import HiddenIcon from '@material-ui/icons/VisibilityOff';
 
+import { SCOPE_DATASET } from '../../../../common/scope';
 import { fromFields } from '../../sharedSelectors';
+import getFieldClassName from '../../lib/getFieldClassName';
+import { isLongText, getShortText } from '../../lib/longTexts';
+import { URI_FIELD_NAME } from '../../../../common/uris';
+
 import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
 } from '../../propTypes';
-import getFieldClassName from '../../lib/getFieldClassName';
-import { isLongText, getShortText } from '../../lib/longTexts';
 
-const getStyle = memoize(field =>
-    field.cover === 'dataset'
-        ? {
-              fontWeight: 'bold',
-              color: 'black',
-          }
-        : null,
-);
+const getStyle = memoize(field => {
+    if (field.scope === SCOPE_DATASET) {
+        return {
+            fontWeight: 'bold',
+            color: 'black',
+        };
+    }
+
+    if (field.name === URI_FIELD_NAME) {
+        return { cursor: 'initial' };
+    }
+
+    return null;
+});
+
+const titleStyle = {
+    titleBlock: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    titleId: {
+        fontWeight: 'lighter',
+        fontStyle: 'italic',
+        display: 'flex',
+    },
+    hidden: {
+        marginLeft: 5,
+    },
+};
 
 const ensureTextIsShort = text =>
     isLongText(text) ? getShortText(text) : text;
+
+const isVisible = field =>
+    field.display ? null : <HiddenIcon style={titleStyle.hidden} />;
 
 const ComposedOf = ({ compositeFields, polyglot }) => {
     if (!compositeFields.length) {
@@ -50,7 +78,12 @@ const ExcerptHeaderComponent = ({
     p: polyglot,
 }) => (
     <div style={getStyle(field)}>
-        {ensureTextIsShort(field.label || field.name)}
+        <p style={titleStyle.titleBlock}>
+            <span>{ensureTextIsShort(field.label)}</span>
+            <span style={titleStyle.titleId} data-field-name={field.name}>
+                ( {ensureTextIsShort(field.name)} ) {isVisible(field)}
+            </span>
+        </p>
         {completedField && (
             <div className={`completes_${getFieldClassName(completedField)}`}>
                 {polyglot.t('completes_field_X', {

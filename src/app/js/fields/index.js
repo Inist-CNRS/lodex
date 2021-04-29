@@ -12,6 +12,8 @@ import fieldSelectors, {
     NEW_CHARACTERISTIC_FORM_NAME as formName,
 } from './selectors';
 
+import { SCOPE_COLLECTION } from '../../../common/scope';
+
 export const selectors = fieldSelectors;
 export const NEW_CHARACTERISTIC_FORM_NAME = formName;
 
@@ -111,12 +113,12 @@ export const defaultState = {
     invalidProperties: [],
 };
 
-const getDefaultField = (name, index) => ({
-    cover: 'collection',
+const getDefaultField = (name, index, rest = {}) => ({
+    scope: SCOPE_COLLECTION,
     label: name || `newField ${index + 1}`,
     name: 'new',
-    display_in_resource: true,
-    searchable: true,
+    display: true,
+    searchable: false,
     transformers: name
         ? [
               {
@@ -134,19 +136,24 @@ const getDefaultField = (name, index) => ({
     classes: [],
     position: index,
     overview: 0,
+    ...rest,
 });
 
 export default handleActions(
     {
-        ADD_FIELD: (state, { payload: name }) => ({
-            ...state,
-            editedFieldName: 'new',
-            list: [...state.list, 'new'],
-            byName: {
-                ...state.byName,
-                new: getDefaultField(name, state.list.length),
-            },
-        }),
+        ADD_FIELD: (state, { payload }) => {
+            const { name, ...rest } = payload || {};
+
+            return {
+                ...state,
+                editedFieldName: 'new',
+                list: [...state.list, 'new'],
+                byName: {
+                    ...state.byName,
+                    new: getDefaultField(name, state.list.length, rest),
+                },
+            };
+        },
         LOAD_FIELD: state => ({ ...state, loading: true }),
         LOAD_FIELD_SUCCESS: (state, { payload: fields }) => {
             const { catalog, list } = getCatalogFromArray(fields, 'name');
@@ -169,6 +176,13 @@ export default handleActions(
                     list: [...state.list.slice(0, -1)],
                 };
             }
+
+            if (typeof payload === 'number') {
+                console.warn(
+                    'Edit field using an index is deprecated, please use the field name instead',
+                );
+            }
+
             return {
                 ...state,
                 editedFieldName:

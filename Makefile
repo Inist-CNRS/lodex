@@ -143,6 +143,7 @@ clear-database: ## Clear the whole database
 		db.field.remove({}); \
 		db.dataset.remove({}); \
 		db.publishedFacet.remove({}); \
+		db.subresource.remove({}); \
 	"
 clear-publication: ## Clear the published data, keep uploaded dataset and model
 	docker-compose exec mongo mongo lodex --eval " \

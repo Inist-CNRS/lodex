@@ -1,5 +1,5 @@
 import React from 'react';
-import Checkbox from 'material-ui/Checkbox';
+import { Checkbox, FormControlLabel } from '@material-ui/core';
 import memoize from 'lodash.memoize';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
@@ -12,11 +12,15 @@ const isChecked = memoize(value => {
 });
 
 const FormCheckboxField = ({ input, label, meta, ...custom }) => (
-    <Checkbox
+    <FormControlLabel
+        control={
+            <Checkbox
+                checked={isChecked(input.value)}
+                onChange={input.onChange}
+                {...custom}
+            />
+        }
         label={label}
-        checked={isChecked(input.value)}
-        onCheck={input.onChange}
-        {...custom}
     />
 );
 

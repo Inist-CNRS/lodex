@@ -113,18 +113,21 @@ describe('characteristic', () => {
                 const fields = [
                     {
                         name: 'lothal',
+                        scope: 'dataset',
                         completes: false,
-                        display_in_home: true,
+                        display: true,
                     },
                     {
                         name: 'mandalore',
+                        scope: 'dataset',
                         completes: false,
-                        display_in_home: false,
+                        display: false,
                     },
                     {
                         name: 'malachor',
+                        scope: 'dataset',
                         completes: false,
-                        display_in_home: true,
+                        display: true,
                     },
                 ];
 
@@ -138,13 +141,13 @@ describe('characteristic', () => {
                 const c1 = characteristics[0];
                 expect(c1.name).toEqual('lothal');
                 expect(c1.completes).toEqual(false);
-                expect(c1.display_in_home).toEqual(true);
+                expect(c1.display).toEqual(true);
                 expect(c1.value).toEqual('ezra');
 
                 const c2 = characteristics[1];
                 expect(c2.name).toEqual('malachor');
                 expect(c2.completes).toEqual(false);
-                expect(c2.display_in_home).toEqual(true);
+                expect(c2.display).toEqual(true);
                 expect(c2.value).toEqual('ahsoka');
             });
         });

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FileDownload from 'material-ui/svg-icons/file/file-download';
+import FileDownload from '@material-ui/icons/GetApp';
 import Link from '../../lib/components/Link';
 
 import {
@@ -28,7 +28,12 @@ IstexDocument.propTypes = {
 };
 
 export const getComposedComponent = () =>
-    composeRenderProps([IstexCitationList, JournalFold, IstexCitationList, IstexDocument]);
+    composeRenderProps([
+        IstexCitationList,
+        JournalFold,
+        IstexCitationList,
+        IstexDocument,
+    ]);
 
 const styles = stylesToClassname(
     {

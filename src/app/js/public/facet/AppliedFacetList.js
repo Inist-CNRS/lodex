@@ -1,7 +1,7 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import Chip from 'material-ui/Chip';
+import { Chip } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -39,9 +39,11 @@ export const AppliedFacetListComponent = ({
                     }),
                 )}
                 {facets.length && (
-                    <Chip style={styles.chip} onClick={clearAll}>
-                        {polyglot.t('clear_all')}
-                    </Chip>
+                    <Chip
+                        style={styles.chip}
+                        onClick={clearAll}
+                        label={polyglot.t('clear_all')}
+                    />
                 )}
             </div>
         ) : null}

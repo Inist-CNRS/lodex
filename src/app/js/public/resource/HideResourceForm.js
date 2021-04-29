@@ -42,7 +42,7 @@ export const HideResourceFormComponent = ({
             component={FormTextField}
             label={polyglot.t('enter_reason')}
             fullWidth
-            multiLine
+            multiline
         />
     </form>
 );

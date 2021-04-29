@@ -1,22 +1,26 @@
+import publishFacets from './publishFacets';
+import { validateField } from '../../models/field';
+import indexSearchableFields from '../../services/indexSearchableFields';
+
 import {
     setup,
     getAllField,
     exportFields,
-    exportFieldsReady,
     importFields,
     postField,
     putField,
     removeField,
     reorderField,
+    backupFields,
+    restoreFields,
 } from './field';
-import publishFacets from './publishFacets';
-import { validateField } from '../../models/field';
+
 import {
-    COVER_DATASET,
-    COVER_COLLECTION,
-    COVER_DOCUMENT,
-} from '../../../common/cover';
-import indexSearchableFields from '../../services/indexSearchableFields';
+    SCOPE_DATASET,
+    SCOPE_GRAPHIC,
+    SCOPE_COLLECTION,
+    SCOPE_DOCUMENT,
+} from '../../../common/scope';
 
 jest.mock('../../services/indexSearchableFields');
 
@@ -24,6 +28,7 @@ describe('field routes', () => {
     beforeAll(() => {
         indexSearchableFields.mockImplementation(() => null);
     });
+
     describe('setup', () => {
         it('should add validateField to ctx and call next', async () => {
             const ctx = {};
@@ -34,6 +39,8 @@ describe('field routes', () => {
             expect(ctx).toEqual({
                 publishFacets,
                 validateField,
+                backupFields,
+                restoreFields,
             });
         });
 
@@ -50,6 +57,8 @@ describe('field routes', () => {
                 validateField,
                 body: { error: 'Boom' },
                 status: 500,
+                backupFields,
+                restoreFields,
             });
         });
     });
@@ -72,222 +81,87 @@ describe('field routes', () => {
         });
     });
 
-    describe('exportFieldsReady', () => {
-        it('should call ctx.field.findAll and pass the result with correct transformers', async () => {
-            const ctx = {
-                field: {
-                    findAll: jest.fn().mockImplementation(() =>
-                        Promise.resolve([
-                            {
-                                name: 'field1',
-                                label: 'column1',
-                                _id: 'id1',
-                            },
-                            {
-                                name: 'field2',
-                                label: 'column2',
-                                _id: 'id2',
-                            },
-                        ]),
-                    ),
-                },
-                attachment: jest.fn(),
-            };
-
-            await exportFieldsReady(ctx);
-            expect(ctx.field.findAll).toHaveBeenCalled();
-            expect(ctx.body).toEqual(
-                JSON.stringify(
-                    [
-                        {
-                            name: 'field1',
-                            label: 'column1',
-                            transformers: [
-                                {
-                                    operation: 'COLUMN',
-                                    args: [
-                                        {
-                                            name: 'column',
-                                            type: 'column',
-                                            value: 'column1',
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                        {
-                            name: 'field2',
-                            label: 'column2',
-                            transformers: [
-                                {
-                                    operation: 'COLUMN',
-                                    args: [
-                                        {
-                                            name: 'column',
-                                            type: 'column',
-                                            value: 'column2',
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                    ],
-                    null,
-                    4,
-                ),
-            );
-            expect(ctx.attachment).toHaveBeenCalledWith('lodex_model.json');
-            expect(ctx.type).toBe('application/json');
-        });
-    });
-
     describe('exportFields', () => {
-        it('should call ctx.field.findAll and pass the result to ctx.body with correct headers', async () => {
-            const ctx = {
-                field: {
-                    findAll: jest.fn().mockImplementation(() =>
-                        Promise.resolve([
-                            { name: 'field1', _id: 'id1' },
-                            { name: 'field2', _id: 'id2' },
-                        ]),
-                    ),
-                },
-                attachment: jest.fn(),
-            };
+        const ctx = {
+            req: 'request',
+            set: jest.fn(),
+            res: 'result',
+            backupFields: jest
+                .fn()
+                .mockImplementation(() => Promise.resolve('BACKUP OK')),
+        };
+
+        beforeEach(() => {
+            ctx.backupFields.mockClear();
+            ctx.set.mockClear();
+        });
+
+        it('should call rawBody and return 200 in ctx.status', async () => {
+            await exportFields(ctx);
+
+            expect(ctx.set.mock.calls[0][0]).toBe('Content-disposition');
+            expect(
+                ctx.set.mock.calls[0][1].startsWith(
+                    'attachment; filename=model_',
+                ) && ctx.set.mock.calls[0][1].endsWith('.tar'),
+            ).toBeTruthy();
+
+            expect(ctx.set.mock.calls[1]).toEqual([
+                'Content-type',
+                'application/x-tar',
+            ]);
+
+            expect(ctx.backupFields).toHaveBeenCalledWith('result');
+        });
+
+        it('should return 500 in ctx.status and error message in ctx.body on error', async () => {
+            ctx.backupFields.mockImplementation(() => {
+                throw new Error('Error!');
+            });
 
             await exportFields(ctx);
-            expect(ctx.field.findAll).toHaveBeenCalled();
-            expect(ctx.body).toEqual(
-                JSON.stringify(
-                    [{ name: 'field1' }, { name: 'field2' }],
-                    null,
-                    4,
-                ),
-            );
-            expect(ctx.attachment).toHaveBeenCalledWith('lodex_export.json');
-            expect(ctx.type).toBe('application/json');
+            expect(ctx.status).toBe(500);
+            expect(ctx.body).toBe('Error!');
         });
     });
 
     describe('importFields', () => {
-        let getUploadedFields;
-
         const ctx = {
             req: 'request',
-            field: {
-                create: jest.fn(),
-                remove: jest.fn(),
-            },
+            set: jest.fn(),
+            restoreFields: jest
+                .fn()
+                .mockImplementation(() => Promise.resolve('RESTORE OK')),
         };
 
         beforeEach(() => {
-            getUploadedFields = jest.fn().mockImplementation(() => [
-                { name: 'field1', label: 'Field 1' },
-                { name: 'field2', label: 'Field 2' },
-            ]);
-            ctx.field.create.mockClear();
-            ctx.field.remove.mockClear();
+            ctx.restoreFields.mockClear();
+            ctx.set.mockClear();
         });
 
-        it('should call rawBody', async () => {
-            await importFields(getUploadedFields)(ctx);
-            expect(getUploadedFields).toHaveBeenCalledWith('request');
-        });
+        it('should call rawBody and return 200 in ctx.status', async () => {
+            const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
+                files: ['file0'],
+            }));
 
-        it('should call ctx.field.remove', async () => {
-            await importFields(getUploadedFields)(ctx);
-            expect(ctx.field.remove).toHaveBeenCalled();
-        });
-
-        it('should call ctx.field.create for each field', async () => {
-            await importFields(getUploadedFields)(ctx);
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 1', position: 0 },
-                'field1',
-                false,
-            );
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 2', position: 1 },
-                'field2',
-                false,
-            );
-        });
-
-        it('should pass the position ctx.field.create if available', async () => {
-            getUploadedFields = jest.fn(() => [
-                { name: 'field1', label: 'Field 1', position: 0 },
-                { name: 'field2', label: 'Field 2', position: 1 },
-            ]);
-
-            await importFields(getUploadedFields)(ctx);
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 1', position: 0 },
-                'field1',
-                false,
-            );
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 2', position: 1 },
-                'field2',
-                false,
-            );
-        });
-
-        it('should rearrange the position to avoid gap', async () => {
-            getUploadedFields = jest.fn().mockImplementation(() => [
-                { name: 'field1', label: 'Field 1', position: 5 },
-                { name: 'field2', label: 'Field 2', position: 6 },
-            ]);
-
-            await importFields(getUploadedFields)(ctx);
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 1', position: 0 },
-                'field1',
-                false,
-            );
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 2', position: 1 },
-                'field2',
-                false,
-            );
-        });
-
-        it('should ensure uri is first', async () => {
-            getUploadedFields = jest.fn().mockImplementation(() => [
-                { name: 'field1', label: 'Field 1', position: 5 },
-                { name: 'field2', label: 'Field 2', position: 6 },
-                { name: 'uri', label: 'Uri', position: 10 },
-            ]);
-
-            await importFields(getUploadedFields)(ctx);
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Uri', position: 0 },
-                'uri',
-                false,
-            );
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 1', position: 1 },
-                'field1',
-                false,
-            );
-
-            expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 2', position: 2 },
-                'field2',
-                false,
-            );
-        });
-
-        it('should set ctx.status to 200', async () => {
-            await importFields(getUploadedFields)(ctx);
+            await importFields(asyncBusboyImpl)(ctx);
+            expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
+            expect(ctx.restoreFields).toHaveBeenCalledWith('file0', ctx);
             expect(ctx.status).toEqual(200);
+        });
+
+        it('should return 500 in ctx.status and error message in ctx.body on error', async () => {
+            const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
+                files: ['file0'],
+            }));
+
+            ctx.restoreFields.mockImplementation(() => {
+                throw new Error('Error!');
+            });
+
+            await importFields(asyncBusboyImpl)(ctx);
+            expect(ctx.status).toBe(500);
+            expect(ctx.body).toBe('Error!');
         });
     });
 
@@ -406,11 +280,11 @@ describe('field routes', () => {
     });
 
     describe('reorderField', () => {
-        it('should update field position based on index in array when all cover are dataset', async () => {
+        it('should update field position based on index in array when all scope are dataset', async () => {
             const fieldsByName = {
-                a: { cover: COVER_DATASET },
-                b: { cover: COVER_DATASET },
-                c: { cover: COVER_DATASET },
+                a: { scope: SCOPE_DATASET },
+                b: { scope: SCOPE_DATASET },
+                c: { scope: SCOPE_DATASET },
             };
             const ctx = {
                 request: {
@@ -439,11 +313,11 @@ describe('field routes', () => {
             expect(ctx.body).toEqual(['updated a', 'updated b', 'updated c']);
         });
 
-        it('should update field position based on index in array when all cover are collection or document and first one is uri', async () => {
+        it('should update field position based on index in array when all scope are collection or document and first one is uri', async () => {
             const fieldsByName = {
-                a: { cover: COVER_COLLECTION, name: 'uri' },
-                b: { cover: COVER_DOCUMENT },
-                c: { cover: COVER_COLLECTION },
+                a: { scope: SCOPE_COLLECTION, name: 'uri' },
+                b: { scope: SCOPE_DOCUMENT },
+                c: { scope: SCOPE_COLLECTION },
             };
             const ctx = {
                 request: {
@@ -472,11 +346,11 @@ describe('field routes', () => {
             expect(ctx.body).toEqual(['updated a', 'updated b', 'updated c']);
         });
 
-        it('should throw an error if dataset is mixed with other cover', async () => {
+        it('should throw an error if dataset is mixed with other scope', async () => {
             const fieldsByName = {
-                a: { cover: COVER_DATASET },
-                b: { cover: COVER_DOCUMENT },
-                c: { cover: COVER_COLLECTION },
+                a: { scope: SCOPE_DATASET },
+                b: { scope: SCOPE_DOCUMENT },
+                c: { scope: SCOPE_COLLECTION },
             };
             const ctx = {
                 request: {
@@ -500,17 +374,51 @@ describe('field routes', () => {
 
             expect(ctx.status).toBe(400);
             expect(ctx.body.error).toBe(
-                'Bad cover: trying to mix characteristic with other fields',
+                'Bad scope: trying to mix home fields with other fields',
             );
 
             expect(ctx.field.updatePosition).not.toHaveBeenCalled();
         });
 
-        it('should throw an error if cover is not dataset and first field is not uri', async () => {
+        it('should throw an error if graphic is mixed with other scope', async () => {
             const fieldsByName = {
-                a: { cover: COVER_COLLECTION, name: 'a' },
-                b: { cover: COVER_DOCUMENT, name: 'uri' },
-                c: { cover: COVER_COLLECTION, name: 'c' },
+                a: { scope: SCOPE_GRAPHIC },
+                b: { scope: SCOPE_DOCUMENT },
+                c: { scope: SCOPE_DATASET },
+            };
+            const ctx = {
+                request: {
+                    body: {
+                        fields: ['a', 'b', 'c'],
+                    },
+                },
+                field: {
+                    updatePosition: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve(`updated field`),
+                        ),
+                    findByNames: jest
+                        .fn()
+                        .mockImplementation(() => fieldsByName),
+                },
+            };
+
+            await reorderField(ctx, 'id');
+
+            expect(ctx.status).toBe(400);
+            expect(ctx.body.error).toBe(
+                'Bad scope: trying to mix graphic fields with other fields',
+            );
+
+            expect(ctx.field.updatePosition).not.toHaveBeenCalled();
+        });
+
+        it('should throw an error if scope is collection and first field is not uri', async () => {
+            const fieldsByName = {
+                a: { scope: SCOPE_COLLECTION, name: 'a' },
+                b: { scope: SCOPE_DOCUMENT, name: 'uri' },
+                c: { scope: SCOPE_COLLECTION, name: 'c' },
             };
             const ctx = {
                 request: {

@@ -3,15 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { grey500 } from 'material-ui/styles/colors';
+import { grey } from '@material-ui/core/colors';
 
 import {
     Table,
     TableBody,
-    TableHeader,
+    TableHead,
     TableRow,
-    TableRowColumn,
-} from 'material-ui/Table';
+    TableCell,
+} from '@material-ui/core';
+
 import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
 import Pagination from '../../lib/components/Pagination';
@@ -39,7 +40,7 @@ const styles = {
         paddingRight: '1rem',
     },
     label: {
-        color: grey500,
+        color: grey[500],
         flexGrow: 2,
         fontWeight: 'bold',
         fontSize: '1rem',
@@ -87,15 +88,8 @@ export class DatasetComponent extends Component {
                         </div>
                     </div>
                 </div>
-                <Table
-                    selectable={false}
-                    fixedHeader={false}
-                    style={styles.table}
-                >
-                    <TableHeader
-                        displaySelectAll={false}
-                        adjustForCheckbox={false}
-                    >
+                <Table style={styles.table}>
+                    <TableHead>
                         <TableRow>
                             {columns.map(c => (
                                 <DatasetColumnHeader
@@ -105,13 +99,11 @@ export class DatasetComponent extends Component {
                                 />
                             ))}
                         </TableRow>
-                    </TableHeader>
-                    <TableBody displayRowCheckbox={false}>
+                    </TableHead>
+                    <TableBody>
                         {!dataset.length ? (
                             <TableRow>
-                                <TableRowColumn>
-                                    {polyglot.t('no_result')}
-                                </TableRowColumn>
+                                <TableCell>{polyglot.t('no_result')}</TableCell>
                             </TableRow>
                         ) : (
                             dataset.map((data, indice) => (

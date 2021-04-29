@@ -46,31 +46,25 @@ export const waitForLoading = () => {
 
 export const getFacetsOrder = facets => {
     facets.forEach((name, index) => {
-        cy.get(`.search .search-facets > div:nth-child(${index + 1})`)
+        cy.get(`.search .search-facets > li:nth-child(${index + 1})`)
             .contains(name)
             .should('be.visible');
     });
 };
 
 export const getFacet = name =>
-    cy.get('.search .search-facets .facet-item').contains(name);
+    cy.get('.search .search-facets .facet-item').contains('span', name);
 
 export const getFacetItem = (name, value) =>
     getFacet(name)
-        .parentsUntil('.search .search-facets > div')
-        .last()
-        .next() // .facet-value-list next to the .facet-item
-        .find('.facet-value-item')
-        .contains(value)
-        .parentsUntil('.facet-value-item')
-        .last();
+        .parent()
+        .contains('span', value)
+        .parent();
 
 export const getFacetExcludeItem = name =>
     getFacet(name)
-        .parentsUntil('.search-facets > div')
-        .last()
-        .next() // .facet-value-list next to the .facet-item
-        .find('.exclude-facet');
+        .next()
+        .find('.facet-value-list .exclude-facet');
 
 export const setFacet = (name, value) => {
     getFacet(name).click();
@@ -90,14 +84,12 @@ export const clearFacet = value => {
 
 export const checkFacetsItem = (name, facets) => {
     const facetValueItems = getFacet(name)
-        .parentsUntil('.search .search-facets > div')
-        .last()
-        .next() // .facet-value-list next to the .facet-item
+        .next()
         .find('.facet-value-item');
 
     facetValueItems.each((facetValueItem, index) => {
         cy.wrap(facetValueItem)
-            .contains(facets[index])
+            .contains('span', facets[index])
             .should('exist');
     });
 };
@@ -105,8 +97,9 @@ export const checkFacetsItem = (name, facets) => {
 export const sortFacet = (name, sortName) => {
     getFacet(name)
         .get(`.sort_${sortName}`)
+        .first()
         .click();
-    cy.wait(500);
+    cy.wait(1000);
 };
 
 export const checkMoreResultsExist = () => {

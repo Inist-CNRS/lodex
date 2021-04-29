@@ -4,10 +4,10 @@ services:
     lodex:
         build:
             context: .
-        user: '${UID}:${GID}'
         environment:
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
+            NODE_OPTIONS: ${NODE_OPTIONS}
             EZMASTER_MONGODB_HOST_PORT: 'mongo:27017'
             EZMASTER_TECHNICAL_NAME: 'lodex'
             no_proxy: 'localhost,127.0.0.1,'
@@ -16,16 +16,10 @@ services:
             - ./upload:/app/upload
         links:
             - mongo
-            - lodex-extended
         ports:
             - 3000:3000
-
     mongo:
         image: mongo:3.4.1
         command: '--smallfiles'
         ports:
             - 27017:27017
-    lodex-extended:
-        image: inistcnrs/lodex-extended:6.1.3
-        ports:
-            - 31976:31976

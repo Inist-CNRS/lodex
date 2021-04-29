@@ -243,27 +243,28 @@ describe('upload', () => {
     });
 
     describe('uploadUrl', () => {
-        const parser = jest.fn().mockImplementation(() => 'parsedStream');
+        const loader = jest.fn().mockImplementation(() => 'parsedStream');
         const ctx = {
             request: {
                 body: {
                     url: 'http://host/file.name.type',
                 },
             },
-            getParser: jest.fn().mockImplementation(() => parser),
+            getLoader: jest.fn().mockImplementation(() => loader),
             getStreamFromUrl: jest.fn().mockImplementation(() => 'streamUrl'),
             saveParsedStream: jest
                 .fn()
                 .mockImplementation(() => 'dataset count'),
             uploadFile: jest.fn(),
+            initDatasetUri: 'initDatasetUri',
         };
 
         beforeAll(async () => {
             await uploadUrl(ctx);
         });
 
-        it('should have called getParser with url file extension', () => {
-            expect(ctx.getParser).toHaveBeenCalledWith('type');
+        it('should have called getLoader with url file extension', () => {
+            expect(ctx.getLoader).toHaveBeenCalledWith('type');
         });
 
         it('should have called getStreamForUrl with url', () => {
@@ -272,12 +273,15 @@ describe('upload', () => {
             );
         });
 
-        it('should have called parser with streamUrl', () => {
-            expect(parser).toHaveBeenCalledWith('streamUrl');
+        it('should have called loader with streamUrl', () => {
+            expect(loader).toHaveBeenCalledWith('streamUrl');
         });
 
         it('should have called saveParsedStream with parsedStream', () => {
-            expect(ctx.saveParsedStream).toHaveBeenCalledWith('parsedStream');
+            expect(ctx.saveParsedStream).toHaveBeenCalledWith(
+                'parsedStream',
+                ctx.initDatasetUri,
+            );
         });
 
         it('should have set ctx.body.totalLines to `dataset count`', () => {

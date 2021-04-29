@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import IconButton from 'material-ui/IconButton';
-import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
-import ActionAddIcon from 'material-ui/svg-icons/content/add';
-import RaisedButton from 'material-ui/RaisedButton';
+import { IconButton, Button } from '@material-ui/core';
+import ActionDeleteIcon from '@material-ui/icons/Delete';
+import ActionAddIcon from '@material-ui/icons/Add';
 import classnames from 'classnames';
 import memoize from 'lodash.memoize';
 
@@ -30,8 +29,6 @@ const styles = stylesToClassname(
     'input-list',
 );
 
-const underlineStyle = { position: 'relative' };
-
 class InputList extends Component {
     convertToList = () => {
         const { fields, all } = this.props;
@@ -49,12 +46,14 @@ class InputList extends Component {
             return (
                 <div>
                     <p>{polyglot.t('bad_format_edit_list')}</p>
-                    <RaisedButton
+                    <Button
+                        variant="contained"
                         className="convert-to-list"
-                        primary
+                        color="primary"
                         onClick={this.convertToList}
-                        label={polyglot.t('convert_to_list')}
-                    />
+                    >
+                        {polyglot.t('convert_to_list')}
+                    </Button>
                 </div>
             );
         }
@@ -68,7 +67,6 @@ class InputList extends Component {
                         <Field
                             {...this.props}
                             className={styles.input}
-                            underlineStyle={underlineStyle}
                             name={name}
                             component={ItemComponent}
                             resource={{ [name]: all[index] }}
