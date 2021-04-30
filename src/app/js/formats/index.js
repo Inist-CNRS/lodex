@@ -14,6 +14,7 @@ import fieldClone from './fieldClone';
 import html from './html';
 import image from './image';
 import pdf from './pdf';
+import latex from './latex';
 import istex from './istex';
 import link from './link';
 import linkImage from './link-image';
@@ -56,6 +57,7 @@ const components = {
     html,
     image,
     pdf,
+    latex,
     istex,
     link,
     linkImage,
