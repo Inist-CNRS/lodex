@@ -39,7 +39,27 @@ const styles = stylesToClassname(
 );
 
 // see https://jsonfeed.org/version/1#items
-const LodexResource = ({ id, url, title, summary }) => {
+const LodexResource = props => {
+    let id = props.id;
+    let url = props.url;
+    let title = props.title;
+    let summary = props.summary;
+    let summarySize = props.summarySize;
+
+    if (summarySize > 0) {
+        let currentSize = 0;
+        let finalOutput = '';
+        for (const substr of summary.split(' ')) {
+            finalOutput += substr;
+            currentSize += substr.length;
+            if (currentSize >= summarySize) {
+                finalOutput += '…';
+                break;
+            } else finalOutput += ' ';
+        }
+        summary = finalOutput;
+    }
+
     if (!id) {
         return null;
     }
@@ -79,11 +99,13 @@ LodexResource.propTypes = {
     url: PropTypes.string.isRequired,
     title: PropTypes.string,
     summary: PropTypes.string,
+    summarySize: PropTypes.number,
 };
 
 LodexResource.defaultProps = {
     title: 'n/a',
     summary: '',
+    summarySize: -1,
 };
 
 export default LodexResource;

@@ -31,6 +31,7 @@ export const defaultArgs = {
     allowToLoadMore: true,
     pageSize: 6,
     spaceWidth: '30%',
+    summarySize: 400,
     params: {
         maxSize: 5,
         orderBy: 'value/asc',
@@ -49,6 +50,7 @@ class RessourcesGridAdmin extends Component {
             spaceWidth: PropTypes.string,
             allowToLoadMore: PropTypes.bool,
             pageSize: PropTypes.number,
+            summarySize: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -80,12 +82,24 @@ class RessourcesGridAdmin extends Component {
         });
     };
 
+    setSummarySize = e => {
+        this.props.onChange({
+            ...this.props.args,
+            summarySize: parseInt(e.target.value),
+        });
+    };
+
     render() {
         const {
             p: polyglot,
             args: { params },
         } = this.props;
-        const { spaceWidth, allowToLoadMore, pageSize } = this.props.args;
+        const {
+            spaceWidth,
+            allowToLoadMore,
+            pageSize,
+            summarySize,
+        } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -133,6 +147,13 @@ class RessourcesGridAdmin extends Component {
                         />
                     }
                     label={polyglot.t('allow_to_load_more')}
+                />
+                <TextField
+                    label={polyglot.t('number_of_char')}
+                    onChange={this.setSummarySize}
+                    style={styles.input}
+                    value={summarySize}
+                    type="number"
                 />
                 {allowToLoadMore && (
                     <TextField

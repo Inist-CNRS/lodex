@@ -60,6 +60,7 @@ class ResourcesGridView extends Component {
         data: PropTypes.arrayOf(PropTypes.object).isRequired,
         total: PropTypes.number.isRequired,
         pageSize: PropTypes.number.isRequired,
+        summarySize: PropTypes.number.isRequired,
         spaceWidth: PropTypes.string.isRequired,
         filterFormatData: PropTypes.func.isRequired,
         allowToLoadMore: PropTypes.bool.isRequired,
@@ -113,7 +114,10 @@ class ResourcesGridView extends Component {
                             className={styles.item}
                         >
                             <div className={styles.content}>
-                                <LodexResource {...entry} />
+                                <LodexResource
+                                    {...entry}
+                                    summarySize={this.props.summarySize}
+                                />
                             </div>
                         </li>
                     ))}
