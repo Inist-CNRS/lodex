@@ -49,18 +49,17 @@ const LodexResource = props => {
 
     if (summarySize > 0) {
         let currentSize = 0;
-        let finalOutput = '';
+        let finalOutput = [];
         const subStringList = summary.split(/\s+/);
         for (const substr of subStringList) {
-            finalOutput += substr;
+            finalOutput.push(substr);
             currentSize += substr.length;
             if (currentSize >= summarySize) {
-                finalOutput += '…';
+                finalOutput.push('…');
                 break;
             }
-            finalOutput += ' ';
         }
-        summary = finalOutput;
+        summary = finalOutput.join(' ');
     }
 
     if (!id) {
