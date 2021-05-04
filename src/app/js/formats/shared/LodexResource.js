@@ -45,6 +45,7 @@ const LodexResource = props => {
     let title = props.title;
     let summary = props.summary;
     let summarySize = props.summarySize;
+    let openInNewTab = props.openInNewTab;
 
     if (summarySize > 0) {
         let currentSize = 0;
@@ -72,12 +73,15 @@ const LodexResource = props => {
         </div>
     );
 
+    const target = openInNewTab ? '_blank' : '';
+
     if (isLocalURL(id)) {
         return (
             <div id={id}>
                 <Link
                     className={styles.contentLink}
                     to={getResourceUri({ uri: id })}
+                    target={target}
                 >
                     {content}
                 </Link>
@@ -87,7 +91,7 @@ const LodexResource = props => {
 
     return (
         <div id={id}>
-            <Link className={styles.contentLink} href={url}>
+            <Link className={styles.contentLink} href={url} target={target}>
                 {content}
             </Link>
         </div>
@@ -100,12 +104,14 @@ LodexResource.propTypes = {
     title: PropTypes.string,
     summary: PropTypes.string,
     summarySize: PropTypes.number,
+    openInNewTab: PropTypes.bool,
 };
 
 LodexResource.defaultProps = {
     title: 'n/a',
     summary: '',
     summarySize: -1,
+    openInNewTab: false,
 };
 
 export default LodexResource;

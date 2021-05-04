@@ -32,6 +32,7 @@ export const defaultArgs = {
     pageSize: 6,
     spaceWidth: '30%',
     summarySize: 400,
+    openInNewTab: false,
     params: {
         maxSize: 5,
         orderBy: 'value/asc',
@@ -51,6 +52,7 @@ class RessourcesGridAdmin extends Component {
             allowToLoadMore: PropTypes.bool,
             pageSize: PropTypes.number,
             summarySize: PropTypes.number,
+            openInNewTab: PropTypes.bool,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -70,6 +72,13 @@ class RessourcesGridAdmin extends Component {
         updateAdminArgs(
             'allowToLoadMore',
             !this.props.args.allowToLoadMore,
+            this.props,
+        );
+
+    toggleOpenInNewTab = () =>
+        updateAdminArgs(
+            'openInNewTab',
+            !this.props.args.openInNewTab,
             this.props,
         );
 
@@ -99,6 +108,7 @@ class RessourcesGridAdmin extends Component {
             allowToLoadMore,
             pageSize,
             summarySize,
+            openInNewTab,
         } = this.props.args;
 
         return (
@@ -146,6 +156,15 @@ class RessourcesGridAdmin extends Component {
                         />
                     }
                     label={polyglot.t('allow_to_load_more')}
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleOpenInNewTab}
+                            checked={openInNewTab}
+                        />
+                    }
+                    label={polyglot.t('open_in_new_tab')}
                 />
                 <TextField
                     label={polyglot.t('number_of_char')}
