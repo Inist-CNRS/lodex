@@ -22,6 +22,9 @@ const styles = {
         width: '200%',
         justifyContent: 'space-between',
     },
+    input: {
+        width: '100%',
+    },
 };
 
 export const defaultArgs = {
