@@ -550,4 +550,4 @@
 "warning_frontend_modification"	"Warning, modifications from this interface can be overwritten. Please modify them from the administration interface to make them constant."	"Attention, les modifications depuis cette interfaces peuvent êtres écrasées. Veuillez les modifier depuis l'interface d'administration pour les rendre permanentes."
 "back_to_resource"	"Back to resource"	"Retourner à la ressource"
 "actually"	"Actually"	"Actuellement"
-"number_of_char"    "Size of the summary in char count"  "Taille du résumé en nombre de caratère"
+"number_of_char"	"Description limited to (number of characters)"	"Description limitée à (nombre de caractères)"
