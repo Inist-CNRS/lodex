@@ -22,9 +22,6 @@ const styles = {
         width: '200%',
         justifyContent: 'space-between',
     },
-    input: {
-        width: '100%',
-    },
 };
 
 export const defaultArgs = {
@@ -142,7 +139,6 @@ class RessourcesGridAdmin extends Component {
                     control={
                         <Checkbox
                             onChange={this.toggleAllowToLoadMore}
-                            style={styles.input}
                             checked={allowToLoadMore}
                         />
                     }
