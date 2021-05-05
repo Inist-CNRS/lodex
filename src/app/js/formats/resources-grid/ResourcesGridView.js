@@ -60,6 +60,7 @@ class ResourcesGridView extends Component {
         data: PropTypes.arrayOf(PropTypes.object).isRequired,
         total: PropTypes.number.isRequired,
         pageSize: PropTypes.number.isRequired,
+        titleSize: PropTypes.number.isRequired,
         summarySize: PropTypes.number.isRequired,
         openInNewTab: PropTypes.bool.isRequired,
         spaceWidth: PropTypes.string.isRequired,
@@ -117,6 +118,7 @@ class ResourcesGridView extends Component {
                             <div className={styles.content}>
                                 <LodexResource
                                     {...entry}
+                                    titleSize={this.props.titleSize}
                                     summarySize={this.props.summarySize}
                                     openInNewTab={this.props.openInNewTab}
                                 />

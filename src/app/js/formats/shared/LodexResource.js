@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { isLocalURL, getResourceUri } from '../../../../common/uris';
 import Link from '../../lib/components/Link';
 import stylesToClassname from '../../lib/stylesToClassName';
+import { truncateByWords } from '../stringUtils';
 
 const styles = stylesToClassname(
     {
@@ -40,27 +41,9 @@ const styles = stylesToClassname(
 
 // see https://jsonfeed.org/version/1#items
 const LodexResource = props => {
-    let id = props.id;
-    let url = props.url;
-    let title = props.title;
-    let summary = props.summary;
-    let summarySize = props.summarySize;
-    let openInNewTab = props.openInNewTab;
-
-    if (summarySize > 0) {
-        let currentSize = 0;
-        let finalOutput = [];
-        const subStringList = summary.split(/\s+/);
-        for (const substr of subStringList) {
-            finalOutput.push(substr);
-            currentSize += substr.length;
-            if (currentSize >= summarySize) {
-                finalOutput.push('…');
-                break;
-            }
-        }
-        summary = finalOutput.join(' ');
-    }
+    const { id, url, openInNewTab } = props;
+    const summary = truncateByWords(props.summary, props.summarySize);
+    const title = truncateByWords(props.title, props.titleSize);
 
     if (!id) {
         return null;
@@ -103,6 +86,7 @@ LodexResource.propTypes = {
     id: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     title: PropTypes.string,
+    titleSize: PropTypes.number,
     summary: PropTypes.string,
     summarySize: PropTypes.number,
     openInNewTab: PropTypes.bool,
@@ -110,6 +94,7 @@ LodexResource.propTypes = {
 
 LodexResource.defaultProps = {
     title: 'n/a',
+    titleSize: -1,
     summary: '',
     summarySize: -1,
     openInNewTab: false,

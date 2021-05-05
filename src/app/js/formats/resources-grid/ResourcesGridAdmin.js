@@ -31,6 +31,7 @@ export const defaultArgs = {
     allowToLoadMore: true,
     pageSize: 6,
     spaceWidth: '30%',
+    titleSize: 100,
     summarySize: 400,
     openInNewTab: false,
     params: {
@@ -51,6 +52,7 @@ class RessourcesGridAdmin extends Component {
             spaceWidth: PropTypes.string,
             allowToLoadMore: PropTypes.bool,
             pageSize: PropTypes.number,
+            titleSize: PropTypes.number,
             summarySize: PropTypes.number,
             openInNewTab: PropTypes.bool,
         }),
@@ -98,6 +100,13 @@ class RessourcesGridAdmin extends Component {
         });
     };
 
+    setTitleSize = e => {
+        this.props.onChange({
+            ...this.props.args,
+            titleSize: parseInt(e.target.value),
+        });
+    };
+
     render() {
         const {
             p: polyglot,
@@ -107,6 +116,7 @@ class RessourcesGridAdmin extends Component {
             spaceWidth,
             allowToLoadMore,
             pageSize,
+            titleSize,
             summarySize,
             openInNewTab,
         } = this.props.args;
@@ -167,7 +177,14 @@ class RessourcesGridAdmin extends Component {
                     label={polyglot.t('open_in_new_tab')}
                 />
                 <TextField
-                    label={polyglot.t('number_of_char')}
+                    label={polyglot.t('number_of_char_title')}
+                    onChange={this.setTitleSize}
+                    style={styles.input}
+                    value={titleSize}
+                    type="number"
+                />
+                <TextField
+                    label={polyglot.t('number_of_char_summary')}
                     onChange={this.setSummarySize}
                     style={styles.input}
                     value={summarySize}
