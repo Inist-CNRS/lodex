@@ -31,6 +31,9 @@ export const defaultArgs = {
     allowToLoadMore: true,
     pageSize: 6,
     spaceWidth: '30%',
+    titleSize: 100,
+    summarySize: 400,
+    openInNewTab: false,
     params: {
         maxSize: 5,
         orderBy: 'value/asc',
@@ -49,6 +52,9 @@ class RessourcesGridAdmin extends Component {
             spaceWidth: PropTypes.string,
             allowToLoadMore: PropTypes.bool,
             pageSize: PropTypes.number,
+            titleSize: PropTypes.number,
+            summarySize: PropTypes.number,
+            openInNewTab: PropTypes.bool,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -71,6 +77,13 @@ class RessourcesGridAdmin extends Component {
             this.props,
         );
 
+    toggleOpenInNewTab = () =>
+        updateAdminArgs(
+            'openInNewTab',
+            !this.props.args.openInNewTab,
+            this.props,
+        );
+
     setPageSize = e => {
         const { args, onChange } = this.props;
 
@@ -80,12 +93,33 @@ class RessourcesGridAdmin extends Component {
         });
     };
 
+    setSummarySize = e => {
+        this.props.onChange({
+            ...this.props.args,
+            summarySize: parseInt(e.target.value),
+        });
+    };
+
+    setTitleSize = e => {
+        this.props.onChange({
+            ...this.props.args,
+            titleSize: parseInt(e.target.value),
+        });
+    };
+
     render() {
         const {
             p: polyglot,
             args: { params },
         } = this.props;
-        const { spaceWidth, allowToLoadMore, pageSize } = this.props.args;
+        const {
+            spaceWidth,
+            allowToLoadMore,
+            pageSize,
+            titleSize,
+            summarySize,
+            openInNewTab,
+        } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -128,11 +162,33 @@ class RessourcesGridAdmin extends Component {
                     control={
                         <Checkbox
                             onChange={this.toggleAllowToLoadMore}
-                            style={styles.input}
                             checked={allowToLoadMore}
                         />
                     }
                     label={polyglot.t('allow_to_load_more')}
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.toggleOpenInNewTab}
+                            checked={openInNewTab}
+                        />
+                    }
+                    label={polyglot.t('open_in_new_tab')}
+                />
+                <TextField
+                    label={polyglot.t('number_of_char_title')}
+                    onChange={this.setTitleSize}
+                    style={styles.input}
+                    value={titleSize}
+                    type="number"
+                />
+                <TextField
+                    label={polyglot.t('number_of_char_summary')}
+                    onChange={this.setSummarySize}
+                    style={styles.input}
+                    value={summarySize}
+                    type="number"
                 />
                 {allowToLoadMore && (
                     <TextField
