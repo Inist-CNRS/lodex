@@ -19,20 +19,36 @@ const styles = stylesToClassname(
 );
 
 const LatexView = ({ resource, field }) => {
+    const KatexOptions = {
+        displayMode: false,
+        leqno: true,
+        fleqn: true,
+        throwOnError: false,
+        errorColor: '#cc0000',
+        strict: 'warn',
+        output: 'html',
+        trust: false,
+    };
     const value = resource[field.name];
+    const delimiter = field.format.args.delimiter.trim();
+    const parts =
+        delimiter !== ''
+            ? resource[field.name].split(delimiter)
+            : ['', resource[field.name]];
 
     let html;
     try {
-        html = katex.renderToString(resource[field.name], {
-            displayMode: false,
-            leqno: true,
-            fleqn: true,
-            throwOnError: false,
-            errorColor: '#cc0000',
-            strict: 'warn',
-            output: 'html',
-            trust: false,
-        });
+        html = parts
+            .reduce(
+                (acc, cur, index) =>
+                    acc.concat(
+                        index % 2 === 0
+                            ? cur
+                            : katex.renderToString(cur, KatexOptions),
+                    ),
+                [],
+            )
+            .join('');
     } catch (e) {
         return <InvalidFormat format={field.format} value={value} />;
     }
