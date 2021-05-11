@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { List } from 'material-ui/List';
+import { List } from '@material-ui/core';
 
 import Alert from '../../lib/components/Alert';
 import { IstexRefbibsView } from './IstexRefbibsView';
