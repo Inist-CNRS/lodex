@@ -140,7 +140,7 @@ class ResourcesGridView extends Component {
                                 ) : null
                             }
                         >
-                            {polyglot.t('see_more')}
+                            {polyglot.t('see_more_result')}
                         </Button>
                     </div>
                 )}

@@ -5,6 +5,8 @@ import { isLocalURL, getResourceUri } from '../../../../common/uris';
 import Link from '../../lib/components/Link';
 import stylesToClassname from '../../lib/stylesToClassName';
 import { truncateByWords } from '../stringUtils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 const styles = stylesToClassname(
     {
@@ -35,6 +37,9 @@ const styles = stylesToClassname(
             },
         },
         contentCustomDiv: {},
+        newTab: {
+            float: 'right',
+        },
     },
     'lodex-resource',
 );
@@ -68,6 +73,13 @@ const LodexResource = props => {
                     target={target}
                 >
                     {content}
+                    {openInNewTab && (
+                        <FontAwesomeIcon
+                            className={styles.newTab}
+                            icon={faExternalLinkAlt}
+                            height={12}
+                        />
+                    )}
                 </Link>
             </div>
         );
