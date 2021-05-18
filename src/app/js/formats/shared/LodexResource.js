@@ -39,6 +39,7 @@ const styles = stylesToClassname(
         contentCustomDiv: {},
         newTab: {
             float: 'right',
+            paddingLeft: '95%',
         },
     },
     'lodex-resource',
@@ -73,14 +74,16 @@ const LodexResource = props => {
                     target={target}
                 >
                     {content}
-                    {openInNewTab && (
-                        <FontAwesomeIcon
-                            className={styles.newTab}
-                            icon={faExternalLinkAlt}
-                            height={12}
-                        />
-                    )}
                 </Link>
+                {openInNewTab && (
+                    <Link
+                        className={styles.newTab}
+                        to={getResourceUri({ uri: id })}
+                        target={target}
+                    >
+                        <FontAwesomeIcon icon={faExternalLinkAlt} height={12} />
+                    </Link>
+                )}
             </div>
         );
     }
