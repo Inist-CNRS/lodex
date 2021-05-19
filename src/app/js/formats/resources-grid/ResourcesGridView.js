@@ -121,6 +121,7 @@ class ResourcesGridView extends Component {
                                     titleSize={this.props.titleSize}
                                     summarySize={this.props.summarySize}
                                     openInNewTab={this.props.openInNewTab}
+                                    polyglot={polyglot}
                                 />
                             </div>
                         </li>
