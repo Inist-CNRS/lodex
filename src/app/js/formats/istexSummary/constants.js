@@ -10,6 +10,9 @@ export const HOST_ISBN = 'host.isbn';
 export const HOST_EISBN = 'host.eisbn';
 export const HOST_TITLE = 'host.title';
 export const HOST_TITLE_RAW = 'host.title.raw';
+export const REFBIBS_HOST_TITLE_RAW = 'refBibs.host.title.raw';
+export const REFBIBS_TITLE = 'refBibs.title';
+export const TOP_HITS = 'topHits';
 
 export const SEARCHED_FIELD_VALUES = [
     CUSTOM_ISTEX_QUERY,

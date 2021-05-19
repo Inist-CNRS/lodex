@@ -511,7 +511,6 @@
 "browse_results"	"Browse results"	"Parcourir les résultats"
 "clear_all"	"Clear All"	"Tout supprimer"
 "similar"	"similar"	"similaire"
-"istexCitation"	"Other - ISTEX Citation"	"Autre - RefBibs ISTEX"
 "toggle_tooltip"	"Display tooltip"	"Afficher l'info-bulle"
 "tooltip_category"	"Tooltip: Category title"	"Info-bulle : Titre des catégories"
 "tooltip_value"	"Tooltip: Value title"	"Info-bulle : Titre des valeurs"
@@ -530,6 +529,8 @@
 "world_position_europe"	"European Projection"	"Projection européenne"
 "world_position_france"	"French Projection"	"Projection française"
 "kbart"	"KBART"	"KBART"
+"istexRefbibs"	"Other - Cited article"	"Autre - Article cité"
+"istexCitation"	"Other - Citing article"	"Autre - Article citant"
 "data"	"Data"	"Données"
 "display"	"Display"	"Affichage"
 "add_more"	"Add more"	"Ajouter"
@@ -553,4 +554,5 @@
 "number_of_char_title"	"Title limited to (number of characters)"	"Titre limitée à (nombre de caractères)"
 "number_of_char_summary"	"Description limited to (number of characters)"	"Description limitée à (nombre de caractères)"
 "open_in_new_tab"	"Open resource in a new tab"	"Ouvrir la ressource dans un nouvel onglet"
-new_tab_label	Open link in a new tab	Ouvrir le lien dans un nouvel onglet
+"new_tab_label"	"Open link in a new tab"	"Ouvrir le lien dans un nouvel onglet"
+"choose_delimiter"	"Choose a delimiter character (or not)"	"Choisir un caractère de séparation (facultatif)"
