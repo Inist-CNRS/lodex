@@ -121,6 +121,7 @@ class ResourcesGridView extends Component {
                                     titleSize={this.props.titleSize}
                                     summarySize={this.props.summarySize}
                                     openInNewTab={this.props.openInNewTab}
+                                    polyglot={polyglot}
                                 />
                             </div>
                         </li>
@@ -140,7 +141,7 @@ class ResourcesGridView extends Component {
                                 ) : null
                             }
                         >
-                            {polyglot.t('see_more')}
+                            {polyglot.t('see_more_result')}
                         </Button>
                     </div>
                 )}

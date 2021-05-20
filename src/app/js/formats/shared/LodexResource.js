@@ -5,6 +5,9 @@ import { isLocalURL, getResourceUri } from '../../../../common/uris';
 import Link from '../../lib/components/Link';
 import stylesToClassname from '../../lib/stylesToClassName';
 import { truncateByWords } from '../stringUtils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = stylesToClassname(
     {
@@ -35,13 +38,17 @@ const styles = stylesToClassname(
             },
         },
         contentCustomDiv: {},
+        newTab: {
+            float: 'right',
+            paddingLeft: '95%',
+        },
     },
     'lodex-resource',
 );
 
 // see https://jsonfeed.org/version/1#items
 const LodexResource = props => {
-    const { id, url, openInNewTab } = props;
+    const { id, url, openInNewTab, polyglot } = props;
     const summary = truncateByWords(props.summary, props.summarySize);
     const title = truncateByWords(props.title, props.titleSize);
 
@@ -69,6 +76,20 @@ const LodexResource = props => {
                 >
                     {content}
                 </Link>
+                {openInNewTab && (
+                    <Link
+                        className={styles.newTab}
+                        to={getResourceUri({ uri: id })}
+                        target={target}
+                    >
+                        <abbr title={polyglot.t('new_tab_label')}>
+                            <FontAwesomeIcon
+                                icon={faExternalLinkAlt}
+                                height={12}
+                            />
+                        </abbr>
+                    </Link>
+                )}
             </div>
         );
     }
@@ -90,6 +111,7 @@ LodexResource.propTypes = {
     summary: PropTypes.string,
     summarySize: PropTypes.number,
     openInNewTab: PropTypes.bool,
+    polyglot: polyglotPropTypes,
 };
 
 LodexResource.defaultProps = {
@@ -98,6 +120,7 @@ LodexResource.defaultProps = {
     summary: '',
     summarySize: -1,
     openInNewTab: false,
+    polyglot: undefined,
 };
 
 export default LodexResource;

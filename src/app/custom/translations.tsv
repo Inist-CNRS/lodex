@@ -499,7 +499,7 @@
 "convert_to_value"	"Convert to value"	"Convertir en valeur"
 "allow_to_load_more"	"Allow to load more resources"	"Autoriser à charger plus de ressources"
 "items_per_page"	"Resource number per page"	"Nombre de ressources par page"
-"see_more"	"See more"	"Voir plus"
+"see_more_result"	"More results"	"Plus de résultats"
 "no_result"	"No matching resource found"	"Aucune correspondance trouvée"
 "no_result_details"	"Please change your search terms or facets"	"Veuillez changer vos filtres ou termes de recherche"
 "max_char_number_in_labels"	"Maximum character number in labels"	"Nombre max de caractères dans les intitulés"
@@ -554,5 +554,5 @@
 "number_of_char_title"	"Title limited to (number of characters)"	"Titre limitée à (nombre de caractères)"
 "number_of_char_summary"	"Description limited to (number of characters)"	"Description limitée à (nombre de caractères)"
 "open_in_new_tab"	"Open resource in a new tab"	"Ouvrir la ressource dans un nouvel onglet"
+"new_tab_label"	"Open link in a new tab"	"Ouvrir le lien dans un nouvel onglet"
 "choose_delimiter"	"Choose a delimiter character (or not)"	"Choisir un caractère de séparation (facultatif)"
-
