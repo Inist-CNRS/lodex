@@ -9,6 +9,7 @@ import globalRadarchart from './vega/component/radar-chart';
 import emphasedNumber from './emphased-number/';
 import identifierBadge from './identifier-badge/';
 import resourcesGrid from './resources-grid/';
+import table from './table/';
 import email from './email';
 import fieldClone from './fieldClone';
 import html from './html';
@@ -74,6 +75,7 @@ const components = {
     resource,
     lodexField,
     resourcesGrid,
+    table,
     cartography,
     heatmap,
     network,
