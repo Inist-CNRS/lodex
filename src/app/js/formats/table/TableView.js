@@ -23,17 +23,25 @@ import {
 class TableView extends Component {
     constructor(props) {
         super(props);
-        this.onPageChange = this.onPageChange.bind(this);
+        this.onChangePage = this.onChangePage.bind(this);
+        this.onChangeRowsPerPage = this.onChangeRowsPerPage.bind(this);
         this.state = {
             rowsPerPage: props.pageSize,
             page: 0,
         };
     }
 
-    onPageChange(event, newPage) {
+    onChangePage(event, newPage) {
         this.setState({
             rowsPerPage: this.state.rowsPerPage,
             page: newPage,
+        });
+    }
+
+    onChangeRowsPerPage(event) {
+        this.setState({
+            rowsPerPage: parseInt(event.target.value, 10),
+            page: this.state.page,
         });
     }
 
@@ -71,13 +79,14 @@ class TableView extends Component {
                                 pageSize,
                                 pageSize * 2,
                                 pageSize * 3,
-                                { label: p.t('all'), value: -1 },
+                                { label: p.t('all'), value: data.length },
                             ]}
                             rowsPerPage={this.state.rowsPerPage}
                             count={data.length}
                             page={this.state.page}
-                            onChangePage={this.onPageChange}
+                            onChangePage={this.onChangePage}
                             labelRowsPerPage={p.t('rows_per_page')}
+                            onChangeRowsPerPage={this.onChangeRowsPerPage}
                         />
                     </TableFooter>
                 </Table>

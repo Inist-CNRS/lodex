@@ -57,9 +57,8 @@ class TableAdmin extends Component {
     render() {
         const {
             p: polyglot,
-            args: { params },
+            args: { params, pageSize },
         } = this.props;
-        const { pageSize } = this.props.args;
         return (
             <div style={styles.container}>
                 <RoutineParamsAdmin
@@ -67,6 +66,9 @@ class TableAdmin extends Component {
                     onChange={this.setParams}
                     polyglot={polyglot}
                     showMaxSize={true}
+                    showMaxValue={false}
+                    showMinValue={false}
+                    showOrderBy={false}
                 />
                 <TextField
                     label={polyglot.t('items_per_page')}
