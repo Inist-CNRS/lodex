@@ -5,6 +5,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 import { TextField } from '@material-ui/core';
+import TableColumnsParameters from './TableColumnsParameters';
 
 const styles = {
     container: {
@@ -24,6 +25,21 @@ export const defaultArgs = {
         maxSize: 6,
         orderBy: 'value/asc',
     },
+    columnsCount: 2,
+    columnsParameters: [
+        {
+            id: 0,
+            type: 'text',
+            field: '',
+            title: 'Column 1',
+        },
+        {
+            id: 1,
+            type: 'text',
+            field: '',
+            title: 'Column 2',
+        },
+    ],
 };
 
 class TableAdmin extends Component {
@@ -36,6 +52,15 @@ class TableAdmin extends Component {
                 orderBy: PropTypes.string,
             }),
             pageSize: PropTypes.number,
+            columnsCount: PropTypes.number,
+            columnsParameters: PropTypes.arrayOf(
+                PropTypes.shape({
+                    id: PropTypes.number,
+                    title: PropTypes.string,
+                    type: PropTypes.string,
+                    field: PropTypes.string,
+                }),
+            ),
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -54,10 +79,18 @@ class TableAdmin extends Component {
         });
     };
 
+    setColumnParameter = args => {
+        this.props.onChange({
+            ...this.props.args,
+            columnsCount: args.parameterCount,
+            columnsParameters: args.parameters,
+        });
+    };
+
     render() {
         const {
             p: polyglot,
-            args: { params, pageSize },
+            args: { params, pageSize, columnsCount, columnsParameters },
         } = this.props;
         return (
             <div style={styles.container}>
@@ -76,6 +109,12 @@ class TableAdmin extends Component {
                     style={styles.input}
                     value={pageSize}
                     type="number"
+                />
+                <TableColumnsParameters
+                    onChange={this.setColumnParameter}
+                    polyglot={polyglot}
+                    parameterCount={columnsCount}
+                    parameters={columnsParameters}
                 />
             </div>
         );
