@@ -93,6 +93,18 @@ const components = {
 
 export const FORMATS = Object.keys(components).sort();
 
+export const TABLE_COMPATIBLE_FORMATS = Object.keys({
+    title,
+    uri,
+    markdown,
+    html,
+    link,
+    latex,
+    emphasedNumber,
+    paragraph,
+    code,
+}).sort();
+
 export const getFormatInitialArgs = name =>
     get(components, [name, 'defaultArgs'], {});
 

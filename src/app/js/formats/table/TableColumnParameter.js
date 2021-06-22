@@ -8,6 +8,8 @@ import {
     Select,
     TextField,
 } from '@material-ui/core';
+import SelectFormat from '../SelectFormat';
+import { TABLE_COMPATIBLE_FORMATS, getAdminComponent } from '../index';
 
 const styles = {
     input50: {
@@ -32,8 +34,11 @@ class TableColumnParameter extends Component {
         parameter: PropTypes.shape({
             id: PropTypes.number.isRequired,
             title: PropTypes.string.isRequired,
-            type: PropTypes.string.isRequired,
             field: PropTypes.string.isRequired,
+            format: PropTypes.shape({
+                name: PropTypes.string.isRequired,
+                option: PropTypes.any.isRequired,
+            }).isRequired,
         }),
         onParameterChange: PropTypes.func.isRequired,
     };
@@ -43,21 +48,39 @@ class TableColumnParameter extends Component {
         this.state = {
             id: props.parameter.id,
             title: props.parameter.title,
-            type: props.parameter.type,
+            format: props.parameter.format,
             field: props.parameter.field,
         };
-        this.changeType = this.changeType.bind(this);
+        this.changeFormat = this.changeFormat.bind(this);
+        this.changeFormatOption = this.changeFormatOption.bind(this);
         this.changeField = this.changeField.bind(this);
         this.changeTitle = this.changeTitle.bind(this);
     }
 
-    changeType(e) {
-        const newType = e.target.value;
-        const { id, field, title } = this.state;
+    changeFormat(newFormat) {
+        const { id, field, title, format } = this.state;
         const parameter = {
             id: id,
             title: title,
-            type: newType,
+            format: {
+                name: newFormat,
+                option: format.option,
+            },
+            field: field,
+        };
+        this.setState(parameter);
+        this.props.onParameterChange(parameter);
+    }
+
+    changeFormatOption(newFormatOption) {
+        const { id, field, title, format } = this.state;
+        const parameter = {
+            id: id,
+            title: title,
+            format: {
+                name: format.name,
+                option: newFormatOption,
+            },
             field: field,
         };
         this.setState(parameter);
@@ -66,11 +89,11 @@ class TableColumnParameter extends Component {
 
     changeField(e) {
         const newField = e.target.value;
-        const { id, type, title } = this.state;
+        const { id, format, title } = this.state;
         const parameter = {
             id: id,
             title: title,
-            type: type,
+            format: format,
             field: newField,
         };
         this.setState(parameter);
@@ -79,11 +102,11 @@ class TableColumnParameter extends Component {
 
     changeTitle(e) {
         const newTitle = e.target.value;
-        const { id, type, field } = this.state;
+        const { id, format, field } = this.state;
         const parameter = {
             id: id,
             title: newTitle,
-            type: type,
+            format: format,
             field: field,
         };
         this.setState(parameter);
@@ -91,19 +114,15 @@ class TableColumnParameter extends Component {
     }
 
     render() {
-        const { id, type, field, title } = this.state;
+        const { id, format, field, title } = this.state;
         const polyglot = this.props.polyglot;
+
+        const SubAdminComponent = getAdminComponent(format.name);
+
         return (
             <div>
                 <label style={styles.label20}>{'#' + (id + 1)}</label>
                 <div style={styles.div80}>
-                    <FormControl style={styles.input50}>
-                        <InputLabel>{polyglot.t('type')}</InputLabel>
-                        <Select value={type} onChange={this.changeType}>
-                            <MenuItem value={'text'}>text</MenuItem>
-                            <MenuItem value={'url'}>url</MenuItem>
-                        </Select>
-                    </FormControl>
                     <FormControl style={styles.input50}>
                         <InputLabel>{polyglot.t('table_field')}</InputLabel>
                         <Select value={field} onChange={this.changeField}>
@@ -125,18 +144,29 @@ class TableColumnParameter extends Component {
                             <MenuItem value={'value'}>
                                 {polyglot.t('table_value')}
                             </MenuItem>
-                            <MenuItem value={'uri'}>
-                                {polyglot.t('table_uri')}
+                            <MenuItem value={'url'}>
+                                {polyglot.t('table_url')}
                             </MenuItem>
                         </Select>
                     </FormControl>
-                    <br />
                     <TextField
-                        style={styles.input100}
+                        style={styles.input50}
                         value={title}
                         label={polyglot.t('column_title')}
                         onChange={this.changeTitle}
                     />
+                    <br />
+                    <FormControl style={styles.input100}>
+                        <SelectFormat
+                            formats={TABLE_COMPATIBLE_FORMATS}
+                            value={format.name}
+                            onChange={this.changeFormat}
+                        />
+                        <SubAdminComponent
+                            onChange={this.changeFormatOption}
+                            args={format.option}
+                        />
+                    </FormControl>
                 </div>
             </div>
         );

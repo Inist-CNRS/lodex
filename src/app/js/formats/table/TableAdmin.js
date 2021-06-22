@@ -29,15 +29,21 @@ export const defaultArgs = {
     columnsParameters: [
         {
             id: 0,
-            type: 'text',
+            format: {
+                name: '',
+                option: undefined,
+            },
             field: '',
             title: 'Column 1',
         },
         {
             id: 1,
-            type: 'text',
             field: '',
             title: 'Column 2',
+            format: {
+                name: '',
+                option: undefined,
+            },
         },
     ],
 };
@@ -57,8 +63,11 @@ class TableAdmin extends Component {
                 PropTypes.shape({
                     id: PropTypes.number,
                     title: PropTypes.string,
-                    type: PropTypes.string,
                     field: PropTypes.string,
+                    format: PropTypes.shape({
+                        name: PropTypes.string,
+                        option: PropTypes.any,
+                    }),
                 }),
             ),
         }),

@@ -16,9 +16,12 @@ import {
     TableCell,
     TableContainer,
     TableFooter,
+    TableHead,
     TablePagination,
     TableRow,
 } from '@material-ui/core';
+import _ from 'lodash';
+import { getViewComponent } from '../index';
 
 class TableView extends Component {
     constructor(props) {
@@ -46,17 +49,63 @@ class TableView extends Component {
     }
 
     render() {
-        const { data, pageSize, p } = this.props;
+        const { data, pageSize, p, columnsParameters } = this.props;
 
-        const link = (id, url) => {
-            if (isLocalURL(id))
-                return <Link to={getResourceUri({ uri: id })}>{url}</Link>;
-            else return <Link to={url}>{url}</Link>;
+        // const link = (id, url) => {
+        //     if (isLocalURL(id))
+        //         return <Link to={getResourceUri({ uri: id })}>{url}</Link>;
+        //     else return <Link to={url}>{url}</Link>;
+        // };
+
+        const buildColumn = (value, index, columnParameter) => {
+            const { name, option } = columnParameter.format;
+            const { ViewComponent, args } = getViewComponent(
+                columnParameter.format.name,
+            );
+
+            return (
+                <TableCell>
+                    {name ? (
+                        <ViewComponent
+                            resource={value}
+                            field={{
+                                name: columnParameter.field,
+                                valueOfList: value,
+                                format: {
+                                    name: name,
+                                    args: option,
+                                },
+                            }}
+                            {...args}
+                            {...option}
+                        />
+                    ) : (
+                        'Error'
+                    )}
+                </TableCell>
+            );
+            //
+            // return columnParameter.type === 'text' ? (
+            //     <TableCell>{_.get(entry, columnParameter.field, '')}</TableCell>
+            // ) : (
+            //     <TableCell>
+            //         {link(entry.id, _.get(entry, columnParameter.field, ''))}
+            //     </TableCell>
+            // );
         };
 
         return (
             <TableContainer>
                 <Table>
+                    <TableHead>
+                        <TableRow>
+                            {columnsParameters.map(column => (
+                                <TableCell key={column.id}>
+                                    {column.title}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
                     <TableBody>
                         {data
                             .slice(
@@ -66,10 +115,9 @@ class TableView extends Component {
                             )
                             .map((entry, index) => (
                                 <TableRow key={`${index}-table`}>
-                                    <TableCell>{entry.title}</TableCell>
-                                    <TableCell>
-                                        {link(entry.id, entry.url)}
-                                    </TableCell>
+                                    {columnsParameters.map(column =>
+                                        buildColumn(entry, index, column),
+                                    )}
                                 </TableRow>
                             ))}
                     </TableBody>
@@ -101,6 +149,17 @@ TableView.propTypes = {
     total: PropTypes.number.isRequired,
     pageSize: PropTypes.number.isRequired,
     p: polyglotPropTypes.isRequired,
+    columnsParameters: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            title: PropTypes.string.isRequired,
+            field: PropTypes.string.isRequired,
+            format: PropTypes.shape({
+                name: PropTypes.string.isRequired,
+                option: PropTypes.any.isRequired,
+            }).isRequired,
+        }),
+    ).isRequired,
 };
 
 const mapStateToProps = (_, { formatData, spaceWidth }) => {

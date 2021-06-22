@@ -23,8 +23,11 @@ class TableColumnsParameters extends Component {
             PropTypes.shape({
                 id: PropTypes.number.isRequired,
                 title: PropTypes.string.isRequired,
-                type: PropTypes.string.isRequired,
                 field: PropTypes.string.isRequired,
+                format: PropTypes.shape({
+                    name: PropTypes.string.isRequired,
+                    option: PropTypes.any.isRequired,
+                }).isRequired,
             }),
         ).isRequired,
     };
@@ -55,9 +58,12 @@ class TableColumnsParameters extends Component {
             for (let i = 0; i < diff; i++) {
                 reformattedParameters.push({
                     id: parameters.length,
-                    type: 'text',
                     field: '',
                     title: 'Column ' + (parameters.length + 1),
+                    format: {
+                        name: '',
+                        option: undefined,
+                    },
                 });
             }
             return reformattedParameters;
