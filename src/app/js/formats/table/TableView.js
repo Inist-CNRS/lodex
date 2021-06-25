@@ -17,31 +17,60 @@ import {
     TableHead,
     TablePagination,
     TableRow,
+    TableSortLabel,
 } from '@material-ui/core';
 import { getViewComponent } from '../index';
+import _ from 'lodash';
 
 class TableView extends Component {
     constructor(props) {
         super(props);
         this.onChangePage = this.onChangePage.bind(this);
         this.onChangeRowsPerPage = this.onChangeRowsPerPage.bind(this);
+        this.sort = this.sort.bind(this);
         this.state = {
             rowsPerPage: props.pageSize,
             page: 0,
+            sortId: undefined,
+            sort: false,
         };
     }
 
     onChangePage(event, newPage) {
         this.setState({
-            rowsPerPage: this.state.rowsPerPage,
+            ...this.state,
             page: newPage,
         });
     }
 
     onChangeRowsPerPage(event) {
         this.setState({
+            ...this.state,
             rowsPerPage: parseInt(event.target.value, 10),
-            page: this.state.page,
+        });
+    }
+
+    sort(id) {
+        let sort = this.state.sort;
+        if (id === this.state.sortId) {
+            switch (sort) {
+                case 'asc':
+                    sort = 'desc';
+                    break;
+                case 'desc':
+                    sort = false;
+                    break;
+                case false:
+                    sort = 'asc';
+                    break;
+            }
+        } else {
+            sort = 'asc';
+        }
+        this.setState({
+            ...this.state,
+            sortId: id,
+            sort: sort,
         });
     }
 
@@ -77,6 +106,27 @@ class TableView extends Component {
             );
         };
 
+        const getSortDirection = id => {
+            if (id === this.state.sortId) {
+                return this.state.sort;
+            } else return false;
+        };
+
+        const sortElement = array => {
+            if (this.state.sort === false) return array;
+            const sortedArray = _.sortBy(array, [
+                o => {
+                    const parameter = _.findIndex(columnsParameters, {
+                        id: this.state.sortId,
+                    });
+                    return _.get(o, columnsParameters[parameter].field, '');
+                },
+            ]);
+            return this.state.sort === 'asc'
+                ? sortedArray
+                : _.reverse(sortedArray);
+        };
+
         return (
             <TableContainer>
                 <Table>
@@ -84,13 +134,27 @@ class TableView extends Component {
                         <TableRow>
                             {columnsParameters.map(column => (
                                 <TableCell key={column.id}>
-                                    {column.title}
+                                    <TableSortLabel
+                                        active={
+                                            getSortDirection(column.id) !==
+                                            false
+                                        }
+                                        direction={
+                                            getSortDirection(column.id) ===
+                                            false
+                                                ? 'asc'
+                                                : getSortDirection(column.id)
+                                        }
+                                        onClick={() => this.sort(column.id)}
+                                    >
+                                        {column.title}
+                                    </TableSortLabel>
                                 </TableCell>
                             ))}
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data
+                        {sortElement(data)
                             .slice(
                                 this.state.page * this.state.rowsPerPage,
                                 this.state.page * this.state.rowsPerPage +
