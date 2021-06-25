@@ -8,8 +8,6 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 import PropTypes from 'prop-types';
-import { getResourceUri, isLocalURL } from '../../../../common/uris';
-import Link from '../../lib/components/Link';
 import {
     Table,
     TableBody,
@@ -20,7 +18,6 @@ import {
     TablePagination,
     TableRow,
 } from '@material-ui/core';
-import _ from 'lodash';
 import { getViewComponent } from '../index';
 
 class TableView extends Component {
@@ -51,12 +48,6 @@ class TableView extends Component {
     render() {
         const { data, pageSize, p, columnsParameters } = this.props;
 
-        // const link = (id, url) => {
-        //     if (isLocalURL(id))
-        //         return <Link to={getResourceUri({ uri: id })}>{url}</Link>;
-        //     else return <Link to={url}>{url}</Link>;
-        // };
-
         const buildColumn = (value, index, columnParameter) => {
             const { name, option } = columnParameter.format;
             const { ViewComponent, args } = getViewComponent(
@@ -84,14 +75,6 @@ class TableView extends Component {
                     )}
                 </TableCell>
             );
-            //
-            // return columnParameter.type === 'text' ? (
-            //     <TableCell>{_.get(entry, columnParameter.field, '')}</TableCell>
-            // ) : (
-            //     <TableCell>
-            //         {link(entry.id, _.get(entry, columnParameter.field, ''))}
-            //     </TableCell>
-            // );
         };
 
         return (

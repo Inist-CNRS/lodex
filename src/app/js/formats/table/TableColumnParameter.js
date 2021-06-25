@@ -18,12 +18,16 @@ const styles = {
     input100: {
         width: '100%',
     },
-    div80: {
+    container: {
         width: '80%',
         display: 'inline-block',
+        'padding-left': '2%',
+        margin: '2%',
+        'border-left': '1px solid grey',
+        'border-radius': '2px',
     },
-    label20: {
-        width: '20%',
+    labelId: {
+        'margin-right': '4%',
         display: 'inline-block',
     },
 };
@@ -119,10 +123,21 @@ class TableColumnParameter extends Component {
 
         const SubAdminComponent = getAdminComponent(format.name);
 
+        const availableField = [
+            'title',
+            'summary',
+            'source',
+            'target',
+            'weight',
+            'value',
+            'url',
+            '_id',
+        ];
+
         return (
             <div>
-                <label style={styles.label20}>{'#' + (id + 1)}</label>
-                <div style={styles.div80}>
+                <label style={styles.labelId}>{'#' + (id + 1)}</label>
+                <div style={styles.container}>
                     <FormControl style={styles.input50}>
                         <InputLabel>{polyglot.t('table_field')}</InputLabel>
                         <Select value={field} onChange={this.changeField}>
@@ -147,6 +162,18 @@ class TableColumnParameter extends Component {
                             <MenuItem value={'url'}>
                                 {polyglot.t('table_url')}
                             </MenuItem>
+                            <MenuItem value={'_id'}>
+                                {polyglot.t('table_id')}
+                            </MenuItem>
+                            <MenuItem
+                                value={
+                                    availableField.includes(field)
+                                        ? 'other'
+                                        : field
+                                }
+                            >
+                                {polyglot.t('table_other')}
+                            </MenuItem>
                         </Select>
                     </FormControl>
                     <TextField
@@ -155,7 +182,20 @@ class TableColumnParameter extends Component {
                         label={polyglot.t('column_title')}
                         onChange={this.changeTitle}
                     />
-                    <br />
+                    {!availableField.includes(field) ? (
+                        <>
+                            <br />
+                            <TextField
+                                style={styles.input100}
+                                value={field}
+                                label={polyglot.t('table_other_field')}
+                                onChange={this.changeField}
+                            />
+                            <br />
+                        </>
+                    ) : (
+                        <br />
+                    )}
                     <FormControl style={styles.input100}>
                         <SelectFormat
                             formats={TABLE_COMPATIBLE_FORMATS}
@@ -163,6 +203,7 @@ class TableColumnParameter extends Component {
                             onChange={this.changeFormat}
                         />
                         <SubAdminComponent
+                            style={styles.input100}
                             onChange={this.changeFormatOption}
                             args={format.option}
                         />

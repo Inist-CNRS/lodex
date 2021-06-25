@@ -103,7 +103,7 @@ class TableColumnsParameters extends Component {
         const { polyglot } = this.props;
         const { parameters, parameterCount } = this.state;
         return (
-            <>
+            <div>
                 <TextField
                     style={styles.input}
                     type="number"
@@ -114,13 +114,12 @@ class TableColumnsParameters extends Component {
                 {parameters.map((parameter, index) => (
                     <TableColumnParameter
                         key={`${index}-column-parameter`}
-                        style={styles.input}
                         polyglot={polyglot}
                         parameter={parameter}
                         onParameterChange={this.onParameterChange}
                     />
                 ))}
-            </>
+            </div>
         );
     }
 }
