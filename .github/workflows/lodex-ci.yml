@@ -1,0 +1,45 @@
+name: Lodex CI
+on: [push, pull_request]
+
+jobs:
+  test-unit:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Install LODEX
+      run: make install
+
+    - name: Start Unit Tests
+      run: make test-unit
+
+  test-api-e2e:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Install LODEX
+      run: make install
+
+    - name: Start API E2E Tests
+      run: make test-api-e2e
+
+  test-e2e:
+    timeout-minutes: 25
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Install LODEX
+      run: make install
+
+    - name: Start E2E Tests
+      run: make test-e2e
