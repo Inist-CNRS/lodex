@@ -50,17 +50,14 @@ class TableView extends Component {
         });
     }
 
-    sort(id) {
+    sort(columnId) {
         let sort = this.state.sort;
-        if (id === this.state.sortId) {
+        if (columnId === this.state.sortId) {
             switch (sort) {
                 case 'asc':
                     sort = 'desc';
                     break;
-                case 'desc':
-                    sort = false;
-                    break;
-                case false:
+                default:
                     sort = 'asc';
                     break;
             }
@@ -69,7 +66,7 @@ class TableView extends Component {
         }
         this.setState({
             ...this.state,
-            sortId: id,
+            sortId: columnId,
             sort: sort,
         });
     }
@@ -106,10 +103,9 @@ class TableView extends Component {
             );
         };
 
-        const getSortDirection = id => {
-            if (id === this.state.sortId) {
-                return this.state.sort;
-            } else return false;
+        const getSortDirection = columnId => {
+            if (columnId !== this.state.sortId) return false;
+            return this.state.sort;
         };
 
         const sortElement = array => {
