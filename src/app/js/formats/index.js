@@ -9,6 +9,7 @@ import globalRadarchart from './vega/component/radar-chart';
 import emphasedNumber from './emphased-number/';
 import identifierBadge from './identifier-badge/';
 import resourcesGrid from './resources-grid/';
+import table from './table/';
 import email from './email';
 import fieldClone from './fieldClone';
 import html from './html';
@@ -74,6 +75,7 @@ const components = {
     resource,
     lodexField,
     resourcesGrid,
+    table,
     cartography,
     heatmap,
     network,
@@ -90,6 +92,18 @@ const components = {
 };
 
 export const FORMATS = Object.keys(components).sort();
+
+export const TABLE_COMPATIBLE_FORMATS = Object.keys({
+    title,
+    uri,
+    markdown,
+    html,
+    link,
+    latex,
+    emphasedNumber,
+    paragraph,
+    code,
+}).sort();
 
 export const getFormatInitialArgs = name =>
     get(components, [name, 'defaultArgs'], {});
