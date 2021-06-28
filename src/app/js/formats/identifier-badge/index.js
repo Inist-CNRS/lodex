@@ -16,4 +16,7 @@ export const resolvers = {
     DOI: 'http://dx.doi.org/',
     DOAI: 'http://doai.io/',
     PMID: 'https://www.ncbi.nlm.nih.gov/pubmed/',
+    HAL: 'https://hal.archives-ouvertes.fr/',
+    UID: '/',
+    ARK: '/',
 };
