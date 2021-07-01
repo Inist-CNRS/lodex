@@ -28,7 +28,7 @@
         "ignore": [
             "*.spec.js"
         ],
-        "delay": "2500"
+        "delay": 2500
     },
     "repository": {
         "type": "git",
@@ -41,16 +41,17 @@
     },
     "homepage": "https://github.com/Inist-CNRS/lodex#readme",
     "dependencies": {
-        "@babel/cli": "^7.8.4",
-        "@babel/core": "^7.1.6",
-        "@babel/plugin-proposal-class-properties": "^7.1.0",
-        "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
-        "@babel/plugin-syntax-dynamic-import": "^7.0.0",
-        "@babel/plugin-transform-runtime": "^7.1.0",
-        "@babel/polyfill": "^7.0.0",
-        "@babel/preset-env": "^7.1.6",
-        "@babel/preset-react": "^7.0.0",
-        "@babel/register": "^7.9.0",
+        "@babel/cli": "^7.14.5",
+        "@babel/core": "^7.14.6",
+        "@babel/plugin-proposal-class-properties": "^7.14.5",
+        "@babel/plugin-proposal-object-rest-spread": "^7.14.7",
+        "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+        "@babel/plugin-transform-runtime": "^7.14.5",
+        "@babel/polyfill": "^7.12.1",
+        "@babel/preset-env": "^7.14.7",
+        "@babel/preset-react": "^7.14.5",
+        "@babel/register": "^7.14.5",
+        "@babel/runtime": "^7.14.6",
         "@ezs/analytics": "^1.16.0",
         "@ezs/basics": "^1.13.2",
         "@ezs/booster": "^1.2.4",
@@ -71,8 +72,7 @@
         "@material-ui/styles": "^4.10.0",
         "aphrodite": "^1.2.5",
         "async-busboy": "^0.7.0",
-        "babel-eslint": "^10.0.3",
-        "babel-loader": "^8.0.4",
+        "babel-loader": "^8.2.2",
         "classnames": "^2.2.6",
         "cli-truncate": "^1.1.0",
         "comma-number": "^2.0.1",
@@ -200,9 +200,10 @@
         "xml-writer": "^1.7.0"
     },
     "devDependencies": {
+        "@babel/eslint-parser": "^7.14.7",
         "@testing-library/react": "11.2.3",
         "babel-core": "^7.0.0-bridge.0",
-        "babel-jest": "^26.3.0",
+        "babel-jest": "^27.0.6",
         "cypress": "^4.11.0",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.2",
