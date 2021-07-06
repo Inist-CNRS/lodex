@@ -221,7 +221,7 @@ const mapStateToProps = (_, { formatData, spaceWidth }) => {
 };
 
 export default compose(
-    injectData(null, field => !!field),
+    injectData(null, field => !!field, true),
     connect(mapStateToProps),
     translate,
 )(TableView);

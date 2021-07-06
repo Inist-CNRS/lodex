@@ -96,6 +96,7 @@ export const FORMATS = Object.keys(components).sort();
 export const TABLE_COMPATIBLE_FORMATS = Object.keys({
     title,
     uri,
+    list,
     markdown,
     html,
     link,
