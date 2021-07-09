@@ -33,4 +33,5 @@ module.exports = {
         max: 500,
         maxAge: 60 * 60, // 1 hour
     },
+    uploadDir: '/tmp/upload',
 };
