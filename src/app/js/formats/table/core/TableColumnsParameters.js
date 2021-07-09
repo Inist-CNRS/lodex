@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { TextField } from '@material-ui/core';
 import TableColumnParameter from './TableColumnParameter';
 import _ from 'lodash';
@@ -58,7 +58,7 @@ class TableColumnsParameters extends Component {
             for (let i = 0; i < diff; i++) {
                 reformattedParameters.push({
                     id: parameters.length,
-                    field: '',
+                    field: 'a_routine_field',
                     title: 'Column ' + (parameters.length + 1),
                     format: {
                         name: '',

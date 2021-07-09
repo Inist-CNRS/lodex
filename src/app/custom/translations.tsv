@@ -569,7 +569,7 @@
 "table_weight"	"Weight (weight)"	"Poids (weight)"
 "table_value"	"Value (value)"	"Valeur (value)"
 "table_url"	"Url (url)"	"Url (url)"
-"table_id"	"Identifier (_id)"	"Identifiant (_id)"
+"table_id"	"Identifier (id)"	"Identifiant (id)"
 "table_other"	"Custom field"	"Champ personnalisé"
 "table_other_field"	"Custom field name"	"Nom du champ personnalisé"
 "table_field"	"Routine field (name)"	"Champ de la routine (nom)"
