@@ -11,27 +11,8 @@ export const defaultArgs = {
         maxSize: 6,
         orderBy: 'value/asc',
     },
-    columnsCount: 2,
-    columnsParameters: [
-        {
-            id: 0,
-            format: {
-                name: 'None',
-                option: undefined,
-            },
-            field: 'a_routine_field',
-            title: 'Column 1',
-        },
-        {
-            id: 1,
-            field: 'a_routine_field',
-            title: 'Column 2',
-            format: {
-                name: 'None',
-                option: undefined,
-            },
-        },
-    ],
+    columnsCount: 0,
+    columnsParameters: [],
 };
 
 class PaginatedTableAdmin extends AbstractTableAdmin {
