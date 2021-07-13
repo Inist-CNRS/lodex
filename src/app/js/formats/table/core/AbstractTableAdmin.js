@@ -38,7 +38,7 @@ class AbstractTableAdmin extends Component {
             justifyContent: 'space-between',
         },
         input: {
-            width: '100%',
+            width: '185%',
         },
     };
 

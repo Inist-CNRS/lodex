@@ -59,25 +59,42 @@ class AbstractTableView extends Component {
             rowsPerPage: props.pageSize,
             page: 0,
             sortId: undefined,
+            sortOn: undefined,
             sort: false,
         };
     }
 
+    UNSAFE_componentWillMount() {
+        if (this.props.columnsParameters.length >= 1) {
+            this.onSort(this.props.columnsParameters[0]);
+        }
+    }
+
+    onStateChange(state) {
+        this.setState(state);
+    }
+
     onChangePage(event, newPage) {
-        this.setState({
+        const newState = {
             ...this.state,
             page: newPage,
-        });
+        };
+
+        this.onStateChange(newState);
     }
 
     onChangeRowsPerPage(event) {
-        this.setState({
+        const newState = {
             ...this.state,
             rowsPerPage: parseInt(event.target.value, 10),
-        });
+        };
+
+        this.onStateChange(newState);
     }
 
-    onSort(columnId) {
+    onSort(column) {
+        const columnId = column.id;
+        const columnField = column.field;
         let sort = this.state.sort;
         if (columnId === this.state.sortId) {
             switch (sort) {
@@ -91,11 +108,14 @@ class AbstractTableView extends Component {
         } else {
             sort = 'asc';
         }
-        this.setState({
+        const newState = {
             ...this.state,
             sortId: columnId,
+            sortOn: columnField,
             sort: sort,
-        });
+        };
+
+        this.onStateChange(newState);
     }
 
     getCellInnerHtml(value, index, columnParameter) {
@@ -159,7 +179,7 @@ class AbstractTableView extends Component {
                                         ? 'asc'
                                         : this.getSortDirection(column.id)
                                 }
-                                onClick={() => this.onSort(column.id)}
+                                onClick={() => this.onSort(column)}
                             >
                                 {column.title}
                             </TableSortLabel>
