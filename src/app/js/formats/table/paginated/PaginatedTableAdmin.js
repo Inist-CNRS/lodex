@@ -23,19 +23,10 @@ class PaginatedTableAdmin extends AbstractTableAdmin {
     render() {
         const {
             p: polyglot,
-            args: { params, pageSize, columnsCount, columnsParameters },
+            args: { pageSize, columnsCount, columnsParameters },
         } = this.props;
         return (
             <div style={this.styles.container}>
-                <RoutineParamsAdmin
-                    params={params || defaultArgs.params}
-                    onChange={this.setParams}
-                    polyglot={polyglot}
-                    showMaxSize={true}
-                    showMaxValue={false}
-                    showMinValue={false}
-                    showOrderBy={false}
-                />
                 <TextField
                     label={polyglot.t('items_per_page')}
                     onChange={this.setPageSize}
