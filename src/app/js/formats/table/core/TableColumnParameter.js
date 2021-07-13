@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import {
     FormControl,
     InputLabel,
@@ -8,8 +8,12 @@ import {
     Select,
     TextField,
 } from '@material-ui/core';
-import SelectFormat from '../SelectFormat';
-import { TABLE_COMPATIBLE_FORMATS, getAdminComponent } from '../index';
+import SelectFormat from '../../SelectFormat';
+import {
+    TABLE_COMPATIBLE_FORMATS,
+    getAdminComponent,
+    getFormatInitialArgs,
+} from '../../index';
 
 const styles = {
     input50: {
@@ -62,13 +66,13 @@ class TableColumnParameter extends Component {
     }
 
     changeFormat(newFormat) {
-        const { id, field, title, format } = this.state;
+        const { id, field, title } = this.state;
         const parameter = {
             id: id,
             title: title,
             format: {
                 name: newFormat,
-                option: format.option,
+                option: getFormatInitialArgs(newFormat),
             },
             field: field,
         };
@@ -131,7 +135,7 @@ class TableColumnParameter extends Component {
             'weight',
             'value',
             'url',
-            '_id',
+            'id',
         ];
 
         return (
@@ -141,30 +145,14 @@ class TableColumnParameter extends Component {
                     <FormControl style={styles.input50}>
                         <InputLabel>{polyglot.t('table_field')}</InputLabel>
                         <Select value={field} onChange={this.changeField}>
-                            <MenuItem value={'title'}>
-                                {polyglot.t('table_title')}
-                            </MenuItem>
-                            <MenuItem value={'summary'}>
-                                {polyglot.t('table_summary')}
-                            </MenuItem>
-                            <MenuItem value={'source'}>
-                                {polyglot.t('table_source')}
-                            </MenuItem>
-                            <MenuItem value={'target'}>
-                                {polyglot.t('table_target')}
-                            </MenuItem>
-                            <MenuItem value={'weight'}>
-                                {polyglot.t('table_weight')}
-                            </MenuItem>
-                            <MenuItem value={'value'}>
-                                {polyglot.t('table_value')}
-                            </MenuItem>
-                            <MenuItem value={'url'}>
-                                {polyglot.t('table_url')}
-                            </MenuItem>
-                            <MenuItem value={'_id'}>
-                                {polyglot.t('table_id')}
-                            </MenuItem>
+                            {availableField.map(value => (
+                                <MenuItem
+                                    key={`table_parameter_${value}`}
+                                    value={value}
+                                >
+                                    {polyglot.t(`table_${value}`)}
+                                </MenuItem>
+                            ))}
                             <MenuItem
                                 value={
                                     availableField.includes(field)
