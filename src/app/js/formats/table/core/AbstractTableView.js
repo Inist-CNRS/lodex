@@ -198,10 +198,10 @@ class AbstractTableView extends Component {
                         pageSize,
                         pageSize * 2,
                         pageSize * 3,
-                        { label: polyglot.t('all'), value: dataTotal.length },
+                        { label: polyglot.t('all'), value: dataTotal },
                     ]}
                     rowsPerPage={this.state.rowsPerPage}
-                    count={dataTotal.length}
+                    count={dataTotal}
                     page={this.state.page}
                     onChangePage={this.onChangePage}
                     labelRowsPerPage={polyglot.t('rows_per_page')}

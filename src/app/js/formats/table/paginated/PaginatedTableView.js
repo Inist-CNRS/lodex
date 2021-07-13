@@ -7,21 +7,32 @@ import { Table, TableBody, TableContainer, TableRow } from '@material-ui/core';
 import React from 'react';
 
 class PaginatedTableView extends AbstractTableView {
+    onStateChange(state) {
+        const filterFormatDataParameter = {
+            skip: state.page * state.rowsPerPage,
+            maxSize: state.rowsPerPage,
+        };
+
+        if (state.sortOn !== undefined && state.sort !== false)
+            filterFormatDataParameter.sort = [state.sortOn, state.sort].join(
+                '/',
+            );
+
+        this.setState(state, () =>
+            this.props.filterFormatData(filterFormatDataParameter),
+        );
+    }
+
     render() {
-        const { data, pageSize, p, columnsParameters } = this.props;
+        const { data, pageSize, total, p, columnsParameters } = this.props;
 
         return (
             <TableContainer>
                 <Table>
                     {this.getTableHead(columnsParameters)}
                     <TableBody>
-                        {this.sortData(data, columnsParameters)
-                            .slice(
-                                this.state.page * this.state.rowsPerPage,
-                                this.state.page * this.state.rowsPerPage +
-                                    this.state.rowsPerPage,
-                            )
-                            .map((entry, index) => (
+                        {this.sortData(data, columnsParameters).map(
+                            (entry, index) => (
                                 <TableRow key={`${index}-table`}>
                                     {columnsParameters.map(column =>
                                         this.getCellInnerHtml(
@@ -31,9 +42,10 @@ class PaginatedTableView extends AbstractTableView {
                                         ),
                                     )}
                                 </TableRow>
-                            ))}
+                            ),
+                        )}
                     </TableBody>
-                    {this.getTableFooter(pageSize, data, p)}
+                    {this.getTableFooter(pageSize, total, p)}
                 </Table>
             </TableContainer>
         );
