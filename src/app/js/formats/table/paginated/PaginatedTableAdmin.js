@@ -1,6 +1,5 @@
 import AbstractTableAdmin from '../core/AbstractTableAdmin';
 import translate from 'redux-polyglot/translate';
-import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 import { TextField } from '@material-ui/core';
 import TableColumnsParameters from '../core/TableColumnsParameters';
 import React from 'react';
