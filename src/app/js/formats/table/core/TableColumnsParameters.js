@@ -61,7 +61,7 @@ class TableColumnsParameters extends Component {
                     field: 'a_routine_field',
                     title: 'Column ' + (parameters.length + 1),
                     format: {
-                        name: '',
+                        name: 'None',
                         option: undefined,
                     },
                 });
