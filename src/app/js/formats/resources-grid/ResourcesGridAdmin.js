@@ -86,10 +86,13 @@ class RessourcesGridAdmin extends Component {
 
     setPageSize = e => {
         const { args, onChange } = this.props;
-
+        const pageSize = parseInt(e.target.value, 10);
         onChange({
             ...args,
-            pageSize: parseInt(e.target.value, 10),
+            pageSize: pageSize,
+            params: {
+                maxSize: pageSize,
+            },
         });
     };
 
@@ -127,6 +130,10 @@ class RessourcesGridAdmin extends Component {
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
                     polyglot={polyglot}
+                    showMaxSize={false}
+                    showMaxValue={false}
+                    showMinValue={false}
+                    showOrderBy={false}
                 />
                 <FormControl fullWidth>
                     <InputLabel id="resourcesgrid-admin-input-label">
@@ -190,15 +197,13 @@ class RessourcesGridAdmin extends Component {
                     value={summarySize}
                     type="number"
                 />
-                {allowToLoadMore && (
-                    <TextField
-                        label={polyglot.t('items_per_page')}
-                        onChange={this.setPageSize}
-                        style={styles.input}
-                        value={pageSize}
-                        type="number"
-                    />
-                )}
+                <TextField
+                    label={polyglot.t('items_per_page')}
+                    onChange={this.setPageSize}
+                    style={styles.input}
+                    value={pageSize}
+                    type="number"
+                />
             </div>
         );
     }
