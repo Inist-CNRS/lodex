@@ -191,6 +191,13 @@ class AbstractTableView extends Component {
     }
 
     getTableFooter(pageSize, dataTotal, polyglot) {
+        const labelDisplayedRows = ({ from, to, count }) =>
+            polyglot
+                .t('showing')
+                .replace('{total}', count)
+                .replace('{from}', from)
+                .replace('{to}', to);
+
         return (
             <TableFooter>
                 <TablePagination
@@ -204,8 +211,11 @@ class AbstractTableView extends Component {
                     count={dataTotal.length}
                     page={this.state.page}
                     onChangePage={this.onChangePage}
-                    labelRowsPerPage={polyglot.t('rows_per_page')}
                     onChangeRowsPerPage={this.onChangeRowsPerPage}
+                    labelRowsPerPage={polyglot.t('rows_per_page')}
+                    backIconButtonText={polyglot.t('previous')}
+                    nextIconButtonText={polyglot.t('next')}
+                    labelDisplayedRows={labelDisplayedRows}
                 />
             </TableFooter>
         );
