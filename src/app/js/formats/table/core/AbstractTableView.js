@@ -43,6 +43,14 @@ class AbstractTableView extends Component {
             };
         }
 
+        if (formatData.data || _.isArray(formatData.data)) {
+            return {
+                data: formatData.data,
+                total: formatData.total,
+                spaceWidth,
+            };
+        }
+
         return {
             data: formatData.items,
             total: formatData.total,
