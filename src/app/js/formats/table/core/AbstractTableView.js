@@ -36,17 +36,32 @@ class AbstractTableView extends Component {
     };
 
     static mapStateToProps = (_, { formatData, spaceWidth }) => {
-        if (!formatData || !formatData.items) {
+        if (!formatData) {
             return {
                 data: [],
                 total: 0,
             };
         }
 
+        if (formatData.items) {
+            return {
+                data: formatData.items,
+                total: formatData.total,
+                spaceWidth,
+            };
+        }
+
+        if (Array.isArray(formatData)) {
+            return {
+                data: formatData,
+                total: formatData.length,
+                spaceWidth,
+            };
+        }
+
         return {
-            data: formatData.items,
-            total: formatData.total,
-            spaceWidth,
+            data: [],
+            total: 0,
         };
     };
 
