@@ -19,14 +19,14 @@ class PaginatedTableAdmin extends AbstractTableAdmin {
         args: defaultArgs,
     };
 
-    setColumnParameter = args => {
+    setPageSize = e => {
+        const pageSize = parseInt(e.target.value, 10);
         this.props.onChange({
             ...this.props.args,
             params: {
-                maxSize: args.parameterCount,
+                maxSize: pageSize,
             },
-            columnsCount: args.parameterCount,
-            columnsParameters: args.parameters,
+            pageSize: pageSize,
         });
     };
 
