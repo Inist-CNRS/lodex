@@ -36,17 +36,32 @@ class AbstractTableView extends Component {
     };
 
     static mapStateToProps = (_, { formatData, spaceWidth }) => {
-        if (!formatData || !formatData.items) {
+        if (!formatData) {
             return {
                 data: [],
                 total: 0,
             };
         }
 
+        if (formatData.items) {
+            return {
+                data: formatData.items,
+                total: formatData.total,
+                spaceWidth,
+            };
+        }
+
+        if (Array.isArray(formatData)) {
+            return {
+                data: formatData,
+                total: formatData.length,
+                spaceWidth,
+            };
+        }
+
         return {
-            data: formatData.items,
-            total: formatData.total,
-            spaceWidth,
+            data: [],
+            total: 0,
         };
     };
 
@@ -191,6 +206,13 @@ class AbstractTableView extends Component {
     }
 
     getTableFooter(pageSize, dataTotal, polyglot) {
+        const labelDisplayedRows = ({ from, to, count }) =>
+            polyglot
+                .t('showing')
+                .replace('{total}', count)
+                .replace('{from}', from)
+                .replace('{to}', to);
+
         return (
             <TableFooter>
                 <TablePagination
@@ -204,8 +226,11 @@ class AbstractTableView extends Component {
                     count={dataTotal}
                     page={this.state.page}
                     onChangePage={this.onChangePage}
-                    labelRowsPerPage={polyglot.t('rows_per_page')}
                     onChangeRowsPerPage={this.onChangeRowsPerPage}
+                    labelRowsPerPage={polyglot.t('rows_per_page')}
+                    backIconButtonText={polyglot.t('previous')}
+                    nextIconButtonText={polyglot.t('next')}
+                    labelDisplayedRows={labelDisplayedRows}
                 />
             </TableFooter>
         );

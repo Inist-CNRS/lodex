@@ -73,16 +73,8 @@ class ResourcesGridView extends Component {
         super(props);
         this.state = {
             fetch: false,
-            more: 0,
+            more: props.pageSize,
         };
-    }
-
-    UNSAFE_componentWillMount() {
-        const { allowToLoadMore } = this.props;
-
-        if (allowToLoadMore) {
-            this.handleMore();
-        }
     }
 
     handleMore = () => {
