@@ -62,7 +62,7 @@ build-app:
 build: ## Build the docker image localy
 	docker build -t inistcnrs/lodex --build-arg http_proxy --build-arg https_proxy .
 publish: build  ## publish version to docker hub
-	docker push inistcnrs/lodex:12.2.1
+	docker push inistcnrs/lodex:12.2.2
 
 analyze-code: ## Generate statistics about the bundle. Usage: make analyze-code.
 	docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run analyze
