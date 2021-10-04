@@ -25,6 +25,7 @@ const styles = stylesToClassname(
             display: 'flex',
             flexDirection: 'column',
             marginTop: '16px',
+            zIndex: 1003, // on top of Navbar (with zIndex 1002)
         },
         menuTitle: {
             padding: '0px 16px',
