@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 
 import { DetailComponent as Detail } from './Detail';
 import Property from '../Property';
+import ExportButton from '../ExportButton';
 
 describe('Detail', () => {
     it('should render one Property per fields', () => {
@@ -84,5 +85,50 @@ describe('Detail', () => {
             { index: 1, name: 'contribution1' },
             { index: 2, name: 'field1' },
         ]);
+    });
+
+    it('should render export button for ressource', () => {
+        const props = {
+            fields: [
+                { name: 'field1', scheme: 'scheme1', position: 3 },
+                { name: 'field2', scheme: 'scheme2', position: 1 },
+                { name: 'contribution1', scheme: 'scheme3', position: 2 },
+            ],
+            resource: {
+                field1: 'value1',
+                field2: 'value2',
+                contribution1: 'value3',
+            },
+            p: {
+                t: v => v,
+            },
+        };
+
+        const wrapper = shallow(<Detail {...props} />);
+        const exportButton = wrapper.find(ExportButton);
+        expect(exportButton.exists()).toBeTruthy()
+    });
+
+    it('should not render export button for subressource', () => {
+        const props = {
+            fields: [
+                { name: 'field1', scheme: 'scheme1', position: 3 },
+                { name: 'field2', scheme: 'scheme2', position: 1 },
+                { name: 'contribution1', scheme: 'scheme3', position: 2 },
+            ],
+            resource: {
+                field1: 'value1',
+                field2: 'value2',
+                contribution1: 'value3',
+                subresourceId: 'value4',
+            },
+            p: {
+                t: v => v,
+            },
+        };
+
+        const wrapper = shallow(<Detail {...props} />);
+        const exportButton = wrapper.find(ExportButton);
+        expect(exportButton.exists()).not.toBeTruthy();
     });
 });
