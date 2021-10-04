@@ -12,6 +12,7 @@ describe('<Resource />', () => {
         loading: true,
         preLoadResource: () => null,
         preLoadPublication: () => null,
+        preLoadExporters: () => null,
         p: { t: v => v },
         history: { goBack: () => {} },
         match: { params: { uri: 'FOO' } },
