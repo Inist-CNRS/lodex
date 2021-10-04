@@ -168,11 +168,13 @@ export const DetailComponent = ({ fields, resource, title, description }) => {
                         <SelectVersion />
                         <AddField style={{ marginLeft: 'auto' }} />
                         <HideResource />
-                        <ExportButton
-                            style={{ float: 'right' }}
-                            uri={resource.uri}
-                            withText
-                        />
+                        {!resource.subresourceId && (
+                            <ExportButton
+                                style={{ float: 'right' }}
+                                uri={resource.uri}
+                                withText
+                            />
+                        )}
                     </CardActions>
                     <div style={styles.version}>
                         <Version />
