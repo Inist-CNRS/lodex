@@ -15,7 +15,6 @@ import ExportItem from './export/ExportMenuItem';
 import stylesToClassname from '../lib/stylesToClassName';
 
 import {
-    preLoadExporters,
     exportPublishedDataset as exportPublishedDatasetAction,
 } from './export';
 
@@ -121,7 +120,6 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
 ExportButton.propTypes = {
     exporters: PropTypes.arrayOf(PropTypes.object),
     onExport: PropTypes.func.isRequired,
-    preLoadExporters: PropTypes.func.isRequired,
     uri: PropTypes.string,
     p: polyglotPropTypes.isRequired,
     withText: PropTypes.bool.isRequired,
@@ -138,7 +136,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
     bindActionCreators(
         {
-            preLoadExporters,
             onExport: exportPublishedDatasetAction,
         },
         dispatch,

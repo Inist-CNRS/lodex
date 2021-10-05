@@ -18,6 +18,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Loading from '../../lib/components/Loading';
 import { preLoadResource } from './';
 import { preLoadPublication } from '../../fields';
+import { preLoadExporters } from '../export';
 import Link from '../../lib/components/Link';
 import stylesToClassname from '../../lib/stylesToClassName';
 import NavButton, { NEXT, PREV } from '../../lib/components/NavButton';
@@ -65,6 +66,7 @@ export class ResourceComponent extends React.Component {
     UNSAFE_componentWillMount() {
         this.props.preLoadResource();
         this.props.preLoadPublication();
+        this.props.preLoadExporters();
     }
 
     componentDidUpdate(prevProps) {
@@ -233,6 +235,7 @@ ResourceComponent.propTypes = {
     removed: PropTypes.bool.isRequired,
     preLoadResource: PropTypes.func.isRequired,
     preLoadPublication: PropTypes.func.isRequired,
+    preLoadExporters: PropTypes.func.isRequired,
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
         goBack: PropTypes.func.isRequired,
@@ -264,6 +267,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     preLoadResource,
     preLoadPublication,
+    preLoadExporters
 };
 
 export default compose(
