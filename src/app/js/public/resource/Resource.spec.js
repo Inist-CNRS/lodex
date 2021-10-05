@@ -94,6 +94,20 @@ describe('<Resource />', () => {
         );
     });
 
+    it('should call preLoadExporters when the resource component will mount', () => {
+        const preLoadExporters = jest.fn();
+        const props = {
+            ...defaultProps,
+            match: { params: { uri: 'uri' } },
+            preLoadExporters,
+            loading: false,
+            resource: 'resource',
+        };
+
+        render(<ResourceComponent {...props} />);
+        expect(preLoadExporters).toHaveBeenCalledTimes(1);
+    });
+
     it('should call again preLoadResource if the uid uri change in the url', () => {
         const preLoadResource = jest.fn();
         const props = {
