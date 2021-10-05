@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { TableCell } from '@material-ui/core';
+import { TableCell, TableContainer } from '@material-ui/core';
 import ExcerptLine from './ExcerptLine';
 
 import { ExcerptComponent as Excerpt } from './Excerpt';
@@ -17,6 +17,12 @@ describe('<Excerpt />', () => {
         ],
         p: { t: key => key },
     };
+
+    it('should render Table container', () => {
+        const wrapper = shallow(<Excerpt {...defaultProps} />);
+        const tableContainer = wrapper.find(TableContainer);
+        expect(tableContainer.exists()).toBeTruthy();
+    });
 
     it('should render headers', () => {
         const wrapper = shallow(<Excerpt {...defaultProps} />);
