@@ -27,7 +27,6 @@ const OntologyComponent = ({
                 container
                 justify="space-between"
                 alignItems="center"
-                style={{ paddingBottom: 20 }}
             >
                 <Grid item>
                     <h4>{polyglot.t(filter)}</h4>
@@ -36,7 +35,7 @@ const OntologyComponent = ({
                     <AddCharacteristic displayPage={filter} />
                 </Grid>
             </Grid>
-            <Grid container direction="row">
+            <Grid container direction="row" style={{ overflowX: 'auto' }}>
                 <Grid item>
                     <OntologyTable filter={filter} />
                 </Grid>

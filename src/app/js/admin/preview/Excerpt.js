@@ -12,6 +12,7 @@ import {
     TableHead,
     TableCell,
     TableRow,
+    TableContainer
 } from '@material-ui/core';
 
 import {
@@ -53,52 +54,56 @@ export const ExcerptComponent = ({
     p: polyglot,
     isPreview = false,
 }) => (
-    <Table className={className} style={styles.table(isPreview)}>
-        <TableHead>
-            <TableRow>
-                {columns.map(field => (
-                    <TableCell
-                        key={field.name}
-                        className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
-                            field,
-                        )}`}
-                        style={getColStyle(colStyle)}
-                        onClick={() =>
-                            field.name !== URI_FIELD_NAME &&
-                            onHeaderClick(field.name)
-                        }
-                        tooltip={
-                            areHeadersClickable
-                                ? polyglot.t('click_to_edit_publication_field')
-                                : ''
-                        }
-                    >
-                        <ExcerptHeader field={field} />
-                    </TableCell>
-                ))}
-            </TableRow>
-        </TableHead>
-        <TableBody>
-            {areHeadersClickable && (
+    <TableContainer>
+        <Table className={className} style={styles.table(isPreview)}>
+            <TableHead>
                 <TableRow>
-                    {columns.map(c => (
-                        <ExcerptRemoveColumn
-                            key={`remove_column_${c._id}`}
-                            field={c}
-                            onClick={onCellClick}
-                        />
+                    {columns.map(field => (
+                        <TableCell
+                            key={field.name}
+                            className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
+                                field,
+                            )}`}
+                            style={getColStyle(colStyle)}
+                            onClick={() =>
+                                field.name !== URI_FIELD_NAME &&
+                                onHeaderClick(field.name)
+                            }
+                            tooltip={
+                                areHeadersClickable
+                                    ? polyglot.t(
+                                          'click_to_edit_publication_field',
+                                      )
+                                    : ''
+                            }
+                        >
+                            <ExcerptHeader field={field} />
+                        </TableCell>
                     ))}
                 </TableRow>
-            )}
-            {lines.map((line, index) => (
-                <ExcerptLine
-                    key={`${line.uri}-${index}` || index}
-                    line={line}
-                    columns={columns}
-                />
-            ))}
-        </TableBody>
-    </Table>
+            </TableHead>
+            <TableBody>
+                {areHeadersClickable && (
+                    <TableRow>
+                        {columns.map(c => (
+                            <ExcerptRemoveColumn
+                                key={`remove_column_${c._id}`}
+                                field={c}
+                                onClick={onCellClick}
+                            />
+                        ))}
+                    </TableRow>
+                )}
+                {lines.map((line, index) => (
+                    <ExcerptLine
+                        key={`${line.uri}-${index}` || index}
+                        line={line}
+                        columns={columns}
+                    />
+                ))}
+            </TableBody>
+        </Table>
+    </TableContainer>
 );
 
 ExcerptComponent.propTypes = {
