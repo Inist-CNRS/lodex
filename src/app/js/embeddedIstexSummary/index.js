@@ -6,7 +6,7 @@ import { render } from 'react-dom';
 import Polyglot from 'node-polyglot';
 
 import {
-    createMuiTheme,
+    createTheme,
     ThemeProvider as MuiThemeProvider,
 } from '@material-ui/core/styles';
 
@@ -22,7 +22,7 @@ const polyglot = new Polyglot({
     phrases: phrasesFor(locale),
 });
 
-const theme = createMuiTheme(customTheme, {
+const theme = createTheme(customTheme, {
     userAgent: navigator.userAgent,
 });
 

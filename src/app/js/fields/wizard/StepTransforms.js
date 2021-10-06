@@ -4,12 +4,32 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/dist/translate';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
+import { memoize } from 'lodash';
 
 import Step from './Step';
 import TransformerList from '../TransformerList';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { isSubresourceTransformation } from './StepValueSubresource';
 import { FIELD_FORM_NAME } from '..';
+
+const renderTransformer = memoize((locked, isSubresourceField) => props => {
+    if (locked) {
+        return (
+            <span>
+                {polyglot.t(
+                    'transformer_no_editable_with_subresource_uid_value',
+                )}
+            </span>
+        );
+    }
+
+    return (
+        <TransformerList
+            hideFirstTransformers={isSubresourceField ? 3 : 0}
+            {...props}
+        />
+    );
+});
 
 export const StepTransformComponent = ({
     isSubresourceField,
@@ -20,24 +40,7 @@ export const StepTransformComponent = ({
     <Step id="step-transformers" label="field_wizard_step_tranforms" {...props}>
         <FieldArray
             name="transformers"
-            component={props => {
-                if (locked) {
-                    return (
-                        <span>
-                            {polyglot.t(
-                                'transformer_no_editable_with_subresource_uid_value',
-                            )}
-                        </span>
-                    );
-                }
-
-                return (
-                    <TransformerList
-                        hideFirstTransformers={isSubresourceField ? 3 : 0}
-                        {...props}
-                    />
-                );
-            }}
+            component={renderTransformer(locked, isSubresourceField)}
             type="transform"
         />
     </Step>

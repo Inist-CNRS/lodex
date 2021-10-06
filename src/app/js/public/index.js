@@ -6,7 +6,7 @@ import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
 
 import {
-    createMuiTheme,
+    createTheme,
     ThemeProvider as MuiThemeProvider,
 } from '@material-ui/core/styles';
 
@@ -18,7 +18,7 @@ import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import customTheme from './customTheme';
 
-const theme = createMuiTheme(customTheme);
+const theme = createTheme(customTheme);
 
 const locale = getLocale();
 const initialState = {
