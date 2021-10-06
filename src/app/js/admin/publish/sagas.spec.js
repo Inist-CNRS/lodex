@@ -8,36 +8,16 @@ import { FINISH_PROGRESS, ERROR_PROGRESS } from '../progress/reducer';
 import {
     publishError,
     publishSuccess,
-    publishWarn,
-    PUBLISH_CONFIRM,
-    PUBLISH_CANCEL,
 } from './';
 
 describe('publication saga', () => {
     describe('handlePublishRequest', () => {
         const saga = handlePublishRequest();
 
-        it('should select getVerifyUriRequest', () => {
-            expect(saga.next().value).toEqual(
-                select(fromUser.getVerifyUriRequest),
-            );
-        });
-
-        it('should call fetchSaga with the verify uri request', () => {
-            expect(saga.next('verify uri request').value).toEqual(
-                call(fetchSaga, 'verify uri request'),
-            );
-        });
-
         it('should select getPublishRequest', () => {
-            expect(
-                saga.next({
-                    response: {
-                        nbInvalidUri: 0,
-                        nbInvalidSubresourceUriMap: {},
-                    },
-                }).value,
-            ).toEqual(select(fromUser.getPublishRequest));
+            expect(saga.next().value).toEqual(
+                select(fromUser.getPublishRequest),
+            );
         });
 
         it('should call fetchSaga with the request', () => {
@@ -65,10 +45,6 @@ describe('publication saga', () => {
             const failedSaga = handlePublishRequest();
             failedSaga.next();
             failedSaga.next();
-            failedSaga.next({
-                response: { nbInvalidUri: 0, nbInvalidSubresourceUriMap: {} },
-            });
-            failedSaga.next();
             expect(failedSaga.next({ error: 'foo' }).value).toEqual(
                 put(publishError('foo')),
             );
@@ -77,10 +53,6 @@ describe('publication saga', () => {
         it('should put publishError action with error from progress if any', () => {
             const failedSaga = handlePublishRequest();
             failedSaga.next();
-            failedSaga.next();
-            failedSaga.next({
-                response: { nbInvalidUri: 0, nbInvalidSubresourceUriMap: {} },
-            });
             failedSaga.next();
             expect(failedSaga.next({}).value).toEqual(
                 race({
@@ -93,102 +65,6 @@ describe('publication saga', () => {
                     progressError: { payload: { error: 'error' } },
                 }).value,
             ).toEqual(put(publishError('error')));
-        });
-    });
-
-    describe('handlePublishRequest with invalidUri canceling', () => {
-        const saga = handlePublishRequest();
-
-        it('should select getVerifyUriRequest', () => {
-            expect(saga.next().value).toEqual(
-                select(fromUser.getVerifyUriRequest),
-            );
-        });
-
-        it('should call fetchSaga with the verify uri request', () => {
-            expect(saga.next('verify uri request').value).toEqual(
-                call(fetchSaga, 'verify uri request'),
-            );
-        });
-
-        it('should put publishWarn', () => {
-            expect(
-                saga.next({
-                    response: {
-                        nbInvalidUri: 5,
-                        nbInvalidSubresourceUriMap: {},
-                    },
-                }).value,
-            ).toEqual(
-                put(
-                    publishWarn({
-                        nbInvalidUri: 5,
-                        nbInvalidSubresourceUriMap: {},
-                    }),
-                ),
-            );
-        });
-
-        it('should race PUBLISH_CONFIRM and PUBLISH_CANCEL', () => {
-            expect(saga.next().value).toEqual(
-                race({
-                    ok: take(PUBLISH_CONFIRM),
-                    cancel: take(PUBLISH_CANCEL),
-                }),
-            );
-        });
-
-        it('should end if cancel', () => {
-            expect(saga.next({ cancel: true }).done).toBe(true);
-        });
-    });
-
-    describe('handlePublishRequest with invalidUri confirming', () => {
-        const saga = handlePublishRequest();
-
-        it('should select getVerifyUriRequest', () => {
-            expect(saga.next().value).toEqual(
-                select(fromUser.getVerifyUriRequest),
-            );
-        });
-
-        it('should call fetchSaga with the verify uri request', () => {
-            expect(saga.next('verify uri request').value).toEqual(
-                call(fetchSaga, 'verify uri request'),
-            );
-        });
-
-        it('should put publishWarn', () => {
-            expect(
-                saga.next({
-                    response: {
-                        nbInvalidUri: 5,
-                        nbInvalidSubresourceUriMap: {},
-                    },
-                }).value,
-            ).toEqual(
-                put(
-                    publishWarn({
-                        nbInvalidUri: 5,
-                        nbInvalidSubresourceUriMap: {},
-                    }),
-                ),
-            );
-        });
-
-        it('should race PUBLISH_CONFIRM and PUBLISH_CANCEL', () => {
-            expect(saga.next().value).toEqual(
-                race({
-                    ok: take(PUBLISH_CONFIRM),
-                    cancel: take(PUBLISH_CANCEL),
-                }),
-            );
-        });
-
-        it('should continue if ok', () => {
-            expect(saga.next({ ok: true }).value).toEqual(
-                select(fromUser.getPublishRequest),
-            );
         });
     });
 });
