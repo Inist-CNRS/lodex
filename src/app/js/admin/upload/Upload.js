@@ -11,10 +11,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
+import {
+    uploadFile,
+    changeUploadUrl,
+    changeLoaderName,
+    uploadUrl,
+    openUploadPopup,
+} from './';
 import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
 import theme from '../../theme';
+import ConfirmUpload from './ConfirmUpload';
 
 const useStyles = makeStyles({
     button: {
@@ -69,6 +76,8 @@ export const UploadComponent = ({
     onUrlUpload,
     p: polyglot,
     loaders,
+    onOpenUploadPopup,
+    isFirstFile,
 }) => {
     const classes = useStyles();
     const [files, setFiles] = useState([]);
@@ -94,7 +103,20 @@ export const UploadComponent = ({
 
     const handleFileUploaded = () => {
         if (files.length === 0) return;
+        if (!isFirstFile) {
+            onOpenUploadPopup();
+        } else {
+            onConfirm();
+        }
+    };
 
+    const onConfirm = (...params) => {
+        if (useUrl) {
+            onUrlUpload(...params);
+            if (path != successRedirectPath) {
+                history.push(successRedirectPath);
+            }
+        }
         onFileLoad(files[0].file);
         if (path != successRedirectPath) {
             history.push(successRedirectPath);
@@ -102,9 +124,10 @@ export const UploadComponent = ({
     };
 
     const handleUrlAdded = (...params) => {
-        onUrlUpload(...params);
-        if (path != successRedirectPath) {
-            history.push(successRedirectPath);
+        if (!isFirstFile) {
+            onOpenUploadPopup();
+        } else {
+            onConfirm(...params);
         }
     };
 
@@ -186,6 +209,7 @@ export const UploadComponent = ({
                     {polyglot.t('upload_file')}
                 </Button>
             )}
+            <ConfirmUpload history={history} onConfirm={onConfirm} />
             <div className={classes.divider}>
                 <hr className={classes.dividerHr} />
                 <div className={classes.dividerLabel}>{polyglot.t('or')}</div>
@@ -217,6 +241,8 @@ UploadComponent.propTypes = {
     onUrlUpload: PropTypes.func.isRequired,
     onChangeLoaderName: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    onOpenUploadPopup: PropTypes.func.isRequired,
+    isFirstFile: PropTypes.bool,
 };
 
 UploadComponent.defaultProps = {
@@ -258,6 +284,7 @@ const mapDispatchToProps = {
     onChangeUrl: e => changeUploadUrl(e.target.value),
     onChangeLoaderName: val =>
         changeLoaderName(Array.isArray(val) ? val[0] : val),
+    onOpenUploadPopup: openUploadPopup,
 };
 
 export default compose(
