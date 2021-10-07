@@ -13,8 +13,6 @@ export const publishError = createAction(PUBLISH_ERROR);
 export const defaultState = {
     error: null,
     loading: false,
-    nbInvalidUri: 0,
-    nbInvalidSubresourceUriMap: {},
 };
 
 export default handleActions(
@@ -44,13 +42,8 @@ export default handleActions(
 
 export const getIsPublishing = state => state.loading;
 export const getPublishingError = state => state.error;
-export const getNbInvalidUri = state => state.nbInvalidUri;
-export const getNbInvalidSubresourceUriMap = state =>
-    state.nbInvalidSubresourceUriMap;
 
 export const selectors = {
     getIsPublishing,
     getPublishingError,
-    getNbInvalidUri,
-    getNbInvalidSubresourceUriMap,
 };

@@ -17,12 +17,8 @@ export const goToDisplay = () => {
     cy.get('div[role="progressbar"]').should('not.be.visible');
 };
 
-export const publishAndGoToPublishedData = (forcePublish = true) => {
+export const publishAndGoToPublishedData = () => {
     cy.contains('button', 'Publish').click();
-    if (forcePublish) {
-        cy.contains('Publish anyway?').click();
-    }
-
     cy.wait(500);
     cy.get('div[role="dialog"] div[role="progressbar"]', {
         timeout: 10000,

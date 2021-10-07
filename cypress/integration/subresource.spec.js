@@ -40,24 +40,12 @@ describe('Subresource Page', () => {
         cy.contains('.publication-excerpt-column', 'myField').should('exist');
     });
 
-    it('should show number of duplicate fields before publish', () => {
-        subresourcePage.createSubresource();
-        subresourcePage.addField('name', 'myField');
-
-        cy.contains('button', 'Publish').click();
-
-        cy.contains(
-            '1 subresource(s) are duplicated will not be published',
-        ).should('exist');
-
-        cy.contains('Animals: 1').should('exist');
-    });
-
+    
     it('should successfully publish subresources', () => {
         subresourcePage.createSubresource();
         subresourcePage.addField('name', 'myField');
 
-        navigationPage.publishAndGoToPublishedData(true);
+        navigationPage.publishAndGoToPublishedData();
     });
 
     it('should allow to create link to subresource', () => {
@@ -100,7 +88,7 @@ describe('Subresource Page', () => {
         cy.contains('From a column').click();
         datasetImportPage.addColumn('name', { display: { syndication: 1 } });
 
-        navigationPage.publishAndGoToPublishedData(true);
+        navigationPage.publishAndGoToPublishedData();
 
         menu.openSearchDrawer();
         searchDrawer.findSearchResultByTitle('Publication n°1').click();
@@ -198,7 +186,7 @@ describe('Subresource Page', () => {
         cy.contains('From a column').click();
         datasetImportPage.addColumn('name', { display: { syndication: 1 } });
 
-        navigationPage.publishAndGoToPublishedData(true);
+        navigationPage.publishAndGoToPublishedData();
 
         menu.openSearchDrawer();
         searchDrawer.findSearchResultByTitle('Publication n°1').click();
