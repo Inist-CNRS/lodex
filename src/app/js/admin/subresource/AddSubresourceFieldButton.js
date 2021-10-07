@@ -44,18 +44,12 @@ const createDefaultSubresourceField = subresource => ({
     ],
 });
 
-export const AddSubresourceFieldButton = compose(
-    translate,
-    withRouter,
-    connect(
-        (state, { match }) => ({
-            subresource: state.subresource.subresources.find(
-                s => s._id === match.params.subresourceId,
-            ),
-        }),
-        { addField: addFieldAction, editField: editFieldAction },
-    ),
-)(({ addField, editField, subresource, p: polyglot }) => {
+export const AddSubresourceFieldButtonComponent = ({
+    addField,
+    editField,
+    subresource,
+    p: polyglot,
+}) => {
     const classes = useStyles();
 
     return (
@@ -78,4 +72,17 @@ export const AddSubresourceFieldButton = compose(
             />
         </>
     );
-});
+};
+
+export const AddSubresourceFieldButton = compose(
+    translate,
+    withRouter,
+    connect(
+        (state, { match }) => ({
+            subresource: state.subresource.subresources.find(
+                s => s._id === match.params.subresourceId,
+            ),
+        }),
+        { addField: addFieldAction, editField: editFieldAction },
+    ),
+)(AddSubresourceFieldButtonComponent);

@@ -20,7 +20,11 @@ const useStyles = makeStyles({
     },
 });
 
-const AddFieldButtonComponent = ({ onAddNewField, p: polyglot, name }) => {
+export const AddFieldButtonComponent = ({
+    onAddNewField,
+    p: polyglot,
+    name,
+}) => {
     const classes = useStyles();
 
     return (

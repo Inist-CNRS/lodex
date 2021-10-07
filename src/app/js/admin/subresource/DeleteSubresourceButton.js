@@ -3,10 +3,12 @@ import translate from 'redux-polyglot/translate';
 import { Button, Dialog, DialogTitle, DialogContent } from '@material-ui/core';
 import { compose, withState } from 'recompose';
 
-export const DeleteSubresourceButton = compose(
-    translate,
-    withState('showDeletePopup', 'setShowDeletePopup', false),
-)(({ p: polyglot, onClick, showDeletePopup, setShowDeletePopup }) => (
+export const DeleteSubresourceButtonComponent = ({
+    p: polyglot,
+    onClick,
+    showDeletePopup,
+    setShowDeletePopup,
+}) => (
     <>
         <Button
             variant="contained"
@@ -32,4 +34,9 @@ export const DeleteSubresourceButton = compose(
             </Dialog>
         )}
     </>
-));
+);
+
+export const DeleteSubresourceButton = compose(
+    translate,
+    withState('showDeletePopup', 'setShowDeletePopup', false),
+)(DeleteSubresourceButtonComponent);

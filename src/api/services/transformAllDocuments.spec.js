@@ -1,10 +1,20 @@
 import tranformAllDocuments from './transformAllDocuments';
+import progress from './progress';
+
+jest.mock('./progress');
 
 describe('tranformAllDocuments', () => {
+    let transformerCallCount = 0;
+
     const dataset = {
         length: 1000,
-        map: jest.fn().mockImplementation(() => ['transformed dataset']),
+        map: jest.fn().mockImplementation(() => {
+            // Emulate fluctuant transformed results
+            transformerCallCount++;
+            return Array(transformerCallCount).fill('transformed dataset');
+        }),
     };
+
     const count = 2001;
     const findLimitFromSkip = jest.fn().mockImplementation(() => dataset);
     const insertBatch = jest.fn();
@@ -39,5 +49,9 @@ describe('tranformAllDocuments', () => {
 
     it('should insert all transformedDocument', () => {
         expect(insertBatch).toHaveBeenCalledWith(['transformed dataset']);
+    });
+
+    it('should have called progress.incrementProgress with transformedDataset.length', () => {
+        expect(progress.incrementProgress.mock.calls).toEqual([[1], [2], [3]]);
     });
 });

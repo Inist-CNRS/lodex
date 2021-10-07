@@ -12,7 +12,11 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { isSubresourceTransformation } from './StepValueSubresource';
 import { FIELD_FORM_NAME } from '..';
 
-const renderTransformer = memoize((locked, isSubresourceField) => props => {
+export const renderTransformerFunction = (
+    locked,
+    isSubresourceField,
+    polyglot,
+) => props => {
     if (locked) {
         return (
             <span>
@@ -29,7 +33,9 @@ const renderTransformer = memoize((locked, isSubresourceField) => props => {
             {...props}
         />
     );
-});
+};
+
+const renderTransformer = memoize(renderTransformerFunction);
 
 export const StepTransformComponent = ({
     isSubresourceField,
@@ -40,7 +46,7 @@ export const StepTransformComponent = ({
     <Step id="step-transformers" label="field_wizard_step_tranforms" {...props}>
         <FieldArray
             name="transformers"
-            component={renderTransformer(locked, isSubresourceField)}
+            component={renderTransformer(locked, isSubresourceField, polyglot)}
             type="transform"
         />
     </Step>

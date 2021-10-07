@@ -22,9 +22,14 @@ const useStyles = makeStyles({
     },
 });
 
-const FieldsEditComponent = ({ filter, fields, showAddColumns }) => {
+export const FieldsEditComponent = ({
+    filter,
+    fields,
+    showAddColumns,
+    defaultTab = 'page',
+}) => {
     const classes = useStyles();
-    const [tab, setTab] = useState('page');
+    const [tab, setTab] = useState(defaultTab);
     const handleChangeTab = (event, newValue) => setTab(newValue);
 
     return (
@@ -83,6 +88,7 @@ FieldsEditComponent.propTypes = {
     filter: PropTypes.string,
     fields: PropTypes.array,
     subresourceId: PropTypes.string,
+    defaultTab: PropTypes.oneOf(['page', 'published']),
 };
 
 export const FieldsEdit = compose(

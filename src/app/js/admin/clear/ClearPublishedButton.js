@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     },
 });
 
-const ClearPublishedButtonComponent = ({
+export const ClearPublishedButtonComponent = ({
     p: polyglot,
     hasPublishedDataset,
 }) => {

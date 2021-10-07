@@ -20,7 +20,10 @@ const useStyles = makeStyles({
     },
 });
 
-const AddFieldFromColumnButton = ({ onShowExistingColumns, p: polyglot }) => {
+export const AddFieldFromColumnButton = ({
+    onShowExistingColumns,
+    p: polyglot,
+}) => {
     const classes = useStyles();
 
     return (

@@ -9,7 +9,10 @@ import ClearDialog from '../Appbar/ClearDialog';
 import { fromParsing } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-const ClearDatasetButtonComponent = ({ p: polyglot, hasLoadedDataset }) => {
+export const ClearDatasetButtonComponent = ({
+    p: polyglot,
+    hasLoadedDataset,
+}) => {
     const [show, setShow] = useState(false);
 
     const handleShow = () => setShow(true);
