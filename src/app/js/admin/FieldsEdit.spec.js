@@ -73,7 +73,7 @@ describe('<FieldsEdit />', () => {
                 defaultTab="published"
             />,
         );
-        console.log(wrapper.debug());
+
         expect(
             wrapper.find(
                 'Connect(Translated(PublicationPreviewComponent)) + Connect(Translated(StatisticsComponent))',
