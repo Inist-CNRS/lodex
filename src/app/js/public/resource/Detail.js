@@ -13,7 +13,6 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
 import Property from '../Property';
-import AddField from '../../fields/addField/AddField';
 import HideResource from './HideResource';
 import SelectVersion from './SelectVersion';
 import Version from '../Version';
@@ -166,7 +165,6 @@ export const DetailComponent = ({ fields, resource, title, description }) => {
                             {resource.uri}
                         </Button>
                         <SelectVersion />
-                        <AddField style={{ marginLeft: 'auto' }} />
                         <HideResource />
                         {!resource.subresourceId && (
                             <ExportButton
