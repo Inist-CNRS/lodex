@@ -26,21 +26,25 @@ describe('Subresource Page', () => {
         subresourcePage.createSubresource();
         subresourcePage.addField('name', 'myField', false);
 
-        cy.get('.publication-excerpt-for-edition tbody tr td').each(
-            (item, index) => {
+        cy.get('div[role="dialog"]')
+            .find('.publication-excerpt-for-edition tbody tr td')
+            .each((item, index) => {
                 cy.wrap(item).should(
                     'contain.text',
                     ['Canidae', 'Felinae', 'Canidae'][index],
                 );
-            },
-        );
+            });
 
-        cy.get('.btn-save').click();
-        cy.get('div[role="none presentation"]').should('not.exist');
+        cy.get('div[role="dialog"]')
+            .find('.btn-save')
+            .click();
+
+        cy.get('div[role="dialog"]', { timeout: 2000 }).should('not.exist');
+
+        cy.contains('button', 'Données publiées').click();
         cy.contains('.publication-excerpt-column', 'myField').should('exist');
     });
 
-    
     it('should successfully publish subresources', () => {
         subresourcePage.createSubresource();
         subresourcePage.addField('name', 'myField');
@@ -82,8 +86,11 @@ describe('Subresource Page', () => {
             'Searchable - global full text search will target this field',
         ).click();
 
-        cy.get('.btn-save').click();
-        cy.get('div[role="none presentation"]').should('not.exist');
+        cy.get('div[role="dialog"]')
+            .find('.btn-save')
+            .click();
+
+        cy.get('div[role="dialog"]').should('not.exist');
 
         cy.contains('From a column').click();
         datasetImportPage.addColumn('name', { display: { syndication: 1 } });
@@ -101,6 +108,7 @@ describe('Subresource Page', () => {
         subresourcePage.createSubresource();
         subresourcePage.addField('name', 'Name');
 
+        cy.contains('button', 'Données publiées').click();
         cy.contains('.publication-excerpt-column', 'Name').should('exist');
 
         cy.get('.sub-sidebar')
@@ -129,8 +137,11 @@ describe('Subresource Page', () => {
 
         cy.get('#step-value-subresource-field .column_name').type('name');
 
-        cy.get('.btn-save').click();
-        cy.get('div[role="none presentation"]').should('not.exist');
+        cy.get('div[role="dialog"]')
+            .find('.btn-save')
+            .click();
+
+        cy.get('div[role="dialog"]').should('not.exist');
 
         let fieldName;
         cy.contains('span', 'Animal name')
@@ -180,8 +191,11 @@ describe('Subresource Page', () => {
             'Searchable - global full text search will target this field',
         ).click();
 
-        cy.get('.btn-save').click();
-        cy.get('div[role="none presentation"]').should('not.exist');
+        cy.get('div[role="dialog"]')
+            .find('.btn-save')
+            .click();
+
+        cy.get('div[role="dialog"]').should('not.exist');
 
         cy.contains('From a column').click();
         datasetImportPage.addColumn('name', { display: { syndication: 1 } });

@@ -15,9 +15,6 @@ import {
 } from '../../fields';
 
 const useStyles = makeStyles({
-    addFieldButton: {
-        marginBottom: 20,
-    },
     icon: {
         marginRight: 10,
     },
@@ -46,31 +43,23 @@ const createDefaultSubresourceField = subresource => ({
 
 export const AddSubresourceFieldButtonComponent = ({
     addField,
-    editField,
     subresource,
     p: polyglot,
 }) => {
     const classes = useStyles();
 
     return (
-        <>
-            <Button
-                variant="contained"
-                color="primary"
-                className={classes.addFieldButton}
-                onClick={() =>
-                    subresource &&
-                    addField(createDefaultSubresourceField(subresource))
-                }
-            >
-                <AddNewIcon className={classes.icon} />
-                {polyglot.t('new_field')}
-            </Button>
-            <PublicationModalWizard
-                filter={SCOPE_DOCUMENT}
-                onExitEdition={() => editField(null)}
-            />
-        </>
+        <Button
+            variant="contained"
+            color="primary"
+            onClick={() =>
+                subresource &&
+                addField(createDefaultSubresourceField(subresource))
+            }
+        >
+            <AddNewIcon className={classes.icon} />
+            {polyglot.t('new_field')}
+        </Button>
     );
 };
 
@@ -83,6 +72,6 @@ export const AddSubresourceFieldButton = compose(
                 s => s._id === match.params.subresourceId,
             ),
         }),
-        { addField: addFieldAction, editField: editFieldAction },
+        { addField: addFieldAction },
     ),
 )(AddSubresourceFieldButtonComponent);

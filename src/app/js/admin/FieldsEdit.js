@@ -26,6 +26,8 @@ export const FieldsEditComponent = ({
     filter,
     fields,
     showAddColumns,
+    addFieldButton,
+    subresourceId,
     defaultTab = 'page',
 }) => {
     const classes = useStyles();
@@ -48,7 +50,8 @@ export const FieldsEditComponent = ({
                 <FieldGrid
                     filter={filter}
                     fields={fields}
-                    addFieldButton={<AddFieldButton />}
+                    isSubresource={!!subresourceId}
+                    addFieldButton={addFieldButton}
                 />
             )}
             {tab === 'published' && (
@@ -57,7 +60,7 @@ export const FieldsEditComponent = ({
                         {filter === SCOPE_DOCUMENT && (
                             <AddFieldFromColumnButton />
                         )}
-                        <AddFieldButton />
+                        {addFieldButton}
                     </div>
                     <div style={{ display: showAddColumns ? 'block' : 'none' }}>
                         <ParsingResult showAddColumns maxLines={3} />
@@ -89,6 +92,7 @@ FieldsEditComponent.propTypes = {
     fields: PropTypes.array,
     subresourceId: PropTypes.string,
     defaultTab: PropTypes.oneOf(['page', 'published']),
+    addFieldButton: PropTypes.element,
 };
 
 export const FieldsEdit = compose(

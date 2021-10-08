@@ -58,6 +58,7 @@ const FieldGridComponent = ({
     filter,
     editField,
     p: polyglot,
+    isSubresource,
     addFieldButton,
 }) => {
     const classes = useStyles();
@@ -77,7 +78,11 @@ const FieldGridComponent = ({
             {fields.length === 0 ? (
                 <NoField
                     addFieldButton={addFieldButton}
-                    label={polyglot.t('no_field_for_resource')}
+                    label={
+                        isSubresource
+                            ? polyglot.t('no_field_for_subresource')
+                            : polyglot.t('no_field_for_resource')
+                    }
                 />
             ) : (
                 <>
@@ -120,6 +125,7 @@ FieldGridComponent.propTypes = {
     filter: PropTypes.string,
     editField: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    isSubresource: PropTypes.bool,
     addFieldButton: PropTypes.func.isRequired,
 };
 

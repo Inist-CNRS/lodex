@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
 
 import PublicationExcerpt from './PublicationExcerpt';
 import PublicationModalWizard from '../../../fields/wizard';
@@ -35,7 +34,6 @@ const PublicationPreviewComponent = ({
     filter,
     loadField,
     editColumn,
-    p: polyglot,
 }) => {
     useEffect(() => {
         loadField();
@@ -61,7 +59,6 @@ const PublicationPreviewComponent = ({
 PublicationPreviewComponent.propTypes = {
     editColumn: PropTypes.func.isRequired,
     loadField: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     filter: PropTypes.string,
 };
@@ -75,7 +72,6 @@ const mapDispatchToProps = {
     loadField,
 };
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(PublicationPreviewComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps))(
+    PublicationPreviewComponent,
+);
