@@ -49,12 +49,6 @@ describe('publication saga', () => {
                     }),
                 );
             });
-
-            it('should put publish with ignoreWarn if clearPublished succeed', () => {
-                expect(saga.next({ cancel: false }).value).toEqual(
-                    put(publish({ ignoreWarn: true })),
-                );
-            });
         });
     });
 

@@ -41,11 +41,7 @@ export const getLoader = async loaderName => {
 
     // ezs is safe : errors do not break the pipeline
     return stream =>
-        stream
-            .pipe(ezs('metrics', { stage: loaderName, bucket: 'input' }))
-            .pipe(ezs('delegate', { script }))
-            .pipe(ezs('metrics', { stage: loaderName, bucket: 'output' }))
-            .pipe(ezs.catch(e => log(e)));
+        stream.pipe(ezs('delegate', { script })).pipe(ezs.catch(e => log(e)));
 };
 
 export const requestToStream = asyncBusboyImpl => async req => {
