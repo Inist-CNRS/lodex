@@ -34,50 +34,6 @@ export const doPublish = async ctx => {
     };
 };
 
-export const verifyUri = async ctx => {
-    const [uriField, subresources, fields] = await Promise.all([
-        ctx.field.findOneByName('uri'),
-        ctx.subresource.findAll(),
-        ctx.field.findAll(),
-    ]);
-
-    if (
-        get(uriField, 'transformers[0].operation') === 'AUTOGENERATE_URI' &&
-        subresources.length === 0
-    ) {
-        ctx.body = { valid: true };
-        return;
-    }
-
-    const uriFields = get(uriField, 'transformers[0].args')
-        .filter(({ type }) => type === 'column')
-        .map(({ value }) => value);
-
-    const fieldsSubresources = fields.reduce((acc, field) => {
-        if (
-            field.subresourceId &&
-            typeof acc[field.subresourceId] === 'undefined'
-        ) {
-            const fieldConfig = subresources.find(
-                s => s._id + '' === field.subresourceId,
-            );
-
-            if (fieldConfig) {
-                acc[field.subresourceId] = fieldConfig;
-            }
-        }
-
-        return acc;
-    }, {});
-
-    ctx.body = {
-        nbInvalidUri: await ctx.dataset.countNotUnique(uriFields),
-        nbInvalidSubresourceUriMap: await ctx.dataset.countNotUniqueSubresources(
-            fieldsSubresources,
-        ),
-    };
-};
-
 export const clearPublished = async ctx => {
     try {
         await ctx.dataset.updateMany(
@@ -98,8 +54,6 @@ export const clearPublished = async ctx => {
         };
     }
 };
-
-app.use(route.get('/verifyUri', verifyUri));
 
 app.use(route.post('/', preparePublish));
 app.use(route.post('/', handlePublishError));

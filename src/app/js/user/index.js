@@ -172,12 +172,6 @@ export const getPublishRequest = state =>
         method: 'POST',
     });
 
-export const getVerifyUriRequest = state =>
-    getRequest(state, {
-        url: '/api/publish/verifyUri',
-        method: 'GET',
-    });
-
 export const getClearPublishedRequest = state =>
     getRequest(state, {
         url: '/api/publish',
@@ -430,7 +424,6 @@ export const selectors = {
     getUpdateCharacteristicsRequest,
     getRestoreResourceRequest,
     getLoadRemovedResourcePageRequest,
-    getVerifyUriRequest,
     getPublishRequest,
     getLoadParsingResultRequest,
     getRemoveFieldRequest,

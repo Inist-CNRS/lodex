@@ -10,7 +10,6 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { publish as publishAction } from './';
 import { fromPublish, fromPublication } from '../selectors';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
-import ConfirmPublication from './ConfirmPublication';
 import { fromFields } from '../../sharedSelectors';
 
 const useStyles = makeStyles({
@@ -52,7 +51,6 @@ export const PublishButtonComponent = ({
             >
                 {polyglot.t('publish')}
             </ButtonWithStatus>
-            <ConfirmPublication />
         </div>
     );
 };
