@@ -22,8 +22,7 @@ describe('Dataset Publication', () => {
             menu.goToAdminDashboard();
             cy.wait(300);
             datasetImportPage.importDataset('dataset/simple.csv');
-            cy.wait(500);
-            cy.get('tbody tr')
+            cy.get('tbody tr', { timeout: 500 })
                 .eq(0)
                 .should('contains.text', ['1', 'Row 1', 'Test 1'].join(''));
 
@@ -37,9 +36,8 @@ describe('Dataset Publication', () => {
             menu.goToAdminDashboard();
             cy.wait(300);
             datasetImportPage.importDataset('dataset/simple.csv');
-            cy.wait(500);
 
-            cy.get('.sidebar')
+            cy.get('.sidebar', { timeout: 500 })
                 .contains('a', 'Add')
                 .click();
 

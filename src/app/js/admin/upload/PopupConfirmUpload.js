@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import {
@@ -11,9 +10,7 @@ import {
     DialogActions,
 } from '@material-ui/core';
 
-import { uploadFile, closeUploadPopup } from './';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { fromUpload } from '../selectors';
 
 const styles = {
     container: {
@@ -21,22 +18,24 @@ const styles = {
     },
 };
 
-export const ConfirmUploadComponent = ({
-    cancelUpload,
+export const PopupConfirmUploadComponent = ({
     p: polyglot,
-    isOpenPopup,
+    isOpen,
     onConfirm,
+    setIsOpenPopupConfirm,
 }) => {
+    const handleClose = () => {
+        setIsOpenPopupConfirm(false);
+    };
     const handleConfirmAction = () => {
         onConfirm();
-        cancelUpload();
+        handleClose();
     };
     const actions = [
         <Button
             variant="text"
             color="primary"
             key="confirm"
-            className="confirm"
             onClick={handleConfirmAction}
         >
             {polyglot.t('Accept')}
@@ -45,15 +44,14 @@ export const ConfirmUploadComponent = ({
             variant="text"
             color="secondary"
             key="cancel"
-            className="cancel"
-            onClick={cancelUpload}
+            onClick={handleClose}
         >
             {polyglot.t('Cancel')}
         </Button>,
     ];
 
     return (
-        <Dialog open={isOpenPopup}>
+        <Dialog open={isOpen}>
             <DialogTitle>{polyglot.t('info_upload')}</DialogTitle>
             <DialogContent>
                 <div style={styles.container} id="confirm-upload">
@@ -65,21 +63,11 @@ export const ConfirmUploadComponent = ({
     );
 };
 
-ConfirmUploadComponent.propTypes = {
-    cancelUpload: PropTypes.func.isRequired,
+PopupConfirmUploadComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     onConfirm: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    setIsOpenPopupConfirm: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-    isOpenPopup: fromUpload.isOpenPopup(state),
-});
-
-const mapDispatchToProps = {
-    cancelUpload: closeUploadPopup,
-};
-
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(ConfirmUploadComponent);
+export default translate(PopupConfirmUploadComponent);

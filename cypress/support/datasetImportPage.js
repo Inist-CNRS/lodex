@@ -22,13 +22,11 @@ export const importOtherDataset = (filename, mimeType = 'text/csv') => {
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);
     cy.get('.btn-upload-dataset').click({ force: true });
+    cy.get('#confirm-upload', { timeout: 300 }).should('be.visible');
     cy.wait(300);
-    cy.get('#confirm-upload').should('be.visible');
-    cy.wait(300);
-    cy.get('.confirm').click({ force: true });
+    cy.contains('Accept').click({ force: true });
     cy.get('.progress').should('exist');
     cy.get('.progress', { timeout: 6000 }).should('not.exist');
-
     cy.get('tbody', { timeout: 6000 }).should('exist');
 };
 
@@ -39,11 +37,13 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
 
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);
-    cy.get('.btn-upload-dataset').click({ force: true });
 
-    cy.get('.progress').should('exist');
+    cy.get('.btn-upload-dataset').click({ force: true });
+    cy.get('#confirm-upload', { timeout: 1000 }).should('be.visible');
     cy.wait(300);
-    cy.get('.progress').should('not.exist');
+    cy.contains('Accept').click({ force: true });
+    cy.get('.progress').should('exist');
+    cy.get('.progress', { timeout: 6000 }).should('not.exist');
 
     cy.get('.data-published a')
         .contains('Go to my published data')

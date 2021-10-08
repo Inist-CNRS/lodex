@@ -1,15 +1,15 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Button, Dialog } from '@material-ui/core';
-import { ConfirmUploadComponent as ConfirmUpload } from './ConfirmUpload';
+import { PopupConfirmUploadComponent as PopupConfirmUpload } from './PopupConfirmUpload';
 
-describe('<ConfirmUpload />', () => {
+describe('<PopupConfirmUpload />', () => {
     it('should render a popup for confirm upload', () => {
         const wrapper = shallow(
-            <ConfirmUpload
+            <PopupConfirmUpload
                 p={{ t: key => key }}
-                cancelUpload={() => {}}
-                isOpenPopup
+                setIsOpenPopupConfirm={() => {}}
+                isOpen
                 onConfirm={() => {}}
             />,
         );
@@ -21,10 +21,10 @@ describe('<ConfirmUpload />', () => {
     it('should render the onConfirm action on click', () => {
         const onConfirm = jest.fn();
         const wrapper = shallow(
-            <ConfirmUpload
+            <PopupConfirmUpload
                 p={{ t: key => key }}
-                cancelUpload={() => {}}
-                isOpenPopup
+                setIsOpenPopupConfirm={() => {}}
+                isOpen
                 onConfirm={onConfirm}
             />,
         );
@@ -39,12 +39,12 @@ describe('<ConfirmUpload />', () => {
     });
 
     it('should render the cancelUpload action on click', () => {
-        const cancelUpload = jest.fn();
+        const handleClose = jest.fn();
         const wrapper = shallow(
-            <ConfirmUpload
+            <PopupConfirmUpload
                 p={{ t: key => key }}
-                cancelUpload={cancelUpload}
-                isOpenPopup
+                setIsOpenPopupConfirm={handleClose}
+                isOpen
                 onConfirm={() => {}}
             />,
         );
@@ -55,6 +55,6 @@ describe('<ConfirmUpload />', () => {
             .find(Button)
             .at(1)
             .simulate('click');
-        expect(cancelUpload).toHaveBeenCalled();
+        expect(handleClose).toHaveBeenCalled();
     });
 });

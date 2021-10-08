@@ -20,7 +20,6 @@ describe('upload reduce', () => {
             error: false,
             status: 'PENDING',
             open: false,
-            openPopup: false,
         });
     });
 

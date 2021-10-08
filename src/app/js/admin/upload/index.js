@@ -6,8 +6,6 @@ export const UPLOAD_ERROR = 'UPLOAD_ERROR';
 export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
 export const OPEN_UPLOAD = 'OPEN_UPLOAD';
 export const CLOSE_UPLOAD = 'CLOSE_UPLOAD';
-export const OPEN_UPLOAD_POPUP = 'OPEN_UPLOAD_POPUP';
-export const CLOSE_UPLOAD_POPUP = 'CLOSE_UPLOAD_POPUP';
 export const CHANGE_UPLOAD_URL = 'CHANGE_UPLOAD_URL';
 export const CHANGE_LOADER_NAME = 'CHANGE_LOADER_NAME';
 
@@ -19,8 +17,6 @@ export const openUpload = createAction(OPEN_UPLOAD);
 export const closeUpload = createAction(CLOSE_UPLOAD);
 export const changeUploadUrl = createAction(CHANGE_UPLOAD_URL);
 export const changeLoaderName = createAction(CHANGE_LOADER_NAME);
-export const openUploadPopup = createAction(OPEN_UPLOAD_POPUP);
-export const closeUploadPopup = createAction(CLOSE_UPLOAD_POPUP);
 
 const validateUrl = url =>
     url && (url.startsWith('http://') || url.startsWith('https://'));
@@ -43,7 +39,6 @@ export default handleActions(
                       error: false,
                       open: false,
                       status: 'PENDING',
-                      openPopup: false,
                   }
                 : state,
         UPLOAD_SUCCESS: state => ({
@@ -62,14 +57,6 @@ export default handleActions(
         CLOSE_UPLOAD: state => ({
             ...state,
             open: false,
-        }),
-        OPEN_UPLOAD_POPUP: state => ({
-            ...state,
-            openPopup: true,
-        }),
-        CLOSE_UPLOAD_POPUP: state => ({
-            ...state,
-            openPopup: false,
         }),
         CHANGE_UPLOAD_URL: (state, { payload: url }) => ({
             ...state,
@@ -90,7 +77,6 @@ export const isOpen = state => state.open;
 export const getUrl = ({ url }) => url;
 export const getLoaderName = ({ loaderName }) => loaderName;
 export const isUrlValid = ({ validUrl }) => validUrl;
-export const isOpenPopup = state => state.openPopup;
 
 
 export const selectors = {
@@ -100,5 +86,4 @@ export const selectors = {
     getUrl,
     getLoaderName,
     isUrlValid,
-    isOpenPopup,
 };
