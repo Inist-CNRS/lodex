@@ -18,6 +18,20 @@ export const importDataset = (filename, mimeType = 'text/csv') => {
     cy.get('tbody', { timeout: 6000 }).should('exist');
 };
 
+export const importOtherDataset = (filename, mimeType = 'text/csv') => {
+    fillInputWithFixture('input[type=file]', filename, mimeType);
+    cy.wait(300);
+    cy.get('.btn-upload-dataset').click({ force: true });
+    cy.wait(300);
+    cy.get('#confirm-upload').should('be.visible');
+    cy.wait(300);
+    cy.get('.confirm').click({ force: true });
+    cy.get('.progress').should('exist');
+    cy.get('.progress', { timeout: 6000 }).should('not.exist');
+
+    cy.get('tbody', { timeout: 6000 }).should('exist');
+};
+
 export const importMoreDataset = (filename, mimeType = 'text/csv') => {
     cy.get('.sidebar')
         .contains('Add more')

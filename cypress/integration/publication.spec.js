@@ -31,6 +31,26 @@ describe('Dataset Publication', () => {
                 .eq(1)
                 .should('contains.text', ['2', 'Row 2', 'Test 2'].join(''));
         });
+
+        it('should display a information popup when adding a second dataset', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            cy.wait(300);
+            datasetImportPage.importDataset('dataset/simple.csv');
+            cy.wait(500);
+
+            cy.get('.sidebar')
+                .contains('a', 'Add')
+                .click();
+
+            cy.wait(300);
+            datasetImportPage.importOtherDataset('dataset/simple.csv');
+            cy.wait(500);
+
+            cy.get('tbody tr')
+                .eq(1)
+                .should('contains.text', ['2', 'Row 2', 'Test 2'].join(''));
+        });
     });
 
     describe('Publication', () => {

@@ -18,7 +18,7 @@ import {
     uploadUrl,
     openUploadPopup,
 } from './';
-import { fromUpload, fromLoaders } from '../selectors';
+import { fromUpload, fromLoaders, fromPublication } from '../selectors';
 import LoaderSelect from './LoaderSelect';
 import theme from '../../theme';
 import ConfirmUpload from './ConfirmUpload';
@@ -113,11 +113,10 @@ export const UploadComponent = ({
     const onConfirm = (...params) => {
         if (useUrl) {
             onUrlUpload(...params);
-            if (path != successRedirectPath) {
-                history.push(successRedirectPath);
-            }
+        } else {
+            onFileLoad(files[0].file);
         }
-        onFileLoad(files[0].file);
+
         if (path != successRedirectPath) {
             history.push(successRedirectPath);
         }

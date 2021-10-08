@@ -66,7 +66,6 @@ export const ConfirmUploadComponent = ({
 };
 
 ConfirmUploadComponent.propTypes = {
-    confirmUpload: PropTypes.func.isRequired,
     cancelUpload: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     onConfirm: PropTypes.func.isRequired,
@@ -77,7 +76,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    confirmUpload: uploadFile,
     cancelUpload: closeUploadPopup,
 };
 
