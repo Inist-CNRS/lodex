@@ -92,6 +92,7 @@ describe('Subresource Page', () => {
 
         cy.get('div[role="dialog"]').should('not.exist');
 
+        cy.contains('button', 'Données publiées').click();
         cy.contains('From a column').click();
         datasetImportPage.addColumn('name', { display: { syndication: 1 } });
 
@@ -142,6 +143,7 @@ describe('Subresource Page', () => {
             .click();
 
         cy.get('div[role="dialog"]').should('not.exist');
+        cy.contains('button', 'Données publiées').click();
 
         let fieldName;
         cy.contains('span', 'Animal name')
@@ -197,6 +199,7 @@ describe('Subresource Page', () => {
 
         cy.get('div[role="dialog"]').should('not.exist');
 
+        cy.contains('button', 'Données publiées').click();
         cy.contains('From a column').click();
         datasetImportPage.addColumn('name', { display: { syndication: 1 } });
 

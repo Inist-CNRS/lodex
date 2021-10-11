@@ -6,7 +6,7 @@ import { FieldGrid } from '../fields/FieldGrid';
 import PublicationPreview from './preview/publication/PublicationPreview';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import AddFieldFromColumnButton from './Appbar/AddFieldFromColumnButton';
-import { AddFieldButton } from './Appbar/AddFieldButton';
+// import { AddFieldButton } from './Appbar/AddFieldButton';
 import ParsingResult from './parsing/ParsingResult';
 import Statistics from './Statistics';
 
@@ -20,11 +20,14 @@ describe('<FieldsEdit />', () => {
     });
 
     it('should display published tab (PublicationPreview) with published defaultTab prop', () => {
+        const AddFieldButton = () => <button />;
+
         const wrapper = shallow(
             <FieldsEdit
                 showAddColumns={false}
                 fields={[]}
                 filter={{}}
+                addFieldButton={<AddFieldButton />}
                 defaultTab="published"
             />,
         );
@@ -59,7 +62,7 @@ describe('<FieldsEdit />', () => {
 
         expect(
             wrapper.find(
-                'Connect(Translated(StatisticsComponent)) + Connect(Translated(PublicationPreviewComponent))',
+                'Connect(Translated(StatisticsComponent)) + Connect(PublicationPreviewComponent)',
             ).length,
         ).toBe(1);
     });
@@ -76,7 +79,7 @@ describe('<FieldsEdit />', () => {
 
         expect(
             wrapper.find(
-                'Connect(Translated(PublicationPreviewComponent)) + Connect(Translated(StatisticsComponent))',
+                'Connect(PublicationPreviewComponent) + Connect(Translated(StatisticsComponent))',
             ).length,
         ).toBe(1);
     });
