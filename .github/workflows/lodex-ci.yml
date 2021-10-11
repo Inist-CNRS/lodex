@@ -6,52 +6,52 @@ on:
     branches: [ master ]
      
 jobs:
-  # test-unit:
-  #   timeout-minutes: 10
-  #   runs-on: ubuntu-latest
+  test-unit:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v1
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
 
-  #   - name: Install LODEX
-  #     run: make install
+    - name: Install LODEX
+      run: make install
 
-  #   - name: Start Unit Tests
-  #     run: make test-unit
+    - name: Start Unit Tests
+      run: make test-unit
 
-  # test-api-e2e:
-  #   timeout-minutes: 10
-  #   runs-on: ubuntu-latest
+  test-api-e2e:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v1
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
 
-  #   - name: Install LODEX
-  #     run: make install
+    - name: Install LODEX
+      run: make install
 
-  #   - name: Start API E2E Tests
-  #     run: make test-api-e2e
+    - name: Start API E2E Tests
+      run: make test-api-e2e
 
-  # test-e2e:
-  #   timeout-minutes: 25
-  #   runs-on: ubuntu-latest
+  test-e2e:
+    timeout-minutes: 25
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v1
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
 
-  #   - name: Install LODEX
-  #     run: make install
+    - name: Install LODEX
+      run: make install
 
-  #   - name: Start E2E Tests
-  #     run: make test-e2e
+    - name: Start E2E Tests
+      run: make test-e2e
 
   deploy: 
     timeout-minutes: 25
     runs-on: ubuntu-latest
-    # needs: ['test-unit', 'test-api-e2e', 'test-e2e']
+    needs: ['test-unit', 'test-api-e2e', 'test-e2e']
     steps:
     - name: Check out from Git
       uses: actions/checkout@v1
