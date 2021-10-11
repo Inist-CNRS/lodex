@@ -2,8 +2,11 @@ name: Lodex CI
 on:
   push:
     branches: [ master ]
+    tags:        
+      - '*'
   pull_request:
     branches: [ master ]
+     
 
 jobs:
   test-unit:
@@ -47,3 +50,15 @@ jobs:
 
     - name: Start E2E Tests
       run: make test-e2e
+
+  deploy: 
+    steps:
+    - name: Check out from Git
+      uses: actions/checkout@v1
+
+    - name: Check if Git tag exists
+      run: echo "::set-env name=HEAD_TAG::$(git tag --points-at HEAD)"
+
+    - name: Runs only if Git tag exists
+      run: echo"This runs because Git tag points at HEAD ..."
+      if: env.HEAD_TAG != ''
