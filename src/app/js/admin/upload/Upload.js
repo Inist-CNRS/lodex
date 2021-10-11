@@ -11,10 +11,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
+import {
+    uploadFile,
+    changeUploadUrl,
+    changeLoaderName,
+    uploadUrl,
+} from './';
 import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
 import theme from '../../theme';
+import PopupConfirmUpload from './PopupConfirmUpload';
 
 const useStyles = makeStyles({
     button: {
@@ -69,11 +75,13 @@ export const UploadComponent = ({
     onUrlUpload,
     p: polyglot,
     loaders,
+    isFirstFile,
 }) => {
     const classes = useStyles();
     const [files, setFiles] = useState([]);
     const [dropping, setDropping] = useState(false);
-    const [useUrl, setUseUrl] = useState(false);
+    const [useUrlForUpload, setUseUrlForUpload] = useState(false);
+    const [isOpenPopupConfirm, setIsOpenPopupConfirm] = useState(false);
     const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
 
@@ -94,17 +102,30 @@ export const UploadComponent = ({
 
     const handleFileUploaded = () => {
         if (files.length === 0) return;
+        if (!isFirstFile) {
+            setIsOpenPopupConfirm(true);
+        } else {
+            onConfirm();
+        }
+    };
 
-        onFileLoad(files[0].file);
+    const onConfirm = (...params) => {
+        if (useUrlForUpload) {
+            onUrlUpload(...params);
+        } else {
+            onFileLoad(files[0].file);
+        }
+
         if (path != successRedirectPath) {
             history.push(successRedirectPath);
         }
     };
 
     const handleUrlAdded = (...params) => {
-        onUrlUpload(...params);
-        if (path != successRedirectPath) {
-            history.push(successRedirectPath);
+        if (!isFirstFile) {
+            setIsOpenPopupConfirm(true);
+        } else {
+            onConfirm(...params);
         }
     };
 
@@ -119,7 +140,7 @@ export const UploadComponent = ({
                 <span />
             )}
             {dropping && <DroppingLoader text={polyglot.t('inspect_file')} />}
-            {!useUrl && (
+            {!useUrlForUpload && (
                 <DropzoneAreaBase
                     filesLimit={1}
                     maxFileSize={1 * 1024 * 1024 * 1024}
@@ -144,7 +165,7 @@ export const UploadComponent = ({
                     }
                 />
             )}
-            {useUrl && (
+            {useUrlForUpload && (
                 <TextField
                     fullWidth
                     className={classes.input}
@@ -160,7 +181,7 @@ export const UploadComponent = ({
                 setLoader={onChangeLoaderName}
                 value={loaderName}
             />
-            {useUrl ? (
+            {useUrlForUpload ? (
                 <Button
                     variant="contained"
                     disabled={!isUrlValid}
@@ -186,14 +207,22 @@ export const UploadComponent = ({
                     {polyglot.t('upload_file')}
                 </Button>
             )}
+            <PopupConfirmUpload
+                history={history}
+                onConfirm={onConfirm}
+                isOpen={isOpenPopupConfirm}
+                setIsOpenPopupConfirm={setIsOpenPopupConfirm}
+            />
             <div className={classes.divider}>
                 <hr className={classes.dividerHr} />
                 <div className={classes.dividerLabel}>{polyglot.t('or')}</div>
                 <a
-                    onClick={() => setUseUrl(!useUrl)}
+                    onClick={() => setUseUrlForUpload(!useUrlForUpload)}
                     className={classnames(classes.dividerLabel, classes.link)}
                 >
-                    {useUrl ? polyglot.t('not_use_url') : polyglot.t('use_url')}
+                    {useUrlForUpload
+                        ? polyglot.t('not_use_url')
+                        : polyglot.t('use_url')}
                 </a>
 
                 <hr className={classes.dividerHr} />
@@ -217,6 +246,7 @@ UploadComponent.propTypes = {
     onUrlUpload: PropTypes.func.isRequired,
     onChangeLoaderName: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    isFirstFile: PropTypes.bool,
 };
 
 UploadComponent.defaultProps = {
