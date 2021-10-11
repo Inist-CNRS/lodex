@@ -18,6 +18,8 @@ describe('Transformers & Formats', () => {
                 .contains('a', 'Resource pages')
                 .click();
 
+            cy.contains('button', 'Données publiées').click();
+
             datasetImportPage.addColumn('Column 1', {
                 composedOf: ['Column 1', 'Column 2'],
                 display: {

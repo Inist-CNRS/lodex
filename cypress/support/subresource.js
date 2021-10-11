@@ -15,20 +15,25 @@ export const fillSubcategoryFormAndSubmit = values => {
 export const addField = (name, label, save = true) => {
     cy.contains('button', 'New field').click();
 
-    cy.get('div[role="none presentation"]')
-        .should('exist')
+    cy.get('div[role="dialog"]').should('exist');
+
+    cy.get('div[role="dialog"]')
         .find(`input[name="transformers[2].args[0].value"]`)
         .type(name);
 
-    cy.get('div[role="none presentation"]')
-        .should('exist')
+    cy.get('div[role="dialog"]')
         .find(`input[name="label"]`)
         .clear()
         .type(label);
 
     if (save) {
-        cy.get('.btn-save').click();
-        cy.get('div[role="none presentation"]').should('not.exist');
+        cy.get('div[role="dialog"]')
+            .find('.btn-save')
+            .click();
+
+        cy.get('div[role="dialog"]').should('not.exist');
+
+        cy.contains('button', 'Données publiées').click();
         cy.contains('.publication-excerpt-column', label).should('exist');
     }
 };

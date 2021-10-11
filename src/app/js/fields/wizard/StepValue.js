@@ -6,7 +6,6 @@ import { change } from 'redux-form';
 
 import Step from './Step';
 import { FIELD_FORM_NAME } from '../';
-import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../../common/scope';
 
 import StepValueValue from './StepValueValue';
 import StepValueColumn from './StepValueColumn';
@@ -17,12 +16,12 @@ import StepValueSubresourceField from './StepValueSubresourceField';
 export const StepValueComponent = ({
     isSubresourceField,
     handleChange,
-    filter,
+    arbitraryMode,
     ...props
 }) => (
     <Step id="step-value" label="field_wizard_step_value" {...props}>
         <StepValueValue onChange={handleChange} />
-        {filter !== SCOPE_DATASET && filter !== SCOPE_GRAPHIC && (
+        {!arbitraryMode && (
             <>
                 <StepValueColumn onChange={handleChange} />
                 {!isSubresourceField && (
@@ -40,7 +39,7 @@ export const StepValueComponent = ({
 StepValueComponent.propTypes = {
     isSubresourceField: PropTypes.bool,
     handleChange: PropTypes.func.isRequired,
-    filter: PropTypes.string,
+    arbitraryMode: PropTypes.bool.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({

@@ -14,7 +14,9 @@ export const goToDisplay = () => {
         .click({ force: true }); // avoid bug due of detached DOM element
 
     cy.location('hash').should('equal', '#/display/dataset');
-    cy.get('div[role="progressbar"]').should('not.be.visible');
+    cy.get('div[role="progressbar"]', { timeout: 2000 }).should(
+        'not.be.visible',
+    );
 };
 
 export const publishAndGoToPublishedData = () => {

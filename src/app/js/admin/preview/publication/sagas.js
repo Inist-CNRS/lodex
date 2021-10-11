@@ -1,19 +1,28 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 import { fromUser, fromFields } from '../../../sharedSelectors';
+import { fromParsing, fromPublication } from '../../selectors';
+import { LOAD_PARSING_RESULT_SUCCESS } from '../../parsing';
+import { COMPUTE_PUBLICATION } from '../../publication';
+import { publish } from '../../publish';
+
 import {
     computePublicationPreviewSuccess,
     computePublicationPreviewError,
 } from './';
+
 import {
     LOAD_FIELD_SUCCESS,
     REMOVE_FIELD_SUCCESS,
     SAVE_FIELD_SUCCESS,
 } from '../../../fields';
-import { fromParsing } from '../../selectors';
-import { LOAD_PARSING_RESULT_SUCCESS } from '../../parsing';
-import { COMPUTE_PUBLICATION } from '../../publication';
+
+import {
+    clearPublished,
+    CLEAR_PUBLISHED_ERROR,
+    CLEAR_PUBLISHED_SUCCESS,
+} from '../../clear';
 
 export function* handleComputePublicationPreview() {
     try {
@@ -36,6 +45,23 @@ export function* handleComputePublicationPreview() {
     }
 }
 
+export function* handleRecomputePublication() {
+    const isPublished = yield select(fromPublication.hasPublishedDataset);
+    if (!isPublished) {
+        return;
+    }
+
+    yield put(clearPublished());
+    const { cancel } = yield race({
+        cancel: take(CLEAR_PUBLISHED_ERROR),
+        ok: take(CLEAR_PUBLISHED_SUCCESS),
+    });
+
+    if (!cancel) {
+        yield put(publish());
+    }
+}
+
 export default function* watchComputePreview() {
     yield takeLatest(
         [
@@ -47,4 +73,6 @@ export default function* watchComputePreview() {
         ],
         handleComputePublicationPreview,
     );
+
+    yield takeLatest([SAVE_FIELD_SUCCESS], handleRecomputePublication);
 }

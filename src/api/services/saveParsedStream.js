@@ -23,11 +23,13 @@ const saveParsedStreamFactory = ctx =>
                 { $set: { lodex_published: true } },
                 { multi: true },
             );
+
             await ctx.publishedDataset.updateMany(
                 {},
                 { $set: { lodex_published: true } },
                 { multi: true },
             );
+
             await ctx.saveStream(parsedStream);
 
             if (typeof postSaveCallback === 'function') {
@@ -35,8 +37,8 @@ const saveParsedStreamFactory = ctx =>
             }
 
             const fields = await ctx.field.findAll();
-            const collectionScopeFields = fields.filter(
-                c => c.scope === SCOPE_COLLECTION || c.scope === SCOPE_DOCUMENT,
+            const collectionScopeFields = fields.filter(c =>
+                [SCOPE_COLLECTION, SCOPE_DOCUMENT].includes(c.scope),
             );
 
             const count = await ctx.dataset.count({

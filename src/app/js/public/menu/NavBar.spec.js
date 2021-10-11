@@ -5,7 +5,7 @@ import { StyleSheetTestUtils } from 'aphrodite';
 import { NavBar } from './NavBar';
 import MenuItem from './MenuItem';
 
-describe.skip('NavBar', () => {
+describe('NavBar', () => {
     // Todo: Unskip this test once material-ui is upgraded
 
     // Invariant Violation: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
@@ -41,6 +41,11 @@ describe.skip('NavBar', () => {
             'menu3',
             'menu4',
             {
+                icon: 'faCog',
+                label: {
+                    en: 'Advanced',
+                    fr: 'Avancé',
+                },
                 role: 'advanced',
             },
         ];

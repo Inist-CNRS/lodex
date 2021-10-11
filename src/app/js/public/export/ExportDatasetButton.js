@@ -9,25 +9,11 @@ import { dumpDataset } from '../../admin/dump';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromDump } from '../../admin/selectors';
 
-const ExportDatasetButtonComponent = ({
-    loading,
-    dumpDataset,
-    p: polyglot,
-}) => {
-    if (loading) {
-        return (
-            <Button variant="contained" disabled>
-                {polyglot.t('loading')}
-            </Button>
-        );
-    }
-
-    return (
-        <Button variant="contained" color="primary" onClick={dumpDataset}>
-            {polyglot.t('export_raw_dataset')}
-        </Button>
-    );
-};
+const ExportDatasetButtonComponent = ({ dumpDataset, p: polyglot }) => (
+    <Button variant="contained" fullWidth color="primary" onClick={dumpDataset}>
+        {polyglot.t('export_raw_dataset')}
+    </Button>
+);
 
 ExportDatasetButtonComponent.propTypes = {
     dumpDataset: PropTypes.func.isRequired,

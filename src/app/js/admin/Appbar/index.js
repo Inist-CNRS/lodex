@@ -12,9 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import SignOutButton from './SignOutButton';
 import PublicationButton from '../publish/PublicationButton';
-import Settings from './Settings';
 import { fromUser } from '../../sharedSelectors';
-import { fromPublication, fromParsing } from '../selectors';
+import { fromParsing } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';
 import theme from './../../theme';
@@ -60,7 +59,6 @@ const activeButtonStyle = {
 };
 
 const AppbarComponent = ({
-    hasPublishedDataset,
     hasLoadedDataset,
     isLoading,
     isAdmin,
@@ -112,9 +110,8 @@ const AppbarComponent = ({
                     >
                         <span>{polyglot.t('settings')}</span>
                     </NavLink>
-                    <Settings />
-                    <SignOutButton />
-                    {!hasPublishedDataset && <PublicationButton />}
+                    <SignOutButton className={classes.button} />
+                    <PublicationButton className={classes.button} />
                 </div>
             )}
             {isLoading && (
@@ -145,7 +142,6 @@ const AppbarComponent = ({
 };
 
 AppbarComponent.propTypes = {
-    hasPublishedDataset: PropTypes.bool.isRequired,
     hasLoadedDataset: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool,
     isAdmin: PropTypes.bool.isRequired,
@@ -159,7 +155,6 @@ AppbarComponent.defaultProps = {
 export default compose(
     translate,
     connect(state => ({
-        hasPublishedDataset: fromPublication.hasPublishedDataset(state),
         hasLoadedDataset: fromParsing.hasUploadedFile(state),
         isLoading: state.loading,
         isAdmin: fromUser.isAdmin(state),

@@ -10,7 +10,7 @@ import { Route, Redirect } from 'react-router';
 
 import {
     ThemeProvider as MuiThemeProvider,
-    createMuiTheme,
+    createTheme,
 } from '@material-ui/core/styles';
 
 import rootReducer from './reducers';
@@ -27,7 +27,7 @@ import { Display } from './Display';
 import { Data } from './Data';
 import Settings from './Settings';
 
-const adminTheme = createMuiTheme({
+const adminTheme = createTheme({
     palette: {
         secondary: {
             main: theme.orange.primary,

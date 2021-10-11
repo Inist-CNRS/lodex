@@ -1,16 +1,57 @@
-import { call, put, select } from 'redux-saga/effects';
+import { call, put, race, select, take } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
-
 import { fromFields, fromUser } from '../../../sharedSelectors';
+import { fromParsing, fromPublication } from '../../selectors';
+import { publish } from '../../publish';
+
+import {
+    clearPublished,
+    CLEAR_PUBLISHED_ERROR,
+    CLEAR_PUBLISHED_SUCCESS,
+} from '../../clear';
+
+import {
+    handleComputePublicationPreview,
+    handleRecomputePublication,
+} from './sagas';
+
 import {
     computePublicationPreviewSuccess,
     computePublicationPreviewError,
 } from './';
-import { fromParsing } from '../../selectors';
-import { handleComputePublicationPreview } from './sagas';
 
 describe('publication saga', () => {
+    describe('handleRecomputePublication', () => {
+        it('should return if not published', () => {
+            const saga = handleRecomputePublication();
+
+            expect(saga.next().value).toEqual(
+                select(fromPublication.hasPublishedDataset),
+            );
+
+            expect(saga.next(false).done).toBe(true);
+        });
+
+        describe('if published', () => {
+            const saga = handleRecomputePublication();
+            saga.next();
+
+            it('should put clearPublished', () => {
+                expect(saga.next(true).value).toEqual(put(clearPublished()));
+            });
+
+            it('should create race with CLEAR_PUBLISHED_ERROR and CLEAR_PUBLISHED_SUCCESS', () => {
+                expect(saga.next().value).toEqual(
+                    race({
+                        cancel: take(CLEAR_PUBLISHED_ERROR),
+                        ok: take(CLEAR_PUBLISHED_SUCCESS),
+                    }),
+                );
+            });
+        });
+    });
+
     describe('handleComputePublicationPreview', () => {
         const saga = handleComputePublicationPreview();
         const token = 'token';

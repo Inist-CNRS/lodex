@@ -10,7 +10,7 @@ import { StaticRouter } from 'react-router';
 import { Helmet } from 'react-helmet';
 import {
     ThemeProvider as MuiThemeProvider,
-    createMuiTheme,
+    createTheme,
 } from '@material-ui/core/styles';
 import { END } from 'redux-saga';
 import fs from 'fs';
@@ -216,7 +216,7 @@ const handleRender = async (ctx, next) => {
         initialEntries: [url],
     });
 
-    const theme = createMuiTheme(customTheme, {
+    const theme = createTheme(customTheme, {
         userAgent: headers['user-agent'],
     });
 
