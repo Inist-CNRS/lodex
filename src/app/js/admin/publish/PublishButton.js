@@ -68,8 +68,18 @@ PublishButtonComponent.defaultProps = {
     error: null,
 };
 
+export const canPublish = (areAllFieldsValid, allListFields) => {
+    return (
+        areAllFieldsValid &&
+        allListFields.filter(f => f.name != 'uri').length > 0
+    );
+};
+
 const mapStateToProps = state => ({
-    canPublish: fromFields.areAllFieldsValid(state),
+    canPublish: canPublish(
+        fromFields.areAllFieldsValid(state),
+        fromFields.getAllListFields(state),
+    ),
     error: fromPublish.getPublishingError(state),
     isPublishing: fromPublish.getIsPublishing(state),
     published: fromPublication.hasPublishedDataset(state),

@@ -1,7 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { PublishButtonComponent as PublishButton } from './PublishButton';
+import {
+    canPublish,
+    PublishButtonComponent as PublishButton,
+} from './PublishButton';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 
 describe('<Publish />', () => {
@@ -37,5 +40,23 @@ describe('<Publish />', () => {
 
         wrapper.find(ButtonWithStatus).simulate('click');
         expect(onPublish).toHaveBeenCalled();
+    });
+
+    it('should return true if there are other fields than uri for publication', () => {
+        const state = {
+            allValid: true,
+            list: [{ name: 'uri' }, { name: 'label' }, { name: 'test' }],
+        };
+        const isCanPublish = canPublish(state.allValid, state.list);
+        expect(isCanPublish).toBeTruthy();
+    });
+
+    it.only('should return false if only field uri for publication', () => {
+        const state = {
+            allValid: true,
+            list: [{ name: 'uri' }],
+        };
+        const isCanPublish = canPublish(state.allValid, state.list);
+        expect(isCanPublish).not.toBeTruthy();
     });
 });
