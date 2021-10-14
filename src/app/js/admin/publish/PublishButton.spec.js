@@ -51,7 +51,7 @@ describe('<Publish />', () => {
         expect(isCanPublish).toBeTruthy();
     });
 
-    it.only('should return false if only field uri for publication', () => {
+    it('should return false if there are no other fields except uri for publication', () => {
         const state = {
             allValid: true,
             list: [{ name: 'uri' }],

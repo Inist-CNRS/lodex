@@ -71,7 +71,7 @@ PublishButtonComponent.defaultProps = {
 export const canPublish = (areAllFieldsValid, allListFields) => {
     return (
         areAllFieldsValid &&
-        allListFields.filter(f => f.name != 'uri').length > 0
+        allListFields.some(f => f.name !== 'uri')
     );
 };
 
