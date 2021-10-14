@@ -41,17 +41,8 @@ describe('handleUploadFile saga', () => {
         expect(value).toEqual(
             race({
                 file: call(loadDatasetFile, 'payload', 'token', 'loaderName'),
-                cancel: take([LOCATION_CHANGE]),
             }),
         );
-    });
-
-    it('should end if receiving cancel', () => {
-        saga.next();
-        saga.next('loaderName');
-        saga.next('token');
-        const { done } = saga.next({ cancel: true });
-        expect(done).toBe(true);
     });
 
     it('should put uploadError if an error is thrown', () => {
