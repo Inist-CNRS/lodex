@@ -2,11 +2,6 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
-import scrollToTop from '../../lib/scrollToTop';
-
-const scrollToTopSaga = function*() {
-    yield call(scrollToTop, true);
-};
 
 export default ({ actionTypes, actions, selectors }) => {
     const handleLoadFacetValuesRequest = function*({ payload: { name } }) {
@@ -35,7 +30,5 @@ export default ({ actionTypes, actions, selectors }) => {
             ],
             handleLoadFacetValuesRequest,
         );
-
-        yield takeLatest(actionTypes.TOGGLE_FACET_VALUE, scrollToTopSaga);
     };
 };
