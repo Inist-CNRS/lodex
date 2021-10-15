@@ -52,6 +52,33 @@ describe('Dataset Publication', () => {
     });
 
     describe('Publication', () => {
+        it('should display a disabled publish button if no model', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/simple.csv');
+            adminNavigation.goToDisplay();
+            cy.get('.btn-publish button', { timeout: 300 }).should(
+                'be.disabled',
+            );
+        });
+
+        it('should enable publish button if model', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/simple.csv');
+            adminNavigation.goToDisplay();
+            cy.get('.sidebar')
+                .contains('a', 'Resource pages')
+                .click();
+
+            cy.contains('button', 'Données publiées').click();
+
+            datasetImportPage.addColumn('Column 1');
+            cy.get('.btn-publish button', { timeout: 300 }).should(
+                'not.be.disabled',
+            );
+        });
+
         it('should publish dataset by manually adding columns', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
