@@ -27,8 +27,11 @@ export default function configureStore(
         connectRouter(history),
     )(rootReducer);
 
-    const storage = compose(filter(['user', 'search']))(
+    const sessionStorage = compose(filter(['search']))(
         adapter(window.sessionStorage),
+    );
+    const localStorage = compose(filter(['user']))(
+        adapter(window.localStorage),
     );
     const middlewares = applyMiddleware(
         routerMiddleware(history),
@@ -40,12 +43,13 @@ export default function configureStore(
             ? window.__REDUX_DEVTOOLS_EXTENSION__()
             : f => f;
 
-    const persistStateEnhancer = persistState(storage);
+    const persistSessionStateEnhancer = persistState(sessionStorage);
+    const persistLocalStateEnhancer = persistState(localStorage);
 
     const store = createStore(
         reducer,
         initialState,
-        compose(middlewares, persistStateEnhancer, devtools),
+        compose(middlewares, persistSessionStateEnhancer,persistLocalStateEnhancer, devtools),
     );
 
     sagaMiddleware.run(sagas);

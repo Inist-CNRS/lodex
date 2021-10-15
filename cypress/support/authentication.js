@@ -10,6 +10,7 @@ export const logout = () => {
     cy.clearCookies();
     cy.window().then(win => {
         win.sessionStorage.clear();
+        win.localStorage.clear();
     });
 };
 
