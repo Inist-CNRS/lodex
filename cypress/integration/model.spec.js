@@ -7,65 +7,6 @@ import * as resourcePage from '../support/resourcePage';
 import * as searchDrawer from '../support/searchDrawer';
 
 describe('Model Page', () => {
-    describe('handling fields and characteristics', () => {
-        beforeEach(() => {
-            teardown();
-            menu.openAdvancedDrawer();
-            menu.goToAdminDashboard();
-            datasetImportPage.importDataset('dataset/simple.csv');
-            datasetImportPage.importModel('model/concat.json');
-            datasetImportPage.publish();
-            datasetImportPage.goToPublishedResources();
-        });
-
-        // @TODO: Change it to use new dragndrop feature (Remove old OntologyField too)
-        it.skip('should display list of characteristics and allow to reorder them', () => {
-            homePage.checkCharacteristicsOrder(['Title', 'Description']);
-            menu.openAdvancedDrawer();
-            menu.goToAdminDashboard();
-            datasetImportPage.goToModel();
-            cy.contains('h4', 'Dataset').should('be.visible');
-            modelPage.checkDatasetFieldOrder(['Title', 'Description']);
-
-            modelPage.dragDatasetField(1, 2);
-
-            modelPage.checkDatasetFieldOrder(['Description', 'Title']);
-
-            modelPage.goToDatasetImportPage();
-            datasetImportPage.goToPublishedResources();
-            homePage.checkCharacteristicsOrder(['Description', 'Title']);
-        });
-
-        // @TODO: Change it to use new dragndrop feature (Remove old OntologyField too)
-        it.skip('should display list of resource field and allow to reorder them', () => {
-            menu.openSearchDrawer();
-            searchDrawer.getFacetsOrder(['Column 1', 'Column 2']);
-
-            menu.openAdvancedDrawer();
-            menu.goToAdminDashboard();
-            datasetImportPage.goToModel();
-
-            cy.contains('h4', 'Dataset').should('be.visible');
-            cy.get('.sidebar')
-                .contains('a', 'Resource pages')
-                .click();
-            cy.get('.ontology-table-dataset').should('not.exist');
-            cy.contains('h4', 'Document').should('be.visible');
-
-            modelPage.checkDocumentFieldOrder(['uri', 'Column 1', 'Column 2']);
-
-            modelPage.dragDocumentField(2, 3);
-
-            modelPage.checkDocumentFieldOrder(['uri', 'Column 2', 'Column 1']);
-
-            modelPage.goToDatasetImportPage();
-            datasetImportPage.goToPublishedResources();
-
-            menu.openSearchDrawer();
-            searchDrawer.getFacetsOrder(['Column 2', 'Column 1']);
-        });
-    });
-
     describe('handling old models', () => {
         beforeEach(() => {
             teardown();

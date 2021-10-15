@@ -5,6 +5,9 @@ module.exports = {
             rootDir: `${__dirname}/src/app`,
             setupFiles: [`${__dirname}/src/app/setupTest.js`],
             testMatch: ['/**/*.spec.js'],
+            moduleNameMapper: {
+                '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+            },
         },
         {
             displayName: 'api',

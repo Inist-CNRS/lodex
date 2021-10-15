@@ -441,7 +441,9 @@ describe('field routes', () => {
             await reorderField(ctx, 'id');
 
             expect(ctx.status).toBe(400);
-            expect(ctx.body.error).toBe('Uri must always be the first field');
+            expect(ctx.body.error).toBe(
+                'Uri must always be the first field for collection scope',
+            );
 
             expect(ctx.field.updatePosition).not.toHaveBeenCalled();
         });

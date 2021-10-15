@@ -92,7 +92,6 @@ describe('Subresource Page', () => {
 
         cy.get('div[role="dialog"]').should('not.exist');
 
-        cy.contains('button', 'Données publiées').click();
         cy.contains('From a column').click();
         datasetImportPage.addColumn('name', { display: { syndication: 1 } });
 
@@ -143,6 +142,7 @@ describe('Subresource Page', () => {
             .click();
 
         cy.get('div[role="dialog"]').should('not.exist');
+
         cy.contains('button', 'Données publiées').click();
 
         let fieldName;
@@ -158,6 +158,7 @@ describe('Subresource Page', () => {
 
         // Add subresource link using previously created field
 
+        cy.contains('button', 'Page').click();
         cy.contains('New field').click();
         cy.get('.wizard', { timeout: 10000 }).should('be.visible');
 
@@ -199,7 +200,6 @@ describe('Subresource Page', () => {
 
         cy.get('div[role="dialog"]').should('not.exist');
 
-        cy.contains('button', 'Données publiées').click();
         cy.contains('From a column').click();
         datasetImportPage.addColumn('name', { display: { syndication: 1 } });
 

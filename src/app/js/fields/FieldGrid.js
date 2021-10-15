@@ -1,16 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import HiddenIcon from '@material-ui/icons/VisibilityOff';
 import translate from 'redux-polyglot/translate';
 import compose from 'lodash.compose';
 import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../propTypes';
+import GridLayout from 'react-grid-layout';
+import { Button, makeStyles, Snackbar } from '@material-ui/core';
+import 'react-grid-layout/css/styles.css';
+import classNames from 'classnames';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import Alert from '@material-ui/lab/Alert';
 
+import {
+    DragIndicator as DragIndicatorIcon,
+    Edit as EditIcon,
+} from '@material-ui/icons';
+
+import { polyglot as polyglotPropTypes } from '../propTypes';
 import PublicationModalWizard from '../fields/wizard';
-import { loadField, editField } from '../fields';
-import { makeStyles } from '@material-ui/core';
 import { getShortText, isLongText } from '../lib/longTexts';
+import { SCOPE_GRAPHIC } from '../../../common/scope';
 import { NoField } from './NoField';
+import { useDidUpdateEffect } from '../lib/useDidUpdateEffect';
+import { fromFields } from '../sharedSelectors';
+
+import {
+    loadField,
+    editField,
+    changePositions,
+    saveFieldFromData,
+} from '../fields';
 
 const useStyles = makeStyles({
     root: {
@@ -21,28 +40,35 @@ const useStyles = makeStyles({
         display: 'flex',
         flexFlow: 'row wrap',
     },
-    propertyContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-    },
     property: {
         border: '1px solid #ccc',
         borderRadius: 3,
-        padding: 40,
-        margin: 10,
         textAlign: 'center',
-        cursor: 'pointer',
         fontWeight: 'bold',
         display: 'flex',
+        height: '100%',
+        padding: '0 60px',
         justifyContent: 'center',
+        position: 'relative',
         alignItems: 'center',
         color: '#444',
         '&:hover': {
             background: '#efefef',
         },
     },
+    propertyHandle: {
+        position: 'absolute',
+        left: 20,
+        cursor: 'pointer',
+    },
+    editIcon: {
+        position: 'absolute',
+        right: 20,
+        minWidth: 30,
+    },
     propertyLabel: {
         marginRight: 10,
+        cursor: 'copy',
     },
     actionsContainer: {
         marginLeft: 'auto',
@@ -53,10 +79,166 @@ const useStyles = makeStyles({
 const ensureTextIsShort = text =>
     isLongText(text) ? getShortText(text) : text;
 
+const layoutFromItems = items => {
+    const result = items
+        .sort((a, b) => a.position - b.position)
+        .reduce(
+            (acc, curr) => {
+                if (acc.currXOffset + curr.width > 10) {
+                    acc.currLine++;
+                    acc.currXOffset = 0;
+                }
+
+                acc.layout.push({
+                    i: curr.id,
+                    x: acc.currXOffset,
+                    y: curr.position + acc.currLine,
+                    w: curr.width,
+                    h: 1,
+                    isBounded: true,
+                });
+
+                acc.currXOffset += curr.width;
+
+                return acc;
+            },
+            { layout: [], currXOffset: 0, currLine: 0 },
+        );
+
+    return result.layout;
+};
+
+const itemsFromLayout = layout =>
+    layout
+        .sort((a, b) => (a.y === b.y ? a.x - b.x : a.y - b.y))
+        .map((item, index) => ({
+            id: item.i,
+            position: index,
+            width: item.w,
+            _x: item.x, // will trigger refresh if in the same line
+        }));
+
+const ItemGridLabel = connect((state, { field }) => ({
+    completedField: fromFields.getCompletedField(state, field),
+}))(({ field, completedField, polyglot, onShowNameCopied }) => (
+    <>
+        <CopyToClipboard text={field.name} onCopy={onShowNameCopied}>
+            <span>
+                {ensureTextIsShort(field.label)}
+                {` (${ensureTextIsShort(field.name)})`}
+                {completedField && (
+                    <span>
+                        {polyglot.t('completes_field_X', {
+                            field: completedField.label,
+                        })}
+                    </span>
+                )}
+            </span>
+        </CopyToClipboard>
+    </>
+));
+
+const DraggableItemGrid = ({
+    onEditField,
+    onChangeWidth,
+    onChangePositions,
+    allowResize,
+    fields,
+    polyglot,
+}) => {
+    const [showNameCopied, setShowNameCopied] = useState(false);
+    const classes = useStyles();
+
+    const [items, setItems] = useState(
+        fields.map(field => ({
+            id: field.name,
+            width: !!field.width ? parseInt(field.width, 10) / 10 : 10,
+            position: field.position,
+        })),
+    );
+
+    const layout = useMemo(() => layoutFromItems(items), [items]);
+
+    useDidUpdateEffect(() => {
+        onChangePositions(items);
+    }, [JSON.stringify(items.map(item => item.id))]);
+
+    const handleLayoutChange = newLayout => {
+        setItems(itemsFromLayout(newLayout));
+    };
+
+    const handleResize = (elements, el) => {
+        const newEl = elements.find(elem => elem.i === el.i);
+        if (newEl) {
+            onChangeWidth(newEl.i, newEl.w * 10);
+            setItems(itemsFromLayout(elements));
+        }
+    };
+
+    return (
+        <>
+            <GridLayout
+                className="layout"
+                layout={layout}
+                key={JSON.stringify(items)}
+                cols={10}
+                rowHeight={150}
+                width={1000}
+                draggableHandle=".draghandle"
+                onDragStop={handleLayoutChange}
+                onResizeStop={handleResize}
+                isResizable={allowResize}
+            >
+                {fields.map(field => (
+                    <div key={field.name} className={classes.property}>
+                        <span
+                            className={classNames(
+                                'draghandle',
+                                classes.propertyHandle,
+                            )}
+                        >
+                            <DragIndicatorIcon />
+                        </span>
+                        <span
+                            className={classes.propertyLabel}
+                            data-field-name={field.name}
+                        >
+                            <ItemGridLabel
+                                field={field}
+                                polyglot={polyglot}
+                                onShowNameCopied={() => setShowNameCopied(true)}
+                            />
+                        </span>
+                        <Button
+                            className={classes.editIcon}
+                            onClick={() => onEditField(field.name)}
+                        >
+                            <EditIcon />
+                        </Button>
+                        {!field.display && <HiddenIcon />}
+                    </div>
+                ))}
+            </GridLayout>
+            <Snackbar
+                open={showNameCopied}
+                autoHideDuration={2000}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                onClose={() => setShowNameCopied(false)}
+            >
+                <Alert variant="filled" severity="success">
+                    {polyglot.t('fieldname_copied_clipboard')}
+                </Alert>
+            </Snackbar>
+        </>
+    );
+};
+
 const FieldGridComponent = ({
     fields,
     filter,
     editField,
+    changePositions,
+    saveFieldFromData,
     p: polyglot,
     isSubresource,
     addFieldButton,
@@ -73,6 +255,24 @@ const FieldGridComponent = ({
         editField(null);
     };
 
+    const handleChangePositions = fieldsWithPosition => {
+        changePositions({
+            type: filter,
+            fields: fieldsWithPosition.map(field => ({
+                name: field.id,
+                position: field.position,
+            })),
+        });
+    };
+
+    const handleChangeWidth = (name, width) => {
+        saveFieldFromData({
+            name,
+            data: { width },
+            silent: true /* Doesn't trigger "success" / re-publish */,
+        });
+    };
+
     return (
         <div className={classes.root}>
             {fields.length === 0 ? (
@@ -85,32 +285,15 @@ const FieldGridComponent = ({
                     }
                 />
             ) : (
-                <>
-                    <div className={classes.actionsContainer}>
-                        {addFieldButton}
-                    </div>
-                    {fields.map(field => (
-                        <div
-                            key={field.name}
-                            className={classes.propertyContainer}
-                            style={{ width: `${field.width || 100}%` }}
-                        >
-                            <div
-                                onClick={() => editField(field.name)}
-                                className={classes.property}
-                            >
-                                <span
-                                    className={classes.propertyLabel}
-                                    data-field-name={field.name}
-                                >
-                                    {ensureTextIsShort(field.label)}
-                                    {` (${ensureTextIsShort(field.name)})`}
-                                </span>
-                                {!field.display && <HiddenIcon />}
-                            </div>
-                        </div>
-                    ))}
-                </>
+                <DraggableItemGrid
+                    key={filter}
+                    fields={fields}
+                    onEditField={editField}
+                    onChangeWidth={handleChangeWidth}
+                    onChangePositions={handleChangePositions}
+                    allowResize={filter !== SCOPE_GRAPHIC}
+                    polyglot={polyglot}
+                />
             )}
             <PublicationModalWizard
                 filter={filter}
@@ -131,5 +314,10 @@ FieldGridComponent.propTypes = {
 
 export const FieldGrid = compose(
     translate,
-    connect(undefined, { loadField, editField }),
+    connect(undefined, {
+        loadField,
+        editField,
+        changePositions,
+        saveFieldFromData,
+    }),
 )(FieldGridComponent);

@@ -11,7 +11,7 @@ export const checkCharacteristicsOrder = labels => {
 
 export const checkCharacteristic = (name, value) =>
     cy
-        .get(`.property_value.${name}`, {timeout: 300})
+        .get(`.property_value.${name}`, { timeout: 1000 })
         .contains(value)
         .scrollIntoView()
         .should('be.visible');

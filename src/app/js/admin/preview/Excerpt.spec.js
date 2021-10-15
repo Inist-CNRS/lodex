@@ -15,6 +15,7 @@ describe('<Excerpt />', () => {
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
         ],
+        readonly: true,
         p: { t: key => key },
     };
 
@@ -49,12 +50,14 @@ describe('<Excerpt />', () => {
         const excerptLines = wrapper.find(ExcerptLine);
         expect(excerptLines.at(0).props()).toEqual({
             line: { foo: 'foo1', bar: 'bar1' },
+            readonly: true,
             columns: [
                 { name: 'foo', label: 'foo' },
                 { name: 'bar', label: 'Super Bar' },
             ],
         });
         expect(excerptLines.at(1).props()).toEqual({
+            readonly: true,
             line: { foo: 'foo2', bar: 'bar2' },
             columns: [
                 { name: 'foo', label: 'foo' },

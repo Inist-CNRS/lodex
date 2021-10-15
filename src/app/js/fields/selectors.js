@@ -37,6 +37,12 @@ const getOntologyFields = createSelector(
     (fields, type) => fields.filter(getOntologyFieldsFilter(type)),
 );
 
+const getOntologyFieldsWithUri = createSelector(
+    getFields,
+    (_, type) => type,
+    (fields, type) => fields.filter(getOntologyFieldsFilter(type, true)),
+);
+
 const getState = state => state.list;
 const getByName = ({ byName }) => byName;
 
@@ -390,7 +396,14 @@ const getFieldFormatArgs = createSelector(getFieldByName, field =>
 
 const getInvalidProperties = state => state.invalidProperties || [];
 
+export const getFromName = createSelector(
+    getByName,
+    (_, name) => name,
+    (fields, name) => fields[name] || null,
+);
+
 export default {
+    getFromName,
     areAllFieldsValid,
     getCollectionFields,
     getCompletedField,
@@ -446,6 +459,7 @@ export default {
     isFieldConfigured,
     getFieldFormatArgs,
     getOntologyFields,
+    getOntologyFieldsWithUri,
     getInvalidProperties,
     canBeSearched,
 };
