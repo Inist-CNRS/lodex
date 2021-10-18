@@ -12,7 +12,7 @@ import {
     TableHead,
     TableCell,
     TableRow,
-    TableContainer
+    TableContainer,
 } from '@material-ui/core';
 
 import {
@@ -36,9 +36,6 @@ const styles = {
         minWidth: separated ? '150px' : '100%',
         border: separated ? 'none' : '1px solid rgb(224, 224, 224)',
     })),
-    cell: {
-        cursor: 'pointer',
-    },
 };
 
 const getColStyle = memoize(style => ({ ...styles.header, ...style }));
@@ -64,7 +61,12 @@ export const ExcerptComponent = ({
                             className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
                                 field,
                             )}`}
-                            style={getColStyle(colStyle)}
+                            style={getColStyle({
+                                ...(areHeadersClickable
+                                    ? {}
+                                    : { cursor: 'default' }),
+                                ...colStyle,
+                            })}
                             onClick={() =>
                                 field.name !== URI_FIELD_NAME &&
                                 onHeaderClick(field.name)
@@ -99,6 +101,7 @@ export const ExcerptComponent = ({
                         key={`${line.uri}-${index}` || index}
                         line={line}
                         columns={columns}
+                        readonly
                     />
                 ))}
             </TableBody>

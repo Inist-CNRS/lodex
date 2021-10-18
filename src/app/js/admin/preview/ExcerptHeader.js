@@ -81,7 +81,7 @@ const ExcerptHeaderComponent = ({
         <p style={titleStyle.titleBlock}>
             <span>{ensureTextIsShort(field.label)}</span>
             <span style={titleStyle.titleId} data-field-name={field.name}>
-                ( {ensureTextIsShort(field.name)} ) {isVisible(field)}
+                (&nbsp;{ensureTextIsShort(field.name)}&nbsp;) {isVisible(field)}
             </span>
         </p>
         {completedField && (

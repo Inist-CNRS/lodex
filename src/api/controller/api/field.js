@@ -267,7 +267,7 @@ export const reorderField = async ctx => {
             }
 
             if (scope === SCOPE_COLLECTION || scope === SCOPE_DOCUMENT) {
-                return SCOPE_COLLECTION;
+                return scope;
             }
 
             throw new Error(
@@ -277,7 +277,9 @@ export const reorderField = async ctx => {
 
         if (scope === SCOPE_COLLECTION) {
             if (fieldsData[0].name !== 'uri') {
-                throw new Error('Uri must always be the first field');
+                throw new Error(
+                    'Uri must always be the first field for collection scope',
+                );
             }
         }
 

@@ -7,6 +7,15 @@ import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
 } from '../../propTypes';
+import RemoveButton from '../../admin/preview/RemoveButton';
+
+const styles = {
+    root: {
+        display: 'flex',
+        flex: 1,
+        justifyContent: 'space-between',
+    },
+};
 
 export const ActionsComponent = ({
     field,
@@ -44,7 +53,87 @@ export const ActionsComponent = ({
 
     if (step === 0) {
         return (
+            <div style={styles.root}>
+                <div>
+                    <RemoveButton field={field} />
+                </div>
+                <div>
+                    <Button
+                        variant="text"
+                        className="btn-next"
+                        onClick={onNextStep}
+                    >
+                        {polyglot.t('next')}
+                    </Button>
+                    <Button
+                        variant="contained"
+                        className="btn-save"
+                        color="primary"
+                        onClick={onSave}
+                    >
+                        {polyglot.t('save')}
+                    </Button>
+                    <Button
+                        variant="text"
+                        className="btn-exit-column-edition"
+                        color="secondary"
+                        onClick={onCancel}
+                    >
+                        {polyglot.t('cancel')}
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+
+    if (step === stepsCount - 1) {
+        return (
+            <div style={styles.root}>
+                <div>
+                    <RemoveButton field={field} />
+                </div>
+                <div>
+                    <Button
+                        variant="text"
+                        className="btn-previous"
+                        onClick={onPreviousStep}
+                    >
+                        {polyglot.t('previous')}
+                    </Button>
+                    <Button
+                        variant="contained"
+                        className="btn-save"
+                        onClick={onSave}
+                        color="primary"
+                    >
+                        {polyglot.t('save')}
+                    </Button>
+                    <Button
+                        variant="text"
+                        className="btn-exit-column-edition"
+                        color="secondary"
+                        onClick={onCancel}
+                    >
+                        {polyglot.t('cancel')}
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div style={styles.root}>
             <div>
+                <RemoveButton field={field} />
+            </div>
+            <div>
+                <Button
+                    variant="text"
+                    className="btn-previous"
+                    onClick={onPreviousStep}
+                >
+                    {polyglot.t('previous')}
+                </Button>
                 <Button
                     variant="text"
                     className="btn-next"
@@ -69,67 +158,6 @@ export const ActionsComponent = ({
                     {polyglot.t('cancel')}
                 </Button>
             </div>
-        );
-    }
-
-    if (step === stepsCount - 1) {
-        return (
-            <div>
-                <Button
-                    variant="text"
-                    className="btn-previous"
-                    onClick={onPreviousStep}
-                >
-                    {polyglot.t('previous')}
-                </Button>
-                <Button
-                    variant="contained"
-                    className="btn-save"
-                    onClick={onSave}
-                    color="primary"
-                >
-                    {polyglot.t('save')}
-                </Button>
-                <Button
-                    variant="text"
-                    className="btn-exit-column-edition"
-                    color="secondary"
-                    onClick={onCancel}
-                >
-                    {polyglot.t('cancel')}
-                </Button>
-            </div>
-        );
-    }
-
-    return (
-        <div>
-            <Button
-                variant="text"
-                className="btn-previous"
-                onClick={onPreviousStep}
-            >
-                {polyglot.t('previous')}
-            </Button>
-            <Button variant="text" className="btn-next" onClick={onNextStep}>
-                {polyglot.t('next')}
-            </Button>
-            <Button
-                variant="contained"
-                className="btn-save"
-                color="primary"
-                onClick={onSave}
-            >
-                {polyglot.t('save')}
-            </Button>
-            <Button
-                variant="text"
-                className="btn-exit-column-edition"
-                color="secondary"
-                onClick={onCancel}
-            >
-                {polyglot.t('cancel')}
-            </Button>
         </div>
     );
 };

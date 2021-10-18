@@ -34,6 +34,7 @@ const PublicationPreviewComponent = ({
     filter,
     loadField,
     editColumn,
+    readonly,
 }) => {
     useEffect(() => {
         loadField();
@@ -47,11 +48,13 @@ const PublicationPreviewComponent = ({
 
     return (
         <div style={styles.container} className="publication-preview">
-            <PublicationExcerpt onHeaderClick={editColumn} fields={fields} />
-            <PublicationModalWizard
-                filter={filter}
-                onExitEdition={handleExitColumEdition}
-            />
+            <PublicationExcerpt onHeaderClick={null} fields={fields} />
+            {!readonly && (
+                <PublicationModalWizard
+                    filter={filter}
+                    onExitEdition={handleExitColumEdition}
+                />
+            )}
         </div>
     );
 };
@@ -61,6 +64,7 @@ PublicationPreviewComponent.propTypes = {
     loadField: PropTypes.func.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     filter: PropTypes.string,
+    readonly: PropTypes.boolean,
 };
 
 const mapStateToProps = (state, { filter, fields }) => ({

@@ -12,26 +12,17 @@ import getFieldClassName from '../../lib/getFieldClassName';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const styles = {
-    header: {
-        cursor: 'pointer',
-    },
-    table: {
-        width: 'auto',
-    },
-    wrapper: {
-        overflowX: 'auto',
-    },
-    cell: {
-        cursor: 'pointer',
+    cell: readonly => ({
+        cursor: readonly ? 'default' : 'pointer',
         height: 'auto',
-    },
+    }),
 };
 
-export const ExcerptLineColComponent = ({ field, value = '' }) =>
+export const ExcerptLineColComponent = ({ field, value = '', readonly }) =>
     isLongText(value) ? (
         <TableCell
             title={value}
-            style={styles.cell}
+            style={styles.cell(readonly)}
             className={classnames(
                 'publication-preview-column',
                 getFieldClassName(field),
@@ -41,7 +32,7 @@ export const ExcerptLineColComponent = ({ field, value = '' }) =>
         </TableCell>
     ) : (
         <TableCell
-            style={styles.cell}
+            style={styles.cell(readonly)}
             className={classnames(
                 'publication-preview-column',
                 getFieldClassName(field),
@@ -54,6 +45,7 @@ export const ExcerptLineColComponent = ({ field, value = '' }) =>
 ExcerptLineColComponent.propTypes = {
     field: fieldPropTypes.isRequired,
     value: PropTypes.string,
+    readonly: PropTypes.bool,
 };
 
 ExcerptLineColComponent.defaultProps = {

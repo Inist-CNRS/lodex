@@ -1,5 +1,5 @@
 import { takeEvery, call, select, put } from 'redux-saga/effects';
-import { CHANGE_POSITION, changePositionValue } from '../';
+import { CHANGE_POSITION, changePositionValue, CHANGE_POSITIONS } from '../';
 
 import { fromFields, fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
@@ -49,6 +49,27 @@ export function* handleChangePosition({
     yield put(changePositionValue({ fields: response }));
 }
 
+export function* handleChangePositions({
+    payload: { type, fields: reorderedFields },
+}) {
+    const fields = yield select(fromFields.getOntologyFieldsWithUri, type);
+    yield put(changePositionValue({ fields: reorderedFields }));
+
+    const request = yield select(
+        fromUser.getReorderFieldRequest,
+        reorderedFields,
+    );
+
+    const { error, response } = yield call(fetchSaga, request);
+    if (error) {
+        yield put(changePositionValue({ fields }));
+        return;
+    }
+
+    yield put(changePositionValue({ fields: response }));
+}
+
 export default function* watchLoadField() {
     yield takeEvery([CHANGE_POSITION], handleChangePosition);
+    yield takeEvery([CHANGE_POSITIONS], handleChangePositions);
 }

@@ -12,7 +12,6 @@ import { FieldGrid } from '../fields/FieldGrid';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import { fromFields } from '../sharedSelectors';
 import { URI_FIELD_NAME } from '../../../common/uris';
-import { AddFieldButton } from './Appbar/AddFieldButton';
 import AddFieldFromColumnButton from './Appbar/AddFieldFromColumnButton';
 
 const useStyles = makeStyles({
@@ -32,7 +31,8 @@ export const FieldsEditComponent = ({
 }) => {
     const classes = useStyles();
     const [tab, setTab] = useState(defaultTab);
-    const handleChangeTab = (event, newValue) => setTab(newValue);
+
+    const handleChangeTab = (_, newValue) => setTab(newValue);
 
     return (
         <div>
@@ -47,14 +47,6 @@ export const FieldsEditComponent = ({
                 <Tab value="published" label="Données publiées" />
             </Tabs>
             {tab === 'page' && (
-                <FieldGrid
-                    filter={filter}
-                    fields={fields}
-                    isSubresource={!!subresourceId}
-                    addFieldButton={addFieldButton}
-                />
-            )}
-            {tab === 'published' && (
                 <>
                     <div className={classes.actionsContainer}>
                         {filter === SCOPE_DOCUMENT && (
@@ -62,24 +54,39 @@ export const FieldsEditComponent = ({
                         )}
                         {addFieldButton}
                     </div>
-                    <div style={{ display: showAddColumns ? 'block' : 'none' }}>
+                    <div
+                        style={{
+                            display: showAddColumns ? 'block' : 'none',
+                            paddingBottom: 20,
+                        }}
+                    >
                         <ParsingResult showAddColumns maxLines={3} />
                     </div>
-                    {showAddColumns && (
-                        <Statistics
-                            mode="display"
-                            filter={filter}
-                            fields={fields}
-                        />
-                    )}
-                    <PublicationPreview filter={filter} fields={fields} />
-                    {!showAddColumns && (
-                        <Statistics
-                            mode="display"
-                            filter={filter}
-                            fields={fields}
-                        />
-                    )}
+                    <Statistics
+                        mode="display"
+                        filter={filter}
+                        fields={fields}
+                    />
+                    <FieldGrid
+                        filter={filter}
+                        fields={fields}
+                        isSubresource={!!subresourceId}
+                        addFieldButton={addFieldButton}
+                    />
+                </>
+            )}
+            {tab === 'published' && (
+                <>
+                    <PublicationPreview
+                        readonly
+                        filter={filter}
+                        fields={fields}
+                    />
+                    <Statistics
+                        mode="display"
+                        filter={filter}
+                        fields={fields}
+                    />
                 </>
             )}
         </div>

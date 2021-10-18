@@ -14,13 +14,14 @@ const styles = {
     },
 };
 
-const ExcerptLine = ({ columns, line }) => (
+const ExcerptLine = ({ columns, line, readonly }) => (
     <TableRow style={styles.row}>
         {columns.map(col => (
             <ExcerptLineCol
                 key={`${line.uri}_${col.name}`}
                 field={col}
                 line={line}
+                readonly={readonly}
             />
         ))}
     </TableRow>
@@ -29,6 +30,7 @@ const ExcerptLine = ({ columns, line }) => (
 ExcerptLine.propTypes = {
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
     line: linePropTypes.isRequired,
+    readonly: PropTypes.bool,
 };
 
 export default ExcerptLine;

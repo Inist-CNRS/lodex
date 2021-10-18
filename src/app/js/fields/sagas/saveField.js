@@ -9,10 +9,11 @@ import {
     saveFieldSuccess,
     FIELD_FORM_NAME,
     SAVE_FIELD,
+    SAVE_FIELD_FROM_DATA,
 } from '../';
 
 import { getFieldFormData } from '../selectors';
-import { fromUser } from '../../sharedSelectors';
+import { fromFields, fromUser } from '../../sharedSelectors';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
@@ -49,6 +50,37 @@ export function* handleSaveField() {
     yield put(destroy(FIELD_FORM_NAME));
 }
 
+export function* handleSaveFieldData({ payload }) {
+    const field = yield select(fromFields.getFromName, payload.name);
+    if (!field) {
+        return;
+    }
+
+    const sanitizedFieldData = yield call(sanitizeField, {
+        ...field,
+        ...payload.data,
+    });
+
+    const request = yield select(
+        fromUser.getSaveFieldRequest,
+        sanitizedFieldData,
+    );
+
+    const { error } = yield call(fetchSaga, request);
+
+    if (error) {
+        yield put(saveFieldError(error));
+        return;
+    }
+
+    if (!payload.silent) {
+        yield put(saveFieldSuccess());
+    }
+
+    yield put(loadField());
+}
+
 export default function* watchSaveField() {
     yield takeLatest([SAVE_FIELD], handleSaveField);
+    yield takeLatest([SAVE_FIELD_FROM_DATA], handleSaveFieldData);
 }
