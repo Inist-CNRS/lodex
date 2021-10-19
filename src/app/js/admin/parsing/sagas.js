@@ -26,13 +26,11 @@ export function* handleLoadParsingResult(action) {
         yield call(delay, 5000);
         yield put(clearProgress());
     }
-
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
         return yield put(loadParsingResultError(error));
     }
-
     return yield put(loadParsingResultSuccess(response));
 }
 
