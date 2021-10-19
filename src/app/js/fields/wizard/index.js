@@ -46,8 +46,7 @@ const styles = {
         overflowY: 'auto',
     },
     column: {
-        minWidth: '10rem',
-        maxWidth: '10rem',
+        width: '10rem',
     },
     title: {
         display: 'flex',
@@ -189,12 +188,13 @@ class FieldEditionWizardComponent extends Component {
                                     <StepUri field={field} fields={fields} />
                                 )}
                             </div>
-                            <FieldExcerpt
-                                className="publication-excerpt-for-edition"
-                                colStyle={styles.column}
-                                onHeaderClick={null}
-                                isPreview
-                            />
+                            <div style={styles.column}>
+                                <FieldExcerpt
+                                    className="publication-excerpt-for-edition"
+                                    onHeaderClick={null}
+                                    isPreview
+                                />
+                            </div>
                         </div>
                     )}
                 </DialogContent>
