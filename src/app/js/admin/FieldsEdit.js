@@ -49,7 +49,7 @@ export const FieldsEditComponent = ({
             {tab === 'page' && (
                 <>
                     <div className={classes.actionsContainer}>
-                        {filter === SCOPE_DOCUMENT && (
+                        {filter === SCOPE_DOCUMENT && !subresourceId && (
                             <AddFieldFromColumnButton />
                         )}
                         {addFieldButton}
