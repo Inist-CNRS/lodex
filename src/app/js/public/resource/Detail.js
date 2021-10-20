@@ -158,12 +158,6 @@ export const DetailComponent = ({ fields, resource, title, description }) => {
                         ))}
                     </div>
                     <CardActions style={styles.actions}>
-                        <Button
-                            href={`${getCleanHost()}/${resource.uri} `}
-                            color="primary"
-                        >
-                            {resource.uri}
-                        </Button>
                         <SelectVersion />
                         <HideResource />
                         {!resource.subresourceId && (
