@@ -45,17 +45,29 @@ const groupSubresourceFields = fields =>
         return acc;
     }, {});
 
+export const getFieldsFromSubresourceFields = (
+    subresourceFields,
+    removeFirstColumnTransformer,
+) => {
+    return subresourceFields.map(sf => ({
+        ...sf,
+        transformers: removeFirstColumnTransformer
+            ? sf.transformers[0].operation === 'COLUMN'
+                ? sf.transformers.slice(1)
+                : sf.transformers
+            : sf.transformers,
+    }));
+};
+
 const getSubresourceTransformer = (
     ctx,
     subresourceFields,
-    removeFirstTransformer = false,
+    removeFirstColumnTransformer = false,
 ) => {
-    const fields = subresourceFields.map(sf => ({
-        ...sf,
-        transformers: removeFirstTransformer
-            ? sf.transformers.slice(1)
-            : sf.transformers,
-    }));
+    const fields = getFieldsFromSubresourceFields(
+        subresourceFields,
+        removeFirstColumnTransformer,
+    );
 
     return getDocumentTransformer(
         ctx.dataset.findBy,

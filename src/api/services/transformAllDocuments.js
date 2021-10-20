@@ -18,7 +18,6 @@ export default async function transformAllDocument(
         const transformedDataset = (
             await Promise.all(dataset.map(transformer))
         ).filter(x => x);
-
         await insertBatch(transformedDataset);
         progress.incrementProgress(transformedDataset.length);
         handled += dataset.length;

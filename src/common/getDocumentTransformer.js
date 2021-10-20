@@ -10,7 +10,6 @@ export const getFieldTransformation = (context, field) => {
     );
 
     const transformDocument = composeTransformers(documentTransformers);
-
     return async doc => ({
         [field.name]: await transformDocument(doc).catch(() => ''),
     });

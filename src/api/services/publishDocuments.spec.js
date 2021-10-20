@@ -1,6 +1,7 @@
 import {
     versionTransformerDecorator,
     publishDocumentsFactory,
+    getFieldsFromSubresourceFields,
 } from './publishDocuments';
 
 const fields = [
@@ -205,6 +206,138 @@ describe('publishDocuments', () => {
             });
 
             expect(transform).toHaveBeenCalledWith(doc);
+        });
+    });
+
+    describe('getFieldsFromSubresourceFields', () => {
+        it('should return fields from subressource fields without column transformers', async () => {
+            const fieldsFromSubressource = [
+                {
+                    name: 'Test',
+                    scope: 'collection',
+                    transformers: [
+                        {
+                            operation: 'COLUMN',
+                            args: [
+                                {
+                                    name: 'column',
+                                    type: 'column',
+                                    value: 'uri',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ];
+
+            const result = getFieldsFromSubresourceFields(
+                fieldsFromSubressource,
+                true,
+            );
+            expect(result[0]).toHaveProperty('transformers');
+            expect(result[0].transformers).toHaveLength(0);
+        });
+
+        it('should return empty transformers if there is only one transformer COLUMN', async () => {
+            const fieldsFromSubressource = [
+                {
+                    name: 'Test',
+                    scope: 'collection',
+                    transformers: [
+                        {
+                            operation: 'COLUMN',
+                            args: [
+                                {
+                                    name: 'column',
+                                    type: 'column',
+                                    value: 'uri',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ];
+
+            const result = getFieldsFromSubresourceFields(
+                fieldsFromSubressource,
+                true,
+            );
+            expect(result[0]).toHaveProperty('transformers');
+            expect(result[0].transformers).toHaveLength(0);
+        });
+
+        it('should return fields with transformers if there is only one transformer who is not COLUMN', async () => {
+            const fieldsFromSubressource = [
+                {
+                    name: 'Test',
+                    scope: 'collection',
+                    transformers: [
+                        {
+                            operation: 'VALUE',
+                            args: [
+                                {
+                                    name: 'value',
+                                    type: 'string',
+                                    value: 'test',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ];
+
+            const result = getFieldsFromSubresourceFields(
+                fieldsFromSubressource,
+                true,
+            );
+            expect(result[0].transformers).toEqual([
+                {
+                    operation: 'VALUE',
+                    args: [{ name: 'value', type: 'string', value: 'test' }],
+                },
+            ]);
+        });
+
+        it('should return fields without COLUMN transformers if it is in first position', async () => {
+            const fieldsFromSubressource = [
+                {
+                    name: 'Test',
+                    scope: 'collection',
+                    transformers: [
+                        {
+                            operation: 'COLUMN',
+                            args: [
+                                {
+                                    name: 'column',
+                                    type: 'column',
+                                    value: 'uri',
+                                },
+                            ],
+                        },
+                        {
+                            operation: 'VALUE',
+                            args: [
+                                {
+                                    name: 'value',
+                                    type: 'string',
+                                    value: 'test',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ];
+
+            const result = getFieldsFromSubresourceFields(
+                fieldsFromSubressource,
+                true,
+            );
+            expect(result[0].transformers).toEqual([
+                {
+                    operation: 'VALUE',
+                    args: [{ name: 'value', type: 'string', value: 'test' }],
+                },
+            ]);
         });
     });
 });
