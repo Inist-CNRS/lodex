@@ -102,7 +102,23 @@ const getSubresourceTransformers = subresource =>
                       {
                           name: 'replaceValue',
                           type: 'string',
-                          value: `uid:/${subresource._id}/$1`,
+                          value: `${subresource._id}/$1`,
+                      },
+                  ],
+              },
+              { operation: 'MD5', args: [] },
+              {
+                  operation: 'REPLACE_REGEX',
+                  args: [
+                      {
+                          name: 'searchValue',
+                          type: 'string',
+                          value: '^(.*)$',
+                      },
+                      {
+                          name: 'replaceValue',
+                          type: 'string',
+                          value: `uid:/$1`,
                       },
                   ],
               },
@@ -111,12 +127,13 @@ const getSubresourceTransformers = subresource =>
 
 export const isSubresourceTransformation = transformers => {
     const operations = transformers.map(t => t.operation).join('|');
-    return operations === 'COLUMN|PARSE|GET|STRING|REPLACE_REGEX';
+    return (
+        operations === 'COLUMN|PARSE|GET|STRING|REPLACE_REGEX|MD5|REPLACE_REGEX'
+    );
 };
 
-const extractedSubresourceIdRegex = new RegExp(/^uid:\/(.*)\/\$1/, 'i');
 const extractUriSubresourceId = uri => {
-    const [, subresourceId] = extractedSubresourceIdRegex.exec(uri);
+    const [_, subresourceId] = uri.split('/');
     return subresourceId;
 };
 
@@ -129,7 +146,7 @@ const mapStateToProps = state => {
 
     if (isSubresourceTransformation(transformers || [])) {
         const extractedSubresourceId = extractUriSubresourceId(
-            transformers[4].args[1].value,
+            transformers[4].args[1].value, // transformers[4] is REPLACE_REGEX transformer from subresources
         );
 
         return {

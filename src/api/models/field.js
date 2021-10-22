@@ -75,6 +75,22 @@ const createSubresourceUriField = subresource => ({
                 },
             ],
         },
+        { operation: 'MD5', args: [] },
+        {
+            operation: 'REPLACE_REGEX',
+            args: [
+                {
+                    name: 'searchValue',
+                    type: 'string',
+                    value: '^(.*)$',
+                },
+                {
+                    name: 'replaceValue',
+                    type: 'string',
+                    value: `uid:/$1`,
+                },
+            ],
+        },
     ],
     position: 1,
 });

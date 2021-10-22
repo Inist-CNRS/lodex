@@ -21,6 +21,7 @@ export default (predicate, Component, format, type) => {
         if (typeof value === 'undefined') {
             return null;
         }
+
         if (!predicate(value)) {
             return <InvalidFormat format={format} value={value} />;
         }
