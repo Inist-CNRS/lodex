@@ -198,7 +198,11 @@ DetailComponent.propTypes = {
 const mapStateToProps = state => {
     const resource = fromResource.getResourceSelectedVersion(state);
 
-    const titleKey = fromFields.getResourceTitleFieldName(state);
+    const titleKey =
+        resource && resource.subresourceId
+            ? fromFields.getSubresourceTitleFieldName(state)
+            : fromFields.getResourceTitleFieldName(state);
+
     const descriptionKey = fromFields.getResourceDescriptionFieldName(state);
     const title = get(resource, titleKey);
     const description = get(resource, descriptionKey);

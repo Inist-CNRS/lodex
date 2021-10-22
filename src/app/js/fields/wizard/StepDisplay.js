@@ -18,12 +18,15 @@ import { SCOPES } from '../../../../common/scope';
 export const StepDisplayComponent = ({
     scope,
     keepMeta = true,
+    isSubresourceField = false,
     p: polyglot,
     ...props
 }) => (
     <Step id="step-display" label="field_wizard_step_display" {...props}>
         {keepMeta && <FieldDisplayInput />}
-        {keepMeta && <FieldOverviewInput />}
+        {keepMeta && (
+            <FieldOverviewInput isSubresourceField={isSubresourceField} />
+        )}
         <FieldFormatInput />
         <FieldWidthInput />
     </Step>
@@ -35,6 +38,7 @@ StepDisplayComponent.propTypes = {
     format: PropTypes.object,
     p: polyglotPropTypes.isRequired,
     keepMeta: PropTypes.bool,
+    isSubresourceField: PropTypes.bool,
 };
 
 const mapStateToProps = state => {
