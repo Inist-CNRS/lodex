@@ -101,7 +101,6 @@ describe('Subresource Page', () => {
         searchDrawer.findSearchResultByTitle('Publication n°1').click();
 
         cy.location('pathname').should('not.equal', '/');
-        cy.contains('a', 'uid:/').should('be.visible');
     });
 
     it('should allow to create named link to subresource', () => {
@@ -209,7 +208,6 @@ describe('Subresource Page', () => {
         searchDrawer.findSearchResultByTitle('Publication n°1').click();
 
         cy.location('pathname').should('not.equal', '/');
-        cy.contains('a', 'uid:/').should('be.visible');
 
         cy.contains('.property', 'Animal name').within(() => {
             cy.contains('Canidae').should('be.visible');
