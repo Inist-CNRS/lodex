@@ -177,7 +177,7 @@ const mapStateToProps = state => {
 
     if (isSubresourceFieldTransformation(transformers || [])) {
         const extractedSubresourceId = extractUriSubresourceId(
-            transformers[4].args[1].value,
+            transformers[4].args[1].value, // transformers[4] is REPLACE_REGEX transformer from subresources
         );
 
         const columnName = extractColumnName(transformers);

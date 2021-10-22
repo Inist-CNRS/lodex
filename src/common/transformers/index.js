@@ -1,8 +1,12 @@
 import { transformers, transformersMetas } from '@ezs/transformers';
 import AUTOGENERATE_URI from './AUTOGENERATE_URI';
+import MD5 from './MD5';
 
 transformers.AUTOGENERATE_URI = AUTOGENERATE_URI;
 transformersMetas.push(AUTOGENERATE_URI.getMetas());
+
+transformers.MD5 = MD5;
+transformersMetas.push(MD5.getMetas());
 
 export default transformers;
 
