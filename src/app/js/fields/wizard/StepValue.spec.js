@@ -7,6 +7,7 @@ import StepValueSubresource from './StepValueSubresource';
 import StepValueSubresourceField from './StepValueSubresourceField';
 
 import { StepValueComponent as StepValue } from './StepValue';
+import StepValueSubresourceColumn from './StepValueSubresourceColumn';
 
 describe('StepValue', () => {
     const defaultProps = {
@@ -24,12 +25,14 @@ describe('StepValue', () => {
         expect(wrapper.find(StepValueSubresourceField)).toHaveLength(1);
     });
 
-    it('should render StepValue with arbitrary and column values when is subresource field', () => {
+    it('should render StepValue with arbitrary and subresource column values when is subresource field', () => {
         const wrapper = shallow(
-            <StepValue {...defaultProps} isSubresourceField={true} />,
+            <StepValue {...defaultProps} subresourceUri="foo" />,
         );
+        console.log(wrapper.debug());
         expect(wrapper.find(StepValueValue)).toHaveLength(1);
-        expect(wrapper.find(StepValueColumn)).toHaveLength(1);
+        expect(wrapper.find(StepValueSubresourceColumn)).toHaveLength(1);
+        expect(wrapper.find(StepValueColumn)).toHaveLength(0);
         expect(wrapper.find(StepValueConcat)).toHaveLength(0);
         expect(wrapper.find(StepValueSubresource)).toHaveLength(0);
         expect(wrapper.find(StepValueSubresourceField)).toHaveLength(0);

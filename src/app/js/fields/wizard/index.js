@@ -120,7 +120,7 @@ class FieldEditionWizardComponent extends Component {
                 />,
                 <StepValue
                     key="value"
-                    isSubresourceField={!!field.subresourceId}
+                    subresourceUri={field.subresourceId}
                     arbitraryMode={[SCOPE_DATASET, SCOPE_GRAPHIC].includes(
                         filter,
                     )}

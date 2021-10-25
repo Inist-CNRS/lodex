@@ -18,13 +18,19 @@ export const addField = (name, label, save = true) => {
     cy.get('div[role="dialog"]').should('exist');
 
     cy.get('div[role="dialog"]')
-        .find(`input[name="transformers[2].args[0].value"]`)
-        .type(name);
-
-    cy.get('div[role="dialog"]')
         .find(`input[name="label"]`)
         .clear()
         .type(label);
+
+    cy.get('#step-value')
+        .click()
+        .scrollIntoView();
+
+    cy.get('#select-subresource-input-label').click();
+
+    cy.get('ul[aria-labelledby="select-subresource-input-label"]')
+        .find(`li[data-value="${name}"]`)
+        .click();
 
     if (save) {
         cy.get('div[role="dialog"]')
