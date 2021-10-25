@@ -5,6 +5,7 @@ import {
     RESOURCE_DESCRIPTION,
     RESOURCE_DETAIL_1,
     RESOURCE_DETAIL_2,
+    SUBRESOURCE_TITLE,
 } from '../overview';
 
 describe('isFieldRequired', () => {
@@ -25,6 +26,11 @@ describe('isFieldRequired', () => {
             overview: RESOURCE_TITLE,
         };
         expect(isFieldRequired(fieldTitle)).toBe(true);
+
+        const fieldSubresourceTitle = {
+            overview: SUBRESOURCE_TITLE,
+        };
+        expect(isFieldRequired(fieldSubresourceTitle)).toBe(true);
 
         const fieldDescription = {
             overview: RESOURCE_DESCRIPTION,

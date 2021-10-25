@@ -321,6 +321,11 @@ const getResourceTitleFieldName = createSelector(
     findFieldWithOverviewID(overview.RESOURCE_TITLE),
 );
 
+const getSubresourceTitleFieldName = createSelector(
+    getCollectionFields,
+    findFieldWithOverviewID(overview.SUBRESOURCE_TITLE),
+);
+
 const getResourceDescriptionFieldName = createSelector(
     getCollectionFields,
     findFieldWithOverviewID(overview.RESOURCE_DESCRIPTION),
@@ -440,6 +445,7 @@ export default {
     getDatasetTitleFieldName,
     getDatasetDescriptionFieldName,
     getResourceTitleFieldName,
+    getSubresourceTitleFieldName,
     getResourceDescriptionFieldName,
     getResourceDetail1FieldName,
     getResourceDetail2FieldName,

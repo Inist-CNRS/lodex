@@ -62,7 +62,7 @@ describe('Dataset Publication', () => {
             );
         });
 
-        it.only('should enable publish button if model', () => {
+        it('should enable publish button if model', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
