@@ -7,6 +7,7 @@ import GridOnIcon from '@material-ui/icons/GridOn';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PlusIcon from '@material-ui/icons/Add';
+import PostAddIcon from '@material-ui/icons/PostAdd';
 import MainResourceIcon from '@material-ui/icons/InsertDriveFile';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -166,6 +167,41 @@ const DocumentMenu = compose(
     );
 });
 
+const EnrichmentMenu = compose(
+    connect(s => ({ enrichment: s.enrichment })),
+    translate,
+)(({ p: polyglot, enrichment }) => {
+    const classes = useStyles();
+    return (
+        <div className={classnames(classes.subSidebar, 'sub-sidebar')}>
+            {(enrichment.enrichments || []).map(e => (
+                <Fragment key={r._id}>
+                    <hr className={classes.separator} />
+                    <Box className={classes.iconSubLinkContainer}>
+                        <NavLink
+                            className={classes.sidebarNavLink}
+                            activeStyle={subSidebarNavLinkActiveStyle}
+                            to={`/data/enrichment/${e._id}`}
+                        >
+                            {e.name}
+                        </NavLink>
+                    </Box>
+                </Fragment>
+            ))}
+            <Box className={classes.iconSubLinkContainer}>
+                <NavLink
+                    className={classes.sidebarCallToAction}
+                    activeStyle={subSidebarNavLinkActiveStyle}
+                    to="/data/enrichment/add"
+                >
+                    <PlusIcon />
+                    {polyglot.t('new_enrichment')}
+                </NavLink>
+            </Box>
+        </div>
+    );
+});
+
 const InnerSidebarComponent = ({
     hasPublishedDataset,
     hasLoadedDataset,
@@ -228,6 +264,16 @@ const InnerSidebarComponent = ({
                             {polyglot.t('data')}
                         </NavLink>
                     </Box>
+                    <Box className={classes.iconLinkContainer}>
+                        <NavLink
+                            className={classes.sidebarNavLink}
+                            activeStyle={sidebarNavLinkActiveStyle}
+                            to="/data/enrichment"
+                        >
+                            <PostAddIcon />
+                            {polyglot.t('enrichment')}
+                        </NavLink>
+                    </Box>
                     {hasLoadedDataset && (
                         <Box className={classes.iconLinkContainer}>
                             <NavLink
@@ -256,6 +302,9 @@ const InnerSidebarComponent = ({
                         </Box>
                     )}
                 </div>
+                <Route path={`/data/enrichment`}>
+                    <EnrichmentMenu />
+                </Route>
             </Route>
         </>
     );
