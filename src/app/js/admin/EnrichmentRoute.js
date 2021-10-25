@@ -4,24 +4,18 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import withInitialData from './withInitialData';
 
-import {
-    Route,
-    useRouteMatch,
-    Redirect,
-    Switch,
-    useParams,
-} from 'react-router';
+import { Route, useRouteMatch, Switch } from 'react-router';
+import  FormEnrichment  from './enrichment/FormEnrichment';
 
 export const EnrichmentRouteComponent = () => {
     let { path } = useRouteMatch();
-    console.log(path)
     return (
         <Switch>
             <Route exact path={`${path}/`}>
                 <div>LIST</div>
             </Route>
             <Route exact path={`${path}/add`}>
-                <div>ADD</div>
+                <FormEnrichment />
             </Route>
             <Route exact path={`${path}/:enrichmentId`}>
                 <div>EDIT</div>

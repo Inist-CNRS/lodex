@@ -585,3 +585,4 @@
 "info_publish_desc"	"The data you are about to add will be merged or substituted, if same identifiers, with those already loaded"	"Les données que vous vous apprêtez à ajouter seront fusionnées ou se substitueront, si même identifiants, avec celles déjà chargées"
 "enrichment"	"Enrichment"	"Enrichissement"
 "new_enrichment"	"New enrichment"	"Nouvel enrichissements"
+"expand_rules"	"Expand rules"	"Règles de développement"
