@@ -30,16 +30,16 @@ export const RemoveButtonComponent = ({ onRemove, p: polyglot }) => {
                     <Button
                         color="primary"
                         variant="contained"
-                        onClick={handleCloseDialog}
-                    >
-                        {polyglot.t('Cancel')}
-                    </Button>
-                    <Button
-                        color="secondary"
-                        variant="contained"
                         onClick={onRemove}
                     >
                         {polyglot.t('Accept')}
+                    </Button>
+                    <Button
+                        color="secondary"
+                        variant="text"
+                        onClick={handleCloseDialog}
+                    >
+                        {polyglot.t('Cancel')}
                     </Button>
                 </DialogActions>
             </Dialog>
