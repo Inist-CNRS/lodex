@@ -29,7 +29,7 @@ describe('StepValue', () => {
         const wrapper = shallow(
             <StepValue {...defaultProps} subresourceUri="foo" />,
         );
-        console.log(wrapper.debug());
+
         expect(wrapper.find(StepValueValue)).toHaveLength(1);
         expect(wrapper.find(StepValueSubresourceColumn)).toHaveLength(1);
         expect(wrapper.find(StepValueColumn)).toHaveLength(0);
