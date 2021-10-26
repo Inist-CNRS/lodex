@@ -36,7 +36,7 @@ const styles = {
     container: {
         display: 'flex',
         paddingBottom: '1rem',
-        width: 800,
+        width: 900,
     },
     form: {
         borderRight: '1px solid rgb(224, 224, 224)',

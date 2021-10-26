@@ -12,8 +12,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Alert from '@material-ui/lab/Alert';
 
 import {
-    DragIndicator as DragIndicatorIcon,
-    Edit as EditIcon,
+    OpenWith as DragIndicatorIcon,
+    Settings as SettingsIcon,
 } from '@material-ui/icons';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -138,6 +138,13 @@ const ItemGridLabel = connect((state, { field }) => ({
     </>
 ));
 
+export const buildFieldsDefinitionsArray = fields =>
+    fields.map(field => ({
+        id: field.name,
+        width: !!field.width ? parseInt(field.width, 10) / 10 : 10,
+        position: field.position,
+    }));
+
 const DraggableItemGrid = ({
     onEditField,
     onChangeWidth,
@@ -149,13 +156,7 @@ const DraggableItemGrid = ({
     const [showNameCopied, setShowNameCopied] = useState(false);
     const classes = useStyles();
 
-    const [items, setItems] = useState(
-        fields.map(field => ({
-            id: field.name,
-            width: !!field.width ? parseInt(field.width, 10) / 10 : 10,
-            position: field.position,
-        })),
-    );
+    const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
 
     const layout = useMemo(() => layoutFromItems(items), [items]);
 
@@ -213,7 +214,7 @@ const DraggableItemGrid = ({
                             className={classes.editIcon}
                             onClick={() => onEditField(field.name)}
                         >
-                            <EditIcon />
+                            <SettingsIcon />
                         </Button>
                         {!field.display && <HiddenIcon />}
                     </div>
