@@ -33,7 +33,7 @@ export const PopupConfirmUploadComponent = ({
     };
     const actions = [
         <Button
-            variant="text"
+            variant="contained"
             color="primary"
             key="confirm"
             onClick={handleConfirmAction}
