@@ -8,7 +8,7 @@ import PublicationPreview from './preview/publication/PublicationPreview';
 import Statistics from './Statistics';
 import { fromParsing } from './selectors';
 import ParsingResult from './parsing/ParsingResult';
-import { FieldGrid } from '../fields/FieldGrid';
+import { buildFieldsDefinitionsArray, FieldGrid } from '../fields/FieldGrid';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import { fromFields } from '../sharedSelectors';
 import { URI_FIELD_NAME } from '../../../common/uris';
@@ -68,6 +68,9 @@ export const FieldsEditComponent = ({
                         fields={fields}
                     />
                     <FieldGrid
+                        key={JSON.stringify(
+                            buildFieldsDefinitionsArray(fields),
+                        )}
                         filter={filter}
                         fields={fields}
                         isSubresource={!!subresourceId}
