@@ -36,21 +36,9 @@ export const StepIdentityComponent = ({
     p: polyglot,
     ...props
 }) => {
-    const getOperationIndex = field.transformers.findIndex(
-        t => t.operation === 'GET',
-    );
-
     return (
         <Step id="step-identity" label="field_wizard_step_identity" {...props}>
             <FieldLabelInput />
-            {isSubresourceField && getOperationIndex !== -1 && (
-                <Field
-                    name={`transformers[${getOperationIndex}].args[0].value`}
-                    component={TextField}
-                    label="Name"
-                    fullWidth
-                />
-            )}
             <Field name="scope" component={TextField} type="hidden" />
             <FieldArray name="classes" component={ClassList} type="classes" />
             <FieldLanguageInput field={field} />

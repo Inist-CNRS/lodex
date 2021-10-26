@@ -12,9 +12,10 @@ import StepValueColumn from './StepValueColumn';
 import StepValueConcat from './StepValueConcat';
 import StepValueSubresource from './StepValueSubresource';
 import StepValueSubresourceField from './StepValueSubresourceField';
+import StepValueSubresourceColumn from './StepValueSubresourceColumn';
 
 export const StepValueComponent = ({
-    isSubresourceField,
+    subresourceUri,
     handleChange,
     arbitraryMode,
     ...props
@@ -23,9 +24,14 @@ export const StepValueComponent = ({
         <StepValueValue onChange={handleChange} />
         {!arbitraryMode && (
             <>
-                <StepValueColumn onChange={handleChange} />
-                {!isSubresourceField && (
+                {subresourceUri ? (
+                    <StepValueSubresourceColumn
+                        subresourceUri={subresourceUri}
+                        onChange={handleChange}
+                    />
+                ) : (
                     <>
+                        <StepValueColumn onChange={handleChange} />
                         <StepValueConcat onChange={handleChange} />
                         <StepValueSubresource onChange={handleChange} />
                         <StepValueSubresourceField onChange={handleChange} />
@@ -37,7 +43,7 @@ export const StepValueComponent = ({
 );
 
 StepValueComponent.propTypes = {
-    isSubresourceField: PropTypes.bool,
+    subresourceId: PropTypes.string,
     handleChange: PropTypes.func.isRequired,
     arbitraryMode: PropTypes.bool.isRequired,
 };

@@ -15,7 +15,7 @@ const styles = {
 };
 
 export const SelectSubresourceFieldComponent = ({
-    datasetFields,
+    datasetFields = [],
     handleChange,
     p: polyglot,
     column,
@@ -52,14 +52,32 @@ SelectSubresourceFieldComponent.propTypes = {
     label: PropTypes.string.isRequired,
     id: PropTypes.string,
 };
+
 SelectSubresourceFieldComponent.defaultProps = {
     column: '',
     id: 'select_subresource',
 };
 
-const mapStateToProps = state => ({
-    datasetFields: fromParsing.getParsedExcerptColumns(state),
-});
+export const mapStateToProps = (state, { subresourceUri }) => {
+    const { subresources } = state.subresource;
+
+    const subresource = subresources.find(s => s._id === subresourceUri);
+    const [firstParsedLine] = fromParsing.getExcerptLines(state);
+
+    if (!subresource || !firstParsedLine) {
+        return {};
+    }
+
+    const subresourceData = JSON.parse(firstParsedLine[subresource.path] || '');
+
+    return {
+        datasetFields: Object.keys(
+            (Array.isArray(subresourceData)
+                ? subresourceData[0]
+                : subresourceData) || {},
+        ),
+    };
+};
 
 export default compose(
     connect(mapStateToProps),
