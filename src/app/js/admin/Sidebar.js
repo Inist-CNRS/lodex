@@ -175,7 +175,7 @@ const EnrichmentMenu = compose(
     return (
         <div className={classnames(classes.subSidebar, 'sub-sidebar')}>
             {(enrichment.enrichments || []).map(e => (
-                <Fragment key={r._id}>
+                <Fragment key={e._id}>
                     <hr className={classes.separator} />
                     <Box className={classes.iconSubLinkContainer}>
                         <NavLink

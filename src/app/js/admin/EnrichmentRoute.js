@@ -5,17 +5,18 @@ import translate from 'redux-polyglot/translate';
 import withInitialData from './withInitialData';
 
 import { Route, useRouteMatch, Switch } from 'react-router';
-import  FormEnrichment  from './enrichment/FormEnrichment';
+import EnrichmentForm from './enrichment/EnrichmentForm';
 
 export const EnrichmentRouteComponent = () => {
     let { path } = useRouteMatch();
+
     return (
         <Switch>
             <Route exact path={`${path}/`}>
                 <div>LIST</div>
             </Route>
             <Route exact path={`${path}/add`}>
-                <FormEnrichment />
+                <EnrichmentForm />
             </Route>
             <Route exact path={`${path}/:enrichmentId`}>
                 <div>EDIT</div>
