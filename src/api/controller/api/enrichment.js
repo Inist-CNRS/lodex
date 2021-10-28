@@ -71,7 +71,7 @@ export const scheduleDatasetEnrichment = async (ctx, action, id) => {
         throw new Error(`Invalid action "${action}"`);
     }
 
-    const worker = getEnrichmentWorker(id, ctx);
+    const worker = await getEnrichmentWorker(id, ctx);
     await worker[action]();
 
     if (action === 'resume') {

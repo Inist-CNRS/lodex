@@ -2,6 +2,7 @@ import fastq from 'fastq';
 import { ObjectId } from 'mongodb';
 import { PassThrough } from 'stream';
 import ezs from '@ezs/core';
+import { memoize } from 'lodash';
 
 export const getEnrichmentDatasetCandidate = async (id, ctx) => {
     const enrichment = await ctx.enrichment.findOneById(id);
@@ -15,50 +16,65 @@ export const getEnrichmentDatasetCandidate = async (id, ctx) => {
 
 const workerRegistry = (() => {
     const map = {};
-    const get = (id, ctx) => {
-        if (!map[id]) map[id] = fastq.promise(worker(id, ctx), 1);
+    const get = async (id, ctx) => {
+        if (!map[id]) map[id] = fastq.promise(await worker(id, ctx), 1);
         return map[id];
     };
 
     return { get };
 })();
 
-const worker = (id, ctx) => async entry => {
-    const enrichment = await ctx.enrichment.findOneById(id);
+const createMemoisedEzsRuleCommands = memoize(rule =>
+    ezs.compileScript(rule).get(),
+);
 
-    await new Promise(resolve => {
-        const input = new PassThrough({ objectMode: true });
+const createEnrichmentTransformerFactory = ctx =>
+    memoize(async id => {
+        const enrichment = await ctx.enrichment.findOneById(id);
 
-        const result = input.pipe(
-            ezs('delegate', { script: enrichment.rule }, {}),
-        );
+        return ({ id, value }) =>
+            new Promise((resolve, reject) => {
+                const input = new PassThrough({ objectMode: true });
 
-        result.on('data', async ({ id, value }) => {
-            await ctx.dataset.updateOne(
-                { _id: new ObjectId(id) },
-                { $set: { [enrichment.name]: value } },
-            );
-            resolve();
-        });
+                const commands = createMemoisedEzsRuleCommands(enrichment.rule);
+                const result = input.pipe(ezs('delegate', { commands }, {}));
 
-        result.on('error', async e => {
-            await ctx.dataset.updateOne(
-                { _id: new ObjectId(entry._id) },
-                { $set: { [enrichment.name]: 'ERROR' } },
-            );
-            resolve();
-        });
+                result.on('data', ({ value }) =>
+                    resolve({ value, enrichment }),
+                );
 
-        input.write({
-            id: entry._id,
-            value: entry,
-        });
+                result.on('error', error => reject({ error, enrichment }));
 
-        input.end();
+                input.write({ id, value });
+                input.end();
+            });
     });
 
-    const nextEntry = await getEnrichmentDatasetCandidate(id, ctx);
-    nextEntry && getEnrichmentWorker(id, ctx).push(nextEntry);
+const worker = async (id, ctx) => {
+    const transformerFactory = createEnrichmentTransformerFactory(ctx);
+    const enricherTransformer = await transformerFactory(id);
+
+    return async entry => {
+        try {
+            const { value, enrichment } = await enricherTransformer({
+                id: entry._id,
+                value: entry,
+            });
+
+            await ctx.dataset.updateOne(
+                { _id: new ObjectId(entry._id) },
+                { $set: { [enrichment.name]: value } },
+            );
+        } catch (e) {
+            await ctx.dataset.updateOne(
+                { _id: new ObjectId(entry._id) },
+                { $set: { [enrichment.name]: '##ERROR##' } },
+            );
+        }
+
+        const nextEntry = await getEnrichmentDatasetCandidate(id, ctx);
+        nextEntry && (await getEnrichmentWorker(id, ctx)).push(nextEntry);
+    };
 };
 
 export const getEnrichmentWorker = (id, ctx) => workerRegistry.get(id, ctx);
