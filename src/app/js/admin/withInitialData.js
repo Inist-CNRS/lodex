@@ -8,7 +8,8 @@ import { LinearProgress } from '@material-ui/core';
 import { loadParsingResult as loadParsingResultAction } from './parsing';
 import { loadPublication as loadPublicationAction } from './publication';
 import { loadSubresources as loadSubresourcesAction } from './subresource';
-import { fromParsing, fromPublication, fromSubresources } from './selectors';
+import { loadEnrichments as loadEnrichmentsAction } from './enrichment';
+import { fromParsing, fromPublication, fromSubresources, fromEnrichments } from './selectors';
 
 export const withInitialDataHoc = BaseComponent =>
     class HocComponent extends Component {
@@ -16,6 +17,7 @@ export const withInitialDataHoc = BaseComponent =>
             loadParsingResult: PropTypes.func.isRequired,
             loadPublication: PropTypes.func.isRequired,
             loadSubresources: PropTypes.func.isRequired,
+            loadEnrichments: PropTypes.func.isRequired,
             isLoading: PropTypes.bool.isRequired,
         };
 
@@ -23,6 +25,7 @@ export const withInitialDataHoc = BaseComponent =>
             this.props.loadPublication();
             this.props.loadParsingResult();
             this.props.loadSubresources();
+            this.props.loadEnrichments();
         }
 
         render() {
@@ -46,13 +49,15 @@ export default BaseComponent => {
         loadParsingResult: loadParsingResultAction,
         loadPublication: loadPublicationAction,
         loadSubresources: loadSubresourcesAction,
+        loadEnrichments: loadEnrichmentsAction,
     };
 
     const mapStateToProps = state => ({
         isLoading:
             fromParsing.isParsingLoading(state) ||
             fromPublication.isPublicationLoading(state) ||
-            fromSubresources.isLoading(state),
+            fromSubresources.isLoading(state) ||
+            fromEnrichments.isLoading(state), 
     });
 
     return compose(

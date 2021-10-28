@@ -6,20 +6,21 @@ import withInitialData from './withInitialData';
 
 import { Route, useRouteMatch, Switch } from 'react-router';
 import EnrichmentForm from './enrichment/EnrichmentForm';
+import EnrichmentSelect from './enrichment/EnrichmentSelect';
 
 export const EnrichmentRouteComponent = () => {
     let { path } = useRouteMatch();
 
     return (
         <Switch>
-            <Route exact path={`${path}/`}>
-                <div>LIST</div>
-            </Route>
             <Route exact path={`${path}/add`}>
                 <EnrichmentForm />
             </Route>
             <Route exact path={`${path}/:enrichmentId`}>
-                <div>EDIT</div>
+                <EnrichmentForm isEdit />
+            </Route>
+            <Route>
+                <EnrichmentSelect />
             </Route>
         </Switch>
     );

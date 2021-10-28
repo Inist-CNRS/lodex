@@ -7,7 +7,7 @@ import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
 import { reduxForm, Field } from 'redux-form';
 
-import { createEnrichment } from '.';
+import { createEnrichment, updateEnrichment, deleteEnrichment } from '.';
 import { fromEnrichments } from '../selectors';
 import FormTextField from '../../lib/components/FormTextField';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
@@ -15,8 +15,12 @@ import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 export const EnrichmentFormComponent = ({
     isLoading,
     onAddEnrichment,
+    onUpdateEnrichment,
+    onDeleteEnrichment,
     p: polyglot,
     history,
+    isEdit,
+    initialValues,
 }) => {
     const handleSubmit = e => {
         e.preventDefault();
@@ -24,10 +28,26 @@ export const EnrichmentFormComponent = ({
         const formData = new FormData(e.currentTarget);
         const [name, rule] = [formData.get('name'), formData.get('rule')];
 
-        onAddEnrichment({
-            resource: { name, rule },
-            callback: id => history.push(`/data/enrichment/${id}`),
-        });
+        if (isEdit) {
+            onUpdateEnrichment({
+                resource: { _id: initialValues._id, name, rule },
+            });
+        } else {
+            onAddEnrichment({
+                resource: { name, rule },
+                callback: id => history.push(`/data/enrichment/${id}`),
+            });
+        }
+    };
+
+    const handleDelete = e => {
+        e.preventDefault();
+
+        if (isEdit) {
+            onDeleteEnrichment({
+                resource: { _id: initialValues._id },
+            });
+        }
     };
 
     return (
@@ -59,6 +79,18 @@ export const EnrichmentFormComponent = ({
             >
                 {polyglot.t('save')}
             </ButtonWithStatus>
+            {isEdit && (
+                <ButtonWithStatus
+                    variant="text"
+                    key="delete"
+                    color="secondary"
+                    loading={isLoading}
+                    style={{ marginTop: 10 }}
+                    onClick={handleDelete}
+                >
+                    {polyglot.t('delete')}
+                </ButtonWithStatus>
+            )}
         </form>
     );
 };
@@ -66,15 +98,24 @@ export const EnrichmentFormComponent = ({
 EnrichmentFormComponent.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     onAddEnrichment: PropTypes.func.isRequired,
+    onUpdateEnrichment: PropTypes.func.isRequired,
+    onDeleteEnrichment: PropTypes.func.isRequired,
+    isEdit: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, { match }) => ({
     isLoading: fromEnrichments.isLoading(state),
+    enrichments: fromEnrichments.enrichments(state),
+    initialValues: fromEnrichments
+        .enrichments(state)
+        .find(sr => sr._id === match.params.enrichmentId),
 });
 
 const mapDispatchToProps = {
     onAddEnrichment: createEnrichment,
+    onUpdateEnrichment: updateEnrichment,
+    onDeleteEnrichment: deleteEnrichment,
 };
 
 const validate = (values, { p: polyglot }) => {

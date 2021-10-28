@@ -60,7 +60,9 @@ export default handleActions(
 );
 
 export const isLoading = state => state.loading;
+export const enrichments = state => state.enrichments;
 
 export const selectors = {
     isLoading,
+    enrichments
 };
