@@ -70,10 +70,10 @@ export const scheduleDatasetEnrichment = async (ctx, action, id) => {
     }
 
     const worker = getEnrichmentWorker(id, ctx);
-    worker[action]();
+    await worker[action]();
 
     if (action === 'resume') {
-        const candidate = getEnrichmentDatasetCandidate(id, ctx);
+        const candidate = await getEnrichmentDatasetCandidate(id, ctx);
         candidate && worker.push(candidate);
     }
 };

@@ -24,22 +24,16 @@ const workerRegistry = (() => {
 })();
 
 const worker = (id, ctx) => async entry => {
-    console.log('Computing entry...');
-
-    await new Promise(r => setTimeout(r, 1000));
-
     const enrichment = await ctx.enrichment.findOneById(id);
 
     await new Promise(resolve => {
-
         const input = new PassThrough({ objectMode: true });
-        const result = input.pipe(ezs('delegate', { script: enrichment.rule }, {}));
-        const ezsInput = {
-            id: entry._id,
-            value: entry,
-        };
-        input.write(ezsInput);
-        result.on('data', async ({id, value}) => {
+
+        const result = input.pipe(
+            ezs('delegate', { script: enrichment.rule }, {}),
+        );
+
+        result.on('data', async ({ id, value }) => {
             await ctx.dataset.updateOne(
                 { _id: new ObjectId(id) },
                 { $set: { [enrichment.name]: value } },
@@ -47,16 +41,21 @@ const worker = (id, ctx) => async entry => {
             resolve();
         });
 
-        result.on('error', async () => {
+        result.on('error', async e => {
             await ctx.dataset.updateOne(
                 { _id: new ObjectId(entry._id) },
                 { $set: { [enrichment.name]: 'ERROR' } },
             );
             resolve();
         });
-        
+
+        input.write({
+            id: entry._id,
+            value: entry,
+        });
+
         input.end();
-    })
+    });
 
     const nextEntry = await getEnrichmentDatasetCandidate(id, ctx);
     nextEntry && getEnrichmentWorker(id, ctx).push(nextEntry);
