@@ -45,8 +45,8 @@ export const EnrichmentFormComponent = ({
 
         if (isEdit) {
             onDeleteEnrichment({
-                resource: { _id: initialValues._id },
-            });
+                id: initialValues._id },
+            );
         }
     };
 

@@ -10,6 +10,7 @@ import {
     updateEnrichmentOptimistic,
     CREATE_ENRICHMENT,
     LOAD_ENRICHMENTS,
+    DELETE_ENRICHMENT,
 } from '.';
 
 import { fromUser } from '../../sharedSelectors';
@@ -80,15 +81,15 @@ export function* handleUpdateEnrichment({ payload: resource }) {
     return yield put(loadEnrichments());
 }
 
-// export function* handleDeleteSubresource({ payload: id }) {
-//     const request = yield select(fromUser.getDeleteSubresourceRequest, id);
-//     const { error } = yield call(fetchSaga, request);
-//     if (error) {
-//         return;
-//     }
+export function* handleDeleteEnrichment({ payload: id }) {
+    const request = yield select(fromUser.getDeleteEnrichmentRequest, id);
+    const { error } = yield call(fetchSaga, request);
+    if (error) {
+        return;
+    }
 
-//     return yield put(loadEnrichments());
-// }
+    return yield put(loadEnrichments());
+}
 
 export function* watchLoadEnrichmentsRequest() {
     yield takeLatest([LOAD_ENRICHMENTS], handleLoadEnrichmentsRequest);
@@ -102,13 +103,13 @@ export function* watchUpdateEnrichment() {
     yield takeLatest(UPDATE_ENRICHMENT, handleUpdateEnrichment);
 }
 
-// export function* watchDeleteSubresource() {
-//     yield takeLatest(DELETE_SUBRESOURCE, handleDeleteSubresource);
-// }
+export function* watchDeleteEnrichment() {
+    yield takeLatest(DELETE_ENRICHMENT, handleDeleteEnrichment);
+}
 
 export default function*() {
     yield fork(watchLoadEnrichmentsRequest);
     yield fork(watchCreateEnrichment);
     yield fork(watchUpdateEnrichment);
-    // yield fork(watchDeleteSubresource);
+    yield fork(watchDeleteEnrichment);
 }

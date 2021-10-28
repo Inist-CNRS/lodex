@@ -140,6 +140,12 @@ export const getUpdateEnrichmentRequest = (state, { resource }) =>
         body: resource,
     });
 
+export const getDeleteEnrichmentRequest = (state, { id }) =>
+    getRequest(state, {
+        url: `/api/enrichment/${id}`,
+        method: 'DELETE',
+    });
+
 export const getUpdateSubresourceRequest = (state, { _id, ...body }) =>
     getRequest(state, {
         url: `/api/subresource/${_id}`,
@@ -460,6 +466,7 @@ export const selectors = {
     getCreateSubresourceRequest,
     getCreateEnrichmentRequest,
     getUpdateEnrichmentRequest,
+    getDeleteEnrichmentRequest,
     getScheduleDatasetEnrichmentRequest,
     getLoadFieldRequest,
     getUploadUrlRequest,
