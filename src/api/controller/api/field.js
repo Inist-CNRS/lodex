@@ -47,7 +47,7 @@ export const restoreFields = (fileStream, ctx) => {
                 uri: mongoConnectionString,
                 stream: fileStream,
                 parser: 'json',
-                dropCollections: ['field', 'subresource'],
+                dropCollections: ['field', 'subresource', 'enrichment'],
                 callback: function(err) {
                     err ? reject(err) : resolve();
                 },
@@ -132,7 +132,7 @@ export const backupFields = writeStream =>
     new Promise((resolve, reject) =>
         backup({
             uri: mongoConnectionString,
-            collections: ['field', 'subresource'],
+            collections: ['field', 'subresource', 'enrichment'],
             stream: writeStream,
             parser: 'json',
             callback: err => {
