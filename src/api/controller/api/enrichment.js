@@ -19,7 +19,6 @@ export const setup = async (ctx, next) => {
 export const postEnrichment = async ctx => {
     const newResource = ctx.request.body;
     const result = await ctx.enrichment.create(newResource);
-    // await ctx.field.initializeSubresourceModel(result);
 
     if (result) {
         ctx.body = result;
@@ -29,36 +28,39 @@ export const postEnrichment = async ctx => {
     ctx.status = 500;
 };
 
-// export const putSubresource = async (ctx, id) => {
-//     const newResource = ctx.request.body;
+export const putEnrichment = async (ctx, id) => {
+    const newResource = ctx.request.body;
 
-//     try {
-//         await ctx.field.initializeSubresourceModel({ ...newResource, _id: id });
-//         await ctx.field.updateSubresourcePaths({ ...newResource, _id: id });
+    try {
+        // Delete existing data from dataset
+        // If we change the name or the rule, existing data is obsolete
+        const enrichment = await ctx.enrichment.findOneById(id);
+        await ctx.dataset.removeAttribute(enrichment.name);
 
-//         ctx.body = await ctx.subresource.update(id, newResource);
-//     } catch (error) {
-//         ctx.status = 403;
-//         ctx.body = { error: error.message };
-//         return;
-//     }
-// };
+        ctx.body = await ctx.enrichment.update(id, newResource);
+    } catch (error) {
+        ctx.status = 403;
+        ctx.body = { error: error.message };
+        return;
+    }
+};
 
-// export const deleteSubresource = async (ctx, id) => {
-//     try {
-//         await ctx.subresource.delete(id);
-//         await ctx.field.removeBySubresource(id);
-//         ctx.body = true;
-//     } catch (error) {
-//         ctx.status = 403;
-//         ctx.body = { error: error.message };
-//         return;
-//     }
-// };
+export const deleteEnrichment = async (ctx, id) => {
+    try {
+        const enrichment = await ctx.enrichment.findOneById(id);
+        await ctx.enrichment.delete(id);
+        await ctx.dataset.removeAttribute(enrichment.name);
+        ctx.body = true;
+    } catch (error) {
+        ctx.status = 403;
+        ctx.body = { error: error.message };
+        return;
+    }
+};
 
-// export const getSubresource = async (ctx, id) => {
-//     ctx.body = await ctx.subresource.findOne(id);
-// };
+export const getEnrichment = async (ctx, id) => {
+    ctx.body = await ctx.enrichment.findOneById(id);
+};
 
 export const getAllEnrichments = async ctx => {
     ctx.body = await ctx.enrichment.findAll();
@@ -76,6 +78,8 @@ export const scheduleDatasetEnrichment = async (ctx, action, id) => {
         const candidate = await getEnrichmentDatasetCandidate(id, ctx);
         candidate && worker.push(candidate);
     }
+
+    ctx.status = 200;
 };
 
 const app = new Koa();
@@ -83,11 +87,11 @@ const app = new Koa();
 app.use(setup);
 
 app.use(route.get('/', getAllEnrichments));
-// app.use(route.get('/:id', getSubresource));
+app.use(route.get('/:id', getEnrichment));
 app.use(koaBodyParser());
 app.use(route.post('/', postEnrichment));
-// app.use(route.put('/:id', putSubresource));
-// app.use(route.delete('/:id', deleteSubresource));
+app.use(route.put('/:id', putEnrichment));
+app.use(route.delete('/:id', deleteEnrichment));
 app.use(route.post('/schedule/:action/:id', scheduleDatasetEnrichment));
 
 export default app;
