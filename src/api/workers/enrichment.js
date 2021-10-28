@@ -2,7 +2,6 @@ import fastq from 'fastq';
 import { ObjectId } from 'mongodb';
 import { PassThrough } from 'stream';
 import ezs from '@ezs/core';
-import { memoize } from 'lodash';
 
 export const getEnrichmentDatasetCandidate = async (id, ctx) => {
     const enrichment = await ctx.enrichment.findOneById(id);
@@ -24,9 +23,7 @@ const workerRegistry = (() => {
     return { get };
 })();
 
-const createMemoisedEzsRuleCommands = memoize(rule =>
-    ezs.compileScript(rule).get(),
-);
+const createEzsRuleCommands = rule => ezs.compileScript(rule).get();
 
 const createEnrichmentTransformerFactory = ctx => async id => {
     const enrichment = await ctx.enrichment.findOneById(id);
@@ -35,7 +32,7 @@ const createEnrichmentTransformerFactory = ctx => async id => {
         new Promise((resolve, reject) => {
             const input = new PassThrough({ objectMode: true });
 
-            const commands = createMemoisedEzsRuleCommands(enrichment.rule);
+            const commands = createEzsRuleCommands(enrichment.rule);
             const result = input.pipe(ezs('delegate', { commands }, {}));
 
             result.on('data', ({ value }) => resolve({ value, enrichment }));
@@ -48,9 +45,10 @@ const createEnrichmentTransformerFactory = ctx => async id => {
 
 const worker = async (id, ctx) => {
     const transformerFactory = createEnrichmentTransformerFactory(ctx);
-    const enricherTransformer = await transformerFactory(id);
 
     return async entry => {
+        const enricherTransformer = await transformerFactory(id);
+
         try {
             const { value, enrichment } = await enricherTransformer({
                 id: entry._id,
@@ -62,6 +60,7 @@ const worker = async (id, ctx) => {
                 { $set: { [enrichment.name]: value } },
             );
         } catch (e) {
+            console.log({ e });
             await ctx.dataset.updateOne(
                 { _id: new ObjectId(entry._id) },
                 { $set: { [enrichment.name]: '##ERROR##' } },
