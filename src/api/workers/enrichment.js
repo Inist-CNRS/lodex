@@ -28,27 +28,23 @@ const createMemoisedEzsRuleCommands = memoize(rule =>
     ezs.compileScript(rule).get(),
 );
 
-const createEnrichmentTransformerFactory = ctx =>
-    memoize(async id => {
-        const enrichment = await ctx.enrichment.findOneById(id);
+const createEnrichmentTransformerFactory = ctx => async id => {
+    const enrichment = await ctx.enrichment.findOneById(id);
 
-        return ({ id, value }) =>
-            new Promise((resolve, reject) => {
-                const input = new PassThrough({ objectMode: true });
+    return ({ id, value }) =>
+        new Promise((resolve, reject) => {
+            const input = new PassThrough({ objectMode: true });
 
-                const commands = createMemoisedEzsRuleCommands(enrichment.rule);
-                const result = input.pipe(ezs('delegate', { commands }, {}));
+            const commands = createMemoisedEzsRuleCommands(enrichment.rule);
+            const result = input.pipe(ezs('delegate', { commands }, {}));
 
-                result.on('data', ({ value }) =>
-                    resolve({ value, enrichment }),
-                );
+            result.on('data', ({ value }) => resolve({ value, enrichment }));
+            result.on('error', error => reject({ error, enrichment }));
 
-                result.on('error', error => reject({ error, enrichment }));
-
-                input.write({ id, value });
-                input.end();
-            });
-    });
+            input.write({ id, value });
+            input.end();
+        });
+};
 
 const worker = async (id, ctx) => {
     const transformerFactory = createEnrichmentTransformerFactory(ctx);
