@@ -133,6 +133,13 @@ export const getCreateEnrichmentRequest = (state, body) =>
         body,
     });
 
+export const getUpdateEnrichmentRequest = (state, { resource }) =>
+    getRequest(state, {
+        url: `/api/enrichment/${resource._id}`,
+        method: 'PUT',
+        body: resource,
+    });
+
 export const getUpdateSubresourceRequest = (state, { _id, ...body }) =>
     getRequest(state, {
         url: `/api/subresource/${_id}`,
@@ -452,6 +459,7 @@ export const selectors = {
     getLoadEnrichmentsRequest,
     getCreateSubresourceRequest,
     getCreateEnrichmentRequest,
+    getUpdateEnrichmentRequest,
     getScheduleDatasetEnrichmentRequest,
     getLoadFieldRequest,
     getUploadUrlRequest,
