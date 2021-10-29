@@ -62,7 +62,7 @@
         "@ezs/conditor": "^1.9.18",
         "@ezs/core": "^1.25.1",
         "@ezs/istex": "1.4.4",
-        "@ezs/lodex": "1.14.4",
+        "@ezs/lodex": "1.14.6",
         "@ezs/loterre": "^1.1.17",
         "@ezs/sparql": "^1.1.7",
         "@ezs/storage": "^1.5.3",
