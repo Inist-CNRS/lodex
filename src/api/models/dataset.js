@@ -97,6 +97,9 @@ export default db => {
             .pipe(JSONStream.stringify());
     };
 
+    collection.removeAttribute = async attribute =>
+        collection.update({}, { $unset: { [attribute]: 1 } }, { multi: true });
+
     collection.findBy = async (fieldName, value) => {
         if (!(await collection.ensureIsUnique(fieldName))) {
             throw new Error(

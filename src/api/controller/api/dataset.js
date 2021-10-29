@@ -11,6 +11,7 @@ export const clearDataset = async ctx => {
         await ctx.field.remove({});
         await ctx.dataset.remove({});
         await ctx.subresource.remove({});
+        await ctx.enrichment.remove({});
 
         ctx.body = { status: 'success' };
     } catch (error) {

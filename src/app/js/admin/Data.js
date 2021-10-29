@@ -6,6 +6,7 @@ import withInitialData from './withInitialData';
 import { DataRoute } from './DataRoute';
 import { DataAddRoute } from './DataAddRoute';
 import RemovedResourcePage from './removedResources/RemovedResourcePage';
+import { EnrichmentRoute } from './EnrichmentRoute';
 
 const DataComponent = () => {
     let { path } = useRouteMatch();
@@ -25,6 +26,10 @@ const DataComponent = () => {
                 path={`${path}/removed`}
                 exact
                 component={() => <RemovedResourcePage />}
+            />
+              <Route
+                path={`${path}/enrichment`}
+                component={() => <EnrichmentRoute />}
             />
             <Route
                 path={path}

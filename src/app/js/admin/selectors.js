@@ -12,6 +12,7 @@ import { selectors as clearSelectors } from './clear';
 import { selectors as progressSelectors } from './progress/reducer';
 import { selectors as loaderSelectors } from './loader';
 import { selectors as subresourcesSelectors } from './subresource';
+import { selectors as enrichmentsSelectors } from './enrichment';
 import { selectors as dumpSelectors } from './dump';
 
 export const fromParsing = createGlobalSelectors(
@@ -56,4 +57,9 @@ export const fromLoaders = createGlobalSelectors(
 export const fromSubresources = createGlobalSelectors(
     s => s.subresource,
     subresourcesSelectors,
+);
+
+export const fromEnrichments = createGlobalSelectors(
+    s => s.enrichment,
+    enrichmentsSelectors,
 );
