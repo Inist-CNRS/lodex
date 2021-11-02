@@ -285,7 +285,10 @@ export const reorderField = async ctx => {
 
         ctx.body = await Promise.all(
             fields.map((name, position) =>
-                ctx.field.updatePosition(name, position),
+                ctx.field.updatePosition(
+                    name,
+                    name.endsWith('uri') ? 0 : position + 1,
+                ),
             ),
         );
         ctx.status = 200;

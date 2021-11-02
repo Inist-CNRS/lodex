@@ -306,9 +306,9 @@ describe('field routes', () => {
 
             await reorderField(ctx, 'id');
 
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('a', 0);
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('b', 1);
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('c', 2);
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('a', 1);
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('b', 2);
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('c', 3);
 
             expect(ctx.body).toEqual(['updated a', 'updated b', 'updated c']);
         });
@@ -339,9 +339,9 @@ describe('field routes', () => {
 
             await reorderField(ctx, 'id');
 
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('a', 0);
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('b', 1);
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('c', 2);
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('a', 1);
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('b', 2);
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('c', 3);
 
             expect(ctx.body).toEqual(['updated a', 'updated b', 'updated c']);
         });
