@@ -18,6 +18,7 @@ export default {
     green: {
         primary: '#7dbd42',
         secondary: 'rgba(125, 189, 66, .7)',
+        light: 'rgba(125, 189, 66, .1)',
     },
     purple: {
         primary: '#b22f90',

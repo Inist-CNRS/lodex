@@ -19,7 +19,7 @@ export const ParsingExcerptHeaderColumnComponent = ({ style, column }) =>
             {getShortText(column)}
         </TableCell>
     ) : (
-        <TableCell style={styles.col}>{column}</TableCell>
+        <TableCell style={{ ...styles.col, ...style }}>{column}</TableCell>
     );
 
 ParsingExcerptHeaderColumnComponent.propTypes = {

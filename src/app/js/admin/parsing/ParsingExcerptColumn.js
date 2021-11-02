@@ -20,7 +20,7 @@ export const ParsingExcerptColumnComponent = ({ children, style, value }) =>
             {children}
         </TableCell>
     ) : (
-        <TableCell style={styles.col}>
+        <TableCell style={{ ...styles.col, ...style }}>
             {value}
             {children}
         </TableCell>
