@@ -13,7 +13,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const useStyles = makeStyles({
     button: {
-        color: 'white',
+        color: 'green',
         padding: '0 20px',
         height: 40,
     },
@@ -39,7 +39,7 @@ export const ClearPublishedButtonComponent = ({
                 raised
                 disabled={!hasPublishedDataset}
                 variant="contained"
-                color="secondary"
+                color="white"
                 className={classes.button}
                 onClick={handleShow}
                 icon={<ClearAllIcon />}
