@@ -277,14 +277,7 @@ const FieldGridComponent = ({
     return (
         <div className={classes.root}>
             {fields.length === 0 ? (
-                <NoField
-                    addFieldButton={addFieldButton}
-                    label={
-                        isSubresource
-                            ? polyglot.t('no_field_for_subresource')
-                            : polyglot.t('no_field_for_resource')
-                    }
-                />
+                <NoField label={polyglot.t('no_field_add')} />
             ) : (
                 <DraggableItemGrid
                     key={filter}
