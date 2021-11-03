@@ -22,6 +22,7 @@ import reducer, {
 } from './';
 
 import { addFieldToResourceSuccess } from '../public/resource';
+import { SCOPE_DOCUMENT } from '../../../common/scope';
 
 describe('field reducer', () => {
     it('should initialize with correct state', () => {
@@ -39,7 +40,7 @@ describe('field reducer', () => {
                     },
                     list: ['name1', 'name2'],
                 },
-                addField(),
+                addField({ name: undefined, scope: SCOPE_DOCUMENT }),
             );
 
             expect(state).toEqual({
@@ -51,7 +52,7 @@ describe('field reducer', () => {
                     name1: { name: 'name1', label: 'foo' },
                     new: {
                         label: 'newField 3',
-                        scope: 'collection',
+                        scope: SCOPE_DOCUMENT,
                         name: 'new',
                         display: true,
                         searchable: false,
@@ -73,7 +74,7 @@ describe('field reducer', () => {
                     },
                     list: ['name1', 'name2'],
                 },
-                addField({ name: 'target_col' }),
+                addField({ name: 'target_col', scope: SCOPE_DOCUMENT }),
             );
 
             expect(state).toEqual({
@@ -85,7 +86,7 @@ describe('field reducer', () => {
                     name1: { name: 'name1', label: 'foo' },
                     new: {
                         label: 'target_col',
-                        scope: 'collection',
+                        scope: SCOPE_DOCUMENT,
                         name: 'new',
                         display: true,
                         searchable: false,

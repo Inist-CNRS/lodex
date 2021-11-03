@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import { Button } from '@material-ui/core';
 
 import { AddFieldButtonComponent as AddFieldButton } from './AddFieldButton';
+import { SCOPE_DATASET } from '../../../../common/scope';
 
 describe('<AddFieldButton />', () => {
     it('should call onAddNewField with name prop as arg on click', () => {
@@ -12,6 +13,7 @@ describe('<AddFieldButton />', () => {
             <AddFieldButton
                 onAddNewField={onAddNewField}
                 name="foo"
+                scope={SCOPE_DATASET}
                 p={{ t: key => key }}
             />,
         );
@@ -19,6 +21,9 @@ describe('<AddFieldButton />', () => {
         expect(wrapper.find(Button).exists()).toBeTruthy();
         wrapper.find(Button).simulate('click');
 
-        expect(onAddNewField).toHaveBeenCalledWith('foo');
+        expect(onAddNewField).toHaveBeenCalledWith({
+            name: 'foo',
+            scope: SCOPE_DATASET,
+        });
     });
 });
