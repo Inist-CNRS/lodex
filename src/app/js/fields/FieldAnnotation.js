@@ -10,7 +10,7 @@ import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
 } from '../propTypes';
-import { isSimilarScope } from '../../../common/scope';
+import { hasSimilarScope } from '../../../common/scope';
 
 const styles = {
     complete: {
@@ -36,7 +36,7 @@ const FieldAnnotation = ({ fields, scope, p: polyglot }) => (
             <MenuItem value={null}>
                 {polyglot.t('completes_field_none')}
             </MenuItem>
-            {fields.filter(isSimilarScope(scope)).map(f => (
+            {fields.filter(hasSimilarScope(scope)).map(f => (
                 <MenuItem
                     className={`completes-${getFieldClassName(f)}`}
                     key={f.name}
