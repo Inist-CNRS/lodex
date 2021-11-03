@@ -3,7 +3,7 @@ export const SCOPE_GRAPHIC = 'graphic';
 export const SCOPE_COLLECTION = 'collection';
 export const SCOPE_DOCUMENT = 'document';
 
-export const isSimilarScope = scopeA => scopeB => {
+export const hasSimilarScope = scopeA => scopeB => {
     if (scopeA === scopeB.scope) {
         return true;
     }
