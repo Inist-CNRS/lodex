@@ -19,7 +19,10 @@ export default async function transformAllDocument(
             await Promise.all(dataset.map(transformer))
         ).filter(x => x);
         await insertBatch(transformedDataset);
-        progress.incrementProgress(transformedDataset.length);
+        progress.incrementProgress(
+            transformedDataset.filter(({ subresourceId }) => !subresourceId)
+                .length,
+        );
         handled += dataset.length;
     }
 }
