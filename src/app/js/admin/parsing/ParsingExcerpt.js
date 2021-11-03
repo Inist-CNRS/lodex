@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -9,6 +9,8 @@ import { addField } from '../../fields';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
+import { fromEnrichments } from '../selectors';
+import theme from '../../theme';
 
 const styles = {
     table: {
@@ -20,6 +22,9 @@ const styles = {
     },
     body: {
         position: 'relative',
+    },
+    enrichedColumn: {
+        backgroundColor: theme.green.light,
     },
 };
 
@@ -37,12 +42,25 @@ export const getRowStyle = (index, total) => {
     return { opacity, height: 36 };
 };
 
+export const getEnrichmentsNames = enrichments => {
+    return enrichments?.map(enrichiment => enrichiment.name);
+};
+
+export const getColumnStyle = (enrichmentsNames, column) => {
+    return enrichmentsNames?.includes(column) ? styles.enrichedColumn : {};
+};
+
 export const ParsingExcerptComponent = ({
     columns,
     handleAddColumn,
     lines,
     showAddColumns,
+    enrichments,
 }) => {
+    const enrichmentsNames = useMemo(() => getEnrichmentsNames(enrichments), [
+        enrichments,
+    ]);
+
     const total = lines.length;
 
     return (
@@ -53,6 +71,7 @@ export const ParsingExcerptComponent = ({
                         <ParsingExcerptHeaderColumn
                             key={`header_${column}`}
                             column={column}
+                            style={getColumnStyle(enrichmentsNames, column)}
                         />
                     ))}
                 </TableRow>
@@ -69,10 +88,15 @@ export const ParsingExcerptComponent = ({
                                 showAddColumns &&
                                 (index === total - 3 ||
                                     (total < 3 && index === 0));
+
                             return (
                                 <ParsingExcerptColumn
                                     key={`${column}_${line._id}`}
                                     value={`${line[column] || ''}`}
+                                    style={getColumnStyle(
+                                        enrichmentsNames,
+                                        column,
+                                    )}
                                 >
                                     {showAddColumnButton && (
                                         <ParsingExcerptAddColumn
@@ -99,11 +123,15 @@ ParsingExcerptComponent.propTypes = {
     showAddColumns: PropTypes.bool.isRequired,
 };
 
+const mapStateToProps = state => ({
+    enrichments: fromEnrichments.enrichments(state),
+});
+
 const mapDispatchToProps = {
     handleAddColumn: name => addField({ name }),
 };
 
 export default compose(
-    connect(undefined, mapDispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     pure,
 )(ParsingExcerptComponent);

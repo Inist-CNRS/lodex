@@ -4,9 +4,39 @@ import { shallow } from 'enzyme';
 import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
 
-import { ParsingExcerptComponent as ParsingExcerpt } from './ParsingExcerpt';
+import { ParsingExcerptComponent as ParsingExcerpt, getEnrichmentsNames, getColumnStyle } from './ParsingExcerpt';
+import theme from '../../theme';
 
 describe('<ParsingExcerpt />', () => {
+
+    it('should return an empty array of enrichments name', () => {
+        const enrichments = [];
+        const enrichmentsName = getEnrichmentsNames(enrichments);
+        expect(enrichmentsName).toEqual([]);
+    });
+
+    it('should return array of enrichments name', () => {
+        const enrichments = [{name: 'enrichment1', rules: {}}, {name: 'enrichment2', rules: {}}];
+        const enrichmentsName = getEnrichmentsNames(enrichments);
+        expect(enrichmentsName).toEqual(['enrichment1', 'enrichment2']);
+    });
+
+    it('should return a style for enriched column', () => {
+        const column = 'enrichment1';
+        const enrichments = [{name: 'enrichment1', rules: {}}, {name: 'enrichment2', rules: {}}];
+        const enrichmentsName = getEnrichmentsNames(enrichments);
+        const style = getColumnStyle(enrichmentsName, column);
+        expect(style).toEqual({backgroundColor: theme.green.light});
+    });
+
+    it('should return a empty style for basic column', () => {
+        const column = 'basicColumn';
+        const enrichments = [{name: 'enrichment1', rules: {}}, {name: 'enrichment2', rules: {}}];
+        const enrichmentsName = getEnrichmentsNames(enrichments);
+        const style = getColumnStyle(enrichmentsName, column);
+        expect(style).toEqual({});
+    });
+
     it('should render headers', () => {
         const columns = ['foo', 'bar'];
         const lines = [
