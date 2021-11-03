@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
     Dialog,
@@ -15,73 +15,70 @@ import { loadProgress, clearProgress } from './reducer';
 import { PENDING } from '../../../../common/progressStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-export class ProgressComponent extends Component {
-    UNSAFE_componentWillMount() {
-        this.props.loadProgress();
+const renderProgressText = props => {
+    const { progress, target, symbol } = props;
+    if (!progress || !target) {
+        return null;
     }
 
-    renderProgressText = () => {
-        const { progress, target, symbol } = this.props;
-
-        if (!progress || !target) {
-            return null;
-        }
-
-        if (symbol) {
-            return (
-                <p>
-                    {progress} / {target} {symbol}
-                </p>
-            );
-        }
-
+    if (symbol) {
         return (
             <p>
-                {progress} / {target}
+                {progress} / {target} {symbol}
             </p>
         );
-    };
+    }
 
-    render() {
-        const {
-            status,
-            target,
-            progress,
-            error,
-            clearProgress,
-            p: polyglot,
-        } = this.props;
+    return (
+        <p>
+            {progress} / {target}
+        </p>
+    );
+};
 
-        if (error) {
-            return (
-                <Dialog open={status !== PENDING} onClose={clearProgress}>
-                    <DialogTitle>{polyglot.t(status)}</DialogTitle>
-                    <DialogContent>
-                        <div>{polyglot.t('progress_error')}</div>
-                    </DialogContent>
-                </Dialog>
-            );
-        }
+export const ProgressComponent = props => {
+    const {
+        status,
+        target,
+        progress,
+        error,
+        clearProgress,
+        p: polyglot,
+        loadProgress,
+    } = props;
 
+    useEffect(() => {
+        loadProgress();
+    });
+
+    if (error) {
         return (
-            <Dialog open={status !== PENDING}>
+            <Dialog open={status !== PENDING} onClose={clearProgress}>
                 <DialogTitle>{polyglot.t(status)}</DialogTitle>
                 <DialogContent>
-                    <div className="progress">
-                        <LinearProgress
-                            mode="determinate"
-                            min={0}
-                            max={target || 0}
-                            value={progress || 0}
-                        />
-                        {this.renderProgressText()}
-                    </div>
+                    <div>{polyglot.t('progress_error')}</div>
                 </DialogContent>
             </Dialog>
         );
     }
-}
 
+    return (
+        <Dialog open={status !== PENDING}>
+            <DialogTitle>{polyglot.t(status)}</DialogTitle>
+            <DialogContent>
+                <div className="progress">
+                    <LinearProgress
+                        mode="determinate"
+                        min={0}
+                        max={target || 0}
+                        value={progress || 0}
+                    />
+                    {renderProgressText(props)}
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+};
 ProgressComponent.propTypes = {
     status: PropTypes.string.isRequired,
     target: PropTypes.number,
@@ -106,7 +103,7 @@ const mapDispatchToProps = {
     clearProgress,
 };
 
-export default compose(
+export const Progress = compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
 )(ProgressComponent);
