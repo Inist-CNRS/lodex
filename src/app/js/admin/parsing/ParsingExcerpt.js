@@ -9,7 +9,7 @@ import { addField } from '../../fields';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
-import { fromEnrichments } from '../selectors';
+import { fromEnrichments, fromParsing } from '../selectors';
 import theme from '../../theme';
 
 const styles = {
@@ -50,16 +50,55 @@ export const getColumnStyle = (enrichmentsNames, column) => {
     return enrichmentsNames?.includes(column) ? styles.enrichedColumn : {};
 };
 
+export const filterColumnsToShow = (
+    columns,
+    enrichmentsNames,
+    isHiddenLoadedColumn,
+    isHiddenEnrichedColumn,
+) => {
+    if (isHiddenEnrichedColumn && isHiddenLoadedColumn) {
+        return [];
+    }
+    if (isHiddenEnrichedColumn) {
+        return columns.filter(column => !enrichmentsNames.includes(column));
+    }
+
+    if (isHiddenLoadedColumn) {
+        return columns.filter(column => enrichmentsNames.includes(column));
+    }
+
+    return columns;
+};
+
 export const ParsingExcerptComponent = ({
     columns,
     handleAddColumn,
     lines,
     showAddColumns,
     enrichments,
+    isHiddenLoadedColumn,
+    isHiddenEnrichedColumn,
 }) => {
     const enrichmentsNames = useMemo(() => getEnrichmentsNames(enrichments), [
         enrichments,
     ]);
+
+    const columnsToShow = useMemo(
+        () =>
+            filterColumnsToShow(
+                columns,
+                enrichmentsNames,
+                isHiddenLoadedColumn,
+                isHiddenEnrichedColumn,
+            ),
+        [
+            columns,
+            lines,
+            enrichmentsNames,
+            isHiddenLoadedColumn,
+            isHiddenEnrichedColumn,
+        ],
+    );
 
     const total = lines.length;
 
@@ -67,7 +106,7 @@ export const ParsingExcerptComponent = ({
         <Table style={styles.table}>
             <TableHead>
                 <TableRow>
-                    {columns.map(column => (
+                    {columnsToShow.map(column => (
                         <ParsingExcerptHeaderColumn
                             key={`header_${column}`}
                             column={column}
@@ -76,42 +115,44 @@ export const ParsingExcerptComponent = ({
                     ))}
                 </TableRow>
             </TableHead>
-            <TableBody style={styles.body}>
-                {lines.map((line, index) => (
-                    <TableRow
-                        key={`${line._id}_data_row`}
-                        style={getRowStyle(index, total)}
-                    >
-                        {columns.map(column => {
-                            const showAddColumnButton =
-                                showAddColumns &&
-                                showAddColumns &&
-                                (index === total - 3 ||
-                                    (total < 3 && index === 0));
+            {(!isHiddenLoadedColumn || !isHiddenEnrichedColumn) && (
+                <TableBody style={styles.body}>
+                    {lines.map((line, index) => (
+                        <TableRow
+                            key={`${line._id}_data_row`}
+                            style={getRowStyle(index, total)}
+                        >
+                            {columnsToShow.map(column => {
+                                const showAddColumnButton =
+                                    showAddColumns &&
+                                    showAddColumns &&
+                                    (index === total - 3 ||
+                                        (total < 3 && index === 0));
 
-                            return (
-                                <ParsingExcerptColumn
-                                    key={`${column}_${line._id}`}
-                                    value={`${line[column] || ''}`}
-                                    style={getColumnStyle(
-                                        enrichmentsNames,
-                                        column,
-                                    )}
-                                >
-                                    {showAddColumnButton && (
-                                        <ParsingExcerptAddColumn
-                                            key={`add_column_${column}`}
-                                            name={column}
-                                            onAddColumn={handleAddColumn}
-                                            atTop={total < 3}
-                                        />
-                                    )}
-                                </ParsingExcerptColumn>
-                            );
-                        })}
-                    </TableRow>
-                ))}
-            </TableBody>
+                                return (
+                                    <ParsingExcerptColumn
+                                        key={`${column}_${line._id}`}
+                                        value={`${line[column] || ''}`}
+                                        style={getColumnStyle(
+                                            enrichmentsNames,
+                                            column,
+                                        )}
+                                    >
+                                        {showAddColumnButton && (
+                                            <ParsingExcerptAddColumn
+                                                key={`add_column_${column}`}
+                                                name={column}
+                                                onAddColumn={handleAddColumn}
+                                                atTop={total < 3}
+                                            />
+                                        )}
+                                    </ParsingExcerptColumn>
+                                );
+                            })}
+                        </TableRow>
+                    ))}
+                </TableBody>
+            )}
         </Table>
     );
 };
@@ -125,6 +166,8 @@ ParsingExcerptComponent.propTypes = {
 
 const mapStateToProps = state => ({
     enrichments: fromEnrichments.enrichments(state),
+    isHiddenLoadedColumn: fromParsing.getHideLoadedColumn(state),
+    isHiddenEnrichedColumn: fromParsing.getHideEnrichedColumn(state),
 });
 
 const mapDispatchToProps = {
