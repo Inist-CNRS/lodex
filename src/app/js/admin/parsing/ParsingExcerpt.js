@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -23,6 +23,9 @@ const styles = {
     body: {
         position: 'relative',
     },
+    enrichedColumn: {
+        backgroundColor: theme.green.light,
+    },
 };
 
 export const getRowStyle = (index, total) => {
@@ -39,13 +42,12 @@ export const getRowStyle = (index, total) => {
     return { opacity, height: 36 };
 };
 
-export const isColumnEnrichment = (columns, enrichments) => {
-    let arrayIsColumnEnrichment = [];
-    columns.map(c => {
-        arrayIsColumnEnrichment[c] = enrichments.find(e => e.name === c);
-    });
+export const getEnrichmentsNames = enrichments => {
+    return enrichments?.map(enrichiment => enrichiment.name);
+};
 
-    return arrayIsColumnEnrichment;
+export const getColumnStyle = (enrichmentsNames, column) => {
+    return enrichmentsNames?.includes(column) ? styles.enrichedColumn : {};
 };
 
 export const ParsingExcerptComponent = ({
@@ -55,11 +57,11 @@ export const ParsingExcerptComponent = ({
     showAddColumns,
     enrichments,
 }) => {
-    const total = lines.length;
-    const arrayIsColumnEnrichment = isColumnEnrichment(
-        columns,
+    const enrichmentsNames = useMemo(() => getEnrichmentsNames(enrichments), [
         enrichments,
-    );
+    ]);
+
+    const total = lines.length;
 
     return (
         <Table style={styles.table}>
@@ -69,11 +71,7 @@ export const ParsingExcerptComponent = ({
                         <ParsingExcerptHeaderColumn
                             key={`header_${column}`}
                             column={column}
-                            style={
-                                arrayIsColumnEnrichment[column] && {
-                                    backgroundColor: theme.green.light,
-                                }
-                            }
+                            style={getColumnStyle(enrichmentsNames, column)}
                         />
                     ))}
                 </TableRow>
@@ -95,11 +93,10 @@ export const ParsingExcerptComponent = ({
                                 <ParsingExcerptColumn
                                     key={`${column}_${line._id}`}
                                     value={`${line[column] || ''}`}
-                                    style={
-                                        arrayIsColumnEnrichment[column] && {
-                                            backgroundColor: theme.green.light,
-                                        }
-                                    }
+                                    style={getColumnStyle(
+                                        enrichmentsNames,
+                                        column,
+                                    )}
                                 >
                                     {showAddColumnButton && (
                                         <ParsingExcerptAddColumn
