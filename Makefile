@@ -84,11 +84,13 @@ test-api-e2e-watch: ## Run the API E2E tests in watch mode
 	docker-compose -f docker-compose.dev.yml run --rm -p "3010:3010" node \
 		npm run test:api:e2e:watch
 
-test-unit: ## Run the unit tests
-	NODE_ENV=test docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run test:unit
+test-unit: ## Run the unit tests, usage : JEST_OPTIONS=myfile.to.test.spec.js make test-unit
+## You can use other Jest options (https://jestjs.io/fr/docs/cli)
+	NODE_ENV=test docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run test:unit -- $(JEST_OPTIONS)
 
-test-unit-watch: ## Run the unit tests
-	NODE_ENV=test docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run test:unit:watch
+test-unit-watch: ## Run the unit tests, usage : JEST_OPTIONS=myfile.to.test.spec.js make test-unit-watch
+## You can use other Jest options (https://jestjs.io/fr/docs/cli)
+	NODE_ENV=test docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run test:unit:watch -- $(JEST_OPTIONS)
 
 test-e2e-start-dockers:
 ifeq "$(CI)" "true"
