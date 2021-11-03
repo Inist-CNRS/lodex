@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import AppBar from './Appbar';
 import getTitle from '../lib/getTitle';
-import Progress from './progress/Progress';
+import { Progress } from './progress/Progress';
 import { Sidebar } from './Sidebar';
 
 const styles = {
