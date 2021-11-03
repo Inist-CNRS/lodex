@@ -20,7 +20,10 @@ const DisplayRouteComponent = () => {
     const { url, path } = useRouteMatch();
 
     const pageComponent = (
-        <FieldsEdit filter={filter} addFieldButton={<AddFieldButton />} />
+        <FieldsEdit
+            filter={filter}
+            addFieldButton={<AddFieldButton scope={filter} />}
+        />
     );
 
     if (filter === SCOPE_DOCUMENT) {

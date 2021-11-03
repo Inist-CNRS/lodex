@@ -12,8 +12,6 @@ import fieldSelectors, {
     NEW_CHARACTERISTIC_FORM_NAME as formName,
 } from './selectors';
 
-import { SCOPE_COLLECTION } from '../../../common/scope';
-
 export const selectors = fieldSelectors;
 export const NEW_CHARACTERISTIC_FORM_NAME = formName;
 
@@ -117,8 +115,8 @@ export const defaultState = {
     invalidProperties: [],
 };
 
-const getDefaultField = (name, index, rest = {}) => ({
-    scope: SCOPE_COLLECTION,
+const getDefaultField = (name, index, scope, rest = {}) => ({
+    scope: scope,
     label: name || `newField ${index + 1}`,
     name: 'new',
     display: true,
@@ -146,15 +144,14 @@ const getDefaultField = (name, index, rest = {}) => ({
 export default handleActions(
     {
         ADD_FIELD: (state, { payload }) => {
-            const { name, ...rest } = payload || {};
-
+            const { name, scope, ...rest } = payload || {};
             return {
                 ...state,
                 editedFieldName: 'new',
                 list: [...state.list, 'new'],
                 byName: {
                     ...state.byName,
-                    new: getDefaultField(name, state.list.length, rest),
+                    new: getDefaultField(name, state.list.length, scope, rest),
                 },
             };
         },
