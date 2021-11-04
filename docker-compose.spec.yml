@@ -12,10 +12,13 @@ services:
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
             EZMASTER_MONGODB_HOST_PORT: mongo:27017
             EXPOSE_TEST_CONTROLLER: 'true'
+            REDIS_URL: 'redis://redis:6379'
         links:
             - mongo
+            - redis
         depends_on:
             - mongo
+            - redis
         ports:
             - 3000:3000
         volumes:
@@ -36,3 +39,8 @@ services:
     mongo:
         image: mongo:3.4.1
         command: '--smallfiles'
+
+    redis:
+        image: redis:6
+        ports:
+            - 6379:6379
