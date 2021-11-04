@@ -1,11 +1,9 @@
 import Koa from 'koa';
 import route from 'koa-route';
-import get from 'lodash.get';
 
 import publishDocuments from '../../services/publishDocuments';
 import publishCharacteristics from '../../services/publishCharacteristics';
 import publishFacets from './publishFacets';
-import publish from '../../services/publish';
 import { publisherQueue } from '../../workers/publisher';
 
 const app = new Koa();
@@ -28,13 +26,7 @@ export const handlePublishError = async (ctx, next) => {
 };
 
 export const doPublish = async ctx => {
-    console.log('###############################');
-    console.log('###############################');
-    console.log('doPublish');
-    console.log('###############################');
-    console.log('###############################');
     publisherQueue.add(ctx);
-    publish(ctx);
     ctx.status = 200;
     ctx.body = {
         status: 'success',
