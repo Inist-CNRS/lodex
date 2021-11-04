@@ -54,8 +54,6 @@ export const clearPublished = async ctx => {
     }
 };
 
-app.use(route.post('/', preparePublish));
-app.use(route.post('/', handlePublishError));
 app.use(route.post('/', doPublish));
 
 app.use(route.delete('/', clearPublished));
