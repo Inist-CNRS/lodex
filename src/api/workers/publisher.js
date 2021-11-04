@@ -46,11 +46,7 @@ const publish = async ctx => {
 };
 
 const prepareContext = async ctx => {
-    await repositoryMiddleware(ctx, async () => {
-        return new Promise(resolve => {
-            return resolve();
-        });
-    });
+    await repositoryMiddleware(ctx, Promise.resolve);
     ctx.publishDocuments = publishDocuments;
     ctx.publishCharacteristics = publishCharacteristics;
     ctx.publishFacets = publishFacets;
