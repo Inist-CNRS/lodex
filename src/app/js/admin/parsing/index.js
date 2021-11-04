@@ -8,9 +8,13 @@ export const RELOAD_PARSING_RESULT = 'RELOAD_PARSING_RESULT';
 export const CANCEL_RELOAD = 'CANCEL_RELOAD';
 export const SHOW_ADD_COLUMNS = 'SHOW_ADD_COLUMNS';
 export const HIDE_ADD_COLUMNS = 'HIDE_ADD_COLUMNS';
+export const TOGGLE_LOADED_COLUMN = 'TOGGLE_LOADED_COLUMN';
+export const TOGGLE_ENRICHED_COLUMN = 'TOGGLE_ENRICHED_COLUMN';
 
 export const showAddColumns = createAction(SHOW_ADD_COLUMNS);
 export const hideAddColumns = createAction(HIDE_ADD_COLUMNS);
+export const toggleLoadedColumn = createAction(TOGGLE_LOADED_COLUMN);
+export const toggleEnrichedColumn = createAction(TOGGLE_ENRICHED_COLUMN);
 
 export const defaultState = {
     error: false,
@@ -21,6 +25,8 @@ export const defaultState = {
     showAddColumns: false,
     totalLoadedLines: 0,
     totalParsedLines: 0,
+    hideLoadedColumn: false,
+    hideEnrichedColumn: false,
 };
 
 export default handleActions(
@@ -52,6 +58,14 @@ export default handleActions(
         }),
         SHOW_ADD_COLUMNS: state => ({ ...state, showAddColumns: true }),
         HIDE_ADD_COLUMNS: state => ({ ...state, showAddColumns: false }),
+        TOGGLE_LOADED_COLUMN: state => ({
+            ...state,
+            hideLoadedColumn: !state.hideLoadedColumn,
+        }),
+        TOGGLE_ENRICHED_COLUMN: state => ({
+            ...state,
+            hideEnrichedColumn: !state.hideEnrichedColumn,
+        }),
     },
     defaultState,
 );
@@ -80,6 +94,8 @@ export const isParsingLoading = ({ loading }) => loading;
 export const getTotalLoadedLines = ({ totalLoadedLines }) => totalLoadedLines;
 
 export const getShowAddColumns = state => state.showAddColumns;
+export const getHideLoadedColumn = state => state.hideLoadedColumn;
+export const getHideEnrichedColumn = state => state.hideEnrichedColumn;
 
 export const selectors = {
     getExcerptLines,
@@ -89,4 +105,6 @@ export const selectors = {
     isParsingLoading,
     getTotalLoadedLines,
     showAddColumns: getShowAddColumns,
+    getHideLoadedColumn,
+    getHideEnrichedColumn,
 };
