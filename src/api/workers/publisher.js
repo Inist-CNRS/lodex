@@ -13,13 +13,23 @@ import {
     SCOPE_GRAPHIC,
 } from '../../common/scope';
 
+export const PUBLISH = 'publish';
+
 export const publisherQueue = new Queue('publisher', process.env.REDIS_URL);
 
 publisherQueue.process((job, done) => {
-    publish(job.data).then(() => done());
+    switch (job.data) {
+        case PUBLISH:
+            publish()
+                .then(() => done())
+                .catch(err => done(err));
+        default:
+            done();
+    }
 });
 
-const publish = async ctx => {
+const publish = async () => {
+    const ctx = {};
     await prepareContext(ctx);
 
     const count = await ctx.dataset.count({});
@@ -50,4 +60,5 @@ const prepareContext = async ctx => {
     ctx.publishDocuments = publishDocuments;
     ctx.publishCharacteristics = publishCharacteristics;
     ctx.publishFacets = publishFacets;
+    return ctx;
 };
