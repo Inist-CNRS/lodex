@@ -36,6 +36,7 @@ export const StepIdentityComponent = ({
     p: polyglot,
     ...props
 }) => {
+    console.log(field)
     return (
         <Step id="step-identity" label="field_wizard_step_identity" {...props}>
             <FieldLabelInput />
