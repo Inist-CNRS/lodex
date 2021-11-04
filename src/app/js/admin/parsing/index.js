@@ -58,8 +58,14 @@ export default handleActions(
         }),
         SHOW_ADD_COLUMNS: state => ({ ...state, showAddColumns: true }),
         HIDE_ADD_COLUMNS: state => ({ ...state, showAddColumns: false }),
-        TOGGLE_LOADED_COLUMN:  (state, { payload }) => ({ ...state, hideLoadedColumn: payload.hideLoadedColumn }),
-        TOGGLE_ENRICHED_COLUMN:  (state, { payload }) => ({ ...state, hideEnrichedColumn: payload.hideEnrichedColumn }),
+        TOGGLE_LOADED_COLUMN: state => ({
+            ...state,
+            hideLoadedColumn: !state.hideLoadedColumn,
+        }),
+        TOGGLE_ENRICHED_COLUMN: state => ({
+            ...state,
+            hideEnrichedColumn: !state.hideEnrichedColumn,
+        }),
     },
     defaultState,
 );
@@ -100,5 +106,5 @@ export const selectors = {
     getTotalLoadedLines,
     showAddColumns: getShowAddColumns,
     getHideLoadedColumn,
-    getHideEnrichedColumn
+    getHideEnrichedColumn,
 };

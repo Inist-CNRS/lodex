@@ -89,11 +89,7 @@ export const StatisticsComponent = ({
 
                     <Box
                         className={classes.item}
-                        onClick={() =>
-                            handleToggleLoadedColumn({
-                                hideLoadedColumn: !isHiddenLoadedColumn,
-                            })
-                        }
+                        onClick={handleToggleLoadedColumn}
                     >
                         <div className={classes.itemText}>
                             {polyglot.t('parsing_summary_columns', {
@@ -114,14 +110,10 @@ export const StatisticsComponent = ({
                             classes.item,
                             classes.columnEnriched,
                         )}
-                        onClick={() =>
-                            handleToggleEnrichedColumn({
-                                hideEnrichedColumn: !isHiddenEnrichedColumn,
-                            })
-                        }
+                        onClick={handleToggleEnrichedColumn}
                     >
                         <div className={classes.itemText}>
-                            {polyglot.t('parsing_summary_columns', {
+                            {polyglot.t('parsing_enriched_columns', {
                                 smart_count: totalLoadedEnrichmentColumns,
                             })}
                         </div>
