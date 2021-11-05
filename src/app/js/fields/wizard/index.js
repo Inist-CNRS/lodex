@@ -36,7 +36,7 @@ const styles = {
     container: {
         display: 'flex',
         paddingBottom: '1rem',
-        width: 900,
+        width: 1000,
     },
     form: {
         borderRight: '1px solid rgb(224, 224, 224)',
@@ -46,7 +46,7 @@ const styles = {
         overflowY: 'auto',
     },
     column: {
-        width: '10rem',
+        width: '20rem',
     },
     title: {
         display: 'flex',
