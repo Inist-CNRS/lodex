@@ -7,6 +7,7 @@ import { TextField as MUITextField } from '@material-ui/core';
 import Step from './Step';
 import FieldLanguageInput from '../FieldLanguageInput';
 import FieldLabelInput from '../FieldLabelInput';
+import FieldInternal from '../FieldInternal';
 import ClassList from '../ClassList';
 
 import {
@@ -36,13 +37,13 @@ export const StepIdentityComponent = ({
     p: polyglot,
     ...props
 }) => {
-    console.log(field)
     return (
         <Step id="step-identity" label="field_wizard_step_identity" {...props}>
             <FieldLabelInput />
             <Field name="scope" component={TextField} type="hidden" />
             <FieldArray name="classes" component={ClassList} type="classes" />
             <FieldLanguageInput field={field} />
+            <FieldInternal field={field} />
         </Step>
     );
 };
