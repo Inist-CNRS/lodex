@@ -17,18 +17,15 @@ export const PUBLISH = 'publish';
 
 export const publisherQueue = new Queue('publisher', process.env.REDIS_URL);
 
-publisherQueue.process((job, done) => {
-    switch (job.data) {
-        case PUBLISH:
-            publish()
-                .then(() => done())
-                .catch(err => {
-                    handlePublishError();
-                    done(err);
-                });
-        default:
-            done();
-    }
+publisherQueue.process(PUBLISH, (job, done) => {
+    console.log('###################');
+    console.log('Process!');
+    publish()
+        .then(() => done())
+        .catch(err => {
+            handlePublishError();
+            done(err);
+        });
 });
 
 const publish = async () => {
@@ -64,7 +61,7 @@ const handlePublishError = async () => {
 };
 
 const prepareContext = async ctx => {
-    await repositoryMiddleware(ctx, Promise.resolve);
+    await repositoryMiddleware(ctx, () => Promise.resolve());
     ctx.publishDocuments = publishDocuments;
     ctx.publishCharacteristics = publishCharacteristics;
     ctx.publishFacets = publishFacets;
