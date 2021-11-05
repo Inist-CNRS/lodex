@@ -45,15 +45,17 @@ export const ProgressComponent = props => {
         clearProgress,
         p: polyglot,
         loadProgress,
+        isBackground,
     } = props;
 
+    const isOpen = status !== PENDING && !isBackground;
     useEffect(() => {
         loadProgress();
     });
 
     if (error) {
         return (
-            <Dialog open={status !== PENDING} onClose={clearProgress}>
+            <Dialog open={isOpen} onClose={clearProgress}>
                 <DialogTitle>{polyglot.t(status)}</DialogTitle>
                 <DialogContent>
                     <div>{polyglot.t('progress_error')}</div>
@@ -63,7 +65,7 @@ export const ProgressComponent = props => {
     }
 
     return (
-        <Dialog open={status !== PENDING}>
+        <Dialog open={isOpen}>
             <DialogTitle>{polyglot.t(status)}</DialogTitle>
             <DialogContent>
                 <div className="progress">
@@ -88,6 +90,7 @@ ProgressComponent.propTypes = {
     error: PropTypes.bool,
     clearProgress: PropTypes.func.isRequired,
     p: polyglotPropTypes,
+    isBackground: PropTypes.bool,
 };
 
 ProgressComponent.defaultProps = {

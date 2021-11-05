@@ -21,6 +21,7 @@ export const defaultState = {
     target: undefined,
     error: false,
     symbol: undefined,
+    isBackground: false,
 };
 
 export default handleActions(
@@ -36,12 +37,20 @@ export default handleActions(
             symbol,
             error: undefined,
         }),
-        [combineActions(PUBLISH, UPLOAD_FILE)]: state => ({
+        [UPLOAD_FILE]: state => ({
             ...state,
             status: STARTING,
             progress: undefined,
             target: undefined,
             error: undefined,
+        }),
+        [PUBLISH]: state => ({
+            ...state,
+            status: STARTING,
+            progress: undefined,
+            target: undefined,
+            error: undefined,
+            isBackground: true,
         }),
         [ERROR_PROGRESS]: state => ({
             ...state,
