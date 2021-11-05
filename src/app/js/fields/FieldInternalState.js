@@ -1,72 +1,44 @@
 import React from 'react';
 import translate from 'redux-polyglot/translate';
-import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
 import DescriptionIcon from '@material-ui/icons/Description';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import theme from '../theme';
-import classnames from 'classnames';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
 const useStyles = makeStyles({
     container: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
         marginRight: '1rem',
-    },
-    state: {
-        padding: '0.5rem',
-        border: '1px solid black',
-    },
-    stateSelected: {
-        backgroundColor: theme.green.tertiary,
     },
 });
 
 export const FieldInternalStateComponent = ({ input }) => {
     const classes = useStyles();
 
-    const handleStateSelected = state => {
+    const handleStateSelected = (event, state) => {
         input.onChange(state === input.value ? '' : state);
     };
 
     return (
-        <Box className={classes.container}>
-            <Box
-                onClick={() => handleStateSelected('home')}
-                className={classnames(
-                    {
-                        [classes.stateSelected]: input.value === 'home',
-                    },
-                    classes.state,
-                )}
-            >
+        <ToggleButtonGroup
+            value={input.value}
+            exclusive
+            onChange={handleStateSelected}
+            aria-label="text alignment"
+            className={classes.container}
+        >
+            <ToggleButton value="home" aria-label="left aligned">
                 <HomeIcon />
-            </Box>
-            <Box
-                onClick={() => handleStateSelected('document')}
-                className={classnames(
-                    {
-                        [classes.stateSelected]: input.value === 'document',
-                    },
-                    classes.state,
-                )}
-            >
+            </ToggleButton>
+            <ToggleButton value="document" aria-label="centered">
                 <DescriptionIcon />
-            </Box>
-            <Box
-                onClick={() => handleStateSelected('chart')}
-                className={classnames(
-                    {
-                        [classes.stateSelected]: input.value === 'chart',
-                    },
-                    classes.state,
-                )}
-            >
+            </ToggleButton>
+            <ToggleButton value="chart" aria-label="right aligned">
                 <BarChartIcon />
-            </Box>
-        </Box>
+            </ToggleButton>
+        </ToggleButtonGroup>
     );
 };
 
