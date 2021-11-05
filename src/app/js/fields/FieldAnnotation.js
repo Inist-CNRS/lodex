@@ -11,6 +11,7 @@ import {
     field as fieldPropTypes,
 } from '../propTypes';
 import { hasSimilarScope } from '../../../common/scope';
+import FieldInternalIcon from './FieldInternalIcon';
 
 const styles = {
     complete: {
@@ -19,6 +20,15 @@ const styles = {
     header: {
         lineHeight: '48px',
         paddingLeft: 0,
+    },
+    line: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    internal: {
+        display: 'flex',
+        alignItems: 'center',
     },
 };
 
@@ -41,8 +51,13 @@ const FieldAnnotation = ({ fields, scope, p: polyglot }) => (
                     className={`completes-${getFieldClassName(f)}`}
                     key={f.name}
                     value={f.name}
+                    style={styles.line}
                 >
-                    {f.label}
+                    <div>{f.label}</div>
+                    <div style={styles.internal}>
+                        <FieldInternalIcon state={f.internalState} />
+                        {f.internalName}
+                    </div>
                 </MenuItem>
             ))}
         </Field>

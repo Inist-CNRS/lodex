@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
 import DescriptionIcon from '@material-ui/icons/Description';
 import BarChartIcon from '@material-ui/icons/BarChart';
-import { field, formField as formFieldPropTypes } from '../propTypes';
 import theme from '../theme';
 import classnames from 'classnames';
 
@@ -25,15 +24,11 @@ const useStyles = makeStyles({
     },
 });
 
-export const FieldInternalStateComponent = ({ input, value }) => {
+export const FieldInternalStateComponent = ({ input }) => {
     const classes = useStyles();
 
     const handleStateSelected = state => {
-        if (state === input.value) {
-            input.onChange('');
-        } else {
-            input.onChange(state);
-        }
+        input.onChange(state === input.value ? '' : state);
     };
 
     return (
@@ -74,7 +69,5 @@ export const FieldInternalStateComponent = ({ input, value }) => {
         </Box>
     );
 };
-
-// FieldInternalStateComponent.propTypes = formFieldPropTypes;
 
 export default translate(FieldInternalStateComponent);
