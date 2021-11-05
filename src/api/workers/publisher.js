@@ -34,7 +34,6 @@ publisherQueue.process((job, done) => {
 const publish = async () => {
     const ctx = await prepareContext({});
 
-
     const count = await ctx.dataset.count({});
     const fields = await ctx.field.findAll();
 
@@ -58,7 +57,7 @@ const publish = async () => {
     progress.finish();
 };
 
-const handlePublishError = () => {
+const handlePublishError = async () => {
     const ctx = await prepareContext({});
     await ctx.publishedDataset.remove({});
     await ctx.publishedCharacteristic.remove({});
