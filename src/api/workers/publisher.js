@@ -22,15 +22,18 @@ publisherQueue.process((job, done) => {
         case PUBLISH:
             publish()
                 .then(() => done())
-                .catch(err => done(err));
+                .catch(err => {
+                    handlePublishError();
+                    done(err);
+                });
         default:
             done();
     }
 });
 
 const publish = async () => {
-    const ctx = {};
-    await prepareContext(ctx);
+    const ctx = await prepareContext({});
+
 
     const count = await ctx.dataset.count({});
     const fields = await ctx.field.findAll();
@@ -53,6 +56,12 @@ const publish = async () => {
     await indexSearchableFields();
 
     progress.finish();
+};
+
+const handlePublishError = () => {
+    const ctx = await prepareContext({});
+    await ctx.publishedDataset.remove({});
+    await ctx.publishedCharacteristic.remove({});
 };
 
 const prepareContext = async ctx => {

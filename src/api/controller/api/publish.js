@@ -1,32 +1,12 @@
 import Koa from 'koa';
 import route from 'koa-route';
 
-import publishDocuments from '../../services/publishDocuments';
-import publishCharacteristics from '../../services/publishCharacteristics';
-import publishFacets from './publishFacets';
-import { publisherQueue } from '../../workers/publisher';
+import { publisherQueue, PUBLISH } from '../../workers/publisher';
 
 const app = new Koa();
 
-export const preparePublish = async (ctx, next) => {
-    ctx.publishDocuments = publishDocuments;
-    ctx.publishCharacteristics = publishCharacteristics;
-    ctx.publishFacets = publishFacets;
-    await next();
-};
-
-export const handlePublishError = async (ctx, next) => {
-    try {
-        await next();
-    } catch (error) {
-        await ctx.publishedDataset.remove({});
-        await ctx.publishedCharacteristic.remove({});
-        throw error;
-    }
-};
-
 export const doPublish = async ctx => {
-    publisherQueue.add(ctx);
+    publisherQueue.add(PUBLISH);
     ctx.status = 200;
     ctx.body = {
         status: 'success',
