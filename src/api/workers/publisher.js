@@ -18,8 +18,6 @@ export const PUBLISH = 'publish';
 export const publisherQueue = new Queue('publisher', process.env.REDIS_URL);
 
 publisherQueue.process(PUBLISH, (job, done) => {
-    console.log('###################');
-    console.log('Process!');
     publish()
         .then(() => done())
         .catch(err => {
