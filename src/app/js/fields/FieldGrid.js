@@ -146,8 +146,8 @@ const ItemGridLabel = connect((state, { field }) => ({
                 </span>
             </CopyToClipboard>
             <div className={classes.internal}>
-                {field.internalState && (
-                    <FieldInternalIcon state={field.internalState} />
+                {field.internalScope && (
+                    <FieldInternalIcon scope={field.internalScope} />
                 )}
                 {field.internalName}
             </div>

@@ -7,7 +7,7 @@ import {
     polyglot as polyglotPropTypes,
 } from '../propTypes';
 
-import FieldInternalState from './FieldInternalState';
+import FieldToggleInternalScope from './FieldToggleInternalScope';
 import FieldInternalName from './FieldInternalName';
 import FieldInput from '../lib/components/FieldInput';
 
@@ -26,9 +26,9 @@ export const FieldInternalComponent = field => {
     return (
         <Box className={classes.container}>
             <FieldInput
-                name="internalState"
-                component={FieldInternalState}
-                labelKey="internalState"
+                name="internalScope"
+                component={FieldToggleInternalScope}
+                labelKey="internalScope"
                 fullWidth
             />
             <FieldInternalName field={field} />

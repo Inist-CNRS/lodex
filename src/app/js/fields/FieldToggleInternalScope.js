@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     },
 });
 
-export const FieldInternalStateComponent = ({ input }) => {
+export const FieldToggleInternalScopeComponent = ({ input }) => {
     const classes = useStyles();
 
     const handleStateSelected = (event, state) => {
@@ -42,4 +42,4 @@ export const FieldInternalStateComponent = ({ input }) => {
     );
 };
 
-export default translate(FieldInternalStateComponent);
+export default translate(FieldToggleInternalScopeComponent);

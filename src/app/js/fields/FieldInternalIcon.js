@@ -7,21 +7,21 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 const HOME = 'home';
 const DOCUMENT = 'document';
 const CHART = 'chart';
-const INTERNAL_STATE_ICON = [];
-INTERNAL_STATE_ICON['home'] = <HomeIcon />;
-INTERNAL_STATE_ICON['document'] = <DescriptionIcon />;
-INTERNAL_STATE_ICON['chart'] = <BarChartIcon />;
+const INTERNAL_SCOPE_ICON = [];
+INTERNAL_SCOPE_ICON['home'] = <HomeIcon />;
+INTERNAL_SCOPE_ICON['document'] = <DescriptionIcon />;
+INTERNAL_SCOPE_ICON['chart'] = <BarChartIcon />;
 
-const getIconInternalState = state => {
-    if (!!state) {
-        return INTERNAL_STATE_ICON[state];
+const getIconInternalScope = scope => {
+    if (!!scope) {
+        return INTERNAL_SCOPE_ICON[scope];
     }
 };
 
-const FieldInternalIcon = ({ state }) => (getIconInternalState(state));
+const FieldInternalIcon = ({ scope }) => (getIconInternalScope(scope));
 
 FieldInternalIcon.propTypes = {
-    state: PropTypes.oneOf([HOME, DOCUMENT, CHART, '']),
+    scope: PropTypes.oneOf([HOME, DOCUMENT, CHART, '']),
 };
 
 export default FieldInternalIcon;
