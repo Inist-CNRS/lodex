@@ -30,6 +30,7 @@ import {
     changePositions,
     saveFieldFromData,
 } from '../fields';
+import FieldInternalIcon from './FieldInternalIcon';
 
 const useStyles = makeStyles({
     root: {
@@ -73,6 +74,13 @@ const useStyles = makeStyles({
     actionsContainer: {
         marginLeft: 'auto',
         padding: '20px 10px 20px 0',
+    },
+    internal: {
+        display: 'flex',
+        justifyContent: 'center',
+        fontSize: '0.8rem',
+        fontWeight: 'normal',
+        alignItems: 'center',
     },
 });
 
@@ -120,23 +128,32 @@ const itemsFromLayout = layout =>
 
 const ItemGridLabel = connect((state, { field }) => ({
     completedField: fromFields.getCompletedField(state, field),
-}))(({ field, completedField, polyglot, onShowNameCopied }) => (
-    <>
-        <CopyToClipboard text={field.name} onCopy={onShowNameCopied}>
-            <span>
-                {ensureTextIsShort(field.label)}
-                {` (${ensureTextIsShort(field.name)})`}
-                {completedField && (
-                    <span>
-                        {polyglot.t('completes_field_X', {
-                            field: completedField.label,
-                        })}
-                    </span>
+}))(({ field, completedField, polyglot, onShowNameCopied }) => {
+    const classes = useStyles();
+    return (
+        <>
+            <CopyToClipboard text={field.name} onCopy={onShowNameCopied}>
+                <span>
+                    {ensureTextIsShort(field.label)}
+                    {` (${ensureTextIsShort(field.name)})`}
+                    {completedField && (
+                        <span>
+                            {polyglot.t('completes_field_X', {
+                                field: completedField.label,
+                            })}
+                        </span>
+                    )}
+                </span>
+            </CopyToClipboard>
+            <div className={classes.internal}>
+                {field.internalScope && (
+                    <FieldInternalIcon scope={field.internalScope} />
                 )}
-            </span>
-        </CopyToClipboard>
-    </>
-));
+                {field.internalName}
+            </div>
+        </>
+    );
+});
 
 export const buildFieldsDefinitionsArray = fields =>
     fields.map(field => ({
