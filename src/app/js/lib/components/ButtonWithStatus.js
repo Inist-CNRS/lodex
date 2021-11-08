@@ -25,29 +25,17 @@ const ButtonWithStatus = ({
                 <Button
                     variant="contained"
                     className={classnames(className, {
-                        [classes.loadingProgress]: loading && progress,
+                        [classes.loadingProgress]: loading && target,
                     })}
                     disabled={disabled || loading}
-                    startIcon={getIcon(
-                        error,
-                        success,
-                        loading,
-                        progress,
-                        target,
-                    )}
+                    startIcon={getIcon(error, success, loading, target)}
                     {...props}
                 />
             ) : (
                 <Button
                     variant="text"
                     disabled={disabled || loading}
-                    startIcon={getIcon(
-                        error,
-                        success,
-                        loading,
-                        progress,
-                        target,
-                    )}
+                    startIcon={getIcon(error, success, loading, target)}
                     {...props}
                 />
             )}
@@ -76,8 +64,8 @@ const useStyles = makeStyles({
         margin: '0 4px 0',
     },
 });
-const getIcon = (error, success, loading, progress) => {
-    if (loading && progress == null)
+const getIcon = (error, success, loading, target) => {
+    if (loading && target == null)
         return <CircularProgress variant="indeterminate" size={20} />;
     if (error) return <Warning color={red[400]} />;
     if (success) return <Success color={lightGreen.A400} />;
