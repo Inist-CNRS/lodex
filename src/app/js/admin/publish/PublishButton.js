@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { publish as publishAction } from './';
-import { fromPublish, fromPublication } from '../selectors';
+import { fromPublish, fromPublication, fromProgress } from '../selectors';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import { fromFields } from '../../sharedSelectors';
 
@@ -31,6 +31,8 @@ export const PublishButtonComponent = ({
     p: polyglot,
     published,
     onPublish,
+    target,
+    progress,
 }) => {
     const classes = useStyles();
     const handleClick = () => {
@@ -48,6 +50,8 @@ export const PublishButtonComponent = ({
                 onClick={handleClick}
                 disabled={!canPublish}
                 className={classes.button}
+                target={target}
+                progress={progress}
             >
                 {polyglot.t('publish')}
             </ButtonWithStatus>
@@ -69,10 +73,7 @@ PublishButtonComponent.defaultProps = {
 };
 
 export const canPublish = (areAllFieldsValid, allListFields) => {
-    return (
-        areAllFieldsValid &&
-        allListFields.some(f => f.name !== 'uri')
-    );
+    return areAllFieldsValid && allListFields.some(f => f.name !== 'uri');
 };
 
 const mapStateToProps = state => ({
@@ -83,6 +84,7 @@ const mapStateToProps = state => ({
     error: fromPublish.getPublishingError(state),
     isPublishing: fromPublish.getIsPublishing(state),
     published: fromPublication.hasPublishedDataset(state),
+    ...fromProgress.getProgressAndTarget(state),
 });
 
 const mapDispatchToProps = {

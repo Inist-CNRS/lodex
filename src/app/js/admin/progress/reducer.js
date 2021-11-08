@@ -71,7 +71,9 @@ export default handleActions(
 );
 
 const getProgress = state => state;
+const getProgressAndTarget = ({ progress, target }) => ({ progress, target });
 
 export const selectors = {
     getProgress,
+    getProgressAndTarget,
 };
