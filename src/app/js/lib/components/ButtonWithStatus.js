@@ -68,8 +68,6 @@ const useStyles = makeStyles({
     },
 });
 const getIcon = (error, loading, success, progress, target) => {
-    // if (loading) return <CircularProgress variant="indeterminate" size={20} />;
-
     if (error) return <Warning color={red[400]} />;
     if (success) return <Success color={lightGreen.A400} />;
     return null;
