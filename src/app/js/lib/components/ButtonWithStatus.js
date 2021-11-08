@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { lightGreen, red } from '@material-ui/core/colors';
 import { CircularProgress, LinearProgress, Button } from '@material-ui/core';
@@ -14,6 +15,7 @@ const ButtonWithStatus = ({
     success,
     progress,
     target,
+    className,
     ...props
 }) => {
     const classes = useStyles();
@@ -22,11 +24,14 @@ const ButtonWithStatus = ({
             {raised ? (
                 <Button
                     variant="contained"
+                    className={classnames(className, {
+                        [classes.loadingProgress]: loading && progress,
+                    })}
                     disabled={disabled || loading}
                     startIcon={getIcon(
                         error,
-                        loading,
                         success,
+                        loading,
                         progress,
                         target,
                     )}
@@ -38,15 +43,15 @@ const ButtonWithStatus = ({
                     disabled={disabled || loading}
                     startIcon={getIcon(
                         error,
-                        loading,
                         success,
+                        loading,
                         progress,
                         target,
                     )}
                     {...props}
                 />
             )}
-            {loading ? (
+            {loading && progress ? (
                 <LinearProgress
                     className={classes.progress}
                     variant="determinate"
@@ -63,11 +68,17 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
     },
+    loadingProgress: {
+        borderBottomLeftRadius: '0px',
+        borderBottomRightRadius: '0px',
+    },
     progress: {
-        width: '100%',
+        margin: '0 4px 0',
     },
 });
-const getIcon = (error, loading, success, progress, target) => {
+const getIcon = (error, success, loading, progress) => {
+    if (loading && progress == null)
+        return <CircularProgress variant="indeterminate" size={20} />;
     if (error) return <Warning color={red[400]} />;
     if (success) return <Success color={lightGreen.A400} />;
     return null;
