@@ -51,7 +51,7 @@ export const ProgressComponent = props => {
     const isOpen = status !== PENDING && !isBackground;
     useEffect(() => {
         loadProgress();
-    });
+    }, []);
 
     if (error) {
         return (
