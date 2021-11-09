@@ -53,7 +53,9 @@ export const PublishButtonComponent = ({
                 target={target}
                 progress={progress}
             >
-                {polyglot.t('publish')}
+                {isPublishing
+                    ? polyglot.t('publishing')
+                    : polyglot.t('publish')}
             </ButtonWithStatus>
         </div>
     );
