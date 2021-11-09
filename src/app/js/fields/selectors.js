@@ -17,6 +17,8 @@ import {
     SCOPE_GRAPHIC,
 } from '../../../common/scope';
 
+import { URI_FIELD_NAME } from '../../../common/uris';
+
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 
 export const getFields = ({ byName, list = [] }) =>
@@ -75,6 +77,16 @@ const getParams = (_, params) => params;
 const getEditedFieldName = state => state.editedFieldName;
 
 const getEditedField = state => state.byName[state.editedFieldName];
+
+const getFieldsForEditing = (state, { filter, subresourceId }) => {
+    return (!subresourceId
+        ? getFromFilterFields(state, filter)
+        : getSubresourceFields(state, subresourceId).filter(field => {
+              // Remove subresource field uri from editable columns
+              return !field.name.endsWith('_uri');
+          })
+    ).filter(field => field.name !== URI_FIELD_NAME);
+};
 
 export const getCollectionFields = createSelector(getFields, fields =>
     fields.filter(
@@ -468,4 +480,5 @@ export default {
     getOntologyFieldsWithUri,
     getInvalidProperties,
     canBeSearched,
+    getFieldsForEditing,
 };

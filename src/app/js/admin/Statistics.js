@@ -149,27 +149,15 @@ StatisticsComponent.propTypes = {
     handleToggleEnrichedColumn: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, { filter, fields }) => ({
+const mapStateToProps = (state, { filter, subresourceId }) => ({
     isComputing: fromPublicationPreview.isComputing(state),
     totalLoadedColumns: fromParsing.getParsedExcerptColumns(state).length,
     totalLoadedEnrichmentColumns: fromEnrichments.enrichments(state).length,
     totalLoadedLines: fromParsing.getTotalLoadedLines(state),
-    totalPublishedFields: (fields || fromFields.getFields(state)).filter(f => {
-        if (!filter) {
-            return true;
-        }
-
-        return filter === SCOPE_DOCUMENT
-            ? (f.scope === SCOPE_COLLECTION || f.scope === SCOPE_DOCUMENT) &&
-                  !f.subresourceId
-            : filter === f.subresourceId
-            ? (f.scope === SCOPE_COLLECTION || f.scope === SCOPE_DOCUMENT) &&
-              filter === f.subresourceId &&
-              !(f.name.endsWith('_uri') && f.label === 'uri')
-            : f.scope === filter;
-    }).length,
+    totalPublishedFields: fromFields.getFieldsForEditing(state, { filter, subresourceId }).length,
     isHiddenLoadedColumn: fromParsing.getHideLoadedColumn(state),
     isHiddenEnrichedColumn: fromParsing.getHideEnrichedColumn(state),
+    fields: fromFields.getFieldsForEditing(state, { filter, subresourceId }),
 });
 
 const mapDispatchToProps = {

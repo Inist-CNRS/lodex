@@ -67,8 +67,8 @@ PublicationPreviewComponent.propTypes = {
     readonly: PropTypes.boolean,
 };
 
-const mapStateToProps = (state, { filter, fields }) => ({
-    fields: fields || fromFields.getFromFilterFields(state, filter),
+const mapStateToProps = (state, { filter, subresourceId }) => ({
+    fields: fromFields.getFieldsForEditing(state, { filter, subresourceId }),
 });
 
 const mapDispatchToProps = {
