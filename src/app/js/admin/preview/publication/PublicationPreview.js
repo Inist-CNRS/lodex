@@ -68,7 +68,7 @@ PublicationPreviewComponent.propTypes = {
 };
 
 const mapStateToProps = (state, { filter, subresourceId }) => ({
-    fields: fromFields.getFieldsForEditing(state, { filter, subresourceId }),
+    fields: fromFields.getEditingFields(state, { filter, subresourceId }),
 });
 
 const mapDispatchToProps = {

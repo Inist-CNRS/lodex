@@ -318,7 +318,7 @@ FieldGridComponent.propTypes = {
 };
 
 const mapStateToProps = (state, { subresourceId, filter }) => ({
-    fields: fromFields.getFieldsForEditing(state, { filter, subresourceId }),
+    fields: fromFields.getEditingFields(state, { filter, subresourceId }),
 });
 
 export const FieldGrid = compose(

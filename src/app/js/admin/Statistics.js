@@ -154,10 +154,10 @@ const mapStateToProps = (state, { filter, subresourceId }) => ({
     totalLoadedColumns: fromParsing.getParsedExcerptColumns(state).length,
     totalLoadedEnrichmentColumns: fromEnrichments.enrichments(state).length,
     totalLoadedLines: fromParsing.getTotalLoadedLines(state),
-    totalPublishedFields: fromFields.getFieldsForEditing(state, { filter, subresourceId }).length,
+    totalPublishedFields: fromFields.getEditingFields(state, { filter, subresourceId }).length,
     isHiddenLoadedColumn: fromParsing.getHideLoadedColumn(state),
     isHiddenEnrichedColumn: fromParsing.getHideEnrichedColumn(state),
-    fields: fromFields.getFieldsForEditing(state, { filter, subresourceId }),
+    fields: fromFields.getEditingFields(state, { filter, subresourceId }),
 });
 
 const mapDispatchToProps = {

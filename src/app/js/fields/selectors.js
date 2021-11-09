@@ -78,7 +78,7 @@ const getEditedFieldName = state => state.editedFieldName;
 
 const getEditedField = state => state.byName[state.editedFieldName];
 
-const getFieldsForEditing = (state, { filter, subresourceId }) => {
+const getEditingFields = (state, { filter, subresourceId }) => {
     return (!subresourceId
         ? getFromFilterFields(state, filter)
         : getSubresourceFields(state, subresourceId).filter(field => {
@@ -480,5 +480,5 @@ export default {
     getOntologyFieldsWithUri,
     getInvalidProperties,
     canBeSearched,
-    getFieldsForEditing,
+    getEditingFields,
 };
