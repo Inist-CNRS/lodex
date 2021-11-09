@@ -121,9 +121,8 @@ const itemsFromLayout = layout =>
         .sort((a, b) => (a.y === b.y ? a.x - b.x : a.y - b.y))
         .map((item, index) => ({
             id: item.i,
-            position: index,
             width: item.w,
-            _x: item.x, // will trigger refresh if in the same line
+            position: index + 1,
         }));
 
 const ItemGridLabel = connect((state, { field }) => ({
@@ -202,7 +201,6 @@ const DraggableItemGrid = ({
                 cols={10}
                 rowHeight={150}
                 width={1000}
-                draggableHandle=".draghandle"
                 onDragStop={handleLayoutChange}
                 onResizeStop={handleResize}
                 isResizable={allowResize}
