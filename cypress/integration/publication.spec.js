@@ -149,15 +149,23 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/concat.json');
             datasetImportPage.publish();
             cy.wait(300);
+            cy.log('import 1');
             datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            cy.log('import 2');
             datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            cy.log('import 3');
             datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            cy.log('import 4');
             datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            cy.log('import 5');
             datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            cy.log('import 6');
             datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
 
+            cy.log('go to published resource');
             datasetImportPage.goToPublishedResources();
 
+            cy.log('Open searchDrawer');
             menu.openSearchDrawer();
             searchDrawer.checkMoreResultsCount(10, 14);
         });
