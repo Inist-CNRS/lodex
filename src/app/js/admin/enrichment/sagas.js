@@ -29,8 +29,8 @@ export function* handleLoadEnrichmentsRequest() {
     return yield put(loadEnrichmentsSuccess(response));
 }
 
-export function* handleCreateEnrichment({ payload: { resource, callback } }) {
-    const request = yield select(fromUser.getCreateEnrichmentRequest, resource);
+export function* handleCreateEnrichment({ payload: { enrichment, callback } }) {
+    const request = yield select(fromUser.getCreateEnrichmentRequest, enrichment);
     const { error, response } = yield call(fetchSaga, request);
     if (error) {
         return;
@@ -55,10 +55,10 @@ export function* handleCreateEnrichment({ payload: { resource, callback } }) {
     return yield put(loadEnrichments());
 }
 
-export function* handleUpdateEnrichment({ payload: resource }) {
+export function* handleUpdateEnrichment({ payload: enrichment }) {
     const request = yield select(
         fromUser.getUpdateEnrichmentRequest,
-        resource,
+        enrichment,
     );
 
     const { error, response } = yield call(fetchSaga, request);
