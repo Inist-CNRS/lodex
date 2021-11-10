@@ -40,7 +40,7 @@ const ButtonWithStatus = ({
                     {...props}
                 />
             )}
-            {loading && progress ? (
+            {loading && target ? (
                 <LinearProgress
                     // className={classes.progress}
                     classes={{
@@ -72,6 +72,7 @@ const useStyles = makeStyles({
     colorPrimary: { backgroundColor: theme.white.primary },
     barColorPrimary: { backgroundColor: theme.green.secondary },
 });
+
 const getIcon = (error, success, loading, target) => {
     if (loading && target == null)
         return <CircularProgress variant="indeterminate" size={20} />;
@@ -79,6 +80,7 @@ const getIcon = (error, success, loading, target) => {
     if (success) return <Success color={lightGreen.A400} />;
     return null;
 };
+
 ButtonWithStatus.propTypes = {
     raised: PropTypes.bool,
     error: PropTypes.bool,
