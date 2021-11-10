@@ -6,6 +6,7 @@ import { CircularProgress, LinearProgress, Button } from '@material-ui/core';
 import Warning from '@material-ui/icons/Warning';
 import Success from '@material-ui/icons/Done';
 import { makeStyles } from '@material-ui/styles';
+import theme from '../../theme';
 
 const ButtonWithStatus = ({
     raised,
@@ -41,7 +42,12 @@ const ButtonWithStatus = ({
             )}
             {loading && progress ? (
                 <LinearProgress
-                    className={classes.progress}
+                    // className={classes.progress}
+                    classes={{
+                        root: classes.progress,
+                        colorPrimary: classes.colorPrimary,
+                        barColorPrimary: classes.barColorPrimary,
+                    }}
                     variant="determinate"
                     value={target ? (progress / target) * 100 : 0}
                 />
@@ -63,6 +69,8 @@ const useStyles = makeStyles({
     progress: {
         margin: '0 4px 0',
     },
+    colorPrimary: { backgroundColor: theme.white.primary },
+    barColorPrimary: { backgroundColor: theme.green.secondary },
 });
 const getIcon = (error, success, loading, target) => {
     if (loading && target == null)
