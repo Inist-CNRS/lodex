@@ -41,8 +41,6 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
     cy.get('#confirm-upload', { timeout: 1000 }).should('be.visible');
     cy.wait(300);
     cy.contains('Accept').click({ force: true });
-    cy.get('.progress').should('exist');
-    cy.get('.progress', { timeout: 6000 }).should('not.exist');
 
     cy.get('.data-published a')
         .contains('Go to my published data')
