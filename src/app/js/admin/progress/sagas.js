@@ -13,6 +13,7 @@ import { UPLOAD_FILE } from '../upload';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromUser } from '../../sharedSelectors';
 import { PENDING } from '../../../../common/progressStatus';
+import { CLEAR_PUBLISHED } from '../clear';
 
 export function* handleStartProgressSaga() {
     yield call(delay, 1000);
@@ -34,7 +35,7 @@ export function* handleStartProgressSaga() {
 
 export default function* progressSaga() {
     yield takeEvery(
-        [PUBLISH, LOAD_PROGRESS, UPLOAD_FILE],
+        [PUBLISH, LOAD_PROGRESS, UPLOAD_FILE, CLEAR_PUBLISHED],
         handleStartProgressSaga,
     );
 }
