@@ -17,7 +17,7 @@ export const PUBLISH = 'publish';
 
 export const publisherQueue = new Queue('publisher', process.env.REDIS_URL);
 
-publisherQueue.process(PUBLISH, (job, done) => {
+publisherQueue.process(PUBLISH, 1,(job, done) => {
     publish()
         .then(() => done())
         .catch(err => {
