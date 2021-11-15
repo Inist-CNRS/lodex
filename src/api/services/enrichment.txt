@@ -1,0 +1,21 @@
+prepend = basics:JSONParse
+append = dump?indent=true
+
+[use]
+plugin = basics
+
+[validate]
+path = id
+rule = required
+
+path = value
+rule = required
+
+[assign]
+path = value
+value = get('[[COLUMN NAME]]')
+
+[URLConnect]
+url = [[WEB SERVICE URL]]
+timeout = 5000
+noerror = false

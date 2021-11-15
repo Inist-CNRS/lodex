@@ -74,8 +74,13 @@ export const EnrichmentFormComponent = ({
                 sourceColumn: formData.get('sourceColumn'),
                 subPath: formData.get('subPath'),
             };
+        }else {
+            payload = {
+                ...payload,
+                rule: formData.get('rule'),
+            };
         }
-
+        console.log(payload)
         if (isEdit) {
             onUpdateEnrichment({
                 enrichment: { _id: initialValues._id, ...payload },
