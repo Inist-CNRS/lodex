@@ -8,10 +8,8 @@ import PublicationPreview from './preview/publication/PublicationPreview';
 import Statistics from './Statistics';
 import { fromParsing } from './selectors';
 import ParsingResult from './parsing/ParsingResult';
-import { buildFieldsDefinitionsArray, FieldGrid } from '../fields/FieldGrid';
+import { FieldGrid } from '../fields/FieldGrid';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
-import { fromFields } from '../sharedSelectors';
-import { URI_FIELD_NAME } from '../../../common/uris';
 import AddFieldFromColumnButton from './Appbar/AddFieldFromColumnButton';
 
 const useStyles = makeStyles({
@@ -23,7 +21,6 @@ const useStyles = makeStyles({
 
 export const FieldsEditComponent = ({
     filter,
-    fields,
     showAddColumns,
     addFieldButton,
     subresourceId,
@@ -65,16 +62,11 @@ export const FieldsEditComponent = ({
                     <Statistics
                         mode="display"
                         filter={filter}
-                        fields={fields}
+                        subresourceId={subresourceId}
                     />
                     <FieldGrid
-                        key={JSON.stringify(
-                            buildFieldsDefinitionsArray(fields),
-                        )}
                         filter={filter}
-                        fields={fields}
-                        isSubresource={!!subresourceId}
-                        addFieldButton={addFieldButton}
+                        subresourceId={subresourceId}
                     />
                 </>
             )}
@@ -83,12 +75,12 @@ export const FieldsEditComponent = ({
                     <PublicationPreview
                         readonly
                         filter={filter}
-                        fields={fields}
+                        subresourceId={subresourceId}
                     />
                     <Statistics
                         mode="display"
                         filter={filter}
-                        fields={fields}
+                        subresourceId={subresourceId}
                     />
                 </>
             )}
@@ -99,23 +91,13 @@ export const FieldsEditComponent = ({
 FieldsEditComponent.propTypes = {
     showAddColumns: PropTypes.bool.isRequired,
     filter: PropTypes.string,
-    fields: PropTypes.array,
     subresourceId: PropTypes.string,
     defaultTab: PropTypes.oneOf(['page', 'published']),
     addFieldButton: PropTypes.element,
 };
 
 export const FieldsEdit = compose(
-    connect((state, { subresourceId, filter }) => ({
+    connect((state) => ({
         showAddColumns: fromParsing.showAddColumns(state),
-        fields: (!subresourceId
-            ? fromFields.getFromFilterFields(state, filter)
-            : fromFields
-                  .getSubresourceFields(state, subresourceId)
-                  .filter(field => {
-                      // Remove subresource field uri from editable columns
-                      return !field.name.endsWith('_uri');
-                  })
-        ).filter(field => field.name !== URI_FIELD_NAME),
     })),
 )(FieldsEditComponent);

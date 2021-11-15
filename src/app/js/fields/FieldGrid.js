@@ -256,8 +256,6 @@ const FieldGridComponent = ({
     changePositions,
     saveFieldFromData,
     p: polyglot,
-    isSubresource,
-    addFieldButton,
 }) => {
     const classes = useStyles();
 
@@ -317,13 +315,15 @@ FieldGridComponent.propTypes = {
     filter: PropTypes.string,
     editField: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    isSubresource: PropTypes.bool,
-    addFieldButton: PropTypes.func.isRequired,
 };
+
+const mapStateToProps = (state, { subresourceId, filter }) => ({
+    fields: fromFields.getEditingFields(state, { filter, subresourceId }),
+});
 
 export const FieldGrid = compose(
     translate,
-    connect(undefined, {
+    connect(mapStateToProps, {
         loadField,
         editField,
         changePositions,
