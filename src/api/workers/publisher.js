@@ -1,55 +1,29 @@
 import Queue from 'bull';
-import progress from '../services/progress';
-import indexSearchableFields from '../services/indexSearchableFields';
+import publish from '../services/publish';
 import publishFacets from '../controller/api/publishFacets';
 import publishCharacteristics from '../services/publishCharacteristics';
 import publishDocuments from '../services/publishDocuments';
 import repositoryMiddleware from '../services/repositoryMiddleware';
-import { CREATE_INDEX } from '../../common/progressStatus';
-import {
-    SCOPE_COLLECTION,
-    SCOPE_DATASET,
-    SCOPE_DOCUMENT,
-    SCOPE_GRAPHIC,
-} from '../../common/scope';
 
 export const PUBLISH = 'publish';
 
 export const publisherQueue = new Queue('publisher', process.env.REDIS_URL);
 
-publisherQueue.process(PUBLISH, 1,(job, done) => {
-    publish()
-        .then(() => done())
+publisherQueue.process(PUBLISH,  (job, done) => {
+    startPublishing(job)
+        .then(() => {
+            job.progress(100);
+            done();
+        })
         .catch(err => {
             handlePublishError();
             done(err);
         });
 });
 
-const publish = async () => {
-    const ctx = await prepareContext({});
-
-    const count = await ctx.dataset.count({});
-    const fields = await ctx.field.findAll();
-
-    const collectionScopeFields = fields.filter(c =>
-        [SCOPE_COLLECTION, SCOPE_DOCUMENT].includes(c.scope),
-    );
-
-    await ctx.publishDocuments(ctx, count, collectionScopeFields);
-
-    const datasetScopeFields = fields.filter(c =>
-        [SCOPE_DATASET, SCOPE_GRAPHIC].includes(c.scope),
-    );
-
-    await ctx.publishCharacteristics(ctx, datasetScopeFields, count);
-    await ctx.publishFacets(ctx, fields, true);
-
-    progress.start(CREATE_INDEX, null);
-
-    await indexSearchableFields();
-
-    progress.finish();
+const startPublishing = async (job) => {
+    const ctx = await prepareContext({job});
+    await publish(ctx);
 };
 
 const handlePublishError = async () => {
