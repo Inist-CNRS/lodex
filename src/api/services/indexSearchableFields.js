@@ -4,7 +4,8 @@ import field from '../models/field';
 import publishedDataset from '../models/publishedDataset';
 
 export default async () => {
-    return composeAsync(
+    ctx.job && ctx.job.log("Indexing fields");
+    await composeAsync(
         await composeAsync(mongoClient, field, f => f.findSearchableNames)(),
         await composeAsync(
             mongoClient,
@@ -12,4 +13,5 @@ export default async () => {
             p => p.createTextIndexes,
         )(),
     )();
+    ctx.job && ctx.job.log("Fields indexed");
 };

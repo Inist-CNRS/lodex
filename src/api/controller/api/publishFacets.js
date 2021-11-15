@@ -8,11 +8,12 @@ export default async (ctx, fields, withProgress = false) => {
         return;
     }
     withProgress && progress.start(PUBLISH_FACET, facetFields.length);
+    ctx.job && ctx.job.log("Publishing facets");
 
     const names = fields.map(({ name }) => name);
     await ctx.publishedFacet.remove({ field: { $in: names } });
 
-    return facetFields
+    await facetFields
         .reduce(
             async (prevPromise, field) =>
                 prevPromise.then(async () => {
@@ -33,4 +34,5 @@ export default async (ctx, fields, withProgress = false) => {
             }
             progress.throw(error);
         });
+    ctx.job && ctx.job.log("Facets published");
 };
