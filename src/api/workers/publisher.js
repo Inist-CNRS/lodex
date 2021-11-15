@@ -7,7 +7,7 @@ import repositoryMiddleware from '../services/repositoryMiddleware';
 
 export const PUBLISH = 'publish';
 
-export const publisherQueue = new Queue('publisher', process.env.REDIS_URL);
+export const publisherQueue = new Queue('publisher', process.env.REDIS_URL, {defaultJobOptions:{removeOnComplete:100, removeOnFail:100}});
 
 publisherQueue.process(PUBLISH,  (job, done) => {
     startPublishing(job)
