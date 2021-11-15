@@ -58,6 +58,8 @@
         "@babel/runtime": "^7.14.6",
         "@ezs/analytics": "^1.16.9",
         "@ezs/basics": "^1.15.1",
+        "@bull-board/api": "^3.7.0",
+        "@bull-board/koa": "^3.7.0",
         "@ezs/booster": "^1.2.4",
         "@ezs/conditor": "^1.9.18",
         "@ezs/core": "^1.26.1",
