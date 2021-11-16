@@ -6,7 +6,7 @@ describe('publish', () => {
     describe('doPublish', () => {
 
         beforeAll(async () => {
-            doPublish({});
+            await doPublish({});
         });
         it('should add event to publisher queue', () => {
             expect(publisherQueue.add).toHaveBeenCalledWith(PUBLISH);
