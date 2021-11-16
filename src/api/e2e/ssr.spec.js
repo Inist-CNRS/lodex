@@ -25,8 +25,9 @@ const authentifiedHeader = {
 describe('ssr', () => {
     let server;
 
-    beforeAll(() => {
+    beforeAll((done) => {
         server = requestServer();
+        done();
     });
 
     beforeEach(async () => {
@@ -50,7 +51,7 @@ describe('ssr', () => {
                 );
             });
 
-            it('should preload the dataset for home', async () => {
+            it('should preload the dataset for home', () => {
                 expect(state.dataset.dataset).toEqual([
                     {
                         uri: '1',
@@ -97,7 +98,7 @@ describe('ssr', () => {
                 ]);
             });
 
-            it('should preload characteristics for home', async () => {
+            it('should preload characteristics for home', () => {
                 expect(
                     state.characteristic.characteristics.map(d =>
                         omit(d, '_id'),
@@ -128,7 +129,7 @@ describe('ssr', () => {
                 expect(state.router.location.pathname).toBe('/login');
             });
 
-            it('should not preload the dataset for home', async () => {
+            it('should not preload the dataset for home', () => {
                 expect(state.dataset.dataset).toEqual([]);
             });
 
@@ -137,11 +138,11 @@ describe('ssr', () => {
                 expect(Object.keys(state.fields.byName)).toEqual([]);
             });
 
-            it('should not preload characteristics for home', async () => {
+            it('should not preload characteristics for home', () => {
                 expect(state.characteristic.characteristics).toEqual([]);
             });
 
-            it('should not preload exporters for home', async () => {
+            it('should not preload exporters for home', () => {
                 expect(state.export.exporters).toEqual([]);
             });
 
@@ -185,7 +186,7 @@ describe('ssr', () => {
                 ]);
             });
 
-            it('should preload characteristics', async () => {
+            it('should preload characteristics', () => {
                 expect(
                     state.characteristic.characteristics.map(d =>
                         omit(d, '_id'),
@@ -193,7 +194,7 @@ describe('ssr', () => {
                 ).toEqual([{ movie: 'LOTR', author: 'Peter Jackson' }]);
             });
 
-            it('should preload resource', async () => {
+            it('should preload resource', () => {
                 expect(omit(state.resource.resource, '_id')).toEqual({
                     uri: '1',
                     versions: [
@@ -233,7 +234,7 @@ describe('ssr', () => {
                 expect(Object.keys(state.fields.byName)).toEqual([]);
             });
 
-            it('should not preload characteristics', async () => {
+            it('should not preload characteristics',  () => {
                 expect(
                     state.characteristic.characteristics.map(d =>
                         omit(d, '_id'),
@@ -241,7 +242,7 @@ describe('ssr', () => {
                 ).toEqual([]);
             });
 
-            it('should not preload resource', async () => {
+            it('should not preload resource',  () => {
                 expect(omit(state.resource.resource, '_id')).toEqual({});
             });
 
