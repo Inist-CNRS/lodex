@@ -59,7 +59,6 @@ export default handleActions(
             progress: undefined,
             target: undefined,
             error: undefined,
-            isBackground: true,
         }),
         [ERROR_PROGRESS]: state => ({
             ...state,
