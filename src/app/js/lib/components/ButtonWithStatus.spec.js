@@ -150,7 +150,8 @@ describe('<ButtonWithStatus />', () => {
                 .props();
             expect(button.variant).toEqual('contained');
             expect(button.disabled).toEqual(true);
-            expect(button.startIcon).toEqual(null);
+            expect(button.startIcon).toEqual(
+                <CircularProgress variant="indeterminate" size={20} />);
             expect(button.children).toEqual('Foo');
             expect(button.className).toContain('loadingProgress');
             const progressBar = wrapper
