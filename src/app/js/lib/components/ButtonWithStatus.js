@@ -8,6 +8,22 @@ import Success from '@material-ui/icons/Done';
 import { makeStyles } from '@material-ui/styles';
 import theme from '../../theme';
 
+const useStyles = makeStyles({
+    container: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    loadingProgress: {
+        borderBottomLeftRadius: '0px',
+        borderBottomRightRadius: '0px',
+    },
+    progress: {
+        margin: '0 4px 0',
+    },
+    colorPrimary: { backgroundColor: theme.white.primary },
+    barColorPrimary: { backgroundColor: theme.green.secondary },
+});
+
 const ButtonWithStatus = ({
     raised,
     error,
@@ -57,21 +73,6 @@ const ButtonWithStatus = ({
         </div>
     );
 };
-const useStyles = makeStyles({
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    loadingProgress: {
-        borderBottomLeftRadius: '0px',
-        borderBottomRightRadius: '0px',
-    },
-    progress: {
-        margin: '0 4px 0',
-    },
-    colorPrimary: { backgroundColor: theme.white.primary },
-    barColorPrimary: { backgroundColor: theme.green.secondary },
-});
 
 const getIcon = (error, success, loading, target) => {
     if (loading) return <CircularProgress variant="indeterminate" size={20} />;
