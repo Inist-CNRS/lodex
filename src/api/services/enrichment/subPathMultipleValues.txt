@@ -1,0 +1,32 @@
+[use]
+plugin = basics
+plugin = analytics
+
+[expand]
+path = [[SOURCE COLUMN]]
+size = 1
+
+[expand/exploding]
+
+[expand/assign]
+path = value.[[SUB PATH]]_enriched
+value = get('value.[[SUB PATH]]')
+
+[expand/expand]
+path = value.[[SUB PATH]]_enriched
+size = 100
+
+[expand/expand/exploding]
+
+[expand/expand/expand]
+path = value
+size = 100
+
+[expand/expand/expand/URLConnect]
+url = [[WEB SERVICE URL]]
+timeout = 1000
+noerror = true
+
+[expand/expand/aggregate]
+
+[expand/aggregate]
