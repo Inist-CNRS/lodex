@@ -7,7 +7,7 @@ import { publisherQueue, PUBLISH } from '../../workers/publisher';
 
 const app = new Koa();
 
-export const doPublish = async ctx => {
+export const doPublish = ctx => {
     publisherQueue.add(PUBLISH);
     ctx.status = 200;
     ctx.body = {
