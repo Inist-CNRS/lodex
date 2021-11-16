@@ -10,7 +10,6 @@ import {
 } from '../../common/scope';
 
 export default async ctx => {
-    await clearPublished(ctx);
 
     const count = await ctx.dataset.count({});
     const fields = await ctx.field.findAll();
@@ -19,6 +18,7 @@ export default async ctx => {
         [SCOPE_COLLECTION, SCOPE_DOCUMENT].includes(c.scope),
     );
 
+    await clearPublished(ctx);
     await ctx.publishDocuments(ctx, count, collectionScopeFields);
 
 
@@ -32,7 +32,6 @@ export default async ctx => {
     progress.start(CREATE_INDEX, null);
 
     await indexSearchableFields();
-
 
     progress.finish();
 };
