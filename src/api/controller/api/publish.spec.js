@@ -1,7 +1,4 @@
-import { doPublish, preparePublish, handlePublishError } from './publish';
-import publishCharacteristics from '../../services/publishCharacteristics';
-import publishDocuments from '../../services/publishDocuments';
-import publishFacets from './publishFacets';
+import { doPublish } from './publish';
 
 describe('publish', () => {
     describe('doPublish', () => {
