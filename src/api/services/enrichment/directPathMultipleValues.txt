@@ -1,0 +1,24 @@
+[use]
+plugin = basics
+plugin = analytics
+
+[assign]
+path = [[COLUMN NAME]]_enriched
+value = get('[[COLUMN NAME]]')
+
+[expand]
+path = [[COLUMN NAME]]_enriched
+size = 1
+
+[expand/exploding]
+
+[expand/expand]
+path = value
+size = 100
+
+[expand/expand/URLConnect]
+url = [[WEB SERVICE URL]]
+timeout = 1000
+noerror = true
+
+[expand/aggregate]

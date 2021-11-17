@@ -6,6 +6,7 @@ import {
     getEnrichmentDatasetCandidate,
     getEnrichmentWorker,
 } from '../../workers/enrichment';
+import { createEnrichmentRule } from '../../services/enrichment/enrichment';
 
 export const setup = async (ctx, next) => {
     try {
@@ -17,15 +18,21 @@ export const setup = async (ctx, next) => {
 };
 
 export const postEnrichment = async ctx => {
-    const newResource = ctx.request.body;
-    const result = await ctx.enrichment.create(newResource);
+    try {
+        const newEnrichmentWithRule = await createEnrichmentRule(ctx);
+        const result = await ctx.enrichment.create(newEnrichmentWithRule);
 
-    if (result) {
-        ctx.body = result;
+        if (result) {
+            ctx.body = result;
+            return;
+        }
+
+        ctx.status = 403;
+    } catch (error) {
+        ctx.status = 403;
+        ctx.body = { error: error.message };
         return;
     }
-
-    ctx.status = 500;
 };
 
 export const putEnrichment = async (ctx, id) => {

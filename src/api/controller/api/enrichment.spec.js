@@ -4,29 +4,29 @@ describe('Enrichment controller', () => {
     describe('postEnrichment', () => {
         it('should call enrichment create repository method', async () => {
             const ctx = {
-                request: { body: 'my enrichment' },
+                request: { body: {advancedMode: true, name: 'test'} },
                 enrichment: { create: jest.fn() },
             };
 
             await postEnrichment(ctx);
 
-            expect(ctx.enrichment.create).toHaveBeenCalledWith('my enrichment');
+            expect(ctx.enrichment.create).toHaveBeenCalledWith({advancedMode: true, name: 'test'});
         });
 
         it('should return result as body result', async () => {
             const ctx = {
-                request: { body: 'my enrichment' },
+                request: { body: {advancedMode: true, name: 'test'} },
                 enrichment: {
-                    create: jest.fn(() => 'enrichment create result'),
+                    create: jest.fn(() => {return {advancedMode: true, name: 'test'}}),
                 },
             };
 
             await postEnrichment(ctx);
 
-            expect(ctx.body).toBe('enrichment create result');
+            expect(ctx.body).toStrictEqual({advancedMode: true, name: 'test'});
         });
 
-        it("should set status 500 if there's not result", async () => {
+        it("should set status 403 if there's not result", async () => {
             const ctx = {
                 request: { body: 'my enrichment' },
                 enrichment: {
@@ -36,7 +36,7 @@ describe('Enrichment controller', () => {
 
             await postEnrichment(ctx);
 
-            expect(ctx.status).toBe(500);
+            expect(ctx.status).toBe(403);
         });
     });
 
