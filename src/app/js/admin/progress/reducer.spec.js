@@ -41,6 +41,7 @@ describe('progress reducer', () => {
                 error: undefined,
                 progress: undefined,
                 target: undefined,
+                isBackground: true,
             });
         });
     });

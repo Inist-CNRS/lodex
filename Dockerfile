@@ -14,7 +14,7 @@ RUN mkdir /app/upload && \
     ./lodex-extended-sync
 
 FROM node:12-alpine AS release
-RUN apk add --no-cache su-exec
+RUN apk add --no-cache su-exec redis
 COPY --from=build /app /app
 
 # ezmasterizing of lodex

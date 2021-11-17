@@ -50,12 +50,12 @@ export default handleActions(
     initialState,
 );
 
-export const getIsClearing = state => state.loading;
+export const getIsLoading = state => state.loading;
 export const hasClearSucceeded = state => state.status === 'success';
 export const hasClearFailed = state => state.status === 'error';
 
 export const selectors = {
-    getIsClearing,
+    getIsLoading,
     hasClearSucceeded,
     hasClearFailed,
 };

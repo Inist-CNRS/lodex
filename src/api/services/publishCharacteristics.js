@@ -5,6 +5,8 @@ export const publishCharacteristicsFactory = ({ getDocumentTransformer }) =>
         if (!datasetScopeFields.length) {
             return;
         }
+
+        ctx.job && ctx.job.log("Publishing characteristics");
         const getPublishedCharacteristics = getDocumentTransformer(
             ctx.dataset.findBy,
             datasetScopeFields,
@@ -31,6 +33,7 @@ export const publishCharacteristicsFactory = ({ getDocumentTransformer }) =>
                 publishedCharacteristics,
             );
         }
+        ctx.job && ctx.job.log("Characteristics published");
     };
 
 export default publishCharacteristicsFactory({ getDocumentTransformer });

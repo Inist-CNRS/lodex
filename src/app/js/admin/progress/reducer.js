@@ -1,5 +1,6 @@
-import { createAction, handleActions, combineActions } from 'redux-actions';
+import { createAction, handleActions } from 'redux-actions';
 import { PENDING, STARTING, ERROR } from '../../../../common/progressStatus';
+import { CLEAR_DATASET } from '../clear';
 import { PUBLISH } from '../publish';
 import { UPLOAD_FILE } from '../upload';
 
@@ -21,6 +22,7 @@ export const defaultState = {
     target: undefined,
     error: false,
     symbol: undefined,
+    isBackground: false,
 };
 
 export default handleActions(
@@ -36,7 +38,22 @@ export default handleActions(
             symbol,
             error: undefined,
         }),
-        [combineActions(PUBLISH, UPLOAD_FILE)]: state => ({
+        [UPLOAD_FILE]: state => ({
+            ...state,
+            status: STARTING,
+            progress: undefined,
+            target: undefined,
+            error: undefined,
+        }),
+        [PUBLISH]: state => ({
+            ...state,
+            status: STARTING,
+            progress: undefined,
+            target: undefined,
+            error: undefined,
+            isBackground: true,
+        }),
+        [CLEAR_DATASET]: state => ({
             ...state,
             status: STARTING,
             progress: undefined,
@@ -62,7 +79,9 @@ export default handleActions(
 );
 
 const getProgress = state => state;
+const getProgressAndTarget = ({ progress, target }) => ({ progress, target });
 
 export const selectors = {
     getProgress,
+    getProgressAndTarget,
 };

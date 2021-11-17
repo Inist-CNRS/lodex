@@ -466,6 +466,7 @@
 "not_use_url"	"Add from uploading a file"	"Ajouter en téléchargeant un fichier"
 "bad_format_error"	"Error: Unable to display the value"	"Erreur : Impossible d'afficher la valeur"
 "bad_format_details"	"The format of this field does not allow the current value to be displayed. Please edit the value or change the format."	"Le format de ce champ ne permet pas d'afficher la valeur courante. Veuillez éditer la valeur ou changer de format. "
+"publishing"	"Publishing..."	"Publication..."
 "PUBLISH_FACET"	"Publishing facet"	"Publication des facettes"
 "PUBLISH_DOCUMENT"	"Publishing documents"	"Publication des documents"
 "STARTING"	"Starting"	"Démarrage"

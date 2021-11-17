@@ -77,13 +77,7 @@ class ClearDialogComponent extends Component {
     };
 
     render() {
-        const {
-            type,
-            p: polyglot,
-            onClose,
-            isClearing,
-            hasFailed,
-        } = this.props;
+        const { type, p: polyglot, onClose, isLoading, hasFailed } = this.props;
 
         const { validName } = this.state;
 
@@ -96,7 +90,7 @@ class ClearDialogComponent extends Component {
                 color="primary"
                 error={hasFailed}
                 disabled={!validName}
-                loading={isClearing}
+                loading={isLoading}
             >
                 {polyglot.t('confirm')}
             </ButtonWithStatus>,
@@ -148,14 +142,14 @@ ClearDialogComponent.propTypes = {
     clearDataset: PropTypes.func.isRequired,
     clearPublished: PropTypes.func.isRequired,
     reloadParsing: PropTypes.func.isRequired,
-    isClearing: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     hasFailed: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
     succeeded: fromClear.hasClearSucceeded(state),
     hasFailed: fromClear.hasClearFailed(state),
-    isClearing: fromClear.getIsClearing(state),
+    isLoading: fromClear.getIsLoading(state),
 });
 
 const mapDispatchToProps = {

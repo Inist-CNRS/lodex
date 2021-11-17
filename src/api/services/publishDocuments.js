@@ -84,6 +84,7 @@ export const publishDocumentsFactory = ({
     getDocumentTransformer,
     transformAllDocuments,
 }) => async (ctx, count, fields) => {
+    ctx.job && ctx.job.log("Publishing documents");
     const mainResourceFields = fields
         .filter(
             c =>
@@ -195,6 +196,7 @@ export const publishDocumentsFactory = ({
         ctx.publishedDataset.insertBatch,
         versionTransformerDecorator(transformMainResourceDocument),
     );
+    ctx.job && ctx.job.log("Document published");
 };
 
 export default publishDocumentsFactory({

@@ -1,64 +1,36 @@
 import Koa from 'koa';
 import route from 'koa-route';
-import get from 'lodash.get';
 
-import publishDocuments from '../../services/publishDocuments';
-import publishCharacteristics from '../../services/publishCharacteristics';
-import publishFacets from './publishFacets';
-import publish from '../../services/publish';
+import clearPublished from '../../services/clearPublished';
+import { publisherQueue, PUBLISH } from '../../workers/publisher';
+
 
 const app = new Koa();
 
-export const preparePublish = async (ctx, next) => {
-    ctx.publishDocuments = publishDocuments;
-    ctx.publishCharacteristics = publishCharacteristics;
-    ctx.publishFacets = publishFacets;
-    await next();
-};
-
-export const handlePublishError = async (ctx, next) => {
-    try {
-        await next();
-    } catch (error) {
-        await ctx.publishedDataset.remove({});
-        await ctx.publishedCharacteristic.remove({});
-        throw error;
-    }
-};
-
 export const doPublish = async ctx => {
-    publish(ctx);
+    await publisherQueue.add(PUBLISH);
     ctx.status = 200;
     ctx.body = {
-        status: 'success',
+        status: 'publishing',
     };
 };
 
-export const clearPublished = async ctx => {
+export const handleClearPublished = async ctx => {
     try {
-        await ctx.dataset.updateMany(
-            {},
-            { $unset: { lodex_published: '' } },
-            { multi: true },
-        );
-        await ctx.publishedDataset.remove({});
-        await ctx.publishedCharacteristic.remove({});
-        await ctx.publishedFacet.remove({});
-
+        await clearPublished(ctx);
         ctx.body = {
             status: 'success',
         };
     } catch (error) {
+        console.log(error);
         ctx.body = {
             status: 'error',
         };
     }
 };
 
-app.use(route.post('/', preparePublish));
-app.use(route.post('/', handlePublishError));
 app.use(route.post('/', doPublish));
 
-app.use(route.delete('/', clearPublished));
+app.use(route.delete('/', handleClearPublished));
 
 export default app;
