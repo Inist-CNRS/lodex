@@ -80,7 +80,7 @@ export const EnrichmentFormComponent = ({
                 rule: formData.get('rule'),
             };
         }
-        console.log(payload)
+
         if (isEdit) {
             onUpdateEnrichment({
                 enrichment: { _id: initialValues._id, ...payload },

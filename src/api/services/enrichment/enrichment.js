@@ -3,7 +3,7 @@ import path from 'path';
 
 export const createEnrichmentRule = async ctx => {
     const enrichment = ctx.request.body;
-    if (enrichment.hasOwnProperty('rule')) {
+    if (enrichment.advancedMode) {
         return enrichment;
     }
 
@@ -11,32 +11,28 @@ export const createEnrichmentRule = async ctx => {
         throw new Error(`Missing parameters`);
     }
 
+    const excerpt = await ctx.dataset.getExcerpt();
+    const sourceData = excerpt[0][enrichment.sourceColumn];
+    let data;
     try {
-        const excerpt = await ctx.dataset.getExcerpt();
-        const sourceData = excerpt[0][enrichment.sourceColumn];
-        let data;
-        try {
-            data = JSON.parse(sourceData);
-        } catch {
-            data = sourceData;
-        }
-
-        let rule = getEnrichmentRuleModel(data, enrichment);
-
-        return {
-            name: enrichment.name,
-            advancedMode: enrichment.advancedMode,
-            rule: rule,
-        };
-    } catch (e) {
-        console.log('Error:', e.stack);
+        data = JSON.parse(sourceData);
+    } catch {
+        data = sourceData;
     }
+
+    let rule = getEnrichmentRuleModel(data, enrichment);
+
+    return {
+        name: enrichment.name,
+        advancedMode: enrichment.advancedMode,
+        rule: rule,
+    };
 };
 
 export const getEnrichmentRuleModel = (sourceData, enrichment) => {
     try {
         let rule;
-        if (typeof sourceData === 'string' || Array.isArray(sourceData)) {
+        if (typeof sourceData === 'string' || (Array.isArray(sourceData) && typeof sourceData[0] === 'string')) {
             const file = Array.isArray(sourceData)
                 ? './directPathMultipleValues.txt'
                 : './directPathSingleValue.txt';
@@ -51,12 +47,12 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
             );
         }
 
-        if (typeof sourceData === 'object') {
+        if (typeof sourceData === 'object' && (Array.isArray(sourceData)  && typeof sourceData[0] === 'object')) {
             if (!enrichment.subPath) {
                 throw new Error(`Missing sub-path parameters`);
             }
             const subPathData = sourceData[0][enrichment.subPath];
-            if (!!!subPathData) {
+            if (!subPathData) {
                 throw new Error(`No data with this sub-path`);
             }
 
