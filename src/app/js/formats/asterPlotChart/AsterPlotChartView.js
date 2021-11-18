@@ -11,6 +11,7 @@ import { getShortText } from '../../lib/longTexts';
 import stylesToClassname from '../../lib/stylesToClassName';
 import injectData from '../injectData';
 import AsterPlot from './AsterPlot';
+import { getResourceUri } from '../../../../common/uris';
 
 const sortByKey = (key = '') => (dataA, dataB) => {
     if (key === '') {
@@ -32,10 +33,9 @@ const prepareData = (data = [], history, polyglot) =>
             const label = `<div>${title}<br/><br/>${value}% ${polyglot.t(
                 'similar',
             )}</div>`;
-
             const onClick = () => {
                 history.push({
-                    pathname: `/${d.target}`,
+                    pathname: getResourceUri({uri: d.target}),
                     state: {},
                 });
             };
