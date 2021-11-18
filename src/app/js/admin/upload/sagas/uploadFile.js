@@ -18,9 +18,7 @@ export function* handleUploadFile(action) {
         preventUnload();
         const loaderName = yield select(fromUpload.getLoaderName);
         const token = yield select(fromUser.getToken);
-        const { file } = yield race({
-            file: call(loadDatasetFile, action.payload, token, loaderName),
-        });
+        const file = yield call(loadDatasetFile, action.payload, token, loaderName);
 
         allowUnload();
         yield take(FINISH_PROGRESS);
