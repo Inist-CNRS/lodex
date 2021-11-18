@@ -18,7 +18,7 @@ const styles = {
         overflowX: 'auto',
         width: 'auto',
         minWidth: '100%',
-        borderLeft: '1px solid rgb(224, 224, 224)',
+        border: '4px solid rgb(95, 99, 104, 0.1)',
     },
     body: {
         position: 'relative',
@@ -57,14 +57,18 @@ export const filterColumnsToShow = (
     isHiddenEnrichedColumn,
 ) => {
     if (isHiddenEnrichedColumn && isHiddenLoadedColumn) {
-        return [];
+        return columns.filter(column => column === 'uri');
     }
     if (isHiddenEnrichedColumn) {
-        return columns.filter(column => !enrichmentsNames.includes(column));
+        return columns.filter(
+            column => !enrichmentsNames.includes(column) || column === 'uri',
+        );
     }
 
     if (isHiddenLoadedColumn) {
-        return columns.filter(column => enrichmentsNames.includes(column));
+        return columns.filter(
+            column => enrichmentsNames.includes(column) || column === 'uri',
+        );
     }
 
     return columns;
@@ -115,44 +119,42 @@ export const ParsingExcerptComponent = ({
                     ))}
                 </TableRow>
             </TableHead>
-            {(!isHiddenLoadedColumn || !isHiddenEnrichedColumn) && (
-                <TableBody style={styles.body}>
-                    {lines.map((line, index) => (
-                        <TableRow
-                            key={`${line._id}_data_row`}
-                            style={getRowStyle(index, total)}
-                        >
-                            {columnsToShow.map(column => {
-                                const showAddColumnButton =
-                                    showAddColumns &&
-                                    showAddColumns &&
-                                    (index === total - 3 ||
-                                        (total < 3 && index === 0));
+            <TableBody style={styles.body}>
+                {lines.map((line, index) => (
+                    <TableRow
+                        key={`${line._id}_data_row`}
+                        style={getRowStyle(index, total)}
+                    >
+                        {columnsToShow.map(column => {
+                            const showAddColumnButton =
+                                showAddColumns &&
+                                showAddColumns &&
+                                (index === total - 3 ||
+                                    (total < 3 && index === 0));
 
-                                return (
-                                    <ParsingExcerptColumn
-                                        key={`${column}_${line._id}`}
-                                        value={`${line[column] || ''}`}
-                                        style={getColumnStyle(
-                                            enrichmentsNames,
-                                            column,
-                                        )}
-                                    >
-                                        {showAddColumnButton && (
-                                            <ParsingExcerptAddColumn
-                                                key={`add_column_${column}`}
-                                                name={column}
-                                                onAddColumn={handleAddColumn}
-                                                atTop={total < 3}
-                                            />
-                                        )}
-                                    </ParsingExcerptColumn>
-                                );
-                            })}
-                        </TableRow>
-                    ))}
-                </TableBody>
-            )}
+                            return (
+                                <ParsingExcerptColumn
+                                    key={`${column}_${line._id}`}
+                                    value={`${line[column] || ''}`}
+                                    style={getColumnStyle(
+                                        enrichmentsNames,
+                                        column,
+                                    )}
+                                >
+                                    {showAddColumnButton && (
+                                        <ParsingExcerptAddColumn
+                                            key={`add_column_${column}`}
+                                            name={column}
+                                            onAddColumn={handleAddColumn}
+                                            atTop={total < 3}
+                                        />
+                                    )}
+                                </ParsingExcerptColumn>
+                            );
+                        })}
+                    </TableRow>
+                ))}
+            </TableBody>
         </Table>
     );
 };

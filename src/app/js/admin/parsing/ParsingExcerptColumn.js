@@ -9,7 +9,7 @@ const styles = {
         position: 'relative',
         minWidth: '10rem',
         overflow: 'visible',
-        height: 'auto',
+        height: '5rem',
     },
 };
 
