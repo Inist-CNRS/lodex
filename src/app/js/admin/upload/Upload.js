@@ -158,6 +158,7 @@ export const UploadComponent = ({
                             )}
                         </>
                     }
+                    showAlerts={['error']}
                     showPreviewsInDropzone
                     showFileNamesInPreview
                     alertSnackbarProps={{
@@ -185,36 +186,45 @@ export const UploadComponent = ({
                     helperText={url && !isUrlValid && polyglot.t('invalid_url')}
                 />
             )}
-            <LoaderSelect
-                loaders={loaders}
-                setLoader={onChangeLoaderName}
-                value={loaderName}
-            />
-            {useUrlForUpload ? (
-                <Button
-                    variant="contained"
-                    disabled={!isUrlValid}
-                    component="label"
-                    color="primary"
-                    fullWidth
-                    className={classnames(classes.button, 'btn-upload-url')}
-                    disabled={!url || !isUrlValid}
-                    onClick={handleUrlAdded}
-                >
-                    {polyglot.t('upload_url')}
-                </Button>
-            ) : (
-                <Button
-                    variant="contained"
-                    component="label"
-                    color="primary"
-                    fullWidth
-                    className={classnames(classes.button, 'btn-upload-dataset')}
-                    disabled={files.length === 0}
-                    onClick={handleFileUploaded}
-                >
-                    {polyglot.t('upload_file')}
-                </Button>
+            {!!files.length && (
+                <>
+                    <LoaderSelect
+                        loaders={loaders}
+                        setLoader={onChangeLoaderName}
+                        value={loaderName}
+                    />
+                    {useUrlForUpload ? (
+                        <Button
+                            variant="contained"
+                            component="label"
+                            color="primary"
+                            fullWidth
+                            className={classnames(
+                                classes.button,
+                                'btn-upload-url',
+                            )}
+                            disabled={!url || !isUrlValid}
+                            onClick={handleUrlAdded}
+                        >
+                            {polyglot.t('upload_url')}
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="contained"
+                            component="label"
+                            color="primary"
+                            fullWidth
+                            className={classnames(
+                                classes.button,
+                                'btn-upload-dataset',
+                            )}
+                            disabled={files.length === 0}
+                            onClick={handleFileUploaded}
+                        >
+                            {polyglot.t('upload_file')}
+                        </Button>
+                    )}
+                </>
             )}
             <PopupConfirmUpload
                 history={history}
