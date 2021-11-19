@@ -7,9 +7,7 @@ export const openImport = () => {
 };
 
 export const importDataset = (filename, mimeType = 'text/csv') => {
-    fillInputWithFixture('input[type=file]', filename, mimeType);
-    cy.wait(300);
-    cy.get('.btn-upload-dataset').click({ force: true });
+    addFile(filename, mimeType);
 
     cy.get('.progress').should('exist');
     cy.wait(300);
@@ -180,4 +178,9 @@ export const checkListOfFiltererFileFormats = () => {
     cy.get('button')
         .contains('Cancel')
         .click({ force: true });
+};
+export const addFile = (filename, mimeType = 'text/csv') => {
+    fillInputWithFixture('input[type=file]', filename, mimeType);
+    cy.wait(300);
+    cy.get('.btn-upload-dataset').click({ force: true });
 };
