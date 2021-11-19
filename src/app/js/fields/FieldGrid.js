@@ -43,6 +43,7 @@ const useStyles = makeStyles({
     },
     property: {
         border: '1px solid #ccc',
+        cursor: 'pointer',
         borderRadius: 3,
         textAlign: 'center',
         fontWeight: 'bold',
@@ -157,7 +158,7 @@ const ItemGridLabel = connect((state, { field }) => ({
 export const buildFieldsDefinitionsArray = fields =>
     fields.map(field => ({
         id: field.name,
-        width: !!field.width ? parseInt(field.width, 10) / 10 : 10,
+        width: field.width ? parseInt(field.width, 10) / 10 : 10,
         position: field.position,
     }));
 
@@ -206,7 +207,11 @@ const DraggableItemGrid = ({
                 isResizable={allowResize}
             >
                 {fields.map(field => (
-                    <div key={field.name} className={classes.property}>
+                    <div
+                        key={field.name}
+                        className={classes.property}
+                        onClick={() => onEditField(field.name)}
+                    >
                         <span
                             className={classNames(
                                 'draghandle',
@@ -225,10 +230,7 @@ const DraggableItemGrid = ({
                                 onShowNameCopied={() => setShowNameCopied(true)}
                             />
                         </span>
-                        <Button
-                            className={classes.editIcon}
-                            onClick={() => onEditField(field.name)}
-                        >
+                        <Button className={classes.editIcon}>
                             <SettingsIcon />
                         </Button>
                         {!field.display && <HiddenIcon />}
