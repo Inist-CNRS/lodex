@@ -83,6 +83,9 @@ const useStyles = makeStyles({
         fontWeight: 'normal',
         alignItems: 'center',
     },
+    fieldChildren: {
+        pointerEvents: 'none',
+    },
 });
 
 const ensureTextIsShort = text =>
@@ -216,12 +219,16 @@ const DraggableItemGrid = ({
                             className={classNames(
                                 'draghandle',
                                 classes.propertyHandle,
+                                classes.fieldChildren,
                             )}
                         >
                             <DragIndicatorIcon />
                         </span>
                         <span
-                            className={classes.propertyLabel}
+                            className={classNames(
+                                classes.propertyLabel,
+                                classes.fieldChildren,
+                            )}
                             data-field-name={field.name}
                         >
                             <ItemGridLabel
@@ -230,7 +237,12 @@ const DraggableItemGrid = ({
                                 onShowNameCopied={() => setShowNameCopied(true)}
                             />
                         </span>
-                        <Button className={classes.editIcon}>
+                        <Button
+                            className={classNames(
+                                classes.editIcon,
+                                classes.fieldChildren,
+                            )}
+                        >
                             <SettingsIcon />
                         </Button>
                         {!field.display && <HiddenIcon />}
