@@ -6,17 +6,18 @@ import translate from 'redux-polyglot/translate';
 import { withRouter } from 'react-router';
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import Alert from '../../lib/components/Alert';
-import { Button, TextField, Grid, CircularProgress } from '@material-ui/core';
+import {
+    Button,
+    TextField,
+    Grid,
+    CircularProgress,
+    Typography,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import {
-    uploadFile,
-    changeUploadUrl,
-    changeLoaderName,
-    uploadUrl,
-} from './';
+import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
 import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
 import theme from '../../theme';
@@ -128,6 +129,7 @@ export const UploadComponent = ({
             onConfirm(...params);
         }
     };
+    console.log(files);
 
     return (
         <div className={classes.alert}>
@@ -145,10 +147,18 @@ export const UploadComponent = ({
                     filesLimit={1}
                     maxFileSize={1 * 1024 * 1024 * 1024}
                     dropzoneText={
-                        files.length
-                            ? files[0].file.name
-                            : polyglot.t('import_file_text')
+                        <>
+                            <Typography variant="h6">
+                                1. {polyglot.t('import_file_text')}
+                            </Typography>
+                            {!!files.length && (
+                                <Typography variant="subtitle1">
+                                    {files[0].file.name}
+                                </Typography>
+                            )}
+                        </>
                     }
+                    showAlerts={['error']}
                     showPreviewsInDropzone
                     showFileNamesInPreview
                     alertSnackbarProps={{
@@ -176,36 +186,45 @@ export const UploadComponent = ({
                     helperText={url && !isUrlValid && polyglot.t('invalid_url')}
                 />
             )}
-            <LoaderSelect
-                loaders={loaders}
-                setLoader={onChangeLoaderName}
-                value={loaderName}
-            />
-            {useUrlForUpload ? (
-                <Button
-                    variant="contained"
-                    disabled={!isUrlValid}
-                    component="label"
-                    color="primary"
-                    fullWidth
-                    className={classnames(classes.button, 'btn-upload-url')}
-                    disabled={!url || !isUrlValid}
-                    onClick={handleUrlAdded}
-                >
-                    {polyglot.t('upload_url')}
-                </Button>
-            ) : (
-                <Button
-                    variant="contained"
-                    component="label"
-                    color="primary"
-                    fullWidth
-                    className={classnames(classes.button, 'btn-upload-dataset')}
-                    disabled={files.length === 0}
-                    onClick={handleFileUploaded}
-                >
-                    {polyglot.t('upload_file')}
-                </Button>
+            {!!files.length && (
+                <>
+                    <LoaderSelect
+                        loaders={loaders}
+                        setLoader={onChangeLoaderName}
+                        value={loaderName}
+                    />
+                    {useUrlForUpload ? (
+                        <Button
+                            variant="contained"
+                            component="label"
+                            color="primary"
+                            fullWidth
+                            className={classnames(
+                                classes.button,
+                                'btn-upload-url',
+                            )}
+                            disabled={!url || !isUrlValid}
+                            onClick={handleUrlAdded}
+                        >
+                            {polyglot.t('upload_url')}
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="contained"
+                            component="label"
+                            color="primary"
+                            fullWidth
+                            className={classnames(
+                                classes.button,
+                                'btn-upload-dataset',
+                            )}
+                            disabled={files.length === 0}
+                            onClick={handleFileUploaded}
+                        >
+                            {polyglot.t('upload_file')}
+                        </Button>
+                    )}
+                </>
             )}
             <PopupConfirmUpload
                 history={history}

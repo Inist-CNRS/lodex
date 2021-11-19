@@ -43,6 +43,7 @@ const useStyles = makeStyles({
     },
     property: {
         border: '1px solid #ccc',
+        cursor: 'pointer',
         borderRadius: 3,
         textAlign: 'center',
         fontWeight: 'bold',
@@ -81,6 +82,9 @@ const useStyles = makeStyles({
         fontSize: '0.8rem',
         fontWeight: 'normal',
         alignItems: 'center',
+    },
+    fieldChildren: {
+        pointerEvents: 'none',
     },
 });
 
@@ -157,7 +161,7 @@ const ItemGridLabel = connect((state, { field }) => ({
 export const buildFieldsDefinitionsArray = fields =>
     fields.map(field => ({
         id: field.name,
-        width: !!field.width ? parseInt(field.width, 10) / 10 : 10,
+        width: field.width ? parseInt(field.width, 10) / 10 : 10,
         position: field.position,
     }));
 
@@ -206,17 +210,25 @@ const DraggableItemGrid = ({
                 isResizable={allowResize}
             >
                 {fields.map(field => (
-                    <div key={field.name} className={classes.property}>
+                    <div
+                        key={field.name}
+                        className={classes.property}
+                        onClick={() => onEditField(field.name)}
+                    >
                         <span
                             className={classNames(
                                 'draghandle',
                                 classes.propertyHandle,
+                                classes.fieldChildren,
                             )}
                         >
                             <DragIndicatorIcon />
                         </span>
                         <span
-                            className={classes.propertyLabel}
+                            className={classNames(
+                                classes.propertyLabel,
+                                classes.fieldChildren,
+                            )}
                             data-field-name={field.name}
                         >
                             <ItemGridLabel
@@ -226,8 +238,10 @@ const DraggableItemGrid = ({
                             />
                         </span>
                         <Button
-                            className={classes.editIcon}
-                            onClick={() => onEditField(field.name)}
+                            className={classNames(
+                                classes.editIcon,
+                                classes.fieldChildren,
+                            )}
                         >
                             <SettingsIcon />
                         </Button>

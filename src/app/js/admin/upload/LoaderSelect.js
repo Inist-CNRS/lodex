@@ -40,10 +40,18 @@ const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
     return (
         <div>
             <Grid
+                display
                 container={true}
                 direction="row"
                 justify="center"
-                style={{ width: '100%', marginBottom: 25, marginTop: 25 }}
+                style={{
+                    width: '100%',
+                    marginBottom: 25,
+                    marginTop: 25,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}
             >
                 <Box
                     style={{
@@ -52,8 +60,8 @@ const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
                         marginRight: 20,
                     }}
                 >
-                    <Typography variant="h6">
-                        {polyglot.t('loader_name')}
+                    <Typography variant="h6" style={{ marginBottom: 10 }}>
+                        2. {polyglot.t('loader_name')}
                     </Typography>
                 </Box>
                 <Box>

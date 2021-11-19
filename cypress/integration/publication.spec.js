@@ -12,6 +12,7 @@ describe('Dataset Publication', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
             cy.wait(300);
+            datasetImportPage.addFile('dataset/simple.csv');
 
             datasetImportPage.checkListOfSupportedFileFormats();
             datasetImportPage.checkListOfFiltererFileFormats();
