@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     },
     enrichmentForm: {
         width: '100%',
-        maxWidth: '700px'
+        maxWidth: '700px',
     },
     switchMode: {
         display: 'flex',
@@ -34,8 +34,8 @@ const useStyles = makeStyles({
     },
     simplifiedRules: {
         border: '1px solid rgb(95, 99, 104, 0.5)',
-        borderRadius: 4 ,
-        padding: 20
+        borderRadius: 4,
+        padding: 20,
     },
     valuesContainer: {
         display: 'flex',
@@ -56,7 +56,7 @@ export const EnrichmentFormComponent = ({
     excerptColumns,
 }) => {
     const classes = useStyles();
-    const [advancedMode, setAdvancedMode] = useState(false);
+    const [advancedMode, setAdvancedMode] = useState(initialValues?.advancedMode || false);
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -74,7 +74,7 @@ export const EnrichmentFormComponent = ({
                 sourceColumn: formData.get('sourceColumn'),
                 subPath: formData.get('subPath'),
             };
-        }else {
+        } else {
             payload = {
                 ...payload,
                 rule: formData.get('rule'),
@@ -108,94 +108,84 @@ export const EnrichmentFormComponent = ({
     };
 
     const getRuleFields = () => {
-        if (isEdit) {
-            return (
-                <Field
-                    name="rule"
-                    component={FormTextField}
-                    label={polyglot.t('expand_rules')}
-                    multiline
-                    fullWidth
-                    rows={30}
-                    variant="outlined"
-                />
-            );
-        } else {
-            const columnItems = excerptColumns.map(column => (
-                <MenuItem key={column} value={column}>
-                    {column}
-                </MenuItem>
-            ));
+        const columnItems = excerptColumns.map(column => (
+            <MenuItem key={column} value={column}>
+                {column}
+            </MenuItem>
+        ));
 
-            return (
-                <Box>
-                    <div className={classes.switchMode}>
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={advancedMode}
-                                    onChange={handleAdvancedMode}
-                                />
-                            }
-                            label={polyglot.t('advancedMode')}
-                        />
-                    </div>
-                    {advancedMode ? (
-                        <Field
-                            name="rule"
-                            component={FormTextField}
-                            label={polyglot.t('expand_rules')}
-                            multiline
-                            fullWidth
-                            rows={30}
-                            variant="outlined"
-                        />
-                    ) : (
-                        <Box className={classes.simplifiedRules}>
-                            <Field
-                                name="webServiceUrl"
-                                component={FormTextField}
-                                label={polyglot.t('webServiceUrl')}
-                                fullWidth
-                                style={{ marginBottom: 16 }}
+        return (
+            <Box>
+                <div className={classes.switchMode}>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={advancedMode}
+                                onChange={handleAdvancedMode}
                             />
+                        }
+                        label={polyglot.t('advancedMode')}
+                    />
+                </div>
+                {advancedMode ? (
+                    <Field
+                        name="rule"
+                        component={FormTextField}
+                        label={polyglot.t('expand_rules')}
+                        multiline
+                        fullWidth
+                        rows={30}
+                        variant="outlined"
+                    />
+                ) : (
+                    <Box className={classes.simplifiedRules}>
+                        <Field
+                            name="webServiceUrl"
+                            component={FormTextField}
+                            label={polyglot.t('webServiceUrl')}
+                            fullWidth
+                            style={{ marginBottom: 16 }}
+                        />
 
-                            <div className={classes.valuesContainer}>
-                                <Field
-                                    name="sourceColumn"
-                                    component={FormSelectField}
-                                    label={polyglot.t('sourceColumn')}
-                                    fullWidth
-                                    style={{ marginBottom: 20 }}
-                                >
-                                    <MenuItem key={null} value={null}>
-                                        {polyglot.t('none')}
-                                    </MenuItem>
-                                    {columnItems}
-                                </Field>
+                        <div className={classes.valuesContainer}>
+                            <Field
+                                name="sourceColumn"
+                                component={FormSelectField}
+                                label={polyglot.t('sourceColumn')}
+                                fullWidth
+                                style={{ marginBottom: 20 }}
+                            >
+                                <MenuItem key={null} value={null}>
+                                    {polyglot.t('none')}
+                                </MenuItem>
+                                {columnItems}
+                            </Field>
 
-                                <div style={{ fontSize: 24, marginLeft: 12 }}>
-                                    •
-                                </div>
-                                <Field
-                                    name="subPath"
-                                    component={FormTextField}
-                                    label={polyglot.t('subPath')}
-                                    fullWidth
-                                    style={{ marginLeft: 12 }}
-                                    helperText={polyglot.t('subPathHelper')}
-                                />
+                            <div style={{ fontSize: 24, marginLeft: 12 }}>
+                                •
                             </div>
-                        </Box>
-                    )}
-                </Box>
-            );
-        }
+                            <Field
+                                name="subPath"
+                                component={FormTextField}
+                                label={polyglot.t('subPath')}
+                                fullWidth
+                                style={{ marginLeft: 12 }}
+                                helperText={polyglot.t('subPathHelper')}
+                            />
+                        </div>
+                    </Box>
+                )}
+            </Box>
+        );
     };
 
     return (
         <div className={classes.enrichmentContainer}>
-            <form id="enrichment_form" onSubmit={handleSubmit} className={classes.enrichmentForm}>
+            <form
+                id="enrichment_form"
+                onSubmit={handleSubmit}
+                className={classes.enrichmentForm}
+            >
                 <Field
                     name="name"
                     component={FormTextField}

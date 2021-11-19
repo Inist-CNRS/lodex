@@ -133,11 +133,11 @@ export const getCreateEnrichmentRequest = (state, body) =>
         body,
     });
 
-export const getUpdateEnrichmentRequest = (state, { resource }) =>
+export const getUpdateEnrichmentRequest = (state, { enrichment }) =>
     getRequest(state, {
-        url: `/api/enrichment/${resource._id}`,
+        url: `/api/enrichment/${enrichment._id}`,
         method: 'PUT',
-        body: resource,
+        body: enrichment,
     });
 
 export const getDeleteEnrichmentRequest = (state, { id }) =>
