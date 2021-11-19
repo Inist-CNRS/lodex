@@ -129,6 +129,7 @@ export const UploadComponent = ({
             onConfirm(...params);
         }
     };
+    console.log(files);
 
     return (
         <div className={classes.alert}>
@@ -146,11 +147,16 @@ export const UploadComponent = ({
                     filesLimit={1}
                     maxFileSize={1 * 1024 * 1024 * 1024}
                     dropzoneText={
-                        <Typography variant="h6">
-                            {files.length
-                                ? files[0].file.name
-                                : `1. ${polyglot.t('import_file_text')}`}
-                        </Typography>
+                        <>
+                            <Typography variant="h6">
+                                1. {polyglot.t('import_file_text')}
+                            </Typography>
+                            {!!files.length && (
+                                <Typography variant="subtitle1">
+                                    {files[0].file.name}
+                                </Typography>
+                            )}
+                        </>
                     }
                     showPreviewsInDropzone
                     showFileNamesInPreview
