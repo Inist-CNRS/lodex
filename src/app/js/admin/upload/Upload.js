@@ -6,17 +6,18 @@ import translate from 'redux-polyglot/translate';
 import { withRouter } from 'react-router';
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import Alert from '../../lib/components/Alert';
-import { Button, TextField, Grid, CircularProgress } from '@material-ui/core';
+import {
+    Button,
+    TextField,
+    Grid,
+    CircularProgress,
+    Typography,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import {
-    uploadFile,
-    changeUploadUrl,
-    changeLoaderName,
-    uploadUrl,
-} from './';
+import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
 import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
 import theme from '../../theme';
@@ -145,9 +146,11 @@ export const UploadComponent = ({
                     filesLimit={1}
                     maxFileSize={1 * 1024 * 1024 * 1024}
                     dropzoneText={
-                        files.length
-                            ? files[0].file.name
-                            : polyglot.t('import_file_text')
+                        <Typography variant="h6">
+                            {files.length
+                                ? files[0].file.name
+                                : `1. ${polyglot.t('import_file_text')}`}
+                        </Typography>
                     }
                     showPreviewsInDropzone
                     showFileNamesInPreview
