@@ -262,6 +262,24 @@ const DraggableItemGrid = ({
         </>
     );
 };
+DraggableItemGrid.propTypes = {
+    onEditField: PropTypes.func.isRequired,
+    onChangeWidth: PropTypes.func.isRequired,
+    onChangePositions: PropTypes.func.isRequired,
+    allowResize: PropTypes.bool,
+    fields: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            label: PropTypes.string.isRequired,
+            width: PropTypes.string,
+            position: PropTypes.number,
+            display: PropTypes.bool,
+            internalScope: PropTypes.string,
+            internalName: PropTypes.string,
+        }),
+    ).isRequired,
+    polyglot: PropTypes.object.isRequired,
+};
 
 const FieldGridComponent = ({
     fields,
@@ -329,6 +347,8 @@ FieldGridComponent.propTypes = {
     filter: PropTypes.string,
     editField: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    changePositions: PropTypes.func.isRequired,
+    saveFieldFromData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, { subresourceId, filter }) => ({
