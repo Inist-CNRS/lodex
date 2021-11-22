@@ -593,3 +593,4 @@
 "sourceColumn"	"Source column"	"Colonne de la source"
 "subPath"	"Sub-path"	"Sous-chemin"
 "subPathHelper"	"Leave empty to directly send the column value"	"Laisser vide pour utiliser directement la valeur de la colonne"
+"imported_lines"	"lignes importées"	"imported lines"
