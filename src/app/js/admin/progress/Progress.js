@@ -34,6 +34,7 @@ export const ProgressComponent = props => {
     const {
         status,
         target,
+        label,
         progress,
         error,
         clearProgress,
@@ -85,6 +86,7 @@ ProgressComponent.propTypes = {
     clearProgress: PropTypes.func.isRequired,
     p: polyglotPropTypes,
     isBackground: PropTypes.bool,
+    label: PropTypes.string,
 };
 
 ProgressComponent.defaultProps = {
