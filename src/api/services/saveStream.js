@@ -11,14 +11,12 @@ export const chunkStream = chunkSize => {
         function write(d) {
             acc.push(d);
             if (acc.length >= chunkSize) {
-                progress.incrementTarget(acc.length);
                 this.queue(acc);
                 acc = [];
             }
         },
         function end() {
             if (acc.length) {
-                progress.incrementTarget(acc.length);
                 this.queue(acc);
             }
         },
