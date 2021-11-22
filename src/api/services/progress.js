@@ -3,10 +3,6 @@ import { PENDING, ERROR } from '../../common/progressStatus';
 export class Progress {
     status = PENDING;
     start(status, target, symbol, label) {
-        if (target === null || target === undefined) {
-            return;
-        }
-
         this.status = status;
         this.target = target;
         this.progress = 0;

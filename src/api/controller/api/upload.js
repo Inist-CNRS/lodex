@@ -59,7 +59,9 @@ export const getStreamFromUrl = url => request.get(url);
 
 export const uploadFile = ctx => async loaderName => {
     const { filename, totalChunks, extension } = ctx.resumable;
-    progress.start(SAVING_DATASET, null, null, 'imported_lines');
+    if (progress.status !== SAVING_DATASET) {
+        progress.start(SAVING_DATASET, null, null, 'imported_lines');
+    }
     const mergedStream = ctx.mergeChunks(filename, totalChunks);
     const parseStream = await ctx.getLoader(
         !loaderName || loaderName === 'automatic' ? extension : loaderName,
@@ -152,8 +154,9 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
     );
 
     const progression = Math.round((uploadedFileSize * 100) / totalSize);
-
-    progress.setProgress(progression === 100 ? 99 : progression);
+    if (progress.getProgress().status === UPLOADING_DATASET) {
+        progress.setProgress(progression === 100 ? 99 : progression);
+    }
 
     if (uploadedFileSize >= totalSize) {
         ctx.uploadFile(loaderName);
