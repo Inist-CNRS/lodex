@@ -51,6 +51,25 @@ describe('Progress', () => {
         expect(wrapper.find('.progress p').text()).toBe('700 / 1000');
     });
 
+    it('should render progress with no target', () => {
+        const wrapper = shallow(
+            <Progress {...defaultProps} progress={700} target={null} />,
+        );
+        expect(wrapper.find('.progress p').text()).toBe('700');
+    });
+
+    it('should render progress with no target and text', () => {
+        const wrapper = shallow(
+            <Progress
+                {...defaultProps}
+                progress={700}
+                target={null}
+                label="lines"
+            />,
+        );
+        expect(wrapper.find('.progress p').text()).toBe('700 lines');
+    });
+
     it('should render the symbol if specified', () => {
         const wrapper = shallow(
             <Progress

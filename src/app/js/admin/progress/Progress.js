@@ -16,22 +16,16 @@ import { PENDING } from '../../../../common/progressStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const renderProgressText = props => {
-    const { progress, target, symbol } = props;
-    if (!progress || !target) {
+    const { progress, target, symbol, label } = props;
+    if (!progress) {
         return null;
-    }
-
-    if (symbol) {
-        return (
-            <p>
-                {progress} / {target} {symbol}
-            </p>
-        );
     }
 
     return (
         <p>
-            {progress} / {target}
+            {`${progress}${target ? ` / ${target}` : ''}${
+                symbol ? ` ${symbol}` : ''
+            }${label ? ` ${label}` : ''}`}
         </p>
     );
 };
@@ -95,6 +89,8 @@ ProgressComponent.propTypes = {
 
 ProgressComponent.defaultProps = {
     symbol: null,
+    text: null,
+    target: null,
 };
 
 const mapStateToProps = state => ({
