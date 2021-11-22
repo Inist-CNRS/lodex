@@ -129,7 +129,6 @@ export const UploadComponent = ({
             onConfirm(...params);
         }
     };
-    console.log(files);
 
     return (
         <div className={classes.alert}>
@@ -171,7 +170,7 @@ export const UploadComponent = ({
                     onDrop={handleAdding}
                     onDropRejected={handleAddRejected}
                     onAlert={(message, variant) =>
-                        console.log(`${variant}: ${message}`)
+                        console.error(new Error(`${variant}: ${message}`))
                     }
                 />
             )}
@@ -253,6 +252,7 @@ export const UploadComponent = ({
 UploadComponent.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
+        location: PropTypes.object,
     }),
     className: PropTypes.string,
     error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
@@ -288,6 +288,9 @@ const DroppingLoader = ({ text }) => {
             <span>{text}</span>
         </Grid>
     );
+};
+DroppingLoader.propTypes = {
+    text: PropTypes.string.isRequired,
 };
 
 UploadComponent.propTypes = {
