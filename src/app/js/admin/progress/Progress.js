@@ -16,7 +16,7 @@ import { PENDING } from '../../../../common/progressStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const renderProgressText = props => {
-    const { progress, target, symbol, label } = props;
+    const { progress, target, symbol, label, p: polyglot } = props;
     if (!progress) {
         return null;
     }
@@ -25,7 +25,7 @@ const renderProgressText = props => {
         <p>
             {`${progress}${target ? ` / ${target}` : ''}${
                 symbol ? ` ${symbol}` : ''
-            }${label ? ` ${label}` : ''}`}
+            }${label ? ` ${polyglot.t(label)}` : ''}`}
         </p>
     );
 };
@@ -34,7 +34,6 @@ export const ProgressComponent = props => {
     const {
         status,
         target,
-        label,
         progress,
         error,
         clearProgress,
