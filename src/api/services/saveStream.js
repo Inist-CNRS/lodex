@@ -38,7 +38,7 @@ export default upsertMany => (stream, modifier) =>
                 upsertMany(chunk)
                     .then(data => {
                         this.emit('data', data);
-                        progress.incrementProgress(defaultChunkSize);
+                        progress.incrementProgress(data.length);
                     })
                     .catch(error => this.emit('error', error));
             }),
