@@ -31,13 +31,16 @@ export const createEnrichmentRule = async ctx => {
 export const getEnrichmentRuleModel = (sourceData, enrichment) => {
     try {
         let rule;
-        if (typeof sourceData === 'string' || (Array.isArray(sourceData) && typeof sourceData[0] === 'string')) {
+        if (
+            typeof sourceData === 'string' ||
+            (Array.isArray(sourceData) && typeof sourceData[0] === 'string')
+        ) {
             const file = Array.isArray(sourceData)
                 ? './directPathMultipleValues.txt'
                 : './directPathSingleValue.txt';
             rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
             let columnName = `${enrichment.sourceColumn}${
-                !!enrichment.subPath ? '.' + enrichment.subPath : ''
+                enrichment.subPath ? '.' + enrichment.subPath : ''
             }`;
             rule = rule.replace(/\[\[COLUMN NAME\]\]/g, columnName);
             rule = rule.replace(
@@ -46,7 +49,11 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
             );
         }
 
-        if (typeof sourceData === 'object' && (Array.isArray(sourceData)  && typeof sourceData[0] === 'object')) {
+        if (
+            typeof sourceData === 'object' &&
+            Array.isArray(sourceData) &&
+            typeof sourceData[0] === 'object'
+        ) {
             if (!enrichment.subPath) {
                 throw new Error(`Missing sub-path parameters`);
             }
@@ -76,6 +83,6 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
 
         return rule;
     } catch (e) {
-        console.log('Error:', e.stack);
+        console.error('Error:', e.stack);
     }
 };

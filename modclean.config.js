@@ -157,9 +157,6 @@ module.exports = {
             'wercker.yml',
             '.flowconfig',
         ],
-        ignore: [
-            'validate-npm-package-license',
-            'spdx-license-ids',
-        ],
+        ignore: ['validate-npm-package-license', 'spdx-license-ids'],
     },
 };

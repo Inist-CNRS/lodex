@@ -35,8 +35,14 @@ const createEnrichmentTransformerFactory = ctx => async id => {
             const commands = createEzsRuleCommands(enrichment.rule);
             const result = input.pipe(ezs('delegate', { commands }, {}));
 
-            result.on('data', ({ value }) => resolve({ value, enrichment }));
-            result.on('error', error => reject({ error, enrichment }));
+            result.on('data', ({ value }) => {
+                console.debug('value', value);
+                resolve({ value, enrichment });
+            });
+            result.on('error', error => {
+                console.debug('error', error);
+                reject({ error, enrichment });
+            });
 
             input.write({ id, value });
             input.end();
@@ -60,11 +66,7 @@ const worker = async (id, ctx) => {
                 { $set: { [enrichment.name]: value } },
             );
         } catch (e) {
-            console.log({ e });
-            await ctx.dataset.updateOne(
-                { _id: new ObjectId(entry._id) },
-                { $set: { [enrichment.name]: '##ERROR##' } },
-            );
+            console.error({ e });
         }
 
         const nextEntry = await getEnrichmentDatasetCandidate(id, ctx);

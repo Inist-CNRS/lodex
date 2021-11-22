@@ -3,22 +3,25 @@ plugin = basics
 plugin = analytics
 
 [assign]
-path = [[COLUMN NAME]]_enriched
-value = get('[[COLUMN NAME]]')
+path = value
+value = get("value.[[COLUMN NAME]]")
 
 [expand]
-path = [[COLUMN NAME]]_enriched
+path = value.[[COLUMN NAME]]
 size = 1
 
 [expand/exploding]
 
 [expand/expand]
-path = value
+path = value.[[COLUMN NAME]]
 size = 100
 
 [expand/expand/URLConnect]
 url = [[WEB SERVICE URL]]
-timeout = 1000
+timeout = 5000
 noerror = true
 
 [expand/aggregate]
+
+[debug]
+text = PASSE ICI 
