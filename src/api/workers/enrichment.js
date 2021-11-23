@@ -31,18 +31,11 @@ const createEnrichmentTransformerFactory = ctx => async id => {
     return ({ id, value }) =>
         new Promise((resolve, reject) => {
             const input = new PassThrough({ objectMode: true });
-
             const commands = createEzsRuleCommands(enrichment.rule);
             const result = input.pipe(ezs('delegate', { commands }, {}));
 
-            result.on('data', ({ value }) => {
-                console.debug('value', value);
-                resolve({ value, enrichment });
-            });
-            result.on('error', error => {
-                console.debug('error', error);
-                reject({ error, enrichment });
-            });
+            result.on('data', ({ value }) => resolve({ value, enrichment }));
+            result.on('error', error => reject({ error, enrichment }));
 
             input.write({ id, value });
             input.end();
