@@ -23,8 +23,7 @@ export const createEnrichmentRule = async ctx => {
     let rule = getEnrichmentRuleModel(data, enrichment);
 
     return {
-        name: enrichment.name,
-        advancedMode: enrichment.advancedMode,
+        ...enrichment,
         rule: rule,
     };
 };
