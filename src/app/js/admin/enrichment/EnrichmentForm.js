@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import translate from 'redux-polyglot/translate';
@@ -17,8 +17,10 @@ import {
     FormControlLabel,
     makeStyles,
     MenuItem,
+    Snackbar,
     Switch,
 } from '@material-ui/core';
+import Alert from '../../lib/components/Alert';
 const useStyles = makeStyles({
     enrichmentContainer: {
         display: 'flex',
@@ -54,9 +56,17 @@ export const EnrichmentFormComponent = ({
     isEdit,
     initialValues,
     excerptColumns,
+    errorEnrichment,
 }) => {
     const classes = useStyles();
-    const [advancedMode, setAdvancedMode] = useState(initialValues?.advancedMode || false);
+    const [advancedMode, setAdvancedMode] = useState(
+        initialValues?.advancedMode || false,
+    );
+    const [openSnackBar, setOpenSnackBar] = useState(false);
+
+    useEffect(() => {
+        setOpenSnackBar(!!errorEnrichment);
+    }, [errorEnrichment]);
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -218,6 +228,17 @@ export const EnrichmentFormComponent = ({
                     </ButtonWithStatus>
                 )}
             </form>
+
+            <Snackbar
+                open={openSnackBar}
+                autoHideDuration={3000}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                onClose={() => setOpenSnackBar(!openSnackBar)}
+            >
+                <Alert variant="filled" severity="success">
+                    {polyglot.t('error')}: {errorEnrichment}
+                </Alert>
+            </Snackbar>
         </div>
     );
 };
@@ -229,6 +250,12 @@ EnrichmentFormComponent.propTypes = {
     onDeleteEnrichment: PropTypes.func.isRequired,
     isEdit: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired,
+    }),
+    excerptColumns: PropTypes.arrayOf(PropTypes.string),
+    initialValues: PropTypes.any,
+    errorEnrichment: PropTypes.string,
 };
 
 const mapStateToProps = (state, { match }) => ({
@@ -238,6 +265,7 @@ const mapStateToProps = (state, { match }) => ({
     initialValues: fromEnrichments
         .enrichments(state)
         .find(sr => sr._id === match.params.enrichmentId),
+    errorEnrichment: fromEnrichments.getError(state),
 });
 
 const mapDispatchToProps = {
