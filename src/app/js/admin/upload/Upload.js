@@ -169,9 +169,6 @@ export const UploadComponent = ({
                     onAdd={fileObjs => handleFileAdded(fileObjs)}
                     onDrop={handleAdding}
                     onDropRejected={handleAddRejected}
-                    onAlert={(message, variant) =>
-                        console.error(new Error(`${variant}: ${message}`))
-                    }
                 />
             )}
             {useUrlForUpload && (
@@ -282,7 +279,7 @@ const DroppingLoader = ({ text }) => {
             container
             direction="column"
             alignItems="center"
-            justify="center"
+            justifyContent="center"
         >
             <CircularProgress />
             <span>{text}</span>
