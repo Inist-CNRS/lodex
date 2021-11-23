@@ -18,17 +18,12 @@ export function* handleUploadFile(action) {
         preventUnload();
         const loaderName = yield select(fromUpload.getLoaderName);
         const token = yield select(fromUser.getToken);
-        const { file } = yield call(
-            loadDatasetFile,
-            action.payload,
-            token,
-            loaderName,
-        );
+        yield call(loadDatasetFile, action.payload, token, loaderName);
 
         allowUnload();
         yield take(FINISH_PROGRESS);
 
-        yield put(uploadSuccess(file));
+        yield put(uploadSuccess());
 
         const hasPublishedDataset = yield select(
             fromPublication.hasPublishedDataset,
@@ -38,6 +33,7 @@ export function* handleUploadFile(action) {
             yield put(publishAction());
         }
     } catch (error) {
+        console.error(error);
         allowUnload();
         yield put(uploadError(error));
     }
