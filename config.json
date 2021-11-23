@@ -53,6 +53,7 @@
         "skos",
         "json",
         "json-conditor",
+        "json-import",
         "json-istex",
         "json-lodex",
         "json-wordpress",
