@@ -10,12 +10,8 @@ import {
 } from './';
 import { UPLOAD_SUCCESS } from '../upload';
 import { fromUser } from '../../sharedSelectors';
-import { INDEXATION, STARTING } from '../../../../common/progressStatus';
-import {
-    clearProgress,
-    finishProgress,
-    updateProgress,
-} from '../progress/reducer';
+import { INDEXATION } from '../../../../common/progressStatus';
+import { clearProgress, updateProgress } from '../progress/reducer';
 
 export function* handleLoadParsingResult(action) {
     const request = yield select(fromUser.getLoadParsingResultRequest);

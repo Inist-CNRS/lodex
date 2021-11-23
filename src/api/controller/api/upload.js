@@ -60,7 +60,7 @@ export const getStreamFromUrl = url => request.get(url);
 export const uploadFile = ctx => async loaderName => {
     const { filename, totalChunks, extension } = ctx.resumable;
     if (progress.status !== SAVING_DATASET) {
-        progress.start(SAVING_DATASET, null, null, 'imported_lines');
+        progress.start(SAVING_DATASET, undefined, undefined, 'imported_lines');
     }
     const mergedStream = ctx.mergeChunks(filename, totalChunks);
     const parseStream = await ctx.getLoader(
