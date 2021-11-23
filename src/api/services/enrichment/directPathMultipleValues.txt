@@ -5,9 +5,9 @@ plugin = analytics
 
 [assign]
 path = value
-value = get("value.[[COLUMN NAME]]").castArray().map(JSON.parse).reduce((acc, item) => item)
+value = get("value.[[SOURCE COLUMN]]").castArray().map(JSON.parse).reduce((acc, item) => item)
 [debug]
-text = avant expand
+text = Value before expand
 
 [expand]
 path = value
@@ -16,7 +16,7 @@ size = 1
 [expand/exploding]
 
 [expand/debug]
-text = expand
+text = value expand
 
 [expand/expand]
 path = value

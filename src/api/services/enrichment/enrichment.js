@@ -39,10 +39,10 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
                 ? './directPathMultipleValues.txt'
                 : './directPathSingleValue.txt';
             rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
-            let columnName = `${enrichment.sourceColumn}${
-                enrichment.subPath ? '.' + enrichment.subPath : ''
-            }`;
-            rule = rule.replace(/\[\[COLUMN NAME\]\]/g, columnName);
+            rule = rule.replace(
+                /\[\[SOURCE COLUMN\]\]/g,
+                enrichment.sourceColumn,
+            );
             rule = rule.replace(
                 '[[WEB SERVICE URL]]',
                 enrichment.webServiceUrl,

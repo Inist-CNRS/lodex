@@ -2,23 +2,31 @@
 plugin = basics
 plugin = analytics
 
+[assign]
+path = value
+value = get("value.[[SOURCE COLUMN]]").castArray().map(JSON.parse).reduce((acc, item) => item)
+
 [expand]
-path = [[SOURCE COLUMN]]
+path = value
 size = 1
+
+[expand/debug]
+text = Value after expand
 
 [expand/exploding]
 
 [expand/assign]
-path = value.[[SUB PATH]]_enriched
-value = get('value.[[SUB PATH]]')
+path = value
+value = get("value.[[SUB PATH]]")
 
-[expand/expand]
-path = value.[[SUB PATH]]_enriched
-size = 100
+[expand/debug]
+text = Value after expand assign
 
-[expand/expand/URLConnect]
+[expand/URLConnect]
 url = [[WEB SERVICE URL]]
-timeout = 1000
+timeout = 5000
 noerror = true
 
 [expand/aggregate]
+
+[debug]

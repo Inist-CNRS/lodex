@@ -13,10 +13,10 @@ rule = required
 
 [assign]
 path = value
-value = get("value.[[COLUMN NAME]]")
+value = get("value.[[SOURCE COLUMN]]")
 
 [debug]
-text = PASSE ICI 
+text = Value Assign
 
 [URLConnect]
 url = [[WEB SERVICE URL]]
