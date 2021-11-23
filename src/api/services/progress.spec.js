@@ -27,19 +27,6 @@ describe('Progress', () => {
         });
     });
 
-    it('should not change status on start if target is null', () => {
-        const progress = new Progress();
-
-        progress.start(PUBLISH_DOCUMENT, null);
-
-        expect(progress.getProgress()).toEqual({
-            target: undefined,
-            progress: undefined,
-            status: PENDING,
-            symbol: undefined,
-        });
-    });
-
     it('should allow to follow Progress', () => {
         const progress = new Progress();
 
