@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IconButton, MenuItem, Menu } from '@material-ui/core';
+import { IconButton, MenuItem, Menu, makeStyles } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import translate from 'redux-polyglot/translate';
@@ -11,12 +11,24 @@ import { bindActionCreators } from 'redux';
 import { signOut } from '../../user';
 import { exportFields } from '../../exportFields';
 
+const useStyles = makeStyles({
+    container: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    menu: {
+        display: 'flex',
+    },
+});
+
 const MenuComponent = ({
     p: polyglot,
     dumpDataset,
     onSignOut,
     exportFields,
 }) => {
+    const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = !!anchorEl;
     const handleOpenMenu = event => {
@@ -27,7 +39,7 @@ const MenuComponent = ({
         callback && callback();
     };
     return (
-        <div style={{ display: 'flex' }}>
+        <div className={classes.container}>
             <IconButton
                 color="inherit"
                 aria-label="more"
@@ -37,6 +49,7 @@ const MenuComponent = ({
             </IconButton>
             <Menu
                 id="long-menu"
+                className={classes.menu}
                 MenuListProps={{
                     'aria-labelledby': 'long-button',
                 }}
