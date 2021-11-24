@@ -7,6 +7,7 @@ import {
     UPDATE_ENRICHMENT,
     // DELETE_SUBRESOURCE,
     createEnrichmentOptimistic,
+    createEnrichmentError,
     updateEnrichmentOptimistic,
     CREATE_ENRICHMENT,
     LOAD_ENRICHMENTS,
@@ -30,10 +31,13 @@ export function* handleLoadEnrichmentsRequest() {
 }
 
 export function* handleCreateEnrichment({ payload: { enrichment, callback } }) {
-    const request = yield select(fromUser.getCreateEnrichmentRequest, enrichment);
+    const request = yield select(
+        fromUser.getCreateEnrichmentRequest,
+        enrichment,
+    );
     const { error, response } = yield call(fetchSaga, request);
     if (error) {
-        return;
+        return yield put(createEnrichmentError(error.message));
     }
 
     yield put(createEnrichmentOptimistic(response));

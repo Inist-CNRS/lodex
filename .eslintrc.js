@@ -1,5 +1,11 @@
-{
+const path = require('path')
+module.exports = {
     "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "babelOptions": {
+            "configFile": path.join(__dirname, 'babel.config.js')
+        }
+    },
     "env": {
         "es6": true,
         "browser": true,

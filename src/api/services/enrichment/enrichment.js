@@ -28,27 +28,45 @@ export const createEnrichmentRule = async ctx => {
     };
 };
 
+const isDirectPath = sourceData => {
+    return (
+        typeof sourceData === 'string' ||
+        (Array.isArray(sourceData) && typeof sourceData[0] === 'string')
+    );
+};
+
+const isSubPath = sourceData => {
+    return (
+        typeof sourceData === 'object' &&
+        Array.isArray(sourceData) &&
+        typeof sourceData[0] === 'object'
+    );
+};
+
 export const getEnrichmentRuleModel = (sourceData, enrichment) => {
     try {
         let rule;
-        if (typeof sourceData === 'string' || (Array.isArray(sourceData) && typeof sourceData[0] === 'string')) {
+        if (!enrichment.sourceColumn) {
+            throw new Error(`Missing source column parameter`);
+        }
+        if (isDirectPath(sourceData)) {
             const file = Array.isArray(sourceData)
                 ? './directPathMultipleValues.txt'
                 : './directPathSingleValue.txt';
             rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
-            let columnName = `${enrichment.sourceColumn}${
-                !!enrichment.subPath ? '.' + enrichment.subPath : ''
-            }`;
-            rule = rule.replace(/\[\[COLUMN NAME\]\]/g, columnName);
+            rule = rule.replace(
+                /\[\[SOURCE COLUMN\]\]/g,
+                enrichment.sourceColumn,
+            );
             rule = rule.replace(
                 '[[WEB SERVICE URL]]',
                 enrichment.webServiceUrl,
             );
         }
 
-        if (typeof sourceData === 'object' && (Array.isArray(sourceData)  && typeof sourceData[0] === 'object')) {
+        if (isSubPath(sourceData)) {
             if (!enrichment.subPath) {
-                throw new Error(`Missing sub-path parameters`);
+                throw new Error(`Missing sub-path parameter`);
             }
             const subPathData = sourceData[0][enrichment.subPath];
             if (!subPathData) {
@@ -76,6 +94,7 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
 
         return rule;
     } catch (e) {
-        console.log('Error:', e.stack);
+        console.error('Error:', e.stack);
+        throw e;
     }
 };

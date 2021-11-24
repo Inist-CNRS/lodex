@@ -31,7 +31,6 @@ const createEnrichmentTransformerFactory = ctx => async id => {
     return ({ id, value }) =>
         new Promise((resolve, reject) => {
             const input = new PassThrough({ objectMode: true });
-
             const commands = createEzsRuleCommands(enrichment.rule);
             const result = input.pipe(ezs('delegate', { commands }, {}));
 
@@ -60,11 +59,7 @@ const worker = async (id, ctx) => {
                 { $set: { [enrichment.name]: value } },
             );
         } catch (e) {
-            console.log({ e });
-            await ctx.dataset.updateOne(
-                { _id: new ObjectId(entry._id) },
-                { $set: { [enrichment.name]: '##ERROR##' } },
-            );
+            console.error({ e });
         }
 
         const nextEntry = await getEnrichmentDatasetCandidate(id, ctx);
