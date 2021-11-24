@@ -66,6 +66,6 @@ describe('handleUploadFile saga', () => {
         saga.next('token');
         saga.next({ file: 'file' });
         const { value } = saga.next();
-        expect(value).toEqual(put(uploadSuccess('file')));
+        expect(value).toEqual(put(uploadSuccess()));
     });
 });
