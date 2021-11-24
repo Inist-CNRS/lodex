@@ -1,17 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { IconButton, MenuItem, Menu } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import translate from 'redux-polyglot/translate';
+import { compose } from 'recompose';
+import { dumpDataset } from '../dump';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { signOut } from '../../user';
 
-const MenuComponent = ({ p: polyglot }) => {
+const MenuComponent = ({ p: polyglot, dumpDataset, onSignOut }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = !!anchorEl;
     const handleOpenMenu = event => {
         setAnchorEl(event.currentTarget);
     };
-    const handleCloseMenu = () => {
+    const handleCloseMenu = callback => {
         setAnchorEl(null);
+        callback && callback();
     };
     return (
         <div>
@@ -32,11 +39,14 @@ const MenuComponent = ({ p: polyglot }) => {
                 open={open}
                 onClose={handleCloseMenu}
             >
-                <MenuItem onClick={handleCloseMenu}>
+                <MenuItem onClick={() => handleCloseMenu(onSignOut)}>
                     {polyglot.t('sign_out')}
                 </MenuItem>
-                <MenuItem onClick={handleCloseMenu}>
+                <MenuItem onClick={() => handleCloseMenu(dumpDataset)}>
                     {polyglot.t('export_fields')}
+                </MenuItem>
+                <MenuItem onClick={() => handleCloseMenu(dumpDataset)}>
+                    {polyglot.t('export_raw_dataset')}
                 </MenuItem>
             </Menu>
         </div>
@@ -45,6 +55,19 @@ const MenuComponent = ({ p: polyglot }) => {
 
 MenuComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
+    dumpDataset: PropTypes.func.isRequired,
+    onSignOut: PropTypes.func.isRequired,
 };
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(
+        {
+            onSignOut: signOut,
+            dumpDataset,
+        },
+        dispatch,
+    );
 
-export default translate(MenuComponent);
+export default compose(
+    connect(null, mapDispatchToProps),
+    translate,
+)(MenuComponent);
