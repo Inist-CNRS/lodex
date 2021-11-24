@@ -9,8 +9,14 @@ import { dumpDataset } from '../dump';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { signOut } from '../../user';
+import { exportFields } from '../../exportFields';
 
-const MenuComponent = ({ p: polyglot, dumpDataset, onSignOut }) => {
+const MenuComponent = ({
+    p: polyglot,
+    dumpDataset,
+    onSignOut,
+    exportFields,
+}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = !!anchorEl;
     const handleOpenMenu = event => {
@@ -42,7 +48,7 @@ const MenuComponent = ({ p: polyglot, dumpDataset, onSignOut }) => {
                 <MenuItem onClick={() => handleCloseMenu(onSignOut)}>
                     {polyglot.t('sign_out')}
                 </MenuItem>
-                <MenuItem onClick={() => handleCloseMenu(dumpDataset)}>
+                <MenuItem onClick={() => handleCloseMenu(exportFields)}>
                     {polyglot.t('export_fields')}
                 </MenuItem>
                 <MenuItem onClick={() => handleCloseMenu(dumpDataset)}>
@@ -57,12 +63,14 @@ MenuComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     dumpDataset: PropTypes.func.isRequired,
     onSignOut: PropTypes.func.isRequired,
+    exportFields: PropTypes.func.isRequired,
 };
 const mapDispatchToProps = dispatch =>
     bindActionCreators(
         {
             onSignOut: signOut,
             dumpDataset,
+            exportFields,
         },
         dispatch,
     );
