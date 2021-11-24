@@ -17,7 +17,7 @@ import { fromParsing } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';
 import theme from './../../theme';
-
+import MenuComponent from './Menu';
 const useStyles = makeStyles({
     linkToHome: {
         color: `${theme.white.primary} !important`,
@@ -112,6 +112,7 @@ const AppbarComponent = ({
                     </NavLink>
                     <SignOutButton className={classes.button} />
                     <PublicationButton className={classes.button} />
+                    <MenuComponent />
                 </div>
             )}
             {isLoading && (
