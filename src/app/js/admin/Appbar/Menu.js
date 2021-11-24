@@ -56,6 +56,13 @@ const MenuComponent = ({
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleCloseMenu}
+                PaperProps={{
+                    style: {
+                        marginTop: '48px',
+                        borderTopLeftRadius: '0',
+                        borderTopRightRadius: '0',
+                    },
+                }}
             >
                 <MenuItem onClick={() => handleCloseMenu(onSignOut)}>
                     {polyglot.t('sign_out')}
