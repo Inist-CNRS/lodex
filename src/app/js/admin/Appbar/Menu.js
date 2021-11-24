@@ -27,8 +27,7 @@ const MenuComponent = ({
         callback && callback();
     };
     return (
-        <div>
-            {/* The more button to display menu */}
+        <div style={{ display: 'flex' }}>
             <IconButton
                 color="inherit"
                 aria-label="more"
