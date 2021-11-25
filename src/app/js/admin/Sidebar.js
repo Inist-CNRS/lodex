@@ -9,6 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PlusIcon from '@material-ui/icons/Add';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import MainResourceIcon from '@material-ui/icons/InsertDriveFile';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -148,6 +149,7 @@ const DocumentMenu = compose(
                             activeStyle={subSidebarNavLinkActiveStyle}
                             to={`/display/document/${r._id}`}
                         >
+                            <FileCopyIcon />
                             {r.name}
                         </NavLink>
                     </Box>
