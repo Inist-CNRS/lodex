@@ -129,7 +129,6 @@ export const UploadComponent = ({
             onConfirm(...params);
         }
     };
-    console.log(files);
 
     return (
         <div className={classes.alert}>

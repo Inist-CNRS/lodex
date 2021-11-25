@@ -6,18 +6,16 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import StorageIcon from '@material-ui/icons/Storage';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
-import SettingsIcon from '@material-ui/icons/Settings';
 import { AppBar, CircularProgress, Button, Toolbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import SignOutButton from './SignOutButton';
 import PublicationButton from '../publish/PublicationButton';
 import { fromUser } from '../../sharedSelectors';
 import { fromParsing } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';
 import theme from './../../theme';
-
+import Menu from './Menu';
 const useStyles = makeStyles({
     linkToHome: {
         color: `${theme.white.primary} !important`,
@@ -100,18 +98,8 @@ const AppbarComponent = ({
         <>
             {isAdmin && (
                 <div style={{ display: 'flex' }}>
-                    <NavLink
-                        to="/settings"
-                        component={Button}
-                        variant="text"
-                        className={classes.button}
-                        startIcon={<SettingsIcon />}
-                        activeStyle={activeButtonStyle}
-                    >
-                        <span>{polyglot.t('settings')}</span>
-                    </NavLink>
-                    <SignOutButton className={classes.button} />
                     <PublicationButton className={classes.button} />
+                    <Menu />
                 </div>
             )}
             {isLoading && (
