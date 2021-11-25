@@ -149,9 +149,13 @@ const ItemGridLabel = connect((state, { field }) => ({
                 </span>
             </CopyToClipboard>
             <div className={classes.internal}>
-                {field.internalScope && (
-                    <FieldInternalIcon scope={field.internalScope} />
-                )}
+                {field.internalScope &&
+                    field.internalScope.map(internalScope => (
+                        <FieldInternalIcon
+                            key={internalScope}
+                            scope={internalScope}
+                        />
+                    ))}
                 {field.internalName}
             </div>
         </>
@@ -349,6 +353,15 @@ FieldGridComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     changePositions: PropTypes.func.isRequired,
     saveFieldFromData: PropTypes.func.isRequired,
+};
+
+DraggableItemGrid.propTypes = {
+    fields: PropTypes.array,
+    onEditField: PropTypes.func,
+    onChangeWidth: PropTypes.func,
+    onChangePositions: PropTypes.func,
+    allowResize: PropTypes.bool,
+    polyglot: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = (state, { subresourceId, filter }) => ({

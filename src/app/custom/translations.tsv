@@ -589,6 +589,7 @@
 "expand_rules"	"Expand rules"	"Règles de développement"
 "webServiceUrl"	"Web service URL"	"URL du web service"
 "internalName"	"Internal name"	"Nom interne"
+"internalScope"	"Internal scope"	"Scope interne"
 "advancedMode"	"Advanced mode"	"Mode avancé"
 "sourceColumn"	"Source column"	"Colonne de la source"
 "subPath"	"Sub-path"	"Sous-chemin"

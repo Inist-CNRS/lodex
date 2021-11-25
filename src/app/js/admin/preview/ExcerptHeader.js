@@ -16,6 +16,7 @@ import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
 } from '../../propTypes';
+import FieldInternalIcon from '../../fields/FieldInternalIcon';
 
 const getStyle = memoize(field => {
     if (field.scope === SCOPE_DATASET) {
@@ -44,6 +45,12 @@ const titleStyle = {
     },
     hidden: {
         marginLeft: 5,
+    },
+    internal: {
+        display: 'flex',
+        fontSize: '0.8rem',
+        fontWeight: 'normal',
+        alignItems: 'center',
     },
 };
 
@@ -92,6 +99,18 @@ const ExcerptHeaderComponent = ({
             </div>
         )}
         <ComposedOf compositeFields={compositeFields} polyglot={polyglot} />
+        <div>
+            <div style={titleStyle.internal}>
+                {field.internalScope &&
+                    field.internalScope.map(internalScope => (
+                        <FieldInternalIcon
+                            key={internalScope}
+                            scope={internalScope}
+                        />
+                    ))}
+            </div>
+            {field.internalName}
+        </div>
     </div>
 );
 
