@@ -15,6 +15,13 @@ import { loadProgress, clearProgress } from './reducer';
 import { PENDING } from '../../../../common/progressStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
+const formatProgress = (progress, target, symbol, label) => {
+    const formatedTarget = target ? ` / ${target}` : ``;
+    const formatedSymbol = symbol ? ` ${symbol}` : ``;
+    const formatedLabel = label ? ` ${label}` : ``;
+    return progress + formatedTarget + formatedSymbol + formatedLabel;
+}
+
 const renderProgressText = props => {
     const { progress, target, symbol, label, p: polyglot } = props;
     if (!progress) {
@@ -23,9 +30,7 @@ const renderProgressText = props => {
 
     return (
         <p>
-            {`${progress}${target ? ` / ${target}` : ''}${
-                symbol ? ` ${symbol}` : ''
-            }${label ? ` ${polyglot.t(label)}` : ''}`}
+            {formatProgress(progress, target, symbol, polyglot.t(label))}
         </p>
     );
 };
