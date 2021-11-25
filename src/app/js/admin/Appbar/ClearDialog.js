@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -25,114 +25,105 @@ import { getHost } from '../../../../common/uris';
 
 const baseUrl = getHost();
 
-class ClearDialogComponent extends Component {
-    constructor(props) {
-        super(props);
+const ClearDialogComponent = props => {
+    const [validName, setValidName] = React.useState(false);
+    const {
+        type,
+        p: polyglot,
+        onClose,
+        isLoading,
+        hasFailed,
+        succeeded,
+    } = props;
 
-        this.state = {
-            validName: false,
-            error: null,
-        };
-    }
-
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps.succeeded) {
+    useEffect(() => {
+        if (succeeded) {
             window.location.reload();
         }
-    }
+    }, [succeeded]);
 
-    getInstanceName = () => /\/\/([a-z0-9-]+)./.exec(baseUrl)[1];
+    const getInstanceName = () => /\/\/([a-z0-9-]+)./.exec(baseUrl)[1];
 
-    handleChangeField = e => {
-        const instanceName = this.getInstanceName();
-        this.setState({
-            validName: instanceName === e.target.value,
-        });
+    const handleChangeField = e => {
+        const instanceName = getInstanceName();
+        setValidName(e.target.value === instanceName);
     };
 
-    handleClear = type =>
-        (type === 'dataset' && this.handleClearDataset) ||
-        (type === 'published' && this.handleClearPublished);
+    const handleClear = type =>
+        (type === 'dataset' && handleClearDataset) ||
+        (type === 'published' && handleClearPublished);
 
-    handleClearDataset = () => {
-        this.props.clearDataset();
+    const handleClearDataset = () => {
+        props.clearDataset();
     };
 
-    handleClearPublished = () => {
-        this.props.clearPublished();
+    const handleClearPublished = () => {
+        props.clearPublished();
     };
 
-    handleKeyPress = (e, type) => {
-        if (e.key !== 'Enter' || !this.state.validName) {
+    const handleKeyPress = (e, type) => {
+        if (e.key !== 'Enter' || !validName) {
             return null;
         }
 
         if (type === 'dataset') {
-            return this.handleClearDataset();
+            return handleClearDataset();
         } else if (type === 'published') {
-            return this.handleClearPublished();
+            return handleClearPublished();
         }
 
         return null;
     };
-
-    render() {
-        const { type, p: polyglot, onClose, isLoading, hasFailed } = this.props;
-
-        const { validName } = this.state;
-
-        const actions = [
-            <ButtonWithStatus
-                raised
-                key="submit"
-                className="btn-save"
-                onClick={this.handleClear(type)}
-                color="primary"
-                error={hasFailed}
-                disabled={!validName}
-                loading={isLoading}
-            >
-                {polyglot.t('confirm')}
-            </ButtonWithStatus>,
-            <Button
-                key="cancel"
-                color="secondary"
-                variant="text"
-                className="btn-cancel"
-                onClick={onClose}
-            >
-                {polyglot.t('cancel')}
-            </Button>,
-        ];
-        return (
-            <Dialog open>
-                <DialogTitle>
-                    {polyglot.t(
-                        type === 'dataset' ? 'clear_dataset' : 'clear_publish',
-                    )}
-                </DialogTitle>
-                <DialogContent>
-                    <b>{polyglot.t('listen_up')}</b>
-                    <br />
-                    <br />
-                    <div>
-                        {polyglot.t('enter_name')} :
-                        <b> {this.getInstanceName()}</b>
-                        <TextField
-                            name="field-name-instance"
-                            placeholder={polyglot.t('instance_name')}
-                            fullWidth
-                            onChange={this.handleChangeField}
-                            onKeyPress={e => this.handleKeyPress(e, type)}
-                            error={hasFailed && polyglot.t('error')}
-                        />
-                    </div>
-                </DialogContent>
-                <DialogActions>{actions}</DialogActions>
-            </Dialog>
-        );
-    }
-}
+    const actions = [
+        <ButtonWithStatus
+            raised
+            key="submit"
+            className="btn-save"
+            onClick={handleClear(type)}
+            color="primary"
+            error={hasFailed}
+            disabled={!validName}
+            loading={isLoading}
+        >
+            {polyglot.t('confirm')}
+        </ButtonWithStatus>,
+        <Button
+            key="cancel"
+            color="secondary"
+            variant="text"
+            className="btn-cancel"
+            onClick={onClose}
+        >
+            {polyglot.t('cancel')}
+        </Button>,
+    ];
+    return (
+        <Dialog open>
+            <DialogTitle>
+                {polyglot.t(
+                    type === 'dataset' ? 'clear_dataset' : 'clear_publish',
+                )}
+            </DialogTitle>
+            <DialogContent>
+                <b>{polyglot.t('listen_up')}</b>
+                <br />
+                <br />
+                <div>
+                    {polyglot.t('enter_name')} :<b> {getInstanceName()}</b>
+                    <TextField
+                        name="field-name-instance"
+                        placeholder={polyglot.t('instance_name')}
+                        fullWidth
+                        onChange={handleChangeField}
+                        onKeyPress={e => handleKeyPress(e, type)}
+                        error={hasFailed && polyglot.t('error')}
+                    />
+                </div>
+            </DialogContent>
+            <DialogActions>{actions}</DialogActions>
+        </Dialog>
+    );
+};
 
 ClearDialogComponent.propTypes = {
     type: PropTypes.string.isRequired,
