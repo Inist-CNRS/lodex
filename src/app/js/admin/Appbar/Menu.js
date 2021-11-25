@@ -94,7 +94,10 @@ const MenuComponent = ({
                         </MenuItem>
                     )}
                     <Divider />
-                    <MenuItem onClick={() => handleCloseMenu(onSignOut)}>
+                    <MenuItem
+                        onClick={() => handleCloseMenu(onSignOut)}
+                        aria-label="signout"
+                    >
                         {polyglot.t('sign_out')}
                     </MenuItem>
                 </Menu>

@@ -25,7 +25,6 @@ import Login from '../user/Login';
 import PrivateRoute from './PrivateRoute';
 import { Display } from './Display';
 import { Data } from './Data';
-import Settings from './Settings';
 
 const adminTheme = createTheme({
     palette: {
@@ -73,7 +72,6 @@ render(
                     />
                     <PrivateRoute path="/data" component={Data} />
                     <PrivateRoute path="/display" component={Display} />
-                    <PrivateRoute path="/settings" component={Settings} />
                     <Route path="/login" exact component={Login} />
                 </App>
             </ConnectedRouter>

@@ -6,11 +6,9 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import StorageIcon from '@material-ui/icons/Storage';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
-import SettingsIcon from '@material-ui/icons/Settings';
 import { AppBar, CircularProgress, Button, Toolbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import SignOutButton from './SignOutButton';
 import PublicationButton from '../publish/PublicationButton';
 import { fromUser } from '../../sharedSelectors';
 import { fromParsing } from '../selectors';
