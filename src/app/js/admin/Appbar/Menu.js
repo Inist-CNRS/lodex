@@ -76,24 +76,30 @@ const MenuComponent = ({
                         },
                     }}
                 >
-                    <MenuItem onClick={() => handleCloseMenu(exportFields)}>
-                        {polyglot.t('export_fields')}
-                    </MenuItem>
-                    <MenuItem onClick={() => handleCloseMenu(dumpDataset)}>
-                        {polyglot.t('export_raw_dataset')}
-                    </MenuItem>
                     {hasLoadedDataset && (
-                        <MenuItem
-                            onClick={() =>
-                                handleCloseMenu(() =>
-                                    setShowClearDialog(!showClearDialog),
-                                )
-                            }
-                        >
-                            {polyglot.t('clear_dataset')}
-                        </MenuItem>
+                        <>
+                            <MenuItem
+                                onClick={() => handleCloseMenu(exportFields)}
+                            >
+                                {polyglot.t('export_fields')}
+                            </MenuItem>
+                            <MenuItem
+                                onClick={() => handleCloseMenu(dumpDataset)}
+                            >
+                                {polyglot.t('export_raw_dataset')}
+                            </MenuItem>
+                            <MenuItem
+                                onClick={() =>
+                                    handleCloseMenu(() =>
+                                        setShowClearDialog(!showClearDialog),
+                                    )
+                                }
+                            >
+                                {polyglot.t('clear_dataset')}
+                            </MenuItem>
+                            <Divider />
+                        </>
                     )}
-                    <Divider />
                     <MenuItem
                         onClick={() => handleCloseMenu(onSignOut)}
                         aria-label="signout"
