@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
 import DescriptionIcon from '@material-ui/icons/Description';
-import BarChartIcon from '@material-ui/icons/BarChart';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
-import SortIcon from '@material-ui/icons/Sort';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import FilterAtIcon from './FilterAt';
 
 const useStyles = makeStyles({
     container: {
@@ -43,13 +43,13 @@ export const FieldToggleInternalScopeComponent = ({ input }) => {
                 <DescriptionIcon />
             </ToggleButton>
             <ToggleButton value="subRessource" aria-label="centered">
-                <DescriptionOutlinedIcon />
+                <FileCopyIcon />
             </ToggleButton>
             <ToggleButton value="facet" aria-label="centered">
-                <SortIcon />
+                <FilterAtIcon />
             </ToggleButton>
             <ToggleButton value="chart" aria-label="right aligned">
-                <BarChartIcon />
+                <EqualizerIcon />
             </ToggleButton>
         </ToggleButtonGroup>
     );

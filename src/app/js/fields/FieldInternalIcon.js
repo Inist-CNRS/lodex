@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import HomeIcon from '@material-ui/icons/Home';
 import DescriptionIcon from '@material-ui/icons/Description';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import SortIcon from '@material-ui/icons/Sort';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
+import FilterAtIcon from './FilterAt';
 
 const HOME = 'home';
 const DOCUMENT = 'document';
@@ -15,8 +15,8 @@ const INTERNAL_SCOPE_ICON = [];
 INTERNAL_SCOPE_ICON['home'] = <HomeIcon />;
 INTERNAL_SCOPE_ICON['document'] = <DescriptionIcon />;
 INTERNAL_SCOPE_ICON['subRessource'] = <DescriptionOutlinedIcon />;
-INTERNAL_SCOPE_ICON['facet'] = <SortIcon />;
-INTERNAL_SCOPE_ICON['chart'] = <BarChartIcon />;
+INTERNAL_SCOPE_ICON['facet'] = <FilterAtIcon />;
+INTERNAL_SCOPE_ICON['chart'] = <EqualizerIcon />;
 
 const getIconInternalScope = scope => {
     if (scope) {
