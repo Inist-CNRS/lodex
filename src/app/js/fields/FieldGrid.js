@@ -189,6 +189,7 @@ const DraggableItemGrid = ({
     const classes = useStyles();
 
     const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
+    const [isEditable, setIsEditable] = useState(true);
 
     const layout = useMemo(() => layoutFromItems(items), [
         JSON.stringify(items),
@@ -202,15 +203,28 @@ const DraggableItemGrid = ({
         onChangePositions(items);
     }, [JSON.stringify(items.map(item => item.id))]);
 
+    const stopClickPropagation = () => {
+        setIsEditable(false);
+        setTimeout(() => setIsEditable(true), 200);
+    };
+
     const handleLayoutChange = newLayout => {
+        stopClickPropagation();
         setItems(itemsFromLayout(newLayout));
     };
 
     const handleResize = (elements, el) => {
+        stopClickPropagation();
         const newEl = elements.find(elem => elem.i === el.i);
         if (newEl) {
             onChangeWidth(newEl.i, newEl.w * 10);
             setItems(itemsFromLayout(elements));
+        }
+    };
+
+    const handleEditField = fieldName => {
+        if (isEditable) {
+            onEditField(fieldName);
         }
     };
 
@@ -231,7 +245,7 @@ const DraggableItemGrid = ({
                     <div
                         key={field.name}
                         className={classes.property}
-                        onClick={() => onEditField(field.name)}
+                        onClick={() => handleEditField(field.name)}
                     >
                         <span
                             className={classNames(
