@@ -135,7 +135,7 @@ export const ParsingExcerptComponent = ({
                             return (
                                 <ParsingExcerptColumn
                                     key={`${column}_${line._id}`}
-                                    value={`${line[column] || ''}`}
+                                    value={`${line[column]}`}
                                     style={getColumnStyle(
                                         enrichmentsNames,
                                         column,

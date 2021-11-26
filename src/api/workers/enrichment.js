@@ -34,7 +34,10 @@ const createEnrichmentTransformerFactory = ctx => async id => {
             const commands = createEzsRuleCommands(enrichment.rule);
             const result = input.pipe(ezs('delegate', { commands }, {}));
 
-            result.on('data', ({ value }) => resolve({ value, enrichment }));
+            result.on('data', ({ value }) => {
+                console.debug('valueWebService', value);
+                return resolve({ value, enrichment });
+            });
             result.on('error', error => reject({ error, enrichment }));
 
             input.write({ id, value });
