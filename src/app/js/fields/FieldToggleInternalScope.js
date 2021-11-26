@@ -21,7 +21,7 @@ export const FieldToggleInternalScopeComponent = ({ input }) => {
     const [values, setValues] = React.useState([]);
 
     useEffect(() => {
-        setValues(input.value);
+        Array.isArray(input.value) && setValues(input.value);
     }, [input.value]);
 
     const handleStateSelected = (event, newValues) => {

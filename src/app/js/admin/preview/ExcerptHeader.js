@@ -99,16 +99,14 @@ const ExcerptHeaderComponent = ({
             </div>
         )}
         <ComposedOf compositeFields={compositeFields} polyglot={polyglot} />
-        <div>
-            <div style={titleStyle.internal}>
-                {field.internalScope &&
-                    field.internalScope.map(internalScope => (
-                        <FieldInternalIcon
-                            key={internalScope}
-                            scope={internalScope}
-                        />
-                    ))}
-            </div>
+        <div style={titleStyle.internal}>
+            {field.internalScope &&
+                field.internalScope.map(internalScope => (
+                    <FieldInternalIcon
+                        key={internalScope}
+                        scope={internalScope}
+                    />
+                ))}
             {field.internalName}
         </div>
     </div>
