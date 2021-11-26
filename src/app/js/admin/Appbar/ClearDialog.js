@@ -132,7 +132,7 @@ ClearDialogComponent.propTypes = {
     onClose: PropTypes.func.isRequired,
     clearDataset: PropTypes.func.isRequired,
     clearPublished: PropTypes.func.isRequired,
-    reloadParsing: PropTypes.func.isRequired,
+    reloadParsing: PropTypes.func,
     isLoading: PropTypes.bool.isRequired,
     hasFailed: PropTypes.bool.isRequired,
 };

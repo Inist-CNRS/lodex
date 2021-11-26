@@ -39,9 +39,7 @@ describe('handleUploadFile saga', () => {
         const { value } = saga.next('token');
 
         expect(value).toEqual(
-            race({
-                file: call(loadDatasetFile, 'payload', 'token', 'loaderName'),
-            }),
+            call(loadDatasetFile, 'payload', 'token', 'loaderName'),
         );
     });
 
@@ -68,6 +66,6 @@ describe('handleUploadFile saga', () => {
         saga.next('token');
         saga.next({ file: 'file' });
         const { value } = saga.next();
-        expect(value).toEqual(put(uploadSuccess('file')));
+        expect(value).toEqual(put(uploadSuccess()));
     });
 });

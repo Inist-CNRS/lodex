@@ -40,10 +40,9 @@ const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
     return (
         <div>
             <Grid
-                display
                 container={true}
                 direction="row"
-                justify="center"
+                justifyContent="center"
                 style={{
                     width: '100%',
                     marginBottom: 25,

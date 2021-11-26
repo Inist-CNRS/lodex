@@ -23,13 +23,14 @@ export const defaultState = {
     error: false,
     symbol: undefined,
     isBackground: false,
+    label: undefined,
 };
 
 export default handleActions(
     {
         [UPDATE_PROGRESS]: (
             state,
-            { payload: { status, progress, target, symbol } },
+            { payload: { status, progress, target, symbol, label } },
         ) => ({
             ...state,
             status,
@@ -37,6 +38,7 @@ export default handleActions(
             target,
             symbol,
             error: undefined,
+            label,
         }),
         [UPLOAD_FILE]: state => ({
             ...state,

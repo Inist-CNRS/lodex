@@ -169,9 +169,6 @@ export const UploadComponent = ({
                     onAdd={fileObjs => handleFileAdded(fileObjs)}
                     onDrop={handleAdding}
                     onDropRejected={handleAddRejected}
-                    onAlert={(message, variant) =>
-                        console.log(`${variant}: ${message}`)
-                    }
                 />
             )}
             {useUrlForUpload && (
@@ -252,6 +249,7 @@ export const UploadComponent = ({
 UploadComponent.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
+        location: PropTypes.object,
     }),
     className: PropTypes.string,
     error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
@@ -281,12 +279,15 @@ const DroppingLoader = ({ text }) => {
             container
             direction="column"
             alignItems="center"
-            justify="center"
+            justifyContent="center"
         >
             <CircularProgress />
             <span>{text}</span>
         </Grid>
     );
+};
+DroppingLoader.propTypes = {
+    text: PropTypes.string.isRequired,
 };
 
 UploadComponent.propTypes = {

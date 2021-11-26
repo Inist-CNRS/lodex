@@ -2,15 +2,12 @@ import { PENDING, ERROR } from '../../common/progressStatus';
 
 export class Progress {
     status = PENDING;
-    start(status, target, symbol) {
-        if (target === null || target === undefined) {
-            return;
-        }
-
+    start(status, target, symbol, label) {
         this.status = status;
         this.target = target;
         this.progress = 0;
         this.symbol = symbol;
+        this.label = label;
         this.error = null;
     }
 
@@ -62,6 +59,7 @@ export class Progress {
             progress: this.progress,
             symbol: this.symbol,
             error: this.error,
+            label: this.label,
         };
     }
 }

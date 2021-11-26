@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
     Dialog,
@@ -15,23 +15,22 @@ import { loadProgress, clearProgress } from './reducer';
 import { PENDING } from '../../../../common/progressStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-const renderProgressText = props => {
-    const { progress, target, symbol } = props;
-    if (!progress || !target) {
-        return null;
-    }
+const formatProgress = (progress, target, symbol, label) => {
+    const formatedTarget = target ? ` / ${target}` : ``;
+    const formatedSymbol = symbol ? ` ${symbol}` : ``;
+    const formatedLabel = label ? ` ${label}` : ``;
+    return progress + formatedTarget + formatedSymbol + formatedLabel;
+}
 
-    if (symbol) {
-        return (
-            <p>
-                {progress} / {target} {symbol}
-            </p>
-        );
+const renderProgressText = props => {
+    const { progress, target, symbol, label, p: polyglot } = props;
+    if (!progress) {
+        return null;
     }
 
     return (
         <p>
-            {progress} / {target}
+            {formatProgress(progress, target, symbol, polyglot.t(label))}
         </p>
     );
 };
@@ -91,10 +90,13 @@ ProgressComponent.propTypes = {
     clearProgress: PropTypes.func.isRequired,
     p: polyglotPropTypes,
     isBackground: PropTypes.bool,
+    label: PropTypes.string,
 };
 
 ProgressComponent.defaultProps = {
     symbol: null,
+    text: null,
+    target: null,
 };
 
 const mapStateToProps = state => ({

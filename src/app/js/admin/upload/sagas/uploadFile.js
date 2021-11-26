@@ -7,7 +7,7 @@ import { loadDatasetFile } from '../../../lib/loadFile';
 import { UPLOAD_FILE, uploadError, uploadSuccess } from '../';
 import { preventUnload, allowUnload } from './unload';
 import { FINISH_PROGRESS } from '../../progress/reducer';
-import { publish as publishAction } from'../../publish';
+import { publish as publishAction } from '../../publish';
 import { clearPublished } from '../../clear';
 
 export function* handleUploadFile(action) {
@@ -18,21 +18,22 @@ export function* handleUploadFile(action) {
         preventUnload();
         const loaderName = yield select(fromUpload.getLoaderName);
         const token = yield select(fromUser.getToken);
-        const { file } = yield race({
-            file: call(loadDatasetFile, action.payload, token, loaderName),
-        });
+        yield call(loadDatasetFile, action.payload, token, loaderName);
 
         allowUnload();
         yield take(FINISH_PROGRESS);
 
-        yield put(uploadSuccess(file));
+        yield put(uploadSuccess());
 
-        const hasPublishedDataset = yield select(fromPublication.hasPublishedDataset);
+        const hasPublishedDataset = yield select(
+            fromPublication.hasPublishedDataset,
+        );
         if (hasPublishedDataset) {
-            yield put(clearPublished())
+            yield put(clearPublished());
             yield put(publishAction());
         }
     } catch (error) {
+        console.error(error);
         allowUnload();
         yield put(uploadError(error));
     }
