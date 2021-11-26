@@ -5,11 +5,11 @@ import translate from 'redux-polyglot/translate';
 import compose from 'lodash.compose';
 import PropTypes from 'prop-types';
 import GridLayout from 'react-grid-layout';
-import { Button, makeStyles, Snackbar } from '@material-ui/core';
+import { Box, Button, makeStyles, Snackbar } from '@material-ui/core';
 import 'react-grid-layout/css/styles.css';
 import classNames from 'classnames';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Alert from '@material-ui/lab/Alert';
+import copy from 'copy-to-clipboard';
 
 import {
     OpenWith as DragIndicatorIcon,
@@ -133,9 +133,21 @@ const ItemGridLabel = connect((state, { field }) => ({
     completedField: fromFields.getCompletedField(state, field),
 }))(({ field, completedField, polyglot, onShowNameCopied }) => {
     const classes = useStyles();
+
+    const handleCopyToClipboard = (event, text) => {
+        event.stopPropagation();
+        event.preventDefault();
+        copy(text);
+        onShowNameCopied();
+    };
+
     return (
         <>
-            <CopyToClipboard text={field.name} onCopy={onShowNameCopied}>
+            <Box
+                onClick={e => {
+                    handleCopyToClipboard(e, field.name);
+                }}
+            >
                 <span>
                     {ensureTextIsShort(field.label)}
                     {` (${ensureTextIsShort(field.name)})`}
@@ -147,7 +159,7 @@ const ItemGridLabel = connect((state, { field }) => ({
                         </span>
                     )}
                 </span>
-            </CopyToClipboard>
+            </Box>
             <div className={classes.internal}>
                 {field.internalScope && (
                     <FieldInternalIcon scope={field.internalScope} />
@@ -178,7 +190,13 @@ const DraggableItemGrid = ({
 
     const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
 
-    const layout = useMemo(() => layoutFromItems(items), [items]);
+    const layout = useMemo(() => layoutFromItems(items), [
+        JSON.stringify(items),
+    ]);
+
+    useEffect(() => {
+        setItems(buildFieldsDefinitionsArray(fields));
+    }, [JSON.stringify(fields)]);
 
     useDidUpdateEffect(() => {
         onChangePositions(items);
@@ -201,7 +219,7 @@ const DraggableItemGrid = ({
             <GridLayout
                 className="layout"
                 layout={layout}
-                key={JSON.stringify(items)}
+                key={JSON.stringify(fields)}
                 cols={10}
                 rowHeight={150}
                 width={1000}
@@ -225,10 +243,7 @@ const DraggableItemGrid = ({
                             <DragIndicatorIcon />
                         </span>
                         <span
-                            className={classNames(
-                                classes.propertyLabel,
-                                classes.fieldChildren,
-                            )}
+                            className={classNames(classes.propertyLabel)}
                             data-field-name={field.name}
                         >
                             <ItemGridLabel
