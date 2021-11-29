@@ -1,6 +1,5 @@
 import Koa from 'koa';
 import config from 'config';
-import route from 'koa-route';
 import mount from 'koa-mount';
 import cors from 'kcors';
 import koaQs from 'koa-qs';
