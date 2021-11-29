@@ -64,10 +64,7 @@ export const FieldsEditComponent = ({
                         filter={filter}
                         subresourceId={subresourceId}
                     />
-                    <FieldGrid
-                        filter={filter}
-                        subresourceId={subresourceId}
-                    />
+                    <FieldGrid filter={filter} subresourceId={subresourceId} />
                 </>
             )}
             {tab === 'published' && (
@@ -97,7 +94,7 @@ FieldsEditComponent.propTypes = {
 };
 
 export const FieldsEdit = compose(
-    connect((state) => ({
+    connect(state => ({
         showAddColumns: fromParsing.showAddColumns(state),
     })),
 )(FieldsEditComponent);

@@ -22,7 +22,6 @@ const useStyles = makeStyles({
 
 export const AddFieldButtonComponent = ({
     onAddNewField,
-    scope,
     p: polyglot,
     name,
 }) => {
@@ -32,7 +31,7 @@ export const AddFieldButtonComponent = ({
         <Button
             variant="contained"
             color="primary"
-            onClick={() => onAddNewField({ name, scope })}
+            onClick={() => onAddNewField({ name })}
             className={classnames(
                 classes.containedButton,
                 'btn-add-free-field',
@@ -46,7 +45,6 @@ export const AddFieldButtonComponent = ({
 
 AddFieldButtonComponent.propTypes = {
     onAddNewField: PropTypes.func.isRequired,
-    scope: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
     name: PropTypes.string,
 };

@@ -115,8 +115,7 @@ export const defaultState = {
     invalidProperties: [],
 };
 
-const getDefaultField = (name, index, scope, rest = {}) => ({
-    scope: scope,
+const getDefaultField = (name, index, rest = {}) => ({
     label: name || `newField ${index + 1}`,
     name: 'new',
     display: true,
@@ -144,14 +143,14 @@ const getDefaultField = (name, index, scope, rest = {}) => ({
 export default handleActions(
     {
         ADD_FIELD: (state, { payload }) => {
-            const { name, scope, ...rest } = payload || {};
+            const { name, ...rest } = payload || {};
             return {
                 ...state,
                 editedFieldName: 'new',
                 list: [...state.list, 'new'],
                 byName: {
                     ...state.byName,
-                    new: getDefaultField(name, state.list.length, scope, rest),
+                    new: getDefaultField(name, state.list.length, rest),
                 },
             };
         },
