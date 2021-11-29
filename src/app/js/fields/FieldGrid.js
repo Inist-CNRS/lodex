@@ -233,7 +233,7 @@ const DraggableItemGrid = ({
             <GridLayout
                 className="layout"
                 layout={layout}
-                key={JSON.stringify(fields)}
+                key={JSON.stringify(items)}
                 cols={10}
                 rowHeight={150}
                 width={1000}
