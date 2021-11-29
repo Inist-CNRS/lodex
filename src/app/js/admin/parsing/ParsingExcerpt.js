@@ -128,7 +128,6 @@ export const ParsingExcerptComponent = ({
                         {columnsToShow.map(column => {
                             const showAddColumnButton =
                                 showAddColumns &&
-                                showAddColumns &&
                                 (index === total - 3 ||
                                     (total < 3 && index === 0));
 

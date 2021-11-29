@@ -16,7 +16,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { signOut } from '../../user';
 import { exportFields } from '../../exportFields';
-import theme from '../../theme';
 import { fromParsing } from '../selectors';
 import ClearDialog from './ClearDialog';
 
@@ -47,7 +46,7 @@ const MenuComponent = ({
     };
     const handleCloseMenu = callback => {
         setAnchorEl(null);
-        callback && callback();
+        typeof callback === 'function' && callback();
     };
     return (
         <>
@@ -76,30 +75,31 @@ const MenuComponent = ({
                         },
                     }}
                 >
-                    {hasLoadedDataset && (
-                        <>
-                            <MenuItem
-                                onClick={() => handleCloseMenu(exportFields)}
-                            >
-                                {polyglot.t('export_fields')}
-                            </MenuItem>
-                            <MenuItem
-                                onClick={() => handleCloseMenu(dumpDataset)}
-                            >
-                                {polyglot.t('export_raw_dataset')}
-                            </MenuItem>
-                            <MenuItem
-                                onClick={() =>
-                                    handleCloseMenu(() =>
-                                        setShowClearDialog(!showClearDialog),
-                                    )
-                                }
-                            >
-                                {polyglot.t('clear_dataset')}
-                            </MenuItem>
-                            <Divider />
-                        </>
-                    )}
+                    {hasLoadedDataset && [
+                        <MenuItem
+                            key="export_fields"
+                            onClick={() => handleCloseMenu(exportFields)}
+                        >
+                            {polyglot.t('export_fields')}
+                        </MenuItem>,
+                        <MenuItem
+                            key="export_raw_dataset"
+                            onClick={() => handleCloseMenu(dumpDataset)}
+                        >
+                            {polyglot.t('export_raw_dataset')}
+                        </MenuItem>,
+                        <MenuItem
+                            key="clear_dataset"
+                            onClick={() =>
+                                handleCloseMenu(() =>
+                                    setShowClearDialog(!showClearDialog),
+                                )
+                            }
+                        >
+                            {polyglot.t('clear_dataset')}
+                        </MenuItem>,
+                        <Divider key="divider" />,
+                    ]}
                     <MenuItem
                         onClick={() => handleCloseMenu(onSignOut)}
                         aria-label="signout"

@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     },
 });
 
-export const AddFieldFromColumnButton = ({
+export const AddFieldFromColumnButtonComponent = ({
     onShowExistingColumns,
     p: polyglot,
 }) => {
@@ -42,9 +42,10 @@ export const AddFieldFromColumnButton = ({
     );
 };
 
-AddFieldFromColumnButton.propTypes = {
+AddFieldFromColumnButtonComponent.propTypes = {
     onShowExistingColumns: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    scope: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = {
@@ -54,4 +55,4 @@ const mapDispatchToProps = {
 export default compose(
     connect(null, mapDispatchToProps),
     translate,
-)(AddFieldFromColumnButton);
+)(AddFieldFromColumnButtonComponent);
