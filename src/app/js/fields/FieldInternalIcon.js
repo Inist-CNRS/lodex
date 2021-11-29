@@ -6,28 +6,23 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import FilterAtIcon from './FilterAt';
 
-const HOME = 'home';
-const DOCUMENT = 'document';
-const SUBRESSOURCE = 'subRessource';
-const CHART = 'chart';
-const FACET = 'facet';
-const INTERNAL_SCOPE_ICON = [];
-INTERNAL_SCOPE_ICON['home'] = <HomeIcon />;
-INTERNAL_SCOPE_ICON['document'] = <MainResourceIcon />;
-INTERNAL_SCOPE_ICON['subRessource'] = <FileCopyIcon />;
-INTERNAL_SCOPE_ICON['facet'] = <FilterAtIcon />;
-INTERNAL_SCOPE_ICON['chart'] = <EqualizerIcon />;
+const INTERNAL_SCOPE_ICONS = [];
+INTERNAL_SCOPE_ICONS['home'] = <HomeIcon />;
+INTERNAL_SCOPE_ICONS['document'] = <MainResourceIcon />;
+INTERNAL_SCOPE_ICONS['subRessource'] = <FileCopyIcon />;
+INTERNAL_SCOPE_ICONS['facet'] = <FilterAtIcon />;
+INTERNAL_SCOPE_ICONS['chart'] = <EqualizerIcon />;
 
 const getIconInternalScope = scope => {
     if (scope) {
-        return INTERNAL_SCOPE_ICON[scope];
+        return INTERNAL_SCOPE_ICONS[scope];
     }
 };
 
 const FieldInternalIcon = ({ scope }) => getIconInternalScope(scope);
 
 FieldInternalIcon.propTypes = {
-    scope: PropTypes.oneOf([HOME, DOCUMENT, CHART, SUBRESSOURCE, FACET, '']),
+    scope: PropTypes.oneOf(Object.keys(INTERNAL_SCOPE_ICONS)),
 };
 
 export default FieldInternalIcon;

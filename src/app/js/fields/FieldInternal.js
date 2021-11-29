@@ -25,7 +25,7 @@ export const FieldInternalComponent = field => {
     return (
         <Box className={classes.container}>
             <FieldInput
-                name="internalScope"
+                name="internalScopes"
                 component={FieldToggleInternalScope}
                 labelKey="internalScope"
                 fullWidth

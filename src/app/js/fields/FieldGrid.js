@@ -149,8 +149,8 @@ const ItemGridLabel = connect((state, { field }) => ({
                 </span>
             </CopyToClipboard>
             <div className={classes.internal}>
-                {field.internalScope &&
-                    field.internalScope.map(internalScope => (
+                {field.internalScopes &&
+                    field.internalScopes.map(internalScope => (
                         <FieldInternalIcon
                             key={internalScope}
                             scope={internalScope}
@@ -278,7 +278,7 @@ DraggableItemGrid.propTypes = {
             width: PropTypes.string,
             position: PropTypes.number,
             display: PropTypes.bool,
-            internalScope: PropTypes.string,
+            internalScopes: PropTypes.string,
             internalName: PropTypes.string,
         }),
     ).isRequired,

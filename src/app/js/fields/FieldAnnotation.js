@@ -55,8 +55,8 @@ const FieldAnnotation = ({ fields, scope, p: polyglot }) => (
                 >
                     <div>{f.label}</div>
                     <div style={styles.internal}>
-                        {f.internalScope &&
-                            f.internalScope.map(internalScope => (
+                        {f.internalScopes &&
+                            f.internalScopes.map(internalScope => (
                                 <FieldInternalIcon
                                     key={internalScope}
                                     scope={internalScope}

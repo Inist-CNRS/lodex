@@ -100,8 +100,8 @@ const ExcerptHeaderComponent = ({
         )}
         <ComposedOf compositeFields={compositeFields} polyglot={polyglot} />
         <div style={titleStyle.internal}>
-            {field.internalScope &&
-                field.internalScope.map(internalScope => (
+            {field.internalScopes &&
+                field.internalScopes.map(internalScope => (
                     <FieldInternalIcon
                         key={internalScope}
                         scope={internalScope}
