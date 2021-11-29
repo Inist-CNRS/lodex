@@ -5,11 +5,11 @@ import translate from 'redux-polyglot/translate';
 import compose from 'lodash.compose';
 import PropTypes from 'prop-types';
 import GridLayout from 'react-grid-layout';
-import { Button, makeStyles, Snackbar } from '@material-ui/core';
+import { Box, Button, makeStyles, Snackbar } from '@material-ui/core';
 import 'react-grid-layout/css/styles.css';
 import classNames from 'classnames';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Alert from '@material-ui/lab/Alert';
+import copy from 'copy-to-clipboard';
 
 import {
     OpenWith as DragIndicatorIcon,
@@ -133,9 +133,21 @@ const ItemGridLabel = connect((state, { field }) => ({
     completedField: fromFields.getCompletedField(state, field),
 }))(({ field, completedField, polyglot, onShowNameCopied }) => {
     const classes = useStyles();
+
+    const handleCopyToClipboard = (event, text) => {
+        event.stopPropagation();
+        event.preventDefault();
+        copy(text);
+        onShowNameCopied();
+    };
+
     return (
         <>
-            <CopyToClipboard text={field.name} onCopy={onShowNameCopied}>
+            <Box
+                onClick={e => {
+                    handleCopyToClipboard(e, field.name);
+                }}
+            >
                 <span>
                     {ensureTextIsShort(field.label)}
                     {` (${ensureTextIsShort(field.name)})`}
@@ -147,7 +159,7 @@ const ItemGridLabel = connect((state, { field }) => ({
                         </span>
                     )}
                 </span>
-            </CopyToClipboard>
+            </Box>
             <div className={classes.internal}>
                 {field.internalScopes &&
                     field.internalScopes.map(internalScope => (
@@ -181,22 +193,42 @@ const DraggableItemGrid = ({
     const classes = useStyles();
 
     const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
+    const [isEditable, setIsEditable] = useState(true);
 
-    const layout = useMemo(() => layoutFromItems(items), [items]);
+    const layout = useMemo(() => layoutFromItems(items), [
+        JSON.stringify(items),
+    ]);
+
+    useEffect(() => {
+        setItems(buildFieldsDefinitionsArray(fields));
+    }, [JSON.stringify(fields)]);
 
     useDidUpdateEffect(() => {
         onChangePositions(items);
     }, [JSON.stringify(items.map(item => item.id))]);
 
+    const stopClickPropagation = () => {
+        setIsEditable(false);
+        setTimeout(() => setIsEditable(true), 200);
+    };
+
     const handleLayoutChange = newLayout => {
+        stopClickPropagation();
         setItems(itemsFromLayout(newLayout));
     };
 
     const handleResize = (elements, el) => {
+        stopClickPropagation();
         const newEl = elements.find(elem => elem.i === el.i);
         if (newEl) {
             onChangeWidth(newEl.i, newEl.w * 10);
             setItems(itemsFromLayout(elements));
+        }
+    };
+
+    const handleEditField = fieldName => {
+        if (isEditable) {
+            onEditField(fieldName);
         }
     };
 
@@ -217,7 +249,7 @@ const DraggableItemGrid = ({
                     <div
                         key={field.name}
                         className={classes.property}
-                        onClick={() => onEditField(field.name)}
+                        onClick={() => handleEditField(field.name)}
                     >
                         <span
                             className={classNames(
@@ -229,10 +261,7 @@ const DraggableItemGrid = ({
                             <DragIndicatorIcon />
                         </span>
                         <span
-                            className={classNames(
-                                classes.propertyLabel,
-                                classes.fieldChildren,
-                            )}
+                            className={classNames(classes.propertyLabel)}
                             data-field-name={field.name}
                         >
                             <ItemGridLabel
