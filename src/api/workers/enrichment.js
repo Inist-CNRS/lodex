@@ -2,6 +2,7 @@ import fastq from 'fastq';
 import { ObjectId } from 'mongodb';
 import { PassThrough } from 'stream';
 import ezs from '@ezs/core';
+import logger from '../services/logger';
 
 export const getEnrichmentDatasetCandidate = async (id, ctx) => {
     const enrichment = await ctx.enrichment.findOneById(id);
@@ -34,7 +35,10 @@ const createEnrichmentTransformerFactory = ctx => async id => {
             const commands = createEzsRuleCommands(enrichment.rule);
             const result = input.pipe(ezs('delegate', { commands }, {}));
 
-            result.on('data', ({ value }) => resolve({ value, enrichment }));
+            result.on('data', ({ value }) => {
+                logger.info(`valueWebService : ${value}`);
+                return resolve({ value, enrichment });
+            });
             result.on('error', error => reject({ error, enrichment }));
 
             input.write({ id, value });
