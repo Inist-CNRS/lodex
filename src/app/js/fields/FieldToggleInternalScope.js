@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import translate from 'redux-polyglot/translate';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
-import DescriptionIcon from '@material-ui/icons/Description';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import theme from '../theme';
+import MainResourceIcon from '@material-ui/icons/InsertDriveFile';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import FilterAtIcon from './FilterAt';
 
 const useStyles = makeStyles({
     container: {
@@ -16,15 +18,20 @@ const useStyles = makeStyles({
 
 export const FieldToggleInternalScopeComponent = ({ input }) => {
     const classes = useStyles();
+    const [values, setValues] = React.useState([]);
 
-    const handleStateSelected = (event, state) => {
-        input.onChange(state === input.value ? '' : state);
+    useEffect(() => {
+        Array.isArray(input.value) && setValues(input.value);
+    }, [input.value]);
+
+    const handleStateSelected = (event, newValues) => {
+        setValues(newValues);
+        input.onChange(newValues);
     };
 
     return (
         <ToggleButtonGroup
-            value={input.value}
-            exclusive
+            value={values}
             onChange={handleStateSelected}
             aria-label="text alignment"
             className={classes.container}
@@ -33,13 +40,23 @@ export const FieldToggleInternalScopeComponent = ({ input }) => {
                 <HomeIcon />
             </ToggleButton>
             <ToggleButton value="document" aria-label="centered">
-                <DescriptionIcon />
+                <MainResourceIcon />
+            </ToggleButton>
+            <ToggleButton value="subRessource" aria-label="centered">
+                <FileCopyIcon />
+            </ToggleButton>
+            <ToggleButton value="facet" aria-label="centered">
+                <FilterAtIcon />
             </ToggleButton>
             <ToggleButton value="chart" aria-label="right aligned">
-                <BarChartIcon />
+                <EqualizerIcon />
             </ToggleButton>
         </ToggleButtonGroup>
     );
+};
+
+FieldToggleInternalScopeComponent.propTypes = {
+    input: PropTypes.object,
 };
 
 export default translate(FieldToggleInternalScopeComponent);

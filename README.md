@@ -103,5 +103,6 @@ Pie Chart by Gregor Cresnar from the Noun Project
 Radar Chart by Agus Purwanto from the Noun Project
 statistics by Creative Stall from the Noun Project
 Add table by Danil Polshin from the Noun Project
+Add filter icon by Jivan from the Noun Project
 
 Thanks to the noun project and their respective creators

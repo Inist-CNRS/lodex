@@ -11,7 +11,6 @@ import FieldToggleInternalScope from './FieldToggleInternalScope';
 import FieldInternalName from './FieldInternalName';
 import FieldInput from '../lib/components/FieldInput';
 
-
 const useStyles = makeStyles({
     container: {
         display: 'flex',
@@ -26,7 +25,7 @@ export const FieldInternalComponent = field => {
     return (
         <Box className={classes.container}>
             <FieldInput
-                name="internalScope"
+                name="internalScopes"
                 component={FieldToggleInternalScope}
                 labelKey="internalScope"
                 fullWidth
