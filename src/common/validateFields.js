@@ -1,4 +1,4 @@
-import { SCOPES, SCOPE_COLLECTION, SCOPE_DOCUMENT } from './scope';
+import { SCOPES, SCOPE_DOCUMENT } from './scope';
 import knownTransformers from './transformers';
 import languagesList from './languages';
 import isUndefinedOrEmpty from './lib/isUndefinedOrEmpty';
@@ -55,34 +55,6 @@ export const validatePosition = field => {
             ...result,
             isValid: false,
             error: 'invalid',
-        };
-    }
-
-    if (
-        field.position === 0 &&
-        field.scope === SCOPE_COLLECTION &&
-        field.name !== 'uri'
-    ) {
-        return {
-            ...result,
-            isValid: false,
-            error: 'uri_must_come_first',
-        };
-    }
-
-    if (field.position === 0 && field.scope === SCOPE_DOCUMENT) {
-        return {
-            ...result,
-            isValid: false,
-            error: 'uri_must_come_first',
-        };
-    }
-
-    if (field.position > 0 && field.name === 'uri') {
-        return {
-            ...result,
-            isValid: false,
-            error: 'uri_must_come_first',
         };
     }
 

@@ -191,19 +191,6 @@ describe('validateField', () => {
             });
         });
 
-        it('should return invalid result if position is 0 and scope is SCOPE_COLLECTION and field is not uri', () => {
-            expect(
-                validatePosition(
-                    { position: 0, name: 'foo', scope: SCOPE_COLLECTION },
-                    true,
-                ),
-            ).toEqual({
-                name: 'position',
-                isValid: false,
-                error: 'uri_must_come_first',
-            });
-        });
-
         it('should return valid result if position is 0 and scope is not SCOPE_COLLECTION', () => {
             expect(
                 validatePosition(
@@ -213,14 +200,6 @@ describe('validateField', () => {
             ).toEqual({
                 name: 'position',
                 isValid: true,
-            });
-        });
-
-        it('should return invalid result if position is greater than 0 and field is uri', () => {
-            expect(validatePosition({ position: 1, name: 'uri' })).toEqual({
-                name: 'position',
-                isValid: false,
-                error: 'uri_must_come_first',
             });
         });
 

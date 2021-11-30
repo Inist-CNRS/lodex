@@ -241,7 +241,7 @@ export const reorderField = async ctx => {
     const fieldsData = fields.map(name => fieldsDict[name]);
 
     try {
-        const scope = fieldsData.reduce((prev, { scope }) => {
+        fieldsData.reduce((prev, { scope }) => {
             if (!prev) {
                 return scope;
             }
@@ -274,14 +274,6 @@ export const reorderField = async ctx => {
                 'Bad scope: trying to mix ressource fields with other fields',
             );
         }, null);
-
-        if (scope === SCOPE_COLLECTION) {
-            if (fieldsData[0].name !== 'uri') {
-                throw new Error(
-                    'Uri must always be the first field for collection scope',
-                );
-            }
-        }
 
         ctx.body = await Promise.all(
             fields.map((name, position) =>
