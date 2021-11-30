@@ -74,6 +74,13 @@ export const filterColumnsToShow = (
     return columns;
 };
 
+const formatValue = value => {
+    if (typeof value === 'object') {
+        return JSON.stringify(value);
+    }
+    return value;
+};
+
 export const ParsingExcerptComponent = ({
     columns,
     handleAddColumn,
@@ -130,11 +137,10 @@ export const ParsingExcerptComponent = ({
                                 showAddColumns &&
                                 (index === total - 3 ||
                                     (total < 3 && index === 0));
-
                             return (
                                 <ParsingExcerptColumn
                                     key={`${column}_${line._id}`}
-                                    value={`${line[column]}`}
+                                    value={formatValue(line[column])}
                                     style={getColumnStyle(
                                         enrichmentsNames,
                                         column,
@@ -163,6 +169,9 @@ ParsingExcerptComponent.propTypes = {
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
     handleAddColumn: PropTypes.func.isRequired,
     showAddColumns: PropTypes.bool.isRequired,
+    enrichments: PropTypes.arrayOf(PropTypes.object).isRequired,
+    isHiddenLoadedColumn: PropTypes.bool.isRequired,
+    isHiddenEnrichedColumn: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({

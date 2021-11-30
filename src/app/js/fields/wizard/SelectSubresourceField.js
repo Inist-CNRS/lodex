@@ -4,6 +4,7 @@ import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+import parseValue from '../../../../common/tools/parseValue';
 
 import { fromParsing } from '../../admin/selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -68,7 +69,7 @@ export const mapStateToProps = (state, { subresourceUri }) => {
         return {};
     }
 
-    const subresourceData = JSON.parse(firstParsedLine[subresource.path] || '');
+    const subresourceData = parseValue(firstParsedLine[subresource.path] || '');
 
     return {
         datasetFields: Object.keys(

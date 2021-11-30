@@ -6,7 +6,7 @@
         "password": "secret"
     },
     "#pluginsAPI": "http://lodex-extended:31976",
-    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v6.21.0/public/",
+    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v7.0.0/public/",
     "routinesCache": false,
     "routines": [
         "all-documents",
@@ -53,6 +53,7 @@
         "skos",
         "json",
         "json-conditor",
+        "json-import",
         "json-istex",
         "json-lodex",
         "json-wordpress",

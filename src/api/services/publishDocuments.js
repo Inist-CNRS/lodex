@@ -7,6 +7,7 @@ import progress from './progress';
 import { PUBLISH_DOCUMENT } from '../../common/progressStatus';
 import { URI_FIELD_NAME } from '../../common/uris';
 import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
+import parseValue from '../../common/tools/parseValue';
 
 export const versionTransformerDecorator = (
     transformDocument,
@@ -84,7 +85,7 @@ export const publishDocumentsFactory = ({
     getDocumentTransformer,
     transformAllDocuments,
 }) => async (ctx, count, fields) => {
-    ctx.job && ctx.job.log("Publishing documents");
+    ctx.job && ctx.job.log('Publishing documents');
     const mainResourceFields = fields
         .filter(
             c =>
@@ -141,7 +142,7 @@ export const publishDocumentsFactory = ({
                     let data;
 
                     try {
-                        data = JSON.parse(get(curr, subresource.path));
+                        data = parseValue(get(curr, subresource.path));
                     } catch (e) {
                         return acc;
                     }
@@ -196,7 +197,7 @@ export const publishDocumentsFactory = ({
         ctx.publishedDataset.insertBatch,
         versionTransformerDecorator(transformMainResourceDocument),
     );
-    ctx.job && ctx.job.log("Document published");
+    ctx.job && ctx.job.log('Document published');
 };
 
 export default publishDocumentsFactory({

@@ -10,6 +10,7 @@ import { fromFields } from '../../sharedSelectors';
 import { isLongText, getShortText } from '../../lib/longTexts';
 import getFieldClassName from '../../lib/getFieldClassName';
 import { field as fieldPropTypes } from '../../propTypes';
+import parseValue from '../../../../common/tools/parseValue';
 
 const styles = {
     cell: readonly => ({
@@ -54,10 +55,13 @@ ExcerptLineColComponent.defaultProps = {
 
 const mapStateToProps = (state, { field, line }) => {
     const getLineCol = fromFields.getLineColGetter(state, field);
-    const value = `${getLineCol(line) || ''}`;
+    const parsedValue = parseValue(getLineCol(line));
 
     return {
-        value: typeof value === 'object' ? JSON.stringify(value) : value,
+        value:
+            typeof parsedValue === 'object'
+                ? JSON.stringify(parsedValue)
+                : parsedValue,
     };
 };
 
