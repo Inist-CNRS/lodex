@@ -413,40 +413,6 @@ describe('field routes', () => {
 
             expect(ctx.field.updatePosition).not.toHaveBeenCalled();
         });
-
-        it('should throw an error if scope is collection and first field is not uri', async () => {
-            const fieldsByName = {
-                a: { scope: SCOPE_COLLECTION, name: 'a' },
-                b: { scope: SCOPE_DOCUMENT, name: 'uri' },
-                c: { scope: SCOPE_COLLECTION, name: 'c' },
-            };
-            const ctx = {
-                request: {
-                    body: {
-                        fields: ['a', 'b', 'c'],
-                    },
-                },
-                field: {
-                    updatePosition: jest
-                        .fn()
-                        .mockImplementation(() =>
-                            Promise.resolve(`updated field`),
-                        ),
-                    findByNames: jest
-                        .fn()
-                        .mockImplementation(() => fieldsByName),
-                },
-            };
-
-            await reorderField(ctx, 'id');
-
-            expect(ctx.status).toBe(400);
-            expect(ctx.body.error).toBe(
-                'Uri must always be the first field for collection scope',
-            );
-
-            expect(ctx.field.updatePosition).not.toHaveBeenCalled();
-        });
     });
     afterAll(() => {
         indexSearchableFields.mockClear();
