@@ -63,7 +63,16 @@ const worker = async (id, ctx) => {
                 { $set: { [enrichment.name]: value } },
             );
         } catch (e) {
-            console.error({ e });
+            const enrichment = await ctx.enrichment.findOneById(id);
+            await ctx.dataset.updateOne(
+                { _id: new ObjectId(entry._id) },
+                { $set: { [enrichment.name]: `ERROR: ${e.error.message}` } },
+            );
+
+            logger.error('Enrichment error', {
+                enrichment,
+                error: e.error,
+            });
         }
 
         const nextEntry = await getEnrichmentDatasetCandidate(id, ctx);
