@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import translate from 'redux-polyglot/translate';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
@@ -9,6 +10,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import FilterAtIcon from './FilterAt';
+import { Tooltip } from '@material-ui/core';
 
 const useStyles = makeStyles({
     container: {
@@ -16,7 +18,7 @@ const useStyles = makeStyles({
     },
 });
 
-export const FieldToggleInternalScopeComponent = ({ input }) => {
+export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
     const classes = useStyles();
     const [values, setValues] = React.useState([]);
 
@@ -37,19 +39,29 @@ export const FieldToggleInternalScopeComponent = ({ input }) => {
             className={classes.container}
         >
             <ToggleButton value="home" aria-label="left aligned">
-                <HomeIcon />
+                <Tooltip title={polyglot.t('home_tooltip')}>
+                    <HomeIcon />
+                </Tooltip>
             </ToggleButton>
             <ToggleButton value="document" aria-label="centered">
-                <MainResourceIcon />
+                <Tooltip title={polyglot.t('document_tooltip')}>
+                    <MainResourceIcon />
+                </Tooltip>
             </ToggleButton>
             <ToggleButton value="subRessource" aria-label="centered">
-                <FileCopyIcon />
+                <Tooltip title={polyglot.t('subRessource_tooltip')}>
+                    <FileCopyIcon />
+                </Tooltip>
             </ToggleButton>
             <ToggleButton value="facet" aria-label="centered">
-                <FilterAtIcon />
+                <Tooltip title={polyglot.t('facet_tooltip')}>
+                    <FilterAtIcon />
+                </Tooltip>
             </ToggleButton>
             <ToggleButton value="chart" aria-label="right aligned">
-                <EqualizerIcon />
+                <Tooltip title={polyglot.t('chart_tooltip')}>
+                    <EqualizerIcon />
+                </Tooltip>
             </ToggleButton>
         </ToggleButtonGroup>
     );
@@ -57,6 +69,7 @@ export const FieldToggleInternalScopeComponent = ({ input }) => {
 
 FieldToggleInternalScopeComponent.propTypes = {
     input: PropTypes.object,
+    p: polyglotPropTypes.isRequired,
 };
 
 export default translate(FieldToggleInternalScopeComponent);
