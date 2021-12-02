@@ -13,7 +13,7 @@ describe('SelectSubresourceField', () => {
             };
 
             expect(mapStateToProps(state, { subresourceUri: 'foo' })).toEqual({
-                datasetFields: ['cov'],
+                datasetFields: ['cov', 'Autre'],
             });
         });
 
@@ -30,7 +30,7 @@ describe('SelectSubresourceField', () => {
             };
 
             expect(mapStateToProps(state, { subresourceUri: 'foo' })).toEqual({
-                datasetFields: ['bar'],
+                datasetFields: ['bar', 'Autre'],
             });
         });
     });
