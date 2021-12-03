@@ -12,13 +12,9 @@ export const createEnrichmentRule = async ctx => {
     }
 
     const excerpt = await ctx.dataset.getExcerpt();
-    let sourceData;
-    for (let line of excerpt) {
-        if (line[enrichment.sourceColumn]) {
-            sourceData = line[enrichment.sourceColumn];
-            break;
-        }
-    }
+    const sourceData = excerpt.find(line => !!line[enrichment.sourceColumn])[
+        enrichment.sourceColumn
+    ];
     let data;
     try {
         data = JSON.parse(sourceData);
@@ -34,13 +30,14 @@ export const createEnrichmentRule = async ctx => {
     };
 };
 
+const isBasicType = sourceData => {
+    return typeof sourceData === 'string' || typeof sourceData === 'number';
+};
+
 const isDirectPath = sourceData => {
     return (
-        typeof sourceData === 'string' ||
-        typeof sourceData === 'number' ||
-        (Array.isArray(sourceData) &&
-            (typeof sourceData[0] === 'string' ||
-                typeof sourceData === 'number'))
+        isBasicType(sourceData) ||
+        (Array.isArray(sourceData) && isBasicType(sourceData[0]))
     );
 };
 
