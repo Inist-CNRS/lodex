@@ -602,3 +602,5 @@
 "subRessource_tooltip"	"From subresource"	"Depuis une sous-ressource"
 "facet_tooltip"	"From facet"	"Depuis une facette"
 "chart_tooltip"	"From chart"	"Depuis un graphique"
+"other_column"	"Other column"	"Autre nom de colonne"
+"other"	"Other"	"Autre"

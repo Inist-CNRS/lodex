@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
+import {
+    Select,
+    MenuItem,
+    FormControl,
+    InputLabel,
+    TextField,
+} from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -13,6 +19,9 @@ const styles = {
     select: {
         width: '100%',
     },
+    input: {
+        marginTop: '10px',
+    },
 };
 
 export const SelectSubresourceFieldComponent = ({
@@ -22,28 +31,71 @@ export const SelectSubresourceFieldComponent = ({
     column,
     label,
     id,
-}) => (
-    <FormControl id="select-subresource-input-label" fullWidth>
-        <InputLabel>{polyglot.t(label)}</InputLabel>
-        <Select
-            id={id}
-            onChange={e => handleChange(e.target.value)}
-            style={styles.select}
-            labelId="select-subresource-input-label"
-            value={column}
-        >
-            {datasetFields.map(datasetField => (
-                <MenuItem
-                    key={`id_${datasetField}`}
-                    className={`column-${datasetField}`}
-                    value={datasetField}
+}) => {
+    const checkIsOtherColumn = column => {
+        if (column) {
+            if (
+                datasetFields.includes(column) &&
+                column !== polyglot.t('other')
+            ) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    const [isOtherColumn, setIsOtherColumn] = useState(
+        checkIsOtherColumn(column),
+    );
+
+    const checkIsOtherColumnAndHandleChange = column => {
+        setIsOtherColumn(checkIsOtherColumn(column));
+        handleChange(column);
+    };
+
+    return (
+        <>
+            <FormControl id="select-subresource-input-label" fullWidth>
+                <InputLabel>{polyglot.t(label)}</InputLabel>
+                <Select
+                    id={id}
+                    onChange={e =>
+                        checkIsOtherColumnAndHandleChange(e.target.value)
+                    }
+                    style={styles.select}
+                    labelId="select-subresource-input-label"
+                    value={isOtherColumn ? polyglot.t('other') : column}
                 >
-                    {datasetField}
-                </MenuItem>
-            ))}
-        </Select>
-    </FormControl>
-);
+                    {datasetFields.map(datasetField => (
+                        <MenuItem
+                            key={`id_${datasetField}`}
+                            className={`column-${datasetField}`}
+                            value={datasetField}
+                        >
+                            {datasetField}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+            {isOtherColumn && (
+                <FormControl
+                    id="select-subresource-other-input-label"
+                    fullWidth
+                >
+                    <TextField
+                        label={polyglot.t('other_column')}
+                        onChange={e => handleChange(e.target.value)}
+                        style={styles.input}
+                        type="text"
+                        value={column}
+                    />
+                </FormControl>
+            )}
+        </>
+    );
+};
 
 SelectSubresourceFieldComponent.propTypes = {
     datasetFields: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -72,11 +124,14 @@ export const mapStateToProps = (state, { subresourceUri }) => {
     const subresourceData = parseValue(firstParsedLine[subresource.path] || '');
 
     return {
-        datasetFields: Object.keys(
-            (Array.isArray(subresourceData)
-                ? subresourceData[0]
-                : subresourceData) || {},
-        ),
+        datasetFields: [
+            ...Object.keys(
+                (Array.isArray(subresourceData)
+                    ? subresourceData[0]
+                    : subresourceData) || {},
+            ),
+            ...[state.polyglot.phrases['other']],
+        ],
     };
 };
 
