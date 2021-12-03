@@ -51,19 +51,27 @@ const worker = async (id, ctx) => {
 
     return async entry => {
         const enricherTransformer = await transformerFactory(id);
+        const enrichment = await ctx.enrichment.findOneById(id);
+        await ctx.dataset.updateOne(
+            { _id: new ObjectId(entry._id) },
+            { $set: { [enrichment.name]: 'En attente' } },
+        );
 
         try {
-            const { value, enrichment } = await enricherTransformer({
+            let { value } = await enricherTransformer({
                 id: entry._id,
                 value: entry,
             });
+
+            if (value === undefined) {
+                value = 'n/a';
+            }
 
             await ctx.dataset.updateOne(
                 { _id: new ObjectId(entry._id) },
                 { $set: { [enrichment.name]: value } },
             );
         } catch (e) {
-            const enrichment = await ctx.enrichment.findOneById(id);
             await ctx.dataset.updateOne(
                 { _id: new ObjectId(entry._id) },
                 { $set: { [enrichment.name]: `ERROR: ${e.error.message}` } },
