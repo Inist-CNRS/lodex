@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
     Select,
@@ -32,17 +32,28 @@ export const SelectSubresourceFieldComponent = ({
     label,
     id,
 }) => {
-    const [isOtherColumn, setIsOtherColumn] = useState(false);
-
-    useEffect(() => {
+    const checkIsOtherColumn = column => {
         if (column) {
-            if (datasetFields.includes(column) && column !== 'Autre') {
-                setIsOtherColumn(false);
+            if (
+                datasetFields.includes(column) &&
+                column !== polyglot.t('other')
+            ) {
+                return false;
             } else {
-                setIsOtherColumn(true);
+                return true;
             }
         }
-    }, [column]);
+        return false;
+    };
+
+    const [isOtherColumn, setIsOtherColumn] = useState(
+        checkIsOtherColumn(column),
+    );
+
+    const checkIsOtherColumnAndHandleChange = column => {
+        setIsOtherColumn(checkIsOtherColumn(column));
+        handleChange(column);
+    };
 
     return (
         <>
@@ -50,10 +61,12 @@ export const SelectSubresourceFieldComponent = ({
                 <InputLabel>{polyglot.t(label)}</InputLabel>
                 <Select
                     id={id}
-                    onChange={e => handleChange(e.target.value)}
+                    onChange={e =>
+                        checkIsOtherColumnAndHandleChange(e.target.value)
+                    }
                     style={styles.select}
                     labelId="select-subresource-input-label"
-                    value={isOtherColumn ? 'Autre' : column}
+                    value={isOtherColumn ? polyglot.t('other') : column}
                 >
                     {datasetFields.map(datasetField => (
                         <MenuItem
@@ -67,13 +80,18 @@ export const SelectSubresourceFieldComponent = ({
                 </Select>
             </FormControl>
             {isOtherColumn && (
-                <TextField
-                    label={polyglot.t('other_column')}
-                    onChange={e => handleChange(e.target.value)}
-                    style={styles.input}
-                    type="text"
-                    value={column}
-                />
+                <FormControl
+                    id="select-subresource-other-input-label"
+                    fullWidth
+                >
+                    <TextField
+                        label={polyglot.t('other_column')}
+                        onChange={e => handleChange(e.target.value)}
+                        style={styles.input}
+                        type="text"
+                        value={column}
+                    />
+                </FormControl>
             )}
         </>
     );
@@ -112,7 +130,7 @@ export const mapStateToProps = (state, { subresourceUri }) => {
                     ? subresourceData[0]
                     : subresourceData) || {},
             ),
-            ...['Autre'],
+            ...[state.polyglot.phrases['other']],
         ],
     };
 };

@@ -10,10 +10,11 @@ describe('SelectSubresourceField', () => {
                 parsing: {
                     excerptLines: [{ columnPath: '{"cov": "fefe"}' }],
                 },
+                polyglot: { phrases: { other: 'Other' } },
             };
 
             expect(mapStateToProps(state, { subresourceUri: 'foo' })).toEqual({
-                datasetFields: ['cov', 'Autre'],
+                datasetFields: ['cov', 'Other'],
             });
         });
 
@@ -27,10 +28,11 @@ describe('SelectSubresourceField', () => {
                         { columnPath: '[{"bar": "bade"}, {"cov": "fefe"}]' },
                     ],
                 },
+                polyglot: { phrases: { other: 'Other' } },
             };
 
             expect(mapStateToProps(state, { subresourceUri: 'foo' })).toEqual({
-                datasetFields: ['bar', 'Autre'],
+                datasetFields: ['bar', 'Other'],
             });
         });
     });
