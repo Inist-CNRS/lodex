@@ -2,8 +2,8 @@ import Koa from 'koa';
 import route from 'koa-route';
 
 import clearPublished from '../../services/clearPublished';
+import logger from '../../services/logger';
 import { publisherQueue, PUBLISH } from '../../workers/publisher';
-
 
 const app = new Koa();
 
@@ -22,7 +22,9 @@ export const handleClearPublished = async ctx => {
             status: 'success',
         };
     } catch (error) {
-        console.log(error);
+        logger.error('handle clear published error', {
+            error,
+        });
         ctx.body = {
             status: 'error',
         };
