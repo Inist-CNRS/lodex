@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import HiddenIcon from '@material-ui/icons/VisibilityOff';
 import translate from 'redux-polyglot/translate';
@@ -199,9 +199,37 @@ const DraggableItemGrid = ({
         JSON.stringify(items),
     ]);
 
+    const gridLayoutRef = useRef();
+    const useHasLengthIncreased = length => {
+        const previousValue = usePreviousValue(length);
+        return previousValue + 1 === length;
+    };
+
+    const usePreviousValue = value => {
+        const ref = useRef();
+        useEffect(() => {
+            ref.current = value;
+        });
+        return ref.current;
+    };
+
+    const itemsHasLengthIncreased = useHasLengthIncreased(items.length);
+
     useEffect(() => {
         setItems(buildFieldsDefinitionsArray(fields));
     }, [JSON.stringify(fields)]);
+
+    useEffect(() => {
+        if (itemsHasLengthIncreased) {
+            if (gridLayoutRef.current) {
+                gridLayoutRef.current.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'end',
+                    inline: 'nearest',
+                });
+            }
+        }
+    }, [JSON.stringify(items)]);
 
     useDidUpdateEffect(() => {
         onChangePositions(items);
@@ -233,7 +261,7 @@ const DraggableItemGrid = ({
     };
 
     return (
-        <>
+        <div ref={gridLayoutRef}>
             <GridLayout
                 className="layout"
                 layout={layout}
@@ -292,7 +320,7 @@ const DraggableItemGrid = ({
                     {polyglot.t('fieldname_copied_clipboard')}
                 </Alert>
             </Snackbar>
-        </>
+        </div>
     );
 };
 DraggableItemGrid.propTypes = {
