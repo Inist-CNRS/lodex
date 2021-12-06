@@ -98,7 +98,7 @@ const ClearDialogComponent = props => {
         </Button>,
     ];
     return (
-        <Dialog open>
+        <Dialog open onClose={onClose}>
             <DialogTitle>
                 {polyglot.t(
                     type === 'dataset' ? 'clear_dataset' : 'clear_publish',

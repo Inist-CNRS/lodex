@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import compose from 'recompose/compose';
 import {
     Dialog,
     Button,
@@ -51,7 +50,7 @@ export const PopupConfirmUploadComponent = ({
     ];
 
     return (
-        <Dialog open={isOpen}>
+        <Dialog open={isOpen} onClose={handleClose}>
             <DialogTitle>{polyglot.t('info_upload')}</DialogTitle>
             <DialogContent>
                 <div style={styles.container} id="confirm-upload">

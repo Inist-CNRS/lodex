@@ -89,6 +89,7 @@ const ImportModelDialogComponent = ({
     return (
         <Dialog
             className={classnames(classes.dialog, 'dialog-import-fields')}
+            onClose={onClose}
             open
         >
             <DialogContent>

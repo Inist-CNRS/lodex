@@ -36,7 +36,6 @@ export const ClearPublishedButtonComponent = ({
     return (
         <div className={classnames('btn-unpublish', classes.container)}>
             <Button
-                raised
                 disabled={!hasPublishedDataset}
                 variant="contained"
                 color="white"
