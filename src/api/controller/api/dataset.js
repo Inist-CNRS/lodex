@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
+import logger from '../../services/logger';
 
 const app = new Koa();
 
@@ -15,6 +16,9 @@ export const clearDataset = async ctx => {
 
         ctx.body = { status: 'success' };
     } catch (error) {
+        logger.error('clear dataset error', {
+            error,
+        });
         ctx.body = { status: 'error', error };
     }
 };
