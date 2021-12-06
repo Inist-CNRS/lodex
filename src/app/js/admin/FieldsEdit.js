@@ -17,6 +17,11 @@ const useStyles = makeStyles({
         textAlign: 'right',
         padding: '20px 0 30px 0',
     },
+    editHeaderContainer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
 });
 
 export const FieldsEditComponent = ({
@@ -33,24 +38,28 @@ export const FieldsEditComponent = ({
 
     return (
         <div>
-            <Tabs
-                value={tab}
-                onChange={handleChangeTab}
-                indicatorColor="primary"
-                textColor="primary"
-                style={{ paddingBottom: 20 }}
-            >
-                <Tab value="page" label="Page" />
-                <Tab value="published" label="Données publiées" />
-            </Tabs>
-            {tab === 'page' && (
-                <>
+            <div className={classes.editHeaderContainer}>
+                <Tabs
+                    value={tab}
+                    onChange={handleChangeTab}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    style={{ paddingBottom: 20 }}
+                >
+                    <Tab value="page" label="Page" />
+                    <Tab value="published" label="Données publiées" />
+                </Tabs>
+                {tab === 'page' && (
                     <div className={classes.actionsContainer}>
                         {filter === SCOPE_DOCUMENT && !subresourceId && (
                             <AddFieldFromColumnButton />
                         )}
                         {addFieldButton}
                     </div>
+                )}
+            </div>
+            {tab === 'page' && (
+                <>
                     <div
                         style={{
                             display: showAddColumns ? 'block' : 'none',
