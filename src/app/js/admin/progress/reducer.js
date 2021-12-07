@@ -1,6 +1,10 @@
 import { createAction, handleActions } from 'redux-actions';
 import { PENDING, STARTING, ERROR } from '../../../../common/progressStatus';
-import { CLEAR_DATASET } from '../clear';
+import {
+    CLEAR_DATASET,
+    CLEAR_DATASET_ERROR,
+    CLEAR_PUBLISHED_ERROR,
+} from '../clear';
 import { PUBLISH } from '../publish';
 import { UPLOAD_FILE } from '../upload';
 
@@ -58,6 +62,20 @@ export default handleActions(
         [CLEAR_DATASET]: state => ({
             ...state,
             status: STARTING,
+            progress: undefined,
+            target: undefined,
+            error: undefined,
+        }),
+        [CLEAR_DATASET_ERROR]: state => ({
+            ...state,
+            status: PENDING,
+            progress: undefined,
+            target: undefined,
+            error: undefined,
+        }),
+        [CLEAR_PUBLISHED_ERROR]: state => ({
+            ...state,
+            status: PENDING,
             progress: undefined,
             target: undefined,
             error: undefined,
