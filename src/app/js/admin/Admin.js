@@ -15,7 +15,6 @@ import withInitialData from './withInitialData';
 import { fromParsing, fromPublication, fromUpload } from './selectors';
 import ParsingResult from './parsing/ParsingResult';
 import PublicationPreview from './preview/publication/PublicationPreview';
-import Published from './publish/Published';
 import Upload from './upload/Upload';
 import Loading from '../lib/components/Loading';
 import Statistics from './Statistics';
@@ -44,16 +43,6 @@ export const AdminComponent = ({
         );
     }
 
-    if (hasPublishedDataset) {
-        return (
-            <div className="admin">
-                <Card style={{ marginTop: '0.5rem' }}>
-                    <Published />
-                </Card>
-            </div>
-        );
-    }
-
     if (canUploadFile) {
         return <Upload className="admin" />;
     }
@@ -61,7 +50,7 @@ export const AdminComponent = ({
     return (
         <Card className="admin">
             <ParsingResult />
-            <Statistics />
+            <Statistics hasPublishedDataset={hasPublishedDataset} />
             <PublicationPreview />
             <div style={styles.punchLine}>
                 {polyglot.t('publish-punchline')}

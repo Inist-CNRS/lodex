@@ -17,7 +17,6 @@ import {
 import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import theme from './../theme';
-import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../../common/scope';
 import { toggleLoadedColumn, toggleEnrichedColumn } from './parsing';
 
 const useStyles = makeStyles({
@@ -50,6 +49,10 @@ const useStyles = makeStyles({
     columnEnriched: {
         backgroundColor: theme.green.light,
     },
+    isPublished: {
+        backgroundColor: theme.green.tertiary,
+        cursor: 'pointer',
+    },
 });
 
 export const StatisticsComponent = ({
@@ -64,8 +67,15 @@ export const StatisticsComponent = ({
     isHiddenEnrichedColumn,
     handleToggleLoadedColumn,
     handleToggleEnrichedColumn,
+    hasPublishedDataset,
 }) => {
     const classes = useStyles();
+
+    const handleGoToPublication = () => {
+        if (hasPublishedDataset) {
+            window.location.replace(window.location.origin);
+        }
+    };
     return (
         <div className={classes.container}>
             <CircularProgress
@@ -81,6 +91,20 @@ export const StatisticsComponent = ({
             />
             {mode === 'data' ? (
                 <>
+                    <div
+                        className={classnames(
+                            {
+                                [classes.isPublished]: hasPublishedDataset,
+                            },
+                            classes.item,
+                            'data-published-status',
+                        )}
+                        onClick={handleGoToPublication}
+                    >
+                        {hasPublishedDataset
+                            ? polyglot.t('isPublished')
+                            : polyglot.t('isNotPublished')}
+                    </div>
                     <div className={classes.item}>
                         {polyglot.t('parsing_summary_lines', {
                             smart_count: totalLoadedLines,
@@ -147,6 +171,7 @@ StatisticsComponent.propTypes = {
     isHiddenEnrichedColumn: PropTypes.bool.isRequired,
     handleToggleLoadedColumn: PropTypes.func.isRequired,
     handleToggleEnrichedColumn: PropTypes.func.isRequired,
+    hasPublishedDataset: PropTypes.bool,
 };
 
 const mapStateToProps = (state, { filter, subresourceId }) => ({
@@ -154,7 +179,10 @@ const mapStateToProps = (state, { filter, subresourceId }) => ({
     totalLoadedColumns: fromParsing.getParsedExcerptColumns(state).length,
     totalLoadedEnrichmentColumns: fromEnrichments.enrichments(state).length,
     totalLoadedLines: fromParsing.getTotalLoadedLines(state),
-    totalPublishedFields: fromFields.getEditingFields(state, { filter, subresourceId }).length,
+    totalPublishedFields: fromFields.getEditingFields(state, {
+        filter,
+        subresourceId,
+    }).length,
     isHiddenLoadedColumn: fromParsing.getHideLoadedColumn(state),
     isHiddenEnrichedColumn: fromParsing.getHideEnrichedColumn(state),
     fields: fromFields.getEditingFields(state, { filter, subresourceId }),

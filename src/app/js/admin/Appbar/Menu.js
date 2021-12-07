@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { signOut } from '../../user';
 import { exportFields } from '../../exportFields';
-import { fromParsing } from '../selectors';
+import { fromParsing, fromPublication } from '../selectors';
 import ClearDialog from './ClearDialog';
 
 const useStyles = makeStyles({
@@ -36,6 +36,7 @@ const MenuComponent = ({
     onSignOut,
     exportFields,
     hasLoadedDataset,
+    hasPublishedDataset,
 }) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -44,6 +45,13 @@ const MenuComponent = ({
     const handleOpenMenu = event => {
         setAnchorEl(event.currentTarget);
     };
+
+    const handleGoToPublication = () => {
+        if (hasPublishedDataset) {
+            window.location.replace(window.location.origin);
+        }
+    };
+
     const handleCloseMenu = callback => {
         setAnchorEl(null);
         typeof callback === 'function' && callback();
@@ -75,6 +83,16 @@ const MenuComponent = ({
                         },
                     }}
                 >
+                    {hasPublishedDataset && (
+                        <MenuItem
+                            key="export_fields"
+                            onClick={() =>
+                                handleCloseMenu(handleGoToPublication)
+                            }
+                        >
+                            {polyglot.t('navigate_to_published_data')}
+                        </MenuItem>
+                    )}
                     {hasLoadedDataset && [
                         <MenuItem
                             key="export_fields"
@@ -124,6 +142,7 @@ MenuComponent.propTypes = {
     onSignOut: PropTypes.func.isRequired,
     exportFields: PropTypes.func.isRequired,
     hasLoadedDataset: PropTypes.bool,
+    hasPublishedDataset: PropTypes.bool,
 };
 const mapDispatchToProps = dispatch =>
     bindActionCreators(
@@ -136,6 +155,7 @@ const mapDispatchToProps = dispatch =>
     );
 const mapStateToProps = state => ({
     hasLoadedDataset: fromParsing.hasUploadedFile(state),
+    hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),

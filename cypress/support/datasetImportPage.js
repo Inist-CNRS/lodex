@@ -39,8 +39,8 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
     cy.get('#confirm-upload', { timeout: 1000 }).should('be.visible');
     cy.wait(300);
     cy.contains('Accept').click({ force: true });
-    cy.get('.data-published a', { timeout: 1000 })
-        .contains('Go to my published data')
+    cy.get('.data-published-status', { timeout: 1000 })
+        .contains('Published')
         .should('be.visible');
 };
 
@@ -119,12 +119,12 @@ export const setOperationTypeInWizard = (value = 'DEFAULT') => {
 export const publish = () => {
     cy.get('.btn-publish button').click();
     adminNavigation.goToData();
-    cy.get('.data-published').should('be.visible');
+    cy.get('.data-published-status').should('be.visible');
 };
 
 export const goToPublishedResources = () => {
-    cy.get('.data-published a')
-        .contains('Go to my published data')
+    cy.get('.data-published-status')
+        .contains('Published')
         .click();
     cy.location('pathname').should('equal', '/');
 };
