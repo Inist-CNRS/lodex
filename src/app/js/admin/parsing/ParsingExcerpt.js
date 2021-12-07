@@ -5,8 +5,6 @@ import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 import { Table, TableBody, TableHead, TableRow } from '@material-ui/core';
 
-import { addField } from '../../fields';
-import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
 import { fromEnrichments, fromParsing } from '../selectors';
@@ -83,9 +81,7 @@ const formatValue = value => {
 
 export const ParsingExcerptComponent = ({
     columns,
-    handleAddColumn,
     lines,
-    showAddColumns,
     enrichments,
     isHiddenLoadedColumn,
     isHiddenEnrichedColumn,
@@ -133,10 +129,6 @@ export const ParsingExcerptComponent = ({
                         style={getRowStyle(index, total)}
                     >
                         {columnsToShow.map(column => {
-                            const showAddColumnButton =
-                                showAddColumns &&
-                                (index === total - 3 ||
-                                    (total < 3 && index === 0));
                             return (
                                 <ParsingExcerptColumn
                                     key={`${column}_${line._id}`}
@@ -145,16 +137,7 @@ export const ParsingExcerptComponent = ({
                                         enrichmentsNames,
                                         column,
                                     )}
-                                >
-                                    {showAddColumnButton && (
-                                        <ParsingExcerptAddColumn
-                                            key={`add_column_${column}`}
-                                            name={column}
-                                            onAddColumn={handleAddColumn}
-                                            atTop={total < 3}
-                                        />
-                                    )}
-                                </ParsingExcerptColumn>
+                                ></ParsingExcerptColumn>
                             );
                         })}
                     </TableRow>
@@ -167,8 +150,6 @@ export const ParsingExcerptComponent = ({
 ParsingExcerptComponent.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.string).isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
-    handleAddColumn: PropTypes.func.isRequired,
-    showAddColumns: PropTypes.bool.isRequired,
     enrichments: PropTypes.arrayOf(PropTypes.object).isRequired,
     isHiddenLoadedColumn: PropTypes.bool.isRequired,
     isHiddenEnrichedColumn: PropTypes.bool.isRequired,
@@ -180,9 +161,7 @@ const mapStateToProps = state => ({
     isHiddenEnrichedColumn: fromParsing.getHideEnrichedColumn(state),
 });
 
-const mapDispatchToProps = {
-    handleAddColumn: name => addField({ name }),
-};
+const mapDispatchToProps = {};
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),

@@ -57,7 +57,7 @@ describe('<DeleteSubresourceButton />', () => {
         );
 
         const okButton = wrapper.findWhere(node => {
-            return node.type() === Button && node.text() === 'OK';
+            return node.type() === Button && node.text() === 'Accept';
         });
 
         expect(okButton.exists()).toBeTruthy();
