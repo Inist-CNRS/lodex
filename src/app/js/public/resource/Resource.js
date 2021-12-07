@@ -85,7 +85,8 @@ export class ResourceComponent extends React.Component {
         if (
             match.params &&
             match.params.uri &&
-            match.params.uri.length !== 32 && // md5 length for subresources uuid
+            match.params.uri.length !== 32 &&
+            !match.params.uri.includes('%2F') && // md5 length for subresources uuid
             match.params.uri !== this.state.lastResourceUri
         ) {
             this.setState({ lastResourceUri: match.params.uri });
