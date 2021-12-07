@@ -6,6 +6,7 @@ import compose from 'lodash.compose';
 import PropTypes from 'prop-types';
 import GridLayout from 'react-grid-layout';
 import { Box, Button, makeStyles, Snackbar } from '@material-ui/core';
+import { useMeasure } from 'react-use';
 import 'react-grid-layout/css/styles.css';
 import classNames from 'classnames';
 import Alert from '@material-ui/lab/Alert';
@@ -40,6 +41,10 @@ const useStyles = makeStyles({
         overflow: 'hidden',
         display: 'flex',
         flexFlow: 'row wrap',
+    },
+    layoutContainer: {
+        display: 'flex',
+        flex: 1,
     },
     property: {
         border: '1px solid #ccc',
@@ -87,6 +92,9 @@ const useStyles = makeStyles({
         pointerEvents: 'none',
     },
 });
+
+// 1rem = 16px
+const ROOT_PADDING = 16;
 
 const ensureTextIsShort = text =>
     isLongText(text) ? getShortText(text) : text;
@@ -199,37 +207,29 @@ const DraggableItemGrid = ({
         JSON.stringify(items),
     ]);
 
-    const gridLayoutRef = useRef();
-    const useHasLengthIncreased = length => {
-        const previousValue = usePreviousValue(length);
-        return previousValue + 1 === length;
-    };
-
-    const usePreviousValue = value => {
-        const ref = useRef();
-        useEffect(() => {
-            ref.current = value;
-        });
-        return ref.current;
-    };
-
-    const itemsHasLengthIncreased = useHasLengthIncreased(items.length);
+    const [gridLayoutRef, { width }] = useMeasure();
 
     useEffect(() => {
         setItems(buildFieldsDefinitionsArray(fields));
     }, [JSON.stringify(fields)]);
 
+    const fieldsLength = fields.length;
+    const previousFieldsLength = useRef(fields.length);
     useEffect(() => {
-        if (itemsHasLengthIncreased) {
-            if (gridLayoutRef.current) {
-                gridLayoutRef.current.scrollIntoView({
+        if (previousFieldsLength.current + 1 === fields.length) {
+            setTimeout(() => {
+                const lastChild = document.querySelector(
+                    '.layout > div:last-child',
+                );
+                lastChild.scrollIntoView({
                     behavior: 'smooth',
                     block: 'end',
-                    inline: 'nearest',
                 });
-            }
+            }, 1);
         }
-    }, [JSON.stringify(items)]);
+
+        previousFieldsLength.current = fields.length;
+    }, [fieldsLength]);
 
     useDidUpdateEffect(() => {
         onChangePositions(items);
@@ -261,14 +261,14 @@ const DraggableItemGrid = ({
     };
 
     return (
-        <div ref={gridLayoutRef}>
+        <div className={classes.layoutContainer} ref={gridLayoutRef}>
             <GridLayout
                 className="layout"
                 layout={layout}
                 key={JSON.stringify(items)}
                 cols={10}
                 rowHeight={150}
-                width={1000}
+                width={width - ROOT_PADDING}
                 onDragStop={handleLayoutChange}
                 onResizeStop={handleResize}
                 isResizable={allowResize}
