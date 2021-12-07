@@ -38,6 +38,9 @@ const ClearDialogComponent = props => {
 
     useEffect(() => {
         if (succeeded) {
+            window.location.replace(
+                window.location.origin + '/admin#/data/existing',
+            );
             window.location.reload();
         }
     }, [succeeded]);
