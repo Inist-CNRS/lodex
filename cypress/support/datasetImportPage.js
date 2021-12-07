@@ -64,11 +64,11 @@ export const fillStepDisplaySyndication = syndication => {
 };
 
 export const addColumn = (columnName, options = {}) => {
-    const name = columnName.replace(' ', '-');
-    cy.get('button.btn-add-field-from-dataset').click();
-    cy.get(
-        ['.btn-excerpt-add-column', `.btn-excerpt-add-column-${name}`].join(''),
-    ).click();
+    const name = columnName.replaceAll(' ', '-');
+    cy.get('button.btn-add-field-from-dataset').click({ force: true });
+    cy.get('#select-dataset-input-label', { timeout: 2000 }).click();
+    cy.get(`.column-${name}`, { timeout: 5000 }).click();
+    cy.get('.btn-add-field-from-column', { timeout: 2000 }).click();
 
     if (options.composedOf && options.composedOf.length > 1) {
         cy.get('#step-value')

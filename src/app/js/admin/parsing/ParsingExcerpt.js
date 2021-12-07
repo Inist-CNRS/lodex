@@ -150,7 +150,7 @@ export const ParsingExcerptComponent = ({
 ParsingExcerptComponent.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.string).isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
-    enrichments: PropTypes.arrayOf(PropTypes.object).isRequired,
+    enrichments: PropTypes.arrayOf(PropTypes.object),
     isHiddenLoadedColumn: PropTypes.bool.isRequired,
     isHiddenEnrichedColumn: PropTypes.bool.isRequired,
 };

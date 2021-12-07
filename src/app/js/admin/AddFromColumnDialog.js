@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
+import classnames from 'classnames';
 import {
     Button,
     Dialog,
@@ -47,6 +48,7 @@ export const AddFromColumnDialogComponent = ({
                     color="primary"
                     variant="contained"
                     onClick={handleOnClick}
+                    className={classnames('btn-add-field-from-column')}
                 >
                     {polyglot.t('Accept')}
                 </Button>

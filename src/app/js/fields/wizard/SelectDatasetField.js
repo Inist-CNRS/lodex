@@ -34,7 +34,7 @@ export const SelectDatasetFieldComponent = ({
             {datasetFields.map(datasetField => (
                 <MenuItem
                     key={`id_${datasetField}`}
-                    className={`column-${datasetField}`}
+                    className={`column-${datasetField.replaceAll(' ', '-')}`}
                     value={datasetField}
                 >
                     {datasetField}
