@@ -39,7 +39,7 @@ export const ExcerptLineColComponent = ({ field, value = '', readonly }) =>
                 getFieldClassName(field),
             )}
         >
-            {value}
+            {`${value}`}
         </TableCell>
     );
 
@@ -56,7 +56,6 @@ ExcerptLineColComponent.defaultProps = {
 const mapStateToProps = (state, { field, line }) => {
     const getLineCol = fromFields.getLineColGetter(state, field);
     const parsedValue = parseValue(getLineCol(line));
-
     return {
         value:
             typeof parsedValue === 'object'
