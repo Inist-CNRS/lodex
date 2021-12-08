@@ -33,9 +33,11 @@ import {
 } from '../fields';
 import FieldInternalIcon from './FieldInternalIcon';
 
+const ROOT_PADDING = 16;
+
 const useStyles = makeStyles({
     root: {
-        padding: '1rem',
+        padding: ROOT_PADDING,
         border: '1px dashed #ccc',
         borderRadius: 5,
         overflow: 'hidden',
@@ -92,9 +94,6 @@ const useStyles = makeStyles({
         pointerEvents: 'none',
     },
 });
-
-// 1rem = 16px
-const ROOT_PADDING = 16;
 
 const ensureTextIsShort = text =>
     isLongText(text) ? getShortText(text) : text;
@@ -189,6 +188,16 @@ export const buildFieldsDefinitionsArray = fields =>
         position: field.position,
     }));
 
+const scrollToLastLayoutItem = () => {
+    setTimeout(() => {
+        const lastChild = document.querySelector('.layout > div:last-child');
+        lastChild.scrollIntoView({
+            behavior: 'smooth',
+            block: 'end',
+        });
+    }, 1);
+};
+
 const DraggableItemGrid = ({
     onEditField,
     onChangeWidth,
@@ -217,17 +226,8 @@ const DraggableItemGrid = ({
     const previousFieldsLength = useRef(fields.length);
     useEffect(() => {
         if (previousFieldsLength.current + 1 === fields.length) {
-            setTimeout(() => {
-                const lastChild = document.querySelector(
-                    '.layout > div:last-child',
-                );
-                lastChild.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'end',
-                });
-            }, 1);
+            scrollToLastLayoutItem();
         }
-
         previousFieldsLength.current = fields.length;
     }, [fieldsLength]);
 

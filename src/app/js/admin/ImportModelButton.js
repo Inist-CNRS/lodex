@@ -55,17 +55,17 @@ export const ImportModelButtonComponent = ({
         setShowImportFieldsConfirmation,
     ] = useState(false);
 
-    const [showAlert, setShowAlert] = useState(false);
-    const [useInput, setUseInput] = useState(false);
+    const [isAlertDisplayed, setIsAlertDisplayed] = useState(false);
+    const [applyUploadInput, setApplyUploadInput] = useState(false);
 
     useEffect(() => {
         if (succeeded || failed) {
-            setShowAlert(true);
+            setIsAlertDisplayed(true);
         }
         if (nbFields === 0) {
-            setUseInput(true);
+            setApplyUploadInput(true);
         } else {
-            setUseInput(false);
+            setApplyUploadInput(false);
         }
     }, [succeeded, failed, nbFields]);
 
@@ -75,7 +75,7 @@ export const ImportModelButtonComponent = ({
     };
 
     const handleImportFields = event => {
-        if (useInput) {
+        if (applyUploadInput) {
             importFields(event.target.files[0]);
         } else {
             setShowImportFieldsConfirmation(true);
@@ -94,7 +94,7 @@ export const ImportModelButtonComponent = ({
                 onClick={handleImportFields}
             >
                 {polyglot.t('import_fields')}
-                {useInput && (
+                {applyUploadInput && (
                     <input
                         name="file_model"
                         type="file"
@@ -107,10 +107,10 @@ export const ImportModelButtonComponent = ({
                 <ImportModelDialog onClose={handleImportFieldsClose} />
             )}
             <Snackbar
-                open={showAlert}
+                open={isAlertDisplayed}
                 autoHideDuration={60000}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                onClose={() => setShowAlert(false)}
+                onClose={() => setIsAlertDisplayed(false)}
             >
                 <Alert
                     variant="filled"
