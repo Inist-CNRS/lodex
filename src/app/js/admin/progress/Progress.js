@@ -20,7 +20,7 @@ const formatProgress = (progress, target, symbol, label) => {
     const formatedSymbol = symbol ? ` ${symbol}` : ``;
     const formatedLabel = label ? ` ${label}` : ``;
     return progress + formatedTarget + formatedSymbol + formatedLabel;
-}
+};
 
 const renderProgressText = props => {
     const { progress, target, symbol, label, p: polyglot } = props;
@@ -28,11 +28,7 @@ const renderProgressText = props => {
         return null;
     }
 
-    return (
-        <p>
-            {formatProgress(progress, target, symbol, polyglot.t(label))}
-        </p>
-    );
+    return <p>{formatProgress(progress, target, symbol, polyglot.t(label))}</p>;
 };
 
 export const ProgressComponent = props => {
