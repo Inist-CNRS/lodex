@@ -39,9 +39,7 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
     cy.get('#confirm-upload', { timeout: 1000 }).should('be.visible');
     cy.wait(300);
     cy.contains('Accept').click({ force: true });
-    cy.get('.data-published-status', { timeout: 1000 })
-        .contains('Published')
-        .should('be.visible');
+    cy.get('.data-published-status', { timeout: 2000 }).should('be.visible');
 };
 
 const fillStepValueConcatColumn = (value, index) => {
@@ -123,9 +121,7 @@ export const publish = () => {
 };
 
 export const goToPublishedResources = () => {
-    cy.get('.data-published-status')
-        .contains('Published')
-        .click();
+    cy.get('.go-published-button', { timeout: 1000 }).click();
     cy.location('pathname').should('equal', '/');
 };
 

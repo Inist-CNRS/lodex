@@ -51,7 +51,6 @@ const useStyles = makeStyles({
     },
     isPublished: {
         backgroundColor: theme.green.tertiary,
-        cursor: 'pointer',
     },
 });
 
@@ -71,11 +70,6 @@ export const StatisticsComponent = ({
 }) => {
     const classes = useStyles();
 
-    const handleGoToPublication = () => {
-        if (hasPublishedDataset) {
-            window.location.replace(window.location.origin);
-        }
-    };
     return (
         <div className={classes.container}>
             <CircularProgress
@@ -99,7 +93,6 @@ export const StatisticsComponent = ({
                             classes.item,
                             'data-published-status',
                         )}
-                        onClick={handleGoToPublication}
                     >
                         {hasPublishedDataset
                             ? polyglot.t('isPublished')

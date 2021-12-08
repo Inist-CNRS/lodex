@@ -11,11 +11,12 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import PublicationButton from '../publish/PublicationButton';
 import { fromUser } from '../../sharedSelectors';
-import { fromParsing } from '../selectors';
+import { fromParsing, fromPublication } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';
 import theme from './../../theme';
 import Menu from './Menu';
+import PublishedButton from './PublishedButton';
 const useStyles = makeStyles({
     linkToHome: {
         color: `${theme.white.primary} !important`,
@@ -29,6 +30,12 @@ const useStyles = makeStyles({
     buttons: {
         display: 'flex',
         paddingLeft: 100,
+    },
+    buttonContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        marginLeft: 4,
+        marginRight: 4,
     },
     button: {
         color: theme.white.primary,
@@ -61,8 +68,10 @@ const AppbarComponent = ({
     isLoading,
     isAdmin,
     p: polyglot,
+    hasPublishedDataset,
 }) => {
     const classes = useStyles();
+
     const leftElement = (
         <div className={classes.buttons}>
             {isAdmin && (
@@ -98,6 +107,7 @@ const AppbarComponent = ({
         <>
             {isAdmin && (
                 <div style={{ display: 'flex' }}>
+                    {hasPublishedDataset && <PublishedButton />}
                     <PublicationButton className={classes.button} />
                     <Menu />
                 </div>
@@ -134,6 +144,7 @@ AppbarComponent.propTypes = {
     isLoading: PropTypes.bool,
     isAdmin: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
+    hasPublishedDataset: PropTypes.bool,
 };
 
 AppbarComponent.defaultProps = {
@@ -146,5 +157,6 @@ export default compose(
         hasLoadedDataset: fromParsing.hasUploadedFile(state),
         isLoading: state.loading,
         isAdmin: fromUser.isAdmin(state),
+        hasPublishedDataset: fromPublication.hasPublishedDataset(state),
     })),
 )(AppbarComponent);

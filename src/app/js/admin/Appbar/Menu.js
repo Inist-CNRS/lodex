@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { signOut } from '../../user';
 import { exportFields } from '../../exportFields';
-import { fromParsing, fromPublication } from '../selectors';
+import { fromParsing } from '../selectors';
 import ClearDialog from './ClearDialog';
 
 const useStyles = makeStyles({
@@ -36,7 +36,6 @@ const MenuComponent = ({
     onSignOut,
     exportFields,
     hasLoadedDataset,
-    hasPublishedDataset,
 }) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -44,12 +43,6 @@ const MenuComponent = ({
     const open = !!anchorEl;
     const handleOpenMenu = event => {
         setAnchorEl(event.currentTarget);
-    };
-
-    const handleGoToPublication = () => {
-        if (hasPublishedDataset) {
-            window.location.replace(window.location.origin);
-        }
     };
 
     const handleCloseMenu = callback => {
@@ -83,16 +76,6 @@ const MenuComponent = ({
                         },
                     }}
                 >
-                    {hasPublishedDataset && (
-                        <MenuItem
-                            key="export_fields"
-                            onClick={() =>
-                                handleCloseMenu(handleGoToPublication)
-                            }
-                        >
-                            {polyglot.t('navigate_to_published_data')}
-                        </MenuItem>
-                    )}
                     {hasLoadedDataset && [
                         <MenuItem
                             key="export_fields"
@@ -155,7 +138,6 @@ const mapDispatchToProps = dispatch =>
     );
 const mapStateToProps = state => ({
     hasLoadedDataset: fromParsing.hasUploadedFile(state),
-    hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
