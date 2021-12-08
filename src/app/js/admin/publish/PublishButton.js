@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
@@ -68,6 +68,8 @@ PublishButtonComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     onPublish: PropTypes.func.isRequired,
     published: PropTypes.bool.isRequired,
+    target: PropTypes.string,
+    progress: PropTypes.number,
 };
 
 PublishButtonComponent.defaultProps = {

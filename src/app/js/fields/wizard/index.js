@@ -161,6 +161,7 @@ class FieldEditionWizardComponent extends Component {
                 scroll="body"
                 className="wizard"
                 maxWidth="xl"
+                onClose={this.handleCancel}
             >
                 <DialogTitle>
                     <div style={styles.title}>

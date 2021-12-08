@@ -24,7 +24,12 @@ export const RemoveButtonComponent = ({ onRemove, p: polyglot }) => {
             <Button variant="text" onClick={handleShowDialog} color="secondary">
                 {polyglot.t('remove_from_publication')}
             </Button>
-            <Dialog open={showDialog} maxWidth="sm" fullWidth>
+            <Dialog
+                open={showDialog}
+                onClose={handleCloseDialog}
+                maxWidth="sm"
+                fullWidth
+            >
                 <DialogTitle>{polyglot.t('remove_field')}</DialogTitle>
                 <DialogActions>
                     <Button

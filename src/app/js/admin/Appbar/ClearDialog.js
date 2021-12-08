@@ -38,6 +38,11 @@ const ClearDialogComponent = props => {
 
     useEffect(() => {
         if (succeeded) {
+            if (type === 'dataset') {
+                window.location.replace(
+                    window.location.origin + '/admin#/data/existing',
+                );
+            }
             window.location.reload();
         }
     }, [succeeded]);
@@ -98,7 +103,7 @@ const ClearDialogComponent = props => {
         </Button>,
     ];
     return (
-        <Dialog open>
+        <Dialog open onClose={onClose}>
             <DialogTitle>
                 {polyglot.t(
                     type === 'dataset' ? 'clear_dataset' : 'clear_publish',

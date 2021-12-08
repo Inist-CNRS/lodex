@@ -45,7 +45,7 @@ export const AddFieldFromColumnButtonComponent = ({
 AddFieldFromColumnButtonComponent.propTypes = {
     onShowExistingColumns: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    scope: PropTypes.string.isRequired,
+    scope: PropTypes.string,
 };
 
 const mapDispatchToProps = {

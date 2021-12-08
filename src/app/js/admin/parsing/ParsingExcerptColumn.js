@@ -29,7 +29,7 @@ export const ParsingExcerptColumnComponent = ({ children, style, value }) =>
 ParsingExcerptColumnComponent.propTypes = {
     children: PropTypes.node,
     style: PropTypes.object,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 
 ParsingExcerptColumnComponent.defaultProps = {

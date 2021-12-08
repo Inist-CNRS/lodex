@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -15,7 +15,6 @@ import classnames from 'classnames';
 
 import { importFields as importFieldsAction } from './import';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { fromImport } from './selectors';
 
 const useStyles = makeStyles({
     input: {
@@ -41,22 +40,12 @@ const useStyles = makeStyles({
     },
 });
 
-const ImportModelDialogComponent = ({
-    failed,
-    onClose,
-    p: polyglot,
-    importFields,
-    succeeded,
-}) => {
+const ImportModelDialogComponent = ({ onClose, p: polyglot, importFields }) => {
     const classes = useStyles();
-    useEffect(() => {
-        if (succeeded) {
-            onClose(true);
-        }
-    }, [onClose, succeeded]);
 
     const handleFileUpload = event => {
         importFields(event.target.files[0]);
+        onClose(true);
     };
 
     const actions = [
@@ -89,33 +78,22 @@ const ImportModelDialogComponent = ({
     return (
         <Dialog
             className={classnames(classes.dialog, 'dialog-import-fields')}
+            onClose={onClose}
             open
         >
-            <DialogContent>
-                {!failed && polyglot.t('confirm_import_fields')}
-                {failed && (
-                    <span className={classes.error}>
-                        {polyglot.t('import_fields_failed')}
-                    </span>
-                )}
-            </DialogContent>
+            <DialogContent>{polyglot.t('confirm_import_fields')}</DialogContent>
             <DialogActions>{actions}</DialogActions>
         </Dialog>
     );
 };
 
 ImportModelDialogComponent.propTypes = {
-    succeeded: PropTypes.bool.isRequired,
-    failed: PropTypes.bool.isRequired,
     importFields: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
-    succeeded: fromImport.hasImportSucceeded(state),
-    failed: fromImport.hasImportFailed(state),
-});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
     importFields: importFieldsAction,

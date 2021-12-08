@@ -132,6 +132,7 @@ export const EnrichmentFormComponent = ({
                             <Switch
                                 checked={advancedMode}
                                 onChange={handleAdvancedMode}
+                                color="primary"
                             />
                         }
                         label={polyglot.t('advancedMode')}
@@ -202,7 +203,7 @@ export const EnrichmentFormComponent = ({
                     label={polyglot.t('fieldName')}
                     autoFocus
                     fullWidth
-                    style={{ marginBottom: 16 }}
+                    style={{ marginBottom: 24 }}
                 />
                 {getRuleFields()}
                 <ButtonWithStatus
@@ -211,7 +212,7 @@ export const EnrichmentFormComponent = ({
                     color="primary"
                     type="submit"
                     loading={isLoading}
-                    style={{ marginTop: 10 }}
+                    style={{ marginTop: 24 }}
                 >
                     {polyglot.t('save')}
                 </ButtonWithStatus>
@@ -221,7 +222,7 @@ export const EnrichmentFormComponent = ({
                         key="delete"
                         color="secondary"
                         loading={isLoading}
-                        style={{ marginTop: 10 }}
+                        style={{ marginTop: 24 }}
                         onClick={handleDelete}
                     >
                         {polyglot.t('delete')}

@@ -1,7 +1,9 @@
 import React from 'react';
 import translate from 'redux-polyglot/translate';
-import { Button, Dialog, DialogTitle, DialogContent } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import { Button, Dialog, DialogTitle, DialogActions } from '@material-ui/core';
 import { compose, withState } from 'recompose';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const DeleteSubresourceButtonComponent = ({
     p: polyglot,
@@ -18,23 +20,37 @@ export const DeleteSubresourceButtonComponent = ({
             {polyglot.t('delete')}
         </Button>
         {showDeletePopup && (
-            <Dialog open>
+            <Dialog open onClose={() => setShowDeletePopup(false)}>
                 <DialogTitle>
                     {polyglot.t('confirm_delete_subresource')}
                 </DialogTitle>
-                <DialogContent>
+                <DialogActions>
                     <Button
+                        color="primary"
                         variant="contained"
-                        color="secondary"
                         onClick={onClick}
                     >
-                        OK
+                        {polyglot.t('Accept')}
                     </Button>
-                </DialogContent>
+                    <Button
+                        color="secondary"
+                        variant="text"
+                        onClick={() => setShowDeletePopup(false)}
+                    >
+                        {polyglot.t('Cancel')}
+                    </Button>
+                </DialogActions>
             </Dialog>
         )}
     </>
 );
+
+DeleteSubresourceButtonComponent.propTypes = {
+    showDeletePopup: PropTypes.bool.isRequired,
+    setShowDeletePopup: PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
+};
 
 export const DeleteSubresourceButton = compose(
     translate,

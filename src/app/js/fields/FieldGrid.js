@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import HiddenIcon from '@material-ui/icons/VisibilityOff';
 import translate from 'redux-polyglot/translate';
@@ -6,6 +6,7 @@ import compose from 'lodash.compose';
 import PropTypes from 'prop-types';
 import GridLayout from 'react-grid-layout';
 import { Box, Button, makeStyles, Snackbar } from '@material-ui/core';
+import { useMeasure } from 'react-use';
 import 'react-grid-layout/css/styles.css';
 import classNames from 'classnames';
 import Alert from '@material-ui/lab/Alert';
@@ -32,14 +33,20 @@ import {
 } from '../fields';
 import FieldInternalIcon from './FieldInternalIcon';
 
+const ROOT_PADDING = 16;
+
 const useStyles = makeStyles({
     root: {
-        padding: '1rem',
+        padding: ROOT_PADDING,
         border: '1px dashed #ccc',
         borderRadius: 5,
         overflow: 'hidden',
         display: 'flex',
         flexFlow: 'row wrap',
+    },
+    layoutContainer: {
+        display: 'flex',
+        flex: 1,
     },
     property: {
         border: '1px solid #ccc',
@@ -181,6 +188,16 @@ export const buildFieldsDefinitionsArray = fields =>
         position: field.position,
     }));
 
+const scrollToLastLayoutItem = () => {
+    setTimeout(() => {
+        const lastChild = document.querySelector('.layout > div:last-child');
+        lastChild.scrollIntoView({
+            behavior: 'smooth',
+            block: 'end',
+        });
+    }, 1);
+};
+
 const DraggableItemGrid = ({
     onEditField,
     onChangeWidth,
@@ -199,9 +216,20 @@ const DraggableItemGrid = ({
         JSON.stringify(items),
     ]);
 
+    const [gridLayoutRef, { width }] = useMeasure();
+
     useEffect(() => {
         setItems(buildFieldsDefinitionsArray(fields));
     }, [JSON.stringify(fields)]);
+
+    const fieldsLength = fields.length;
+    const previousFieldsLength = useRef(fields.length);
+    useEffect(() => {
+        if (previousFieldsLength.current + 1 === fields.length) {
+            scrollToLastLayoutItem();
+        }
+        previousFieldsLength.current = fields.length;
+    }, [fieldsLength]);
 
     useDidUpdateEffect(() => {
         onChangePositions(items);
@@ -233,14 +261,14 @@ const DraggableItemGrid = ({
     };
 
     return (
-        <>
+        <div className={classes.layoutContainer} ref={gridLayoutRef}>
             <GridLayout
                 className="layout"
                 layout={layout}
                 key={JSON.stringify(items)}
                 cols={10}
                 rowHeight={150}
-                width={1000}
+                width={width - ROOT_PADDING}
                 onDragStop={handleLayoutChange}
                 onResizeStop={handleResize}
                 isResizable={allowResize}
@@ -292,7 +320,7 @@ const DraggableItemGrid = ({
                     {polyglot.t('fieldname_copied_clipboard')}
                 </Alert>
             </Snackbar>
-        </>
+        </div>
     );
 };
 DraggableItemGrid.propTypes = {

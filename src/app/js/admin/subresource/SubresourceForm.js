@@ -3,6 +3,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { propTypes as reduxFormPropTypes, Field } from 'redux-form';
 import { TextField as MUITextField, Grid, Button } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -59,7 +60,7 @@ const SubresourceFormComponent = ({
                 />
             </Grid>
         </Grid>
-        <Grid container align="center" justify="space-between">
+        <Grid container align="center" justifyContent="space-between">
             <Grid item style={{ padding: 8 }}>
                 <Button
                     variant="contained"
@@ -82,6 +83,16 @@ const SubresourceFormComponent = ({
 SubresourceFormComponent.propTypes = {
     ...reduxFormPropTypes,
     p: polyglotPropTypes.isRequired,
+};
+
+TextField.propTypes = {
+    label: PropTypes.string,
+    input: PropTypes.shape({ name: PropTypes.string }),
+    meta: PropTypes.shape({
+        touched: PropTypes.bool,
+        invalid: PropTypes.bool,
+        error: PropTypes.string,
+    }),
 };
 
 export default compose(translate)(SubresourceFormComponent);
