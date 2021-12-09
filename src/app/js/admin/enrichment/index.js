@@ -5,6 +5,7 @@ export const LOAD_ENRICHMENTS_ERROR = 'LOAD_ENRICHMENTS_ERROR';
 export const LOAD_ENRICHMENTS_SUCCESS = 'LOAD_ENRICHMENTS_SUCCESS';
 export const CREATE_ENRICHMENT = 'CREATE_ENRICHMENT';
 export const CREATE_ENRICHMENT_ERROR = 'CREATE_ENRICHMENT_ERROR';
+export const START_ENRICHMENT = 'START_ENRICHMENT';
 export const UPDATE_ENRICHMENT = 'UPDATE_ENRICHMENT';
 export const CREATE_ENRICHMENT_OPTIMISTIC = 'CREATE_ENRICHMENT_OPTIMISTIC';
 export const UPDATE_ENRICHMENT_OPTIMISTIC = 'UPDATE_ENRICHMENT_OPTIMISTIC';
@@ -15,6 +16,7 @@ export const loadEnrichmentsError = createAction(LOAD_ENRICHMENTS_ERROR);
 export const loadEnrichmentsSuccess = createAction(LOAD_ENRICHMENTS_SUCCESS);
 export const createEnrichment = createAction(CREATE_ENRICHMENT);
 export const createEnrichmentError = createAction(CREATE_ENRICHMENT_ERROR);
+export const startEnrichment = createAction(START_ENRICHMENT);
 export const updateEnrichment = createAction(UPDATE_ENRICHMENT);
 export const createEnrichmentOptimistic = createAction(
     CREATE_ENRICHMENT_OPTIMISTIC,

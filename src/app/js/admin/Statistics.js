@@ -170,7 +170,9 @@ StatisticsComponent.propTypes = {
 const mapStateToProps = (state, { filter, subresourceId }) => ({
     isComputing: fromPublicationPreview.isComputing(state),
     totalLoadedColumns: fromParsing.getParsedExcerptColumns(state).length,
-    totalLoadedEnrichmentColumns: fromEnrichments.enrichments(state).length,
+    totalLoadedEnrichmentColumns: fromEnrichments
+        .enrichments(state)
+        .filter(enrichment => enrichment.status !== 'new').length,
     totalLoadedLines: fromParsing.getTotalLoadedLines(state),
     totalPublishedFields: fromFields.getEditingFields(state, {
         filter,

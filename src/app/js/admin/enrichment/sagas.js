@@ -12,6 +12,7 @@ import {
     CREATE_ENRICHMENT,
     LOAD_ENRICHMENTS,
     DELETE_ENRICHMENT,
+    START_ENRICHMENT,
 } from '.';
 
 import { fromUser } from '../../sharedSelectors';
@@ -46,15 +47,15 @@ export function* handleCreateEnrichment({ payload: { enrichment, callback } }) {
         callback(response._id);
     }
 
-    const scheduleRequest = yield select(
-        fromUser.getScheduleDatasetEnrichmentRequest,
-        {
-            action: 'resume',
-            id: response._id,
-        },
-    );
+    // const scheduleRequest = yield select(
+    //     fromUser.getScheduleDatasetEnrichmentRequest,
+    //     {
+    //         action: 'resume',
+    //         id: response._id,
+    //     },
+    // );
 
-    yield call(fetchSaga, scheduleRequest);
+    // yield call(fetchSaga, scheduleRequest);
 
     return yield put(loadEnrichments());
 }
@@ -72,17 +73,33 @@ export function* handleUpdateEnrichment({ payload: enrichment }) {
 
     yield put(updateEnrichmentOptimistic(response));
 
-    const scheduleRequest = yield select(
-        fromUser.getScheduleDatasetEnrichmentRequest,
-        {
-            action: 'resume',
-            id: response._id,
-        },
-    );
+    // const scheduleRequest = yield select(
+    //     fromUser.getScheduleDatasetEnrichmentRequest,
+    //     {
+    //         action: 'resume',
+    //         id: response._id,
+    //     },
+    // );
 
-    yield call(fetchSaga, scheduleRequest);
+    // yield call(fetchSaga, scheduleRequest);
 
     return yield put(loadEnrichments());
+}
+
+export function* handleStartEnrichment({ payload: enrichment }) {
+    console.log('handleStartEnrichment', enrichment);
+
+    // const scheduleRequest = yield select(
+    //     fromUser.getScheduleDatasetEnrichmentRequest,
+    //     {
+    //         action: 'resume',
+    //         id: enrichment.id,
+    //     },
+    // );
+
+    // yield call(fetchSaga, scheduleRequest);
+
+    // return yield put(loadEnrichments());
 }
 
 export function* handleDeleteEnrichment({ payload: id }) {
@@ -101,6 +118,10 @@ export function* watchLoadEnrichmentsRequest() {
 
 export function* watchCreateEnrichment() {
     yield takeLatest(CREATE_ENRICHMENT, handleCreateEnrichment);
+}
+
+export function* watchStartEnrichment() {
+    yield takeLatest(START_ENRICHMENT, handleStartEnrichment);
 }
 
 export function* watchUpdateEnrichment() {
