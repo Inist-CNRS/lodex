@@ -44,6 +44,7 @@ const MenuComponent = ({
     const handleOpenMenu = event => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleCloseMenu = callback => {
         setAnchorEl(null);
         typeof callback === 'function' && callback();
@@ -124,6 +125,7 @@ MenuComponent.propTypes = {
     onSignOut: PropTypes.func.isRequired,
     exportFields: PropTypes.func.isRequired,
     hasLoadedDataset: PropTypes.bool,
+    hasPublishedDataset: PropTypes.bool,
 };
 const mapDispatchToProps = dispatch =>
     bindActionCreators(

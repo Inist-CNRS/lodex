@@ -27,6 +27,6 @@ export const publishAndGoToPublishedData = () => {
     }).should('not.be.visible');
 
     goToData();
-    cy.get('.data-published').should('be.visible');
+    cy.get('.data-published-status').should('be.visible');
     goToPublishedResources();
 };
