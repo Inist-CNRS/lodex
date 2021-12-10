@@ -30,7 +30,7 @@ const processEzsEnrichment = (entry, enrichment) => {
             return resolve({ value, enrichment });
         });
         result.on('error', error => reject({ error, enrichment }));
-        input.write({ id: entry._id, value: entry.value });
+        input.write({ id: entry._id, value: entry });
         input.end();
     });
 };
@@ -43,10 +43,7 @@ const processEnrichmentBackground = async (entry, enrichment, ctx) => {
             { $set: { [enrichment.name]: 'En attente' } },
         );
         try {
-            let { value } = await processEzsEnrichment(
-                nextEntry._id,
-                nextEntry,
-            );
+            let { value } = await processEzsEnrichment(nextEntry, enrichment);
 
             if (value === undefined) {
                 value = 'n/a';
