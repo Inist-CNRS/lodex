@@ -35,26 +35,6 @@ const processEzsEnrichment = (entry, enrichment) => {
     });
 };
 
-// const createEnrichmentBackgroundTransformerFactory = ctx => async id => {
-//     const enrichment = await ctx.enrichment.findOneById(id);
-
-//     return ({ id, value }) =>
-//         new Promise((resolve, reject) => {
-//             const input = new PassThrough({ objectMode: true });
-//             const commands = createEzsRuleCommands(enrichment.rule);
-//             const result = input.pipe(ezs('delegate', { commands }, {}));
-
-//             result.on('data', ({ value }) => {
-//                 logger.info(`valueWebService : ${value}`);
-//                 return resolve({ value, enrichment });
-//             });
-//             result.on('error', error => reject({ error, enrichment }));
-
-//             input.write({ id, value });
-//             input.end();
-//         });
-// };
-
 const processEnrichmentBackground = async (entry, enrichment, ctx) => {
     let nextEntry = entry;
     while (nextEntry) {
