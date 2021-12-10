@@ -38,6 +38,7 @@ const processEzsEnrichment = (entry, enrichment) => {
 const processEnrichmentBackground = async (entry, enrichment, ctx) => {
     let nextEntry = entry;
     while (nextEntry) {
+        ctx.job.log(`Enrichment ${enrichment.name} on ${nextEntry._id}`);
         await ctx.dataset.updateOne(
             { _id: new ObjectId(nextEntry._id) },
             { $set: { [enrichment.name]: 'En attente' } },
