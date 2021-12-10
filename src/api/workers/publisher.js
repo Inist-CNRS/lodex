@@ -12,7 +12,7 @@ export const publisherQueue = new Queue('publisher', process.env.REDIS_URL, {
 });
 
 publisherQueue.process(PUBLISH, (job, done) => {
-    publisherQueue.clean(0, 'wait');
+    publisherQueue.clean(100, 'wait');
     startPublishing(job)
         .then(() => {
             job.progress(100);
