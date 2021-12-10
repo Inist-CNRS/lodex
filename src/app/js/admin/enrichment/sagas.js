@@ -47,16 +47,6 @@ export function* handleCreateEnrichment({ payload: { enrichment, callback } }) {
         callback(response._id);
     }
 
-    // const scheduleRequest = yield select(
-    //     fromUser.getScheduleDatasetEnrichmentRequest,
-    //     {
-    //         action: 'resume',
-    //         id: response._id,
-    //     },
-    // );
-
-    // yield call(fetchSaga, scheduleRequest);
-
     return yield put(loadEnrichments());
 }
 
@@ -72,34 +62,21 @@ export function* handleUpdateEnrichment({ payload: enrichment }) {
     }
 
     yield put(updateEnrichmentOptimistic(response));
-
-    // const scheduleRequest = yield select(
-    //     fromUser.getScheduleDatasetEnrichmentRequest,
-    //     {
-    //         action: 'resume',
-    //         id: response._id,
-    //     },
-    // );
-
-    // yield call(fetchSaga, scheduleRequest);
-
     return yield put(loadEnrichments());
 }
 
 export function* handleStartEnrichment({ payload: enrichment }) {
-    console.log('handleStartEnrichment', enrichment);
+    const scheduleRequest = yield select(
+        fromUser.getScheduleDatasetEnrichmentRequest,
+        {
+            action: 'resume',
+            id: enrichment.id,
+        },
+    );
 
-    // const scheduleRequest = yield select(
-    //     fromUser.getScheduleDatasetEnrichmentRequest,
-    //     {
-    //         action: 'resume',
-    //         id: enrichment.id,
-    //     },
-    // );
+    yield call(fetchSaga, scheduleRequest);
 
-    // yield call(fetchSaga, scheduleRequest);
-
-    // return yield put(loadEnrichments());
+    return yield put(loadEnrichments());
 }
 
 export function* handleDeleteEnrichment({ payload: id }) {
@@ -135,6 +112,7 @@ export function* watchDeleteEnrichment() {
 export default function*() {
     yield fork(watchLoadEnrichmentsRequest);
     yield fork(watchCreateEnrichment);
+    yield fork(watchStartEnrichment);
     yield fork(watchUpdateEnrichment);
     yield fork(watchDeleteEnrichment);
 }

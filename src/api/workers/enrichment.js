@@ -6,6 +6,10 @@ import logger from '../services/logger';
 
 export const getEnrichmentDatasetCandidate = async (id, ctx) => {
     const enrichment = await ctx.enrichment.findOneById(id);
+    await ctx.enrichment.updateOne(
+        { _id: new ObjectId(enrichment._id) },
+        { $set: { ['status']: 'pending' } },
+    );
     const [entry] = await ctx.dataset
         .find({ [enrichment.name]: { $exists: false } })
         .limit(1)
