@@ -12,6 +12,7 @@ import controller from './controller';
 import testController from './controller/testController';
 import indexSearchableFields from './services/indexSearchableFields';
 import { publisherQueue } from './workers/publisher';
+import { enrichmentQueue } from './workers/enrichmentWorker';
 
 const app = koaQs(new Koa());
 
@@ -24,7 +25,10 @@ if (process.env.NODE_ENV === 'development') {
     const serverAdapter = new KoaAdapter();
     serverAdapter.setBasePath('/bull');
     createBullBoard({
-        queues: [new BullAdapter(publisherQueue)],
+        queues: [
+            new BullAdapter(publisherQueue),
+            new BullAdapter(enrichmentQueue),
+        ],
         serverAdapter,
     });
     app.use(serverAdapter.registerPlugin());

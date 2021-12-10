@@ -66,15 +66,15 @@ export function* handleUpdateEnrichment({ payload: enrichment }) {
 }
 
 export function* handleStartEnrichment({ payload: enrichment }) {
-    const scheduleRequest = yield select(
-        fromUser.getScheduleDatasetEnrichmentRequest,
+    const enrichmentBackgroundRequest = yield select(
+        fromUser.getEnrichmentBackgroundRequestRequest,
         {
             action: 'resume',
             id: enrichment.id,
         },
     );
 
-    yield call(fetchSaga, scheduleRequest);
+    yield call(fetchSaga, enrichmentBackgroundRequest);
 
     return yield put(loadEnrichments());
 }
