@@ -7,9 +7,12 @@ import repositoryMiddleware from '../services/repositoryMiddleware';
 
 export const PUBLISH = 'publish';
 
-export const publisherQueue = new Queue('publisher', process.env.REDIS_URL, {defaultJobOptions:{removeOnComplete:100, removeOnFail:100}});
+export const publisherQueue = new Queue('publisher', process.env.REDIS_URL, {
+    defaultJobOptions: { removeOnComplete: 100, removeOnFail: 100, lifo: true },
+});
 
-publisherQueue.process(PUBLISH,  (job, done) => {
+publisherQueue.process(PUBLISH, (job, done) => {
+    publisherQueue.clean(0, 'wait');
     startPublishing(job)
         .then(() => {
             job.progress(100);
@@ -21,8 +24,8 @@ publisherQueue.process(PUBLISH,  (job, done) => {
         });
 });
 
-const startPublishing = async (job) => {
-    const ctx = await prepareContext({job});
+const startPublishing = async job => {
+    const ctx = await prepareContext({ job });
     await publish(ctx);
 };
 
