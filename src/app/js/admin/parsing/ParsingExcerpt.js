@@ -9,6 +9,7 @@ import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
 import { fromEnrichments, fromParsing } from '../selectors';
 import theme from '../../theme';
+import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 
 const styles = {
     table: {
@@ -107,8 +108,14 @@ export const ParsingExcerptComponent = ({
         ],
     );
 
-    const total = lines.length;
+    const checkIsEnrichmentLoading = column => {
+        return (
+            enrichments?.find(enrichiment => enrichiment.name === column)
+                ?.status === IN_PROGRESS
+        );
+    };
 
+    const total = lines.length;
     return (
         <Table style={styles.table}>
             <TableHead>
@@ -135,6 +142,9 @@ export const ParsingExcerptComponent = ({
                                     value={formatValue(line[column])}
                                     style={getColumnStyle(
                                         enrichmentsNames,
+                                        column,
+                                    )}
+                                    isEnrichmentLoading={checkIsEnrichmentLoading(
                                         column,
                                     )}
                                 ></ParsingExcerptColumn>

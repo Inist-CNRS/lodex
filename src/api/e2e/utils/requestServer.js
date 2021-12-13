@@ -4,7 +4,7 @@ import { getHost } from '../../../common/uris';
 
 import server from '../../';
 import { publisherQueue } from '../../workers/publisher';
-import { enrichmentQueue } from '../../workers/enrichmentWorker';
+import { enrichmentQueue } from '../../workers/enrichment';
 
 export default () => {
     const app = server.listen(config.port);

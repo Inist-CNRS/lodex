@@ -18,6 +18,7 @@ import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import theme from './../theme';
 import { toggleLoadedColumn, toggleEnrichedColumn } from './parsing';
+import { CREATED } from '../../../common/enrichmentStatus';
 
 const useStyles = makeStyles({
     progress: {
@@ -172,7 +173,7 @@ const mapStateToProps = (state, { filter, subresourceId }) => ({
     totalLoadedColumns: fromParsing.getParsedExcerptColumns(state).length,
     totalLoadedEnrichmentColumns: fromEnrichments
         .enrichments(state)
-        .filter(enrichment => enrichment.status !== 'new').length,
+        .filter(enrichment => enrichment.status !== CREATED).length,
     totalLoadedLines: fromParsing.getTotalLoadedLines(state),
     totalPublishedFields: fromFields.getEditingFields(state, {
         filter,

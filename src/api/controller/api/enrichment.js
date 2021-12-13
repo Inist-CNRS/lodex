@@ -2,7 +2,7 @@ import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 
-import { enrichmentQueue, PROCESS } from '../../workers/enrichmentWorker';
+import { enrichmentQueue, PROCESS } from '../../workers/enrichment';
 import { createEnrichmentRule } from '../../services/enrichment/enrichment';
 
 export const setup = async (ctx, next) => {

@@ -6,13 +6,16 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
 import { reduxForm, Field } from 'redux-form';
-import { PlayArrow as PlayArrowIcon } from '@material-ui/icons';
+import {
+    PlayArrow as PlayArrowIcon,
+    Delete as DeleteIcon,
+} from '@material-ui/icons';
 
 import {
     createEnrichment,
     updateEnrichment,
     deleteEnrichment,
-    startEnrichment,
+    launchEnrichment,
 } from '.';
 import { fromEnrichments, fromParsing } from '../selectors';
 import FormTextField from '../../lib/components/FormTextField';
@@ -28,6 +31,8 @@ import {
     Switch,
 } from '@material-ui/core';
 import Alert from '../../lib/components/Alert';
+import { CREATED, IN_PROGRESS } from '../../../../common/enrichmentStatus';
+
 const useStyles = makeStyles({
     enrichmentContainer: {
         display: 'flex',
@@ -63,7 +68,7 @@ export const EnrichmentFormComponent = ({
     onAddEnrichment,
     onUpdateEnrichment,
     onDeleteEnrichment,
-    onStartEnrichment,
+    onLaunchEnrichment,
     p: polyglot,
     history,
     isEdit,
@@ -89,7 +94,7 @@ export const EnrichmentFormComponent = ({
         let payload = {
             name: formData.get('name'),
             advancedMode,
-            status: initialValues?.status || 'new',
+            status: initialValues?.status || CREATED,
         };
 
         if (!advancedMode) {
@@ -132,8 +137,8 @@ export const EnrichmentFormComponent = ({
         setAdvancedMode(!advancedMode);
     };
 
-    const handleStartEnrichment = () => {
-        onStartEnrichment({
+    const handleLaunchEnrichment = () => {
+        onLaunchEnrichment({
             id: initialValues._id,
         });
     };
@@ -211,21 +216,40 @@ export const EnrichmentFormComponent = ({
         );
     };
 
-    return (
-        <>
-            {initialValues?.status === 'new' && (
-                <div className={classes.actionContainer}>
+    const getActionButtons = () => {
+        return (
+            <div className={classes.actionContainer}>
+                {[CREATED, IN_PROGRESS].includes(initialValues?.status) && (
                     <Button
-                        onClick={handleStartEnrichment}
+                        onClick={handleLaunchEnrichment}
                         variant="contained"
                         color="primary"
+                        disabled={[IN_PROGRESS].includes(initialValues?.status)}
                     >
                         <PlayArrowIcon className={classes.icon} />
-                        {polyglot.t('start')}
+                        {polyglot.t('run')}
                     </Button>
-                </div>
-            )}
+                )}
 
+                {isEdit && (
+                    <Button
+                        variant="contained"
+                        key="delete"
+                        color="secondary"
+                        onClick={handleDelete}
+                        style={{ marginLeft: 24 }}
+                    >
+                        <DeleteIcon className={classes.icon} />
+                        {polyglot.t('delete')}
+                    </Button>
+                )}
+            </div>
+        );
+    };
+
+    return (
+        <>
+            {getActionButtons()}
             <div className={classes.enrichmentContainer}>
                 <form
                     id="enrichment_form"
@@ -251,18 +275,6 @@ export const EnrichmentFormComponent = ({
                     >
                         {polyglot.t('save')}
                     </ButtonWithStatus>
-                    {isEdit && (
-                        <ButtonWithStatus
-                            variant="text"
-                            key="delete"
-                            color="secondary"
-                            loading={isLoading}
-                            style={{ marginTop: 24 }}
-                            onClick={handleDelete}
-                        >
-                            {polyglot.t('delete')}
-                        </ButtonWithStatus>
-                    )}
                 </form>
 
                 <Snackbar
@@ -285,7 +297,7 @@ EnrichmentFormComponent.propTypes = {
     onAddEnrichment: PropTypes.func.isRequired,
     onUpdateEnrichment: PropTypes.func.isRequired,
     onDeleteEnrichment: PropTypes.func.isRequired,
-    onStartEnrichment: PropTypes.func.isRequired,
+    onLaunchEnrichment: PropTypes.func.isRequired,
     isEdit: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
     history: PropTypes.shape({
@@ -310,7 +322,7 @@ const mapDispatchToProps = {
     onAddEnrichment: createEnrichment,
     onUpdateEnrichment: updateEnrichment,
     onDeleteEnrichment: deleteEnrichment,
-    onStartEnrichment: startEnrichment,
+    onLaunchEnrichment: launchEnrichment,
 };
 
 const validate = (values, { p: polyglot }) => {

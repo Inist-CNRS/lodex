@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';

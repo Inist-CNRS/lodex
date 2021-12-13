@@ -113,7 +113,7 @@ export const getLoadEnrichmentsRequest = state =>
         url: '/api/enrichment',
     });
 
-export const getEnrichmentBackgroundRequestRequest = (state, { action, id }) =>
+export const getEnrichmentBackgroundRequest = (state, { action, id }) =>
     getRequest(state, {
         url: `/api/enrichment/background/${action}/${id}`,
         method: 'POST',
@@ -467,7 +467,7 @@ export const selectors = {
     getCreateEnrichmentRequest,
     getUpdateEnrichmentRequest,
     getDeleteEnrichmentRequest,
-    getEnrichmentBackgroundRequestRequest,
+    getEnrichmentBackgroundRequest,
     getLoadFieldRequest,
     getUploadUrlRequest,
     getUrlRequest,

@@ -2,13 +2,10 @@ import { ObjectId } from 'mongodb';
 import { PassThrough } from 'stream';
 import ezs from '@ezs/core';
 import logger from '../../services/logger';
+import { IN_PROGRESS, FINISHED } from '../../../common/enrichmentStatus';
 
 export const getEnrichmentDatasetCandidate = async (id, ctx) => {
     const enrichment = await ctx.enrichment.findOneById(id);
-    await ctx.enrichment.updateOne(
-        { _id: new ObjectId(enrichment._id) },
-        { $set: { ['status']: 'pending' } },
-    );
     const [entry] = await ctx.dataset
         .find({ [enrichment.name]: { $exists: false } })
         .limit(1)
@@ -37,12 +34,15 @@ const processEzsEnrichment = (entry, enrichment) => {
 
 const processEnrichmentBackground = async (entry, enrichment, ctx) => {
     let nextEntry = entry;
+
+    if (nextEntry) {
+        await ctx.enrichment.updateOne(
+            { _id: new ObjectId(enrichment._id) },
+            { $set: { ['status']: IN_PROGRESS } },
+        );
+    }
     while (nextEntry) {
         ctx.job.log(`Enrichment ${enrichment.name} on ${nextEntry._id}`);
-        await ctx.dataset.updateOne(
-            { _id: new ObjectId(nextEntry._id) },
-            { $set: { [enrichment.name]: 'En attente' } },
-        );
         try {
             let { value } = await processEzsEnrichment(nextEntry, enrichment);
 
@@ -67,6 +67,12 @@ const processEnrichmentBackground = async (entry, enrichment, ctx) => {
         }
 
         nextEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
+        if (!nextEntry) {
+            await ctx.enrichment.updateOne(
+                { _id: new ObjectId(enrichment._id) },
+                { $set: { ['status']: FINISHED } },
+            );
+        }
     }
 };
 

@@ -12,7 +12,7 @@ import controller from './controller';
 import testController from './controller/testController';
 import indexSearchableFields from './services/indexSearchableFields';
 import { publisherQueue } from './workers/publisher';
-import { enrichmentQueue } from './workers/enrichmentWorker';
+import { enrichmentQueue } from './workers/enrichment';
 
 const app = koaQs(new Koa());
 

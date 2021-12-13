@@ -12,7 +12,7 @@ import {
     CREATE_ENRICHMENT,
     LOAD_ENRICHMENTS,
     DELETE_ENRICHMENT,
-    START_ENRICHMENT,
+    LAUNCH_ENRICHMENT,
 } from '.';
 
 import { fromUser } from '../../sharedSelectors';
@@ -65,9 +65,9 @@ export function* handleUpdateEnrichment({ payload: enrichment }) {
     return yield put(loadEnrichments());
 }
 
-export function* handleStartEnrichment({ payload: enrichment }) {
+export function* handleLaunchEnrichment({ payload: enrichment }) {
     const enrichmentBackgroundRequest = yield select(
-        fromUser.getEnrichmentBackgroundRequestRequest,
+        fromUser.getEnrichmentBackgroundRequest,
         {
             action: 'resume',
             id: enrichment.id,
@@ -97,8 +97,8 @@ export function* watchCreateEnrichment() {
     yield takeLatest(CREATE_ENRICHMENT, handleCreateEnrichment);
 }
 
-export function* watchStartEnrichment() {
-    yield takeLatest(START_ENRICHMENT, handleStartEnrichment);
+export function* watchLaunchEnrichment() {
+    yield takeLatest(LAUNCH_ENRICHMENT, handleLaunchEnrichment);
 }
 
 export function* watchUpdateEnrichment() {
@@ -112,7 +112,7 @@ export function* watchDeleteEnrichment() {
 export default function*() {
     yield fork(watchLoadEnrichmentsRequest);
     yield fork(watchCreateEnrichment);
-    yield fork(watchStartEnrichment);
+    yield fork(watchLaunchEnrichment);
     yield fork(watchUpdateEnrichment);
     yield fork(watchDeleteEnrichment);
 }
