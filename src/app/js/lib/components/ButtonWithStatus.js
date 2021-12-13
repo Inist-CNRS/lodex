@@ -89,6 +89,7 @@ ButtonWithStatus.propTypes = {
     success: PropTypes.bool,
     progress: PropTypes.number,
     target: PropTypes.number,
+    className: PropTypes.string,
 };
 
 ButtonWithStatus.defaultProps = {
