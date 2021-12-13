@@ -69,7 +69,7 @@ export function* handleLaunchEnrichment({ payload: enrichment }) {
     const enrichmentBackgroundRequest = yield select(
         fromUser.getEnrichmentBackgroundRequest,
         {
-            action: 'resume',
+            action: enrichment.action || 'resume',
             id: enrichment.id,
         },
     );

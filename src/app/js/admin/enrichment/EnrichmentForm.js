@@ -31,7 +31,11 @@ import {
     Switch,
 } from '@material-ui/core';
 import Alert from '../../lib/components/Alert';
-import { CREATED, IN_PROGRESS } from '../../../../common/enrichmentStatus';
+import {
+    CREATED,
+    FINISHED,
+    IN_PROGRESS,
+} from '../../../../common/enrichmentStatus';
 
 const useStyles = makeStyles({
     enrichmentContainer: {
@@ -140,6 +144,7 @@ export const EnrichmentFormComponent = ({
     const handleLaunchEnrichment = () => {
         onLaunchEnrichment({
             id: initialValues._id,
+            action: initialValues?.status === FINISHED ? 'relaunch' : 'resume',
         });
     };
 
@@ -219,7 +224,9 @@ export const EnrichmentFormComponent = ({
     const getActionButtons = () => {
         return (
             <div className={classes.actionContainer}>
-                {[CREATED, IN_PROGRESS].includes(initialValues?.status) && (
+                {[CREATED, IN_PROGRESS, FINISHED].includes(
+                    initialValues?.status,
+                ) && (
                     <Button
                         onClick={handleLaunchEnrichment}
                         variant="contained"

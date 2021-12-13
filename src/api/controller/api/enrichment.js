@@ -71,11 +71,20 @@ export const getAllEnrichments = async ctx => {
 };
 
 export const enrichmentBackground = async (ctx, action, id) => {
-    if (!['resume', 'pause'].includes(action)) {
+    if (!['resume', 'pause', 'relaunch'].includes(action)) {
         throw new Error(`Invalid action "${action}"`);
     }
 
     if (action === 'resume') {
+        await enrichmentQueue.add(PROCESS, { id });
+        ctx.body = {
+            status: 'pending',
+        };
+    }
+
+    if (action === 'relaunch') {
+        const enrichment = await ctx.enrichment.findOneById(id);
+        await ctx.dataset.removeAttribute(enrichment.name);
         await enrichmentQueue.add(PROCESS, { id });
         ctx.body = {
             status: 'pending',
