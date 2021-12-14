@@ -70,12 +70,12 @@ export const getAllEnrichments = async ctx => {
     ctx.body = await ctx.enrichment.findAll();
 };
 
-export const enrichmentBackground = async (ctx, action, id) => {
-    if (!['resume', 'pause', 'relaunch'].includes(action)) {
+export const enrichmentAction = async (ctx, action, id) => {
+    if (!['launch', 'pause', 'relaunch'].includes(action)) {
         throw new Error(`Invalid action "${action}"`);
     }
 
-    if (action === 'resume') {
+    if (action === 'launch') {
         await enrichmentQueue.add(PROCESS, { id });
         ctx.body = {
             status: 'pending',
@@ -104,6 +104,6 @@ app.use(koaBodyParser());
 app.use(route.post('/', postEnrichment));
 app.use(route.put('/:id', putEnrichment));
 app.use(route.delete('/:id', deleteEnrichment));
-app.use(route.post('/background/:action/:id', enrichmentBackground));
+app.use(route.post('/:action/:id', enrichmentAction));
 
 export default app;

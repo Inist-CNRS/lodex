@@ -23,7 +23,7 @@ describe('<ParsingExcerptColumn />', () => {
         expect(row.children().text()).toEqual(getShortText(value));
     });
 
-    it('should render a loader when it is enrichment loading', () => {
+    it('should render a loader when it is enrichment loading and value undefined', () => {
         const value = undefined;
         const wrapper = shallow(
             <ParsingExcerptColumn value={value} isEnrichmentLoading={true} />,
@@ -31,5 +31,16 @@ describe('<ParsingExcerptColumn />', () => {
         const row = wrapper.find(TableCell);
         expect(row.prop('title')).toEqual(value);
         expect(wrapper.find(CircularProgress).exists()).toBeTruthy();
+    });
+
+    it('should render a loader when it is enrichment loading and value defined', () => {
+        const value = 'defined';
+        const wrapper = shallow(
+            <ParsingExcerptColumn value={value} isEnrichmentLoading={true} />,
+        );
+        const row = wrapper.find(TableCell);
+        expect(row.prop('title')).toEqual(value);
+        expect(row.children().text()).toEqual(value);
+        expect(wrapper.find(CircularProgress).exists()).not.toBeTruthy();
     });
 });

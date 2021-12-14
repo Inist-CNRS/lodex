@@ -15,7 +15,6 @@ enrichmentQueue.process(PROCESS, (job, done) => {
             done();
         })
         .catch(err => {
-            handleStartEnrichmentError();
             done(err);
         });
 });
@@ -24,8 +23,6 @@ const startEnrichment = async job => {
     const ctx = await prepareContext({ job });
     await startEnrichmentBackground(ctx);
 };
-
-const handleStartEnrichmentError = async () => {};
 
 const prepareContext = async ctx => {
     await repositoryMiddleware(ctx, () => Promise.resolve());

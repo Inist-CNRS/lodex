@@ -32,7 +32,7 @@ import {
 } from '@material-ui/core';
 import Alert from '../../lib/components/Alert';
 import {
-    CREATED,
+    PENDING,
     FINISHED,
     IN_PROGRESS,
 } from '../../../../common/enrichmentStatus';
@@ -98,7 +98,7 @@ export const EnrichmentFormComponent = ({
         let payload = {
             name: formData.get('name'),
             advancedMode,
-            status: initialValues?.status || CREATED,
+            status: initialValues?.status || PENDING,
         };
 
         if (!advancedMode) {
@@ -144,7 +144,7 @@ export const EnrichmentFormComponent = ({
     const handleLaunchEnrichment = () => {
         onLaunchEnrichment({
             id: initialValues._id,
-            action: initialValues?.status === FINISHED ? 'relaunch' : 'resume',
+            action: initialValues?.status === FINISHED ? 'relaunch' : 'launch',
         });
     };
 
@@ -224,13 +224,14 @@ export const EnrichmentFormComponent = ({
     const getActionButtons = () => {
         return (
             <div className={classes.actionContainer}>
-                {[CREATED, IN_PROGRESS, FINISHED].includes(
+                {[PENDING, IN_PROGRESS, FINISHED].includes(
                     initialValues?.status,
                 ) && (
                     <Button
                         onClick={handleLaunchEnrichment}
                         variant="contained"
                         color="primary"
+                        key="run"
                         disabled={[IN_PROGRESS].includes(initialValues?.status)}
                     >
                         <PlayArrowIcon className={classes.icon} />
@@ -321,7 +322,7 @@ const mapStateToProps = (state, { match }) => ({
     enrichments: fromEnrichments.enrichments(state),
     initialValues: fromEnrichments
         .enrichments(state)
-        .find(sr => sr._id === match.params.enrichmentId),
+        .find(enrichment => enrichment._id === match.params.enrichmentId),
     errorEnrichment: fromEnrichments.getError(state),
 });
 
