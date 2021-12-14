@@ -5,7 +5,7 @@ import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm, Field, formValueSelector } from 'redux-form';
 import {
     PlayArrow as PlayArrowIcon,
     Delete as DeleteIcon,
@@ -21,6 +21,7 @@ import { fromEnrichments, fromParsing } from '../selectors';
 import FormTextField from '../../lib/components/FormTextField';
 import FormSelectField from '../../lib/components/FormSelectField';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
+import EnrichmentExcerpt from './EnrichmentExcerpt';
 import {
     Box,
     Button,
@@ -36,35 +37,48 @@ import {
     FINISHED,
     IN_PROGRESS,
 } from '../../../../common/enrichmentStatus';
+import parseValue from '../../../../common/tools/parseValue';
 
-const useStyles = makeStyles({
-    enrichmentContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-    },
-    enrichmentForm: {
-        width: '100%',
-        maxWidth: '700px',
-    },
-    switchMode: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-    },
-    simplifiedRules: {
-        border: '1px solid rgb(95, 99, 104, 0.5)',
-        borderRadius: 4,
-        padding: 20,
-    },
-    valuesContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    actionContainer: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-        marginBottom: 20,
-    },
+const useStyles = makeStyles(theme => {
+    return {
+        enrichmentContainer: {
+            display: 'flex',
+            justifyContent: 'center',
+        },
+        enrichmentForm: {
+            width: '100%',
+            maxWidth: '900px',
+        },
+        switchMode: {
+            display: 'flex',
+            justifyContent: 'flex-end',
+        },
+        simplifiedRulesFormContainer: {
+            flex: '4',
+            borderRadius: 4,
+            padding: 20,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-around',
+        },
+        excerptContainer: {
+            flex: '2',
+            borderLeft: '1px solid rgb(95, 99, 104, 0.5)',
+        },
+        simplifiedRules: {
+            border: '1px solid rgb(95, 99, 104, 0.5)',
+            display: 'flex',
+            flexDirection: 'column',
+            [theme.breakpoints.up('md')]: {
+                flexDirection: 'row',
+            },
+        },
+        valuesContainer: {
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+        },
+    };
 });
 
 export const EnrichmentFormComponent = ({
@@ -79,16 +93,44 @@ export const EnrichmentFormComponent = ({
     initialValues,
     excerptColumns,
     errorEnrichment,
+    lines,
+    formValues,
 }) => {
     const classes = useStyles();
     const [advancedMode, setAdvancedMode] = useState(
         initialValues?.advancedMode || false,
     );
     const [openSnackBar, setOpenSnackBar] = useState(false);
+    const [dataPreview, setDataPreview] = useState([]);
 
     useEffect(() => {
         setOpenSnackBar(!!errorEnrichment);
     }, [errorEnrichment]);
+
+    useEffect(() => {
+        formValues?.sourceColumn && getSourcePreview();
+    }, [formValues?.sourceColumn, formValues?.subPath]);
+
+    const getSourcePreview = () => {
+        let previewLines = [];
+        for (const line of lines) {
+            if (formValues.subPath) {
+                const parsedValue = parseValue(line[formValues.sourceColumn]);
+                previewLines.push(
+                    JSON.stringify(
+                        parsedValue.map(item =>
+                            item[formValues.subPath]
+                                ? item[formValues.subPath]
+                                : '',
+                        ),
+                    ),
+                );
+            } else {
+                previewLines.push(line[formValues.sourceColumn]);
+            }
+        }
+        setDataPreview(previewLines);
+    };
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -181,39 +223,44 @@ export const EnrichmentFormComponent = ({
                     />
                 ) : (
                     <Box className={classes.simplifiedRules}>
-                        <Field
-                            name="webServiceUrl"
-                            component={FormTextField}
-                            label={polyglot.t('webServiceUrl')}
-                            fullWidth
-                            style={{ marginBottom: 16 }}
-                        />
-
-                        <div className={classes.valuesContainer}>
+                        <div className={classes.simplifiedRulesFormContainer}>
                             <Field
-                                name="sourceColumn"
-                                component={FormSelectField}
-                                label={polyglot.t('sourceColumn')}
-                                fullWidth
-                                style={{ marginBottom: 20 }}
-                            >
-                                <MenuItem key={null} value={null}>
-                                    {polyglot.t('none')}
-                                </MenuItem>
-                                {columnItems}
-                            </Field>
-
-                            <div style={{ fontSize: 24, marginLeft: 12 }}>
-                                •
-                            </div>
-                            <Field
-                                name="subPath"
+                                name="webServiceUrl"
                                 component={FormTextField}
-                                label={polyglot.t('subPath')}
+                                label={polyglot.t('webServiceUrl')}
                                 fullWidth
-                                style={{ marginLeft: 12 }}
-                                helperText={polyglot.t('subPathHelper')}
+                                style={{ marginBottom: 16 }}
                             />
+
+                            <div className={classes.valuesContainer}>
+                                <Field
+                                    name="sourceColumn"
+                                    component={FormSelectField}
+                                    label={polyglot.t('sourceColumn')}
+                                    fullWidth
+                                    style={{ marginBottom: 20 }}
+                                >
+                                    <MenuItem key={null} value={null}>
+                                        {polyglot.t('none')}
+                                    </MenuItem>
+                                    {columnItems}
+                                </Field>
+
+                                <div style={{ fontSize: 24, marginLeft: 12 }}>
+                                    •
+                                </div>
+                                <Field
+                                    name="subPath"
+                                    component={FormTextField}
+                                    label={polyglot.t('subPath')}
+                                    fullWidth
+                                    style={{ marginLeft: 12 }}
+                                    helperText={polyglot.t('subPathHelper')}
+                                />
+                            </div>
+                        </div>
+                        <div className={classes.excerptContainer}>
+                            <EnrichmentExcerpt lines={dataPreview} />
                         </div>
                     </Box>
                 )}
@@ -314,8 +361,14 @@ EnrichmentFormComponent.propTypes = {
     excerptColumns: PropTypes.arrayOf(PropTypes.string),
     initialValues: PropTypes.any,
     errorEnrichment: PropTypes.string,
+    lines: PropTypes.any,
+    formValues: PropTypes.shape({
+        sourceColumn: PropTypes.string,
+        subPath: PropTypes.string,
+    }),
 };
 
+const formSelector = formValueSelector('ENRICHMENT_FORM');
 const mapStateToProps = (state, { match }) => ({
     excerptColumns: fromParsing.getParsedExcerptColumns(state),
     isLoading: fromEnrichments.isLoading(state),
@@ -324,6 +377,8 @@ const mapStateToProps = (state, { match }) => ({
         .enrichments(state)
         .find(enrichment => enrichment._id === match.params.enrichmentId),
     errorEnrichment: fromEnrichments.getError(state),
+    lines: fromParsing.getExcerptLines(state),
+    formValues: formSelector(state, 'sourceColumn', 'subPath'),
 });
 
 const mapDispatchToProps = {
