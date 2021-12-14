@@ -38,7 +38,6 @@ export const ClearPublishedButtonComponent = ({
             <Button
                 disabled={!hasPublishedDataset}
                 variant="contained"
-                color="white"
                 className={classes.button}
                 onClick={handleShow}
                 icon={<ClearAllIcon />}

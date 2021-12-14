@@ -10,6 +10,8 @@ describe('Progress', () => {
             progress: undefined,
             symbol: undefined,
             status: PENDING,
+            isBackground: false,
+            label: undefined,
         });
     });
 
@@ -24,6 +26,8 @@ describe('Progress', () => {
             status: PUBLISH_DOCUMENT,
             symbol: undefined,
             error: null,
+            isBackground: true,
+            label: undefined,
         });
     });
 
@@ -38,6 +42,8 @@ describe('Progress', () => {
             status: PUBLISH_DOCUMENT,
             symbol: undefined,
             error: null,
+            isBackground: true,
+            label: undefined,
         });
 
         progress.incrementProgress(10);
@@ -48,6 +54,8 @@ describe('Progress', () => {
             status: PUBLISH_DOCUMENT,
             symbol: undefined,
             error: null,
+            isBackground: true,
+            label: undefined,
         });
 
         progress.setProgress(20);
@@ -58,6 +66,8 @@ describe('Progress', () => {
             status: PUBLISH_DOCUMENT,
             symbol: undefined,
             error: null,
+            isBackground: true,
+            label: undefined,
         });
 
         progress.incrementProgress(10);
@@ -68,6 +78,8 @@ describe('Progress', () => {
             status: PUBLISH_DOCUMENT,
             symbol: undefined,
             error: null,
+            isBackground: true,
+            label: undefined,
         });
     });
 
@@ -101,6 +113,8 @@ describe('Progress', () => {
                 status: 'PENDING',
                 symbol: undefined,
                 target: 30,
+                isBackground: false,
+                label: undefined,
             });
         });
     });

@@ -11,12 +11,18 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import PublicationButton from '../publish/PublicationButton';
 import { fromUser } from '../../sharedSelectors';
-import { fromParsing, fromPublication } from '../selectors';
+import {
+    fromParsing,
+    fromProgress,
+    fromPublication,
+    fromPublish,
+} from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';
 import theme from './../../theme';
 import Menu from './Menu';
-import PublishedButton from './PublishedButton';
+import GoToPublicationButton from './GoToPublicationButton';
+import JobProgress from './JobProgress';
 const useStyles = makeStyles({
     linkToHome: {
         color: `${theme.white.primary} !important`,
@@ -55,6 +61,31 @@ const useStyles = makeStyles({
         flex: 1,
         alignItems: 'stretch',
         height: 64,
+    },
+    loadingProgress: {
+        borderBottomLeftRadius: '0px',
+        borderBottomRightRadius: '0px',
+    },
+    progress: {
+        width: '100%',
+        display: 'flex',
+        margin: '0 4px 0',
+    },
+    colorPrimary: { backgroundColor: theme.white.primary },
+    barColorPrimary: { backgroundColor: theme.green.secondary },
+    progressContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        marginLeft: 'auto',
+        width: '130px',
+    },
+    progressLabel: {
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-around',
     },
 });
 
@@ -107,7 +138,8 @@ const AppbarComponent = ({
         <>
             {isAdmin && (
                 <div style={{ display: 'flex' }}>
-                    {hasPublishedDataset && <PublishedButton />}
+                    <JobProgress />
+                    {hasPublishedDataset && <GoToPublicationButton />}
                     <PublicationButton className={classes.button} />
                     <Menu />
                 </div>

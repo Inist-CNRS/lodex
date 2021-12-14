@@ -74,7 +74,7 @@ const ButtonWithStatus = ({
     );
 };
 
-const getIcon = (error, success, loading, target) => {
+const getIcon = (error, success, loading) => {
     if (loading) return <CircularProgress variant="indeterminate" size={20} />;
     if (error) return <Warning color={red[400]} />;
     if (success) return <Success color={lightGreen.A400} />;
@@ -89,6 +89,7 @@ ButtonWithStatus.propTypes = {
     success: PropTypes.bool,
     progress: PropTypes.number,
     target: PropTypes.number,
+    className: PropTypes.string,
 };
 
 ButtonWithStatus.defaultProps = {

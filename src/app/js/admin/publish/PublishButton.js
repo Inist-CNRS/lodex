@@ -5,11 +5,10 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { makeStyles } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { publish as publishAction } from './';
-import { fromPublish, fromPublication, fromProgress } from '../selectors';
-import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import { fromFields } from '../../sharedSelectors';
 
 const useStyles = makeStyles({
@@ -26,13 +25,8 @@ const useStyles = makeStyles({
 
 export const PublishButtonComponent = ({
     canPublish,
-    error,
-    isPublishing,
     p: polyglot,
-    published,
     onPublish,
-    target,
-    progress,
 }) => {
     const classes = useStyles();
     const handleClick = () => {
@@ -41,39 +35,23 @@ export const PublishButtonComponent = ({
 
     return (
         <div className={classnames('btn-publish', classes.container)}>
-            <ButtonWithStatus
-                raised
+            <Button
+                variant="contained"
                 color="primary"
-                loading={isPublishing}
-                error={error}
-                success={published}
                 onClick={handleClick}
                 disabled={!canPublish}
                 className={classes.button}
-                target={target}
-                progress={progress}
             >
-                {isPublishing
-                    ? polyglot.t('publishing')
-                    : polyglot.t('publish')}
-            </ButtonWithStatus>
+                {polyglot.t('publish')}
+            </Button>
         </div>
     );
 };
 
 PublishButtonComponent.propTypes = {
     canPublish: PropTypes.bool.isRequired,
-    error: PropTypes.string,
-    isPublishing: PropTypes.bool.isRequired,
-    p: polyglotPropTypes.isRequired,
     onPublish: PropTypes.func.isRequired,
-    published: PropTypes.bool.isRequired,
-    target: PropTypes.string,
-    progress: PropTypes.number,
-};
-
-PublishButtonComponent.defaultProps = {
-    error: null,
+    p: polyglotPropTypes.isRequired,
 };
 
 export const canPublish = (areAllFieldsValid, allListFields) => {
@@ -85,10 +63,6 @@ const mapStateToProps = state => ({
         fromFields.areAllFieldsValid(state),
         fromFields.getAllListFields(state),
     ),
-    error: fromPublish.getPublishingError(state),
-    isPublishing: fromPublish.getIsPublishing(state),
-    published: fromPublication.hasPublishedDataset(state),
-    ...fromProgress.getProgressAndTarget(state),
 });
 
 const mapDispatchToProps = {

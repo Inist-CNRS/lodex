@@ -12,14 +12,12 @@ import { ClearPublishedButton } from '../clear/ClearPublishedButton';
 const mapStateToProps = state => ({
     invalidFields: fromFields.getInvalidFields(state),
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
-    isLoading: fromPublish.getIsPublishing(state),
 });
 
 export default compose(
     connect(mapStateToProps),
     branch(
-        ({ hasPublishedDataset, isLoading }) =>
-            hasPublishedDataset && !isLoading,
+        ({ hasPublishedDataset }) => hasPublishedDataset,
         renderComponent(ClearPublishedButton),
     ),
     branch(

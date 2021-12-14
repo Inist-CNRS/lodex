@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import { Button, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import theme from './../../theme';
+import theme from '../../theme';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import classNames from 'classnames';
 
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     },
 });
 
-const PublishedButtonComponent = ({ p: polyglot }) => {
+const GoToPublicationButtonComponent = ({ p: polyglot }) => {
     const classes = useStyles();
 
     const handleGoToPublication = () => {
@@ -47,8 +47,8 @@ const PublishedButtonComponent = ({ p: polyglot }) => {
     );
 };
 
-PublishedButtonComponent.propTypes = {
+GoToPublicationButtonComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default compose(translate)(PublishedButtonComponent);
+export default compose(translate)(GoToPublicationButtonComponent);
