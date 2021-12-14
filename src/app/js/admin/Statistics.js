@@ -18,6 +18,7 @@ import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import theme from './../theme';
 import { toggleLoadedColumn, toggleEnrichedColumn } from './parsing';
+import { PENDING } from '../../../common/enrichmentStatus';
 
 const useStyles = makeStyles({
     progress: {
@@ -170,7 +171,9 @@ StatisticsComponent.propTypes = {
 const mapStateToProps = (state, { filter, subresourceId }) => ({
     isComputing: fromPublicationPreview.isComputing(state),
     totalLoadedColumns: fromParsing.getParsedExcerptColumns(state).length,
-    totalLoadedEnrichmentColumns: fromEnrichments.enrichments(state).length,
+    totalLoadedEnrichmentColumns: fromEnrichments
+        .enrichments(state)
+        .filter(enrichment => enrichment.status !== PENDING).length,
     totalLoadedLines: fromParsing.getTotalLoadedLines(state),
     totalPublishedFields: fromFields.getEditingFields(state, {
         filter,

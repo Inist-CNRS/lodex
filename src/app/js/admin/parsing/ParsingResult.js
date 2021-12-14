@@ -55,7 +55,6 @@ export class ParsingResultComponent extends Component {
             maxLines,
             loadingParsingResult,
         } = this.props;
-
         if (loadingParsingResult) {
             return (
                 <Loading className="admin">

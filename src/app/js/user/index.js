@@ -113,9 +113,9 @@ export const getLoadEnrichmentsRequest = state =>
         url: '/api/enrichment',
     });
 
-export const getScheduleDatasetEnrichmentRequest = (state, { action, id }) =>
+export const getEnrichmentActionRequest = (state, { action, id }) =>
     getRequest(state, {
-        url: `/api/enrichment/schedule/${action}/${id}`,
+        url: `/api/enrichment/${action}/${id}`,
         method: 'POST',
     });
 
@@ -467,7 +467,7 @@ export const selectors = {
     getCreateEnrichmentRequest,
     getUpdateEnrichmentRequest,
     getDeleteEnrichmentRequest,
-    getScheduleDatasetEnrichmentRequest,
+    getEnrichmentActionRequest,
     getLoadFieldRequest,
     getUploadUrlRequest,
     getUrlRequest,

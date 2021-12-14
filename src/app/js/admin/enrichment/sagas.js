@@ -12,6 +12,7 @@ import {
     CREATE_ENRICHMENT,
     LOAD_ENRICHMENTS,
     DELETE_ENRICHMENT,
+    LAUNCH_ENRICHMENT,
 } from '.';
 
 import { fromUser } from '../../sharedSelectors';
@@ -46,16 +47,6 @@ export function* handleCreateEnrichment({ payload: { enrichment, callback } }) {
         callback(response._id);
     }
 
-    const scheduleRequest = yield select(
-        fromUser.getScheduleDatasetEnrichmentRequest,
-        {
-            action: 'resume',
-            id: response._id,
-        },
-    );
-
-    yield call(fetchSaga, scheduleRequest);
-
     return yield put(loadEnrichments());
 }
 
@@ -71,16 +62,19 @@ export function* handleUpdateEnrichment({ payload: enrichment }) {
     }
 
     yield put(updateEnrichmentOptimistic(response));
+    return yield put(loadEnrichments());
+}
 
-    const scheduleRequest = yield select(
-        fromUser.getScheduleDatasetEnrichmentRequest,
+export function* handleLaunchEnrichment({ payload: enrichment }) {
+    const enrichmentBackgroundRequest = yield select(
+        fromUser.getEnrichmentActionRequest,
         {
-            action: 'resume',
-            id: response._id,
+            action: enrichment.action || 'launch',
+            id: enrichment.id,
         },
     );
 
-    yield call(fetchSaga, scheduleRequest);
+    yield call(fetchSaga, enrichmentBackgroundRequest);
 
     return yield put(loadEnrichments());
 }
@@ -103,6 +97,10 @@ export function* watchCreateEnrichment() {
     yield takeLatest(CREATE_ENRICHMENT, handleCreateEnrichment);
 }
 
+export function* watchLaunchEnrichment() {
+    yield takeLatest(LAUNCH_ENRICHMENT, handleLaunchEnrichment);
+}
+
 export function* watchUpdateEnrichment() {
     yield takeLatest(UPDATE_ENRICHMENT, handleUpdateEnrichment);
 }
@@ -114,6 +112,7 @@ export function* watchDeleteEnrichment() {
 export default function*() {
     yield fork(watchLoadEnrichmentsRequest);
     yield fork(watchCreateEnrichment);
+    yield fork(watchLaunchEnrichment);
     yield fork(watchUpdateEnrichment);
     yield fork(watchDeleteEnrichment);
 }

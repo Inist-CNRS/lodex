@@ -2,10 +2,7 @@ import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 
-import {
-    getEnrichmentDatasetCandidate,
-    getEnrichmentWorker,
-} from '../../workers/enrichment';
+import { enrichmentQueue, PROCESS } from '../../workers/enrichment';
 import { createEnrichmentRule } from '../../services/enrichment/enrichment';
 
 export const setup = async (ctx, next) => {
@@ -73,17 +70,25 @@ export const getAllEnrichments = async ctx => {
     ctx.body = await ctx.enrichment.findAll();
 };
 
-export const scheduleDatasetEnrichment = async (ctx, action, id) => {
-    if (!['resume', 'pause'].includes(action)) {
+export const enrichmentAction = async (ctx, action, id) => {
+    if (!['launch', 'pause', 'relaunch'].includes(action)) {
         throw new Error(`Invalid action "${action}"`);
     }
 
-    const worker = await getEnrichmentWorker(id, ctx);
-    await worker[action]();
+    if (action === 'launch') {
+        await enrichmentQueue.add(PROCESS, { id });
+        ctx.body = {
+            status: 'pending',
+        };
+    }
 
-    if (action === 'resume') {
-        const candidate = await getEnrichmentDatasetCandidate(id, ctx);
-        candidate && worker.push(candidate);
+    if (action === 'relaunch') {
+        const enrichment = await ctx.enrichment.findOneById(id);
+        await ctx.dataset.removeAttribute(enrichment.name);
+        await enrichmentQueue.add(PROCESS, { id });
+        ctx.body = {
+            status: 'pending',
+        };
     }
 
     ctx.status = 200;
@@ -99,6 +104,6 @@ app.use(koaBodyParser());
 app.use(route.post('/', postEnrichment));
 app.use(route.put('/:id', putEnrichment));
 app.use(route.delete('/:id', deleteEnrichment));
-app.use(route.post('/schedule/:action/:id', scheduleDatasetEnrichment));
+app.use(route.post('/:action/:id', enrichmentAction));
 
 export default app;

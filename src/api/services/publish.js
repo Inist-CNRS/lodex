@@ -10,7 +10,6 @@ import {
 } from '../../common/scope';
 
 export default async ctx => {
-
     const count = await ctx.dataset.count({});
     const fields = await ctx.field.findAll();
 
@@ -20,7 +19,6 @@ export default async ctx => {
 
     await clearPublished(ctx);
     await ctx.publishDocuments(ctx, count, collectionScopeFields);
-
 
     const datasetScopeFields = fields.filter(c =>
         [SCOPE_DATASET, SCOPE_GRAPHIC].includes(c.scope),
