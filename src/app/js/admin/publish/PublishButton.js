@@ -51,6 +51,7 @@ export const PublishButtonComponent = ({
 PublishButtonComponent.propTypes = {
     canPublish: PropTypes.bool.isRequired,
     onPublish: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
 export const canPublish = (areAllFieldsValid, allListFields) => {
