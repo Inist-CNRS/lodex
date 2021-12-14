@@ -5,25 +5,14 @@ import {
     canPublish,
     PublishButtonComponent as PublishButton,
 } from './PublishButton';
-import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
+import { Button } from '@material-ui/core';
 
 describe('<Publish />', () => {
     it('should render a publish button', () => {
-        const wrapper = shallow(
-            <PublishButton
-                p={{ t: key => key }}
-                loadField={() => {}}
-                isPublishing
-                error
-                published
-            />,
-        );
+        const wrapper = shallow(<PublishButton p={{ t: key => key }} />);
 
-        const button = wrapper.find(ButtonWithStatus).at(0);
-        expect(button.prop('children')).toEqual('publishing');
-        expect(button.prop('loading')).toEqual(true);
-        expect(button.prop('error')).toEqual(true);
-        expect(button.prop('success')).toEqual(true);
+        const button = wrapper.find(Button).at(0);
+        expect(button.prop('children')).toEqual('publish');
     });
 
     it('should trigger the onPublish action on click', () => {
@@ -38,7 +27,7 @@ describe('<Publish />', () => {
             />,
         );
 
-        wrapper.find(ButtonWithStatus).simulate('click');
+        wrapper.find(Button).simulate('click');
         expect(onPublish).toHaveBeenCalled();
     });
 
