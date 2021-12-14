@@ -5,17 +5,8 @@ import { NavLink } from 'react-router-dom';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import StorageIcon from '@material-ui/icons/Storage';
-import Fade from '@material-ui/core/Fade';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
-import {
-    AppBar,
-    CircularProgress,
-    Button,
-    Toolbar,
-    LinearProgress,
-    Box,
-    Typography,
-} from '@material-ui/core';
+import { AppBar, CircularProgress, Button, Toolbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import PublicationButton from '../publish/PublicationButton';
@@ -31,6 +22,7 @@ import Link from '../../lib/components/Link';
 import theme from './../../theme';
 import Menu from './Menu';
 import GoToPublicationButton from './GoToPublicationButton';
+import JobProgress from './JobProgress';
 const useStyles = makeStyles({
     linkToHome: {
         color: `${theme.white.primary} !important`,
@@ -108,9 +100,6 @@ const AppbarComponent = ({
     isAdmin,
     p: polyglot,
     hasPublishedDataset,
-    isPublishing,
-    target,
-    progress,
 }) => {
     const classes = useStyles();
 
@@ -149,30 +138,7 @@ const AppbarComponent = ({
         <>
             {isAdmin && (
                 <div style={{ display: 'flex' }}>
-                    <Fade in={isPublishing} out={!isPublishing}>
-                        <Box className={classes.progressContainer}>
-                            <div className={classes.progressLabel}>
-                                <CircularProgress
-                                    variant="indeterminate"
-                                    color={theme.white.primary}
-                                    size={20}
-                                />
-                                <Typography>
-                                    {polyglot.t('publishing')}
-                                </Typography>
-                            </div>
-                            <LinearProgress
-                                // className={classes.progress}
-                                classes={{
-                                    root: classes.progress,
-                                    colorPrimary: classes.colorPrimary,
-                                    barColorPrimary: classes.barColorPrimary,
-                                }}
-                                variant="determinate"
-                                value={target ? (progress / target) * 100 : 0}
-                            />
-                        </Box>
-                    </Fade>
+                    <JobProgress />
                     {hasPublishedDataset && <GoToPublicationButton />}
                     <PublicationButton className={classes.button} />
                     <Menu />
@@ -211,9 +177,6 @@ AppbarComponent.propTypes = {
     isAdmin: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     hasPublishedDataset: PropTypes.bool,
-    isPublishing: PropTypes.bool,
-    target: PropTypes.number,
-    progress: PropTypes.number,
 };
 
 AppbarComponent.defaultProps = {
@@ -227,7 +190,5 @@ export default compose(
         isLoading: state.loading,
         isAdmin: fromUser.isAdmin(state),
         hasPublishedDataset: fromPublication.hasPublishedDataset(state),
-        isPublishing: fromPublish.getIsPublishing(state),
-        ...fromProgress.getProgressAndTarget(state),
     })),
 )(AppbarComponent);
