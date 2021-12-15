@@ -63,7 +63,6 @@ if (!module.parent) {
     const io = new Server(httpServer);
 
     io.on('connection', socket => {
-        console.log(`client connect`);
         progress.addProgressListener(progress => {
             socket.emit('progress', progress);
         });

@@ -6,15 +6,11 @@ import {
     Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-
-import PropTypes from 'prop-types';
-import { compose } from 'recompose';
+import { io } from 'socket.io-client';
 import translate from 'redux-polyglot/dist/translate';
-import { connect } from 'react-redux';
-import { fromProgress, fromPublish } from '../selectors';
 
 const useStyles = makeStyles({
     progress: {
@@ -43,8 +39,22 @@ const useStyles = makeStyles({
 
 const JobProgressComponent = props => {
     const classes = useStyles();
-    const { isPublishing, target, progress, p: polyglot } = props;
+    const { p: polyglot } = props;
+    const [isPublishing, setIsPublishing] = useState(false);
+    const [progress, setProgress] = useState();
+    const [target, setTarget] = useState();
     const label = isPublishing && 'publishing';
+    useEffect(() => {
+        const socket = io();
+        socket.on('progress', data => {
+            setTarget(data.target);
+            setProgress(data.progress);
+        });
+        socket.on('publisher', data => {
+            setIsPublishing(data.isPublishing);
+        });
+        return () => socket.disconnect();
+    }, []);
     return (
         <Fade in={isPublishing} out={!isPublishing}>
             <Box className={classes.progressContainer}>
@@ -71,16 +81,7 @@ const JobProgressComponent = props => {
 };
 
 JobProgressComponent.propTypes = {
-    isPublishing: PropTypes.bool.isRequired,
-    target: PropTypes.number,
-    progress: PropTypes.number,
     p: polyglotPropTypes.isRequired,
 };
 
-export default compose(
-    translate,
-    connect(state => ({
-        isPublishing: fromPublish.getIsPublishing(state),
-        ...fromProgress.getProgressAndTarget(state),
-    })),
-)(JobProgressComponent);
+export default translate(JobProgressComponent);
