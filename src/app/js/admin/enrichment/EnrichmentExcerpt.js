@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { connect } from 'react-redux';
 import {
+    CircularProgress,
     Paper,
     Table,
     TableBody,
@@ -17,7 +18,7 @@ import { isLongText, getShortText } from '../../lib/longTexts';
 
 const EXCERPT_HEIGHT = 350;
 
-export const EnrichmentExcerptComponent = ({ lines, p: polyglot }) => (
+export const EnrichmentExcerptComponent = ({ lines, loading, p: polyglot }) => (
     <TableContainer component={Paper} style={{ height: EXCERPT_HEIGHT }}>
         <Table stickyHeader>
             <TableHead>
@@ -26,13 +27,40 @@ export const EnrichmentExcerptComponent = ({ lines, p: polyglot }) => (
                 </TableRow>
             </TableHead>
             <TableBody>
-                {lines.map(line => (
-                    <TableRow key={line}>
-                        <TableCell component="th" scope="row" title={line}>
-                            {isLongText(line) ? getShortText(line) : line}
+                {!loading &&
+                    lines.map(line => {
+                        const stringifyLine = JSON.stringify(line);
+                        return (
+                            <TableRow key={stringifyLine}>
+                                <TableCell
+                                    component="th"
+                                    scope="row"
+                                    title={stringifyLine}
+                                >
+                                    {isLongText(stringifyLine)
+                                        ? getShortText(stringifyLine)
+                                        : stringifyLine}
+                                </TableCell>
+                            </TableRow>
+                        );
+                    })}
+                {loading && (
+                    <TableRow>
+                        <TableCell component="th" scope="row">
+                            <CircularProgress
+                                variant="indeterminate"
+                                size={20}
+                            />
                         </TableCell>
                     </TableRow>
-                ))}
+                )}
+                {!loading && lines.length === 0 && (
+                    <TableRow>
+                        <TableCell component="th" scope="row">
+                            Pas de données
+                        </TableCell>
+                    </TableRow>
+                )}
             </TableBody>
         </Table>
     </TableContainer>
@@ -40,6 +68,7 @@ export const EnrichmentExcerptComponent = ({ lines, p: polyglot }) => (
 
 EnrichmentExcerptComponent.propTypes = {
     lines: PropTypes.array.isRequired,
+    loading: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
 };
 

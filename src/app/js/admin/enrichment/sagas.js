@@ -15,6 +15,7 @@ import {
     LAUNCH_ENRICHMENT,
     PREVIEW_DATA_ENRICHMENT,
     previewDataEnrichmentSuccess,
+    previewDataEnrichmentError,
 } from '.';
 
 import { fromUser } from '../../sharedSelectors';
@@ -97,7 +98,7 @@ export function* handlePreviewDataEnrichment({ payload: previewEnrichment }) {
 
     const { error, response } = yield call(fetchSaga, request);
     if (error) {
-        return;
+        return yield put(previewDataEnrichmentError(error));
     }
 
     yield put(previewDataEnrichmentSuccess(response));

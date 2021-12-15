@@ -99,8 +99,9 @@ export const enrichmentAction = async (ctx, action, id) => {
 
 export const enrichmentDataPreview = async ctx => {
     try {
-        await getEnrichmentDataPreview(ctx);
+        const result = await getEnrichmentDataPreview(ctx);
         ctx.status = 200;
+        ctx.body = result;
     } catch (error) {
         ctx.status = 403;
         ctx.body = { error: error.message };

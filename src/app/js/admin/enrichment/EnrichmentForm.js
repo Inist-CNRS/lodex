@@ -38,7 +38,6 @@ import {
     FINISHED,
     IN_PROGRESS,
 } from '../../../../common/enrichmentStatus';
-import parseValue from '../../../../common/tools/parseValue';
 
 const useStyles = makeStyles(theme => {
     return {
@@ -88,27 +87,27 @@ const useStyles = makeStyles(theme => {
 });
 
 export const EnrichmentFormComponent = ({
-    isLoading,
-    onAddEnrichment,
-    onUpdateEnrichment,
-    onDeleteEnrichment,
-    onLaunchEnrichment,
-    p: polyglot,
-    history,
-    isEdit,
-    initialValues,
+    dataPreviewEnrichment,
     excerptColumns,
     errorEnrichment,
-    lines,
     formValues,
+    history,
+    initialValues,
+    isDataPreviewLoading,
+    isEdit,
+    isLoading,
+    onAddEnrichment,
+    onDeleteEnrichment,
+    onLaunchEnrichment,
     onPreviewDataEnrichment,
+    onUpdateEnrichment,
+    p: polyglot,
 }) => {
     const classes = useStyles();
     const [advancedMode, setAdvancedMode] = useState(
         initialValues?.advancedMode || false,
     );
     const [openSnackBar, setOpenSnackBar] = useState(false);
-    const [dataPreview, setDataPreview] = useState([]);
 
     useEffect(() => {
         setOpenSnackBar(!!errorEnrichment);
@@ -123,24 +122,6 @@ export const EnrichmentFormComponent = ({
             sourceColumn: formValues.sourceColumn,
             subPath: formValues.subPath,
         });
-        // let previewLines = [];
-        // for (const line of lines) {
-        //     if (formValues.subPath) {
-        //         const parsedValue = parseValue(line[formValues.sourceColumn]);
-        //         previewLines.push(
-        //             JSON.stringify(
-        //                 parsedValue.map(item =>
-        //                     item[formValues.subPath]
-        //                         ? item[formValues.subPath]
-        //                         : '',
-        //                 ),
-        //             ),
-        //         );
-        //     } else {
-        //         previewLines.push(line[formValues.sourceColumn]);
-        //     }
-        // }
-        // setDataPreview(previewLines);
     };
 
     const handleSubmit = e => {
@@ -222,6 +203,7 @@ export const EnrichmentFormComponent = ({
                         label={polyglot.t('advancedMode')}
                     />
                 </div>
+                {advancedMode}
                 {advancedMode ? (
                     <Field
                         name="rule"
@@ -271,7 +253,10 @@ export const EnrichmentFormComponent = ({
                             </div>
                         </div>
                         <div className={classes.excerptContainer}>
-                            <EnrichmentExcerpt lines={dataPreview} />
+                            <EnrichmentExcerpt
+                                lines={dataPreviewEnrichment}
+                                loading={isDataPreviewLoading}
+                            />
                         </div>
                     </Box>
                 )}
@@ -359,45 +344,47 @@ export const EnrichmentFormComponent = ({
 };
 
 EnrichmentFormComponent.propTypes = {
+    dataPreviewEnrichment: PropTypes.array,
+    errorEnrichment: PropTypes.string,
+    excerptColumns: PropTypes.arrayOf(PropTypes.string),
+    formValues: PropTypes.shape({
+        sourceColumn: PropTypes.string,
+        subPath: PropTypes.string,
+    }),
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired,
+    }),
+    initialValues: PropTypes.any,
+    isDataPreviewLoading: PropTypes.bool,
+    isEdit: PropTypes.bool,
     isLoading: PropTypes.bool.isRequired,
     onAddEnrichment: PropTypes.func.isRequired,
     onUpdateEnrichment: PropTypes.func.isRequired,
     onDeleteEnrichment: PropTypes.func.isRequired,
     onLaunchEnrichment: PropTypes.func.isRequired,
     onPreviewDataEnrichment: PropTypes.func.isRequired,
-    isEdit: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }),
-    excerptColumns: PropTypes.arrayOf(PropTypes.string),
-    initialValues: PropTypes.any,
-    errorEnrichment: PropTypes.string,
-    lines: PropTypes.any,
-    formValues: PropTypes.shape({
-        sourceColumn: PropTypes.string,
-        subPath: PropTypes.string,
-    }),
 };
 
 const formSelector = formValueSelector('ENRICHMENT_FORM');
 const mapStateToProps = (state, { match }) => ({
+    dataPreviewEnrichment: fromEnrichments.dataPreviewEnrichment(state),
+    errorEnrichment: fromEnrichments.getError(state),
     excerptColumns: fromParsing.getParsedExcerptColumns(state),
-    isLoading: fromEnrichments.isLoading(state),
-    enrichments: fromEnrichments.enrichments(state),
+    formValues: formSelector(state, 'sourceColumn', 'subPath'),
     initialValues: fromEnrichments
         .enrichments(state)
         .find(enrichment => enrichment._id === match.params.enrichmentId),
-    errorEnrichment: fromEnrichments.getError(state),
+    isLoading: fromEnrichments.isLoading(state),
+    isDataPreviewLoading: fromEnrichments.isDataPreviewLoading(state),
     lines: fromParsing.getExcerptLines(state),
-    formValues: formSelector(state, 'sourceColumn', 'subPath'),
 });
 
 const mapDispatchToProps = {
     onAddEnrichment: createEnrichment,
-    onUpdateEnrichment: updateEnrichment,
     onDeleteEnrichment: deleteEnrichment,
     onLaunchEnrichment: launchEnrichment,
+    onUpdateEnrichment: updateEnrichment,
     onPreviewDataEnrichment: previewDataEnrichment,
 };
 

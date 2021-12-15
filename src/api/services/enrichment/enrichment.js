@@ -48,7 +48,12 @@ export const getEnrichmentDataPreview = async ctx => {
     const rule = getEnrichmentRuleModel(data, { sourceColumn, subPath });
     const commands = createEzsRuleCommands(rule);
     const excerptLines = await getExcerptLines(ctx);
-    console.log(excerptLines);
+    let result = [];
+    for (const line of excerptLines) {
+        let { value } = await processEzsEnrichment(line, commands);
+        result.push(value);
+    }
+    return result;
 };
 
 const isBasicType = sourceData => {
@@ -93,13 +98,14 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
                 );
             } else {
                 rule = rule.replace('[URLConnect]', '');
+                rule = rule.replace('[expand/URLConnect]', '');
             }
         }
 
         if (isSubPath(sourceData)) {
-            if (!enrichment.subPath) {
-                throw new Error(`Missing sub-path parameter`);
-            }
+            // if (!enrichment.subPath) {
+            //     throw new Error(`Missing sub-path parameter`);
+            // }
             const subPathData = sourceData[0][enrichment.subPath];
             if (!subPathData) {
                 throw new Error(`No data with this sub-path`);
@@ -123,7 +129,8 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
                         enrichment.webServiceUrl,
                     );
                 } else {
-                    rule = rule.replace('[URLConnect]', '');
+                    rule = rule.replace('[expand/URLConnect]', '');
+                    rule = rule.replace('[expand/expand/URLConnect]', '');
                 }
             }
         }
