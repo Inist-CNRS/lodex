@@ -37,16 +37,31 @@ export const createEnrichmentRule = async ctx => {
     };
 };
 
-export const getEnrichmentDataPreview = async ctx => {
-    const { sourceColumn, subPath } = ctx.request.body;
+const cleanWebServiceRule = rule => {
+    rule = rule.replace('[URLConnect]', '');
+    rule = rule.replace('[expand/URLConnect]', '');
+    rule = rule.replace('[expand/expand/URLConnect]', '');
+    return rule;
+};
 
-    if (!sourceColumn) {
-        throw new Error(`Missing sourceColumn parameter`);
+export const getEnrichmentDataPreview = async ctx => {
+    const { sourceColumn, subPath, rule } = ctx.request.body;
+    let previewRule = rule;
+    if (!sourceColumn && !rule) {
+        throw new Error(`Missing parameters`);
     }
 
-    const data = await getSourceData(ctx, sourceColumn);
-    const rule = getEnrichmentRuleModel(data, { sourceColumn, subPath });
-    const commands = createEzsRuleCommands(rule);
+    if (!previewRule) {
+        const data = await getSourceData(ctx, sourceColumn);
+        previewRule = getEnrichmentRuleModel(data, {
+            sourceColumn,
+            subPath,
+        });
+    } else {
+        previewRule = cleanWebServiceRule(previewRule);
+    }
+
+    const commands = createEzsRuleCommands(previewRule);
     const excerptLines = await getExcerptLines(ctx);
     let result = [];
     for (const line of excerptLines) {
@@ -97,8 +112,7 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
                     enrichment.webServiceUrl,
                 );
             } else {
-                rule = rule.replace('[URLConnect]', '');
-                rule = rule.replace('[expand/URLConnect]', '');
+                rule = cleanWebServiceRule(rule);
             }
         }
 
@@ -129,8 +143,7 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
                         enrichment.webServiceUrl,
                     );
                 } else {
-                    rule = rule.replace('[expand/URLConnect]', '');
-                    rule = rule.replace('[expand/expand/URLConnect]', '');
+                    rule = cleanWebServiceRule(rule);
                 }
             }
         }

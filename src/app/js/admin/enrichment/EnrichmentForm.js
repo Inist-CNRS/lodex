@@ -115,12 +115,22 @@ export const EnrichmentFormComponent = ({
 
     useEffect(() => {
         formValues?.sourceColumn && getSourcePreview();
-    }, [formValues?.sourceColumn, formValues?.subPath]);
+    }, [formValues?.sourceColumn, formValues?.subPath, formValues?.rule]);
+
+    useEffect(() => {
+        formValues?.rule && getSourcePreviewAdvancedMode();
+    }, [formValues?.rule]);
 
     const getSourcePreview = () => {
         onPreviewDataEnrichment({
             sourceColumn: formValues.sourceColumn,
             subPath: formValues.subPath,
+        });
+    };
+
+    const getSourcePreviewAdvancedMode = () => {
+        onPreviewDataEnrichment({
+            rule: formValues.rule,
         });
     };
 
@@ -203,17 +213,24 @@ export const EnrichmentFormComponent = ({
                         label={polyglot.t('advancedMode')}
                     />
                 </div>
-                {advancedMode}
                 {advancedMode ? (
-                    <Field
-                        name="rule"
-                        component={FormTextField}
-                        label={polyglot.t('expand_rules')}
-                        multiline
-                        fullWidth
-                        rows={30}
-                        variant="outlined"
-                    />
+                    <>
+                        <Field
+                            name="rule"
+                            component={FormTextField}
+                            label={polyglot.t('expand_rules')}
+                            multiline
+                            fullWidth
+                            rows={30}
+                            variant="outlined"
+                        />
+                        <div className={classes.excerptContainer}>
+                            <EnrichmentExcerpt
+                                lines={dataPreviewEnrichment}
+                                loading={isDataPreviewLoading}
+                            />
+                        </div>
+                    </>
                 ) : (
                     <Box className={classes.simplifiedRules}>
                         <div className={classes.simplifiedRulesFormContainer}>
@@ -350,6 +367,7 @@ EnrichmentFormComponent.propTypes = {
     formValues: PropTypes.shape({
         sourceColumn: PropTypes.string,
         subPath: PropTypes.string,
+        rule: PropTypes.string,
     }),
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
@@ -371,7 +389,7 @@ const mapStateToProps = (state, { match }) => ({
     dataPreviewEnrichment: fromEnrichments.dataPreviewEnrichment(state),
     errorEnrichment: fromEnrichments.getError(state),
     excerptColumns: fromParsing.getParsedExcerptColumns(state),
-    formValues: formSelector(state, 'sourceColumn', 'subPath'),
+    formValues: formSelector(state, 'sourceColumn', 'subPath', 'rule'),
     initialValues: fromEnrichments
         .enrichments(state)
         .find(enrichment => enrichment._id === match.params.enrichmentId),
