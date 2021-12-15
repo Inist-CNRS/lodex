@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
-import { reduxForm, Field, formValueSelector } from 'redux-form';
+import { reduxForm, Field, formValueSelector, reset } from 'redux-form';
 import {
     PlayArrow as PlayArrowIcon,
     Delete as DeleteIcon,
@@ -13,16 +13,19 @@ import {
 
 import {
     createEnrichment,
-    updateEnrichment,
     deleteEnrichment,
     launchEnrichment,
     previewDataEnrichment,
+    previewDataEnrichmentClear,
+    updateEnrichment,
 } from '.';
 import { fromEnrichments, fromParsing } from '../selectors';
 import FormTextField from '../../lib/components/FormTextField';
 import FormSelectField from '../../lib/components/FormSelectField';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import EnrichmentExcerpt from './EnrichmentExcerpt';
+
+import debounce from 'lodash.debounce';
 import {
     Box,
     Button,
@@ -38,6 +41,8 @@ import {
     FINISHED,
     IN_PROGRESS,
 } from '../../../../common/enrichmentStatus';
+
+const DEBOUNCE_TIMEOUT = 2000;
 
 const useStyles = makeStyles(theme => {
     return {
@@ -100,7 +105,9 @@ export const EnrichmentFormComponent = ({
     onDeleteEnrichment,
     onLaunchEnrichment,
     onPreviewDataEnrichment,
+    onPreviewDataEnrichmentClear,
     onUpdateEnrichment,
+    onResetForm,
     p: polyglot,
 }) => {
     const classes = useStyles();
@@ -113,25 +120,40 @@ export const EnrichmentFormComponent = ({
         setOpenSnackBar(!!errorEnrichment);
     }, [errorEnrichment]);
 
+    const debouncePreview = useCallback(
+        debounce(formValues => {
+            getSourcePreview(formValues);
+        }, DEBOUNCE_TIMEOUT),
+        [],
+    );
+
     useEffect(() => {
-        formValues?.sourceColumn && getSourcePreview();
+        debouncePreview(formValues);
     }, [formValues?.sourceColumn, formValues?.subPath, formValues?.rule]);
 
     useEffect(() => {
-        formValues?.rule && getSourcePreviewAdvancedMode();
-    }, [formValues?.rule]);
+        return () => {
+            onResetForm();
+            onPreviewDataEnrichmentClear();
+        };
+    }, []);
 
-    const getSourcePreview = () => {
-        onPreviewDataEnrichment({
-            sourceColumn: formValues.sourceColumn,
-            subPath: formValues.subPath,
-        });
-    };
+    const getSourcePreview = formValues => {
+        if (advancedMode && !formValues?.rule) {
+            return;
+        }
 
-    const getSourcePreviewAdvancedMode = () => {
-        onPreviewDataEnrichment({
-            rule: formValues.rule,
-        });
+        if (!advancedMode && !formValues?.sourceColumn) {
+            return;
+        }
+        onPreviewDataEnrichment(
+            advancedMode
+                ? { rule: formValues.rule }
+                : {
+                      sourceColumn: formValues.sourceColumn,
+                      subPath: formValues.subPath,
+                  },
+        );
     };
 
     const handleSubmit = e => {
@@ -381,6 +403,8 @@ EnrichmentFormComponent.propTypes = {
     onDeleteEnrichment: PropTypes.func.isRequired,
     onLaunchEnrichment: PropTypes.func.isRequired,
     onPreviewDataEnrichment: PropTypes.func.isRequired,
+    onPreviewDataEnrichmentClear: PropTypes.func.isRequired,
+    onResetForm: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
@@ -404,6 +428,8 @@ const mapDispatchToProps = {
     onLaunchEnrichment: launchEnrichment,
     onUpdateEnrichment: updateEnrichment,
     onPreviewDataEnrichment: previewDataEnrichment,
+    onPreviewDataEnrichmentClear: previewDataEnrichmentClear,
+    onResetForm: () => reset('ENRICHMENT_FORM'),
 };
 
 const validate = (values, { p: polyglot }) => {
