@@ -69,9 +69,6 @@ if (!module.parent) {
         addPublisherListener(publishing => {
             socket.emit('publisher', publishing);
         });
-        socket.on('disconnect', () => {
-            logger.info('Client disconnected');
-        });
     });
 }
 
