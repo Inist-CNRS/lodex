@@ -1,5 +1,5 @@
 import Queue from 'bull';
-import { startEnrichmentBackground } from '../services/enrichment/enrichmentBackground';
+import { startEnrichment } from '../services/enrichment/enrichment';
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
 export const PROCESS = 'process';
@@ -9,7 +9,7 @@ export const enrichmentQueue = new Queue('enrichment', process.env.REDIS_URL, {
 });
 
 enrichmentQueue.process(PROCESS, (job, done) => {
-    startEnrichment(job)
+    startJobEnrichment(job)
         .then(() => {
             job.progress(100);
             done();
@@ -19,9 +19,9 @@ enrichmentQueue.process(PROCESS, (job, done) => {
         });
 });
 
-const startEnrichment = async job => {
+const startJobEnrichment = async job => {
     const ctx = await prepareContext({ job });
-    await startEnrichmentBackground(ctx);
+    await startEnrichment(ctx);
 };
 
 const prepareContext = async ctx => {

@@ -6,6 +6,8 @@ export const LOAD_ENRICHMENTS_SUCCESS = 'LOAD_ENRICHMENTS_SUCCESS';
 export const CREATE_ENRICHMENT = 'CREATE_ENRICHMENT';
 export const CREATE_ENRICHMENT_ERROR = 'CREATE_ENRICHMENT_ERROR';
 export const LAUNCH_ENRICHMENT = 'LAUNCH_ENRICHMENT';
+export const PREVIEW_DATA_ENRICHMENT = 'PREVIEW_DATA_ENRICHMENT';
+export const PREVIEW_DATA_ENRICHMENT_SUCESS = 'PREVIEW_DATA_ENRICHMENT_SUCESS';
 export const UPDATE_ENRICHMENT = 'UPDATE_ENRICHMENT';
 export const CREATE_ENRICHMENT_OPTIMISTIC = 'CREATE_ENRICHMENT_OPTIMISTIC';
 export const UPDATE_ENRICHMENT_OPTIMISTIC = 'UPDATE_ENRICHMENT_OPTIMISTIC';
@@ -17,6 +19,10 @@ export const loadEnrichmentsSuccess = createAction(LOAD_ENRICHMENTS_SUCCESS);
 export const createEnrichment = createAction(CREATE_ENRICHMENT);
 export const createEnrichmentError = createAction(CREATE_ENRICHMENT_ERROR);
 export const launchEnrichment = createAction(LAUNCH_ENRICHMENT);
+export const previewDataEnrichment = createAction(PREVIEW_DATA_ENRICHMENT);
+export const previewDataEnrichmentSuccess = createAction(
+    PREVIEW_DATA_ENRICHMENT_SUCESS,
+);
 export const updateEnrichment = createAction(UPDATE_ENRICHMENT);
 export const createEnrichmentOptimistic = createAction(
     CREATE_ENRICHMENT_OPTIMISTIC,
@@ -30,6 +36,7 @@ export const initialState = {
     error: null,
     loading: false,
     enrichments: [],
+    dataPreviewEnrichment: [],
 };
 
 export default handleActions(
@@ -48,6 +55,17 @@ export default handleActions(
         CREATE_ENRICHMENT_OPTIMISTIC: (state, { payload: enrichment }) => ({
             ...state,
             enrichments: [...state.enrichments, enrichment],
+            error: null,
+        }),
+        PREVIEW_DATA_ENRICHMENT_SUCESS: (
+            state,
+            { payload: dataPreviewEnrichment },
+        ) => ({
+            ...state,
+            dataPreviewEnrichment: [
+                ...state.dataPreviewEnrichment,
+                dataPreviewEnrichment,
+            ],
             error: null,
         }),
         CREATE_ENRICHMENT_ERROR: (state, { payload: error }) => ({

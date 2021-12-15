@@ -16,6 +16,7 @@ import {
     updateEnrichment,
     deleteEnrichment,
     launchEnrichment,
+    previewDataEnrichment,
 } from '.';
 import { fromEnrichments, fromParsing } from '../selectors';
 import FormTextField from '../../lib/components/FormTextField';
@@ -78,6 +79,11 @@ const useStyles = makeStyles(theme => {
             flexDirection: 'row',
             alignItems: 'center',
         },
+        actionContainer: {
+            display: 'flex',
+            justifyContent: 'flex-end',
+            marginBottom: 20,
+        },
     };
 });
 
@@ -95,6 +101,7 @@ export const EnrichmentFormComponent = ({
     errorEnrichment,
     lines,
     formValues,
+    onPreviewDataEnrichment,
 }) => {
     const classes = useStyles();
     const [advancedMode, setAdvancedMode] = useState(
@@ -112,24 +119,28 @@ export const EnrichmentFormComponent = ({
     }, [formValues?.sourceColumn, formValues?.subPath]);
 
     const getSourcePreview = () => {
-        let previewLines = [];
-        for (const line of lines) {
-            if (formValues.subPath) {
-                const parsedValue = parseValue(line[formValues.sourceColumn]);
-                previewLines.push(
-                    JSON.stringify(
-                        parsedValue.map(item =>
-                            item[formValues.subPath]
-                                ? item[formValues.subPath]
-                                : '',
-                        ),
-                    ),
-                );
-            } else {
-                previewLines.push(line[formValues.sourceColumn]);
-            }
-        }
-        setDataPreview(previewLines);
+        onPreviewDataEnrichment({
+            sourceColumn: formValues.sourceColumn,
+            subPath: formValues.subPath,
+        });
+        // let previewLines = [];
+        // for (const line of lines) {
+        //     if (formValues.subPath) {
+        //         const parsedValue = parseValue(line[formValues.sourceColumn]);
+        //         previewLines.push(
+        //             JSON.stringify(
+        //                 parsedValue.map(item =>
+        //                     item[formValues.subPath]
+        //                         ? item[formValues.subPath]
+        //                         : '',
+        //                 ),
+        //             ),
+        //         );
+        //     } else {
+        //         previewLines.push(line[formValues.sourceColumn]);
+        //     }
+        // }
+        // setDataPreview(previewLines);
     };
 
     const handleSubmit = e => {
@@ -353,6 +364,7 @@ EnrichmentFormComponent.propTypes = {
     onUpdateEnrichment: PropTypes.func.isRequired,
     onDeleteEnrichment: PropTypes.func.isRequired,
     onLaunchEnrichment: PropTypes.func.isRequired,
+    onPreviewDataEnrichment: PropTypes.func.isRequired,
     isEdit: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
     history: PropTypes.shape({
@@ -386,6 +398,7 @@ const mapDispatchToProps = {
     onUpdateEnrichment: updateEnrichment,
     onDeleteEnrichment: deleteEnrichment,
     onLaunchEnrichment: launchEnrichment,
+    onPreviewDataEnrichment: previewDataEnrichment,
 };
 
 const validate = (values, { p: polyglot }) => {

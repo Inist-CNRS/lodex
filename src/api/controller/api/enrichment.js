@@ -3,7 +3,10 @@ import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 
 import { enrichmentQueue, PROCESS } from '../../workers/enrichment';
-import { createEnrichmentRule } from '../../services/enrichment/enrichment';
+import {
+    createEnrichmentRule,
+    getEnrichmentDataPreview,
+} from '../../services/enrichment/enrichment';
 
 export const setup = async (ctx, next) => {
     try {
@@ -94,6 +97,17 @@ export const enrichmentAction = async (ctx, action, id) => {
     ctx.status = 200;
 };
 
+export const enrichmentDataPreview = async ctx => {
+    try {
+        await getEnrichmentDataPreview(ctx);
+        ctx.status = 200;
+    } catch (error) {
+        ctx.status = 403;
+        ctx.body = { error: error.message };
+        return;
+    }
+};
+
 const app = new Koa();
 
 app.use(setup);
@@ -105,5 +119,6 @@ app.use(route.post('/', postEnrichment));
 app.use(route.put('/:id', putEnrichment));
 app.use(route.delete('/:id', deleteEnrichment));
 app.use(route.post('/:action/:id', enrichmentAction));
+app.use(route.post('/preview', enrichmentDataPreview));
 
 export default app;

@@ -13,12 +13,12 @@ import {
     LOAD_ENRICHMENTS,
     DELETE_ENRICHMENT,
     LAUNCH_ENRICHMENT,
+    PREVIEW_DATA_ENRICHMENT,
+    previewDataEnrichmentSuccess,
 } from '.';
 
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
-// import { loadPublication } from '../publication';
-// import { IMPORT_FIELDS_SUCCESS } from '../import';
 
 export function* handleLoadEnrichmentsRequest() {
     const request = yield select(fromUser.getLoadEnrichmentsRequest);
@@ -66,7 +66,7 @@ export function* handleUpdateEnrichment({ payload: enrichment }) {
 }
 
 export function* handleLaunchEnrichment({ payload: enrichment }) {
-    const enrichmentBackgroundRequest = yield select(
+    const enrichmentActionRequest = yield select(
         fromUser.getEnrichmentActionRequest,
         {
             action: enrichment.action || 'launch',
@@ -74,7 +74,7 @@ export function* handleLaunchEnrichment({ payload: enrichment }) {
         },
     );
 
-    yield call(fetchSaga, enrichmentBackgroundRequest);
+    yield call(fetchSaga, enrichmentActionRequest);
 
     return yield put(loadEnrichments());
 }
@@ -89,6 +89,20 @@ export function* handleDeleteEnrichment({ payload: id }) {
     return yield put(loadEnrichments());
 }
 
+export function* handlePreviewDataEnrichment({ payload: previewEnrichment }) {
+    const request = yield select(
+        fromUser.getPreviewDataEnrichmentRequest,
+        previewEnrichment,
+    );
+
+    const { error, response } = yield call(fetchSaga, request);
+    if (error) {
+        return;
+    }
+
+    yield put(previewDataEnrichmentSuccess(response));
+}
+
 export function* watchLoadEnrichmentsRequest() {
     yield takeLatest([LOAD_ENRICHMENTS], handleLoadEnrichmentsRequest);
 }
@@ -99,6 +113,10 @@ export function* watchCreateEnrichment() {
 
 export function* watchLaunchEnrichment() {
     yield takeLatest(LAUNCH_ENRICHMENT, handleLaunchEnrichment);
+}
+
+export function* watchPreviewDataEnrichment() {
+    yield takeLatest(PREVIEW_DATA_ENRICHMENT, handlePreviewDataEnrichment);
 }
 
 export function* watchUpdateEnrichment() {
@@ -115,4 +133,5 @@ export default function*() {
     yield fork(watchLaunchEnrichment);
     yield fork(watchUpdateEnrichment);
     yield fork(watchDeleteEnrichment);
+    yield fork(watchPreviewDataEnrichment);
 }
