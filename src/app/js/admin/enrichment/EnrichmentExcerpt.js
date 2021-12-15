@@ -57,7 +57,7 @@ export const EnrichmentExcerptComponent = ({ lines, loading, p: polyglot }) => (
                 {!loading && lines.length === 0 && (
                     <TableRow>
                         <TableCell component="th" scope="row">
-                            Pas de données
+                            {polyglot.t('completes_field_none')}
                         </TableCell>
                     </TableRow>
                 )}
