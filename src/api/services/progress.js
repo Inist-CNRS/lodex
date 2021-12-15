@@ -1,6 +1,7 @@
 import { PENDING, ERROR, PUBLISH_DOCUMENT } from '../../common/progressStatus';
 
 export class Progress {
+    listeners = [];
     status = PENDING;
     start(status, target, symbol, label) {
         this.status = status;
@@ -9,6 +10,7 @@ export class Progress {
         this.symbol = symbol;
         this.label = label;
         this.error = null;
+        this.notifyListeners();
     }
 
     finish() {
@@ -16,6 +18,7 @@ export class Progress {
             return;
         }
         this.status = PENDING;
+        this.notifyListeners();
     }
 
     throw(error) {
@@ -28,6 +31,7 @@ export class Progress {
             return;
         }
         this.progress += progress;
+        this.notifyListeners();
     }
 
     setProgress(progress) {
@@ -36,6 +40,7 @@ export class Progress {
         }
 
         this.progress = progress;
+        this.notifyListeners();
     }
 
     incrementTarget(target = 1) {
@@ -44,6 +49,7 @@ export class Progress {
         }
 
         this.target += target;
+        this.notifyListeners();
     }
 
     getProgress() {
@@ -63,6 +69,14 @@ export class Progress {
             isBackground: this.status === PUBLISH_DOCUMENT,
         };
     }
+
+    addProgressListener = listener => {
+        this.listeners.push(listener);
+    };
+
+    notifyListeners = () => {
+        this.listeners.forEach(listener => listener(this.getProgress()));
+    };
 }
 
 export default new Progress();
