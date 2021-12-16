@@ -22,8 +22,8 @@ const useStyles = makeStyles({
         display: 'flex',
         margin: '0 4px 0',
     },
-    colorPrimary: { backgroundColor: theme.white.primary },
-    barColorPrimary: { backgroundColor: theme.green.secondary },
+    colorPrimary: { backgroundColor: theme.green.secondary },
+    barColorPrimary: { backgroundColor: theme.white.primary },
     progressContainer: {
         display: 'flex',
         flexDirection: 'column',
