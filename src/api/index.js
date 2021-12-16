@@ -66,8 +66,8 @@ if (!module.parent) {
         progress.addProgressListener(progress => {
             socket.emit('progress', progress);
         });
-        addPublisherListener(publishing => {
-            socket.emit('publisher', publishing);
+        addPublisherListener(payload => {
+            socket.emit('publisher', payload);
         });
     });
 }

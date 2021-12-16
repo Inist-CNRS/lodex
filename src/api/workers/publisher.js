@@ -16,7 +16,7 @@ publisherQueue.process(PUBLISH, (job, done) => {
     startPublishing(job)
         .then(() => {
             job.progress(100);
-            notifyListeners(false);
+            notifyListeners({ isPublishing: false, success: true });
             done();
         })
         .catch(err => {
@@ -26,13 +26,13 @@ publisherQueue.process(PUBLISH, (job, done) => {
 });
 
 const startPublishing = async job => {
-    notifyListeners(true);
+    notifyListeners({ isPublishing: true, success: false });
     const ctx = await prepareContext({ job });
     await publish(ctx);
 };
 
 const handlePublishError = async () => {
-    notifyListeners(false);
+    notifyListeners({ isPublishing: false, success: false });
     const ctx = await prepareContext({});
     await ctx.publishedDataset.remove({});
     await ctx.publishedCharacteristic.remove({});
@@ -47,5 +47,5 @@ const prepareContext = async ctx => {
 };
 
 export const addPublisherListener = listener => listeners.push(listener);
-const notifyListeners = isPublishing =>
-    listeners.forEach(listener => listener({ isPublishing }));
+const notifyListeners = payload =>
+    listeners.forEach(listener => listener(payload));
