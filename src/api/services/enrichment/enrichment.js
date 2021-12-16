@@ -38,9 +38,12 @@ export const createEnrichmentRule = async ctx => {
 };
 
 const cleanWebServiceRule = rule => {
-    rule = rule.replace('[URLConnect]', '');
-    rule = rule.replace('[expand/URLConnect]', '');
-    rule = rule.replace('[expand/expand/URLConnect]', '');
+    rule = rule.replace('[URLConnect]', '[transit]');
+    rule = rule.replace('[expand/URLConnect]', '[expand/transit]');
+    rule = rule.replace(
+        '[expand/expand/URLConnect]',
+        '[expand/expand/transit]',
+    );
     return rule;
 };
 
