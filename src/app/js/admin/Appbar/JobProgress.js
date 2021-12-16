@@ -15,6 +15,7 @@ import { publishSuccess } from '../publish';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import PropTypes from 'prop-types';
+import { PENDING } from '../../../../common/progressStatus';
 
 const useStyles = makeStyles({
     progress: {
@@ -58,6 +59,9 @@ const JobProgressComponent = props => {
     useEffect(() => {
         const socket = io();
         socket.on('progress', data => {
+            if (data.status === PENDING) {
+                return;
+            }
             setProgress(data);
         });
         socket.on('publisher', data => {
