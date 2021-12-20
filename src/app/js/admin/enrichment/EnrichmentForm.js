@@ -236,15 +236,22 @@ export const EnrichmentFormComponent = ({
                     />
                 </div>
                 {advancedMode ? (
-                    <>
+                    <div
+                        style={{
+                            display: 'flex',
+                        }}
+                    >
                         <Field
                             name="rule"
                             component={FormTextField}
                             label={polyglot.t('expand_rules')}
                             multiline
-                            fullWidth
-                            rows={30}
+                            rows={17}
                             variant="outlined"
+                            size="small"
+                            style={{
+                                flex: '4',
+                            }}
                         />
                         <div className={classes.excerptContainer}>
                             <EnrichmentExcerpt
@@ -252,7 +259,7 @@ export const EnrichmentFormComponent = ({
                                 loading={isDataPreviewLoading}
                             />
                         </div>
-                    </>
+                    </div>
                 ) : (
                     <Box className={classes.simplifiedRules}>
                         <div className={classes.simplifiedRulesFormContainer}>
