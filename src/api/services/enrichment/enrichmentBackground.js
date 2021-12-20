@@ -90,7 +90,7 @@ export const startEnrichmentBackground = async ctx => {
             ENRICHING,
             dataSetSize,
             null,
-            'enriching',
+            'ENRICHING',
             enrichment.name,
             'enrichment',
         );

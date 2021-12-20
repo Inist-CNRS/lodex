@@ -64,7 +64,6 @@ const JobProgressComponent = props => {
         });
 
         socket.on('publisher', data => {
-            console.log('publisher', data);
             if (data.success) {
                 handlePublishSuccess();
             }

@@ -24,9 +24,7 @@ export const getPublication = async ctx => {
     return {
         characteristics,
         fields: fieldsWithCount,
-        published:
-            publishedDatasetCount > 0 ||
-            progress.getProgress().status !== PENDING,
+        published: publishedDatasetCount > 0,
     };
 };
 
