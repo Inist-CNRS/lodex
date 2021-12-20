@@ -1,4 +1,9 @@
-import { PENDING, ERROR, PUBLISH_DOCUMENT } from '../../common/progressStatus';
+import {
+    PENDING,
+    ERROR,
+    PUBLISH_DOCUMENT,
+    ENRICHING,
+} from '../../common/progressStatus';
 
 export class Progress {
     listeners = [];
@@ -66,7 +71,8 @@ export class Progress {
             symbol: this.symbol,
             error: this.error,
             label: this.label,
-            isBackground: this.status === PUBLISH_DOCUMENT,
+            isBackground:
+                this.status === PUBLISH_DOCUMENT || this.status === ENRICHING,
         };
     }
 

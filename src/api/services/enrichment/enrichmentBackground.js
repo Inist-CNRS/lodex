@@ -2,7 +2,9 @@ import { ObjectId } from 'mongodb';
 import { PassThrough } from 'stream';
 import ezs from '@ezs/core';
 import logger from '../../services/logger';
+import progress from '../../services/progress';
 import { IN_PROGRESS, FINISHED } from '../../../common/enrichmentStatus';
+import { ENRICHING, PENDING } from '../../../common/progressStatus';
 
 export const getEnrichmentDatasetCandidate = async (id, ctx) => {
     const enrichment = await ctx.enrichment.findOneById(id);
@@ -67,11 +69,13 @@ const processEnrichmentBackground = async (entry, enrichment, ctx) => {
         }
 
         nextEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
+        progress.incrementProgress(1);
         if (!nextEntry) {
             await ctx.enrichment.updateOne(
                 { _id: new ObjectId(enrichment._id) },
                 { $set: { ['status']: FINISHED } },
             );
+            progress.finish();
         }
     }
 };
@@ -80,5 +84,9 @@ export const startEnrichmentBackground = async ctx => {
     const id = ctx.job?.data?.id;
     const enrichment = await ctx.enrichment.findOneById(id);
     const firstEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
+    const dataSetSize = await ctx.dataset.count();
+    if (progress.getProgress().status === PENDING) {
+        progress.start(ENRICHING, dataSetSize);
+    }
     await processEnrichmentBackground(firstEntry, enrichment, ctx);
 };

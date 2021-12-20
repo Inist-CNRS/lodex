@@ -114,5 +114,6 @@ export default db => {
 
         return results[0];
     };
+
     return collection;
 };
