@@ -8,13 +8,15 @@ import {
 export class Progress {
     listeners = [];
     status = PENDING;
-    start(status, target, symbol, label) {
+    start(status, target, symbol, label, subLabel, type) {
         this.status = status;
         this.target = target;
         this.progress = 0;
         this.symbol = symbol;
         this.label = label;
         this.error = null;
+        this.type = type;
+        this.subLabel = subLabel;
         this.notifyListeners();
     }
 
@@ -64,6 +66,7 @@ export class Progress {
             this.status = PENDING;
             throw error;
         }
+
         return {
             status: this.status,
             target: this.target,
@@ -71,6 +74,8 @@ export class Progress {
             symbol: this.symbol,
             error: this.error,
             label: this.label,
+            subLabel: this.subLabel,
+            type: this.type,
             isBackground:
                 this.status === PUBLISH_DOCUMENT || this.status === ENRICHING,
         };

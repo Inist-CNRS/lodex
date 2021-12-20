@@ -52,42 +52,30 @@ const useStyles = makeStyles({
 const JobProgressComponent = props => {
     const classes = useStyles();
     const { p: polyglot, handlePublishSuccess } = props;
-    const [dataJobProgress, setDataJobProgress] = useState({});
     const [progress, setProgress] = useState();
 
     useEffect(() => {
         const socket = io();
         socket.on('progress', data => {
-            if (data.status === PENDING) {
-                return;
-            }
+            data.isJobProgress =
+                data.status !== PENDING &&
+                (data.type === 'enrichment' || data.type === 'publisher');
             setProgress(data);
         });
+
         socket.on('publisher', data => {
-            setDataJobProgress({
-                isJobProgress: data.isPublishing,
-                type: 'publisher',
-                label: 'publishing',
-            });
+            console.log('publisher', data);
             if (data.success) {
                 handlePublishSuccess();
             }
-        });
-        socket.on('enrichment', data => {
-            setDataJobProgress({
-                isJobProgress: data.isEnriching,
-                type: 'enrichment',
-                label: 'enriching',
-                name: data.name,
-            });
         });
         return () => socket.disconnect();
     }, []);
 
     return (
         <Fade
-            in={dataJobProgress?.isJobProgress}
-            out={!dataJobProgress?.isJobProgress}
+            in={progress && progress.isJobProgress}
+            out={progress && !progress.isJobProgress}
         >
             <Box className={classes.progressContainer}>
                 <div className={classes.progressLabelContainer}>
@@ -97,24 +85,22 @@ const JobProgressComponent = props => {
                         size={20}
                     />
                     <div className={classes.progressLabel}>
-                        {dataJobProgress?.label && (
+                        {progress?.label && (
                             <Typography variant="subtitle2">
-                                {polyglot.t(
-                                    dataJobProgress?.label || 'publishing',
-                                )}
+                                {polyglot.t(progress?.label || 'publishing')}
                             </Typography>
                         )}
                         {progress &&
-                            dataJobProgress?.type === 'publisher' &&
+                            progress?.type === 'publisher' &&
                             progress.status && (
                                 <Typography variant="caption">
                                     {polyglot.t(progress.status)}
                                 </Typography>
                             )}
 
-                        {dataJobProgress?.type === 'enrichment' && (
+                        {progress?.type === 'enrichment' && (
                             <Typography variant="caption">
-                                {dataJobProgress.name}
+                                {progress.subLabel}
                             </Typography>
                         )}
                     </div>

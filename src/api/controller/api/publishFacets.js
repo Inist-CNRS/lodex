@@ -7,8 +7,16 @@ export default async (ctx, fields, withProgress = false) => {
         withProgress && progress.finish();
         return;
     }
-    withProgress && progress.start(PUBLISH_FACET, facetFields.length);
-    ctx.job && ctx.job.log("Publishing facets");
+    withProgress &&
+        progress.start(
+            PUBLISH_FACET,
+            facetFields.length,
+            null,
+            'publishing',
+            null,
+            'publisher',
+        );
+    ctx.job && ctx.job.log('Publishing facets');
 
     const names = fields.map(({ name }) => name);
     await ctx.publishedFacet.remove({ field: { $in: names } });
@@ -34,5 +42,5 @@ export default async (ctx, fields, withProgress = false) => {
             }
             progress.throw(error);
         });
-    ctx.job && ctx.job.log("Facets published");
+    ctx.job && ctx.job.log('Facets published');
 };

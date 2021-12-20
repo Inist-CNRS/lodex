@@ -75,9 +75,9 @@ const processEnrichmentBackground = async (entry, enrichment, ctx) => {
                 { _id: new ObjectId(enrichment._id) },
                 { $set: { ['status']: FINISHED } },
             );
-            progress.finish();
         }
     }
+    progress.finish();
 };
 
 export const startEnrichmentBackground = async ctx => {
@@ -86,7 +86,14 @@ export const startEnrichmentBackground = async ctx => {
     const firstEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
     const dataSetSize = await ctx.dataset.count();
     if (progress.getProgress().status === PENDING) {
-        progress.start(ENRICHING, dataSetSize);
+        progress.start(
+            ENRICHING,
+            dataSetSize,
+            null,
+            'enriching',
+            enrichment.name,
+            'enrichment',
+        );
     }
     await processEnrichmentBackground(firstEntry, enrichment, ctx);
 };

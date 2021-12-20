@@ -22,7 +22,6 @@ export function* handleStartProgressSaga() {
         yield put(errorProgress(error));
         return;
     }
-
     yield put(updateProgress(response));
 
     if (response.status === PENDING) {

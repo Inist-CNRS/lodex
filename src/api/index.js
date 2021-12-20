@@ -14,7 +14,7 @@ import testController from './controller/testController';
 import indexSearchableFields from './services/indexSearchableFields';
 
 import { addPublisherListener, publisherQueue } from './workers/publisher';
-import { addEnrichmentListener, enrichmentQueue } from './workers/enrichment';
+import { enrichmentQueue } from './workers/enrichment';
 import progress from './services/progress';
 
 const app = koaQs(new Koa());
@@ -68,9 +68,6 @@ if (!module.parent) {
         });
         addPublisherListener(payload => {
             socket.emit('publisher', payload);
-        });
-        addEnrichmentListener(payload => {
-            socket.emit('enrichment', payload);
         });
     });
 }

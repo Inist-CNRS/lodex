@@ -130,7 +130,14 @@ export const publishDocumentsFactory = ({
         mainResourceFields,
     );
 
-    progress.start(PUBLISH_DOCUMENT, count);
+    progress.start(
+        PUBLISH_DOCUMENT,
+        count,
+        null,
+        'publishing',
+        null,
+        'publisher',
+    );
 
     await Promise.all(
         Object.keys(groupedSubresourceFields).map(subresourceId => {
