@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import { PENDING } from '../../../../common/progressStatus';
+import classNames from 'classnames';
 
 const useStyles = makeStyles({
     progress: {
@@ -76,7 +77,12 @@ const JobProgressComponent = props => {
             in={progress && progress.isJobProgress}
             out={progress && !progress.isJobProgress}
         >
-            <Box className={classes.progressContainer}>
+            <Box
+                className={classNames(
+                    classes.progressContainer,
+                    'progress-container',
+                )}
+            >
                 <div className={classes.progressLabelContainer}>
                     <CircularProgress
                         variant="indeterminate"
