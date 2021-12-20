@@ -10,7 +10,7 @@ export default async function transformAllDocument(
     let handled = 0;
     while (handled < count) {
         const dataset = datasetChunkExtractor(
-            await findLimitFromSkip(1000, handled, {
+            await findLimitFromSkip(200, handled, {
                 lodex_published: { $exists: false },
             }),
         );

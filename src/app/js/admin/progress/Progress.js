@@ -28,7 +28,16 @@ const renderProgressText = props => {
         return null;
     }
 
-    return <p>{formatProgress(progress, target, symbol, polyglot.t(label))}</p>;
+    return (
+        <p>
+            {formatProgress(
+                progress,
+                target,
+                symbol,
+                label ? polyglot.t(label) : undefined,
+            )}
+        </p>
+    );
 };
 
 export const ProgressComponent = props => {

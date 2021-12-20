@@ -187,6 +187,8 @@
         "reselect": "^3.0.1",
         "resumablejs": "^1.1.0",
         "scheduler": "^0.18.0",
+        "socket.io": "^4.4.0",
+        "socket.io-client": "^4.4.0",
         "sprintf-js": "^1.1.2",
         "stream-to-string": "^1.2.0",
         "style-loader": "^2.0.0",
