@@ -6,10 +6,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
 import { reduxForm, Field } from 'redux-form';
-import {
-    PlayArrow as PlayArrowIcon,
-    Delete as DeleteIcon,
-} from '@material-ui/icons';
 
 import {
     createEnrichment,
@@ -23,7 +19,6 @@ import FormSelectField from '../../lib/components/FormSelectField';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import {
     Box,
-    Button,
     FormControlLabel,
     makeStyles,
     MenuItem,
@@ -31,11 +26,8 @@ import {
     Switch,
 } from '@material-ui/core';
 import Alert from '../../lib/components/Alert';
-import {
-    PENDING,
-    FINISHED,
-    IN_PROGRESS,
-} from '../../../../common/enrichmentStatus';
+import { PENDING, FINISHED } from '../../../../common/enrichmentStatus';
+import EnrichmentActionButton from './EnrichmentActionButton';
 
 const useStyles = makeStyles({
     enrichmentContainer: {
@@ -127,7 +119,7 @@ export const EnrichmentFormComponent = ({
         }
     };
 
-    const handleDelete = e => {
+    const handleDeleteEnrichment = e => {
         e.preventDefault();
 
         if (isEdit) {
@@ -222,45 +214,14 @@ export const EnrichmentFormComponent = ({
         );
     };
 
-    const getActionButtons = () => {
-        return (
-            <div className={classes.actionContainer}>
-                {[PENDING, IN_PROGRESS, FINISHED].includes(
-                    initialValues?.status,
-                ) && (
-                    <Button
-                        onClick={handleLaunchEnrichment}
-                        variant="contained"
-                        color="primary"
-                        key="run"
-                        name="run-enrichment"
-                        disabled={[IN_PROGRESS].includes(initialValues?.status)}
-                    >
-                        <PlayArrowIcon className={classes.icon} />
-                        {polyglot.t('run')}
-                    </Button>
-                )}
-
-                {isEdit && (
-                    <Button
-                        variant="contained"
-                        key="delete"
-                        name="delete-enrichment"
-                        color="secondary"
-                        onClick={handleDelete}
-                        style={{ marginLeft: 24 }}
-                    >
-                        <DeleteIcon className={classes.icon} />
-                        {polyglot.t('delete')}
-                    </Button>
-                )}
-            </div>
-        );
-    };
-
     return (
         <>
-            {getActionButtons()}
+            <EnrichmentActionButton
+                handleLaunchEnrichment={handleLaunchEnrichment}
+                handleDeleteEnrichment={handleDeleteEnrichment}
+                isEdit={isEdit}
+                status={initialValues?.status}
+            />
             <div className={classes.enrichmentContainer}>
                 <form
                     id="enrichment_form"
