@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import { PENDING } from '../../../../common/progressStatus';
+import classNames from 'classnames';
 
 const useStyles = makeStyles({
     progress: {
@@ -52,20 +53,18 @@ const useStyles = makeStyles({
 const JobProgressComponent = props => {
     const classes = useStyles();
     const { p: polyglot, handlePublishSuccess } = props;
-    const [isPublishing, setIsPublishing] = useState(false);
     const [progress, setProgress] = useState();
-    const label = isPublishing && 'publishing';
 
     useEffect(() => {
         const socket = io();
         socket.on('progress', data => {
-            if (data.status === PENDING) {
-                return;
-            }
+            data.isJobProgress =
+                data.status !== PENDING &&
+                (data.type === 'enrichment' || data.type === 'publisher');
             setProgress(data);
         });
+
         socket.on('publisher', data => {
-            setIsPublishing(data.isPublishing);
             if (data.success) {
                 handlePublishSuccess();
             }
@@ -74,8 +73,16 @@ const JobProgressComponent = props => {
     }, []);
 
     return (
-        <Fade in={isPublishing} out={!isPublishing}>
-            <Box className={classes.progressContainer}>
+        <Fade
+            in={progress && progress.isJobProgress}
+            out={progress && !progress.isJobProgress}
+        >
+            <Box
+                className={classNames(
+                    classes.progressContainer,
+                    'progress-container',
+                )}
+            >
                 <div className={classes.progressLabelContainer}>
                     <CircularProgress
                         variant="indeterminate"
@@ -83,14 +90,22 @@ const JobProgressComponent = props => {
                         size={20}
                     />
                     <div className={classes.progressLabel}>
-                        {label && (
+                        {progress?.label && (
                             <Typography variant="subtitle2">
-                                {polyglot.t(label)}
+                                {polyglot.t(progress?.label || 'publishing')}
                             </Typography>
                         )}
-                        {progress && progress.status && (
+                        {progress &&
+                            progress?.type === 'publisher' &&
+                            progress.status && (
+                                <Typography variant="caption">
+                                    {polyglot.t(progress.status)}
+                                </Typography>
+                            )}
+
+                        {progress?.type === 'enrichment' && (
                             <Typography variant="caption">
-                                {polyglot.t(progress.status)}
+                                {progress.subLabel}
                             </Typography>
                         )}
                     </div>

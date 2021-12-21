@@ -164,6 +164,7 @@ export const EnrichmentFormComponent = ({
                                 checked={advancedMode}
                                 onChange={handleAdvancedMode}
                                 color="primary"
+                                name="advancedMode"
                             />
                         }
                         label={polyglot.t('advancedMode')}
@@ -232,6 +233,7 @@ export const EnrichmentFormComponent = ({
                         variant="contained"
                         color="primary"
                         key="run"
+                        name="run-enrichment"
                         disabled={[IN_PROGRESS].includes(initialValues?.status)}
                     >
                         <PlayArrowIcon className={classes.icon} />
@@ -243,6 +245,7 @@ export const EnrichmentFormComponent = ({
                     <Button
                         variant="contained"
                         key="delete"
+                        name="delete-enrichment"
                         color="secondary"
                         onClick={handleDelete}
                         style={{ marginLeft: 24 }}
@@ -280,6 +283,7 @@ export const EnrichmentFormComponent = ({
                         type="submit"
                         loading={isLoading}
                         style={{ marginTop: 24 }}
+                        name="submit-enrichment"
                     >
                         {polyglot.t('save')}
                     </ButtonWithStatus>

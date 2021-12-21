@@ -3,7 +3,6 @@ import { startEnrichmentBackground } from '../services/enrichment/enrichmentBack
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
 export const PROCESS = 'process';
-
 export const enrichmentQueue = new Queue('enrichment', process.env.REDIS_URL, {
     defaultJobOptions: { removeOnComplete: 100, removeOnFail: 100 },
 });
