@@ -1,7 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { PassThrough } from 'stream';
 import ezs from '@ezs/core';
-import logger from '../../services/logger';
 import progress from '../../services/progress';
 import { IN_PROGRESS, FINISHED } from '../../../common/enrichmentStatus';
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
@@ -25,7 +24,6 @@ const processEzsEnrichment = (entry, enrichment) => {
         const result = input.pipe(ezs('delegate', { commands }, {}));
 
         result.on('data', ({ value }) => {
-            logger.info(`valueWebService : ${value}`);
             return resolve({ value, enrichment });
         });
         result.on('error', error => reject({ error, enrichment }));
@@ -43,10 +41,24 @@ const processEnrichmentBackground = async (entry, enrichment, ctx) => {
             { $set: { ['status']: IN_PROGRESS } },
         );
     }
+
+    let lineIndex = 0;
     while (nextEntry) {
-        ctx.job.log(`Enrichment ${enrichment.name} on ${nextEntry._id}`);
+        lineIndex += 1;
+        const logData = {
+            level: 'info',
+            message: `Started enriching line #${lineIndex}`,
+            timestamp: new Date(),
+        };
+        ctx.job.log(JSON.stringify(logData));
         try {
             let { value } = await processEzsEnrichment(nextEntry, enrichment);
+            const logData = {
+                level: 'info',
+                message: `Finished enriching line #${lineIndex} (output: ${value})`,
+                timestamp: new Date(),
+            };
+            ctx.job.log(JSON.stringify(logData));
 
             if (value === undefined) {
                 value = 'n/a';
@@ -62,10 +74,12 @@ const processEnrichmentBackground = async (entry, enrichment, ctx) => {
                 { $set: { [enrichment.name]: `ERROR: ${e.error.message}` } },
             );
 
-            logger.error('Enrichment error', {
-                enrichment,
-                error: e.error,
-            });
+            const logData = {
+                level: 'error',
+                message: `Errored enriching line #${lineIndex}`,
+                timestamp: new Date(),
+            };
+            ctx.job.log(JSON.stringify(logData));
         }
 
         nextEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
@@ -78,11 +92,25 @@ const processEnrichmentBackground = async (entry, enrichment, ctx) => {
         }
     }
     progress.finish();
+    const logData = {
+        level: 'ok',
+        message: `Enrichement finished`,
+        timestamp: new Date(),
+    };
+    ctx.job.log(JSON.stringify(logData));
+};
+
+const setEnrichmentJobId = async (ctx, enrichment, job) => {
+    await ctx.enrichment.updateOne(
+        { _id: new ObjectId(enrichment._id) },
+        { $set: { ['jobId']: job.id } },
+    );
 };
 
 export const startEnrichmentBackground = async ctx => {
     const id = ctx.job?.data?.id;
     const enrichment = await ctx.enrichment.findOneById(id);
+    await setEnrichmentJobId(ctx, enrichment, ctx.job);
     const firstEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
     const dataSetSize = await ctx.dataset.count();
     if (progress.getProgress().status === PENDING) {
@@ -95,5 +123,12 @@ export const startEnrichmentBackground = async ctx => {
             'enrichment',
         );
     }
+
+    const logData = {
+        level: 'ok',
+        message: `Enrichement started`,
+        timestamp: new Date(),
+    };
+    ctx.job.log(JSON.stringify(logData));
     await processEnrichmentBackground(firstEntry, enrichment, ctx);
 };

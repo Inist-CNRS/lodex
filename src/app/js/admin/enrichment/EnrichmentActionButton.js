@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import compose from 'recompose/compose';
-import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
@@ -13,6 +12,7 @@ import {
     FINISHED,
     IN_PROGRESS,
 } from '../../../../common/enrichmentStatus';
+import { EnrichmentContext } from './enrichment-context';
 
 const useStyles = makeStyles({
     actionContainer: {
@@ -22,24 +22,24 @@ const useStyles = makeStyles({
     },
 });
 
-export const EnrichmentActionButtonComponent = ({
-    handleLaunchEnrichment,
-    handleDeleteEnrichment,
-    isEdit,
-    p: polyglot,
-    status,
-}) => {
+export const EnrichmentActionButtonComponent = ({ p: polyglot }) => {
     const classes = useStyles();
+    const {
+        handleLaunchEnrichment,
+        handleDeleteEnrichment,
+        isEdit,
+        enrichment,
+    } = useContext(EnrichmentContext);
     return (
         <div className={classes.actionContainer}>
-            {[PENDING, IN_PROGRESS, FINISHED].includes(status) && (
+            {[PENDING, IN_PROGRESS, FINISHED].includes(enrichment?.status) && (
                 <Button
                     onClick={handleLaunchEnrichment}
                     variant="contained"
                     color="primary"
                     key="run"
                     name="run-enrichment"
-                    disabled={[IN_PROGRESS].includes(status)}
+                    disabled={[IN_PROGRESS].includes(enrichment?.status)}
                 >
                     <PlayArrowIcon className={classes.icon} />
                     {polyglot.t('run')}
@@ -64,11 +64,7 @@ export const EnrichmentActionButtonComponent = ({
 };
 
 EnrichmentActionButtonComponent.propTypes = {
-    handleDeleteEnrichment: PropTypes.func.isRequired,
-    handleLaunchEnrichment: PropTypes.func.isRequired,
-    isEdit: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
-    status: PropTypes.any,
 };
 
 export default compose(translate)(EnrichmentActionButtonComponent);

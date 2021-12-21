@@ -27,12 +27,20 @@ import {
 } from '@material-ui/core';
 import Alert from '../../lib/components/Alert';
 import { PENDING, FINISHED } from '../../../../common/enrichmentStatus';
-import EnrichmentActionButton from './EnrichmentActionButton';
+import EnrichmentSidebar from './EnrichmentSidebar';
+
+import { EnrichmentContext } from './enrichment-context';
 
 const useStyles = makeStyles({
-    enrichmentContainer: {
+    enrichmentPageContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    enrichmentFormContainer: {
         display: 'flex',
         justifyContent: 'center',
+        flex: 2,
+        marginRight: 20,
     },
     enrichmentForm: {
         width: '100%',
@@ -215,14 +223,8 @@ export const EnrichmentFormComponent = ({
     };
 
     return (
-        <>
-            <EnrichmentActionButton
-                handleLaunchEnrichment={handleLaunchEnrichment}
-                handleDeleteEnrichment={handleDeleteEnrichment}
-                isEdit={isEdit}
-                status={initialValues?.status}
-            />
-            <div className={classes.enrichmentContainer}>
+        <div className={classes.enrichmentPageContainer}>
+            <div className={classes.enrichmentFormContainer}>
                 <form
                     id="enrichment_form"
                     onSubmit={handleSubmit}
@@ -261,7 +263,17 @@ export const EnrichmentFormComponent = ({
                     </Alert>
                 </Snackbar>
             </div>
-        </>
+            <EnrichmentContext.Provider
+                value={{
+                    isEdit,
+                    enrichment: initialValues,
+                    handleLaunchEnrichment,
+                    handleDeleteEnrichment,
+                }}
+            >
+                <EnrichmentSidebar />
+            </EnrichmentContext.Provider>
+        </div>
     );
 };
 

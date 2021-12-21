@@ -54,7 +54,7 @@ describe('<EnrichmentFormComponent />', () => {
         expect(webServiceUrl.prop('name')).toEqual('rule');
     });
 
-    it('should render a run button disabled if enrichment exists and had IN_PROGRESS status', () => {
+    it('should render a sidebar component component', () => {
         const initialValues = {
             advancedMode: false,
             _id: '123',
@@ -68,9 +68,8 @@ describe('<EnrichmentFormComponent />', () => {
                 isEdit={true}
             />,
         );
-
         expect(
-            wrapper.find('Translated(EnrichmentActionButtonComponent)'),
+            wrapper.find('Translated(EnrichmentSidebarComponent)'),
         ).toHaveLength(1);
     });
 });
