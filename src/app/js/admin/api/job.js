@@ -1,6 +1,6 @@
 import { store } from '..';
 import fetch from '../../lib/fetch';
-import { getJobLogsRequest } from '../../user';
+import { getJobLogsRequest, getCancelJobRequest } from '../../user';
 
 const getJobLogs = (queue, jobId) => {
     const state = store.getState();
@@ -9,4 +9,11 @@ const getJobLogs = (queue, jobId) => {
     return fetch(request);
 };
 
-export default { getJobLogs };
+const cancelJob = queue => {
+    const state = store.getState();
+    const request = getCancelJobRequest(state.user, queue);
+
+    return fetch(request);
+};
+
+export default { getJobLogs, cancelJob };
