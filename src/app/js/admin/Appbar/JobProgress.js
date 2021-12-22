@@ -17,6 +17,8 @@ import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import { PENDING } from '../../../../common/progressStatus';
 import classNames from 'classnames';
+import { Cancel } from '@material-ui/icons';
+import jobsApi from '../api/job';
 
 const useStyles = makeStyles({
     progress: {
@@ -82,6 +84,11 @@ const JobProgressComponent = props => {
                     classes.progressContainer,
                     'progress-container',
                 )}
+                onClick={() => {
+                    if (progress.type === 'publisher') {
+                        jobsApi.cancelJob('publisher');
+                    }
+                }}
             >
                 <div className={classes.progressLabelContainer}>
                     <CircularProgress
@@ -109,6 +116,7 @@ const JobProgressComponent = props => {
                             </Typography>
                         )}
                     </div>
+                    {progress?.type === 'publisher' && <Cancel />}
                 </div>
                 <LinearProgress
                     classes={{
