@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { fromFields } from '../../sharedSelectors';
 import PublishButton from './PublishButton';
 import ValidationButton from './ValidationButton';
-import { fromPublication, fromPublish } from '../selectors';
+import { fromPublication } from '../selectors';
 import compose from 'recompose/compose';
 import { ClearPublishedButton } from '../clear/ClearPublishedButton';
 

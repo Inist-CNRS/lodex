@@ -25,6 +25,7 @@ import loader from './loader';
 import translate from './translate';
 import subresource from './subresource';
 import enrichment from './enrichment';
+import job from './job';
 import dump from './dump';
 
 const app = new Koa();
@@ -103,6 +104,7 @@ app.use(mount('/characteristic', characteristic));
 app.use(mount('/field', fieldRoutes));
 app.use(mount('/subresource', subresource));
 app.use(mount('/enrichment', enrichment));
+app.use(mount('/job', job));
 app.use(mount('/parsing', parsing));
 app.use(mount('/publish', publish));
 app.use(mount('/upload', upload));

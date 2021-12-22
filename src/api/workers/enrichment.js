@@ -1,9 +1,11 @@
 import Queue from 'bull';
-import { startEnrichment } from '../services/enrichment/enrichment';
+import {
+    startEnrichment,
+    setEnrichmentError,
+} from '../services/enrichment/enrichment';
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
 export const PROCESS = 'process';
-
 export const enrichmentQueue = new Queue('enrichment', process.env.REDIS_URL, {
     defaultJobOptions: { removeOnComplete: 100, removeOnFail: 100 },
 });
@@ -15,6 +17,7 @@ enrichmentQueue.process(PROCESS, (job, done) => {
             done();
         })
         .catch(err => {
+            handlePublishError();
             done(err);
         });
 });
@@ -22,6 +25,11 @@ enrichmentQueue.process(PROCESS, (job, done) => {
 const startJobEnrichment = async job => {
     const ctx = await prepareContext({ job });
     await startEnrichment(ctx);
+};
+
+const handlePublishError = async job => {
+    const ctx = await prepareContext({ job });
+    await setEnrichmentError(ctx);
 };
 
 const prepareContext = async ctx => {

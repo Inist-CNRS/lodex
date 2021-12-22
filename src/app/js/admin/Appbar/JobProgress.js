@@ -6,15 +6,17 @@ import {
     Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-
-import PropTypes from 'prop-types';
-import { compose } from 'recompose';
+import { io } from 'socket.io-client';
 import translate from 'redux-polyglot/dist/translate';
+import { publishSuccess } from '../publish';
 import { connect } from 'react-redux';
-import { fromProgress, fromPublish } from '../selectors';
+import { compose } from 'recompose';
+import PropTypes from 'prop-types';
+import { PENDING } from '../../../../common/progressStatus';
+import classNames from 'classnames';
 
 const useStyles = makeStyles({
     progress: {
@@ -22,20 +24,27 @@ const useStyles = makeStyles({
         display: 'flex',
         margin: '0 4px 0',
     },
-    colorPrimary: { backgroundColor: theme.white.primary },
-    barColorPrimary: { backgroundColor: theme.green.secondary },
+    colorPrimary: { backgroundColor: theme.green.secondary },
+    barColorPrimary: { backgroundColor: theme.white.primary },
     progressContainer: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-evenly',
         marginLeft: 'auto',
-        width: '130px',
+        width: '200px',
         marginRight: '20px',
+    },
+    progressLabelContainer: {
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-around',
     },
     progressLabel: {
         width: '100%',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-around',
     },
@@ -43,18 +52,63 @@ const useStyles = makeStyles({
 
 const JobProgressComponent = props => {
     const classes = useStyles();
-    const { isPublishing, target, progress, p: polyglot } = props;
-    const label = isPublishing && 'publishing';
+    const { p: polyglot, handlePublishSuccess } = props;
+    const [progress, setProgress] = useState();
+
+    useEffect(() => {
+        const socket = io();
+        socket.on('progress', data => {
+            data.isJobProgress =
+                data.status !== PENDING &&
+                (data.type === 'enrichment' || data.type === 'publisher');
+            setProgress(data);
+        });
+
+        socket.on('publisher', data => {
+            if (data.success) {
+                handlePublishSuccess();
+            }
+        });
+        return () => socket.disconnect();
+    }, []);
+
     return (
-        <Fade in={isPublishing} out={!isPublishing}>
-            <Box className={classes.progressContainer}>
-                <div className={classes.progressLabel}>
+        <Fade
+            in={progress && progress.isJobProgress}
+            out={progress && !progress.isJobProgress}
+        >
+            <Box
+                className={classNames(
+                    classes.progressContainer,
+                    'progress-container',
+                )}
+            >
+                <div className={classes.progressLabelContainer}>
                     <CircularProgress
                         variant="indeterminate"
                         color="inherit"
                         size={20}
                     />
-                    {label && <Typography>{polyglot.t(label)}</Typography>}
+                    <div className={classes.progressLabel}>
+                        {progress?.label && (
+                            <Typography variant="subtitle2">
+                                {polyglot.t(progress?.label || 'publishing')}
+                            </Typography>
+                        )}
+                        {progress &&
+                            progress?.type === 'publisher' &&
+                            progress.status && (
+                                <Typography variant="caption">
+                                    {polyglot.t(progress.status)}
+                                </Typography>
+                            )}
+
+                        {progress?.type === 'enrichment' && (
+                            <Typography variant="caption">
+                                {progress.subLabel}
+                            </Typography>
+                        )}
+                    </div>
                 </div>
                 <LinearProgress
                     classes={{
@@ -63,24 +117,24 @@ const JobProgressComponent = props => {
                         barColorPrimary: classes.barColorPrimary,
                     }}
                     variant="determinate"
-                    value={target ? (progress / target) * 100 : 0}
+                    value={
+                        progress && progress.target
+                            ? (progress.progress / progress.target) * 100
+                            : 0
+                    }
                 />
             </Box>
         </Fade>
     );
 };
-
 JobProgressComponent.propTypes = {
-    isPublishing: PropTypes.bool.isRequired,
-    target: PropTypes.number,
-    progress: PropTypes.number,
     p: polyglotPropTypes.isRequired,
+    handlePublishSuccess: PropTypes.func.isRequired,
 };
-
+const mapDispatchToProps = {
+    handlePublishSuccess: () => publishSuccess(),
+};
 export default compose(
+    connect(undefined, mapDispatchToProps),
     translate,
-    connect(state => ({
-        isPublishing: fromPublish.getIsPublishing(state),
-        ...fromProgress.getProgressAndTarget(state),
-    })),
 )(JobProgressComponent);

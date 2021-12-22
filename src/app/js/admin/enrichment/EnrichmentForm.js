@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, {
+    useEffect,
+    useState,
+    useCallback,
+    useLayoutEffect,
+    useRef,
+} from 'react';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import translate from 'redux-polyglot/translate';
@@ -6,10 +12,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
 import { reduxForm, Field, formValueSelector, reset } from 'redux-form';
-import {
-    PlayArrow as PlayArrowIcon,
-    Delete as DeleteIcon,
-} from '@material-ui/icons';
 
 import {
     createEnrichment,
@@ -18,6 +20,7 @@ import {
     previewDataEnrichment,
     previewDataEnrichmentClear,
     updateEnrichment,
+    loadEnrichments,
 } from '.';
 import { fromEnrichments, fromParsing } from '../selectors';
 import FormTextField from '../../lib/components/FormTextField';
@@ -28,7 +31,6 @@ import EnrichmentExcerpt from './EnrichmentExcerpt';
 import debounce from 'lodash.debounce';
 import {
     Box,
-    Button,
     FormControlLabel,
     makeStyles,
     MenuItem,
@@ -36,23 +38,28 @@ import {
     Switch,
 } from '@material-ui/core';
 import Alert from '../../lib/components/Alert';
-import {
-    PENDING,
-    FINISHED,
-    IN_PROGRESS,
-} from '../../../../common/enrichmentStatus';
+import { PENDING, FINISHED } from '../../../../common/enrichmentStatus';
+import EnrichmentSidebar from './EnrichmentSidebar';
+
+import { EnrichmentContext } from './EnrichmentContext';
 
 const DEBOUNCE_TIMEOUT = 2000;
 
 const useStyles = makeStyles(theme => {
     return {
-        enrichmentContainer: {
+        enrichmentPageContainer: {
+            display: 'flex',
+            flexDirection: 'row',
+        },
+        enrichmentFormContainer: {
             display: 'flex',
             justifyContent: 'center',
+            flex: 2,
+            marginRight: 20,
         },
         enrichmentForm: {
             width: '100%',
-            maxWidth: '900px',
+            maxWidth: '700px',
         },
         switchMode: {
             display: 'flex',
@@ -81,7 +88,7 @@ const useStyles = makeStyles(theme => {
         valuesContainer: {
             display: 'flex',
             flexDirection: 'row',
-            alignItems: 'center',
+            alignItems: 'flex-start',
         },
         actionContainer: {
             display: 'flex',
@@ -108,6 +115,7 @@ export const EnrichmentFormComponent = ({
     onPreviewDataEnrichmentClear,
     onUpdateEnrichment,
     onResetForm,
+    onLoadEnrichments,
     p: polyglot,
 }) => {
     const classes = useStyles();
@@ -127,7 +135,12 @@ export const EnrichmentFormComponent = ({
         [],
     );
 
-    useEffect(() => {
+    const firstRender = useRef(true);
+    useLayoutEffect(() => {
+        if (firstRender.current) {
+            firstRender.current = false;
+            return;
+        }
         debouncePreview(formValues);
     }, [formValues?.sourceColumn, formValues?.subPath, formValues?.rule]);
 
@@ -193,7 +206,7 @@ export const EnrichmentFormComponent = ({
         }
     };
 
-    const handleDelete = e => {
+    const handleDeleteEnrichment = e => {
         e.preventDefault();
 
         if (isEdit) {
@@ -230,6 +243,7 @@ export const EnrichmentFormComponent = ({
                                 checked={advancedMode}
                                 onChange={handleAdvancedMode}
                                 color="primary"
+                                name="advancedMode"
                             />
                         }
                         label={polyglot.t('advancedMode')}
@@ -285,7 +299,13 @@ export const EnrichmentFormComponent = ({
                                     {columnItems}
                                 </Field>
 
-                                <div style={{ fontSize: 24, marginLeft: 12 }}>
+                                <div
+                                    style={{
+                                        fontSize: 24,
+                                        marginLeft: 12,
+                                        marginTop: 15,
+                                    }}
+                                >
                                     •
                                 </div>
                                 <Field
@@ -310,44 +330,9 @@ export const EnrichmentFormComponent = ({
         );
     };
 
-    const getActionButtons = () => {
-        return (
-            <div className={classes.actionContainer}>
-                {[PENDING, IN_PROGRESS, FINISHED].includes(
-                    initialValues?.status,
-                ) && (
-                    <Button
-                        onClick={handleLaunchEnrichment}
-                        variant="contained"
-                        color="primary"
-                        key="run"
-                        disabled={[IN_PROGRESS].includes(initialValues?.status)}
-                    >
-                        <PlayArrowIcon className={classes.icon} />
-                        {polyglot.t('run')}
-                    </Button>
-                )}
-
-                {isEdit && (
-                    <Button
-                        variant="contained"
-                        key="delete"
-                        color="secondary"
-                        onClick={handleDelete}
-                        style={{ marginLeft: 24 }}
-                    >
-                        <DeleteIcon className={classes.icon} />
-                        {polyglot.t('delete')}
-                    </Button>
-                )}
-            </div>
-        );
-    };
-
     return (
-        <>
-            {getActionButtons()}
-            <div className={classes.enrichmentContainer}>
+        <div className={classes.enrichmentPageContainer}>
+            <div className={classes.enrichmentFormContainer}>
                 <form
                     id="enrichment_form"
                     onSubmit={handleSubmit}
@@ -369,6 +354,7 @@ export const EnrichmentFormComponent = ({
                         type="submit"
                         loading={isLoading}
                         style={{ marginTop: 24 }}
+                        name="submit-enrichment"
                     >
                         {polyglot.t('save')}
                     </ButtonWithStatus>
@@ -385,7 +371,18 @@ export const EnrichmentFormComponent = ({
                     </Alert>
                 </Snackbar>
             </div>
-        </>
+            <EnrichmentContext.Provider
+                value={{
+                    isEdit,
+                    enrichment: initialValues,
+                    handleLaunchEnrichment,
+                    handleDeleteEnrichment,
+                    onLoadEnrichments,
+                }}
+            >
+                <EnrichmentSidebar />
+            </EnrichmentContext.Provider>
+        </div>
     );
 };
 
@@ -412,6 +409,7 @@ EnrichmentFormComponent.propTypes = {
     onPreviewDataEnrichment: PropTypes.func.isRequired,
     onPreviewDataEnrichmentClear: PropTypes.func.isRequired,
     onResetForm: PropTypes.func.isRequired,
+    onLoadEnrichments: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
@@ -436,6 +434,7 @@ const mapDispatchToProps = {
     onUpdateEnrichment: updateEnrichment,
     onPreviewDataEnrichment: previewDataEnrichment,
     onPreviewDataEnrichmentClear: previewDataEnrichmentClear,
+    onLoadEnrichments: loadEnrichments,
     onResetForm: () => reset('ENRICHMENT_FORM'),
 };
 

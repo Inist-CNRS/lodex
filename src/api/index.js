@@ -1,4 +1,5 @@
 import Koa from 'koa';
+import { Server } from 'socket.io';
 import config from 'config';
 import mount from 'koa-mount';
 import cors from 'kcors';
@@ -11,8 +12,11 @@ import logger from './services/logger';
 import controller from './controller';
 import testController from './controller/testController';
 import indexSearchableFields from './services/indexSearchableFields';
-import { publisherQueue } from './workers/publisher';
+
+import { addPublisherListener, publisherQueue } from './workers/publisher';
 import { enrichmentQueue } from './workers/enrichment';
+import progress from './services/progress';
+import { addEnrichmentJobListener } from './services/enrichment/enrichment';
 
 const app = koaQs(new Koa());
 
@@ -56,7 +60,20 @@ if (!module.parent) {
     indexSearchableFields();
     global.console.log(`Server listening on port ${config.port}`);
     global.console.log('Press CTRL+C to stop server');
-    app.listen(config.port);
+    const httpServer = app.listen(config.port);
+    const io = new Server(httpServer);
+
+    io.on('connection', socket => {
+        progress.addProgressListener(progress => {
+            socket.emit('progress', progress);
+        });
+        addPublisherListener(payload => {
+            socket.emit('publisher', payload);
+        });
+        addEnrichmentJobListener(payload => {
+            socket.emit(payload.room, payload.data);
+        });
+    });
 }
 
 export default app;

@@ -1,6 +1,3 @@
-import progress from '../../services/progress';
-import { PENDING } from '../../../common/progressStatus';
-
 export const getPublication = async ctx => {
     const publishedDatasetCount = await ctx.publishedDataset.count();
     const characteristics = await ctx.publishedCharacteristic.findAllVersions(
@@ -24,9 +21,7 @@ export const getPublication = async ctx => {
     return {
         characteristics,
         fields: fieldsWithCount,
-        published:
-            publishedDatasetCount > 0 ||
-            progress.getProgress().status !== PENDING,
+        published: publishedDatasetCount > 0,
     };
 };
 

@@ -22,9 +22,6 @@ size = 1
 
 [expand/expand/exploding]
 
-[expand/expand/debug]
-text = valueInArray
-
 [expand/expand/URLConnect]
 url = [[WEB SERVICE URL]]
 timeout = 5000

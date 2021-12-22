@@ -15,8 +15,6 @@ rule = required
 path = value
 value = get("value.[[SOURCE COLUMN]]")
 
-[debug]
-text = Value Assign
 
 [URLConnect]
 url = [[WEB SERVICE URL]]

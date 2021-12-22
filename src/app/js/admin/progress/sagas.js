@@ -8,7 +8,6 @@ import {
     LOAD_PROGRESS,
     finishProgress,
 } from './reducer';
-import { PUBLISH } from '../publish';
 import { UPLOAD_FILE } from '../upload';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromUser } from '../../sharedSelectors';
@@ -23,7 +22,6 @@ export function* handleStartProgressSaga() {
         yield put(errorProgress(error));
         return;
     }
-
     yield put(updateProgress(response));
 
     if (response.status === PENDING) {
@@ -35,7 +33,7 @@ export function* handleStartProgressSaga() {
 
 export default function* progressSaga() {
     yield takeEvery(
-        [PUBLISH, LOAD_PROGRESS, UPLOAD_FILE, CLEAR_PUBLISHED],
+        [LOAD_PROGRESS, UPLOAD_FILE, CLEAR_PUBLISHED],
         handleStartProgressSaga,
     );
 }

@@ -4,26 +4,34 @@ describe('Enrichment controller', () => {
     describe('postEnrichment', () => {
         it('should call enrichment create repository method', async () => {
             const ctx = {
-                request: { body: {advancedMode: true, name: 'test'} },
+                request: { body: { advancedMode: true, name: 'test' } },
                 enrichment: { create: jest.fn() },
             };
 
             await postEnrichment(ctx);
 
-            expect(ctx.enrichment.create).toHaveBeenCalledWith({advancedMode: true, name: 'test'});
+            expect(ctx.enrichment.create).toHaveBeenCalledWith({
+                advancedMode: true,
+                name: 'test',
+            });
         });
 
         it('should return result as body result', async () => {
             const ctx = {
-                request: { body: {advancedMode: true, name: 'test'} },
+                request: { body: { advancedMode: true, name: 'test' } },
                 enrichment: {
-                    create: jest.fn(() => {return {advancedMode: true, name: 'test'}}),
+                    create: jest.fn(() => {
+                        return { advancedMode: true, name: 'test' };
+                    }),
                 },
             };
 
             await postEnrichment(ctx);
 
-            expect(ctx.body).toStrictEqual({advancedMode: true, name: 'test'});
+            expect(ctx.body).toStrictEqual({
+                advancedMode: true,
+                name: 'test',
+            });
         });
 
         it("should set status 403 if there's not result", async () => {

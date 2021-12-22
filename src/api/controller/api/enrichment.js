@@ -6,6 +6,7 @@ import { enrichmentQueue, PROCESS } from '../../workers/enrichment';
 import {
     createEnrichmentRule,
     getEnrichmentDataPreview,
+    setEnrichmentJobId,
 } from '../../services/enrichment/enrichment';
 
 export const setup = async (ctx, next) => {
@@ -79,7 +80,9 @@ export const enrichmentAction = async (ctx, action, id) => {
     }
 
     if (action === 'launch') {
-        await enrichmentQueue.add(PROCESS, { id });
+        await enrichmentQueue.add(PROCESS, { id }).then(job => {
+            setEnrichmentJobId(ctx, id, job);
+        });
         ctx.body = {
             status: 'pending',
         };
@@ -88,7 +91,9 @@ export const enrichmentAction = async (ctx, action, id) => {
     if (action === 'relaunch') {
         const enrichment = await ctx.enrichment.findOneById(id);
         await ctx.dataset.removeAttribute(enrichment.name);
-        await enrichmentQueue.add(PROCESS, { id });
+        await enrichmentQueue.add(PROCESS, { id }).then(job => {
+            setEnrichmentJobId(ctx, id, job);
+        });
         ctx.body = {
             status: 'pending',
         };

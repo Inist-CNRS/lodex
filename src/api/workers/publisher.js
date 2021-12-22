@@ -6,7 +6,7 @@ import publishDocuments from '../services/publishDocuments';
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
 export const PUBLISH = 'publish';
-
+const listeners = [];
 export const publisherQueue = new Queue('publisher', process.env.REDIS_URL, {
     defaultJobOptions: { removeOnComplete: 100, removeOnFail: 100, lifo: true },
 });
@@ -16,6 +16,7 @@ publisherQueue.process(PUBLISH, (job, done) => {
     startPublishing(job)
         .then(() => {
             job.progress(100);
+            notifyListeners({ isPublishing: false, success: true });
             done();
         })
         .catch(err => {
@@ -25,11 +26,13 @@ publisherQueue.process(PUBLISH, (job, done) => {
 });
 
 const startPublishing = async job => {
+    notifyListeners({ isPublishing: true, success: false });
     const ctx = await prepareContext({ job });
     await publish(ctx);
 };
 
 const handlePublishError = async () => {
+    notifyListeners({ isPublishing: false, success: false });
     const ctx = await prepareContext({});
     await ctx.publishedDataset.remove({});
     await ctx.publishedCharacteristic.remove({});
@@ -42,3 +45,7 @@ const prepareContext = async ctx => {
     ctx.publishFacets = publishFacets;
     return ctx;
 };
+
+export const addPublisherListener = listener => listeners.push(listener);
+const notifyListeners = payload =>
+    listeners.forEach(listener => listener(payload));

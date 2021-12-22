@@ -474,6 +474,7 @@
 "STARTING"	"Starting"	"Démarrage"
 "INDEXATION"	"Indexing..."	"Indexation..."
 "UPLOADING_DATASET"	"Uploading the dataset"	"Chargement du jeu de données"
+"ENRICHING"	"Enriching..."	"Enrichissement..."
 "SAVING_DATASET"	"Saving the dataset"	"Sauvegarde du jeu de données"
 "INITIALIZING_URI"	"Initializing all URI"	"Initialisation des URI"
 "CREATE_INDEX"	"Search indexes creation"	"Création des indexes de recherche"
@@ -608,3 +609,4 @@
 "isNotPublished"	"Not published"	"Non publié"
 "run"	"Run"	"Lancer"
 "sourcePreview"	"Source preview"	"Aperçu de la source"
+"waiting"	"Waiting..."	"En attente..."

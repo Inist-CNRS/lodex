@@ -5,7 +5,6 @@ import {
     loadEnrichmentsError,
     loadEnrichments,
     UPDATE_ENRICHMENT,
-    // DELETE_SUBRESOURCE,
     createEnrichmentOptimistic,
     createEnrichmentError,
     updateEnrichmentOptimistic,

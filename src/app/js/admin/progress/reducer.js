@@ -34,7 +34,16 @@ export default handleActions(
     {
         [UPDATE_PROGRESS]: (
             state,
-            { payload: { status, progress, target, symbol, label } },
+            {
+                payload: {
+                    status,
+                    progress,
+                    target,
+                    symbol,
+                    label,
+                    isBackground,
+                },
+            },
         ) => ({
             ...state,
             status,
@@ -43,6 +52,7 @@ export default handleActions(
             symbol,
             error: undefined,
             label,
+            isBackground,
         }),
         [UPLOAD_FILE]: state => ({
             ...state,

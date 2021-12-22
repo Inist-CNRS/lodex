@@ -1,14 +1,23 @@
-import { PENDING, ERROR, PUBLISH_DOCUMENT } from '../../common/progressStatus';
+import {
+    PENDING,
+    ERROR,
+    PUBLISH_DOCUMENT,
+    ENRICHING,
+} from '../../common/progressStatus';
 
 export class Progress {
+    listeners = [];
     status = PENDING;
-    start(status, target, symbol, label) {
+    start(status, target, symbol, label, subLabel, type) {
         this.status = status;
         this.target = target;
         this.progress = 0;
         this.symbol = symbol;
         this.label = label;
         this.error = null;
+        this.type = type;
+        this.subLabel = subLabel;
+        this.notifyListeners();
     }
 
     finish() {
@@ -16,6 +25,7 @@ export class Progress {
             return;
         }
         this.status = PENDING;
+        this.notifyListeners();
     }
 
     throw(error) {
@@ -28,6 +38,7 @@ export class Progress {
             return;
         }
         this.progress += progress;
+        this.notifyListeners();
     }
 
     setProgress(progress) {
@@ -36,6 +47,7 @@ export class Progress {
         }
 
         this.progress = progress;
+        this.notifyListeners();
     }
 
     incrementTarget(target = 1) {
@@ -44,6 +56,7 @@ export class Progress {
         }
 
         this.target += target;
+        this.notifyListeners();
     }
 
     getProgress() {
@@ -53,6 +66,7 @@ export class Progress {
             this.status = PENDING;
             throw error;
         }
+
         return {
             status: this.status,
             target: this.target,
@@ -60,9 +74,20 @@ export class Progress {
             symbol: this.symbol,
             error: this.error,
             label: this.label,
-            isBackground: this.status === PUBLISH_DOCUMENT,
+            subLabel: this.subLabel,
+            type: this.type,
+            isBackground:
+                this.status === PUBLISH_DOCUMENT || this.status === ENRICHING,
         };
     }
+
+    addProgressListener = listener => {
+        this.listeners.push(listener);
+    };
+
+    notifyListeners = () => {
+        this.listeners.forEach(listener => listener(this.getProgress()));
+    };
 }
 
 export default new Progress();
