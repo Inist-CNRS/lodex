@@ -121,9 +121,6 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
         }
 
         if (isSubPath(sourceData)) {
-            // if (!enrichment.subPath) {
-            //     throw new Error(`Missing sub-path parameter`);
-            // }
             const subPathData = sourceData[0][enrichment.subPath];
             if (!subPathData) {
                 throw new Error(`No data with this sub-path`);
