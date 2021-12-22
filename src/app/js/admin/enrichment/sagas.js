@@ -5,7 +5,6 @@ import {
     loadEnrichmentsError,
     loadEnrichments,
     UPDATE_ENRICHMENT,
-    // DELETE_SUBRESOURCE,
     createEnrichmentOptimistic,
     createEnrichmentError,
     updateEnrichmentOptimistic,
@@ -17,8 +16,6 @@ import {
 
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
-// import { loadPublication } from '../publication';
-// import { IMPORT_FIELDS_SUCCESS } from '../import';
 
 export function* handleLoadEnrichmentsRequest() {
     const request = yield select(fromUser.getLoadEnrichmentsRequest);

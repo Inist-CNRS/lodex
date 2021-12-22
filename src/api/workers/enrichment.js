@@ -1,5 +1,8 @@
 import Queue from 'bull';
-import { startEnrichmentBackground } from '../services/enrichment/enrichmentBackground';
+import {
+    startEnrichmentBackground,
+    setEnrichmentBackgroundError,
+} from '../services/enrichment/enrichmentBackground';
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
 export const PROCESS = 'process';
@@ -14,6 +17,7 @@ enrichmentQueue.process(PROCESS, (job, done) => {
             done();
         })
         .catch(err => {
+            handlePublishError();
             done(err);
         });
 });
@@ -21,6 +25,11 @@ enrichmentQueue.process(PROCESS, (job, done) => {
 const startEnrichment = async job => {
     const ctx = await prepareContext({ job });
     await startEnrichmentBackground(ctx);
+};
+
+const handlePublishError = async job => {
+    const ctx = await prepareContext({ job });
+    await setEnrichmentBackgroundError(ctx);
 };
 
 const prepareContext = async ctx => {

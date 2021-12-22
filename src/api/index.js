@@ -16,6 +16,7 @@ import indexSearchableFields from './services/indexSearchableFields';
 import { addPublisherListener, publisherQueue } from './workers/publisher';
 import { enrichmentQueue } from './workers/enrichment';
 import progress from './services/progress';
+import { addEnrichmentJobListener } from './services/enrichment/enrichmentBackground';
 
 const app = koaQs(new Koa());
 
@@ -68,6 +69,9 @@ if (!module.parent) {
         });
         addPublisherListener(payload => {
             socket.emit('publisher', payload);
+        });
+        addEnrichmentJobListener(payload => {
+            socket.emit(payload.room, payload.data);
         });
     });
 }

@@ -5,6 +5,7 @@ export default {
         veryDark: '#333',
         dark: '#555',
         light: 'rgb(95, 99, 104, 0.5)',
+        lighter: 'rgb(95, 99, 104, 0.15)',
         veryLight: 'rgb(95, 99, 104, 0.1)',
         transparent: 'rgba(0, 0, 0, .1)',
     },
