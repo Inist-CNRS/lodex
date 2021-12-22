@@ -438,6 +438,12 @@ export const getJobLogsRequest = (state, queue, jobId) =>
         url: `/api/job/${queue}/${jobId}/logs`,
     });
 
+export const getCancelJobRequest = (state, queue) =>
+    getRequest(state, {
+        url: `/api/job/${queue}/cancel`,
+        method: 'POST',
+    });
+
 export const selectors = {
     isAdmin,
     getRole,
@@ -493,4 +499,5 @@ export const selectors = {
     getBreadcrumbRequest,
     getLoadLoadersRequest,
     getPreviewDataEnrichmentRequest,
+    getCancelJobRequest,
 };
