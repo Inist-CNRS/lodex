@@ -4,7 +4,7 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
-import { EnrichmentContext } from './enrichment-context';
+import { EnrichmentContext } from './EnrichmentContext';
 import { fromUser } from '../../sharedSelectors';
 import { connect } from 'react-redux';
 import theme from '../../theme';

@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { EnrichmentActionButtonComponent } from './EnrichmentActionButton';
 import { Button } from '@material-ui/core';
-import { EnrichmentContext } from './enrichment-context';
+import { EnrichmentContext } from './EnrichmentContext';
 
 describe('<EnrichmentActionButtonComponent />', () => {
     it('should render', () => {

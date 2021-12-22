@@ -76,7 +76,7 @@ const processEnrichmentBackground = async (entry, enrichment, ctx) => {
 
             const logData = {
                 level: 'error',
-                message: `Errored enriching line #${lineIndex}`,
+                message: `Error enriching line #${lineIndex}`,
                 timestamp: new Date(),
             };
             ctx.job.log(JSON.stringify(logData));

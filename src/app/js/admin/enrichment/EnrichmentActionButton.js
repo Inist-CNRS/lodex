@@ -12,7 +12,7 @@ import {
     FINISHED,
     IN_PROGRESS,
 } from '../../../../common/enrichmentStatus';
-import { EnrichmentContext } from './enrichment-context';
+import { EnrichmentContext } from './EnrichmentContext';
 
 const useStyles = makeStyles({
     actionContainer: {
