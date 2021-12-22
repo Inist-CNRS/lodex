@@ -6,9 +6,14 @@ import {
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
 export const PROCESS = 'process';
-export const enrichmentQueue = new Queue('enrichment', process.env.REDIS_URL, {
-    defaultJobOptions: { removeOnComplete: 100, removeOnFail: 100 },
-});
+export const ENRICHMENT_QUEUE = 'enrichment';
+export const enrichmentQueue = new Queue(
+    ENRICHMENT_QUEUE,
+    process.env.REDIS_URL,
+    {
+        defaultJobOptions: { removeOnComplete: 100, removeOnFail: 100 },
+    },
+);
 
 enrichmentQueue.process(PROCESS, (job, done) => {
     startJobEnrichment(job)
