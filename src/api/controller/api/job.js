@@ -20,7 +20,7 @@ export const getJobLogs = async (ctx, queue, id) => {
 
 const app = new Koa();
 app.use(setup);
-app.use(route.get('/log/:queue/:id', getJobLogs));
+app.use(route.get('/:queue/:id/logs', getJobLogs));
 app.use(koaBodyParser());
 
 export default app;
