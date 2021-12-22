@@ -12,6 +12,7 @@ import {
     updateEnrichment,
     deleteEnrichment,
     launchEnrichment,
+    loadEnrichments,
 } from '.';
 import { fromEnrichments, fromParsing } from '../selectors';
 import FormTextField from '../../lib/components/FormTextField';
@@ -73,6 +74,7 @@ export const EnrichmentFormComponent = ({
     onUpdateEnrichment,
     onDeleteEnrichment,
     onLaunchEnrichment,
+    onLoadEnrichments,
     p: polyglot,
     history,
     isEdit,
@@ -269,6 +271,7 @@ export const EnrichmentFormComponent = ({
                     enrichment: initialValues,
                     handleLaunchEnrichment,
                     handleDeleteEnrichment,
+                    onLoadEnrichments,
                 }}
             >
                 <EnrichmentSidebar />
@@ -283,6 +286,7 @@ EnrichmentFormComponent.propTypes = {
     onUpdateEnrichment: PropTypes.func.isRequired,
     onDeleteEnrichment: PropTypes.func.isRequired,
     onLaunchEnrichment: PropTypes.func.isRequired,
+    onLoadEnrichments: PropTypes.func.isRequired,
     isEdit: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
     history: PropTypes.shape({
@@ -308,6 +312,7 @@ const mapDispatchToProps = {
     onUpdateEnrichment: updateEnrichment,
     onDeleteEnrichment: deleteEnrichment,
     onLaunchEnrichment: launchEnrichment,
+    onLoadEnrichments: loadEnrichments,
 };
 
 const validate = (values, { p: polyglot }) => {

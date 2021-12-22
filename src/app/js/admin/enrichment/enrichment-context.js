@@ -5,4 +5,5 @@ export const EnrichmentContext = React.createContext({
     enrichment: null,
     handleLaunchEnrichment: () => {},
     handleDeleteEnrichment: () => {},
+    onLoadEnrichments: () => {},
 });

@@ -8,6 +8,8 @@ import { EnrichmentContext } from './enrichment-context';
 import { fromUser } from '../../sharedSelectors';
 import { connect } from 'react-redux';
 import theme from '../../theme';
+import { io } from 'socket.io-client';
+import { FINISHED } from '../../../../common/enrichmentStatus';
 
 const useStyles = makeStyles({
     LogsContainer: {
@@ -23,6 +25,7 @@ const useStyles = makeStyles({
     },
     Log_info: {
         color: theme.black.light,
+        lineHeight: '0.8rem',
     },
     Log_ok: {
         color: theme.green.primary,
@@ -35,7 +38,7 @@ const useStyles = makeStyles({
 });
 
 export const EnrichmentLogsComponent = ({ p: polyglot, optionsRequest }) => {
-    const { enrichment } = useContext(EnrichmentContext);
+    const { enrichment, onLoadEnrichments } = useContext(EnrichmentContext);
 
     const url =
         window.location.origin + `/api/job/log/enrichment/${enrichment?.jobId}`;
@@ -65,19 +68,39 @@ export const EnrichmentLogsComponent = ({ p: polyglot, optionsRequest }) => {
                 );
     }, []);
 
+    useEffect(() => {
+        const socket = io();
+        socket.on(`enrichment-job-${enrichment?.jobId}`, data => {
+            setLogs(currentState => [data, ...currentState]);
+
+            console.log(JSON.parse(data).status);
+            if (JSON.parse(data).status === FINISHED) {
+                console.log('ALLLEZZ')
+                onLoadEnrichments();
+            }
+        });
+        return () => socket.disconnect();
+    }, []);
+
     const classes = useStyles();
 
     const renderLog = log => {
         const parsedLog = JSON.parse(log);
-        const date = Intl.DateTimeFormat('fr', {
-            hour12: false,
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-        }).format(new Date(parsedLog.timestamp));
+
+        let date;
+        try {
+            date = Intl.DateTimeFormat('fr', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+            }).format(new Date(parsedLog?.timestamp));
+        } catch (e) {
+            date = 'No date';
+        }
 
         return (
             <p
@@ -93,9 +116,13 @@ export const EnrichmentLogsComponent = ({ p: polyglot, optionsRequest }) => {
         <div className={classes.LogsContainer}>
             <div className={classes.LogsTitle}>Logs #{enrichment?.jobId}</div>
             <div className={classes.Logs}>
-                {!isLoaded && <div>Loading...</div>}
-                {isLoaded && error && <div>Error: {error.message}</div>}
-                {isLoaded && !logs && <div>{polyglot.t('Empty')}</div>}
+                {!isLoaded && <div>{polyglot.t('loading')}</div>}
+                {isLoaded && error && (
+                    <div>
+                        {polyglot.t('error')}: {error.message}
+                    </div>
+                )}
+                {isLoaded && !logs && <div>{polyglot.t('empty')}</div>}
                 {isLoaded && logs && logs.map(log => renderLog(log))}
             </div>
         </div>

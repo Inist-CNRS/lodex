@@ -43,22 +43,28 @@ const processEnrichmentBackground = async (entry, enrichment, ctx) => {
     }
 
     let lineIndex = 0;
+    const room = `enrichment-job-${ctx.job.id}`;
     while (nextEntry) {
         lineIndex += 1;
-        const logData = {
+
+        const logData = JSON.stringify({
             level: 'info',
             message: `Started enriching line #${lineIndex}`,
             timestamp: new Date(),
-        };
-        ctx.job.log(JSON.stringify(logData));
+            status: IN_PROGRESS,
+        });
+        ctx.job.log(logData);
+        notifyListeners(room, logData);
         try {
             let { value } = await processEzsEnrichment(nextEntry, enrichment);
-            const logData = {
+            const logData = JSON.stringify({
                 level: 'info',
                 message: `Finished enriching line #${lineIndex} (output: ${value})`,
                 timestamp: new Date(),
-            };
-            ctx.job.log(JSON.stringify(logData));
+                status: IN_PROGRESS,
+            });
+            ctx.job.log(logData);
+            notifyListeners(room, logData);
 
             if (value === undefined) {
                 value = 'n/a';
@@ -74,12 +80,14 @@ const processEnrichmentBackground = async (entry, enrichment, ctx) => {
                 { $set: { [enrichment.name]: `ERROR: ${e.error.message}` } },
             );
 
-            const logData = {
+            const logData = JSON.stringify({
                 level: 'error',
                 message: `Errored enriching line #${lineIndex}`,
                 timestamp: new Date(),
-            };
-            ctx.job.log(JSON.stringify(logData));
+                status: IN_PROGRESS,
+            });
+            ctx.job.log(logData);
+            notifyListeners(room, logData);
         }
 
         nextEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
@@ -92,12 +100,14 @@ const processEnrichmentBackground = async (entry, enrichment, ctx) => {
         }
     }
     progress.finish();
-    const logData = {
+    const logData = JSON.stringify({
         level: 'ok',
         message: `Enrichement finished`,
         timestamp: new Date(),
-    };
-    ctx.job.log(JSON.stringify(logData));
+        status: FINISHED,
+    });
+    ctx.job.log(logData);
+    notifyListeners(room, logData);
 };
 
 const setEnrichmentJobId = async (ctx, enrichment, job) => {
@@ -123,12 +133,23 @@ export const startEnrichmentBackground = async ctx => {
             'enrichment',
         );
     }
-
-    const logData = {
+    const room = `enrichment-job-${ctx.job.id}`;
+    const logData = JSON.stringify({
         level: 'ok',
         message: `Enrichement started`,
         timestamp: new Date(),
-    };
-    ctx.job.log(JSON.stringify(logData));
+        status: IN_PROGRESS,
+    });
+    ctx.job.log(logData);
+    notifyListeners(room, logData);
     await processEnrichmentBackground(firstEntry, enrichment, ctx);
+};
+
+const LISTENERS = [];
+export const addEnrichmentJobListener = listener => {
+    LISTENERS.push(listener);
+};
+
+const notifyListeners = (room, payload) => {
+    LISTENERS.forEach(listener => listener({ room, data: payload }));
 };
