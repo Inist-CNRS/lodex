@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb';
 import { PassThrough } from 'stream';
 import ezs from '@ezs/core';
 import progress from '../../services/progress';
-import { IN_PROGRESS, FINISHED } from '../../../common/enrichmentStatus';
+import { IN_PROGRESS, FINISHED, ERROR } from '../../../common/enrichmentStatus';
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
 
 export const getEnrichmentDatasetCandidate = async (id, ctx) => {
@@ -142,6 +142,24 @@ export const startEnrichmentBackground = async ctx => {
     ctx.job.log(logData);
     notifyListeners(room, logData);
     await processEnrichmentBackground(firstEntry, enrichment, ctx);
+};
+
+export const setEnrichmentBackgroundError = async ctx => {
+    const id = ctx.job?.data?.id;
+    await ctx.enrichment.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { ['status']: ERROR } },
+    );
+
+    const room = `enrichment-job-${ctx.job.id}`;
+    const logData = JSON.stringify({
+        level: 'error',
+        message: `Enrichement errored`,
+        timestamp: new Date(),
+        status: ERROR,
+    });
+    ctx.job.log(logData);
+    notifyListeners(room, logData);
 };
 
 const LISTENERS = [];
