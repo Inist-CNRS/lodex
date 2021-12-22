@@ -16,7 +16,7 @@ import indexSearchableFields from './services/indexSearchableFields';
 import { addPublisherListener, publisherQueue } from './workers/publisher';
 import { enrichmentQueue } from './workers/enrichment';
 import progress from './services/progress';
-import { addEnrichmentJobListener } from './services/enrichment/enrichmentBackground';
+import { addEnrichmentJobListener } from './services/enrichment/enrichment';
 
 const app = koaQs(new Koa());
 

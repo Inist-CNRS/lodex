@@ -133,6 +133,13 @@ export const getCreateEnrichmentRequest = (state, body) =>
         body,
     });
 
+export const getPreviewDataEnrichmentRequest = (state, body) =>
+    getRequest(state, {
+        url: '/api/enrichment/preview',
+        method: 'POST',
+        body,
+    });
+
 export const getUpdateEnrichmentRequest = (state, { enrichment }) =>
     getRequest(state, {
         url: `/api/enrichment/${enrichment._id}`,
@@ -480,4 +487,5 @@ export const selectors = {
     getMenuRequest,
     getBreadcrumbRequest,
     getLoadLoadersRequest,
+    getPreviewDataEnrichmentRequest,
 };

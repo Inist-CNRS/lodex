@@ -10,17 +10,11 @@ value = get("value.[[SOURCE COLUMN]]").castArray().map(JSON.parse).reduce((acc, 
 path = value
 size = 1
 
-[expand/debug]
-text = Value after expand
-
 [expand/exploding]
 
 [expand/assign]
 path = value
 value = get("value.[[SUB PATH]]")
-
-[expand/debug]
-text = Value after expand assign
 
 [expand/URLConnect]
 url = [[WEB SERVICE URL]]

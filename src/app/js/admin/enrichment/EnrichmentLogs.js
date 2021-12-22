@@ -22,6 +22,8 @@ const useStyles = makeStyles({
     Logs: {
         width: '100%',
         textAlign: 'left',
+        paddingLeft: '1rem',
+        paddingRight: '1rem',
     },
     Log_info: {
         color: theme.black.light,

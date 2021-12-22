@@ -1,23 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+    useEffect,
+    useState,
+    useCallback,
+    useLayoutEffect,
+    useRef,
+} from 'react';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm, Field, formValueSelector, reset } from 'redux-form';
 
 import {
     createEnrichment,
-    updateEnrichment,
     deleteEnrichment,
     launchEnrichment,
+    previewDataEnrichment,
+    previewDataEnrichmentClear,
+    updateEnrichment,
     loadEnrichments,
 } from '.';
 import { fromEnrichments, fromParsing } from '../selectors';
 import FormTextField from '../../lib/components/FormTextField';
 import FormSelectField from '../../lib/components/FormSelectField';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
+import EnrichmentExcerpt from './EnrichmentExcerpt';
+
+import debounce from 'lodash.debounce';
 import {
     Box,
     FormControlLabel,
@@ -32,55 +43,80 @@ import EnrichmentSidebar from './EnrichmentSidebar';
 
 import { EnrichmentContext } from './EnrichmentContext';
 
-const useStyles = makeStyles({
-    enrichmentPageContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-    },
-    enrichmentFormContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        flex: 2,
-        marginRight: 20,
-    },
-    enrichmentForm: {
-        width: '100%',
-        maxWidth: '700px',
-    },
-    switchMode: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-    },
-    simplifiedRules: {
-        border: '1px solid rgb(95, 99, 104, 0.5)',
-        borderRadius: 4,
-        padding: 20,
-    },
-    valuesContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    actionContainer: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-        marginBottom: 20,
-    },
+const DEBOUNCE_TIMEOUT = 2000;
+
+const useStyles = makeStyles(theme => {
+    return {
+        enrichmentPageContainer: {
+            display: 'flex',
+            flexDirection: 'row',
+        },
+        enrichmentFormContainer: {
+            display: 'flex',
+            justifyContent: 'center',
+            flex: 2,
+            marginRight: 20,
+        },
+        enrichmentForm: {
+            width: '100%',
+            maxWidth: '700px',
+        },
+        switchMode: {
+            display: 'flex',
+            justifyContent: 'flex-end',
+        },
+        simplifiedRulesFormContainer: {
+            flex: '4',
+            borderRadius: 4,
+            padding: 20,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-around',
+        },
+        excerptContainer: {
+            flex: '2',
+            borderLeft: '1px solid rgb(95, 99, 104, 0.5)',
+        },
+        simplifiedRules: {
+            border: '1px solid rgb(95, 99, 104, 0.5)',
+            display: 'flex',
+            flexDirection: 'column',
+            [theme.breakpoints.up('md')]: {
+                flexDirection: 'row',
+            },
+        },
+        valuesContainer: {
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+        },
+        actionContainer: {
+            display: 'flex',
+            justifyContent: 'flex-end',
+            marginBottom: 20,
+        },
+    };
 });
 
 export const EnrichmentFormComponent = ({
-    isLoading,
-    onAddEnrichment,
-    onUpdateEnrichment,
-    onDeleteEnrichment,
-    onLaunchEnrichment,
-    onLoadEnrichments,
-    p: polyglot,
-    history,
-    isEdit,
-    initialValues,
+    dataPreviewEnrichment,
     excerptColumns,
     errorEnrichment,
+    formValues,
+    history,
+    initialValues,
+    isDataPreviewLoading,
+    isEdit,
+    isLoading,
+    onAddEnrichment,
+    onDeleteEnrichment,
+    onLaunchEnrichment,
+    onPreviewDataEnrichment,
+    onPreviewDataEnrichmentClear,
+    onUpdateEnrichment,
+    onResetForm,
+    onLoadEnrichments,
+    p: polyglot,
 }) => {
     const classes = useStyles();
     const [advancedMode, setAdvancedMode] = useState(
@@ -91,6 +127,47 @@ export const EnrichmentFormComponent = ({
     useEffect(() => {
         setOpenSnackBar(!!errorEnrichment);
     }, [errorEnrichment]);
+
+    const debouncePreview = useCallback(
+        debounce(formValues => {
+            getSourcePreview(formValues);
+        }, DEBOUNCE_TIMEOUT),
+        [],
+    );
+
+    const firstRender = useRef(true);
+    useLayoutEffect(() => {
+        if (firstRender.current) {
+            firstRender.current = false;
+            return;
+        }
+        debouncePreview(formValues);
+    }, [formValues?.sourceColumn, formValues?.subPath, formValues?.rule]);
+
+    useEffect(() => {
+        return () => {
+            onResetForm();
+            onPreviewDataEnrichmentClear();
+        };
+    }, []);
+
+    const getSourcePreview = formValues => {
+        if (advancedMode && !formValues?.rule) {
+            return;
+        }
+
+        if (!advancedMode && !formValues?.sourceColumn) {
+            return;
+        }
+        onPreviewDataEnrichment(
+            advancedMode
+                ? { rule: formValues.rule }
+                : {
+                      sourceColumn: formValues.sourceColumn,
+                      subPath: formValues.subPath,
+                  },
+        );
+    };
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -173,49 +250,78 @@ export const EnrichmentFormComponent = ({
                     />
                 </div>
                 {advancedMode ? (
-                    <Field
-                        name="rule"
-                        component={FormTextField}
-                        label={polyglot.t('expand_rules')}
-                        multiline
-                        fullWidth
-                        rows={30}
-                        variant="outlined"
-                    />
+                    <div
+                        style={{
+                            display: 'flex',
+                        }}
+                    >
+                        <Field
+                            name="rule"
+                            component={FormTextField}
+                            label={polyglot.t('expand_rules')}
+                            multiline
+                            rows={17}
+                            variant="outlined"
+                            size="small"
+                            style={{
+                                flex: '4',
+                            }}
+                        />
+                        <div className={classes.excerptContainer}>
+                            <EnrichmentExcerpt
+                                lines={dataPreviewEnrichment}
+                                loading={isDataPreviewLoading}
+                            />
+                        </div>
+                    </div>
                 ) : (
                     <Box className={classes.simplifiedRules}>
-                        <Field
-                            name="webServiceUrl"
-                            component={FormTextField}
-                            label={polyglot.t('webServiceUrl')}
-                            fullWidth
-                            style={{ marginBottom: 16 }}
-                        />
-
-                        <div className={classes.valuesContainer}>
+                        <div className={classes.simplifiedRulesFormContainer}>
                             <Field
-                                name="sourceColumn"
-                                component={FormSelectField}
-                                label={polyglot.t('sourceColumn')}
-                                fullWidth
-                                style={{ marginBottom: 20 }}
-                            >
-                                <MenuItem key={null} value={null}>
-                                    {polyglot.t('none')}
-                                </MenuItem>
-                                {columnItems}
-                            </Field>
-
-                            <div style={{ fontSize: 24, marginLeft: 12 }}>
-                                •
-                            </div>
-                            <Field
-                                name="subPath"
+                                name="webServiceUrl"
                                 component={FormTextField}
-                                label={polyglot.t('subPath')}
+                                label={polyglot.t('webServiceUrl')}
                                 fullWidth
-                                style={{ marginLeft: 12 }}
-                                helperText={polyglot.t('subPathHelper')}
+                                style={{ marginBottom: 16 }}
+                            />
+
+                            <div className={classes.valuesContainer}>
+                                <Field
+                                    name="sourceColumn"
+                                    component={FormSelectField}
+                                    label={polyglot.t('sourceColumn')}
+                                    fullWidth
+                                    style={{ marginBottom: 20 }}
+                                >
+                                    <MenuItem key={null} value={null}>
+                                        {polyglot.t('none')}
+                                    </MenuItem>
+                                    {columnItems}
+                                </Field>
+
+                                <div
+                                    style={{
+                                        fontSize: 24,
+                                        marginLeft: 12,
+                                        marginTop: 15,
+                                    }}
+                                >
+                                    •
+                                </div>
+                                <Field
+                                    name="subPath"
+                                    component={FormTextField}
+                                    label={polyglot.t('subPath')}
+                                    fullWidth
+                                    style={{ marginLeft: 12 }}
+                                    helperText={polyglot.t('subPathHelper')}
+                                />
+                            </div>
+                        </div>
+                        <div className={classes.excerptContainer}>
+                            <EnrichmentExcerpt
+                                lines={dataPreviewEnrichment}
+                                loading={isDataPreviewLoading}
                             />
                         </div>
                     </Box>
@@ -281,38 +387,55 @@ export const EnrichmentFormComponent = ({
 };
 
 EnrichmentFormComponent.propTypes = {
+    dataPreviewEnrichment: PropTypes.array,
+    errorEnrichment: PropTypes.string,
+    excerptColumns: PropTypes.arrayOf(PropTypes.string),
+    formValues: PropTypes.shape({
+        sourceColumn: PropTypes.string,
+        subPath: PropTypes.string,
+        rule: PropTypes.string,
+    }),
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired,
+    }),
+    initialValues: PropTypes.any,
+    isDataPreviewLoading: PropTypes.bool,
+    isEdit: PropTypes.bool,
     isLoading: PropTypes.bool.isRequired,
     onAddEnrichment: PropTypes.func.isRequired,
     onUpdateEnrichment: PropTypes.func.isRequired,
     onDeleteEnrichment: PropTypes.func.isRequired,
     onLaunchEnrichment: PropTypes.func.isRequired,
+    onPreviewDataEnrichment: PropTypes.func.isRequired,
+    onPreviewDataEnrichmentClear: PropTypes.func.isRequired,
+    onResetForm: PropTypes.func.isRequired,
     onLoadEnrichments: PropTypes.func.isRequired,
-    isEdit: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }),
-    excerptColumns: PropTypes.arrayOf(PropTypes.string),
-    initialValues: PropTypes.any,
-    errorEnrichment: PropTypes.string,
 };
 
+const formSelector = formValueSelector('ENRICHMENT_FORM');
 const mapStateToProps = (state, { match }) => ({
+    dataPreviewEnrichment: fromEnrichments.dataPreviewEnrichment(state),
+    errorEnrichment: fromEnrichments.getError(state),
     excerptColumns: fromParsing.getParsedExcerptColumns(state),
-    isLoading: fromEnrichments.isLoading(state),
-    enrichments: fromEnrichments.enrichments(state),
+    formValues: formSelector(state, 'sourceColumn', 'subPath', 'rule'),
     initialValues: fromEnrichments
         .enrichments(state)
         .find(enrichment => enrichment._id === match.params.enrichmentId),
-    errorEnrichment: fromEnrichments.getError(state),
+    isLoading: fromEnrichments.isLoading(state),
+    isDataPreviewLoading: fromEnrichments.isDataPreviewLoading(state),
+    lines: fromParsing.getExcerptLines(state),
 });
 
 const mapDispatchToProps = {
     onAddEnrichment: createEnrichment,
-    onUpdateEnrichment: updateEnrichment,
     onDeleteEnrichment: deleteEnrichment,
     onLaunchEnrichment: launchEnrichment,
+    onUpdateEnrichment: updateEnrichment,
+    onPreviewDataEnrichment: previewDataEnrichment,
+    onPreviewDataEnrichmentClear: previewDataEnrichmentClear,
     onLoadEnrichments: loadEnrichments,
+    onResetForm: () => reset('ENRICHMENT_FORM'),
 };
 
 const validate = (values, { p: polyglot }) => {
