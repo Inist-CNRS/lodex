@@ -1,7 +1,10 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
-import { enrichmentQueue } from '../../workers/enrichment';
+import { enrichmentQueue, ENRICHMENT_QUEUE } from '../../workers/enrichment';
+import { publisherQueue, PUBLISHER_QUEUE } from '../../workers/publisher';
+import clearPublished from '../../services/clearPublished';
+import progress from '../../services/progress';
 
 export const setup = async (ctx, next) => {
     try {
@@ -13,14 +16,30 @@ export const setup = async (ctx, next) => {
 };
 
 export const getJobLogs = async (ctx, queue, id) => {
-    if (queue === 'enrichment') {
+    if (queue === ENRICHMENT_QUEUE) {
         ctx.body = await enrichmentQueue.getJobLogs(id);
+    }
+};
+
+export const cancelJob = async (ctx, queue) => {
+    if (queue === PUBLISHER_QUEUE) {
+        await publisherQueue.clean(0, 'wait');
+        await publisherQueue.getActive().then(jobs => {
+            jobs.forEach(job => {
+                job.discard();
+                job.moveToFailed(new Error('cancelled'), true);
+            });
+        });
+        clearPublished(ctx);
+        progress.finish();
+        ctx.status = 200;
     }
 };
 
 const app = new Koa();
 app.use(setup);
 app.use(route.get('/:queue/:id/logs', getJobLogs));
+app.use(route.post('/:queue/cancel', cancelJob));
 app.use(koaBodyParser());
 
 export default app;
