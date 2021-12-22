@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { makeStyles } from '@material-ui/core';
-import { EnrichmentContext } from './enrichment-context';
+import { EnrichmentContext } from './EnrichmentContext';
 import EnrichmentActionButton from './EnrichmentActionButton';
 import theme from '../../theme';
 import EnrichmentLogs from './EnrichmentLogs';
-import { useContext } from 'react';
 
 const useStyles = makeStyles({
     sidebarContainer: {

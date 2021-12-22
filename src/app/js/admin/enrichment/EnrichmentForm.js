@@ -30,7 +30,7 @@ import Alert from '../../lib/components/Alert';
 import { PENDING, FINISHED } from '../../../../common/enrichmentStatus';
 import EnrichmentSidebar from './EnrichmentSidebar';
 
-import { EnrichmentContext } from './enrichment-context';
+import { EnrichmentContext } from './EnrichmentContext';
 
 const useStyles = makeStyles({
     enrichmentPageContainer: {
