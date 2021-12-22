@@ -110,9 +110,9 @@ const processEnrichmentBackground = async (entry, enrichment, ctx) => {
     notifyListeners(room, logData);
 };
 
-const setEnrichmentJobId = async (ctx, enrichment, job) => {
+export const setEnrichmentJobId = async (ctx, enrichmentID, job) => {
     await ctx.enrichment.updateOne(
-        { _id: new ObjectId(enrichment._id) },
+        { _id: new ObjectId(enrichmentID) },
         { $set: { ['jobId']: job.id } },
     );
 };
@@ -120,7 +120,6 @@ const setEnrichmentJobId = async (ctx, enrichment, job) => {
 export const startEnrichmentBackground = async ctx => {
     const id = ctx.job?.data?.id;
     const enrichment = await ctx.enrichment.findOneById(id);
-    await setEnrichmentJobId(ctx, enrichment, ctx.job);
     const firstEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
     const dataSetSize = await ctx.dataset.count();
     if (progress.getProgress().status === PENDING) {

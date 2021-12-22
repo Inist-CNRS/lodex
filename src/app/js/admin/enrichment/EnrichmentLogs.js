@@ -73,9 +73,7 @@ export const EnrichmentLogsComponent = ({ p: polyglot, optionsRequest }) => {
         socket.on(`enrichment-job-${enrichment?.jobId}`, data => {
             setLogs(currentState => [data, ...currentState]);
 
-            console.log(JSON.parse(data).status);
             if (JSON.parse(data).status === FINISHED) {
-                console.log('ALLLEZZ')
                 onLoadEnrichments();
             }
         });
@@ -122,7 +120,9 @@ export const EnrichmentLogsComponent = ({ p: polyglot, optionsRequest }) => {
                         {polyglot.t('error')}: {error.message}
                     </div>
                 )}
-                {isLoaded && !logs && <div>{polyglot.t('empty')}</div>}
+                {isLoaded && logs.length < 1 && (
+                    <div>{polyglot.t('waiting')}</div>
+                )}
                 {isLoaded && logs && logs.map(log => renderLog(log))}
             </div>
         </div>
