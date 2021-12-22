@@ -5,11 +5,10 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import { EnrichmentContext } from './EnrichmentContext';
-import { fromUser } from '../../sharedSelectors';
-import { connect } from 'react-redux';
 import theme from '../../theme';
 import { io } from 'socket.io-client';
 import { FINISHED } from '../../../../common/enrichmentStatus';
+import jobsApi from '../api/job';
 
 const useStyles = makeStyles({
     LogsContainer: {
@@ -39,15 +38,8 @@ const useStyles = makeStyles({
     },
 });
 
-export const EnrichmentLogsComponent = ({ p: polyglot, optionsRequest }) => {
+export const EnrichmentLogsComponent = ({ p: polyglot }) => {
     const { enrichment, onLoadEnrichments } = useContext(EnrichmentContext);
-
-    const url =
-        window.location.origin + `/api/job/log/enrichment/${enrichment?.jobId}`;
-    const options = optionsRequest({
-        url,
-        method: 'GET',
-    });
 
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -55,19 +47,16 @@ export const EnrichmentLogsComponent = ({ p: polyglot, optionsRequest }) => {
 
     useEffect(() => {
         enrichment?.jobId &&
-            fetch(url, options)
-                .then(res => res.json())
-                .then(
-                    result => {
-                        setIsLoaded(true);
-                        setLogs(result.logs.reverse());
-                    },
-
-                    error => {
-                        setIsLoaded(true);
-                        setError(error);
-                    },
-                );
+            jobsApi.getJobLogs('enrichment', enrichment.jobId).then(
+                result => {
+                    setIsLoaded(true);
+                    setLogs(result.response.logs.reverse());
+                },
+                error => {
+                    setIsLoaded(true);
+                    setError(error);
+                },
+            );
     }, []);
 
     useEffect(() => {
@@ -136,11 +125,4 @@ EnrichmentLogsComponent.propTypes = {
     optionsRequest: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-    optionsRequest: request => fromUser.getRequest(state, request),
-});
-
-export default compose(
-    translate,
-    connect(mapStateToProps),
-)(EnrichmentLogsComponent);
+export default compose(translate)(EnrichmentLogsComponent);
