@@ -6,13 +6,22 @@ import {
     PlayArrow as PlayArrowIcon,
     Delete as DeleteIcon,
 } from '@material-ui/icons';
-import { Button, makeStyles } from '@material-ui/core';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    makeStyles,
+} from '@material-ui/core';
 import {
     PENDING,
     FINISHED,
     IN_PROGRESS,
 } from '../../../../common/enrichmentStatus';
 import { EnrichmentContext } from './EnrichmentContext';
+import { useState } from 'react';
 
 const useStyles = makeStyles({
     actionContainer: {
@@ -24,6 +33,10 @@ const useStyles = makeStyles({
 
 export const EnrichmentActionButtonComponent = ({ p: polyglot }) => {
     const classes = useStyles();
+    const [showDialog, setShowDialog] = useState(false);
+
+    const handleShowDialog = () => setShowDialog(true);
+    const handleCloseDialog = () => setShowDialog(false);
     const {
         handleLaunchEnrichment,
         handleDeleteEnrichment,
@@ -47,17 +60,57 @@ export const EnrichmentActionButtonComponent = ({ p: polyglot }) => {
             )}
 
             {isEdit && (
-                <Button
-                    variant="contained"
-                    key="delete"
-                    name="delete-enrichment"
-                    color="secondary"
-                    onClick={handleDeleteEnrichment}
-                    style={{ marginLeft: 24 }}
-                >
-                    <DeleteIcon className={classes.icon} />
-                    {polyglot.t('delete')}
-                </Button>
+                <>
+                    <Button
+                        variant="contained"
+                        key="delete"
+                        name="delete-enrichment"
+                        color="secondary"
+                        onClick={handleShowDialog}
+                        style={{ marginLeft: 24 }}
+                    >
+                        <DeleteIcon className={classes.icon} />
+                        {polyglot.t('delete')}
+                    </Button>
+                    <Dialog
+                        open={showDialog}
+                        onClose={handleCloseDialog}
+                        maxWidth="sm"
+                        fullWidth
+                    >
+                        <DialogTitle>
+                            {polyglot.t('remove_enrichment_dialog_title')}
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                {polyglot.t(
+                                    'remove_enrichment_dialog_content',
+                                ) + ` "${enrichment?.name}".`}
+                            </DialogContentText>
+                            <DialogContentText>
+                                {polyglot.t(
+                                    'remove_enrichment_dialog_content_2',
+                                )}
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={handleDeleteEnrichment}
+                            >
+                                {polyglot.t('Accept')}
+                            </Button>
+                            <Button
+                                color="secondary"
+                                variant="text"
+                                onClick={handleCloseDialog}
+                            >
+                                {polyglot.t('Cancel')}
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </>
             )}
         </div>
     );
