@@ -6,7 +6,7 @@ export default async db => {
     const collection = db.collection('enrichment');
 
     collection.findOneById = async id =>
-        collection.findOne({ _id: new ObjectID(id) });
+        collection.findOne({ $or: [{ _id: new ObjectID(id) }, { _id: id }] });
 
     collection.findAll = async () => collection.find({}).toArray();
 
@@ -16,7 +16,7 @@ export default async db => {
     };
 
     collection.delete = async id =>
-        collection.remove({ _id: new ObjectID(id) });
+        collection.remove({ $or: [{ _id: new ObjectID(id) }, { _id: id }] });
 
     collection.update = async (id, data) => {
         const objectId = new ObjectID(id);
@@ -24,7 +24,7 @@ export default async db => {
         return collection
             .findOneAndUpdate(
                 {
-                    _id: objectId,
+                    $or: [{ _id: objectId }, { _id: id }],
                 },
                 omit(data, ['_id']),
                 {
