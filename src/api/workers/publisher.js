@@ -23,9 +23,10 @@ export const publisherQueue = new Queue(
 publisherQueue.process(PUBLISH, (job, done) => {
     publisherQueue.clean(100, 'wait');
     startPublishing(job)
-        .then(() => {
+        .then(async () => {
             job.progress(100);
-            notifyListeners({ isPublishing: false, success: true });
+            const isFailed = await job.isFailed();
+            notifyListeners({ isPublishing: false, success: !isFailed });
             done();
         })
         .catch(err => {
