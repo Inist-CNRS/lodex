@@ -194,6 +194,7 @@ export const publishDocumentsFactory = ({
                 ctx.publishedDataset.insertBatchIgnoreDuplicate,
                 x => x, // disable default transformer (do it in extractor)
                 datasetChunkExtractor,
+                ctx.job,
             );
         }),
     );
@@ -203,8 +204,13 @@ export const publishDocumentsFactory = ({
         ctx.dataset.findLimitFromSkip,
         ctx.publishedDataset.insertBatch,
         versionTransformerDecorator(transformMainResourceDocument),
+        undefined,
+        ctx.job,
     );
-    ctx.job && ctx.job.log('Document published');
+    ctx.job &&
+        ctx.job.log(
+            ctx.job.isActive() ? 'Document published' : 'Publication cancelled',
+        );
 };
 
 export default publishDocumentsFactory({

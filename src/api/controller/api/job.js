@@ -26,7 +26,6 @@ export const cancelJob = async (ctx, queue) => {
         await publisherQueue.clean(0, 'wait');
         await publisherQueue.getActive().then(jobs => {
             jobs.forEach(job => {
-                job.discard();
                 job.moveToFailed(new Error('cancelled'), true);
             });
         });

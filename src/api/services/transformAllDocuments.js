@@ -6,9 +6,10 @@ export default async function transformAllDocument(
     insertBatch,
     transformer,
     datasetChunkExtractor = x => x,
+    job,
 ) {
     let handled = 0;
-    while (handled < count) {
+    while (handled < count && (!job || (job && (await job.isActive())))) {
         const dataset = datasetChunkExtractor(
             await findLimitFromSkip(200, handled, {
                 lodex_published: { $exists: false },
