@@ -52,6 +52,7 @@ export class ParsingResultComponent extends Component {
             excerptColumns,
             excerptLines,
             p: polyglot,
+            showAddColumns,
             maxLines,
             loadingParsingResult,
         } = this.props;
@@ -68,6 +69,7 @@ export class ParsingResultComponent extends Component {
                 <ParsingExcerpt
                     columns={excerptColumns}
                     lines={excerptLines.slice(0, maxLines)}
+                    showAddColumns={showAddColumns}
                 />
             </div>
         );
@@ -79,12 +81,14 @@ ParsingResultComponent.propTypes = {
     excerptLines: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
     handleClearParsing: PropTypes.func.isRequired,
+    showAddColumns: PropTypes.bool.isRequired,
     maxLines: PropTypes.number,
     loadingParsingResult: PropTypes.bool.isRequired,
 };
 
 ParsingResultComponent.defaultProps = {
     maxLines: 10,
+    showAddColumns: false,
 };
 
 const mapStateToProps = state => ({
