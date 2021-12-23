@@ -87,11 +87,7 @@ const isDirectPath = sourceData => {
 };
 
 const isSubPath = sourceData => {
-    return (
-        typeof sourceData === 'object' &&
-        Array.isArray(sourceData) &&
-        typeof sourceData[0] === 'object'
-    );
+    return typeof sourceData === 'object';
 };
 
 export const getEnrichmentRuleModel = (sourceData, enrichment) => {
@@ -121,7 +117,13 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
         }
 
         if (isSubPath(sourceData)) {
-            const subPathData = sourceData[0][enrichment.subPath];
+            let subPathData;
+            if (Array.isArray(sourceData)) {
+                subPathData = sourceData[0][enrichment.subPath];
+            } else {
+                subPathData = sourceData[enrichment.subPath];
+            }
+
             if (!subPathData) {
                 throw new Error(`No data with this sub-path`);
             }
