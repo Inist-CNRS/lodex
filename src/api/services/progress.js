@@ -3,6 +3,8 @@ import {
     ERROR,
     PUBLISH_DOCUMENT,
     ENRICHING,
+    PUBLISH_FACET,
+    CREATE_INDEX,
 } from '../../common/progressStatus';
 
 export class Progress {
@@ -76,8 +78,12 @@ export class Progress {
             label: this.label,
             subLabel: this.subLabel,
             type: this.type,
-            isBackground:
-                this.status === PUBLISH_DOCUMENT || this.status === ENRICHING,
+            isBackground: [
+                PUBLISH_DOCUMENT,
+                ENRICHING,
+                PUBLISH_FACET,
+                CREATE_INDEX,
+            ].includes(this.status),
         };
     }
 
