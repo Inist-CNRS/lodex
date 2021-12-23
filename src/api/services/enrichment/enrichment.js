@@ -114,9 +114,7 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
             } else {
                 rule = cleanWebServiceRule(rule);
             }
-        }
-
-        if (isSubPath(sourceData)) {
+        } else if (isSubPath(sourceData)) {
             let subPathData;
             if (Array.isArray(sourceData)) {
                 subPathData = sourceData[0][enrichment.subPath];
