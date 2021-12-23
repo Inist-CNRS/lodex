@@ -129,8 +129,8 @@ export const EnrichmentFormComponent = ({
     }, [errorEnrichment]);
 
     const debouncePreview = useCallback(
-        debounce(formValues => {
-            getSourcePreview(formValues);
+        debounce((advancedMode, formValues) => {
+            getSourcePreview(advancedMode, formValues);
         }, DEBOUNCE_TIMEOUT),
         [],
     );
@@ -141,8 +141,13 @@ export const EnrichmentFormComponent = ({
             firstRender.current = false;
             return;
         }
-        debouncePreview(formValues);
-    }, [formValues?.sourceColumn, formValues?.subPath, formValues?.rule]);
+        debouncePreview(advancedMode, formValues);
+    }, [
+        formValues?.sourceColumn,
+        formValues?.subPath,
+        formValues?.rule,
+        advancedMode,
+    ]);
 
     useEffect(() => {
         return () => {
@@ -151,7 +156,7 @@ export const EnrichmentFormComponent = ({
         };
     }, []);
 
-    const getSourcePreview = formValues => {
+    const getSourcePreview = (advancedMode, formValues) => {
         if (advancedMode && !formValues?.rule) {
             return;
         }
