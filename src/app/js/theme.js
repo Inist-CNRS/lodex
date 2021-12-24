@@ -12,6 +12,7 @@ export default {
     white: {
         primary: '#fff',
         transparent: 'rgba(255, 255, 255, .1)',
+        light: 'rgba(255, 255, 255, .2)',
     },
     red: {
         primary: '#f44336',

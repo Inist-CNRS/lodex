@@ -1,5 +1,6 @@
 import {
     Box,
+    Button,
     CircularProgress,
     Fade,
     LinearProgress,
@@ -26,7 +27,7 @@ const useStyles = makeStyles({
         display: 'flex',
         margin: '0 4px 0',
     },
-    colorPrimary: { backgroundColor: theme.green.secondary },
+    colorPrimary: { backgroundColor: theme.white.light },
     barColorPrimary: { backgroundColor: theme.white.primary },
     progressContainer: {
         display: 'flex',
@@ -34,8 +35,8 @@ const useStyles = makeStyles({
         alignItems: 'center',
         justifyContent: 'space-evenly',
         marginLeft: 'auto',
-        width: '200px',
         marginRight: '20px',
+        width: '250px',
     },
     progressLabelContainer: {
         width: '100%',
@@ -49,6 +50,11 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-around',
+    },
+    cancelButton: {
+        display: 'flex',
+        minWidth: '0',
+        padding: '0',
     },
 });
 
@@ -84,11 +90,6 @@ const JobProgressComponent = props => {
                     classes.progressContainer,
                     'progress-container',
                 )}
-                onClick={() => {
-                    if (progress.type === 'publisher') {
-                        jobsApi.cancelJob('publisher');
-                    }
-                }}
             >
                 <div className={classes.progressLabelContainer}>
                     <CircularProgress
@@ -116,7 +117,18 @@ const JobProgressComponent = props => {
                             </Typography>
                         )}
                     </div>
-                    {progress?.type === 'publisher' && <Cancel />}
+
+                    {progress?.type === 'publisher' && (
+                        <Button
+                            className={classes.cancelButton}
+                            color="inherit"
+                            onClick={() => {
+                                jobsApi.cancelJob('publisher');
+                            }}
+                        >
+                            <Cancel />
+                        </Button>
+                    )}
                 </div>
                 <LinearProgress
                     classes={{
