@@ -72,6 +72,8 @@ describe('publishDocuments', () => {
                 'dataset.findLimitFromSkip()',
                 'publishedDataset.insertBatch()',
                 'initializeVersion()',
+                undefined,
+                undefined,
             );
         });
 
@@ -93,6 +95,8 @@ describe('publishDocuments', () => {
                 'dataset.findLimitFromSkip()',
                 'publishedDataset.insertBatch()',
                 'initializeVersion()',
+                undefined,
+                undefined,
             );
         });
     });
