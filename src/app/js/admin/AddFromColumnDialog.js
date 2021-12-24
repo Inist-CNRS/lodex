@@ -15,6 +15,17 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import { addField } from '../fields';
 import ParsingResult from './parsing/ParsingResult';
 
+const styles = {
+    container: {
+        display: 'flex',
+        padding: '1rem',
+        width: 1000,
+    },
+    dialogContent: {
+        height: 'calc(90vh - 64px - 52px)',
+    },
+};
+
 function useClickOnAddColumn(ref, callback) {
     useEffect(() => {
         function handleClickOutside(event) {
@@ -44,10 +55,12 @@ export const AddFromColumnDialogComponent = ({ p: polyglot, onClose }) => {
     useClickOnAddColumn(wrapperRef, onClose);
 
     return (
-        <Dialog ref={wrapperRef} open onClose={onClose} maxWidth="xl" fullWidth>
+        <Dialog ref={wrapperRef} open onClose={onClose} maxWidth="xl">
             <DialogTitle> {polyglot.t('a_column')}</DialogTitle>
-            <DialogContent>
-                <ParsingResult showAddColumns maxLines={3} />
+            <DialogContent style={styles.dialogContent}>
+                <div style={styles.container}>
+                    <ParsingResult showAddColumns maxLines={6} />
+                </div>
             </DialogContent>
             <DialogActions>
                 <Button color="secondary" variant="text" onClick={onClose}>
