@@ -85,7 +85,10 @@ export const publishDocumentsFactory = ({
     getDocumentTransformer,
     transformAllDocuments,
 }) => async (ctx, count, fields) => {
-    ctx.job && ctx.job.log('Publishing documents');
+    if (!ctx.job) {
+        return;
+    }
+    ctx.job.log('Publishing documents');
     const mainResourceFields = fields
         .filter(
             c =>
@@ -205,10 +208,9 @@ export const publishDocumentsFactory = ({
         undefined,
         ctx.job,
     );
-    ctx.job &&
-        ctx.job.log(
-            ctx.job.isActive() ? 'Document published' : 'Publication cancelled',
-        );
+    ctx.job.log(
+        ctx.job.isActive() ? 'Document published' : 'Publication cancelled',
+    );
 };
 
 export default publishDocumentsFactory({
