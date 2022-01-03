@@ -610,3 +610,4 @@
 "run"	"Run"	"Lancer"
 "sourcePreview"	"Source preview"	"Aperçu de la source"
 "waiting"	"Waiting..."	"En attente..."
+"other_column_placeholder"	"Enter column name"	"Entrer un nom de colonne"

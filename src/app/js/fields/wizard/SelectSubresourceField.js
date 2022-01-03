@@ -46,6 +46,14 @@ export const SelectSubresourceFieldComponent = ({
         return false;
     };
 
+    const focusOtherColumnInputField = input => {
+        if (input) {
+            setTimeout(() => {
+                input.querySelector('input').focus();
+            }, 100);
+        }
+    };
+
     const [isOtherColumn, setIsOtherColumn] = useState(
         checkIsOtherColumn(column),
     );
@@ -89,7 +97,9 @@ export const SelectSubresourceFieldComponent = ({
                         onChange={e => handleChange(e.target.value)}
                         style={styles.input}
                         type="text"
-                        value={column}
+                        value={column !== polyglot.t('other') ? column : ''}
+                        placeholder={polyglot.t('other_column_placeholder')}
+                        ref={focusOtherColumnInputField}
                     />
                 </FormControl>
             )}
