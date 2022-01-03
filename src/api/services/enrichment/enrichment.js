@@ -283,14 +283,13 @@ export const startEnrichment = async ctx => {
     const firstEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
     const dataSetSize = await ctx.dataset.count();
     if (progress.getProgress().status === PENDING) {
-        progress.start(
-            ENRICHING,
-            dataSetSize,
-            null,
-            'ENRICHING',
-            enrichment.name,
-            'enrichment',
-        );
+        progress.start({
+            status: ENRICHING,
+            target: dataSetSize,
+            symbol: 'ENRICHING',
+            label: enrichment.name,
+            type: 'enrichment',
+        });
     }
     const room = `enrichment-job-${ctx.job.id}`;
     const logData = JSON.stringify({

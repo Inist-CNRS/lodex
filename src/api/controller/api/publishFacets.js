@@ -8,14 +8,12 @@ export default async (ctx, fields, withProgress = false) => {
         return;
     }
     withProgress &&
-        progress.start(
-            PUBLISH_FACET,
-            facetFields.length,
-            null,
-            'publishing',
-            null,
-            'publisher',
-        );
+        progress.start({
+            status: PUBLISH_FACET,
+            target: facetFields.length,
+            label: 'publishing',
+            type: 'publisher',
+        });
     ctx.job && ctx.job.log('Publishing facets');
 
     const names = fields.map(({ name }) => name);

@@ -6,7 +6,11 @@ import progress from './progress';
 import { CREATE_INDEX } from '../../common/progressStatus';
 
 export default async () => {
-    progress.start(CREATE_INDEX, null, null, 'publishing', null, 'publisher');
+    progress.start({
+        status: CREATE_INDEX,
+        label: 'publishing',
+        type: 'publisher',
+    });
     return composeAsync(
         await composeAsync(mongoClient, field, f => f.findSearchableNames)(),
         await composeAsync(
