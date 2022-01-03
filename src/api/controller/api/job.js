@@ -6,6 +6,7 @@ import { publisherQueue, PUBLISHER_QUEUE } from '../../workers/publisher';
 import clearPublished from '../../services/clearPublished';
 import progress from '../../services/progress';
 
+const GRACE_PERIOD = 0;
 export const setup = async (ctx, next) => {
     try {
         await next();
@@ -23,7 +24,7 @@ export const getJobLogs = async (ctx, queue, id) => {
 
 export const cancelJob = async (ctx, queue) => {
     if (queue === PUBLISHER_QUEUE) {
-        await publisherQueue.clean(0, 'wait');
+        await publisherQueue.clean(GRACE_PERIOD, 'wait');
         await publisherQueue.getActive().then(jobs => {
             jobs.forEach(job => {
                 job.moveToFailed(new Error('cancelled'), true);
