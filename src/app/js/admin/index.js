@@ -53,7 +53,7 @@ const initialState = {
 };
 
 const history = createHashHistory();
-export const store = configureStore(
+const store = configureStore(
     rootReducer,
     sagas,
     window.__PRELOADED_STATE__ || initialState,

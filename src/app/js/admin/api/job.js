@@ -1,18 +1,20 @@
-import { store } from '..';
 import fetch from '../../lib/fetch';
 import { getJobLogsRequest, getCancelJobRequest } from '../../user';
 
-const getJobLogs = (queue, jobId) => {
-    const state = store.getState();
+export const getUserLocalStorageInfo = () =>
+    JSON.parse(window.localStorage.getItem('redux-localstorage').user);
 
-    const request = getJobLogsRequest(state.user, queue, jobId);
+const getJobLogs = (queue, jobId) => {
+    const state = getUserLocalStorageInfo();
+
+    const request = getJobLogsRequest(state, queue, jobId);
     return fetch(request);
 };
 
 const cancelJob = queue => {
-    const state = store.getState();
-    const request = getCancelJobRequest(state.user, queue);
+    const state = getUserLocalStorageInfo();
 
+    const request = getCancelJobRequest(state, queue);
     return fetch(request);
 };
 
