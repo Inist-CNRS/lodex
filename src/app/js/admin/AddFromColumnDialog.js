@@ -26,40 +26,17 @@ const styles = {
     },
 };
 
-function useClickOnAddColumn(ref, callback) {
-    useEffect(() => {
-        function handleClickOutside(event) {
-            event.preventDefault();
-            const target = event.target;
-            const parent = target.parentElement;
-            if (
-                target.classList.contains('btn-excerpt-add-column') ||
-                parent.classList.contains('btn-excerpt-add-column')
-            ) {
-                setTimeout(() => {
-                    callback();
-                }, 500);
-            }
-        }
-
-        // Bind the event listener
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [ref]);
-}
-
 export const AddFromColumnDialogComponent = ({ p: polyglot, onClose }) => {
-    const wrapperRef = useRef(null);
-    useClickOnAddColumn(wrapperRef, onClose);
-
     return (
-        <Dialog ref={wrapperRef} open onClose={onClose} maxWidth="xl">
+        <Dialog open onClose={onClose} maxWidth="xl">
             <DialogTitle> {polyglot.t('a_column')}</DialogTitle>
             <DialogContent style={styles.dialogContent}>
                 <div style={styles.container}>
-                    <ParsingResult showAddColumns maxLines={6} />
+                    <ParsingResult
+                        showAddFromColumn
+                        maxLines={6}
+                        onAddField={onClose}
+                    />
                 </div>
             </DialogContent>
             <DialogActions>

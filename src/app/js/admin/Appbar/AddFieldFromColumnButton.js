@@ -9,7 +9,7 @@ import translate from 'redux-polyglot/translate';
 
 import AddFromDatasetIcon from './AddFromDatasetIcon';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { showAddColumns } from '../parsing';
+import { showAddFromColumn } from '../parsing';
 
 const useStyles = makeStyles({
     containedButton: {
@@ -49,7 +49,7 @@ AddFieldFromColumnButtonComponent.propTypes = {
 };
 
 const mapDispatchToProps = {
-    onShowExistingColumns: showAddColumns,
+    onShowExistingColumns: showAddFromColumn,
 };
 
 export default compose(

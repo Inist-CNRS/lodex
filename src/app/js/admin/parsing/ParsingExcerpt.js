@@ -86,7 +86,8 @@ export const ParsingExcerptComponent = ({
     columns,
     handleAddColumn,
     lines,
-    showAddColumns,
+    showAddFromColumn,
+    onAddField,
     enrichments,
     isHiddenLoadedColumn,
     isHiddenEnrichedColumn,
@@ -141,7 +142,7 @@ export const ParsingExcerptComponent = ({
                     >
                         {columnsToShow.map(column => {
                             const showAddColumnButton =
-                                showAddColumns &&
+                                showAddFromColumn &&
                                 (index === total - 3 ||
                                     (total < 3 && index === 0));
 
@@ -161,7 +162,10 @@ export const ParsingExcerptComponent = ({
                                         <ParsingExcerptAddColumn
                                             key={`add_column_${column}`}
                                             name={column}
-                                            onAddColumn={handleAddColumn}
+                                            onAddColumn={name => {
+                                                onAddField && onAddField();
+                                                handleAddColumn(name);
+                                            }}
                                             atTop={total < 3}
                                         />
                                     )}
@@ -182,7 +186,8 @@ ParsingExcerptComponent.propTypes = {
     isHiddenLoadedColumn: PropTypes.bool.isRequired,
     isHiddenEnrichedColumn: PropTypes.bool.isRequired,
     handleAddColumn: PropTypes.func.isRequired,
-    showAddColumns: PropTypes.bool.isRequired,
+    showAddFromColumn: PropTypes.bool.isRequired,
+    onAddField: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
