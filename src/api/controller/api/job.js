@@ -25,11 +25,11 @@ export const getJobLogs = async (ctx, queue, id) => {
 export const cancelJob = async (ctx, queue) => {
     if (queue === PUBLISHER_QUEUE) {
         await publisherQueue.clean(GRACE_PERIOD, 'wait');
-        await publisherQueue.getActive().then(jobs => {
-            jobs.forEach(job => {
-                job.moveToFailed(new Error('cancelled'), true);
-            });
+        const activeJobs = await publisherQueue.getActive();
+        activeJobs.forEach(job => {
+            job.moveToFailed(new Error('cancelled'), true);
         });
+
         clearPublished(ctx);
         progress.finish();
         ctx.status = 200;
