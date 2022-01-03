@@ -9,7 +9,11 @@ export default async function transformAllDocument(
     job,
 ) {
     let handled = 0;
-    while (handled < count && (!job || (job && (await job.isActive())))) {
+    const isJobActive = async () =>
+        !job || (job.isActive && (await job.isActive()));
+    while (handled < count) {
+        if (!(await isJobActive())) break;
+
         const dataset = datasetChunkExtractor(
             await findLimitFromSkip(200, handled, {
                 lodex_published: { $exists: false },
