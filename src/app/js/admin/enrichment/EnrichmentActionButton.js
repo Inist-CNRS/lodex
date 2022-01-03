@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -21,7 +21,6 @@ import {
     IN_PROGRESS,
 } from '../../../../common/enrichmentStatus';
 import { EnrichmentContext } from './EnrichmentContext';
-import { useState } from 'react';
 
 const useStyles = makeStyles({
     actionContainer: {
