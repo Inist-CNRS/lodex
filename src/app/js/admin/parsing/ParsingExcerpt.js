@@ -7,9 +7,11 @@ import { Table, TableBody, TableHead, TableRow } from '@material-ui/core';
 
 import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
+import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 import { fromEnrichments, fromParsing } from '../selectors';
 import theme from '../../theme';
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
+import { addField } from '../../fields';
 
 const styles = {
     table: {
@@ -82,7 +84,10 @@ const formatValue = value => {
 
 export const ParsingExcerptComponent = ({
     columns,
+    handleAddColumn,
     lines,
+    showAddFromColumn,
+    onAddField,
     enrichments,
     isHiddenLoadedColumn,
     isHiddenEnrichedColumn,
@@ -136,6 +141,11 @@ export const ParsingExcerptComponent = ({
                         style={getRowStyle(index, total)}
                     >
                         {columnsToShow.map(column => {
+                            const showAddColumnButton =
+                                showAddFromColumn &&
+                                (index === total - 3 ||
+                                    (total < 3 && index === 0));
+
                             return (
                                 <ParsingExcerptColumn
                                     key={`${column}_${line._id}`}
@@ -147,7 +157,19 @@ export const ParsingExcerptComponent = ({
                                     isEnrichmentLoading={checkIsEnrichmentLoading(
                                         column,
                                     )}
-                                ></ParsingExcerptColumn>
+                                >
+                                    {showAddColumnButton && (
+                                        <ParsingExcerptAddColumn
+                                            key={`add_column_${column}`}
+                                            name={column}
+                                            onAddColumn={name => {
+                                                onAddField && onAddField();
+                                                handleAddColumn(name);
+                                            }}
+                                            atTop={total < 3}
+                                        />
+                                    )}
+                                </ParsingExcerptColumn>
                             );
                         })}
                     </TableRow>
@@ -163,6 +185,9 @@ ParsingExcerptComponent.propTypes = {
     enrichments: PropTypes.arrayOf(PropTypes.object),
     isHiddenLoadedColumn: PropTypes.bool.isRequired,
     isHiddenEnrichedColumn: PropTypes.bool.isRequired,
+    handleAddColumn: PropTypes.func.isRequired,
+    showAddFromColumn: PropTypes.bool.isRequired,
+    onAddField: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -171,7 +196,9 @@ const mapStateToProps = state => ({
     isHiddenEnrichedColumn: fromParsing.getHideEnrichedColumn(state),
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+    handleAddColumn: name => addField({ name }),
+};
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),

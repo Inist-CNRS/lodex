@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 
 export const FieldsEditComponent = ({
     filter,
-    showAddColumns,
+    showAddFromColumn,
     addFieldButton,
     subresourceId,
     defaultTab = 'page',
@@ -38,10 +38,10 @@ export const FieldsEditComponent = ({
     const [showAddFromColumnDialog, setAddFromColumnDialog] = useState(false);
 
     useEffect(() => {
-        if (showAddColumns) {
+        if (showAddFromColumn) {
             setAddFromColumnDialog(true);
         }
-    }, [showAddColumns]);
+    }, [showAddFromColumn]);
 
     const handleChangeTab = (_, newValue) => setTab(newValue);
     const handleCloseAddFromColumnDialog = () => {
@@ -105,7 +105,7 @@ export const FieldsEditComponent = ({
 };
 
 FieldsEditComponent.propTypes = {
-    showAddColumns: PropTypes.bool.isRequired,
+    showAddFromColumn: PropTypes.bool.isRequired,
     filter: PropTypes.string,
     subresourceId: PropTypes.string,
     defaultTab: PropTypes.oneOf(['page', 'published']),
@@ -120,7 +120,7 @@ const mapDispatchToProps = {
 export const FieldsEdit = compose(
     connect(
         state => ({
-            showAddColumns: fromParsing.showAddColumns(state),
+            showAddFromColumn: fromParsing.showAddFromColumn(state),
         }),
         mapDispatchToProps,
     ),

@@ -10,7 +10,7 @@ import AddFieldFromColumnButton from './Appbar/AddFieldFromColumnButton';
 describe('<FieldsEdit />', () => {
     it('should display page tab (FieldGrid) per default', () => {
         const wrapper = shallow(
-            <FieldsEdit showAddColumns={false} fields={[]} filter={{}} />,
+            <FieldsEdit showAddFromColumn={false} fields={[]} filter={{}} />,
         );
 
         expect(wrapper.find(FieldGrid).exists()).toBeTruthy();
@@ -19,7 +19,7 @@ describe('<FieldsEdit />', () => {
     it('should display published tab (PublicationPreview) with published defaultTab prop', () => {
         const wrapper = shallow(
             <FieldsEdit
-                showAddColumns={false}
+                showAddFromColumn={false}
                 fields={[]}
                 filter={SCOPE_DOCUMENT}
                 addFieldButton={null}
@@ -33,7 +33,7 @@ describe('<FieldsEdit />', () => {
     it('should display AddFieldFromColumnButton in page tab if filter === SCOPE_DOCUMENT', () => {
         const wrapper = shallow(
             <FieldsEdit
-                showAddColumns={false}
+                showAddFromColumn={false}
                 fields={[]}
                 filter={SCOPE_DOCUMENT}
                 defaultTab="page"
@@ -46,7 +46,7 @@ describe('<FieldsEdit />', () => {
     it('should display Statistics before page', () => {
         const wrapper = shallow(
             <FieldsEdit
-                showAddColumns={true}
+                showAddFromColumn={true}
                 fields={[]}
                 filter={SCOPE_DOCUMENT}
                 defaultTab="page"
@@ -56,14 +56,14 @@ describe('<FieldsEdit />', () => {
         expect(
             wrapper.find(
                 'Connect(Translated(StatisticsComponent)) + Translated(FieldGridComponent)',
-            ).length,
-        ).toBe(1);
+            ),
+        ).toHaveLength(1);
     });
 
     it('should display Statistics after PublicationPreview', () => {
         const wrapper = shallow(
             <FieldsEdit
-                showAddColumns={false}
+                showAddFromColumn={false}
                 fields={[]}
                 filter={SCOPE_DOCUMENT}
                 defaultTab="published"
@@ -73,7 +73,7 @@ describe('<FieldsEdit />', () => {
         expect(
             wrapper.find(
                 'Connect(PublicationPreviewComponent) + Connect(Translated(StatisticsComponent))',
-            ).length,
-        ).toBe(1);
+            ),
+        ).toHaveLength(1);
     });
 });

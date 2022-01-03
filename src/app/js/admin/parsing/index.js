@@ -11,7 +11,7 @@ export const HIDE_ADD_COLUMNS = 'HIDE_ADD_COLUMNS';
 export const TOGGLE_LOADED_COLUMN = 'TOGGLE_LOADED_COLUMN';
 export const TOGGLE_ENRICHED_COLUMN = 'TOGGLE_ENRICHED_COLUMN';
 
-export const showAddColumns = createAction(SHOW_ADD_COLUMNS);
+export const showAddFromColumn = createAction(SHOW_ADD_COLUMNS);
 export const hideAddColumns = createAction(HIDE_ADD_COLUMNS);
 export const toggleLoadedColumn = createAction(TOGGLE_LOADED_COLUMN);
 export const toggleEnrichedColumn = createAction(TOGGLE_ENRICHED_COLUMN);
@@ -22,7 +22,7 @@ export const defaultState = {
     loading: false,
     parsing: false,
     allowUpload: true,
-    showAddColumns: false,
+    showAddFromColumn: false,
     totalLoadedLines: 0,
     totalParsedLines: 0,
     hideLoadedColumn: false,
@@ -56,8 +56,8 @@ export default handleActions(
             ...state,
             allowUpload: false,
         }),
-        SHOW_ADD_COLUMNS: state => ({ ...state, showAddColumns: true }),
-        HIDE_ADD_COLUMNS: state => ({ ...state, showAddColumns: false }),
+        SHOW_ADD_COLUMNS: state => ({ ...state, showAddFromColumn: true }),
+        HIDE_ADD_COLUMNS: state => ({ ...state, showAddFromColumn: false }),
         TOGGLE_LOADED_COLUMN: state => ({
             ...state,
             hideLoadedColumn: !state.hideLoadedColumn,
@@ -93,7 +93,7 @@ export const isParsingLoading = ({ loading }) => loading;
 
 export const getTotalLoadedLines = ({ totalLoadedLines }) => totalLoadedLines;
 
-export const getShowAddColumns = state => state.showAddColumns;
+export const getshowAddFromColumn = state => state.showAddFromColumn;
 export const getHideLoadedColumn = state => state.hideLoadedColumn;
 export const getHideEnrichedColumn = state => state.hideEnrichedColumn;
 
@@ -104,7 +104,7 @@ export const selectors = {
     canUpload,
     isParsingLoading,
     getTotalLoadedLines,
-    showAddColumns: getShowAddColumns,
+    showAddFromColumn: getshowAddFromColumn,
     getHideLoadedColumn,
     getHideEnrichedColumn,
 };
