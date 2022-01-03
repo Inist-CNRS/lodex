@@ -5,9 +5,9 @@ export const getUserLocalStorageInfo = () =>
     JSON.parse(window.localStorage.getItem('redux-localstorage').user);
 
 const getJobLogs = (queue, jobId) => {
-    const state = getUserLocalStorageInfo();
+    const userInfo = getUserLocalStorageInfo();
 
-    const request = getJobLogsRequest(state, queue, jobId);
+    const request = getJobLogsRequest(userInfo, queue, jobId);
     return fetch(request);
 };
 
