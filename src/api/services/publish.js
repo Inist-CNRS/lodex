@@ -10,6 +10,17 @@ import {
 
 const isJobActive = async ctx => !ctx.job || (await ctx.job.isActive());
 
+const chainWhileJobIsActive = async (operations, ctx) => {
+    let operationIndex = 0;
+    let isActive = await isJobActive(ctx);
+    while (isActive && operationIndex < operations.length) {
+        const operation = operations[operationIndex];
+        await operation();
+        operationIndex++;
+        isActive = await isJobActive(ctx);
+    }
+};
+
 export default async ctx => {
     const count = await ctx.dataset.count({});
     const fields = await ctx.field.findAll();
@@ -18,19 +29,26 @@ export default async ctx => {
         [SCOPE_COLLECTION, SCOPE_DOCUMENT].includes(c.scope),
     );
 
-    (await isJobActive(ctx)) && (await clearPublished(ctx));
-    (await isJobActive(ctx)) &&
-        (await ctx.publishDocuments(ctx, count, collectionScopeFields));
-
-    const datasetScopeFields = fields.filter(c =>
-        [SCOPE_DATASET, SCOPE_GRAPHIC].includes(c.scope),
+    await chainWhileJobIsActive(
+        [
+            async () => await clearPublished(ctx),
+            async () =>
+                await ctx.publishDocuments(ctx, count, collectionScopeFields),
+            async () => {
+                const datasetScopeFields = fields.filter(c =>
+                    [SCOPE_DATASET, SCOPE_GRAPHIC].includes(c.scope),
+                );
+                await ctx.publishCharacteristics(
+                    ctx,
+                    datasetScopeFields,
+                    count,
+                );
+            },
+            async () => await ctx.publishFacets(ctx, fields, true),
+            async () => await indexSearchableFields(),
+        ],
+        ctx,
     );
-    (await isJobActive(ctx)) &&
-        (await ctx.publishCharacteristics(ctx, datasetScopeFields, count));
-
-    (await isJobActive(ctx)) && (await ctx.publishFacets(ctx, fields, true));
-
-    (await isJobActive(ctx)) && (await indexSearchableFields());
 
     progress.finish();
 };
