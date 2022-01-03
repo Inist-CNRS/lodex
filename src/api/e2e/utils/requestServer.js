@@ -4,7 +4,7 @@ import { getHost } from '../../../common/uris';
 
 import server from '../../';
 import { publisherQueue } from '../../workers/publisher';
-import { enrichmentQueue } from '../../workers/enrichment';
+import { enricherQueue } from '../../workers/enricher';
 
 export default () => {
     const app = server.listen(config.port);
@@ -47,7 +47,7 @@ export default () => {
             }),
         close: () => {
             publisherQueue.close();
-            enrichmentQueue.close();
+            enricherQueue.close();
             app.close();
         },
     };

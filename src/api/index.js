@@ -14,7 +14,7 @@ import testController from './controller/testController';
 import indexSearchableFields from './services/indexSearchableFields';
 
 import { addPublisherListener, publisherQueue } from './workers/publisher';
-import { enrichmentQueue } from './workers/enrichment';
+import { enricherQueue } from './workers/enricher';
 import progress from './services/progress';
 import { addEnrichmentJobListener } from './services/enrichment/enrichment';
 
@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'development') {
     createBullBoard({
         queues: [
             new BullAdapter(publisherQueue),
-            new BullAdapter(enrichmentQueue),
+            new BullAdapter(enricherQueue),
         ],
         serverAdapter,
     });

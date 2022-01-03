@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
-import { enrichmentQueue, ENRICHMENT_QUEUE } from '../../workers/enrichment';
+import { enricherQueue, ENRICHER_QUEUE } from '../../workers/enricher';
 import { publisherQueue, PUBLISHER_QUEUE } from '../../workers/publisher';
 import clearPublished from '../../services/clearPublished';
 import progress from '../../services/progress';
@@ -16,8 +16,8 @@ export const setup = async (ctx, next) => {
 };
 
 export const getJobLogs = async (ctx, queue, id) => {
-    if (queue === ENRICHMENT_QUEUE) {
-        ctx.body = await enrichmentQueue.getJobLogs(id);
+    if (queue === ENRICHER_QUEUE) {
+        ctx.body = await enricherQueue.getJobLogs(id);
     }
 };
 
