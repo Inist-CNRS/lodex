@@ -83,7 +83,8 @@ const isBasicType = sourceData => {
 const isDirectPath = sourceData => {
     return (
         isBasicType(sourceData) ||
-        (Array.isArray(sourceData) && isBasicType(sourceData[0]))
+        (Array.isArray(sourceData) &&
+            (sourceData.length === 0 || isBasicType(sourceData[0])))
     );
 };
 
