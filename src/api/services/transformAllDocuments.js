@@ -9,10 +9,14 @@ export default async function transformAllDocument(
     job,
 ) {
     let handled = 0;
-    const isJobActive = async () =>
-        !job || (job.isActive && (await job.isActive()));
+    const isJobActive = async () => {
+        return !job || (job.isActive && (await job.isActive()));
+    };
+
     while (handled < count) {
-        if (!(await isJobActive())) break;
+        if (!(await isJobActive())) {
+            break;
+        }
 
         const dataset = datasetChunkExtractor(
             await findLimitFromSkip(200, handled, {
