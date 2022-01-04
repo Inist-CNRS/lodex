@@ -7,6 +7,7 @@ import { ObjectId } from 'mongodb';
 import { PassThrough } from 'stream';
 import { IN_PROGRESS, FINISHED, ERROR } from '../../../common/enrichmentStatus';
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
+import { jobLogger } from '../../workers/tools';
 
 const getSourceData = async (ctx, sourceColumn) => {
     const excerpt = await ctx.dataset.getExcerpt();
@@ -213,7 +214,7 @@ const processEnrichment = async (entry, enrichment, ctx) => {
             timestamp: new Date(),
             status: IN_PROGRESS,
         });
-        ctx.job.log(logData);
+        jobLogger.info(ctx.job, logData);
         notifyListeners(room, logData);
         try {
             let { value } = await processEzsEnrichment(nextEntry, commands);
@@ -223,7 +224,7 @@ const processEnrichment = async (entry, enrichment, ctx) => {
                 timestamp: new Date(),
                 status: IN_PROGRESS,
             });
-            ctx.job.log(logData);
+            jobLogger.info(ctx.job, logData);
             notifyListeners(room, logData);
 
             if (value === undefined) {
@@ -246,7 +247,7 @@ const processEnrichment = async (entry, enrichment, ctx) => {
                 timestamp: new Date(),
                 status: IN_PROGRESS,
             });
-            ctx.job.log(logData);
+            jobLogger.info(ctx.job, logData);
             notifyListeners(room, logData);
         }
 
@@ -266,7 +267,7 @@ const processEnrichment = async (entry, enrichment, ctx) => {
         timestamp: new Date(),
         status: FINISHED,
     });
-    ctx.job.log(logData);
+    jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
 };
 
@@ -298,7 +299,7 @@ export const startEnrichment = async ctx => {
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
-    ctx.job.log(logData);
+    jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
     await processEnrichment(firstEntry, enrichment, ctx);
 };
@@ -317,7 +318,7 @@ export const setEnrichmentError = async ctx => {
         timestamp: new Date(),
         status: ERROR,
     });
-    ctx.job.log(logData);
+    jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
 };
 

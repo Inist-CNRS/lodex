@@ -8,6 +8,8 @@ import { PUBLISH_DOCUMENT } from '../../common/progressStatus';
 import { URI_FIELD_NAME } from '../../common/uris';
 import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
 import parseValue from '../../common/tools/parseValue';
+import logger from './logger';
+import { jobLogger } from '../workers/tools';
 
 export const versionTransformerDecorator = (
     transformDocument,
@@ -86,9 +88,10 @@ export const publishDocumentsFactory = ({
     transformAllDocuments,
 }) => async (ctx, count, fields) => {
     if (!ctx.job) {
+        logger.error('Job is not defined');
         return;
     }
-    ctx.job.log('Publishing documents');
+    jobLogger.info(ctx.job, 'Publishing documents');
     const mainResourceFields = fields
         .filter(
             c =>
@@ -208,9 +211,10 @@ export const publishDocumentsFactory = ({
         undefined,
         ctx.job,
     );
-    ctx.job.log(
-        ctx.job.isActive() ? 'Document published' : 'Publication cancelled',
-    );
+
+    ctx.job.isActive()
+        ? jobLogger.info(ctx.job, 'Documents published')
+        : jobLogger.error(ctx.job, 'Publication cancelled');
 };
 
 export default publishDocumentsFactory({
