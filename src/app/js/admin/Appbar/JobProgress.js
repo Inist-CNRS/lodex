@@ -20,6 +20,7 @@ import { PENDING } from '../../../../common/progressStatus';
 import classNames from 'classnames';
 import { Cancel } from '@material-ui/icons';
 import jobsApi from '../api/job';
+import CancelPublicationDialog from './CancelPublicationDialog';
 
 const useStyles = makeStyles({
     progress: {
@@ -62,6 +63,10 @@ const JobProgressComponent = props => {
     const classes = useStyles();
     const { p: polyglot, handlePublishSuccess } = props;
     const [progress, setProgress] = useState();
+    const [
+        isCancelPublicationDialogOpen,
+        setIsCancelPublicationDialogOpen,
+    ] = useState(false);
 
     useEffect(() => {
         const socket = io();
@@ -81,70 +86,86 @@ const JobProgressComponent = props => {
     }, []);
 
     return (
-        <Fade
-            in={progress && progress.isJobProgress}
-            out={progress && !progress.isJobProgress}
-        >
-            <Box
-                className={classNames(
-                    classes.progressContainer,
-                    'progress-container',
-                )}
+        <>
+            <Fade
+                in={progress && progress.isJobProgress}
+                out={progress && !progress.isJobProgress}
             >
-                <div className={classes.progressLabelContainer}>
-                    <CircularProgress
-                        variant="indeterminate"
-                        color="inherit"
-                        size={20}
-                    />
-                    <div className={classes.progressLabel}>
-                        {progress?.label && (
-                            <Typography variant="subtitle2">
-                                {polyglot.t(progress?.label || 'publishing')}
-                            </Typography>
-                        )}
-                        {progress &&
-                            progress?.type === 'publisher' &&
-                            progress.status && (
-                                <Typography variant="caption">
-                                    {polyglot.t(progress.status)}
+                <Box
+                    className={classNames(
+                        classes.progressContainer,
+                        'progress-container',
+                    )}
+                >
+                    <div className={classes.progressLabelContainer}>
+                        <CircularProgress
+                            variant="indeterminate"
+                            color="inherit"
+                            size={20}
+                        />
+                        <div className={classes.progressLabel}>
+                            {progress?.label && (
+                                <Typography variant="subtitle2">
+                                    {polyglot.t(
+                                        progress?.label || 'publishing',
+                                    )}
                                 </Typography>
                             )}
+                            {progress &&
+                                progress?.type === 'publisher' &&
+                                progress.status && (
+                                    <Typography variant="caption">
+                                        {polyglot.t(progress.status)}
+                                    </Typography>
+                                )}
 
-                        {progress?.type === 'enrichment' && (
-                            <Typography variant="caption">
-                                {progress.subLabel}
-                            </Typography>
+                            {progress?.type === 'enrichment' && (
+                                <Typography variant="caption">
+                                    {progress.subLabel}
+                                </Typography>
+                            )}
+                        </div>
+
+                        {progress?.type === 'publisher' && (
+                            <Button
+                                className={classes.cancelButton}
+                                color="inherit"
+                                onClick={() => {
+                                    setIsCancelPublicationDialogOpen(true);
+                                }}
+                            >
+                                <Cancel />
+                            </Button>
                         )}
                     </div>
-
-                    {progress?.type === 'publisher' && (
-                        <Button
-                            className={classes.cancelButton}
-                            color="inherit"
-                            onClick={() => {
-                                jobsApi.cancelJob('publisher');
-                            }}
-                        >
-                            <Cancel />
-                        </Button>
-                    )}
-                </div>
-                <LinearProgress
-                    classes={{
-                        root: classes.progress,
-                        colorPrimary: classes.colorPrimary,
-                        barColorPrimary: classes.barColorPrimary,
-                    }}
-                    variant="determinate"
-                    value={
-                        progress && progress.target
-                            ? (progress.progress / progress.target) * 100
-                            : 0
-                    }
-                />
-            </Box>
-        </Fade>
+                    <LinearProgress
+                        classes={{
+                            root: classes.progress,
+                            colorPrimary: classes.colorPrimary,
+                            barColorPrimary: classes.barColorPrimary,
+                        }}
+                        variant="determinate"
+                        value={
+                            progress && progress.target
+                                ? (progress.progress / progress.target) * 100
+                                : 0
+                        }
+                    />
+                </Box>
+            </Fade>
+            <CancelPublicationDialog
+                isOpen={isCancelPublicationDialogOpen}
+                title={'cancelPublicationTitle'}
+                content={'cancelPublicationContent'}
+                onCancel={() => {
+                    setIsCancelPublicationDialogOpen(false);
+                }}
+                onConfirm={() => {
+                    jobsApi.cancelJob('publisher');
+                    setIsCancelPublicationDialogOpen(false);
+                }}
+            />
+        </>
     );
 };
 JobProgressComponent.propTypes = {
