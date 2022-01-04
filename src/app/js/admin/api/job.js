@@ -11,9 +11,9 @@ export const getUserLocalStorageInfo = () => {
 };
 
 const getJobLogs = (queue, jobId) => {
-    const userInfo = getUserLocalStorageInfo();
+    const { token } = getUserLocalStorageInfo();
 
-    const request = getJobLogsRequest(userInfo, queue, jobId);
+    const request = getJobLogsRequest({ token }, queue, jobId);
     return fetch(request);
 };
 
