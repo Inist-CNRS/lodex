@@ -10,7 +10,7 @@ import {
 export class Progress {
     listeners = [];
     status = PENDING;
-    start(status, target, symbol, label, subLabel, type) {
+    start({ status, target, symbol, label, subLabel, type }) {
         this.status = status;
         this.target = target;
         this.progress = 0;

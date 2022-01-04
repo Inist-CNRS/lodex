@@ -6,8 +6,7 @@ import { INITIALIZING_URI } from '../../common/progressStatus';
 
 const initDatasetUriFactory = ctx =>
     async function initDatasetUri() {
-        progress.start(INITIALIZING_URI);
-        const count = await ctx.dataset.countWithoutUri();
+        progress.start({ status: INITIALIZING_URI });
         const fields = await ctx.field.findAll();
         const transformUri = getDocumentTransformer(
             ctx.dataset.findBy,

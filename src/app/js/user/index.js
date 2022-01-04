@@ -433,6 +433,17 @@ export const getLoadLoadersRequest = state =>
         url: '/api/loader',
     });
 
+export const getJobLogsRequest = (state, queue, jobId) =>
+    getRequest(state, {
+        url: `/api/job/${queue}/${jobId}/logs`,
+    });
+
+export const getCancelJobRequest = (state, queue) =>
+    getRequest(state, {
+        url: `/api/job/${queue}/cancel`,
+        method: 'POST',
+    });
+
 export const selectors = {
     isAdmin,
     getRole,
@@ -488,4 +499,5 @@ export const selectors = {
     getBreadcrumbRequest,
     getLoadLoadersRequest,
     getPreviewDataEnrichmentRequest,
+    getCancelJobRequest,
 };

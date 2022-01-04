@@ -1,4 +1,5 @@
 import getDocumentTransformer from './getDocumentTransformer';
+import { jobLogger } from '../workers/tools';
 
 export const publishCharacteristicsFactory = ({ getDocumentTransformer }) =>
     async function publishCharacteristics(ctx, datasetScopeFields, count) {
@@ -6,7 +7,7 @@ export const publishCharacteristicsFactory = ({ getDocumentTransformer }) =>
             return;
         }
 
-        ctx.job && ctx.job.log("Publishing characteristics");
+        jobLogger.info(ctx.job, 'Publishing characteristics');
         const getPublishedCharacteristics = getDocumentTransformer(
             ctx.dataset.findBy,
             datasetScopeFields,
@@ -33,7 +34,7 @@ export const publishCharacteristicsFactory = ({ getDocumentTransformer }) =>
                 publishedCharacteristics,
             );
         }
-        ctx.job && ctx.job.log("Characteristics published");
+        jobLogger.info(ctx.job, 'Characteristics published');
     };
 
 export default publishCharacteristicsFactory({ getDocumentTransformer });

@@ -67,3 +67,78 @@ describe('tranformAllDocuments', () => {
         ]);
     });
 });
+
+describe('Cancel transformAllDocuments', () => {
+    it('should do nothing when job is not active', async () => {
+        // GIVEN
+        const count = 2001;
+        const findLimitFromSkip = jest.fn();
+        const transformDocument = jest.fn();
+        const insertBatch = jest.fn();
+        const job = {
+            isActive: () => Promise.resolve(false),
+        };
+
+        // WHEN
+        await tranformAllDocuments(
+            count,
+            findLimitFromSkip,
+            insertBatch,
+            transformDocument,
+            undefined,
+            job,
+        );
+
+        // THEN
+        expect(findLimitFromSkip).not.toHaveBeenCalled();
+        expect(insertBatch).not.toHaveBeenCalled();
+        expect(transformDocument).not.toHaveBeenCalled();
+    });
+    it('should do things when job is active', async () => {
+        // GIVEN
+        const count = 1;
+        const dataset = [{ id: 1, name: 'test' }];
+        const findLimitFromSkip = jest.fn().mockImplementation(() => dataset);
+        const transformDocument = jest.fn();
+        const insertBatch = jest.fn();
+        const job = {
+            isActive: () => Promise.resolve(true),
+        };
+
+        // WHEN
+        await tranformAllDocuments(
+            count,
+            findLimitFromSkip,
+            insertBatch,
+            transformDocument,
+            undefined,
+            job,
+        );
+
+        // THEN
+        expect(findLimitFromSkip).toHaveBeenCalled();
+        expect(insertBatch).toHaveBeenCalled();
+        expect(transformDocument).toHaveBeenCalled();
+    });
+    it('should do things when there is no job', async () => {
+        // GIVEN
+        const count = 1;
+        const dataset = [{ id: 1, name: 'test' }];
+        const findLimitFromSkip = jest.fn().mockImplementation(() => dataset);
+        const transformDocument = jest.fn();
+        const insertBatch = jest.fn();
+
+        // WHEN
+        await tranformAllDocuments(
+            count,
+            findLimitFromSkip,
+            insertBatch,
+            transformDocument,
+        );
+
+        // THEN
+        expect(findLimitFromSkip).toHaveBeenCalled();
+        expect(insertBatch).toHaveBeenCalled();
+        expect(transformDocument).toHaveBeenCalled();
+    });
+});

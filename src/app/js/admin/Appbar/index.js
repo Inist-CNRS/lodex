@@ -11,12 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import PublicationButton from '../publish/PublicationButton';
 import { fromUser } from '../../sharedSelectors';
-import {
-    fromParsing,
-    fromProgress,
-    fromPublication,
-    fromPublish,
-} from '../selectors';
+import { fromParsing, fromPublication } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';
 import theme from './../../theme';

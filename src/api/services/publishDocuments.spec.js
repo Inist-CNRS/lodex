@@ -19,6 +19,10 @@ const fields = [
     { name: 'field3', scope: 'dataset' },
 ];
 
+const job = {
+    log: jest.fn(),
+    isActive: () => true,
+};
 const getCtx = ({ subresources } = {}) => ({
     dataset: {
         findLimitFromSkip: 'dataset.findLimitFromSkip()',
@@ -36,6 +40,7 @@ const getCtx = ({ subresources } = {}) => ({
     publishedDataset: {
         insertBatch: 'publishedDataset.insertBatch()',
     },
+    job,
 });
 
 const getMocks = () => ({
@@ -72,6 +77,8 @@ describe('publishDocuments', () => {
                 'dataset.findLimitFromSkip()',
                 'publishedDataset.insertBatch()',
                 'initializeVersion()',
+                undefined,
+                job,
             );
         });
 
@@ -93,6 +100,8 @@ describe('publishDocuments', () => {
                 'dataset.findLimitFromSkip()',
                 'publishedDataset.insertBatch()',
                 'initializeVersion()',
+                undefined,
+                job,
             );
         });
     });

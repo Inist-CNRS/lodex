@@ -18,7 +18,7 @@ describe('Progress', () => {
     it('should change status on start if target is 0', () => {
         const progress = new Progress();
 
-        progress.start(PUBLISH_DOCUMENT, 0);
+        progress.start({ status: PUBLISH_DOCUMENT, target: 0 });
 
         expect(progress.getProgress()).toEqual({
             target: 0,
@@ -34,7 +34,7 @@ describe('Progress', () => {
     it('should allow to follow Progress', () => {
         const progress = new Progress();
 
-        progress.start(PUBLISH_DOCUMENT, 30);
+        progress.start({ status: PUBLISH_DOCUMENT, target: 30 });
 
         expect(progress.getProgress()).toEqual({
             target: 30,
@@ -86,7 +86,7 @@ describe('Progress', () => {
     it('should return the symbol if specified one', () => {
         const progress = new Progress();
 
-        progress.start('percent', 100, '%');
+        progress.start({ status: 'percent', target: 100, symbol: '%' });
 
         expect(progress.getProgress().symbol).toBe('%');
 
@@ -99,7 +99,7 @@ describe('Progress', () => {
         it('should cancel progress ignoring all further operation until getProgress is called that will throw the error', () => {
             const progress = new Progress();
 
-            progress.start(PUBLISH_DOCUMENT, 30);
+            progress.start({ status: PUBLISH_DOCUMENT, target: 30 });
             const error = new Error('Boom');
             progress.throw(error);
             progress.incrementProgress();

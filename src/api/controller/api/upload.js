@@ -60,7 +60,10 @@ export const getStreamFromUrl = url => request.get(url);
 export const uploadFile = ctx => async loaderName => {
     const { filename, totalChunks, extension } = ctx.resumable;
     if (progress.status !== SAVING_DATASET) {
-        progress.start(SAVING_DATASET, undefined, undefined, 'imported_lines');
+        progress.start({
+            status: SAVING_DATASET,
+            label: 'imported_lines',
+        });
     }
     const mergedStream = ctx.mergeChunks(filename, totalChunks);
     const parseStream = await ctx.getLoader(
@@ -142,7 +145,7 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
     } = ctx.resumable;
 
     if (progress.getProgress().status === PENDING) {
-        progress.start(UPLOADING_DATASET, 100, '%');
+        progress.start({ status: UPLOADING_DATASET, target: 100, symbol: '%' });
     }
     if (!(await ctx.checkFileExists(chunkname, currentChunkSize))) {
         await ctx.saveStreamInFile(stream, chunkname);

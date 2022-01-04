@@ -6,17 +6,27 @@ import publishDocuments from '../services/publishDocuments';
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
 export const PUBLISH = 'publish';
+export const PUBLISHER_QUEUE = 'publisher';
 const listeners = [];
-export const publisherQueue = new Queue('publisher', process.env.REDIS_URL, {
-    defaultJobOptions: { removeOnComplete: 100, removeOnFail: 100, lifo: true },
-});
+export const publisherQueue = new Queue(
+    PUBLISHER_QUEUE,
+    process.env.REDIS_URL,
+    {
+        defaultJobOptions: {
+            removeOnComplete: 100,
+            removeOnFail: 100,
+            lifo: true,
+        },
+    },
+);
 
 publisherQueue.process(PUBLISH, (job, done) => {
     publisherQueue.clean(100, 'wait');
     startPublishing(job)
-        .then(() => {
+        .then(async () => {
             job.progress(100);
-            notifyListeners({ isPublishing: false, success: true });
+            const isFailed = await job.isFailed();
+            notifyListeners({ isPublishing: false, success: !isFailed });
             done();
         })
         .catch(err => {

@@ -8,6 +8,8 @@ import { PUBLISH_DOCUMENT } from '../../common/progressStatus';
 import { URI_FIELD_NAME } from '../../common/uris';
 import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
 import parseValue from '../../common/tools/parseValue';
+import logger from './logger';
+import { jobLogger } from '../workers/tools';
 
 export const versionTransformerDecorator = (
     transformDocument,
@@ -85,7 +87,11 @@ export const publishDocumentsFactory = ({
     getDocumentTransformer,
     transformAllDocuments,
 }) => async (ctx, count, fields) => {
-    ctx.job && ctx.job.log('Publishing documents');
+    if (!ctx.job) {
+        logger.error('Job is not defined');
+        return;
+    }
+    jobLogger.info(ctx.job, 'Publishing documents');
     const mainResourceFields = fields
         .filter(
             c =>
@@ -130,14 +136,12 @@ export const publishDocumentsFactory = ({
         mainResourceFields,
     );
 
-    progress.start(
-        PUBLISH_DOCUMENT,
-        count,
-        null,
-        'publishing',
-        null,
-        'publisher',
-    );
+    progress.start({
+        status: PUBLISH_DOCUMENT,
+        target: count,
+        symbol: 'publishing',
+        type: 'publisher',
+    });
 
     await Promise.all(
         Object.keys(groupedSubresourceFields).map(subresourceId => {
@@ -194,6 +198,7 @@ export const publishDocumentsFactory = ({
                 ctx.publishedDataset.insertBatchIgnoreDuplicate,
                 x => x, // disable default transformer (do it in extractor)
                 datasetChunkExtractor,
+                ctx.job,
             );
         }),
     );
@@ -203,8 +208,13 @@ export const publishDocumentsFactory = ({
         ctx.dataset.findLimitFromSkip,
         ctx.publishedDataset.insertBatch,
         versionTransformerDecorator(transformMainResourceDocument),
+        undefined,
+        ctx.job,
     );
-    ctx.job && ctx.job.log('Document published');
+
+    ctx.job.isActive()
+        ? jobLogger.info(ctx.job, 'Documents published')
+        : jobLogger.error(ctx.job, 'Publication cancelled');
 };
 
 export default publishDocumentsFactory({
