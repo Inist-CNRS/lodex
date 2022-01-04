@@ -10,8 +10,10 @@ import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 
 const getSourceData = async (ctx, sourceColumn) => {
-    const excerpt = await ctx.dataset.getExcerpt();
-    const sourceData = excerpt.find(line => !!line[sourceColumn])[sourceColumn];
+    const excerpt = await ctx.dataset.getExcerpt({
+        [sourceColumn]: { $ne: null },
+    });
+    const sourceData = excerpt[0][sourceColumn];
     try {
         return JSON.parse(sourceData);
     } catch {
@@ -67,7 +69,9 @@ export const getEnrichmentDataPreview = async ctx => {
     }
 
     const commands = createEzsRuleCommands(previewRule);
-    const excerptLines = await getExcerptLines(ctx);
+    const excerptLines = await ctx.dataset.getExcerpt({
+        [sourceColumn]: { $ne: null },
+    });
     let result = [];
     for (const line of excerptLines) {
         let { value } = await processEzsEnrichment(line, commands);
