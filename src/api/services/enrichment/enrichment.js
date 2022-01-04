@@ -168,15 +168,6 @@ export const getEnrichmentDatasetCandidate = async (id, ctx) => {
     return entry;
 };
 
-export const getExcerptLines = async ctx => {
-    const lines = await ctx.dataset
-        .find({})
-        .limit(8)
-        .toArray();
-
-    return lines;
-};
-
 const createEzsRuleCommands = rule => ezs.compileScript(rule).get();
 
 const processEzsEnrichment = (entry, commands) => {
