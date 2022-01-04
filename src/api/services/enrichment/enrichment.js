@@ -77,7 +77,7 @@ export const getEnrichmentDataPreview = async ctx => {
 };
 
 const isBasicType = sourceData => {
-    return typeof sourceData === 'string' || typeof sourceData === 'number';
+    return typeof sourceData !== 'object';
 };
 
 const isDirectPath = sourceData => {
