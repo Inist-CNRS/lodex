@@ -5,7 +5,7 @@ plugin = analytics
 
 [assign]
 path = value
-value = get("value.[[SOURCE COLUMN]]")
+value = get("value").update("[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(item)} catch {return item } }).get("[[SOURCE COLUMN]]")
 
 [expand]
 path = value
