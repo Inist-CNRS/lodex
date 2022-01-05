@@ -4,23 +4,9 @@ plugin = analytics
 
 [assign]
 path = value
-value = get("value.[[SOURCE COLUMN]]").castArray().map(JSON.parse).reduce((acc, item) => item)
+value = get("value.[[SOURCE COLUMN]]").update("[[SUB PATH]]", (item) => { try { return JSON.parse(item)} catch {return item } }).get("[[SUB PATH]]")
 
-[expand]
-path = value
-size = 1
-
-[expand/exploding]
-
-[expand/assign]
-path = value
-value = get("value.[[SUB PATH]]")
-
-[expand/URLConnect]
+[URLConnect]
 url = [[WEB SERVICE URL]]
 timeout = 5000
-noerror = true
-
-[expand/aggregate]
-
-[debug]
+noerror = false
