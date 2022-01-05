@@ -1,4 +1,4 @@
-import { getEnrichmentRuleModel } from './enrichment';
+import { getEnrichmentDataPreview, getEnrichmentRuleModel } from './enrichment';
 
 describe('enrichment', () => {
     describe('getEnrichmentRuleModel', () => {
@@ -90,6 +90,34 @@ describe('enrichment', () => {
             expect(() =>
                 getEnrichmentRuleModel(sourceData, enrichment),
             ).toThrow('No data with this sub-path');
+        });
+    });
+
+    describe('getEnrichmentDataPreview', () => {
+        it('should return right fields values when getting preview with simple sourceColumn', async () => {
+            // GIVEN
+            const ctx = {
+                request: {
+                    body: {
+                        sourceColumn: 'simpleValue',
+                    },
+                },
+                dataset: {
+                    getExcerpt: () => {
+                        return [
+                            { _id: '1', simpleValue: 'plop' },
+                            { _id: '2', simpleValue: 'plip' },
+                            { _id: '3', simpleValue: 'ploup' },
+                        ];
+                    },
+                },
+            };
+
+            // WHEN
+            const results = await getEnrichmentDataPreview(ctx);
+
+            // THEN
+            expect(results).toContain('plop', 'plip', 'ploup');
         });
     });
 });
