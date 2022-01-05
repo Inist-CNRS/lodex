@@ -4,7 +4,8 @@ plugin = analytics
 
 [assign]
 path = value
-value = get("value.[[SOURCE COLUMN]]").update("[[SUB PATH]]", (item) => { try { return JSON.parse(item)} catch {return item } }).get("[[SUB PATH]]")
+value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(item); } catch { return item; } }).get('value.[[SOURCE COLUMN]].[[SUB PATH]]')
+
 
 [URLConnect]
 url = [[WEB SERVICE URL]]

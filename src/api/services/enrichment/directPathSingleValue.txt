@@ -13,7 +13,7 @@ rule = required
 
 [assign]
 path = value
-value = get("value.[[SOURCE COLUMN]]")
+value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(item); } catch { return item; } }).get("value.[[SOURCE COLUMN]]")
 
 
 [URLConnect]
