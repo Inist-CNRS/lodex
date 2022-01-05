@@ -80,29 +80,13 @@ export const getEnrichmentDataPreview = async ctx => {
     return result;
 };
 
-const isBasicType = sourceData => {
-    return typeof sourceData !== 'object';
-};
-
-const isDirectPath = sourceData => {
-    return (
-        isBasicType(sourceData) ||
-        (Array.isArray(sourceData) &&
-            (sourceData.length === 0 || isBasicType(sourceData[0])))
-    );
-};
-
-const isSubPath = sourceData => {
-    return typeof sourceData === 'object';
-};
-
 export const getEnrichmentRuleModel = (sourceData, enrichment) => {
     try {
         let rule;
         if (!enrichment.sourceColumn) {
             throw new Error(`Missing source column parameter`);
         }
-        if (isDirectPath(sourceData)) {
+        if (!enrichment.subPath) {
             const file = Array.isArray(sourceData)
                 ? './directPathMultipleValues.txt'
                 : './directPathSingleValue.txt';
@@ -120,7 +104,7 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
             } else {
                 rule = cleanWebServiceRule(rule);
             }
-        } else if (isSubPath(sourceData)) {
+        } else {
             let subPathData;
             if (Array.isArray(sourceData)) {
                 subPathData = sourceData[0][enrichment.subPath];

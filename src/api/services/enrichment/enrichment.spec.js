@@ -176,5 +176,37 @@ describe('enrichment', () => {
                 expect.arrayContaining([['plop'], ['plip'], ['ploup']]),
             );
         });
+
+        it('should return right fields values when getting preview with array of object', async () => {
+            // GIVEN
+            const ctx = {
+                request: {
+                    body: {
+                        sourceColumn: 'arrayValue',
+                    },
+                },
+                dataset: {
+                    getExcerpt: () => {
+                        return [
+                            { _id: '1', arrayValue: [{ name: 'plop' }] },
+                            { _id: '2', arrayValue: [{ name: 'plip' }] },
+                            { _id: '3', arrayValue: [{ name: 'ploup' }] },
+                        ];
+                    },
+                },
+            };
+
+            // WHEN
+            const results = await getEnrichmentDataPreview(ctx);
+
+            // THEN
+            expect(results).toEqual(
+                expect.arrayContaining([
+                    [{ name: 'plop' }],
+                    [{ name: 'plip' }],
+                    [{ name: 'ploup' }],
+                ]),
+            );
+        });
     });
 });
