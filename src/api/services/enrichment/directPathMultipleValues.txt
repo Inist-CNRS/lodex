@@ -5,7 +5,7 @@ plugin = analytics
 
 [assign]
 path = value
-value = get("value.[[SOURCE COLUMN]]").castArray().map(JSON.parse).reduce((acc, item) => item)
+value = get("value.[[SOURCE COLUMN]]")
 
 [expand]
 path = value
