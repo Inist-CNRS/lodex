@@ -25,11 +25,17 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
             cy.get('tbody tr', { timeout: 500 })
                 .eq(0)
-                .should('contains.text', ['1', 'Row 1', 'Test 1'].join(''));
+                .should(
+                    'contains.text',
+                    ['"1"', '"Row 1"', '"Test 1"'].join(''),
+                );
 
             cy.get('tbody tr')
                 .eq(1)
-                .should('contains.text', ['2', 'Row 2', 'Test 2'].join(''));
+                .should(
+                    'contains.text',
+                    ['"2"', '"Row 2"', '"Test 2"'].join(''),
+                );
         });
 
         it('should display a information popup when adding a second dataset', () => {
@@ -48,7 +54,10 @@ describe('Dataset Publication', () => {
 
             cy.get('tbody tr')
                 .eq(1)
-                .should('contains.text', ['2', 'Row 2', 'Test 2'].join(''));
+                .should(
+                    'contains.text',
+                    ['"2"', '"Row 2"', '"Test 2"'].join(''),
+                );
         });
     });
 
