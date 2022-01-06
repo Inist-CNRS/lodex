@@ -139,7 +139,7 @@ export const publishDocumentsFactory = ({
     progress.start({
         status: PUBLISH_DOCUMENT,
         target: count,
-        symbol: 'publishing',
+        label: 'publishing',
         type: 'publisher',
     });
 
