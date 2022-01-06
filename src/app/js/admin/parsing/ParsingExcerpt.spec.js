@@ -86,25 +86,25 @@ describe('<ParsingExcerpt />', () => {
                 .find(ParsingExcerptColumn)
                 .at(0)
                 .prop('value'),
-        ).toEqual('foo1');
+        ).toEqual('"foo1"');
         expect(
             wrapper
                 .find(ParsingExcerptColumn)
                 .at(1)
                 .prop('value'),
-        ).toEqual('bar1');
+        ).toEqual('"bar1"');
         expect(
             wrapper
                 .find(ParsingExcerptColumn)
                 .at(2)
                 .prop('value'),
-        ).toEqual('foo2');
+        ).toEqual('"foo2"');
         expect(
             wrapper
                 .find(ParsingExcerptColumn)
                 .at(3)
                 .prop('value'),
-        ).toEqual('bar2');
+        ).toEqual('"bar2"');
     });
 
     it('should render line with enrichment column hidden', () => {
@@ -133,7 +133,7 @@ describe('<ParsingExcerpt />', () => {
                 .find(ParsingExcerptColumn)
                 .at(0)
                 .prop('value'),
-        ).toEqual('bar1');
+        ).toEqual('"bar1"');
         expect(
             wrapper
                 .find(ParsingExcerptColumn)
@@ -145,7 +145,7 @@ describe('<ParsingExcerpt />', () => {
                 .find(ParsingExcerptColumn)
                 .at(1)
                 .prop('value'),
-        ).toEqual('bar2');
+        ).toEqual('"bar2"');
     });
 
     it('should render line with loaded column hidden', () => {
@@ -168,7 +168,7 @@ describe('<ParsingExcerpt />', () => {
                 .find(ParsingExcerptColumn)
                 .at(0)
                 .prop('value'),
-        ).toEqual('foo1');
+        ).toEqual('"foo1"');
         expect(
             wrapper
                 .find(ParsingExcerptColumn)
@@ -180,7 +180,7 @@ describe('<ParsingExcerpt />', () => {
                 .find(ParsingExcerptColumn)
                 .at(1)
                 .prop('value'),
-        ).toEqual('foo2');
+        ).toEqual('"foo2"');
         expect(
             wrapper
                 .find(ParsingExcerptColumn)

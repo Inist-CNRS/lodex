@@ -76,10 +76,7 @@ export const filterColumnsToShow = (
 };
 
 const formatValue = value => {
-    if (typeof value === 'object') {
-        return JSON.stringify(value);
-    }
-    return value;
+    return JSON.stringify(value);
 };
 
 export const ParsingExcerptComponent = ({
