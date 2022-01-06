@@ -21,6 +21,7 @@ import classNames from 'classnames';
 import { Cancel } from '@material-ui/icons';
 import jobsApi from '../api/job';
 import CancelPublicationDialog from './CancelPublicationDialog';
+import { publicationCleared } from '../publication';
 
 const useStyles = makeStyles({
     progress: {
@@ -61,7 +62,11 @@ const useStyles = makeStyles({
 
 const JobProgressComponent = props => {
     const classes = useStyles();
-    const { p: polyglot, handlePublishSuccess } = props;
+    const {
+        p: polyglot,
+        handlePublishSuccess,
+        handleCancelPublication,
+    } = props;
     const [progress, setProgress] = useState();
     const [
         isCancelPublicationDialogOpen,
@@ -162,6 +167,7 @@ const JobProgressComponent = props => {
                 }}
                 onConfirm={() => {
                     jobsApi.cancelJob('publisher');
+                    handleCancelPublication();
                     setIsCancelPublicationDialogOpen(false);
                 }}
             />
@@ -171,9 +177,11 @@ const JobProgressComponent = props => {
 JobProgressComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     handlePublishSuccess: PropTypes.func.isRequired,
+    handleCancelPublication: PropTypes.func.isRequired,
 };
 const mapDispatchToProps = {
     handlePublishSuccess: () => publishSuccess(),
+    handleCancelPublication: () => publicationCleared(),
 };
 export default compose(
     connect(undefined, mapDispatchToProps),
