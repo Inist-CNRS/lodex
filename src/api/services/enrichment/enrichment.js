@@ -4,7 +4,7 @@ import ezs from '@ezs/core';
 import progress from '../../services/progress';
 
 import { ObjectId } from 'mongodb';
-import { PassThrough } from 'stream';
+import { PassThrough, pipeline, Transform } from 'stream';
 import { IN_PROGRESS, FINISHED, ERROR } from '../../../common/enrichmentStatus';
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
@@ -133,7 +133,7 @@ export const getEnrichmentDatasetCandidate = async (id, ctx) => {
     const enrichment = await ctx.enrichment.findOneById(id);
     const [entry] = await ctx.dataset
         .find({ [enrichment.name]: { $exists: false } })
-        .limit(1)
+        .limit(100)
         .toArray();
 
     return entry;
@@ -155,6 +155,30 @@ const processEzsEnrichment = (entry, commands) => {
     });
 };
 
+const formatInputData = new Transform({
+    objectMode: true,
+    transform: (chunk, encoding, callback) => {
+        console.log('typeof chunk', typeof chunk);
+        const transformedData = { id: chunk._id, value: chunk };
+        callback(null, transformedData);
+    },
+});
+
+//     (chunk, encoding, callback) => {
+//     console.log(chunk);
+//     return { id: chunk._id, value: chunk };
+// });
+const ezsPipeInput = (commands, ctx, room) => {
+    const input = new PassThrough({
+        objectMode: true,
+    });
+    input
+        .pipe(formatInputData)
+        .pipe(ezs('delegate', { commands }, {}))
+        .pipe(ezs('debug'));
+    return input;
+};
+
 const processEnrichment = async (entry, enrichment, ctx) => {
     let nextEntry = entry;
 
@@ -168,70 +192,68 @@ const processEnrichment = async (entry, enrichment, ctx) => {
     let lineIndex = 0;
     const room = `enrichment-job-${ctx.job.id}`;
     const commands = createEzsRuleCommands(enrichment.rule);
-    while (nextEntry) {
-        lineIndex += 1;
+    const input = ezsPipeInput(commands, ctx, room);
+    ctx.dataset
+        .find()
+        .stream()
+        .pipe(input);
+    // while (nextEntry) {
+    //     lineIndex += 1;
 
-        const logData = JSON.stringify({
-            level: 'info',
-            message: `Started enriching line #${lineIndex}`,
-            timestamp: new Date(),
-            status: IN_PROGRESS,
-        });
-        jobLogger.info(ctx.job, logData);
-        notifyListeners(room, logData);
-        try {
-            let { value } = await processEzsEnrichment(nextEntry, commands);
-            const logData = JSON.stringify({
-                level: 'info',
-                message: `Finished enriching line #${lineIndex} (output: ${value})`,
-                timestamp: new Date(),
-                status: IN_PROGRESS,
-            });
-            jobLogger.info(ctx.job, logData);
-            notifyListeners(room, logData);
+    //     const logData = JSON.stringify({
+    //         level: 'info',
+    //         message: `Started enriching line #${lineIndex}`,
+    //         timestamp: new Date(),
+    //         status: IN_PROGRESS,
+    //     });
+    //     jobLogger.info(ctx.job, logData);
+    //     notifyListeners(room, logData);
+    //     input.write({ id: nextEntry._id, value: nextEntry });
 
-            if (value === undefined) {
-                value = 'n/a';
-            }
+    //     // try {
+    //     //     let { value } = await processEzsEnrichment(nextEntry, commands);
+    //     //     const logData = JSON.stringify({
+    //     //         level: 'info',
+    //     //         message: `Finished enriching line #${lineIndex} (output: ${value})`,
+    //     //         timestamp: new Date(),
+    //     //         status: IN_PROGRESS,
+    //     //     });
+    //     //     jobLogger.info(ctx.job, logData);
+    //     //     notifyListeners(room, logData);
 
-            await ctx.dataset.updateOne(
-                { _id: new ObjectId(nextEntry._id) },
-                { $set: { [enrichment.name]: value } },
-            );
-        } catch (e) {
-            await ctx.dataset.updateOne(
-                { _id: new ObjectId(nextEntry._id) },
-                { $set: { [enrichment.name]: `ERROR: ${e.error.message}` } },
-            );
+    //     //     if (value === undefined) {
+    //     //         value = 'n/a';
+    //     //     }
 
-            const logData = JSON.stringify({
-                level: 'error',
-                message: `Error enriching line #${lineIndex}: ${e.error.message}`,
-                timestamp: new Date(),
-                status: IN_PROGRESS,
-            });
-            jobLogger.info(ctx.job, logData);
-            notifyListeners(room, logData);
-        }
+    //     //     await ctx.dataset.updateOne(
+    //     //         { _id: new ObjectId(nextEntry._id) },
+    //     //         { $set: { [enrichment.name]: value } },
+    //     //     );
+    //     // } catch (e) {
+    //     //     await ctx.dataset.updateOne(
+    //     //         { _id: new ObjectId(nextEntry._id) },
+    //     //         { $set: { [enrichment.name]: `ERROR: ${e.error.message}` } },
+    //     //     );
 
-        nextEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
-        progress.incrementProgress(1);
-        if (!nextEntry) {
-            await ctx.enrichment.updateOne(
-                { _id: new ObjectId(enrichment._id) },
-                { $set: { ['status']: FINISHED } },
-            );
-        }
-    }
-    progress.finish();
-    const logData = JSON.stringify({
-        level: 'ok',
-        message: `Enrichement finished`,
-        timestamp: new Date(),
-        status: FINISHED,
-    });
-    jobLogger.info(ctx.job, logData);
-    notifyListeners(room, logData);
+    //     //     const logData = JSON.stringify({
+    //     //         level: 'error',
+    //     //         message: `Error enriching line #${lineIndex}: ${e.error.message}`,
+    //     //         timestamp: new Date(),
+    //     //         status: IN_PROGRESS,
+    //     //     });
+    //     //     jobLogger.info(ctx.job, logData);
+    //     //     notifyListeners(room, logData);
+    //     // }
+
+    //     nextEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
+    //     progress.incrementProgress(1);
+    //     if (!nextEntry) {
+    //         await ctx.enrichment.updateOne(
+    //             { _id: new ObjectId(enrichment._id) },
+    //             { $set: { ['status']: FINISHED } },
+    //         );
+    //     }
+    // }
 };
 
 export const setEnrichmentJobId = async (ctx, enrichmentID, job) => {
