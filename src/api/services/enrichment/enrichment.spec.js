@@ -94,7 +94,7 @@ describe('enrichment', () => {
     });
 
     describe('getEnrichmentDataPreview', () => {
-        it('should return right fields values when getting preview with simple sourceColumn', async () => {
+        it('with direct path, single value', async () => {
             // GIVEN
             const ctx = {
                 request: {
@@ -122,7 +122,7 @@ describe('enrichment', () => {
             );
         });
 
-        it('should return right fields values when getting preview with object sourceColumn and subPath', async () => {
+        it('with direct path, single value and subpath', async () => {
             // GIVEN
             const ctx = {
                 request: {
@@ -150,7 +150,7 @@ describe('enrichment', () => {
                 expect.arrayContaining(['plop', 'plip', 'ploup']),
             );
         });
-        it('should return right fields values when getting preview with object sourceColumn and subPath stringified', async () => {
+        it('with direct path, single value stringified and subpath', async () => {
             // GIVEN
             const ctx = {
                 request: {
@@ -193,7 +193,7 @@ describe('enrichment', () => {
                 expect.arrayContaining(['plop', 'plip', 'ploup']),
             );
         });
-        it('should return right fields values when getting preview with array sourceColumn', async () => {
+        it('with direct path, multiple values', async () => {
             // GIVEN
             const ctx = {
                 request: {
@@ -204,7 +204,7 @@ describe('enrichment', () => {
                 dataset: {
                     getExcerpt: () => {
                         return [
-                            { _id: '1', arrayValue: ['plop'] },
+                            { _id: '1', arrayValue: ['plop', 'plup'] },
                             { _id: '2', arrayValue: ['plip'] },
                             { _id: '3', arrayValue: ['ploup'] },
                         ];
@@ -217,11 +217,11 @@ describe('enrichment', () => {
 
             // THEN
             expect(results).toEqual(
-                expect.arrayContaining([['plop'], ['plip'], ['ploup']]),
+                expect.arrayContaining([['plop', 'plup'], ['plip'], ['ploup']]),
             );
         });
 
-        it('should return right fields values when getting preview with array sourceColumn stringified', async () => {
+        it('with direct path, multiple values stringified', async () => {
             // GIVEN
             const ctx = {
                 request: {
@@ -232,7 +232,10 @@ describe('enrichment', () => {
                 dataset: {
                     getExcerpt: () => {
                         return [
-                            { _id: '1', arrayValue: JSON.stringify(['plop']) },
+                            {
+                                _id: '1',
+                                arrayValue: JSON.stringify(['plop', 'plup']),
+                            },
                             { _id: '2', arrayValue: JSON.stringify(['plip']) },
                             { _id: '3', arrayValue: JSON.stringify(['ploup']) },
                         ];
@@ -245,24 +248,37 @@ describe('enrichment', () => {
 
             // THEN
             expect(results).toEqual(
-                expect.arrayContaining([['plop'], ['plip'], ['ploup']]),
+                expect.arrayContaining([['plop', 'plup'], ['plip'], ['ploup']]),
             );
         });
 
-        it('should return right fields values when getting preview with array of object', async () => {
+        it('with direct path, multiple values and subpath', async () => {
             // GIVEN
             const ctx = {
                 request: {
                     body: {
                         sourceColumn: 'arrayValue',
+                        subPath: 'subPath',
                     },
                 },
                 dataset: {
                     getExcerpt: () => {
                         return [
-                            { _id: '1', arrayValue: [{ name: 'plop' }] },
-                            { _id: '2', arrayValue: [{ name: 'plip' }] },
-                            { _id: '3', arrayValue: [{ name: 'ploup' }] },
+                            {
+                                _id: '1',
+                                arrayValue: [
+                                    { subPath: 'plop' },
+                                    { subPath: 'plup' },
+                                ],
+                            },
+                            {
+                                _id: '2',
+                                arrayValue: [{ subPath: 'plip' }],
+                            },
+                            {
+                                _id: '3',
+                                arrayValue: [{ subPath: 'ploup' }],
+                            },
                         ];
                     },
                 },
@@ -273,11 +289,7 @@ describe('enrichment', () => {
 
             // THEN
             expect(results).toEqual(
-                expect.arrayContaining([
-                    [{ name: 'plop' }],
-                    [{ name: 'plip' }],
-                    [{ name: 'ploup' }],
-                ]),
+                expect.arrayContaining([['plop', 'plup'], ['plip'], ['ploup']]),
             );
         });
     });
