@@ -10,8 +10,10 @@ import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 
 const getSourceData = async (ctx, sourceColumn) => {
-    const excerpt = await ctx.dataset.getExcerpt();
-    const sourceData = excerpt.find(line => !!line[sourceColumn])[sourceColumn];
+    const excerptLines = await ctx.dataset.getExcerpt({
+        [sourceColumn]: { $ne: null },
+    });
+    const sourceData = excerptLines[0][sourceColumn];
     try {
         return JSON.parse(sourceData);
     } catch {
@@ -65,9 +67,10 @@ export const getEnrichmentDataPreview = async ctx => {
     } else {
         previewRule = cleanWebServiceRule(previewRule);
     }
-
     const commands = createEzsRuleCommands(previewRule);
-    const excerptLines = await getExcerptLines(ctx);
+    const excerptLines = await ctx.dataset.getExcerpt({
+        [sourceColumn]: { $ne: null },
+    });
     let result = [];
     for (const line of excerptLines) {
         let { value } = await processEzsEnrichment(line, commands);
@@ -76,28 +79,13 @@ export const getEnrichmentDataPreview = async ctx => {
     return result;
 };
 
-const isBasicType = sourceData => {
-    return typeof sourceData === 'string' || typeof sourceData === 'number';
-};
-
-const isDirectPath = sourceData => {
-    return (
-        isBasicType(sourceData) ||
-        (Array.isArray(sourceData) && isBasicType(sourceData[0]))
-    );
-};
-
-const isSubPath = sourceData => {
-    return typeof sourceData === 'object';
-};
-
 export const getEnrichmentRuleModel = (sourceData, enrichment) => {
     try {
         let rule;
         if (!enrichment.sourceColumn) {
             throw new Error(`Missing source column parameter`);
         }
-        if (isDirectPath(sourceData)) {
+        if (!enrichment.subPath) {
             const file = Array.isArray(sourceData)
                 ? './directPathMultipleValues.txt'
                 : './directPathSingleValue.txt';
@@ -115,41 +103,25 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
             } else {
                 rule = cleanWebServiceRule(rule);
             }
-        } else if (isSubPath(sourceData)) {
-            let subPathData;
-            if (Array.isArray(sourceData)) {
-                subPathData = sourceData[0][enrichment.subPath];
-            } else {
-                subPathData = sourceData[enrichment.subPath];
-            }
-
-            if (!subPathData) {
-                throw new Error(`No data with this sub-path`);
-            }
-
-            if (typeof subPathData === 'string' || Array.isArray(subPathData)) {
-                const file = Array.isArray(subPathData)
-                    ? './subPathMultipleValues.txt'
-                    : './subPathSingleValue.txt';
-                rule = fs
-                    .readFileSync(path.resolve(__dirname, file))
-                    .toString();
+        } else {
+            const file = Array.isArray(sourceData)
+                ? './subPathMultipleValues.txt'
+                : './subPathSingleValue.txt';
+            rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
+            rule = rule.replace(
+                /\[\[SOURCE COLUMN\]\]/g,
+                enrichment.sourceColumn,
+            );
+            rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
+            if (enrichment.webServiceUrl) {
                 rule = rule.replace(
-                    '[[SOURCE COLUMN]]',
-                    enrichment.sourceColumn,
+                    '[[WEB SERVICE URL]]',
+                    enrichment.webServiceUrl,
                 );
-                rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
-                if (enrichment.webServiceUrl) {
-                    rule = rule.replace(
-                        '[[WEB SERVICE URL]]',
-                        enrichment.webServiceUrl,
-                    );
-                } else {
-                    rule = cleanWebServiceRule(rule);
-                }
+            } else {
+                rule = cleanWebServiceRule(rule);
             }
         }
-
         return rule;
     } catch (e) {
         console.error('Error:', e.stack);
@@ -165,15 +137,6 @@ export const getEnrichmentDatasetCandidate = async (id, ctx) => {
         .toArray();
 
     return entry;
-};
-
-export const getExcerptLines = async ctx => {
-    const lines = await ctx.dataset
-        .find({})
-        .limit(8)
-        .toArray();
-
-    return lines;
 };
 
 const createEzsRuleCommands = rule => ezs.compileScript(rule).get();
@@ -287,8 +250,8 @@ export const startEnrichment = async ctx => {
         progress.start({
             status: ENRICHING,
             target: dataSetSize,
-            symbol: 'ENRICHING',
-            label: enrichment.name,
+            label: 'ENRICHING',
+            subLabel: enrichment.name,
             type: 'enrichment',
         });
     }

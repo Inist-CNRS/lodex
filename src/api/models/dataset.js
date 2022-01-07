@@ -17,9 +17,9 @@ export default db => {
                 w: 1,
             }),
         );
-    collection.getExcerpt = () =>
+    collection.getExcerpt = filter =>
         collection
-            .find()
+            .find(filter)
             .limit(8)
             .toArray();
     collection.findLimitFromSkip = (limit, skip, query = {}) =>

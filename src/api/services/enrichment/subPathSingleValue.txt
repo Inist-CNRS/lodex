@@ -2,25 +2,14 @@
 plugin = basics
 plugin = analytics
 
+# We sometime have a stringified value (like "{id:1, name: 'Bob'}"), and we want to parse it, if possible
+# This assign command aim is to do that, it update the [[SOURCE COLUMN]] to JSON.parse it if possible.
 [assign]
 path = value
-value = get("value.[[SOURCE COLUMN]]").castArray().map(JSON.parse).reduce((acc, item) => item)
+value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(item); } catch { return item; } }).get('value.[[SOURCE COLUMN]].[[SUB PATH]]')
 
-[expand]
-path = value
-size = 1
 
-[expand/exploding]
-
-[expand/assign]
-path = value
-value = get("value.[[SUB PATH]]")
-
-[expand/URLConnect]
+[URLConnect]
 url = [[WEB SERVICE URL]]
 timeout = 5000
-noerror = true
-
-[expand/aggregate]
-
-[debug]
+noerror = false
