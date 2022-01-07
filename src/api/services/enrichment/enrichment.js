@@ -10,10 +10,10 @@ import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 
 const getSourceData = async (ctx, sourceColumn) => {
-    const excerpt = await ctx.dataset.getExcerpt({
+    const excerptLines = await ctx.dataset.getExcerpt({
         [sourceColumn]: { $ne: null },
     });
-    const sourceData = excerpt[0][sourceColumn];
+    const sourceData = excerptLines[0][sourceColumn];
     try {
         return JSON.parse(sourceData);
     } catch {
