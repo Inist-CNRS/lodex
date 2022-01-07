@@ -76,21 +76,6 @@ describe('enrichment', () => {
                 getEnrichmentRuleModel(sourceData, enrichment),
             ).toThrow('Missing source column parameter');
         });
-
-        it('should get an error for having no data with this sub-path', async () => {
-            const sourceData = [{ sub: ['data', 'otherData'] }];
-            const enrichment = {
-                name: 'Test',
-                sourceColumn: 'source',
-                subPath: 'bad_sub',
-                advancedMode: false,
-                webServiceUrl: 'lodex.fr',
-            };
-
-            expect(() =>
-                getEnrichmentRuleModel(sourceData, enrichment),
-            ).toThrow('No data with this sub-path');
-        });
     });
 
     describe('getEnrichmentDataPreview', () => {
@@ -278,6 +263,51 @@ describe('enrichment', () => {
                             {
                                 _id: '3',
                                 arrayValue: [{ subPath: 'ploup' }],
+                            },
+                        ];
+                    },
+                },
+            };
+
+            // WHEN
+            const results = await getEnrichmentDataPreview(ctx);
+
+            // THEN
+            expect(results).toEqual(
+                expect.arrayContaining([['plop', 'plup'], ['plip'], ['ploup']]),
+            );
+        });
+        // We skip that test because it's a very specific case where we want to get a subpath in an array that is stringified, that may not happen. If the dataset import a string, then, it's a string.
+        it.skip('with direct path, multiple values and subpath stringified', async () => {
+            // GIVEN
+            const ctx = {
+                request: {
+                    body: {
+                        sourceColumn: 'arrayValue',
+                        subPath: 'subPath',
+                    },
+                },
+                dataset: {
+                    getExcerpt: () => {
+                        return [
+                            {
+                                _id: '1',
+                                arrayValue: JSON.stringify([
+                                    { subPath: 'plop' },
+                                    { subPath: 'plup' },
+                                ]),
+                            },
+                            {
+                                _id: '2',
+                                arrayValue: JSON.stringify([
+                                    { subPath: 'plip' },
+                                ]),
+                            },
+                            {
+                                _id: '3',
+                                arrayValue: JSON.stringify([
+                                    { subPath: 'ploup' },
+                                ]),
                             },
                         ];
                     },
