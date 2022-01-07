@@ -14,7 +14,6 @@ size = 100
 
 [expand/expand/exploding]
 
-
 [expand/expand/assign]
 path = value
 value = get("value.[[SUB PATH]]")
