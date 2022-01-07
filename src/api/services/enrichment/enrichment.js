@@ -67,7 +67,6 @@ export const getEnrichmentDataPreview = async ctx => {
     } else {
         previewRule = cleanWebServiceRule(previewRule);
     }
-
     const commands = createEzsRuleCommands(previewRule);
     const excerptLines = await ctx.dataset.getExcerpt({
         [sourceColumn]: { $ne: null },
@@ -105,40 +104,24 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
                 rule = cleanWebServiceRule(rule);
             }
         } else {
-            let subPathData;
-            if (Array.isArray(sourceData)) {
-                subPathData = sourceData[0][enrichment.subPath];
-            } else {
-                subPathData = sourceData[enrichment.subPath];
-            }
-
-            if (!subPathData) {
-                throw new Error(`No data with this sub-path`);
-            }
-
-            if (typeof subPathData === 'string' || Array.isArray(subPathData)) {
-                const file = Array.isArray(subPathData)
-                    ? './subPathMultipleValues.txt'
-                    : './subPathSingleValue.txt';
-                rule = fs
-                    .readFileSync(path.resolve(__dirname, file))
-                    .toString();
+            const file = Array.isArray(sourceData)
+                ? './subPathMultipleValues.txt'
+                : './subPathSingleValue.txt';
+            rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
+            rule = rule.replace(
+                /\[\[SOURCE COLUMN\]\]/g,
+                enrichment.sourceColumn,
+            );
+            rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
+            if (enrichment.webServiceUrl) {
                 rule = rule.replace(
-                    '[[SOURCE COLUMN]]',
-                    enrichment.sourceColumn,
+                    '[[WEB SERVICE URL]]',
+                    enrichment.webServiceUrl,
                 );
-                rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
-                if (enrichment.webServiceUrl) {
-                    rule = rule.replace(
-                        '[[WEB SERVICE URL]]',
-                        enrichment.webServiceUrl,
-                    );
-                } else {
-                    rule = cleanWebServiceRule(rule);
-                }
+            } else {
+                rule = cleanWebServiceRule(rule);
             }
         }
-
         return rule;
     } catch (e) {
         console.error('Error:', e.stack);
@@ -267,8 +250,8 @@ export const startEnrichment = async ctx => {
         progress.start({
             status: ENRICHING,
             target: dataSetSize,
-            symbol: 'ENRICHING',
-            label: enrichment.name,
+            label: 'ENRICHING',
+            subLabel: enrichment.name,
             type: 'enrichment',
         });
     }
