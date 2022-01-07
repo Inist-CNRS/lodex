@@ -19,8 +19,8 @@ size = 100
 path = value
 value = get("value.[[SUB PATH]]")
 
-[expand/expand/transit]
-url = https://webservice.url
+[expand/expand/URLConnect]
+url = [[WEB SERVICE URL]]
 timeout = 1000
 noerror = true
 
