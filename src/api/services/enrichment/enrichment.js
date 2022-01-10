@@ -4,7 +4,7 @@ import ezs from '@ezs/core';
 import progress from '../../services/progress';
 
 import { ObjectId } from 'mongodb';
-import { PassThrough, pipeline, Transform } from 'stream';
+import { PassThrough, pipeline, Transform, Writable } from 'stream';
 import { IN_PROGRESS, FINISHED, ERROR } from '../../../common/enrichmentStatus';
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
@@ -168,92 +168,62 @@ const formatInputData = new Transform({
 //     console.log(chunk);
 //     return { id: chunk._id, value: chunk };
 // });
-const ezsPipeInput = (commands, ctx, room) => {
-    const input = new PassThrough({
+
+const lodexOutput = (ctx, room, enrichment) =>
+    new Writable({
         objectMode: true,
+        write: (chunk, encoding, next) => {
+            console.log('saving:', chunk);
+            ctx.dataset
+                .updateOne(
+                    { _id: new ObjectId(chunk.id) },
+                    { $set: { [enrichment.name]: chunk.value } },
+                )
+                .then(() => {
+                    const logData = JSON.stringify({
+                        level: 'info',
+                        message: `Finished enriching line #${chunk.id} (output: ${chunk.value})`,
+                        timestamp: new Date(),
+                        status: IN_PROGRESS,
+                    });
+                    jobLogger.info(ctx.job, logData);
+                    notifyListeners(room, logData);
+                    progress.incrementProgress(1);
+                });
+            next();
+        },
     });
-    input
-        .pipe(formatInputData)
-        .pipe(ezs('delegate', { commands }, {}))
-        .pipe(ezs('debug'));
-    return input;
-};
 
-const processEnrichment = async (entry, enrichment, ctx) => {
-    let nextEntry = entry;
-
-    if (nextEntry) {
-        await ctx.enrichment.updateOne(
-            { _id: new ObjectId(enrichment._id) },
-            { $set: { ['status']: IN_PROGRESS } },
-        );
-    }
-
-    let lineIndex = 0;
+const processEnrichment = async (enrichment, ctx) => {
     const room = `enrichment-job-${ctx.job.id}`;
     const commands = createEzsRuleCommands(enrichment.rule);
-    const input = ezsPipeInput(commands, ctx, room);
+    const output = lodexOutput(ctx, room, enrichment);
+    const startingLogger = new PassThrough({ objectMode: true });
+    startingLogger.on('data', chunk => {
+        const logData = JSON.stringify({
+            level: 'info',
+            message: `Started enriching id ${chunk.id}`,
+            timestamp: new Date(),
+            status: IN_PROGRESS,
+        });
+        jobLogger.info(ctx.job, logData);
+        notifyListeners(room, logData);
+    });
+
     ctx.dataset
         .find()
         .stream()
-        .pipe(input);
-    // while (nextEntry) {
-    //     lineIndex += 1;
-
-    //     const logData = JSON.stringify({
-    //         level: 'info',
-    //         message: `Started enriching line #${lineIndex}`,
-    //         timestamp: new Date(),
-    //         status: IN_PROGRESS,
-    //     });
-    //     jobLogger.info(ctx.job, logData);
-    //     notifyListeners(room, logData);
-    //     input.write({ id: nextEntry._id, value: nextEntry });
-
-    //     // try {
-    //     //     let { value } = await processEzsEnrichment(nextEntry, commands);
-    //     //     const logData = JSON.stringify({
-    //     //         level: 'info',
-    //     //         message: `Finished enriching line #${lineIndex} (output: ${value})`,
-    //     //         timestamp: new Date(),
-    //     //         status: IN_PROGRESS,
-    //     //     });
-    //     //     jobLogger.info(ctx.job, logData);
-    //     //     notifyListeners(room, logData);
-
-    //     //     if (value === undefined) {
-    //     //         value = 'n/a';
-    //     //     }
-
-    //     //     await ctx.dataset.updateOne(
-    //     //         { _id: new ObjectId(nextEntry._id) },
-    //     //         { $set: { [enrichment.name]: value } },
-    //     //     );
-    //     // } catch (e) {
-    //     //     await ctx.dataset.updateOne(
-    //     //         { _id: new ObjectId(nextEntry._id) },
-    //     //         { $set: { [enrichment.name]: `ERROR: ${e.error.message}` } },
-    //     //     );
-
-    //     //     const logData = JSON.stringify({
-    //     //         level: 'error',
-    //     //         message: `Error enriching line #${lineIndex}: ${e.error.message}`,
-    //     //         timestamp: new Date(),
-    //     //         status: IN_PROGRESS,
-    //     //     });
-    //     //     jobLogger.info(ctx.job, logData);
-    //     //     notifyListeners(room, logData);
-    //     // }
-
-    //     nextEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
-    //     progress.incrementProgress(1);
-    //     if (!nextEntry) {
-    //         await ctx.enrichment.updateOne(
-    //             { _id: new ObjectId(enrichment._id) },
-    //             { $set: { ['status']: FINISHED } },
-    //         );
-    //     }
-    // }
+        .pipe(formatInputData)
+        .pipe(startingLogger)
+        .pipe(ezs('delegate', { commands }, {}))
+        .pipe(output)
+        .on('finish', () => {
+            progress.finish();
+            ctx.enrichment.updateOne(
+                { _id: new ObjectId(enrichment._id) },
+                { $set: { ['status']: FINISHED } },
+            );
+        });
 };
 
 export const setEnrichmentJobId = async (ctx, enrichmentID, job) => {
@@ -266,7 +236,6 @@ export const setEnrichmentJobId = async (ctx, enrichmentID, job) => {
 export const startEnrichment = async ctx => {
     const id = ctx.job?.data?.id;
     const enrichment = await ctx.enrichment.findOneById(id);
-    const firstEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
     const dataSetSize = await ctx.dataset.count();
     if (progress.getProgress().status === PENDING) {
         progress.start({
@@ -286,7 +255,7 @@ export const startEnrichment = async ctx => {
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-    await processEnrichment(firstEntry, enrichment, ctx);
+    await processEnrichment(enrichment, ctx);
 };
 
 export const setEnrichmentError = async ctx => {
