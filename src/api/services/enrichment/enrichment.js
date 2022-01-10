@@ -4,7 +4,7 @@ import ezs from '@ezs/core';
 import progress from '../../services/progress';
 
 import { ObjectId } from 'mongodb';
-import { PassThrough, pipeline, Transform, Writable } from 'stream';
+import { PassThrough, Transform, Writable } from 'stream';
 import { IN_PROGRESS, FINISHED, ERROR } from '../../../common/enrichmentStatus';
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
@@ -81,47 +81,31 @@ export const getEnrichmentDataPreview = async ctx => {
 
 export const getEnrichmentRuleModel = (sourceData, enrichment) => {
     try {
-        let rule;
         if (!enrichment.sourceColumn) {
             throw new Error(`Missing source column parameter`);
         }
+        let file;
         if (!enrichment.subPath) {
-            const file = Array.isArray(sourceData)
+            file = Array.isArray(sourceData)
                 ? './directPathMultipleValues.txt'
                 : './directPathSingleValue.txt';
-            rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
-            rule = rule.replace(
-                /\[\[SOURCE COLUMN\]\]/g,
-                enrichment.sourceColumn,
-            );
-
-            if (enrichment.webServiceUrl) {
-                rule = rule.replace(
-                    '[[WEB SERVICE URL]]',
-                    enrichment.webServiceUrl,
-                );
-            } else {
-                rule = cleanWebServiceRule(rule);
-            }
         } else {
-            const file = Array.isArray(sourceData)
+            file = Array.isArray(sourceData)
                 ? './subPathMultipleValues.txt'
                 : './subPathSingleValue.txt';
-            rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
-            rule = rule.replace(
-                /\[\[SOURCE COLUMN\]\]/g,
-                enrichment.sourceColumn,
-            );
-            rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
-            if (enrichment.webServiceUrl) {
-                rule = rule.replace(
-                    '[[WEB SERVICE URL]]',
-                    enrichment.webServiceUrl,
-                );
-            } else {
-                rule = cleanWebServiceRule(rule);
-            }
         }
+        let rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
+        rule = rule.replace(/\[\[SOURCE COLUMN\]\]/g, enrichment.sourceColumn);
+        rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
+        if (enrichment.webServiceUrl) {
+            rule = rule.replace(
+                '[[WEB SERVICE URL]]',
+                enrichment.webServiceUrl,
+            );
+        } else {
+            rule = cleanWebServiceRule(rule);
+        }
+
         return rule;
     } catch (e) {
         console.error('Error:', e.stack);
@@ -158,22 +142,15 @@ const processEzsEnrichment = (entry, commands) => {
 const formatInputData = new Transform({
     objectMode: true,
     transform: (chunk, encoding, callback) => {
-        console.log('typeof chunk', typeof chunk);
         const transformedData = { id: chunk._id, value: chunk };
         callback(null, transformedData);
     },
 });
 
-//     (chunk, encoding, callback) => {
-//     console.log(chunk);
-//     return { id: chunk._id, value: chunk };
-// });
-
 const lodexOutput = (ctx, room, enrichment) =>
     new Writable({
         objectMode: true,
-        write: (chunk, encoding, next) => {
-            console.log('saving:', chunk);
+        write: (chunk, _, next) => {
             ctx.dataset
                 .updateOne(
                     { _id: new ObjectId(chunk.id) },
