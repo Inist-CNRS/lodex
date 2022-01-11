@@ -166,8 +166,8 @@ const lodexOutput = (ctx, room, enrichment) =>
                     jobLogger.info(ctx.job, logData);
                     notifyListeners(room, logData);
                     progress.incrementProgress(1);
+                    next();
                 });
-            next();
         },
     });
 
