@@ -17,6 +17,8 @@ rule = required
 path = value
 value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(item); } catch { return item; } }).get("value.[[SOURCE COLUMN]]")
 
+[group]
+length=10
 
 [URLConnect]
 url = [[WEB SERVICE URL]]
