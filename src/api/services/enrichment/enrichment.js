@@ -9,7 +9,7 @@ import { IN_PROGRESS, FINISHED, ERROR } from '../../../common/enrichmentStatus';
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 
-const BATCH_SIZE = 10;
+const BATCH_SIZE = 50;
 
 const getSourceData = async (ctx, sourceColumn) => {
     const excerptLines = await ctx.dataset.getExcerpt({
@@ -95,6 +95,8 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
                 /\[\[SOURCE COLUMN\]\]/g,
                 enrichment.sourceColumn,
             );
+            rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
+            rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
 
             if (enrichment.webServiceUrl) {
                 rule = rule.replace(
@@ -114,6 +116,7 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
                 enrichment.sourceColumn,
             );
             rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
+            rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
             if (enrichment.webServiceUrl) {
                 rule = rule.replace(
                     '[[WEB SERVICE URL]]',
@@ -148,6 +151,13 @@ const processEzsEnrichment = (entries, commands) => {
         const input = new PassThrough({ objectMode: true });
         input
             .pipe(ezs('delegate', { commands }, {}))
+            .pipe(
+                ezs.catch(e => {
+                    // TODO how to handle this.
+                    console.log(e);
+                }),
+            )
+            // .pipe(ezs('debug'))
             .on('data', data => {
                 values.push(data);
             })
@@ -178,10 +188,9 @@ const processEnrichment = async (enrichment, ctx) => {
             .limit(BATCH_SIZE)
             .toArray();
         for (const entry of entries) {
-            const lineIndex = entries.indexOf(entry);
             const logData = JSON.stringify({
                 level: 'info',
-                message: `Started enriching line #${index + lineIndex}`,
+                message: `Started enriching line #${entry._id}`,
                 timestamp: new Date(),
                 status: IN_PROGRESS,
             });
@@ -191,11 +200,9 @@ const processEnrichment = async (enrichment, ctx) => {
         try {
             let enrichedValues = await processEzsEnrichment(entries, commands);
             for (const enrichedValue of enrichedValues) {
-                const lineIndex = enrichedValues.indexOf(enrichedValue);
                 const logData = JSON.stringify({
                     level: 'info',
-                    message: `Finished enriching line #${index +
-                        lineIndex} (output: ${enrichedValue.value})`,
+                    message: `Finished enriching line #${enrichedValue.id} (output: ${enrichedValue.value})`,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });

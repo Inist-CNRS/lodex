@@ -4,13 +4,12 @@ plugin = analytics
 
 [expand]
 path = value.[[SOURCE COLUMN]]
-size = 1
 
 [expand/exploding]
 
 [expand/expand]
 path = value
-size = 100
+size = [[BATCH SIZE]]
 
 [expand/expand/exploding]
 

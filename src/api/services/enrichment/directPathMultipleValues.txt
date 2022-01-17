@@ -10,13 +10,13 @@ value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(it
 
 [expand]
 path = value
-size = 1
 
 [expand/exploding]
 
 
 [expand/expand]
 path = value
+size = [[BATCH SIZE]]
 
 [expand/expand/URLConnect]
 url = [[WEB SERVICE URL]]
