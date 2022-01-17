@@ -45,7 +45,6 @@ export const createEnrichmentRule = async ctx => {
 
 const cleanWebServiceRule = rule => {
     rule = rule.replace('URLConnect', 'transit');
-    rule = rule.replace('[group]', '[transit]');
     return rule;
 };
 
@@ -86,46 +85,30 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
         if (!enrichment.sourceColumn) {
             throw new Error(`Missing source column parameter`);
         }
+        let file;
         if (!enrichment.subPath) {
-            const file = Array.isArray(sourceData)
+            file = Array.isArray(sourceData)
                 ? './directPathMultipleValues.txt'
                 : './directPathSingleValue.txt';
-            rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
-            rule = rule.replace(
-                /\[\[SOURCE COLUMN\]\]/g,
-                enrichment.sourceColumn,
-            );
-            rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
-            rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
-
-            if (enrichment.webServiceUrl) {
-                rule = rule.replace(
-                    '[[WEB SERVICE URL]]',
-                    enrichment.webServiceUrl,
-                );
-            } else {
-                rule = cleanWebServiceRule(rule);
-            }
         } else {
-            const file = Array.isArray(sourceData)
+            file = Array.isArray(sourceData)
                 ? './subPathMultipleValues.txt'
                 : './subPathSingleValue.txt';
-            rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
-            rule = rule.replace(
-                /\[\[SOURCE COLUMN\]\]/g,
-                enrichment.sourceColumn,
-            );
-            rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
-            rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
-            if (enrichment.webServiceUrl) {
-                rule = rule.replace(
-                    '[[WEB SERVICE URL]]',
-                    enrichment.webServiceUrl,
-                );
-            } else {
-                rule = cleanWebServiceRule(rule);
-            }
         }
+
+        rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
+        rule = rule.replace(/\[\[SOURCE COLUMN\]\]/g, enrichment.sourceColumn);
+        rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
+        rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
+        if (enrichment.webServiceUrl) {
+            rule = rule.replace(
+                '[[WEB SERVICE URL]]',
+                enrichment.webServiceUrl,
+            );
+        } else {
+            rule = cleanWebServiceRule(rule);
+        }
+
         return rule;
     } catch (e) {
         console.error('Error:', e.stack);
