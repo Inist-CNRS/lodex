@@ -9,6 +9,8 @@ import { IN_PROGRESS, FINISHED, ERROR } from '../../../common/enrichmentStatus';
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 
+const BATCH_SIZE = 50;
+
 const getSourceData = async (ctx, sourceColumn) => {
     const excerptLines = await ctx.dataset.getExcerpt({
         [sourceColumn]: { $ne: null },
@@ -42,12 +44,7 @@ export const createEnrichmentRule = async ctx => {
 };
 
 const cleanWebServiceRule = rule => {
-    rule = rule.replace('[URLConnect]', '[transit]');
-    rule = rule.replace('[expand/URLConnect]', '[expand/transit]');
-    rule = rule.replace(
-        '[expand/expand/URLConnect]',
-        '[expand/expand/transit]',
-    );
+    rule = rule.replace('URLConnect', 'transit');
     return rule;
 };
 
@@ -72,9 +69,12 @@ export const getEnrichmentDataPreview = async ctx => {
         [sourceColumn]: { $ne: null },
     });
     let result = [];
-    for (const line of excerptLines) {
-        let { value } = await processEzsEnrichment(line, commands);
-        result.push(value);
+    for (let index = 0; index < excerptLines.length; index += BATCH_SIZE) {
+        let values = await processEzsEnrichment(
+            excerptLines.slice(index, index + BATCH_SIZE),
+            commands,
+        );
+        result.push(...values.map(v => v.value));
     }
     return result;
 };
@@ -85,43 +85,30 @@ export const getEnrichmentRuleModel = (sourceData, enrichment) => {
         if (!enrichment.sourceColumn) {
             throw new Error(`Missing source column parameter`);
         }
+        let file;
         if (!enrichment.subPath) {
-            const file = Array.isArray(sourceData)
+            file = Array.isArray(sourceData)
                 ? './directPathMultipleValues.txt'
                 : './directPathSingleValue.txt';
-            rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
-            rule = rule.replace(
-                /\[\[SOURCE COLUMN\]\]/g,
-                enrichment.sourceColumn,
-            );
-
-            if (enrichment.webServiceUrl) {
-                rule = rule.replace(
-                    '[[WEB SERVICE URL]]',
-                    enrichment.webServiceUrl,
-                );
-            } else {
-                rule = cleanWebServiceRule(rule);
-            }
         } else {
-            const file = Array.isArray(sourceData)
+            file = Array.isArray(sourceData)
                 ? './subPathMultipleValues.txt'
                 : './subPathSingleValue.txt';
-            rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
-            rule = rule.replace(
-                /\[\[SOURCE COLUMN\]\]/g,
-                enrichment.sourceColumn,
-            );
-            rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
-            if (enrichment.webServiceUrl) {
-                rule = rule.replace(
-                    '[[WEB SERVICE URL]]',
-                    enrichment.webServiceUrl,
-                );
-            } else {
-                rule = cleanWebServiceRule(rule);
-            }
         }
+
+        rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
+        rule = rule.replace(/\[\[SOURCE COLUMN\]\]/g, enrichment.sourceColumn);
+        rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
+        rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
+        if (enrichment.webServiceUrl) {
+            rule = rule.replace(
+                '[[WEB SERVICE URL]]',
+                enrichment.webServiceUrl,
+            );
+        } else {
+            rule = cleanWebServiceRule(rule);
+        }
+
         return rule;
     } catch (e) {
         console.error('Error:', e.stack);
@@ -141,88 +128,109 @@ export const getEnrichmentDatasetCandidate = async (id, ctx) => {
 
 const createEzsRuleCommands = rule => ezs.compileScript(rule).get();
 
-const processEzsEnrichment = (entry, commands) => {
+const processEzsEnrichment = (entries, commands) => {
     return new Promise((resolve, reject) => {
+        const values = [];
         const input = new PassThrough({ objectMode: true });
-        const result = input.pipe(ezs('delegate', { commands }, {}));
+        input
+            .pipe(ezs('delegate', { commands }, {}))
+            .pipe(
+                ezs.catch(e => {
+                    // TODO how to handle this.
+                    console.log(e);
+                }),
+            )
+            // .pipe(ezs('debug'))
+            .on('data', data => {
+                values.push(data);
+            })
+            .on('end', () => {
+                resolve(values);
+            })
+            .on('error', error => reject({ error }));
 
-        result.on('data', ({ value }) => {
-            return resolve({ value });
-        });
-        result.on('error', error => reject({ error }));
-        input.write({ id: entry._id, value: entry });
+        for (const entry of entries) {
+            input.write({ id: entry._id, value: entry });
+        }
         input.end();
     });
 };
 
-const processEnrichment = async (entry, enrichment, ctx) => {
-    let nextEntry = entry;
-
-    if (nextEntry) {
-        await ctx.enrichment.updateOne(
-            { _id: new ObjectId(enrichment._id) },
-            { $set: { ['status']: IN_PROGRESS } },
-        );
-    }
-
-    let lineIndex = 0;
+const processEnrichment = async (enrichment, ctx) => {
+    await ctx.enrichment.updateOne(
+        { _id: new ObjectId(enrichment._id) },
+        { $set: { ['status']: IN_PROGRESS } },
+    );
     const room = `enrichment-job-${ctx.job.id}`;
     const commands = createEzsRuleCommands(enrichment.rule);
-    while (nextEntry) {
-        lineIndex += 1;
-
-        const logData = JSON.stringify({
-            level: 'info',
-            message: `Started enriching line #${lineIndex}`,
-            timestamp: new Date(),
-            status: IN_PROGRESS,
-        });
-        jobLogger.info(ctx.job, logData);
-        notifyListeners(room, logData);
-        try {
-            let { value } = await processEzsEnrichment(nextEntry, commands);
+    const dataSetSize = await ctx.dataset.count();
+    for (let index = 0; index < dataSetSize; index += BATCH_SIZE) {
+        const entries = await ctx.dataset
+            .find()
+            .skip(index)
+            .limit(BATCH_SIZE)
+            .toArray();
+        for (const entry of entries) {
             const logData = JSON.stringify({
                 level: 'info',
-                message: `Finished enriching line #${lineIndex} (output: ${value})`,
-                timestamp: new Date(),
-                status: IN_PROGRESS,
-            });
-            jobLogger.info(ctx.job, logData);
-            notifyListeners(room, logData);
-
-            if (value === undefined) {
-                value = 'n/a';
-            }
-
-            await ctx.dataset.updateOne(
-                { _id: new ObjectId(nextEntry._id) },
-                { $set: { [enrichment.name]: value } },
-            );
-        } catch (e) {
-            await ctx.dataset.updateOne(
-                { _id: new ObjectId(nextEntry._id) },
-                { $set: { [enrichment.name]: `ERROR: ${e.error.message}` } },
-            );
-
-            const logData = JSON.stringify({
-                level: 'error',
-                message: `Error enriching line #${lineIndex}: ${e.error.message}`,
+                message: `Started enriching line #${entry._id}`,
                 timestamp: new Date(),
                 status: IN_PROGRESS,
             });
             jobLogger.info(ctx.job, logData);
             notifyListeners(room, logData);
         }
+        try {
+            let enrichedValues = await processEzsEnrichment(entries, commands);
+            for (const enrichedValue of enrichedValues) {
+                const logData = JSON.stringify({
+                    level: 'info',
+                    message: `Finished enriching line #${enrichedValue.id} (output: ${enrichedValue.value})`,
+                    timestamp: new Date(),
+                    status: IN_PROGRESS,
+                });
+                jobLogger.info(ctx.job, logData);
+                notifyListeners(room, logData);
 
-        nextEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
-        progress.incrementProgress(1);
-        if (!nextEntry) {
-            await ctx.enrichment.updateOne(
-                { _id: new ObjectId(enrichment._id) },
-                { $set: { ['status']: FINISHED } },
-            );
+                if (enrichedValue.value === undefined) {
+                    enrichedValue.value = 'n/a';
+                }
+
+                await ctx.dataset.updateOne(
+                    { _id: new ObjectId(enrichedValue.id) },
+                    { $set: { [enrichment.name]: enrichedValue.value } },
+                );
+                progress.incrementProgress(1);
+            }
+        } catch (e) {
+            for (const entry of entries) {
+                const lineIndex = entries.indexOf(entry);
+                await ctx.dataset.updateOne(
+                    { _id: new ObjectId(entry._id) },
+                    {
+                        $set: {
+                            [enrichment.name]: `ERROR: ${e.error.message}`,
+                        },
+                    },
+                );
+
+                const logData = JSON.stringify({
+                    level: 'error',
+                    message: `Error enriching line #${index + lineIndex}: ${
+                        e.error.message
+                    }`,
+                    timestamp: new Date(),
+                    status: IN_PROGRESS,
+                });
+                jobLogger.info(ctx.job, logData);
+                notifyListeners(room, logData);
+            }
         }
     }
+    await ctx.enrichment.updateOne(
+        { _id: new ObjectId(enrichment._id) },
+        { $set: { ['status']: FINISHED } },
+    );
     progress.finish();
     const logData = JSON.stringify({
         level: 'ok',
@@ -244,7 +252,6 @@ export const setEnrichmentJobId = async (ctx, enrichmentID, job) => {
 export const startEnrichment = async ctx => {
     const id = ctx.job?.data?.id;
     const enrichment = await ctx.enrichment.findOneById(id);
-    const firstEntry = await getEnrichmentDatasetCandidate(enrichment._id, ctx);
     const dataSetSize = await ctx.dataset.count();
     if (progress.getProgress().status === PENDING) {
         progress.start({
@@ -264,7 +271,7 @@ export const startEnrichment = async ctx => {
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-    await processEnrichment(firstEntry, enrichment, ctx);
+    await processEnrichment(enrichment, ctx);
 };
 
 export const setEnrichmentError = async ctx => {

@@ -3,6 +3,7 @@ append = dump?indent=true
 
 [use]
 plugin = basics
+plugin = analytics
 
 [validate]
 path = id
@@ -17,8 +18,11 @@ rule = required
 path = value
 value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(item); } catch { return item; } }).get("value.[[SOURCE COLUMN]]")
 
+[expand]
+size = [[BATCH SIZE]]
+path=value
 
-[URLConnect]
+[expand/URLConnect]
 url = [[WEB SERVICE URL]]
-timeout = 5000
+timeout = 30000
 noerror = false

@@ -8,8 +8,11 @@ plugin = analytics
 path = value
 value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(item); } catch { return item; } }).get('value.[[SOURCE COLUMN]].[[SUB PATH]]')
 
+[expand]
+size = [[BATCH SIZE]]
+path=value
 
-[URLConnect]
+[expand/URLConnect]
 url = [[WEB SERVICE URL]]
 timeout = 5000
 noerror = false
