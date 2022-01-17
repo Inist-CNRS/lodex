@@ -173,7 +173,7 @@ const processEnrichment = async (enrichment, ctx) => {
         for (const entry of entries) {
             const logData = JSON.stringify({
                 level: 'info',
-                message: `Started enriching line #${entry._id}`,
+                message: `Started enriching #${entry._id}`,
                 timestamp: new Date(),
                 status: IN_PROGRESS,
             });
@@ -185,7 +185,7 @@ const processEnrichment = async (enrichment, ctx) => {
             for (const enrichedValue of enrichedValues) {
                 const logData = JSON.stringify({
                     level: 'info',
-                    message: `Finished enriching line #${enrichedValue.id} (output: ${enrichedValue.value})`,
+                    message: `Finished enriching #${enrichedValue.id} (output: ${enrichedValue.value})`,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });
@@ -204,7 +204,6 @@ const processEnrichment = async (enrichment, ctx) => {
             }
         } catch (e) {
             for (const entry of entries) {
-                const lineIndex = entries.indexOf(entry);
                 await ctx.dataset.updateOne(
                     { _id: new ObjectId(entry._id) },
                     {
@@ -216,9 +215,7 @@ const processEnrichment = async (enrichment, ctx) => {
 
                 const logData = JSON.stringify({
                     level: 'error',
-                    message: `Error enriching line #${index + lineIndex}: ${
-                        e.error.message
-                    }`,
+                    message: `Error enriching #${entry._id}: ${e.error.message}`,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });
