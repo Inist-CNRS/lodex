@@ -28,14 +28,17 @@ const useStyles = makeStyles({
     Log_info: {
         color: theme.black.light,
         lineHeight: '0.8rem',
+        whiteSpace: 'nowrap',
     },
     Log_ok: {
         color: theme.green.primary,
         fontWeight: 'bold',
+        whiteSpace: 'nowrap',
     },
     Log_error: {
         color: theme.red.primary,
         fontWeight: 'bold',
+        whiteSpace: 'nowrap',
     },
 });
 
