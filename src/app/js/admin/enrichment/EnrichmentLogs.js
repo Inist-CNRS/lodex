@@ -9,6 +9,7 @@ import theme from '../../theme';
 import { io } from 'socket.io-client';
 import { FINISHED } from '../../../../common/enrichmentStatus';
 import jobsApi from '../api/job';
+import { FixedSizeList } from 'react-window';
 
 const useStyles = makeStyles({
     LogsContainer: {
@@ -27,14 +28,17 @@ const useStyles = makeStyles({
     Log_info: {
         color: theme.black.light,
         lineHeight: '0.8rem',
+        whiteSpace: 'nowrap',
     },
     Log_ok: {
         color: theme.green.primary,
         fontWeight: 'bold',
+        whiteSpace: 'nowrap',
     },
     Log_error: {
         color: theme.red.primary,
         fontWeight: 'bold',
+        whiteSpace: 'nowrap',
     },
 });
 
@@ -73,7 +77,9 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
 
     const classes = useStyles();
 
-    const renderLog = log => {
+    const LogLine = props => {
+        const { data, index, style } = props;
+        const log = data[index];
         const parsedLog = JSON.parse(log);
 
         let date;
@@ -94,11 +100,18 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
         return (
             <p
                 key={parsedLog.timestamp}
+                style={style}
                 className={classes[`Log_${parsedLog.level}`]}
             >
                 [{date}] {parsedLog.message}
             </p>
         );
+    };
+
+    LogLine.propTypes = {
+        data: PropTypes.arrayOf(PropTypes.string).isRequired,
+        index: PropTypes.number.isRequired,
+        style: PropTypes.object.isRequired,
     };
 
     return enrichment?.jobId ? (
@@ -114,7 +127,17 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
                 {isLoaded && logs.length < 1 && (
                     <div>{polyglot.t('waiting')}</div>
                 )}
-                {isLoaded && logs && logs.map(log => renderLog(log))}
+                {isLoaded && logs && (
+                    <FixedSizeList
+                        height={700}
+                        width={600}
+                        itemSize={35}
+                        itemCount={logs.length}
+                        itemData={logs}
+                    >
+                        {LogLine}
+                    </FixedSizeList>
+                )}
             </div>
         </div>
     ) : null;

@@ -173,7 +173,7 @@ const processEnrichment = async (enrichment, ctx) => {
         for (const entry of entries) {
             const logData = JSON.stringify({
                 level: 'info',
-                message: `Started enriching line #${entry._id}`,
+                message: `Started enriching #${entry.uri}`,
                 timestamp: new Date(),
                 status: IN_PROGRESS,
             });
@@ -183,9 +183,11 @@ const processEnrichment = async (enrichment, ctx) => {
         try {
             let enrichedValues = await processEzsEnrichment(entries, commands);
             for (const enrichedValue of enrichedValues) {
+                const lineIndex = enrichedValues.indexOf(enrichedValue);
+                const entry = entries[lineIndex];
                 const logData = JSON.stringify({
                     level: 'info',
-                    message: `Finished enriching line #${enrichedValue.id} (output: ${enrichedValue.value})`,
+                    message: `Finished enriching #${entry.uri} (output: ${enrichedValue.value})`,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });
@@ -197,28 +199,27 @@ const processEnrichment = async (enrichment, ctx) => {
                 }
 
                 await ctx.dataset.updateOne(
-                    { _id: new ObjectId(enrichedValue.id) },
+                    {
+                        _id: new ObjectId(entry._id),
+                    },
                     { $set: { [enrichment.name]: enrichedValue.value } },
                 );
                 progress.incrementProgress(1);
             }
         } catch (e) {
             for (const entry of entries) {
-                const lineIndex = entries.indexOf(entry);
                 await ctx.dataset.updateOne(
                     { _id: new ObjectId(entry._id) },
                     {
                         $set: {
-                            [enrichment.name]: `ERROR: ${e.error.message}`,
+                            [enrichment.name]: `ERROR: ${e.message}`,
                         },
                     },
                 );
 
                 const logData = JSON.stringify({
                     level: 'error',
-                    message: `Error enriching line #${index + lineIndex}: ${
-                        e.error.message
-                    }`,
+                    message: `Error enriching #${entry._id}: ${e.error.message}`,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });

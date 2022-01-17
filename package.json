@@ -175,6 +175,7 @@
         "react-use": "17.3.1",
         "react-vega": "7.3.0",
         "react-vis-force": "^0.3.1",
+        "react-window": "^1.8.6",
         "recompose": "^0.30.0",
         "redux": "^3.7.2",
         "redux-actions": "^2.6.4",
