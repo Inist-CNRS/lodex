@@ -136,12 +136,16 @@ const processEzsEnrichment = (entries, commands) => {
     return new Promise((resolve, reject) => {
         const values = [];
         const input = new PassThrough({ objectMode: true });
+        const getSourceError = error =>
+            error.sourceError ? getSourceError(error.sourceError) : error;
         input
             .pipe(ezs('delegate', { commands }, {}))
             .pipe(
-                ezs.catch(e => {
-                    // TODO how to handle this.
-                    console.log(e);
+                ezs.catch(error => {
+                    values.push({
+                        id: undefined,
+                        error: getSourceError(error).message,
+                    });
                 }),
             )
             // .pipe(ezs('debug'))
@@ -151,7 +155,7 @@ const processEzsEnrichment = (entries, commands) => {
             .on('end', () => {
                 resolve(values);
             })
-            .on('error', error => reject({ error }));
+            .on('error', error => reject(error));
 
         for (const entry of entries) {
             input.write({ id: entry._id, value: entry });
@@ -160,7 +164,7 @@ const processEzsEnrichment = (entries, commands) => {
     });
 };
 
-const processEnrichment = async (enrichment, ctx) => {
+export const processEnrichment = async (enrichment, ctx) => {
     await ctx.enrichment.updateOne(
         { _id: new ObjectId(enrichment._id) },
         { $set: { ['status']: IN_PROGRESS } },
@@ -189,9 +193,12 @@ const processEnrichment = async (enrichment, ctx) => {
             for (const enrichedValue of enrichedValues) {
                 const lineIndex = enrichedValues.indexOf(enrichedValue);
                 const entry = entries[lineIndex];
+
                 const logData = JSON.stringify({
-                    level: 'info',
-                    message: `Finished enriching #${entry.uri} (output: ${enrichedValue.value})`,
+                    level: enrichedValue.error ? 'error' : 'info',
+                    message: enrichedValue.error
+                        ? `Error enriching #${entry.uri}: ${enrichedValue.error}`
+                        : `Finished enriching #${entry.uri} (output: ${enrichedValue.value})`,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });
@@ -223,12 +230,13 @@ const processEnrichment = async (enrichment, ctx) => {
 
                 const logData = JSON.stringify({
                     level: 'error',
-                    message: `Error enriching #${entry._id}: ${e.error.message}`,
+                    message: e.message,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });
                 jobLogger.info(ctx.job, logData);
                 notifyListeners(room, logData);
+                progress.incrementProgress(1);
             }
         }
     }

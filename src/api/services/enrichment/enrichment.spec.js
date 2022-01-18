@@ -1,4 +1,13 @@
-import { getEnrichmentDataPreview, getEnrichmentRuleModel } from './enrichment';
+import {
+    getEnrichmentDataPreview,
+    getEnrichmentRuleModel,
+    processEnrichment,
+} from './enrichment';
+import * as fs from 'fs';
+import path from 'path';
+import { ObjectId } from 'mongodb';
+import { IN_PROGRESS } from '../../../common/enrichmentStatus';
+import ezs from '@ezs/core';
 
 describe('enrichment', () => {
     describe('getEnrichmentRuleModel', () => {
@@ -320,6 +329,156 @@ describe('enrichment', () => {
             // THEN
             expect(results).toEqual(
                 expect.arrayContaining([['plop', 'plup'], ['plip'], ['ploup']]),
+            );
+        });
+    });
+
+    describe('processEnrichment', () => {
+        it('should log error when ws is out', async () => {
+            // GIVEN
+            const ezsRule = fs
+                .readFileSync(
+                    path.resolve(__dirname, './directPathSingleValue.txt'),
+                )
+                .toString()
+                .replace(/\[\[SOURCE COLUMN\]\]/g, 'name')
+                .replace(
+                    '[[WEB SERVICE URL]]',
+                    'http://a-fake-url.to.raise.an.error',
+                );
+            const enrichment = {
+                rule: ezsRule,
+            };
+            const ctx = {
+                job: {
+                    id: 1,
+                    log: jest.fn(),
+                },
+                enrichment: {
+                    updateOne: jest.fn(),
+                },
+                dataset: {
+                    updateOne: jest.fn(),
+                    count: jest.fn().mockReturnValue(3),
+                    find: jest.fn().mockReturnValue({
+                        skip: jest.fn().mockReturnValue({
+                            limit: jest.fn().mockReturnValue({
+                                toArray: jest.fn().mockReturnValue([
+                                    {
+                                        _id: new ObjectId(),
+                                        uri: '1',
+                                        name: 'plop',
+                                    },
+                                    {
+                                        _id: new ObjectId(),
+                                        uri: '2',
+                                        name: 'plip',
+                                    },
+                                    {
+                                        _id: new ObjectId(),
+                                        uri: '3',
+                                        name: 'ploup',
+                                    },
+                                ]),
+                            }),
+                        }),
+                    }),
+                },
+            };
+
+            // WHEN
+            await processEnrichment(enrichment, ctx);
+
+            // THEN
+            expect(ctx.job.log).toHaveBeenCalledTimes(7);
+            expect(ctx.job.log).toHaveBeenNthCalledWith(
+                4,
+                expect.stringContaining(
+                    `request to http://a-fake-url.to.raise.an.error/ failed, reason: getaddrinfo ENOTFOUND a-fake-url.to.raise.an.error`,
+                ),
+            );
+            expect(ctx.job.log).toHaveBeenNthCalledWith(
+                5,
+                expect.stringContaining(
+                    `request to http://a-fake-url.to.raise.an.error/ failed, reason: getaddrinfo ENOTFOUND a-fake-url.to.raise.an.error`,
+                ),
+            );
+            expect(ctx.job.log).toHaveBeenNthCalledWith(
+                6,
+                expect.stringContaining(
+                    `request to http://a-fake-url.to.raise.an.error/ failed, reason: getaddrinfo ENOTFOUND a-fake-url.to.raise.an.error`,
+                ),
+            );
+        });
+        it('should log error for 2nd line when ws errored for this line', async () => {
+            // GIVEN
+            const ezsRule = `
+                [validate]
+                path=value.valid
+                rule=required
+                [transit]
+            `;
+            const enrichment = {
+                rule: ezsRule,
+            };
+            const ctx = {
+                job: {
+                    id: 1,
+                    log: jest.fn(),
+                },
+                enrichment: {
+                    updateOne: jest.fn(),
+                },
+                dataset: {
+                    updateOne: jest.fn(),
+                    count: jest.fn().mockReturnValue(3),
+                    find: jest.fn().mockReturnValue({
+                        skip: jest.fn().mockReturnValue({
+                            limit: jest.fn().mockReturnValue({
+                                toArray: jest.fn().mockReturnValue([
+                                    {
+                                        _id: new ObjectId(),
+                                        uri: '1',
+                                        name: 'plop',
+                                        valid: true,
+                                    },
+                                    {
+                                        _id: new ObjectId(),
+                                        uri: '2',
+                                        name: 'plip',
+                                        invalid: true,
+                                    },
+                                    {
+                                        _id: new ObjectId(),
+                                        uri: '3',
+                                        name: 'ploup',
+                                        valid: true,
+                                    },
+                                ]),
+                            }),
+                        }),
+                    }),
+                },
+            };
+
+            // WHEN
+            await processEnrichment(enrichment, ctx);
+
+            // THEN
+            expect(ctx.job.log).toHaveBeenCalledTimes(7);
+            expect(ctx.job.log).toHaveBeenNthCalledWith(
+                4,
+                expect.stringContaining(`Finished enriching #1`),
+            );
+            expect(ctx.job.log).toHaveBeenNthCalledWith(
+                5,
+                expect.stringContaining(
+                    `Error enriching #2: { 'value.valid': [ 'The value.valid field is required.' ] }`,
+                ),
+            );
+            expect(ctx.job.log).toHaveBeenNthCalledWith(
+                6,
+                expect.stringContaining(`Finished enriching #3`),
             );
         });
     });
