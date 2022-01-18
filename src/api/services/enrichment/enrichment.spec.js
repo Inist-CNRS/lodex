@@ -6,8 +6,6 @@ import {
 import * as fs from 'fs';
 import path from 'path';
 import { ObjectId } from 'mongodb';
-import { IN_PROGRESS } from '../../../common/enrichmentStatus';
-import ezs from '@ezs/core';
 
 describe('enrichment', () => {
     describe('getEnrichmentRuleModel', () => {
