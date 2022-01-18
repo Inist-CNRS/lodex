@@ -136,33 +136,35 @@ const processEzsEnrichment = (entries, commands) => {
     return new Promise((resolve, reject) => {
         const values = [];
         const input = new PassThrough({ objectMode: true });
+        const getSourceError = error =>
+            error.sourceError ? getSourceError(error.sourceError) : error;
         input
             .pipe(ezs('delegate', { commands }, {}))
-            .pipe(
-                ezs.catch(e => {
-                    // TODO how to handle this.
-                    console.log(e);
-                }),
-            )
-            // .pipe(ezs('debug'))
             .on('data', data => {
-                values.push(data);
+                if (data instanceof Error) {
+                    values.push({
+                        id: undefined,
+                        error: getSourceError(data).message,
+                    });
+                } else {
+                    values.push(data);
+                }
             })
             .on('end', () => {
                 resolve(values);
             })
-            .on('error', error => reject({ error }));
+            .on('error', error => reject(error));
 
         for (const entry of entries) {
-            input.write({ id: entry._id, value: entry });
+            input.write({ id: entry.uri, value: entry });
         }
         input.end();
     });
 };
 
-const processEnrichment = async (enrichment, ctx) => {
+export const processEnrichment = async (enrichment, ctx) => {
     await ctx.enrichment.updateOne(
-        { _id: new ObjectId(enrichment._id) },
+        { uri: enrichment.uri },
         { $set: { ['status']: IN_PROGRESS } },
     );
     const room = `enrichment-job-${ctx.job.id}`;
@@ -185,28 +187,44 @@ const processEnrichment = async (enrichment, ctx) => {
             notifyListeners(room, logData);
         }
         try {
-            let enrichedValues = await processEzsEnrichment(entries, commands);
+            const enrichedValues = await processEzsEnrichment(
+                entries,
+                commands,
+            );
+            const erroredEnrichedValues = enrichedValues.filter(v => v.error);
+            const nonErroredEnrichedValues = enrichedValues.filter(
+                v => !v.error,
+            );
+            const correspondingErrorEntries = entries.filter(
+                e => !nonErroredEnrichedValues.find(v => v.id === e.uri),
+            );
+
             for (const enrichedValue of enrichedValues) {
-                const lineIndex = enrichedValues.indexOf(enrichedValue);
-                const entry = entries[lineIndex];
+                const value =
+                    enrichedValue.value ||
+                    (enrichedValue.error && `[Error] ${enrichedValue.error}`) ||
+                    'n/a';
+
+                const id = enrichedValue.id
+                    ? enrichedValue.id
+                    : correspondingErrorEntries[
+                          erroredEnrichedValues.indexOf(enrichedValue)
+                      ].uri;
                 const logData = JSON.stringify({
-                    level: 'info',
-                    message: `Finished enriching #${entry.uri} (output: ${enrichedValue.value})`,
+                    level: enrichedValue.error ? 'error' : 'info',
+                    message: enrichedValue.error
+                        ? `Error enriching #${id}: ${value}`
+                        : `Finished enriching #${id} (output: ${value})`,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });
                 jobLogger.info(ctx.job, logData);
                 notifyListeners(room, logData);
-
-                if (enrichedValue.value === undefined) {
-                    enrichedValue.value = 'n/a';
-                }
-
                 await ctx.dataset.updateOne(
                     {
-                        _id: new ObjectId(entry._id),
+                        uri: id,
                     },
-                    { $set: { [enrichment.name]: enrichedValue.value } },
+                    { $set: { [enrichment.name]: value } },
                 );
                 progress.incrementProgress(1);
             }
@@ -223,12 +241,13 @@ const processEnrichment = async (enrichment, ctx) => {
 
                 const logData = JSON.stringify({
                     level: 'error',
-                    message: `Error enriching #${entry._id}: ${e.error.message}`,
+                    message: e.message,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });
                 jobLogger.info(ctx.job, logData);
                 notifyListeners(room, logData);
+                progress.incrementProgress(1);
             }
         }
     }

@@ -25,6 +25,9 @@ const useStyles = makeStyles({
         paddingLeft: '1rem',
         paddingRight: '1rem',
     },
+    LogsList: {
+        overflow: 'hidden !important',
+    },
     Log_info: {
         color: theme.black.light,
         lineHeight: '0.8rem',
@@ -41,7 +44,44 @@ const useStyles = makeStyles({
         whiteSpace: 'nowrap',
     },
 });
+const LogLine = props => {
+    const { data, index, style } = props;
+    const log = data[index];
+    const parsedLog = JSON.parse(log);
+    const classes = useStyles();
 
+    let date;
+    try {
+        date = Intl.DateTimeFormat('fr', {
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        }).format(new Date(parsedLog?.timestamp));
+    } catch (e) {
+        date = 'No date';
+    }
+
+    return (
+        <p
+            key={parsedLog.timestamp}
+            style={style}
+            className={classes[`Log_${parsedLog.level}`]}
+            title={parsedLog.message}
+        >
+            [{date}] {parsedLog.message}
+        </p>
+    );
+};
+
+LogLine.propTypes = {
+    data: PropTypes.arrayOf(PropTypes.string).isRequired,
+    index: PropTypes.number.isRequired,
+    style: PropTypes.object.isRequired,
+};
 export const EnrichmentLogsComponent = ({ p: polyglot }) => {
     const { enrichment, onLoadEnrichments } = useContext(EnrichmentContext);
 
@@ -77,43 +117,6 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
 
     const classes = useStyles();
 
-    const LogLine = props => {
-        const { data, index, style } = props;
-        const log = data[index];
-        const parsedLog = JSON.parse(log);
-
-        let date;
-        try {
-            date = Intl.DateTimeFormat('fr', {
-                hour12: false,
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-            }).format(new Date(parsedLog?.timestamp));
-        } catch (e) {
-            date = 'No date';
-        }
-
-        return (
-            <p
-                key={parsedLog.timestamp}
-                style={style}
-                className={classes[`Log_${parsedLog.level}`]}
-            >
-                [{date}] {parsedLog.message}
-            </p>
-        );
-    };
-
-    LogLine.propTypes = {
-        data: PropTypes.arrayOf(PropTypes.string).isRequired,
-        index: PropTypes.number.isRequired,
-        style: PropTypes.object.isRequired,
-    };
-
     return enrichment?.jobId ? (
         <div className={classes.LogsContainer}>
             <div className={classes.LogsTitle}>Logs #{enrichment?.jobId}</div>
@@ -129,6 +132,7 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
                 )}
                 {isLoaded && logs && (
                     <FixedSizeList
+                        className={classes.LogsList}
                         height={700}
                         width={600}
                         itemSize={35}
