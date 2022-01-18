@@ -97,9 +97,9 @@ describe('enrichment', () => {
                 dataset: {
                     getExcerpt: () => {
                         return [
-                            { _id: '1', simpleValue: 'plop' },
-                            { _id: '2', simpleValue: 'plip' },
-                            { _id: '3', simpleValue: 'ploup' },
+                            { uri: '1', simpleValue: 'plop' },
+                            { uri: '2', simpleValue: 'plip' },
+                            { uri: '3', simpleValue: 'ploup' },
                         ];
                     },
                 },
@@ -126,9 +126,9 @@ describe('enrichment', () => {
                 dataset: {
                     getExcerpt: () => {
                         return [
-                            { _id: '1', objectValue: { subPath: 'plop' } },
-                            { _id: '2', objectValue: { subPath: 'plip' } },
-                            { _id: '3', objectValue: { subPath: 'ploup' } },
+                            { uri: '1', objectValue: { subPath: 'plop' } },
+                            { uri: '2', objectValue: { subPath: 'plip' } },
+                            { uri: '3', objectValue: { subPath: 'ploup' } },
                         ];
                     },
                 },
@@ -155,19 +155,19 @@ describe('enrichment', () => {
                     getExcerpt: () => {
                         return [
                             {
-                                _id: '1',
+                                uri: '1',
                                 objectValue: JSON.stringify({
                                     subPath: 'plop',
                                 }),
                             },
                             {
-                                _id: '2',
+                                uri: '2',
                                 objectValue: JSON.stringify({
                                     subPath: 'plip',
                                 }),
                             },
                             {
-                                _id: '3',
+                                uri: '3',
                                 objectValue: JSON.stringify({
                                     subPath: 'ploup',
                                 }),
@@ -196,9 +196,9 @@ describe('enrichment', () => {
                 dataset: {
                     getExcerpt: () => {
                         return [
-                            { _id: '1', arrayValue: ['plop', 'plup'] },
-                            { _id: '2', arrayValue: ['plip'] },
-                            { _id: '3', arrayValue: ['ploup'] },
+                            { uri: '1', arrayValue: ['plop', 'plup'] },
+                            { uri: '2', arrayValue: ['plip'] },
+                            { uri: '3', arrayValue: ['ploup'] },
                         ];
                     },
                 },
@@ -225,11 +225,11 @@ describe('enrichment', () => {
                     getExcerpt: () => {
                         return [
                             {
-                                _id: '1',
+                                uri: '1',
                                 arrayValue: JSON.stringify(['plop', 'plup']),
                             },
-                            { _id: '2', arrayValue: JSON.stringify(['plip']) },
-                            { _id: '3', arrayValue: JSON.stringify(['ploup']) },
+                            { uri: '2', arrayValue: JSON.stringify(['plip']) },
+                            { uri: '3', arrayValue: JSON.stringify(['ploup']) },
                         ];
                     },
                 },
@@ -257,18 +257,18 @@ describe('enrichment', () => {
                     getExcerpt: () => {
                         return [
                             {
-                                _id: '1',
+                                uri: '1',
                                 arrayValue: [
                                     { subPath: 'plop' },
                                     { subPath: 'plup' },
                                 ],
                             },
                             {
-                                _id: '2',
+                                uri: '2',
                                 arrayValue: [{ subPath: 'plip' }],
                             },
                             {
-                                _id: '3',
+                                uri: '3',
                                 arrayValue: [{ subPath: 'ploup' }],
                             },
                         ];
@@ -298,20 +298,20 @@ describe('enrichment', () => {
                     getExcerpt: () => {
                         return [
                             {
-                                _id: '1',
+                                uri: '1',
                                 arrayValue: JSON.stringify([
                                     { subPath: 'plop' },
                                     { subPath: 'plup' },
                                 ]),
                             },
                             {
-                                _id: '2',
+                                uri: '2',
                                 arrayValue: JSON.stringify([
                                     { subPath: 'plip' },
                                 ]),
                             },
                             {
-                                _id: '3',
+                                uri: '3',
                                 arrayValue: JSON.stringify([
                                     { subPath: 'ploup' },
                                 ]),
@@ -471,7 +471,7 @@ describe('enrichment', () => {
             expect(ctx.job.log).toHaveBeenNthCalledWith(
                 5,
                 expect.stringContaining(
-                    `Error enriching #2: { 'value.valid': [ 'The value.valid field is required.' ] }`,
+                    `Error enriching #2: [Error] { 'value.valid': [ 'The value.valid field is required.' ] }`,
                 ),
             );
             expect(ctx.job.log).toHaveBeenNthCalledWith(
