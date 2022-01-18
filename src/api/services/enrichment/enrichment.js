@@ -140,8 +140,6 @@ const processEzsEnrichment = (entries, commands) => {
             error.sourceError ? getSourceError(error.sourceError) : error;
         input
             .pipe(ezs('delegate', { commands }, {}))
-
-            // .pipe(ezs('debug'))
             .on('data', data => {
                 if (data instanceof Error) {
                     values.push({
