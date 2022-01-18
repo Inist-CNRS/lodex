@@ -140,17 +140,17 @@ const processEzsEnrichment = (entries, commands) => {
             error.sourceError ? getSourceError(error.sourceError) : error;
         input
             .pipe(ezs('delegate', { commands }, {}))
-            .pipe(
-                ezs.catch(error => {
-                    values.push({
-                        id: undefined,
-                        error: getSourceError(error).message,
-                    });
-                }),
-            )
+
             // .pipe(ezs('debug'))
             .on('data', data => {
-                values.push(data);
+                if (data instanceof Error) {
+                    values.push({
+                        id: undefined,
+                        error: getSourceError(data).message,
+                    });
+                } else {
+                    values.push(data);
+                }
             })
             .on('end', () => {
                 resolve(values);
@@ -158,7 +158,7 @@ const processEzsEnrichment = (entries, commands) => {
             .on('error', error => reject(error));
 
         for (const entry of entries) {
-            input.write({ id: entry._id, value: entry });
+            input.write({ id: entry.uri, value: entry });
         }
         input.end();
     });
@@ -166,7 +166,7 @@ const processEzsEnrichment = (entries, commands) => {
 
 export const processEnrichment = async (enrichment, ctx) => {
     await ctx.enrichment.updateOne(
-        { _id: new ObjectId(enrichment._id) },
+        { uri: enrichment.uri },
         { $set: { ['status']: IN_PROGRESS } },
     );
     const room = `enrichment-job-${ctx.job.id}`;
@@ -189,31 +189,44 @@ export const processEnrichment = async (enrichment, ctx) => {
             notifyListeners(room, logData);
         }
         try {
-            let enrichedValues = await processEzsEnrichment(entries, commands);
-            for (const enrichedValue of enrichedValues) {
-                const lineIndex = enrichedValues.indexOf(enrichedValue);
-                const entry = entries[lineIndex];
+            const enrichedValues = await processEzsEnrichment(
+                entries,
+                commands,
+            );
+            const erroredEnrichedValues = enrichedValues.filter(v => v.error);
+            const nonErroredEnrichedValues = enrichedValues.filter(
+                v => !v.error,
+            );
+            const correspondingErrorEntries = entries.filter(
+                e => !nonErroredEnrichedValues.find(v => v.id === e.uri),
+            );
 
+            for (const enrichedValue of enrichedValues) {
+                const value =
+                    enrichedValue.value ||
+                    (enrichedValue.error && `[Error] ${enrichedValue.error}`) ||
+                    'n/a';
+
+                const id = enrichedValue.id
+                    ? enrichedValue.id
+                    : correspondingErrorEntries[
+                          erroredEnrichedValues.indexOf(enrichedValue)
+                      ].uri;
                 const logData = JSON.stringify({
                     level: enrichedValue.error ? 'error' : 'info',
                     message: enrichedValue.error
-                        ? `Error enriching #${entry.uri}: ${enrichedValue.error}`
-                        : `Finished enriching #${entry.uri} (output: ${enrichedValue.value})`,
+                        ? `Error enriching #${id}: ${value}`
+                        : `Finished enriching #${id} (output: ${value})`,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });
                 jobLogger.info(ctx.job, logData);
                 notifyListeners(room, logData);
-
-                if (enrichedValue.value === undefined) {
-                    enrichedValue.value = 'n/a';
-                }
-
                 await ctx.dataset.updateOne(
                     {
-                        _id: new ObjectId(entry._id),
+                        uri: id,
                     },
-                    { $set: { [enrichment.name]: enrichedValue.value } },
+                    { $set: { [enrichment.name]: value } },
                 );
                 progress.incrementProgress(1);
             }
