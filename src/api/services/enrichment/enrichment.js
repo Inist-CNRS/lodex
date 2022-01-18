@@ -12,9 +12,13 @@ import { jobLogger } from '../../workers/tools';
 const BATCH_SIZE = 50;
 
 const getSourceData = async (ctx, sourceColumn) => {
-    const excerptLines = await ctx.dataset.getExcerpt({
-        [sourceColumn]: { $ne: null },
-    });
+    const excerptLines = await ctx.dataset.getExcerpt(
+        sourceColumn
+            ? {
+                  [sourceColumn]: { $ne: null },
+              }
+            : {},
+    );
     const sourceData = excerptLines[0][sourceColumn];
     try {
         return JSON.parse(sourceData);
@@ -65,9 +69,9 @@ export const getEnrichmentDataPreview = async ctx => {
         previewRule = cleanWebServiceRule(previewRule);
     }
     const commands = createEzsRuleCommands(previewRule);
-    const excerptLines = await ctx.dataset.getExcerpt({
-        [sourceColumn]: { $ne: null },
-    });
+    const excerptLines = await ctx.dataset.getExcerpt(
+        sourceColumn ? { [sourceColumn]: { $ne: null } } : {},
+    );
     let result = [];
     for (let index = 0; index < excerptLines.length; index += BATCH_SIZE) {
         let values = await processEzsEnrichment(
