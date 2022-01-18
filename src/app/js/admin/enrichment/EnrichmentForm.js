@@ -201,7 +201,11 @@ export const EnrichmentFormComponent = ({
 
         if (isEdit) {
             onUpdateEnrichment({
-                enrichment: { _id: initialValues._id, ...payload },
+                enrichment: {
+                    _id: initialValues._id,
+                    jobId: initialValues.jobId,
+                    ...payload,
+                },
             });
         } else {
             onAddEnrichment({
