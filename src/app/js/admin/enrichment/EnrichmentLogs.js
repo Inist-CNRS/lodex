@@ -90,7 +90,7 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
     const [logs, setLogs] = useState([]);
 
     useEffect(() => {
-        enrichment?.jobId &&
+        if (enrichment.jobId) {
             jobsApi.getJobLogs(enrichment.jobId).then(
                 result => {
                     setIsLoaded(true);
@@ -101,6 +101,7 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
                     setError(error);
                 },
             );
+        }
     }, []);
 
     useEffect(() => {
