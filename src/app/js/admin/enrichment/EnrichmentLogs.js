@@ -91,7 +91,7 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
 
     useEffect(() => {
         enrichment?.jobId &&
-            jobsApi.getJobLogs('enrichment', enrichment.jobId).then(
+            jobsApi.getJobLogs(enrichment.jobId).then(
                 result => {
                     setIsLoaded(true);
                     setLogs(result.response.logs.reverse());

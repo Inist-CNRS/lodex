@@ -435,7 +435,7 @@ export const getLoadLoadersRequest = state =>
 
 export const getJobLogsRequest = (state, queue, jobId) =>
     getRequest(state, {
-        url: `/api/job/${queue}/${jobId}/logs`,
+        url: `/api/job/${jobId}/logs`,
     });
 
 export const getCancelJobRequest = (state, queue) =>

@@ -10,10 +10,10 @@ export const getUserLocalStorageInfo = () => {
         : localStorageItem.user;
 };
 
-const getJobLogs = (queue, jobId) => {
+const getJobLogs = jobId => {
     const { token } = getUserLocalStorageInfo();
 
-    const request = getJobLogsRequest({ token }, queue, jobId);
+    const request = getJobLogsRequest({ token }, jobId);
     return fetch(request);
 };
 

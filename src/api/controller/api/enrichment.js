@@ -2,7 +2,8 @@ import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 
-import { enricherQueue, PROCESS } from '../../workers/enricher';
+import { PROCESS } from '../../workers/enricher';
+import { workerQueue } from '../../workers/publisher';
 import {
     createEnrichmentRule,
     getEnrichmentDataPreview,
@@ -80,7 +81,7 @@ export const enrichmentAction = async (ctx, action, id) => {
     }
 
     if (action === 'launch') {
-        await enricherQueue.add(PROCESS, { id }).then(job => {
+        await workerQueue.add(PROCESS, { id }).then(job => {
             setEnrichmentJobId(ctx, id, job);
         });
         ctx.body = {
@@ -91,7 +92,7 @@ export const enrichmentAction = async (ctx, action, id) => {
     if (action === 'relaunch') {
         const enrichment = await ctx.enrichment.findOneById(id);
         await ctx.dataset.removeAttribute(enrichment.name);
-        await enricherQueue.add(PROCESS, { id }).then(job => {
+        await workerQueue.add(PROCESS, { id }).then(job => {
             setEnrichmentJobId(ctx, id, job);
         });
         ctx.body = {

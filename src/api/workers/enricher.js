@@ -1,17 +1,13 @@
-import Queue from 'bull';
 import {
     startEnrichment,
     setEnrichmentError,
 } from '../services/enrichment/enrichment';
 import repositoryMiddleware from '../services/repositoryMiddleware';
+import { workerQueue } from './publisher';
 
 export const PROCESS = 'process';
-export const ENRICHER_QUEUE = 'enrichment';
-export const enricherQueue = new Queue(ENRICHER_QUEUE, process.env.REDIS_URL, {
-    defaultJobOptions: { removeOnComplete: 100, removeOnFail: 100 },
-});
 
-enricherQueue.process(PROCESS, (job, done) => {
+workerQueue.process(PROCESS, (job, done) => {
     startJobEnrichment(job)
         .then(() => {
             job.progress(100);

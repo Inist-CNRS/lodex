@@ -5,23 +5,28 @@ import publishCharacteristics from '../services/publishCharacteristics';
 import publishDocuments from '../services/publishDocuments';
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
-export const PUBLISH = 'publish';
-export const PUBLISHER_QUEUE = 'publisher';
+export const PUBLISH = 'publisher';
+export const QUEUE_NAME = 'worker';
 const listeners = [];
-export const publisherQueue = new Queue(
-    PUBLISHER_QUEUE,
-    process.env.REDIS_URL,
-    {
-        defaultJobOptions: {
-            removeOnComplete: 100,
-            removeOnFail: 100,
-            lifo: true,
-        },
+export const workerQueue = new Queue(QUEUE_NAME, process.env.REDIS_URL, {
+    limiter: {
+        max: 1,
+        duration: 1000,
     },
-);
+    defaultJobOptions: {
+        removeOnComplete: 100,
+        removeOnFail: 100,
+        lifo: true,
+    },
+});
 
-publisherQueue.process(PUBLISH, (job, done) => {
-    publisherQueue.clean(100, 'wait');
+workerQueue.process(PUBLISH, (job, done) => {
+    workerQueue.getWaiting().then(jobs => {
+        jobs.filter(job => job.name === PUBLISH).forEach(waitingJob =>
+            waitingJob.remove(),
+        );
+    });
+    // publisherQueue.clean(100, 'wait');
     startPublishing(job)
         .then(async () => {
             job.progress(100);
