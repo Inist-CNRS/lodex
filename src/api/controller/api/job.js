@@ -14,7 +14,7 @@ export const setup = async (ctx, next) => {
     }
 };
 
-export const getJobLogs = async (ctx, queue, id) => {
+export const getJobLogs = async (ctx, id) => {
     ctx.body = await workerQueue.getJobLogs(id);
 };
 
