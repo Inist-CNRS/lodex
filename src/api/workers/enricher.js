@@ -3,11 +3,10 @@ import {
     setEnrichmentError,
 } from '../services/enrichment/enrichment';
 import repositoryMiddleware from '../services/repositoryMiddleware';
-import { workerQueue } from './publisher';
 
-export const PROCESS = 'process';
+export const ENRICHER = 'enricher';
 
-workerQueue.process(PROCESS, (job, done) => {
+export const processEnrichment = (job, done) => {
     startJobEnrichment(job)
         .then(() => {
             job.progress(100);
@@ -17,7 +16,7 @@ workerQueue.process(PROCESS, (job, done) => {
             handlePublishError();
             done(err);
         });
-});
+};
 
 const startJobEnrichment = async job => {
     const ctx = await prepareContext({ job });

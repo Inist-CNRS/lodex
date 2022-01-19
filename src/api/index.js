@@ -13,7 +13,9 @@ import controller from './controller';
 import testController from './controller/testController';
 import indexSearchableFields from './services/indexSearchableFields';
 
-import { addPublisherListener, workerQueue } from './workers/publisher';
+import { workerQueue } from './workers';
+import { addPublisherListener } from './workers/publisher';
+
 import progress from './services/progress';
 import { addEnrichmentJobListener } from './services/enrichment/enrichment';
 

@@ -3,7 +3,7 @@ import config from 'config';
 import { getHost } from '../../../common/uris';
 
 import server from '../../';
-import { workerQueue } from '../../workers/publisher';
+import { workerQueue } from '../../workers';
 
 export default () => {
     const app = server.listen(config.port);

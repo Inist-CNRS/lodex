@@ -3,12 +3,13 @@ import route from 'koa-route';
 
 import clearPublished from '../../services/clearPublished';
 import logger from '../../services/logger';
-import { workerQueue, PUBLISH } from '../../workers/publisher';
+import { workerQueue } from '../../workers';
+import { PUBLISHER } from '../../workers/publisher';
 
 const app = new Koa();
 
 export const doPublish = async ctx => {
-    await workerQueue.add(PUBLISH);
+    await workerQueue.add({ jobType: PUBLISHER });
     ctx.status = 200;
     ctx.body = {
         status: 'publishing',
