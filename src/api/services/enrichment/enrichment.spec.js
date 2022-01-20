@@ -1,6 +1,7 @@
 import {
     getEnrichmentDataPreview,
     getEnrichmentRuleModel,
+    getSourceError,
     processEnrichment,
 } from './enrichment';
 import * as fs from 'fs';
@@ -479,5 +480,30 @@ describe('enrichment', () => {
                 expect.stringContaining(`Finished enriching #3`),
             );
         });
+    });
+});
+
+describe('getSourceError', () => {
+    it('should return the deepest sourceError object', () => {
+        // GIVEN
+        const error = {
+            sourceError: {
+                sourceError: {
+                    sourceError: { message: 'Source error' },
+                    sourceChunk: 'This chunk',
+                },
+                sourceChunk: 'not that',
+            },
+            sourceChunk: 'not this',
+        };
+
+        // WHEN
+        const deepestSourceError = getSourceError(error);
+
+        // THEN
+        expect(deepestSourceError.sourceError).toEqual({
+            message: 'Source error',
+        });
+        expect(deepestSourceError.sourceChunk).toEqual('This chunk');
     });
 });

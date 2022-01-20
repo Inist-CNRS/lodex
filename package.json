@@ -62,7 +62,7 @@
         "@ezs/basics": "^1.15.1",
         "@ezs/booster": "^1.2.4",
         "@ezs/conditor": "^1.9.18",
-        "@ezs/core": "^1.26.3",
+        "@ezs/core": "1.27.0",
         "@ezs/istex": "1.4.6",
         "@ezs/lodex": "1.14.9",
         "@ezs/loterre": "^1.2.11",

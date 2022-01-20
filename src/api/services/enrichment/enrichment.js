@@ -132,19 +132,30 @@ export const getEnrichmentDatasetCandidate = async (id, ctx) => {
 
 const createEzsRuleCommands = rule => ezs.compileScript(rule).get();
 
+export const getSourceError = error => {
+    const sourceError = error?.sourceError;
+    if (sourceError?.sourceError) {
+        return getSourceError(sourceError);
+    }
+    return error;
+};
+
 const processEzsEnrichment = (entries, commands) => {
     return new Promise((resolve, reject) => {
         const values = [];
         const input = new PassThrough({ objectMode: true });
-        const getSourceError = error =>
-            error.sourceError ? getSourceError(error.sourceError) : error;
+
         input
             .pipe(ezs('delegate', { commands }, {}))
             .on('data', data => {
                 if (data instanceof Error) {
+                    const error = getSourceError(data);
+                    const sourceChunk = error?.sourceChunk
+                        ? JSON.parse(error.sourceChunk)
+                        : null;
                     values.push({
-                        id: undefined,
-                        error: getSourceError(data).message,
+                        id: sourceChunk?.id,
+                        error: error?.sourceError?.message,
                     });
                 } else {
                     values.push(data);
@@ -192,25 +203,13 @@ export const processEnrichment = async (enrichment, ctx) => {
                 commands,
             );
 
-            const erroredEnrichedValues = enrichedValues.filter(v => v.error);
-            const nonErroredEnrichedValues = enrichedValues.filter(
-                v => !v.error,
-            );
-            const correspondingErrorEntries = entries.filter(
-                e => !nonErroredEnrichedValues.find(v => v.id === e.uri),
-            );
-
             for (const enrichedValue of enrichedValues) {
                 const value =
                     enrichedValue.value ||
                     (enrichedValue.error && `[Error] ${enrichedValue.error}`) ||
                     'n/a';
 
-                const id = enrichedValue.id
-                    ? enrichedValue.id
-                    : correspondingErrorEntries[
-                          erroredEnrichedValues.indexOf(enrichedValue)
-                      ].uri;
+                const id = enrichedValue.id;
                 const logData = JSON.stringify({
                     level: enrichedValue.error ? 'error' : 'info',
                     message: enrichedValue.error
