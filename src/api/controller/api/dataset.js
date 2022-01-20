@@ -23,6 +23,16 @@ export const clearDataset = async ctx => {
     }
 };
 
+export const getDataset = async ctx => {
+    const { skip, limit } = ctx.query;
+    const datas = ctx.dataset
+        .find()
+        .skip(skip)
+        .limit(limit);
+    ctx.body(datas);
+};
+
 app.use(route.delete('/', clearDataset));
+app.use(route.get('/', getDataset));
 
 export default app;
