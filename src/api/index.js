@@ -13,8 +13,9 @@ import controller from './controller';
 import testController from './controller/testController';
 import indexSearchableFields from './services/indexSearchableFields';
 
-import { addPublisherListener, publisherQueue } from './workers/publisher';
-import { enricherQueue } from './workers/enricher';
+import { workerQueue } from './workers';
+import { addPublisherListener } from './workers/publisher';
+
 import progress from './services/progress';
 import { addEnrichmentJobListener } from './services/enrichment/enrichment';
 
@@ -29,14 +30,22 @@ if (process.env.NODE_ENV === 'development') {
     const serverAdapter = new KoaAdapter();
     serverAdapter.setBasePath('/bull');
     createBullBoard({
-        queues: [
-            new BullAdapter(publisherQueue),
-            new BullAdapter(enricherQueue),
-        ],
+        queues: [new BullAdapter(workerQueue)],
         serverAdapter,
     });
     app.use(serverAdapter.registerPlugin());
 }
+
+// worker job
+app.use(async (ctx, next) => {
+    try {
+        const activeJobs = await workerQueue.getActive();
+        ctx.job = activeJobs[0];
+    } catch (e) {
+        logger.error('An error occured on loading running job', e);
+    }
+    await next();
+});
 
 // server logs
 app.use(async (ctx, next) => {

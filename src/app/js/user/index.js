@@ -433,9 +433,9 @@ export const getLoadLoadersRequest = state =>
         url: '/api/loader',
     });
 
-export const getJobLogsRequest = (state, queue, jobId) =>
+export const getJobLogsRequest = (state, jobId) =>
     getRequest(state, {
-        url: `/api/job/${queue}/${jobId}/logs`,
+        url: `/api/job/${jobId}/logs`,
     });
 
 export const getCancelJobRequest = (state, queue) =>

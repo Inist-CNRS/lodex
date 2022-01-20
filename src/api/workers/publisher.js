@@ -1,27 +1,15 @@
-import Queue from 'bull';
 import publish from '../services/publish';
 import publishFacets from '../controller/api/publishFacets';
 import publishCharacteristics from '../services/publishCharacteristics';
 import publishDocuments from '../services/publishDocuments';
 import repositoryMiddleware from '../services/repositoryMiddleware';
+import { cleanWaitingJobsOfType } from '.';
 
-export const PUBLISH = 'publish';
-export const PUBLISHER_QUEUE = 'publisher';
+export const PUBLISHER = 'publisher';
 const listeners = [];
-export const publisherQueue = new Queue(
-    PUBLISHER_QUEUE,
-    process.env.REDIS_URL,
-    {
-        defaultJobOptions: {
-            removeOnComplete: 100,
-            removeOnFail: 100,
-            lifo: true,
-        },
-    },
-);
 
-publisherQueue.process(PUBLISH, (job, done) => {
-    publisherQueue.clean(100, 'wait');
+export const processPublication = (job, done) => {
+    cleanWaitingJobsOfType(PUBLISHER);
     startPublishing(job)
         .then(async () => {
             job.progress(100);
@@ -33,7 +21,7 @@ publisherQueue.process(PUBLISH, (job, done) => {
             handlePublishError();
             done(err);
         });
-});
+};
 
 const startPublishing = async job => {
     notifyListeners({ isPublishing: true, success: false });

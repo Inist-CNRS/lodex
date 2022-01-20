@@ -26,7 +26,7 @@ const useStyles = makeStyles({
         paddingRight: '1rem',
     },
     LogsList: {
-        overflow: 'hidden !important',
+        overflowX: 'hidden !important',
     },
     Log_info: {
         color: theme.black.light,
@@ -90,8 +90,8 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
     const [logs, setLogs] = useState([]);
 
     useEffect(() => {
-        enrichment?.jobId &&
-            jobsApi.getJobLogs('enrichment', enrichment.jobId).then(
+        if (enrichment?.jobId) {
+            jobsApi.getJobLogs(enrichment.jobId).then(
                 result => {
                     setIsLoaded(true);
                     setLogs(result.response.logs.reverse());
@@ -101,6 +101,7 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
                     setError(error);
                 },
             );
+        }
     }, []);
 
     useEffect(() => {
@@ -135,7 +136,7 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
                         className={classes.LogsList}
                         height={700}
                         width={600}
-                        itemSize={35}
+                        itemSize={30}
                         itemCount={logs.length}
                         itemData={logs}
                     >

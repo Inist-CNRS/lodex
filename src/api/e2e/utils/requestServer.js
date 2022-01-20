@@ -3,8 +3,7 @@ import config from 'config';
 import { getHost } from '../../../common/uris';
 
 import server from '../../';
-import { publisherQueue } from '../../workers/publisher';
-import { enricherQueue } from '../../workers/enricher';
+import { workerQueue } from '../../workers';
 
 export default () => {
     const app = server.listen(config.port);
@@ -46,8 +45,7 @@ export default () => {
                 body: JSON.stringify(body),
             }),
         close: () => {
-            publisherQueue.close();
-            enricherQueue.close();
+            workerQueue.close();
             app.close();
         },
     };

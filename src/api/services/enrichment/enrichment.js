@@ -164,7 +164,7 @@ const processEzsEnrichment = (entries, commands) => {
 
 export const processEnrichment = async (enrichment, ctx) => {
     await ctx.enrichment.updateOne(
-        { uri: enrichment.uri },
+        { _id: new ObjectId(enrichment._id) },
         { $set: { ['status']: IN_PROGRESS } },
     );
     const room = `enrichment-job-${ctx.job.id}`;
@@ -191,6 +191,7 @@ export const processEnrichment = async (enrichment, ctx) => {
                 entries,
                 commands,
             );
+
             const erroredEnrichedValues = enrichedValues.filter(v => v.error);
             const nonErroredEnrichedValues = enrichedValues.filter(
                 v => !v.error,
