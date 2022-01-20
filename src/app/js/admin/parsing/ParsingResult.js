@@ -4,16 +4,18 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { grey } from '@material-ui/core/colors';
+import { DataGrid } from '@mui/x-data-grid';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { reloadParsingResult } from './';
 import { fromParsing } from '../selectors';
-import ParsingExcerpt from './ParsingExcerpt';
 import Loading from '../../lib/components/Loading';
 
 const styles = {
     container: {
         position: 'relative',
+        height: 600,
+        width: '100%',
         display: 'flex',
         maxHeight: 'calc(((100vh - 100px) - 76px) - 72px)',
     },
@@ -67,11 +69,21 @@ export class ParsingResultComponent extends Component {
 
         return (
             <div className="parsingResult" style={styles.container}>
-                <ParsingExcerpt
+                {/* <ParsingExcerpt
                     columns={excerptColumns}
                     lines={excerptLines.slice(0, maxLines)}
                     showAddFromColumn={showAddFromColumn}
                     onAddField={onAddField}
+                /> */}
+                <DataGrid
+                    columns={excerptColumns.map(column => ({
+                        field: column,
+                        headerName: column,
+                    }))}
+                    rows={excerptLines.map(column => ({
+                        id: column._id,
+                        ...column,
+                    }))}
                 />
             </div>
         );
