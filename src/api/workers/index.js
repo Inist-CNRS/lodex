@@ -6,8 +6,8 @@ export const QUEUE_NAME = 'worker';
 
 export const workerQueue = new Queue(QUEUE_NAME, process.env.REDIS_URL, {
     defaultJobOptions: {
-        removeOnComplete: 100,
-        removeOnFail: 100,
+        removeOnComplete: 10,
+        removeOnFail: 10,
         lifo: true,
     },
 });
