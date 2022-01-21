@@ -24,7 +24,7 @@ export const DataRouteComponent = ({ canUploadFile, hasPublishedDataset }) => {
     return (
         <div style={{ marginLeft: '-20px' }}>
             <AdminContextProvider>
-                <ParsingResult />
+                <ParsingResult dataGrid />
                 <Statistics
                     mode="data"
                     hasPublishedDataset={hasPublishedDataset}

@@ -53,6 +53,9 @@ const useStyles = makeStyles({
     isPublished: {
         backgroundColor: theme.green.tertiary,
     },
+    toggle: {
+        cursor: 'pointer',
+    },
 });
 
 export const StatisticsComponent = ({
@@ -119,9 +122,9 @@ export const StatisticsComponent = ({
                             })}
                         </div>
                         {showMainColumns ? (
-                            <VisibilityIcon />
+                            <VisibilityIcon className={classes.toggle} />
                         ) : (
-                            <VisibilityOffIcon />
+                            <VisibilityOffIcon className={classes.toggle} />
                         )}
                     </Box>
 
@@ -138,9 +141,9 @@ export const StatisticsComponent = ({
                             })}
                         </div>
                         {showEnrichmentColumns ? (
-                            <VisibilityIcon />
+                            <VisibilityIcon className={classes.toggle} />
                         ) : (
-                            <VisibilityOffIcon />
+                            <VisibilityOffIcon className={classes.toggle} />
                         )}
                     </Box>
                 </>
