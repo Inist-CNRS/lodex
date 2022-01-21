@@ -1,13 +1,11 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const AdminContext = createContext();
 
 export const AdminContextProvider = ({ children }) => {
-    const [showEnrichmentColumns, setShowEnrichmentColumn] = React.useState(
-        true,
-    );
-    const [showMainColumns, setShowMainColumn] = React.useState(true);
+    const [showEnrichmentColumns, setShowEnrichmentColumn] = useState(true);
+    const [showMainColumns, setShowMainColumn] = useState(true);
 
     return (
         <AdminContext.Provider
