@@ -17,8 +17,8 @@ import {
 import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import theme from './../theme';
-import { toggleLoadedColumn, toggleEnrichedColumn } from './parsing';
 import { PENDING } from '../../../common/enrichmentStatus';
+import { useAdminContext } from './AdminContext';
 
 const useStyles = makeStyles({
     progress: {
@@ -63,13 +63,15 @@ export const StatisticsComponent = ({
     totalLoadedLines,
     totalPublishedFields,
     mode = 'data',
-    isHiddenLoadedColumn,
-    isHiddenEnrichedColumn,
-    handleToggleLoadedColumn,
-    handleToggleEnrichedColumn,
     hasPublishedDataset,
 }) => {
     const classes = useStyles();
+    const adminContext = useAdminContext();
+    const toggleShowEnrichmentColumns =
+        adminContext?.toggleShowEnrichmentColumns;
+    const showEnrichmentColumns = adminContext?.showEnrichmentColumns;
+    const toggleShowMainColumns = adminContext?.toggleShowMainColumns;
+    const showMainColumns = adminContext?.showMainColumns;
 
     return (
         <div className={classes.container}>
@@ -107,7 +109,7 @@ export const StatisticsComponent = ({
 
                     <Box
                         className={classes.item}
-                        onClick={handleToggleLoadedColumn}
+                        onClick={toggleShowMainColumns}
                     >
                         <div className={classes.itemText}>
                             {polyglot.t('parsing_summary_columns', {
@@ -116,10 +118,10 @@ export const StatisticsComponent = ({
                                     totalLoadedEnrichmentColumns,
                             })}
                         </div>
-                        {isHiddenLoadedColumn ? (
-                            <VisibilityOffIcon />
-                        ) : (
+                        {showMainColumns ? (
                             <VisibilityIcon />
+                        ) : (
+                            <VisibilityOffIcon />
                         )}
                     </Box>
 
@@ -128,17 +130,17 @@ export const StatisticsComponent = ({
                             classes.item,
                             classes.columnEnriched,
                         )}
-                        onClick={handleToggleEnrichedColumn}
+                        onClick={toggleShowEnrichmentColumns}
                     >
                         <div className={classes.itemText}>
                             {polyglot.t('parsing_enriched_columns', {
                                 smart_count: totalLoadedEnrichmentColumns,
                             })}
                         </div>
-                        {isHiddenEnrichedColumn ? (
-                            <VisibilityOffIcon />
-                        ) : (
+                        {showEnrichmentColumns ? (
                             <VisibilityIcon />
+                        ) : (
+                            <VisibilityOffIcon />
                         )}
                     </Box>
                 </>
@@ -161,10 +163,6 @@ StatisticsComponent.propTypes = {
     totalLoadedLines: PropTypes.number.isRequired,
     totalPublishedFields: PropTypes.number.isRequired,
     mode: PropTypes.oneOf(['data', 'display']),
-    isHiddenLoadedColumn: PropTypes.bool.isRequired,
-    isHiddenEnrichedColumn: PropTypes.bool.isRequired,
-    handleToggleLoadedColumn: PropTypes.func.isRequired,
-    handleToggleEnrichedColumn: PropTypes.func.isRequired,
     hasPublishedDataset: PropTypes.bool,
 };
 
@@ -179,17 +177,10 @@ const mapStateToProps = (state, { filter, subresourceId }) => ({
         filter,
         subresourceId,
     }).length,
-    isHiddenLoadedColumn: fromParsing.getHideLoadedColumn(state),
-    isHiddenEnrichedColumn: fromParsing.getHideEnrichedColumn(state),
     fields: fromFields.getEditingFields(state, { filter, subresourceId }),
 });
 
-const mapDispatchToProps = {
-    handleToggleLoadedColumn: toggleLoadedColumn,
-    handleToggleEnrichedColumn: toggleEnrichedColumn,
-};
-
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps),
     translate,
 )(StatisticsComponent);
