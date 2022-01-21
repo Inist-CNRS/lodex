@@ -14,8 +14,9 @@ export const AdminContextProvider = ({ children }) => {
             value={{
                 showEnrichmentColumn,
                 showMainColumn,
-                setShowEnrichmentColumn,
-                setShowMainColumn,
+                toggleShowEnrichmentColumns: () =>
+                    setShowEnrichmentColumn(!showEnrichmentColumn),
+                toggleShowMainColumns: () => setShowMainColumn(!showMainColumn),
             }}
         >
             {children}
@@ -28,11 +29,5 @@ AdminContextProvider.propTypes = {
 };
 
 export const useAdminContext = () => {
-    const context = useContext(AdminContext);
-    if (context === undefined) {
-        throw new Error(
-            'useAdminContext must be used within a AdminContextProvider',
-        );
-    }
-    return context;
+    return useContext(AdminContext);
 };
