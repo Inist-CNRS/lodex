@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -9,12 +9,13 @@ import { DataGrid } from '@mui/x-data-grid';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { reloadParsingResult } from './';
 import { fromParsing } from '../selectors';
+import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
 
 const styles = {
     container: {
         position: 'relative',
-        height: 600,
+        height: '645px',
         width: '100%',
         display: 'flex',
         maxHeight: 'calc(((100vh - 100px) - 76px) - 72px)',
@@ -42,53 +43,46 @@ const styles = {
     },
 };
 
-export class ParsingResultComponent extends Component {
-    handleClearParsing = () => {
-        event.preventDefault();
-        event.stopPropagation();
-        this.props.handleClearParsing();
-    };
+const ParsingResultComponent = props => {
+    const { p: polyglot } = props;
+    const [columns, setColumns] = useState([]);
+    const [rows, setRows] = useState([]);
+    const [skip, setSkip] = useState(0);
+    const [limit, setLimit] = useState(10);
+    const [filter, setFilter] = useState({});
 
-    render() {
-        const {
-            excerptColumns,
-            excerptLines,
-            p: polyglot,
-            showAddFromColumn,
-            onAddField,
-            maxLines,
-            loadingParsingResult,
-        } = this.props;
-        if (loadingParsingResult) {
-            return (
-                <Loading className="admin">
-                    {polyglot.t('loading_parsing_results')}
-                </Loading>
-            );
-        }
+    useEffect(() => {
+        const fetchDataset = async () => {
+            const datas = await datasetApi.getDataset({ skip, limit, filter });
+            if (datas.length !== 0) {
+                setColumns(
+                    Object.keys(datas[0])
+                        .filter(key => key !== '_id')
+                        .map(key => ({
+                            field: key,
+                            headerName: key,
+                        })),
+                );
+                setRows(datas.map(data => ({ id: data._id, ...data })));
+            }
+        };
+        fetchDataset();
+    }, [skip, limit, filter]);
 
+    if (rows.length === 0) {
         return (
-            <div className="parsingResult" style={styles.container}>
-                {/* <ParsingExcerpt
-                    columns={excerptColumns}
-                    lines={excerptLines.slice(0, maxLines)}
-                    showAddFromColumn={showAddFromColumn}
-                    onAddField={onAddField}
-                /> */}
-                <DataGrid
-                    columns={excerptColumns.map(column => ({
-                        field: column,
-                        headerName: column,
-                    }))}
-                    rows={excerptLines.map(column => ({
-                        id: column._id,
-                        ...column,
-                    }))}
-                />
-            </div>
+            <Loading className="admin">
+                {polyglot.t('loading_parsing_results')}
+            </Loading>
         );
     }
-}
+
+    return (
+        <div className="parsingResult" style={styles.container}>
+            <DataGrid columns={columns} rows={rows} />
+        </div>
+    );
+};
 
 ParsingResultComponent.propTypes = {
     excerptColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
