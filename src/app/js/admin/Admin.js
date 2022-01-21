@@ -51,7 +51,7 @@ export const AdminComponent = ({
     return (
         <Card className="admin">
             <AdminContextProvider>
-                <ParsingResult />
+                <ParsingResult dataGrid />
                 <Statistics hasPublishedDataset={hasPublishedDataset} />
                 <PublicationPreview />
             </AdminContextProvider>

@@ -11,6 +11,7 @@ import { reloadParsingResult } from './';
 import { fromParsing } from '../selectors';
 import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
+import ParsingExcerpt from './ParsingExcerpt';
 
 const styles = {
     container: {
@@ -43,8 +44,16 @@ const styles = {
     },
 };
 
-const ParsingResultComponent = props => {
-    const { p: polyglot } = props;
+export const ParsingResultComponent = props => {
+    const {
+        p: polyglot,
+        excerptColumns,
+        excerptLines,
+        maxLines,
+        showAddFromColumn,
+        onAddField,
+        dataGrid,
+    } = props;
     const [columns, setColumns] = useState([]);
     const [rows, setRows] = useState([]);
     const [skip, setSkip] = useState(0);
@@ -88,17 +97,26 @@ const ParsingResultComponent = props => {
 
     return (
         <div className="parsingResult" style={styles.container}>
-            <DataGrid
-                columns={columns}
-                rows={rows}
-                rowCount={rowCount}
-                autoPageSize
-                disableColumnFilter
-                disableColumnMenu
-                pageSize={10}
-                paginationMode="server"
-                onPageChange={onPageChange}
-            />
+            {dataGrid ? (
+                <DataGrid
+                    columns={columns}
+                    rows={rows}
+                    rowCount={rowCount}
+                    autoPageSize
+                    disableColumnFilter
+                    disableColumnMenu
+                    pageSize={10}
+                    paginationMode="server"
+                    onPageChange={onPageChange}
+                />
+            ) : (
+                <ParsingExcerpt
+                    columns={excerptColumns}
+                    lines={excerptLines.slice(0, maxLines)}
+                    showAddFromColumn={showAddFromColumn}
+                    onAddField={onAddField}
+                />
+            )}
         </div>
     );
 };
@@ -112,6 +130,7 @@ ParsingResultComponent.propTypes = {
     onAddField: PropTypes.func,
     maxLines: PropTypes.number,
     loadingParsingResult: PropTypes.bool.isRequired,
+    dataGrid: PropTypes.bool,
 };
 
 ParsingResultComponent.defaultProps = {
