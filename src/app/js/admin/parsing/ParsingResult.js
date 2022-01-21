@@ -51,6 +51,9 @@ const ParsingResultComponent = props => {
     const [limit, setLimit] = useState(10);
     const [filter, setFilter] = useState({});
     const [rowCount, setRowCount] = useState(0);
+    const onPageChange = page => {
+        setSkip(page * limit);
+    };
 
     useEffect(() => {
         const fetchDataset = async () => {
@@ -93,6 +96,8 @@ const ParsingResultComponent = props => {
                 disableColumnFilter
                 disableColumnMenu
                 pageSize={10}
+                paginationMode="server"
+                onPageChange={onPageChange}
             />
         </div>
     );
