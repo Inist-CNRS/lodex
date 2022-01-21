@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { grey } from '@material-ui/core/colors';
 import { DataGrid } from '@mui/x-data-grid';
+import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { reloadParsingResult } from './';
@@ -15,6 +15,7 @@ import ParsingExcerpt from './ParsingExcerpt';
 import { useAdminContext } from '../AdminContext';
 import theme from '../../theme';
 import { makeStyles } from '@material-ui/styles';
+import { CircularProgress } from '@material-ui/core';
 
 const styles = {
     container: {
@@ -23,6 +24,9 @@ const styles = {
         width: '100%',
         display: 'flex',
         maxHeight: 'calc(((100vh - 100px) - 76px) - 72px)',
+    },
+    header: {
+        backgroundColor: theme.black.veryLight,
     },
     enrichedColumn: {
         backgroundColor: theme.green.light,
@@ -55,20 +59,45 @@ export const ParsingResultComponent = props => {
         const enrichmentsNames = enrichments.map(enrichment => enrichment.name);
 
         return Object.keys(datas[0])
-            .filter(key => key !== 'uri')
             .filter(key => {
+                const isEnrichment = enrichmentsNames.includes(key);
                 return (
-                    (showEnrichmentColumns && enrichmentsNames.includes(key)) ||
-                    (showMainColumns && !enrichmentsNames.includes(key)) ||
-                    key === '_id'
+                    key !== '_id' &&
+                    (key === 'uri' ||
+                        (showEnrichmentColumns && isEnrichment) ||
+                        (showMainColumns && !enrichmentsNames.includes(key)))
                 );
             })
-            .map(key => ({
-                field: key,
-                headerName: key,
-                cellClassName:
-                    enrichmentsNames.includes(key) && classes.enrichedColumn,
-            }));
+            .map(key => {
+                const isEnrichment = enrichmentsNames.includes(key);
+                const isEnrichmentLoading =
+                    isEnrichment &&
+                    enrichments.some(
+                        enrichment =>
+                            enrichment.name === key &&
+                            enrichment.status === IN_PROGRESS,
+                    );
+                return {
+                    field: key,
+                    headerName: key,
+                    cellClassName: isEnrichment && classes.enrichedColumn,
+                    renderCell: params => {
+                        if (isEnrichmentLoading && params.value === undefined)
+                            return (
+                                <CircularProgress
+                                    variant="indeterminate"
+                                    style={styles.progress}
+                                    size={20}
+                                />
+                            );
+                        return (
+                            <div title={params.value}>
+                                {JSON.stringify(params.value)}
+                            </div>
+                        );
+                    },
+                };
+            });
     };
 
     const columns = useMemo(
