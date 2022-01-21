@@ -67,7 +67,6 @@ export const ParsingResultComponent = props => {
         dataGrid,
     } = props;
     const [datas, setDatas] = useState([]);
-
     const columns = useMemo(
         () => getColumnsToShow(datas, showEnrichmentColumns, showMainColumns),
         [datas, showEnrichmentColumns, showMainColumns],
@@ -75,11 +74,11 @@ export const ParsingResultComponent = props => {
     const rows = useMemo(() => datas.map(data => ({ id: data._id, ...data })), [
         datas,
     ]);
-    const [rowCount, setRowCount] = useState(0);
 
+    const [rowCount, setRowCount] = useState(0);
     const [skip, setSkip] = useState(0);
-    const [limit, setLimit] = useState(10);
-    const [filter, setFilter] = useState({});
+    const limit = 10;
+    const filter = {};
 
     const adminContext = useAdminContext();
     const showEnrichmentColumns = adminContext?.showEnrichmentColumns;
