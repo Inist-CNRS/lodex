@@ -13,6 +13,8 @@ import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
 import ParsingExcerpt from './ParsingExcerpt';
 import { useAdminContext } from '../AdminContext';
+import theme from '../../theme';
+import { makeStyles } from '@material-ui/styles';
 
 const styles = {
     container: {
@@ -22,47 +24,12 @@ const styles = {
         display: 'flex',
         maxHeight: 'calc(((100vh - 100px) - 76px) - 72px)',
     },
-    card: {
-        marginTop: 0,
-    },
-    content: {
-        overflow: 'auto',
-        display: 'flex',
-    },
-    list: {
-        borderRight: `solid 1px ${grey[400]}`,
-        listStyleType: 'none',
-        margin: 0,
-        padding: 0,
-        paddingRight: '1rem',
-    },
-    listItem: {
-        whiteSpace: 'nowrap',
-    },
-    button: {
-        float: 'right',
-        marginRight: '2rem',
+    enrichedColumn: {
+        backgroundColor: theme.green.light,
     },
 };
 
-const getColumnsToShow = (datas, showEnrichments, showMains, enrichments) => {
-    if (datas.length === 0) return [];
-    const enrichmentsNames = enrichments.map(enrichment => enrichment.name);
-
-    return Object.keys(datas[0])
-        .filter(key => key !== 'uri')
-        .filter(key => {
-            return (
-                (showEnrichments && enrichmentsNames.includes(key)) ||
-                (showMains && !enrichmentsNames.includes(key)) ||
-                key === '_id'
-            );
-        })
-        .map(key => ({
-            field: key,
-            headerName: key,
-        }));
-};
+const useStyles = makeStyles(styles);
 
 export const ParsingResultComponent = props => {
     const {
@@ -76,11 +43,33 @@ export const ParsingResultComponent = props => {
         enrichments,
     } = props;
 
+    const classes = useStyles();
     const adminContext = useAdminContext();
     const showEnrichmentColumns = adminContext?.showEnrichmentColumns;
     const showMainColumns = adminContext?.showMainColumns;
 
     const [datas, setDatas] = useState([]);
+
+    const getColumnsToShow = () => {
+        if (datas.length === 0) return [];
+        const enrichmentsNames = enrichments.map(enrichment => enrichment.name);
+
+        return Object.keys(datas[0])
+            .filter(key => key !== 'uri')
+            .filter(key => {
+                return (
+                    (showEnrichmentColumns && enrichmentsNames.includes(key)) ||
+                    (showMainColumns && !enrichmentsNames.includes(key)) ||
+                    key === '_id'
+                );
+            })
+            .map(key => ({
+                field: key,
+                headerName: key,
+                cellClassName:
+                    enrichmentsNames.includes(key) && classes.enrichedColumn,
+            }));
+    };
 
     const columns = useMemo(
         () =>
@@ -128,7 +117,7 @@ export const ParsingResultComponent = props => {
     }
 
     return (
-        <div className="parsingResult" style={styles.container}>
+        <div className={classes.container}>
             {dataGrid ? (
                 <DataGrid
                     columns={columns}
