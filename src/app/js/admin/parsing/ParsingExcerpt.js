@@ -8,7 +8,7 @@ import { Table, TableBody, TableHead, TableRow } from '@material-ui/core';
 import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
-import { fromEnrichments, fromParsing } from '../selectors';
+import { fromEnrichments } from '../selectors';
 import theme from '../../theme';
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import { addField } from '../../fields';
@@ -51,30 +51,6 @@ export const getColumnStyle = (enrichmentsNames, column) => {
     return enrichmentsNames?.includes(column) ? styles.enrichedColumn : {};
 };
 
-export const filterColumnsToShow = (
-    columns,
-    enrichmentsNames,
-    isHiddenLoadedColumn,
-    isHiddenEnrichedColumn,
-) => {
-    if (isHiddenEnrichedColumn && isHiddenLoadedColumn) {
-        return columns.filter(column => column === 'uri');
-    }
-    if (isHiddenEnrichedColumn) {
-        return columns.filter(
-            column => !enrichmentsNames.includes(column) || column === 'uri',
-        );
-    }
-
-    if (isHiddenLoadedColumn) {
-        return columns.filter(
-            column => enrichmentsNames.includes(column) || column === 'uri',
-        );
-    }
-
-    return columns;
-};
-
 const formatValue = value => {
     return JSON.stringify(value);
 };
@@ -86,29 +62,10 @@ export const ParsingExcerptComponent = ({
     showAddFromColumn,
     onAddField,
     enrichments,
-    isHiddenLoadedColumn,
-    isHiddenEnrichedColumn,
 }) => {
     const enrichmentsNames = useMemo(() => getEnrichmentsNames(enrichments), [
         enrichments,
     ]);
-
-    const columnsToShow = useMemo(
-        () =>
-            filterColumnsToShow(
-                columns,
-                enrichmentsNames,
-                isHiddenLoadedColumn,
-                isHiddenEnrichedColumn,
-            ),
-        [
-            columns,
-            lines,
-            enrichmentsNames,
-            isHiddenLoadedColumn,
-            isHiddenEnrichedColumn,
-        ],
-    );
 
     const checkIsEnrichmentLoading = column => {
         return (
@@ -122,7 +79,7 @@ export const ParsingExcerptComponent = ({
         <Table style={styles.table}>
             <TableHead>
                 <TableRow>
-                    {columnsToShow.map(column => (
+                    {columns.map(column => (
                         <ParsingExcerptHeaderColumn
                             key={`header_${column}`}
                             column={column}
@@ -137,7 +94,7 @@ export const ParsingExcerptComponent = ({
                         key={`${line._id}_data_row`}
                         style={getRowStyle(index, total)}
                     >
-                        {columnsToShow.map(column => {
+                        {columns.map(column => {
                             const showAddColumnButton =
                                 showAddFromColumn &&
                                 (index === total - 3 ||
@@ -180,8 +137,6 @@ ParsingExcerptComponent.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.string).isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
     enrichments: PropTypes.arrayOf(PropTypes.object),
-    isHiddenLoadedColumn: PropTypes.bool.isRequired,
-    isHiddenEnrichedColumn: PropTypes.bool.isRequired,
     handleAddColumn: PropTypes.func.isRequired,
     showAddFromColumn: PropTypes.bool.isRequired,
     onAddField: PropTypes.func,
@@ -189,8 +144,6 @@ ParsingExcerptComponent.propTypes = {
 
 const mapStateToProps = state => ({
     enrichments: fromEnrichments.enrichments(state),
-    isHiddenLoadedColumn: fromParsing.getHideLoadedColumn(state),
-    isHiddenEnrichedColumn: fromParsing.getHideEnrichedColumn(state),
 });
 
 const mapDispatchToProps = {
