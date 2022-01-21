@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -12,6 +12,7 @@ import { fromParsing } from '../selectors';
 import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
 import ParsingExcerpt from './ParsingExcerpt';
+import { useAdminContext } from '../AdminContext';
 
 const styles = {
     container: {
@@ -44,6 +45,17 @@ const styles = {
     },
 };
 
+const getColumnsToShow = datas => {
+    if (datas.length === 0) return [];
+
+    return Object.keys(datas[0])
+        .filter(key => key !== '_id')
+        .map(key => ({
+            field: key,
+            headerName: key,
+        }));
+};
+
 export const ParsingResultComponent = props => {
     const {
         p: polyglot,
@@ -54,16 +66,30 @@ export const ParsingResultComponent = props => {
         onAddField,
         dataGrid,
     } = props;
-    const [columns, setColumns] = useState([]);
-    const [rows, setRows] = useState([]);
+    const [datas, setDatas] = useState([]);
+
+    const columns = useMemo(
+        () => getColumnsToShow(datas, showEnrichmentColumns, showMainColumns),
+        [datas, showEnrichmentColumns, showMainColumns],
+    );
+    const rows = useMemo(() => datas.map(data => ({ id: data._id, ...data })), [
+        datas,
+    ]);
+    const [rowCount, setRowCount] = useState(0);
+
     const [skip, setSkip] = useState(0);
     const [limit, setLimit] = useState(10);
     const [filter, setFilter] = useState({});
-    const [rowCount, setRowCount] = useState(0);
+
+    const adminContext = useAdminContext();
+    const showEnrichmentColumns = adminContext?.showEnrichmentColumns;
+    const showMainColumns = adminContext?.showMainColumns;
+
     const onPageChange = page => {
         setSkip(page * limit);
     };
 
+    useEffect(() => {}, [showEnrichmentColumns, showMainColumns]);
     useEffect(() => {
         const fetchDataset = async () => {
             const { count: datasCount, datas } = await datasetApi.getDataset({
@@ -72,17 +98,7 @@ export const ParsingResultComponent = props => {
                 filter,
             });
             setRowCount(datasCount);
-            if (datasCount !== 0) {
-                setColumns(
-                    Object.keys(datas[0])
-                        .filter(key => key !== '_id')
-                        .map(key => ({
-                            field: key,
-                            headerName: key,
-                        })),
-                );
-                setRows(datas.map(data => ({ id: data._id, ...data })));
-            }
+            setDatas(datas);
         };
         fetchDataset();
     }, [skip, limit, filter]);
