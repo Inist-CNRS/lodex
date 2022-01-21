@@ -25,11 +25,12 @@ export const clearDataset = async ctx => {
 
 export const getDataset = async ctx => {
     const { skip, limit } = ctx.query;
-    const datas = ctx.dataset
+    const datas = await ctx.dataset
         .find()
-        .skip(skip)
-        .limit(limit);
-    ctx.body(datas);
+        .skip(skip ? parseInt(skip) : 0)
+        .limit(limit ? parseInt(limit, 10) : 10)
+        .toArray();
+    ctx.body = datas;
 };
 
 app.use(route.delete('/', clearDataset));
