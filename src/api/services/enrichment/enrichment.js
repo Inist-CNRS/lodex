@@ -9,7 +9,7 @@ import { IN_PROGRESS, FINISHED, ERROR } from '../../../common/enrichmentStatus';
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 
-const BATCH_SIZE = 50;
+const BATCH_SIZE = 100;
 
 const getSourceData = async (ctx, sourceColumn) => {
     const excerptLines = await ctx.dataset.getExcerpt(
