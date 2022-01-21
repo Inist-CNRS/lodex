@@ -8,7 +8,7 @@ import { DataGrid } from '@mui/x-data-grid';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { reloadParsingResult } from './';
-import { fromParsing } from '../selectors';
+import { fromEnrichments, fromParsing } from '../selectors';
 import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
 import ParsingExcerpt from './ParsingExcerpt';
@@ -45,11 +45,19 @@ const styles = {
     },
 };
 
-const getColumnsToShow = datas => {
+const getColumnsToShow = (datas, showEnrichments, showMains, enrichments) => {
     if (datas.length === 0) return [];
+    const enrichmentsNames = enrichments.map(enrichment => enrichment.name);
 
     return Object.keys(datas[0])
-        .filter(key => key !== '_id')
+        .filter(key => key !== 'uri')
+        .filter(key => {
+            return (
+                (showEnrichments && enrichmentsNames.includes(key)) ||
+                (showMains && !enrichmentsNames.includes(key)) ||
+                key === '_id'
+            );
+        })
         .map(key => ({
             field: key,
             headerName: key,
@@ -65,30 +73,39 @@ export const ParsingResultComponent = props => {
         showAddFromColumn,
         onAddField,
         dataGrid,
+        enrichments,
     } = props;
+
+    const adminContext = useAdminContext();
+    const showEnrichmentColumns = adminContext?.showEnrichmentColumns;
+    const showMainColumns = adminContext?.showMainColumns;
+
     const [datas, setDatas] = useState([]);
+
     const columns = useMemo(
-        () => getColumnsToShow(datas, showEnrichmentColumns, showMainColumns),
-        [datas, showEnrichmentColumns, showMainColumns],
+        () =>
+            getColumnsToShow(
+                datas,
+                showEnrichmentColumns,
+                showMainColumns,
+                enrichments,
+            ),
+        [datas, showEnrichmentColumns, showMainColumns, enrichments],
     );
+
     const rows = useMemo(() => datas.map(data => ({ id: data._id, ...data })), [
         datas,
     ]);
 
     const [rowCount, setRowCount] = useState(0);
     const [skip, setSkip] = useState(0);
-    const limit = 10;
-    const filter = {};
-
-    const adminContext = useAdminContext();
-    const showEnrichmentColumns = adminContext?.showEnrichmentColumns;
-    const showMainColumns = adminContext?.showMainColumns;
+    const [limit] = useState(10);
+    const [filter] = useState({});
 
     const onPageChange = page => {
         setSkip(page * limit);
     };
 
-    useEffect(() => {}, [showEnrichmentColumns, showMainColumns]);
     useEffect(() => {
         const fetchDataset = async () => {
             const { count: datasCount, datas } = await datasetApi.getDataset({
@@ -146,6 +163,7 @@ ParsingResultComponent.propTypes = {
     maxLines: PropTypes.number,
     loadingParsingResult: PropTypes.bool.isRequired,
     dataGrid: PropTypes.bool,
+    enrichments: PropTypes.arrayOf(PropTypes.object),
 };
 
 ParsingResultComponent.defaultProps = {
@@ -157,6 +175,7 @@ const mapStateToProps = state => ({
     excerptColumns: fromParsing.getParsedExcerptColumns(state),
     excerptLines: fromParsing.getExcerptLines(state),
     loadingParsingResult: fromParsing.isParsingLoading(state),
+    enrichments: fromEnrichments.enrichments(state),
 });
 
 const mapDispatchToProps = {
