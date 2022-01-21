@@ -50,11 +50,17 @@ const ParsingResultComponent = props => {
     const [skip, setSkip] = useState(0);
     const [limit, setLimit] = useState(10);
     const [filter, setFilter] = useState({});
+    const [rowCount, setRowCount] = useState(0);
 
     useEffect(() => {
         const fetchDataset = async () => {
-            const datas = await datasetApi.getDataset({ skip, limit, filter });
-            if (datas.length !== 0) {
+            const { count: datasCount, datas } = await datasetApi.getDataset({
+                skip,
+                limit,
+                filter,
+            });
+            setRowCount(datasCount);
+            if (datasCount !== 0) {
                 setColumns(
                     Object.keys(datas[0])
                         .filter(key => key !== '_id')
@@ -82,9 +88,10 @@ const ParsingResultComponent = props => {
             <DataGrid
                 columns={columns}
                 rows={rows}
-                autoPageSize={true}
-                disableColumnFilter={true}
-                disableColumnMenu={true}
+                rowCount={rowCount}
+                autoPageSize
+                disableColumnFilter
+                disableColumnMenu
                 pageSize={10}
             />
         </div>
