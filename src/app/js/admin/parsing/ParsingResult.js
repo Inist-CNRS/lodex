@@ -79,7 +79,14 @@ const ParsingResultComponent = props => {
 
     return (
         <div className="parsingResult" style={styles.container}>
-            <DataGrid columns={columns} rows={rows} />
+            <DataGrid
+                columns={columns}
+                rows={rows}
+                autoPageSize={true}
+                disableColumnFilter={true}
+                disableColumnMenu={true}
+                pageSize={10}
+            />
         </div>
     );
 };
