@@ -20,6 +20,7 @@ import Loading from '../lib/components/Loading';
 import Statistics from './Statistics';
 import theme from '../theme';
 import { preLoadLoaders } from './loader/';
+import { AdminContextProvider } from './AdminContext';
 
 const styles = {
     punchLine: {
@@ -49,9 +50,11 @@ export const AdminComponent = ({
 
     return (
         <Card className="admin">
-            <ParsingResult />
-            <Statistics hasPublishedDataset={hasPublishedDataset} />
-            <PublicationPreview />
+            <AdminContextProvider>
+                <ParsingResult />
+                <Statistics hasPublishedDataset={hasPublishedDataset} />
+                <PublicationPreview />
+            </AdminContextProvider>
             <div style={styles.punchLine}>
                 {polyglot.t('publish-punchline')}
             </div>
