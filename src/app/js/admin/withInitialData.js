@@ -9,7 +9,12 @@ import { loadParsingResult as loadParsingResultAction } from './parsing';
 import { loadPublication as loadPublicationAction } from './publication';
 import { loadSubresources as loadSubresourcesAction } from './subresource';
 import { loadEnrichments as loadEnrichmentsAction } from './enrichment';
-import { fromParsing, fromPublication, fromSubresources, fromEnrichments } from './selectors';
+import {
+    fromParsing,
+    fromPublication,
+    fromSubresources,
+    fromEnrichments,
+} from './selectors';
 
 export const withInitialDataHoc = BaseComponent =>
     class HocComponent extends Component {
@@ -57,7 +62,7 @@ export default BaseComponent => {
             fromParsing.isParsingLoading(state) ||
             fromPublication.isPublicationLoading(state) ||
             fromSubresources.isLoading(state) ||
-            fromEnrichments.isLoading(state), 
+            fromEnrichments.isLoading(state),
     });
 
     return compose(
