@@ -10,6 +10,7 @@ import { fromParsing, fromPublication } from './selectors';
 import Upload from './upload/Upload';
 import { preLoadLoaders } from './loader';
 import withInitialData from './withInitialData';
+import { AdminContextProvider } from './AdminContext';
 
 export const DataRouteComponent = ({ canUploadFile, hasPublishedDataset }) => {
     if (canUploadFile) {
@@ -22,8 +23,13 @@ export const DataRouteComponent = ({ canUploadFile, hasPublishedDataset }) => {
 
     return (
         <div style={{ marginLeft: '-20px' }}>
-            <ParsingResult />
-            <Statistics mode="data" hasPublishedDataset={hasPublishedDataset} />
+            <AdminContextProvider>
+                <ParsingResult />
+                <Statistics
+                    mode="data"
+                    hasPublishedDataset={hasPublishedDataset}
+                />
+            </AdminContextProvider>
         </div>
     );
 };
