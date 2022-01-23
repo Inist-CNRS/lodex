@@ -45,6 +45,7 @@ export const ParsingResultComponent = props => {
         onAddField,
         dataGrid,
         enrichments,
+        loadingParsingResult,
     } = props;
 
     const classes = useStyles();
@@ -136,8 +137,7 @@ export const ParsingResultComponent = props => {
         };
         fetchDataset();
     }, [skip, limit, filter]);
-
-    if (rows.length === 0) {
+    if (loadingParsingResult) {
         return (
             <Loading className="admin">
                 {polyglot.t('loading_parsing_results')}
