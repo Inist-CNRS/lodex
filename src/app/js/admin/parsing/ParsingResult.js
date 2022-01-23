@@ -20,10 +20,10 @@ import { CircularProgress } from '@material-ui/core';
 const styles = {
     container: {
         position: 'relative',
-        height: '645px',
-        width: '100%',
+        flex: '1 1 auto',
+        // width: '100%',
         display: 'flex',
-        maxHeight: 'calc(((100vh - 100px) - 76px) - 72px)',
+        height: 'calc(((100vh - 100px) - 76px) - 24px)',
     },
     header: {
         backgroundColor: theme.black.veryLight,
@@ -118,7 +118,7 @@ export const ParsingResultComponent = props => {
 
     const [rowCount, setRowCount] = useState(0);
     const [skip, setSkip] = useState(0);
-    const [limit] = useState(10);
+    const [limit, setLimit] = useState(10);
     const [filter] = useState({});
 
     const onPageChange = page => {
@@ -152,12 +152,13 @@ export const ParsingResultComponent = props => {
                     columns={columns}
                     rows={rows}
                     rowCount={rowCount}
-                    autoPageSize
                     disableColumnFilter
                     disableColumnMenu
-                    pageSize={10}
+                    pageSize={limit}
                     paginationMode="server"
                     onPageChange={onPageChange}
+                    onPageSizeChange={setLimit}
+                    rowsPerPageOptions={[10, 25, 50]}
                 />
             ) : (
                 <ParsingExcerpt
