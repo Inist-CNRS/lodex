@@ -23,7 +23,7 @@ const styles = {
         flex: '1 1 auto',
         // width: '100%',
         display: 'flex',
-        height: 'calc(((100vh - 100px) - 76px) - 24px)',
+        height: 'calc(((100vh - 100px) - 76px))',
     },
     header: {
         backgroundColor: theme.black.veryLight,
@@ -83,6 +83,7 @@ export const ParsingResultComponent = props => {
                     headerName: key,
                     cellClassName: isEnrichment && classes.enrichedColumn,
                     width: 150,
+                    sortable: false,
                     renderCell: params => {
                         if (isEnrichmentLoading && params.value === undefined)
                             return (
@@ -160,6 +161,12 @@ export const ParsingResultComponent = props => {
                     onPageChange={onPageChange}
                     onPageSizeChange={setLimit}
                     rowsPerPageOptions={[10, 25, 50]}
+                    disableSelectionOnClick={true}
+                    componentsProps={{
+                        pagination: {
+                            labelRowsPerPage: polyglot.t('rows_per_page'),
+                        },
+                    }}
                 />
             ) : (
                 <ParsingExcerpt

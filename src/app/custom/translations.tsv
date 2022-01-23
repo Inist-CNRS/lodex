@@ -616,3 +616,4 @@
 "remove_enrichment_dialog_content_2"	"All the fields available on front-end referencing this column will be on error."	"Tous les champs disponibles sur le front-end faisant référence à cette colonne seront en erreur."
 "cancelPublicationTitle"	"Cancel running publication ?"	"Annuler la publication en cours ?"
 "cancelPublicationContent"	"By cancelling running publication, you also clear published data. All the pages available on front-end won't be available anymore for users."	"En annulant la publication en cours, vous supprimerez également les données publiées. Toutes les pages du front-end ne seront plus accessibles aux utilisateurs."
+"rows_per_page"	"Rows per page"	"Lignes par page"
