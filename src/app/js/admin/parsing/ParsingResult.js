@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { DataGrid } from '@mui/x-data-grid';
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { reloadParsingResult } from './';
@@ -15,7 +18,8 @@ import ParsingExcerpt from './ParsingExcerpt';
 import { useAdminContext } from '../AdminContext';
 import theme from '../../theme';
 import { makeStyles } from '@material-ui/styles';
-import { Chip, CircularProgress } from '@material-ui/core';
+import { Box, Chip, CircularProgress } from '@material-ui/core';
+import { TablePagination } from '@mui/material';
 
 const styles = {
     container: {
@@ -30,6 +34,29 @@ const styles = {
     },
     enrichedColumn: {
         backgroundColor: theme.green.light,
+    },
+    footer: {
+        height: 30,
+        alignItems: 'center',
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        zIndex: 2,
+    },
+    footerItem: {
+        paddingLeft: '1rem',
+        paddingRight: '1rem',
+        backgroundColor: theme.black.veryLight,
+        lineHeight: '30px',
+        height: '100%',
+        alignItems: 'center',
+        display: 'flex',
+    },
+    footerItemText: {
+        paddingRight: '1rem',
+    },
+    toggle: {
+        cursor: 'pointer',
     },
 };
 
@@ -120,13 +147,28 @@ export const ParsingResultComponent = props => {
         [datas, showEnrichmentColumns, showMainColumns, enrichments],
     );
 
+    const numberOfEnrichmentsColumns = useMemo(() => {
+        if (!datas || !enrichments) return 0;
+        return Object.keys(datas).filter(key =>
+            enrichments.map(enrichment => enrichment.name).includes(key),
+        ).length;
+    }, [datas, enrichments]);
+
+    const numberOfNonEnrichmentsColumns = useMemo(() => {
+        if (!datas || !enrichments) return 0;
+        return Object.keys(datas).filter(
+            key =>
+                !enrichments.map(enrichment => enrichment.name).includes(key),
+        ).length;
+    }, [datas, enrichments]);
+
     const rows = useMemo(() => datas.map(data => ({ id: data._id, ...data })), [
         datas,
     ]);
 
     const [rowCount, setRowCount] = useState(0);
     const [skip, setSkip] = useState(0);
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(25);
     const [filter] = useState({});
 
     const onPageChange = page => {
@@ -153,6 +195,55 @@ export const ParsingResultComponent = props => {
         );
     }
 
+    const CustomFooter = () => {
+        return (
+            <div className={classes.footer}>
+                <Box className={classes.footerItem} onClick={() => {}}>
+                    <div className={classes.footerItemText}>
+                        {polyglot.t('parsing_summary_columns', {
+                            smart_count: numberOfNonEnrichmentsColumns,
+                        })}
+                    </div>
+                    {showMainColumns ? (
+                        <VisibilityIcon className={classes.toggle} />
+                    ) : (
+                        <VisibilityOffIcon className={classes.toggle} />
+                    )}
+                </Box>
+
+                <Box
+                    className={classnames(
+                        classes.footerItem,
+                        classes.columnEnriched,
+                    )}
+                    onClick={() => {}}
+                >
+                    <div className={classes.footerItemText}>
+                        {polyglot.t('parsing_enriched_columns', {
+                            smart_count: numberOfEnrichmentsColumns,
+                        })}
+                    </div>
+                    {showEnrichmentColumns ? (
+                        <VisibilityIcon className={classes.toggle} />
+                    ) : (
+                        <VisibilityOffIcon className={classes.toggle} />
+                    )}
+                </Box>
+                <TablePagination
+                    count={rowCount}
+                    page={skip / limit}
+                    rowsPerPage={limit}
+                    onPageChange={(e, page) => onPageChange(page)}
+                    rowsPerPageOptions={[25, 50, 100]}
+                    labelRowsPerPage={polyglot.t('rows_per_page')}
+                    onRowsPerPageChange={rpp => {
+                        setLimit(rpp.target.value);
+                    }}
+                />
+            </div>
+        );
+    };
+
     return (
         <div className={classes.container}>
             {dataGrid ? (
@@ -168,10 +259,8 @@ export const ParsingResultComponent = props => {
                     onPageSizeChange={setLimit}
                     rowsPerPageOptions={[10, 25, 50]}
                     disableSelectionOnClick={true}
-                    componentsProps={{
-                        pagination: {
-                            labelRowsPerPage: polyglot.t('rows_per_page'),
-                        },
+                    components={{
+                        Footer: CustomFooter,
                     }}
                 />
             ) : (
