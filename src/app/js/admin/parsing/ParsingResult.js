@@ -38,8 +38,11 @@ const styles = {
         alignItems: 'center',
         position: 'relative',
         display: 'flex',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         zIndex: 2,
+    },
+    columnToggle: {
+        display: 'flex',
     },
     footerItem: {
         paddingLeft: '1rem',
@@ -195,44 +198,50 @@ export const ParsingResultComponent = props => {
     const CustomFooter = () => {
         return (
             <div className={classes.footer}>
-                <Box
-                    className={classes.footerItem}
-                    onClick={() => {
-                        setShowMainColumns(!showMainColumns);
-                    }}
-                >
-                    <div className={classes.footerItemText}>
-                        {polyglot.t('parsing_summary_columns', {
-                            smart_count: numberOfNonEnrichmentsColumns,
-                        })}
-                    </div>
-                    {showMainColumns ? (
-                        <VisibilityIcon className={classes.toggle} />
-                    ) : (
-                        <VisibilityOffIcon className={classes.toggle} />
-                    )}
-                </Box>
+                <div className={classes.columnToggle}>
+                    <Box
+                        className={classnames(
+                            classes.footerItem,
+                            classes.toggle,
+                        )}
+                        onClick={() => {
+                            setShowMainColumns(!showMainColumns);
+                        }}
+                    >
+                        <div className={classes.footerItemText}>
+                            {polyglot.t('parsing_summary_columns', {
+                                smart_count: numberOfNonEnrichmentsColumns,
+                            })}
+                        </div>
+                        {showMainColumns ? (
+                            <VisibilityIcon />
+                        ) : (
+                            <VisibilityOffIcon />
+                        )}
+                    </Box>
 
-                <Box
-                    className={classnames(
-                        classes.footerItem,
-                        classes.columnEnriched,
-                    )}
-                    onClick={() => {
-                        setShowEnrichmentColumns(!showEnrichmentColumns);
-                    }}
-                >
-                    <div className={classes.footerItemText}>
-                        {polyglot.t('parsing_enriched_columns', {
-                            smart_count: numberOfEnrichmentsColumns,
-                        })}
-                    </div>
-                    {showEnrichmentColumns ? (
-                        <VisibilityIcon className={classes.toggle} />
-                    ) : (
-                        <VisibilityOffIcon className={classes.toggle} />
-                    )}
-                </Box>
+                    <Box
+                        className={classnames(
+                            classes.enrichedColumn,
+                            classes.footerItem,
+                            classes.toggle,
+                        )}
+                        onClick={() => {
+                            setShowEnrichmentColumns(!showEnrichmentColumns);
+                        }}
+                    >
+                        <div className={classes.footerItemText}>
+                            {polyglot.t('parsing_enriched_columns', {
+                                smart_count: numberOfEnrichmentsColumns,
+                            })}
+                        </div>
+                        {showEnrichmentColumns ? (
+                            <VisibilityIcon />
+                        ) : (
+                            <VisibilityOffIcon />
+                        )}
+                    </Box>
+                </div>
                 <TablePagination
                     count={rowCount}
                     page={skip / limit}

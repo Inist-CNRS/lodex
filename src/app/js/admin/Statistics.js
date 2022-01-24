@@ -34,9 +34,6 @@ const useStyles = makeStyles({
         justifyContent: 'flex-end',
         zIndex: 2,
     },
-    itemText: {
-        paddingRight: '1rem',
-    },
     item: {
         paddingLeft: '1rem',
         paddingRight: '1rem',
@@ -45,9 +42,6 @@ const useStyles = makeStyles({
         height: '100%',
         alignItems: 'center',
         display: 'flex',
-    },
-    columnEnriched: {
-        backgroundColor: theme.green.light,
     },
     isPublished: {
         backgroundColor: theme.green.tertiary,
