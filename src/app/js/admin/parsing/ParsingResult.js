@@ -15,7 +15,6 @@ import { fromEnrichments, fromParsing } from '../selectors';
 import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
 import ParsingExcerpt from './ParsingExcerpt';
-import { useAdminContext } from '../AdminContext';
 import theme from '../../theme';
 import { makeStyles } from '@material-ui/styles';
 import { Box, Chip, CircularProgress } from '@material-ui/core';
@@ -76,9 +75,8 @@ export const ParsingResultComponent = props => {
     } = props;
 
     const classes = useStyles();
-    const adminContext = useAdminContext();
-    const showEnrichmentColumns = adminContext?.showEnrichmentColumns;
-    const showMainColumns = adminContext?.showMainColumns;
+    const [showEnrichmentColumns, setShowEnrichmentColumns] = useState(true);
+    const [showMainColumns, setShowMainColumns] = useState(true);
 
     const [datas, setDatas] = useState([]);
 
@@ -148,17 +146,17 @@ export const ParsingResultComponent = props => {
     );
 
     const numberOfEnrichmentsColumns = useMemo(() => {
-        if (!datas || !enrichments) return 0;
-        return Object.keys(datas).filter(key =>
-            enrichments.map(enrichment => enrichment.name).includes(key),
+        if (!datas || datas.length === 0 || !enrichments) return 0;
+
+        return Object.keys(datas[0]).filter(key =>
+            enrichments.some(enrichment => enrichment.name === key),
         ).length;
     }, [datas, enrichments]);
 
     const numberOfNonEnrichmentsColumns = useMemo(() => {
-        if (!datas || !enrichments) return 0;
-        return Object.keys(datas).filter(
-            key =>
-                !enrichments.map(enrichment => enrichment.name).includes(key),
+        if (!datas || datas.length === 0 || !enrichments) return 0;
+        return Object.keys(datas[0]).filter(
+            key => !enrichments.some(enrichment => enrichment.name === key),
         ).length;
     }, [datas, enrichments]);
 
@@ -198,7 +196,12 @@ export const ParsingResultComponent = props => {
     const CustomFooter = () => {
         return (
             <div className={classes.footer}>
-                <Box className={classes.footerItem} onClick={() => {}}>
+                <Box
+                    className={classes.footerItem}
+                    onClick={() => {
+                        setShowMainColumns(!showMainColumns);
+                    }}
+                >
                     <div className={classes.footerItemText}>
                         {polyglot.t('parsing_summary_columns', {
                             smart_count: numberOfNonEnrichmentsColumns,
@@ -216,7 +219,9 @@ export const ParsingResultComponent = props => {
                         classes.footerItem,
                         classes.columnEnriched,
                     )}
-                    onClick={() => {}}
+                    onClick={() => {
+                        setShowEnrichmentColumns(!showEnrichmentColumns);
+                    }}
                 >
                     <div className={classes.footerItemText}>
                         {polyglot.t('parsing_enriched_columns', {
