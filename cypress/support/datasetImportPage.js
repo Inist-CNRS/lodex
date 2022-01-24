@@ -13,7 +13,7 @@ export const importDataset = (filename, mimeType = 'text/csv') => {
     cy.wait(300);
     cy.get('.progress', { timeout: 6000 }).should('not.exist');
 
-    cy.get('tbody', { timeout: 6000 }).should('exist');
+    cy.get('[role="grid"]', { timeout: 6000 }).should('exist');
 };
 
 export const importOtherDataset = (filename, mimeType = 'text/csv') => {
@@ -24,7 +24,7 @@ export const importOtherDataset = (filename, mimeType = 'text/csv') => {
     cy.wait(300);
     cy.contains('Accept').click({ force: true });
     cy.get('.progress').should('exist');
-    cy.get('tbody', { timeout: 6000 }).should('exist');
+    cy.get('[role="grid"]', { timeout: 6000 }).should('exist');
 };
 
 export const importMoreDataset = (filename, mimeType = 'text/csv') => {
