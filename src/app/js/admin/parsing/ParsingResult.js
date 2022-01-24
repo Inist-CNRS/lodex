@@ -15,7 +15,7 @@ import ParsingExcerpt from './ParsingExcerpt';
 import { useAdminContext } from '../AdminContext';
 import theme from '../../theme';
 import { makeStyles } from '@material-ui/styles';
-import { CircularProgress } from '@material-ui/core';
+import { Chip, CircularProgress } from '@material-ui/core';
 
 const styles = {
     container: {
@@ -93,6 +93,12 @@ export const ParsingResultComponent = props => {
                                     size={20}
                                 />
                             );
+                        if (params.value === undefined) {
+                            return <Chip label="undefined" />;
+                        }
+                        if (params.value === null) {
+                            return <Chip label="null" />;
+                        }
                         return (
                             <div title={params.value}>
                                 {JSON.stringify(params.value)}
