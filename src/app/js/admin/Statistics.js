@@ -18,7 +18,6 @@ import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import theme from './../theme';
 import { PENDING } from '../../../common/enrichmentStatus';
-import { useAdminContext } from './AdminContext';
 
 const useStyles = makeStyles({
     progress: {
@@ -61,20 +60,9 @@ const useStyles = makeStyles({
 export const StatisticsComponent = ({
     isComputing,
     p: polyglot,
-    totalLoadedColumns,
-    totalLoadedEnrichmentColumns,
-    totalLoadedLines,
     totalPublishedFields,
-    mode = 'data',
-    hasPublishedDataset,
 }) => {
     const classes = useStyles();
-    const adminContext = useAdminContext();
-    const toggleShowEnrichmentColumns =
-        adminContext?.toggleShowEnrichmentColumns;
-    const showEnrichmentColumns = adminContext?.showEnrichmentColumns;
-    const toggleShowMainColumns = adminContext?.toggleShowMainColumns;
-    const showMainColumns = adminContext?.showMainColumns;
 
     return (
         <div className={classes.container}>
@@ -89,71 +77,11 @@ export const StatisticsComponent = ({
                 )}
                 size={20}
             />
-            {mode === 'data' ? (
-                <>
-                    <div
-                        className={classnames(
-                            {
-                                [classes.isPublished]: hasPublishedDataset,
-                            },
-                            classes.item,
-                            'data-published-status',
-                        )}
-                    >
-                        {hasPublishedDataset
-                            ? polyglot.t('isPublished')
-                            : polyglot.t('isNotPublished')}
-                    </div>
-                    <div className={classes.item}>
-                        {polyglot.t('parsing_summary_lines', {
-                            smart_count: totalLoadedLines,
-                        })}
-                    </div>
-
-                    <Box
-                        className={classes.item}
-                        onClick={toggleShowMainColumns}
-                    >
-                        <div className={classes.itemText}>
-                            {polyglot.t('parsing_summary_columns', {
-                                smart_count:
-                                    totalLoadedColumns -
-                                    totalLoadedEnrichmentColumns,
-                            })}
-                        </div>
-                        {showMainColumns ? (
-                            <VisibilityIcon className={classes.toggle} />
-                        ) : (
-                            <VisibilityOffIcon className={classes.toggle} />
-                        )}
-                    </Box>
-
-                    <Box
-                        className={classnames(
-                            classes.item,
-                            classes.columnEnriched,
-                        )}
-                        onClick={toggleShowEnrichmentColumns}
-                    >
-                        <div className={classes.itemText}>
-                            {polyglot.t('parsing_enriched_columns', {
-                                smart_count: totalLoadedEnrichmentColumns,
-                            })}
-                        </div>
-                        {showEnrichmentColumns ? (
-                            <VisibilityIcon className={classes.toggle} />
-                        ) : (
-                            <VisibilityOffIcon className={classes.toggle} />
-                        )}
-                    </Box>
-                </>
-            ) : (
-                <div className={classes.item}>
-                    {polyglot.t('publication_summary_fields', {
-                        smart_count: totalPublishedFields,
-                    })}
-                </div>
-            )}
+            <div className={classes.item}>
+                {polyglot.t('publication_summary_fields', {
+                    smart_count: totalPublishedFields,
+                })}
+            </div>
         </div>
     );
 };
@@ -161,21 +89,11 @@ export const StatisticsComponent = ({
 StatisticsComponent.propTypes = {
     isComputing: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
-    totalLoadedColumns: PropTypes.number.isRequired,
-    totalLoadedEnrichmentColumns: PropTypes.number.isRequired,
-    totalLoadedLines: PropTypes.number.isRequired,
     totalPublishedFields: PropTypes.number.isRequired,
-    mode: PropTypes.oneOf(['data', 'display']),
-    hasPublishedDataset: PropTypes.bool,
 };
 
 const mapStateToProps = (state, { filter, subresourceId }) => ({
     isComputing: fromPublicationPreview.isComputing(state),
-    totalLoadedColumns: fromParsing.getParsedExcerptColumns(state).length,
-    totalLoadedEnrichmentColumns: fromEnrichments
-        .enrichments(state)
-        .filter(enrichment => enrichment.status !== PENDING).length,
-    totalLoadedLines: fromParsing.getTotalLoadedLines(state),
     totalPublishedFields: fromFields.getEditingFields(state, {
         filter,
         subresourceId,
