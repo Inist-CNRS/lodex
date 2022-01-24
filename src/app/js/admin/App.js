@@ -15,7 +15,7 @@ const styles = {
     },
     contentLayout: { display: 'flex', flex: 1, flexDirection: 'row' },
     body: {
-        padding: '100px 20px 0px 20px',
+        padding: '70px 20px 0px 20px',
         flex: 1,
         overflowX: 'hidden',
         background: 'white',
