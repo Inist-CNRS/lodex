@@ -24,9 +24,8 @@ const styles = {
     container: {
         position: 'relative',
         flex: '1 1 auto',
-        // width: '100%',
         display: 'flex',
-        height: 'calc(((100vh - 100px) - 76px))',
+        height: 'calc(100vh - 81px)',
     },
     header: {
         backgroundColor: theme.black.veryLight,
