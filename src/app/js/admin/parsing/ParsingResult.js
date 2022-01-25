@@ -29,7 +29,7 @@ const styles = {
         position: 'relative',
         flex: '1 1 auto',
         display: 'flex',
-        height: 'calc(100vh - 81px)',
+        height: 'calc(100vh - 90px)',
     },
     header: {
         backgroundColor: theme.black.veryLight,
