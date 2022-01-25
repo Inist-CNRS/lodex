@@ -9,10 +9,10 @@ const getJobLogs = jobId => {
     return fetch(request);
 };
 
-const cancelJob = queue => {
+const cancelJob = type => {
     const state = getUserLocalStorageInfo();
 
-    const request = getCancelJobRequest(state, queue);
+    const request = getCancelJobRequest(state, type);
     return fetch(request);
 };
 

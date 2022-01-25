@@ -8,6 +8,7 @@ import { PassThrough } from 'stream';
 import { IN_PROGRESS, FINISHED, ERROR } from '../../../common/enrichmentStatus';
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
+import { CancelWorkerError } from '../../workers';
 
 const BATCH_SIZE = 50;
 
@@ -171,6 +172,9 @@ export const processEnrichment = async (enrichment, ctx) => {
     const commands = createEzsRuleCommands(enrichment.rule);
     const dataSetSize = await ctx.dataset.count();
     for (let index = 0; index < dataSetSize; index += BATCH_SIZE) {
+        if (!(await ctx.job.isActive())) {
+            throw new CancelWorkerError();
+        }
         const entries = await ctx.dataset
             .find()
             .skip(index)
@@ -284,7 +288,7 @@ export const startEnrichment = async ctx => {
             target: dataSetSize,
             label: 'ENRICHING',
             subLabel: enrichment.name,
-            type: 'enrichment',
+            type: 'enricher',
         });
     }
     const room = `enrichment-job-${ctx.job.id}`;

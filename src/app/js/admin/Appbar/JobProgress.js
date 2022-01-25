@@ -68,23 +68,21 @@ const JobProgressComponent = props => {
         handleCancelPublication,
     } = props;
     const [progress, setProgress] = useState();
-    const [
-        isCancelPublicationDialogOpen,
-        setIsCancelPublicationDialogOpen,
-    ] = useState(false);
+    const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
 
     useEffect(() => {
         const socket = io();
         socket.on('progress', data => {
             data.isJobProgress =
                 data.status !== PENDING &&
-                (data.type === 'enrichment' || data.type === 'publisher');
+                (data.type === 'enricher' || data.type === 'publisher');
             setProgress(data);
         });
 
         socket.on('publisher', data => {
             if (data.success) {
                 handlePublishSuccess();
+                setProgress();
             }
         });
         return () => socket.disconnect();
@@ -124,24 +122,22 @@ const JobProgressComponent = props => {
                                     </Typography>
                                 )}
 
-                            {progress?.type === 'enrichment' && (
+                            {progress?.type === 'enricher' && (
                                 <Typography variant="caption">
                                     {progress.subLabel}
                                 </Typography>
                             )}
                         </div>
 
-                        {progress?.type === 'publisher' && (
-                            <Button
-                                className={classes.cancelButton}
-                                color="inherit"
-                                onClick={() => {
-                                    setIsCancelPublicationDialogOpen(true);
-                                }}
-                            >
-                                <Cancel />
-                            </Button>
-                        )}
+                        <Button
+                            className={classes.cancelButton}
+                            color="inherit"
+                            onClick={() => {
+                                setIsCancelDialogOpen(true);
+                            }}
+                        >
+                            <Cancel />
+                        </Button>
                     </div>
                     <LinearProgress
                         classes={{
@@ -159,16 +155,21 @@ const JobProgressComponent = props => {
                 </Box>
             </Fade>
             <CancelPublicationDialog
-                isOpen={isCancelPublicationDialogOpen}
+                isOpen={isCancelDialogOpen}
                 title={'cancelPublicationTitle'}
                 content={'cancelPublicationContent'}
                 onCancel={() => {
-                    setIsCancelPublicationDialogOpen(false);
+                    setIsCancelDialogOpen(false);
                 }}
                 onConfirm={() => {
-                    jobsApi.cancelJob('publisher');
-                    handleCancelPublication();
-                    setIsCancelPublicationDialogOpen(false);
+                    if (!progress) {
+                        return;
+                    }
+                    jobsApi.cancelJob(progress.type);
+                    if (progress.type === 'publisher') {
+                        handleCancelPublication();
+                    }
+                    setIsCancelDialogOpen(false);
                 }}
             />
         </>
