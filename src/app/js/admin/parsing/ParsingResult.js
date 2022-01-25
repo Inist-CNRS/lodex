@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -20,6 +20,10 @@ import { makeStyles } from '@material-ui/styles';
 import { Box, Chip, CircularProgress } from '@material-ui/core';
 import { TablePagination } from '@mui/material';
 
+const COLUMN_TYPE = {
+    MAIN: 'main',
+    ENRICHMENT: 'enrichment',
+};
 const styles = {
     container: {
         position: 'relative',
@@ -147,20 +151,25 @@ export const ParsingResultComponent = props => {
         [datas, showEnrichmentColumns, showMainColumns, enrichments],
     );
 
-    const numberOfEnrichmentsColumns = useMemo(() => {
-        if (!datas || datas.length === 0 || !enrichments) return 0;
-
-        return Object.keys(datas[0]).filter(key =>
-            enrichments.some(enrichment => enrichment.name === key),
-        ).length;
-    }, [datas, enrichments]);
-
-    const numberOfNonEnrichmentsColumns = useMemo(() => {
-        if (!datas || datas.length === 0 || !enrichments) return 0;
-        return Object.keys(datas[0]).filter(
-            key => !enrichments.some(enrichment => enrichment.name === key),
-        ).length;
-    }, [datas, enrichments]);
+    const numberOfColumns = useCallback(
+        columnType => {
+            if (!datas || datas.length === 0 || !enrichments) return 0;
+            return Object.keys(datas[0]).filter(key => {
+                const isEnrichmentColumn = enrichments.some(
+                    enrichment => enrichment.name === key,
+                );
+                switch (columnType) {
+                    case COLUMN_TYPE.MAIN:
+                        return !isEnrichmentColumn;
+                    case COLUMN_TYPE.ENRICHMENT:
+                        return isEnrichmentColumn;
+                    default:
+                        return false;
+                }
+            }).length;
+        },
+        [datas, enrichments],
+    );
 
     const rows = useMemo(() => datas.map(data => ({ id: data._id, ...data })), [
         datas,
@@ -210,7 +219,7 @@ export const ParsingResultComponent = props => {
                     >
                         <div className={classes.footerItemText}>
                             {polyglot.t('parsing_summary_columns', {
-                                smart_count: numberOfNonEnrichmentsColumns,
+                                smart_count: numberOfColumns(COLUMN_TYPE.MAIN),
                             })}
                         </div>
                         {showMainColumns ? (
@@ -232,7 +241,9 @@ export const ParsingResultComponent = props => {
                     >
                         <div className={classes.footerItemText}>
                             {polyglot.t('parsing_enriched_columns', {
-                                smart_count: numberOfEnrichmentsColumns,
+                                smart_count: numberOfColumns(
+                                    COLUMN_TYPE.ENRICHMENT,
+                                ),
                             })}
                         </div>
                         {showEnrichmentColumns ? (
