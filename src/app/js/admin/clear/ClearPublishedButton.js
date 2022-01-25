@@ -38,6 +38,8 @@ export const ClearPublishedButtonComponent = ({
             <Button
                 disabled={!hasPublishedDataset}
                 variant="contained"
+                role="button"
+                aria-label="unpublish"
                 className={classes.button}
                 onClick={handleShow}
                 icon={<ClearAllIcon />}
