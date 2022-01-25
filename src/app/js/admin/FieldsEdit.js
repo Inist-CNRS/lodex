@@ -78,11 +78,7 @@ export const FieldsEditComponent = ({
                             onClose={handleCloseAddFromColumnDialog}
                         />
                     )}
-                    <Statistics
-                        mode="display"
-                        filter={filter}
-                        subresourceId={subresourceId}
-                    />
+                    <Statistics filter={filter} subresourceId={subresourceId} />
                     <FieldGrid filter={filter} subresourceId={subresourceId} />
                 </>
             )}
@@ -93,11 +89,7 @@ export const FieldsEditComponent = ({
                         filter={filter}
                         subresourceId={subresourceId}
                     />
-                    <Statistics
-                        mode="display"
-                        filter={filter}
-                        subresourceId={subresourceId}
-                    />
+                    <Statistics filter={filter} subresourceId={subresourceId} />
                 </>
             )}
         </div>

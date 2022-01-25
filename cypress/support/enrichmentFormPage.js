@@ -11,18 +11,18 @@ export const fillAdvancedEnrichment = () => {
     const rule = `
     [use]
     plugin = basics
-    
+
     [validate]
     path = id
     rule = required
-    
+
     path = value
     rule = required
-    
+
     [assign]
     path = value
     value = get("value.Column 1")
-    
+
     [debug]`;
     cy.get('input[name="name"]', { timeout: 12000 }).type('Enrichment');
     cy.get('input[name="advancedMode"]').click({ force: true });
@@ -40,5 +40,5 @@ export const runEnrichment = () => {
 };
 
 export const checkIfEnrichmentExistInDataset = () => {
-    cy.contains('th', 'Enrichment').should('exist');
+    cy.get('[data-field="Enrichment"]', { timeout: 500 }).should('exist');
 };

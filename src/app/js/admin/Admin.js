@@ -17,7 +17,6 @@ import ParsingResult from './parsing/ParsingResult';
 import PublicationPreview from './preview/publication/PublicationPreview';
 import Upload from './upload/Upload';
 import Loading from '../lib/components/Loading';
-import Statistics from './Statistics';
 import theme from '../theme';
 import { preLoadLoaders } from './loader/';
 
@@ -49,8 +48,7 @@ export const AdminComponent = ({
 
     return (
         <Card className="admin">
-            <ParsingResult />
-            <Statistics hasPublishedDataset={hasPublishedDataset} />
+            <ParsingResult dataGrid />
             <PublicationPreview />
             <div style={styles.punchLine}>
                 {polyglot.t('publish-punchline')}

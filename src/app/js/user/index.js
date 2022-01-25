@@ -281,6 +281,14 @@ export const getHideResourceRequest = (state, data) =>
         body: data,
     });
 
+export const getGetDatasetRequest = (state, params) => {
+    const paramString = getQueryString(params);
+    return getRequest(state, {
+        url: `/api/dataset?${paramString}`,
+        method: 'GET',
+    });
+};
+
 export const getClearDatasetRequest = state =>
     getRequest(state, {
         url: '/api/dataset',

@@ -1,14 +1,6 @@
 import fetch from '../../lib/fetch';
 import { getJobLogsRequest, getCancelJobRequest } from '../../user';
-
-export const getUserLocalStorageInfo = () => {
-    const localStorageItem = JSON.parse(
-        window.localStorage.getItem('redux-localstorage'),
-    );
-    return typeof localStorageItem === 'string'
-        ? JSON.parse(localStorageItem).user
-        : localStorageItem.user;
-};
+import { getUserLocalStorageInfo } from './tools';
 
 const getJobLogs = jobId => {
     const { token } = getUserLocalStorageInfo();

@@ -13,7 +13,7 @@ export const importDataset = (filename, mimeType = 'text/csv') => {
     cy.wait(300);
     cy.get('.progress', { timeout: 6000 }).should('not.exist');
 
-    cy.get('tbody', { timeout: 6000 }).should('exist');
+    cy.get('[role="grid"]', { timeout: 6000 }).should('exist');
 };
 
 export const importOtherDataset = (filename, mimeType = 'text/csv') => {
@@ -24,7 +24,7 @@ export const importOtherDataset = (filename, mimeType = 'text/csv') => {
     cy.wait(300);
     cy.contains('Accept').click({ force: true });
     cy.get('.progress').should('exist');
-    cy.get('tbody', { timeout: 6000 }).should('exist');
+    cy.get('[role="grid"]', { timeout: 6000 }).should('exist');
 };
 
 export const importMoreDataset = (filename, mimeType = 'text/csv') => {
@@ -39,7 +39,7 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
     cy.get('#confirm-upload', { timeout: 1000 }).should('be.visible');
     cy.wait(300);
     cy.contains('Accept').click({ force: true });
-    cy.get('.data-published-status', { timeout: 2000 }).should('be.visible');
+    cy.get('[aria-label="unpublish"]', { timeout: 2000 }).should('be.visible');
 };
 
 const fillStepValueConcatColumn = (value, index) => {
@@ -118,7 +118,7 @@ export const setOperationTypeInWizard = (value = 'DEFAULT') => {
 export const publish = () => {
     cy.get('.btn-publish button').click();
     adminNavigation.goToData();
-    cy.get('.data-published-status').should('be.visible');
+    cy.get('[aria-label="unpublish"]', { timeout: 2000 }).should('be.visible');
 };
 
 export const goToPublishedResources = () => {

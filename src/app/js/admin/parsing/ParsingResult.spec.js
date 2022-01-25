@@ -14,7 +14,6 @@ describe('<ParsingResult />', () => {
                 totalLoadedLines={24}
             />,
         );
-
         const parsingExcerpt = wrapper.find(ParsingExcerpt).at(0);
 
         expect(parsingExcerpt.prop('columns')).toEqual(['foo']);

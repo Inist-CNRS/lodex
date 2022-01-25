@@ -5,13 +5,12 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 
 import ParsingResult from './parsing/ParsingResult';
-import Statistics from './Statistics';
 import { fromParsing, fromPublication } from './selectors';
 import Upload from './upload/Upload';
 import { preLoadLoaders } from './loader';
 import withInitialData from './withInitialData';
 
-export const DataRouteComponent = ({ canUploadFile, hasPublishedDataset }) => {
+export const DataRouteComponent = ({ canUploadFile }) => {
     if (canUploadFile) {
         return (
             <div style={{ margin: '0 100px' }}>
@@ -22,8 +21,7 @@ export const DataRouteComponent = ({ canUploadFile, hasPublishedDataset }) => {
 
     return (
         <div style={{ marginLeft: '-20px' }}>
-            <ParsingResult />
-            <Statistics mode="data" hasPublishedDataset={hasPublishedDataset} />
+            <ParsingResult dataGrid />
         </div>
     );
 };
