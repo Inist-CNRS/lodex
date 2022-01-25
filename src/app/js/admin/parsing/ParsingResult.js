@@ -131,7 +131,7 @@ export const ParsingResultComponent = props => {
                             return <Chip label="null" />;
                         }
                         return (
-                            <div title={params.value}>
+                            <div title={JSON.stringify(params.value)}>
                                 {JSON.stringify(params.value)}
                             </div>
                         );
