@@ -118,7 +118,7 @@ export const setOperationTypeInWizard = (value = 'DEFAULT') => {
 export const publish = () => {
     cy.get('.btn-publish button').click();
     adminNavigation.goToData();
-    cy.get('[aria-label="unpublish"]').should('be.visible');
+    cy.get('[aria-label="unpublish"]', { timeout: 2000 }).should('be.visible');
 };
 
 export const goToPublishedResources = () => {
