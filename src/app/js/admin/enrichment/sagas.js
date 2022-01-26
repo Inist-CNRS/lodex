@@ -85,8 +85,6 @@ export function* handleDeleteEnrichment({ payload: id }) {
     if (error) {
         return;
     }
-
-    return yield put(loadEnrichments());
 }
 
 export function* handlePreviewDataEnrichment({ payload: previewEnrichment }) {

@@ -217,12 +217,9 @@ export const EnrichmentFormComponent = ({
 
     const handleDeleteEnrichment = e => {
         e.preventDefault();
-
-        if (isEdit) {
-            onDeleteEnrichment({
-                id: initialValues._id,
-            });
-        }
+        onDeleteEnrichment({
+            id: initialValues._id,
+        });
     };
 
     const handleAdvancedMode = () => {

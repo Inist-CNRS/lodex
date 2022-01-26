@@ -22,7 +22,7 @@ import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import PrivateRoute from './PrivateRoute';
 import ImportModelButton from './ImportModelButton.js';
-import { fromPublication, fromParsing } from './selectors';
+import { fromPublication, fromParsing, fromEnrichments } from './selectors';
 import theme from './../theme';
 import {
     SCOPE_DOCUMENT,
@@ -170,13 +170,13 @@ const DocumentMenu = compose(
 });
 
 const EnrichmentMenu = compose(
-    connect(s => ({ enrichment: s.enrichment })),
+    connect(state => ({ enrichments: fromEnrichments.enrichments(state) })),
     translate,
-)(({ p: polyglot, enrichment }) => {
+)(({ p: polyglot, enrichments }) => {
     const classes = useStyles();
     return (
         <div className={classnames(classes.subSidebar, 'sub-sidebar')}>
-            {(enrichment.enrichments || []).map(e => (
+            {(enrichments || []).map(e => (
                 <Fragment key={e._id}>
                     <hr className={classes.separator} />
                     <Box className={classes.iconSubLinkContainer}>

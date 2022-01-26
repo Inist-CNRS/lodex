@@ -102,6 +102,14 @@ export default handleActions(
                 return e;
             }),
         }),
+        DELETE_ENRICHMENT: (state, { payload }) => {
+            return {
+                ...state,
+                enrichments: state.enrichments.filter(
+                    e => e._id !== payload.id,
+                ),
+            };
+        },
     },
     initialState,
 );
