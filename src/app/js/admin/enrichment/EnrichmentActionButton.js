@@ -90,7 +90,10 @@ export const EnrichmentActionButtonComponent = ({ p: polyglot }) => {
                             <Button
                                 color="primary"
                                 variant="contained"
-                                onClick={handleDeleteEnrichment}
+                                onClick={e => {
+                                    handleCloseDialog();
+                                    handleDeleteEnrichment(e);
+                                }}
                             >
                                 {polyglot.t('Accept')}
                             </Button>
