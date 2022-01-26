@@ -1,3 +1,4 @@
+import { workerQueue } from '.';
 import logger from '../services/logger';
 
 export const jobLogger = {
@@ -15,4 +16,12 @@ export const jobLogger = {
         logger.error(message);
         job.log(message);
     },
+};
+
+export const getActiveJob = async () => {
+    const activeJobs = await workerQueue.getActive();
+    if (activeJobs.length === 0) {
+        return undefined;
+    }
+    return activeJobs[0];
 };

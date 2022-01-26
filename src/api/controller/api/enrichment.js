@@ -9,6 +9,7 @@ import {
     getEnrichmentDataPreview,
     setEnrichmentJobId,
 } from '../../services/enrichment/enrichment';
+import { cancelJob } from './job';
 
 export const setup = async (ctx, next) => {
     try {
@@ -57,6 +58,13 @@ export const putEnrichment = async (ctx, id) => {
 export const deleteEnrichment = async (ctx, id) => {
     try {
         const enrichment = await ctx.enrichment.findOneById(id);
+        const activeJob = (await workerQueue.getActive())[0];
+        if (
+            activeJob?.data?.jobType === ENRICHER &&
+            activeJob?.data?.id === id
+        ) {
+            await cancelJob(ctx, ENRICHER);
+        }
         await ctx.enrichment.delete(id);
         await ctx.dataset.removeAttribute(enrichment.name);
         ctx.body = true;
