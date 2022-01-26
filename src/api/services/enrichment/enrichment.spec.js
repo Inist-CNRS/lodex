@@ -351,6 +351,7 @@ describe('enrichment', () => {
                 job: {
                     id: 1,
                     log: jest.fn(),
+                    isActive: jest.fn().mockReturnValue(true),
                 },
                 enrichment: {
                     updateOne: jest.fn(),
@@ -423,6 +424,7 @@ describe('enrichment', () => {
                 job: {
                     id: 1,
                     log: jest.fn(),
+                    isActive: jest.fn().mockReturnValue(true),
                 },
                 enrichment: {
                     updateOne: jest.fn(),
