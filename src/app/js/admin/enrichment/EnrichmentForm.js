@@ -280,6 +280,7 @@ export const EnrichmentFormComponent = ({
                             <EnrichmentExcerpt
                                 lines={dataPreviewEnrichment}
                                 loading={isDataPreviewLoading}
+                                advancedMode
                             />
                         </div>
                     </div>
