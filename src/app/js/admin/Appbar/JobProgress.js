@@ -156,8 +156,16 @@ const JobProgressComponent = props => {
             </Fade>
             <CancelPublicationDialog
                 isOpen={isCancelDialogOpen}
-                title={'cancelPublicationTitle'}
-                content={'cancelPublicationContent'}
+                title={
+                    (progress?.type === 'publisher' &&
+                        'cancelPublicationTitle') ||
+                    'cancelEnrichmentTitle'
+                }
+                content={
+                    (progress?.type === 'publisher' &&
+                        'cancelPublicationContent') ||
+                    'cancelEnrichmentContent'
+                }
                 onCancel={() => {
                     setIsCancelDialogOpen(false);
                 }}
