@@ -1,3 +1,4 @@
+import { CancelWorkerError } from '.';
 import {
     startEnrichment,
     setEnrichmentError,
@@ -13,7 +14,7 @@ export const processEnrichment = (job, done) => {
             done();
         })
         .catch(err => {
-            handlePublishError();
+            handleEnrichmentError(job, err);
             done(err);
         });
 };
@@ -23,9 +24,13 @@ const startJobEnrichment = async job => {
     await startEnrichment(ctx);
 };
 
-const handlePublishError = async job => {
+const handleEnrichmentError = async (job, err) => {
     const ctx = await prepareContext({ job });
-    await setEnrichmentError(ctx);
+    if (err instanceof CancelWorkerError) {
+        const enrichment = await ctx.enrichment.findOneById(ctx.job.data.id);
+        ctx.dataset.removeAttribute(enrichment.name);
+    }
+    await setEnrichmentError(ctx, err);
 };
 
 const prepareContext = async ctx => {

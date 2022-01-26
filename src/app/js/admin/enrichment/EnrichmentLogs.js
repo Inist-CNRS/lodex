@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core';
 import { EnrichmentContext } from './EnrichmentContext';
 import theme from '../../theme';
 import { io } from 'socket.io-client';
-import { FINISHED } from '../../../../common/enrichmentStatus';
+import { ERROR, FINISHED } from '../../../../common/enrichmentStatus';
 import jobsApi from '../api/job';
 import { FixedSizeList } from 'react-window';
 
@@ -109,7 +109,7 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
         socket.on(`enrichment-job-${enrichment?.jobId}`, data => {
             setLogs(currentState => [data, ...currentState]);
 
-            if (JSON.parse(data).status === FINISHED) {
+            if ([FINISHED, ERROR].includes(JSON.parse(data).status)) {
                 onLoadEnrichments();
             }
         });

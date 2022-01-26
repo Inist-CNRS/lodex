@@ -4,6 +4,13 @@ import { processEnrichment, ENRICHER } from './enricher';
 
 export const QUEUE_NAME = 'worker';
 
+export class CancelWorkerError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'CancelWorkerError';
+    }
+}
+
 export const workerQueue = new Queue(QUEUE_NAME, process.env.REDIS_URL, {
     defaultJobOptions: {
         removeOnComplete: 10,

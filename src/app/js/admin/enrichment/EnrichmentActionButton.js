@@ -15,11 +15,7 @@ import {
     DialogTitle,
     makeStyles,
 } from '@material-ui/core';
-import {
-    PENDING,
-    FINISHED,
-    IN_PROGRESS,
-} from '../../../../common/enrichmentStatus';
+import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import { EnrichmentContext } from './EnrichmentContext';
 
 const useStyles = makeStyles({
@@ -44,19 +40,17 @@ export const EnrichmentActionButtonComponent = ({ p: polyglot }) => {
     } = useContext(EnrichmentContext);
     return (
         <div className={classes.actionContainer}>
-            {[PENDING, IN_PROGRESS, FINISHED].includes(enrichment?.status) && (
-                <Button
-                    onClick={handleLaunchEnrichment}
-                    variant="contained"
-                    color="primary"
-                    key="run"
-                    name="run-enrichment"
-                    disabled={[IN_PROGRESS].includes(enrichment?.status)}
-                >
-                    <PlayArrowIcon className={classes.icon} />
-                    {polyglot.t('run')}
-                </Button>
-            )}
+            <Button
+                onClick={handleLaunchEnrichment}
+                variant="contained"
+                color="primary"
+                key="run"
+                name="run-enrichment"
+                disabled={[IN_PROGRESS].includes(enrichment?.status)}
+            >
+                <PlayArrowIcon className={classes.icon} />
+                {polyglot.t('run')}
+            </Button>
 
             {isEdit && (
                 <>
