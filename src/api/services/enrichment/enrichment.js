@@ -173,7 +173,7 @@ export const processEnrichment = async (enrichment, ctx) => {
     const dataSetSize = await ctx.dataset.count();
     for (let index = 0; index < dataSetSize; index += BATCH_SIZE) {
         if (!(await ctx.job.isActive())) {
-            throw new CancelWorkerError();
+            throw new CancelWorkerError('Job has been canceled');
         }
         const entries = await ctx.dataset
             .find()
@@ -303,17 +303,17 @@ export const startEnrichment = async ctx => {
     await processEnrichment(enrichment, ctx);
 };
 
-export const setEnrichmentError = async ctx => {
+export const setEnrichmentError = async (ctx, err) => {
     const id = ctx.job?.data?.id;
     await ctx.enrichment.updateOne(
         { _id: new ObjectId(id) },
-        { $set: { ['status']: ERROR } },
+        { $set: { ['status']: ERROR, ['message']: err?.message } },
     );
 
     const room = `enrichment-job-${ctx.job.id}`;
     const logData = JSON.stringify({
         level: 'error',
-        message: `Enrichement errored`,
+        message: `Enrichement errored : ${err?.message}`,
         timestamp: new Date(),
         status: ERROR,
     });

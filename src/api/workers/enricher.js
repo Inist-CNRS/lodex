@@ -19,17 +19,18 @@ export const processEnrichment = (job, done) => {
         });
 };
 
-const startJobEnrichment = async (job, err) => {
-    if (err instanceof CancelWorkerError) {
-        console.log('clean enrichment', job);
-    }
+const startJobEnrichment = async job => {
     const ctx = await prepareContext({ job });
     await startEnrichment(ctx);
 };
 
-const handleEnrichmentError = async job => {
+const handleEnrichmentError = async (job, err) => {
     const ctx = await prepareContext({ job });
-    await setEnrichmentError(ctx);
+    if (err instanceof CancelWorkerError) {
+        const enrichment = await ctx.enrichment.findOneById(ctx.job.data.id);
+        ctx.dataset.removeAttribute(enrichment.name);
+    }
+    await setEnrichmentError(ctx, err);
 };
 
 const prepareContext = async ctx => {
