@@ -38,6 +38,7 @@ const styles = {
         backgroundColor: theme.green.light,
     },
     footer: {
+        overflow: 'hidden',
         height: 30,
         alignItems: 'center',
         position: 'relative',
