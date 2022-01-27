@@ -220,6 +220,7 @@ export const EnrichmentFormComponent = ({
         onDeleteEnrichment({
             id: initialValues._id,
         });
+        history.push(`/data/enrichment`);
     };
 
     const handleAdvancedMode = () => {
