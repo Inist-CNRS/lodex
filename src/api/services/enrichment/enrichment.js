@@ -4,7 +4,7 @@ import ezs from '@ezs/core';
 import progress from '../../services/progress';
 
 import { ObjectId } from 'mongodb';
-import { PassThrough } from 'stream';
+import from from 'from';
 import { IN_PROGRESS, FINISHED, ERROR } from '../../../common/enrichmentStatus';
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
@@ -141,12 +141,18 @@ export const getSourceError = error => {
     return error;
 };
 
+function preformat(data, feed) {
+    if (this.isLast()) {
+        return feed.close();
+    }
+    feed.send({ id: data.uri, value: data });
+}
+
 const processEzsEnrichment = (entries, commands) => {
     return new Promise((resolve, reject) => {
         const values = [];
-        const input = new PassThrough({ objectMode: true });
-
-        input
+        from(entries)
+            .pipe(ezs(preformat))
             .pipe(ezs('delegate', { commands }, {}))
             .on('data', data => {
                 if (data instanceof Error) {
@@ -162,15 +168,8 @@ const processEzsEnrichment = (entries, commands) => {
                     values.push(data);
                 }
             })
-            .on('end', () => {
-                resolve(values);
-            })
+            .on('end', () => resolve(values))
             .on('error', error => reject(error));
-
-        for (const entry of entries) {
-            input.write({ id: entry.uri, value: entry });
-        }
-        input.end();
     });
 };
 
