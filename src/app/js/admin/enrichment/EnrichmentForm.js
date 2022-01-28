@@ -116,6 +116,7 @@ export const EnrichmentFormComponent = ({
     onUpdateEnrichment,
     onResetForm,
     onLoadEnrichments,
+    match,
     p: polyglot,
 }) => {
     const classes = useStyles();
@@ -150,6 +151,9 @@ export const EnrichmentFormComponent = ({
     ]);
 
     useEffect(() => {
+        if (match.params.enrichmentId && !initialValues) {
+            history.push('/data/enrichment');
+        }
         return () => {
             onResetForm();
             onPreviewDataEnrichmentClear();
@@ -417,6 +421,7 @@ EnrichmentFormComponent.propTypes = {
     onPreviewDataEnrichmentClear: PropTypes.func.isRequired,
     onResetForm: PropTypes.func.isRequired,
     onLoadEnrichments: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
