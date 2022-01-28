@@ -138,7 +138,7 @@ export const EnrichmentFormComponent = ({
 
     useEffect(() => {
         const enrichmentExist = match.params.enrichmentId && initialValues;
-        if (!enrichmentExist) {
+        if (match.params.enrichmentId && !enrichmentExist) {
             history.push('/data/enrichment');
         }
         return () => {
