@@ -11,7 +11,7 @@
     },
     "scripts": {
         "dev:server": "BABEL_ENV=browser webpack-dev-server --config ./src/app/webpack.config.babel.js --host 0.0.0.0",
-        "start": "DEBUG=EZS node --trace-warnings --require @babel/register src/api",
+        "start": "node --require @babel/register src/api",
         "build": "BABEL_ENV=browser node --max_old_space_size=4096 ./node_modules/.bin/webpack --config=./src/app/webpack.config.babel.js",
         "analyze": "BABEL_ENV=browser NODE_ENV=analyze npx webpack --config=./src/app/webpack.config.babel.js --profile --json > stats.json",
         "development:api": "nodemon --inspect=0.0.0.0:9229 --require @babel/register --watch src/api src/api",
