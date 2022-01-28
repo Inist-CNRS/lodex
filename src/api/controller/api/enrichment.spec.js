@@ -1,11 +1,9 @@
 import { postEnrichment, putEnrichment, deleteEnrichment } from './enrichment';
-import { cancelJob } from '../../controller/api/job';
-import { getActiveJob } from '../../workers/tools';
+import { postCancelJob } from '../../controller/api/job';
+import { getActiveJob, cancelJob } from '../../workers/tools';
 
 jest.mock('../../workers/tools', () => ({
     getActiveJob: jest.fn(),
-}));
-jest.mock('../../controller/api/job', () => ({
     cancelJob: jest.fn(),
 }));
 
@@ -120,7 +118,7 @@ describe('Enrichment controller', () => {
             expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith('NAME');
             expect(ctx.enrichment.delete).toHaveBeenCalledWith(42);
             expect(cancelJob).toHaveBeenCalled();
-            expect(ctx.body).toBe(true);
+            expect(ctx.status).toBe(200);
         });
 
         it('should return a 403 on error if an error occured', async () => {
