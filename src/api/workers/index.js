@@ -10,7 +10,6 @@ export class CancelWorkerError extends Error {
         this.name = 'CancelWorkerError';
     }
 }
-
 export const workerQueue = new Queue(QUEUE_NAME, process.env.REDIS_URL, {
     defaultJobOptions: {
         removeOnComplete: 10,

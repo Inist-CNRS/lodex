@@ -1,10 +1,4 @@
-import React, {
-    useEffect,
-    useState,
-    useCallback,
-    useLayoutEffect,
-    useRef,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import translate from 'redux-polyglot/translate';
@@ -28,7 +22,6 @@ import FormSelectField from '../../lib/components/FormSelectField';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import EnrichmentExcerpt from './EnrichmentExcerpt';
 
-import debounce from 'lodash.debounce';
 import {
     Box,
     FormControlLabel,
@@ -116,6 +109,7 @@ export const EnrichmentFormComponent = ({
     onUpdateEnrichment,
     onResetForm,
     onLoadEnrichments,
+    match,
     p: polyglot,
 }) => {
     const classes = useStyles();
@@ -128,20 +122,13 @@ export const EnrichmentFormComponent = ({
         setOpenSnackBar(!!errorEnrichment);
     }, [errorEnrichment]);
 
-    const debouncePreview = useCallback(
-        debounce((advancedMode, formValues) => {
+    useEffect(() => {
+        const debounceTimeout = setTimeout(() => {
             getSourcePreview(advancedMode, formValues);
-        }, DEBOUNCE_TIMEOUT),
-        [],
-    );
-
-    const firstRender = useRef(true);
-    useLayoutEffect(() => {
-        if (firstRender.current) {
-            firstRender.current = false;
-            return;
-        }
-        debouncePreview(advancedMode, formValues);
+        }, DEBOUNCE_TIMEOUT);
+        return () => {
+            clearTimeout(debounceTimeout);
+        };
     }, [
         formValues?.sourceColumn,
         formValues?.subPath,
@@ -150,6 +137,10 @@ export const EnrichmentFormComponent = ({
     ]);
 
     useEffect(() => {
+        const enrichmentExist = match.params.enrichmentId && initialValues;
+        if (match.params.enrichmentId && !enrichmentExist) {
+            history.push('/data/enrichment');
+        }
         return () => {
             onResetForm();
             onPreviewDataEnrichmentClear();
@@ -174,7 +165,7 @@ export const EnrichmentFormComponent = ({
         );
     };
 
-    const handleSubmit = e => {
+    const saveEnrichment = e => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
@@ -185,17 +176,17 @@ export const EnrichmentFormComponent = ({
             status: initialValues?.status || PENDING,
         };
 
-        if (!advancedMode) {
+        if (advancedMode) {
+            payload = {
+                ...payload,
+                rule: formData.get('rule'),
+            };
+        } else {
             payload = {
                 ...payload,
                 webServiceUrl: formData.get('webServiceUrl'),
                 sourceColumn: formData.get('sourceColumn'),
                 subPath: formData.get('subPath'),
-            };
-        } else {
-            payload = {
-                ...payload,
-                rule: formData.get('rule'),
             };
         }
 
@@ -215,21 +206,19 @@ export const EnrichmentFormComponent = ({
         }
     };
 
-    const handleDeleteEnrichment = e => {
+    const deleteEnrichment = e => {
         e.preventDefault();
-
-        if (isEdit) {
-            onDeleteEnrichment({
-                id: initialValues._id,
-            });
-        }
+        onDeleteEnrichment({
+            id: initialValues._id,
+        });
+        history.push(`/data/enrichment`);
     };
 
-    const handleAdvancedMode = () => {
+    const toggleAdvancedMode = () => {
         setAdvancedMode(!advancedMode);
     };
 
-    const handleLaunchEnrichment = () => {
+    const launchEnrichment = () => {
         onLaunchEnrichment({
             id: initialValues._id,
             action: initialValues?.status === FINISHED ? 'relaunch' : 'launch',
@@ -250,7 +239,7 @@ export const EnrichmentFormComponent = ({
                         control={
                             <Switch
                                 checked={advancedMode}
-                                onChange={handleAdvancedMode}
+                                onChange={toggleAdvancedMode}
                                 color="primary"
                                 name="advancedMode"
                             />
@@ -345,7 +334,7 @@ export const EnrichmentFormComponent = ({
             <div className={classes.enrichmentFormContainer}>
                 <form
                     id="enrichment_form"
-                    onSubmit={handleSubmit}
+                    onSubmit={saveEnrichment}
                     className={classes.enrichmentForm}
                 >
                     <Field
@@ -385,8 +374,8 @@ export const EnrichmentFormComponent = ({
                 value={{
                     isEdit,
                     enrichment: initialValues,
-                    handleLaunchEnrichment,
-                    handleDeleteEnrichment,
+                    handleLaunchEnrichment: launchEnrichment,
+                    handleDeleteEnrichment: deleteEnrichment,
                     onLoadEnrichments,
                 }}
             >
@@ -420,6 +409,7 @@ EnrichmentFormComponent.propTypes = {
     onPreviewDataEnrichmentClear: PropTypes.func.isRequired,
     onResetForm: PropTypes.func.isRequired,
     onLoadEnrichments: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 

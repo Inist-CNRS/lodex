@@ -9,6 +9,7 @@ import {
     getEnrichmentDataPreview,
     setEnrichmentJobId,
 } from '../../services/enrichment/enrichment';
+import { cancelJob, getActiveJob } from '../../workers/tools';
 
 export const setup = async (ctx, next) => {
     try {
@@ -57,9 +58,18 @@ export const putEnrichment = async (ctx, id) => {
 export const deleteEnrichment = async (ctx, id) => {
     try {
         const enrichment = await ctx.enrichment.findOneById(id);
+        console.log('getActiveJob');
+        const activeJob = await getActiveJob();
+        if (
+            activeJob?.data?.jobType === ENRICHER &&
+            activeJob?.data?.id === id
+        ) {
+            console.log('cancelIt');
+            cancelJob(ctx, ENRICHER);
+        }
         await ctx.enrichment.delete(id);
         await ctx.dataset.removeAttribute(enrichment.name);
-        ctx.body = true;
+        ctx.status = 200;
     } catch (error) {
         ctx.status = 403;
         ctx.body = { error: error.message };

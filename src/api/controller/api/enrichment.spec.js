@@ -1,4 +1,11 @@
 import { postEnrichment, putEnrichment, deleteEnrichment } from './enrichment';
+import { postCancelJob } from '../../controller/api/job';
+import { getActiveJob, cancelJob } from '../../workers/tools';
+
+jest.mock('../../workers/tools', () => ({
+    getActiveJob: jest.fn(),
+    cancelJob: jest.fn(),
+}));
 
 describe('Enrichment controller', () => {
     describe('postEnrichment', () => {
@@ -53,8 +60,12 @@ describe('Enrichment controller', () => {
             const ctx = {
                 request: { body: 'my updated enrichment' },
                 enrichment: {
-                    findOneById: jest.fn(() => ({ name: 'NAME' })),
-                    update: jest.fn(() => 'updated enrichment'),
+                    findOneById: jest.fn(() =>
+                        Promise.resolve({ name: 'NAME' }),
+                    ),
+                    update: jest.fn(() =>
+                        Promise.resolve('updated enrichment'),
+                    ),
                 },
                 dataset: { removeAttribute: jest.fn() },
             };
@@ -68,6 +79,7 @@ describe('Enrichment controller', () => {
                 'my updated enrichment',
             );
             expect(ctx.body).toEqual('updated enrichment');
+            return;
         });
 
         it('should return a 403 on error if an error occured', async () => {
@@ -96,13 +108,17 @@ describe('Enrichment controller', () => {
                 },
                 dataset: { removeAttribute: jest.fn() },
             };
+            getActiveJob.mockResolvedValue({
+                data: { id: 42, jobType: 'enricher' },
+            });
 
             await deleteEnrichment(ctx, 42);
 
             expect(ctx.enrichment.findOneById).toHaveBeenCalledWith(42);
             expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith('NAME');
             expect(ctx.enrichment.delete).toHaveBeenCalledWith(42);
-            expect(ctx.body).toBe(true);
+            expect(cancelJob).toHaveBeenCalled();
+            expect(ctx.status).toBe(200);
         });
 
         it('should return a 403 on error if an error occured', async () => {

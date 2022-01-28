@@ -9,6 +9,7 @@ import { IN_PROGRESS, FINISHED, ERROR } from '../../../common/enrichmentStatus';
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError } from '../../workers';
+import logger from '../logger';
 
 const BATCH_SIZE = 100;
 
@@ -74,12 +75,17 @@ export const getEnrichmentDataPreview = async ctx => {
         sourceColumn ? { [sourceColumn]: { $ne: null } } : {},
     );
     let result = [];
-    for (let index = 0; index < excerptLines.length; index += BATCH_SIZE) {
-        let values = await processEzsEnrichment(
-            excerptLines.slice(index, index + BATCH_SIZE),
-            commands,
-        );
-        result.push(...values.map(v => v.value));
+    try {
+        for (let index = 0; index < excerptLines.length; index += BATCH_SIZE) {
+            let values = await processEzsEnrichment(
+                excerptLines.slice(index, index + BATCH_SIZE),
+                commands,
+            );
+            result.push(...values.map(v => v.value));
+        }
+    } catch (error) {
+        logger.error('Error while processing enrichment preview', error);
+        return [];
     }
     return result;
 };
