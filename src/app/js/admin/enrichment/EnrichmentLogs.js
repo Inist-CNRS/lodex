@@ -47,7 +47,12 @@ const useStyles = makeStyles({
 const LogLine = props => {
     const { data, index, style } = props;
     const log = data[index];
-    const parsedLog = JSON.parse(log);
+    let parsedLog;
+    try {
+        parsedLog = JSON.parse(log);
+    } catch (e) {
+        console.error('Error parsing log', e);
+    }
     const classes = useStyles();
 
     let date;
@@ -108,8 +113,14 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
         const socket = io();
         socket.on(`enrichment-job-${enrichment?.jobId}`, data => {
             setLogs(currentState => [data, ...currentState]);
+            let parsedData;
+            try {
+                parsedData = JSON.parse(data);
+            } catch {
+                console.error('Error parsing data', data);
+            }
 
-            if ([FINISHED, ERROR].includes(JSON.parse(data).status)) {
+            if (parsedData && [FINISHED, ERROR].includes(parsedData.status)) {
                 onLoadEnrichments();
             }
         });
