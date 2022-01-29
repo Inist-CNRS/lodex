@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import path from 'path';
 import ezs from '@ezs/core';
 import progress from '../../services/progress';
+import localConfig from '../../../../config.json';
 
 import { ObjectId } from 'mongodb';
 import from from 'from';
@@ -11,7 +12,7 @@ import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError } from '../../workers';
 import logger from '../logger';
 
-const BATCH_SIZE = 100;
+const { enrichmentBatchSize: BATCH_SIZE } = localConfig;
 
 const getSourceData = async (ctx, sourceColumn) => {
     const excerptLines = await ctx.dataset.getExcerpt(
