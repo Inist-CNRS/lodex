@@ -58,13 +58,11 @@ export const putEnrichment = async (ctx, id) => {
 export const deleteEnrichment = async (ctx, id) => {
     try {
         const enrichment = await ctx.enrichment.findOneById(id);
-        console.log('getActiveJob');
         const activeJob = await getActiveJob();
         if (
             activeJob?.data?.jobType === ENRICHER &&
             activeJob?.data?.id === id
         ) {
-            console.log('cancelIt');
             cancelJob(ctx, ENRICHER);
         }
         await ctx.enrichment.delete(id);
