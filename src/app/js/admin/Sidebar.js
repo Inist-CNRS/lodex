@@ -87,6 +87,7 @@ const useStyles = makeStyles({
         position: 'sticky',
         top: 0,
         height: '100vh',
+        overflowY: 'scroll',
     },
     iconLinkContainer: {
         width: 125,
@@ -176,6 +177,16 @@ const EnrichmentMenu = compose(
     const classes = useStyles();
     return (
         <div className={classnames(classes.subSidebar, 'sub-sidebar')}>
+            <Box className={classes.iconSubLinkContainer}>
+                <NavLink
+                    className={classes.sidebarCallToAction}
+                    activeStyle={subSidebarNavLinkActiveStyle}
+                    to="/data/enrichment/add"
+                >
+                    <PlusIcon />
+                    {polyglot.t('new_enrichment')}
+                </NavLink>
+            </Box>
             {(enrichments || []).map(e => (
                 <Fragment key={e._id}>
                     <hr className={classes.separator} />
@@ -190,16 +201,6 @@ const EnrichmentMenu = compose(
                     </Box>
                 </Fragment>
             ))}
-            <Box className={classes.iconSubLinkContainer}>
-                <NavLink
-                    className={classes.sidebarCallToAction}
-                    activeStyle={subSidebarNavLinkActiveStyle}
-                    to="/data/enrichment/add"
-                >
-                    <PlusIcon />
-                    {polyglot.t('new_enrichment')}
-                </NavLink>
-            </Box>
         </div>
     );
 });
