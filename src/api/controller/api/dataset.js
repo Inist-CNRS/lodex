@@ -24,13 +24,15 @@ export const clearDataset = async ctx => {
 };
 
 export const getDataset = async ctx => {
-    const { skip, limit } = ctx.query;
+    const { skip, limit, sortBy, sortDir } = ctx.query;
     const count = await ctx.dataset.find().count();
-    const datas = await ctx.dataset
-        .find()
-        .skip(skip ? parseInt(skip) : 0)
-        .limit(limit ? parseInt(limit, 10) : 10)
-        .toArray();
+    const datas = await ctx.dataset.findLimitFromSkip(
+        limit ? parseInt(limit, 10) : 10,
+        skip ? parseInt(skip) : 0,
+        {},
+        sortBy,
+        sortDir?.toUpperCase(),
+    );
     ctx.body = { count, datas };
 };
 
