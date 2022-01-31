@@ -115,7 +115,7 @@ export const ParsingResultComponent = props => {
                     headerName: key,
                     cellClassName: isEnrichment && classes.enrichedColumn,
                     width: 150,
-                    sortable: false,
+                    sortable: typeof datas[0][key] !== 'object',
                     renderCell: params => {
                         if (isEnrichmentLoading && params.value === undefined)
                             return (
