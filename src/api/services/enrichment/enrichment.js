@@ -186,7 +186,12 @@ const processEzsEnrichment = (entries, commands) => {
 
 export const processEnrichment = async (enrichment, ctx) => {
     await ctx.enrichment.updateOne(
-        { _id: new ObjectId(enrichment._id) },
+        {
+            $or: [
+                { _id: new ObjectId(enrichment._id) },
+                { _id: enrichment._id },
+            ],
+        },
         { $set: { ['status']: IN_PROGRESS } },
     );
     const room = `enrichment-job-${ctx.job.id}`;
@@ -266,7 +271,12 @@ export const processEnrichment = async (enrichment, ctx) => {
         }
     }
     await ctx.enrichment.updateOne(
-        { _id: new ObjectId(enrichment._id) },
+        {
+            $or: [
+                { _id: new ObjectId(enrichment._id) },
+                { _id: enrichment._id },
+            ],
+        },
         { $set: { ['status']: FINISHED } },
     );
     progress.finish();
@@ -282,7 +292,9 @@ export const processEnrichment = async (enrichment, ctx) => {
 
 export const setEnrichmentJobId = async (ctx, enrichmentID, job) => {
     await ctx.enrichment.updateOne(
-        { _id: new ObjectId(enrichmentID) },
+        {
+            $or: [{ _id: new ObjectId(enrichmentID) }, { _id: enrichmentID }],
+        },
         { $set: { ['jobId']: job.id } },
     );
 };
@@ -315,7 +327,9 @@ export const startEnrichment = async ctx => {
 export const setEnrichmentError = async (ctx, err) => {
     const id = ctx.job?.data?.id;
     await ctx.enrichment.updateOne(
-        { _id: new ObjectId(id) },
+        {
+            $or: [{ _id: new ObjectId(id) }, { _id: id }],
+        },
         { $set: { ['status']: ERROR, ['message']: err?.message } },
     );
 
