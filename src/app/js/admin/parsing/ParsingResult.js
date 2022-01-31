@@ -179,7 +179,7 @@ export const ParsingResultComponent = props => {
     const [rowCount, setRowCount] = useState(0);
     const [skip, setSkip] = useState(0);
     const [limit, setLimit] = useState(25);
-    const [sort, setSort] = useState([{ field: 'uri', direction: 'asc' }]);
+    const [sort, setSort] = useState({ sortBy: 'uri', sortDir: 'ASC' });
     const [filter] = useState({});
 
     const onPageChange = page => {
@@ -201,7 +201,10 @@ export const ParsingResultComponent = props => {
     }, [skip, limit, filter, sort]);
 
     const handleSortModelChange = useCallback(sortModel => {
-        setSort(sortModel);
+        setSort({
+            sortBy: sortModel[0]?.field,
+            sortDir: sortModel[0]?.sort,
+        });
     }, []);
 
     if (loadingParsingResult) {
