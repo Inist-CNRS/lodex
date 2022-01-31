@@ -9,7 +9,7 @@ import EnrichmentLogs from './EnrichmentLogs';
 
 const useStyles = makeStyles({
     sidebarContainer: {
-        marginTop: -100,
+        marginTop: -75,
         marginRight: -20,
         paddingTop: 100,
         display: 'flex',
