@@ -163,9 +163,14 @@ const processEzsEnrichment = (entries, commands) => {
             .on('data', data => {
                 if (data instanceof Error) {
                     const error = getSourceError(data);
-                    const sourceChunk = error?.sourceChunk
-                        ? JSON.parse(error.sourceChunk)
-                        : null;
+                    let sourceChunk = null;
+                    if (error?.sourceChunk) {
+                        try {
+                            sourceChunk = JSON.parse(error.sourceChunk);
+                        } catch (e) {
+                            logger.error('Error while parsing sourceChunk', e);
+                        }
+                    }
                     values.push({
                         id: sourceChunk?.id,
                         error: error?.sourceError?.message,
