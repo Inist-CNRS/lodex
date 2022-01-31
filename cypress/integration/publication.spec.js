@@ -54,7 +54,63 @@ describe('Dataset Publication', () => {
             );
         });
     });
+    describe('Dataset Sorting', () => {
+        it('should by default sort by uri asc', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            cy.wait(300);
+            datasetImportPage.importDataset('dataset/simpleForOrderTests.csv');
 
+            cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
+                'contains.text',
+                ['"1"', '"Bobby"', '"Womack"'].join(''),
+            );
+        });
+
+        it('should sort by firstName asc when clicking one time on it', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            cy.wait(300);
+            datasetImportPage.importDataset('dataset/simpleForOrderTests.csv');
+
+            cy.get(
+                '[role=columnheader][data-field=firstName] [aria-label=Sort]',
+                {
+                    timeout: 500,
+                },
+            ).click({ force: true });
+
+            cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
+                'contains.text',
+                ['"2"', '"Alain"', '"Chabat"'].join(''),
+            );
+        });
+
+        it('should sort by firstName desc when clicking two times on it', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            cy.wait(300);
+            datasetImportPage.importDataset('dataset/simpleForOrderTests.csv');
+
+            cy.get(
+                '[role=columnheader][data-field=firstName] [aria-label=Sort]',
+                {
+                    timeout: 500,
+                },
+            ).click({ force: true });
+            cy.get(
+                '[role=columnheader][data-field=firstName] [aria-label=Sort]',
+                {
+                    timeout: 500,
+                },
+            ).click({ force: true });
+
+            cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
+                'contains.text',
+                ['"4"', '"Rob"', '"Zombie"'].join(''),
+            );
+        });
+    });
     describe('Publication', () => {
         it('should display a disabled publish button if no model', () => {
             menu.openAdvancedDrawer();
