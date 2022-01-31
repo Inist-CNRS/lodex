@@ -179,6 +179,7 @@ export const ParsingResultComponent = props => {
     const [rowCount, setRowCount] = useState(0);
     const [skip, setSkip] = useState(0);
     const [limit, setLimit] = useState(25);
+    const [sort, setSort] = useState([{ field: 'uri', direction: 'asc' }]);
     const [filter] = useState({});
 
     const onPageChange = page => {
@@ -191,12 +192,18 @@ export const ParsingResultComponent = props => {
                 skip,
                 limit,
                 filter,
+                sort,
             });
             setRowCount(datasCount);
             setDatas(datas);
         };
         fetchDataset();
-    }, [skip, limit, filter]);
+    }, [skip, limit, filter, sort]);
+
+    const handleSortModelChange = useCallback(sortModel => {
+        setSort(sortModel);
+    }, []);
+
     if (loadingParsingResult) {
         return (
             <Loading className="admin">
@@ -282,6 +289,8 @@ export const ParsingResultComponent = props => {
                     paginationMode="server"
                     onPageChange={onPageChange}
                     onPageSizeChange={setLimit}
+                    sortingMode="server"
+                    onSortModelChange={handleSortModelChange}
                     rowsPerPageOptions={[10, 25, 50]}
                     disableSelectionOnClick={true}
                     components={{
