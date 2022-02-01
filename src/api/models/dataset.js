@@ -22,16 +22,14 @@ export default db => {
             .find(filter)
             .limit(8)
             .toArray();
-    collection.findLimitFromSkip = (
-        limit,
-        skip,
-        query = {},
-        sortBy = 'uri',
-        sortDir = 'ASC',
-    ) =>
+    collection.findLimitFromSkip = (limit, skip, query = {}, sortBy, sortDir) =>
         collection
             .find(query)
-            .sort({ [sortBy]: sortDir === 'ASC' ? 1 : -1 })
+            .sort(
+                sortBy && sortDir
+                    ? { [sortBy]: sortDir === 'ASC' ? 1 : -1 }
+                    : {},
+            )
             .skip(skip)
             .limit(limit)
             .toArray();
