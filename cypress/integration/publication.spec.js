@@ -111,6 +111,78 @@ describe('Dataset Publication', () => {
             );
         });
     });
+    describe.only('Dataset Filtering', () => {
+        it('should filter by uri', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            cy.wait(300);
+            datasetImportPage.importDataset(
+                'dataset/simpleForFilterTests.json',
+            );
+            cy.get('[role=columnheader][data-field=uri] [aria-label=Menu]', {
+                timeout: 500,
+            }).click({ force: true });
+            cy.get('[role=menu] :nth-child(4)').click();
+            cy.focused().type('2');
+
+            cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
+                'contains.text',
+                ['2', '"Alain"', '"Chabat"', 'true'].join(''),
+            );
+        });
+        it('should filter by firstName', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            cy.wait(300);
+            datasetImportPage.importDataset(
+                'dataset/simpleForFilterTests.json',
+            );
+            cy.get(
+                '[role=columnheader][data-field=firstName] [aria-label=Menu]',
+                {
+                    timeout: 500,
+                },
+            ).click({ force: true });
+            cy.get('[role=menu] :nth-child(4)').click();
+            cy.focused().type('b');
+
+            cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
+                'contains.text',
+                ['1', '"Bobby"', '"Womack"', 'true'].join(''),
+            );
+
+            cy.get('[data-rowindex=1]', { timeout: 3000 }).should(
+                'contains.text',
+                ['4', '"Rob"', '"Zombie"', '""'].join(''),
+            );
+        });
+        it('should filter by boolean', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            cy.wait(300);
+            datasetImportPage.importDataset(
+                'dataset/simpleForFilterTests.json',
+            );
+            cy.get(
+                '[role=columnheader][data-field=boolean] [aria-label=Menu]',
+                {
+                    timeout: 500,
+                },
+            ).click({ force: true });
+            cy.get('[role=menu] :nth-child(4)').click();
+            cy.focused().select('true');
+
+            cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
+                'contains.text',
+                ['1', '"Bobby"', '"Womack"', 'true'].join(''),
+            );
+
+            cy.get('[data-rowindex=1]', { timeout: 3000 }).should(
+                'contains.text',
+                ['2', '"Alain"', '"Chabat"', 'true'].join(''),
+            );
+        });
+    });
     describe('Publication', () => {
         it('should display a disabled publish button if no model', () => {
             menu.openAdvancedDrawer();

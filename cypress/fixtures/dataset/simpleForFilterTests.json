@@ -1,0 +1,26 @@
+[
+    {
+        "uri": 1,
+        "firstName": "Bobby",
+        "lastNAme": "Womack",
+        "boolean": true
+    },
+    {
+        "uri": 2,
+        "firstName": "Alain",
+        "lastNAme": "Chabat",
+        "boolean": true
+    },
+    {
+        "uri": 3,
+        "firstName": "General",
+        "lastNAme": "Elektriks",
+        "boolean": false
+    },
+    {
+        "uri": 4,
+        "firstName": "Rob",
+        "lastNAme": "Zombie",
+        "boolean": false
+    }
+]
