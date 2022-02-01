@@ -237,11 +237,12 @@ export const ParsingResultComponent = props => {
 
     const handleFilterModelChange = filterModel => {
         if (filterModel.items.length === 0) {
-            setFilter({});
+            return;
         }
         const { columnField, operatorValue, value } = filterModel.items[0];
         setFilter({ columnField, operatorValue, value });
     };
+
     if (loadingParsingResult) {
         return (
             <Loading className="admin">
