@@ -39,6 +39,12 @@ const buildQuery = (filterBy, filterOperator, filterValue) => {
             return { [filterBy]: new RegExp(`.*${filterValue}.*`) };
     }
 };
+
+export const getDatasetColumns = async ctx => {
+    const columns = await ctx.dataset.getColumns();
+    ctx.body = { columns };
+};
+
 export const getDataset = async ctx => {
     const {
         skip,
@@ -63,6 +69,7 @@ export const getDataset = async ctx => {
 };
 
 app.use(route.delete('/', clearDataset));
+app.use(route.get('/columns', getDatasetColumns));
 app.use(route.get('/', getDataset));
 
 export default app;
