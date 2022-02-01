@@ -20,7 +20,7 @@ services:
         ports:
             - 3000:3000
     mongo:
-        image: mongo:3.4.1
+        image: mongo:3.4.21
         command: '--smallfiles'
         ports:
             - 27017:27017

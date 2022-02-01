@@ -40,7 +40,7 @@ services:
         command: npm run dev:server
 
     mongo:
-        image: mongo:3.4.1
+        image: mongo:3.4.21
         command: '--smallfiles'
         ports:
             - 27017:27017
