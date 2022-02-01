@@ -131,7 +131,9 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
 
     return enrichment?.jobId ? (
         <div className={classes.LogsContainer}>
-            <div className={classes.LogsTitle}>Enrichment Logs</div>
+            <div className={classes.LogsTitle}>
+                {polyglot.t('enrichment_logs')}
+            </div>
             <div className={classes.Logs}>
                 {!isLoaded && <div>{polyglot.t('loading')}</div>}
                 {isLoaded && error && (
