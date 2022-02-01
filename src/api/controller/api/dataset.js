@@ -22,14 +22,39 @@ export const clearDataset = async ctx => {
         ctx.body = { status: 'error', error };
     }
 };
-
+const buildQuery = (filterBy, filterOperator, filterValue) => {
+    if (!filterValue) {
+        return {};
+    }
+    switch (filterOperator) {
+        case 'is':
+            return { [filterBy]: { $eq: filterValue } };
+        case '=':
+            return { [filterBy]: { $eq: parseFloat(filterValue) } };
+        case '>':
+            return { [filterBy]: { $gt: parseFloat(filterValue) } };
+        case '<':
+            return { [filterBy]: { $lt: parseFloat(filterValue) } };
+        default:
+            return { [filterBy]: new RegExp(filterValue) };
+    }
+};
 export const getDataset = async ctx => {
-    const { skip, limit, sortBy, sortDir } = ctx.query;
-    const count = await ctx.dataset.find().count();
+    const {
+        skip,
+        limit,
+        sortBy,
+        sortDir,
+        filterBy,
+        filterOperator,
+        filterValue,
+    } = ctx.query;
+    const query = buildQuery(filterBy, filterOperator, filterValue);
+    const count = await ctx.dataset.find(query).count();
     const datas = await ctx.dataset.findLimitFromSkip(
         limit ? parseInt(limit, 10) : 10,
         skip ? parseInt(skip) : 0,
-        {},
+        query,
         sortBy,
         sortDir?.toUpperCase(),
     );
