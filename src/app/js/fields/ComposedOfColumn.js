@@ -15,6 +15,7 @@ import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
 } from '../propTypes';
+import FieldInternalIcon from './FieldInternalIcon';
 
 const styles = {
     compositionContainer: {
@@ -22,6 +23,15 @@ const styles = {
     },
     select: {
         flexGrow: 2,
+    },
+    line: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    internal: {
+        display: 'flex',
+        alignItems: 'center',
     },
 };
 
@@ -46,12 +56,23 @@ const ComposedOfColumn = ({
                         className={`composite-field-${index}-${f.name}`}
                         key={`composite-field-${index}-${f.name}`}
                         value={f.name}
+                        style={styles.line}
                     >
                         {f.label}
+                        <div style={styles.internal}>
+                            {f.internalScopes &&
+                                f.internalScopes.map(internalScope => (
+                                    <FieldInternalIcon
+                                        key={internalScope}
+                                        scope={internalScope}
+                                    />
+                                ))}
+                            {f.internalName}
+                        </div>
                     </MenuItem>
                 ))}
             </Select>
-            <FormHelperText>{polyglot.t('select_a_column')}</FormHelperText>
+            <FormHelperText>{polyglot.t('select_a_field')}</FormHelperText>
         </FormControl>
         {index > 1 && (
             <IconButton

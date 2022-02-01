@@ -82,7 +82,7 @@ class FieldComposedOf extends Component {
                                 onChange={this.handleSwitch}
                             />
                         }
-                        label="is_composite_field"
+                        label={polyglot.t('is_composite_field')}
                     />
                     {isComposedOf &&
                         columns.map((col, index) => (

@@ -622,3 +622,4 @@
 "cancelEnrichmentContent"	"By cancelling running enrichment, you also clear already enriched data."	"En annulant l'enrichissement en cours, vous supprimerez également les données déjà enrichies."
 "advancedModePreviewInfo"	"Source preview replaces [URLConnect] with [transit] and runs your ini file"	"Ci-dessous: les données traitées par le script, en remplaçant [URLConnect] par [transit]"
 "enrichment_logs"	"Enrichment logs"	"Logs de l'enrichissement"
+"is_composite_field"	"Is composite field"	"Est un champ composé"
