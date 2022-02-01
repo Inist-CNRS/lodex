@@ -115,6 +115,12 @@ export const ParsingResultComponent = props => {
         const enrichmentsNames = enrichments.map(enrichment => enrichment.name);
 
         return columns
+            .sort((a, b) => {
+                if (a.key === 'uri') {
+                    return -1;
+                }
+                return a.key.localeCompare(b.key);
+            })
             .filter(({ key }) => {
                 const isEnrichment = enrichmentsNames.includes(key);
                 return (
@@ -213,12 +219,15 @@ export const ParsingResultComponent = props => {
     };
 
     useEffect(() => {
+        const fetchDataColumns = async () => {
+            const { columns } = await datasetApi.getDatasetColumns();
+            setColumns(columns);
+        };
+        fetchDataColumns();
+    }, []);
+    useEffect(() => {
         const fetchDataset = async () => {
-            const {
-                count: datasCount,
-                datas,
-                columns,
-            } = await datasetApi.getDataset({
+            const { count: datasCount, datas } = await datasetApi.getDataset({
                 skip,
                 limit,
                 filter,
@@ -226,7 +235,6 @@ export const ParsingResultComponent = props => {
             });
             setRowCount(datasCount);
             setDatas(datas);
-            setColumns(columns);
         };
         fetchDataset();
     }, [skip, limit, filter, sort]);
