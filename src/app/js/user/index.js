@@ -452,6 +452,12 @@ export const getCancelJobRequest = (state, queue) =>
         method: 'POST',
     });
 
+export const getClearJobsRequest = state =>
+    getRequest(state, {
+        url: `/api/job/clear`,
+        method: 'POST',
+    });
+
 export const selectors = {
     isAdmin,
     getRole,

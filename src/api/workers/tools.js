@@ -21,11 +21,24 @@ export const jobLogger = {
 };
 
 export const getActiveJob = async () => {
+    const activeJobs = getActiveJobs();
+    return activeJobs[0] || undefined;
+};
+
+export const getActiveJobs = async () => {
     const activeJobs = await workerQueue.getActive();
     if (activeJobs.length === 0) {
         return undefined;
     }
-    return activeJobs[0];
+    return activeJobs;
+};
+
+export const getWaitingJobs = async () => {
+    const waitingJobs = await workerQueue.getWaiting();
+    if (waitingJobs.length === 0) {
+        return undefined;
+    }
+    return waitingJobs;
 };
 
 export const cancelJob = async (ctx, jobType) => {
@@ -36,4 +49,14 @@ export const cancelJob = async (ctx, jobType) => {
         clearPublished(ctx);
         progress.finish();
     }
+};
+
+export const clearJobs = async () => {
+    const waitingJobs = await getWaitingJobs();
+    const activeJobs = await getActiveJobs();
+    waitingJobs?.forEach(waitingJob => waitingJob.remove());
+    activeJobs?.forEach(activeJob =>
+        activeJob.moveToFailed(new Error('cancelled'), true),
+    );
+    progress.finish();
 };
