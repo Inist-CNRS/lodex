@@ -60,7 +60,6 @@
         "json-wordpress",
         "json-datacite",
         "json-inspirehep",
-        "json-protege",
         "rss",
         "atom",
         "mods",
@@ -70,7 +69,6 @@
         "zip"
     ],
     "exporters": [
-        "kbart",
         "csv",
         "tsv",
         "jsonallvalue"
