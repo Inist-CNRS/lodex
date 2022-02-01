@@ -1,5 +1,9 @@
 import fetch from '../../lib/fetch';
-import { getJobLogsRequest, getCancelJobRequest } from '../../user';
+import {
+    getCancelJobRequest,
+    getClearJobsRequest,
+    getJobLogsRequest,
+} from '../../user';
 import { getUserLocalStorageInfo } from './tools';
 
 const getJobLogs = jobId => {
@@ -16,4 +20,11 @@ const cancelJob = type => {
     return fetch(request);
 };
 
-export default { getJobLogs, cancelJob };
+const clearJobs = () => {
+    const state = getUserLocalStorageInfo();
+
+    const request = getClearJobsRequest(state);
+    return fetch(request);
+};
+
+export default { cancelJob, clearJobs, getJobLogs };

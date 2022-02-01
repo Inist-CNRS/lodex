@@ -53,6 +53,7 @@
 "clear"	"Clear"	"Effacer"
 "clear_publish"	"Unpublish"	"Dépublier"
 "clear_dataset"	"Clear database"	"Effacer la base de données"
+"clear_jobs"	"Clear jobs"	"Effacer les tâches de fonds"
 "sign_out"	"Sign out"	"Déconnexion"
 "back_to_list"	"Back to list"	"Retourner à la liste"
 "not_found"	"Resource not found"	"Ressource non trouvée"

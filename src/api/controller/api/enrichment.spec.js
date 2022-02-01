@@ -1,5 +1,4 @@
 import { postEnrichment, putEnrichment, deleteEnrichment } from './enrichment';
-import { postCancelJob } from '../../controller/api/job';
 import { getActiveJob, cancelJob } from '../../workers/tools';
 
 jest.mock('../../workers/tools', () => ({

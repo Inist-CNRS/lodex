@@ -18,6 +18,7 @@ import { signOut } from '../../user';
 import { exportFields } from '../../exportFields';
 import { fromParsing } from '../selectors';
 import ClearDialog from './ClearDialog';
+import jobsApi from '../api/job';
 
 const useStyles = makeStyles({
     container: {
@@ -31,11 +32,11 @@ const useStyles = makeStyles({
 });
 
 const MenuComponent = ({
-    p: polyglot,
     dumpDataset,
-    onSignOut,
     exportFields,
     hasLoadedDataset,
+    onSignOut,
+    p: polyglot,
 }) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -49,6 +50,7 @@ const MenuComponent = ({
         setAnchorEl(null);
         typeof callback === 'function' && callback();
     };
+
     return (
         <>
             <div className={classes.container}>
@@ -99,6 +101,12 @@ const MenuComponent = ({
                         >
                             {polyglot.t('clear_dataset')}
                         </MenuItem>,
+                        <MenuItem
+                            key="clear_jobs"
+                            onClick={() => handleCloseMenu(jobsApi.clearJobs)}
+                        >
+                            {polyglot.t('clear_jobs')}
+                        </MenuItem>,
                         <Divider key="divider" />,
                     ]}
                     <MenuItem
@@ -120,19 +128,19 @@ const MenuComponent = ({
 };
 
 MenuComponent.propTypes = {
-    p: polyglotPropTypes.isRequired,
     dumpDataset: PropTypes.func.isRequired,
-    onSignOut: PropTypes.func.isRequired,
     exportFields: PropTypes.func.isRequired,
     hasLoadedDataset: PropTypes.bool,
     hasPublishedDataset: PropTypes.bool,
+    onSignOut: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 const mapDispatchToProps = dispatch =>
     bindActionCreators(
         {
-            onSignOut: signOut,
             dumpDataset,
             exportFields,
+            onSignOut: signOut,
         },
         dispatch,
     );
