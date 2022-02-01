@@ -36,7 +36,11 @@ const buildQuery = (filterBy, filterOperator, filterValue) => {
         case '<':
             return { [filterBy]: { $lt: parseFloat(filterValue) } };
         default:
-            return { [filterBy]: new RegExp(`.*${filterValue}.*`) };
+            return {
+                [filterBy]: new RegExp(
+                    `.*${filterValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}.*`,
+                ),
+            };
     }
 };
 
@@ -57,7 +61,6 @@ export const getDataset = async ctx => {
     } = ctx.query;
     const query = buildQuery(filterBy, filterOperator, filterValue);
     const count = await ctx.dataset.find(query).count();
-    const columns = await ctx.dataset.getColumns();
     const datas = await ctx.dataset.findLimitFromSkip(
         limit ? parseInt(limit, 10) : 10,
         skip ? parseInt(skip) : 0,
@@ -65,7 +68,7 @@ export const getDataset = async ctx => {
         sortBy,
         sortDir?.toUpperCase(),
     );
-    ctx.body = { count, datas, columns };
+    ctx.body = { count, datas };
 };
 
 app.use(route.delete('/', clearDataset));
