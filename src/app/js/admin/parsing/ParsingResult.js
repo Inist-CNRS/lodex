@@ -115,12 +115,6 @@ export const ParsingResultComponent = props => {
         const enrichmentsNames = enrichments.map(enrichment => enrichment.name);
 
         return columns
-            .sort((a, b) => {
-                if (a.key === 'uri') {
-                    return -1;
-                }
-                return a.key.localeCompare(b.key);
-            })
             .filter(({ key }) => {
                 const isEnrichment = enrichmentsNames.includes(key);
                 return (
