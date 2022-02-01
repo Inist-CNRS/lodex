@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { DataGrid } from '@mui/x-data-grid';
+import {
+    DataGrid,
+    getGridNumericColumnOperators,
+    getGridStringOperators,
+    getGridBooleanOperators,
+} from '@mui/x-data-grid';
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
@@ -68,6 +73,24 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
+const getFiltersOperatorsForType = type => {
+    switch (type) {
+        case 'number':
+            return getGridNumericColumnOperators().filter(
+                operator =>
+                    operator.value === '=' ||
+                    operator.value === '<' ||
+                    operator.value === '>',
+            );
+        case 'boolean':
+            return getGridBooleanOperators();
+        default:
+            return getGridStringOperators().filter(
+                operator => operator.value === 'contains',
+            );
+    }
+};
+
 export const ParsingResultComponent = props => {
     const {
         p: polyglot,
@@ -115,7 +138,12 @@ export const ParsingResultComponent = props => {
                     headerName: key,
                     cellClassName: isEnrichment && classes.enrichedColumn,
                     width: 150,
+                    filterable: typeof datas[0][key] !== 'object',
                     sortable: typeof datas[0][key] !== 'object',
+                    filterOperators: getFiltersOperatorsForType(
+                        typeof datas[0][key],
+                    ),
+                    type: typeof datas[0][key],
                     renderCell: params => {
                         if (isEnrichmentLoading && params.value === undefined)
                             return (
@@ -180,7 +208,7 @@ export const ParsingResultComponent = props => {
     const [skip, setSkip] = useState(0);
     const [limit, setLimit] = useState(25);
     const [sort, setSort] = useState({ sortBy: 'uri', sortDir: 'ASC' });
-    const [filter] = useState({});
+    const [filter, setFilter] = useState({});
 
     const onPageChange = page => {
         setSkip(page * limit);
@@ -200,12 +228,17 @@ export const ParsingResultComponent = props => {
         fetchDataset();
     }, [skip, limit, filter, sort]);
 
-    const handleSortModelChange = useCallback(sortModel => {
+    const handleSortModelChange = sortModel => {
         setSort({
             sortBy: sortModel[0]?.field,
             sortDir: sortModel[0]?.sort,
         });
-    }, []);
+    };
+
+    const handleFilterModelChange = filterModel => {
+        console.log(filter);
+        setFilter(filterModel);
+    };
 
     if (loadingParsingResult) {
         return (
@@ -286,14 +319,14 @@ export const ParsingResultComponent = props => {
                     columns={columns}
                     rows={rows}
                     rowCount={rowCount}
-                    disableColumnFilter
-                    disableColumnMenu
                     pageSize={limit}
                     paginationMode="server"
                     onPageChange={onPageChange}
                     onPageSizeChange={setLimit}
                     sortingMode="server"
                     onSortModelChange={handleSortModelChange}
+                    filterMode="server"
+                    onFilterModelChange={handleFilterModelChange}
                     rowsPerPageOptions={[10, 25, 50]}
                     disableSelectionOnClick={true}
                     components={{
