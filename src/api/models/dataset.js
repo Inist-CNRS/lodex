@@ -123,18 +123,11 @@ export default db => {
     };
 
     collection.getColumns = async () => {
-        const aggregation = await collection
-            .aggregate([
-                { $project: { keyValue: { $objectToArray: '$$ROOT' } } },
-                { $unwind: '$keyValue' },
-                { $group: { _id: null, keys: { $addToSet: '$keyValue.k' } } },
-            ])
-            .toArray();
         const firstLine = await collection.findOne();
         const columns = [];
-        for (const key of aggregation[0].keys) {
+        Object.keys(firstLine).forEach(key => {
             columns.push({ key, type: typeof firstLine[key] });
-        }
+        });
         return columns;
     };
 
