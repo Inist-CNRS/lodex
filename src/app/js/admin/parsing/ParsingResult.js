@@ -236,10 +236,12 @@ export const ParsingResultComponent = props => {
     };
 
     const handleFilterModelChange = filterModel => {
-        console.log(filter);
-        setFilter(filterModel);
+        if (filterModel.items.length === 0) {
+            setFilter({});
+        }
+        const { columnField, operatorValue, value } = filterModel.items[0];
+        setFilter({ columnField, operatorValue, value });
     };
-
     if (loadingParsingResult) {
         return (
             <Loading className="admin">
