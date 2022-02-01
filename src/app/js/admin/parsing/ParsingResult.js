@@ -109,13 +109,13 @@ export const ParsingResultComponent = props => {
     const [showMainColumns, setShowMainColumns] = useState(true);
 
     const [datas, setDatas] = useState([]);
+    const [columns, setColumns] = useState([]);
 
     const getColumnsToShow = () => {
-        if (datas.length === 0) return [];
         const enrichmentsNames = enrichments.map(enrichment => enrichment.name);
 
-        return Object.keys(datas[0])
-            .filter(key => {
+        return columns
+            .filter(({ key }) => {
                 const isEnrichment = enrichmentsNames.includes(key);
                 return (
                     key !== '_id' &&
@@ -124,7 +124,7 @@ export const ParsingResultComponent = props => {
                         (showMainColumns && !enrichmentsNames.includes(key)))
                 );
             })
-            .map(key => {
+            .map(({ key, type }) => {
                 const isEnrichment = enrichmentsNames.includes(key);
                 const isEnrichmentLoading =
                     isEnrichment &&
@@ -138,12 +138,10 @@ export const ParsingResultComponent = props => {
                     headerName: key,
                     cellClassName: isEnrichment && classes.enrichedColumn,
                     width: 150,
-                    filterable: typeof datas[0][key] !== 'object',
-                    sortable: typeof datas[0][key] !== 'object',
-                    filterOperators: getFiltersOperatorsForType(
-                        typeof datas[0][key],
-                    ),
-                    type: typeof datas[0][key],
+                    filterable: type !== 'object',
+                    sortable: type !== 'object',
+                    filterOperators: getFiltersOperatorsForType(type),
+                    type,
                     renderCell: params => {
                         if (isEnrichmentLoading && params.value === undefined)
                             return (
@@ -169,15 +167,15 @@ export const ParsingResultComponent = props => {
             });
     };
 
-    const columns = useMemo(
+    const columnsToShow = useMemo(
         () =>
             getColumnsToShow(
-                datas,
+                columns,
                 showEnrichmentColumns,
                 showMainColumns,
                 enrichments,
             ),
-        [datas, showEnrichmentColumns, showMainColumns, enrichments],
+        [columns, showEnrichmentColumns, showMainColumns, enrichments],
     );
 
     const numberOfColumns = useCallback(
@@ -216,7 +214,11 @@ export const ParsingResultComponent = props => {
 
     useEffect(() => {
         const fetchDataset = async () => {
-            const { count: datasCount, datas } = await datasetApi.getDataset({
+            const {
+                count: datasCount,
+                datas,
+                columns,
+            } = await datasetApi.getDataset({
                 skip,
                 limit,
                 filter,
@@ -224,6 +226,7 @@ export const ParsingResultComponent = props => {
             });
             setRowCount(datasCount);
             setDatas(datas);
+            setColumns(columns);
         };
         fetchDataset();
     }, [skip, limit, filter, sort]);
@@ -319,7 +322,7 @@ export const ParsingResultComponent = props => {
         <div className={classes.container}>
             {dataGrid ? (
                 <DataGrid
-                    columns={columns}
+                    columns={columnsToShow}
                     rows={rows}
                     rowCount={rowCount}
                     pageSize={limit}
