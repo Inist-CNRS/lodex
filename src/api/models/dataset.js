@@ -122,5 +122,21 @@ export default db => {
         return results[0];
     };
 
+    collection.getColumns = async () => {
+        const aggregation = await collection
+            .aggregate([
+                { $project: { keyValue: { $objectToArray: '$$ROOT' } } },
+                { $unwind: '$keyValue' },
+                { $group: { _id: null, keys: { $addToSet: '$keyValue.k' } } },
+            ])
+            .toArray();
+        const firstLine = await collection.findOne();
+        const columns = [];
+        for (const key of aggregation[0].keys) {
+            columns.push({ key, type: typeof firstLine[key] });
+        }
+        return columns;
+    };
+
     return collection;
 };
