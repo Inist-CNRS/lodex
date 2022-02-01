@@ -28,7 +28,7 @@ const buildQuery = (filterBy, filterOperator, filterValue) => {
     }
     switch (filterOperator) {
         case 'is':
-            return { [filterBy]: { $eq: filterValue } };
+            return { [filterBy]: { $eq: filterValue === 'true' } };
         case '=':
             return { [filterBy]: { $eq: parseFloat(filterValue) } };
         case '>':
@@ -36,7 +36,7 @@ const buildQuery = (filterBy, filterOperator, filterValue) => {
         case '<':
             return { [filterBy]: { $lt: parseFloat(filterValue) } };
         default:
-            return { [filterBy]: new RegExp(filterValue) };
+            return { [filterBy]: new RegExp(`.*${filterValue}.*`) };
     }
 };
 export const getDataset = async ctx => {
@@ -51,6 +51,7 @@ export const getDataset = async ctx => {
     } = ctx.query;
     const query = buildQuery(filterBy, filterOperator, filterValue);
     const count = await ctx.dataset.find(query).count();
+    const columns = await ctx.dataset.getColumns();
     const datas = await ctx.dataset.findLimitFromSkip(
         limit ? parseInt(limit, 10) : 10,
         skip ? parseInt(skip) : 0,
@@ -58,7 +59,7 @@ export const getDataset = async ctx => {
         sortBy,
         sortDir?.toUpperCase(),
     );
-    ctx.body = { count, datas };
+    ctx.body = { count, datas, columns };
 };
 
 app.use(route.delete('/', clearDataset));
