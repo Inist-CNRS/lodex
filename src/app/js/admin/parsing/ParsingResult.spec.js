@@ -10,6 +10,7 @@ describe('<ParsingResult />', () => {
             <ParsingResult
                 excerptColumns={['foo']}
                 excerptLines={['bar']}
+                enrichments={[]}
                 p={{ t: () => {} }}
                 totalLoadedLines={24}
             />,
