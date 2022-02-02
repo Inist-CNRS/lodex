@@ -97,6 +97,11 @@ const useStyles = makeStyles(theme => {
                 flexDirection: 'row',
             },
         },
+        advancedRulesEditor: {
+            display: 'flex',
+            flex: '4 !important',
+            height: '350px !important',
+        },
     };
 });
 
@@ -265,8 +270,7 @@ export const EnrichmentFormComponent = ({
                             name="rule"
                             component={FormSourceCodeField}
                             label={polyglot.t('expand_rules')}
-                            height={350}
-                            width={600}
+                            className={classes.advancedRulesEditor}
                         />
                         <div className={classes.excerptContainer}>
                             <EnrichmentExcerpt
