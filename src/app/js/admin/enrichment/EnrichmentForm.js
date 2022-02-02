@@ -36,7 +36,6 @@ import EnrichmentSidebar from './EnrichmentSidebar';
 
 import { EnrichmentContext } from './EnrichmentContext';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
-import FieldInput from '../../lib/components/FieldInput';
 
 const DEBOUNCE_TIMEOUT = 2000;
 
@@ -266,7 +265,7 @@ export const EnrichmentFormComponent = ({
                         }}
                         className={classes.advancedRulesFormContainer}
                     >
-                        <FieldInput
+                        <Field
                             name="rule"
                             component={FormSourceCodeField}
                             label={polyglot.t('expand_rules')}

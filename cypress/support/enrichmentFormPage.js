@@ -26,7 +26,7 @@ export const fillAdvancedEnrichment = () => {
     [debug]`;
     cy.get('input[name="name"]', { timeout: 12000 }).type('Enrichment');
     cy.get('input[name="advancedMode"]').click({ force: true });
-    cy.get('textarea[name="rule"]', { timeout: 3000 }).type(rule);
+    cy.get('textarea', { timeout: 3000 }).type(rule, { force: true });
     cy.get('button[name="submit-enrichment"]', { timeout: 500 }).click({
         force: true,
     });
