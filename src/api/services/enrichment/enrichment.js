@@ -81,6 +81,8 @@ export const getEnrichmentDataPreview = async ctx => {
             let values = await processEzsEnrichment(
                 excerptLines.slice(index, index + BATCH_SIZE),
                 commands,
+                ctx,
+                true,
             );
             result.push(...values.map(v => v.value));
         }
@@ -155,13 +157,16 @@ function preformat(data, feed) {
     feed.send({ id: data.uri, value: data });
 }
 
-const processEzsEnrichment = (entries, commands) => {
+const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
     return new Promise((resolve, reject) => {
         const values = [];
         from(entries)
             .pipe(ezs(preformat))
             .pipe(ezs('delegate', { commands }, {}))
-            .on('data', data => {
+            .on('data', async data => {
+                if (!preview && !(await ctx.job?.isActive())) {
+                    throw new CancelWorkerError('Job has been canceled');
+                }
                 if (data instanceof Error) {
                     const error = getSourceError(data);
                     let sourceChunk = null;
@@ -199,7 +204,7 @@ export const processEnrichment = async (enrichment, ctx) => {
     const commands = createEzsRuleCommands(enrichment.rule);
     const dataSetSize = await ctx.dataset.count();
     for (let index = 0; index < dataSetSize; index += BATCH_SIZE) {
-        if (!(await ctx.job.isActive())) {
+        if (!(await ctx.job?.isActive())) {
             throw new CancelWorkerError('Job has been canceled');
         }
         const entries = await ctx.dataset
@@ -207,6 +212,8 @@ export const processEnrichment = async (enrichment, ctx) => {
             .skip(index)
             .limit(BATCH_SIZE)
             .toArray();
+
+        const logsStartedEnriching = [];
         for (const entry of entries) {
             const logData = JSON.stringify({
                 level: 'info',
@@ -215,14 +222,17 @@ export const processEnrichment = async (enrichment, ctx) => {
                 status: IN_PROGRESS,
             });
             jobLogger.info(ctx.job, logData);
-            notifyListeners(room, logData);
+            logsStartedEnriching.push(logData);
         }
+        notifyListeners(room, logsStartedEnriching.reverse());
         try {
             const enrichedValues = await processEzsEnrichment(
                 entries,
                 commands,
+                ctx,
             );
 
+            const logsEnrichedValue = [];
             for (const enrichedValue of enrichedValues) {
                 const value =
                     enrichedValue.value ||
@@ -239,15 +249,16 @@ export const processEnrichment = async (enrichment, ctx) => {
                     status: IN_PROGRESS,
                 });
                 jobLogger.info(ctx.job, logData);
-                notifyListeners(room, logData);
+                logsEnrichedValue.push(logData);
                 await ctx.dataset.updateOne(
                     {
                         uri: id,
                     },
                     { $set: { [enrichment.name]: value } },
                 );
-                progress.incrementProgress(1);
             }
+            progress.incrementProgress(BATCH_SIZE);
+            notifyListeners(room, logsEnrichedValue.reverse());
         } catch (e) {
             for (const entry of entries) {
                 await ctx.dataset.updateOne(
@@ -337,7 +348,10 @@ export const setEnrichmentError = async (ctx, err) => {
     const room = `enrichment-job-${ctx.job.id}`;
     const logData = JSON.stringify({
         level: 'error',
-        message: `Enrichement errored : ${err?.message}`,
+        message:
+            err instanceof CancelWorkerError
+                ? `${err?.message}`
+                : `Enrichement errored : ${err?.message}`,
         timestamp: new Date(),
         status: ERROR,
     });

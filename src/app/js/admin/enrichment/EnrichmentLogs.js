@@ -11,6 +11,7 @@ import { ERROR, FINISHED } from '../../../../common/enrichmentStatus';
 import jobsApi from '../api/job';
 import { FixedSizeList } from 'react-window';
 import { useMeasure } from 'react-use';
+import { loadProgress } from '../progress/reducer';
 
 const useStyles = makeStyles({
     LogsContainer: {
@@ -98,7 +99,7 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
 
     const [logsContainerRef, { width }] = useMeasure();
 
-    useEffect(() => {
+    const getJobLogs = async () => {
         if (enrichment?.jobId) {
             jobsApi.getJobLogs(enrichment.jobId).then(
                 result => {
@@ -111,22 +112,38 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
                 },
             );
         }
+    };
+
+    useEffect(() => {
+        getJobLogs();
     }, []);
 
     useEffect(() => {
         const socket = io();
         socket.on(`enrichment-job-${enrichment?.jobId}`, data => {
-            setLogs(currentState => [data, ...currentState]);
-            let parsedData;
-            try {
-                parsedData = JSON.parse(data);
-            } catch {
-                console.error('Error parsing data', data);
-            }
+            if (Array.isArray(data)) {
+                setLogs(currentState => [...data, ...currentState]);
+            } else {
+                setLogs(currentState => [data, ...currentState]);
+                let parsedData;
 
-            if (parsedData && [FINISHED, ERROR].includes(parsedData.status)) {
-                onLoadEnrichments();
+                try {
+                    parsedData = JSON.parse(data);
+                } catch {
+                    console.error('Error parsing data', data);
+                }
+
+                if (
+                    parsedData &&
+                    [FINISHED, ERROR].includes(parsedData.status)
+                ) {
+                    onLoadEnrichments();
+                }
             }
+        });
+        socket.on('connect_error', () => {
+            getJobLogs();
+            loadProgress();
         });
         return () => socket.disconnect();
     }, []);
