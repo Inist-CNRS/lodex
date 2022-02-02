@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => {
         enrichmentFormContainer: {
             display: 'flex',
             justifyContent: 'center',
-            flex: 2,
+            flex: 3,
             marginRight: 20,
         },
         enrichmentForm: {
@@ -87,6 +87,13 @@ const useStyles = makeStyles(theme => {
             display: 'flex',
             justifyContent: 'flex-end',
             marginBottom: 20,
+        },
+        advancedRulesFormContainer: {
+            display: 'flex',
+            flexDirection: 'column',
+            [theme.breakpoints.up('md')]: {
+                flexDirection: 'row',
+            },
         },
     };
 });
@@ -252,6 +259,7 @@ export const EnrichmentFormComponent = ({
                         style={{
                             display: 'flex',
                         }}
+                        className={classes.advancedRulesFormContainer}
                     >
                         <Field
                             name="rule"

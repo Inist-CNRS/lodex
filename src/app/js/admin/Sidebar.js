@@ -141,6 +141,16 @@ const DocumentMenu = compose(
                     {polyglot.t('main_resource')}
                 </NavLink>
             </Box>
+            <Box className={classes.iconSubLinkContainer}>
+                <NavLink
+                    className={classes.sidebarCallToAction}
+                    activeStyle={subSidebarNavLinkActiveStyle}
+                    to="/display/document/add"
+                >
+                    <PlusIcon />
+                    {polyglot.t('new_subresource')}
+                </NavLink>
+            </Box>
             {(subresource.subresources || []).map(r => (
                 <Fragment key={r._id}>
                     <hr className={classes.separator} />
@@ -156,16 +166,6 @@ const DocumentMenu = compose(
                     </Box>
                 </Fragment>
             ))}
-            <Box className={classes.iconSubLinkContainer}>
-                <NavLink
-                    className={classes.sidebarCallToAction}
-                    activeStyle={subSidebarNavLinkActiveStyle}
-                    to="/display/document/add"
-                >
-                    <PlusIcon />
-                    {polyglot.t('new_subresource')}
-                </NavLink>
-            </Box>
         </div>
     );
 });
