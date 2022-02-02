@@ -10,10 +10,12 @@ import { io } from 'socket.io-client';
 import { ERROR, FINISHED } from '../../../../common/enrichmentStatus';
 import jobsApi from '../api/job';
 import { FixedSizeList } from 'react-window';
+import { useMeasure } from 'react-use';
 
 const useStyles = makeStyles({
     LogsContainer: {
         overflowY: 'auto',
+        width: '100%',
     },
     LogsTitle: {
         fontSize: '1.2rem',
@@ -26,7 +28,7 @@ const useStyles = makeStyles({
         paddingRight: '1rem',
     },
     LogsList: {
-        overflowX: 'hidden !important',
+        overflowX: 'auto !important',
     },
     Log_info: {
         color: theme.black.light,
@@ -94,6 +96,8 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [logs, setLogs] = useState([]);
 
+    const [logsContainerRef, { width }] = useMeasure();
+
     useEffect(() => {
         if (enrichment?.jobId) {
             jobsApi.getJobLogs(enrichment.jobId).then(
@@ -134,7 +138,7 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
             <div className={classes.LogsTitle}>
                 {polyglot.t('enrichment_logs')}
             </div>
-            <div className={classes.Logs}>
+            <div className={classes.Logs} ref={logsContainerRef}>
                 {!isLoaded && <div>{polyglot.t('loading')}</div>}
                 {isLoaded && error && (
                     <div>
@@ -148,7 +152,7 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
                     <FixedSizeList
                         className={classes.LogsList}
                         height={700}
-                        width={600}
+                        width={width}
                         itemSize={30}
                         itemCount={logs.length}
                         itemData={logs}

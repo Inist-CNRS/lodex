@@ -18,8 +18,9 @@ const useStyles = makeStyles({
         backgroundColor: theme.black.lighter,
         textAlign: 'center',
         height: '100vh',
-        flex: 1,
+        flex: 2,
         borderLeft: `2px solid ${theme.black.light}`,
+        overflow: 'auto',
     },
 });
 
