@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { DataGrid } from '@mui/x-data-grid';
+import {
+    DataGrid,
+    getGridNumericColumnOperators,
+    getGridStringOperators,
+    getGridBooleanOperators,
+} from '@mui/x-data-grid';
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
@@ -68,6 +73,24 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
+const getFiltersOperatorsForType = type => {
+    switch (type) {
+        case 'number':
+            return getGridNumericColumnOperators().filter(
+                operator =>
+                    operator.value === '=' ||
+                    operator.value === '<' ||
+                    operator.value === '>',
+            );
+        case 'boolean':
+            return getGridBooleanOperators();
+        default:
+            return getGridStringOperators().filter(
+                operator => operator.value === 'contains',
+            );
+    }
+};
+
 export const ParsingResultComponent = props => {
     const {
         p: polyglot,
@@ -86,13 +109,13 @@ export const ParsingResultComponent = props => {
     const [showMainColumns, setShowMainColumns] = useState(true);
 
     const [datas, setDatas] = useState([]);
+    const [columns, setColumns] = useState([]);
 
     const getColumnsToShow = () => {
-        if (datas.length === 0) return [];
         const enrichmentsNames = enrichments.map(enrichment => enrichment.name);
 
-        return Object.keys(datas[0])
-            .filter(key => {
+        return columns
+            .filter(({ key }) => {
                 const isEnrichment = enrichmentsNames.includes(key);
                 return (
                     key !== '_id' &&
@@ -101,7 +124,7 @@ export const ParsingResultComponent = props => {
                         (showMainColumns && !enrichmentsNames.includes(key)))
                 );
             })
-            .map(key => {
+            .map(({ key, type }) => {
                 const isEnrichment = enrichmentsNames.includes(key);
                 const isEnrichmentLoading =
                     isEnrichment &&
@@ -115,7 +138,10 @@ export const ParsingResultComponent = props => {
                     headerName: key,
                     cellClassName: isEnrichment && classes.enrichedColumn,
                     width: 150,
-                    sortable: typeof datas[0][key] !== 'object',
+                    filterable: type !== 'object',
+                    sortable: type !== 'object',
+                    filterOperators: getFiltersOperatorsForType(type),
+                    type,
                     renderCell: params => {
                         if (isEnrichmentLoading && params.value === undefined)
                             return (
@@ -141,15 +167,15 @@ export const ParsingResultComponent = props => {
             });
     };
 
-    const columns = useMemo(
+    const columnsToShow = useMemo(
         () =>
             getColumnsToShow(
-                datas,
+                columns,
                 showEnrichmentColumns,
                 showMainColumns,
                 enrichments,
             ),
-        [datas, showEnrichmentColumns, showMainColumns, enrichments],
+        [columns, showEnrichmentColumns, showMainColumns, enrichments],
     );
 
     const numberOfColumns = useCallback(
@@ -180,12 +206,19 @@ export const ParsingResultComponent = props => {
     const [skip, setSkip] = useState(0);
     const [limit, setLimit] = useState(25);
     const [sort, setSort] = useState({ sortBy: 'uri', sortDir: 'ASC' });
-    const [filter] = useState({});
+    const [filter, setFilter] = useState({});
 
     const onPageChange = page => {
         setSkip(page * limit);
     };
 
+    useEffect(() => {
+        const fetchDataColumns = async () => {
+            const { columns } = await datasetApi.getDatasetColumns();
+            setColumns(columns);
+        };
+        fetchDataColumns();
+    }, []);
     useEffect(() => {
         const fetchDataset = async () => {
             const { count: datasCount, datas } = await datasetApi.getDataset({
@@ -200,12 +233,20 @@ export const ParsingResultComponent = props => {
         fetchDataset();
     }, [skip, limit, filter, sort]);
 
-    const handleSortModelChange = useCallback(sortModel => {
+    const handleSortModelChange = sortModel => {
         setSort({
             sortBy: sortModel[0]?.field,
             sortDir: sortModel[0]?.sort,
         });
-    }, []);
+    };
+
+    const handleFilterModelChange = filterModel => {
+        if (filterModel.items.length === 0) {
+            return;
+        }
+        const { columnField, operatorValue, value } = filterModel.items[0];
+        setFilter({ columnField, operatorValue, value });
+    };
 
     if (loadingParsingResult) {
         return (
@@ -283,17 +324,17 @@ export const ParsingResultComponent = props => {
         <div className={classes.container}>
             {dataGrid ? (
                 <DataGrid
-                    columns={columns}
+                    columns={columnsToShow}
                     rows={rows}
                     rowCount={rowCount}
-                    disableColumnFilter
-                    disableColumnMenu
                     pageSize={limit}
                     paginationMode="server"
                     onPageChange={onPageChange}
                     onPageSizeChange={setLimit}
                     sortingMode="server"
                     onSortModelChange={handleSortModelChange}
+                    filterMode="server"
+                    onFilterModelChange={handleFilterModelChange}
                     rowsPerPageOptions={[10, 25, 50]}
                     disableSelectionOnClick={true}
                     components={{

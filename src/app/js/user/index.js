@@ -289,6 +289,12 @@ export const getGetDatasetRequest = (state, params) => {
     });
 };
 
+export const getGetDatasetColumnsRequest = state => {
+    return getRequest(state, {
+        url: `/api/dataset/columns`,
+        method: 'GET',
+    });
+};
 export const getClearDatasetRequest = state =>
     getRequest(state, {
         url: '/api/dataset',

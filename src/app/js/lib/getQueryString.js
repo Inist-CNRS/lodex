@@ -28,6 +28,7 @@ export default ({
     limit,
     skip,
     uri,
+    filter = {},
 } = {}) =>
     compose(
         qs.stringify,
@@ -43,4 +44,7 @@ export default ({
         addKeyToLiteral('limit', limit),
         addKeyToLiteral('skip', skip),
         addKeyToLiteral('uri', uri),
+        addKeyToLiteral('filterBy', filter.columnField),
+        addKeyToLiteral('filterOperator', filter.operatorValue),
+        addKeyToLiteral('filterValue', filter.value),
     )({});

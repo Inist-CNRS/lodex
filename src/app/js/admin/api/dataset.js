@@ -1,5 +1,8 @@
 import fetch from '../../lib/fetch';
-const { getGetDatasetRequest } = require('../../user');
+const {
+    getGetDatasetRequest,
+    getGetDatasetColumnsRequest,
+} = require('../../user');
 const { getUserLocalStorageInfo } = require('./tools');
 
 const getDataset = async ({ filter, skip, limit, sort }) => {
@@ -17,4 +20,15 @@ const getDataset = async ({ filter, skip, limit, sort }) => {
     });
 };
 
-export default { getDataset };
+const getDatasetColumns = async () => {
+    const { token } = getUserLocalStorageInfo();
+    const request = getGetDatasetColumnsRequest({ token });
+    return fetch(request).then(({ response, error }) => {
+        if (error) {
+            return { columns: [] };
+        }
+        return response;
+    });
+};
+
+export default { getDataset, getDatasetColumns };

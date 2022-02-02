@@ -120,5 +120,14 @@ export default db => {
         return results[0];
     };
 
+    collection.getColumns = async () => {
+        const firstLine = await collection.findOne();
+        const columns = [];
+        Object.keys(firstLine).forEach(key => {
+            columns.push({ key, type: typeof firstLine[key] });
+        });
+        return columns;
+    };
+
     return collection;
 };
