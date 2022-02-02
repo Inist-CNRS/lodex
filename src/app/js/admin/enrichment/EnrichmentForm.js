@@ -265,6 +265,7 @@ export const EnrichmentFormComponent = ({
                             name="rule"
                             component={FormSourceCodeField}
                             label={polyglot.t('expand_rules')}
+                            height={350}
                         />
                         <div className={classes.excerptContainer}>
                             <EnrichmentExcerpt
