@@ -35,6 +35,8 @@ import { PENDING, FINISHED } from '../../../../common/enrichmentStatus';
 import EnrichmentSidebar from './EnrichmentSidebar';
 
 import { EnrichmentContext } from './EnrichmentContext';
+import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
+import FieldInput from '../../lib/components/FieldInput';
 
 const DEBOUNCE_TIMEOUT = 2000;
 
@@ -175,10 +177,8 @@ export const EnrichmentFormComponent = ({
     const saveEnrichment = e => {
         e.preventDefault();
 
-        const formData = new FormData(e.currentTarget);
-
         let payload = {
-            name: formData.get('name'),
+            name: formValues.name,
             advancedMode,
             status: initialValues?.status || PENDING,
         };
@@ -186,14 +186,14 @@ export const EnrichmentFormComponent = ({
         if (advancedMode) {
             payload = {
                 ...payload,
-                rule: formData.get('rule'),
+                rule: formValues.rule,
             };
         } else {
             payload = {
                 ...payload,
-                webServiceUrl: formData.get('webServiceUrl'),
-                sourceColumn: formData.get('sourceColumn'),
-                subPath: formData.get('subPath'),
+                webServiceUrl: formValues.webServiceUrl,
+                sourceColumn: formValues.sourceColumn,
+                subPath: formValues.subPath,
             };
         }
 
@@ -261,17 +261,10 @@ export const EnrichmentFormComponent = ({
                         }}
                         className={classes.advancedRulesFormContainer}
                     >
-                        <Field
+                        <FieldInput
                             name="rule"
-                            component={FormTextField}
+                            component={FormSourceCodeField}
                             label={polyglot.t('expand_rules')}
-                            multiline
-                            rows={17}
-                            variant="outlined"
-                            size="small"
-                            style={{
-                                flex: '4',
-                            }}
                         />
                         <div className={classes.excerptContainer}>
                             <EnrichmentExcerpt
@@ -401,6 +394,8 @@ EnrichmentFormComponent.propTypes = {
         sourceColumn: PropTypes.string,
         subPath: PropTypes.string,
         rule: PropTypes.string,
+        webServiceUrl: PropTypes.string,
+        name: PropTypes.string,
     }),
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
@@ -426,7 +421,14 @@ const mapStateToProps = (state, { match }) => ({
     dataPreviewEnrichment: fromEnrichments.dataPreviewEnrichment(state),
     errorEnrichment: fromEnrichments.getError(state),
     excerptColumns: fromParsing.getParsedExcerptColumns(state),
-    formValues: formSelector(state, 'sourceColumn', 'subPath', 'rule'),
+    formValues: formSelector(
+        state,
+        'sourceColumn',
+        'subPath',
+        'rule',
+        'name',
+        'webServiceUrl',
+    ),
     initialValues: fromEnrichments
         .enrichments(state)
         .find(enrichment => enrichment._id === match.params.enrichmentId),
