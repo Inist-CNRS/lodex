@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => {
         },
         enrichmentForm: {
             width: '100%',
-            maxWidth: '700px',
+            maxWidth: '900px',
         },
         switchMode: {
             display: 'flex',
@@ -266,6 +266,7 @@ export const EnrichmentFormComponent = ({
                             component={FormSourceCodeField}
                             label={polyglot.t('expand_rules')}
                             height={350}
+                            width={600}
                         />
                         <div className={classes.excerptContainer}>
                             <EnrichmentExcerpt
