@@ -74,5 +74,8 @@ export default function* watchComputePreview() {
         handleComputePublicationPreview,
     );
 
-    yield takeLatest([SAVE_FIELD_SUCCESS], handleRecomputePublication);
+    yield takeLatest(
+        [SAVE_FIELD_SUCCESS, REMOVE_FIELD_SUCCESS],
+        handleRecomputePublication,
+    );
 }

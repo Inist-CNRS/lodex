@@ -272,4 +272,43 @@ describe('Dataset Publication', () => {
                 .should('have.length', 3);
         });
     });
+    describe.only('Automatic Publication', () => {
+        it('should re-publish dataset when updating field', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/book_summary.csv');
+            datasetImportPage.importModel('model/book_summary.json');
+            datasetImportPage.publish();
+            adminNavigation.goToResourcePage();
+            cy.get('[aria-label="Title"] button', { timeout: 3000 }).click({
+                force: true,
+            });
+            cy.get('.btn-save').click();
+
+            cy.get('[aria-label="job-progress"]', { timeout: 3000 }).should(
+                'have.css',
+                'opacity',
+                '1',
+            );
+        });
+        it('should re-publish dataset when deleting field', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/book_summary.csv');
+            datasetImportPage.importModel('model/book_summary.json');
+            datasetImportPage.publish();
+            adminNavigation.goToResourcePage();
+            cy.get('[aria-label="Title"] button', { timeout: 3000 }).click({
+                force: true,
+            });
+            cy.contains('Remove').click({ force: true });
+            cy.contains('Accept').click({ force: true });
+
+            cy.get('[aria-label="job-progress"]', { timeout: 3000 }).should(
+                'have.css',
+                'opacity',
+                '1',
+            );
+        });
+    });
 });
