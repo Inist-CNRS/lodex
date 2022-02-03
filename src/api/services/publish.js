@@ -31,7 +31,7 @@ export default async ctx => {
 
     await chainWhileJobIsActive(
         [
-            async () => await clearPublished(ctx),
+            async () => await clearPublished(ctx, true),
             async () =>
                 await ctx.publishDocuments(ctx, count, collectionScopeFields),
             async () => {

@@ -1,11 +1,11 @@
 import { UNPUBLISH_DOCUMENT } from '../../common/progressStatus';
 import progress from './progress';
 
-export default async ctx => {
+export default async (ctx, triggeredFromPublication) => {
     progress.start({
         status: UNPUBLISH_DOCUMENT,
         target: 100,
-        label: 'publishing',
+        label: triggeredFromPublication ? 'publishing' : UNPUBLISH_DOCUMENT,
         type: 'publisher',
     });
     await ctx.dataset.updateMany(
