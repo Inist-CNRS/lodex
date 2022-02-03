@@ -51,7 +51,7 @@ export const openSearchDrawer = () => {
         .contains('Search')
         .click();
 
-    cy.wait(300);
+    cy.wait(800);
     cy.get('.drawer .search .search-header').should('be.visible');
 };
 
