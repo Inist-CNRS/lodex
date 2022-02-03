@@ -129,5 +129,27 @@ export default db => {
         return columns;
     };
 
+    collection.indexColumns = async () => {
+        const aggregation = await collection
+            .aggregate([
+                { $project: { keyValue: { $objectToArray: '$$ROOT' } } },
+                { $unwind: '$keyValue' },
+                {
+                    $group: {
+                        _id: null,
+                        keys: { $addToSet: '$keyValue.k' },
+                    },
+                },
+            ])
+            .toArray();
+        for (const key of aggregation[0].keys) {
+            try {
+                await collection.createIndex({ [key]: 1 });
+            } catch {
+                console.error(`Failed to index ${key}`);
+            }
+        }
+    };
+
     return collection;
 };
