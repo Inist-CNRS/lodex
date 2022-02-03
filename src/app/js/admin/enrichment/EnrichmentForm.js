@@ -35,6 +35,7 @@ import { PENDING, FINISHED } from '../../../../common/enrichmentStatus';
 import EnrichmentSidebar from './EnrichmentSidebar';
 
 import { EnrichmentContext } from './EnrichmentContext';
+import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 
 const DEBOUNCE_TIMEOUT = 2000;
 
@@ -52,7 +53,7 @@ const useStyles = makeStyles(theme => {
         },
         enrichmentForm: {
             width: '100%',
-            maxWidth: '700px',
+            maxWidth: '900px',
         },
         switchMode: {
             display: 'flex',
@@ -94,6 +95,11 @@ const useStyles = makeStyles(theme => {
             [theme.breakpoints.up('md')]: {
                 flexDirection: 'row',
             },
+        },
+        advancedRulesEditor: {
+            display: 'flex',
+            flex: '4 !important',
+            height: '350px !important',
         },
     };
 });
@@ -175,10 +181,8 @@ export const EnrichmentFormComponent = ({
     const saveEnrichment = e => {
         e.preventDefault();
 
-        const formData = new FormData(e.currentTarget);
-
         let payload = {
-            name: formData.get('name'),
+            name: formValues.name,
             advancedMode,
             status: initialValues?.status || PENDING,
         };
@@ -186,14 +190,14 @@ export const EnrichmentFormComponent = ({
         if (advancedMode) {
             payload = {
                 ...payload,
-                rule: formData.get('rule'),
+                rule: formValues.rule,
             };
         } else {
             payload = {
                 ...payload,
-                webServiceUrl: formData.get('webServiceUrl'),
-                sourceColumn: formData.get('sourceColumn'),
-                subPath: formData.get('subPath'),
+                webServiceUrl: formValues.webServiceUrl,
+                sourceColumn: formValues.sourceColumn,
+                subPath: formValues.subPath,
             };
         }
 
@@ -263,15 +267,9 @@ export const EnrichmentFormComponent = ({
                     >
                         <Field
                             name="rule"
-                            component={FormTextField}
+                            component={FormSourceCodeField}
                             label={polyglot.t('expand_rules')}
-                            multiline
-                            rows={17}
-                            variant="outlined"
-                            size="small"
-                            style={{
-                                flex: '4',
-                            }}
+                            className={classes.advancedRulesEditor}
                         />
                         <div className={classes.excerptContainer}>
                             <EnrichmentExcerpt
@@ -401,6 +399,8 @@ EnrichmentFormComponent.propTypes = {
         sourceColumn: PropTypes.string,
         subPath: PropTypes.string,
         rule: PropTypes.string,
+        webServiceUrl: PropTypes.string,
+        name: PropTypes.string,
     }),
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
@@ -426,7 +426,14 @@ const mapStateToProps = (state, { match }) => ({
     dataPreviewEnrichment: fromEnrichments.dataPreviewEnrichment(state),
     errorEnrichment: fromEnrichments.getError(state),
     excerptColumns: fromParsing.getParsedExcerptColumns(state),
-    formValues: formSelector(state, 'sourceColumn', 'subPath', 'rule'),
+    formValues: formSelector(
+        state,
+        'sourceColumn',
+        'subPath',
+        'rule',
+        'name',
+        'webServiceUrl',
+    ),
     initialValues: fromEnrichments
         .enrichments(state)
         .find(enrichment => enrichment._id === match.params.enrichmentId),

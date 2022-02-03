@@ -49,9 +49,9 @@ describe('<EnrichmentFormComponent />', () => {
                 initialValues={initialValues}
             />,
         );
-        const webServiceUrl = wrapper.find(Field).at(1);
-        expect(webServiceUrl).toHaveLength(1);
-        expect(webServiceUrl.prop('name')).toEqual('rule');
+        const rule = wrapper.find(Field).at(1);
+        expect(rule).toHaveLength(1);
+        expect(rule.prop('name')).toEqual('rule');
     });
 
     it('should render a sidebar component component', () => {
