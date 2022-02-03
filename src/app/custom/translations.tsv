@@ -627,3 +627,4 @@
 "published_data"	"Published data"	"Données publiées"
 "toggle_loaded"	"Show/hide loaded columns"	"Afficher/cacher les colonnes chargées"
 "toggle_enriched"	"Show/hide enriched columns"	"Afficher/cacher les colonnes enrichies"
+"import_model_published"	"Unpublish the data to be able to import a model"	"Dépubliez les données pour pouvoir importer un modèle"
