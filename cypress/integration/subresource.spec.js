@@ -41,7 +41,7 @@ describe('Subresource Page', () => {
 
         cy.get('div[role="dialog"]', { timeout: 2000 }).should('not.exist');
 
-        cy.contains('button', 'Données publiées').click();
+        cy.contains('button', 'Published data').click();
         cy.contains('.publication-excerpt-column', 'myField').should('exist');
     });
 
@@ -107,7 +107,7 @@ describe('Subresource Page', () => {
         subresourcePage.createSubresource();
         subresourcePage.addField('name', 'Name');
 
-        cy.contains('button', 'Données publiées').click();
+        cy.contains('button', 'Published data').click();
         cy.contains('.publication-excerpt-column', 'Name').should('exist');
 
         cy.get('.sub-sidebar')
@@ -142,7 +142,7 @@ describe('Subresource Page', () => {
 
         cy.get('div[role="dialog"]').should('not.exist');
 
-        cy.contains('button', 'Données publiées').click();
+        cy.contains('button', 'Published data').click();
 
         let fieldName;
         cy.contains('span', 'Animal name')

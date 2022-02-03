@@ -186,7 +186,7 @@
 "field_wizard_step_search"	"Search related"	"Recherche"
 "field_wizard_step_semantic"	"Semantics"	"Sémantiques"
 "previous"	"Previous"	"Précédent"
-"export_raw_dataset"	"Export raw dataset"	"Exporter le dataset"
+"export_raw_dataset"	"Export raw dataset"	"Exporter le jeu de données"
 "next"	"Next"	"Suivant"
 "a_value"	"An arbitrary value"	"Une valeur arbitraire"
 "enter_a_value"	"Enter the value"	"Entrer une valeur"
@@ -624,3 +624,4 @@
 "advancedModePreviewInfo"	"Source preview replaces [URLConnect] with [transit] and runs your ini file"	"Ci-dessous: les données traitées par le script, en remplaçant [URLConnect] par [transit]"
 "enrichment_logs"	"Enrichment logs"	"Logs de l'enrichissement"
 "is_composite_field"	"Is composite field"	"Est un champ composé"
+"published_data"	"Published data"	"Données publiées"
