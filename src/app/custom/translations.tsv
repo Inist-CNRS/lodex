@@ -625,3 +625,5 @@
 "enrichment_logs"	"Enrichment logs"	"Logs de l'enrichissement"
 "is_composite_field"	"Is composite field"	"Est un champ composé"
 "published_data"	"Published data"	"Données publiées"
+"toggle_loaded"	"Show/hide loaded columns"	"Afficher/cacher les colonnes chargées"
+"toggle_enriched"	"Show/hide enriched columns"	"Afficher/cacher les colonnes enrichies"
