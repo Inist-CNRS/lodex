@@ -27,7 +27,7 @@ const GoToPublicationButtonComponent = ({ p: polyglot }) => {
     const classes = useStyles();
 
     const handleGoToPublication = () => {
-        window.location.replace(window.location.origin);
+        window.open(window.location.origin, '_blank').focus();
     };
 
     return (
