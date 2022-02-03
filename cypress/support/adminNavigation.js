@@ -14,9 +14,16 @@ export const goToDisplay = () => {
         .click({ force: true }); // avoid bug due of detached DOM element
 
     cy.location('hash').should('equal', '#/display/dataset');
-    cy.get('div[role="progressbar"]', { timeout: 2000 }).should(
-        'not.be.visible',
-    );
+};
+
+export const goToResourcePage = () => {
+    cy.get('.appbar')
+        .contains('Display')
+        .click({ force: true }); // avoid bug due of detached DOM element
+
+    cy.location('hash').should('equal', '#/display/dataset');
+    cy.get('[href="#/display/document"]').click({ force: true });
+    cy.location('hash').should('equal', '#/display/document');
 };
 
 export const publishAndGoToPublishedData = () => {

@@ -37,17 +37,8 @@ describe('publication saga', () => {
             const saga = handleRecomputePublication();
             saga.next();
 
-            it('should put clearPublished', () => {
-                expect(saga.next(true).value).toEqual(put(clearPublished()));
-            });
-
-            it('should create race with CLEAR_PUBLISHED_ERROR and CLEAR_PUBLISHED_SUCCESS', () => {
-                expect(saga.next().value).toEqual(
-                    race({
-                        cancel: take(CLEAR_PUBLISHED_ERROR),
-                        ok: take(CLEAR_PUBLISHED_SUCCESS),
-                    }),
-                );
+            it('should put publish', () => {
+                expect(saga.next(true).value).toEqual(put(publish()));
             });
         });
     });

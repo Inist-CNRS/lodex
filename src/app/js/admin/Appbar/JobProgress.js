@@ -100,7 +100,10 @@ const JobProgressComponent = props => {
                         'progress-container',
                     )}
                 >
-                    <div className={classes.progressLabelContainer}>
+                    <div
+                        className={classes.progressLabelContainer}
+                        aria-label="job-progress"
+                    >
                         <CircularProgress
                             variant="indeterminate"
                             color="inherit"

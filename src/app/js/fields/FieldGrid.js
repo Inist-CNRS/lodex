@@ -276,6 +276,7 @@ const DraggableItemGrid = ({
                 {fields.map(field => (
                     <div
                         key={field.name}
+                        aria-label={field.label}
                         className={classes.property}
                         onClick={() => handleEditField(field.name)}
                     >

@@ -5,6 +5,7 @@ import {
     ENRICHING,
     PUBLISH_FACET,
     CREATE_INDEX,
+    UNPUBLISH_DOCUMENT,
 } from '../../common/progressStatus';
 
 export class Progress {
@@ -80,6 +81,7 @@ export class Progress {
             type: this.type,
             isBackground: [
                 PUBLISH_DOCUMENT,
+                UNPUBLISH_DOCUMENT,
                 ENRICHING,
                 PUBLISH_FACET,
                 CREATE_INDEX,

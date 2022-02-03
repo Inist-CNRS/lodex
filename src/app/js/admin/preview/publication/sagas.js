@@ -51,15 +51,7 @@ export function* handleRecomputePublication() {
         return;
     }
 
-    yield put(clearPublished());
-    const { cancel } = yield race({
-        cancel: take(CLEAR_PUBLISHED_ERROR),
-        ok: take(CLEAR_PUBLISHED_SUCCESS),
-    });
-
-    if (!cancel) {
-        yield put(publish());
-    }
+    yield put(publish());
 }
 
 export default function* watchComputePreview() {
@@ -74,5 +66,8 @@ export default function* watchComputePreview() {
         handleComputePublicationPreview,
     );
 
-    yield takeLatest([SAVE_FIELD_SUCCESS], handleRecomputePublication);
+    yield takeLatest(
+        [SAVE_FIELD_SUCCESS, REMOVE_FIELD_SUCCESS],
+        handleRecomputePublication,
+    );
 }
