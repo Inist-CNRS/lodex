@@ -55,10 +55,10 @@ export const EnrichmentExcerptComponent = ({
                 </TableHead>
                 <TableBody>
                     {!loading &&
-                        lines.map(line => {
+                        lines.map((line, index) => {
                             const stringifyLine = JSON.stringify(line);
                             return (
-                                <TableRow key={stringifyLine}>
+                                <TableRow key={stringifyLine + index}>
                                     <TableCell
                                         component="th"
                                         scope="row"
