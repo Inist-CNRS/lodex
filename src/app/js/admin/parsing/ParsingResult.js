@@ -205,7 +205,7 @@ export const ParsingResultComponent = props => {
     const [rowCount, setRowCount] = useState(0);
     const [skip, setSkip] = useState(0);
     const [limit, setLimit] = useState(25);
-    const [sort, setSort] = useState({ sortBy: 'uri', sortDir: 'ASC' });
+    const [sort, setSort] = useState({});
     const [filter, setFilter] = useState({});
 
     const onPageChange = page => {
