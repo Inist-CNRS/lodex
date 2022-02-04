@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Snackbar } from '@material-ui/core';
+import { Button, Portal, Snackbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import { connect } from 'react-redux';
@@ -106,21 +106,23 @@ export const ImportModelButtonComponent = ({
             {!hasPublishedDataset && showImportFieldsConfirmation && (
                 <ImportModelDialog onClose={handleImportFieldsClose} />
             )}
-            <Snackbar
-                open={isAlertDisplayed}
-                autoHideDuration={60000}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                onClose={() => setIsAlertDisplayed(false)}
-            >
-                <Alert
-                    variant="filled"
-                    severity={succeeded ? 'success' : 'error'}
+            <Portal>
+                <Snackbar
+                    open={isAlertDisplayed}
+                    autoHideDuration={60000}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                    onClose={() => setIsAlertDisplayed(false)}
                 >
-                    {succeeded
-                        ? polyglot.t('model_imported_with_success')
-                        : polyglot.t('import_fields_failed')}
-                </Alert>
-            </Snackbar>
+                    <Alert
+                        variant="filled"
+                        severity={succeeded ? 'success' : 'error'}
+                    >
+                        {succeeded
+                            ? polyglot.t('model_imported_with_success')
+                            : polyglot.t('import_fields_failed')}
+                    </Alert>
+                </Snackbar>
+            </Portal>
         </div>
     );
 };

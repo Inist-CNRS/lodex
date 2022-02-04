@@ -74,6 +74,17 @@ const useStyles = makeStyles({
             backgroundColor: theme.black.light,
         },
     },
+    sidebarCallToActionDisabled: {
+        color: theme.white.light,
+        textDecoration: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        margin: 20,
+        padding: '10px 10px',
+        border: `3px dashed ${theme.white.transparent}`,
+        borderRadius: 10,
+    },
     sidebarDeleteNavLink: {
         marginTop: 'auto',
     },
@@ -246,9 +257,20 @@ const InnerSidebarComponent = ({
                         </NavLink>
                     </Box>
                     <Box className={classes.iconLinkContainer}>
-                        <ImportModelButton
-                            className={classes.sidebarCallToAction}
-                        />
+                        <div
+                            title={
+                                hasPublishedDataset &&
+                                polyglot.t('import_model_published')
+                            }
+                        >
+                            <ImportModelButton
+                                className={
+                                    !hasPublishedDataset
+                                        ? classes.sidebarCallToAction
+                                        : classes.sidebarCallToActionDisabled
+                                }
+                            />
+                        </div>
                     </Box>
                 </div>
                 <Route path={`/display/${SCOPE_DOCUMENT}`}>

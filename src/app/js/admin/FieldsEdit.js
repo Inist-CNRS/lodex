@@ -4,14 +4,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import PublicationPreview from './preview/publication/PublicationPreview';
-import Statistics from './Statistics';
-import { fromParsing } from './selectors';
-import { FieldGrid } from '../fields/FieldGrid';
-import { SCOPE_DOCUMENT } from '../../../common/scope';
 import AddFieldFromColumnButton from './Appbar/AddFieldFromColumnButton';
 import AddFromColumnDialog from './AddFromColumnDialog';
+import PublicationPreview from './preview/publication/PublicationPreview';
+import Statistics from './Statistics';
+import translate from 'redux-polyglot/translate';
+import { fromParsing } from './selectors';
+import { FieldGrid } from '../fields/FieldGrid';
 import { hideAddColumns } from './parsing';
+import { polyglot as polyglotPropTypes } from '../propTypes';
+import { SCOPE_DOCUMENT } from '../../../common/scope';
 
 const useStyles = makeStyles({
     actionsContainer: {
@@ -26,12 +28,13 @@ const useStyles = makeStyles({
 });
 
 export const FieldsEditComponent = ({
-    filter,
-    showAddFromColumn,
     addFieldButton,
-    subresourceId,
     defaultTab = 'page',
+    filter,
     hideAddColumns,
+    p: polyglot,
+    showAddFromColumn,
+    subresourceId,
 }) => {
     const classes = useStyles();
     const [tab, setTab] = useState(defaultTab);
@@ -60,7 +63,10 @@ export const FieldsEditComponent = ({
                     style={{ paddingBottom: 20 }}
                 >
                     <Tab value="page" label="Page" />
-                    <Tab value="published" label="Données publiées" />
+                    <Tab
+                        value="published"
+                        label={polyglot.t('published_data')}
+                    />
                 </Tabs>
                 {tab === 'page' && (
                     <div className={classes.actionsContainer}>
@@ -97,12 +103,13 @@ export const FieldsEditComponent = ({
 };
 
 FieldsEditComponent.propTypes = {
-    showAddFromColumn: PropTypes.bool.isRequired,
-    filter: PropTypes.string,
-    subresourceId: PropTypes.string,
-    defaultTab: PropTypes.oneOf(['page', 'published']),
     addFieldButton: PropTypes.element,
+    defaultTab: PropTypes.oneOf(['page', 'published']),
+    filter: PropTypes.string,
     hideAddColumns: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
+    showAddFromColumn: PropTypes.bool.isRequired,
+    subresourceId: PropTypes.string,
 };
 
 const mapDispatchToProps = {
@@ -116,4 +123,5 @@ export const FieldsEdit = compose(
         }),
         mapDispatchToProps,
     ),
+    translate,
 )(FieldsEditComponent);

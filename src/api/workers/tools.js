@@ -22,7 +22,7 @@ export const jobLogger = {
 
 export const getActiveJob = async () => {
     const activeJobs = await getActiveJobs();
-    return activeJobs[0] || undefined;
+    return activeJobs?.[0] || undefined;
 };
 
 export const getActiveJobs = async () => {

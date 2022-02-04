@@ -22,7 +22,7 @@ import Loading from '../../lib/components/Loading';
 import ParsingExcerpt from './ParsingExcerpt';
 import theme from '../../theme';
 import { makeStyles } from '@material-ui/styles';
-import { Box, Chip, CircularProgress } from '@material-ui/core';
+import { Box, Chip, CircularProgress, Tooltip } from '@material-ui/core';
 import { TablePagination } from '@mui/material';
 
 const COLUMN_TYPE = {
@@ -275,11 +275,13 @@ export const ParsingResultComponent = props => {
                                 smart_count: numberOfColumns(COLUMN_TYPE.MAIN),
                             })}
                         </div>
-                        {showMainColumns ? (
-                            <VisibilityIcon />
-                        ) : (
-                            <VisibilityOffIcon />
-                        )}
+                        <Tooltip title={polyglot.t(`toggle_loaded`)}>
+                            {showMainColumns ? (
+                                <VisibilityIcon />
+                            ) : (
+                                <VisibilityOffIcon />
+                            )}
+                        </Tooltip>
                     </Box>
 
                     <Box
@@ -299,11 +301,13 @@ export const ParsingResultComponent = props => {
                                 ),
                             })}
                         </div>
-                        {showEnrichmentColumns ? (
-                            <VisibilityIcon />
-                        ) : (
-                            <VisibilityOffIcon />
-                        )}
+                        <Tooltip title={polyglot.t(`toggle_enriched`)}>
+                            {showEnrichmentColumns ? (
+                                <VisibilityIcon />
+                            ) : (
+                                <VisibilityOffIcon />
+                            )}
+                        </Tooltip>
                     </Box>
                 </div>
                 <TablePagination

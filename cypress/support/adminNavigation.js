@@ -23,7 +23,8 @@ export const goToResourcePage = () => {
 
     cy.location('hash').should('equal', '#/display/dataset');
     cy.get('[href="#/display/document"]').click({ force: true });
-    cy.location('hash').should('equal', '#/display/document');
+    cy.wait(500);
+    cy.location('hash').should('equal', '#/display/document/main');
 };
 
 export const publishAndGoToPublishedData = () => {

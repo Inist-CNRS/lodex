@@ -3,21 +3,14 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { Box, CircularProgress } from '@material-ui/core';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
-import {
-    fromParsing,
-    fromPublicationPreview,
-    fromEnrichments,
-} from './selectors';
+import { fromPublicationPreview } from './selectors';
 import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import theme from './../theme';
-import { PENDING } from '../../../common/enrichmentStatus';
 
 const useStyles = makeStyles({
     progress: {

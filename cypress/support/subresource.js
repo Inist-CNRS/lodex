@@ -39,7 +39,7 @@ export const addField = (name, label, save = true) => {
 
         cy.get('div[role="dialog"]').should('not.exist');
 
-        cy.contains('button', 'Données publiées').click();
+        cy.contains('button', 'Published data').click();
         cy.contains('.publication-excerpt-column', label).should('exist');
     }
 };

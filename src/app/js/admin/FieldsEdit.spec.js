@@ -10,7 +10,12 @@ import AddFieldFromColumnButton from './Appbar/AddFieldFromColumnButton';
 describe('<FieldsEdit />', () => {
     it('should display page tab (FieldGrid) per default', () => {
         const wrapper = shallow(
-            <FieldsEdit showAddFromColumn={false} fields={[]} filter={{}} />,
+            <FieldsEdit
+                showAddFromColumn={false}
+                fields={[]}
+                filter={{}}
+                p={{ t: () => {} }}
+            />,
         );
 
         expect(wrapper.find(FieldGrid).exists()).toBeTruthy();
@@ -24,6 +29,7 @@ describe('<FieldsEdit />', () => {
                 filter={SCOPE_DOCUMENT}
                 addFieldButton={null}
                 defaultTab="published"
+                p={{ t: () => {} }}
             />,
         );
 
@@ -37,6 +43,7 @@ describe('<FieldsEdit />', () => {
                 fields={[]}
                 filter={SCOPE_DOCUMENT}
                 defaultTab="page"
+                p={{ t: () => {} }}
             />,
         );
 
@@ -50,6 +57,7 @@ describe('<FieldsEdit />', () => {
                 fields={[]}
                 filter={SCOPE_DOCUMENT}
                 defaultTab="page"
+                p={{ t: () => {} }}
             />,
         );
 
@@ -67,6 +75,7 @@ describe('<FieldsEdit />', () => {
                 fields={[]}
                 filter={SCOPE_DOCUMENT}
                 defaultTab="published"
+                p={{ t: () => {} }}
             />,
         );
 

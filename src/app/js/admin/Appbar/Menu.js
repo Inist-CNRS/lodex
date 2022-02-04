@@ -19,6 +19,11 @@ import { exportFields } from '../../exportFields';
 import { fromParsing } from '../selectors';
 import ClearDialog from './ClearDialog';
 import jobsApi from '../api/job';
+import AspectRatioIcon from '@material-ui/icons/AspectRatio';
+import ClearAllIcon from '@material-ui/icons/ClearAll';
+import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
+import StorageIcon from '@material-ui/icons/Storage';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles({
     container: {
@@ -28,6 +33,9 @@ const useStyles = makeStyles({
     },
     menu: {
         display: 'flex',
+    },
+    labelAction: {
+        marginLeft: '8px',
     },
 });
 
@@ -83,13 +91,19 @@ const MenuComponent = ({
                             key="export_fields"
                             onClick={() => handleCloseMenu(exportFields)}
                         >
-                            {polyglot.t('export_fields')}
+                            <AspectRatioIcon />
+                            <span className={classes.labelAction}>
+                                {polyglot.t('export_fields')}
+                            </span>
                         </MenuItem>,
                         <MenuItem
                             key="export_raw_dataset"
                             onClick={() => handleCloseMenu(dumpDataset)}
                         >
-                            {polyglot.t('export_raw_dataset')}
+                            <StorageIcon />
+                            <span className={classes.labelAction}>
+                                {polyglot.t('export_raw_dataset')}
+                            </span>
                         </MenuItem>,
                         <MenuItem
                             key="clear_dataset"
@@ -99,13 +113,19 @@ const MenuComponent = ({
                                 )
                             }
                         >
-                            {polyglot.t('clear_dataset')}
+                            <ClearAllIcon />
+                            <span className={classes.labelAction}>
+                                {polyglot.t('clear_dataset')}
+                            </span>
                         </MenuItem>,
                         <MenuItem
                             key="clear_jobs"
                             onClick={() => handleCloseMenu(jobsApi.clearJobs)}
                         >
-                            {polyglot.t('clear_jobs')}
+                            <DeleteSweepIcon />
+                            <span className={classes.labelAction}>
+                                {polyglot.t('clear_jobs')}
+                            </span>
                         </MenuItem>,
                         <Divider key="divider" />,
                     ]}
@@ -113,7 +133,10 @@ const MenuComponent = ({
                         onClick={() => handleCloseMenu(onSignOut)}
                         aria-label="signout"
                     >
-                        {polyglot.t('sign_out')}
+                        <ExitToAppIcon />
+                        <span className={classes.labelAction}>
+                            {polyglot.t('sign_out')}
+                        </span>
                     </MenuItem>
                 </Menu>
             </div>
