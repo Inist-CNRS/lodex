@@ -73,6 +73,7 @@ export const uploadFile = ctx => async loaderName => {
     const parsedStream = parseStream(mergedStream);
     try {
         await ctx.saveParsedStream(parsedStream, ctx.initDatasetUri);
+        await ctx.dataset.indexColumns();
         progress.finish();
     } catch (error) {
         progress.throw(error);

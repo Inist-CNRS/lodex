@@ -198,9 +198,10 @@ export const ParsingResultComponent = props => {
         [datas, enrichments],
     );
 
-    const rows = useMemo(() => datas.map(data => ({ id: data._id, ...data })), [
-        datas,
-    ]);
+    const rows = useMemo(() => {
+        if (!datas || !Array.isArray(datas)) return [];
+        return datas.map(data => ({ id: data._id, ...data }));
+    }, [datas]);
 
     const [rowCount, setRowCount] = useState(0);
     const [skip, setSkip] = useState(0);
