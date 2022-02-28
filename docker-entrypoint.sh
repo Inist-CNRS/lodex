@@ -1,4 +1,5 @@
 #!/bin/sh
 redis-server &
-chown -R daemon:daemon /app /tmp
+find /app/src/app/custom ! -user daemon -exec chown daemon:daemon {} \; &
+find /tmp ! -user daemon -exec chown daemon:daemon {} \; &
 exec su-exec daemon:daemon $*

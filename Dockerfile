@@ -30,7 +30,9 @@ RUN echo '{ \
     sed -i -e "s/daemon:x:2:2/daemon:x:1:1/" /etc/passwd && \
     sed -i -e "s/daemon:x:2:/daemon:x:1:/" /etc/group && \
     sed -i -e "s/bin:x:1:1/bin:x:2:2/" /etc/passwd && \
-    sed -i -e "s/bin:x:1:/bin:x:2:/" /etc/group
+    sed -i -e "s/bin:x:1:/bin:x:2:/" /etc/group && \
+    chown -R daemon:daemon /app
+
 
 WORKDIR /app
 ENV NODE_ENV="production"
