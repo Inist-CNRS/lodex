@@ -13,10 +13,12 @@ path = value
 
 [expand/exploding]
 
-
 [expand/expand]
 path = value
 size = [[BATCH SIZE]]
+
+[expand/expand/throttle]
+bySecond = 2
 
 [expand/expand/URLConnect]
 url = [[WEB SERVICE URL]]
