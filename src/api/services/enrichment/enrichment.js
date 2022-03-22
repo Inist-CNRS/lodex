@@ -235,7 +235,8 @@ export const processEnrichment = async (enrichment, ctx) => {
             const logsEnrichedValue = [];
             for (const enrichedValue of enrichedValues) {
                 const value =
-                    enrichedValue.value ||
+                    enrichedValue.value === undefined ||
+                    enrichedValue.value === null ||
                     (enrichedValue.error && `[Error] ${enrichedValue.error}`) ||
                     'n/a';
 
