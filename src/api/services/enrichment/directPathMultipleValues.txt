@@ -22,5 +22,6 @@ size = [[BATCH SIZE]]
 url = [[WEB SERVICE URL]]
 timeout = 5000
 noerror = true
+retries = 5
 
 [expand/aggregate]

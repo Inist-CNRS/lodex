@@ -26,3 +26,4 @@ path=value
 url = [[WEB SERVICE URL]]
 timeout = 30000
 noerror = false
+retries = 5

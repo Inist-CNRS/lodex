@@ -21,6 +21,7 @@ value = get("value.[[SUB PATH]]")
 url = [[WEB SERVICE URL]]
 timeout = 1000
 noerror = true
+retries = 5
 
 [expand/aggregate]
 

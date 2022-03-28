@@ -344,7 +344,8 @@ describe('enrichment', () => {
                 .replace(
                     '[[WEB SERVICE URL]]',
                     'http://a-fake-url.to.raise.an.error',
-                );
+                )
+                .replace('retries = 5', 'retries = 1');
             const enrichment = {
                 rule: ezsRule,
             };
