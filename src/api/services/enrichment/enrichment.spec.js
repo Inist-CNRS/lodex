@@ -409,7 +409,7 @@ describe('enrichment', () => {
                     `request to http://a-fake-url.to.raise.an.error/ failed, reason: getaddrinfo ENOTFOUND a-fake-url.to.raise.an.error`,
                 ),
             );
-        });
+        }, 60000);
         it('should log error for 2nd line when ws errored for this line', async () => {
             // GIVEN
             const ezsRule = `
