@@ -6,6 +6,7 @@ import {
     Menu,
     makeStyles,
     Divider,
+    Snackbar,
 } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -24,6 +25,7 @@ import ClearAllIcon from '@material-ui/icons/ClearAll';
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 import StorageIcon from '@material-ui/icons/Storage';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles({
     container: {
@@ -49,6 +51,8 @@ const MenuComponent = ({
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [showClearDialog, setShowClearDialog] = React.useState(false);
+    const [showAlertClearJobs, setShowAlertClearJobs] = React.useState(false);
+
     const open = !!anchorEl;
     const handleOpenMenu = event => {
         setAnchorEl(event.currentTarget);
@@ -57,6 +61,14 @@ const MenuComponent = ({
     const handleCloseMenu = callback => {
         setAnchorEl(null);
         typeof callback === 'function' && callback();
+    };
+
+    const handleClearJobs = async () => {
+        const result = await jobsApi.clearJobs();
+        if (result.response.status === 'success') {
+            setShowAlertClearJobs(true);
+        }
+        setAnchorEl(null);
     };
 
     return (
@@ -118,10 +130,7 @@ const MenuComponent = ({
                                 {polyglot.t('clear_dataset')}
                             </span>
                         </MenuItem>,
-                        <MenuItem
-                            key="clear_jobs"
-                            onClick={() => handleCloseMenu(jobsApi.clearJobs)}
-                        >
+                        <MenuItem key="clear_jobs" onClick={handleClearJobs}>
                             <DeleteSweepIcon />
                             <span className={classes.labelAction}>
                                 {polyglot.t('clear_jobs')}
@@ -146,6 +155,17 @@ const MenuComponent = ({
                     onClose={() => setShowClearDialog(!showClearDialog)}
                 />
             )}
+
+            <Snackbar
+                open={showAlertClearJobs}
+                autoHideDuration={3000}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                onClose={() => setShowAlertClearJobs(!showAlertClearJobs)}
+            >
+                <Alert variant="filled" severity="success">
+                    {polyglot.t('jobs_cleared')}
+                </Alert>
+            </Snackbar>
         </>
     );
 };
