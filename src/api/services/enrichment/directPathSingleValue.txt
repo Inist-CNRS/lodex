@@ -1,6 +1,3 @@
-prepend = basics:JSONParse
-append = dump?indent=true
-
 [use]
 plugin = basics
 plugin = analytics
@@ -21,6 +18,9 @@ value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(it
 [expand]
 size = [[BATCH SIZE]]
 path=value
+
+[expand/throttle]
+bySecond = 2
 
 [expand/URLConnect]
 url = [[WEB SERVICE URL]]
