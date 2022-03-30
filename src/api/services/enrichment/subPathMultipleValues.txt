@@ -17,6 +17,9 @@ size = [[BATCH SIZE]]
 path = value
 value = get("value.[[SUB PATH]]")
 
+[expand/expand/throttle]
+bySecond = 2
+
 [expand/expand/URLConnect]
 url = [[WEB SERVICE URL]]
 timeout = 1000

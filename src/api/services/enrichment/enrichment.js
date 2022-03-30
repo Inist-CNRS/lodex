@@ -234,11 +234,17 @@ export const processEnrichment = async (enrichment, ctx) => {
 
             const logsEnrichedValue = [];
             for (const enrichedValue of enrichedValues) {
-                const value =
-                    enrichedValue.value ||
-                    (enrichedValue.error && `[Error] ${enrichedValue.error}`) ||
-                    'n/a';
-
+                let value;
+                if (enrichedValue.error) {
+                    value = `[Error] ${enrichedValue.error}`;
+                } else if (
+                    enrichedValue.value !== undefined &&
+                    enrichedValue.value !== null
+                ) {
+                    value = enrichedValue.value;
+                } else {
+                    value = 'n/a';
+                }
                 const id = enrichedValue.id;
                 const logData = JSON.stringify({
                     level: enrichedValue.error ? 'error' : 'info',
