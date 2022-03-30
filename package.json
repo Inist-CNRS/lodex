@@ -203,7 +203,7 @@
         "style-loader": "^2.0.0",
         "through": "^2.3.8",
         "url-api-polyfill": "^1.1.0",
-        "vega": "5.13.0",
+        "vega": "5.22.1",
         "vega-crossfilter": "4.0.2",
         "vega-encode": "4.8.0",
         "vega-force": "4.0.4",
