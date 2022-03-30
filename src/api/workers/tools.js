@@ -46,7 +46,9 @@ export const cancelJob = async (ctx, jobType) => {
     if (activeJob?.data?.jobType === jobType) {
         await cleanWaitingJobsOfType(activeJob.data.jobType);
         activeJob.moveToFailed(new Error('cancelled'), true);
-        clearPublished(ctx);
+        if (jobType === 'publisher') {
+            await clearPublished(ctx);
+        }
         progress.finish();
     }
 };
