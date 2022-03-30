@@ -19,3 +19,5 @@ bySecond = 2
 url = [[WEB SERVICE URL]]
 timeout = 5000
 noerror = false
+retries = 5
+
