@@ -126,7 +126,6 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
             } else {
                 setLogs(currentState => [data, ...currentState]);
                 let parsedData;
-
                 try {
                     parsedData = JSON.parse(data);
                 } catch {
@@ -163,7 +162,7 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
                     </div>
                 )}
                 {isLoaded && logs.length < 1 && (
-                    <div>{polyglot.t('empty')}</div>
+                    <div>{polyglot.t('empty_logs')}</div>
                 )}
                 {isLoaded && logs && (
                     <FixedSizeList
