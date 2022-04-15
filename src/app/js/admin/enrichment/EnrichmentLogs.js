@@ -58,6 +58,7 @@ const LogLine = props => {
     }
     const classes = useStyles();
 
+    const timestamp = new Date(parsedLog?.timestamp);
     let date;
     try {
         date = Intl.DateTimeFormat('fr', {
@@ -68,14 +69,14 @@ const LogLine = props => {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric',
-        }).format(new Date(parsedLog?.timestamp));
+        }).format(timestamp);
     } catch (e) {
         date = 'No date';
     }
 
     return (
         <p
-            key={parsedLog.timestamp}
+            key={timestamp.valueOf()}
             style={style}
             className={classes[`Log_${parsedLog.level}`]}
             title={parsedLog.message}

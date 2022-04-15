@@ -18,7 +18,7 @@ path = value
 size = [[BATCH SIZE]]
 
 [expand/expand/throttle]
-bySecond = 2
+bySecond = 4
 
 [expand/expand/URLConnect]
 url = [[WEB SERVICE URL]]
