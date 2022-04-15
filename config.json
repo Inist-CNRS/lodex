@@ -7,7 +7,7 @@
     },
     "#pluginsAPI": "http://lodex-extended:31976",
     "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v7.1.2/public/",
-    "enrichmentBatchSize": 100,
+    "enrichmentBatchSize": 10,
     "routinesCache": false,
     "routines": [
         "all-documents",
