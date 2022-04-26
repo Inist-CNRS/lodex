@@ -142,11 +142,13 @@ export default db => {
                 },
             ])
             .toArray();
-        for (const key of aggregation[0].keys) {
-            try {
-                await collection.createIndex({ [key]: 1 });
-            } catch {
-                console.error(`Failed to index ${key}`);
+        if (aggregation[0]) {
+            for (const key of aggregation[0].keys) {
+                try {
+                    await collection.createIndex({ [key]: 1 });
+                } catch {
+                    console.error(`Failed to index ${key}`);
+                }
             }
         }
     };
