@@ -56,6 +56,10 @@ class HierarchyAdmin extends Component {
 
     static defaultProps = {
         args: defaultArgs,
+        showMaxSize: true,
+        showMaxValue: false,
+        showMinValue: false,
+        showOrderBy: true,
     };
 
     constructor(props) {
@@ -102,10 +106,10 @@ class HierarchyAdmin extends Component {
         const {
             p: polyglot,
             args: { params },
-            showMaxSize = true,
-            showMaxValue = false,
-            showMinValue = false,
-            showOrderBy = true,
+            showMaxSize,
+            showMaxValue,
+            showMinValue,
+            showOrderBy,
         } = this.props;
 
         return (

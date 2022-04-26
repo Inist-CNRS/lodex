@@ -59,6 +59,10 @@ class PieChartAdmin extends Component {
 
     static defaultProps = {
         args: defaultArgs,
+        showMaxSize: true,
+        showMaxValue: true,
+        showMinValue: true,
+        showOrderBy: true,
     };
 
     constructor(props) {
@@ -97,10 +101,10 @@ class PieChartAdmin extends Component {
         const {
             p: polyglot,
             args: { params, tooltip, tooltipCategory, tooltipValue, labels },
-            showMaxSize = true,
-            showMaxValue = true,
-            showMinValue = true,
-            showOrderBy = true,
+            showMaxSize,
+            showMaxValue,
+            showMinValue,
+            showOrderBy,
         } = this.props;
 
         return (

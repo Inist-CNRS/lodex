@@ -49,6 +49,10 @@ class NetworkAdmin extends Component {
 
     static defaultProps = {
         args: defaultArgs,
+        showMaxSize: true,
+        showMaxValue: true,
+        showMinValue: true,
+        showOrderBy: true,
     };
 
     constructor(props) {
@@ -75,10 +79,10 @@ class NetworkAdmin extends Component {
         const {
             p: polyglot,
             args: { params },
-            showMaxSize = true,
-            showMaxValue = true,
-            showMinValue = true,
-            showOrderBy = true,
+            showMaxSize,
+            showMaxValue,
+            showMinValue,
+            showOrderBy,
         } = this.props;
 
         return (

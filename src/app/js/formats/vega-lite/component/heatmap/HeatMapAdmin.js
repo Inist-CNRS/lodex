@@ -69,10 +69,10 @@ class HeatMapAdmin extends Component {
 
     static defaultProps = {
         args: defaultArgs,
-        showMaxSize: false,
-        showMaxValue: false,
-        showMinValue: false,
-        showOrderBy: false,
+        showMaxSize: true,
+        showMaxValue: true,
+        showMinValue: true,
+        showOrderBy: true,
     };
 
     constructor(props) {
@@ -126,10 +126,10 @@ class HeatMapAdmin extends Component {
                 tooltipTarget,
                 tooltipWeight,
             },
-            showMaxSize = true,
-            showMaxValue = true,
-            showMinValue = true,
-            showOrderBy = true,
+            showMaxSize,
+            showMaxValue,
+            showMinValue,
+            showOrderBy,
         } = this.props;
 
         return (
