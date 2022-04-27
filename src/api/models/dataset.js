@@ -123,9 +123,13 @@ export default db => {
     collection.getColumns = async () => {
         const firstLine = await collection.findOne();
         const columns = [];
-        Object.keys(firstLine).forEach(key => {
-            columns.push({ key, type: typeof firstLine[key] });
-        });
+        if (firstLine) {
+            Object.keys(firstLine).forEach(key => {
+                columns.push({ key, type: typeof firstLine[key] });
+            });
+        } else {
+            throw new Error('Unable to get columns, first line is empty.');
+        }
         return columns;
     };
 
@@ -150,6 +154,10 @@ export default db => {
                     console.error(`Failed to index ${key}`);
                 }
             }
+        } else {
+            console.warning(
+                'Unable to create datagrid indexes, columns are invalid.',
+            );
         }
     };
 
