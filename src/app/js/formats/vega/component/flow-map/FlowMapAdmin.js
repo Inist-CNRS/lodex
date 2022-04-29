@@ -58,10 +58,10 @@ class FlowMapAdmin extends Component {
 
     static defaultProps = {
         args: defaultArgs,
-        showMaxSize: false,
-        showMaxValue: false,
-        showMinValue: false,
-        showOrderBy: false,
+        showMaxSize: true,
+        showMaxValue: true,
+        showMinValue: true,
+        showOrderBy: true,
     };
 
     constructor(props) {
@@ -109,10 +109,10 @@ class FlowMapAdmin extends Component {
     render() {
         const {
             p: polyglot,
-            showMaxSize = true,
-            showMaxValue = true,
-            showMinValue = true,
-            showOrderBy = true,
+            showMaxSize,
+            showMaxValue,
+            showMinValue,
+            showOrderBy,
         } = this.props;
         const {
             params,
