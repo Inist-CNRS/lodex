@@ -6,7 +6,7 @@
         "password": "secret"
     },
     "#pluginsAPI": "http://lodex-extended:31976",
-    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v7.1.2/public/",
+    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v7.2.2/public/",
     "enrichmentBatchSize": 10,
     "routinesCache": false,
     "routines": [
@@ -72,6 +72,7 @@
         "atom",
         "mods",
         "tei",
+        "tei-persee",
         "xml",
         "corpus",
         "zip"
