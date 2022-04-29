@@ -215,14 +215,24 @@ export const processEnrichment = async (enrichment, ctx) => {
 
         const logsStartedEnriching = [];
         for (const entry of entries) {
-            const logData = JSON.stringify({
-                level: 'info',
-                message: `Started enriching #${entry.uri}`,
-                timestamp: new Date(),
-                status: IN_PROGRESS,
-            });
-            jobLogger.info(ctx.job, logData);
-            logsStartedEnriching.push(logData);
+            if (!entry.uri) {
+                const logData = JSON.stringify({
+                    level: 'error',
+                    message: `Unable to enrich row with no URI, see object _id#${entry._id}`,
+                    timestamp: new Date(),
+                    status: IN_PROGRESS,
+                });
+                jobLogger.info(ctx.job, logData);
+            } else {
+                const logData = JSON.stringify({
+                    level: 'info',
+                    message: `Started enriching #${entry.uri}`,
+                    timestamp: new Date(),
+                    status: IN_PROGRESS,
+                });
+                jobLogger.info(ctx.job, logData);
+                logsStartedEnriching.push(logData);
+            }
         }
         notifyListeners(room, logsStartedEnriching.reverse());
         try {
@@ -246,22 +256,24 @@ export const processEnrichment = async (enrichment, ctx) => {
                     value = 'n/a';
                 }
                 const id = enrichedValue.id;
-                const logData = JSON.stringify({
-                    level: enrichedValue.error ? 'error' : 'info',
-                    message: enrichedValue.error
+                if (id) {
+                    const logData = JSON.stringify({
+                        level: enrichedValue.error ? 'error' : 'info',
+                        message: enrichedValue.error
                         ? `Error enriching #${id}: ${value}`
                         : `Finished enriching #${id} (output: ${value})`,
-                    timestamp: new Date(),
-                    status: IN_PROGRESS,
-                });
-                jobLogger.info(ctx.job, logData);
-                logsEnrichedValue.push(logData);
-                await ctx.dataset.updateOne(
-                    {
-                        uri: id,
-                    },
-                    { $set: { [enrichment.name]: value } },
-                );
+                        timestamp: new Date(),
+                        status: IN_PROGRESS,
+                    });
+                    jobLogger.info(ctx.job, logData);
+                    logsEnrichedValue.push(logData);
+                    await ctx.dataset.updateOne(
+                        {
+                            uri: id,
+                        },
+                        { $set: { [enrichment.name]: value } },
+                    );
+                }
             }
             progress.incrementProgress(BATCH_SIZE);
             notifyListeners(room, logsEnrichedValue.reverse());
