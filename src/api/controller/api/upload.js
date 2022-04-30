@@ -5,6 +5,7 @@ import config from 'config';
 import koaBodyParser from 'koa-bodyparser';
 import request from 'request';
 import ezs from '@ezs/core';
+import path from 'path';
 
 import progress from '../../services/progress';
 import {
@@ -41,7 +42,10 @@ export const getLoader = async loaderName => {
 
     // ezs is safe : errors do not break the pipeline
     return stream =>
-        stream.pipe(ezs('delegate', { script })).pipe(ezs.catch(e => log(e)));
+        stream
+            .pipe(ezs('delegate', { script }))
+            .pipe(ezs('delegate', { file: path.resolve(__dirname, 'upload-control.ini') }))
+            .pipe(ezs.catch(e => log(e)));
 };
 
 export const requestToStream = asyncBusboyImpl => async req => {
