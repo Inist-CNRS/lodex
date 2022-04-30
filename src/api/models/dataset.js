@@ -155,7 +155,7 @@ export default db => {
                 }
             }
         } else {
-            console.warning(
+            console.warn(
                 'Unable to create datagrid indexes, columns are invalid.',
             );
         }

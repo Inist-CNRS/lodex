@@ -157,7 +157,7 @@ const FilterComponent = ({ loaders, filter, setFilter, p: polyglot }) => {
             .map(l => l.name),
         xmlFormat: loaders
             .filter(l =>
-                ['xml', 'rss', 'atom', 'mods', 'tei', 'skos'].includes(l.name),
+                ['xml', 'rss', 'atom', 'mods', 'tei', 'tei-persee', 'skos'].includes(l.name),
             )
             .map(l => l.name),
         jsonFormat: loaders
