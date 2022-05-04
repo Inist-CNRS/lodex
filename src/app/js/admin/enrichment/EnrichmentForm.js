@@ -361,7 +361,7 @@ export const EnrichmentFormComponent = ({
                         style={{ marginTop: 24 }}
                         name="submit-enrichment"
                     >
-                        {polyglot.t('save')}
+                        {polyglot.t(isEdit ? 'save' : 'add_more')}
                     </ButtonWithStatus>
                 </form>
 
