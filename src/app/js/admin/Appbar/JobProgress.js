@@ -22,6 +22,7 @@ import { Cancel } from '@material-ui/icons';
 import jobsApi from '../api/job';
 import CancelPublicationDialog from './CancelPublicationDialog';
 import { publicationCleared } from '../publication';
+import Warning from '@material-ui/icons/Warning';
 
 const useStyles = makeStyles({
     progress: {
@@ -52,6 +53,9 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-around',
+    },
+    progressStatus: {
+        width: '190px',
     },
     cancelButton: {
         display: 'flex',
@@ -86,7 +90,12 @@ const JobProgressComponent = props => {
                 setProgress();
             } else {
                 handlePublishError(data);
-                setProgress();
+                setProgress({
+                    isJobError: true,
+                    status: data.message,
+                    label: 'show_publication_errors',
+                    type: 'publisher',
+                });
             }
         });
         return () => socket.disconnect();
@@ -95,7 +104,7 @@ const JobProgressComponent = props => {
     return (
         <>
             <Fade
-                in={progress && progress.isJobProgress}
+                in={progress && (progress.isJobProgress || progress.isJobError)}
                 out={progress && !progress.isJobProgress}
             >
                 <Box
@@ -108,11 +117,15 @@ const JobProgressComponent = props => {
                         className={classes.progressLabelContainer}
                         aria-label="job-progress"
                     >
-                        <CircularProgress
-                            variant="indeterminate"
-                            color="inherit"
-                            size={20}
-                        />
+                        {progress?.isJobError ? (
+                            <Warning size={20} />
+                        ) : (
+                            <CircularProgress
+                                variant="indeterminate"
+                                color="inherit"
+                                size={20}
+                            />
+                        )}
                         <div className={classes.progressLabel}>
                             {progress?.label && (
                                 <Typography variant="subtitle2">
@@ -124,7 +137,12 @@ const JobProgressComponent = props => {
                             {progress &&
                                 progress?.type === 'publisher' &&
                                 progress.status && (
-                                    <Typography variant="caption">
+                                    <Typography
+                                        variant="caption"
+                                        title={progress?.status}
+                                        className={classes.progressStatus}
+                                        noWrap={true}
+                                    >
                                         {polyglot.t(progress.status)}
                                     </Typography>
                                 )}
@@ -183,6 +201,7 @@ const JobProgressComponent = props => {
                     jobsApi.cancelJob(progress.type);
                     if (progress.type === 'publisher') {
                         handleCancelPublication();
+                        setProgress();
                     }
                     setIsCancelDialogOpen(false);
                 }}
