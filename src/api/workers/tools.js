@@ -53,6 +53,13 @@ export const cancelJob = async (ctx, jobType) => {
     }
 };
 
+export const dropJobs = async jobType => {
+    const jobs = await workerQueue.getJobs();
+    jobs.forEach(job => {
+        if (!jobType || job.data.jobType === jobType) job.remove();
+    });
+};
+
 export const clearJobs = async () => {
     const waitingJobs = await getWaitingJobs();
     const activeJobs = await getActiveJobs();
