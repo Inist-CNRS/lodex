@@ -350,6 +350,7 @@ export const EnrichmentFormComponent = ({
                         autoFocus
                         fullWidth
                         style={{ marginBottom: 24 }}
+                        disabled={isEdit}
                     />
                     {getRuleFields()}
                     <ButtonWithStatus
