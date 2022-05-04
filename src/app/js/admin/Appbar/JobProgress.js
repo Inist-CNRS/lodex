@@ -12,7 +12,7 @@ import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { io } from 'socket.io-client';
 import translate from 'redux-polyglot/dist/translate';
-import { publishSuccess } from '../publish';
+import { publishSuccess, publishError } from '../publish';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import PropTypes from 'prop-types';
@@ -65,6 +65,7 @@ const JobProgressComponent = props => {
     const {
         p: polyglot,
         handlePublishSuccess,
+        handlePublishError,
         handleCancelPublication,
     } = props;
     const [progress, setProgress] = useState();
@@ -82,6 +83,9 @@ const JobProgressComponent = props => {
         socket.on('publisher', data => {
             if (data.success) {
                 handlePublishSuccess();
+                setProgress();
+            } else {
+                handlePublishError(data);
                 setProgress();
             }
         });
@@ -189,10 +193,12 @@ const JobProgressComponent = props => {
 JobProgressComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     handlePublishSuccess: PropTypes.func.isRequired,
+    handlePublishError: PropTypes.func.isRequired,
     handleCancelPublication: PropTypes.func.isRequired,
 };
 const mapDispatchToProps = {
     handlePublishSuccess: () => publishSuccess(),
+    handlePublishError: error => publishError(error),
     handleCancelPublication: () => publicationCleared(),
 };
 export default compose(
