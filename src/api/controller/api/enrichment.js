@@ -91,7 +91,7 @@ export const enrichmentAction = async (ctx, action, id) => {
 
     if (action === 'launch') {
         await workerQueue
-            .add({ id, jobType: ENRICHER, opts: { jobId: uuid() } })
+            .add({ id, jobType: ENRICHER }, { jobId: uuid() })
             .then(job => {
                 setEnrichmentJobId(ctx, id, job);
             });
@@ -104,7 +104,7 @@ export const enrichmentAction = async (ctx, action, id) => {
         const enrichment = await ctx.enrichment.findOneById(id);
         await ctx.dataset.removeAttribute(enrichment.name);
         await workerQueue
-            .add({ id, jobType: ENRICHER, opts: { jobId: uuid() } })
+            .add({ id, jobType: ENRICHER }, { jobId: uuid() })
             .then(job => {
                 setEnrichmentJobId(ctx, id, job);
             });
