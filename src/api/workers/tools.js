@@ -44,13 +44,22 @@ export const getWaitingJobs = async () => {
 export const cancelJob = async (ctx, jobType) => {
     const activeJob = await getActiveJob();
     if (activeJob?.data?.jobType === jobType) {
-        await cleanWaitingJobsOfType(activeJob.data.jobType);
+        if (jobType === 'publisher') {
+            await cleanWaitingJobsOfType(activeJob.data.jobType);
+        }
         activeJob.moveToFailed(new Error('cancelled'), true);
         if (jobType === 'publisher') {
             await clearPublished(ctx);
         }
         progress.finish();
     }
+};
+
+export const dropJobs = async jobType => {
+    const jobs = await workerQueue.getJobs();
+    jobs.forEach(job => {
+        if (!jobType || job.data.jobType === jobType) job.remove();
+    });
 };
 
 export const clearJobs = async () => {

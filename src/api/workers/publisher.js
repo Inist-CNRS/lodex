@@ -18,7 +18,7 @@ export const processPublication = (job, done) => {
             done();
         })
         .catch(err => {
-            handlePublishError();
+            handlePublishError(err);
             done(err);
         });
 };
@@ -29,8 +29,12 @@ const startPublishing = async job => {
     await publish(ctx);
 };
 
-const handlePublishError = async () => {
-    notifyListeners({ isPublishing: false, success: false });
+const handlePublishError = async error => {
+    notifyListeners({
+        isPublishing: false,
+        success: false,
+        message: error.message,
+    });
     const ctx = await prepareContext({});
     await ctx.publishedDataset.remove({});
     await ctx.publishedCharacteristic.remove({});

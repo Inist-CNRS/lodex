@@ -7,9 +7,16 @@ export const mongoConnectionString = `mongodb://${config.mongo.host}/${config.mo
 
 export const mongoClientFactory = MongoClientImpl => async () => {
     if (!db) {
-        db = await MongoClientImpl.connect(mongoConnectionString, {
-            poolSize: 10,
-        });
+        try {
+            db = await MongoClientImpl.connect(mongoConnectionString, {
+                poolSize: 10,
+            });
+        } catch (error) {
+            console.error(error);
+            throw new Error(
+                `L'url de la base mongoDB n'est pas bonne, ou non renseignée.`,
+            );
+        }
     }
 
     return db;

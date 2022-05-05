@@ -54,7 +54,8 @@ const LogLine = props => {
     try {
         parsedLog = JSON.parse(log);
     } catch (e) {
-        console.error('Error parsing log', e);
+        console.error(`Error parsing log : "${data[index]}"`);
+        return null;
     }
     const classes = useStyles();
 

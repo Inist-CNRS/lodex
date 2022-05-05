@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
+import { v1 as uuid } from 'uuid';
 
 import clearPublished from '../../services/clearPublished';
 import logger from '../../services/logger';
@@ -9,7 +10,7 @@ import { PUBLISHER } from '../../workers/publisher';
 const app = new Koa();
 
 export const doPublish = async ctx => {
-    await workerQueue.add({ jobType: PUBLISHER });
+    await workerQueue.add({ jobType: PUBLISHER }, { jobId: uuid() });
     ctx.status = 200;
     ctx.body = {
         status: 'publishing',

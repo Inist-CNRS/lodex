@@ -18,6 +18,8 @@ import {
     SCOPE_COLLECTION,
     SCOPE_DOCUMENT,
 } from '../../../common/scope';
+import { dropJobs } from '../../workers/tools';
+import { ENRICHER } from '../../workers/enricher';
 
 const sortByFieldUri = (a, b) =>
     (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
@@ -41,8 +43,9 @@ export const restoreFields = (fileStream, ctx) => {
             });
     }
 
-    const restoreTask = () =>
-        new Promise((resolve, reject) =>
+    const restoreTask = () => {
+        dropJobs(ENRICHER);
+        return new Promise((resolve, reject) =>
             restore({
                 uri: mongoConnectionString,
                 stream: fileStream,
@@ -53,7 +56,7 @@ export const restoreFields = (fileStream, ctx) => {
                 },
             }),
         );
-
+    };
     return ctx.field
         .remove({})
         .then(restoreTask)

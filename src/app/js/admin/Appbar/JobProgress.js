@@ -12,7 +12,7 @@ import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { io } from 'socket.io-client';
 import translate from 'redux-polyglot/dist/translate';
-import { publishSuccess } from '../publish';
+import { publishSuccess, publishError } from '../publish';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import PropTypes from 'prop-types';
@@ -22,6 +22,7 @@ import { Cancel } from '@material-ui/icons';
 import jobsApi from '../api/job';
 import CancelPublicationDialog from './CancelPublicationDialog';
 import { publicationCleared } from '../publication';
+import Warning from '@material-ui/icons/Warning';
 
 const useStyles = makeStyles({
     progress: {
@@ -53,6 +54,9 @@ const useStyles = makeStyles({
         alignItems: 'center',
         justifyContent: 'space-around',
     },
+    progressStatus: {
+        width: '190px',
+    },
     cancelButton: {
         display: 'flex',
         minWidth: '0',
@@ -65,6 +69,7 @@ const JobProgressComponent = props => {
     const {
         p: polyglot,
         handlePublishSuccess,
+        handlePublishError,
         handleCancelPublication,
     } = props;
     const [progress, setProgress] = useState();
@@ -83,6 +88,14 @@ const JobProgressComponent = props => {
             if (data.success) {
                 handlePublishSuccess();
                 setProgress();
+            } else {
+                handlePublishError(data);
+                setProgress({
+                    isJobError: true,
+                    status: data.message,
+                    label: 'show_publication_errors',
+                    type: 'publisher',
+                });
             }
         });
         return () => socket.disconnect();
@@ -91,7 +104,7 @@ const JobProgressComponent = props => {
     return (
         <>
             <Fade
-                in={progress && progress.isJobProgress}
+                in={progress && (progress.isJobProgress || progress.isJobError)}
                 out={progress && !progress.isJobProgress}
             >
                 <Box
@@ -104,11 +117,15 @@ const JobProgressComponent = props => {
                         className={classes.progressLabelContainer}
                         aria-label="job-progress"
                     >
-                        <CircularProgress
-                            variant="indeterminate"
-                            color="inherit"
-                            size={20}
-                        />
+                        {progress?.isJobError ? (
+                            <Warning size={20} />
+                        ) : (
+                            <CircularProgress
+                                variant="indeterminate"
+                                color="inherit"
+                                size={20}
+                            />
+                        )}
                         <div className={classes.progressLabel}>
                             {progress?.label && (
                                 <Typography variant="subtitle2">
@@ -120,7 +137,12 @@ const JobProgressComponent = props => {
                             {progress &&
                                 progress?.type === 'publisher' &&
                                 progress.status && (
-                                    <Typography variant="caption">
+                                    <Typography
+                                        variant="caption"
+                                        title={progress?.status}
+                                        className={classes.progressStatus}
+                                        noWrap={true}
+                                    >
                                         {polyglot.t(progress.status)}
                                     </Typography>
                                 )}
@@ -179,6 +201,7 @@ const JobProgressComponent = props => {
                     jobsApi.cancelJob(progress.type);
                     if (progress.type === 'publisher') {
                         handleCancelPublication();
+                        setProgress();
                     }
                     setIsCancelDialogOpen(false);
                 }}
@@ -189,10 +212,12 @@ const JobProgressComponent = props => {
 JobProgressComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     handlePublishSuccess: PropTypes.func.isRequired,
+    handlePublishError: PropTypes.func.isRequired,
     handleCancelPublication: PropTypes.func.isRequired,
 };
 const mapDispatchToProps = {
     handlePublishSuccess: () => publishSuccess(),
+    handlePublishError: error => publishError(error),
     handleCancelPublication: () => publicationCleared(),
 };
 export default compose(

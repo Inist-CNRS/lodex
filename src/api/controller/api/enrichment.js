@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
+import { v1 as uuid } from 'uuid';
 
 import { ENRICHER } from '../../workers/enricher';
 import { workerQueue } from '../../workers';
@@ -89,9 +90,11 @@ export const enrichmentAction = async (ctx, action, id) => {
     }
 
     if (action === 'launch') {
-        await workerQueue.add({ id, jobType: ENRICHER }).then(job => {
-            setEnrichmentJobId(ctx, id, job);
-        });
+        await workerQueue
+            .add({ id, jobType: ENRICHER }, { jobId: uuid() })
+            .then(job => {
+                setEnrichmentJobId(ctx, id, job);
+            });
         ctx.body = {
             status: 'pending',
         };
@@ -100,9 +103,11 @@ export const enrichmentAction = async (ctx, action, id) => {
     if (action === 'relaunch') {
         const enrichment = await ctx.enrichment.findOneById(id);
         await ctx.dataset.removeAttribute(enrichment.name);
-        await workerQueue.add({ id, jobType: ENRICHER }).then(job => {
-            setEnrichmentJobId(ctx, id, job);
-        });
+        await workerQueue
+            .add({ id, jobType: ENRICHER }, { jobId: uuid() })
+            .then(job => {
+                setEnrichmentJobId(ctx, id, job);
+            });
         ctx.body = {
             status: 'pending',
         };
