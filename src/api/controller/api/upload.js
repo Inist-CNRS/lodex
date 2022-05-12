@@ -26,7 +26,6 @@ import {
 } from '../../services/fsHelpers';
 import saveParsedStream from '../../services/saveParsedStream';
 import publishFacets from './publishFacets';
-import initDatasetUri from '../../services/initDatasetUri';
 
 const loaders = new Script('loaders', '../app/custom/loaders');
 const log = e => global.console.error('Error in pipeline.', e);
@@ -72,7 +71,7 @@ export const uploadFile = ctx => async loaderName => {
 
     const parsedStream = parseStream(mergedStream);
     try {
-        await ctx.saveParsedStream(parsedStream, ctx.initDatasetUri);
+        await ctx.saveParsedStream(parsedStream);
         await ctx.dataset.indexColumns();
         progress.finish();
     } catch (error) {
@@ -85,7 +84,6 @@ export const uploadFile = ctx => async loaderName => {
 export const prepareUpload = async (ctx, next) => {
     ctx.getLoader = getLoader;
     ctx.requestToStream = requestToStream(asyncBusboy);
-    ctx.initDatasetUri = initDatasetUri(ctx);
     ctx.saveStream = saveStream(ctx.dataset.bulkUpsertByUri);
     ctx.checkFileExists = checkFileExists;
     ctx.saveStreamInFile = saveStreamInFile;
@@ -183,7 +181,6 @@ export const uploadUrl = async ctx => {
     ctx.body = {
         totalLines: await ctx.saveParsedStream(
             parsedStream,
-            ctx.initDatasetUri,
         ),
     };
 
