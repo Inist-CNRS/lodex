@@ -157,16 +157,26 @@ function preformat(data, feed) {
     feed.send({ id: data.uri, value: data });
 }
 
+async function postcheck(data, feed) {
+    const preview = this.getParam('preview');
+    const ctx = this.getEnv();
+    if (this.isLast()) {
+        return feed.close();
+    }
+    if (!preview && !(await ctx.job?.isActive())) {
+        return feed.stop(new CancelWorkerError('Job has been canceled'));
+    }
+    feed.send(data);
+}
+
 const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
     return new Promise((resolve, reject) => {
         const values = [];
         from(entries)
             .pipe(ezs(preformat))
             .pipe(ezs('delegate', { commands }, {}))
-            .on('data', async data => {
-                if (!preview && !(await ctx.job?.isActive())) {
-                    throw new CancelWorkerError('Job has been canceled');
-                }
+            .pipe(ezs(postcheck, { preview }, ctx))
+            .on('data', data => {
                 if (data instanceof Error) {
                     const error = getSourceError(data);
                     let sourceChunk = null;
@@ -184,6 +194,7 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
                 } else {
                     values.push(data);
                 }
+                values.push(data);
             })
             .on('end', () => resolve(values))
             .on('error', error => reject(error));
