@@ -19,6 +19,7 @@ describe('Enrichment', () => {
             enrichmentFormPage.fillAdvancedEnrichment();
             enrichmentFormPage.runEnrichment();
             adminNavigation.goToData();
+            cy.wait(300);
             enrichmentFormPage.checkIfEnrichmentExistInDataset();
         });
     });

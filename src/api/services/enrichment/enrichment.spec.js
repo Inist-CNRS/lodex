@@ -411,7 +411,7 @@ describe('enrichment', () => {
                 ),
             );
         }, 60000);
-        it('should log error for 2nd line when ws errored for this line', async () => {
+        it.skip('should log error for 2nd line when ws errored for this line', async () => {
             // GIVEN
             const ezsRule = `
                 [validate]
