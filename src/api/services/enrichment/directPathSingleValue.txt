@@ -11,6 +11,7 @@ rule = required
 
 # We sometime have a stringified value (like "{id:1, name: 'Bob'}"), and we want to parse it, if possible
 # This assign command aim is to do that, it update the [[SOURCE COLUMN]] to JSON.parse it if possible.
+# Can be simplified with the following statement : value = get('value.[[SOURCE COLUMN]]')
 [assign]
 path = value
 value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(item); } catch { return item; } }).get("value.[[SOURCE COLUMN]]")
@@ -19,11 +20,12 @@ value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(it
 size = [[BATCH SIZE]]
 path=value
 
+# remove the two lines below to speed up enrichment
 [expand/throttle]
-bySecond = 4
+bySecond = 5
 
 [expand/URLConnect]
 url = [[WEB SERVICE URL]]
-timeout = 30000
+timeout = 5000
 noerror = false
 retries = 5
