@@ -12,6 +12,12 @@ value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(it
 [expand]
 path = value
 
+# Ensure to process an array
+[expand/assign]
+path = value
+value = get('value',[]).concat(null).filter(Boolean)
+
+
 [expand/exploding]
 
 [expand/expand]

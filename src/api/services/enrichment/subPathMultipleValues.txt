@@ -2,8 +2,14 @@
 plugin = basics
 plugin = analytics
 
+
 [expand]
 path = value.[[SOURCE COLUMN]]
+
+# Ensure to process an array
+[expand/assign]
+path = value
+value = get('value',[]).concat(null).filter(Boolean)
 
 [expand/exploding]
 
