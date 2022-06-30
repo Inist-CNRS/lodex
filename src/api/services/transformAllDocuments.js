@@ -23,6 +23,10 @@ export default async function transformAllDocument(
                 lodex_published: { $exists: false },
             }),
         );
+        // avoid infinite loop
+        if (dataset.length === 0) {
+            handled = count;
+        }
 
         const transformedDataset = (
             await Promise.all(dataset.map(transformer))
