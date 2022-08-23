@@ -5,12 +5,12 @@ import moment from 'moment';
 import { streamEnd } from '../../services/streamHelper';
 
 export default async ctx => {
-    const filename = `dataset_${moment().format('YYYY-MM-DD-HHmmss')}.json`;
+    const filename = `dataset_${moment().format('YYYY-MM-DD-HHmmss')}.jsonl`;
 
     const pathname = `${os.tmpdir()}/${filename}`;
     const fileWriter = fs.createWriteStream(pathname);
 
-    const stream = await ctx.dataset.dumpAsJsonStream();
+    const stream = await ctx.dataset.dumpAsJsonLStream();
     await streamEnd(stream.pipe(fileWriter));
 
     const mimetype = mime.lookup(pathname);
