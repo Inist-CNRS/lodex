@@ -102,6 +102,17 @@ export default db => {
             .pipe(JSONStream.stringify());
     };
 
+    collection.dumpAsJsonLStream = async () => {
+        const omitMongoId = new Transform({ objectMode: true });
+        omitMongoId._transform = function(data, enc, cb) {
+            this.push(JSON.stringify(omit(data, ['_id'])).concat('\n'));
+            cb();
+        };
+
+        return (await collection.find({}).stream()).pipe(omitMongoId);
+    };
+
+
     collection.removeAttribute = async attribute =>
         collection.update({}, { $unset: { [attribute]: 1 } }, { multi: true });
 
