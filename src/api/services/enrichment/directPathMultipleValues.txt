@@ -9,21 +9,23 @@ plugin = analytics
 path = value
 value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(item)} catch {return item } }).get("value.[[SOURCE COLUMN]]")
 
-[map]
+[expand]
 path = value
 
+[expand/exploding]
 
-[map/expand]
+[expand/expand]
 path = value
 size = [[BATCH SIZE]]
 
 # remove the two lines below to speed up enrichment
-[map/expand/throttle]
+[expand/expand/throttle]
 bySecond = 5
 
-[map/expand/URLConnect]
+[expand/expand/URLConnect]
 url = [[WEB SERVICE URL]]
 timeout = 5000
 noerror = false
 retries = 5
 
+[expand/aggregate]
