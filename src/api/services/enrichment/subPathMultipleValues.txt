@@ -4,18 +4,13 @@ plugin = analytics
 
 [expand]
 path = value.[[SOURCE COLUMN]]
+size = [[BATCH SIZE]]
 
 [expand/exploding]
 
 [expand/expand]
-path = value
+path = value.[[SUB PATH]]
 size = [[BATCH SIZE]]
-
-[expand/expand/exploding]
-
-[expand/expand/assign]
-path = value
-value = get("value.[[SUB PATH]]")
 
 # remove the two lines below to speed up enrichment
 [expand/expand/throttle]

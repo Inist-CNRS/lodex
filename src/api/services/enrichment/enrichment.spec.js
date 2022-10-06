@@ -53,7 +53,7 @@ describe('enrichment', () => {
             const result = getEnrichmentRuleModel(sourceData, enrichment);
             expect(result).toMatch(/(expand\/URLConnect)/i);
             expect(result).toMatch(/(expand\/exploding)/i);
-            expect(result).toMatch(/(expand\/assign)/i);
+            expect(result).toMatch(/(expand\/expand)/i);
         });
 
         it('should get rule for multiple values and sub path', async () => {
@@ -68,7 +68,6 @@ describe('enrichment', () => {
 
             const result = getEnrichmentRuleModel(sourceData, enrichment);
             expect(result).toMatch(/(expand\/exploding)/i);
-            expect(result).toMatch(/(expand\/expand\/exploding)/i);
             expect(result).toMatch(/(expand\/expand\/URLConnect)/i);
         });
 
