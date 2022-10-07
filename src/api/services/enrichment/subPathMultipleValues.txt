@@ -24,6 +24,7 @@ retries = 5
 
 [expand/aggregate]
 
+
 [assign]
 path = value
 value = get("value.[[SOURCE COLUMN]]")
