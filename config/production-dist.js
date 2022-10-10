@@ -5,8 +5,8 @@ const getMongoConfig = () => {
 
     const defaultConfig = {
         dbName: String(process.env.EZMASTER_TECHNICAL_NAME).replace(
-            /(-[0-9]+)$/,
-            '',
+            /(-[^-]*)-[0-9]+$/,
+            '$1',
         ),
     };
 
