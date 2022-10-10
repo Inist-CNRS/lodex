@@ -11,18 +11,15 @@ value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(it
 
 [expand]
 path = value
+size = [[BATCH SIZE]]
 
 [expand/exploding]
 
-[expand/expand]
-path = value
-size = [[BATCH SIZE]]
-
 # remove the two lines below to speed up enrichment
-[expand/expand/throttle]
+[expand/throttle]
 bySecond = 5
 
-[expand/expand/URLConnect]
+[expand/URLConnect]
 url = [[WEB SERVICE URL]]
 timeout = 5000
 noerror = false

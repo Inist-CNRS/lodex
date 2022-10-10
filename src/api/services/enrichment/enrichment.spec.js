@@ -53,7 +53,7 @@ describe('enrichment', () => {
             const result = getEnrichmentRuleModel(sourceData, enrichment);
             expect(result).toMatch(/(expand\/URLConnect)/i);
             expect(result).toMatch(/(expand\/exploding)/i);
-            expect(result).toMatch(/(expand\/assign)/i);
+            expect(result).toMatch(/(expand\/expand)/i);
         });
 
         it('should get rule for multiple values and sub path', async () => {
@@ -68,7 +68,6 @@ describe('enrichment', () => {
 
             const result = getEnrichmentRuleModel(sourceData, enrichment);
             expect(result).toMatch(/(expand\/exploding)/i);
-            expect(result).toMatch(/(expand\/expand\/exploding)/i);
             expect(result).toMatch(/(expand\/expand\/URLConnect)/i);
         });
 
@@ -282,7 +281,7 @@ describe('enrichment', () => {
 
             // THEN
             expect(results).toEqual(
-                expect.arrayContaining([['plop', 'plup'], ['plip'], ['ploup']]),
+                expect.arrayContaining([[{"subPath": "plop"}, {"subPath": "plup"}], [{"subPath": "plop"}, {"subPath": "plup"}], [{"subPath": "plip"}], [{"subPath": "plip"}], [{"subPath": "ploup"}], [{"subPath": "ploup"}]]),
             );
         });
         // We skip that test because it's a very specific case where we want to get a subpath in an array that is stringified, that may not happen. If the dataset import a string, then, it's a string.
