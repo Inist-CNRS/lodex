@@ -21,9 +21,9 @@ value = get('value',[]).concat(null).filter(Boolean)
 
 [expand/exploding]
 
-# remove the two lines below to speed up enrichment
-[expand/throttle]
-bySecond = 5
+# add the two lines below to relieve the server
+#[expand/throttle]
+#bySecond = 5
 
 [expand/URLConnect]
 url = [[WEB SERVICE URL]]
