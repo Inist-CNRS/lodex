@@ -37,8 +37,7 @@ services:
         command: node --require @babel/register ./cypress/mocks/istexApi.js
 
     mongo:
-        image: mongo:3.4.21
-        command: '--smallfiles'
+        image: mongo:4.4.4-bionic
         ports:
             - 27017:27017
 
