@@ -3,6 +3,6 @@
     "video": false,
     "viewportWidth": 1000,
     "viewportHeight": 1200,
-    "defaultCommandTimeout": 20000,
-    "pageLoadTimeout": 20000
+    "defaultCommandTimeout": 200000,
+    "pageLoadTimeout": 200000
 }
