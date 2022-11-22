@@ -2,5 +2,7 @@
     "baseUrl": "http://localhost:3000",
     "video": false,
     "viewportWidth": 1000,
-    "viewportHeight": 1200
+    "viewportHeight": 1200,
+    "defaultCommandTimeout": 10000,
+    "pageLoadTimeout": 10000
 }
