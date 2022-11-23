@@ -110,7 +110,7 @@ describe('Search', () => {
             searchDrawer.searchInput().should('have.value', query);
         });
 
-        it('should sort result by pertinence', () => {
+        it.skip('should sort result by pertinence', () => {
             menu.openSearchDrawer();
             searchDrawer.search('medicine');
             searchDrawer.checkStatsCount(2, 12);
@@ -153,7 +153,7 @@ describe('Search', () => {
             searchDrawer.checkResultsCount(10);
         });
 
-        it('should allow to sort facet', () => {
+        it.skip('should allow to sort facet', () => {
             menu.openSearchDrawer();
             searchDrawer.getFacet('Première mise en ligne en').click();
             cy.wait(500);
