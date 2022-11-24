@@ -127,7 +127,7 @@ describe('Dataset Publication', () => {
 
             cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
                 'contains.text',
-                ['2', '"Alain"', '"Chabat"', 'true'].join(''),
+                ['2', 'true', '"Alain"', '"Chabat"'].join(''),
             );
         });
         it('should filter by firstName', () => {
@@ -148,12 +148,12 @@ describe('Dataset Publication', () => {
 
             cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
                 'contains.text',
-                ['1', '"Bobby"', '"Womack"', 'true'].join(''),
+                ['1', 'true', '"Bobby"', '"Womack"'].join(''),
             );
 
             cy.get('[data-rowindex=1]', { timeout: 3000 }).should(
                 'contains.text',
-                ['4', '"Rob"', '"Zombie"', '""'].join(''),
+                ['4', '""', '"Rob"', '"Zombie"'].join(''),
             );
         });
         it('should filter by boolean', () => {
@@ -174,12 +174,12 @@ describe('Dataset Publication', () => {
 
             cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
                 'contains.text',
-                ['1', '"Bobby"', '"Womack"', 'true'].join(''),
+                ['1', 'true', '"Bobby"', '"Womack"'].join(''),
             );
 
             cy.get('[data-rowindex=1]', { timeout: 3000 }).should(
                 'contains.text',
-                ['2', '"Alain"', '"Chabat"', 'true'].join(''),
+                ['2', 'true', '"Alain"', '"Chabat"'].join(''),
             );
         });
     });
