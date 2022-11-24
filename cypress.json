@@ -3,10 +3,10 @@
     "video": false,
     "viewportWidth": 1000,
     "viewportHeight": 1200,
-    "defaultCommandTimeout": 600000,
-    "execTimeout": 100000,
-    "taskTimeout": 100000,
-    "pageLoadTimeout": 600000,
-    "requestTimeout": 100000,
-    "responseTimeout": 100000
+    "defaultCommandTimeout": 60000,
+    "execTimeout": 60000,
+    "taskTimeout": 60000,
+    "pageLoadTimeout": 60000,
+    "requestTimeout": 60000,
+    "responseTimeout": 60000
 }
