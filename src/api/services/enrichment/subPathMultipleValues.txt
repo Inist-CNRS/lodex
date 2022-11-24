@@ -18,9 +18,9 @@ value = get('value',[]).concat(null).filter(Boolean)
 path = value.[[SUB PATH]]
 size = [[BATCH SIZE]]
 
-# remove the two lines below to speed up enrichment
-[expand/expand/throttle]
-bySecond = 5
+# add the two lines below to relieve the server
+#[expand/expand/throttle]
+#bySecond = 5
 
 [expand/expand/URLConnect]
 url = [[WEB SERVICE URL]]
