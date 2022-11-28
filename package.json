@@ -153,7 +153,7 @@
         "memorystream": "0.3.1",
         "mime-types": "2.1.35",
         "modclean": "3.0.0-beta.1",
-        "moment": "^2.22.2",
+        "moment": "2.29.4",
         "mongodb": "^2.2.36",
         "mongodb-backup": "1.6.9",
         "mongodb-restore": "1.6.2",
@@ -196,8 +196,8 @@
         "reselect": "^3.0.1",
         "resumablejs": "^1.1.0",
         "scheduler": "^0.18.0",
-        "socket.io": "^4.4.1",
-        "socket.io-client": "^4.4.1",
+        "socket.io": "4.5.4",
+        "socket.io-client": "4.5.4",
         "sprintf-js": "^1.1.2",
         "stream-to-string": "^1.2.0",
         "style-loader": "^2.0.0",
@@ -245,7 +245,7 @@
         "eslint-plugin-react": "^7.17.0",
         "identity-obj-proxy": "3.0.0",
         "jest": "^24.9.0",
-        "nodemon": "^2.0.15",
+        "nodemon": "2.0.20",
         "prettier": "^1.19.1",
         "webpack-dev-server": "^3.11.3"
     }
