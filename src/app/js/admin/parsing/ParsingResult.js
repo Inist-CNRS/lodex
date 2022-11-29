@@ -69,6 +69,10 @@ const styles = {
     toggle: {
         cursor: 'pointer',
     },
+    error: {
+        backgroundColor: theme.red.primary,
+        color: theme.white.primary,
+    },
 };
 
 const useStyles = makeStyles(styles);
@@ -156,6 +160,15 @@ export const ParsingResultComponent = props => {
                         }
                         if (params.value === null) {
                             return <Chip label="null" />;
+                        }
+                        if (
+                            typeof params.value === 'string' &&
+                            (params.value.startsWith('[Error]') ||
+                                params.value.startsWith('ERROR'))
+                        ) {
+                            return (
+                                <Chip className={classes.error} label="Error" />
+                            );
                         }
                         return (
                             <div title={JSON.stringify(params.value)}>
