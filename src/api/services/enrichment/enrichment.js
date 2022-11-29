@@ -271,8 +271,8 @@ export const processEnrichment = async (enrichment, ctx) => {
                     const logData = JSON.stringify({
                         level: enrichedValue.error ? 'error' : 'info',
                         message: enrichedValue.error
-                        ? `Error enriching #${id}: ${value}`
-                        : `Finished enriching #${id} (output: ${value})`,
+                            ? `Error enriching #${id}: ${value}`
+                            : `Finished enriching #${id} (output: ${value})`,
                         timestamp: new Date(),
                         status: IN_PROGRESS,
                     });
@@ -294,7 +294,7 @@ export const processEnrichment = async (enrichment, ctx) => {
                     { _id: new ObjectId(entry._id) },
                     {
                         $set: {
-                            [enrichment.name]: `ERROR: ${e.message}`,
+                            [enrichment.name]: `[Error]: ${e.message}`,
                         },
                     },
                 );
