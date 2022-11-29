@@ -77,7 +77,7 @@ const styles = {
         cursor: 'pointer',
     },
     drawer: {
-        width: '40%',
+        width: '45%',
     },
     error: {
         backgroundColor: theme.red.primary,
