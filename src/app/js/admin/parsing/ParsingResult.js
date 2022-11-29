@@ -275,6 +275,9 @@ export const ParsingResultComponent = props => {
     };
 
     const handleCellClick = params => {
+        if (!params.value) {
+            return;
+        }
         setSelectedCell(params);
         setToggleDrawer(true);
     };
