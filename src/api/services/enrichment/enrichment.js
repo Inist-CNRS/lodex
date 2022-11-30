@@ -211,6 +211,7 @@ export const processEnrichment = async (enrichment, ctx) => {
         },
         { $set: { ['status']: IN_PROGRESS } },
     );
+    let errorCount = 0;
     const room = `enrichment-job-${ctx.job.id}`;
     const commands = createEzsRuleCommands(enrichment.rule);
     const dataSetSize = await ctx.dataset.count();
@@ -276,6 +277,7 @@ export const processEnrichment = async (enrichment, ctx) => {
                         timestamp: new Date(),
                         status: IN_PROGRESS,
                     });
+                    errorCount += enrichedValue.error ? 1 : 0;
                     jobLogger.info(ctx.job, logData);
                     logsEnrichedValue.push(logData);
                     await ctx.dataset.updateOne(
@@ -307,6 +309,7 @@ export const processEnrichment = async (enrichment, ctx) => {
                 });
                 jobLogger.info(ctx.job, logData);
                 notifyListeners(room, logData);
+                errorCount++;
                 progress.incrementProgress(1);
             }
         }
@@ -318,7 +321,7 @@ export const processEnrichment = async (enrichment, ctx) => {
                 { _id: enrichment._id },
             ],
         },
-        { $set: { ['status']: FINISHED } },
+        { $set: { ['status']: FINISHED, ['errorCount']: errorCount } },
     );
     progress.finish();
     const logData = JSON.stringify({
