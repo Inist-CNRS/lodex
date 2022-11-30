@@ -640,3 +640,4 @@
 "dataset_edit_enrichment_title"	"Enrichment %{column_name} for row %{row_name}"	"Enrichissement %{column_name} pour la ligne %{row_name}"
 "dataset_edit_success"	"Field updated with value"	"Champ mis à jour avec la nouvelle valeur"
 "header_name_with_errors"	"%{name} (%{errorCount} errors)"	"%{name} (%{errorCount} erreurs)"
+"refresh_button"	"Refresh"	"Rafraîchir"
