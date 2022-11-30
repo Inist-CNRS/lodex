@@ -637,3 +637,4 @@
 "empty_logs"	"Other enrichissement in pending or empty"	"Un autre enrichissement est en cours ou celui-ci est vide"
 "jobs_cleared"	"All jobs have been cleared"	"Toutes les tâches de fond ont été effacé"
 "header_name_with_errors"	"%{name} (%{errorCount} errors)"	"%{name} (%{errorCount} erreurs)"
+"refresh_button"	"Refresh"	"Rafraîchir"

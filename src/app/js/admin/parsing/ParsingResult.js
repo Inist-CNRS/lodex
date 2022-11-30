@@ -12,6 +12,7 @@ import {
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -22,7 +23,13 @@ import Loading from '../../lib/components/Loading';
 import ParsingExcerpt from './ParsingExcerpt';
 import theme from '../../theme';
 import { makeStyles } from '@material-ui/styles';
-import { Box, Chip, CircularProgress, Tooltip } from '@material-ui/core';
+import {
+    Box,
+    Chip,
+    CircularProgress,
+    IconButton,
+    Tooltip,
+} from '@material-ui/core';
 import { TablePagination } from '@mui/material';
 
 const COLUMN_TYPE = {
@@ -238,6 +245,17 @@ export const ParsingResultComponent = props => {
     const [sort, setSort] = useState({});
     const [filter, setFilter] = useState({});
 
+    const fetchDataset = async () => {
+        const { count: datasCount, datas } = await datasetApi.getDataset({
+            skip,
+            limit,
+            filter,
+            sort,
+        });
+        setRowCount(datasCount);
+        setDatas(datas);
+    };
+
     const onPageChange = page => {
         setSkip(page * limit);
     };
@@ -250,16 +268,6 @@ export const ParsingResultComponent = props => {
         fetchDataColumns();
     }, []);
     useEffect(() => {
-        const fetchDataset = async () => {
-            const { count: datasCount, datas } = await datasetApi.getDataset({
-                skip,
-                limit,
-                filter,
-                sort,
-            });
-            setRowCount(datasCount);
-            setDatas(datas);
-        };
         fetchDataset();
     }, [skip, limit, filter, sort]);
 
@@ -339,17 +347,24 @@ export const ParsingResultComponent = props => {
                         </Tooltip>
                     </Box>
                 </div>
-                <TablePagination
-                    count={rowCount}
-                    page={skip / limit}
-                    rowsPerPage={limit}
-                    onPageChange={(e, page) => onPageChange(page)}
-                    rowsPerPageOptions={[25, 50, 100]}
-                    labelRowsPerPage={polyglot.t('rows_per_page')}
-                    onRowsPerPageChange={rpp => {
-                        setLimit(rpp.target.value);
-                    }}
-                />
+                <Box display="flex">
+                    <Tooltip title={polyglot.t(`refresh_button`)}>
+                        <IconButton onClick={() => fetchDataset()}>
+                            <RefreshIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <TablePagination
+                        count={rowCount}
+                        page={skip / limit}
+                        rowsPerPage={limit}
+                        onPageChange={(e, page) => onPageChange(page)}
+                        rowsPerPageOptions={[25, 50, 100]}
+                        labelRowsPerPage={polyglot.t('rows_per_page')}
+                        onRowsPerPageChange={rpp => {
+                            setLimit(rpp.target.value);
+                        }}
+                    />
+                </Box>
             </div>
         );
     };
