@@ -79,9 +79,12 @@ const styles = {
     drawer: {
         width: '45%',
     },
-    error: {
+    errorChip: {
         backgroundColor: theme.red.primary,
         color: theme.white.primary,
+    },
+    errorHeader: {
+        color: theme.orange.primary,
     },
 };
 
@@ -149,9 +152,19 @@ export const ParsingResultComponent = props => {
                             enrichment.name === key &&
                             enrichment.status === IN_PROGRESS,
                     );
+                const errorCount = isEnrichment
+                    ? enrichments.find(enrichment => enrichment.name === key)
+                          ?.errorCount
+                    : null;
                 return {
                     field: key,
-                    headerName: key,
+                    headerName: errorCount
+                        ? polyglot.t('header_name_with_errors', {
+                              name: key,
+                              errorCount,
+                          })
+                        : key,
+                    headerClassName: errorCount && classes.errorHeader,
                     cellClassName: isEnrichment && classes.enrichedColumn,
                     width: 150,
                     filterable: type !== 'object',
@@ -179,7 +192,10 @@ export const ParsingResultComponent = props => {
                                 params.value.startsWith('ERROR'))
                         ) {
                             return (
-                                <Chip className={classes.error} label="Error" />
+                                <Chip
+                                    className={classes.errorChip}
+                                    label="Error"
+                                />
                             );
                         }
                         return (
