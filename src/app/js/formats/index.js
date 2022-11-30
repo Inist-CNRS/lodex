@@ -93,7 +93,25 @@ const components = {
     istexRefbibs,
 };
 
-export const FORMATS = Object.keys(components).sort();
+const formats = [
+    {
+        name: 'asterPlotChart',
+        description: 'Aster Plot Chart',
+        componentName: 'asterPlotChart',
+        type: 'chart',
+    },
+    {
+        name: 'code',
+        description: 'Code',
+        componentName: 'code',
+        type: 'text',
+    },
+];
+
+// export const FORMATS = Object.keys(components).sort();
+export const FORMATS = formats.sort((a, b) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+);
 
 export const TABLE_COMPATIBLE_FORMATS = Object.keys({
     title,

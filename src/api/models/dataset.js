@@ -112,7 +112,6 @@ export default db => {
         return (await collection.find({}).stream()).pipe(omitMongoId);
     };
 
-
     collection.removeAttribute = async attribute =>
         collection.update({}, { $unset: { [attribute]: 1 } }, { multi: true });
 

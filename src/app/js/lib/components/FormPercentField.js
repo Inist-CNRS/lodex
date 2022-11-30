@@ -22,6 +22,9 @@ const FormPercentField = ({
         label={label}
         error={touched && !!error}
         helperText={touched && error}
+        InputProps={{
+            endAdornment: '%',
+        }}
         {...input}
         {...custom}
     />
