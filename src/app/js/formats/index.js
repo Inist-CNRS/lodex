@@ -106,6 +106,54 @@ const formats = [
         componentName: 'code',
         type: 'text',
     },
+    {
+        name: 'globalBarchart',
+        description: 'Global Barchart',
+        componentName: 'globalBarchart',
+        type: 'chart',
+    },
+    {
+        name: 'globalPiechart',
+        description: 'Global Piechart',
+        componentName: 'globalPiechart',
+        type: 'chart',
+    },
+    {
+        name: 'globalRadarchart',
+        description: 'Global Radarchart',
+        componentName: 'globalRadarchart',
+        type: 'chart',
+    },
+    {
+        name: 'emphasedNumber',
+        description: 'Emphased Number',
+        componentName: 'emphasedNumber',
+        type: 'text',
+    },
+    {
+        name: 'identifierBadge',
+        description: 'Identifier Badge',
+        componentName: 'identifierBadge',
+        type: 'text',
+    },
+    {
+        name: 'email',
+        description: 'Email',
+        componentName: 'email',
+        type: 'text',
+    },
+    {
+        name: 'fieldClone',
+        description: 'Field Clone',
+        componentName: 'fieldClone',
+        type: 'text',
+    },
+    {
+        name: 'html',
+        description: 'HTML',
+        componentName: 'html',
+        type: 'text',
+    },
 ];
 
 // export const FORMATS = Object.keys(components).sort();

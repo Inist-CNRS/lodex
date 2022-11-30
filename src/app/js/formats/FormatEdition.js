@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import merge from '../lib/merge';
 
 import SelectFormat from './SelectFormat';
@@ -12,50 +12,6 @@ const styles = {
         width: '100%',
     },
 };
-
-// class FormatEdition extends Component {
-//     constructor(props) {
-//         super(props);
-
-//         this.state = {
-//             name: props.input.value.name || '',
-//             args: merge(
-//                 getFormatInitialArgs(props.input.value.name),
-//                 props.input.value.args,
-//             ),
-//         };
-//     }
-
-//     setArguments = args => {
-//         this.setState({ args }, () => this.props.input.onChange(this.state));
-//     };
-
-//     setFormat = name => {
-//         this.setState({ name, args: getFormatInitialArgs(name) }, () =>
-//             this.props.input.onChange(this.state),
-//         );
-//     };
-
-//     render() {
-//         const { name, args } = this.state;
-//         const AdminComponent = getAdminComponent(name);
-
-//         return (
-//             <div style={styles.container}>
-//                 <SelectFormat
-//                     formats={FORMATS}
-//                     value={name}
-//                     onChange={this.setFormat}
-//                 />
-//                 <AdminComponent
-//                     onChange={this.setArguments}
-//                     {...this.props}
-//                     args={args}
-//                 />
-//             </div>
-//         );
-//     }
-// }
 
 const FormatEdition = props => {
     const { input } = props;
