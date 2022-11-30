@@ -289,6 +289,13 @@ export const getGetDatasetRequest = (state, params) => {
     });
 };
 
+export const putUpdateDataset = (state, data) =>
+    getRequest(state, {
+        url: '/api/dataset',
+        method: 'PUT',
+        body: data,
+    });
+
 export const getGetDatasetColumnsRequest = state => {
     return getRequest(state, {
         url: `/api/dataset/columns`,
