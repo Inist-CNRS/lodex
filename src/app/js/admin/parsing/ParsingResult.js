@@ -267,7 +267,6 @@ export const ParsingResultComponent = props => {
         fetchDataColumns();
     }, []);
     useEffect(() => {
-        console.log('useEffect fetchDataset');
         fetchDataset();
     }, [skip, limit, filter, sort]);
 
