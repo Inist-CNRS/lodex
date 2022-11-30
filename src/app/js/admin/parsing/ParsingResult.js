@@ -16,7 +16,6 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { reloadParsingResult } from './';
 import { fromEnrichments, fromParsing } from '../selectors';
 import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
@@ -268,6 +267,7 @@ export const ParsingResultComponent = props => {
         fetchDataColumns();
     }, []);
     useEffect(() => {
+        console.log('useEffect fetchDataset');
         fetchDataset();
     }, [skip, limit, filter, sort]);
 
@@ -406,7 +406,6 @@ ParsingResultComponent.propTypes = {
     excerptColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
     excerptLines: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
-    handleClearParsing: PropTypes.func.isRequired,
     showAddFromColumn: PropTypes.bool.isRequired,
     onAddField: PropTypes.func,
     maxLines: PropTypes.number,
@@ -427,11 +426,7 @@ const mapStateToProps = state => ({
     enrichments: fromEnrichments.enrichments(state),
 });
 
-const mapDispatchToProps = {
-    handleClearParsing: reloadParsingResult,
-};
-
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps),
     translate,
 )(ParsingResultComponent);
