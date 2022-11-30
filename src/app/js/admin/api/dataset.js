@@ -2,6 +2,7 @@ import fetch from '../../lib/fetch';
 const {
     getGetDatasetRequest,
     getGetDatasetColumnsRequest,
+    putUpdateDataset,
 } = require('../../user');
 const { getUserLocalStorageInfo } = require('./tools');
 
@@ -31,4 +32,16 @@ const getDatasetColumns = async () => {
     });
 };
 
-export default { getDataset, getDatasetColumns };
+const updateDataset = async ({ uri, field, value }) => {
+    const { token } = getUserLocalStorageInfo();
+
+    const request = putUpdateDataset({ token }, { uri, field, value });
+    return fetch(request).then(({ response, error }) => {
+        if (error) {
+            return [];
+        }
+        return response;
+    });
+};
+
+export default { getDataset, getDatasetColumns, updateDataset };

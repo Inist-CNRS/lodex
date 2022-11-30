@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import logger from '../../services/logger';
+import koaBodyParser from 'koa-bodyparser';
 
 const app = new Koa();
 
@@ -71,8 +72,27 @@ export const getDataset = async ctx => {
     ctx.body = { count, datas };
 };
 
+export const updateDataset = async ctx => {
+    const { uri, field, value } = ctx.request.body;
+    const dataset = await ctx.dataset.findBy('uri', uri);
+    if (!dataset) {
+        ctx.body = { status: 'error', error: 'dataset not found' };
+        ctx.status = 404;
+        return;
+    }
+    await ctx.dataset.updateOne(
+        {
+            uri: uri,
+        },
+        { $set: { [field]: value } },
+    );
+    ctx.body = { status: 'success' };
+};
+
 app.use(route.delete('/', clearDataset));
 app.use(route.get('/columns', getDatasetColumns));
 app.use(route.get('/', getDataset));
+app.use(koaBodyParser());
+app.use(route.put('/', updateDataset));
 
 export default app;

@@ -22,8 +22,15 @@ import Loading from '../../lib/components/Loading';
 import ParsingExcerpt from './ParsingExcerpt';
 import theme from '../../theme';
 import { makeStyles } from '@material-ui/styles';
-import { Box, Chip, CircularProgress, Tooltip } from '@material-ui/core';
+import {
+    Box,
+    Chip,
+    CircularProgress,
+    Drawer,
+    Tooltip,
+} from '@material-ui/core';
 import { TablePagination } from '@mui/material';
+import ParsingEditCell from './ParsingEditCell';
 
 const COLUMN_TYPE = {
     MAIN: 'main',
@@ -68,6 +75,9 @@ const styles = {
     },
     toggle: {
         cursor: 'pointer',
+    },
+    drawer: {
+        width: '45%',
     },
     errorChip: {
         backgroundColor: theme.red.primary,
@@ -117,6 +127,8 @@ export const ParsingResultComponent = props => {
 
     const [datas, setDatas] = useState([]);
     const [columns, setColumns] = useState([]);
+    const [toggleDrawer, setToggleDrawer] = useState(false);
+    const [selectedCell, setSelectedCell] = useState(null);
 
     const getColumnsToShow = () => {
         const enrichmentsNames = enrichments.map(enrichment => enrichment.name);
@@ -278,6 +290,14 @@ export const ParsingResultComponent = props => {
         setFilter({ columnField, operatorValue, value });
     };
 
+    const handleCellClick = params => {
+        if (!params.value) {
+            return;
+        }
+        setSelectedCell(params);
+        setToggleDrawer(true);
+    };
+
     if (loadingParsingResult) {
         return (
             <Loading className="admin">
@@ -357,24 +377,40 @@ export const ParsingResultComponent = props => {
     return (
         <div className={classes.container}>
             {dataGrid ? (
-                <DataGrid
-                    columns={columnsToShow}
-                    rows={rows}
-                    rowCount={rowCount}
-                    pageSize={limit}
-                    paginationMode="server"
-                    onPageChange={onPageChange}
-                    onPageSizeChange={setLimit}
-                    sortingMode="server"
-                    onSortModelChange={handleSortModelChange}
-                    filterMode="server"
-                    onFilterModelChange={handleFilterModelChange}
-                    rowsPerPageOptions={[10, 25, 50]}
-                    disableSelectionOnClick={true}
-                    components={{
-                        Footer: CustomFooter,
-                    }}
-                />
+                <React.Fragment>
+                    <DataGrid
+                        columns={columnsToShow}
+                        rows={rows}
+                        rowCount={rowCount}
+                        pageSize={limit}
+                        paginationMode="server"
+                        onPageChange={onPageChange}
+                        onPageSizeChange={setLimit}
+                        sortingMode="server"
+                        onSortModelChange={handleSortModelChange}
+                        filterMode="server"
+                        onFilterModelChange={handleFilterModelChange}
+                        rowsPerPageOptions={[10, 25, 50]}
+                        disableSelectionOnClick={true}
+                        onCellClick={handleCellClick}
+                        components={{
+                            Footer: CustomFooter,
+                        }}
+                    />
+                    <Drawer
+                        anchor="right"
+                        open={toggleDrawer}
+                        onClose={() => setToggleDrawer(false)}
+                        className={classes.drawer}
+                        classes={{
+                            paper: classes.drawer,
+                        }}
+                    >
+                        {selectedCell ? (
+                            <ParsingEditCell cell={selectedCell} />
+                        ) : null}
+                    </Drawer>
+                </React.Fragment>
             ) : (
                 <ParsingExcerpt
                     columns={excerptColumns}
