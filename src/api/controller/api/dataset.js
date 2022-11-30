@@ -77,6 +77,7 @@ export const updateDataset = async ctx => {
     const dataset = await ctx.dataset.findBy('uri', uri);
     if (!dataset) {
         ctx.body = { status: 'error', error: 'dataset not found' };
+        ctx.status = 404;
         return;
     }
     await ctx.dataset.updateOne(
