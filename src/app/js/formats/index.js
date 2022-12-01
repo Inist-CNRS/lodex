@@ -48,7 +48,7 @@ export const getComponent = field => {
     }
     if (typeof field === 'string') {
         return (
-            FORMATS_CATALOG.find(i => i.componentName === field).component ||
+            FORMATS_CATALOG.find(i => i.componentName === field)?.component ||
             DefaultFormat
         );
     }
@@ -59,7 +59,7 @@ export const getComponent = field => {
 
     return (
         FORMATS_CATALOG.find(i => i.componentName === field.format.name)
-            .component || DefaultFormat
+            ?.component || DefaultFormat
     );
 };
 
