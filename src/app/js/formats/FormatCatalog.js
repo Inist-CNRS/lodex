@@ -113,8 +113,8 @@ export const FormatCatalog = ({
                             }
                         >
                             <ListItemText
-                                primary={format.name}
-                                secondary={format.description}
+                                primary={polyglot.t(format.name)}
+                                secondary={polyglot.t(format.description)}
                             />
                         </ListItemButton>
                     ))}
