@@ -97,14 +97,14 @@ export const FORMATS_CATALOG = [
         description: 'formatEmailDescription',
         componentName: 'email',
         component: email,
-        type: 'text',
+        type: 'url',
     },
     {
         name: 'formatFieldClone',
         description: 'formatFieldCloneDescription',
         componentName: 'fieldClone',
         component: fieldClone,
-        type: 'text',
+        type: 'other',
     },
     {
         name: 'formatHtml',
@@ -118,14 +118,14 @@ export const FORMATS_CATALOG = [
         description: 'formatImageDescription',
         componentName: 'image',
         component: image,
-        type: 'text',
+        type: 'Other',
     },
     {
         name: 'formatPdf',
         description: 'formatPdfDescription',
         componentName: 'pdf',
         component: pdf,
-        type: 'text',
+        type: 'other',
     },
     {
         name: 'formatLatex',
@@ -146,7 +146,7 @@ export const FORMATS_CATALOG = [
         description: 'formatLinkDescription',
         componentName: 'link',
         component: link,
-        type: 'text',
+        type: 'url',
     },
     {
         name: 'formatLinkImage',
