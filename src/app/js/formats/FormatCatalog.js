@@ -16,25 +16,11 @@ import {
     Box,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import theme from '../theme';
 import { ListItemButton } from '@mui/material';
 
 const useStyles = makeStyles({
-    item: {
-        cursor: 'pointer',
-        '&:hover': {
-            backgroundColor: theme.black.veryLight,
-        },
-        borderBottom: `1px solid ${theme.black.light}`,
-    },
-    selectedItem: {
-        backgroundColor: theme.green.secondary,
-        '&:hover': {
-            backgroundColor: theme.green.primary,
-        },
-    },
     list: {
-        width: 800,
+        width: 1050,
         height: '70vh',
     },
 });
@@ -45,6 +31,7 @@ export const FormatCatalog = ({
     isOpen,
     handleClose,
     onChange,
+    currentValue,
 }) => {
     const classes = useStyles();
     const filters = [...new Set(formats.map(item => item.type))];
@@ -111,6 +98,7 @@ export const FormatCatalog = ({
                             onClick={() =>
                                 handleValueChange(format.componentName)
                             }
+                            selected={currentValue === format.componentName}
                         >
                             <ListItemText
                                 primary={polyglot.t(format.name)}
@@ -140,6 +128,7 @@ FormatCatalog.propTypes = {
     handleClose: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     onChange: PropTypes.func.isRequired,
+    currentValue: PropTypes.object,
 };
 
 export default compose(translate)(FormatCatalog);

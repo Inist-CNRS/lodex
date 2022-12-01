@@ -60,6 +60,7 @@ const SelectFormat = ({ formats, value, onChange, p: polyglot }) => {
                 handleClose={() => setOpenCatalog(false)}
                 formats={formats}
                 onChange={onChange}
+                currentValue={value}
             />
         </div>
     );

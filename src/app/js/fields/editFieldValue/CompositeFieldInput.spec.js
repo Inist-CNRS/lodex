@@ -57,7 +57,7 @@ describe('CompositeFieldInput', () => {
         expect(editFieldInput2Props.field).toEqual('field2');
     });
 
-    it.only('should render ListSubheader with label', () => {
+    it('should render ListSubheader with label', () => {
         const props = {
             label: 'Field',
             p: { t },
