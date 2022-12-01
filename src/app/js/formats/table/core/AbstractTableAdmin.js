@@ -34,7 +34,6 @@ class AbstractTableAdmin extends Component {
         container: {
             display: 'flex',
             flexWrap: 'wrap',
-            width: '200%',
             justifyContent: 'space-between',
         },
         input: {
