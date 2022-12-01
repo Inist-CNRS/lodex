@@ -668,3 +668,4 @@
 "ws_post-v1-en-classify_description"	"Classifies scientific documents in English in the Pascal classification plan (Sciences, Techniques and Medicine) or Francis (Humanities and Social Sciences)."	"Classe des documents scientifiques en anglais dans le plan de classement Pascal (Sciences, Techniques et Médecine) ou Francis (Sciences Humaines et Sociales)."
 "ws_post-v1-unpaywall-expand_title"	"untitled (Info related to Open Access)"	"sans titre (Infos liées à l'Open Access)"
 "ws_post-v1-unpaywall-expand_description"	"Get unpaywall info from doi (is_oa, oa_status, host_type, has_repository_copy)"	"Récupère des infos d'unpaywall à partir du doi (is_oa, oa_status, host_type, has_repository_copy)"
+"refresh_button"	"Refresh"	"Rafraîchir"
