@@ -309,7 +309,7 @@ export const EnrichmentFormComponent = ({
                                             setOpenCatalog(false)
                                         }
                                         selectedWebServiceUrl={
-                                            formValues.webServiceUrl
+                                            formValues?.webServiceUrl
                                         }
                                         onChange={onChangeWebServiceUrl}
                                     />
