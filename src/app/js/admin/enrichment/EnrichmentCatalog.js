@@ -53,9 +53,9 @@ const EnricherDescription = ({ enricher, polyglot }) => {
                 {polyglot.t(`ws_${enricher.id}_description`)}
             </Typography>
             <Box justifyContent="flex-end" display="flex">
-                {enricher.doc && (
+                {enricher.objectifTDM && (
                     <Link
-                        href={enricher.doc}
+                        href={enricher.objectifTDM}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{ marginRight: '1em' }}
