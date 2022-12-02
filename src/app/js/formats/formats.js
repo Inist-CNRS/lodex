@@ -118,7 +118,7 @@ export const FORMATS_CATALOG = [
         description: 'formatImageDescription',
         componentName: 'image',
         component: image,
-        type: 'Other',
+        type: 'other',
     },
     {
         name: 'formatPdf',
