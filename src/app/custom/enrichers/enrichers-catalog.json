@@ -4,7 +4,7 @@
     "url": "https://affiliations-tools.services.inist.fr/v1/rnsr/json",
     "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/affiliations-tools#v1%252frnsr%252fjson",
     "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Structuration%20%26%20enrichissements%20d%27affiliations#/affiliations/post-v1-rnsr-conditor",
-    "objectifTDM": "https://test-objectif-tdm.inist.fr/2021/12/09/identifiants-rnsr-adresse/"
+    "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/09/identifiants-rnsr-adresse/"
   },
   {
     "id": "post-v1-halauthorid-idref-json",
@@ -53,42 +53,42 @@
     "url": "https://biblio-tools.services.inist.fr/v1/crossref/prefixes/expand",
     "doc": "",
     "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/",
-    "objectifTDM": "https://test-objectif-tdm.inist.fr/2021/12/21/verbalisation-des-prefixes-de-doi/"
+    "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/21/verbalisation-des-prefixes-de-doi/"
   },
   {
     "id": "post-v1-teeft-en",
     "url": "https://terms-extraction.services.inist.fr/v1/teeft/en",
     "doc": "",
     "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Extraction%20de%20termes#/terms-extraction/post-v1-teeft-en",
-    "objectifTDM": "https://test-objectif-tdm.inist.fr/2021/12/20/extraction-de-termes-teeft/"
+    "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/20/extraction-de-termes-teeft/"
   },
   {
     "id": "post-v1-teeft-fr",
     "url": "https://terms-extraction.services.inist.fr/v1/teeft/fr",
     "doc": "",
     "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Extraction%20de%20termes#/terms-extraction/post-v1-teeft-fr",
-    "objectifTDM": "https://test-objectif-tdm.inist.fr/2021/12/20/extraction-de-termes-teeft/"
+    "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/20/extraction-de-termes-teeft/"
   },
   {
     "id": "post-v1-addresses-parse",
     "url": "https://affiliations-tools.services.inist.fr/v1/addresses/parse",
     "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/affiliations-tools",
     "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Traitements%20d%27affiliation%20avec%20libpostal#/",
-    "objectifTDM": "https://test-objectif-tdm.inist.fr/2021/12/20/decoupage-dune-adresse/"
+    "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/20/decoupage-dune-adresse/"
   },
   {
     "id": "post-v1-detect-lang",
     "url": "https://nlp-tools2.services.inist.fr/v1/detect-lang",
     "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/nlp-tools2",
     "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Outils%20de%20NLP#/",
-    "objectifTDM": "https://test-objectif-tdm.inist.fr/2021/12/16/detection-de-la-llangue-dun-texte/"
+    "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/16/detection-de-la-llangue-dun-texte/"
   },
   {
     "id": "post-v1-en-classify",
     "url": "https://domains-classifier.services.inist.fr/v1/en/classify",
     "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/domains-classifier",
     "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Classification%20en%20domaines%20scientifiques#/default/post_v1_en_classify",
-    "objectifTDM": "https://test-objectif-tdm.inist.fr/2021/12/08/classification-en-domaines-scientifiques/"
+    "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/08/classification-en-domaines-scientifiques/"
   },
   {
     "id": "post-v1-unpaywall-expand",

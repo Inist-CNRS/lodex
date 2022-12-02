@@ -12,12 +12,34 @@ import {
     Button,
     Typography,
     Link,
+    ListItem,
+    Box,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { ListItemButton } from '@mui/material';
 import enrichers from '../../../custom/enrichers/enrichers-catalog.json';
+import classnames from 'classnames';
+import theme from '../../theme';
+
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
 
 const useStyles = makeStyles({
+    item: {
+        cursor: 'pointer',
+        '&:hover': {
+            backgroundColor: theme.black.veryLight,
+        },
+        borderBottom: `1px solid ${theme.black.light}`,
+    },
+    selectedItem: {
+        backgroundColor: theme.green.secondary,
+        '&:hover': {
+            backgroundColor: theme.green.primary,
+        },
+        '& a': {
+            color: 'white',
+        },
+    },
     list: {
         width: 800,
         height: '70vh',
@@ -30,42 +52,27 @@ const EnricherDescription = ({ enricher, polyglot }) => {
             <Typography>
                 {polyglot.t(`ws_${enricher.id}_description`)}
             </Typography>
-            {enricher.doc && (
-                <Typography>
-                    Doc :{' '}
+            <Box justifyContent="flex-end" display="flex">
+                {enricher.objectifTDM && (
                     <Link
-                        href={enricher.doc}
+                        href={enricher.objectifTDM}
                         target="_blank"
                         rel="noopener noreferrer"
+                        style={{ marginRight: '1em' }}
                     >
-                        {enricher.doc}
+                        <MenuBookIcon />
                     </Link>
-                </Typography>
-            )}
-            {enricher.swagger && (
-                <Typography>
-                    Swagger :{' '}
+                )}
+                {enricher.swagger && (
                     <Link
                         href={enricher.swagger}
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        {enricher.swagger}
+                        <SettingsEthernetIcon />
                     </Link>
-                </Typography>
-            )}
-            {enricher.objectifTDM && (
-                <Typography>
-                    Objectif TDM :{' '}
-                    <Link
-                        href={enricher.objectifTDM}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {enricher.objectifTDM}
-                    </Link>
-                </Typography>
-            )}
+                )}
+            </Box>
         </React.Fragment>
     );
 };
@@ -93,13 +100,19 @@ export const EnrichmentCatalog = ({
                     className={classes.list}
                 >
                     {enrichers.map(enricher => (
-                        <ListItemButton
+                        <ListItem
                             key={enricher.id}
                             onClick={() => handleValueChange(enricher.url)}
-                            selected={selectedWebServiceUrl === enricher.url}
+                            className={classnames(classes.item, {
+                                [classes.selectedItem]:
+                                    selectedWebServiceUrl === enricher.url,
+                            })}
                         >
                             <ListItemText
                                 primary={polyglot.t(`ws_${enricher.id}_title`)}
+                                primaryTypographyProps={{
+                                    style: { fontWeight: 'bold' },
+                                }}
                                 secondary={
                                     <EnricherDescription
                                         enricher={enricher}
@@ -107,7 +120,7 @@ export const EnrichmentCatalog = ({
                                     />
                                 }
                             />
-                        </ListItemButton>
+                        </ListItem>
                     ))}
                 </List>
             </DialogContent>

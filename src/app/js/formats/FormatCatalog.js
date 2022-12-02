@@ -14,11 +14,26 @@ import {
     Button,
     Grid,
     Box,
+    ListItem,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { ListItemButton } from '@mui/material';
+import theme from '../theme';
+import classNames from 'classnames';
 
 const useStyles = makeStyles({
+    item: {
+        cursor: 'pointer',
+        '&:hover': {
+            backgroundColor: theme.black.veryLight,
+        },
+        borderBottom: `1px solid ${theme.black.light}`,
+    },
+    selectedItem: {
+        backgroundColor: theme.green.secondary,
+        '&:hover': {
+            backgroundColor: theme.green.primary,
+        },
+    },
     list: {
         width: 1050,
         height: '70vh',
@@ -35,6 +50,12 @@ export const FormatCatalog = ({
 }) => {
     const classes = useStyles();
     const filters = [...new Set(formats.map(item => item.type))];
+    filters.unshift('all');
+    const otherIndex = filters.indexOf('other');
+    if (otherIndex !== -1) {
+        filters.splice(otherIndex, 1);
+        filters.push('other');
+    }
 
     const [filteredFormats, setFilterFormats] = useState(formats);
     const [selectedFilter, setSelectedFilter] = useState();
@@ -65,7 +86,6 @@ export const FormatCatalog = ({
                         <FilterIcon
                             fontSize="large"
                             style={{ marginRight: 10, cursor: 'pointer' }}
-                            onClick={() => setSelectedFilter()}
                         />
                     </Box>
                     {filters.map(filter => (
@@ -73,14 +93,18 @@ export const FormatCatalog = ({
                             <Button
                                 color="primary"
                                 className="format-category"
-                                onClick={() => setSelectedFilter(filter)}
+                                onClick={() =>
+                                    setSelectedFilter(
+                                        filter === 'all' ? null : filter,
+                                    )
+                                }
                                 variant={
                                     filter === selectedFilter
                                         ? 'contained'
                                         : 'outlined'
                                 }
                             >
-                                {filter}
+                                {polyglot.t(filter)}
                             </Button>
                         </Box>
                     ))}
@@ -93,18 +117,21 @@ export const FormatCatalog = ({
                     className={classes.list}
                 >
                     {filteredFormats.map(format => (
-                        <ListItemButton
+                        <ListItem
                             key={format.name}
                             onClick={() =>
                                 handleValueChange(format.componentName)
                             }
-                            selected={currentValue === format.componentName}
+                            className={classNames(classes.item, {
+                                [classes.selectedItem]:
+                                    currentValue === format.componentName,
+                            })}
                         >
                             <ListItemText
                                 primary={polyglot.t(format.name)}
                                 secondary={polyglot.t(format.description)}
                             />
-                        </ListItemButton>
+                        </ListItem>
                     ))}
                 </List>
             </DialogContent>
