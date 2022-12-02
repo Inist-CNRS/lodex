@@ -50,7 +50,7 @@ export const requestToStream = asyncBusboyImpl => async req => {
 };
 
 export const clearUpload = async ctx => {
-    await ctx.dataset.remove({});
+    await ctx.dataset.drop({});
     ctx.body = true;
 };
 
@@ -70,6 +70,7 @@ export const uploadFile = ctx => async loaderName => {
     );
 
     const parsedStream = parseStream(mergedStream);
+    console.log('parsedStream', parsedStream);
     try {
         await ctx.saveParsedStream(parsedStream);
         await ctx.dataset.indexColumns();

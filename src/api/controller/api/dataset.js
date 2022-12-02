@@ -7,14 +7,14 @@ const app = new Koa();
 
 export const clearDataset = async ctx => {
     try {
-        await ctx.publishedDataset.remove({});
-        await ctx.publishedCharacteristic.remove({});
-        await ctx.publishedFacet.remove({});
-        await ctx.field.remove({});
-        await ctx.dataset.remove({});
-        await ctx.subresource.remove({});
-        await ctx.enrichment.remove({});
-
+        const collectionNames = await ctx.db.listCollections().toArray();
+        if (collectionNames.length > 0) {
+            await Promise.all(
+                collectionNames.map(collection =>
+                    ctx.db.dropCollection(collection.name),
+                ),
+            );
+        }
         ctx.body = { status: 'success' };
     } catch (error) {
         logger.error('clear dataset error', {
