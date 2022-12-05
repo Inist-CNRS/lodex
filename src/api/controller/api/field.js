@@ -2,7 +2,6 @@ import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 import asyncBusboy from 'async-busboy';
-import backup from 'mongodb-backup';
 import restore from 'mongodb-restore';
 import moment from 'moment';
 import streamToString from 'stream-to-string';
@@ -11,6 +10,7 @@ import { validateField } from '../../models/field';
 import publishFacets from './publishFacets';
 import indexSearchableFields from '../../services/indexSearchableFields';
 import { mongoConnectionString } from '../../services/mongoClient';
+const tar = require('tar-stream');
 
 import {
     SCOPE_DATASET,
@@ -131,24 +131,10 @@ export const translateOldField = (ctx, oldField, index) => {
     );
 };
 
-export const backupFields = writeStream =>
-    new Promise((resolve, reject) =>
-        backup({
-            uri: mongoConnectionString,
-            collections: ['field', 'subresource', 'enrichment'],
-            stream: writeStream,
-            parser: 'json',
-            callback: err => {
-                err ? reject(err) : resolve();
-            },
-        }),
-    );
-
 export const setup = async (ctx, next) => {
     ctx.validateField = validateField;
     ctx.publishFacets = publishFacets;
     ctx.restoreFields = restoreFields;
-    ctx.backupFields = backupFields;
 
     try {
         await next();
@@ -211,13 +197,29 @@ export const removeField = async (ctx, id) => {
 
 export const exportFields = async ctx => {
     const filename = `model_${moment().format('YYYY-MM-DD-HHmmss')}.tar`;
-
-    ctx.status = 200;
     ctx.set('Content-disposition', `attachment; filename=${filename}`);
     ctx.set('Content-type', 'application/x-tar');
-
     try {
-        await ctx.backupFields(ctx.res);
+        const collections = ['field', 'subresource', 'enrichment'];
+        const pack = tar.pack();
+
+        for (const collection of collections) {
+            const docs = await ctx.db
+                .collection(collection)
+                .find()
+                .toArray();
+
+            for (const doc of docs) {
+                await pack.entry(
+                    { name: `dataset/${collection}/${doc._id}.json` },
+                    JSON.stringify(doc),
+                );
+            }
+        }
+
+        await pack.finalize();
+        ctx.status = 200;
+        ctx.body = pack;
     } catch (e) {
         ctx.status = 500;
         ctx.body = e.message;
