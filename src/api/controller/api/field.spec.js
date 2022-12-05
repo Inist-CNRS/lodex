@@ -11,7 +11,6 @@ import {
     putField,
     removeField,
     reorderField,
-    backupFields,
     restoreFields,
 } from './field';
 
@@ -39,7 +38,6 @@ describe('field routes', () => {
             expect(ctx).toEqual({
                 publishFacets,
                 validateField,
-                backupFields,
                 restoreFields,
             });
         });
@@ -57,7 +55,6 @@ describe('field routes', () => {
                 validateField,
                 body: { error: 'Boom' },
                 status: 500,
-                backupFields,
                 restoreFields,
             });
         });
@@ -86,17 +83,13 @@ describe('field routes', () => {
             req: 'request',
             set: jest.fn(),
             res: 'result',
-            backupFields: jest
-                .fn()
-                .mockImplementation(() => Promise.resolve('BACKUP OK')),
         };
 
         beforeEach(() => {
-            ctx.backupFields.mockClear();
             ctx.set.mockClear();
         });
 
-        it('should call rawBody and return 200 in ctx.status', async () => {
+        it('should return good header infromations', async () => {
             await exportFields(ctx);
 
             expect(ctx.set.mock.calls[0][0]).toBe('Content-disposition');
@@ -110,18 +103,11 @@ describe('field routes', () => {
                 'Content-type',
                 'application/x-tar',
             ]);
-
-            expect(ctx.backupFields).toHaveBeenCalledWith('result');
         });
 
         it('should return 500 in ctx.status and error message in ctx.body on error', async () => {
-            ctx.backupFields.mockImplementation(() => {
-                throw new Error('Error!');
-            });
-
             await exportFields(ctx);
             expect(ctx.status).toBe(500);
-            expect(ctx.body).toBe('Error!');
         });
     });
 
