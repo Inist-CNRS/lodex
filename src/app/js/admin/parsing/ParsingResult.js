@@ -416,7 +416,10 @@ export const ParsingResultComponent = props => {
                         }}
                     >
                         {selectedCell ? (
-                            <ParsingEditCell cell={selectedCell} />
+                            <ParsingEditCell
+                                cell={selectedCell}
+                                setToggleDrawer={setToggleDrawer}
+                            />
                         ) : null}
                     </Drawer>
                 </React.Fragment>

@@ -6,9 +6,16 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { makeStyles } from '@material-ui/styles';
 import { Save as SaveIcon } from '@material-ui/icons';
 import datasetApi from '../api/dataset';
-import { Button, CircularProgress, Input, Snackbar } from '@material-ui/core';
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Input,
+    Snackbar,
+} from '@material-ui/core';
 import classNames from 'classnames';
 import { Alert } from '@material-ui/lab';
+import theme from '../../theme';
 
 const style = {
     container: {
@@ -20,7 +27,7 @@ const style = {
         minHeight: '100px',
     },
     containedButton: {
-        marginTop: 30,
+        marginTop: 15,
         float: 'right',
     },
     icon: {
@@ -48,7 +55,7 @@ const isError = value => {
     );
 };
 
-const ParsingEditCell = ({ cell, p: polyglot }) => {
+const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
     const [loading, setLoading] = React.useState(false);
     const [value, setValue] = React.useState(returnParsedValue(cell.value));
     const [openAlert, setOpenAlert] = React.useState(false);
@@ -66,15 +73,25 @@ const ParsingEditCell = ({ cell, p: polyglot }) => {
     const handleChange = async () => {
         setLoading(true);
         try {
+            let valueToSave = value;
+            if (isPrimitive(cell.value)) {
+                if (typeof cell.value === 'number') {
+                    valueToSave = Number(value);
+                }
+                if (typeof cell.value === 'boolean') {
+                    valueToSave = value === 'true';
+                }
+            } else {
+                valueToSave = JSON.stringify(value);
+            }
             await datasetApi.updateDataset({
                 uri: cell.row.uri,
                 field: cell.field,
-                value: isPrimitive(value) ? value : JSON.stringify(value),
+                value: valueToSave,
             });
-            cell.row[cell.field] = isPrimitive(value)
-                ? value
-                : JSON.stringify(value);
+            cell.row[cell.field] = valueToSave;
             setOpenAlert(true);
+            setToggleDrawer(false);
         } catch (e) {
             console.error(e);
         } finally {
@@ -105,10 +122,12 @@ const ParsingEditCell = ({ cell, p: polyglot }) => {
     return (
         <div>
             <h2 style={{ textAlign: 'center' }}>
-                {polyglot.t('dataset_edit_title', {
-                    column_name: cell.field,
-                    row_name: cell?.row?.uri || cell?.row?.ark,
-                })}
+                {polyglot.t('column')}{' '}
+                <span style={{ color: theme.green.primary }}>{cell.field}</span>{' '}
+                {polyglot.t('for_row')}{' '}
+                <span style={{ color: theme.orange.primary }}>
+                    {cell?.row?.uri || cell?.row?.ark}
+                </span>
             </h2>
             <div style={{ padding: '0 20px' }}>
                 {isPrimitive(value) ? (
@@ -135,6 +154,12 @@ const ParsingEditCell = ({ cell, p: polyglot }) => {
                         onEdit={e => {
                             setValue(e.updated_src);
                         }}
+                        onAdd={e => {
+                            setValue(e.updated_src);
+                        }}
+                        onDelete={e => {
+                            setValue(e.updated_src);
+                        }}
                         style={{
                             borderRadius: '5px',
                             maxHeight: '80vh',
@@ -142,29 +167,43 @@ const ParsingEditCell = ({ cell, p: polyglot }) => {
                         }}
                     />
                 )}
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleChange}
-                    className={classNames(
-                        classes.containedButton,
-                        'btn-save-edit-cell',
-                    )}
+                <Box
+                    display="flex"
+                    alignItems="flex-end"
+                    justifyContent="flex-end"
                 >
-                    {loading ? (
-                        <CircularProgress
-                            color="white"
-                            variant="indeterminate"
-                            size={20}
-                            marginRight={10}
-                            className={classes.icon}
-                        />
-                    ) : (
-                        <SaveIcon className={classes.icon} />
-                    )}
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleChange}
+                        className={classNames(
+                            classes.containedButton,
+                            'btn-save-edit-cell',
+                        )}
+                    >
+                        {loading ? (
+                            <CircularProgress
+                                color="white"
+                                variant="indeterminate"
+                                size={20}
+                                marginRight={10}
+                                className={classes.icon}
+                            />
+                        ) : (
+                            <SaveIcon className={classes.icon} />
+                        )}
 
-                    {polyglot.t('save')}
-                </Button>
+                        {polyglot.t('save')}
+                    </Button>
+                    <Button
+                        color="secondary"
+                        key="cancel"
+                        variant="text"
+                        onClick={() => setToggleDrawer(false)}
+                    >
+                        {polyglot.t('cancel')}
+                    </Button>
+                </Box>
                 <Snackbar
                     open={openAlert}
                     autoHideDuration={6000}
@@ -186,6 +225,7 @@ const ParsingEditCell = ({ cell, p: polyglot }) => {
 ParsingEditCell.propTypes = {
     cell: PropTypes.object.isRequired,
     p: polyglotPropTypes.isRequired,
+    setToggleDrawer: PropTypes.func.isRequired,
 };
 
 export default translate(ParsingEditCell);
