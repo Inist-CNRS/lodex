@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 import classNames from 'classnames';
 import { Alert } from '@material-ui/lab';
+import theme from '../../theme';
 
 const style = {
     container: {
@@ -77,6 +78,9 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                 if (typeof cell.value === 'number') {
                     valueToSave = Number(value);
                 }
+                if (typeof cell.value === 'boolean') {
+                    valueToSave = value === 'true';
+                }
             } else {
                 valueToSave = JSON.stringify(value);
             }
@@ -118,10 +122,12 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
     return (
         <div>
             <h2 style={{ textAlign: 'center' }}>
-                {polyglot.t('dataset_edit_title', {
-                    column_name: cell.field,
-                    row_name: cell?.row?.uri || cell?.row?.ark,
-                })}
+                {polyglot.t('column')}{' '}
+                <span style={{ color: theme.green.primary }}>{cell.field}</span>{' '}
+                {polyglot.t('for_row')}{' '}
+                <span style={{ color: theme.orange.primary }}>
+                    {cell?.row?.uri || cell?.row?.ark}
+                </span>
             </h2>
             <div style={{ padding: '0 20px' }}>
                 {isPrimitive(value) ? (
