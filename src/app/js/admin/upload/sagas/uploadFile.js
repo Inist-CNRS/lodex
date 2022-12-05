@@ -1,5 +1,4 @@
-import { call, race, take, put, select, takeEvery } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'connected-react-router';
+import { call, take, put, select, takeEvery } from 'redux-saga/effects';
 
 import { fromUser } from '../../../sharedSelectors';
 import { fromUpload, fromPublication } from '../../selectors';

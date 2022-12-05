@@ -471,6 +471,12 @@ export const getClearJobsRequest = state =>
         method: 'POST',
     });
 
+export const getCancelUploadRequest = state =>
+    getRequest(state, {
+        url: `/api/upload/cancel`,
+        method: 'POST',
+    });
+
 export const selectors = {
     isAdmin,
     getRole,
@@ -527,4 +533,5 @@ export const selectors = {
     getLoadLoadersRequest,
     getPreviewDataEnrichmentRequest,
     getCancelJobRequest,
+    getCancelUploadRequest,
 };

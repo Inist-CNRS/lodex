@@ -5,6 +5,8 @@ import {
     LinearProgress,
     DialogTitle,
     DialogContent,
+    DialogActions,
+    Button,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -12,7 +14,8 @@ import compose from 'recompose/compose';
 
 import { fromProgress } from '../selectors';
 import { loadProgress, clearProgress } from './reducer';
-import { PENDING } from '../../../../common/progressStatus';
+import { cancelUpload } from '../upload';
+import { PENDING, SAVING_DATASET } from '../../../../common/progressStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const formatProgress = (progress, target, symbol, label) => {
@@ -47,12 +50,15 @@ export const ProgressComponent = props => {
         progress,
         error,
         clearProgress,
+        cancelUpload,
         p: polyglot,
         loadProgress,
         isBackground,
     } = props;
 
     const isOpen = status !== PENDING && !isBackground;
+
+    console.log('Progress', progress);
 
     useEffect(() => {
         loadProgress();
@@ -83,6 +89,17 @@ export const ProgressComponent = props => {
                     {renderProgressText(props)}
                 </div>
             </DialogContent>
+            {status === SAVING_DATASET && (
+                <DialogActions>
+                    <Button
+                        color="secondary"
+                        variant="text"
+                        onClick={cancelUpload}
+                    >
+                        {polyglot.t('Cancel')}
+                    </Button>
+                </DialogActions>
+            )}
         </Dialog>
     );
 };
@@ -94,6 +111,7 @@ ProgressComponent.propTypes = {
     loadProgress: PropTypes.func.isRequired,
     error: PropTypes.bool,
     clearProgress: PropTypes.func.isRequired,
+    cancelUpload: PropTypes.func.isRequired,
     p: polyglotPropTypes,
     isBackground: PropTypes.bool,
     label: PropTypes.string,
@@ -112,6 +130,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     loadProgress,
     clearProgress,
+    cancelUpload,
 };
 
 export const Progress = compose(
