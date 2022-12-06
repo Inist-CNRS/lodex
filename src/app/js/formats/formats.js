@@ -118,14 +118,14 @@ export const FORMATS_CATALOG = [
         description: 'formatImageDescription',
         componentName: 'image',
         component: image,
-        type: 'other',
+        type: 'url',
     },
     {
         name: 'formatPdf',
         description: 'formatPdfDescription',
         componentName: 'pdf',
         component: pdf,
-        type: 'other',
+        type: 'url',
     },
     {
         name: 'formatLatex',
