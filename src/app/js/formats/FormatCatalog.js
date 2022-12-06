@@ -58,11 +58,11 @@ export const FormatCatalog = ({
     }
 
     const [filteredFormats, setFilterFormats] = useState(formats);
-    const [selectedFilter, setSelectedFilter] = useState();
+    const [selectedFilter, setSelectedFilter] = useState('all');
 
     useEffect(() => {
         setFilterFormats(
-            selectedFilter
+            selectedFilter && selectedFilter !== 'all'
                 ? formats.filter(item => item.type === selectedFilter)
                 : formats,
         );
@@ -129,6 +129,9 @@ export const FormatCatalog = ({
                         >
                             <ListItemText
                                 primary={polyglot.t(format.name)}
+                                primaryTypographyProps={{
+                                    style: { fontWeight: 'bold' },
+                                }}
                                 secondary={polyglot.t(format.description)}
                             />
                         </ListItem>
