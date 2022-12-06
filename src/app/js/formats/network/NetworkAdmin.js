@@ -12,7 +12,6 @@ const styles = {
     container: {
         display: 'flex',
         flexWrap: 'wrap',
-        width: '200%',
         justifyContent: 'space-between',
     },
     input: {

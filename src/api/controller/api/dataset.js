@@ -1,19 +1,20 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import logger from '../../services/logger';
+import koaBodyParser from 'koa-bodyparser';
 
 const app = new Koa();
 
 export const clearDataset = async ctx => {
     try {
-        await ctx.publishedDataset.remove({});
-        await ctx.publishedCharacteristic.remove({});
-        await ctx.publishedFacet.remove({});
-        await ctx.field.remove({});
-        await ctx.dataset.remove({});
-        await ctx.subresource.remove({});
-        await ctx.enrichment.remove({});
-
+        const collectionNames = await ctx.db.listCollections().toArray();
+        if (collectionNames.length > 0) {
+            await Promise.all(
+                collectionNames.map(collection =>
+                    ctx.db.dropCollection(collection.name),
+                ),
+            );
+        }
         ctx.body = { status: 'success' };
     } catch (error) {
         logger.error('clear dataset error', {
@@ -71,8 +72,27 @@ export const getDataset = async ctx => {
     ctx.body = { count, datas };
 };
 
+export const updateDataset = async ctx => {
+    const { uri, field, value } = ctx.request.body;
+    const dataset = await ctx.dataset.findBy('uri', uri);
+    if (!dataset) {
+        ctx.body = { status: 'error', error: 'dataset not found' };
+        ctx.status = 404;
+        return;
+    }
+    await ctx.dataset.updateOne(
+        {
+            uri: uri,
+        },
+        { $set: { [field]: value } },
+    );
+    ctx.body = { status: 'success' };
+};
+
 app.use(route.delete('/', clearDataset));
 app.use(route.get('/columns', getDatasetColumns));
 app.use(route.get('/', getDataset));
+app.use(koaBodyParser());
+app.use(route.put('/', updateDataset));
 
 export default app;

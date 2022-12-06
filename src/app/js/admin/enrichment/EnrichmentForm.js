@@ -1,41 +1,44 @@
-import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import translate from 'redux-polyglot/translate';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
-import { reduxForm, Field, formValueSelector, reset } from 'redux-form';
+import compose from 'recompose/compose';
+import { Field, formValueSelector, reduxForm, reset, change } from 'redux-form';
+import translate from 'redux-polyglot/translate';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 import {
     createEnrichment,
     deleteEnrichment,
     launchEnrichment,
+    loadEnrichments,
     previewDataEnrichment,
     previewDataEnrichmentClear,
     updateEnrichment,
-    loadEnrichments,
 } from '.';
-import { fromEnrichments, fromParsing } from '../selectors';
-import FormTextField from '../../lib/components/FormTextField';
-import FormSelectField from '../../lib/components/FormSelectField';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
+import FormSelectField from '../../lib/components/FormSelectField';
+import FormTextField from '../../lib/components/FormTextField';
+import { fromEnrichments, fromParsing } from '../selectors';
 import EnrichmentExcerpt from './EnrichmentExcerpt';
 
 import {
     Box,
+    Button,
     FormControlLabel,
     makeStyles,
     MenuItem,
     Snackbar,
     Switch,
 } from '@material-ui/core';
+import { FINISHED, PENDING } from '../../../../common/enrichmentStatus';
 import Alert from '../../lib/components/Alert';
-import { PENDING, FINISHED } from '../../../../common/enrichmentStatus';
 import EnrichmentSidebar from './EnrichmentSidebar';
 
-import { EnrichmentContext } from './EnrichmentContext';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
+import { EnrichmentContext } from './EnrichmentContext';
+import EnrichmentCatalogDialog from './EnrichmentCatalog';
 
 const DEBOUNCE_TIMEOUT = 2000;
 
@@ -121,6 +124,7 @@ export const EnrichmentFormComponent = ({
     onPreviewDataEnrichmentClear,
     onUpdateEnrichment,
     onResetForm,
+    onChangeWebServiceUrl,
     onLoadEnrichments,
     match,
     p: polyglot,
@@ -130,6 +134,7 @@ export const EnrichmentFormComponent = ({
         initialValues?.advancedMode || false,
     );
     const [openSnackBar, setOpenSnackBar] = useState(false);
+    const [openCatalog, setOpenCatalog] = useState(false);
 
     useEffect(() => {
         setOpenSnackBar(!!errorEnrichment);
@@ -282,14 +287,34 @@ export const EnrichmentFormComponent = ({
                 ) : (
                     <Box className={classes.simplifiedRules}>
                         <div className={classes.simplifiedRulesFormContainer}>
-                            <Field
-                                name="webServiceUrl"
-                                component={FormTextField}
-                                label={polyglot.t('webServiceUrl')}
-                                fullWidth
-                                style={{ marginBottom: 16 }}
-                            />
-
+                            <div className={classes.valuesContainer}>
+                                <Field
+                                    name="webServiceUrl"
+                                    component={FormTextField}
+                                    label={polyglot.t('webServiceUrl')}
+                                    fullWidth
+                                    style={{ marginBottom: 16 }}
+                                />
+                                <div style={{ margin: '10px 0px 0px 10px' }}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => setOpenCatalog(true)}
+                                    >
+                                        <ListAltIcon fontSize="small" />
+                                    </Button>
+                                    <EnrichmentCatalogDialog
+                                        isOpen={openCatalog}
+                                        handleClose={() =>
+                                            setOpenCatalog(false)
+                                        }
+                                        selectedWebServiceUrl={
+                                            formValues?.webServiceUrl
+                                        }
+                                        onChange={onChangeWebServiceUrl}
+                                    />
+                                </div>
+                            </div>
                             <div className={classes.valuesContainer}>
                                 <Field
                                     name="sourceColumn"
@@ -418,6 +443,7 @@ EnrichmentFormComponent.propTypes = {
     onPreviewDataEnrichmentClear: PropTypes.func.isRequired,
     onResetForm: PropTypes.func.isRequired,
     onLoadEnrichments: PropTypes.func.isRequired,
+    onChangeWebServiceUrl: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     p: polyglotPropTypes.isRequired,
 };
@@ -452,6 +478,8 @@ const mapDispatchToProps = {
     onPreviewDataEnrichmentClear: previewDataEnrichmentClear,
     onLoadEnrichments: loadEnrichments,
     onResetForm: () => reset('ENRICHMENT_FORM'),
+    onChangeWebServiceUrl: value =>
+        change('ENRICHMENT_FORM', 'webServiceUrl', value),
 };
 
 const validate = (values, { p: polyglot }) => {

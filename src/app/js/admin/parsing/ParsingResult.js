@@ -12,18 +12,26 @@ import {
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { reloadParsingResult } from './';
 import { fromEnrichments, fromParsing } from '../selectors';
 import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
 import ParsingExcerpt from './ParsingExcerpt';
 import theme from '../../theme';
 import { makeStyles } from '@material-ui/styles';
-import { Box, Chip, CircularProgress, Tooltip } from '@material-ui/core';
+import {
+    Box,
+    Chip,
+    CircularProgress,
+    Drawer,
+    IconButton,
+    Tooltip,
+} from '@material-ui/core';
 import { TablePagination } from '@mui/material';
+import ParsingEditCell from './ParsingEditCell';
 
 const COLUMN_TYPE = {
     MAIN: 'main',
@@ -69,6 +77,16 @@ const styles = {
     toggle: {
         cursor: 'pointer',
     },
+    drawer: {
+        width: '45%',
+    },
+    errorChip: {
+        backgroundColor: theme.red.primary,
+        color: theme.white.primary,
+    },
+    errorHeader: {
+        color: theme.orange.primary,
+    },
 };
 
 const useStyles = makeStyles(styles);
@@ -110,6 +128,8 @@ export const ParsingResultComponent = props => {
 
     const [datas, setDatas] = useState([]);
     const [columns, setColumns] = useState([]);
+    const [toggleDrawer, setToggleDrawer] = useState(false);
+    const [selectedCell, setSelectedCell] = useState(null);
 
     const getColumnsToShow = () => {
         const enrichmentsNames = enrichments.map(enrichment => enrichment.name);
@@ -133,9 +153,19 @@ export const ParsingResultComponent = props => {
                             enrichment.name === key &&
                             enrichment.status === IN_PROGRESS,
                     );
+                const errorCount = isEnrichment
+                    ? enrichments.find(enrichment => enrichment.name === key)
+                          ?.errorCount
+                    : null;
                 return {
                     field: key,
-                    headerName: key,
+                    headerName: errorCount
+                        ? polyglot.t('header_name_with_errors', {
+                              name: key,
+                              errorCount,
+                          })
+                        : key,
+                    headerClassName: errorCount && classes.errorHeader,
                     cellClassName: isEnrichment && classes.enrichedColumn,
                     width: 150,
                     filterable: type !== 'object',
@@ -156,6 +186,18 @@ export const ParsingResultComponent = props => {
                         }
                         if (params.value === null) {
                             return <Chip label="null" />;
+                        }
+                        if (
+                            typeof params.value === 'string' &&
+                            (params.value.startsWith('[Error]') ||
+                                params.value.startsWith('ERROR'))
+                        ) {
+                            return (
+                                <Chip
+                                    className={classes.errorChip}
+                                    label="Error"
+                                />
+                            );
                         }
                         return (
                             <div title={JSON.stringify(params.value)}>
@@ -209,6 +251,17 @@ export const ParsingResultComponent = props => {
     const [sort, setSort] = useState({});
     const [filter, setFilter] = useState({});
 
+    const fetchDataset = async () => {
+        const { count: datasCount, datas } = await datasetApi.getDataset({
+            skip,
+            limit,
+            filter,
+            sort,
+        });
+        setRowCount(datasCount);
+        setDatas(datas);
+    };
+
     const onPageChange = page => {
         setSkip(page * limit);
     };
@@ -221,16 +274,6 @@ export const ParsingResultComponent = props => {
         fetchDataColumns();
     }, []);
     useEffect(() => {
-        const fetchDataset = async () => {
-            const { count: datasCount, datas } = await datasetApi.getDataset({
-                skip,
-                limit,
-                filter,
-                sort,
-            });
-            setRowCount(datasCount);
-            setDatas(datas);
-        };
         fetchDataset();
     }, [skip, limit, filter, sort]);
 
@@ -247,6 +290,14 @@ export const ParsingResultComponent = props => {
         }
         const { columnField, operatorValue, value } = filterModel.items[0];
         setFilter({ columnField, operatorValue, value });
+    };
+
+    const handleCellClick = params => {
+        if (!params.value) {
+            return;
+        }
+        setSelectedCell(params);
+        setToggleDrawer(true);
     };
 
     if (loadingParsingResult) {
@@ -310,17 +361,24 @@ export const ParsingResultComponent = props => {
                         </Tooltip>
                     </Box>
                 </div>
-                <TablePagination
-                    count={rowCount}
-                    page={skip / limit}
-                    rowsPerPage={limit}
-                    onPageChange={(e, page) => onPageChange(page)}
-                    rowsPerPageOptions={[25, 50, 100]}
-                    labelRowsPerPage={polyglot.t('rows_per_page')}
-                    onRowsPerPageChange={rpp => {
-                        setLimit(rpp.target.value);
-                    }}
-                />
+                <Box display="flex">
+                    <Tooltip title={polyglot.t(`refresh_button`)}>
+                        <IconButton onClick={() => fetchDataset()}>
+                            <RefreshIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <TablePagination
+                        count={rowCount}
+                        page={skip / limit}
+                        rowsPerPage={limit}
+                        onPageChange={(e, page) => onPageChange(page)}
+                        rowsPerPageOptions={[25, 50, 100]}
+                        labelRowsPerPage={polyglot.t('rows_per_page')}
+                        onRowsPerPageChange={rpp => {
+                            setLimit(rpp.target.value);
+                        }}
+                    />
+                </Box>
             </div>
         );
     };
@@ -328,24 +386,43 @@ export const ParsingResultComponent = props => {
     return (
         <div className={classes.container}>
             {dataGrid ? (
-                <DataGrid
-                    columns={columnsToShow}
-                    rows={rows}
-                    rowCount={rowCount}
-                    pageSize={limit}
-                    paginationMode="server"
-                    onPageChange={onPageChange}
-                    onPageSizeChange={setLimit}
-                    sortingMode="server"
-                    onSortModelChange={handleSortModelChange}
-                    filterMode="server"
-                    onFilterModelChange={handleFilterModelChange}
-                    rowsPerPageOptions={[10, 25, 50]}
-                    disableSelectionOnClick={true}
-                    components={{
-                        Footer: CustomFooter,
-                    }}
-                />
+                <React.Fragment>
+                    <DataGrid
+                        columns={columnsToShow}
+                        rows={rows}
+                        rowCount={rowCount}
+                        pageSize={limit}
+                        paginationMode="server"
+                        onPageChange={onPageChange}
+                        onPageSizeChange={setLimit}
+                        sortingMode="server"
+                        onSortModelChange={handleSortModelChange}
+                        filterMode="server"
+                        onFilterModelChange={handleFilterModelChange}
+                        rowsPerPageOptions={[10, 25, 50]}
+                        disableSelectionOnClick={true}
+                        onCellClick={handleCellClick}
+                        components={{
+                            Footer: CustomFooter,
+                        }}
+                    />
+                    <Drawer
+                        anchor="right"
+                        open={toggleDrawer}
+                        onClose={() => setToggleDrawer(false)}
+                        className={classes.drawer}
+                        classes={{
+                            paper: classes.drawer,
+                        }}
+                    >
+                        {selectedCell ? (
+                            <ParsingEditCell
+                                cell={selectedCell}
+                                setToggleDrawer={setToggleDrawer}
+                            />
+                        ) : null}
+                    </Drawer>
+                </React.Fragment>
             ) : (
                 <ParsingExcerpt
                     columns={excerptColumns}
@@ -362,7 +439,6 @@ ParsingResultComponent.propTypes = {
     excerptColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
     excerptLines: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
-    handleClearParsing: PropTypes.func.isRequired,
     showAddFromColumn: PropTypes.bool.isRequired,
     onAddField: PropTypes.func,
     maxLines: PropTypes.number,
@@ -383,11 +459,7 @@ const mapStateToProps = state => ({
     enrichments: fromEnrichments.enrichments(state),
 });
 
-const mapDispatchToProps = {
-    handleClearParsing: reloadParsingResult,
-};
-
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps),
     translate,
 )(ParsingResultComponent);
