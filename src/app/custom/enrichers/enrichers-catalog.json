@@ -105,7 +105,7 @@
     },
     {
         "id": "post-v1-en-classhalen",
-        "url": "",
+        "url": "https://hal-classifier.services.inist.fr/v1/en/classhalen",
         "doc": "",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Classification%20HAL#/Classification%20supervis%C3%A9e/post-v1-en-classhalen",
         "objectifTDM": "https://objectif-tdm.inist.fr/2022/02/10/classification-dans-les-domaines-hal/",

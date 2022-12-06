@@ -95,13 +95,10 @@ export const EnrichmentCatalog = ({
 }) => {
     const classes = useStyles();
 
-    const filters = [...new Set(enrichers.map(item => item.type))];
+    const filters = [
+        ...new Set(enrichers.map(item => item.type)),
+    ].sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)));
     filters.unshift('all');
-    const otherIndex = filters.indexOf('other');
-    if (otherIndex !== -1) {
-        filters.splice(otherIndex, 1);
-        filters.push('other');
-    }
 
     const [filteredEnricher, setFilterEnricher] = useState(enrichers);
     const [selectedFilter, setSelectedFilter] = useState('all');

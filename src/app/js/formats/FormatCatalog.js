@@ -49,13 +49,10 @@ export const FormatCatalog = ({
     currentValue,
 }) => {
     const classes = useStyles();
-    const filters = [...new Set(formats.map(item => item.type))];
+    const filters = [...new Set(formats.map(item => item.type))].sort((x, y) =>
+        polyglot.t(x).localeCompare(polyglot.t(y)),
+    );
     filters.unshift('all');
-    const otherIndex = filters.indexOf('other');
-    if (otherIndex !== -1) {
-        filters.splice(otherIndex, 1);
-        filters.push('other');
-    }
 
     const [filteredFormats, setFilterFormats] = useState(formats);
     const [selectedFilter, setSelectedFilter] = useState('all');
