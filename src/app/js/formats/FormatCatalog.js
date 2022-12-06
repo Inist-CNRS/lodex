@@ -93,11 +93,7 @@ export const FormatCatalog = ({
                             <Button
                                 color="primary"
                                 className="format-category"
-                                onClick={() =>
-                                    setSelectedFilter(
-                                        filter === 'all' ? null : filter,
-                                    )
-                                }
+                                onClick={() => setSelectedFilter(filter)}
                                 variant={
                                     filter === selectedFilter
                                         ? 'contained'
