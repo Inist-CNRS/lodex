@@ -43,6 +43,11 @@ export const getLoader = async loaderName => {
         stream.pipe(ezs('delegate', { script })).pipe(ezs.catch(e => log(e)));
 };
 
+export const getCustomLoader = async script => {
+    return stream =>
+        stream.pipe(ezs('delegate', { script })).pipe(ezs.catch(e => log(e)));
+};
+
 export const requestToStream = asyncBusboyImpl => async req => {
     const { files, fields } = await asyncBusboyImpl(req);
 
@@ -57,7 +62,7 @@ export const clearUpload = async ctx => {
 export const getStreamFromUrl = url => request.get(url);
 
 export const uploadFile = ctx => async loaderName => {
-    const { filename, totalChunks, extension } = ctx.resumable;
+    const { filename, totalChunks, extension, customLoader } = ctx.resumable;
     if (progress.status !== SAVING_DATASET) {
         progress.start({
             status: SAVING_DATASET,
@@ -65,10 +70,15 @@ export const uploadFile = ctx => async loaderName => {
         });
     }
     const mergedStream = ctx.mergeChunks(filename, totalChunks);
-    const parseStream = await ctx.getLoader(
-        !loaderName || loaderName === 'automatic' ? extension : loaderName,
-    );
 
+    let parseStream;
+    if (customLoader) {
+        parseStream = await ctx.getCustomLoader(customLoader);
+    } else {
+        parseStream = await ctx.getLoader(
+            !loaderName || loaderName === 'automatic' ? extension : loaderName,
+        );
+    }
     const parsedStream = parseStream(mergedStream);
     try {
         await ctx.saveParsedStream(parsedStream);
@@ -83,6 +93,7 @@ export const uploadFile = ctx => async loaderName => {
 
 export const prepareUpload = async (ctx, next) => {
     ctx.getLoader = getLoader;
+    ctx.getCustomLoader = getCustomLoader;
     ctx.requestToStream = requestToStream(asyncBusboy);
     ctx.saveStream = saveStream(ctx.dataset.bulkUpsertByUri);
     ctx.checkFileExists = checkFileExists;
@@ -117,7 +128,9 @@ export const parseRequest = async (ctx, _, next) => {
         resumableTotalSize,
         resumableCurrentChunkSize,
         resumableFilename = '',
+        customLoader = null,
     } = fields;
+
     const [extension] = resumableFilename.match(/[^.]*$/);
     const chunkNumber = parseInt(resumableChunkNumber, 10);
 
@@ -129,6 +142,7 @@ export const parseRequest = async (ctx, _, next) => {
         extension,
         chunkname: `${config.uploadDir}/${resumableIdentifier}.${chunkNumber}`,
         stream,
+        customLoader,
     };
     await next();
 };
@@ -168,20 +182,23 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
 }
 
 export const uploadUrl = async ctx => {
-    const { url, loaderName } = ctx.request.body;
+    const { url, loaderName, customLoader } = ctx.request.body;
     const [extension] = url.match(/[^.]*$/);
 
-    const parseStream = await ctx.getLoader(
-        !loaderName || loaderName === 'automatic' ? extension : loaderName,
-    );
+    let parseStream;
+    if (customLoader) {
+        parseStream = await ctx.getCustomLoader(customLoader);
+    } else {
+        parseStream = await ctx.getLoader(
+            !loaderName || loaderName === 'automatic' ? extension : loaderName,
+        );
+    }
 
     const stream = ctx.getStreamFromUrl(url);
     const parsedStream = await parseStream(stream);
 
     ctx.body = {
-        totalLines: await ctx.saveParsedStream(
-            parsedStream,
-        ),
+        totalLines: await ctx.saveParsedStream(parsedStream),
     };
 
     ctx.status = 200;

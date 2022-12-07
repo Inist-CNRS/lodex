@@ -5,6 +5,7 @@ import translate from 'redux-polyglot/translate';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import {
     Button,
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -42,6 +43,7 @@ const CustomLoader = ({
     onChangeLoaderName,
     p: polyglot,
 }) => {
+    const [isLoading, setIsLoading] = React.useState(false);
     const classes = useStyles();
 
     const handleSave = () => {
@@ -58,10 +60,12 @@ const CustomLoader = ({
 
     useEffect(() => {
         const fetchLoaderWithScript = async () => {
+            setIsLoading(true);
             const res = await loaderApi.getLoaderWithScript({
                 name: loaderName,
             });
             onUpsertCustomLoader(res.script);
+            setIsLoading(false);
         };
 
         if (loaderName === 'custom-loader' || loaderName === 'automatic') {
@@ -79,12 +83,16 @@ const CustomLoader = ({
                         display: 'flex',
                     }}
                 >
-                    <Field
-                        name="customLoader"
-                        component={FormSourceCodeField}
-                        label={polyglot.t('expand_rules')}
-                        className={classes.advancedRulesEditor}
-                    />
+                    {isLoading ? (
+                        <CircularProgress />
+                    ) : (
+                        <Field
+                            name="customLoader"
+                            component={FormSourceCodeField}
+                            label={polyglot.t('expand_rules')}
+                            className={classes.advancedRulesEditor}
+                        />
+                    )}
                 </div>
             </DialogContent>
             <DialogActions style={{ justifyContent: 'space-between' }}>
