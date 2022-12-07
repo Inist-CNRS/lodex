@@ -48,7 +48,7 @@ export default db => {
 
     collection.bulkUpdate = async (items, getFilter, upsert = false) => {
         if (items.length) {
-            collection.bulkWrite(
+            await collection.bulkWrite(
                 items.map(item => ({
                     updateOne: {
                         filter: getFilter(item),

@@ -3,45 +3,18 @@ import route from 'koa-route';
 import asyncBusboy from 'async-busboy';
 import config from 'config';
 import koaBodyParser from 'koa-bodyparser';
-import request from 'request';
-import ezs from '@ezs/core';
 
 import progress from '../../services/progress';
+import { PENDING, UPLOADING_DATASET } from '../../../common/progressStatus';
 import {
-    PENDING,
-    UPLOADING_DATASET,
-    SAVING_DATASET,
-} from '../../../common/progressStatus';
-import Script from '../../services/script';
-import saveStream from '../../services/saveStream';
-import publishDocuments from '../../services/publishDocuments';
-import {
-    unlinkFile,
     saveStreamInFile,
     checkFileExists,
-    mergeChunks,
-    clearChunks,
     getUploadedFileSize,
-    createReadStream,
 } from '../../services/fsHelpers';
-import saveParsedStream from '../../services/saveParsedStream';
-import publishFacets from './publishFacets';
 
-const loaders = new Script('loaders', '../app/custom/loaders');
-const log = e => global.console.error('Error in pipeline.', e);
-
-export const getLoader = async loaderName => {
-    const currentLoader = await loaders.get(loaderName);
-    if (!currentLoader) {
-        throw new Error(`Unknown loader: ${loaderName}`);
-    }
-
-    const [, , , script] = currentLoader;
-
-    // ezs is safe : errors do not break the pipeline
-    return stream =>
-        stream.pipe(ezs('delegate', { script })).pipe(ezs.catch(e => log(e)));
-};
+import { v1 as uuid } from 'uuid';
+import { workerQueue } from '../../workers';
+import { IMPORT } from '../../workers/import';
 
 export const requestToStream = asyncBusboyImpl => async req => {
     const { files, fields } = await asyncBusboyImpl(req);
@@ -54,49 +27,16 @@ export const clearUpload = async ctx => {
     ctx.body = true;
 };
 
-export const getStreamFromUrl = url => request.get(url);
-
-export const uploadFile = ctx => async loaderName => {
-    const { filename, totalChunks, extension } = ctx.resumable;
-    if (progress.status !== SAVING_DATASET) {
-        progress.start({
-            status: SAVING_DATASET,
-            label: 'imported_lines',
-        });
-    }
-    const mergedStream = ctx.mergeChunks(filename, totalChunks);
-    const parseStream = await ctx.getLoader(
-        !loaderName || loaderName === 'automatic' ? extension : loaderName,
-    );
-
-    const parsedStream = parseStream(mergedStream);
-    try {
-        await ctx.saveParsedStream(parsedStream);
-        await ctx.dataset.indexColumns();
-        progress.finish();
-    } catch (error) {
-        progress.throw(error);
-    }
-
-    await ctx.clearChunks(filename, totalChunks);
+// TODO: update to cancel bull job
+export const cancelUpload = async ctx => {
+    ctx.body = 'ok';
 };
 
 export const prepareUpload = async (ctx, next) => {
-    ctx.getLoader = getLoader;
     ctx.requestToStream = requestToStream(asyncBusboy);
-    ctx.saveStream = saveStream(ctx.dataset.bulkUpsertByUri);
     ctx.checkFileExists = checkFileExists;
     ctx.saveStreamInFile = saveStreamInFile;
     ctx.getUploadedFileSize = getUploadedFileSize;
-    ctx.mergeChunks = mergeChunks;
-    ctx.clearChunks = clearChunks;
-    ctx.createReadStream = createReadStream;
-    ctx.unlinkFile = unlinkFile;
-    ctx.getStreamFromUrl = getStreamFromUrl;
-    ctx.publishDocuments = publishDocuments;
-    ctx.publishFacets = publishFacets;
-    ctx.saveParsedStream = saveParsedStream(ctx);
-    ctx.uploadFile = uploadFile(ctx);
 
     try {
         await next();
@@ -141,6 +81,7 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
         filename,
         totalChunks,
         totalSize,
+        extension,
     } = ctx.resumable;
 
     if (progress.getProgress().status === PENDING) {
@@ -161,7 +102,13 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
     }
 
     if (uploadedFileSize >= totalSize) {
-        ctx.uploadFile(loaderName);
+        await workerQueue.add(
+            { loaderName, filename, totalChunks, extension, jobType: IMPORT },
+            { jobId: uuid() },
+        );
+        ctx.body = {
+            status: 'pending',
+        };
     }
 
     ctx.status = 200;
@@ -170,21 +117,13 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
 export const uploadUrl = async ctx => {
     const { url, loaderName } = ctx.request.body;
     const [extension] = url.match(/[^.]*$/);
-
-    const parseStream = await ctx.getLoader(
-        !loaderName || loaderName === 'automatic' ? extension : loaderName,
+    await workerQueue.add(
+        { loaderName, url, extension, jobType: IMPORT },
+        { jobId: uuid() },
     );
-
-    const stream = ctx.getStreamFromUrl(url);
-    const parsedStream = await parseStream(stream);
-
     ctx.body = {
-        totalLines: await ctx.saveParsedStream(
-            parsedStream,
-        ),
+        status: 'pending',
     };
-
-    ctx.status = 200;
 };
 
 export const checkChunkMiddleware = async ctx => {
@@ -200,6 +139,7 @@ export const checkChunkMiddleware = async ctx => {
 
 const app = new Koa();
 
+app.use(route.post('/cancel', cancelUpload));
 app.use(prepareUpload);
 
 app.use(koaBodyParser());
@@ -208,7 +148,6 @@ app.use(route.post('/url', uploadUrl));
 app.use(route.post('/:loaderName', parseRequest));
 app.use(route.post('/:loaderName', uploadChunkMiddleware));
 app.use(route.get('/:loaderName', checkChunkMiddleware));
-
 app.use(route.del('/clear', clearUpload));
 
 export default app;
