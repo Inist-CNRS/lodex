@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
@@ -13,13 +13,14 @@ import {
 } from '@material-ui/core';
 import { Field, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { fromLoaders, fromUpload } from '../selectors';
+import { fromUpload } from '../selectors';
 import {
     changeLoaderName,
     deleteCustomLoader,
     upsertCustomLoader,
 } from './index';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import loaderApi from '../api/loader';
 
 const useStyles = makeStyles(() => {
     return {
@@ -35,6 +36,7 @@ const CustomLoader = ({
     formValue,
     handleClose,
     isOpen,
+    loaderName,
     onDeleteCustomLoader,
     onUpsertCustomLoader,
     onChangeLoaderName,
@@ -53,6 +55,20 @@ const CustomLoader = ({
         onChangeLoaderName('automatic');
         handleClose();
     };
+
+    useEffect(() => {
+        const fetchLoaderWithScript = async () => {
+            const res = await loaderApi.getLoaderWithScript({
+                name: loaderName,
+            });
+            onUpsertCustomLoader(res.script);
+        };
+
+        if (loaderName === 'custom-loader' || loaderName === 'automatic') {
+            return;
+        }
+        if (isOpen) fetchLoaderWithScript();
+    }, [isOpen, loaderName]);
 
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="xl">
@@ -97,7 +113,7 @@ const formSelector = formValueSelector('CUSTOM_LOADER_FORM');
 const mapStateToProps = state => ({
     formValue: formSelector(state, 'customLoader'),
     initialValues: { customLoader: fromUpload.getCustomLoader(state) },
-    loaders: fromLoaders.getLoaders(state),
+    loaderName: fromUpload.getLoaderName(state),
 });
 
 const mapDispatchToProps = {
@@ -110,6 +126,7 @@ CustomLoader.propTypes = {
     formValue: PropTypes.string,
     handleClose: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,
+    loaderName: PropTypes.string.isRequired,
     onUpsertCustomLoader: PropTypes.func.isRequired,
     onDeleteCustomLoader: PropTypes.func.isRequired,
     onChangeLoaderName: PropTypes.func.isRequired,

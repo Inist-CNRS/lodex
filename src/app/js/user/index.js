@@ -471,6 +471,12 @@ export const getClearJobsRequest = state =>
         method: 'POST',
     });
 
+export const getLoaderWithScriptRequest = (state, { name }) =>
+    getRequest(state, {
+        method: 'GET',
+        url: `/api/loader/${name}`,
+    });
+
 export const selectors = {
     isAdmin,
     getRole,
@@ -527,4 +533,5 @@ export const selectors = {
     getLoadLoadersRequest,
     getPreviewDataEnrichmentRequest,
     getCancelJobRequest,
+    getLoaderWithScriptRequest,
 };

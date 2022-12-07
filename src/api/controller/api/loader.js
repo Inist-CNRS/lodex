@@ -80,9 +80,22 @@ export async function getLoaders(ctx) {
         }));
 }
 
+export async function getLoaderWithScript(ctx, name) {
+    const currentLoader = await loaders.get(name);
+    if (!currentLoader) {
+        ctx.status = 404;
+        throw new Error(`Unknown loader: ${name}`);
+    }
+
+    const [, , loaderName, script] = currentLoader;
+    ctx.body = { name: loaderName, script };
+    ctx.status = 200;
+}
+
 const app = new Koa();
 
 app.use(setup);
 app.use(route.get('/', getLoaders));
+app.use(route.get('/:name', getLoaderWithScript));
 
 export default app;
