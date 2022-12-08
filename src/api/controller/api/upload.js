@@ -69,6 +69,7 @@ export const uploadFile = ctx => async loaderName => {
             label: 'imported_lines',
         });
     }
+
     const mergedStream = ctx.mergeChunks(filename, totalChunks);
 
     let parseStream;
@@ -79,6 +80,7 @@ export const uploadFile = ctx => async loaderName => {
             !loaderName || loaderName === 'automatic' ? extension : loaderName,
         );
     }
+
     const parsedStream = parseStream(mergedStream);
     try {
         await ctx.saveParsedStream(parsedStream);

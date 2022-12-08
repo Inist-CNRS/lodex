@@ -34,6 +34,7 @@ describe('upload', () => {
                 totalSize: 500,
                 currentChunkSize: 5,
                 extension: 'csv',
+                customLoader: null,
             });
         });
     });
@@ -277,9 +278,52 @@ describe('upload', () => {
         });
 
         it('should have called saveParsedStream with parsedStream', () => {
-            expect(ctx.saveParsedStream).toHaveBeenCalledWith(
-                'parsedStream',
+            expect(ctx.saveParsedStream).toHaveBeenCalledWith('parsedStream');
+        });
+
+        it('should have set ctx.body.totalLines to `dataset count`', () => {
+            expect(ctx.body).toEqual({ totalLines: 'dataset count' });
+        });
+    });
+
+    describe('uploadUrl with customLoader', () => {
+        const loader = jest.fn().mockImplementation(() => 'parsedStream');
+        const ctx = {
+            request: {
+                body: {
+                    url: 'http://host/file.name.type',
+                    customLoader: 'customLoader',
+                },
+            },
+            getLoader: jest.fn().mockImplementation(() => loader),
+            getStreamFromUrl: jest.fn().mockImplementation(() => 'streamUrl'),
+            saveParsedStream: jest
+                .fn()
+                .mockImplementation(() => 'dataset count'),
+            uploadFile: jest.fn(),
+            getCustomLoader: jest.fn().mockImplementation(() => loader),
+        };
+
+        beforeAll(async () => {
+            await uploadUrl(ctx);
+        });
+
+        it('should have called getCustomLoader', () => {
+            expect(ctx.getCustomLoader).toHaveBeenCalledTimes(1);
+        });
+
+        it('should have called getStreamForUrl with url', () => {
+            expect(ctx.getStreamFromUrl).toHaveBeenCalledWith(
+                'http://host/file.name.type',
             );
+        });
+
+        it('should have called loader with streamUrl', () => {
+            expect(loader).toHaveBeenCalledWith('streamUrl');
+        });
+
+        it('should have called saveParsedStream with parsedStream', () => {
+            expect(ctx.saveParsedStream).toHaveBeenCalledWith('parsedStream');
         });
 
         it('should have set ctx.body.totalLines to `dataset count`', () => {
