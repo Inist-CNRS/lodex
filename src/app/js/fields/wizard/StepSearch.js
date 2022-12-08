@@ -20,7 +20,7 @@ export const StepSearchComponent = ({
     ...props
 }) => {
     const displayWarningFacetMessage = useMemo(() => {
-        const firstLine = lines[0] && lines[0][formData.name];
+        const firstLine = lines[0] && lines[0][formData?.name];
         return firstLine instanceof Object && formData.isFacet;
     }, [lines, formData]);
 
