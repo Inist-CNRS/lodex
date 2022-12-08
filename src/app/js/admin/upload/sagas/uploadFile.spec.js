@@ -1,5 +1,4 @@
-import { call, take, put, select, race } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'connected-react-router';
+import { call, take, put, select } from 'redux-saga/effects';
 
 import { fromUser } from '../../../sharedSelectors';
 import { fromUpload } from '../../selectors';
@@ -26,8 +25,16 @@ describe('handleUploadFile saga', () => {
         expect(value).toEqual(select(fromUpload.getLoaderName));
     });
 
+    it('should select customLoader', () => {
+        saga.next();
+        const { value } = saga.next();
+
+        expect(value).toEqual(select(fromUpload.getCustomLoader));
+    });
+
     it('should select getToken', () => {
         saga.next();
+        saga.next('customLoader');
         const { value } = saga.next('loaderName');
 
         expect(value).toEqual(select(fromUser.getToken));
@@ -36,16 +43,24 @@ describe('handleUploadFile saga', () => {
     it('should race call(loadDatasetFile) and take(LOCATION_CHANGE)', () => {
         saga.next();
         saga.next('loaderName');
+        saga.next('customLoader');
         const { value } = saga.next('token');
 
         expect(value).toEqual(
-            call(loadDatasetFile, 'payload', 'token', 'loaderName'),
+            call(
+                loadDatasetFile,
+                'payload',
+                'token',
+                'loaderName',
+                'customLoader',
+            ),
         );
     });
 
     it('should put uploadError if an error is thrown', () => {
         saga.next();
         saga.next('loaderName');
+        saga.next('customLoader');
         saga.next('token');
         const error = new Error('Boom');
         const { value } = saga.throw(error);
@@ -55,6 +70,7 @@ describe('handleUploadFile saga', () => {
     it('should take FINISH_PROGRESS', () => {
         saga.next();
         saga.next('loaderName');
+        saga.next('customLoader');
         saga.next('token');
         const { value } = saga.next({ file: 'file' });
         expect(value).toEqual(take(FINISH_PROGRESS));
@@ -63,6 +79,7 @@ describe('handleUploadFile saga', () => {
     it('should put loadFileSuccess with file', () => {
         saga.next();
         saga.next('loaderName');
+        saga.next('customLoader');
         saga.next('token');
         saga.next({ file: 'file' });
         const { value } = saga.next();

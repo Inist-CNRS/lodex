@@ -10,9 +10,11 @@ export function* handleUploadUrl() {
     preventUnload();
     const url = yield select(fromUpload.getUrl);
     const loaderName = yield select(fromUpload.getLoaderName);
+    const customLoader = yield select(fromUpload.getCustomLoader);
     const request = yield select(fromUser.getUploadUrlRequest, {
         url,
         loaderName,
+        customLoader,
     });
     const { error } = yield call(fetch, request);
 
