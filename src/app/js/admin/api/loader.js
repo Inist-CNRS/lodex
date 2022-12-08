@@ -1,6 +1,6 @@
 import fetch from '../../lib/fetch';
-const { getLoaderWithScriptRequest } = require('../../user');
-const { getUserLocalStorageInfo } = require('./tools');
+import { getLoaderWithScriptRequest } from '../../user';
+import { getUserLocalStorageInfo } from './tools';
 
 const getLoaderWithScript = async ({ name }) => {
     const { token } = getUserLocalStorageInfo();
