@@ -77,74 +77,78 @@ export const FacetValueList = ({
     changeFacetValue,
     invertFacet,
     sortFacetValue,
-}) => (
-    <div className="facet-value-list" style={styles.list}>
-        <FormControlLabel
-            fullWidth
-            control={
-                <Checkbox
-                    checked={inverted}
-                    onChange={onInvertChange(invertFacet, name)}
-                    className="exclude-facet"
-                />
-            }
-            label={polyglot.t('exclude')}
-        />
-        <TextField
-            placeholder={polyglot.t('filter_value', { field: label })}
-            value={filter}
-            fullWidth
-            onChange={onFilterChange(
-                changeFacetValue,
-                name,
-                currentPage,
-                perPage,
-            )}
-        />
-        <div>
-            <div style={styles.listHeader}>
-                <div style={styles.valueHeader}>
-                    <SortButton
-                        name="value"
-                        sortDir={sort.sortDir}
-                        sortBy={sort.sortBy}
-                        sort={onSortChange(sortFacetValue, name)}
-                    >
-                        {polyglot.t('value')}
-                    </SortButton>
-                </div>
-                <div style={styles.totalHeader}>
-                    <SortButton
-                        name="count"
-                        sortDir={sort.sortDir}
-                        sortBy={sort.sortBy}
-                        sort={onSortChange(sortFacetValue, name)}
-                    >
-                        {polyglot.t('count')}
-                    </SortButton>
-                </div>
-            </div>
-            <div>
-                {facetValues.map(({ value, count }) => (
-                    <FacetValueItem
-                        key={value}
-                        name={name}
-                        value={value}
-                        count={count}
-                        page={page}
+}) => {
+    return (
+        <div className="facet-value-list" style={styles.list}>
+            <FormControlLabel
+                fullWidth
+                control={
+                    <Checkbox
+                        checked={inverted}
+                        onChange={onInvertChange(invertFacet, name)}
+                        className="exclude-facet"
                     />
-                ))}
+                }
+                label={polyglot.t('exclude')}
+            />
+            <TextField
+                placeholder={polyglot.t('filter_value', { field: label })}
+                value={filter}
+                fullWidth
+                onChange={onFilterChange(
+                    changeFacetValue,
+                    name,
+                    currentPage,
+                    perPage,
+                )}
+            />
+            <div>
+                <div style={styles.listHeader}>
+                    <div style={styles.valueHeader}>
+                        <SortButton
+                            name="value"
+                            sortDir={sort.sortDir}
+                            sortBy={sort.sortBy}
+                            sort={onSortChange(sortFacetValue, name)}
+                        >
+                            {polyglot.t('value')}
+                        </SortButton>
+                    </div>
+                    <div style={styles.totalHeader}>
+                        <SortButton
+                            name="count"
+                            sortDir={sort.sortDir}
+                            sortBy={sort.sortBy}
+                            sort={onSortChange(sortFacetValue, name)}
+                        >
+                            {polyglot.t('count')}
+                        </SortButton>
+                    </div>
+                </div>
+                <div>
+                    {facetValues.map(({ value, count }) => {
+                        return (
+                            <FacetValueItem
+                                key={value}
+                                name={name}
+                                value={value}
+                                count={count}
+                                page={page}
+                            />
+                        );
+                    })}
+                </div>
             </div>
+            <Pagination
+                column
+                total={total}
+                currentPage={currentPage}
+                perPage={perPage}
+                onChange={onPageChange(changeFacetValue, filter, name)}
+            />
         </div>
-        <Pagination
-            column
-            total={total}
-            currentPage={currentPage}
-            perPage={perPage}
-            onChange={onPageChange(changeFacetValue, filter, name)}
-        />
-    </div>
-);
+    );
+};
 
 FacetValueList.propTypes = {
     facetValues: PropTypes.arrayOf(facetValuePropType).isRequired,

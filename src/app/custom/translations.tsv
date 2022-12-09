@@ -189,6 +189,7 @@
 "field_wizard_step_display"	"How it is displayed"	"Comment elle est affichée"
 "field_wizard_step_search"	"Search related"	"Recherche"
 "field_wizard_step_semantic"	"Semantics"	"Sémantiques"
+"field_wizard_warning_facet_message"	"The value to which the facet is applied is of type Object. Make sure to apply the necessary transformers"	"La valeur sur laquelle est appliquée la facette est de type Objet. Assurez-vous d'appliquer les transformations nécessaires"
 "previous"	"Previous"	"Précédent"
 "export_raw_dataset"	"Export raw dataset"	"Exporter le jeu de données"
 "next"	"Next"	"Suivant"
@@ -749,3 +750,4 @@
 "transformer_URLENCODE"	"Avoid encoding problems in URLs"	"Permet d’éviter les problèmes d’encodage dans les URL"
 "tooltip_objectifTDM"	"Link objectif TDM"	"Lien objectif TDM"
 "tooltip_swagger"	"Link swagger"	"Lien du swagger"
+"facet_invalid_format"	"This facet is invalid"	"Cette facette est invalide"
