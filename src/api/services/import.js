@@ -27,6 +27,7 @@ export const startImport = async ctx => {
         progress.start({
             status: SAVING_DATASET,
             label: 'imported_lines',
+            type: 'import',
         });
     }
 

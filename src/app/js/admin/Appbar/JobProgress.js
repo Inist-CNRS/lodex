@@ -80,7 +80,9 @@ const JobProgressComponent = props => {
         socket.on('progress', data => {
             data.isJobProgress =
                 data.status !== PENDING &&
-                (data.type === 'enricher' || data.type === 'publisher');
+                (data.type === 'enricher' ||
+                    data.type === 'publisher' ||
+                    data.type === 'import');
             setProgress(data);
         });
 
@@ -129,9 +131,11 @@ const JobProgressComponent = props => {
                         <div className={classes.progressLabel}>
                             {progress?.label && (
                                 <Typography variant="subtitle2">
-                                    {polyglot.t(
-                                        progress?.label || 'publishing',
-                                    )}
+                                    {`${
+                                        progress.type === 'import'
+                                            ? progress.progress
+                                            : ''
+                                    } ${polyglot.t(progress?.label)}`}
                                 </Typography>
                             )}
                             {progress &&
@@ -164,32 +168,34 @@ const JobProgressComponent = props => {
                             <Cancel />
                         </Button>
                     </div>
-                    <LinearProgress
-                        classes={{
-                            root: classes.progress,
-                            colorPrimary: classes.colorPrimary,
-                            barColorPrimary: classes.barColorPrimary,
-                        }}
-                        variant="determinate"
-                        value={
-                            progress && progress.target
-                                ? (progress.progress / progress.target) * 100
-                                : 0
-                        }
-                    />
+                    {!!progress?.progress && !!progress?.target && (
+                        <LinearProgress
+                            classes={{
+                                root: classes.progress,
+                                colorPrimary: classes.colorPrimary,
+                                barColorPrimary: classes.barColorPrimary,
+                            }}
+                            variant="determinate"
+                            value={(progress.progress / progress.target) * 100}
+                        />
+                    )}
                 </Box>
             </Fade>
             <CancelPublicationDialog
                 isOpen={isCancelDialogOpen}
                 title={
-                    (progress?.type === 'publisher' &&
-                        'cancelPublicationTitle') ||
-                    'cancelEnrichmentTitle'
+                    progress?.type === 'publisher'
+                        ? 'cancelPublicationTitle'
+                        : progress?.type === 'enricher'
+                        ? 'cancelEnrichmentTitle'
+                        : 'cancelImportTitle'
                 }
                 content={
-                    (progress?.type === 'publisher' &&
-                        'cancelPublicationContent') ||
-                    'cancelEnrichmentContent'
+                    progress?.type === 'publisher'
+                        ? 'cancelPublicationContent'
+                        : progress?.type === 'enricher'
+                        ? 'cancelEnrichmentContent'
+                        : 'cancelImportContent'
                 }
                 onCancel={() => {
                     setIsCancelDialogOpen(false);

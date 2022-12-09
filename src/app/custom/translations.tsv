@@ -716,3 +716,5 @@
 "ws_post-v1-unpaywall-expand_title"	"untitled (Info related to Open Access)"	"sans titre (Infos liées à l'Open Access)"
 "ws_post-v1-unpaywall-expand_description"	"Get unpaywall info from doi (is_oa, oa_status, host_type, has_repository_copy)"	"Récupère des infos d'unpaywall à partir du doi (is_oa, oa_status, host_type, has_repository_copy)"
 "refresh_button"	"Refresh"	"Rafraîchir"
+"cancelImportTitle"	"Cancel running import ?"	"Annuler l'import en cours ?"
+"cancelImportContent"	"By cancelling running import, you also clear already imported data."	"En annulant l'import en cours, vous supprimerez également les données déjà importées."

@@ -8,7 +8,6 @@ export const OPEN_UPLOAD = 'OPEN_UPLOAD';
 export const CLOSE_UPLOAD = 'CLOSE_UPLOAD';
 export const CHANGE_UPLOAD_URL = 'CHANGE_UPLOAD_URL';
 export const CHANGE_LOADER_NAME = 'CHANGE_LOADER_NAME';
-export const CANCEL_UPLOAD = 'CANCEL_UPLOAD';
 
 export const uploadFile = createAction(UPLOAD_FILE);
 export const uploadUrl = createAction(UPLOAD_URL);
@@ -18,7 +17,6 @@ export const openUpload = createAction(OPEN_UPLOAD);
 export const closeUpload = createAction(CLOSE_UPLOAD);
 export const changeUploadUrl = createAction(CHANGE_UPLOAD_URL);
 export const changeLoaderName = createAction(CHANGE_LOADER_NAME);
-export const cancelUpload = createAction(CANCEL_UPLOAD);
 
 const validateUrl = url =>
     url && (url.startsWith('http://') || url.startsWith('https://'));

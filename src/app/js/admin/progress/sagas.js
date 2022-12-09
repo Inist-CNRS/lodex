@@ -8,7 +8,6 @@ import {
     LOAD_PROGRESS,
     finishProgress,
 } from './reducer';
-import { UPLOAD_FILE } from '../upload';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromUser } from '../../sharedSelectors';
 import { PENDING } from '../../../../common/progressStatus';
@@ -32,8 +31,5 @@ export function* handleStartProgressSaga() {
 }
 
 export default function* progressSaga() {
-    yield takeEvery(
-        [LOAD_PROGRESS, UPLOAD_FILE, CLEAR_PUBLISHED],
-        handleStartProgressSaga,
-    );
+    yield takeEvery([LOAD_PROGRESS, CLEAR_PUBLISHED], handleStartProgressSaga);
 }

@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
     Dialog,
     LinearProgress,
     DialogTitle,
     DialogContent,
-    DialogActions,
-    Button,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -14,9 +12,9 @@ import compose from 'recompose/compose';
 
 import { fromProgress } from '../selectors';
 import { loadProgress, clearProgress } from './reducer';
-import { cancelUpload } from '../upload';
-import { PENDING, SAVING_DATASET } from '../../../../common/progressStatus';
+import { PENDING } from '../../../../common/progressStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { io } from 'socket.io-client';
 
 const formatProgress = (progress, target, symbol, label) => {
     const formatedTarget = target ? ` / ${target}` : ``;
@@ -44,30 +42,27 @@ const renderProgressText = props => {
 };
 
 export const ProgressComponent = props => {
-    const {
-        status,
-        target,
-        progress,
-        error,
-        clearProgress,
-        cancelUpload,
-        p: polyglot,
-        loadProgress,
-        isBackground,
-    } = props;
+    const { clearProgress, p: polyglot, loadProgress, progress } = props;
 
-    const isOpen = status !== PENDING && !isBackground;
-
-    console.log('Progress', progress);
+    const [updatedProgress, setUpdatedProgress] = useState(progress);
+    const isOpen =
+        updatedProgress.status !== PENDING && !updatedProgress.isBackground;
 
     useEffect(() => {
-        loadProgress();
+        const socket = io();
+        socket.on('progress', data => {
+            setUpdatedProgress(data);
+        });
+        socket.on('connect_error', () => {
+            loadProgress();
+        });
+        return () => socket.disconnect();
     }, []);
 
-    if (error) {
+    if (updatedProgress.error) {
         return (
             <Dialog open={isOpen} onClose={clearProgress}>
-                <DialogTitle>{polyglot.t(status)}</DialogTitle>
+                <DialogTitle>{polyglot.t(updatedProgress.status)}</DialogTitle>
                 <DialogContent>
                     <div>{polyglot.t('progress_error')}</div>
                 </DialogContent>
@@ -77,44 +72,43 @@ export const ProgressComponent = props => {
 
     return (
         <Dialog open={isOpen}>
-            <DialogTitle>{polyglot.t(status)}</DialogTitle>
+            <DialogTitle>{polyglot.t(updatedProgress.status)}</DialogTitle>
             <DialogContent>
                 <div className="progress">
                     <LinearProgress
-                        mode="determinate"
-                        min={0}
-                        max={target || 0}
-                        value={progress || 0}
+                        variant={
+                            updatedProgress.target
+                                ? 'determinate'
+                                : 'indeterminate'
+                        }
+                        value={
+                            updatedProgress.progress && updatedProgress.target
+                                ? (updatedProgress.progress /
+                                      updatedProgress.target) *
+                                  100
+                                : 0
+                        }
                     />
-                    {renderProgressText(props)}
+                    {renderProgressText({ ...updatedProgress, p: polyglot })}
                 </div>
             </DialogContent>
-            {status === SAVING_DATASET && (
-                <DialogActions>
-                    <Button
-                        color="secondary"
-                        variant="text"
-                        onClick={cancelUpload}
-                    >
-                        {polyglot.t('Cancel')}
-                    </Button>
-                </DialogActions>
-            )}
         </Dialog>
     );
 };
 ProgressComponent.propTypes = {
-    status: PropTypes.string.isRequired,
-    target: PropTypes.number,
-    progress: PropTypes.number,
-    symbol: PropTypes.string,
+    progress: PropTypes.shape({
+        status: PropTypes.string.isRequired,
+        target: PropTypes.number,
+        progress: PropTypes.number,
+        symbol: PropTypes.string,
+        label: PropTypes.string,
+        isBackground: PropTypes.bool,
+        error: PropTypes.bool,
+    }).isRequired,
     loadProgress: PropTypes.func.isRequired,
-    error: PropTypes.bool,
     clearProgress: PropTypes.func.isRequired,
     cancelUpload: PropTypes.func.isRequired,
     p: polyglotPropTypes,
-    isBackground: PropTypes.bool,
-    label: PropTypes.string,
 };
 
 ProgressComponent.defaultProps = {
@@ -124,13 +118,12 @@ ProgressComponent.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-    ...fromProgress.getProgress(state),
+    progress: fromProgress.getProgress(state),
 });
 
 const mapDispatchToProps = {
     loadProgress,
     clearProgress,
-    cancelUpload,
 };
 
 export const Progress = compose(

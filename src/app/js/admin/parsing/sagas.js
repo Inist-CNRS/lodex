@@ -10,14 +10,12 @@ import {
 } from './';
 import { UPLOAD_SUCCESS } from '../upload';
 import { fromUser } from '../../sharedSelectors';
-import { INDEXATION } from '../../../../common/progressStatus';
-import { clearProgress, updateProgress } from '../progress/reducer';
+import { clearProgress } from '../progress/reducer';
 
 export function* handleLoadParsingResult(action) {
     const request = yield select(fromUser.getLoadParsingResultRequest);
 
     if (action.type === UPLOAD_SUCCESS) {
-        yield put(updateProgress({ status: INDEXATION }));
         // MongoDB needs extra time to compute large datasets
         yield call(delay, 5000);
         yield put(clearProgress());
