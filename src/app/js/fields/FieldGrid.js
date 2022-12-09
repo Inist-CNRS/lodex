@@ -392,7 +392,7 @@ const FieldGridComponent = ({
                     onEditField={editField}
                     onChangeWidth={handleChangeWidth}
                     onChangePositions={handleChangePositions}
-                    allowResize={filter !== SCOPE_GRAPHIC}
+                    allowResize={true}
                     polyglot={polyglot}
                 />
             )}
