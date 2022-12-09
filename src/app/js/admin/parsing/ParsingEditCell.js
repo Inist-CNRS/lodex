@@ -74,7 +74,9 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
         setLoading(true);
         try {
             let valueToSave = value;
-            if (isPrimitive(cell.value)) {
+            if (valueToSave instanceof Array || valueToSave instanceof Object) {
+                valueToSave = JSON.stringify(value);
+            } else if (isPrimitive(cell.value)) {
                 if (typeof cell.value === 'number') {
                     valueToSave = Number(value);
                 }
