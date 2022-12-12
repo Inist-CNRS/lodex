@@ -6,14 +6,17 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { makeStyles } from '@material-ui/styles';
 import { Save as SaveIcon } from '@material-ui/icons';
 import datasetApi from '../api/dataset';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import {
     Box,
     Button,
+    ButtonGroup,
     CircularProgress,
     Input,
+    Menu,
+    MenuItem,
     Snackbar,
 } from '@material-ui/core';
-import classNames from 'classnames';
 import { Alert } from '@material-ui/lab';
 import theme from '../../theme';
 
@@ -28,15 +31,20 @@ const style = {
     },
     containedButton: {
         marginTop: 15,
-        float: 'right',
     },
     icon: {
         marginRight: 10,
     },
+    menuPaper: {
+        backgroundColor: theme.green.primary,
+        '& .MuiMenuItem-root': {
+            color: 'white',
+        },
+    },
 };
 const useStyles = makeStyles(style);
 
-const returnParsedValue = value => {
+export const returnParsedValue = value => {
     try {
         return JSON.parse(value);
     } catch (e) {
@@ -44,8 +52,70 @@ const returnParsedValue = value => {
     }
 };
 
-const isPrimitive = value => {
+export const isPrimitive = value => {
     return value !== Object(value);
+};
+
+export const tryParseJSONObjectOrArray = jsonString => {
+    try {
+        if (typeof jsonString === 'object') {
+            return jsonString;
+        }
+        const parsed = JSON.parse(jsonString);
+        if (parsed && (typeof parsed === 'object' || parsed instanceof Array)) {
+            return parsed;
+        }
+    } catch (e) {
+        return false;
+    }
+
+    return false;
+};
+
+export const getValueBySavingType = (value, type, previousValue) => {
+    if (type === 'number') {
+        const parsedValue = Number(value);
+        if (isNaN(parsedValue)) {
+            throw new Error('value_not_a_number');
+        }
+        return Number(value);
+    }
+    if (type === 'string') {
+        return String(value);
+    }
+    if (type === 'boolean') {
+        return value === 'true';
+    }
+
+    if (type === 'array') {
+        const parsedValue = tryParseJSONObjectOrArray(value);
+        if (!parsedValue || !(parsedValue instanceof Array)) {
+            throw new Error('value_not_an_array');
+        }
+        return value;
+    }
+
+    if (type === 'json') {
+        const parsedValue = tryParseJSONObjectOrArray(value);
+        if (!parsedValue || typeof parsedValue !== 'object') {
+            throw new Error('value_not_an_object');
+        }
+        return value;
+    }
+
+    // If no type is provided, we try to guess the type
+    if (value instanceof Array || value instanceof Object) {
+        return JSON.stringify(value);
+    } else if (isPrimitive(previousValue)) {
+        if (typeof previousValue === 'number') {
+            return Number(value);
+        }
+        if (typeof previousValue === 'boolean') {
+            return value === 'true';
+        }
+    }
+
+    return JSON.stringify(value);
 };
 
 const isError = value => {
@@ -53,6 +123,77 @@ const isError = value => {
         typeof value === 'string' &&
         (value.startsWith('[Error]') || value.startsWith('ERROR'))
     );
+};
+
+const ButtonWithDropdown = ({ polyglot, loading, handleChange }) => {
+    const [isOpen, setOpen] = React.useState(false);
+    const classes = useStyles();
+    const anchorRef = React.useRef(null);
+
+    const types = ['number', 'string', 'boolean', 'array', 'json'];
+    return (
+        <>
+            <ButtonGroup
+                variant="contained"
+                ref={anchorRef}
+                className={classes.containedButton}
+            >
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handleChange()}
+                >
+                    {loading ? (
+                        <CircularProgress
+                            size={20}
+                            className={classes.icon}
+                            color="white"
+                        />
+                    ) : (
+                        <SaveIcon className={classes.icon} />
+                    )}
+                    {polyglot.t('save')}
+                </Button>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    onClick={() => setOpen(true)}
+                >
+                    <ArrowDropDownIcon />
+                </Button>
+            </ButtonGroup>
+            <Menu
+                open={isOpen}
+                onClose={() => setOpen(false)}
+                getContentAnchorEl={null}
+                anchorEl={anchorRef.current}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+                classes={{ paper: classes.menuPaper }}
+            >
+                {types.map(type => (
+                    <MenuItem
+                        key={type}
+                        onClick={() => {
+                            handleChange(type);
+                            setOpen(false);
+                        }}
+                    >
+                        {polyglot.t('save_as', {
+                            type: type,
+                        })}
+                    </MenuItem>
+                ))}
+            </Menu>
+        </>
+    );
+};
+
+ButtonWithDropdown.propTypes = {
+    polyglot: polyglotPropTypes.isRequired,
+    loading: PropTypes.bool.isRequired,
+    handleChange: PropTypes.func.isRequired,
 };
 
 const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
@@ -70,21 +211,15 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
 
     const classes = useStyles();
 
-    const handleChange = async () => {
+    const handleChange = async type => {
         setLoading(true);
         try {
-            let valueToSave = value;
-            if (valueToSave instanceof Array || valueToSave instanceof Object) {
-                valueToSave = JSON.stringify(value);
-            } else if (isPrimitive(cell.value)) {
-                if (typeof cell.value === 'number') {
-                    valueToSave = Number(value);
-                }
-                if (typeof cell.value === 'boolean') {
-                    valueToSave = value === 'true';
-                }
-            } else {
-                valueToSave = JSON.stringify(value);
+            let valueToSave;
+            try {
+                valueToSave = getValueBySavingType(value, type, cell.value);
+            } catch (e) {
+                console.error(e);
+                throw new Error(polyglot.t(e.message));
             }
             await datasetApi.updateDataset({
                 uri: cell.row.uri,
@@ -144,7 +279,7 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                             borderRadius: 5,
                         }}
                         multiline
-                        rows={1}
+                        minRows={1}
                         maxRows={Infinity}
                     />
                 ) : (
@@ -174,7 +309,7 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                     alignItems="flex-end"
                     justifyContent="flex-end"
                 >
-                    <Button
+                    {/* <Button
                         variant="contained"
                         color="primary"
                         onClick={handleChange}
@@ -196,7 +331,13 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                         )}
 
                         {polyglot.t('save')}
-                    </Button>
+                    </Button> */}
+
+                    <ButtonWithDropdown
+                        handleChange={handleChange}
+                        loading={loading}
+                        polyglot={polyglot}
+                    />
                     <Button
                         color="secondary"
                         key="cancel"
