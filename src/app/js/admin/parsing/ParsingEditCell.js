@@ -15,10 +15,9 @@ import {
     Input,
     Menu,
     MenuItem,
-    Snackbar,
 } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
 import theme from '../../theme';
+import { toast } from 'react-toastify';
 
 const style = {
     container: {
@@ -81,6 +80,10 @@ export const getValueBySavingType = (value, type, previousValue) => {
         return Number(value);
     }
     if (type === 'string') {
+        const parsedValue = tryParseJSONObjectOrArray(value);
+        if (parsedValue && typeof parsedValue === 'object') {
+            return JSON.stringify(value);
+        }
         return String(value);
     }
     if (type === 'boolean') {
@@ -92,7 +95,7 @@ export const getValueBySavingType = (value, type, previousValue) => {
         if (!parsedValue || !(parsedValue instanceof Array)) {
             throw new Error('value_not_an_array');
         }
-        return value;
+        return parsedValue;
     }
 
     if (type === 'json') {
@@ -100,7 +103,7 @@ export const getValueBySavingType = (value, type, previousValue) => {
         if (!parsedValue || typeof parsedValue !== 'object') {
             throw new Error('value_not_an_object');
         }
-        return value;
+        return parsedValue;
     }
 
     // If no type is provided, we try to guess the type
@@ -199,15 +202,6 @@ ButtonWithDropdown.propTypes = {
 const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
     const [loading, setLoading] = React.useState(false);
     const [value, setValue] = React.useState(returnParsedValue(cell.value));
-    const [openAlert, setOpenAlert] = React.useState(false);
-
-    const handleCloseAlert = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpenAlert(false);
-    };
 
     const classes = useStyles();
 
@@ -218,7 +212,9 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
             try {
                 valueToSave = getValueBySavingType(value, type, cell.value);
             } catch (e) {
-                console.error(e);
+                toast(polyglot.t(e.message), {
+                    type: toast.TYPE.ERROR,
+                });
                 throw new Error(polyglot.t(e.message));
             }
             await datasetApi.updateDataset({
@@ -227,7 +223,9 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                 value: valueToSave,
             });
             cell.row[cell.field] = valueToSave;
-            setOpenAlert(true);
+            toast(polyglot.t('dataset_edit_success'), {
+                type: toast.TYPE.SUCCESS,
+            });
             setToggleDrawer(false);
         } catch (e) {
             console.error(e);
@@ -309,30 +307,6 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                     alignItems="flex-end"
                     justifyContent="flex-end"
                 >
-                    {/* <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleChange}
-                        className={classNames(
-                            classes.containedButton,
-                            'btn-save-edit-cell',
-                        )}
-                    >
-                        {loading ? (
-                            <CircularProgress
-                                color="white"
-                                variant="indeterminate"
-                                size={20}
-                                marginRight={10}
-                                className={classes.icon}
-                            />
-                        ) : (
-                            <SaveIcon className={classes.icon} />
-                        )}
-
-                        {polyglot.t('save')}
-                    </Button> */}
-
                     <ButtonWithDropdown
                         handleChange={handleChange}
                         loading={loading}
@@ -347,19 +321,6 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                         {polyglot.t('cancel')}
                     </Button>
                 </Box>
-                <Snackbar
-                    open={openAlert}
-                    autoHideDuration={6000}
-                    onClose={handleCloseAlert}
-                >
-                    <Alert
-                        onClose={handleCloseAlert}
-                        severity="success"
-                        sx={{ width: '100%' }}
-                    >
-                        {polyglot.t('dataset_edit_success')}
-                    </Alert>
-                </Snackbar>
             </div>
         </div>
     );
