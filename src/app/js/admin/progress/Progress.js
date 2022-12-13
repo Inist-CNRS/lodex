@@ -107,7 +107,6 @@ ProgressComponent.propTypes = {
     }).isRequired,
     loadProgress: PropTypes.func.isRequired,
     clearProgress: PropTypes.func.isRequired,
-    cancelUpload: PropTypes.func.isRequired,
     p: polyglotPropTypes,
 };
 

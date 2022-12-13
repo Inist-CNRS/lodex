@@ -27,11 +27,6 @@ export const clearUpload = async ctx => {
     ctx.body = true;
 };
 
-// TODO: update to cancel bull job
-export const cancelUpload = async ctx => {
-    ctx.body = 'ok';
-};
-
 export const prepareUpload = async (ctx, next) => {
     ctx.requestToStream = requestToStream(asyncBusboy);
     ctx.checkFileExists = checkFileExists;
@@ -154,7 +149,6 @@ export const checkChunkMiddleware = async (ctx, loaderName) => {
 
 const app = new Koa();
 
-app.use(route.post('/cancel', cancelUpload));
 app.use(prepareUpload);
 
 app.use(koaBodyParser());
