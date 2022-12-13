@@ -29,11 +29,14 @@ import {
     FormControlLabel,
     makeStyles,
     MenuItem,
-    Snackbar,
     Switch,
+    Tooltip,
 } from '@material-ui/core';
-import { FINISHED, PENDING } from '../../../../common/enrichmentStatus';
-import Alert from '../../lib/components/Alert';
+import {
+    FINISHED,
+    IN_PROGRESS,
+    PENDING,
+} from '../../../../common/enrichmentStatus';
 import EnrichmentSidebar from './EnrichmentSidebar';
 
 import ListAltIcon from '@material-ui/icons/ListAlt';
@@ -136,7 +139,6 @@ export const EnrichmentFormComponent = ({
     const [advancedMode, setAdvancedMode] = useState(
         initialValues?.advancedMode || false,
     );
-    const [openSnackBar, setOpenSnackBar] = useState(false);
     const [openCatalog, setOpenCatalog] = useState(false);
 
     useEffect(() => {
@@ -259,17 +261,24 @@ export const EnrichmentFormComponent = ({
         return (
             <Box>
                 <div className={classes.switchMode}>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={advancedMode}
-                                onChange={toggleAdvancedMode}
-                                color="primary"
-                                name="advancedMode"
-                            />
+                    <Tooltip
+                        title={
+                            !advancedMode &&
+                            polyglot.t(`enrichment_advanced_mode_tooltip`)
                         }
-                        label={polyglot.t('advancedMode')}
-                    />
+                    >
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={advancedMode}
+                                    onChange={toggleAdvancedMode}
+                                    color="primary"
+                                    name="advancedMode"
+                                />
+                            }
+                            label={polyglot.t('advancedMode')}
+                        />
+                    </Tooltip>
                 </div>
                 {advancedMode ? (
                     <div
@@ -308,6 +317,9 @@ export const EnrichmentFormComponent = ({
                                         variant="contained"
                                         color="primary"
                                         onClick={() => setOpenCatalog(true)}
+                                        disabled={[IN_PROGRESS].includes(
+                                            initialValues?.status,
+                                        )}
                                     >
                                         <ListAltIcon fontSize="small" />
                                     </Button>
@@ -394,21 +406,11 @@ export const EnrichmentFormComponent = ({
                         loading={isLoading}
                         style={{ marginTop: 24 }}
                         name="submit-enrichment"
+                        disabled={[IN_PROGRESS].includes(initialValues?.status)}
                     >
                         {polyglot.t(isEdit ? 'save' : 'add_more')}
                     </ButtonWithStatus>
                 </form>
-
-                <Snackbar
-                    open={openSnackBar}
-                    autoHideDuration={3000}
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                    onClose={() => setOpenSnackBar(!openSnackBar)}
-                >
-                    <Alert variant="filled" severity="success">
-                        {polyglot.t('error')}: {errorEnrichment}
-                    </Alert>
-                </Snackbar>
             </div>
             <EnrichmentContext.Provider
                 value={{
