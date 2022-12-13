@@ -18,6 +18,7 @@ import { addPublisherListener } from './workers/publisher';
 
 import progress from './services/progress';
 import { addEnrichmentJobListener } from './services/enrichment/enrichment';
+import { addImportListener } from './workers/import';
 
 const app = koaQs(new Koa());
 
@@ -91,6 +92,9 @@ if (!module.parent) {
         });
         addEnrichmentJobListener(payload => {
             socket.emit(payload.room, payload.data);
+        });
+        addImportListener(payload => {
+            socket.emit('import', payload);
         });
     });
 }

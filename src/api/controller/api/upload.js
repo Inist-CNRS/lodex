@@ -126,14 +126,29 @@ export const uploadUrl = async ctx => {
     };
 };
 
-export const checkChunkMiddleware = async ctx => {
+export const checkChunkMiddleware = async (ctx, loaderName) => {
     const {
         resumableChunkNumber,
+        resumableTotalChunks,
         resumableIdentifier,
         resumableCurrentChunkSize,
+        resumableFilename,
     } = ctx.request.query;
+    const chunkNumber = parseInt(resumableChunkNumber, 10);
+    const totalChunks = parseInt(resumableTotalChunks, 10);
+    const currentChunkSize = parseInt(resumableCurrentChunkSize, 10);
+    const filename = `${config.uploadDir}/${resumableIdentifier}`;
     const chunkname = `${config.uploadDir}/${resumableIdentifier}.${resumableChunkNumber}`;
-    const exists = await checkFileExists(chunkname, resumableCurrentChunkSize);
+    const [extension] = resumableFilename.match(/[^.]*$/);
+
+    const exists = await checkFileExists(chunkname, currentChunkSize);
+
+    if (exists && chunkNumber === totalChunks) {
+        await workerQueue.add(
+            { loaderName, filename, totalChunks, extension, jobType: IMPORT },
+            { jobId: uuid() },
+        );
+    }
     ctx.status = exists ? 200 : 204;
 };
 

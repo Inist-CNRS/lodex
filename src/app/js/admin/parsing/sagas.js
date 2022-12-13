@@ -10,15 +10,13 @@ import {
 } from './';
 import { UPLOAD_SUCCESS } from '../upload';
 import { fromUser } from '../../sharedSelectors';
-import { clearProgress } from '../progress/reducer';
 
 export function* handleLoadParsingResult(action) {
     const request = yield select(fromUser.getLoadParsingResultRequest);
 
     if (action.type === UPLOAD_SUCCESS) {
-        // MongoDB needs extra time to compute large datasets
-        yield call(delay, 5000);
-        yield put(clearProgress());
+        // MongoDB needs extra time to save first items
+        yield call(delay, 1000);
     }
     const { error, response } = yield call(fetchSaga, request);
 

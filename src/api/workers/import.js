@@ -5,29 +5,45 @@ import { saveParsedStream } from '../services/saveParsedStream';
 import publishDocuments from '../services/publishDocuments';
 import publishFacets from '../controller/api/publishFacets';
 import saveStream from '../services/saveStream';
+import { CancelWorkerError } from '.';
 
 export const IMPORT = 'import';
+const listeners = [];
 
 export const processImport = (job, done) => {
     startJobImport(job)
-        .then(() => {
+        .then(async () => {
             job.progress(100);
+            const isFailed = await job.isFailed();
+            notifyListeners({ isImporting: false, success: !isFailed });
             done();
         })
         .catch(err => {
-            handleImportError(err);
+            handleImportError(job, err);
             done(err);
         });
 };
 
 const startJobImport = async job => {
+    notifyListeners({ isImporting: true, success: false });
     const ctx = await prepareContext({ job });
     await startImport(ctx);
 };
 
-const handleImportError = async () => {
-    const ctx = await prepareContext({});
-    await ctx.dataset.drop();
+const handleImportError = async (job, err) => {
+    notifyListeners({
+        isImporting: false,
+        success: false,
+        message: err.message,
+    });
+    const ctx = await prepareContext({ job });
+    if (err instanceof CancelWorkerError) {
+        await ctx.dataset.drop();
+    }
+    const { filename, totalChunks } = ctx.job?.data || {};
+    if (filename && totalChunks) {
+        await ctx.clearChunks(filename, totalChunks);
+    }
 };
 
 const prepareContext = async ctx => {
@@ -42,3 +58,7 @@ const prepareContext = async ctx => {
     ctx.publishFacets = publishFacets;
     return ctx;
 };
+
+export const addImportListener = listener => listeners.push(listener);
+const notifyListeners = payload =>
+    listeners.forEach(listener => listener(payload));
