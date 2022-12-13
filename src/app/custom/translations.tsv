@@ -751,3 +751,7 @@
 "tooltip_objectifTDM"	"Link objectif TDM"	"Lien objectif TDM"
 "tooltip_swagger"	"Link swagger"	"Lien du swagger"
 "facet_invalid_format"	"This facet is invalid"	"Cette facette est invalide"
+"save_as"	"Save as %{type}"	"En tant que %{type}"
+"value_not_an_object"	"Value is not an object"	"La valeur n’est pas un objet"
+"value_not_an_array"	"Value is not an array"	"La valeur n’est pas un tableau"
+"value_not_a_number"	"Value is not a number"	"La valeur n’est pas un nombre"
