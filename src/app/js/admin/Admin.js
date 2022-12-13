@@ -30,7 +30,6 @@ const styles = {
 
 export const AdminComponent = ({
     loadingParsingResult,
-    hasPublishedDataset,
     canUploadFile,
     p: polyglot,
 }) => {
