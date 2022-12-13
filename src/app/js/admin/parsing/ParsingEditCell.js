@@ -61,7 +61,7 @@ export const tryParseJSONObjectOrArray = jsonString => {
             return jsonString;
         }
         const parsed = JSON.parse(jsonString);
-        if (parsed && (typeof parsed === 'object' || parsed instanceof Array)) {
+        if (parsed && typeof parsed === 'object') {
             return parsed;
         }
     } catch (e) {
@@ -77,17 +77,17 @@ export const getValueBySavingType = (value, type, previousValue) => {
         if (isNaN(parsedValue)) {
             throw new Error('value_not_a_number');
         }
-        return Number(value);
+        return parsedValue;
     }
     if (type === 'string') {
         const parsedValue = tryParseJSONObjectOrArray(value);
-        if (parsedValue && typeof parsedValue === 'object') {
+        if (parsedValue) {
             return JSON.stringify(value);
         }
         return String(value);
     }
     if (type === 'boolean') {
-        return value === 'true';
+        return [true, 'true', 1, '1', 'on', 'yes', 'oui', 'ok'].includes(value);
     }
 
     if (type === 'array') {
@@ -107,12 +107,10 @@ export const getValueBySavingType = (value, type, previousValue) => {
     }
 
     // If no type is provided, we try to guess the type
-    if (value instanceof Array || value instanceof Object) {
-        console.log('typeof previousValue', typeof previousValue);
-        console.log('previousValue', previousValue);
-        if (typeof previousValue === 'string') {
-            return JSON.stringify(value);
-        }
+    if (
+        (value instanceof Array || value instanceof Object) &&
+        typeof previousValue !== 'string'
+    ) {
         return value;
     } else if (isPrimitive(previousValue)) {
         if (typeof previousValue === 'number') {
@@ -122,7 +120,6 @@ export const getValueBySavingType = (value, type, previousValue) => {
             return value === 'true';
         }
     }
-
     return JSON.stringify(value);
 };
 
