@@ -108,7 +108,7 @@ export const getValueBySavingType = (value, type, previousValue) => {
 
     // If no type is provided, we try to guess the type
     if (value instanceof Array || value instanceof Object) {
-        return JSON.stringify(value);
+        return value;
     } else if (isPrimitive(previousValue)) {
         if (typeof previousValue === 'number') {
             return Number(value);
