@@ -15,6 +15,7 @@ import {
     previewDataEnrichment,
     previewDataEnrichmentClear,
     updateEnrichment,
+    clearEnrichmentError,
 } from '.';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import FormSelectField from '../../lib/components/FormSelectField';
@@ -31,11 +32,7 @@ import {
     Snackbar,
     Switch,
 } from '@material-ui/core';
-import {
-    FINISHED,
-    IN_PROGRESS,
-    PENDING,
-} from '../../../../common/enrichmentStatus';
+import { FINISHED, PENDING } from '../../../../common/enrichmentStatus';
 import Alert from '../../lib/components/Alert';
 import EnrichmentSidebar from './EnrichmentSidebar';
 
@@ -43,6 +40,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import { EnrichmentContext } from './EnrichmentContext';
 import EnrichmentCatalogDialog from './EnrichmentCatalog';
+import { toast } from 'react-toastify';
 
 const DEBOUNCE_TIMEOUT = 2000;
 
@@ -121,6 +119,7 @@ export const EnrichmentFormComponent = ({
     isDataPreviewLoading,
     isEdit,
     isLoading,
+    onClearEnrichmentError,
     onAddEnrichment,
     onDeleteEnrichment,
     onLaunchEnrichment,
@@ -141,7 +140,12 @@ export const EnrichmentFormComponent = ({
     const [openCatalog, setOpenCatalog] = useState(false);
 
     useEffect(() => {
-        setOpenSnackBar(!!errorEnrichment);
+        if (errorEnrichment) {
+            toast(`${polyglot.t('error')} : ${errorEnrichment}`, {
+                type: toast.TYPE.ERROR,
+            });
+            onClearEnrichmentError();
+        }
     }, [errorEnrichment]);
 
     useEffect(() => {
@@ -303,13 +307,7 @@ export const EnrichmentFormComponent = ({
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={e => {
-                                            e.stopPropagation();
-                                            setOpenCatalog(true);
-                                        }}
-                                        disabled={[IN_PROGRESS].includes(
-                                            initialValues?.status,
-                                        )}
+                                        onClick={() => setOpenCatalog(true)}
                                     >
                                         <ListAltIcon fontSize="small" />
                                     </Button>
@@ -396,7 +394,6 @@ export const EnrichmentFormComponent = ({
                         loading={isLoading}
                         style={{ marginTop: 24 }}
                         name="submit-enrichment"
-                        disabled={[IN_PROGRESS].includes(initialValues?.status)}
                     >
                         {polyglot.t(isEdit ? 'save' : 'add_more')}
                     </ButtonWithStatus>
@@ -451,6 +448,7 @@ EnrichmentFormComponent.propTypes = {
     onDeleteEnrichment: PropTypes.func.isRequired,
     onLaunchEnrichment: PropTypes.func.isRequired,
     onPreviewDataEnrichment: PropTypes.func.isRequired,
+    onClearEnrichmentError: PropTypes.func.isRequired,
     onPreviewDataEnrichmentClear: PropTypes.func.isRequired,
     onResetForm: PropTypes.func.isRequired,
     onLoadEnrichments: PropTypes.func.isRequired,
@@ -485,6 +483,7 @@ const mapDispatchToProps = {
     onDeleteEnrichment: deleteEnrichment,
     onLaunchEnrichment: launchEnrichment,
     onUpdateEnrichment: updateEnrichment,
+    onClearEnrichmentError: clearEnrichmentError,
     onPreviewDataEnrichment: previewDataEnrichment,
     onPreviewDataEnrichmentClear: previewDataEnrichmentClear,
     onLoadEnrichments: loadEnrichments,
