@@ -31,7 +31,11 @@ import {
     Snackbar,
     Switch,
 } from '@material-ui/core';
-import { FINISHED, PENDING } from '../../../../common/enrichmentStatus';
+import {
+    FINISHED,
+    IN_PROGRESS,
+    PENDING,
+} from '../../../../common/enrichmentStatus';
 import Alert from '../../lib/components/Alert';
 import EnrichmentSidebar from './EnrichmentSidebar';
 
@@ -299,7 +303,13 @@ export const EnrichmentFormComponent = ({
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => setOpenCatalog(true)}
+                                        onClick={e => {
+                                            e.stopPropagation();
+                                            setOpenCatalog(true);
+                                        }}
+                                        disabled={[IN_PROGRESS].includes(
+                                            initialValues?.status,
+                                        )}
                                     >
                                         <ListAltIcon fontSize="small" />
                                     </Button>
@@ -386,6 +396,7 @@ export const EnrichmentFormComponent = ({
                         loading={isLoading}
                         style={{ marginTop: 24 }}
                         name="submit-enrichment"
+                        disabled={[IN_PROGRESS].includes(initialValues?.status)}
                     >
                         {polyglot.t(isEdit ? 'save' : 'add_more')}
                     </ButtonWithStatus>
