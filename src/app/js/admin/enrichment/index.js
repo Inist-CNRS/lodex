@@ -5,6 +5,7 @@ export const LOAD_ENRICHMENTS_ERROR = 'LOAD_ENRICHMENTS_ERROR';
 export const LOAD_ENRICHMENTS_SUCCESS = 'LOAD_ENRICHMENTS_SUCCESS';
 export const CREATE_ENRICHMENT = 'CREATE_ENRICHMENT';
 export const CREATE_ENRICHMENT_ERROR = 'CREATE_ENRICHMENT_ERROR';
+export const CLEAR_ENRICHMENT_ERROR = 'CLEAR_ENRICHMENT_ERROR';
 export const LAUNCH_ENRICHMENT = 'LAUNCH_ENRICHMENT';
 export const PREVIEW_DATA_ENRICHMENT = 'PREVIEW_DATA_ENRICHMENT';
 export const PREVIEW_DATA_ENRICHMENT_SUCESS = 'PREVIEW_DATA_ENRICHMENT_SUCESS';
@@ -20,6 +21,7 @@ export const loadEnrichmentsError = createAction(LOAD_ENRICHMENTS_ERROR);
 export const loadEnrichmentsSuccess = createAction(LOAD_ENRICHMENTS_SUCCESS);
 export const createEnrichment = createAction(CREATE_ENRICHMENT);
 export const createEnrichmentError = createAction(CREATE_ENRICHMENT_ERROR);
+export const clearEnrichmentError = createAction(CLEAR_ENRICHMENT_ERROR);
 export const launchEnrichment = createAction(LAUNCH_ENRICHMENT);
 export const previewDataEnrichment = createAction(PREVIEW_DATA_ENRICHMENT);
 export const previewDataEnrichmentSuccess = createAction(
@@ -91,6 +93,10 @@ export default handleActions(
         CREATE_ENRICHMENT_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
+        }),
+        CLEAR_ENRICHMENT_ERROR: state => ({
+            ...state,
+            error: null,
         }),
         UPDATE_ENRICHMENT_OPTIMISTIC: (state, { payload: enrichment }) => ({
             ...state,

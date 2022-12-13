@@ -118,5 +118,53 @@
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/biblio-tools/post-v1-unpaywall-is_oa",
         "objectifTDM": "",
         "type": "other"
+    },
+    {
+        "id": "post-v1-cnrsunit",
+        "url": "https://address-kit.services.inist.fr/v1/cnrsunit/cnrsunit",
+        "doc": "",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Informations%20sur%20des%20adresses%20d%27affiliations#/address/post-v1-cnrsunit",
+        "objectif TDM": "https://objectif-tdm.inist.fr/2022/11/09/detection-dunites-cnrs/",
+        "type": "affiliation"
+    },
+    {
+        "id": "post-v1-D63-identify",
+        "url": "https://loterre-resolvers.services.inist.fr/v1/D63/identify",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/loterre-resolvers",
+        "swagger": "https://openapi.services.inist.fr/#/loterre-resolvers/post-v1-D63-identify",
+        "objectif TDM": "https://objectif-tdm.inist.fr/2022/02/01/associer-un-terme-au-vocabulaire-des-communes-de-france/",
+        "type": "geography"
+    },
+    {
+        "id": "post-v1-tools",
+        "url": "https://terms-extraction.services.inist.fr/v1/tools/normalize",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/terms-extraction",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Extraction%20de%20termes#/terms-extraction/post-v1-tools",
+        "objectif TDM": "https://objectif-tdm.inist.fr/2022/01/12/normaliser-un-texte-ou-un-terme/",
+        "type": "metadata"
+    },
+    {
+        "id": "post-v1-9SD-identify",
+        "url": "https://loterre-resolvers.services.inist.fr/v1/9SD/identify",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/loterre-resolvers",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-9SD-identify",
+        "objectif TDM": "https://objectif-tdm.inist.fr/2021/12/21/associer-un-pays-ou-subdivision-au-vocabulaire-loterre-correspondant/",
+        "type": "geography"
+    },
+    {
+        "id": "post-v1-perseeBaipTagger",
+        "url": "https://ner-tagger-1.services.inist.fr/v1/perseeBaipTagger/tagger",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/geo-tagger",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=D%C3%A9tection%20d%27entit%C3%A9s%20nomm%C3%A9es#/default/post_v1_perseeBaipTagger_tagger",
+        "objectif TDM": "https://objectif-tdm.inist.fr/2022/03/29/detection-dentites-nommees-dans-les-bulletins-administratifs-de-linstruction-publique-persee/",
+        "type": "geography"
+    },
+    {
+        "id": "post-v1-gotagger",
+        "url": "https://ner-tagger-1.services.inist.fr/v1/geotagger/tagger",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/geo-tagger",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=D%C3%A9tection%20d%27entit%C3%A9s%20nomm%C3%A9es#/default/post_v1_geoTagger_geoTagger",
+        "objectif TDM": "https://objectif-tdm.inist.fr/2022/03/08/detection-dentites-nommees/",
+        "type": "geography"
     }
 ]

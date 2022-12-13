@@ -124,6 +124,7 @@ export const EnrichmentCatalog = ({
                     direction="row"
                     style={{ width: '100%', marginBottom: 25 }}
                     justifyContent="space-around"
+                    spacing={2}
                 >
                     <Box>
                         <FilterIcon
