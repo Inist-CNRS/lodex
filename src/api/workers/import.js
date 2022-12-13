@@ -1,5 +1,10 @@
 import repositoryMiddleware from '../services/repositoryMiddleware';
-import { startImport, getLoader, getStreamFromUrl } from '../services/import';
+import {
+    startImport,
+    getLoader,
+    getStreamFromUrl,
+    getCustomLoader,
+} from '../services/import';
 import { clearChunks, mergeChunks } from '../services/fsHelpers';
 import { saveParsedStream } from '../services/saveParsedStream';
 import publishDocuments from '../services/publishDocuments';
@@ -49,6 +54,7 @@ const handleImportError = async (job, err) => {
 const prepareContext = async ctx => {
     await repositoryMiddleware(ctx, () => Promise.resolve());
     ctx.getLoader = getLoader;
+    ctx.getCustomLoader = getCustomLoader;
     ctx.getStreamFromUrl = getStreamFromUrl;
     ctx.mergeChunks = mergeChunks;
     ctx.clearChunks = clearChunks;

@@ -6,6 +6,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import { Grid, Box, Typography, Button } from '@material-ui/core';
 import ListDialog from './ListDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import theme from '../../theme';
+import CustomLoader from './CustomLoader';
 
 const styles = {
     button: {
@@ -13,17 +15,37 @@ const styles = {
         marginLeft: 4,
         marginRight: 4,
     },
+    divider: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '40%',
+        margin: 'auto',
+        marginBottom: 25,
+    },
+    dividerHr: {
+        flexGrow: 2,
+        marginLeft: '1rem',
+        marginRight: '1rem',
+    },
+    dividerLabel: {
+        color: theme.green.primary,
+        cursor: 'pointer',
+    },
 };
 
 const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
-    const [open, setOpen] = useState(false);
+    const [openLoadersDialog, setOpenLoadersDialog] = useState(false);
+    const [openCustomLoadersDialog, setOpenCustomLoadersDialog] = useState(
+        false,
+    );
 
     const handleOpen = () => {
-        setOpen(true);
+        setOpenLoadersDialog(true);
     };
 
     const handleClose = () => {
-        setOpen(false);
+        setOpenLoadersDialog(false);
     };
 
     const actions = [
@@ -45,7 +67,7 @@ const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
                 justifyContent="center"
                 style={{
                     width: '100%',
-                    marginBottom: 25,
+                    marginBottom: 10,
                     marginTop: 25,
                     display: 'flex',
                     flexDirection: 'column',
@@ -68,7 +90,9 @@ const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
                         variant="contained"
                         style={styles.button}
                         className="open-loaders"
-                        color="primary"
+                        color={
+                            value === 'custom-loader' ? 'secondary' : 'primary'
+                        }
                         onClick={handleOpen}
                         fullWidth
                     >
@@ -83,12 +107,27 @@ const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
                 </Box>
             </Grid>
             <ListDialog
-                open={open}
+                open={openLoadersDialog}
                 handleClose={handleClose}
                 actions={actions}
                 loaders={loaders}
                 setLoader={setLoader}
                 value={value}
+            />
+
+            <div style={styles.divider}>
+                <hr style={styles.dividerHr} />
+                <div
+                    style={styles.dividerLabel}
+                    onClick={() => setOpenCustomLoadersDialog(true)}
+                >
+                    {polyglot.t('add-custom-loader')}
+                </div>
+                <hr style={styles.dividerHr} />
+            </div>
+            <CustomLoader
+                isOpen={openCustomLoadersDialog}
+                handleClose={() => setOpenCustomLoadersDialog(false)}
             />
         </div>
     );

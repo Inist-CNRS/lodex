@@ -20,6 +20,11 @@ export const getLoader = async loaderName => {
         stream.pipe(ezs('delegate', { script })).pipe(ezs.catch(e => log(e)));
 };
 
+export const getCustomLoader = async script => {
+    return stream =>
+        stream.pipe(ezs('delegate', { script })).pipe(ezs.catch(e => log(e)));
+};
+
 export const getStreamFromUrl = url => request.get(url);
 
 export const startImport = async ctx => {
@@ -31,11 +36,16 @@ export const startImport = async ctx => {
         });
     }
 
-    const { loaderName, url, filename, totalChunks, extension } =
+    const { loaderName, url, filename, totalChunks, extension, customLoader } =
         ctx.job?.data || {};
-    const parseStream = await ctx.getLoader(
-        !loaderName || loaderName === 'automatic' ? extension : loaderName,
-    );
+    let parseStream;
+    if (customLoader) {
+        parseStream = await ctx.getCustomLoader(customLoader);
+    } else {
+        parseStream = await ctx.getLoader(
+            !loaderName || loaderName === 'automatic' ? extension : loaderName,
+        );
+    }
     let stream;
     if (url) {
         stream = ctx.getStreamFromUrl(url);

@@ -52,7 +52,9 @@ export const parseRequest = async (ctx, _, next) => {
         resumableTotalSize,
         resumableCurrentChunkSize,
         resumableFilename = '',
+        customLoader = null,
     } = fields;
+
     const [extension] = resumableFilename.match(/[^.]*$/);
     const chunkNumber = parseInt(resumableChunkNumber, 10);
 
@@ -64,6 +66,7 @@ export const parseRequest = async (ctx, _, next) => {
         extension,
         chunkname: `${config.uploadDir}/${resumableIdentifier}.${chunkNumber}`,
         stream,
+        customLoader,
     };
     await next();
 };
@@ -77,6 +80,7 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
         totalChunks,
         totalSize,
         extension,
+        customLoader,
     } = ctx.resumable;
 
     if (progress.getProgress().status === PENDING) {
@@ -98,7 +102,14 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
 
     if (uploadedFileSize >= totalSize) {
         await workerQueue.add(
-            { loaderName, filename, totalChunks, extension, jobType: IMPORT },
+            {
+                loaderName,
+                filename,
+                totalChunks,
+                extension,
+                customLoader,
+                jobType: IMPORT,
+            },
             { jobId: uuid() },
         );
         ctx.body = {
@@ -110,10 +121,10 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
 }
 
 export const uploadUrl = async ctx => {
-    const { url, loaderName } = ctx.request.body;
+    const { url, loaderName, customLoader } = ctx.request.body;
     const [extension] = url.match(/[^.]*$/);
     await workerQueue.add(
-        { loaderName, url, extension, jobType: IMPORT },
+        { loaderName, url, extension, customLoader, jobType: IMPORT },
         { jobId: uuid() },
     );
     ctx.body = {

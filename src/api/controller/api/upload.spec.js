@@ -38,6 +38,7 @@ describe('upload', () => {
                 totalSize: 500,
                 currentChunkSize: 5,
                 extension: 'csv',
+                customLoader: null,
             });
         });
     });
@@ -267,7 +268,6 @@ describe('upload', () => {
     });
 
     describe('uploadUrl', () => {
-        //const loader = jest.fn().mockImplementation(() => 'parsedStream');
         const ctx = {
             request: {
                 body: {
@@ -275,12 +275,6 @@ describe('upload', () => {
                     loaderName: 'type',
                 },
             },
-            // getLoader: jest.fn().mockImplementation(() => loader),
-            // getStreamFromUrl: jest.fn().mockImplementation(() => 'streamUrl'),
-            // saveParsedStream: jest
-            //     .fn()
-            //     .mockImplementation(() => 'dataset count'),
-            // uploadFile: jest.fn(),
         };
 
         beforeAll(async () => {
@@ -299,27 +293,34 @@ describe('upload', () => {
                 { jobId: 'uuid' },
             );
         });
+    });
 
-        // it('should have called getLoader with url file extension', () => {
-        //     expect(ctx.getLoader).toHaveBeenCalledWith('type');
-        // });
+    describe('uploadUrl with customLoader', () => {
+        const ctx = {
+            request: {
+                body: {
+                    url: 'http://host/file.name.ext',
+                    customLoader: 'customLoader',
+                },
+            },
+        };
 
-        // it('should have called getStreamForUrl with url', () => {
-        //     expect(ctx.getStreamFromUrl).toHaveBeenCalledWith(
-        //         'http://host/file.name.type',
-        //     );
-        // });
+        beforeAll(async () => {
+            workerQueue.add.mockClear();
+            await uploadUrl(ctx);
+        });
 
-        // it('should have called loader with streamUrl', () => {
-        //     expect(loader).toHaveBeenCalledWith('streamUrl');
-        // });
-
-        // it('should have called saveParsedStream with parsedStream', () => {
-        //     expect(ctx.saveParsedStream).toHaveBeenCalledWith('parsedStream');
-        // });
-
-        // it('should have set ctx.body.totalLines to `dataset count`', () => {
-        //     expect(ctx.body).toEqual({ totalLines: 'dataset count' });
-        // });
+        it('should add job to the queue', () => {
+            expect(workerQueue.add).toHaveBeenCalledWith(
+                {
+                    extension: 'ext',
+                    url: 'http://host/file.name.ext',
+                    jobType: IMPORT,
+                    loaderName: 'type',
+                    customLoader: 'customLoader',
+                },
+                { jobId: 'uuid' },
+            );
+        });
     });
 });

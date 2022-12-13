@@ -6,6 +6,8 @@ import AppBar from './Appbar';
 import getTitle from '../lib/getTitle';
 import { Progress } from './progress/Progress';
 import { Sidebar } from './Sidebar';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const styles = {
     layout: {
@@ -38,6 +40,18 @@ export const AppComponent = ({ children }) => (
                 <div className="body" style={styles.body}>
                     {children}
                 </div>
+                <ToastContainer
+                    position="bottom-center"
+                    autoClose={5000}
+                    hideProgressBar
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="colored"
+                />
             </div>
         </div>
         <Progress />

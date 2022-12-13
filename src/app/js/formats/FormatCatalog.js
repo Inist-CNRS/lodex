@@ -49,20 +49,17 @@ export const FormatCatalog = ({
     currentValue,
 }) => {
     const classes = useStyles();
-    const filters = [...new Set(formats.map(item => item.type))];
+    const filters = [...new Set(formats.map(item => item.type))].sort((x, y) =>
+        polyglot.t(x).localeCompare(polyglot.t(y)),
+    );
     filters.unshift('all');
-    const otherIndex = filters.indexOf('other');
-    if (otherIndex !== -1) {
-        filters.splice(otherIndex, 1);
-        filters.push('other');
-    }
 
     const [filteredFormats, setFilterFormats] = useState(formats);
-    const [selectedFilter, setSelectedFilter] = useState();
+    const [selectedFilter, setSelectedFilter] = useState('all');
 
     useEffect(() => {
         setFilterFormats(
-            selectedFilter
+            selectedFilter && selectedFilter !== 'all'
                 ? formats.filter(item => item.type === selectedFilter)
                 : formats,
         );
@@ -93,11 +90,7 @@ export const FormatCatalog = ({
                             <Button
                                 color="primary"
                                 className="format-category"
-                                onClick={() =>
-                                    setSelectedFilter(
-                                        filter === 'all' ? null : filter,
-                                    )
-                                }
+                                onClick={() => setSelectedFilter(filter)}
                                 variant={
                                     filter === selectedFilter
                                         ? 'contained'
@@ -129,6 +122,9 @@ export const FormatCatalog = ({
                         >
                             <ListItemText
                                 primary={polyglot.t(format.name)}
+                                primaryTypographyProps={{
+                                    style: { fontWeight: 'bold' },
+                                }}
                                 secondary={polyglot.t(format.description)}
                             />
                         </ListItem>
