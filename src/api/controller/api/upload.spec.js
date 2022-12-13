@@ -316,7 +316,6 @@ describe('upload', () => {
                     extension: 'ext',
                     url: 'http://host/file.name.ext',
                     jobType: IMPORT,
-                    loaderName: 'type',
                     customLoader: 'customLoader',
                 },
                 { jobId: 'uuid' },
