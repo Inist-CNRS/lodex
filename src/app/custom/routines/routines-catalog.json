@@ -1,0 +1,164 @@
+[
+    {
+        "id": "r-all-documents",
+        "url": "/api/run/all-documents/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/alldocuments",
+        "recommendedWith": ["All"]
+    },
+    {
+        "id": "r-classif-by",
+        "url": "/api/run/classif-by/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/classifby",
+        "recommendedWith": ["StreamGraph", "AreaGraph"]
+    },
+    {
+        "id": "r-count-all",
+        "url": "/api/run/count-all/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/countall",
+        "recommendedWith": ["All"]
+    },
+    {
+        "id": "r-count-by-fields",
+        "url": "/api/run/count-by-fields/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/countbyfields",
+        "recommendedWith": ["All"]
+    },
+    {
+        "id": "r-cross-by",
+        "url": "/api/run/cross-by/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/crossby",
+        "recommendedWith": ["All"]
+    },
+    {
+        "id": "r-decompose-by",
+        "url": "/api/run/decompose-by/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/decomposeby",
+        "recommendedWith": ["Network", "HeatMap"]
+    },
+    {
+        "id": "r-distinct-ISO3166-1-alpha2-from",
+        "url": "/api/run/distinct-ISO3166-1-alpha2-from/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/distinctiso31661alpha2from",
+        "recommendedWith": ["Cartography"]
+    },
+    {
+        "id": "r-distinct-ISO3166-1-alpha3-from",
+        "url": "/api/run/distinct-ISO3166-1-alpha3-from/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/distinctiso31661alpha3from",
+        "recommendedWith": ["Cartography"]
+    },
+    {
+        "id": "r-distinct-alpha-2-alpha3-from",
+        "url": "/api/run/distinct-alpha-2-alpha3-from/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/distinctalpha2alpha3from",
+        "recommendedWith": ["Cartography"]
+    },
+    {
+        "id": "r-distinct-alpha-3-alpha2-from",
+        "url": "/api/run/distinct-alpha-3-alpha2-from/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/distinctalpha3alpha2from",
+        "recommendedWith": ["All"]
+    },
+    {
+        "id": "r-distinct-alpha-3-ISO3166-1-from",
+        "url": "/api/run/distinct-alpha-3-ISO3166-1-from/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/distinctalpha3iso31661from",
+        "recommendedWith": ["All"]
+    },
+    {
+        "id": "r-distinct-alpha-3-ISO639-from",
+        "url": "/api/run/distinct-alpha-3-ISO639-from/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/distinctalpha3iso639from",
+        "recommendedWith": ["All"]
+    },
+    {
+        "id": "r-distinct-by",
+        "url": "/api/run/distinct-by/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/distinctby",
+        "recommendedWith": [
+            "BubbleChart",
+            "BarChart",
+            "PieChart",
+            "RadarChart",
+            "Cartography"
+        ]
+    },
+    {
+        "id": "r-distinct-by-field",
+        "url": "/api/run/distinct-by-field/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/distinctbyfield",
+        "recommendedWith": [
+            "BubbleChart",
+            "BarChart",
+            "PieChart",
+            "RadarChart",
+            "Cartography"
+        ]
+    },
+    {
+        "id": "r-distribute-by-date",
+        "url": "/api/run/distribute-by-date/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/distributebydate",
+        "recommendedWith": ["BarChart"]
+    },
+    {
+        "id": "r-distribute-by-decadal",
+        "url": "/api/run/distribute-by-decadal/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/distributebydecadal",
+        "recommendedWith": ["BarChart"]
+    },
+    {
+        "id": "r-distribute-by-interval",
+        "url": "/api/run/distribute-by-interval/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/distributebyinterval",
+        "recommendedWith": ["BarChart", "PieChart", "RadarChart"]
+    },
+    {
+        "id": "r-get-fields",
+        "url": "/api/run/get-fields/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/getfields",
+        "recommendedWith": ["All"]
+    },
+    {
+        "id": "r-graph-by",
+        "url": "/api/run/graph-by/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/graphby",
+        "recommendedWith": ["Network", "HeatMap"]
+    },
+    {
+        "id": "r-pairing-with",
+        "url": "/api/run/pairing-with/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/pairingwith",
+        "recommendedWith": ["Network", "HeatMap"]
+    },
+    {
+        "id": "r-sparql-query",
+        "url": "/api/run/sparql-query/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/sparqlquery",
+        "recommendedWith": ["BubbleChart", "BarChart", "PieChart", "RadarChart"]
+    },
+    {
+        "id": "r-syndication",
+        "url": "/api/run/syndication/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/syndication",
+        "recommendedWith": ["RessourcesGrid"]
+    },
+    {
+        "id": "r-syndication-from",
+        "url": "/api/run/syndication-from/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/syndicationfrom",
+        "recommendedWith": ["RessourcesGrid"]
+    },
+    {
+        "id": "r-total-of",
+        "url": "/api/run/total-of/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/totalof",
+        "recommendedWith": ["All"]
+    },
+    {
+        "id": "r-tree-by",
+        "url": "/api/run/tree-by/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/treeby",
+        "recommendedWith": ["HierarchicalGraph"]
+    }
+]
