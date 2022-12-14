@@ -110,7 +110,7 @@
 "add_to_publication"	"Add"	"Ajouter"
 "add_column"	"Add a new column"	"Ajouter une nouvelle colonne"
 "new_field"	"New field"	"Nouveau champ"
-"no_dataset"	"No dataset"	"Aucun jeu de données"
+"no_dataset"	"No data has been published yet"	"Aucune donnée n'a été publiée pour le moment"
 "no_option"	"No options"	"Aucune sélection"
 "scheme"	"scheme"	"schéma"
 "format"	"format"	"format"
