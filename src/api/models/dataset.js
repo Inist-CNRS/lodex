@@ -4,7 +4,7 @@ import omit from 'lodash.omit';
 import JSONStream from 'jsonstream';
 import { Transform } from 'stream';
 
-import { URI_FIELD_NAME } from '../../common/uris';
+import { URI_FIELD_NAME, moveUriToFirstPosition } from '../../common/uris';
 import countNotUnique from './countNotUnique';
 import countNotUniqueSubresources from './countNotUniqueSubresources';
 
@@ -12,12 +12,13 @@ export default db => {
     const collection = db.collection('dataset');
     collection.insertBatch = documents => {
         return Promise.all(
-            chunk(documents, 100).map(data =>
-                collection.insertMany(data, {
+            chunk(documents, 100).map(data => {
+                const orderedData = moveUriToFirstPosition(data);
+                return collection.insertMany(orderedData, {
                     forceServerObjectId: true,
                     w: 1,
-                }),
-            ),
+                });
+            }),
         );
     };
     collection.getExcerpt = filter =>
