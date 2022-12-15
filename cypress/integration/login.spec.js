@@ -6,6 +6,7 @@ import * as menu from '../support/menu';
 describe('Login', () => {
     beforeEach(() => {
         teardown(true);
+        cy.setCookie('lodex_tenant', 'lodex_test_login');
     });
 
     it('should successfully login as an admin', () => {

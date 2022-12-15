@@ -178,8 +178,7 @@ export const checkListOfFiltererFileFormats = () => {
 };
 export const addFile = (filename, mimeType = 'text/csv') => {
     fillInputWithFixture('input[type=file]', filename, mimeType);
-    cy.wait(300);
-    cy.get('.btn-upload-dataset').click({ force: true });
+    cy.get('.btn-upload-dataset', { timeout: 600 }).click({ force: true });
 };
 export const addFileWithoutClick = (filename, mimeType = 'text/csv') => {
     fillInputWithFixture('input[type=file]', filename, mimeType);

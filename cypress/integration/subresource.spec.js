@@ -8,6 +8,7 @@ import * as searchDrawer from '../support/searchDrawer';
 describe('Subresource Page', () => {
     beforeEach(() => {
         teardown();
+        cy.setCookie('lodex_tenant', 'lodex_test_subresource');
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
         datasetImportPage.importDataset('dataset/subresources-data.json');

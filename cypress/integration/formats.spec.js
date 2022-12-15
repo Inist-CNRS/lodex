@@ -4,7 +4,10 @@ import * as datasetImportPage from '../support/datasetImportPage';
 import * as adminNavigation from '../support/adminNavigation';
 
 describe('Transformers & Formats', () => {
-    beforeEach(teardown);
+    beforeEach(() => {
+        teardown();
+        cy.setCookie('lodex_tenant', 'lodex_test_transformers');
+    });
 
     describe('LIST format', () => {
         it('should display a composed field with a LIST format', () => {

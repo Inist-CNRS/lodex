@@ -5,8 +5,16 @@ import serve from 'koa-static';
 import mount from 'koa-mount';
 
 import repositoryMiddleware from '../services/repositoryMiddleware';
+import { mongo } from 'config';
 
 const app = new koa();
+
+const setTenant = async (ctx, next) => {
+    ctx.tenant = ctx.cookies.get('lodex_tenant') || mongo.dbName;
+    await next();
+};
+
+app.use(setTenant);
 
 app.use(repositoryMiddleware);
 

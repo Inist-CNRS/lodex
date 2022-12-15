@@ -5,7 +5,10 @@ import * as datasetImportPage from '../support/datasetImportPage';
 import * as enrichmentFormPage from '../support/enrichmentFormPage';
 
 describe('Enrichment', () => {
-    beforeEach(teardown);
+    beforeEach(() => {
+        teardown();
+        cy.setCookie('lodex_tenant', 'lodex_test_enrichment');
+    });
 
     describe('Advanced enrichment', () => {
         it('should add an advanced enrichment', () => {

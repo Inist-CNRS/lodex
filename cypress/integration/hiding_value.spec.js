@@ -9,6 +9,7 @@ describe('hiding null value to user', () => {
 
     before(() => {
         teardown();
+        cy.setCookie('lodex_tenant', 'lodex_test_hiding');
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
 

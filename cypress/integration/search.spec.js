@@ -8,6 +8,7 @@ const initSearchDataset = (
     model = 'model/book_summary.json',
 ) => () => {
     teardown();
+    cy.setCookie('lodex_tenant', 'lodex_test_search');
     menu.openAdvancedDrawer();
     menu.goToAdminDashboard();
 

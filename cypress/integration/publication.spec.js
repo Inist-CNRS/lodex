@@ -5,7 +5,10 @@ import * as searchDrawer from '../support/searchDrawer';
 import * as adminNavigation from '../support/adminNavigation';
 
 describe('Dataset Publication', () => {
-    beforeEach(teardown);
+    beforeEach(() => {
+        teardown();
+        cy.setCookie('lodex_tenant', 'lodex_test_publication');
+    });
 
     describe('Dataset Import', () => {
         it('should get the list of possible loaders', () => {

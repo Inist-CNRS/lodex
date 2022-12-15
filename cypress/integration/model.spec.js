@@ -2,14 +2,13 @@ import { teardown } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as menu from '../support/menu';
 import * as homePage from '../support/homePage';
-import * as modelPage from '../support/modelPage';
-import * as resourcePage from '../support/resourcePage';
 import * as searchDrawer from '../support/searchDrawer';
 
 describe('Model Page', () => {
     describe('handling old models', () => {
         beforeEach(() => {
             teardown();
+            cy.setCookie('lodex_tenant', 'lodex_test_model');
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/film.csv');
