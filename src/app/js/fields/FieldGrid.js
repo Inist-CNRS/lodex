@@ -15,12 +15,12 @@ import copy from 'copy-to-clipboard';
 import {
     OpenWith as DragIndicatorIcon,
     Settings as SettingsIcon,
+    FileCopy as FileCopyIcon,
 } from '@material-ui/icons';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import PublicationModalWizard from '../fields/wizard';
 import { getShortText, isLongText } from '../lib/longTexts';
-import { SCOPE_GRAPHIC } from '../../../common/scope';
 import { NoField } from './NoField';
 import { useDidUpdateEffect } from '../lib/useDidUpdateEffect';
 import { fromFields } from '../sharedSelectors';
@@ -32,6 +32,8 @@ import {
     saveFieldFromData,
 } from '../fields';
 import FieldInternalIcon from './FieldInternalIcon';
+
+import fieldApi from '../admin/api/field';
 
 const ROOT_PADDING = 16;
 
@@ -73,6 +75,11 @@ const useStyles = makeStyles({
     editIcon: {
         position: 'absolute',
         right: 20,
+        minWidth: 30,
+    },
+    duplicateIcon: {
+        position: 'absolute',
+        right: 50,
         minWidth: 30,
     },
     propertyLabel: {
@@ -198,132 +205,166 @@ const scrollToLastLayoutItem = () => {
     }, 1);
 };
 
-const DraggableItemGrid = ({
-    onEditField,
-    onChangeWidth,
-    onChangePositions,
-    allowResize,
-    fields,
-    polyglot,
-}) => {
-    const [showNameCopied, setShowNameCopied] = useState(false);
-    const classes = useStyles();
+const DraggableItemGrid = compose(
+    connect(mapStateToProps, {
+        loadField,
+    }),
+)(
+    ({
+        onEditField,
+        onChangeWidth,
+        onChangePositions,
+        allowResize,
+        fields,
+        polyglot,
+        loadField,
+    }) => {
+        const [showNameCopied, setShowNameCopied] = useState(false);
+        const classes = useStyles();
 
-    const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
-    const [isEditable, setIsEditable] = useState(true);
+        const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
+        const [isEditable, setIsEditable] = useState(true);
 
-    const layout = useMemo(() => layoutFromItems(items), [
-        JSON.stringify(items),
-    ]);
+        const layout = useMemo(() => layoutFromItems(items), [
+            JSON.stringify(items),
+        ]);
 
-    const [gridLayoutRef, { width }] = useMeasure();
+        const [gridLayoutRef, { width }] = useMeasure();
 
-    useEffect(() => {
-        setItems(buildFieldsDefinitionsArray(fields));
-    }, [JSON.stringify(fields)]);
+        useEffect(() => {
+            setItems(buildFieldsDefinitionsArray(fields));
+        }, [JSON.stringify(fields)]);
 
-    const fieldsLength = fields.length;
-    const previousFieldsLength = useRef(fields.length);
-    useEffect(() => {
-        if (previousFieldsLength.current + 1 === fields.length) {
-            scrollToLastLayoutItem();
-        }
-        previousFieldsLength.current = fields.length;
-    }, [fieldsLength]);
+        const fieldsLength = fields.length;
+        const previousFieldsLength = useRef(fields.length);
+        const previousLastField = useRef(fields.at(-1));
+        useEffect(() => {
+            if (previousFieldsLength.current + 1 === fields.length) {
+                if (previousLastField.current._id !== fields.at(-1)._id) {
+                    scrollToLastLayoutItem();
+                }
+            }
+            previousFieldsLength.current = fields.length;
+        }, [fieldsLength]);
 
-    useDidUpdateEffect(() => {
-        onChangePositions(items);
-    }, [JSON.stringify(items.map(item => item.id))]);
+        useDidUpdateEffect(() => {
+            onChangePositions(items);
+        }, [JSON.stringify(items.map(item => item.id))]);
 
-    const stopClickPropagation = () => {
-        setIsEditable(false);
-        setTimeout(() => setIsEditable(true), 200);
-    };
+        const stopClickPropagation = () => {
+            setIsEditable(false);
+            setTimeout(() => setIsEditable(true), 200);
+        };
 
-    const handleLayoutChange = newLayout => {
-        stopClickPropagation();
-        setItems(itemsFromLayout(newLayout));
-    };
+        const handleLayoutChange = newLayout => {
+            stopClickPropagation();
+            setItems(itemsFromLayout(newLayout));
+        };
 
-    const handleResize = (elements, el) => {
-        stopClickPropagation();
-        const newEl = elements.find(elem => elem.i === el.i);
-        if (newEl) {
-            onChangeWidth(newEl.i, newEl.w * 10);
-            setItems(itemsFromLayout(elements));
-        }
-    };
+        const handleResize = (elements, el) => {
+            stopClickPropagation();
+            const newEl = elements.find(elem => elem.i === el.i);
+            if (newEl) {
+                onChangeWidth(newEl.i, newEl.w * 10);
+                setItems(itemsFromLayout(elements));
+            }
+        };
 
-    const handleEditField = fieldName => {
-        if (isEditable) {
-            onEditField(fieldName);
-        }
-    };
+        const handleEditField = fieldName => {
+            if (isEditable) {
+                onEditField(fieldName);
+            }
+        };
 
-    return (
-        <div className={classes.layoutContainer} ref={gridLayoutRef}>
-            <GridLayout
-                className="layout"
-                layout={layout}
-                key={JSON.stringify(items)}
-                cols={10}
-                rowHeight={150}
-                width={width - ROOT_PADDING}
-                onDragStop={handleLayoutChange}
-                onResizeStop={handleResize}
-                isResizable={allowResize}
-            >
-                {fields.map(field => (
-                    <div
-                        key={field.name}
-                        aria-label={field.label}
-                        className={classes.property}
-                        onClick={() => handleEditField(field.name)}
-                    >
-                        <span
-                            className={classNames(
-                                'draghandle',
-                                classes.propertyHandle,
-                                classes.fieldChildren,
-                            )}
+        const handleDuplicateField = async (event, field) => {
+            event.stopPropagation();
+            event.preventDefault();
+
+            const res = await fieldApi.duplicateField({
+                fieldId: field._id,
+            });
+
+            if (res) {
+                loadField();
+            }
+        };
+
+        return (
+            <div className={classes.layoutContainer} ref={gridLayoutRef}>
+                <GridLayout
+                    className="layout"
+                    layout={layout}
+                    key={JSON.stringify(items)}
+                    cols={10}
+                    rowHeight={150}
+                    width={width - ROOT_PADDING}
+                    onDragStop={handleLayoutChange}
+                    onResizeStop={handleResize}
+                    isResizable={allowResize}
+                >
+                    {fields.map(field => (
+                        <div
+                            key={field.name}
+                            aria-label={field.label}
+                            className={classes.property}
+                            onClick={() => handleEditField(field.name)}
                         >
-                            <DragIndicatorIcon />
-                        </span>
-                        <span
-                            className={classNames(classes.propertyLabel)}
-                            data-field-name={field.name}
-                        >
-                            <ItemGridLabel
-                                field={field}
-                                polyglot={polyglot}
-                                onShowNameCopied={() => setShowNameCopied(true)}
-                            />
-                        </span>
-                        <Button
-                            className={classNames(
-                                classes.editIcon,
-                                classes.fieldChildren,
-                            )}
-                        >
-                            <SettingsIcon />
-                        </Button>
-                        {!field.display && <HiddenIcon />}
-                    </div>
-                ))}
-            </GridLayout>
-            <Snackbar
-                open={showNameCopied}
-                autoHideDuration={2000}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                onClose={() => setShowNameCopied(false)}
-            >
-                <Alert variant="filled" severity="success">
-                    {polyglot.t('fieldname_copied_clipboard')}
-                </Alert>
-            </Snackbar>
-        </div>
-    );
-};
+                            <span
+                                className={classNames(
+                                    'draghandle',
+                                    classes.propertyHandle,
+                                    classes.fieldChildren,
+                                )}
+                            >
+                                <DragIndicatorIcon />
+                            </span>
+                            <span
+                                className={classNames(classes.propertyLabel)}
+                                data-field-name={field.name}
+                            >
+                                <ItemGridLabel
+                                    field={field}
+                                    polyglot={polyglot}
+                                    onShowNameCopied={() =>
+                                        setShowNameCopied(true)
+                                    }
+                                />
+                            </span>
+                            <Button
+                                className={classNames(classes.duplicateIcon)}
+                                onClick={e => {
+                                    handleDuplicateField(e, field);
+                                }}
+                            >
+                                <FileCopyIcon />
+                            </Button>
+                            <Button
+                                className={classNames(
+                                    classes.editIcon,
+                                    classes.fieldChildren,
+                                )}
+                            >
+                                <SettingsIcon />
+                            </Button>
+                            {!field.display && <HiddenIcon />}
+                        </div>
+                    ))}
+                </GridLayout>
+                <Snackbar
+                    open={showNameCopied}
+                    autoHideDuration={2000}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                    onClose={() => setShowNameCopied(false)}
+                >
+                    <Alert variant="filled" severity="success">
+                        {polyglot.t('fieldname_copied_clipboard')}
+                    </Alert>
+                </Snackbar>
+            </div>
+        );
+    },
+);
+
 DraggableItemGrid.propTypes = {
     onEditField: PropTypes.func.isRequired,
     onChangeWidth: PropTypes.func.isRequired,
@@ -341,6 +382,7 @@ DraggableItemGrid.propTypes = {
         }),
     ).isRequired,
     polyglot: PropTypes.object.isRequired,
+    loadField: PropTypes.func.isRequired,
 };
 
 const FieldGridComponent = ({
@@ -394,6 +436,7 @@ const FieldGridComponent = ({
                     onChangePositions={handleChangePositions}
                     allowResize={true}
                     polyglot={polyglot}
+                    loadField={loadField}
                 />
             )}
             <PublicationModalWizard
@@ -411,15 +454,6 @@ FieldGridComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     changePositions: PropTypes.func.isRequired,
     saveFieldFromData: PropTypes.func.isRequired,
-};
-
-DraggableItemGrid.propTypes = {
-    fields: PropTypes.array,
-    onEditField: PropTypes.func,
-    onChangeWidth: PropTypes.func,
-    onChangePositions: PropTypes.func,
-    allowResize: PropTypes.bool,
-    polyglot: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = (state, { subresourceId, filter }) => ({

@@ -481,6 +481,13 @@ export const getLoaderWithScriptRequest = (state, { name }) =>
         url: `/api/loader/${name}`,
     });
 
+export const postDuplicateField = (state, data) =>
+    getRequest(state, {
+        url: '/api/field/duplicate',
+        method: 'POST',
+        body: data,
+    });
+
 export const selectors = {
     isAdmin,
     getRole,
@@ -538,4 +545,5 @@ export const selectors = {
     getPreviewDataEnrichmentRequest,
     getCancelJobRequest,
     getLoaderWithScriptRequest,
+    postDuplicateField,
 };
