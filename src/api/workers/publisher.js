@@ -41,6 +41,7 @@ const handlePublishError = async error => {
 };
 
 const prepareContext = async ctx => {
+    ctx.tenant = ctx.job.data.tenant;
     await repositoryMiddleware(ctx, () => Promise.resolve());
     ctx.publishDocuments = publishDocuments;
     ctx.publishCharacteristics = publishCharacteristics;

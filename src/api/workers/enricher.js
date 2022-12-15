@@ -34,6 +34,7 @@ const handleEnrichmentError = async (job, err) => {
 };
 
 const prepareContext = async ctx => {
+    ctx.tenant = ctx.job.data.tenant;
     await repositoryMiddleware(ctx, () => Promise.resolve());
     return ctx;
 };

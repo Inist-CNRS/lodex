@@ -108,6 +108,7 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
                 totalChunks,
                 extension,
                 customLoader,
+                tenant: ctx.cookies.get('lodex_tenant'),
                 jobType: IMPORT,
             },
             { jobId: uuid() },
@@ -124,7 +125,14 @@ export const uploadUrl = async ctx => {
     const { url, loaderName, customLoader } = ctx.request.body;
     const [extension] = url.match(/[^.]*$/);
     await workerQueue.add(
-        { loaderName, url, extension, customLoader, jobType: IMPORT },
+        {
+            loaderName,
+            url,
+            extension,
+            customLoader,
+            jobType: IMPORT,
+            tenant: ctx.cookies.get('lodex_tenant'),
+        },
         { jobId: uuid() },
     );
     ctx.body = {
@@ -151,7 +159,14 @@ export const checkChunkMiddleware = async (ctx, loaderName) => {
 
     if (exists && chunkNumber === totalChunks) {
         await workerQueue.add(
-            { loaderName, filename, totalChunks, extension, jobType: IMPORT },
+            {
+                loaderName,
+                filename,
+                totalChunks,
+                extension,
+                jobType: IMPORT,
+                tenant: ctx.cookies.get('lodex_tenant'),
+            },
             { jobId: uuid() },
         );
     }

@@ -2,7 +2,7 @@ import Koa from 'koa';
 import mount from 'koa-mount';
 import route from 'koa-route';
 
-import { simulatedLatency } from 'config';
+import { simulatedLatency, mongo } from 'config';
 import api from './api';
 import front from './front';
 import embedded from './embedded';
@@ -16,6 +16,13 @@ const simulateLatency = ms => async (ctx, next) => {
     await new Promise(resolve => setTimeout(resolve, ms));
     await next();
 };
+
+const setTenant = async (ctx, next) => {
+    ctx.tenant = ctx.cookies.get('lodex_tenant') || mongo.dbName;
+    await next();
+};
+
+app.use(setTenant);
 
 if (simulatedLatency) {
     app.use(simulateLatency(simulatedLatency));
