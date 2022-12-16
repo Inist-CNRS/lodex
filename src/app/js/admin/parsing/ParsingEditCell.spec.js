@@ -13,7 +13,7 @@ describe('<ParsingEditCell />', () => {
             expect(getValueBySavingType('hello', 'string')).toEqual('hello');
             expect(
                 getValueBySavingType('{"hello": "world"}', 'string'),
-            ).toEqual('{"hello": "world"}');
+            ).toEqual(JSON.stringify('{"hello": "world"}'));
         });
 
         it('getValueBySavingType() with type boolean', () => {
@@ -50,7 +50,7 @@ describe('<ParsingEditCell />', () => {
             );
             expect(
                 getValueBySavingType('{"hello": "world"}', undefined, {}),
-            ).toEqual('{"hello": "world"}');
+            ).toEqual(JSON.stringify('{"hello": "world"}'));
         });
     });
 });

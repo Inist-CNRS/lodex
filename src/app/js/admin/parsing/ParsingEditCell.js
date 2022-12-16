@@ -84,7 +84,7 @@ export const getValueBySavingType = (value, type, previousValue) => {
         if (parsedValue) {
             return JSON.stringify(value);
         }
-        return String(value);
+        return value.toString();
     }
     if (type === 'boolean') {
         return [true, 'true', 1, '1', 'on', 'yes', 'oui', 'ok'].includes(value);
