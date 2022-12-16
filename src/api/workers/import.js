@@ -10,12 +10,13 @@ import { saveParsedStream } from '../services/saveParsedStream';
 import publishDocuments from '../services/publishDocuments';
 import publishFacets from '../controller/api/publishFacets';
 import saveStream from '../services/saveStream';
-import { CancelWorkerError } from '.';
+import { CancelWorkerError, cleanWaitingJobsOfType } from '.';
 
 export const IMPORT = 'import';
 const listeners = [];
 
 export const processImport = (job, done) => {
+    cleanWaitingJobsOfType(IMPORT);
     startJobImport(job)
         .then(async () => {
             job.progress(100);
@@ -44,10 +45,6 @@ const handleImportError = async (job, err) => {
     const ctx = await prepareContext({ job });
     if (err instanceof CancelWorkerError) {
         await ctx.dataset.drop();
-    }
-    const { filename, totalChunks } = ctx.job?.data || {};
-    if (filename && totalChunks) {
-        await ctx.clearChunks(filename, totalChunks);
     }
 };
 

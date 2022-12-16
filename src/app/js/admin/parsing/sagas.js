@@ -16,7 +16,7 @@ export function* handleLoadParsingResult(action) {
 
     if (action.type === UPLOAD_SUCCESS) {
         // MongoDB needs extra time to save first items
-        yield call(delay, 1000);
+        yield call(delay, 2000);
     }
     const { error, response } = yield call(fetchSaga, request);
 
