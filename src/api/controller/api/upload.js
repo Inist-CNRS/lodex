@@ -42,7 +42,7 @@ export const prepareUpload = async (ctx, next) => {
     }
 };
 
-export const parseRequest = async (ctx, _, next) => {
+export const parseRequest = async (ctx, loaderName, next) => {
     const { stream, fields } = await ctx.requestToStream(ctx.req);
 
     const {
@@ -66,7 +66,7 @@ export const parseRequest = async (ctx, _, next) => {
         extension,
         chunkname: `${config.uploadDir}/${resumableIdentifier}.${chunkNumber}`,
         stream,
-        customLoader,
+        customLoader: loaderName === 'custom-loader' ? customLoader : null,
     };
     await next();
 };

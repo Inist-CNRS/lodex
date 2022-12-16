@@ -21,48 +21,51 @@ export const getLoader = async loaderName => {
 };
 
 export const getCustomLoader = async script => {
-    return stream =>
-        stream.pipe(ezs('delegate', { script })).pipe(ezs.catch(e => log(e)));
+    return stream => stream.pipe(ezs('delegate', { script }));
 };
 
 export const getStreamFromUrl = url => request.get(url);
 
 export const startImport = async ctx => {
-    if (progress.status !== SAVING_DATASET) {
-        progress.start({
-            status: SAVING_DATASET,
-            subLabel: 'imported_lines',
-            type: 'import',
-        });
-    }
-
     const { loaderName, url, filename, totalChunks, extension, customLoader } =
         ctx.job?.data || {};
-    let parseStream;
-    if (customLoader) {
-        parseStream = await ctx.getCustomLoader(customLoader);
-    } else {
-        parseStream = await ctx.getLoader(
-            !loaderName || loaderName === 'automatic' ? extension : loaderName,
-        );
-    }
-    let stream;
-    if (url) {
-        stream = ctx.getStreamFromUrl(url);
-    }
-    if (filename && totalChunks) {
-        stream = ctx.mergeChunks(filename, totalChunks);
-    }
-    const parsedStream = await parseStream(stream);
-    await ctx.saveParsedStream(ctx, parsedStream);
-    progress.start({
-        status: INDEXATION,
-        type: 'import',
-    });
-    await ctx.dataset.indexColumns();
-    progress.finish();
+    try {
+        if (progress.status !== SAVING_DATASET) {
+            progress.start({
+                status: SAVING_DATASET,
+                subLabel: 'imported_lines',
+                type: 'import',
+            });
+        }
 
-    if (filename && totalChunks) {
-        await ctx.clearChunks(filename, totalChunks);
+        let parseStream;
+        if (customLoader) {
+            parseStream = await ctx.getCustomLoader(customLoader);
+        } else {
+            parseStream = await ctx.getLoader(
+                !loaderName || loaderName === 'automatic'
+                    ? extension
+                    : loaderName,
+            );
+        }
+        let stream;
+        if (url) {
+            stream = ctx.getStreamFromUrl(url);
+        }
+        if (filename && totalChunks) {
+            stream = ctx.mergeChunks(filename, totalChunks);
+        }
+        const parsedStream = await parseStream(stream);
+        await ctx.saveParsedStream(ctx, parsedStream);
+        progress.start({
+            status: INDEXATION,
+            type: 'import',
+        });
+        await ctx.dataset.indexColumns();
+    } finally {
+        progress.finish();
+        if (filename && totalChunks) {
+            await ctx.clearChunks(filename, totalChunks);
+        }
     }
 };

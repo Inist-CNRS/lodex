@@ -51,6 +51,11 @@ export default async (stream, ctx) => {
             .on('error', reject)
             .on('end', resolve);
 
+        stream.on('data', data => {
+            if (data instanceof Error) {
+                reject(data.sourceError || data);
+            }
+        });
         stream.on('end', resolve);
     });
 };

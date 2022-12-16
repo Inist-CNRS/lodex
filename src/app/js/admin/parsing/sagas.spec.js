@@ -56,7 +56,7 @@ describe('parsing saga', () => {
                 select(fromUser.getLoadParsingResultRequest),
             );
 
-            expect(saga.next().value).toEqual(call(delay, 1000));
+            expect(saga.next().value).toEqual(call(delay, 2000));
         });
     });
 });

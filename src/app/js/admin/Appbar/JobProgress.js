@@ -27,6 +27,7 @@ import { loadParsingResult } from '../parsing';
 import { uploadSuccess } from '../upload';
 import { clearPublished } from '../clear';
 import { fromPublication } from '../selectors';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles({
     progress: {
@@ -118,6 +119,11 @@ const JobProgressComponent = props => {
             }
             if (data.success && hasPublishedDataset) {
                 handleRepublish();
+            }
+            if (data.message) {
+                toast(`${polyglot.t('error')} : ${data.message}`, {
+                    type: toast.TYPE.ERROR,
+                });
             }
         });
 
