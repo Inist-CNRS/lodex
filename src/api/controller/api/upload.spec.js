@@ -1,6 +1,10 @@
 import config from 'config';
 
 import { parseRequest, uploadChunkMiddleware, uploadUrl } from './upload';
+import { IMPORT } from '../../workers/import';
+import { workerQueue } from '../../workers';
+jest.mock('../../workers');
+jest.mock('uuid', () => ({ v1: () => 'uuid' }));
 
 describe('upload', () => {
     describe('parseRequest', () => {
@@ -53,12 +57,12 @@ describe('upload', () => {
                     currentChunkSize: 'currentChunkSize',
                     stream: 'stream',
                 },
-                uploadFile: jest.fn(),
             };
 
             const next = jest.fn();
 
             beforeAll(async () => {
+                workerQueue.add.mockClear();
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -88,8 +92,8 @@ describe('upload', () => {
                 expect(ctx.status).toBe(200);
             });
 
-            it('should not call uploadFile', () => {
-                expect(ctx.uploadFile).toHaveBeenCalledTimes(0);
+            it('should not add job to the queue', () => {
+                expect(workerQueue.add).not.toHaveBeenCalled();
             });
         });
 
@@ -99,6 +103,7 @@ describe('upload', () => {
                 checkFileExists: jest.fn().mockImplementation(() => true),
                 saveStreamInFile: jest.fn(),
                 resumable: {
+                    extension: 'extension',
                     chunkname: 'chunkname',
                     filename: 'filename',
                     totalChunks: 'totalChunks',
@@ -106,12 +111,12 @@ describe('upload', () => {
                     currentChunkSize: 'currentChunkSize',
                     stream: 'stream',
                 },
-                uploadFile: jest.fn(),
             };
 
             const next = jest.fn();
 
             beforeAll(async () => {
+                workerQueue.add.mockClear();
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -133,8 +138,17 @@ describe('upload', () => {
                 );
             });
 
-            it('should call uploadFile', () => {
-                expect(ctx.uploadFile).toHaveBeenCalledTimes(1);
+            it('should add job to the queue', () => {
+                expect(workerQueue.add).toHaveBeenCalledWith(
+                    {
+                        extension: 'extension',
+                        filename: 'filename',
+                        jobType: IMPORT,
+                        loaderName: 'type',
+                        totalChunks: 'totalChunks',
+                    },
+                    { jobId: 'uuid' },
+                );
             });
         });
 
@@ -144,6 +158,7 @@ describe('upload', () => {
                 checkFileExists: jest.fn().mockImplementation(() => false),
                 saveStreamInFile: jest.fn(),
                 resumable: {
+                    extension: 'extension',
                     chunkname: 'chunkname',
                     filename: 'filename',
                     totalChunks: 'totalChunks',
@@ -151,12 +166,12 @@ describe('upload', () => {
                     currentChunkSize: 'currentChunkSize',
                     stream: 'stream',
                 },
-                uploadFile: jest.fn(),
             };
 
             const next = jest.fn();
 
             beforeAll(async () => {
+                workerQueue.add.mockClear();
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -181,8 +196,17 @@ describe('upload', () => {
                 );
             });
 
-            it('should call uploadFile', () => {
-                expect(ctx.uploadFile).toHaveBeenCalledTimes(1);
+            it('should add job to the queue', () => {
+                expect(workerQueue.add).toHaveBeenCalledWith(
+                    {
+                        extension: 'extension',
+                        filename: 'filename',
+                        jobType: IMPORT,
+                        loaderName: 'type',
+                        totalChunks: 'totalChunks',
+                    },
+                    { jobId: 'uuid' },
+                );
             });
         });
 
@@ -199,12 +223,12 @@ describe('upload', () => {
                     currentChunkSize: 'currentChunkSize',
                     stream: 'stream',
                 },
-                uploadFile: jest.fn(),
             };
 
             const next = jest.fn();
 
             beforeAll(async () => {
+                workerQueue.add.mockClear();
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -237,97 +261,65 @@ describe('upload', () => {
                 expect(ctx.status).toBe(200);
             });
 
-            it('should not call uploadFile', () => {
-                expect(ctx.uploadFile).toHaveBeenCalledTimes(0);
+            it('should not add job to the queue', () => {
+                expect(workerQueue.add).not.toHaveBeenCalled();
             });
         });
     });
 
     describe('uploadUrl', () => {
-        const loader = jest.fn().mockImplementation(() => 'parsedStream');
         const ctx = {
             request: {
                 body: {
-                    url: 'http://host/file.name.type',
+                    url: 'http://host/file.name.ext',
+                    loaderName: 'type',
                 },
             },
-            getLoader: jest.fn().mockImplementation(() => loader),
-            getStreamFromUrl: jest.fn().mockImplementation(() => 'streamUrl'),
-            saveParsedStream: jest
-                .fn()
-                .mockImplementation(() => 'dataset count'),
-            uploadFile: jest.fn(),
         };
 
         beforeAll(async () => {
+            workerQueue.add.mockClear();
             await uploadUrl(ctx);
         });
 
-        it('should have called getLoader with url file extension', () => {
-            expect(ctx.getLoader).toHaveBeenCalledWith('type');
-        });
-
-        it('should have called getStreamForUrl with url', () => {
-            expect(ctx.getStreamFromUrl).toHaveBeenCalledWith(
-                'http://host/file.name.type',
+        it('should add job to the queue', () => {
+            expect(workerQueue.add).toHaveBeenCalledWith(
+                {
+                    extension: 'ext',
+                    url: 'http://host/file.name.ext',
+                    jobType: IMPORT,
+                    loaderName: 'type',
+                },
+                { jobId: 'uuid' },
             );
-        });
-
-        it('should have called loader with streamUrl', () => {
-            expect(loader).toHaveBeenCalledWith('streamUrl');
-        });
-
-        it('should have called saveParsedStream with parsedStream', () => {
-            expect(ctx.saveParsedStream).toHaveBeenCalledWith('parsedStream');
-        });
-
-        it('should have set ctx.body.totalLines to `dataset count`', () => {
-            expect(ctx.body).toEqual({ totalLines: 'dataset count' });
         });
     });
 
     describe('uploadUrl with customLoader', () => {
-        const loader = jest.fn().mockImplementation(() => 'parsedStream');
         const ctx = {
             request: {
                 body: {
-                    url: 'http://host/file.name.type',
+                    url: 'http://host/file.name.ext',
                     customLoader: 'customLoader',
                 },
             },
-            getLoader: jest.fn().mockImplementation(() => loader),
-            getStreamFromUrl: jest.fn().mockImplementation(() => 'streamUrl'),
-            saveParsedStream: jest
-                .fn()
-                .mockImplementation(() => 'dataset count'),
-            uploadFile: jest.fn(),
-            getCustomLoader: jest.fn().mockImplementation(() => loader),
         };
 
         beforeAll(async () => {
+            workerQueue.add.mockClear();
             await uploadUrl(ctx);
         });
 
-        it('should have called getCustomLoader', () => {
-            expect(ctx.getCustomLoader).toHaveBeenCalledTimes(1);
-        });
-
-        it('should have called getStreamForUrl with url', () => {
-            expect(ctx.getStreamFromUrl).toHaveBeenCalledWith(
-                'http://host/file.name.type',
+        it('should add job to the queue', () => {
+            expect(workerQueue.add).toHaveBeenCalledWith(
+                {
+                    extension: 'ext',
+                    url: 'http://host/file.name.ext',
+                    jobType: IMPORT,
+                    customLoader: 'customLoader',
+                },
+                { jobId: 'uuid' },
             );
-        });
-
-        it('should have called loader with streamUrl', () => {
-            expect(loader).toHaveBeenCalledWith('streamUrl');
-        });
-
-        it('should have called saveParsedStream with parsedStream', () => {
-            expect(ctx.saveParsedStream).toHaveBeenCalledWith('parsedStream');
-        });
-
-        it('should have set ctx.body.totalLines to `dataset count`', () => {
-            expect(ctx.body).toEqual({ totalLines: 'dataset count' });
         });
     });
 });

@@ -6,6 +6,8 @@ import {
     PUBLISH_FACET,
     CREATE_INDEX,
     UNPUBLISH_DOCUMENT,
+    SAVING_DATASET,
+    INDEXATION,
 } from '../../common/progressStatus';
 
 export class Progress {
@@ -85,6 +87,8 @@ export class Progress {
                 ENRICHING,
                 PUBLISH_FACET,
                 CREATE_INDEX,
+                SAVING_DATASET,
+                INDEXATION,
             ].includes(this.status),
         };
     }
