@@ -13,7 +13,7 @@ describe('<ParsingEditCell />', () => {
             expect(getValueBySavingType('hello', 'string')).toEqual('hello');
             expect(
                 getValueBySavingType('{"hello": "world"}', 'string'),
-            ).toEqual(JSON.stringify('{"hello": "world"}'));
+            ).toEqual('{"hello": "world"}');
         });
 
         it('getValueBySavingType() with type boolean', () => {
@@ -33,10 +33,12 @@ describe('<ParsingEditCell />', () => {
         });
 
         it('getValueBySavingType() with type json', () => {
-            expect(getValueBySavingType('{"hello": "world"}', 'json')).toEqual({
+            expect(
+                getValueBySavingType('{"hello": "world"}', 'object'),
+            ).toEqual({
                 hello: 'world',
             });
-            expect(() => getValueBySavingType('hello', 'json')).toThrow(
+            expect(() => getValueBySavingType('hello', 'object')).toThrow(
                 'value_not_an_object',
             );
         });
@@ -48,7 +50,7 @@ describe('<ParsingEditCell />', () => {
             );
             expect(
                 getValueBySavingType('{"hello": "world"}', undefined, {}),
-            ).toEqual(JSON.stringify('{"hello": "world"}'));
+            ).toEqual('{"hello": "world"}');
         });
     });
 });

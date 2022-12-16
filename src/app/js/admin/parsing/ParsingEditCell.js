@@ -98,7 +98,7 @@ export const getValueBySavingType = (value, type, previousValue) => {
         return parsedValue;
     }
 
-    if (type === 'json') {
+    if (type === 'object') {
         const parsedValue = tryParseJSONObjectOrArray(value);
         if (!parsedValue || typeof parsedValue !== 'object') {
             throw new Error('value_not_an_object');
@@ -112,12 +112,15 @@ export const getValueBySavingType = (value, type, previousValue) => {
         typeof previousValue !== 'string'
     ) {
         return value;
-    } else if (isPrimitive(previousValue)) {
+    } else if (isPrimitive(value)) {
         if (typeof previousValue === 'number') {
             return Number(value);
         }
         if (typeof previousValue === 'boolean') {
             return value === 'true';
+        }
+        if (typeof previousValue === 'string') {
+            return value.toString();
         }
     }
     return JSON.stringify(value);
@@ -135,7 +138,7 @@ const ButtonWithDropdown = ({ polyglot, loading, handleChange }) => {
     const classes = useStyles();
     const anchorRef = React.useRef(null);
 
-    const types = ['number', 'string', 'boolean', 'array', 'json'];
+    const types = ['number', 'string', 'boolean', 'array', 'object'];
     return (
         <>
             <ButtonGroup
@@ -203,7 +206,7 @@ ButtonWithDropdown.propTypes = {
 
 const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
     const [loading, setLoading] = React.useState(false);
-    const [value, setValue] = React.useState(returnParsedValue(cell.value));
+    const [value, setValue] = React.useState(cell.value);
 
     const classes = useStyles();
 
