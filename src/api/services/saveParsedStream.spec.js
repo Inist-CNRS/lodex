@@ -1,4 +1,4 @@
-import saveParsedStream from './saveParsedStream';
+import { saveParsedStream } from './saveParsedStream';
 
 describe('saveParsedStream', () => {
     describe('no publication', () => {
@@ -20,7 +20,7 @@ describe('saveParsedStream', () => {
         let result;
 
         beforeAll(async () => {
-            result = await saveParsedStream(ctx)(parsedStream);
+            result = await saveParsedStream(ctx, parsedStream);
         });
 
         it('should return count', () => {
@@ -32,7 +32,7 @@ describe('saveParsedStream', () => {
         });
 
         it('should have called saveStream with parsedStream', () => {
-            expect(ctx.saveStream).toHaveBeenCalledWith('parsedStream');
+            expect(ctx.saveStream).toHaveBeenCalledWith('parsedStream', ctx);
         });
 
         it('should have called field.initializeModel', () => {
@@ -76,7 +76,7 @@ describe('saveParsedStream', () => {
         const parsedStream = 'parsedStream';
 
         beforeAll(async () => {
-            result = await saveParsedStream(ctx)(parsedStream);
+            result = await saveParsedStream(ctx, parsedStream);
         });
 
         it('should return count', () => {
@@ -129,7 +129,7 @@ describe('saveParsedStream', () => {
         });
 
         it('should have called saveStream with parsedStream', () => {
-            expect(ctx.saveStream).toHaveBeenCalledWith('parsedStream');
+            expect(ctx.saveStream).toHaveBeenCalledWith('parsedStream', ctx);
         });
 
         it('should have called dataset.count to count all document', () => {
@@ -168,7 +168,7 @@ describe('saveParsedStream', () => {
         let result;
 
         beforeAll(async () => {
-            result = await saveParsedStream(ctx)(parsedStream).catch(
+            result = await saveParsedStream(ctx, parsedStream).catch(
                 error => error,
             );
         });
@@ -215,7 +215,7 @@ describe('saveParsedStream', () => {
         });
 
         it('should have called saveStream with parsedStream', () => {
-            expect(ctx.saveStream).toHaveBeenCalledWith('parsedStream');
+            expect(ctx.saveStream).toHaveBeenCalledWith('parsedStream', ctx);
         });
 
         it('should remove all unpublished document from dataset and publishedDataset', () => {

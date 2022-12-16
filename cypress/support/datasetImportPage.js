@@ -181,3 +181,7 @@ export const addFile = (filename, mimeType = 'text/csv') => {
     cy.wait(300);
     cy.get('.btn-upload-dataset').click({ force: true });
 };
+export const addFileWithoutClick = (filename, mimeType = 'text/csv') => {
+    fillInputWithFixture('input[type=file]', filename, mimeType);
+    cy.wait(300);
+};

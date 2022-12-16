@@ -67,3 +67,11 @@ export const getFullResourceUri = (resource, defaultBaseUri) => {
 
     return `${baseUri}${uri}`;
 };
+
+export const moveUriToFirstPosition = data => {
+    return data.map(item => {
+        const { uri, ...rest } = item;
+        if (!uri) return item;
+        return { uri, ...rest };
+    });
+};

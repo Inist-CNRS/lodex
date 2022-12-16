@@ -721,6 +721,8 @@
 "ws_post-v1-unpaywall-expand_title"	"untitled (Info related to Open Access)"	"sans titre (Infos liées à l'Open Access)"
 "ws_post-v1-unpaywall-expand_description"	"Get unpaywall info from doi (is_oa, oa_status, host_type, has_repository_copy)"	"Récupère des infos d'unpaywall à partir du doi (is_oa, oa_status, host_type, has_repository_copy)"
 "refresh_button"	"Refresh"	"Rafraîchir"
+"cancelImportTitle"	"Cancel running import ?"	"Annuler l'import en cours ?"
+"cancelImportContent"	"By cancelling running import, you also clear already imported data."	"En annulant l'import en cours, vous supprimerez également les données déjà importées."
 "transformer_ARRAY"	"Transforms comma-separated data into an array."	"Transforme des données séparées par des virgules en un tableau."
 "transformer_BOOLEAN"	"Transforms the value of the field into a boolean (whose value can only be true or false, true or false). This is only useful if the expected value is a boolean (by default, the value of a field is a string)."	"Transforme la valeur du champ en un booléen (dont la valeur ne peut être que true ou false, vrai ou faux). Ceci n’est utile que si la valeur attendue est un booléen (par défaut, la valeur d’un champ est une chaîne de caractères)."
 "transformer_CAPITALIZE"	"Sets the first letter of the string to uppercase, and all others to lowercase."	"Met la première lettre de la chaîne de caractères en majuscule, et toutes les autres en minuscules."
@@ -774,54 +776,38 @@
 "r-all-documents_description" 	"Gives, for the whole corpus, the content of all documents in JSON." 	"Donne, pour tout le corpus, le contenu de tous les documents en JSON."
 "r-classif-by_title" 	"classif-by" 	"classif-by"
 "r-classif-by_description" 	"Is intended for a type of graph allowing to visualize the diachronic evolutions of the weight of themes contained in the documents of a corpus." 	"Est destinée à un type de graphique permettant de visualiser les évolutions diachroniques du poids de thématiques contenues dans les documents d’un corpus."
-
 "r-count-all_title" 	"count-all" 	"count-all"
 "r-count-all_description" 	"Counts the number of documents in the corpus." 	"Compte le nombre de documents du corpus."
-
 "r-count-by-fields_title" 	"count-by-fields" 	"count-by-fields"
 "r-count-by-fields_description" 	"Counts the number of documents in the corpus for each of the field identifiers declared in the model." 	"Compte le nombre de documents du corpus pour chacun des identifiants des champs déclarés dans le modèle."
-
 "r-cross-by_title" 	"cross-by" 	"cross-by"
 "r-cross-by_description" 	"Crosses items for one or more fields and counts the number of occurrences of each cross." 	"Croise les éléments pour un champ ou plusieurs champs et compte le nombre d’occurences de chaque croisement."
-
 "r-decompose-by_title" 	"decompose-by" 	"decompose-by"
 "r-decompose-by_description" 	"Crosses elements for one or more fields and counts the number of occurrences of each cross." 	"Croise les éléments pour un champ ou plusieurs champs et compte le nombre d’occurrences de chaque croisement."
-
 "r-distinct-ISO3166-1-alpha2-from_title" 	"distinct-ISO3166-1-alpha2-from" 	"distinct-ISO3166-1-alpha2-from"
 "r-distinct-ISO3166-1-alpha2-from_description" 	"Transforms the verbalized countries of the represented field into their ISO 2." 	"Transforme les pays verbalisés du champ représenté en leurs codes ISO 2.".
-
 "r-distinct-ISO3166-1-alpha3-from_title" 	"distinct-ISO3166-1-alpha3-from" 	"distinct-ISO3166-1-alpha3-from"
 "r-distinct-ISO3166-1-alpha3-from_description" 	"Transforms the verbalized countries of the represented field into their ISO 3." 	"Transforme les pays verbalisés du champ représenté en leurs codes ISO 3."
-
 "r-distinct-alpha-2-alpha3-from_title" 	"distinct-alpha-2-alpha3-from" 	"distinct-alpha-2-alpha3-from"
 "r-distinct-alpha-2-alpha3-from_description" 	"Transforms the ISO 2 codes of the countries in the represented field into their ISO 3 codes." 	"Transforme les codes ISO 2 des pays du champ représenté en leurs codes ISO 3."
-
 "r-distinct-alpha-3-alpha2-from_title" 	"distinct-alpha-3-alpha2-from" 	"distinct-alpha-3-alpha2-from"
 "r-distinct-alpha-3-alpha2-from_description" 	"Transforms the ISO 3 codes of the countries in the represented field into their ISO 2 codes." 	"Transforme les codes ISO 3 des pays du champ représenté en leurs codes ISO 2."
-
 "r-distinct-alpha-3-ISO3166-1-from_title" 	"distinct-alpha-3-ISO3166-1-from" 	"distinct-alpha-3-ISO3166-1-from"
 "r-distinct-alpha-3-ISO3166-1-from_description" 	"Transforms the ISO 3 codes of the countries in the represented field into verbalized headings." 	"Transforme les codes ISO 3 des pays du champ représenté en intitulés verbalisés."
-
 "r-distinct-alpha-3-ISO639-from_title" 	"distinct-alpha-3-ISO639-from" 	"distinct-alpha-3-ISO639-from"
 "r-distinct-alpha-3-ISO639-from_description" 	"Transforms the ISO 3 codes of the languages of the represented field into verbalised headings." 	"Transforme les codes ISO 3 des langues du champ représenté en intitulés verbalisés."
-
 "r-distinct-by_title" 	"distinct-by" 	"distinct-by"
 "r-distinct-by_description" 	"Counts, for each element of the represented field (identifier), the number of times this element appears." 	"Compte, pour chaque élément du champ représenté (identifiant), le nombre de fois où cet élément apparaît."
-
 "r-distinct-by-field_title" 	"distinct-by-field" 	"distinct-by-field"
 "r-distinct-by-field_description" 	"This routine behaves like the distinct-by routine. But additionally, it can interpret the parameters associated with the graphs." 	"Cette routine se comporte comme la routine distinct-by. Le petit + : elle sait interpréter les paramètres associés aux graphiques."
-
 "r-distribute-by-date_title" 	"distribute-by-date" 	"distribute-by-date"
 "r-distribute-by-date_description" 	"Is used to create timelines that retain years without document or zero value. " 	"Sert à créer des chronologies qui conservent les années sans document/de valeur nulle. "
-
 "r-distribute-by-decadal_title" 	"distribute-by-decadal" 	"distribute-by-decadal"
 "r-distribute-by-decadal_description" 	"Is used to create timelines by grouping values by decade (useful for years scattered over several centuries)." 	"Sert à créer des chronologies en regroupant les valeurs par décennie (utile pour des années dispersées sur plusieurs siècles)."
-
 "r-distribute-by-interval_title" 	"distribute-by-interval" 	"distribute-by-interval"
 "r-distribute-by-interval_description" 	"Is intended for graphs where you want to group values (integers or decimals) in intervals of step "1"." 	"Est destinée à des graphiques pour lesquels on souhaite regrouper des valeurs (nombres entiers ou décimaux) dans des intervalles de pas “1”."
-
 "r-get-fields_title" 	"get-fields" 	"get-fields"
-"r-graph-by_description" 	"Combines the value of two separate fields." "Associe la valeur de deux champs distincts."
+"r-graph-by_description" 	"Combines the value of two separate fields." 	"Associe la valeur de deux champs distincts."
 "r-graph-by_title" 	"graph-by" 	"graph-by"
 "r-graph-by_description" 	"Crosses items for one or more fields and counts the number of occurrences of each cross." 	"Croise les éléments pour un champ ou plusieurs champs et compte le nombre d’occurences de chaque croisement."
 "r-pairing-with_title" 	"pairing-with" 	"pairing-with"
