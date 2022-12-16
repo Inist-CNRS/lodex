@@ -6,8 +6,8 @@ import * as homePage from '../support/homePage';
 
 describe('Home Page', () => {
     beforeEach(() => {
-        teardown();
         cy.setCookie('lodex_tenant', 'lodex_test_homepage');
+        teardown();
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
 

@@ -16,6 +16,7 @@ export const workerQueue = new Queue(QUEUE_NAME, process.env.REDIS_URL, {
         removeOnComplete: 10,
         removeOnFail: 10,
         lifo: true,
+        concurrency: 50,
     },
 });
 

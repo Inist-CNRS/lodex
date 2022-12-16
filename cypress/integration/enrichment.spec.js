@@ -6,8 +6,8 @@ import * as enrichmentFormPage from '../support/enrichmentFormPage';
 
 describe('Enrichment', () => {
     beforeEach(() => {
-        teardown();
         cy.setCookie('lodex_tenant', 'lodex_test_enrichment');
+        teardown();
     });
 
     describe('Advanced enrichment', () => {

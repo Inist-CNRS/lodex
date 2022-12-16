@@ -117,7 +117,7 @@ ifeq "$(DISABLE_E2E_TESTS)" "true"
 else
 	$(MAKE) test-e2e-start-dockers
 	npx cypress install
-	./bin/wait-for -t 30 localhost:3000 -- npx cypress run --browser chrome|| (\
+	./bin/wait-for -t 30 localhost:3000 -- npm run cy:parallel || (\
 		echo "ERROR: Here are the logs:" && \
 		$(MAKE) test-e2e-logs && \
 		$(MAKE) test-e2e-stop-dockers && \

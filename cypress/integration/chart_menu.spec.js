@@ -4,8 +4,8 @@ import * as menu from '../support/menu';
 
 describe('Chart Menu', () => {
     beforeEach(() => {
-        teardown();
         cy.setCookie('lodex_tenant', 'lodex_test_chart');
+        teardown();
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
         datasetImportPage.importDataset('dataset/chart.csv');
