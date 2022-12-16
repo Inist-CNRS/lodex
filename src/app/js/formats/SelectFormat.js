@@ -15,7 +15,7 @@ import FormatCatalogDialog from './FormatCatalog';
 const SelectFormat = ({ formats, value, onChange, p: polyglot }) => {
     const [openCatalog, setOpenCatalog] = React.useState(false);
     return (
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end' }}>
             <FormControl fullWidth>
                 <InputLabel id="select-form-input-label">
                     {polyglot.t('select_a_format')}
