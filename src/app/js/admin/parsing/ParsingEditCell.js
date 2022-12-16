@@ -112,7 +112,7 @@ export const getValueBySavingType = (value, type, previousValue) => {
         typeof previousValue !== 'string'
     ) {
         return value;
-    } else if (isPrimitive(value)) {
+    } else if (isPrimitive(previousValue)) {
         if (typeof previousValue === 'number') {
             return Number(value);
         }
