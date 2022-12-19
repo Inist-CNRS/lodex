@@ -768,3 +768,6 @@
 "ws_post-v1-gotagger_title"	"Detection of geographical entities"	"Détection d’entités géographiques"
 "ws_post-v1-gotagger_description"	"Detects geographical features in an english text"	"Détecte les entités géographiques d'un texte en anglais"
 "enrichment_advanced_mode_tooltip"	"Don't forget to add enrichment for having preview"	"N'oubliez pas d'ajouter l'enrichissement pour avoir la preview"
+"duplicate_field_tooltip"	"Duplicate field"	"Dupliquer le champ"
+"duplicate_field_success"	"Field duplicated"	"Champ dupliqué"
+"duplicate_field_error"	"Error while duplicating field"	"Erreur lors de la duplication du champ"

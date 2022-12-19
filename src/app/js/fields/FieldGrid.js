@@ -34,6 +34,7 @@ import {
 import FieldInternalIcon from './FieldInternalIcon';
 
 import fieldApi from '../admin/api/field';
+import { toast } from 'react-toastify';
 
 const ROOT_PADDING = 16;
 
@@ -284,9 +285,16 @@ const DraggableItemGrid = compose(
                 fieldId: field._id,
             });
 
-            if (res) {
-                loadField();
+            if (!res) {
+                toast(`${polyglot.t('duplicate_field_error')}`, {
+                    type: toast.TYPE.ERROR,
+                });
             }
+
+            loadField();
+            toast(`${polyglot.t('duplicate_field_success')}`, {
+                type: toast.TYPE.SUCCESS,
+            });
         };
 
         return (
