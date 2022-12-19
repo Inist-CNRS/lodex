@@ -47,7 +47,7 @@ export const restoreFields = (fileStream, ctx) => {
         dropJobs(ENRICHER);
         return new Promise((resolve, reject) =>
             restore({
-                uri: mongoConnectionString,
+                uri: mongoConnectionString + ctx.tenant,
                 stream: fileStream,
                 parser: 'json',
                 dropCollections: ['field', 'subresource', 'enrichment'],
@@ -156,7 +156,7 @@ export const postField = async ctx => {
     const result = await ctx.field.create(newField);
 
     if (searchable) {
-        await indexSearchableFields();
+        await indexSearchableFields(ctx);
     }
 
     if (result) {
@@ -178,7 +178,7 @@ export const putField = async (ctx, id) => {
             );
         }
         ctx.body = await ctx.field.updateOneById(id, newField);
-        await indexSearchableFields();
+        await indexSearchableFields(ctx);
     } catch (error) {
         ctx.status = 403;
         ctx.body = { error: error.message };
@@ -192,7 +192,7 @@ export const putField = async (ctx, id) => {
 
 export const removeField = async (ctx, id) => {
     ctx.body = await ctx.field.removeById(id);
-    await indexSearchableFields();
+    await indexSearchableFields(ctx);
 };
 
 export const exportFields = async ctx => {
@@ -229,7 +229,6 @@ export const exportFields = async ctx => {
 export const importFields = asyncBusboyImpl => async ctx => {
     const { files } = await asyncBusboyImpl(ctx.req);
     const fileStream = files[0];
-
     try {
         await ctx.restoreFields(fileStream, ctx);
         ctx.status = 200;

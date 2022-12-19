@@ -19,7 +19,8 @@ export const logoutAndLoginAs = username => {
     login(username);
 };
 
-export const teardown = (withoutLogin = false) => {
+export const teardown = (tenant, withoutLogin = false) => {
+    cy.setCookie('lodex_tenant', tenant);
     cy.request('DELETE', '/tests/fixtures');
 
     if (withoutLogin) {
@@ -28,4 +29,5 @@ export const teardown = (withoutLogin = false) => {
     }
 
     logoutAndLoginAs('admin');
+    cy.setCookie('lodex_tenant', tenant);
 };

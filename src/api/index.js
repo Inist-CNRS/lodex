@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import { Server } from 'socket.io';
-import config from 'config';
+import config, { mongo } from 'config';
 import mount from 'koa-mount';
 import cors from 'kcors';
 import koaQs from 'koa-qs';
@@ -36,6 +36,14 @@ if (process.env.NODE_ENV === 'development') {
     });
     app.use(serverAdapter.registerPlugin());
 }
+
+const setTenant = async (ctx, next) => {
+    ctx.tenant = ctx.cookies.get('lodex_tenant') || mongo.dbName;
+    progress.initialize(ctx.tenant);
+    await next();
+};
+
+app.use(setTenant);
 
 // worker job
 app.use(async (ctx, next) => {
@@ -76,8 +84,14 @@ app.use(function*(next) {
 
 app.use(mount('/', controller));
 
+app.use(async (ctx, next) => {
+    if (!module.parent) {
+        indexSearchableFields(ctx);
+    }
+    await next();
+});
+
 if (!module.parent) {
-    indexSearchableFields();
     global.console.log(`Server listening on port ${config.port}`);
     global.console.log('Press CTRL+C to stop server');
     const httpServer = app.listen(config.port);

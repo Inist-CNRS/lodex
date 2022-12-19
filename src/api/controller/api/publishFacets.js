@@ -5,11 +5,11 @@ import { jobLogger } from '../../workers/tools';
 export default async (ctx, fields, withProgress = false) => {
     const facetFields = fields.filter(c => c.isFacet);
     if (!facetFields.length) {
-        withProgress && progress.finish();
+        withProgress && progress.finish(ctx.tenant);
         return;
     }
     withProgress &&
-        progress.start({
+        progress.start(ctx.tenant, {
             status: PUBLISH_FACET,
             target: facetFields.length,
             label: 'publishing',
@@ -31,7 +31,7 @@ export default async (ctx, fields, withProgress = false) => {
                         return null;
                     }
                     await ctx.publishedFacet.insertMany(facets);
-                    withProgress && progress.incrementProgress(1);
+                    withProgress && progress.incrementProgress(ctx.tenant, 1);
                 }),
             Promise.resolve(),
         )
@@ -39,8 +39,8 @@ export default async (ctx, fields, withProgress = false) => {
             if (!withProgress) {
                 throw error;
             }
-            progress.throw(error);
+            progress.throw(ctx.tenant, error);
         });
-    progress.finish();
+    progress.finish(ctx.tenant);
     jobLogger.info(ctx.job, 'Facets published');
 };

@@ -2,7 +2,7 @@ import { UNPUBLISH_DOCUMENT } from '../../common/progressStatus';
 import progress from './progress';
 
 export default async (ctx, triggeredFromPublication) => {
-    progress.start({
+    progress.start(ctx.tenant, {
         status: UNPUBLISH_DOCUMENT,
         target: 100,
         label: triggeredFromPublication ? 'publishing' : UNPUBLISH_DOCUMENT,
@@ -13,11 +13,11 @@ export default async (ctx, triggeredFromPublication) => {
         { $unset: { lodex_published: '' } },
         { multi: true },
     );
-    progress.incrementProgress(25);
+    progress.incrementProgress(ctx.tenant,25);
     await ctx.publishedDataset.remove({});
-    progress.incrementProgress(25);
+    progress.incrementProgress(ctx.tenant,25);
     await ctx.publishedCharacteristic.remove({});
-    progress.incrementProgress(25);
+    progress.incrementProgress(ctx.tenant,25);
     await ctx.publishedFacet.remove({});
-    progress.finish();
+    progress.finish(ctx.tenant);
 };

@@ -5,8 +5,7 @@ import * as adminNavigation from '../support/adminNavigation';
 
 describe('Transformers & Formats', () => {
     beforeEach(() => {
-        cy.setCookie('lodex_tenant', 'lodex_test_transformers');
-        teardown();
+        teardown('lodex_test_transformers');
     });
 
     describe('LIST format', () => {

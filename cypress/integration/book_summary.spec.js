@@ -6,8 +6,7 @@ import * as searchDrawer from '../support/searchDrawer';
 
 describe('Book Summary Format', () => {
     beforeEach(() => {
-        cy.setCookie('lodex_tenant', 'lodex_test_book');
-        teardown();
+        teardown('lodex_test_book');
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
         datasetImportPage.importDataset('dataset/book.csv');

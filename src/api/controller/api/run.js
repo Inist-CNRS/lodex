@@ -60,7 +60,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         orderBy,
         field,
         ...ctx.query, //usefull ?
-        connectionStringURI: mongoConnectionString,
+        connectionStringURI: mongoConnectionString + ctx.tenant,
         host,
     };
     const input = new PassThrough({ objectMode: true });

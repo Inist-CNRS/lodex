@@ -7,8 +7,7 @@ import * as searchDrawer from '../support/searchDrawer';
 describe('Model Page', () => {
     describe('handling old models', () => {
         beforeEach(() => {
-            cy.setCookie('lodex_tenant', 'lodex_test_model');
-            teardown();
+            teardown('lodex_test_model');
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/film.csv');

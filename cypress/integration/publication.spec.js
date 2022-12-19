@@ -6,8 +6,7 @@ import * as adminNavigation from '../support/adminNavigation';
 
 describe('Dataset Publication', () => {
     beforeEach(() => {
-        cy.setCookie('lodex_tenant', 'lodex_test_publication');
-        teardown();
+        teardown('lodex_test_publication');
     });
 
     describe('Dataset Import', () => {

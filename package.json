@@ -28,8 +28,8 @@
         "insertversion:docker": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose*.yml",
         "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && git add README.md Makefile docker-compose.debug.yml",
         "test:e2e_run_parallel": "node ./run_test_in_parallel.js",
-        "cy:run": "cypress run",
-        "cy:parallel": "cypress-parallel -s cy:run -t 4 -d cypress/integration --browser chrome"
+        "cy:run": "cypress run --browser chrome",
+        "cy:parallel": "cypress-parallel -s cy:run -t 13 -d cypress/integration"
     },
     "nodemonConfig": {
         "ignore": [

@@ -10,8 +10,7 @@ describe('Resource', () => {
 
     describe('Create a resource', () => {
         before(() => {
-            cy.setCookie('lodex_tenant', 'lodex_test_ressource');
-            teardown();
+            teardown('lodex_test_ressource');
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
 

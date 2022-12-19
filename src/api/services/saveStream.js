@@ -41,7 +41,7 @@ export default async (stream, ctx) => {
                 ctx.dataset[method](chunk)
                     .then(data => {
                         this.emit('data', data);
-                        progress.incrementProgress(defaultChunkSize);
+                        progress.incrementProgress(ctx.tenant,defaultChunkSize);
                     })
                     .catch(error => {
                         this.emit('error', error);

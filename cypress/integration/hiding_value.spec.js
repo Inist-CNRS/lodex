@@ -8,8 +8,7 @@ describe('hiding null value to user', () => {
     const model = 'model/simple.json';
 
     before(() => {
-        cy.setCookie('lodex_tenant', 'lodex_test_hiding');
-        teardown();
+        teardown('lodex_test_hiding');
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
 

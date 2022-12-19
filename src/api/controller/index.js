@@ -9,6 +9,7 @@ import embedded from './embedded';
 import customPage from './customPage';
 
 import repositoryMiddleware from '../services/repositoryMiddleware';
+import progress from '../services/progress';
 
 const app = new Koa();
 
@@ -19,6 +20,7 @@ const simulateLatency = ms => async (ctx, next) => {
 
 const setTenant = async (ctx, next) => {
     ctx.tenant = ctx.cookies.get('lodex_tenant') || mongo.dbName;
+    progress.initialize(ctx.tenant);
     await next();
 };
 

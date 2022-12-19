@@ -51,7 +51,7 @@ export const cancelJob = async (ctx, jobType) => {
         if (jobType === 'publisher') {
             await clearPublished(ctx);
         }
-        progress.finish();
+        progress.finish(ctx.tenant);
     }
 };
 
@@ -69,5 +69,5 @@ export const clearJobs = async () => {
     activeJobs?.forEach(activeJob =>
         activeJob.moveToFailed(new Error('cancelled'), true),
     );
-    progress.finish();
+    progress.finish(ctx.tenant);
 };

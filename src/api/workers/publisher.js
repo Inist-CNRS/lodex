@@ -18,7 +18,8 @@ export const processPublication = (job, done) => {
             done();
         })
         .catch(err => {
-            handlePublishError(err);
+            console.log('COUCOU',  err)
+            handlePublishError(job, err);
             done(err);
         });
 };
@@ -29,13 +30,14 @@ const startPublishing = async job => {
     await publish(ctx);
 };
 
-const handlePublishError = async error => {
+const handlePublishError = async (job, error) => {
     notifyListeners({
         isPublishing: false,
         success: false,
         message: error.message,
     });
-    const ctx = await prepareContext({});
+
+    const ctx = await prepareContext({ job });
     await ctx.publishedDataset.remove({});
     await ctx.publishedCharacteristic.remove({});
 };

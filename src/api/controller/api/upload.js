@@ -32,11 +32,10 @@ export const prepareUpload = async (ctx, next) => {
     ctx.checkFileExists = checkFileExists;
     ctx.saveStreamInFile = saveStreamInFile;
     ctx.getUploadedFileSize = getUploadedFileSize;
-
     try {
         await next();
     } catch (error) {
-        progress.throw(error);
+        progress.throw(ctx.tenant, error);
         ctx.status = 500;
         ctx.body = error.message;
     }
@@ -83,8 +82,12 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
         customLoader,
     } = ctx.resumable;
 
-    if (progress.getProgress().status === PENDING) {
-        progress.start({ status: UPLOADING_DATASET, target: 100, symbol: '%' });
+    if (progress.getProgress(ctx.tenant).status === PENDING) {
+        progress.start(ctx.tenant, {
+            status: UPLOADING_DATASET,
+            target: 100,
+            symbol: '%',
+        });
     }
     if (!(await ctx.checkFileExists(chunkname, currentChunkSize))) {
         await ctx.saveStreamInFile(stream, chunkname);
@@ -96,8 +99,11 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
     );
 
     const progression = Math.round((uploadedFileSize * 100) / totalSize);
-    if (progress.getProgress().status === UPLOADING_DATASET) {
-        progress.setProgress(progression === 100 ? 99 : progression);
+    if (progress.getProgress(ctx.tenant).status === UPLOADING_DATASET) {
+        progress.setProgress(
+            ctx.tenant,
+            progression === 100 ? 99 : progression,
+        );
     }
 
     if (uploadedFileSize >= totalSize) {

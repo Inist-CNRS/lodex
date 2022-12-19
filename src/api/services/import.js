@@ -31,7 +31,7 @@ export const startImport = async ctx => {
         ctx.job?.data || {};
     try {
         if (progress.status !== SAVING_DATASET) {
-            progress.start({
+            progress.start(ctx.tenant, {
                 status: SAVING_DATASET,
                 subLabel: 'imported_lines',
                 type: 'import',
@@ -57,13 +57,13 @@ export const startImport = async ctx => {
         }
         const parsedStream = await parseStream(stream);
         await ctx.saveParsedStream(ctx, parsedStream);
-        progress.start({
+        progress.start(ctx.tenant, {
             status: INDEXATION,
             type: 'import',
         });
         await ctx.dataset.indexColumns();
     } finally {
-        progress.finish();
+        progress.finish(ctx.tenant);
         if (filename && totalChunks) {
             await ctx.clearChunks(filename, totalChunks);
         }

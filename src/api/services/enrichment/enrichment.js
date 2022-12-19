@@ -288,7 +288,7 @@ export const processEnrichment = async (enrichment, ctx) => {
                     );
                 }
             }
-            progress.incrementProgress(BATCH_SIZE);
+            progress.incrementProgress(ctx.tenant, BATCH_SIZE);
             notifyListeners(room, logsEnrichedValue.reverse());
         } catch (e) {
             for (const entry of entries) {
@@ -310,7 +310,7 @@ export const processEnrichment = async (enrichment, ctx) => {
                 jobLogger.info(ctx.job, logData);
                 notifyListeners(room, logData);
                 errorCount++;
-                progress.incrementProgress(1);
+                progress.incrementProgress(ctx.tenant, 1);
             }
         }
     }
@@ -323,7 +323,7 @@ export const processEnrichment = async (enrichment, ctx) => {
         },
         { $set: { ['status']: FINISHED, ['errorCount']: errorCount } },
     );
-    progress.finish();
+    progress.finish(ctx.tenant);
     const logData = JSON.stringify({
         level: 'ok',
         message: `Enrichement finished`,
@@ -347,8 +347,8 @@ export const startEnrichment = async ctx => {
     const id = ctx.job?.data?.id;
     const enrichment = await ctx.enrichment.findOneById(id);
     const dataSetSize = await ctx.dataset.count();
-    if (progress.getProgress().status === PENDING) {
-        progress.start({
+    if (progress.getProgress(ctx.tenant).status === PENDING) {
+        progress.start(ctx.tenant, {
             status: ENRICHING,
             target: dataSetSize,
             label: 'ENRICHING',

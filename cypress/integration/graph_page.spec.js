@@ -6,8 +6,7 @@ import * as searchDrawer from '../support/searchDrawer';
 
 describe('Graph Page', () => {
     beforeEach(() => {
-        cy.setCookie('lodex_tenant', 'lodex_test_graph_page');
-        teardown();
+        teardown('lodex_test_graph_page');
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
 

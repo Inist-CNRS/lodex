@@ -5,7 +5,7 @@ export const mongoConnectionString = `mongodb://${config.mongo.host}/`;
 
 export const mongoClientFactory = MongoClientImpl => async tenant => {
     if (!tenant) {
-        throw new Error(`Le tenant n'est pas non renseigné.`);
+        throw new Error(`Le tenant n'est pas renseigné.`);
     }
     try {
         return await MongoClientImpl.connect(mongoConnectionString + tenant, {
