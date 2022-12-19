@@ -3,38 +3,28 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import SearchIcon from '@material-ui/icons/Search';
-import { Grid, Box, Typography, Button } from '@material-ui/core';
+import BuildIcon from '@material-ui/icons/Build';
+import { Box, Typography, Button, Tooltip } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import ListDialog from './ListDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import theme from '../../theme';
 import CustomLoader from './CustomLoader';
+import classNames from 'classnames';
 
-const styles = {
+const useStyles = makeStyles({
     button: {
         color: 'white',
-        marginLeft: 4,
+        marginLeft: 12,
         marginRight: 4,
     },
-    divider: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '40%',
-        margin: 'auto',
-        marginBottom: 25,
+    customLoader: {
+        color: theme.purple.primary,
     },
-    dividerHr: {
-        flexGrow: 2,
-        marginLeft: '1rem',
-        marginRight: '1rem',
-    },
-    dividerLabel: {
-        color: theme.green.primary,
-        cursor: 'pointer',
-    },
-};
+});
 
 const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
+    const classes = useStyles();
     const [openLoadersDialog, setOpenLoadersDialog] = useState(false);
     const [openCustomLoadersDialog, setOpenCustomLoadersDialog] = useState(
         false,
@@ -60,52 +50,53 @@ const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
     ];
 
     return (
-        <div>
-            <Grid
-                container={true}
-                direction="row"
+        <Box>
+            <Box
+                display="flex"
                 justifyContent="center"
-                style={{
-                    width: '100%',
-                    marginBottom: 10,
-                    marginTop: 25,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
+                alignItems="center"
+                marginBottom="48px"
+                marginTop="60px"
             >
-                <Box
-                    style={{
-                        display: 'grid',
-                        alignContent: 'center',
-                        marginRight: 20,
-                    }}
+                <Typography variant="h6">
+                    {polyglot.t('loader_name')}
+                </Typography>
+                <Button
+                    variant="contained"
+                    className={classNames(classes.button, 'open-loaders')}
+                    color="primary"
+                    onClick={handleOpen}
                 >
-                    <Typography variant="h6" style={{ marginBottom: 10 }}>
-                        2. {polyglot.t('loader_name')}
-                    </Typography>
-                </Box>
-                <Box>
+                    <SearchIcon fontSize="medium" />
+                </Button>
+            </Box>
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                marginBottom="48px"
+                marginTop="48px"
+            >
+                <Typography
+                    className={
+                        value === 'custom-loader' && classes.customLoader
+                    }
+                >
+                    {value === 'automatic'
+                        ? polyglot.t('automatic-loader')
+                        : polyglot.t(value)}
+                </Typography>
+                <Tooltip title={polyglot.t(`add-custom-loader`)}>
                     <Button
                         variant="contained"
-                        style={styles.button}
-                        className="open-loaders"
-                        color={
-                            value === 'custom-loader' ? 'secondary' : 'primary'
-                        }
-                        onClick={handleOpen}
-                        fullWidth
+                        className={classes.button}
+                        color="primary"
+                        onClick={() => setOpenCustomLoadersDialog(true)}
                     >
-                        {value === 'automatic'
-                            ? polyglot.t('automatic-loader')
-                            : polyglot.t(value)}
-                        <SearchIcon
-                            fontSize="large"
-                            style={{ marginLeft: 20 }}
-                        />
+                        <BuildIcon fontSize="medium" />
                     </Button>
-                </Box>
-            </Grid>
+                </Tooltip>
+            </Box>
             <ListDialog
                 open={openLoadersDialog}
                 handleClose={handleClose}
@@ -114,22 +105,11 @@ const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
                 setLoader={setLoader}
                 value={value}
             />
-
-            <div style={styles.divider}>
-                <hr style={styles.dividerHr} />
-                <div
-                    style={styles.dividerLabel}
-                    onClick={() => setOpenCustomLoadersDialog(true)}
-                >
-                    {polyglot.t('add-custom-loader')}
-                </div>
-                <hr style={styles.dividerHr} />
-            </div>
             <CustomLoader
                 isOpen={openCustomLoadersDialog}
                 handleClose={() => setOpenCustomLoadersDialog(false)}
             />
-        </div>
+        </Box>
     );
 };
 
