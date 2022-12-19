@@ -4,19 +4,23 @@ import omit from 'lodash.omit';
 import JSONStream from 'jsonstream';
 import { Transform } from 'stream';
 
-import { URI_FIELD_NAME } from '../../common/uris';
+import { URI_FIELD_NAME, moveUriToFirstPosition } from '../../common/uris';
 import countNotUnique from './countNotUnique';
 import countNotUniqueSubresources from './countNotUniqueSubresources';
 
 export default db => {
     const collection = db.collection('dataset');
-    collection.insertBatch = documents =>
-        chunk(documents, 100).map(data =>
-            collection.insertMany(data, {
-                forceServerObjectId: true,
-                w: 1,
+    collection.insertBatch = documents => {
+        return Promise.all(
+            chunk(documents, 100).map(data => {
+                const orderedData = moveUriToFirstPosition(data);
+                return collection.insertMany(orderedData, {
+                    forceServerObjectId: true,
+                    w: 1,
+                });
             }),
         );
+    };
     collection.getExcerpt = filter =>
         collection
             .find(filter)
@@ -48,7 +52,7 @@ export default db => {
 
     collection.bulkUpdate = async (items, getFilter, upsert = false) => {
         if (items.length) {
-            collection.bulkWrite(
+            await collection.bulkWrite(
                 items.map(item => ({
                     updateOne: {
                         filter: getFilter(item),

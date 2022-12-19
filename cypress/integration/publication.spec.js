@@ -12,7 +12,7 @@ describe('Dataset Publication', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
             cy.wait(300);
-            datasetImportPage.addFile('dataset/simple.csv');
+            datasetImportPage.addFileWithoutClick('dataset/simple.csv');
 
             datasetImportPage.checkListOfSupportedFileFormats();
             datasetImportPage.checkListOfFiltererFileFormats();
@@ -127,7 +127,7 @@ describe('Dataset Publication', () => {
 
             cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
                 'contains.text',
-                ['2', 'true', '"Alain"', '"Chabat"'].join(''),
+                ['2', '"Alain"', '"Chabat"', 'true'].join(''),
             );
         });
         it('should filter by firstName', () => {
@@ -148,12 +148,12 @@ describe('Dataset Publication', () => {
 
             cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
                 'contains.text',
-                ['1', 'true', '"Bobby"', '"Womack"'].join(''),
+                ['1', '"Bobby"', '"Womack"', 'true'].join(''),
             );
 
             cy.get('[data-rowindex=1]', { timeout: 3000 }).should(
                 'contains.text',
-                ['4', '""', '"Rob"', '"Zombie"'].join(''),
+                ['4', '"Rob"', '"Zombie"', '""'].join(''),
             );
         });
         it('should filter by boolean', () => {
@@ -174,12 +174,12 @@ describe('Dataset Publication', () => {
 
             cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
                 'contains.text',
-                ['1', 'true', '"Bobby"', '"Womack"'].join(''),
+                ['1', '"Bobby"', '"Womack"', 'true'].join(''),
             );
 
             cy.get('[data-rowindex=1]', { timeout: 3000 }).should(
                 'contains.text',
-                ['2', 'true', '"Alain"', '"Chabat"'].join(''),
+                ['2', '"Alain"', '"Chabat"', 'true'].join(''),
             );
         });
     });

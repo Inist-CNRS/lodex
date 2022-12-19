@@ -12,7 +12,7 @@ import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError } from '../../workers';
 import logger from '../logger';
 
-const { enrichmentBatchSize: BATCH_SIZE } = localConfig;
+const { enrichmentBatchSize: BATCH_SIZE = 10 } = localConfig;
 
 const getSourceData = async (ctx, sourceColumn) => {
     const excerptLines = await ctx.dataset.getExcerpt(

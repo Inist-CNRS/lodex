@@ -33,10 +33,12 @@ describe('<ParsingEditCell />', () => {
         });
 
         it('getValueBySavingType() with type json', () => {
-            expect(getValueBySavingType('{"hello": "world"}', 'json')).toEqual({
+            expect(
+                getValueBySavingType('{"hello": "world"}', 'object'),
+            ).toEqual({
                 hello: 'world',
             });
-            expect(() => getValueBySavingType('hello', 'json')).toThrow(
+            expect(() => getValueBySavingType('hello', 'object')).toThrow(
                 'value_not_an_object',
             );
         });
