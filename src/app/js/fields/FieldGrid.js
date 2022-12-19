@@ -220,7 +220,6 @@ const DraggableItemGrid = compose(
         polyglot,
         loadField,
     }) => {
-        const [showNameCopied, setShowNameCopied] = useState(false);
         const classes = useStyles();
 
         const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
@@ -334,7 +333,14 @@ const DraggableItemGrid = compose(
                                     field={field}
                                     polyglot={polyglot}
                                     onShowNameCopied={() =>
-                                        setShowNameCopied(true)
+                                        toast(
+                                            polyglot.t(
+                                                'fieldname_copied_clipboard',
+                                            ),
+                                            {
+                                                type: toast.TYPE.SUCCESS,
+                                            },
+                                        )
                                     }
                                 />
                             </span>
@@ -358,16 +364,6 @@ const DraggableItemGrid = compose(
                         </div>
                     ))}
                 </GridLayout>
-                <Snackbar
-                    open={showNameCopied}
-                    autoHideDuration={2000}
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                    onClose={() => setShowNameCopied(false)}
-                >
-                    <Alert variant="filled" severity="success">
-                        {polyglot.t('fieldname_copied_clipboard')}
-                    </Alert>
-                </Snackbar>
             </div>
         );
     },
