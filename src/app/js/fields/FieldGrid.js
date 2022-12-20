@@ -5,11 +5,10 @@ import translate from 'redux-polyglot/translate';
 import compose from 'lodash.compose';
 import PropTypes from 'prop-types';
 import GridLayout from 'react-grid-layout';
-import { Box, Button, makeStyles, Snackbar } from '@material-ui/core';
+import { Box, Button, makeStyles } from '@material-ui/core';
 import { useMeasure } from 'react-use';
 import 'react-grid-layout/css/styles.css';
 import classNames from 'classnames';
-import Alert from '@material-ui/lab/Alert';
 import copy from 'copy-to-clipboard';
 
 import {
@@ -207,7 +206,7 @@ const scrollToLastLayoutItem = () => {
 };
 
 const DraggableItemGrid = compose(
-    connect(mapStateToProps, {
+    connect(null, {
         loadField,
     }),
 )(
