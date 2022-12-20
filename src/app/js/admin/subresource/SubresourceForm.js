@@ -104,6 +104,7 @@ const SubresourceFormComponent = ({
                         component={TextField}
                         label={polyglot.t('subresource_name')}
                         fullWidth
+                        aria-label="input-name"
                     />
                 </Grid>
             </Grid>
@@ -120,6 +121,7 @@ const SubresourceFormComponent = ({
                                 {...params}
                                 label={polyglot.t('subresource_path')}
                                 variant="outlined"
+                                aria-label="input-path"
                             />
                         )}
                         renderOption={(props, option, state) => {
@@ -148,6 +150,7 @@ const SubresourceFormComponent = ({
                             <MUITextField
                                 {...params}
                                 label={polyglot.t('subresource_id')}
+                                aria-label="input-identifier"
                                 variant="outlined"
                             />
                         )}
