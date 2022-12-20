@@ -348,6 +348,7 @@ const DraggableItemGrid = compose(
                                 onClick={e => {
                                     handleDuplicateField(e, field);
                                 }}
+                                aria-label={`duplicate-${field.label}`}
                             >
                                 <FileCopyIcon />
                             </Button>
@@ -356,6 +357,7 @@ const DraggableItemGrid = compose(
                                     classes.editIcon,
                                     classes.fieldChildren,
                                 )}
+                                aria-label={`edit-${field.label}`}
                             >
                                 <SettingsIcon />
                             </Button>
