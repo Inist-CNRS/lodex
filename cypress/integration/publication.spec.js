@@ -344,7 +344,7 @@ describe('Dataset Publication', () => {
                 .should('have.length', 3);
         });
     });
-    describe.only('Automatic Publication', () => {
+    describe('Automatic Publication', () => {
         it('should re-publish dataset when updating field', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();

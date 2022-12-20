@@ -441,7 +441,6 @@ const FieldGridComponent = ({
                     onChangePositions={handleChangePositions}
                     allowResize={true}
                     polyglot={polyglot}
-                    loadField={loadField}
                 />
             )}
             <PublicationModalWizard
