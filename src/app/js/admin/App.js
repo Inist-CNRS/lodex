@@ -41,7 +41,7 @@ export const AppComponent = ({ children }) => (
                     {children}
                 </div>
                 <ToastContainer
-                    position="bottom-center"
+                    position="bottom-left"
                     autoClose={5000}
                     hideProgressBar
                     newestOnTop={false}

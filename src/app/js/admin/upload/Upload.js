@@ -22,6 +22,7 @@ import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
 import theme from '../../theme';
 import PopupConfirmUpload from './PopupConfirmUpload';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles({
     button: {
@@ -99,6 +100,9 @@ export const UploadComponent = ({
         if (!list || list.length === 0) return;
 
         setFiles([...list]);
+        toast(polyglot.t('add_file_success', { name: list[0].file.name }), {
+            type: toast.TYPE.SUCCESS,
+        });
     };
 
     const handleFileUploaded = () => {
