@@ -278,6 +278,7 @@ describe('Dataset Publication', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
+            cy.wait(500);
             datasetImportPage.importModel('model/concat.json');
             datasetImportPage.publish();
             cy.wait(300);
@@ -293,6 +294,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
             cy.log('import 6');
             datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
+            cy.wait(1000);
 
             cy.log('go to published resource');
             datasetImportPage.goToPublishedResources();
