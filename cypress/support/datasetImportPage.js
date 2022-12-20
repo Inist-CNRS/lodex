@@ -149,9 +149,7 @@ const checkLoaderItem = label => {
 };
 
 export const checkListOfSupportedFileFormats = () => {
-    cy.get('div')
-        .contains('AUTO')
-        .click({ force: true });
+    cy.get('.open-loaders').click({ force: true });
     cy.wait(500);
     cy.get('button.format-category').should('have.length', 6);
     checkLoaderItem('CSV - with semicolon');
@@ -164,9 +162,7 @@ export const checkListOfSupportedFileFormats = () => {
 };
 
 export const checkListOfFiltererFileFormats = () => {
-    cy.get('div')
-        .contains('AUTO')
-        .click({ force: true });
+    cy.get('.open-loaders').click({ force: true });
     cy.wait(500);
     cy.get('button')
         .contains('TSV')

@@ -20,6 +20,7 @@ import {
 } from '../../../common/scope';
 import { dropJobs } from '../../workers/tools';
 import { ENRICHER } from '../../workers/enricher';
+import generateUid from '../../services/generateUid';
 
 const sortByFieldUri = (a, b) =>
     (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
@@ -297,6 +298,32 @@ export const reorderField = async ctx => {
     }
 };
 
+export const duplicateField = async ctx => {
+    try {
+        // get field id from request body
+        const { fieldId } = ctx.request.body;
+
+        // get field from database
+        const field = await ctx.field.findOneById(fieldId);
+
+        // change name of field
+        field.label = `${field.label}_copy`;
+        field.name = await generateUid();
+        field.position = field.position + 1;
+        delete field._id;
+
+        // save field in database
+        const newField = await ctx.field.create(field);
+        ctx.status = 200;
+        ctx.body = newField;
+    } catch (error) {
+        ctx.status = 400;
+        ctx.body = {
+            error: error.message,
+        };
+    }
+};
+
 const app = new Koa();
 
 app.use(setup);
@@ -306,6 +333,7 @@ app.use(route.get('/export', exportFields));
 app.use(route.post('/import', importFields(asyncBusboy)));
 app.use(koaBodyParser());
 app.use(route.post('/', postField));
+app.use(route.post('/duplicate', duplicateField));
 app.use(route.put('/reorder', reorderField));
 app.use(route.put('/:id', putField));
 app.use(route.del('/:id', removeField));

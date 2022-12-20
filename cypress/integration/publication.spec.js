@@ -352,7 +352,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/book_summary.json');
             datasetImportPage.publish();
             adminNavigation.goToResourcePage();
-            cy.get('[aria-label="Title"] button', { timeout: 3000 }).click({
+            cy.get('[aria-label="edit-Title"]', { timeout: 3000 }).click({
                 force: true,
             });
             cy.get('.btn-save').click();
@@ -370,7 +370,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/book_summary.json');
             datasetImportPage.publish();
             adminNavigation.goToResourcePage();
-            cy.get('[aria-label="Title"] button', { timeout: 3000 }).click({
+            cy.get('[aria-label="edit-Title"]', { timeout: 3000 }).click({
                 force: true,
             });
             cy.contains('Remove').click({ force: true });
