@@ -105,6 +105,7 @@ const useStyles = makeStyles({
     },
     dropzone: {
         minHeight: '220px',
+        padding: '0 1rem',
     },
     disabledDropzone: {
         opacity: 0.5,
