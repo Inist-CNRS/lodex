@@ -24,7 +24,6 @@ import CancelPublicationDialog from './CancelPublicationDialog';
 import { publicationCleared } from '../publication';
 import Warning from '@material-ui/icons/Warning';
 import { loadParsingResult } from '../parsing';
-import { uploadSuccess } from '../upload';
 import { clearPublished } from '../clear';
 import { fromPublication } from '../selectors';
 import { toast } from 'react-toastify';
@@ -77,12 +76,12 @@ const JobProgressComponent = props => {
         handlePublishSuccess,
         handlePublishError,
         handleCancelPublication,
-        handleUploadSuccess,
-        handleCancelImport,
+        loadParsingResult,
         handleRepublish,
     } = props;
     const [progress, setProgress] = useState();
     const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+    const [hasLoadedParsingResult, setHasLoadedParsingResult] = useState(false);
 
     useEffect(() => {
         const socket = io();
@@ -111,24 +110,39 @@ const JobProgressComponent = props => {
         });
 
         socket.on('import', data => {
-            if (data.isImporting) {
-                handleUploadSuccess();
-            }
-            if (!data.isImporting && !data.success) {
-                handleCancelImport();
+            if (!data.isImporting) {
+                loadParsingResult();
+                setHasLoadedParsingResult(false);
             }
             if (data.success && hasPublishedDataset) {
                 handleRepublish();
             }
-            if (data.message) {
+            if (data.message && data.message !== 'cancelled_import') {
                 toast(`${polyglot.t('error')} : ${data.message}`, {
                     type: toast.TYPE.ERROR,
+                });
+            }
+            if (data.message === 'cancelled_import') {
+                toast(polyglot.t('cancelled_import'), {
+                    type: toast.TYPE.SUCCESS,
                 });
             }
         });
 
         return () => socket.disconnect();
     }, []);
+
+    useEffect(() => {
+        if (
+            progress &&
+            progress.status === SAVING_DATASET &&
+            progress.progress > 0 &&
+            !hasLoadedParsingResult
+        ) {
+            loadParsingResult();
+            setHasLoadedParsingResult(true);
+        }
+    }, [progress, hasLoadedParsingResult]);
 
     return (
         <>
@@ -254,8 +268,7 @@ JobProgressComponent.propTypes = {
     handlePublishSuccess: PropTypes.func.isRequired,
     handlePublishError: PropTypes.func.isRequired,
     handleCancelPublication: PropTypes.func.isRequired,
-    handleUploadSuccess: PropTypes.func.isRequired,
-    handleCancelImport: PropTypes.func.isRequired,
+    loadParsingResult: PropTypes.func.isRequired,
     handleRepublish: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
@@ -265,8 +278,7 @@ const mapDispatchToProps = {
     handlePublishSuccess: () => publishSuccess(),
     handlePublishError: error => publishError(error),
     handleCancelPublication: () => publicationCleared(),
-    handleUploadSuccess: () => uploadSuccess(),
-    handleCancelImport: () => loadParsingResult(),
+    loadParsingResult,
     handleRepublish: async () => {
         await clearPublished();
         await publish();
