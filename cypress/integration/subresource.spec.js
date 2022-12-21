@@ -26,7 +26,7 @@ describe('Subresource Page', () => {
         subresourcePage.createSubresource();
         subresourcePage.addField('name', 'myField', false);
 
-        cy.get('div[role="dialog"]')
+        cy.get('.wizard')
             .find('.publication-excerpt-for-edition tbody tr td')
             .each((item, index) => {
                 cy.wrap(item).should(
@@ -35,11 +35,11 @@ describe('Subresource Page', () => {
                 );
             });
 
-        cy.get('div[role="dialog"]')
+        cy.get('.wizard')
             .find('.btn-save')
             .click();
 
-        cy.get('div[role="dialog"]', { timeout: 2000 }).should('not.exist');
+        cy.get('.wizard', { timeout: 2000 }).should('not.exist');
 
         cy.contains('button', 'Published data').click();
         cy.contains('.publication-excerpt-column', 'myField').should('exist');
@@ -86,11 +86,11 @@ describe('Subresource Page', () => {
             'Searchable - global full text search will target this field',
         ).click();
 
-        cy.get('div[role="dialog"]')
+        cy.get('.wizard')
             .find('.btn-save')
             .click();
 
-        cy.get('div[role="dialog"]').should('not.exist');
+        cy.get('.wizard').should('not.exist');
 
         cy.contains('From a column').click();
         datasetImportPage.addColumn('name', { display: { syndication: 1 } });
@@ -136,11 +136,11 @@ describe('Subresource Page', () => {
 
         cy.get('#step-value-subresource-field .column_name').type('name');
 
-        cy.get('div[role="dialog"]')
+        cy.get('.wizard')
             .find('.btn-save')
             .click();
 
-        cy.get('div[role="dialog"]').should('not.exist');
+        cy.get('.wizard').should('not.exist');
 
         cy.contains('button', 'Published data').click();
 
@@ -193,11 +193,11 @@ describe('Subresource Page', () => {
             'Searchable - global full text search will target this field',
         ).click();
 
-        cy.get('div[role="dialog"]')
+        cy.get('.wizard')
             .find('.btn-save')
             .click();
 
-        cy.get('div[role="dialog"]').should('not.exist');
+        cy.get('.wizard').should('not.exist');
 
         cy.contains('From a column').click();
         datasetImportPage.addColumn('name', { display: { syndication: 1 } });

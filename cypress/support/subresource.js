@@ -15,9 +15,9 @@ export const fillSubcategoryFormAndSubmit = values => {
 export const addField = (name, label, save = true) => {
     cy.contains('button', 'New field').click();
 
-    cy.get('div[role="dialog"]').should('exist');
+    cy.get('.wizard').should('exist');
 
-    cy.get('div[role="dialog"]')
+    cy.get('.wizard')
         .find(`input[name="label"]`)
         .clear()
         .type(label);
@@ -33,11 +33,11 @@ export const addField = (name, label, save = true) => {
         .click();
 
     if (save) {
-        cy.get('div[role="dialog"]')
+        cy.get('.wizard')
             .find('.btn-save')
             .click();
 
-        cy.get('div[role="dialog"]').should('not.exist');
+        cy.get('.wizard').should('not.exist');
 
         cy.contains('button', 'Published data').click();
         cy.contains('.publication-excerpt-column', label).should('exist');
