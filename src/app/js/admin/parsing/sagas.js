@@ -1,5 +1,4 @@
 import { call, fork, put, select, takeLatest } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
@@ -8,16 +7,11 @@ import {
     loadParsingResultError,
     loadParsingResultSuccess,
 } from './';
-import { UPLOAD_SUCCESS } from '../upload';
 import { fromUser } from '../../sharedSelectors';
 
-export function* handleLoadParsingResult(action) {
+export function* handleLoadParsingResult() {
     const request = yield select(fromUser.getLoadParsingResultRequest);
 
-    if (action.type === UPLOAD_SUCCESS) {
-        // MongoDB needs extra time to save first items
-        yield call(delay, 2000);
-    }
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
@@ -27,10 +21,7 @@ export function* handleLoadParsingResult(action) {
 }
 
 export function* watchLoadParsingResult() {
-    yield takeLatest(
-        [LOAD_PARSING_RESULT, UPLOAD_SUCCESS],
-        handleLoadParsingResult,
-    );
+    yield takeLatest([LOAD_PARSING_RESULT], handleLoadParsingResult);
 }
 
 export default function*() {

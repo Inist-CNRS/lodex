@@ -37,15 +37,16 @@ const startJobImport = async job => {
 };
 
 const handleImportError = async (job, err) => {
-    notifyListeners({
-        isImporting: false,
-        success: false,
-        message: err.message,
-    });
     const ctx = await prepareContext({ job });
     if (err instanceof CancelWorkerError) {
         await ctx.dataset.drop();
     }
+    notifyListeners({
+        isImporting: false,
+        success: false,
+        message:
+            err instanceof CancelWorkerError ? 'cancelled_import' : err.message,
+    });
 };
 
 const prepareContext = async ctx => {
