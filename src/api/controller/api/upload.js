@@ -84,7 +84,12 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
     } = ctx.resumable;
 
     if (progress.getProgress().status === PENDING) {
-        progress.start({ status: UPLOADING_DATASET, target: 100, symbol: '%' });
+        progress.start({
+            status: UPLOADING_DATASET,
+            target: 100,
+            symbol: '%',
+            type: IMPORT,
+        });
     }
     if (!(await ctx.checkFileExists(chunkname, currentChunkSize))) {
         await ctx.saveStreamInFile(stream, chunkname);

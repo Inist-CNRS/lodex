@@ -9,7 +9,7 @@ export const openImport = () => {
 export const importDataset = (filename, mimeType = 'text/csv') => {
     addFile(filename, mimeType);
 
-    cy.get('.progress').should('exist');
+    cy.get('.progress-container', { timeout: 500 }).should('be.visible');
     cy.wait(300);
     //    cy.get('.progress', { timeout: 6000 }).should('not.exist');
 
@@ -23,7 +23,7 @@ export const importOtherDataset = (filename, mimeType = 'text/csv') => {
     cy.get('#confirm-upload', { timeout: 300 }).should('be.visible');
     cy.wait(300);
     cy.contains('Accept').click({ force: true });
-    cy.get('.progress').should('exist');
+    cy.get('.progress-container', { timeout: 500 }).should('be.visible');
     cy.get('[role="grid"]', { timeout: 6000 }).should('exist');
 };
 

@@ -123,6 +123,7 @@ export const UploadComponent = ({
     url,
     loaderName,
     isUrlValid,
+    isUploading,
     onChangeUrl,
     onChangeLoaderName,
     onFileLoad,
@@ -269,7 +270,9 @@ export const UploadComponent = ({
                 component="label"
                 color="primary"
                 className={classnames(classes.button, 'btn-upload-dataset')}
-                disabled={files.length === 0 && (!url || !isUrlValid)}
+                disabled={
+                    isUploading || (files.length === 0 && (!url || !isUrlValid))
+                }
                 onClick={useUrlForUpload ? handleUrlAdded : handleFileUploaded}
             >
                 {polyglot.t('upload_data')}
@@ -297,6 +300,7 @@ UploadComponent.propTypes = {
     loaderName: PropTypes.string.isRequired,
     loaders: PropTypes.array,
     isUrlValid: PropTypes.bool,
+    isUploading: PropTypes.bool,
     onChangeUrl: PropTypes.func.isRequired,
     onFileLoad: PropTypes.func.isRequired,
     onUrlUpload: PropTypes.func.isRequired,
@@ -337,6 +341,7 @@ UploadComponent.propTypes = {
 const mapStateToProps = state => ({
     url: fromUpload.getUrl(state),
     isUrlValid: fromUpload.isUrlValid(state),
+    isUploading: fromUpload.isUploadPending(state),
     loaderName: fromUpload.getLoaderName(state),
     loaders: fromLoaders.getLoaders(state),
 });

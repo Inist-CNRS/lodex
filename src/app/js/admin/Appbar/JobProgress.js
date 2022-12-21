@@ -16,7 +16,11 @@ import { publish, publishSuccess, publishError } from '../publish';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import PropTypes from 'prop-types';
-import { PENDING, SAVING_DATASET } from '../../../../common/progressStatus';
+import {
+    PENDING,
+    SAVING_DATASET,
+    UPLOADING_DATASET,
+} from '../../../../common/progressStatus';
 import classNames from 'classnames';
 import { Cancel } from '@material-ui/icons';
 import jobsApi from '../api/job';
@@ -27,6 +31,7 @@ import { loadParsingResult } from '../parsing';
 import { clearPublished } from '../clear';
 import { fromPublication } from '../selectors';
 import { toast } from 'react-toastify';
+import { finishProgress } from '../progress/reducer';
 
 const useStyles = makeStyles({
     progress: {
@@ -78,6 +83,7 @@ const JobProgressComponent = props => {
         handleCancelPublication,
         loadParsingResult,
         handleRepublish,
+        finishProgress,
     } = props;
     const [progress, setProgress] = useState();
     const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
@@ -92,6 +98,9 @@ const JobProgressComponent = props => {
                     data.type === 'publisher' ||
                     data.type === 'import');
             setProgress(data);
+            if (data.status === PENDING) {
+                finishProgress();
+            }
         });
 
         socket.on('publisher', data => {
@@ -204,16 +213,17 @@ const JobProgressComponent = props => {
                                     </Typography>
                                 )}
                         </div>
-
-                        <Button
-                            className={classes.cancelButton}
-                            color="inherit"
-                            onClick={() => {
-                                setIsCancelDialogOpen(true);
-                            }}
-                        >
-                            <Cancel />
-                        </Button>
+                        {progress?.status !== UPLOADING_DATASET && (
+                            <Button
+                                className={classes.cancelButton}
+                                color="inherit"
+                                onClick={() => {
+                                    setIsCancelDialogOpen(true);
+                                }}
+                            >
+                                <Cancel />
+                            </Button>
+                        )}
                     </div>
                     {!!progress?.progress && !!progress?.target && (
                         <LinearProgress
@@ -270,6 +280,7 @@ JobProgressComponent.propTypes = {
     handleCancelPublication: PropTypes.func.isRequired,
     loadParsingResult: PropTypes.func.isRequired,
     handleRepublish: PropTypes.func.isRequired,
+    finishProgress: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
@@ -283,6 +294,7 @@ const mapDispatchToProps = {
         await clearPublished();
         await publish();
     },
+    finishProgress,
 };
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
