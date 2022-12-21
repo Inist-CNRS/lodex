@@ -12,8 +12,14 @@ import translate from 'redux-polyglot/translate';
 import { fromParsing } from './selectors';
 import { FieldGrid } from '../fields/FieldGrid';
 import { hideAddColumns } from './parsing';
-import { polyglot as polyglotPropTypes } from '../propTypes';
+import {
+    polyglot as polyglotPropTypes,
+    field as fieldPropTypes,
+} from '../propTypes';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
+import { fromFields } from '../sharedSelectors';
+import PublicationModalWizard from '../fields/wizard';
+import { editField } from '../fields';
 
 const useStyles = makeStyles({
     actionsContainer: {
@@ -35,6 +41,7 @@ export const FieldsEditComponent = ({
     p: polyglot,
     showAddFromColumn,
     subresourceId,
+    field,
 }) => {
     const classes = useStyles();
     const [tab, setTab] = useState(defaultTab);
@@ -51,6 +58,21 @@ export const FieldsEditComponent = ({
         hideAddColumns();
         setAddFromColumnDialog(false);
     };
+
+    const handleExitEdition = e => {
+        e.preventDefault();
+        e.stopPropagation();
+        editField(null);
+    };
+
+    if (field) {
+        return (
+            <PublicationModalWizard
+                filter={filter}
+                onExitEdition={handleExitEdition}
+            />
+        );
+    }
 
     return (
         <div>
@@ -110,18 +132,20 @@ FieldsEditComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     showAddFromColumn: PropTypes.bool.isRequired,
     subresourceId: PropTypes.string,
+    field: fieldPropTypes,
 };
 
+const mapStateToProps = state => ({
+    field: fromFields.getEditedField(state),
+    showAddFromColumn: fromParsing.showAddFromColumn(state),
+});
+
 const mapDispatchToProps = {
-    hideAddColumns: hideAddColumns,
+    hideAddColumns,
+    editField,
 };
 
 export const FieldsEdit = compose(
-    connect(
-        state => ({
-            showAddFromColumn: fromParsing.showAddFromColumn(state),
-        }),
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
     translate,
 )(FieldsEditComponent);

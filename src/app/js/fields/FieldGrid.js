@@ -18,7 +18,6 @@ import {
 } from '@material-ui/icons';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import PublicationModalWizard from '../fields/wizard';
 import { getShortText, isLongText } from '../lib/longTexts';
 import { NoField } from './NoField';
 import { useDidUpdateEffect } from '../lib/useDidUpdateEffect';
@@ -404,12 +403,6 @@ const FieldGridComponent = ({
         loadField();
     }, []);
 
-    const handleExitEdition = e => {
-        e.preventDefault();
-        e.stopPropagation();
-        editField(null);
-    };
-
     const handleChangePositions = fieldsWithPosition => {
         changePositions({
             type: filter,
@@ -443,10 +436,6 @@ const FieldGridComponent = ({
                     polyglot={polyglot}
                 />
             )}
-            <PublicationModalWizard
-                filter={filter}
-                onExitEdition={handleExitEdition}
-            />
         </div>
     );
 };

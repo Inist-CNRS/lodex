@@ -12,8 +12,8 @@ import RemoveButton from '../../admin/preview/RemoveButton';
 const styles = {
     root: {
         display: 'flex',
-        flex: 1,
         justifyContent: 'space-between',
+        marginBottom: '1rem',
     },
 };
 

@@ -27,7 +27,7 @@ const DisplayRouteComponent = () => {
         return (
             <Switch>
                 <Route exact path={`${path}/main`}>
-                    <div>{pageComponent}</div>
+                    {pageComponent}
                 </Route>
                 <Route exact path={`${path}/add`}>
                     <AddSubresource />

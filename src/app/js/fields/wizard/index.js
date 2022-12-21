@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 
-import {
-    Stepper,
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    DialogActions,
-} from '@material-ui/core';
+import { Stepper, Box, Typography } from '@material-ui/core';
 
 import {
     editField as editFieldAction,
@@ -37,6 +29,7 @@ const styles = {
         display: 'flex',
         paddingBottom: '1rem',
         width: 1000,
+        flexGrow: 1,
     },
     form: {
         borderRight: '1px solid rgb(224, 224, 224)',
@@ -49,15 +42,7 @@ const styles = {
         width: '20rem',
     },
     title: {
-        display: 'flex',
-    },
-    closeButton: {
-        position: 'absolute',
-        right: 10,
-        top: 10,
-    },
-    dialogContent: {
-        height: 'calc(90vh - 64px - 52px)',
+        padding: '16px 24px',
     },
 };
 
@@ -156,64 +141,51 @@ class FieldEditionWizardComponent extends Component {
         }
 
         return (
-            <Dialog
-                open={!!field}
-                scroll="body"
+            <Box
                 className="wizard"
-                maxWidth="xl"
-                onClose={this.handleCancel}
+                display="flex"
+                flexDirection="column"
+                height="100%"
             >
-                <DialogTitle>
-                    <div style={styles.title}>
-                        <span>{field ? field.label : ''}</span>
-                        {field && field.name !== 'uri'}
-                    </div>
-                    <IconButton
-                        aria-label="close"
-                        style={styles.closeButton}
-                        onClick={this.handleCancel}
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                </DialogTitle>
-                <DialogContent style={styles.dialogContent}>
-                    {field && (
-                        <div style={styles.container}>
-                            <div id="field_form" style={styles.form}>
-                                {field.name !== URI_FIELD_NAME ? (
-                                    <Stepper
-                                        nonLinear
-                                        activeStep={step}
-                                        orientation="vertical"
-                                    >
-                                        {steps}
-                                    </Stepper>
-                                ) : (
-                                    <StepUri field={field} fields={fields} />
-                                )}
-                            </div>
-                            <div style={styles.column}>
-                                <FieldExcerpt
-                                    className="publication-excerpt-for-edition"
-                                    onHeaderClick={null}
-                                    isPreview
-                                />
-                            </div>
+                <div style={styles.title}>
+                    <Typography component="h2" variant="h6">
+                        {field ? field.label : ''}
+                    </Typography>
+                </div>
+                {field && (
+                    <div style={styles.container}>
+                        <div id="field_form" style={styles.form}>
+                            {field.name !== URI_FIELD_NAME ? (
+                                <Stepper
+                                    nonLinear
+                                    activeStep={step}
+                                    orientation="vertical"
+                                >
+                                    {steps}
+                                </Stepper>
+                            ) : (
+                                <StepUri field={field} fields={fields} />
+                            )}
                         </div>
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    <Actions
-                        field={field}
-                        step={step}
-                        stepsCount={steps.length}
-                        onPreviousStep={this.handlePreviousStep}
-                        onNextStep={this.handleNextStep}
-                        onCancel={this.handleCancel}
-                        onSave={this.handleSave}
-                    />
-                </DialogActions>
-            </Dialog>
+                        <div style={styles.column}>
+                            <FieldExcerpt
+                                className="publication-excerpt-for-edition"
+                                onHeaderClick={null}
+                                isPreview
+                            />
+                        </div>
+                    </div>
+                )}
+                <Actions
+                    field={field}
+                    step={step}
+                    stepsCount={steps.length}
+                    onPreviousStep={this.handlePreviousStep}
+                    onNextStep={this.handleNextStep}
+                    onCancel={this.handleCancel}
+                    onSave={this.handleSave}
+                />
+            </Box>
         );
     }
 }
