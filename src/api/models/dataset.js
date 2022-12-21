@@ -24,6 +24,7 @@ export default db => {
     collection.getExcerpt = filter =>
         collection
             .find(filter)
+            .sort({ $natural: -1 })
             .limit(8)
             .toArray();
     collection.findLimitFromSkip = (limit, skip, query = {}, sortBy, sortDir) =>
