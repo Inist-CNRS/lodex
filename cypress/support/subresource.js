@@ -1,12 +1,12 @@
 const defaultSubresource = {
     name: 'Animals',
-    identifier: 'id',
     path: 'most_found_animal_species',
+    identifier: 'id',
 };
 
 export const fillSubcategoryFormAndSubmit = values => {
     Object.keys(values).forEach(key => {
-        cy.get(`input[name="${key}"]`).type(values[key]);
+        cy.get(`[aria-label="input-${key}"]`).type(values[key]);
     });
 
     cy.get('button[type="submit"]').click();
