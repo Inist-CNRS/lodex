@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import withHandlers from 'recompose/withHandlers';
-import { reduxForm } from 'redux-form';
+import { formValueSelector, reduxForm } from 'redux-form';
 import { Redirect, withRouter } from 'react-router';
 import { compose, branch, renderComponent, withProps } from 'recompose';
 
@@ -17,6 +17,7 @@ export const EditSubresourceForm = compose(
     withRouter,
     connect(
         (s, { match }) => ({
+            pathSelected: formValueSelector('SUBRESOURCE_EDIT_FORM')(s, 'path'),
             initialValues: s.subresource.subresources.find(
                 sr => sr._id === match.params.subresourceId,
             ),
