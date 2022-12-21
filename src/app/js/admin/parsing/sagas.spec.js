@@ -46,17 +46,5 @@ describe('parsing saga', () => {
                 put(loadParsingResultError('foo')),
             );
         });
-
-        it('should add a delay if action type is UPLOAD_SUCCESS', () => {
-            const saga = handleLoadParsingResult({
-                type: UPLOAD_SUCCESS,
-            });
-
-            expect(saga.next().value).toEqual(
-                select(fromUser.getLoadParsingResultRequest),
-            );
-
-            expect(saga.next().value).toEqual(call(delay, 2000));
-        });
     });
 });

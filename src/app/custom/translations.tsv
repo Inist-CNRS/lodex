@@ -824,3 +824,4 @@
 "r-tree-by_title" 	"tree-by" 	"tree-by"
 "r-tree-by_description" 	"Allows you to create tree-like graphs representing hierarchical data and display the number of documents involved." 	"Permet de créer des graphiques en forme d’arbres représentant des données hiérarchisées et d’afficher le nombre de documents concernés."
 "add_file_success"	"File %{name} successfully added"	"Fichier %{name} ajouté avec succès"
+"cancelled_import" 	"Import has been successfully cancelled" 	"L'import a été annulé avec succès"
