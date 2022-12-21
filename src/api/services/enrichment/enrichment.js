@@ -187,14 +187,13 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
                             logger.error('Error while parsing sourceChunk', e);
                         }
                     }
-                    values.push({
+                    return values.push({
                         id: sourceChunk?.id,
                         error: error?.sourceError?.message,
                     });
                 } else {
-                    values.push(data);
+                    return values.push(data);
                 }
-                values.push(data);
             })
             .on('end', () => resolve(values))
             .on('error', error => reject(error));
