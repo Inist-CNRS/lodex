@@ -139,7 +139,7 @@ describe('enrichment', () => {
 
             // THEN
             expect(results).toEqual(
-                expect.arrayContaining(['plop', 'plip', 'ploup']),
+                expect.arrayContaining([{subPath: 'plop'}, {subPath: 'plip'}, {subPath: 'ploup'}]),
             );
         });
         it('with direct path, single value stringified and subpath', async () => {
@@ -182,7 +182,11 @@ describe('enrichment', () => {
 
             // THEN
             expect(results).toEqual(
-                expect.arrayContaining(['plop', 'plip', 'ploup']),
+                expect.arrayContaining([
+                    '{"subPath":"plop"}',
+                    '{"subPath":"plip"}',
+                    '{"subPath":"ploup"}',
+                ]),
             );
         });
         it('with direct path, multiple values', async () => {
