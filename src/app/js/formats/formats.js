@@ -104,7 +104,7 @@ export const FORMATS_CATALOG = [
         description: 'formatFieldCloneDescription',
         componentName: 'fieldClone',
         component: fieldClone,
-        type: 'other',
+        type: 'chart',
     },
     {
         name: 'formatHtml',
@@ -329,6 +329,7 @@ export const FORMATS_CATALOG = [
         componentName: 'istexCitation',
         component: istexCitation,
         type: 'other',
+        doc: 'url',
     },
     {
         name: 'formatIstexRefbibs',
