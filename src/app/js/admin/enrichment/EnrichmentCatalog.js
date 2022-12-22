@@ -43,10 +43,6 @@ const useStyles = makeStyles({
             color: 'white',
         },
     },
-    list: {
-        width: 800,
-        height: '70vh',
-    },
 });
 
 const EnricherDescription = ({ enricher, polyglot }) => {
@@ -99,6 +95,7 @@ export const EnrichmentCatalog = ({
         ...new Set(enrichers.map(item => item.type)),
     ].sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)));
     filters.unshift('all');
+    filters.push(filters.splice(filters.indexOf('other'), 1)[0]);
 
     const [filteredEnricher, setFilterEnricher] = useState(enrichers);
     const [selectedFilter, setSelectedFilter] = useState('all');
@@ -117,7 +114,7 @@ export const EnrichmentCatalog = ({
     };
 
     return (
-        <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="xl">
+        <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
             <DialogTitle>
                 <Grid
                     container={true}
@@ -150,11 +147,11 @@ export const EnrichmentCatalog = ({
                     ))}
                 </Grid>
             </DialogTitle>
-            <DialogContent>
+            <DialogContent style={{ padding: 0 }}>
                 <List
                     component="nav"
                     aria-label="format list"
-                    className={classes.list}
+                    style={{ height: '70vh' }}
                 >
                     {filteredEnricher.map(enricher => (
                         <ListItem

@@ -42,10 +42,6 @@ const useStyles = makeStyles({
             color: 'white',
         },
     },
-    list: {
-        width: 800,
-        height: '70vh',
-    },
 });
 
 const RoutineCatalogDescription = ({ routine, polyglot }) => {
@@ -96,12 +92,12 @@ export const RoutineCatalog = ({
     };
 
     return (
-        <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="xl">
-            <DialogContent>
+        <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
+            <DialogContent style={{ padding: 0 }}>
                 <List
                     component="nav"
                     aria-label="format list"
-                    className={classes.list}
+                    style={{ height: '70vh' }}
                 >
                     {routines.map(routine => (
                         <ListItem
