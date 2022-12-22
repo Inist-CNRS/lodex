@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import translate from 'redux-polyglot/translate';
 
-import { Stepper, Box, Typography } from '@material-ui/core';
+import { Stepper, Box, Typography, Tabs, Tab } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import {
     editField as editFieldAction,
@@ -10,7 +13,10 @@ import {
 } from '../';
 
 import { hideAddColumns } from '../../admin/parsing';
-import { field as fieldPropTypes } from '../../propTypes';
+import {
+    polyglot as polyglotPropTypes,
+    field as fieldPropTypes,
+} from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import StepValue from './StepValue';
 import StepUri from './StepUri';
@@ -23,8 +29,15 @@ import FieldExcerpt from '../../admin/preview/field/FieldExcerpt';
 import Actions from './Actions';
 import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../../common/scope';
 import { URI_FIELD_NAME } from '../../../../common/uris';
+import classNames from 'classnames';
+import { TabPanel } from './TabPanel';
 
-const styles = {
+const useStyles = makeStyles({
+    wizard: {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+    },
     container: {
         display: 'flex',
         paddingBottom: '1rem',
@@ -44,118 +57,165 @@ const styles = {
     title: {
         padding: '16px 24px',
     },
-};
+});
 
-class FieldEditionWizardComponent extends Component {
-    static propTypes = {
-        editField: PropTypes.func.isRequired,
-        field: fieldPropTypes,
-        fields: PropTypes.arrayOf(fieldPropTypes),
-        saveField: PropTypes.func.isRequired,
+const FieldEditionWizardComponent = ({
+    field,
+    fields,
+    filter,
+    editField,
+    saveField,
+    handleHideExistingColumns,
+    p: polyglot,
+}) => {
+    const classes = useStyles();
+    const [tabValue, setTabValue] = useState(0);
+    const [step, setStep] = useState(0);
+
+    useEffect(() => {
+        if (!field || !field.name) {
+            setTabValue(0);
+        }
+    }, [field]);
+
+    const handleChange = (_, newValue) => {
+        setTabValue(newValue);
+    };
+    const handleSelectStep = step => setStep(step);
+
+    const handleCancel = () => {
+        editField(undefined);
+        handleHideExistingColumns();
     };
 
-    static defaultProps = {
-        field: null,
-        fields: null,
-        editedField: null,
+    const handleSave = () => {
+        saveField();
+        handleHideExistingColumns();
     };
 
-    constructor(props) {
-        super(props);
-        this.state = { step: 0 };
+    if (!field) return null;
+
+    const tabs = [
+        {
+            label: 'field_wizard_step_identity',
+            component: (
+                // <StepIdentity
+                //     key="identity"
+                //     id="step-identity"
+                //     isSubresourceField={!!field.subresourceId}
+                // />
+                <span>Toto</span>
+            ),
+        },
+        // {
+        //     label: 'field_wizard_step_value',
+        //     component: (
+        //         <StepValue
+        //             key="value"
+        //             subresourceUri={field.subresourceId}
+        //             arbitraryMode={[SCOPE_DATASET, SCOPE_GRAPHIC].includes(
+        //                 filter,
+        //             )}
+        //         />
+        //     ),
+        // },
+        // {
+        //     label: 'field_wizard_step_tranforms',
+        //     component: (
+        //         <StepTransforms
+        //             key="transformers"
+        //             isSubresourceField={!!field.subresourceId}
+        //         />
+        //     ),
+        // },
+        // {
+        //     label: 'field_wizard_step_display',
+        //     component: (
+        //         <StepDisplay
+        //             isSubresourceField={!!field.subresourceId}
+        //             key="display"
+        //         />
+        //     ),
+        // },
+        // !field.subresourceId && {
+        //     label: 'field_wizard_step_semantic',
+        //     component: (
+        //         <StepSemantics fields={fields} field={field} key="semantics" />
+        //     ),
+        // },
+        // !field.subresourceId && {
+        //     label: 'field_wizard_step_search',
+        //     component: <StepSearch key="search" />,
+        // },
+    ].filter(x => x);
+
+    let steps = [];
+    if (field && field.name !== URI_FIELD_NAME) {
+        steps = [
+            <StepIdentity
+                key="identity"
+                id="step-identity"
+                isSubresourceField={!!field.subresourceId}
+            />,
+            <StepValue
+                key="value"
+                subresourceUri={field.subresourceId}
+                arbitraryMode={[SCOPE_DATASET, SCOPE_GRAPHIC].includes(filter)}
+            />,
+            <StepTransforms
+                key="transformers"
+                isSubresourceField={!!field.subresourceId}
+            />,
+            !field.subresourceId && (
+                <StepSemantics fields={fields} field={field} key="semantics" />
+            ),
+            <StepDisplay
+                isSubresourceField={!!field.subresourceId}
+                key="display"
+            />,
+            !field.subresourceId && <StepSearch key="search" />,
+        ]
+            .filter(x => x)
+            .map((el, index) =>
+                React.cloneElement(el, {
+                    index,
+                    active: step === index,
+                    fields,
+                    field,
+                    filter,
+                    onSelectStep: handleSelectStep,
+                }),
+            );
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        if (
-            !nextProps.field ||
-            !this.props.field ||
-            nextProps.field.name !== this.props.field.name
-        ) {
-            this.setState({ step: 0 });
-        }
-    }
-
-    handleNextStep = () => this.setState({ step: this.state.step + 1 });
-    handlePreviousStep = () => this.setState({ step: this.state.step - 1 });
-    handleSelectStep = step => this.setState({ step });
-
-    handleCancel = () => {
-        this.props.editField(undefined);
-        this.props.handleHideExistingColumns();
-    };
-
-    handleSave = () => {
-        this.props.saveField();
-        this.props.handleHideExistingColumns();
-    };
-
-    render() {
-        const { field, fields, filter } = this.props;
-        const { step } = this.state;
-
-        if (!field) return null;
-
-        let steps = [];
-        if (field && field.name !== URI_FIELD_NAME) {
-            steps = [
-                <StepIdentity
-                    key="identity"
-                    id="step-identity"
-                    isSubresourceField={!!field.subresourceId}
-                />,
-                <StepValue
-                    key="value"
-                    subresourceUri={field.subresourceId}
-                    arbitraryMode={[SCOPE_DATASET, SCOPE_GRAPHIC].includes(
-                        filter,
-                    )}
-                />,
-                <StepTransforms
-                    key="transformers"
-                    isSubresourceField={!!field.subresourceId}
-                />,
-                !field.subresourceId && (
-                    <StepSemantics
-                        fields={fields}
-                        field={field}
-                        key="semantics"
-                    />
-                ),
-                <StepDisplay
-                    isSubresourceField={!!field.subresourceId}
-                    key="display"
-                />,
-                !field.subresourceId && <StepSearch key="search" />,
-            ]
-                .filter(x => x)
-                .map((el, index) =>
-                    React.cloneElement(el, {
-                        index,
-                        active: step === index,
-                        fields,
-                        field,
-                        filter,
-                        onSelectStep: this.handleSelectStep,
-                    }),
-                );
-        }
-
-        return (
-            <Box
-                className="wizard"
-                display="flex"
-                flexDirection="column"
-                height="100%"
-            >
-                <div style={styles.title}>
-                    <Typography component="h2" variant="h6">
-                        {field ? field.label : ''}
-                    </Typography>
-                </div>
-                {field && (
-                    <div style={styles.container}>
-                        <div id="field_form" style={styles.form}>
-                            {field.name !== URI_FIELD_NAME ? (
+    return (
+        <Box className={classNames(classes.wizard, 'wizard')}>
+            <Typography component="h2" variant="h6" className={classes.title}>
+                {field ? field.label : ''}
+            </Typography>
+            {field && (
+                <Box className={classes.container}>
+                    <Box id="field_form" className={classes.form}>
+                        {field.name !== URI_FIELD_NAME ? (
+                            <>
+                                <Tabs value={tabValue} onChange={handleChange}>
+                                    {tabs.map((tab, index) => (
+                                        <Tab
+                                            label={polyglot.t(tab.label)}
+                                            value={index}
+                                            key={index}
+                                        />
+                                    ))}
+                                </Tabs>
+                                {tabs.map((tab, index) => (
+                                    <TabPanel
+                                        value={tabValue}
+                                        index={index}
+                                        key={index}
+                                    >
+                                        {tab.component}
+                                    </TabPanel>
+                                ))}
                                 <Stepper
                                     nonLinear
                                     activeStep={step}
@@ -163,36 +223,43 @@ class FieldEditionWizardComponent extends Component {
                                 >
                                     {steps}
                                 </Stepper>
-                            ) : (
-                                <StepUri field={field} fields={fields} />
-                            )}
-                        </div>
-                        <div style={styles.column}>
-                            <FieldExcerpt
-                                className="publication-excerpt-for-edition"
-                                onHeaderClick={null}
-                                isPreview
-                            />
-                        </div>
-                    </div>
-                )}
-                <Actions
-                    field={field}
-                    step={step}
-                    stepsCount={steps.length}
-                    onPreviousStep={this.handlePreviousStep}
-                    onNextStep={this.handleNextStep}
-                    onCancel={this.handleCancel}
-                    onSave={this.handleSave}
-                />
-            </Box>
-        );
-    }
-}
+                            </>
+                        ) : (
+                            <StepUri field={field} fields={fields} />
+                        )}
+                    </Box>
+                    <Box className={classes.column}>
+                        <FieldExcerpt
+                            className="publication-excerpt-for-edition"
+                            onHeaderClick={null}
+                            isPreview
+                        />
+                    </Box>
+                </Box>
+            )}
+            <Actions
+                field={field}
+                onCancel={handleCancel}
+                onSave={handleSave}
+            />
+        </Box>
+    );
+};
 
 FieldEditionWizardComponent.propTypes = {
+    field: fieldPropTypes,
+    fields: PropTypes.arrayOf(fieldPropTypes),
     filter: PropTypes.string,
+    editField: PropTypes.func.isRequired,
+    saveField: PropTypes.func.isRequired,
     handleHideExistingColumns: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
+};
+
+FieldEditionWizardComponent.defaultProps = {
+    field: null,
+    fields: null,
+    editedField: null,
 };
 
 const mapStateToProps = state => {
@@ -200,7 +267,6 @@ const mapStateToProps = state => {
 
     return {
         field,
-        initialValues: field || null,
         fields: field ? fromFields.getFieldsExceptEdited(state) : null,
     };
 };
@@ -211,7 +277,7 @@ const mapDispatchToProps = {
     handleHideExistingColumns: hideAddColumns,
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate,
 )(FieldEditionWizardComponent);

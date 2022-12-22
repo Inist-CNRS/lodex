@@ -18,20 +18,22 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const StepComponent = ({
-    id,
-    active,
-    completed,
-    disabled,
-    last,
-    style,
-    icon,
-    handleSelectStep,
-    index,
-    label,
-    children,
-    p: polyglot,
-}) => {
+export const StepComponent = props => {
+    const {
+        id,
+        active,
+        completed,
+        disabled,
+        last,
+        style,
+        icon,
+        handleSelectStep,
+        index,
+        label,
+        children,
+        p: polyglot,
+    } = props;
+    console.log('StepComponent', props);
     const classes = useStyles();
 
     return (
