@@ -86,9 +86,9 @@ const SubresourceFormComponent = ({
     datasetFields,
     excerptLines,
     pathSelected,
+    change,
 }) => {
     const classes = useStyles();
-
     const optionsIdentifier = useMemo(() => {
         const firstExcerptLine = excerptLines[0]?.[pathSelected] || [];
         return getKeys(firstExcerptLine);
@@ -124,6 +124,7 @@ const SubresourceFormComponent = ({
                                 aria-label="input-path"
                             />
                         )}
+                        onInputChange={() => change('identifier', '')}
                         renderOption={(props, option, state) => {
                             return (
                                 <ListItem
