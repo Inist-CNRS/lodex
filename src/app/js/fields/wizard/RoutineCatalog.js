@@ -93,7 +93,7 @@ export const RoutineCatalog = ({
 
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
-            <DialogContent style={{ padding: 0 }}>
+            <DialogContent style={{ padding: 0, width: '1100px' }}>
                 <List
                     component="nav"
                     aria-label="format list"

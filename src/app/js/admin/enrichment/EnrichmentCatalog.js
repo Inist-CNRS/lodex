@@ -15,7 +15,6 @@ import {
     ListItem,
     Box,
     Tooltip,
-    DialogTitle,
     Grid,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -115,11 +114,16 @@ export const EnrichmentCatalog = ({
 
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
-            <DialogTitle>
+            <DialogContent style={{ padding: 0, width: '1100px' }}>
                 <Grid
                     container={true}
                     direction="row"
-                    style={{ width: '100%', marginBottom: 25 }}
+                    style={{
+                        width: '100%',
+                        marginBottom: 25,
+                        marginTop: 25,
+                        padding: 10,
+                    }}
                     justifyContent="space-around"
                     spacing={2}
                 >
@@ -146,8 +150,6 @@ export const EnrichmentCatalog = ({
                         </Box>
                     ))}
                 </Grid>
-            </DialogTitle>
-            <DialogContent style={{ padding: 0 }}>
                 <List
                     component="nav"
                     aria-label="format list"

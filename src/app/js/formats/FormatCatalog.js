@@ -8,7 +8,6 @@ import {
     List,
     ListItemText,
     Dialog,
-    DialogTitle,
     DialogContent,
     DialogActions,
     Button,
@@ -95,11 +94,16 @@ export const FormatCatalog = ({
 
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
-            <DialogTitle>
+            <DialogContent style={{ padding: 0, width: '1100px' }}>
                 <Grid
                     container={true}
                     direction="row"
-                    style={{ width: '100%', marginBottom: 25 }}
+                    style={{
+                        width: '100%',
+                        marginBottom: 25,
+                        marginTop: 25,
+                        padding: 10,
+                    }}
                     justifyContent="space-around"
                 >
                     <Box>
@@ -125,8 +129,6 @@ export const FormatCatalog = ({
                         </Box>
                     ))}
                 </Grid>
-            </DialogTitle>
-            <DialogContent style={{ padding: 0 }}>
                 <List
                     component="nav"
                     aria-label="format list"
