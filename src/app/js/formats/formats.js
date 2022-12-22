@@ -329,7 +329,8 @@ export const FORMATS_CATALOG = [
         componentName: 'istexCitation',
         component: istexCitation,
         type: 'other',
-        doc: 'url',
+        doc:
+            'https://lodex.inist.fr/docs/partie-2-2/appliquer-un-format/#autre-article-citant',
     },
     {
         name: 'formatIstexRefbibs',
