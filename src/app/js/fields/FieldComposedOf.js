@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Button, FormControlLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
@@ -29,17 +29,21 @@ const styles = {
     },
 };
 
-class FieldComposedOf extends Component {
-    handleSwitch = () => {
-        const { onChange, isComposedOf } = this.props;
+const FieldComposedOf = ({
+    onChange,
+    isComposedOf,
+    fields,
+    p: polyglot,
+    columns,
+}) => {
+    const handleSwitch = () => {
         onChange({
             isComposedOf: !isComposedOf,
             fields: !isComposedOf ? ['', ''] : [],
         });
     };
 
-    handleSelectColumn = index => column => {
-        const { columns, isComposedOf, onChange } = this.props;
+    const handleSelectColumn = index => column => {
         onChange({
             isComposedOf,
             fields: [
@@ -50,69 +54,57 @@ class FieldComposedOf extends Component {
         });
     };
 
-    handleAddColumn = () => {
-        const { isComposedOf, columns, onChange } = this.props;
+    const handleAddColumn = () => {
         onChange({
             isComposedOf,
             fields: [...columns, ''],
         });
     };
 
-    handleRemoveColumn = index => () => {
-        const { isComposedOf, columns, onChange } = this.props;
+    const handleRemoveColumn = index => () => {
         onChange({
             isComposedOf,
             fields: [...columns.slice(0, index), ...columns.slice(index + 1)],
         });
     };
 
-    render() {
-        const { isComposedOf, columns, fields, p: polyglot } = this.props;
-
-        return (
-            <div>
-                <div style={styles.header}>
-                    {polyglot.t('wizard_composed_of')}
-                </div>
-                <div style={styles.inset}>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={isComposedOf}
-                                onChange={this.handleSwitch}
-                            />
-                        }
-                        label={polyglot.t('is_composite_field')}
-                    />
-                    {isComposedOf &&
-                        columns.map((col, index) => (
-                            <ComposedOfColumn
-                                key={`composition_${index}`}
-                                index={index}
-                                column={col}
-                                fields={fields}
-                                handleSelectColumn={this.handleSelectColumn(
-                                    index,
-                                )}
-                                handleRemoveColumn={this.handleRemoveColumn(
-                                    index,
-                                )}
-                            />
-                        ))}
-                    {isComposedOf && (
-                        <Button
-                            variant="text"
-                            className="btn-add-composition-column"
-                            onClick={this.handleAddColumn}
-                        >
-                            {polyglot.t('add_composition_column')}
-                        </Button>
-                    )}
-                </div>
+    return (
+        <div>
+            <div style={styles.header}>{polyglot.t('wizard_composed_of')}</div>
+            <div style={styles.inset}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={isComposedOf}
+                            onChange={handleSwitch}
+                        />
+                    }
+                    label={polyglot.t('is_composite_field')}
+                />
+                {isComposedOf &&
+                    columns.map((col, index) => (
+                        <ComposedOfColumn
+                            key={`composition_${index}`}
+                            index={index}
+                            column={col}
+                            fields={fields}
+                            handleSelectColumn={handleSelectColumn(index)}
+                            handleRemoveColumn={handleRemoveColumn(index)}
+                        />
+                    ))}
+                {isComposedOf && (
+                    <Button
+                        variant="text"
+                        className="btn-add-composition-column"
+                        onClick={handleAddColumn}
+                    >
+                        {polyglot.t('add_composition_column')}
+                    </Button>
+                )}
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 FieldComposedOf.propTypes = {
     isComposedOf: PropTypes.bool,
