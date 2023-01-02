@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Button, FormControlLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
@@ -13,11 +13,22 @@ import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
 } from '../propTypes';
+import {
+    closestCenter,
+    DndContext,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core';
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 const styles = {
-    inset: {
-        paddingLeft: 40,
-    },
     compositionContainer: {
         display: 'flex',
     },
@@ -36,6 +47,46 @@ const FieldComposedOf = ({
     p: polyglot,
     columns,
 }) => {
+    // We convert the columns array to an array of objects because dnd-kit not handle empty values
+    const [items, setItems] = useState(
+        columns.map((column, index) => ({
+            id: index + 1,
+            value: column,
+        })),
+    );
+
+    useEffect(() => {
+        setItems(
+            columns.map((column, index) => ({
+                id: index + 1,
+                value: column,
+            })),
+        );
+    }, [columns]);
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        }),
+    );
+
+    const handleDragEnd = event => {
+        const { active, over } = event;
+
+        if (active.id !== over.id) {
+            const oldIndex = items.findIndex(item => item.id === active.id);
+            const newIndex = items.findIndex(item => item.id === over.id);
+
+            const newItems = arrayMove(items, oldIndex, newIndex);
+            setItems(newItems);
+            onChange({
+                isComposedOf,
+                fields: [...newItems.map(item => item.value)],
+            });
+        }
+    };
+
     const handleSwitch = () => {
         onChange({
             isComposedOf: !isComposedOf,
@@ -71,7 +122,7 @@ const FieldComposedOf = ({
     return (
         <div>
             <div style={styles.header}>{polyglot.t('wizard_composed_of')}</div>
-            <div style={styles.inset}>
+            <div>
                 <FormControlLabel
                     control={
                         <Switch
@@ -81,17 +132,34 @@ const FieldComposedOf = ({
                     }
                     label={polyglot.t('is_composite_field')}
                 />
-                {isComposedOf &&
-                    columns.map((col, index) => (
-                        <ComposedOfColumn
-                            key={`composition_${index}`}
-                            index={index}
-                            column={col}
-                            fields={fields}
-                            handleSelectColumn={handleSelectColumn(index)}
-                            handleRemoveColumn={handleRemoveColumn(index)}
-                        />
-                    ))}
+                <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleDragEnd}
+                >
+                    <SortableContext
+                        items={items}
+                        strategy={verticalListSortingStrategy}
+                    >
+                        {isComposedOf &&
+                            items.map((item, index) => (
+                                <ComposedOfColumn
+                                    key={item.id}
+                                    index={index}
+                                    column={item.value}
+                                    fields={fields}
+                                    id={item.id}
+                                    handleSelectColumn={handleSelectColumn(
+                                        index,
+                                    )}
+                                    handleRemoveColumn={handleRemoveColumn(
+                                        index,
+                                    )}
+                                />
+                            ))}
+                    </SortableContext>
+                </DndContext>
+
                 {isComposedOf && (
                     <Button
                         variant="text"
