@@ -167,7 +167,17 @@ const app = new Koa();
 
 app.use(prepareUpload);
 
-app.use(koaBodyParser());
+app.use(
+    koaBodyParser({
+        formLimit: '10mb',
+        textLimit: '10mb',
+        jsonLimit: '10mb',
+        queryString: {
+            allowDots: true, //  to keep compatibility with qs@4
+            parameterLimit: 100000000000000,
+        },
+    }),
+);
 app.use(route.post('/url', uploadUrl));
 
 app.use(route.post('/:loaderName', parseRequest));
