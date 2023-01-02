@@ -16,10 +16,15 @@ import {
     field as fieldPropTypes,
 } from '../propTypes';
 import FieldInternalIcon from './FieldInternalIcon';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { OpenWith as DragIndicatorIcon } from '@material-ui/icons';
 
 const styles = {
     compositionContainer: {
         display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
     },
     select: {
         flexGrow: 2,
@@ -42,49 +47,71 @@ const ComposedOfColumn = ({
     handleSelectColumn,
     handleRemoveColumn,
     p: polyglot,
-}) => (
-    <div style={styles.compositionContainer}>
-        <FormControl fullWidth>
-            <Select
-                onChange={e => handleSelectColumn(e.target.value)}
-                style={styles.select}
-                value={column}
-                required
-            >
-                {fields.map(f => (
-                    <MenuItem
-                        className={`composite-field-${index}-${f.name}`}
-                        key={`composite-field-${index}-${f.name}`}
-                        value={f.name}
-                        style={styles.line}
-                    >
-                        {f.label}
-                        <div style={styles.internal}>
-                            {f.internalScopes &&
-                                f.internalScopes.map(internalScope => (
-                                    <FieldInternalIcon
-                                        key={internalScope}
-                                        scope={internalScope}
-                                    />
-                                ))}
-                            {f.internalName}
-                        </div>
-                    </MenuItem>
-                ))}
-            </Select>
-            <FormHelperText>{polyglot.t('select_a_field')}</FormHelperText>
-        </FormControl>
-        {index > 1 && (
-            <IconButton
-                className={`btn-remove-composite-field btn-remove-composite-field-${index}`}
-                onClick={handleRemoveColumn}
-                title={polyglot.t('remove_composition_column')}
-            >
-                <IconDelete />
-            </IconButton>
-        )}
-    </div>
-);
+    id,
+}) => {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+    } = useSortable({ id: id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
+
+    return (
+        <div
+            ref={setNodeRef}
+            style={{ ...style, ...styles.compositionContainer }}
+            {...attributes}
+            {...listeners}
+        >
+            <DragIndicatorIcon />
+            <FormControl fullWidth>
+                <Select
+                    onChange={e => handleSelectColumn(e.target.value)}
+                    style={styles.select}
+                    value={column}
+                    required
+                >
+                    {fields.map(f => (
+                        <MenuItem
+                            className={`composite-field-${index}-${f.name}`}
+                            key={`composite-field-${index}-${f.name}`}
+                            value={f.name}
+                            style={styles.line}
+                        >
+                            {f.label}
+                            <div style={styles.internal}>
+                                {f.internalScopes &&
+                                    f.internalScopes.map(internalScope => (
+                                        <FieldInternalIcon
+                                            key={internalScope}
+                                            scope={internalScope}
+                                        />
+                                    ))}
+                                {f.internalName}
+                            </div>
+                        </MenuItem>
+                    ))}
+                </Select>
+                <FormHelperText>{polyglot.t('select_a_field')}</FormHelperText>
+            </FormControl>
+            {index > 1 && (
+                <IconButton
+                    className={`btn-remove-composite-field btn-remove-composite-field-${index}`}
+                    onClick={handleRemoveColumn}
+                    title={polyglot.t('remove_composition_column')}
+                >
+                    <IconDelete />
+                </IconButton>
+            )}
+        </div>
+    );
+};
 
 ComposedOfColumn.propTypes = {
     column: PropTypes.string.isRequired,
@@ -93,6 +120,7 @@ ComposedOfColumn.propTypes = {
     handleRemoveColumn: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
     p: polyglotPropTypes.isRequired,
+    id: PropTypes.number.isRequired,
 };
 
 ComposedOfColumn.defaultProps = {

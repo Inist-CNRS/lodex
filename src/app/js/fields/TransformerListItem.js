@@ -16,6 +16,10 @@ import TransformerArgList from './TransformerArgList';
 import { changeOperation } from './';
 import theme from '../theme';
 import TransformerAutoComplete from './TransformerAutoComplete';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+import { OpenWith as DragIndicatorIcon } from '@material-ui/icons';
 
 const styles = {
     container: memoize(show => ({
@@ -55,10 +59,29 @@ const TransformerListItem = ({
     p: polyglot,
     onChangeOperation,
     show,
+    id,
 }) => {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+    } = useSortable({ id });
+
+    const dragStyle = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
     const classes = useStyles();
     return (
-        <div style={styles.container(show)}>
+        <div
+            ref={setNodeRef}
+            style={{ ...dragStyle, ...styles.container(show) }}
+            {...attributes}
+            {...listeners}
+        >
+            <DragIndicatorIcon />
             <Field
                 className="operation"
                 name={`${fieldName}.operation`}
@@ -113,6 +136,7 @@ TransformerListItem.propTypes = {
     onRemove: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     show: PropTypes.bool.isRequired,
+    id: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state, { operation, type }) => ({

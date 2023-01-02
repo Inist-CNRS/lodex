@@ -8,17 +8,20 @@ import {
     List,
     ListItemText,
     Dialog,
-    DialogTitle,
     DialogContent,
     DialogActions,
     Button,
     Grid,
     Box,
     ListItem,
+    Typography,
+    Tooltip,
+    Link,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import theme from '../theme';
 import classNames from 'classnames';
+import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
 
 const useStyles = makeStyles({
     item: {
@@ -34,11 +37,29 @@ const useStyles = makeStyles({
             backgroundColor: theme.green.primary,
         },
     },
-    list: {
-        width: 1050,
-        height: '70vh',
-    },
 });
+
+const FormatCatalogDescription = ({ format, polyglot }) => {
+    return (
+        <React.Fragment>
+            <Typography>{polyglot.t(`${format.description}`)}</Typography>
+            <Box justifyContent="flex-end" display="flex" mt={2}>
+                {format.doc && (
+                    <Tooltip title={polyglot.t(`tooltip_documentation`)}>
+                        <Link
+                            href={format.doc}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <SettingsEthernetIcon />
+                        </Link>
+                    </Tooltip>
+                )}
+            </Box>
+        </React.Fragment>
+    );
+};
 
 export const FormatCatalog = ({
     p: polyglot,
@@ -53,6 +74,7 @@ export const FormatCatalog = ({
         polyglot.t(x).localeCompare(polyglot.t(y)),
     );
     filters.unshift('all');
+    filters.push(filters.splice(filters.indexOf('other'), 1)[0]);
 
     const [filteredFormats, setFilterFormats] = useState(formats);
     const [selectedFilter, setSelectedFilter] = useState('all');
@@ -71,12 +93,17 @@ export const FormatCatalog = ({
     };
 
     return (
-        <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="xl">
-            <DialogTitle>
+        <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
+            <DialogContent style={{ padding: 0, width: '1100px' }}>
                 <Grid
                     container={true}
                     direction="row"
-                    style={{ width: '100%', marginBottom: 25 }}
+                    style={{
+                        width: '100%',
+                        marginBottom: 25,
+                        marginTop: 25,
+                        padding: 10,
+                    }}
                     justifyContent="space-around"
                 >
                     <Box>
@@ -102,12 +129,10 @@ export const FormatCatalog = ({
                         </Box>
                     ))}
                 </Grid>
-            </DialogTitle>
-            <DialogContent>
                 <List
                     component="nav"
                     aria-label="format list"
-                    className={classes.list}
+                    style={{ height: '70vh' }}
                 >
                     {filteredFormats.map(format => (
                         <ListItem
@@ -125,7 +150,12 @@ export const FormatCatalog = ({
                                 primaryTypographyProps={{
                                     style: { fontWeight: 'bold' },
                                 }}
-                                secondary={polyglot.t(format.description)}
+                                secondary={
+                                    <FormatCatalogDescription
+                                        format={format}
+                                        polyglot={polyglot}
+                                    />
+                                }
                             />
                         </ListItem>
                     ))}
@@ -143,6 +173,14 @@ export const FormatCatalog = ({
             </DialogActions>
         </Dialog>
     );
+};
+
+FormatCatalogDescription.propTypes = {
+    format: PropTypes.shape({
+        description: PropTypes.string.isRequired,
+        doc: PropTypes.string,
+    }).isRequired,
+    polyglot: polyglotPropTypes.isRequired,
 };
 
 FormatCatalog.propTypes = {

@@ -1,6 +1,6 @@
 import ezs from '@ezs/core';
 import Script from './script';
-import request from 'request';
+import fetch from 'fetch-with-proxy';
 import progress from './progress';
 import { INDEXATION, SAVING_DATASET } from '../../common/progressStatus';
 
@@ -24,7 +24,13 @@ export const getCustomLoader = async script => {
     return stream => stream.pipe(ezs('delegate', { script }));
 };
 
-export const getStreamFromUrl = url => request.get(url);
+export const getStreamFromUrl = async url => {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(response.statusText);
+    }
+    return response.body;
+};
 
 export const startImport = async ctx => {
     const { loaderName, url, filename, totalChunks, extension, customLoader } =
@@ -50,7 +56,7 @@ export const startImport = async ctx => {
         }
         let stream;
         if (url) {
-            stream = ctx.getStreamFromUrl(url);
+            stream = await ctx.getStreamFromUrl(url);
         }
         if (filename && totalChunks) {
             stream = ctx.mergeChunks(filename, totalChunks);

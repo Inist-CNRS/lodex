@@ -23,7 +23,13 @@ const useStyles = makeStyles({
     },
 });
 
-const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
+const LoaderSelectComponent = ({
+    loaders,
+    value,
+    setLoader,
+    p: polyglot,
+    disabled,
+}) => {
     const classes = useStyles();
     const [openLoadersDialog, setOpenLoadersDialog] = useState(false);
     const [openCustomLoadersDialog, setOpenCustomLoadersDialog] = useState(
@@ -58,14 +64,13 @@ const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
                 marginBottom="48px"
                 marginTop="60px"
             >
-                <Typography variant="h6">
-                    {polyglot.t('loader_name')}
-                </Typography>
+                <Typography>{polyglot.t('loader_name')}</Typography>
                 <Button
                     variant="contained"
                     className={classNames(classes.button, 'open-loaders')}
                     color="primary"
                     onClick={handleOpen}
+                    disabled={disabled}
                 >
                     <SearchIcon fontSize="medium" />
                 </Button>
@@ -92,6 +97,7 @@ const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
                         className={classes.button}
                         color="primary"
                         onClick={() => setOpenCustomLoadersDialog(true)}
+                        disabled={disabled}
                     >
                         <BuildIcon fontSize="medium" />
                     </Button>
@@ -118,6 +124,7 @@ LoaderSelectComponent.propTypes = {
     setLoader: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
+    disabled: PropTypes.bool,
 };
 
 LoaderSelectComponent.defaultProps = {

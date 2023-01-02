@@ -15,7 +15,6 @@ import {
     ListItem,
     Box,
     Tooltip,
-    DialogTitle,
     Grid,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,10 +41,6 @@ const useStyles = makeStyles({
         '& a': {
             color: 'white',
         },
-    },
-    list: {
-        width: 800,
-        height: '70vh',
     },
 });
 
@@ -99,6 +94,7 @@ export const EnrichmentCatalog = ({
         ...new Set(enrichers.map(item => item.type)),
     ].sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)));
     filters.unshift('all');
+    filters.push(filters.splice(filters.indexOf('other'), 1)[0]);
 
     const [filteredEnricher, setFilterEnricher] = useState(enrichers);
     const [selectedFilter, setSelectedFilter] = useState('all');
@@ -117,12 +113,17 @@ export const EnrichmentCatalog = ({
     };
 
     return (
-        <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="xl">
-            <DialogTitle>
+        <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
+            <DialogContent style={{ padding: 0, width: '1100px' }}>
                 <Grid
                     container={true}
                     direction="row"
-                    style={{ width: '100%', marginBottom: 25 }}
+                    style={{
+                        width: '100%',
+                        marginBottom: 25,
+                        marginTop: 25,
+                        padding: 10,
+                    }}
                     justifyContent="space-around"
                     spacing={2}
                 >
@@ -149,12 +150,10 @@ export const EnrichmentCatalog = ({
                         </Box>
                     ))}
                 </Grid>
-            </DialogTitle>
-            <DialogContent>
                 <List
                     component="nav"
                     aria-label="format list"
-                    className={classes.list}
+                    style={{ height: '70vh' }}
                 >
                     {filteredEnricher.map(enricher => (
                         <ListItem

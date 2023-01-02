@@ -57,11 +57,7 @@ const useStyles = makeStyles({
         },
     },
     loader: {
-        zIndex: 5,
-        position: 'absolute',
-        width: 790,
-        height: 240,
-        margin: 5,
+        minHeight: '220px',
         backgroundColor: theme.white.primary,
         color: theme.green.primary,
     },
@@ -83,8 +79,10 @@ const useStyles = makeStyles({
         },
         '@media (min-width: 992px)': {
             width: 'auto',
-            position: 'static',
             marginTop: 0,
+            alignSelf: 'stretch',
+            display: 'flex',
+            alignItems: 'center',
             '&:before': {
                 width: '2px',
                 height: '100%',
@@ -114,6 +112,9 @@ const useStyles = makeStyles({
     },
     dropzonePreview: {
         justifyContent: 'center',
+        '& .MuiGrid-item, & .MuiChip-root': {
+            maxWidth: '100%',
+        },
     },
 });
 
@@ -206,42 +207,45 @@ export const UploadComponent = ({
             ) : (
                 <span />
             )}
-            {dropping && <DroppingLoader text={polyglot.t('inspect_file')} />}
             <Box className={classes.form}>
-                <DropzoneAreaBase
-                    fileObjects={files}
-                    filesLimit={1}
-                    maxFileSize={1 * 1024 * 1024 * 1024}
-                    dropzoneText={
-                        <Typography variant="h6">
-                            {polyglot.t('import_file_text')}
-                        </Typography>
-                    }
-                    dropzoneProps={{
-                        disabled: !!url,
-                    }}
-                    dropzoneClass={classnames(
-                        classes.dropzone,
-                        !!url && classes.disabledDropzone,
-                    )}
-                    showAlerts={['error']}
-                    showPreviewsInDropzone
-                    showFileNamesInPreview
-                    previewGridClasses={{
-                        container: classes.dropzonePreview,
-                    }}
-                    useChipsForPreview
-                    alertSnackbarProps={{
-                        anchorOrigin: {
-                            vertical: 'bottom',
-                            horizontal: 'center',
-                        },
-                    }}
-                    onAdd={fileObjs => handleFileAdded(fileObjs)}
-                    onDrop={handleAdding}
-                    onDropRejected={handleAddRejected}
-                    onDelete={() => setFiles([])}
-                />
+                {dropping ? (
+                    <DroppingLoader text={polyglot.t('inspect_file')} />
+                ) : (
+                    <DropzoneAreaBase
+                        fileObjects={files}
+                        filesLimit={1}
+                        maxFileSize={1 * 1024 * 1024 * 1024}
+                        dropzoneText={
+                            <Typography variant="h6">
+                                {polyglot.t('import_file_text')}
+                            </Typography>
+                        }
+                        dropzoneProps={{
+                            disabled: !!url,
+                        }}
+                        dropzoneClass={classnames(
+                            classes.dropzone,
+                            !!url && classes.disabledDropzone,
+                        )}
+                        showAlerts={['error']}
+                        showPreviewsInDropzone
+                        showFileNamesInPreview
+                        previewGridClasses={{
+                            container: classes.dropzonePreview,
+                        }}
+                        useChipsForPreview
+                        alertSnackbarProps={{
+                            anchorOrigin: {
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            },
+                        }}
+                        onAdd={fileObjs => handleFileAdded(fileObjs)}
+                        onDrop={handleAdding}
+                        onDropRejected={handleAddRejected}
+                        onDelete={() => setFiles([])}
+                    />
+                )}
                 <Box className={classes.divider}>
                     <Typography variant="h6" className={classes.dividerLabel}>
                         {polyglot.t('or')}
@@ -264,6 +268,7 @@ export const UploadComponent = ({
                 loaders={loaders}
                 setLoader={onChangeLoaderName}
                 value={loaderName}
+                disabled={files.length === 0 && (!url || !isUrlValid)}
             />
             <Button
                 variant="contained"
