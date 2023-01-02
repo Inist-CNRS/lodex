@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import HiddenIcon from '@material-ui/icons/VisibilityOff';
 import translate from 'redux-polyglot/translate';
@@ -194,16 +194,6 @@ export const buildFieldsDefinitionsArray = fields =>
         position: field.position,
     }));
 
-const scrollToLastLayoutItem = () => {
-    setTimeout(() => {
-        const lastChild = document.querySelector('.layout > div:last-child');
-        lastChild.scrollIntoView({
-            behavior: 'smooth',
-            block: 'end',
-        });
-    }, 1);
-};
-
 const DraggableItemGrid = compose(
     connect(null, {
         loadField,
@@ -232,18 +222,6 @@ const DraggableItemGrid = compose(
         useEffect(() => {
             setItems(buildFieldsDefinitionsArray(fields));
         }, [JSON.stringify(fields)]);
-
-        const fieldsLength = fields.length;
-        const previousFieldsLength = useRef(fields.length);
-        const previousLastField = useRef(fields.at(-1));
-        useEffect(() => {
-            if (previousFieldsLength.current + 1 === fields.length) {
-                if (previousLastField.current._id !== fields.at(-1)._id) {
-                    scrollToLastLayoutItem();
-                }
-            }
-            previousFieldsLength.current = fields.length;
-        }, [fieldsLength]);
 
         useDidUpdateEffect(() => {
             onChangePositions(items);

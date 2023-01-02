@@ -33,7 +33,7 @@ export const StepComponent = props => {
         children,
         p: polyglot,
     } = props;
-    console.log('StepComponent', props);
+
     const classes = useStyles();
 
     return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles, Tab, Tabs } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -33,6 +33,16 @@ const useStyles = makeStyles({
     },
 });
 
+const scrollToLastLayoutItem = () => {
+    setTimeout(() => {
+        const lastChild = document.querySelector('.layout > div:last-child');
+        lastChild.scrollIntoView({
+            behavior: 'smooth',
+            block: 'end',
+        });
+    }, 600);
+};
+
 export const FieldsEditComponent = ({
     addFieldButton,
     defaultTab = 'page',
@@ -42,6 +52,8 @@ export const FieldsEditComponent = ({
     showAddFromColumn,
     subresourceId,
     field,
+    fields,
+    editField,
 }) => {
     const classes = useStyles();
     const [tab, setTab] = useState(defaultTab);
@@ -53,25 +65,34 @@ export const FieldsEditComponent = ({
         }
     }, [showAddFromColumn]);
 
+    useEffect(() => {
+        if (field) {
+            editField(undefined);
+        }
+    }, [filter, subresourceId]);
+
+    const fieldsLength = fields.length;
+    const previousFieldsLength = useRef(fields.length);
+    const previousLastField = useRef(fields.at(-1));
+
+    useEffect(() => {
+        if (!field && previousFieldsLength.current + 1 === fields.length) {
+            if (previousLastField.current._id !== fields.at(-1)._id) {
+                scrollToLastLayoutItem();
+            }
+            previousFieldsLength.current = fields.length;
+            previousLastField.current = fields.at(-1);
+        }
+    }, [fieldsLength, field]);
+
     const handleChangeTab = (_, newValue) => setTab(newValue);
     const handleCloseAddFromColumnDialog = () => {
         hideAddColumns();
         setAddFromColumnDialog(false);
     };
 
-    const handleExitEdition = e => {
-        e.preventDefault();
-        e.stopPropagation();
-        editField(null);
-    };
-
     if (field) {
-        return (
-            <PublicationModalWizard
-                filter={filter}
-                onExitEdition={handleExitEdition}
-            />
-        );
+        return <PublicationModalWizard filter={filter} />;
     }
 
     return (
@@ -133,11 +154,14 @@ FieldsEditComponent.propTypes = {
     showAddFromColumn: PropTypes.bool.isRequired,
     subresourceId: PropTypes.string,
     field: fieldPropTypes,
+    fields: PropTypes.array,
+    editField: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, { subresourceId, filter }) => ({
     field: fromFields.getEditedField(state),
     showAddFromColumn: fromParsing.showAddFromColumn(state),
+    fields: fromFields.getEditingFields(state, { filter, subresourceId }),
 });
 
 const mapDispatchToProps = {
