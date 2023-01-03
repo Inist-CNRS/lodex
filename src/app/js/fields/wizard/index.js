@@ -98,10 +98,12 @@ const FieldEditionWizardComponent = ({
     const tabs = [
         {
             label: 'field_wizard_step_identity',
+            id: 'tab-identity',
             component: <TabIdentity field={field} />,
         },
         {
             label: 'field_wizard_step_value',
+            id: 'tab-value',
             component: (
                 <TabValue
                     subresourceUri={field.subresourceId}
@@ -113,22 +115,26 @@ const FieldEditionWizardComponent = ({
         },
         {
             label: 'field_wizard_step_tranforms',
+            id: 'tab-transforms',
             component: (
                 <TabTransforms isSubresourceField={!!field.subresourceId} />
             ),
         },
         {
             label: 'field_wizard_step_display',
+            id: 'tab-display',
             component: (
                 <TabDisplay isSubresourceField={!!field.subresourceId} />
             ),
         },
         !field.subresourceId && {
             label: 'field_wizard_step_semantic',
+            id: 'tab-semantics',
             component: <TabSemantics fields={fields} />,
         },
         !field.subresourceId && {
             label: 'field_wizard_step_search',
+            id: 'tab-search',
             component: <TabSearch />,
         },
     ].filter(x => x);
@@ -154,6 +160,7 @@ const FieldEditionWizardComponent = ({
                                             label={polyglot.t(tab.label)}
                                             value={index}
                                             key={index}
+                                            id={tab.id}
                                         />
                                     ))}
                                 </Tabs>

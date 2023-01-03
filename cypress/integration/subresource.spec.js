@@ -66,21 +66,15 @@ describe('Subresource Page', () => {
         cy.contains('New field').click();
         cy.get('.wizard', { timeout: 10000 }).should('be.visible');
 
-        cy.get('#step-value')
-            .click()
-            .scrollIntoView();
+        cy.get('#tab-value').click();
 
-        cy.get('#step-value-subresource input[value="subresource"]').click();
+        cy.get('#tab-value-subresource input[value="subresource"]').click();
 
-        cy.get('#step-display')
-            .click()
-            .scrollIntoView();
+        cy.get('#tab-display').click();
 
-        datasetImportPage.fillStepDisplayFormat('link');
+        datasetImportPage.fillTabDisplayFormat('link');
 
-        cy.get('#step-search')
-            .click()
-            .scrollIntoView();
+        cy.get('#tab-search').click();
 
         cy.contains(
             'Searchable - global full text search will target this field',
@@ -126,15 +120,13 @@ describe('Subresource Page', () => {
             .clear()
             .type('Animal name');
 
-        cy.get('#step-value')
-            .click()
-            .scrollIntoView();
+        cy.get('#tab-value').click();
 
         cy.get(
-            '#step-value-subresource-field input[value="subresource"]',
+            '#tab-value-subresource-field input[value="subresource"]',
         ).click();
 
-        cy.get('#step-value-subresource-field .column_name').type('name');
+        cy.get('#tab-value-subresource-field .column_name').type('name');
 
         cy.get('.wizard')
             .find('.btn-save')
@@ -165,17 +157,13 @@ describe('Subresource Page', () => {
             .clear()
             .type('Animal link');
 
-        cy.get('#step-value')
-            .click()
-            .scrollIntoView();
+        cy.get('#tab-value').click();
 
-        cy.get('#step-value-subresource input[value="subresource"]').click();
+        cy.get('#tab-value-subresource input[value="subresource"]').click();
 
-        cy.get('#step-display')
-            .click()
-            .scrollIntoView();
+        cy.get('#tab-display').click();
 
-        datasetImportPage.fillStepDisplayFormat('link');
+        datasetImportPage.fillTabDisplayFormat('link');
         cy.contains('The column content').click();
         cy.get(`[role="listbox"] li[data-value="column"]`).click();
         cy.get(`[role="listbox"]`).should('not.be.visible');
@@ -185,9 +173,7 @@ describe('Subresource Page', () => {
                 cy.get('input').type(fieldName);
             });
 
-        cy.get('#step-search')
-            .click()
-            .scrollIntoView();
+        cy.get('#tab-search').click();
 
         cy.contains(
             'Searchable - global full text search will target this field',

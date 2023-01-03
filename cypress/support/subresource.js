@@ -13,6 +13,7 @@ export const fillSubcategoryFormAndSubmit = values => {
 };
 
 export const addField = (name, label, save = true) => {
+    cy.wait(1000);
     cy.contains('button', 'New field').click();
 
     cy.get('.wizard').should('exist');
@@ -22,9 +23,7 @@ export const addField = (name, label, save = true) => {
         .clear()
         .type(label);
 
-    cy.get('#step-value')
-        .click()
-        .scrollIntoView();
+    cy.get('#tab-value').click();
 
     cy.get('#select-subresource-input-label').click();
 

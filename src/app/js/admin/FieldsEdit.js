@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 const scrollToLastLayoutItem = () => {
     setTimeout(() => {
         const lastChild = document.querySelector('.layout > div:last-child');
-        lastChild.scrollIntoView({
+        lastChild?.scrollIntoView({
             behavior: 'smooth',
             block: 'end',
         });
@@ -72,16 +72,17 @@ export const FieldsEditComponent = ({
     }, [filter, subresourceId]);
 
     const fieldsLength = fields.length;
-    const previousFieldsLength = useRef(fields.length);
-    const previousLastField = useRef(fields.at(-1));
+    const previousFieldsLength = useRef(fieldsLength);
+    const lastField = fields[fieldsLength - 1];
+    const previousLastField = useRef(lastField);
 
     useEffect(() => {
-        if (!field && previousFieldsLength.current + 1 === fields.length) {
-            if (previousLastField.current._id !== fields.at(-1)._id) {
+        if (!field && previousFieldsLength.current + 1 === fieldsLength) {
+            if (previousLastField.current?._id !== lastField?._id) {
                 scrollToLastLayoutItem();
             }
             previousFieldsLength.current = fields.length;
-            previousLastField.current = fields.at(-1);
+            previousLastField.current = fields[fieldsLength - 1];
         }
     }, [fieldsLength, field]);
 

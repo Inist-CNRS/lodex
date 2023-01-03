@@ -42,21 +42,21 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
     cy.get('[aria-label="unpublish"]', { timeout: 2000 }).should('be.visible');
 };
 
-const fillStepValueConcatColumn = (value, index) => {
+const fillTabValueConcatColumn = (value, index) => {
     cy.get(`#select-column-${index}`).click();
     cy.get('[role="listbox"]')
         .contains(value)
         .click();
 };
 
-export const fillStepDisplayFormat = format => {
+export const fillTabDisplayFormat = format => {
     cy.get('#step-value-format .select-format')
         .first()
         .click();
     cy.get(`[role="listbox"] li[data-value="${format}"]`).click();
 };
 
-export const fillStepDisplaySyndication = syndication => {
+export const fillTabDisplaySyndication = syndication => {
     cy.get('.field-overview').click();
     cy.get(`[role="listbox"] li[data-value="${syndication}"]`).click();
 };
@@ -70,31 +70,27 @@ export const addColumn = (columnName, options = {}) => {
     ).click();
 
     if (options.composedOf && options.composedOf.length > 1) {
-        cy.get('#step-value')
-            .click()
-            .scrollIntoView();
-        cy.get('#step-value-concat input[value="concat"]').click();
+        cy.get('#tab-value').click();
+        cy.get('#tab-value-concat input[value="concat"]').click();
 
-        options.composedOf.forEach(fillStepValueConcatColumn);
+        options.composedOf.forEach(fillTabValueConcatColumn);
     }
 
     if (options.display) {
-        cy.get('#step-display').click();
+        cy.get('#tab-display').click();
         const { format, syndication } = options.display;
 
         if (format) {
-            fillStepDisplayFormat(format);
+            fillTabDisplayFormat(format);
         }
 
         if (syndication) {
-            fillStepDisplaySyndication(1);
+            fillTabDisplaySyndication(1);
         }
     }
 
     if (options.searchable) {
-        cy.get('#step-search')
-            .click()
-            .scrollIntoView();
+        cy.get('#tab-search').click();
 
         cy.contains(
             'Searchable - global full text search will target this field',
@@ -107,7 +103,7 @@ export const addColumn = (columnName, options = {}) => {
 
 export const setOperationTypeInWizard = (value = 'DEFAULT') => {
     cy.get('.wizard', { timeout: 5000 }).should('be.visible');
-    cy.contains('Transformations applied on the value').click();
+    cy.contains('Transformation').click();
     cy.get('.wizard', { timeout: 5000 }).should('be.visible');
     cy.get('.operation').click();
     cy.contains(value).click();
