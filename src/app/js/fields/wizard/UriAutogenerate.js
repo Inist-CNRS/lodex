@@ -7,10 +7,10 @@ import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 
-import { FIELD_FORM_NAME } from '../';
+import { FIELD_FORM_NAME } from '..';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-export const StepUriAutogenerateComponent = ({
+export const UriAutogenerateComponent = ({
     handleSelect,
     p: polyglot,
     selected,
@@ -28,7 +28,7 @@ export const StepUriAutogenerateComponent = ({
     />
 );
 
-StepUriAutogenerateComponent.propTypes = {
+UriAutogenerateComponent.propTypes = {
     handleSelect: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     selected: PropTypes.bool.isRequired,
@@ -67,4 +67,4 @@ export default compose(
         },
     }),
     translate,
-)(StepUriAutogenerateComponent);
+)(UriAutogenerateComponent);

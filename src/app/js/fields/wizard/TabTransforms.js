@@ -6,53 +6,55 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { memoize } from 'lodash';
 
-import Step from './Step';
 import TransformerList from '../TransformerList';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { isSubresourceTransformation } from './StepValueSubresource';
+import { isSubresourceTransformation } from './TabValueSubresource';
 import { FIELD_FORM_NAME } from '..';
 
 export const renderTransformerFunction = (
     locked,
     isSubresourceField,
     polyglot,
-) => props => {
-    if (locked) {
+) => {
+    function RenderTransformer(props) {
+        if (locked) {
+            return (
+                <span>
+                    {polyglot.t(
+                        'transformer_no_editable_with_subresource_uid_value',
+                    )}
+                </span>
+            );
+        }
+
         return (
-            <span>
-                {polyglot.t(
-                    'transformer_no_editable_with_subresource_uid_value',
-                )}
-            </span>
+            <TransformerList
+                hideFirstTransformers={isSubresourceField ? 3 : 0}
+                {...props}
+            />
         );
     }
 
-    return (
-        <TransformerList
-            hideFirstTransformers={isSubresourceField ? 3 : 0}
-            {...props}
-        />
-    );
+    return RenderTransformer;
 };
 
 const renderTransformer = memoize(renderTransformerFunction);
 
-export const StepTransformComponent = ({
+export const TabTransformComponent = ({
     isSubresourceField,
     p: polyglot,
     locked,
-    ...props
 }) => (
-    <Step id="step-transformers" label="field_wizard_step_tranforms" {...props}>
+    <>
         <FieldArray
             name="transformers"
             component={renderTransformer(locked, isSubresourceField, polyglot)}
             type="transform"
         />
-    </Step>
+    </>
 );
 
-StepTransformComponent.propTypes = {
+TabTransformComponent.propTypes = {
     isSubresourceField: PropTypes.bool,
     locked: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
@@ -72,4 +74,4 @@ const mapStateToProps = state => {
 export default compose(
     connect(mapStateToProps),
     translate,
-)(StepTransformComponent);
+)(TabTransformComponent);

@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import TransformerList from '../TransformerList';
-import { renderTransformerFunction as renderTransformer } from './StepTransforms';
+import { renderTransformerFunction as renderTransformer } from './TabTransforms';
 
-describe('StepTransforms', () => {
+describe('TabTransforms', () => {
     describe('renderTransformer', () => {
         it('should not render TransformerList if locked prop is truthy', () => {
             const Component = renderTransformer(true, true, { t: key => key });

@@ -370,6 +370,7 @@ DraggableItemGrid.propTypes = {
 const FieldGridComponent = ({
     fields,
     filter,
+    loadField,
     editField,
     changePositions,
     saveFieldFromData,
@@ -421,6 +422,7 @@ const FieldGridComponent = ({
 FieldGridComponent.propTypes = {
     fields: PropTypes.array,
     filter: PropTypes.string,
+    loadField: PropTypes.func.isRequired,
     editField: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     changePositions: PropTypes.func.isRequired,

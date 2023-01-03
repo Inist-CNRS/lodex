@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 import translate from 'redux-polyglot/translate';
 
-import { Stepper, Box, Typography, Tabs, Tab } from '@material-ui/core';
+import { Box, Typography, Tabs, Tab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {
     editField as editFieldAction,
+    FIELD_FORM_NAME,
     saveField as saveFieldAction,
 } from '../';
 
@@ -18,19 +19,20 @@ import {
     field as fieldPropTypes,
 } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
-import StepValue from './StepValue';
-import StepUri from './StepUri';
-import StepTransforms from './StepTransforms';
-import StepIdentity from './StepIdentity';
-import StepDisplay from './StepDisplay';
-import StepSearch from './StepSearch';
-import StepSemantics from './StepSemantics';
+import TabValue from './TabValue';
+import Uri from './Uri';
+import TabTransforms from './TabTransforms';
+import TabIdentity from './TabIdentity';
+import TabDisplay from './TabDisplay';
+import TabSearch from './TabSearch';
+import TabSemantics from './TabSemantics';
 import FieldExcerpt from '../../admin/preview/field/FieldExcerpt';
 import Actions from './Actions';
 import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../../common/scope';
 import { URI_FIELD_NAME } from '../../../../common/uris';
 import classNames from 'classnames';
 import { TabPanel } from './TabPanel';
+import { reduxForm } from 'redux-form';
 
 const useStyles = makeStyles({
     wizard: {
@@ -41,7 +43,7 @@ const useStyles = makeStyles({
     container: {
         display: 'flex',
         paddingBottom: '1rem',
-        width: 1000,
+        width: '100%',
         flexGrow: 1,
     },
     form: {
@@ -70,7 +72,6 @@ const FieldEditionWizardComponent = ({
 }) => {
     const classes = useStyles();
     const [tabValue, setTabValue] = useState(0);
-    const [step, setStep] = useState(0);
 
     useEffect(() => {
         if (!field || !field.name) {
@@ -81,7 +82,6 @@ const FieldEditionWizardComponent = ({
     const handleChange = (_, newValue) => {
         setTabValue(newValue);
     };
-    const handleSelectStep = step => setStep(step);
 
     const handleCancel = () => {
         editField(undefined);
@@ -98,95 +98,40 @@ const FieldEditionWizardComponent = ({
     const tabs = [
         {
             label: 'field_wizard_step_identity',
+            component: <TabIdentity field={field} />,
+        },
+        {
+            label: 'field_wizard_step_value',
             component: (
-                // <StepIdentity
-                //     key="identity"
-                //     id="step-identity"
-                //     isSubresourceField={!!field.subresourceId}
-                // />
-                <span>Toto</span>
+                <TabValue
+                    subresourceUri={field.subresourceId}
+                    arbitraryMode={[SCOPE_DATASET, SCOPE_GRAPHIC].includes(
+                        filter,
+                    )}
+                />
             ),
         },
-        // {
-        //     label: 'field_wizard_step_value',
-        //     component: (
-        //         <StepValue
-        //             key="value"
-        //             subresourceUri={field.subresourceId}
-        //             arbitraryMode={[SCOPE_DATASET, SCOPE_GRAPHIC].includes(
-        //                 filter,
-        //             )}
-        //         />
-        //     ),
-        // },
-        // {
-        //     label: 'field_wizard_step_tranforms',
-        //     component: (
-        //         <StepTransforms
-        //             key="transformers"
-        //             isSubresourceField={!!field.subresourceId}
-        //         />
-        //     ),
-        // },
-        // {
-        //     label: 'field_wizard_step_display',
-        //     component: (
-        //         <StepDisplay
-        //             isSubresourceField={!!field.subresourceId}
-        //             key="display"
-        //         />
-        //     ),
-        // },
-        // !field.subresourceId && {
-        //     label: 'field_wizard_step_semantic',
-        //     component: (
-        //         <StepSemantics fields={fields} field={field} key="semantics" />
-        //     ),
-        // },
-        // !field.subresourceId && {
-        //     label: 'field_wizard_step_search',
-        //     component: <StepSearch key="search" />,
-        // },
-    ].filter(x => x);
-
-    let steps = [];
-    if (field && field.name !== URI_FIELD_NAME) {
-        steps = [
-            <StepIdentity
-                key="identity"
-                id="step-identity"
-                isSubresourceField={!!field.subresourceId}
-            />,
-            <StepValue
-                key="value"
-                subresourceUri={field.subresourceId}
-                arbitraryMode={[SCOPE_DATASET, SCOPE_GRAPHIC].includes(filter)}
-            />,
-            <StepTransforms
-                key="transformers"
-                isSubresourceField={!!field.subresourceId}
-            />,
-            !field.subresourceId && (
-                <StepSemantics fields={fields} field={field} key="semantics" />
+        {
+            label: 'field_wizard_step_tranforms',
+            component: (
+                <TabTransforms isSubresourceField={!!field.subresourceId} />
             ),
-            <StepDisplay
-                isSubresourceField={!!field.subresourceId}
-                key="display"
-            />,
-            !field.subresourceId && <StepSearch key="search" />,
-        ]
-            .filter(x => x)
-            .map((el, index) =>
-                React.cloneElement(el, {
-                    index,
-                    active: step === index,
-                    fields,
-                    field,
-                    filter,
-                    onSelectStep: handleSelectStep,
-                }),
-            );
-    }
+        },
+        {
+            label: 'field_wizard_step_display',
+            component: (
+                <TabDisplay isSubresourceField={!!field.subresourceId} />
+            ),
+        },
+        !field.subresourceId && {
+            label: 'field_wizard_step_semantic',
+            component: <TabSemantics fields={fields} />,
+        },
+        !field.subresourceId && {
+            label: 'field_wizard_step_search',
+            component: <TabSearch />,
+        },
+    ].filter(x => x);
 
     return (
         <Box className={classNames(classes.wizard, 'wizard')}>
@@ -198,7 +143,12 @@ const FieldEditionWizardComponent = ({
                     <Box id="field_form" className={classes.form}>
                         {field.name !== URI_FIELD_NAME ? (
                             <>
-                                <Tabs value={tabValue} onChange={handleChange}>
+                                <Tabs
+                                    value={tabValue}
+                                    onChange={handleChange}
+                                    variant="scrollable"
+                                    scrollButtons="auto"
+                                >
                                     {tabs.map((tab, index) => (
                                         <Tab
                                             label={polyglot.t(tab.label)}
@@ -216,16 +166,9 @@ const FieldEditionWizardComponent = ({
                                         {tab.component}
                                     </TabPanel>
                                 ))}
-                                <Stepper
-                                    nonLinear
-                                    activeStep={step}
-                                    orientation="vertical"
-                                >
-                                    {steps}
-                                </Stepper>
                             </>
                         ) : (
-                            <StepUri field={field} fields={fields} />
+                            <Uri field={field} fields={fields} />
                         )}
                     </Box>
                     <Box className={classes.column}>
@@ -279,5 +222,21 @@ const mapDispatchToProps = {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
+    withProps(({ field, filter }) => {
+        const fieldFilterAttributes = filter
+            ? {
+                  scope: filter,
+                  display: field ? field.display : true,
+              }
+            : {};
+
+        return { initialValues: { ...field, ...fieldFilterAttributes } };
+    }),
+    reduxForm({
+        form: FIELD_FORM_NAME,
+        enableReinitialize: true,
+        destroyOnUnmount: false,
+        forceUnregisterOnUnmount: true,
+    }),
     translate,
 )(FieldEditionWizardComponent);

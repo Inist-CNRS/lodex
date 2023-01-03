@@ -3,7 +3,6 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 
-import Step from './Step';
 import FieldIsSearchableInput from '../FieldIsSearchableInput';
 import FieldIsFacetInput from '../FieldIsFacetInput';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -13,19 +12,14 @@ import { fromFieldPreview } from '../../admin/selectors';
 import { Box, Typography } from '@material-ui/core';
 import Warning from '@material-ui/icons/Warning';
 
-export const StepSearchComponent = ({
-    p: polyglot,
-    formData,
-    lines,
-    ...props
-}) => {
+export const TabSearchComponent = ({ p: polyglot, formData, lines }) => {
     const displayWarningFacetMessage = useMemo(() => {
         const firstLine = lines[0] && lines[0][formData?.name];
         return firstLine instanceof Object && formData.isFacet;
     }, [lines, formData]);
 
     return (
-        <Step id="step-search" label="field_wizard_step_search" {...props}>
+        <>
             <FieldIsSearchableInput />
             <FieldIsFacetInput />
 
@@ -41,11 +35,11 @@ export const StepSearchComponent = ({
                     </Typography>
                 </Box>
             )}
-        </Step>
+        </>
     );
 };
 
-StepSearchComponent.propTypes = {
+TabSearchComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     formData: PropTypes.object,
     lines: PropTypes.array,
@@ -60,7 +54,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps),
-)(StepSearchComponent);
+export default compose(translate, connect(mapStateToProps))(TabSearchComponent);

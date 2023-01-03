@@ -5,22 +5,22 @@ import { connect } from 'react-redux';
 import { reduxForm, change } from 'redux-form';
 
 import { fromParsing } from '../../admin/selectors';
-import { FIELD_FORM_NAME } from '../';
+import { FIELD_FORM_NAME } from '..';
 import { getTransformerMetas } from '../../../../common/transformers';
 
-import StepUriAutogenerate from './StepUriAutogenerate';
-import StepValueColumn from './StepValueColumn';
-import StepUriConcat from './StepUriConcat';
+import UriAutogenerate from './UriAutogenerate';
+import TabValueColumn from './TabValueColumn';
+import UriConcat from './UriConcat';
 
-export const StepValueComponent = ({ handleTransformerChange }) => (
+export const UriComponent = ({ handleTransformerChange }) => (
     <div>
-        <StepUriAutogenerate onChange={handleTransformerChange} />
-        <StepValueColumn onChange={handleTransformerChange} />
-        <StepUriConcat onChange={handleTransformerChange} />
+        <UriAutogenerate onChange={handleTransformerChange} />
+        <TabValueColumn onChange={handleTransformerChange} />
+        <UriConcat onChange={handleTransformerChange} />
     </div>
 );
 
-StepValueComponent.propTypes = {
+UriComponent.propTypes = {
     handleTransformerChange: PropTypes.func.isRequired,
 };
 
@@ -59,4 +59,4 @@ export default compose(
         destroyOnUnmount: false,
         forceUnregisterOnUnmount: true,
     }),
-)(StepValueComponent);
+)(UriComponent);
