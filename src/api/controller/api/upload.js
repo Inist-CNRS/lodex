@@ -3,6 +3,7 @@ import route from 'koa-route';
 import asyncBusboy from 'async-busboy';
 import config from 'config';
 import koaBodyParser from 'koa-bodyparser';
+import fs from 'fs';
 
 import progress from '../../services/progress';
 import { PENDING, UPLOADING_DATASET } from '../../../common/progressStatus';
@@ -19,6 +20,11 @@ import { IMPORT } from '../../workers/import';
 export const requestToStream = asyncBusboyImpl => async req => {
     const { files, fields } = await asyncBusboyImpl(req);
 
+    try {
+        fs.unlinkSync(files[0].path);
+    } catch (error) {
+        console.warn(error);
+    }
     return { stream: files[0], fields };
 };
 
