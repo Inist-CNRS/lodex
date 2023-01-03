@@ -56,6 +56,13 @@ export default async (stream, ctx) => {
                 reject(data.sourceError || data);
             }
         });
-        stream.on('end', resolve);
+        stream.on('end', () => {
+            // TODO: This is a temporary fix
+            // The stream is not always finished when the end event is fired. The error event is emitted after the end event.
+            // This need to be removed when we have a better way to know handle concurrency in the saveStream
+            setTimeout(() => {
+                resolve();
+            }, 10);
+        });
     });
 };
