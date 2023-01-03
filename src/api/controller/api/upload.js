@@ -19,7 +19,12 @@ import { IMPORT } from '../../workers/import';
 
 export const requestToStream = asyncBusboyImpl => async req => {
     const { files, fields } = await asyncBusboyImpl(req);
-    fs.unlinkSync(files[0].path);
+
+    try {
+        fs.unlinkSync(files[0].path);
+    } catch (error) {
+        console.warn(error);
+    }
     return { stream: files[0], fields };
 };
 
