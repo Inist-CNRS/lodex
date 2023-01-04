@@ -6,13 +6,7 @@ import { Add as AddNewIcon } from '@material-ui/icons';
 import { compose } from 'recompose';
 import { Button, makeStyles } from '@material-ui/core';
 
-import PublicationModalWizard from '../../fields/wizard';
-import { SCOPE_DOCUMENT } from '../../../../common/scope';
-
-import {
-    addField as addFieldAction,
-    editField as editFieldAction,
-} from '../../fields';
+import { addField as addFieldAction } from '../../fields';
 
 const useStyles = makeStyles({
     icon: {
@@ -20,9 +14,8 @@ const useStyles = makeStyles({
     },
 });
 
-const createDefaultSubresourceField = subresource => ({
-    subresourceId: subresource._id,
-    transformers: [
+const createDefaultSubresourceField = subresource => {
+    const transformers = [
         {
             operation: 'COLUMN',
             args: [
@@ -33,13 +26,25 @@ const createDefaultSubresourceField = subresource => ({
                 },
             ],
         },
-        { operation: 'PARSE' },
         {
-            operation: 'GET',
-            args: [{ name: 'path', type: 'string', value: '' }],
+            operation: 'PARSE',
         },
-    ],
-});
+    ];
+
+    if (subresource.identifier) {
+        transformers.push({
+            operation: 'GET',
+            args: [
+                { name: 'path', type: 'string', value: subresource.identifier },
+            ],
+        });
+    }
+
+    return {
+        subresourceId: subresource._id,
+        transformers: transformers,
+    };
+};
 
 export const AddSubresourceFieldButtonComponent = ({
     addField,
