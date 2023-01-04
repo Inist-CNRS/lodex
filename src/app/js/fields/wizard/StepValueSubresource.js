@@ -43,7 +43,9 @@ export const StepValueSubresourceComponent = ({
                     onChange={a => handleChange(a.target.value)}
                 >
                     {subresources.map(sr => (
-                        <MenuItem value={sr._id}>{sr.name}</MenuItem>
+                        <MenuItem key={sr._id} value={sr._id}>
+                            {sr.name}
+                        </MenuItem>
                     ))}
                 </Select>
             </div>
