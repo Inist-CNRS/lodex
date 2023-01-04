@@ -35,10 +35,6 @@ describe('<AddSubresourceFieldButton />', () => {
                     ],
                 },
                 { operation: 'PARSE' },
-                {
-                    operation: 'GET',
-                    args: [{ name: 'path', type: 'string', value: '' }],
-                },
             ],
         });
     });
