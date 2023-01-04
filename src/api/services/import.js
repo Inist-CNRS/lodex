@@ -5,9 +5,8 @@ import progress from './progress';
 import { INDEXATION, SAVING_DATASET } from '../../common/progressStatus';
 
 const loaders = new Script('loaders', '../app/custom/loaders');
-const log = e => global.console.error('Error in pipeline.', e);
 
-export const getLoader = async loaderName => {
+export const getLoader = async (loaderName, loaderEnvironment) => {
     const currentLoader = await loaders.get(loaderName);
     if (!currentLoader) {
         throw new Error(`Unknown loader: ${loaderName}`);
@@ -17,11 +16,12 @@ export const getLoader = async loaderName => {
 
     // ezs is safe : errors do not break the pipeline
     return stream =>
-        stream.pipe(ezs('delegate', { script })).pipe(ezs.catch(e => log(e)));
+        stream.pipe(ezs('delegate', { script }, loaderEnvironment));
 };
 
-export const getCustomLoader = async script => {
-    return stream => stream.pipe(ezs('delegate', { script }));
+export const getCustomLoader = async (script, loaderEnvironment) => {
+    return stream =>
+        stream.pipe(ezs('delegate', { script }, loaderEnvironment));
 };
 
 export const getStreamFromUrl = async url => {
@@ -43,16 +43,21 @@ export const startImport = async ctx => {
                 type: 'import',
             });
         }
-
+        const source = url ? url : filename;
+        const parser =
+            !loaderName || loaderName === 'automatic' ? extension : loaderName;
+        const loaderEnvironment = {
+            source,
+            parser,
+        };
         let parseStream;
         if (customLoader) {
-            parseStream = await ctx.getCustomLoader(customLoader);
-        } else {
-            parseStream = await ctx.getLoader(
-                !loaderName || loaderName === 'automatic'
-                    ? extension
-                    : loaderName,
+            parseStream = await ctx.getCustomLoader(
+                customLoader,
+                loaderEnvironment,
             );
+        } else {
+            parseStream = await ctx.getLoader(parser, loaderEnvironment);
         }
         let stream;
         if (url) {
