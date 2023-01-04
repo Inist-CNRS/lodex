@@ -1,68 +1,43 @@
-import through from 'through';
-
-import safePipe from './safePipe';
+import ezs from '@ezs/core';
 import progress from './progress';
 import { CancelWorkerError } from '../workers';
 
-const defaultChunkSize = 100;
-
-export const chunkStream = chunkSize => {
-    let acc = [];
-    return through(
-        function write(d) {
-            acc.push(d);
-            if (acc.length >= chunkSize) {
-                this.queue(acc);
-                acc = [];
-            }
-        },
-        function end() {
-            if (acc.length) {
-                this.queue(acc);
-            }
-        },
-    );
-};
+async function insert(data, feed) {
+    const method = this.getParam('method');
+    const ctx = this.getEnv();
+    if (this.isLast()) {
+        return feed.close();
+    }
+    const isActive = await ctx.job?.isActive();
+    if (!isActive) {
+        return feed.stop(new CancelWorkerError('Job has been canceled'));
+    }
+    try {
+        const result = await ctx.dataset[method](data);
+        progress.incrementProgress(data.length);
+        return feed.send(result);
+    } catch (error) {
+        return feed.stop(error);
+    }
+}
 
 export default async (stream, ctx) => {
     const datasetSize = await ctx.dataset.count();
     const method = datasetSize === 0 ? 'insertBatch' : 'bulkUpsertByUri';
     return new Promise((resolve, reject) => {
-        safePipe(stream, [
-            chunkStream(defaultChunkSize),
-            through(async function(chunk) {
-                const isActive = await ctx.job?.isActive();
-                if (!isActive) {
-                    this.emit(
-                        'error',
-                        new CancelWorkerError('Job has been canceled'),
-                    );
-                }
-                ctx.dataset[method](chunk)
-                    .then(data => {
-                        this.emit('data', data);
-                        progress.incrementProgress(defaultChunkSize);
-                    })
-                    .catch(error => {
-                        this.emit('error', error);
-                    });
-            }),
-        ])
-            .on('error', reject)
-            .on('end', resolve);
-
-        stream.on('data', data => {
-            if (data instanceof Error) {
-                reject(data.sourceError || data);
-            }
-        });
-        stream.on('end', () => {
-            // TODO: This is a temporary fix
-            // The stream is not always finished when the end event is fired. The error event is emitted after the end event.
-            // This need to be removed when we have a better way to know handle concurrency in the saveStream
-            setTimeout(() => {
-                resolve();
-            }, 10);
-        });
+        let insertedTotal = 0;
+        stream
+            .pipe(ezs('group', { length: 100 }))
+            .pipe(ezs(insert, { method }, ctx))
+            .pipe(ezs.catch())
+            .on('error', e => {
+                reject(e.sourceError || e);
+            })
+            .on('data', ({ insertedCount }) => {
+                insertedTotal += insertedCount;
+            })
+            .on('end', () => {
+                resolve(insertedTotal);
+            });
     });
 };
