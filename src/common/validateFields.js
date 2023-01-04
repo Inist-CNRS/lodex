@@ -1,4 +1,4 @@
-import { SCOPES, SCOPE_DOCUMENT } from './scope';
+import { SCOPES, SCOPE_DOCUMENT, SCOPE_GRAPHIC } from './scope';
 import knownTransformers from './transformers';
 import languagesList from './languages';
 import isUndefinedOrEmpty from './lib/isUndefinedOrEmpty';
@@ -67,7 +67,7 @@ export const validateTransformers = (field, isContribution) => {
         isValid: true,
     };
 
-    if (isContribution) {
+    if (isContribution || field.scope === SCOPE_GRAPHIC || field.composedOf) {
         return result;
     }
 
@@ -185,6 +185,7 @@ export const validateScheme = field => {
 
 export const validateTransformer = (
     transformer,
+    isComposedOf = false,
     transformers = knownTransformers,
 ) => {
     const transformerOperation = transformers[transformer.operation];
@@ -195,6 +196,13 @@ export const validateTransformer = (
             isValid: false,
             meta: { operation: transformer.operation },
             error: 'invalid',
+        };
+    }
+
+    if (transformer.operation === 'VALUE' && isComposedOf) {
+        return {
+            name: 'transformer.operation',
+            isValid: true,
         };
     }
 
@@ -222,8 +230,10 @@ export const validateTransformer = (
     };
 };
 
-export const validateEachTransformer = (transformers = []) =>
-    transformers.map(value => validateTransformer(value));
+export const validateEachTransformer = (
+    transformers = [],
+    isComposedOf = false,
+) => transformers.map(value => validateTransformer(value, isComposedOf));
 
 export const validateLanguage = (field, languages = languagesList) => {
     const result = {
@@ -263,7 +273,11 @@ export const validateField = (field, isContribution = false, fields = []) => {
 
     const propertiesAreValid = isListValid(properties);
 
-    const transformers = validateEachTransformer(field.transformers);
+    const transformers = validateEachTransformer(
+        field.transformers,
+        field.composedOf,
+    );
+
     const transformersAreValid = isListValid(transformers);
     const composedOfFields = validateEachComposedOfFields(
         field.composedOf && field.composedOf.fields,
