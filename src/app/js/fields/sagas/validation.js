@@ -1,12 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import validateFields from '../../../../common/validateFields';
 
-import {
-    setValidation,
-    LOAD_FIELD_SUCCESS,
-    REMOVE_FIELD_SUCCESS,
-    SAVE_FIELD_SUCCESS,
-} from '../';
+import { setValidation, LOAD_FIELD_SUCCESS, REMOVE_FIELD_SUCCESS } from '../';
 
 import { fromFields } from '../../sharedSelectors';
 
@@ -19,7 +14,7 @@ export function* handleNeedValidation() {
 
 export default function* watch() {
     yield takeLatest(
-        [LOAD_FIELD_SUCCESS, REMOVE_FIELD_SUCCESS, SAVE_FIELD_SUCCESS],
+        [LOAD_FIELD_SUCCESS, REMOVE_FIELD_SUCCESS],
         handleNeedValidation,
     );
 }
