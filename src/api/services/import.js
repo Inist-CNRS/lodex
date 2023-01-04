@@ -52,6 +52,9 @@ export const startImport = async ctx => {
         };
         let parseStream;
         if (customLoader) {
+            loaderEnvironment.parser = loaderEnvironment.parser.concat(
+                '/custom',
+            );
             parseStream = await ctx.getCustomLoader(
                 customLoader,
                 loaderEnvironment,
