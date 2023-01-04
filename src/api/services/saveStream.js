@@ -33,7 +33,7 @@ export default async (stream, ctx) => {
             .on('error', e => {
                 reject(e.sourceError || e);
             })
-            .on('data', ({ insertedCount }) => {
+            .on('data', ({ insertedCount = 0 }) => {
                 insertedTotal += insertedCount;
             })
             .on('end', () => {
