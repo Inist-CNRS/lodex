@@ -1,15 +1,15 @@
 import React, { Fragment } from 'react';
 import { Box } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
-import DescriptionIcon from '@material-ui/icons/Description';
+import SourceIcon from '@mui/icons-material/Source';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import GridOnIcon from '@material-ui/icons/GridOn';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PlusIcon from '@material-ui/icons/Add';
 import PostAddIcon from '@material-ui/icons/PostAdd';
-import MainResourceIcon from '@material-ui/icons/InsertDriveFile';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+import ArticleIcon from '@mui/icons-material/Article';
+import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -148,7 +148,7 @@ const DocumentMenu = compose(
                     activeStyle={subSidebarNavLinkActiveStyle}
                     to="/display/document/main"
                 >
-                    <MainResourceIcon />
+                    <ArticleIcon />
                     {polyglot.t('main_resource')}
                 </NavLink>
             </Box>
@@ -171,7 +171,7 @@ const DocumentMenu = compose(
                             activeStyle={subSidebarNavLinkActiveStyle}
                             to={`/display/document/${r._id}`}
                         >
-                            <FileCopyIcon />
+                            <DocumentScannerIcon />
                             {r.name}
                         </NavLink>
                     </Box>
@@ -242,7 +242,7 @@ const InnerSidebarComponent = ({
                             activeStyle={sidebarNavLinkActiveStyle}
                             to={`/display/${SCOPE_DOCUMENT}`}
                         >
-                            <DescriptionIcon />
+                            <SourceIcon />
                             {polyglot.t('resource_pages')}
                         </NavLink>
                     </Box>
