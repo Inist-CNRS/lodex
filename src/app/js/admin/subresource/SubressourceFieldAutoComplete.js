@@ -9,6 +9,7 @@ const SubressourceFieldAutoComplete = ({
     input,
     hint,
     meta: { touched, error },
+    clearIdentifier,
     ...props
 }) => {
     return (
@@ -16,7 +17,10 @@ const SubressourceFieldAutoComplete = ({
             <Autocomplete
                 error={touched && error}
                 {...input}
-                onChange={(event, newValue) => {
+                onChange={(event, newValue, reason) => {
+                    if (reason === 'clear') {
+                        clearIdentifier();
+                    }
                     input.onChange(newValue);
                 }}
                 {...props}
