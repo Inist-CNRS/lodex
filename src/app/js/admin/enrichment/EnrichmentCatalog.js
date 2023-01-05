@@ -112,6 +112,12 @@ export const EnrichmentCatalog = ({
         handleClose();
     };
 
+    const scrollTo = el => {
+        if (el) {
+            el.scrollIntoView({ inline: 'center', block: 'center' });
+        }
+    };
+
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
             <DialogContent style={{ padding: 0, width: '1100px' }}>
@@ -163,6 +169,11 @@ export const EnrichmentCatalog = ({
                                 [classes.selectedItem]:
                                     selectedWebServiceUrl === enricher.url,
                             })}
+                            ref={
+                                selectedWebServiceUrl === enricher.url
+                                    ? scrollTo
+                                    : null
+                            }
                         >
                             <ListItemText
                                 primary={polyglot.t(`ws_${enricher.id}_title`)}
