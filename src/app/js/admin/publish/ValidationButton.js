@@ -16,7 +16,7 @@ import {
     validationField as validationFieldPropType,
 } from '../../propTypes';
 import { useHistory } from 'react-router';
-import { SCOPE_DATASET, SCOPE_DOCUMENT } from '../../../../common/scope';
+import { SCOPE_DOCUMENT } from '../../../../common/scope';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };
@@ -43,11 +43,7 @@ const ValidationButtonComponent = ({
     const redirectAndHandleEditField = (...args) => {
         const field = fields.find(({ name }) => name === args[0]);
         history.push(
-            `/display/${
-                field && field.scope === SCOPE_DATASET
-                    ? SCOPE_DATASET
-                    : SCOPE_DOCUMENT
-            }`,
+            `/display/${field && field.scope ? field.scope : SCOPE_DOCUMENT}`,
         );
 
         setTimeout(() => handleEditField(...args), 1000);

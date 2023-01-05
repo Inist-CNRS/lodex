@@ -324,7 +324,11 @@ describe('validateField', () => {
                 operation: 'IVY',
             };
 
-            const result = validateTransformer(transformer, knownTransformers);
+            const result = validateTransformer(
+                transformer,
+                false,
+                knownTransformers,
+            );
 
             expect(result.name).toBe('transformer.operation');
             expect(result.isValid).toBe(false);
@@ -355,7 +359,11 @@ describe('validateField', () => {
                 args: [],
             };
 
-            const result = validateTransformer(transformer, knownTransformers);
+            const result = validateTransformer(
+                transformer,
+                false,
+                knownTransformers,
+            );
 
             expect(result.name).toBe('transformer.args');
             expect(result.isValid).toBe(false);
@@ -392,7 +400,11 @@ describe('validateField', () => {
                 ],
             };
 
-            const result = validateTransformer(transformer, knownTransformers);
+            const result = validateTransformer(
+                transformer,
+                false,
+                knownTransformers,
+            );
 
             expect(result.name).toBe('transformer.args');
             expect(result.isValid).toBe(false);
@@ -430,7 +442,11 @@ describe('validateField', () => {
                 ],
             };
 
-            const result = validateTransformer(transformer, knownTransformers);
+            const result = validateTransformer(
+                transformer,
+                false,
+                knownTransformers,
+            );
 
             expect(result.name).toBe('transformer.args');
             expect(result.isValid).toBe(false);
@@ -477,7 +493,11 @@ describe('validateField', () => {
                 ],
             };
 
-            const result = validateTransformer(transformer, knownTransformers);
+            const result = validateTransformer(
+                transformer,
+                false,
+                knownTransformers,
+            );
 
             expect(result.name).toBe('transformer.operation');
             expect(result.isValid).toBe(true);
