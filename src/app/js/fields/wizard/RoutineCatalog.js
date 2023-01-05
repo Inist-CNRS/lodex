@@ -91,6 +91,12 @@ export const RoutineCatalog = ({
         handleClose();
     };
 
+    const scrollTo = el => {
+        if (el) {
+            el.scrollIntoView({ inline: 'center', block: 'center' });
+        }
+    };
+
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
             <DialogContent style={{ padding: 0, width: '1100px' }}>
@@ -108,6 +114,11 @@ export const RoutineCatalog = ({
                                     routine.url,
                                 ),
                             })}
+                            ref={
+                                currentValue.includes(routine.url)
+                                    ? scrollTo
+                                    : null
+                            }
                         >
                             <ListItemText
                                 primary={polyglot.t(`${routine.id}_title`)}
