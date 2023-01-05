@@ -86,6 +86,7 @@ const SubresourceFormComponent = ({
     datasetFields,
     excerptLines,
     pathSelected,
+    change,
 }) => {
     const classes = useStyles();
     const optionsIdentifier = useMemo(() => {
@@ -134,6 +135,9 @@ const SubresourceFormComponent = ({
                                     <Typography>{option}</Typography>
                                 </ListItem>
                             );
+                        }}
+                        clearIdentifier={() => {
+                            change('identifier', '');
                         }}
                     />
                 </Grid>
