@@ -64,6 +64,7 @@
 "error_overview_field_required"	"This field is required because it is used for syndication"	"Ce champ est obligatoire parce qu'il est utilisé pour la syndication"
 "error_label_required"	"Label is required"	"L'étiquette est requise"
 "error_scope_required"	"Coverage is required"	"La couverture est requise"
+"error_transformers_required"	"Transformer is required"	"Une transformation est requise"
 "error_scheme_invalid"	"The scheme must be an url"	"Le schéma doit être un url"
 "error_position_invalid"	"This position is invalid (must be greater than zero)"	"La position n'est pas valide (elle doit être supérieure à zéro)"
 "error_position_required"	"The position is required"	"La position est requise"

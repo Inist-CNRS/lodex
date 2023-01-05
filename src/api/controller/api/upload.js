@@ -3,6 +3,7 @@ import route from 'koa-route';
 import asyncBusboy from 'async-busboy';
 import config from 'config';
 import koaBodyParser from 'koa-bodyparser';
+import fs from 'fs';
 
 import progress from '../../services/progress';
 import { PENDING, UPLOADING_DATASET } from '../../../common/progressStatus';
@@ -19,6 +20,13 @@ import { IMPORT } from '../../workers/import';
 export const requestToStream = asyncBusboyImpl => async req => {
     const { files, fields } = await asyncBusboyImpl(req);
 
+    files[0].once('close', () => {
+        try {
+            fs.unlinkSync(files[0].path);
+        } catch (error) {
+            console.warn(error);
+        }
+    });
     return { stream: files[0], fields };
 };
 
@@ -167,7 +175,17 @@ const app = new Koa();
 
 app.use(prepareUpload);
 
-app.use(koaBodyParser());
+app.use(
+    koaBodyParser({
+        formLimit: '10mb',
+        textLimit: '10mb',
+        jsonLimit: '10mb',
+        queryString: {
+            allowDots: true, //  to keep compatibility with qs@4
+            parameterLimit: 100000000000000,
+        },
+    }),
+);
 app.use(route.post('/url', uploadUrl));
 
 app.use(route.post('/:loaderName', parseRequest));

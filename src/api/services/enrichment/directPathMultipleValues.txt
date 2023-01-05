@@ -1,6 +1,11 @@
+# load some plugins to activate some statements (URL Connect, exploding, aggregate)
 [use]
 plugin = basics
 plugin = analytics
+
+# Toggle ezs traces (see server stderr log)
+[debug]
+ezs = false
 
 # We sometime have a stringified value (like "{id:1, name: 'Bob'}"), and we want to parse it, if possible
 # This assign command aim is to do that, it update the [[SOURCE COLUMN]] to JSON.parse it if possible.
@@ -9,26 +14,38 @@ plugin = analytics
 path = value
 value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(item)} catch {return item } }).get("value.[[SOURCE COLUMN]]")
 
+# Process multivalues of 2 documents
 [expand]
 path = value
-size = [[BATCH SIZE]]
+size = 2
 
 # Ensure to process an array
 [expand/assign]
 path = value
 value = get('value',[]).concat(null).filter(Boolean)
 
-
+# Split the array to process each item
 [expand/exploding]
 
-# add the two lines below to relieve the server
-#[expand/throttle]
-#bySecond = 5
+# Group items to build a request for the webservice
+[expand/expand]
+path = value
+size = [[BATCH SIZE]]
 
-[expand/URLConnect]
+# Uncomment to see each data sent to the webservice
+#[expand/expand/debug]
+
+# Send the request to the webservice
+[expand/expand/URLConnect]
 url = [[WEB SERVICE URL]]
 timeout = 5000
 noerror = false
 retries = 5
 
+# rebuild the original array
 [expand/aggregate]
+
+#
+#  file: directPathMultipleValues.txt
+#  example: https://inist-cnrs.github.io/ezs/#/example-enrichments?id=sous-chemin-valeur-unique-dans-valeur-multiple
+#
