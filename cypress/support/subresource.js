@@ -13,7 +13,7 @@ export const fillSubcategoryFormAndSubmit = values => {
 };
 
 export const addField = (name, label, save = true) => {
-    cy.wait(1000);
+    cy.get('.field-grid').should('exist');
     cy.contains('button', 'New field').click();
 
     cy.get('.wizard').should('exist');

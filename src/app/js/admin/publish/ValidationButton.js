@@ -43,7 +43,9 @@ const ValidationButtonComponent = ({
     const redirectAndHandleEditField = (...args) => {
         const field = fields.find(({ name }) => name === args[0]);
         history.push(
-            `/display/${field && field.scope ? field.scope : SCOPE_DOCUMENT}`,
+            `/display/${
+                field && field.scope ? field.scope : SCOPE_DOCUMENT
+            }/edit`,
         );
 
         setTimeout(() => handleEditField(...args), 1000);

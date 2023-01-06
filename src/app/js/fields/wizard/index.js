@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose, withProps } from 'recompose';
@@ -7,11 +7,7 @@ import translate from 'redux-polyglot/translate';
 import { Box, Typography, Tabs, Tab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import {
-    editField as editFieldAction,
-    FIELD_FORM_NAME,
-    saveField as saveFieldAction,
-} from '../';
+import { FIELD_FORM_NAME, saveField as saveFieldAction } from '../';
 
 import { hideAddColumns } from '../../admin/parsing';
 import {
@@ -28,11 +24,16 @@ import TabSearch from './TabSearch';
 import TabSemantics from './TabSemantics';
 import FieldExcerpt from '../../admin/preview/field/FieldExcerpt';
 import Actions from './Actions';
-import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../../common/scope';
+import {
+    SCOPE_DATASET,
+    SCOPE_DOCUMENT,
+    SCOPE_GRAPHIC,
+} from '../../../../common/scope';
 import { URI_FIELD_NAME } from '../../../../common/uris';
 import classNames from 'classnames';
 import { TabPanel } from './TabPanel';
 import { reduxForm } from 'redux-form';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles({
     wizard: {
@@ -65,31 +66,31 @@ const FieldEditionWizardComponent = ({
     field,
     fields,
     filter,
-    editField,
     saveField,
     handleHideExistingColumns,
     p: polyglot,
 }) => {
     const classes = useStyles();
+    const history = useHistory();
     const [tabValue, setTabValue] = useState(0);
-
-    useEffect(() => {
-        if (!field || !field.name) {
-            setTabValue(0);
-        }
-    }, [field]);
 
     const handleChange = (_, newValue) => {
         setTabValue(newValue);
     };
 
     const handleCancel = () => {
-        editField(undefined);
         handleHideExistingColumns();
+        history.push(
+            `/display/${filter}${
+                filter === SCOPE_DOCUMENT && field.subresourceId
+                    ? `/${field.subresourceId}`
+                    : ''
+            }`,
+        );
     };
 
     const handleSave = () => {
-        saveField();
+        saveField({ field, filter });
         handleHideExistingColumns();
     };
 
@@ -97,12 +98,12 @@ const FieldEditionWizardComponent = ({
 
     const tabs = [
         {
-            label: 'field_wizard_step_identity',
+            label: 'field_wizard_tab_identity',
             id: 'tab-identity',
             component: <TabIdentity field={field} />,
         },
         {
-            label: 'field_wizard_step_value',
+            label: 'field_wizard_tab_value',
             id: 'tab-value',
             component: (
                 <TabValue
@@ -114,26 +115,26 @@ const FieldEditionWizardComponent = ({
             ),
         },
         {
-            label: 'field_wizard_step_tranforms',
+            label: 'field_wizard_tab_tranforms',
             id: 'tab-transforms',
             component: (
                 <TabTransforms isSubresourceField={!!field.subresourceId} />
             ),
         },
         {
-            label: 'field_wizard_step_display',
+            label: 'field_wizard_tab_display',
             id: 'tab-display',
             component: (
                 <TabDisplay isSubresourceField={!!field.subresourceId} />
             ),
         },
         !field.subresourceId && {
-            label: 'field_wizard_step_semantic',
+            label: 'field_wizard_tab_semantic',
             id: 'tab-semantics',
             component: <TabSemantics fields={fields} />,
         },
         !field.subresourceId && {
-            label: 'field_wizard_step_search',
+            label: 'field_wizard_tab_search',
             id: 'tab-search',
             component: <TabSearch />,
         },
@@ -222,7 +223,6 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    editField: editFieldAction,
     saveField: saveFieldAction,
     handleHideExistingColumns: hideAddColumns,
 };

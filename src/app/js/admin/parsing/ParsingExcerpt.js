@@ -12,6 +12,7 @@ import { fromEnrichments } from '../selectors';
 import theme from '../../theme';
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import { addField } from '../../fields';
+import { useHistory, useParams } from 'react-router';
 
 const styles = {
     table: {
@@ -67,6 +68,9 @@ export const ParsingExcerptComponent = ({
         enrichments,
     ]);
 
+    const { filter } = useParams();
+    const history = useHistory();
+
     const checkIsEnrichmentLoading = column => {
         return (
             enrichments?.find(enrichiment => enrichiment.name === column)
@@ -119,6 +123,9 @@ export const ParsingExcerptComponent = ({
                                             onAddColumn={name => {
                                                 onAddField && onAddField();
                                                 handleAddColumn(name);
+                                                history.push(
+                                                    `/display/${filter}/edit`,
+                                                );
                                             }}
                                             atTop={total < 3}
                                         />

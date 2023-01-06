@@ -7,6 +7,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
+import { useHistory, useParams } from 'react-router';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { addField } from '../../fields';
@@ -26,12 +27,17 @@ export const AddFieldButtonComponent = ({
     name,
 }) => {
     const classes = useStyles();
+    const { filter } = useParams();
+    const history = useHistory();
 
     return (
         <Button
             variant="contained"
             color="primary"
-            onClick={() => onAddNewField({ name })}
+            onClick={() => {
+                onAddNewField({ name });
+                history.push(`/display/${filter}/edit`);
+            }}
             className={classnames(
                 classes.containedButton,
                 'btn-add-free-field',

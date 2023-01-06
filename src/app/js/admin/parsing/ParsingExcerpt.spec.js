@@ -11,6 +11,17 @@ import {
 } from './ParsingExcerpt';
 import theme from '../../theme';
 
+const mockedHistory = {
+    push: jest.fn(),
+};
+
+jest.mock('react-router', () => ({
+    useHistory: jest.fn(() => mockedHistory),
+    useParams: () => ({
+        filter: 'bar',
+    }),
+}));
+
 describe('<ParsingExcerpt />', () => {
     it('should return an empty array of enrichments name', () => {
         const enrichments = [];

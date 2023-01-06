@@ -18,7 +18,6 @@ import {
 } from '../propTypes';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import { fromFields } from '../sharedSelectors';
-import PublicationModalWizard from '../fields/wizard';
 import { editField } from '../fields';
 
 const useStyles = makeStyles({
@@ -53,7 +52,6 @@ export const FieldsEditComponent = ({
     subresourceId,
     field,
     fields,
-    editField,
 }) => {
     const classes = useStyles();
     const [tab, setTab] = useState(defaultTab);
@@ -64,12 +62,6 @@ export const FieldsEditComponent = ({
             setAddFromColumnDialog(true);
         }
     }, [showAddFromColumn]);
-
-    useEffect(() => {
-        if (field) {
-            editField(undefined);
-        }
-    }, [filter, subresourceId]);
 
     const fieldsLength = fields.length;
     const previousFieldsLength = useRef(fieldsLength);
@@ -91,10 +83,6 @@ export const FieldsEditComponent = ({
         hideAddColumns();
         setAddFromColumnDialog(false);
     };
-
-    if (field) {
-        return <PublicationModalWizard filter={filter} />;
-    }
 
     return (
         <div>

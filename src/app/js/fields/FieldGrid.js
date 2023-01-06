@@ -30,9 +30,11 @@ import {
     saveFieldFromData,
 } from '../fields';
 import FieldInternalIcon from './FieldInternalIcon';
+import Loading from '../lib/components/Loading';
 
 import fieldApi from '../admin/api/field';
 import { toast } from 'react-toastify';
+import { useHistory } from 'react-router';
 
 const ROOT_PADDING = 16;
 
@@ -207,8 +209,10 @@ const DraggableItemGrid = compose(
         fields,
         polyglot,
         loadField,
+        filter,
     }) => {
         const classes = useStyles();
+        const history = useHistory();
 
         const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
         const [isEditable, setIsEditable] = useState(true);
@@ -249,6 +253,7 @@ const DraggableItemGrid = compose(
         const handleEditField = fieldName => {
             if (isEditable) {
                 onEditField(fieldName);
+                history.push(`/display/${filter}/edit`);
             }
         };
 
@@ -365,6 +370,7 @@ DraggableItemGrid.propTypes = {
     ).isRequired,
     polyglot: PropTypes.object.isRequired,
     loadField: PropTypes.func.isRequired,
+    filter: PropTypes.string.isRequired,
 };
 
 const FieldGridComponent = ({
@@ -375,6 +381,7 @@ const FieldGridComponent = ({
     changePositions,
     saveFieldFromData,
     p: polyglot,
+    isLoading,
 }) => {
     const classes = useStyles();
 
@@ -400,8 +407,16 @@ const FieldGridComponent = ({
         });
     };
 
+    if (isLoading) {
+        return (
+            <Box display="flex" justifyContent="center">
+                <Loading />
+            </Box>
+        );
+    }
+
     return (
-        <div className={classes.root}>
+        <div className={classNames(classes.root, 'field-grid')}>
             {fields.length === 0 ? (
                 <NoField label={polyglot.t('no_field_add')} />
             ) : (
@@ -413,6 +428,7 @@ const FieldGridComponent = ({
                     onChangePositions={handleChangePositions}
                     allowResize={true}
                     polyglot={polyglot}
+                    filter={filter}
                 />
             )}
         </div>
@@ -427,10 +443,12 @@ FieldGridComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     changePositions: PropTypes.func.isRequired,
     saveFieldFromData: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state, { subresourceId, filter }) => ({
     fields: fromFields.getEditingFields(state, { filter, subresourceId }),
+    isLoading: fromFields.isLoading(state),
 });
 
 export const FieldGrid = compose(

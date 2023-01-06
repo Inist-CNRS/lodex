@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
+import { useParams } from 'react-router';
 
 import {
     polyglot as polyglotPropTypes,
@@ -18,13 +19,14 @@ const styles = {
 };
 
 export const ActionsComponent = ({ field, p: polyglot, onCancel, onSave }) => {
+    const { filter } = useParams();
     if (!field) return null;
 
     return (
         <div style={styles.root}>
             {field.name !== 'uri' && (
                 <div>
-                    <RemoveButton field={field} />
+                    <RemoveButton field={field} filter={filter} />
                 </div>
             )}
             <div>

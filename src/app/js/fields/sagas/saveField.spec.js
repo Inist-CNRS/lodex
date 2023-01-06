@@ -11,7 +11,9 @@ import { handleSaveField, sanitizeField } from './saveField';
 
 describe('fields saga', () => {
     describe('handleSaveField', () => {
-        const saga = handleSaveField({ meta: { form: 'field' } });
+        const saga = handleSaveField({
+            payload: { field: { subresourceId: 'id' }, filter: 'foo' },
+        });
 
         it('should select getFieldFormData', () => {
             expect(saga.next().value).toEqual(select(getFieldFormData));
@@ -44,6 +46,18 @@ describe('fields saga', () => {
             );
         });
 
+        it('should put push action', () => {
+            expect(saga.next().value).toEqual(
+                put({
+                    type: '@@router/CALL_HISTORY_METHOD',
+                    payload: {
+                        args: ['/display/foo'],
+                        method: 'push',
+                    },
+                }),
+            );
+        });
+
         it('should put loadField action', () => {
             expect(saga.next({ response: 'foo' }).value).toEqual(
                 put(loadField()),
@@ -51,7 +65,9 @@ describe('fields saga', () => {
         });
 
         it('should put saveFieldError action with error if any', () => {
-            const failedSaga = handleSaveField({ meta: { form: 'field' } });
+            const failedSaga = handleSaveField({
+                payload: { field: { subresourceId: 'id' }, filter: 'foo' },
+            });
             failedSaga.next();
             failedSaga.next();
             failedSaga.next();
