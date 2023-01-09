@@ -33,7 +33,7 @@ export const defaultState = {
     open: false,
     isUrlValid: false,
     url: '',
-    loaderName: 'automatic',
+    loaderName: null,
     customLoader: null,
 };
 
