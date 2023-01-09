@@ -10,14 +10,17 @@ import { publish as publishAction } from '../../publish';
 import { clearPublished } from '../../clear';
 
 export function* handleUploadFile(action) {
+    console.log('HELLLO HANDLE UPLOADs');
     if (!action || !action.payload) {
         return;
     }
     try {
         preventUnload();
+        console.log('HANDLE STEP ONE');
         const loaderName = yield select(fromUpload.getLoaderName);
         const customLoader = yield select(fromUpload.getCustomLoader);
         const token = yield select(fromUser.getToken);
+        console.log('HANDLE STEP two');
         yield call(
             loadDatasetFile,
             action.payload,
@@ -25,10 +28,25 @@ export function* handleUploadFile(action) {
             loaderName,
             customLoader,
         );
-
         allowUnload();
-        yield take(FINISH_PROGRESS);
+    } catch (error) {
+        console.error(error);
+        allowUnload();
+        yield put(uploadError(error));
+    }
+}
 
+export function* handleFinishUpload() {
+    console.log('HANDLE FINISH UPLOAAAAAAD')
+    const isUploadPending = yield select(fromUpload.isUploadPending);
+    if (!isUploadPending) {
+        console.log('IUPLOAD IS NOT PENDING')
+        return;
+    }
+
+    console.log('UPLOAD IS PENDING')
+
+    try {
         yield put(uploadSuccess());
 
         const hasPublishedDataset = yield select(
@@ -40,11 +58,11 @@ export function* handleUploadFile(action) {
         }
     } catch (error) {
         console.error(error);
-        allowUnload();
         yield put(uploadError(error));
     }
 }
 
 export default function* uploadFileSaga() {
     yield takeEvery(UPLOAD_FILE, handleUploadFile);
+    yield takeEvery(FINISH_PROGRESS, handleFinishUpload);
 }
