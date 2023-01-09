@@ -6,7 +6,6 @@ import {
     Menu,
     makeStyles,
     Divider,
-    Snackbar,
 } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -25,7 +24,7 @@ import ClearAllIcon from '@material-ui/icons/ClearAll';
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 import StorageIcon from '@material-ui/icons/Storage';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { Alert } from '@material-ui/lab';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles({
     container: {
@@ -51,7 +50,6 @@ const MenuComponent = ({
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [showClearDialog, setShowClearDialog] = React.useState(false);
-    const [showAlertClearJobs, setShowAlertClearJobs] = React.useState(false);
 
     const open = !!anchorEl;
     const handleOpenMenu = event => {
@@ -66,7 +64,9 @@ const MenuComponent = ({
     const handleClearJobs = async () => {
         const result = await jobsApi.clearJobs();
         if (result.response.status === 'success') {
-            setShowAlertClearJobs(true);
+            toast(polyglot.t('jobs_cleared'), {
+                type: toast.TYPE.SUCCESS,
+            });
         }
         setAnchorEl(null);
     };
@@ -155,17 +155,6 @@ const MenuComponent = ({
                     onClose={() => setShowClearDialog(!showClearDialog)}
                 />
             )}
-
-            <Snackbar
-                open={showAlertClearJobs}
-                autoHideDuration={3000}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                onClose={() => setShowAlertClearJobs(!showAlertClearJobs)}
-            >
-                <Alert variant="filled" severity="success">
-                    {polyglot.t('jobs_cleared')}
-                </Alert>
-            </Snackbar>
         </>
     );
 };
