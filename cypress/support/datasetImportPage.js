@@ -17,7 +17,10 @@ export const importOtherDataset = (filename, mimeType = 'text/csv') => {
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);
     selectLoader();
-    cy.get('.btn-upload-dataset').click({ force: true, timeout: 4000 });
+    cy.get('.btn-upload-dataset', {
+        timeout: 20000,
+    }).should('be.enabled');
+    cy.get('.btn-upload-dataset').click();
     cy.get('#confirm-upload', { timeout: 5000 }).should('be.visible');
     cy.contains('Accept').click({ force: true });
     cy.get('.progress-container', { timeout: 1500 }).should('be.visible');
