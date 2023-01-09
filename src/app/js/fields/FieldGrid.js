@@ -30,7 +30,6 @@ import {
     saveFieldFromData,
 } from '../fields';
 import FieldInternalIcon from './FieldInternalIcon';
-import Loading from '../lib/components/Loading';
 
 import fieldApi from '../admin/api/field';
 import { toast } from 'react-toastify';
@@ -381,7 +380,6 @@ const FieldGridComponent = ({
     changePositions,
     saveFieldFromData,
     p: polyglot,
-    isLoading,
 }) => {
     const classes = useStyles();
 
@@ -406,14 +404,6 @@ const FieldGridComponent = ({
             silent: true /* Doesn't trigger "success" / re-publish */,
         });
     };
-
-    if (isLoading) {
-        return (
-            <Box display="flex" justifyContent="center">
-                <Loading />
-            </Box>
-        );
-    }
 
     return (
         <div className={classNames(classes.root, 'field-grid')}>
@@ -443,12 +433,10 @@ FieldGridComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     changePositions: PropTypes.func.isRequired,
     saveFieldFromData: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state, { subresourceId, filter }) => ({
     fields: fromFields.getEditingFields(state, { filter, subresourceId }),
-    isLoading: fromFields.isLoading(state),
 });
 
 export const FieldGrid = compose(
