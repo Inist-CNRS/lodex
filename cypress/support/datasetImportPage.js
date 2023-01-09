@@ -11,7 +11,6 @@ export const importDataset = (filename, mimeType = 'text/csv') => {
 
     cy.get('.progress-container', { timeout: 500 }).should('be.visible');
     cy.wait(300);
-    //    cy.get('.progress', { timeout: 6000 }).should('not.exist');
 
     cy.get('[role="grid"]', { timeout: 6000 }).should('exist');
 };
@@ -19,6 +18,7 @@ export const importDataset = (filename, mimeType = 'text/csv') => {
 export const importOtherDataset = (filename, mimeType = 'text/csv') => {
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);
+    selectLoader();
     cy.get('.btn-upload-dataset').click({ force: true });
     cy.get('#confirm-upload', { timeout: 3000 }).should('be.visible');
     cy.wait(300);
@@ -34,6 +34,7 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
 
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);
+    selectLoader();
 
     cy.get('.btn-upload-dataset').click({ force: true });
     cy.get('#confirm-upload', { timeout: 3000 }).should('be.visible');
@@ -175,9 +176,17 @@ export const checkListOfFiltererFileFormats = () => {
 export const addFile = (filename, mimeType = 'text/csv') => {
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);
+    selectLoader();
     cy.get('.btn-upload-dataset').click({ force: true });
 };
 export const addFileWithoutClick = (filename, mimeType = 'text/csv') => {
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);
+};
+
+export const selectLoader = (loaderName = 'automatic') => {
+    cy.get('.select-loader')
+        .first()
+        .click();
+    cy.get(`[role="listbox"] li[data-value="${loaderName}"]`).click();
 };
