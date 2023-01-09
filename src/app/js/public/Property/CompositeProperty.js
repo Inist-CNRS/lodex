@@ -63,8 +63,9 @@ const mapStateToProps = (state, { field, resource, parents }) => {
         state,
         field,
     );
-    const compositeFields = allCompositeFields.filter(
-        f => !parents.includes(f.name),
+
+    const compositeFields = allCompositeFields?.filter(
+        f => f?.name && !parents.includes(f.name),
     );
 
     return {
