@@ -1,4 +1,4 @@
-import { call, take, put, select, takeEvery } from 'redux-saga/effects';
+import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import { fromUser } from '../../../sharedSelectors';
 import { fromUpload, fromPublication } from '../../selectors';
@@ -18,6 +18,7 @@ export function* handleUploadFile(action) {
         const loaderName = yield select(fromUpload.getLoaderName);
         const customLoader = yield select(fromUpload.getCustomLoader);
         const token = yield select(fromUser.getToken);
+
         yield call(
             loadDatasetFile,
             action.payload,
@@ -25,10 +26,21 @@ export function* handleUploadFile(action) {
             loaderName,
             customLoader,
         );
-
         allowUnload();
-        yield take(FINISH_PROGRESS);
+    } catch (error) {
+        console.error(error);
+        allowUnload();
+        yield put(uploadError(error));
+    }
+}
 
+export function* handleFinishUpload() {
+    const isUploadPending = yield select(fromUpload.isUploadPending);
+    if (!isUploadPending) {
+        return;
+    }
+
+    try {
         yield put(uploadSuccess());
 
         const hasPublishedDataset = yield select(
@@ -40,11 +52,11 @@ export function* handleUploadFile(action) {
         }
     } catch (error) {
         console.error(error);
-        allowUnload();
         yield put(uploadError(error));
     }
 }
 
 export default function* uploadFileSaga() {
     yield takeEvery(UPLOAD_FILE, handleUploadFile);
+    yield takeEvery(FINISH_PROGRESS, handleFinishUpload);
 }

@@ -4,11 +4,11 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
-import MainResourceIcon from '@material-ui/icons/InsertDriveFile';
+import ArticleIcon from '@mui/icons-material/Article';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import FilterAtIcon from './FilterAt';
 import { Tooltip } from '@material-ui/core';
 
@@ -45,12 +45,12 @@ export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
             </ToggleButton>
             <ToggleButton value="document" aria-label="centered">
                 <Tooltip title={polyglot.t('document_tooltip')}>
-                    <MainResourceIcon />
+                    <ArticleIcon />
                 </Tooltip>
             </ToggleButton>
             <ToggleButton value="subRessource" aria-label="centered">
                 <Tooltip title={polyglot.t('subRessource_tooltip')}>
-                    <FileCopyIcon />
+                    <DocumentScannerIcon />
                 </Tooltip>
             </ToggleButton>
             <ToggleButton value="facet" aria-label="centered">

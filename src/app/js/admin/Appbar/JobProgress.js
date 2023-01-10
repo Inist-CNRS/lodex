@@ -107,7 +107,7 @@ const JobProgressComponent = props => {
             if (data.success) {
                 handlePublishSuccess();
                 setProgress();
-            } else {
+            } else if (!data.isPublishing) {
                 handlePublishError(data);
                 setProgress({
                     isJobError: true,
@@ -119,7 +119,7 @@ const JobProgressComponent = props => {
         });
 
         socket.on('import', data => {
-            if (!data.isImporting) {
+            if (!data.isImporting && data.success) {
                 loadParsingResult();
                 setHasLoadedParsingResult(false);
             }
@@ -138,7 +138,9 @@ const JobProgressComponent = props => {
             }
         });
 
-        return () => socket.disconnect();
+        return () => {
+            socket.disconnect();
+        };
     }, []);
 
     useEffect(() => {
