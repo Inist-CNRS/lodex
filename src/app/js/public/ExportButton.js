@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { IconButton, Popover, Menu, Button } from '@material-ui/core';
+import { IconButton, Menu, Button } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import translate from 'redux-polyglot/translate';
@@ -10,13 +10,10 @@ import compose from 'recompose/compose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { fromExport } from './selectors';
-import theme from '../theme';
 import ExportItem from './export/ExportMenuItem';
 import stylesToClassname from '../lib/stylesToClassName';
 
-import {
-    exportPublishedDataset as exportPublishedDatasetAction,
-} from './export';
+import { exportPublishedDataset as exportPublishedDatasetAction } from './export';
 
 const styles = stylesToClassname(
     {

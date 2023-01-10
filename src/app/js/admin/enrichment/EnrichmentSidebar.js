@@ -4,7 +4,7 @@ import translate from 'redux-polyglot/translate';
 import { makeStyles } from '@material-ui/core';
 import { EnrichmentContext } from './EnrichmentContext';
 import EnrichmentActionButton from './EnrichmentActionButton';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import EnrichmentLogs from './EnrichmentLogs';
 
 const useStyles = makeStyles({
@@ -15,11 +15,11 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: theme.black.lighter,
+        backgroundColor: colorsTheme.black.lighter,
         textAlign: 'center',
         height: '100vh',
         flex: 2,
-        borderLeft: `2px solid ${theme.black.light}`,
+        borderLeft: `2px solid ${colorsTheme.black.light}`,
         overflow: 'auto',
     },
 });

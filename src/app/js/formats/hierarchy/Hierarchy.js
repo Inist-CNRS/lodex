@@ -11,7 +11,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { isValidColor } from '../colorUtils';
 import MouseIcon from '../shared/MouseIcon';
 
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import CenterIcon from '../shared/CenterIcon';
 import stylesToClassname from '../../lib/stylesToClassName';
 
@@ -64,9 +64,9 @@ const styles = StyleSheet.create({
 
 const stylesWithClassnames = stylesToClassname({
     icon: {
-        color: theme.green.primary,
+        color: colorsTheme.green.primary,
         ':hover': {
-            color: theme.purple.primary,
+            color: colorsTheme.purple.primary,
             cursor: 'pointer',
         },
     },

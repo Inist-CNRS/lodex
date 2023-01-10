@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { withRouter } from 'react-router';
 
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import { fromBreadcrumb } from '../selectors';
 import BreadcrumbItem from './BreadcrumbItem';
 import stylesToClassname from '../../lib/stylesToClassName';
@@ -19,7 +19,7 @@ const styles = stylesToClassname(
             justifyContent: 'flex-start',
         },
         icon: {
-            color: theme.green.primary,
+            color: colorsTheme.green.primary,
             margin: '5px 0px',
         },
         trail: {

@@ -19,7 +19,7 @@ import configureStore from '../configureStore';
 import scrollToTop from '../lib/scrollToTop';
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
-import theme from '../theme';
+import colorsTheme from '../../custom/colorsTheme';
 import App from './App';
 import Login from '../user/Login';
 import PrivateRoute from './PrivateRoute';
@@ -29,17 +29,17 @@ import { Data } from './Data';
 const adminTheme = createTheme({
     palette: {
         secondary: {
-            main: theme.orange.primary,
+            main: colorsTheme.orange.primary,
         },
         primary: {
-            main: theme.green.primary,
-            contrastText: theme.white.primary,
+            main: colorsTheme.green.primary,
+            contrastText: colorsTheme.white.primary,
         },
         contrastThreshold: 3,
         // @TODO: find this usage or remove
-        primary2Color: theme.purple.primary,
+        primary2Color: colorsTheme.purple.primary,
         text: {
-            primary: theme.black.secondary,
+            primary: colorsTheme.black.secondary,
         },
     },
 });

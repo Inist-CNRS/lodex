@@ -4,13 +4,13 @@ import { IconButton } from '@material-ui/core';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import theme from '../../../theme';
+import colorsTheme from '../../../../custom/colorsTheme';
 import stylesToClassname from '../../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
     {
         icon: {
-            color: theme.green.primary,
+            color: colorsTheme.green.primary,
         },
     },
     'searchbar-facets-toggler',

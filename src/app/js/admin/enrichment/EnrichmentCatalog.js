@@ -20,7 +20,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import enrichers from '../../../custom/enrichers/enrichers-catalog.json';
 import classnames from 'classnames';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import FilterIcon from '@material-ui/icons/FilterList';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
@@ -29,14 +29,14 @@ const useStyles = makeStyles({
     item: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: theme.black.veryLight,
+            backgroundColor: colorsTheme.black.veryLight,
         },
-        borderBottom: `1px solid ${theme.black.light}`,
+        borderBottom: `1px solid ${colorsTheme.black.light}`,
     },
     selectedItem: {
-        backgroundColor: theme.green.secondary,
+        backgroundColor: colorsTheme.green.secondary,
         '&:hover': {
-            backgroundColor: theme.green.primary,
+            backgroundColor: colorsTheme.green.primary,
         },
         '& a': {
             color: 'white',

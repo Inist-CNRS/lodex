@@ -23,20 +23,20 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 
 import routines from '../../../custom/routines/routines-catalog.json';
 import classnames from 'classnames';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 
 const useStyles = makeStyles({
     item: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: theme.black.veryLight,
+            backgroundColor: colorsTheme.black.veryLight,
         },
-        borderBottom: `1px solid ${theme.black.light}`,
+        borderBottom: `1px solid ${colorsTheme.black.light}`,
     },
     selectedItem: {
-        backgroundColor: theme.green.secondary,
+        backgroundColor: colorsTheme.green.secondary,
         '&:hover': {
-            backgroundColor: theme.green.primary,
+            backgroundColor: colorsTheme.green.primary,
         },
         '& a': {
             color: 'white',

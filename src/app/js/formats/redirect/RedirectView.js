@@ -10,7 +10,7 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 
 const typing = {
     '0%': {
@@ -23,7 +23,7 @@ const typing = {
 
 const blinkCaret = {
     '0%': {
-        borderColor: theme.green.primary,
+        borderColor: colorsTheme.green.primary,
     },
     '100%': {
         borderColor: 'transparent',
@@ -46,7 +46,7 @@ const styles = stylesToClassname(
             zIndex: 100000,
         },
         typewriter: {
-            color: theme.green.primary,
+            color: colorsTheme.green.primary,
             overflow: 'hidden',
             fontSize: '2rem',
             borderRight: '0.25rem solid',
