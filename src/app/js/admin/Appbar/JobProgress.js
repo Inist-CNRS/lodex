@@ -119,7 +119,7 @@ const JobProgressComponent = props => {
         });
 
         socket.on('import', data => {
-            if (!data.isImporting && hasLoadedParsingResult) {
+            if (!data.isImporting && data.success) {
                 loadParsingResult();
                 setHasLoadedParsingResult(false);
             }
@@ -138,8 +138,10 @@ const JobProgressComponent = props => {
             }
         });
 
-        return () => socket.disconnect();
-    }, [hasLoadedParsingResult]);
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
 
     useEffect(() => {
         if (
