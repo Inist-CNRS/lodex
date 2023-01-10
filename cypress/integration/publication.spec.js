@@ -39,10 +39,11 @@ describe('Dataset Publication', () => {
             cy.wait(300);
             datasetImportPage.importDataset('dataset/simple.csv');
 
-            cy.get('.sidebar')
-                .contains('Add more')
+            cy.get('.sidebar', { timeout: 500 })
+                .contains('a', 'Add')
                 .click();
 
+            cy.wait(300);
             datasetImportPage.importOtherDataset('dataset/simple.csv');
             cy.wait(500);
 

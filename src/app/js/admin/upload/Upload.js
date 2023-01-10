@@ -273,9 +273,7 @@ export const UploadComponent = ({
                 color="primary"
                 className={classnames(classes.button, 'btn-upload-dataset')}
                 disabled={
-                    isUploading ||
-                    (files.length === 0 && (!url || !isUrlValid)) ||
-                    !loaderName
+                    isUploading || (files.length === 0 && (!url || !isUrlValid))
                 }
                 onClick={useUrlForUpload ? handleUrlAdded : handleFileUploaded}
                 startIcon={<PublishIcon />}
