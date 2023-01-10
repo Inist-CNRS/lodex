@@ -1,4 +1,4 @@
-import Resumable from 'resumablejs';
+import Resumable from '../../../common/tools/resumable';
 
 export const loadFile = (url, file, token, customLoader = null) =>
     new Promise((resolve, reject) => {
@@ -7,6 +7,7 @@ export const loadFile = (url, file, token, customLoader = null) =>
             headers: {
                 Authorization: `Bearer ${token}`,
             },
+            multipart: true,
         };
 
         if (customLoader) {
@@ -19,7 +20,9 @@ export const loadFile = (url, file, token, customLoader = null) =>
         resumable.on('complete', resolve);
         resumable.on('error', (_, error) => reject(error));
 
-        resumable.on('fileAdded', () => resumable.upload());
+        resumable.on('fileAdded', () => {
+            resumable.upload();
+        });
         resumable.addFile(file);
     });
 
