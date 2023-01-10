@@ -12,11 +12,7 @@ import withInitialData from './withInitialData';
 
 export const DataRouteComponent = ({ canUploadFile }) => {
     if (canUploadFile) {
-        return (
-            <div style={{ margin: '0 100px' }}>
-                <Upload className="admin" isFirstFile={canUploadFile} />
-            </div>
-        );
+        return <Upload className="admin" isFirstFile={canUploadFile} />;
     }
 
     return (

@@ -31,6 +31,7 @@ const useStyles = makeStyles({
         marginLeft: 4,
         marginRight: 4,
         alignSelf: 'center',
+        alignItems: 'flex-start',
     },
     input: {
         '@media (min-width: 992px)': {
@@ -42,16 +43,13 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         marginTop: '48px',
-        '@media (min-width: 1200px)': {
-            width: 800,
-            margin: '48px auto 0',
-        },
     },
     form: {
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
         alignItems: 'center',
+        margin: '0 40px',
         '@media (min-width: 992px)': {
             flexDirection: 'row',
         },
@@ -272,16 +270,17 @@ export const UploadComponent = ({
             />
             <Button
                 variant="contained"
-                component="label"
                 color="primary"
                 className={classnames(classes.button, 'btn-upload-dataset')}
                 disabled={
-                    isUploading || (files.length === 0 && (!url || !isUrlValid))
+                    isUploading ||
+                    (files.length === 0 && (!url || !isUrlValid)) ||
+                    !loaderName
                 }
                 onClick={useUrlForUpload ? handleUrlAdded : handleFileUploaded}
+                startIcon={<PublishIcon />}
             >
                 {polyglot.t('upload_data')}
-                <PublishIcon fontSize="medium" style={{ marginLeft: 20 }} />
             </Button>
 
             <PopupConfirmUpload
