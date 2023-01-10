@@ -10,7 +10,7 @@ import classnames from 'classnames';
 import { fromPublicationPreview } from './selectors';
 import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import theme from './../theme';
+import colorsTheme from '../../custom/colorsTheme';
 
 const useStyles = makeStyles({
     progress: {
@@ -30,14 +30,14 @@ const useStyles = makeStyles({
     item: {
         paddingLeft: '1rem',
         paddingRight: '1rem',
-        backgroundColor: theme.black.veryLight,
+        backgroundColor: colorsTheme.black.veryLight,
         lineHeight: '30px',
         height: '100%',
         alignItems: 'center',
         display: 'flex',
     },
     isPublished: {
-        backgroundColor: theme.green.tertiary,
+        backgroundColor: colorsTheme.green.tertiary,
     },
     toggle: {
         cursor: 'pointer',

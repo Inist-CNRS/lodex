@@ -7,7 +7,7 @@ import { IconButton } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
 
@@ -19,12 +19,12 @@ const styles = stylesToClassname(
             padding: '0px !important',
         },
         icon: {
-            color: theme.green.primary,
+            color: colorsTheme.green.primary,
             ':hover': {
-                color: theme.purple.primary,
+                color: colorsTheme.purple.primary,
             },
             ':active': {
-                color: theme.orange.primary,
+                color: colorsTheme.orange.primary,
             },
         },
     },
@@ -40,14 +40,14 @@ const renderIcon = direction =>
         <FontAwesomeIcon
             className={styles.icon}
             icon={faAngleRight}
-            color={theme.green.primary}
+            color={colorsTheme.green.primary}
             height={36}
         />
     ) : (
         <FontAwesomeIcon
             className={styles.icon}
             icon={faAngleLeft}
-            color={theme.green.primary}
+            color={colorsTheme.green.primary}
             height={36}
         />
     );

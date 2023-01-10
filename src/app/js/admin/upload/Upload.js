@@ -22,7 +22,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
 import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import PopupConfirmUpload from './PopupConfirmUpload';
 import { toast } from 'react-toastify';
 
@@ -56,8 +56,8 @@ const useStyles = makeStyles({
     },
     loader: {
         minHeight: '220px',
-        backgroundColor: theme.white.primary,
-        color: theme.green.primary,
+        backgroundColor: colorsTheme.white.primary,
+        color: colorsTheme.green.primary,
     },
     divider: {
         textTransform: 'uppercase',
@@ -69,7 +69,7 @@ const useStyles = makeStyles({
             width: '100%',
             height: '2px',
             content: '""',
-            backgroundColor: theme.green.primary,
+            backgroundColor: colorsTheme.green.primary,
             position: 'absolute',
             top: '50%',
             left: 0,
@@ -92,7 +92,7 @@ const useStyles = makeStyles({
     },
     dividerLabel: {
         padding: '1rem',
-        backgroundColor: theme.white.primary,
+        backgroundColor: colorsTheme.white.primary,
         position: 'relative',
         display: 'inline-block',
         '@media (min-width: 992px)': {

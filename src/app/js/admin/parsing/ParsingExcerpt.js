@@ -9,7 +9,7 @@ import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 import { fromEnrichments } from '../selectors';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import { addField } from '../../fields';
 
@@ -25,7 +25,7 @@ const styles = {
         position: 'relative',
     },
     enrichedColumn: {
-        backgroundColor: theme.green.light,
+        backgroundColor: colorsTheme.green.light,
     },
 };
 

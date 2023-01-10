@@ -6,7 +6,7 @@ import { CircularProgress, LinearProgress, Button } from '@material-ui/core';
 import Warning from '@material-ui/icons/Warning';
 import Success from '@material-ui/icons/Done';
 import { makeStyles } from '@material-ui/styles';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 
 const useStyles = makeStyles({
     container: {
@@ -20,8 +20,8 @@ const useStyles = makeStyles({
     progress: {
         margin: '0 4px 0',
     },
-    colorPrimary: { backgroundColor: theme.white.primary },
-    barColorPrimary: { backgroundColor: theme.green.secondary },
+    colorPrimary: { backgroundColor: colorsTheme.white.primary },
+    barColorPrimary: { backgroundColor: colorsTheme.green.secondary },
 });
 
 const ButtonWithStatus = ({

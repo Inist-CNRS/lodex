@@ -16,7 +16,7 @@ import {
     Menu,
     MenuItem,
 } from '@material-ui/core';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import { toast } from 'react-toastify';
 
 const style = {
@@ -35,7 +35,7 @@ const style = {
         marginRight: 10,
     },
     menuPaper: {
-        backgroundColor: theme.green.primary,
+        backgroundColor: colorsTheme.green.primary,
         '& .MuiMenuItem-root': {
             color: 'white',
         },
@@ -263,9 +263,11 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
         <div>
             <h2 style={{ textAlign: 'center' }}>
                 {polyglot.t('column')}{' '}
-                <span style={{ color: theme.green.primary }}>{cell.field}</span>{' '}
+                <span style={{ color: colorsTheme.green.primary }}>
+                    {cell.field}
+                </span>{' '}
                 {polyglot.t('for_row')}{' '}
-                <span style={{ color: theme.orange.primary }}>
+                <span style={{ color: colorsTheme.orange.primary }}>
                     {cell?.row?.uri || cell?.row?.ark}
                 </span>
             </h2>

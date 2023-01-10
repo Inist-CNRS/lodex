@@ -14,13 +14,13 @@ import { fromUser } from '../../sharedSelectors';
 import { fromParsing, fromPublication } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';
-import theme from './../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import Menu from './Menu';
 import GoToPublicationButton from './GoToPublicationButton';
 import JobProgress from './JobProgress';
 const useStyles = makeStyles({
     linkToHome: {
-        color: `${theme.white.primary} !important`,
+        color: `${colorsTheme.white.primary} !important`,
         textDecoration: 'none',
         marginRight: '1rem',
         textTransform: 'uppercase',
@@ -39,15 +39,15 @@ const useStyles = makeStyles({
         marginRight: 4,
     },
     button: {
-        color: theme.white.primary,
+        color: colorsTheme.white.primary,
         borderRadius: 0,
         padding: '0 20px',
         boxSizing: 'border-box',
-        borderBottom: `3px solid ${theme.green.primary}`,
+        borderBottom: `3px solid ${colorsTheme.green.primary}`,
         '&:hover': {
             transition: 'all ease-in-out 400ms',
-            borderBottom: `3px solid ${theme.white.primary}`,
-            color: theme.white.primary,
+            borderBottom: `3px solid ${colorsTheme.white.primary}`,
+            color: colorsTheme.white.primary,
         },
     },
     linksContainer: {
@@ -66,8 +66,8 @@ const useStyles = makeStyles({
         display: 'flex',
         margin: '0 4px 0',
     },
-    colorPrimary: { backgroundColor: theme.white.primary },
-    barColorPrimary: { backgroundColor: theme.green.secondary },
+    colorPrimary: { backgroundColor: colorsTheme.white.primary },
+    barColorPrimary: { backgroundColor: colorsTheme.green.secondary },
     progressContainer: {
         display: 'flex',
         flexDirection: 'column',
@@ -85,8 +85,8 @@ const useStyles = makeStyles({
 });
 
 const activeButtonStyle = {
-    borderBottom: `3px solid ${theme.white.primary}`,
-    backgroundColor: theme.black.transparent,
+    borderBottom: `3px solid ${colorsTheme.white.primary}`,
+    backgroundColor: colorsTheme.black.transparent,
 };
 
 const AppbarComponent = ({

@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import classnames from 'classnames';
 import SubressourceFieldAutoComplete from './SubressourceFieldAutoComplete';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import { connect } from 'react-redux';
 import { fromParsing } from '../selectors';
 
@@ -23,20 +23,20 @@ const useStyles = makeStyles({
     item: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: theme.black.veryLight,
+            backgroundColor: colorsTheme.black.veryLight,
         },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        borderBottom: `1px solid ${theme.black.light}`,
+        borderBottom: `1px solid ${colorsTheme.black.light}`,
         '&:last-child': {
             borderBottom: 'none',
         },
     },
     selectedItem: {
-        backgroundColor: theme.green.secondary,
+        backgroundColor: colorsTheme.green.secondary,
         '&:hover': {
-            backgroundColor: theme.green.primary,
+            backgroundColor: colorsTheme.green.primary,
         },
     },
 });
