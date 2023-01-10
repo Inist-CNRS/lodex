@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter, useHistory, useParams } from 'react-router';
+import { withRouter, useParams } from 'react-router';
 import translate from 'redux-polyglot/translate';
 import { Add as AddNewIcon } from '@material-ui/icons';
 import { compose } from 'recompose';
@@ -55,7 +55,6 @@ export const AddSubresourceFieldButtonComponent = ({
 }) => {
     const classes = useStyles();
     const { filter } = useParams();
-    const history = useHistory();
 
     return (
         <Button
@@ -63,8 +62,10 @@ export const AddSubresourceFieldButtonComponent = ({
             color="primary"
             onClick={() => {
                 subresource &&
-                    addField(createDefaultSubresourceField(subresource));
-                history.push(`/display/${filter}/edit`);
+                    addField({
+                        ...createDefaultSubresourceField(subresource),
+                        filter,
+                    });
             }}
         >
             <AddNewIcon className={classes.icon} />

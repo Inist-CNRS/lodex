@@ -18,7 +18,6 @@ import {
 } from '../propTypes';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import { fromFields } from '../sharedSelectors';
-import { editField } from '../fields';
 
 const useStyles = makeStyles({
     actionsContainer: {
@@ -144,7 +143,6 @@ FieldsEditComponent.propTypes = {
     subresourceId: PropTypes.string,
     field: fieldPropTypes,
     fields: PropTypes.array,
-    editField: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, { subresourceId, filter }) => ({
@@ -155,7 +153,6 @@ const mapStateToProps = (state, { subresourceId, filter }) => ({
 
 const mapDispatchToProps = {
     hideAddColumns,
-    editField,
 };
 
 export const FieldsEdit = compose(

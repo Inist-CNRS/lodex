@@ -7,7 +7,7 @@ import translate from 'redux-polyglot/translate';
 import { Box, Typography, Tabs, Tab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { FIELD_FORM_NAME, saveField as saveFieldAction } from '../';
+import { FIELD_FORM_NAME, saveField as saveFieldAction, editField } from '../';
 
 import { hideAddColumns } from '../../admin/parsing';
 import {
@@ -24,11 +24,7 @@ import TabSearch from './TabSearch';
 import TabSemantics from './TabSemantics';
 import FieldExcerpt from '../../admin/preview/field/FieldExcerpt';
 import Actions from './Actions';
-import {
-    SCOPE_DATASET,
-    SCOPE_DOCUMENT,
-    SCOPE_GRAPHIC,
-} from '../../../../common/scope';
+import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../../common/scope';
 import { URI_FIELD_NAME } from '../../../../common/uris';
 import classNames from 'classnames';
 import { TabPanel } from './TabPanel';
@@ -67,6 +63,7 @@ const FieldEditionWizardComponent = ({
     fields,
     filter,
     saveField,
+    editField,
     handleHideExistingColumns,
     p: polyglot,
 }) => {
@@ -78,7 +75,7 @@ const FieldEditionWizardComponent = ({
         if (!field) {
             history.push(`/display/${filter}`);
         }
-    }, [field]);
+    }, []);
 
     const handleChange = (_, newValue) => {
         setTabValue(newValue);
@@ -86,13 +83,7 @@ const FieldEditionWizardComponent = ({
 
     const handleCancel = () => {
         handleHideExistingColumns();
-        history.push(
-            `/display/${filter}${
-                filter === SCOPE_DOCUMENT && field.subresourceId
-                    ? `/${field.subresourceId}`
-                    : ''
-            }`,
-        );
+        editField({ field: null, filter, subresourceId: field.subresourceId });
     };
 
     const handleSave = () => {
@@ -231,6 +222,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     saveField: saveFieldAction,
     handleHideExistingColumns: hideAddColumns,
+    editField: editField,
 };
 
 export default compose(

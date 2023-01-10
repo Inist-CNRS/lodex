@@ -8,10 +8,7 @@ import FieldEditForm from '../../../fields/wizard';
 import { editField, loadField } from '../../../fields';
 import { fromFields } from '../../../sharedSelectors';
 
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../../../propTypes';
+import { field as fieldPropTypes } from '../../../propTypes';
 
 const styles = {
     container: {

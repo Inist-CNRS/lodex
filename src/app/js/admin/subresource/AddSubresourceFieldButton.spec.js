@@ -4,13 +4,8 @@ import { Button } from '@material-ui/core';
 
 import { AddSubresourceFieldButtonComponent as AddSubresourceFieldButton } from './AddSubresourceFieldButton';
 
-const mockedHistory = {
-    push: jest.fn(),
-};
-
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
-    useHistory: jest.fn(() => mockedHistory),
     useParams: () => ({
         filter: 'bar',
     }),
@@ -47,8 +42,8 @@ describe('<AddSubresourceFieldButton />', () => {
                 },
                 { operation: 'PARSE' },
             ],
+            filter: 'bar',
         });
-        expect(mockedHistory.push).toHaveBeenCalledWith('/display/bar/edit');
     });
 
     it('should not call addField on click if subresource is false', () => {

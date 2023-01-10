@@ -33,7 +33,6 @@ import FieldInternalIcon from './FieldInternalIcon';
 
 import fieldApi from '../admin/api/field';
 import { toast } from 'react-toastify';
-import { useHistory } from 'react-router';
 
 const ROOT_PADDING = 16;
 
@@ -211,7 +210,6 @@ const DraggableItemGrid = compose(
         filter,
     }) => {
         const classes = useStyles();
-        const history = useHistory();
 
         const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
         const [isEditable, setIsEditable] = useState(true);
@@ -249,10 +247,9 @@ const DraggableItemGrid = compose(
             }
         };
 
-        const handleEditField = fieldName => {
+        const handleEditField = (field, filter) => {
             if (isEditable) {
-                onEditField(fieldName);
-                history.push(`/display/${filter}/edit`);
+                onEditField({ field, filter });
             }
         };
 
@@ -294,7 +291,7 @@ const DraggableItemGrid = compose(
                             key={field.name}
                             aria-label={field.label}
                             className={classes.property}
-                            onClick={() => handleEditField(field.name)}
+                            onClick={() => handleEditField(field.name, filter)}
                         >
                             <span
                                 className={classNames(

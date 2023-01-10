@@ -283,7 +283,7 @@ describe('field reducer', () => {
                 {
                     list: ['name1', 'name2', 'name3'],
                 },
-                editField(1),
+                editField({ field: 1 }),
             );
             expect(state).toEqual({
                 list: ['name1', 'name2', 'name3'],

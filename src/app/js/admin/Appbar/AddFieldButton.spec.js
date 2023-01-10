@@ -4,12 +4,7 @@ import { Button } from '@material-ui/core';
 
 import { AddFieldButtonComponent as AddFieldButton } from './AddFieldButton';
 
-const mockedHistory = {
-    push: jest.fn(),
-};
-
 jest.mock('react-router', () => ({
-    useHistory: jest.fn(() => mockedHistory),
     useParams: () => ({
         filter: 'bar',
     }),
@@ -32,7 +27,7 @@ describe('<AddFieldButton />', () => {
 
         expect(onAddNewField).toHaveBeenCalledWith({
             name: 'foo',
+            filter: 'bar',
         });
-        expect(mockedHistory.push).toHaveBeenCalledWith('/display/bar/edit');
     });
 });
