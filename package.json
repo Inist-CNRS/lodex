@@ -198,7 +198,6 @@
         "redux-saga": "^0.16.2",
         "request": "^2.88.0",
         "reselect": "^3.0.1",
-        "resumablejs": "^1.1.0",
         "scheduler": "^0.18.0",
         "socket.io": "4.5.4",
         "socket.io-client": "4.5.4",
