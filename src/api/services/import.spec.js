@@ -39,7 +39,10 @@ describe('import', () => {
         });
 
         it('should have called getLoader with extension', async () => {
-            expect(ctx.getLoader).toHaveBeenCalledWith('csv');
+            expect(ctx.getLoader).toHaveBeenCalledWith('csv', {
+                parser: 'csv',
+                source: 'upload/filename.csv',
+            });
         });
 
         it('should have called mergeChunks', async () => {
@@ -116,7 +119,10 @@ describe('import', () => {
         });
 
         it('should have called getCustomLoader with custom', async () => {
-            expect(ctx.getCustomLoader).toHaveBeenCalledWith('custom');
+            expect(ctx.getCustomLoader).toHaveBeenCalledWith('custom', {
+                parser: 'csv/custom',
+                source: 'upload/filename.csv'
+            });
         });
 
         it('should have called mergeChunks', async () => {
@@ -192,7 +198,10 @@ describe('import', () => {
         });
 
         it('should have called getLoader with extension', async () => {
-            expect(ctx.getLoader).toHaveBeenCalledWith('csv');
+            expect(ctx.getLoader).toHaveBeenCalledWith('csv', {
+                parser: 'csv',
+                source: 'http://host/file.name.csv'
+            });
         });
 
         it('should have called getStreamFromUrl', async () => {
