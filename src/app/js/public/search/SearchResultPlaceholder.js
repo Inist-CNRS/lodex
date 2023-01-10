@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import stylesToClassname from '../../lib/stylesToClassName';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 
 const pulseKeyframes = {
     '0%': {
@@ -52,7 +52,7 @@ const styles = stylesToClassname(
         placeholder: {
             width: '100%',
             height: '1rem',
-            backgroundColor: theme.black.light,
+            backgroundColor: colorsTheme.black.light,
             animationName: pulseKeyframes,
             animationDuration: '2s',
             animationIterationCount: 'infinite',

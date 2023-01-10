@@ -19,7 +19,7 @@ import {
     Link,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import theme from '../theme';
+import colorsTheme from '../../custom/colorsTheme';
 import classNames from 'classnames';
 import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
 
@@ -27,14 +27,14 @@ const useStyles = makeStyles({
     item: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: theme.black.veryLight,
+            backgroundColor: colorsTheme.black.veryLight,
         },
-        borderBottom: `1px solid ${theme.black.light}`,
+        borderBottom: `1px solid ${colorsTheme.black.light}`,
     },
     selectedItem: {
-        backgroundColor: theme.green.secondary,
+        backgroundColor: colorsTheme.green.secondary,
         '&:hover': {
-            backgroundColor: theme.green.primary,
+            backgroundColor: colorsTheme.green.primary,
         },
     },
 });

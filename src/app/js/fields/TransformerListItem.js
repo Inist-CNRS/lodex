@@ -14,7 +14,7 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import { fromFields } from '../sharedSelectors';
 import TransformerArgList from './TransformerArgList';
 import { changeOperation } from './';
-import theme from '../theme';
+import colorsTheme from '../../custom/colorsTheme';
 import TransformerAutoComplete from './TransformerAutoComplete';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -34,20 +34,20 @@ const useStyles = makeStyles({
     item: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: theme.black.veryLight,
+            backgroundColor: colorsTheme.black.veryLight,
         },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        borderBottom: `1px solid ${theme.black.light}`,
+        borderBottom: `1px solid ${colorsTheme.black.light}`,
         '&:last-child': {
             borderBottom: 'none',
         },
     },
     selectedItem: {
-        backgroundColor: theme.green.secondary,
+        backgroundColor: colorsTheme.green.secondary,
         '&:hover': {
-            backgroundColor: theme.green.primary,
+            backgroundColor: colorsTheme.green.primary,
         },
     },
 });

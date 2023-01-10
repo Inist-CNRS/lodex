@@ -20,7 +20,7 @@ import { fromEnrichments, fromParsing } from '../selectors';
 import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
 import ParsingExcerpt from './ParsingExcerpt';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import { makeStyles } from '@material-ui/styles';
 import {
     Box,
@@ -45,10 +45,10 @@ const styles = {
         height: 'calc(100vh - 90px)',
     },
     header: {
-        backgroundColor: theme.black.veryLight,
+        backgroundColor: colorsTheme.black.veryLight,
     },
     enrichedColumn: {
-        backgroundColor: theme.green.light,
+        backgroundColor: colorsTheme.green.light,
     },
     footer: {
         overflow: 'hidden',
@@ -65,7 +65,7 @@ const styles = {
     footerItem: {
         paddingLeft: '1rem',
         paddingRight: '1rem',
-        backgroundColor: theme.black.veryLight,
+        backgroundColor: colorsTheme.black.veryLight,
         lineHeight: '30px',
         height: '100%',
         alignItems: 'center',
@@ -81,11 +81,11 @@ const styles = {
         width: '45%',
     },
     errorChip: {
-        backgroundColor: theme.red.primary,
-        color: theme.white.primary,
+        backgroundColor: colorsTheme.red.primary,
+        color: colorsTheme.white.primary,
     },
     errorHeader: {
-        color: theme.orange.primary,
+        color: colorsTheme.orange.primary,
     },
 };
 

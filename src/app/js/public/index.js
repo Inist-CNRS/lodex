@@ -16,7 +16,7 @@ import sagas from './sagas';
 import configureStore from '../configureStore';
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
-import customTheme from './customTheme';
+import customTheme from '../../custom/customTheme';
 
 const theme = createTheme(customTheme);
 

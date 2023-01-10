@@ -5,7 +5,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import { EnrichmentContext } from './EnrichmentContext';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import { io } from 'socket.io-client';
 import { ERROR, FINISHED } from '../../../../common/enrichmentStatus';
 import jobsApi from '../api/job';
@@ -32,17 +32,17 @@ const useStyles = makeStyles({
         overflowX: 'auto !important',
     },
     Log_info: {
-        color: theme.black.light,
+        color: colorsTheme.black.light,
         lineHeight: '0.8rem',
         whiteSpace: 'nowrap',
     },
     Log_ok: {
-        color: theme.green.primary,
+        color: colorsTheme.green.primary,
         fontWeight: 'bold',
         whiteSpace: 'nowrap',
     },
     Log_error: {
-        color: theme.red.primary,
+        color: colorsTheme.red.primary,
         fontWeight: 'bold',
         whiteSpace: 'nowrap',
     },

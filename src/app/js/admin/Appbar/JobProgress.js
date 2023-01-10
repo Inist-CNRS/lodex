@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React, { useEffect, useState } from 'react';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { io } from 'socket.io-client';
 import translate from 'redux-polyglot/dist/translate';
@@ -39,8 +39,8 @@ const useStyles = makeStyles({
         display: 'flex',
         margin: '0 4px 0',
     },
-    colorPrimary: { backgroundColor: theme.white.light },
-    barColorPrimary: { backgroundColor: theme.white.primary },
+    colorPrimary: { backgroundColor: colorsTheme.white.light },
+    barColorPrimary: { backgroundColor: colorsTheme.white.primary },
     progressContainer: {
         display: 'flex',
         flexDirection: 'column',

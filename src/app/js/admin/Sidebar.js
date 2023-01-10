@@ -23,7 +23,7 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import PrivateRoute from './PrivateRoute';
 import ImportModelButton from './ImportModelButton.js';
 import { fromPublication, fromParsing, fromEnrichments } from './selectors';
-import theme from './../theme';
+import colorsTheme from '../../custom/colorsTheme';
 import {
     SCOPE_DOCUMENT,
     SCOPE_DATASET,
@@ -36,14 +36,14 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: theme.black.veryDark,
+        backgroundColor: colorsTheme.black.veryDark,
         textAlign: 'center',
         position: 'sticky',
         top: 0,
         height: '100vh',
     },
     sidebarNavLink: {
-        color: theme.white.primary,
+        color: colorsTheme.white.primary,
         textDecoration: 'none',
         display: 'flex',
         flexDirection: 'column',
@@ -53,36 +53,36 @@ const useStyles = makeStyles({
         '&:hover': {
             transition: 'all ease-in-out 400ms',
             textDecoration: 'none',
-            color: theme.white.primary,
-            backgroundColor: theme.black.light,
+            color: colorsTheme.white.primary,
+            backgroundColor: colorsTheme.black.light,
         },
     },
     sidebarCallToAction: {
-        color: theme.white.primary,
+        color: colorsTheme.white.primary,
         textDecoration: 'none',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         margin: 20,
         padding: '10px 10px',
-        border: `3px dashed ${theme.white.transparent}`,
+        border: `3px dashed ${colorsTheme.white.transparent}`,
         borderRadius: 10,
         '&:hover': {
             transition: 'all ease-in-out 400ms',
             textDecoration: 'none',
-            color: theme.white.primary,
-            backgroundColor: theme.black.light,
+            color: colorsTheme.white.primary,
+            backgroundColor: colorsTheme.black.light,
         },
     },
     sidebarCallToActionDisabled: {
-        color: theme.white.light,
+        color: colorsTheme.white.light,
         textDecoration: 'none',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         margin: 20,
         padding: '10px 10px',
-        border: `3px dashed ${theme.white.transparent}`,
+        border: `3px dashed ${colorsTheme.white.transparent}`,
         borderRadius: 10,
     },
     sidebarDeleteNavLink: {
@@ -94,7 +94,7 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: theme.black.dark,
+        backgroundColor: colorsTheme.black.dark,
         position: 'sticky',
         top: 0,
         height: '100vh',
@@ -121,18 +121,18 @@ const useStyles = makeStyles({
     separator: {
         width: '90%',
         border: 'none',
-        borderTop: `1px solid ${theme.white.transparent}`,
+        borderTop: `1px solid ${colorsTheme.white.transparent}`,
     },
 });
 
 const sidebarNavLinkActiveStyle = {
-    color: theme.white.primary,
-    backgroundColor: theme.black.dark,
+    color: colorsTheme.white.primary,
+    backgroundColor: colorsTheme.black.dark,
 };
 
 const subSidebarNavLinkActiveStyle = {
-    color: theme.white.primary,
-    backgroundColor: theme.white.transparent,
+    color: colorsTheme.white.primary,
+    backgroundColor: colorsTheme.white.transparent,
 };
 
 const DocumentMenu = compose(

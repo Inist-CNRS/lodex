@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import { Button, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import classNames from 'classnames';
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
         marginRight: 2,
     },
     button: {
-        color: theme.white.primary,
+        color: colorsTheme.white.primary,
         borderRadius: 0,
         padding: '0 5px',
         boxSizing: 'border-box',

@@ -7,7 +7,7 @@ import { fromFields } from '../../sharedSelectors';
 import { field as fieldPropTypes } from '../../propTypes';
 import { getIconComponent } from '../../formats';
 import MixedChartIcon from './MixedChartIcon';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import Link from '../../lib/components/Link';
 import stylesToClassname from '../../lib/stylesToClassName';
 
@@ -24,25 +24,25 @@ const styles = stylesToClassname(
             margin: 20,
         },
         activeLink: {
-            color: theme.orange.primary,
-            fill: theme.orange.primary,
+            color: colorsTheme.orange.primary,
+            fill: colorsTheme.orange.primary,
             ':hover': {
-                fill: theme.orange.primary,
-                color: theme.orange.primary,
+                fill: colorsTheme.orange.primary,
+                color: colorsTheme.orange.primary,
             },
         },
         link: {
             textDecoration: 'none',
             backgroundColor: '#f8f8f8',
-            fill: theme.green.primary,
-            color: theme.green.primary,
+            fill: colorsTheme.green.primary,
+            color: colorsTheme.green.primary,
             cursor: 'pointer',
             userSelect: 'none',
             textTransform: 'capitalize',
             ':hover': {
                 textDecoration: 'none',
-                fill: theme.purple.primary,
-                color: theme.purple.primary,
+                fill: colorsTheme.purple.primary,
+                color: colorsTheme.purple.primary,
             },
             ':focus': {
                 textDecoration: 'none',

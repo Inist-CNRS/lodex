@@ -11,13 +11,13 @@ import classnames from 'classnames';
 import ButtonWithStatus from './ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithDialog from './ButtonWithDialog';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import stylesToClassname from '../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
     {
         icon: {
-            color: theme.green.primary,
+            color: colorsTheme.green.primary,
         },
     },
     'dialog-button',
@@ -46,8 +46,7 @@ export const PureButtonWithDialogForm = ({
             )}
             tooltip={label}
             onClick={handleOpen}
-            style={buttonStyle}
-            style={{ color: 'inherit' }}
+            style={{ ...buttonStyle, color: 'inherit' }}
         >
             {saving ? <CircularProgress variant="indeterminate" /> : icon}
         </IconButton>

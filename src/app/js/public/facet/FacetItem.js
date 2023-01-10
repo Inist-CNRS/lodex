@@ -12,7 +12,7 @@ import { fromFacet } from '../selectors';
 import getFieldClassName from '../../lib/getFieldClassName';
 import FacetValueListComponent from './FacetValueList';
 import FacetActionsContext from './FacetActionsContext';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 
 const onClick = (openFacet, field) => () => openFacet({ name: field.name });
 
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     facetTitle: {
         padding: 5,
         '&:hover': {
-            backgroundColor: theme.black.veryLight,
+            backgroundColor: colorsTheme.black.veryLight,
             cursor: 'pointer',
         },
     },
