@@ -686,7 +686,7 @@
 "toggle_enriched"	"Show/hide enriched columns"	"Afficher/cacher les colonnes enrichies"
 "import_model_published"	"Unpublish the data to be able to import a model"	"Dépubliez les données pour pouvoir importer un modèle"
 "empty_logs"	"Other enrichissement in pending or empty"	"Un autre enrichissement est en cours ou celui-ci est vide"
-"jobs_cleared"	"All jobs have been cleared"	"Toutes les tâches de fond ont été effacé"
+"jobs_cleared"	"All jobs have been cleared"	"Toutes les tâches de fond ont été effacées"
 "dataset_edit_title"	"Column %{column_name} for row %{row_name}"	"Colonne %{column_name} pour la ligne %{row_name}"
 "dataset_edit_enrichment_title"	"Enrichment %{column_name} for row %{row_name}"	"Enrichissement %{column_name} pour la ligne %{row_name}"
 "dataset_edit_success"	"Field updated with value"	"Champ mis à jour avec la nouvelle valeur"

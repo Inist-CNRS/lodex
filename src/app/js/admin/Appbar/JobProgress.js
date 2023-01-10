@@ -107,7 +107,7 @@ const JobProgressComponent = props => {
             if (data.success) {
                 handlePublishSuccess();
                 setProgress();
-            } else {
+            } else if (!data.isPublishing) {
                 handlePublishError(data);
                 setProgress({
                     isJobError: true,
