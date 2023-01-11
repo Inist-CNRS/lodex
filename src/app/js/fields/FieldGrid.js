@@ -34,6 +34,7 @@ import FieldInternalIcon from './FieldInternalIcon';
 
 import fieldApi from '../admin/api/field';
 import { toast } from 'react-toastify';
+import { useLocation } from 'react-router';
 
 const ROOT_PADDING = 16;
 
@@ -400,6 +401,8 @@ const FieldGridComponent = ({
 }) => {
     const classes = useStyles();
 
+    const { pathname } = useLocation();
+
     useEffect(() => {
         loadField();
     }, []);
@@ -431,7 +434,13 @@ const FieldGridComponent = ({
     return (
         <div className={classes.root}>
             {fields.length === 0 ? (
-                <NoField label={polyglot.t('no_field_add')} />
+                <NoField
+                    label={polyglot.t(
+                        pathname.includes('/document/main')
+                            ? 'no_field_add_resource'
+                            : 'no_field_add',
+                    )}
+                />
             ) : (
                 <DraggableItemGrid
                     key={filter}
