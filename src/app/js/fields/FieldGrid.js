@@ -51,7 +51,7 @@ const useStyles = makeStyles({
     },
     property: {
         border: '1px solid #ccc',
-        cursor: 'pointer',
+        cursor: disabled => (disabled ? 'auto' : 'pointer'),
         borderRadius: 3,
         textAlign: 'center',
         fontWeight: 'bold',
@@ -208,8 +208,9 @@ const DraggableItemGrid = compose(
         polyglot,
         loadField,
         filter,
+        isFieldsLoading,
     }) => {
-        const classes = useStyles();
+        const classes = useStyles(isFieldsLoading);
 
         const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
         const [isEditable, setIsEditable] = useState(true);
@@ -248,7 +249,7 @@ const DraggableItemGrid = compose(
         };
 
         const handleEditField = (field, filter) => {
-            if (isEditable) {
+            if (isEditable && !isFieldsLoading) {
                 onEditField({ field, filter });
             }
         };
@@ -327,6 +328,7 @@ const DraggableItemGrid = compose(
                                     handleDuplicateField(e, field);
                                 }}
                                 aria-label={`duplicate-${field.label}`}
+                                disabled={isFieldsLoading}
                             >
                                 <FileCopyIcon />
                             </Button>
@@ -336,6 +338,7 @@ const DraggableItemGrid = compose(
                                     classes.fieldChildren,
                                 )}
                                 aria-label={`edit-${field.label}`}
+                                disabled={isFieldsLoading}
                             >
                                 <SettingsIcon />
                             </Button>
@@ -367,6 +370,7 @@ DraggableItemGrid.propTypes = {
     polyglot: PropTypes.object.isRequired,
     loadField: PropTypes.func.isRequired,
     filter: PropTypes.string.isRequired,
+    isFieldsLoading: PropTypes.bool,
 };
 
 const FieldGridComponent = ({
@@ -377,6 +381,7 @@ const FieldGridComponent = ({
     changePositions,
     saveFieldFromData,
     p: polyglot,
+    isFieldsLoading,
 }) => {
     const classes = useStyles();
 
@@ -416,6 +421,7 @@ const FieldGridComponent = ({
                     allowResize={true}
                     polyglot={polyglot}
                     filter={filter}
+                    isFieldsLoading={isFieldsLoading}
                 />
             )}
         </div>
@@ -430,10 +436,12 @@ FieldGridComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     changePositions: PropTypes.func.isRequired,
     saveFieldFromData: PropTypes.func.isRequired,
+    isFieldsLoading: PropTypes.bool,
 };
 
 const mapStateToProps = (state, { subresourceId, filter }) => ({
     fields: fromFields.getEditingFields(state, { filter, subresourceId }),
+    isFieldsLoading: fromFields.isLoading(state),
 });
 
 export const FieldGrid = compose(

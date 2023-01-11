@@ -86,7 +86,6 @@ describe('Subresource Page', () => {
 
         cy.get('.wizard').should('not.exist');
 
-        cy.contains('From a column').click();
         datasetImportPage.addColumn('name', { display: { syndication: 1 } });
 
         navigationPage.publishAndGoToPublishedData();
@@ -185,7 +184,6 @@ describe('Subresource Page', () => {
 
         cy.get('.wizard').should('not.exist');
 
-        cy.contains('From a column').click();
         datasetImportPage.addColumn('name', { display: { syndication: 1 } });
 
         navigationPage.publishAndGoToPublishedData();

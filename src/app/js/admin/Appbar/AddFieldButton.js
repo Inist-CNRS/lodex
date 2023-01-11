@@ -11,6 +11,7 @@ import { useParams } from 'react-router';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { addField } from '../../fields';
+import { fromFields } from '../../sharedSelectors';
 
 const useStyles = makeStyles({
     containedButton: {
@@ -25,6 +26,7 @@ export const AddFieldButtonComponent = ({
     onAddNewField,
     p: polyglot,
     name,
+    isFieldsLoading,
 }) => {
     const classes = useStyles();
     const { filter } = useParams();
@@ -40,6 +42,7 @@ export const AddFieldButtonComponent = ({
                 classes.containedButton,
                 'btn-add-free-field',
             )}
+            disabled={isFieldsLoading}
         >
             <AddNewIcon className={classes.icon} />
             {polyglot.t('new_field')}
@@ -51,13 +54,18 @@ AddFieldButtonComponent.propTypes = {
     onAddNewField: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     name: PropTypes.string,
+    isFieldsLoading: PropTypes.bool,
 };
+
+const mapStateToProps = state => ({
+    isFieldsLoading: fromFields.isLoading(state),
+});
 
 const mapDispatchToProps = {
     onAddNewField: addField,
 };
 
 export const AddFieldButton = compose(
-    connect(null, mapDispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     translate,
 )(AddFieldButtonComponent);

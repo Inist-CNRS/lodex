@@ -64,7 +64,7 @@ export const fillTabDisplaySyndication = syndication => {
 
 export const addColumn = (columnName, options = {}) => {
     const name = columnName.replaceAll(' ', '-');
-    cy.get('button.btn-add-field-from-dataset').click({ force: true });
+    cy.get('button.btn-add-field-from-dataset').click();
     cy.get(
         ['.btn-excerpt-add-column', `.btn-excerpt-add-column-${name}`].join(''),
         { timeout: 2000 },

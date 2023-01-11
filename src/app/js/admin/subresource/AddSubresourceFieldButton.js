@@ -9,6 +9,7 @@ import { Button, makeStyles } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { addField as addFieldAction } from '../../fields';
+import { fromFields } from '../../sharedSelectors';
 
 const useStyles = makeStyles({
     icon: {
@@ -52,6 +53,7 @@ export const AddSubresourceFieldButtonComponent = ({
     addField,
     subresource,
     p: polyglot,
+    isFieldsLoading,
 }) => {
     const classes = useStyles();
     const { filter } = useParams();
@@ -67,6 +69,7 @@ export const AddSubresourceFieldButtonComponent = ({
                         filter,
                     });
             }}
+            disabled={isFieldsLoading}
         >
             <AddNewIcon className={classes.icon} />
             {polyglot.t('new_field')}
@@ -78,6 +81,7 @@ AddSubresourceFieldButtonComponent.propTypes = {
     addField: PropTypes.func.isRequired,
     subresource: PropTypes.object.isRequired,
     p: polyglotPropTypes.isRequired,
+    isFieldsLoading: PropTypes.bool,
 };
 
 export const AddSubresourceFieldButton = compose(
@@ -88,6 +92,7 @@ export const AddSubresourceFieldButton = compose(
             subresource: state.subresource.subresources.find(
                 s => s._id === match.params.subresourceId,
             ),
+            isFieldsLoading: fromFields.isLoading(state),
         }),
         { addField: addFieldAction },
     ),

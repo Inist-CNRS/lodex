@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
@@ -7,6 +8,7 @@ import memoize from 'lodash.memoize';
 import { Button } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { fromFields } from '../../sharedSelectors';
 
 const styles = {
     button: memoize(atTop => ({
@@ -25,6 +27,7 @@ export const ParsingExcerptAddColumnComponent = ({
     name,
     p: polyglot,
     atTop,
+    isFieldsLoading,
 }) => (
     <Button
         variant="contained"
@@ -35,6 +38,7 @@ export const ParsingExcerptAddColumnComponent = ({
         onClick={handleAddColumn}
         color="primary"
         style={styles.button(atTop)}
+        disabled={isFieldsLoading}
     >
         {polyglot.t('add_to_publication')}
     </Button>
@@ -46,13 +50,19 @@ ParsingExcerptAddColumnComponent.propTypes = {
     name: PropTypes.string.isRequired,
     style: PropTypes.object,
     p: polyglotPropTypes.isRequired,
+    isFieldsLoading: PropTypes.bool,
 };
 
 ParsingExcerptAddColumnComponent.defaultProps = {
     style: null,
 };
 
+const mapStateToProps = state => ({
+    isFieldsLoading: fromFields.isLoading(state),
+});
+
 export default compose(
+    connect(mapStateToProps),
     withHandlers({
         handleAddColumn: ({ name, onAddColumn }) => () => onAddColumn(name),
     }),
