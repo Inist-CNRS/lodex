@@ -135,8 +135,7 @@ export const isSubresourceTransformation = transformers => {
 };
 
 const extractUriSubresourceId = uri => {
-    const [, subresourceId] = uri.split('/');
-    return subresourceId;
+    return uri.split('/')[0];
 };
 
 const mapStateToProps = state => {
