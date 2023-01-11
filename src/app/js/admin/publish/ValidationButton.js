@@ -4,15 +4,19 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
-import { List, Popover, IconButton } from '@material-ui/core';
+import { List, Popover, IconButton, Tooltip } from '@material-ui/core';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 
 import { fromFields } from '../../sharedSelectors';
 import ValidationField from './ValidationField';
 import { editField as editFieldAction } from '../../fields';
 
-import { validationField as validationFieldPropType } from '../../propTypes';
+import {
+    validationField as validationFieldPropType,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
+import translate from 'redux-polyglot/translate';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };
@@ -31,6 +35,7 @@ const ValidationButtonComponent = ({
     handleHideErrors,
     handleShowErrorsClick,
     popover,
+    p: polyglot,
 }) => {
     // @TODO: Find a better way to handle fix error from data tab
     const redirectAndHandleEditField = (...args) => {
@@ -44,14 +49,16 @@ const ValidationButtonComponent = ({
 
     return (
         <div style={styles.container}>
-            <IconButton
-                color="secondary"
-                variant="contained"
-                onClick={handleShowErrorsClick}
-                className={'validation-button'}
-            >
-                <ReportProblemIcon />
-            </IconButton>
+            <Tooltip title={polyglot.t(`show_publication_errors`)}>
+                <IconButton
+                    color="secondary"
+                    variant="contained"
+                    onClick={handleShowErrorsClick}
+                    className={'validation-button'}
+                >
+                    <ReportProblemIcon />
+                </IconButton>
+            </Tooltip>
             <Popover
                 open={popover.show}
                 anchorEl={popover.anchorEl}
@@ -79,6 +86,7 @@ ValidationButtonComponent.propTypes = {
     fields: PropTypes.arrayOf(validationFieldPropType).isRequired,
     handleHideErrors: PropTypes.func.isRequired,
     handleShowErrorsClick: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 ValidationButtonComponent.defaultProps = {
     popover: { show: false },
@@ -106,4 +114,5 @@ export default compose(
             editField({ field, filter });
         },
     }),
+    translate,
 )(ValidationButtonComponent);
