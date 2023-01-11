@@ -62,6 +62,9 @@ const ComposedOfColumn = ({
         transition,
     };
 
+    // Sort fields by label alphabetically
+    fields.sort((a, b) => a.label.localeCompare(b.label));
+
     return (
         <div
             ref={setNodeRef}
