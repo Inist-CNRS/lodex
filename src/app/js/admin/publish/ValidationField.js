@@ -10,6 +10,8 @@ import {
     polyglot as polyglotPropTypes,
     validationField as validationFieldPropType,
 } from '../../propTypes';
+import { fromFields } from '../../sharedSelectors';
+import { connect } from 'react-redux';
 
 const styles = {
     label: {
@@ -27,8 +29,12 @@ const ValidationFieldComponent = ({
     onEditField,
     field: { label, properties },
     p: polyglot,
+    isFieldsLoading,
 }) => (
-    <ListItem onClick={onEditField}>
+    <ListItem
+        onClick={!isFieldsLoading && onEditField}
+        disabled={isFieldsLoading}
+    >
         <Grid container alignItems="center">
             <Grid item style={{ minWidth: 250 }}>
                 <div style={styles.label}>{label}:</div>
@@ -48,7 +54,7 @@ const ValidationFieldComponent = ({
                 </ul>
             </Grid>
             <Grid item style={{ width: 70, textAlign: 'center' }}>
-                <IconButton>
+                <IconButton disabled={isFieldsLoading}>
                     <EditIcon />
                 </IconButton>
             </Grid>
@@ -60,9 +66,15 @@ ValidationFieldComponent.propTypes = {
     field: validationFieldPropType.isRequired,
     onEditField: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    isFieldsLoading: PropTypes.bool,
 };
 
+const mapStateToProps = state => ({
+    isFieldsLoading: fromFields.isLoading(state),
+});
+
 export default compose(
+    connect(mapStateToProps),
     withHandlers({
         onEditField: props => event => {
             event.preventDefault();

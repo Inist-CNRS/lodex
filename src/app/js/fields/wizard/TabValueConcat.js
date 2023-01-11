@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 import get from 'lodash.get';
 
-import { FIELD_FORM_NAME } from '../';
+import { FIELD_FORM_NAME } from '..';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ConcatField from './ConcatField';
 
@@ -21,7 +21,7 @@ const styles = {
     },
 };
 
-export const StepValueConcatComponent = ({
+export const TabValueConcatComponent = ({
     handleSelect,
     p: polyglot,
     selected,
@@ -29,9 +29,8 @@ export const StepValueConcatComponent = ({
     handleChange,
     handleAddColumn,
     handleRemoveColumn,
-    ...props
 }) => (
-    <div id="step-value-concat">
+    <div id="tab-value-concat">
         <FormControlLabel
             control={
                 <Switch
@@ -62,7 +61,7 @@ export const StepValueConcatComponent = ({
     </div>
 );
 
-StepValueConcatComponent.propTypes = {
+TabValueConcatComponent.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.string),
     handleChange: PropTypes.func.isRequired,
     handleSelect: PropTypes.func.isRequired,
@@ -72,7 +71,7 @@ StepValueConcatComponent.propTypes = {
     selected: PropTypes.bool.isRequired,
 };
 
-StepValueConcatComponent.defaultProps = {
+TabValueConcatComponent.defaultProps = {
     columns: ['', ''],
 };
 
@@ -160,4 +159,4 @@ export default compose(
         },
     }),
     translate,
-)(StepValueConcatComponent);
+)(TabValueConcatComponent);

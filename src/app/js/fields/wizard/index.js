@@ -1,42 +1,47 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import { compose, withProps } from 'recompose';
+import translate from 'redux-polyglot/translate';
 
-import {
-    Stepper,
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    DialogActions,
-} from '@material-ui/core';
+import { Box, Typography, Tabs, Tab } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-import {
-    editField as editFieldAction,
-    saveField as saveFieldAction,
-} from '../';
+import { FIELD_FORM_NAME, saveField as saveFieldAction, editField } from '../';
 
 import { hideAddColumns } from '../../admin/parsing';
-import { field as fieldPropTypes } from '../../propTypes';
+import {
+    polyglot as polyglotPropTypes,
+    field as fieldPropTypes,
+} from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
-import StepValue from './StepValue';
-import StepUri from './StepUri';
-import StepTransforms from './StepTransforms';
-import StepIdentity from './StepIdentity';
-import StepDisplay from './StepDisplay';
-import StepSearch from './StepSearch';
-import StepSemantics from './StepSemantics';
+import TabValue from './TabValue';
+import Uri from './Uri';
+import TabTransforms from './TabTransforms';
+import TabIdentity from './TabIdentity';
+import TabDisplay from './TabDisplay';
+import TabSearch from './TabSearch';
+import TabSemantics from './TabSemantics';
 import FieldExcerpt from '../../admin/preview/field/FieldExcerpt';
 import Actions from './Actions';
 import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../../common/scope';
 import { URI_FIELD_NAME } from '../../../../common/uris';
+import classNames from 'classnames';
+import { TabPanel } from './TabPanel';
+import { reduxForm } from 'redux-form';
+import { useHistory } from 'react-router';
 
-const styles = {
+const useStyles = makeStyles({
+    wizard: {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+    },
     container: {
         display: 'flex',
         paddingBottom: '1rem',
-        width: 1000,
+        width: '100%',
+        flexGrow: 1,
     },
     form: {
         borderRight: '1px solid rgb(224, 224, 224)',
@@ -49,178 +54,160 @@ const styles = {
         width: '20rem',
     },
     title: {
-        display: 'flex',
+        padding: '16px 24px',
     },
-    closeButton: {
-        position: 'absolute',
-        right: 10,
-        top: 10,
-    },
-    dialogContent: {
-        height: 'calc(90vh - 64px - 52px)',
-    },
-};
+});
 
-class FieldEditionWizardComponent extends Component {
-    static propTypes = {
-        editField: PropTypes.func.isRequired,
-        field: fieldPropTypes,
-        fields: PropTypes.arrayOf(fieldPropTypes),
-        saveField: PropTypes.func.isRequired,
-    };
+const FieldEditionWizardComponent = ({
+    field,
+    fields,
+    filter,
+    saveField,
+    editField,
+    handleHideExistingColumns,
+    p: polyglot,
+}) => {
+    const classes = useStyles();
+    const history = useHistory();
+    const [tabValue, setTabValue] = useState(0);
 
-    static defaultProps = {
-        field: null,
-        fields: null,
-        editedField: null,
-    };
-
-    constructor(props) {
-        super(props);
-        this.state = { step: 0 };
-    }
-
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        if (
-            !nextProps.field ||
-            !this.props.field ||
-            nextProps.field.name !== this.props.field.name
-        ) {
-            this.setState({ step: 0 });
+    useEffect(() => {
+        if (!field) {
+            history.push(`/display/${filter}`);
         }
-    }
+    }, []);
 
-    handleNextStep = () => this.setState({ step: this.state.step + 1 });
-    handlePreviousStep = () => this.setState({ step: this.state.step - 1 });
-    handleSelectStep = step => this.setState({ step });
-
-    handleCancel = () => {
-        this.props.editField(undefined);
-        this.props.handleHideExistingColumns();
+    const handleChange = (_, newValue) => {
+        setTabValue(newValue);
     };
 
-    handleSave = () => {
-        this.props.saveField();
-        this.props.handleHideExistingColumns();
+    const handleCancel = () => {
+        handleHideExistingColumns();
+        editField({ field: null, filter, subresourceId: field.subresourceId });
     };
 
-    render() {
-        const { field, fields, filter } = this.props;
-        const { step } = this.state;
+    const handleSave = () => {
+        saveField({ field, filter });
+        handleHideExistingColumns();
+    };
 
-        if (!field) return null;
+    if (!field) return null;
 
-        let steps = [];
-        if (field && field.name !== URI_FIELD_NAME) {
-            steps = [
-                <StepIdentity
-                    key="identity"
-                    id="step-identity"
-                    isSubresourceField={!!field.subresourceId}
-                />,
-                <StepValue
-                    key="value"
+    const tabs = [
+        {
+            label: 'field_wizard_tab_identity',
+            id: 'tab-identity',
+            component: <TabIdentity field={field} />,
+        },
+        {
+            label: 'field_wizard_tab_value',
+            id: 'tab-value',
+            component: (
+                <TabValue
                     subresourceUri={field.subresourceId}
                     arbitraryMode={[SCOPE_DATASET, SCOPE_GRAPHIC].includes(
                         filter,
                     )}
-                />,
-                <StepTransforms
-                    key="transformers"
-                    isSubresourceField={!!field.subresourceId}
-                />,
-                !field.subresourceId && (
-                    <StepSemantics
-                        fields={fields}
-                        field={field}
-                        key="semantics"
-                    />
-                ),
-                <StepDisplay
-                    isSubresourceField={!!field.subresourceId}
-                    key="display"
-                />,
-                !field.subresourceId && <StepSearch key="search" />,
-            ]
-                .filter(x => x)
-                .map((el, index) =>
-                    React.cloneElement(el, {
-                        index,
-                        active: step === index,
-                        fields,
-                        field,
-                        filter,
-                        onSelectStep: this.handleSelectStep,
-                    }),
-                );
-        }
+                />
+            ),
+        },
+        {
+            label: 'field_wizard_tab_tranforms',
+            id: 'tab-transforms',
+            component: (
+                <TabTransforms isSubresourceField={!!field.subresourceId} />
+            ),
+        },
+        {
+            label: 'field_wizard_tab_display',
+            id: 'tab-display',
+            component: (
+                <TabDisplay isSubresourceField={!!field.subresourceId} />
+            ),
+        },
+        !field.subresourceId && {
+            label: 'field_wizard_tab_semantic',
+            id: 'tab-semantics',
+            component: <TabSemantics fields={fields} />,
+        },
+        !field.subresourceId && {
+            label: 'field_wizard_tab_search',
+            id: 'tab-search',
+            component: <TabSearch />,
+        },
+    ].filter(x => x);
 
-        return (
-            <Dialog
-                open={!!field}
-                scroll="body"
-                className="wizard"
-                maxWidth="xl"
-                onClose={this.handleCancel}
-            >
-                <DialogTitle>
-                    <div style={styles.title}>
-                        <span>{field ? field.label : ''}</span>
-                        {field && field.name !== 'uri'}
-                    </div>
-                    <IconButton
-                        aria-label="close"
-                        style={styles.closeButton}
-                        onClick={this.handleCancel}
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                </DialogTitle>
-                <DialogContent style={styles.dialogContent}>
-                    {field && (
-                        <div style={styles.container}>
-                            <div id="field_form" style={styles.form}>
-                                {field.name !== URI_FIELD_NAME ? (
-                                    <Stepper
-                                        nonLinear
-                                        activeStep={step}
-                                        orientation="vertical"
+    return (
+        <Box className={classNames(classes.wizard, 'wizard')}>
+            <Typography component="h2" variant="h6" className={classes.title}>
+                {field ? field.label : ''}
+            </Typography>
+            {field && (
+                <Box className={classes.container}>
+                    <Box id="field_form" className={classes.form}>
+                        {field.name !== URI_FIELD_NAME ? (
+                            <>
+                                <Tabs
+                                    value={tabValue}
+                                    onChange={handleChange}
+                                    variant="scrollable"
+                                    scrollButtons="auto"
+                                >
+                                    {tabs.map((tab, index) => (
+                                        <Tab
+                                            label={polyglot.t(tab.label)}
+                                            value={index}
+                                            key={index}
+                                            id={tab.id}
+                                        />
+                                    ))}
+                                </Tabs>
+                                {tabs.map((tab, index) => (
+                                    <TabPanel
+                                        value={tabValue}
+                                        index={index}
+                                        key={index}
                                     >
-                                        {steps}
-                                    </Stepper>
-                                ) : (
-                                    <StepUri field={field} fields={fields} />
-                                )}
-                            </div>
-                            <div style={styles.column}>
-                                <FieldExcerpt
-                                    className="publication-excerpt-for-edition"
-                                    onHeaderClick={null}
-                                    isPreview
-                                />
-                            </div>
-                        </div>
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    <Actions
-                        field={field}
-                        step={step}
-                        stepsCount={steps.length}
-                        onPreviousStep={this.handlePreviousStep}
-                        onNextStep={this.handleNextStep}
-                        onCancel={this.handleCancel}
-                        onSave={this.handleSave}
-                    />
-                </DialogActions>
-            </Dialog>
-        );
-    }
-}
+                                        {tab.component}
+                                    </TabPanel>
+                                ))}
+                            </>
+                        ) : (
+                            <Uri field={field} fields={fields} />
+                        )}
+                    </Box>
+                    <Box className={classes.column}>
+                        <FieldExcerpt
+                            className="publication-excerpt-for-edition"
+                            onHeaderClick={null}
+                            isPreview
+                        />
+                    </Box>
+                </Box>
+            )}
+            <Actions
+                field={field}
+                onCancel={handleCancel}
+                onSave={handleSave}
+            />
+        </Box>
+    );
+};
 
 FieldEditionWizardComponent.propTypes = {
+    field: fieldPropTypes,
+    fields: PropTypes.arrayOf(fieldPropTypes),
     filter: PropTypes.string,
+    editField: PropTypes.func.isRequired,
+    saveField: PropTypes.func.isRequired,
     handleHideExistingColumns: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
+};
+
+FieldEditionWizardComponent.defaultProps = {
+    field: null,
+    fields: null,
+    editedField: null,
 };
 
 const mapStateToProps = state => {
@@ -228,18 +215,33 @@ const mapStateToProps = state => {
 
     return {
         field,
-        initialValues: field || null,
         fields: field ? fromFields.getFieldsExceptEdited(state) : null,
     };
 };
 
 const mapDispatchToProps = {
-    editField: editFieldAction,
     saveField: saveFieldAction,
     handleHideExistingColumns: hideAddColumns,
+    editField: editField,
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    withProps(({ field, filter }) => {
+        const fieldFilterAttributes = filter
+            ? {
+                  scope: filter,
+                  display: field ? field.display : true,
+              }
+            : {};
+
+        return { initialValues: { ...field, ...fieldFilterAttributes } };
+    }),
+    reduxForm({
+        form: FIELD_FORM_NAME,
+        enableReinitialize: true,
+        destroyOnUnmount: false,
+        forceUnregisterOnUnmount: true,
+    }),
+    translate,
 )(FieldEditionWizardComponent);

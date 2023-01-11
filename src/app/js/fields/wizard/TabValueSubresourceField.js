@@ -1,14 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Switch, FormControlLabel, Select, MenuItem } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
-import withState from 'recompose/withState';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
+import { withProps } from 'recompose';
 
-import { FIELD_FORM_NAME } from '../';
+import {
+    Switch,
+    FormControlLabel,
+    Select,
+    MenuItem,
+    TextField,
+} from '@material-ui/core';
+
+import { FIELD_FORM_NAME } from '..';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -17,15 +24,17 @@ const styles = {
     },
 };
 
-export const StepValueSubresourceComponent = ({
+export const TabValueSubresourceFieldComponent = ({
     subresource,
-    handleChange,
+    handleChangeSubresource,
+    handleChangeColumn,
+    columnName,
     subresources,
     handleSelect,
     p: polyglot,
     selected,
 }) => (
-    <div id="step-value-subresource">
+    <div id="tab-value-subresource-field">
         <FormControlLabel
             control={
                 <Switch
@@ -34,13 +43,13 @@ export const StepValueSubresourceComponent = ({
                     checked={selected}
                 />
             }
-            label={polyglot.t('a_subresource_uri')}
+            label={polyglot.t('a_subresource_field')}
         />
         {selected && (
             <div style={styles.inset}>
                 <Select
                     value={subresource}
-                    onChange={a => handleChange(a.target.value)}
+                    onChange={a => handleChangeSubresource(a.target.value)}
                 >
                     {subresources.map(sr => (
                         <MenuItem key={sr._id} value={sr._id}>
@@ -48,25 +57,38 @@ export const StepValueSubresourceComponent = ({
                         </MenuItem>
                     ))}
                 </Select>
+                <TextField
+                    fullWidth
+                    className="column_name"
+                    placeholder={polyglot.t('enter_a_value')}
+                    onChange={handleChangeColumn}
+                    value={columnName}
+                />
             </div>
         )}
     </div>
 );
 
-StepValueSubresourceComponent.propTypes = {
+TabValueSubresourceFieldComponent.propTypes = {
     subresource: PropTypes.string,
-    handleChange: PropTypes.func.isRequired,
+    handleChangeSubresource: PropTypes.func.isRequired,
     handleSelect: PropTypes.func.isRequired,
+    handleChangeColumn: PropTypes.func.isRequired,
+    columnName: PropTypes.string,
     p: polyglotPropTypes.isRequired,
     selected: PropTypes.bool.isRequired,
     subresources: PropTypes.array,
 };
 
-StepValueSubresourceComponent.defaultProps = {
+TabValueSubresourceFieldComponent.defaultProps = {
     subresource: '',
 };
 
-const getSubresourceTransformers = subresource =>
+/**
+ * To be able to retrieve the subresourceId from the field
+ * We add it to the transformers using 2 REPLACE_REGEX operations
+ */
+const getSubresourceFieldTransformers = (subresource, columnName) =>
     subresource
         ? [
               {
@@ -88,7 +110,7 @@ const getSubresourceTransformers = subresource =>
                       {
                           name: 'path',
                           type: 'string',
-                          value: subresource.identifier,
+                          value: columnName,
                       },
                   ],
               },
@@ -104,39 +126,46 @@ const getSubresourceTransformers = subresource =>
                       {
                           name: 'replaceValue',
                           type: 'string',
-                          value: `${subresource._id}/$1`,
+                          value: `(${subresource._id})$1`,
                       },
                   ],
               },
-              { operation: 'MD5', args: [] },
               {
                   operation: 'REPLACE_REGEX',
                   args: [
                       {
                           name: 'searchValue',
                           type: 'string',
-                          value: '^(.*)$',
+                          value: `/^\\((.*)\\)/`,
                       },
                       {
                           name: 'replaceValue',
                           type: 'string',
-                          value: `uid:/$1`,
+                          value: ' ', // REPLACE_REGEX Meta can't have an empty replaceValue
                       },
                   ],
               },
+              { operation: 'TRIM' }, // CANCEL REPLACE_REGEX empty "replaceValue"
           ]
         : [];
 
-export const isSubresourceTransformation = transformers => {
+export const isSubresourceFieldTransformation = transformers => {
     const operations = transformers.map(t => t.operation).join('|');
     return (
-        operations === 'COLUMN|PARSE|GET|STRING|REPLACE_REGEX|MD5|REPLACE_REGEX'
+        operations ===
+        'COLUMN|PARSE|GET|STRING|REPLACE_REGEX|REPLACE_REGEX|TRIM'
     );
 };
 
+const extractedSubresourceIdRegex = new RegExp(/^\((.*)\)/, 'i');
 const extractUriSubresourceId = uri => {
-    const [_, subresourceId] = uri.split('/');
+    const [, subresourceId] = extractedSubresourceIdRegex.exec(uri);
     return subresourceId;
+};
+
+const extractColumnName = transformers => {
+    const getOperation = transformers.find(t => t.operation === 'GET');
+    return getOperation.args[0].value;
 };
 
 const mapStateToProps = state => {
@@ -146,15 +175,18 @@ const mapStateToProps = state => {
         'transformers',
     );
 
-    if (isSubresourceTransformation(transformers || [])) {
+    if (isSubresourceFieldTransformation(transformers || [])) {
         const extractedSubresourceId = extractUriSubresourceId(
             transformers[4].args[1].value, // transformers[4] is REPLACE_REGEX transformer from subresources
         );
+
+        const columnName = extractColumnName(transformers);
 
         return {
             selected: true,
             subresources,
             subresource: extractedSubresourceId,
+            columnName,
         };
     }
 
@@ -162,34 +194,49 @@ const mapStateToProps = state => {
         selected: false,
         subresources,
         subresource: subresources[0] ? subresources[0]._id : null,
+        columnName: null,
     };
 };
 
 export default compose(
     connect(mapStateToProps),
-    withState(
-        'subresource',
-        'setSubresource',
-        ({ subresource }) => subresource,
-    ),
+    withProps(({ subresources, subresource }) => {
+        const subresourceObject = subresources.find(s => s._id === subresource);
+        return { subresourceObject };
+    }),
     withHandlers({
-        handleSelect: ({ onChange, subresources, subresource }) => () => {
-            const subresourceObject = subresources.find(
-                s => s._id === subresource,
-            );
-
-            if (subresourceObject) {
-                onChange(getSubresourceTransformers(subresourceObject));
-            }
+        handleSelect: ({ onChange, subresourceObject, columnName }) => () => {
+            subresourceObject &&
+                onChange(
+                    getSubresourceFieldTransformers(
+                        subresourceObject,
+                        columnName,
+                    ),
+                );
         },
-        handleChange: ({ onChange, subresources, setSubresource }) => value => {
-            setSubresource(value);
+        handleChangeColumn: ({ subresourceObject, onChange }) => e => {
+            subresourceObject &&
+                onChange(
+                    getSubresourceFieldTransformers(
+                        subresourceObject,
+                        e.target.value,
+                    ),
+                );
+        },
+        handleChangeSubresource: ({
+            onChange,
+            subresources,
+            columnName,
+        }) => value => {
             const subresourceObject = subresources.find(s => s._id === value);
-
-            if (subresourceObject) {
-                onChange(getSubresourceTransformers(subresourceObject));
-            }
+            subresourceObject &&
+                onChange(
+                    getSubresourceFieldTransformers(
+                        subresourceObject,
+                        columnName,
+                    ),
+                );
         },
     }),
     translate,
-)(StepValueSubresourceComponent);
+)(TabValueSubresourceFieldComponent);

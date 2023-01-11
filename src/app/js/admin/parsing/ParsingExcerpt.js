@@ -12,6 +12,7 @@ import { fromEnrichments } from '../selectors';
 import colorsTheme from '../../../custom/colorsTheme';
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import { addField } from '../../fields';
+import { useParams } from 'react-router';
 
 const styles = {
     table: {
@@ -67,6 +68,8 @@ export const ParsingExcerptComponent = ({
         enrichments,
     ]);
 
+    const { filter } = useParams();
+
     const checkIsEnrichmentLoading = column => {
         return (
             enrichments?.find(enrichiment => enrichiment.name === column)
@@ -118,7 +121,7 @@ export const ParsingExcerptComponent = ({
                                             name={column}
                                             onAddColumn={name => {
                                                 onAddField && onAddField();
-                                                handleAddColumn(name);
+                                                handleAddColumn(name, filter);
                                             }}
                                             atTop={total < 3}
                                         />
@@ -147,7 +150,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    handleAddColumn: name => addField({ name }),
+    handleAddColumn: (name, filter) => addField({ name, filter }),
 };
 
 export default compose(

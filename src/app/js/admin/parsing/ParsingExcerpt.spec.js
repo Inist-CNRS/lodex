@@ -11,6 +11,12 @@ import {
 } from './ParsingExcerpt';
 import colorsTheme from '../../../custom/colorsTheme';
 
+jest.mock('react-router', () => ({
+    useParams: () => ({
+        filter: 'bar',
+    }),
+}));
+
 describe('<ParsingExcerpt />', () => {
     it('should return an empty array of enrichments name', () => {
         const enrichments = [];

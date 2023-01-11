@@ -14,6 +14,7 @@ import { EditSubresource } from './subresource/EditSubresource';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import { FieldsEdit } from './FieldsEdit';
 import { AddFieldButton } from './Appbar/AddFieldButton';
+import FieldEditForm from '../fields/wizard';
 
 const DisplayRouteComponent = () => {
     const { filter } = useParams();
@@ -27,10 +28,13 @@ const DisplayRouteComponent = () => {
         return (
             <Switch>
                 <Route exact path={`${path}/main`}>
-                    <div>{pageComponent}</div>
+                    {pageComponent}
                 </Route>
                 <Route exact path={`${path}/add`}>
                     <AddSubresource />
+                </Route>
+                <Route exact path={`${path}/edit`}>
+                    <FieldEditForm filter={filter} />
                 </Route>
                 <Route exact path={`${path}/:subresourceId`}>
                     <EditSubresource filter={filter} />
@@ -42,7 +46,14 @@ const DisplayRouteComponent = () => {
         );
     }
 
-    return pageComponent;
+    return (
+        <Switch>
+            <Route exact path={`${path}/edit`}>
+                <FieldEditForm filter={filter} />
+            </Route>
+            <Route>{pageComponent}</Route>
+        </Switch>
+    );
 };
 
 export const DisplayRoute = withInitialData(DisplayRouteComponent);

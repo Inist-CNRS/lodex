@@ -12,7 +12,6 @@ import ValidationField from './ValidationField';
 import { editField as editFieldAction } from '../../fields';
 
 import { validationField as validationFieldPropType } from '../../propTypes';
-import { useHistory } from 'react-router';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
@@ -33,16 +32,14 @@ const ValidationButtonComponent = ({
     handleShowErrorsClick,
     popover,
 }) => {
-    const history = useHistory();
-
     // @TODO: Find a better way to handle fix error from data tab
     const redirectAndHandleEditField = (...args) => {
         const field = fields.find(({ name }) => name === args[0]);
-        history.push(
-            `/display/${field && field.scope ? field.scope : SCOPE_DOCUMENT}`,
-        );
 
-        setTimeout(() => handleEditField(...args), 1000);
+        setTimeout(
+            () => handleEditField(field?.name, field?.scope || SCOPE_DOCUMENT),
+            1000,
+        );
     };
 
     return (
@@ -104,9 +101,9 @@ export default compose(
         handleHideErrors: ({ setShowPopover }) => () => {
             setShowPopover({ show: false });
         },
-        handleEditField: ({ editField, setShowPopover }) => field => {
+        handleEditField: ({ editField, setShowPopover }) => (field, filter) => {
             setShowPopover({ show: false });
-            editField(field);
+            editField({ field, filter });
         },
     }),
 )(ValidationButtonComponent);

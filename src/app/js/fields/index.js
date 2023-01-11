@@ -167,8 +167,8 @@ export default handleActions(
             };
         },
         LOAD_FIELD_ERROR: () => defaultState,
-        EDIT_FIELD: (state, { payload }) => {
-            if (!payload && state.editedFieldName === 'new') {
+        EDIT_FIELD: (state, { payload: { field } }) => {
+            if (!field && state.editedFieldName === 'new') {
                 return {
                     ...state,
                     editedFieldName: undefined,
@@ -177,7 +177,7 @@ export default handleActions(
                 };
             }
 
-            if (typeof payload === 'number') {
+            if (typeof field === 'number') {
                 console.warn(
                     'Edit field using an index is deprecated, please use the field name instead',
                 );
@@ -186,7 +186,7 @@ export default handleActions(
             return {
                 ...state,
                 editedFieldName:
-                    typeof payload === 'number' ? state.list[payload] : payload,
+                    typeof field === 'number' ? state.list[field] : field,
             };
         },
         REMOVE_FIELD_SUCCESS: (state, { payload: { name: nameToRemove } }) => ({

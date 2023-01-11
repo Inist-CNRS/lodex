@@ -55,13 +55,14 @@ export const RemoveButtonComponent = ({ onRemove, p: polyglot }) => {
 RemoveButtonComponent.propTypes = {
     onRemove: PropTypes.func.isRequired,
     field: fieldPropTypes.isRequired,
+    filter: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-const mapDispatchtoProps = (dispatch, { field: { name } }) =>
+const mapDispatchtoProps = (dispatch, { field, filter }) =>
     bindActionCreators(
         {
-            onRemove: () => removeField(name),
+            onRemove: () => removeField({ field, filter }),
         },
         dispatch,
     );

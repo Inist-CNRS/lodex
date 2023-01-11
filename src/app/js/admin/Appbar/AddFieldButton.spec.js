@@ -4,6 +4,12 @@ import { Button } from '@material-ui/core';
 
 import { AddFieldButtonComponent as AddFieldButton } from './AddFieldButton';
 
+jest.mock('react-router', () => ({
+    useParams: () => ({
+        filter: 'bar',
+    }),
+}));
+
 describe('<AddFieldButton />', () => {
     it('should call onAddNewField with name prop as arg on click', () => {
         const onAddNewField = jest.fn();
@@ -21,6 +27,7 @@ describe('<AddFieldButton />', () => {
 
         expect(onAddNewField).toHaveBeenCalledWith({
             name: 'foo',
+            filter: 'bar',
         });
     });
 });
