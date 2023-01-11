@@ -8,7 +8,12 @@ import { fromFields, fromUser } from '../../sharedSelectors';
 
 describe('fields saga', () => {
     describe('handleRemoveField', () => {
-        const saga = handleRemoveField({ payload: 'a_field_name' });
+        const saga = handleRemoveField({
+            payload: {
+                field: { name: 'a_field_name', subresourceId: 'id' },
+                filter: 'foo',
+            },
+        });
 
         it('should select fromFields.getFieldByName', () => {
             expect(saga.next().value).toEqual(
@@ -34,8 +39,25 @@ describe('fields saga', () => {
             );
         });
 
+        it('should put push action', () => {
+            expect(saga.next().value).toEqual(
+                put({
+                    type: '@@router/CALL_HISTORY_METHOD',
+                    payload: {
+                        args: ['/display/foo'],
+                        method: 'push',
+                    },
+                }),
+            );
+        });
+
         it('should put removeFieldError action with error if any', () => {
-            const failedSaga = handleRemoveField({ payload: 'a_field_name' });
+            const failedSaga = handleRemoveField({
+                payload: {
+                    field: { name: 'a_field_name', subresourceId: 'id' },
+                    filter: 'foo',
+                },
+            });
             failedSaga.next();
             failedSaga.next();
             failedSaga.next();

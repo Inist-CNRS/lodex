@@ -4,14 +4,11 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import PublicationExcerpt from './PublicationExcerpt';
-import PublicationModalWizard from '../../../fields/wizard';
+import FieldEditForm from '../../../fields/wizard';
 import { editField, loadField } from '../../../fields';
 import { fromFields } from '../../../sharedSelectors';
 
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../../../propTypes';
+import { field as fieldPropTypes } from '../../../propTypes';
 
 const styles = {
     container: {
@@ -50,7 +47,7 @@ const PublicationPreviewComponent = ({
         <div style={styles.container} className="publication-preview">
             <PublicationExcerpt onHeaderClick={null} fields={fields} />
             {!readonly && (
-                <PublicationModalWizard
+                <FieldEditForm
                     filter={filter}
                     onExitEdition={handleExitColumEdition}
                 />

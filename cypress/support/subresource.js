@@ -13,18 +13,17 @@ export const fillSubcategoryFormAndSubmit = values => {
 };
 
 export const addField = (name, label, save = true) => {
+    cy.get('.field-grid').should('exist');
     cy.contains('button', 'New field').click();
 
-    cy.get('div[role="dialog"]').should('exist');
+    cy.get('.wizard').should('exist');
 
-    cy.get('div[role="dialog"]')
+    cy.get('.wizard')
         .find(`input[name="label"]`)
         .clear()
         .type(label);
 
-    cy.get('#step-value')
-        .click()
-        .scrollIntoView();
+    cy.get('#tab-value').click();
 
     cy.get('#select-subresource-input-label').click();
 
@@ -33,11 +32,11 @@ export const addField = (name, label, save = true) => {
         .click();
 
     if (save) {
-        cy.get('div[role="dialog"]')
+        cy.get('.wizard')
             .find('.btn-save')
             .click();
 
-        cy.get('div[role="dialog"]').should('not.exist');
+        cy.get('.wizard').should('not.exist');
 
         cy.contains('button', 'Published data').click();
         cy.contains('.publication-excerpt-column', label).should('exist');

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import HiddenIcon from '@material-ui/icons/VisibilityOff';
 import translate from 'redux-polyglot/translate';
@@ -18,7 +18,6 @@ import {
 } from '@material-ui/icons';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import PublicationModalWizard from '../fields/wizard';
 import { getShortText, isLongText } from '../lib/longTexts';
 import { NoField } from './NoField';
 import { useDidUpdateEffect } from '../lib/useDidUpdateEffect';
@@ -52,7 +51,7 @@ const useStyles = makeStyles({
     },
     property: {
         border: '1px solid #ccc',
-        cursor: 'pointer',
+        cursor: disabled => (disabled ? 'auto' : 'pointer'),
         borderRadius: 3,
         textAlign: 'center',
         fontWeight: 'bold',
@@ -195,16 +194,6 @@ export const buildFieldsDefinitionsArray = fields =>
         position: field.position,
     }));
 
-const scrollToLastLayoutItem = () => {
-    setTimeout(() => {
-        const lastChild = document.querySelector('.layout > div:last-child');
-        lastChild.scrollIntoView({
-            behavior: 'smooth',
-            block: 'end',
-        });
-    }, 1);
-};
-
 const DraggableItemGrid = compose(
     connect(null, {
         loadField,
@@ -218,8 +207,10 @@ const DraggableItemGrid = compose(
         fields,
         polyglot,
         loadField,
+        filter,
+        isFieldsLoading,
     }) => {
-        const classes = useStyles();
+        const classes = useStyles(isFieldsLoading);
 
         const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
         const [isEditable, setIsEditable] = useState(true);
@@ -233,18 +224,6 @@ const DraggableItemGrid = compose(
         useEffect(() => {
             setItems(buildFieldsDefinitionsArray(fields));
         }, [JSON.stringify(fields)]);
-
-        const fieldsLength = fields.length;
-        const previousFieldsLength = useRef(fields.length);
-        const previousLastField = useRef(fields.at(-1));
-        useEffect(() => {
-            if (previousFieldsLength.current + 1 === fields.length) {
-                if (previousLastField.current._id !== fields.at(-1)._id) {
-                    scrollToLastLayoutItem();
-                }
-            }
-            previousFieldsLength.current = fields.length;
-        }, [fieldsLength]);
 
         useDidUpdateEffect(() => {
             onChangePositions(items);
@@ -269,9 +248,9 @@ const DraggableItemGrid = compose(
             }
         };
 
-        const handleEditField = fieldName => {
-            if (isEditable) {
-                onEditField(fieldName);
+        const handleEditField = (field, filter) => {
+            if (isEditable && !isFieldsLoading) {
+                onEditField({ field, filter });
             }
         };
 
@@ -313,7 +292,7 @@ const DraggableItemGrid = compose(
                             key={field.name}
                             aria-label={field.label}
                             className={classes.property}
-                            onClick={() => handleEditField(field.name)}
+                            onClick={() => handleEditField(field.name, filter)}
                         >
                             <span
                                 className={classNames(
@@ -349,6 +328,7 @@ const DraggableItemGrid = compose(
                                     handleDuplicateField(e, field);
                                 }}
                                 aria-label={`duplicate-${field.label}`}
+                                disabled={isFieldsLoading}
                             >
                                 <FileCopyIcon />
                             </Button>
@@ -358,6 +338,7 @@ const DraggableItemGrid = compose(
                                     classes.fieldChildren,
                                 )}
                                 aria-label={`edit-${field.label}`}
+                                disabled={isFieldsLoading}
                             >
                                 <SettingsIcon />
                             </Button>
@@ -388,27 +369,25 @@ DraggableItemGrid.propTypes = {
     ).isRequired,
     polyglot: PropTypes.object.isRequired,
     loadField: PropTypes.func.isRequired,
+    filter: PropTypes.string.isRequired,
+    isFieldsLoading: PropTypes.bool,
 };
 
 const FieldGridComponent = ({
     fields,
     filter,
+    loadField,
     editField,
     changePositions,
     saveFieldFromData,
     p: polyglot,
+    isFieldsLoading,
 }) => {
     const classes = useStyles();
 
     useEffect(() => {
         loadField();
     }, []);
-
-    const handleExitEdition = e => {
-        e.preventDefault();
-        e.stopPropagation();
-        editField(null);
-    };
 
     const handleChangePositions = fieldsWithPosition => {
         changePositions({
@@ -429,7 +408,7 @@ const FieldGridComponent = ({
     };
 
     return (
-        <div className={classes.root}>
+        <div className={classNames(classes.root, 'field-grid')}>
             {fields.length === 0 ? (
                 <NoField label={polyglot.t('no_field_add')} />
             ) : (
@@ -441,12 +420,10 @@ const FieldGridComponent = ({
                     onChangePositions={handleChangePositions}
                     allowResize={true}
                     polyglot={polyglot}
+                    filter={filter}
+                    isFieldsLoading={isFieldsLoading}
                 />
             )}
-            <PublicationModalWizard
-                filter={filter}
-                onExitEdition={handleExitEdition}
-            />
         </div>
     );
 };
@@ -454,14 +431,17 @@ const FieldGridComponent = ({
 FieldGridComponent.propTypes = {
     fields: PropTypes.array,
     filter: PropTypes.string,
+    loadField: PropTypes.func.isRequired,
     editField: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     changePositions: PropTypes.func.isRequired,
     saveFieldFromData: PropTypes.func.isRequired,
+    isFieldsLoading: PropTypes.bool,
 };
 
 const mapStateToProps = (state, { subresourceId, filter }) => ({
     fields: fromFields.getEditingFields(state, { filter, subresourceId }),
+    isFieldsLoading: fromFields.isLoading(state),
 });
 
 export const FieldGrid = compose(

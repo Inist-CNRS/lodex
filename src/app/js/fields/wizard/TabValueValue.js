@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
-import { FIELD_FORM_NAME } from '../';
+import { FIELD_FORM_NAME } from '..';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { useParams } from 'react-router';
@@ -22,7 +22,7 @@ const styles = {
     },
 };
 
-export const StepValueValueComponent = ({
+export const TabValueValueComponent = ({
     handleChange,
     handleSelect,
     p: polyglot,
@@ -32,7 +32,7 @@ export const StepValueValueComponent = ({
     const { filter: scopeForm } = useParams();
     const [openCatalog, setOpenCatalog] = React.useState(false);
     return (
-        <div id="step-value-value">
+        <div id="tab-value-value">
             <FormControlLabel
                 control={
                     <Switch
@@ -78,14 +78,14 @@ export const StepValueValueComponent = ({
     );
 };
 
-StepValueValueComponent.propTypes = {
+TabValueValueComponent.propTypes = {
     handleChange: PropTypes.func.isRequired,
     handleSelect: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     selected: PropTypes.bool.isRequired,
     value: PropTypes.string,
 };
-StepValueValueComponent.defaultProps = {
+TabValueValueComponent.defaultProps = {
     value: undefined,
 };
 
@@ -147,4 +147,4 @@ export default compose(
         },
     }),
     translate,
-)(StepValueValueComponent);
+)(TabValueValueComponent);
