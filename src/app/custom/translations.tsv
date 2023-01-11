@@ -613,6 +613,7 @@
 "delete"	"Delete"	"Supprimer"
 "confirm_delete_subresource"	"This subresource and all its fields will be definitively deleted, Are you sure?"	"Cette sous-ressource ainsi que tous les champs associés vont êtres supprimés. Êtes-vous sûr de vouloir continuer ?"
 "no_field_add"	"Configure your display by clicking on the button « New Field »"	"Configurez votre affichage  en cliquant sur le bouton « Nouveau champ »"
+"no_field_add_resource"	"Configure your display by clicking on one of the buttons above"	"Configurez votre affichage  en cliquant sur l'un des boutons ci-dessus"
 "transformer_no_editable_with_subresource_uid_value"	"Transformers can't be edited when subresource uid is selected"	"Les transformers ne peuvent êtres édités quand la valeur choisie est un uid de sous-ressource"
 "subresource_name"	"Name"	"Nom"
 "subresource_id"	"Identifier"	"Identifiant"
