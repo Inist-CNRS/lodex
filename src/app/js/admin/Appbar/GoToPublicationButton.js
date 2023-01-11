@@ -1,7 +1,7 @@
 import React from 'react';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { Button, Tooltip } from '@material-ui/core';
+import { IconButton, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import colorsTheme from '../../../custom/colorsTheme';
@@ -12,14 +12,11 @@ const useStyles = makeStyles({
     buttonContainer: {
         display: 'flex',
         alignItems: 'center',
-        marginLeft: 2,
-        marginRight: 2,
+        marginLeft: 10,
+        marginRight: 10,
     },
     button: {
         color: colorsTheme.white.primary,
-        borderRadius: 0,
-        padding: '0 5px',
-        boxSizing: 'border-box',
     },
 });
 
@@ -33,7 +30,7 @@ const GoToPublicationButtonComponent = ({ p: polyglot }) => {
     return (
         <div className={classes.buttonContainer}>
             <Tooltip title={polyglot.t(`navigate_to_published_data`)}>
-                <Button
+                <IconButton
                     className={classNames(
                         classes.button,
                         'go-published-button',
@@ -41,7 +38,7 @@ const GoToPublicationButtonComponent = ({ p: polyglot }) => {
                     onClick={handleGoToPublication}
                 >
                     <VisibilityIcon />
-                </Button>
+                </IconButton>
             </Tooltip>
         </div>
     );

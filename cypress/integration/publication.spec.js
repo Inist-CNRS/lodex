@@ -266,7 +266,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.importModel('model/concat-obsolete.json');
 
-            cy.contains('Errors').click();
+            cy.get('.validation-button').click();
             cy.contains('Operation UNKNOWN-OPERATION does not exist').click();
 
             datasetImportPage.setOperationTypeInWizard('BOOLEAN');
