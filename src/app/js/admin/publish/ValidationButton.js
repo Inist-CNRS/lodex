@@ -4,18 +4,19 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
-import translate from 'redux-polyglot/translate';
-import { List, Popover, Button } from '@material-ui/core';
+import { List, Popover, IconButton, Tooltip } from '@material-ui/core';
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 
 import { fromFields } from '../../sharedSelectors';
 import ValidationField from './ValidationField';
 import { editField as editFieldAction } from '../../fields';
 
 import {
-    polyglot as polyglotPropTypes,
     validationField as validationFieldPropType,
+    polyglot as polyglotPropTypes,
 } from '../../propTypes';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
+import translate from 'redux-polyglot/translate';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };
@@ -23,8 +24,8 @@ const styles = {
     container: {
         display: 'flex',
         alignItems: 'center',
-        marginLeft: 4,
-        marginRight: 4,
+        marginLeft: 0,
+        marginRight: 10,
     },
 };
 
@@ -33,8 +34,8 @@ const ValidationButtonComponent = ({
     fields,
     handleHideErrors,
     handleShowErrorsClick,
-    p: polyglot,
     popover,
+    p: polyglot,
 }) => {
     // @TODO: Find a better way to handle fix error from data tab
     const redirectAndHandleEditField = (...args) => {
@@ -48,13 +49,16 @@ const ValidationButtonComponent = ({
 
     return (
         <div style={styles.container}>
-            <Button
-                color="secondary"
-                variant="contained"
-                onClick={handleShowErrorsClick}
-            >
-                {polyglot.t('show_publication_errors')}
-            </Button>
+            <Tooltip title={polyglot.t(`show_publication_errors`)}>
+                <IconButton
+                    color="secondary"
+                    variant="contained"
+                    onClick={handleShowErrorsClick}
+                    className={'validation-button'}
+                >
+                    <ReportProblemIcon />
+                </IconButton>
+            </Tooltip>
             <Popover
                 open={popover.show}
                 anchorEl={popover.anchorEl}

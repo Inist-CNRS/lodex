@@ -10,7 +10,7 @@ import { AppBar, CircularProgress, Button, Toolbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import PublicationButton from '../publish/PublicationButton';
-import { fromUser } from '../../sharedSelectors';
+import { fromFields, fromUser } from '../../sharedSelectors';
 import { fromParsing, fromPublication } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';
@@ -18,6 +18,7 @@ import colorsTheme from '../../../custom/colorsTheme';
 import Menu from './Menu';
 import GoToPublicationButton from './GoToPublicationButton';
 import JobProgress from './JobProgress';
+import ValidationButton from '../publish/ValidationButton';
 const useStyles = makeStyles({
     linkToHome: {
         color: `${colorsTheme.white.primary} !important`,
@@ -95,6 +96,7 @@ const AppbarComponent = ({
     isAdmin,
     p: polyglot,
     hasPublishedDataset,
+    invalidFields,
 }) => {
     const classes = useStyles();
 
@@ -135,6 +137,7 @@ const AppbarComponent = ({
                 <div style={{ display: 'flex' }}>
                     <JobProgress />
                     {hasPublishedDataset && <GoToPublicationButton />}
+                    {invalidFields.length > 0 && <ValidationButton />}
                     <PublicationButton className={classes.button} />
                     <Menu />
                 </div>
@@ -172,6 +175,7 @@ AppbarComponent.propTypes = {
     isAdmin: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     hasPublishedDataset: PropTypes.bool,
+    invalidFields: PropTypes.arrayOf(PropTypes.object),
 };
 
 AppbarComponent.defaultProps = {
@@ -185,5 +189,6 @@ export default compose(
         isLoading: state.loading,
         isAdmin: fromUser.isAdmin(state),
         hasPublishedDataset: fromPublication.hasPublishedDataset(state),
+        invalidFields: fromFields.getInvalidFields(state),
     })),
 )(AppbarComponent);
