@@ -132,6 +132,8 @@ const JobProgressComponent = props => {
                 });
             }
             if (data.message === 'cancelled_import') {
+                loadParsingResult();
+                setHasLoadedParsingResult(false);
                 toast(polyglot.t('cancelled_import'), {
                     type: toast.TYPE.SUCCESS,
                 });
