@@ -8,6 +8,7 @@ import {
     getGridNumericColumnOperators,
     getGridStringOperators,
     getGridBooleanOperators,
+    gridClasses,
 } from '@mui/x-data-grid';
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -401,6 +402,12 @@ export const ParsingResultComponent = props => {
                         onCellClick={handleCellClick}
                         components={{
                             Footer: CustomFooter,
+                        }}
+                        sx={{
+                            [`& .${gridClasses.columnHeaderTitleContainer} .${gridClasses.iconButtonContainer}`]: {
+                                visibility: 'visible',
+                                width: 'auto',
+                            },
                         }}
                     />
                     <Drawer
