@@ -2,6 +2,7 @@ import Koa from 'koa';
 import { Server } from 'socket.io';
 import config from 'config';
 import mount from 'koa-mount';
+import route from 'koa-route';
 import cors from 'kcors';
 import koaQs from 'koa-qs';
 import { KoaAdapter } from '@bull-board/koa';
@@ -19,6 +20,11 @@ import { addPublisherListener } from './workers/publisher';
 import progress from './services/progress';
 import { addEnrichmentJobListener } from './services/enrichment/enrichment';
 import { addImportListener } from './workers/import';
+
+import Meter from '@uswitch/koa-prometheus';
+import MeterConfig from '@uswitch/koa-prometheus/build/koa-prometheus.defaults.json';
+import tracer, { eventTrace, eventError } from '@uswitch/koa-tracer';
+import access, { eventAccess } from '@uswitch/koa-access';
 
 const app = koaQs(new Koa());
 
@@ -63,6 +69,19 @@ app.use(async (ctx, next) => {
     ctx.httpLog.status = ctx.status;
     logger.info(ctx.request.url, ctx.httpLog);
 });
+
+// Prometheus metrics
+const meters = Meter(MeterConfig, { loadStandards: true, loadDefaults: true });
+app.use(meters.middleware); // The middleware that makes the meters available
+app.use(route.get('/metrics', ctx => (ctx.body = meters.print())));
+
+app.use(tracer());
+app.use(access());
+app.on(eventAccess, ctx => {
+    meters.automark(ctx);
+});
+app.on(eventTrace, ctx => meters.automark(ctx));
+app.on(eventError, () => meters.errorRate.mark(1));
 
 app.use(function*(next) {
     try {
