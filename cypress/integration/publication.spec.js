@@ -152,7 +152,7 @@ describe('Dataset Publication', () => {
 
             cy.get('[data-rowindex=1]', { timeout: 3000 }).should(
                 'contains.text',
-                ['4', '"Rob"', '"Zombie"', '""'].join(''),
+                ['4', '"Rob"', '"Zombie"', 'false'].join(''),
             );
         });
         it('should filter by boolean', () => {

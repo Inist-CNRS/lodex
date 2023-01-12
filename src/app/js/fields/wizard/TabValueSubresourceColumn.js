@@ -65,7 +65,7 @@ TabValueSubresourceColumnComponent.defaultProps = {
 
 export const isSubresourceValueColumnTransformation = transformers => {
     const operations = transformers.map(t => t.operation).join('|');
-    return operations === 'COLUMN|PARSE|GET';
+    return operations.includes('COLUMN|PARSE|GET');
 };
 
 export const mapStateToProps = (state, { subresourceUri }) => {
