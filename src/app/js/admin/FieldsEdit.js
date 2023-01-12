@@ -22,9 +22,9 @@ import { fromFields } from '../sharedSelectors';
 const useStyles = makeStyles({
     actionsContainer: {
         textAlign: 'right',
-        padding: '20px 0 30px 0',
     },
     editHeaderContainer: {
+        padding: '20px 0',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
