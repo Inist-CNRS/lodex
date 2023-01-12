@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -56,8 +56,13 @@ export const ImportModelButtonComponent = ({
     ] = useState(false);
 
     const [applyUploadInput, setApplyUploadInput] = useState(false);
+    const initialRender = useRef(true);
 
     useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false;
+            return;
+        }
         if (failed) {
             toast(polyglot.t('import_fields_failed'), {
                 type: toast.TYPE.ERROR,
