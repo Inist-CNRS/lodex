@@ -160,8 +160,9 @@ describe('MenuItem', () => {
                 />,
             );
 
-            const link = wrapper.find('div');
+            const link = wrapper.find(NavLink);
 
+            expect(link.prop('to')).toBe('/search');
             expect(link.prop('onClick')).toBe(onClick);
         });
 

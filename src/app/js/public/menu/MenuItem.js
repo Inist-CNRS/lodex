@@ -144,28 +144,30 @@ const MenuItem = ({
         case 'search':
             return (
                 canBeSearched && (
-                    <div
-                        onClick={onClick(config.role)}
+                    <NavLink
+                        to="/search"
+                        onClick={onClick(config.role, true)}
                         className={classnames('nav-item', styles.menuItem, {
                             [styles.drawerActive]: searchDrawer === 'open',
                         })}
                     >
                         {icon}
                         {label}
-                    </div>
+                    </NavLink>
                 )
             );
         case 'advanced':
             return (
-                <div
-                    onClick={onClick(config.role)}
+                <NavLink
+                    to="/advanced"
+                    onClick={onClick(config.role, true)}
                     className={classnames('nav-item', styles.menuItem, {
                         [styles.drawerActive]: advancedDrawer === 'open',
                     })}
                 >
                     {icon}
                     {label}
-                </div>
+                </NavLink>
             );
         case 'admin':
             return (
