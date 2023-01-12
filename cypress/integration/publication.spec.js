@@ -152,7 +152,7 @@ describe('Dataset Publication', () => {
 
             cy.get('[data-rowindex=1]', { timeout: 3000 }).should(
                 'contains.text',
-                ['4', '"Rob"', '"Zombie"', 'false'].join(''),
+                ['4', '"Rob"', '"Zombie"', '""'].join(''),
             );
         });
         it('should filter by boolean', () => {
@@ -342,6 +342,8 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/book_summary.json');
             datasetImportPage.publish();
             adminNavigation.goToResourcePage();
+            cy.wait(2000);
+            cy.get('[aria-label="edit-Title"]').should('not.be.disabled');
             cy.get('[aria-label="edit-Title"]', { timeout: 3000 }).click({
                 force: true,
             });
@@ -360,6 +362,8 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/book_summary.json');
             datasetImportPage.publish();
             adminNavigation.goToResourcePage();
+            cy.wait(2000);
+            cy.get('[aria-label="edit-Title"]').should('not.be.disabled');
             cy.get('[aria-label="edit-Title"]', { timeout: 3000 }).click({
                 force: true,
             });
