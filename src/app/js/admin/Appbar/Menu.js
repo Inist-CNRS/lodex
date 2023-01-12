@@ -24,6 +24,7 @@ import ClearAllIcon from '@material-ui/icons/ClearAll';
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 import StorageIcon from '@material-ui/icons/Storage';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles({
     container: {
@@ -49,6 +50,7 @@ const MenuComponent = ({
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [showClearDialog, setShowClearDialog] = React.useState(false);
+
     const open = !!anchorEl;
     const handleOpenMenu = event => {
         setAnchorEl(event.currentTarget);
@@ -57,6 +59,16 @@ const MenuComponent = ({
     const handleCloseMenu = callback => {
         setAnchorEl(null);
         typeof callback === 'function' && callback();
+    };
+
+    const handleClearJobs = async () => {
+        const result = await jobsApi.clearJobs();
+        if (result.response.status === 'success') {
+            toast(polyglot.t('jobs_cleared'), {
+                type: toast.TYPE.SUCCESS,
+            });
+        }
+        setAnchorEl(null);
     };
 
     return (
@@ -118,10 +130,7 @@ const MenuComponent = ({
                                 {polyglot.t('clear_dataset')}
                             </span>
                         </MenuItem>,
-                        <MenuItem
-                            key="clear_jobs"
-                            onClick={() => handleCloseMenu(jobsApi.clearJobs)}
-                        >
+                        <MenuItem key="clear_jobs" onClick={handleClearJobs}>
                             <DeleteSweepIcon />
                             <span className={classes.labelAction}>
                                 {polyglot.t('clear_jobs')}

@@ -61,6 +61,7 @@ export const EnrichmentActionButtonComponent = ({ p: polyglot }) => {
                         color="secondary"
                         onClick={handleShowDialog}
                         style={{ marginLeft: 24 }}
+                        disabled={[IN_PROGRESS].includes(enrichment?.status)}
                     >
                         <DeleteIcon className={classes.icon} />
                         {polyglot.t('delete')}

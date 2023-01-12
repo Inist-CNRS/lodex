@@ -4,27 +4,27 @@ import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 
 const styles = stylesToClassname(
     {
         link: {
             padding: '5px',
-            color: theme.green.primary,
+            color: colorsTheme.green.primary,
             textDecoration: 'none',
             ':hover': {
-                color: theme.orange.primary,
+                color: colorsTheme.orange.primary,
                 textDecoration: 'none',
             },
             ':focus': {
                 textDecoration: 'none',
-                color: theme.orange.primary,
+                color: colorsTheme.orange.primary,
             },
             ':visited': {
                 textDecoration: 'none',
             },
             ':active': {
-                color: theme.orange.primary,
+                color: colorsTheme.orange.primary,
             },
         },
     },

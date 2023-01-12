@@ -9,9 +9,10 @@ import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 import { fromEnrichments } from '../selectors';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import { addField } from '../../fields';
+import { useParams } from 'react-router';
 
 const styles = {
     table: {
@@ -25,7 +26,7 @@ const styles = {
         position: 'relative',
     },
     enrichedColumn: {
-        backgroundColor: theme.green.light,
+        backgroundColor: colorsTheme.green.light,
     },
 };
 
@@ -66,6 +67,8 @@ export const ParsingExcerptComponent = ({
     const enrichmentsNames = useMemo(() => getEnrichmentsNames(enrichments), [
         enrichments,
     ]);
+
+    const { filter } = useParams();
 
     const checkIsEnrichmentLoading = column => {
         return (
@@ -118,7 +121,7 @@ export const ParsingExcerptComponent = ({
                                             name={column}
                                             onAddColumn={name => {
                                                 onAddField && onAddField();
-                                                handleAddColumn(name);
+                                                handleAddColumn(name, filter);
                                             }}
                                             atTop={total < 3}
                                         />
@@ -147,7 +150,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    handleAddColumn: name => addField({ name }),
+    handleAddColumn: (name, filter) => addField({ name, filter }),
 };
 
 export default compose(

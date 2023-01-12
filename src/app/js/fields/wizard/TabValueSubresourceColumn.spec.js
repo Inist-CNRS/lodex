@@ -1,6 +1,6 @@
-import { mapStateToProps } from './StepValueSubresourceColumn';
+import { mapStateToProps } from './TabValueSubresourceColumn';
 
-describe('StepValueSubresourceColumn', () => {
+describe('TabValueSubresourceColumn', () => {
     describe('mapStateToProps', () => {
         it('should return an empty state for an unknown subresource', () => {
             expect(

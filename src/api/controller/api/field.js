@@ -2,7 +2,6 @@ import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 import asyncBusboy from 'async-busboy';
-import backup from 'mongodb-backup';
 import restore from 'mongodb-restore';
 import moment from 'moment';
 import streamToString from 'stream-to-string';
@@ -11,6 +10,7 @@ import { validateField } from '../../models/field';
 import publishFacets from './publishFacets';
 import indexSearchableFields from '../../services/indexSearchableFields';
 import { mongoConnectionString } from '../../services/mongoClient';
+const tar = require('tar-stream');
 
 import {
     SCOPE_DATASET,
@@ -18,6 +18,10 @@ import {
     SCOPE_COLLECTION,
     SCOPE_DOCUMENT,
 } from '../../../common/scope';
+import { PENDING } from '../../../common/enrichmentStatus';
+import { dropJobs } from '../../workers/tools';
+import { ENRICHER } from '../../workers/enricher';
+import generateUid from '../../services/generateUid';
 
 const sortByFieldUri = (a, b) =>
     (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
@@ -41,8 +45,9 @@ export const restoreFields = (fileStream, ctx) => {
             });
     }
 
-    const restoreTask = () =>
-        new Promise((resolve, reject) =>
+    const restoreTask = () => {
+        dropJobs(ENRICHER);
+        return new Promise((resolve, reject) =>
             restore({
                 uri: mongoConnectionString,
                 stream: fileStream,
@@ -53,12 +58,17 @@ export const restoreFields = (fileStream, ctx) => {
                 },
             }),
         );
+    };
 
     return ctx.field
         .remove({})
         .then(restoreTask)
         .then(() =>
-            Promise.all([ctx.field.castIds(), ctx.subresource.castIds()]),
+            Promise.all([
+                ctx.field.castIds(),
+                ctx.subresource.castIds(),
+                ctx.enrichment.updateMany({}, { $set: { status: PENDING } }),
+            ]),
         );
 };
 
@@ -128,24 +138,10 @@ export const translateOldField = (ctx, oldField, index) => {
     );
 };
 
-export const backupFields = writeStream =>
-    new Promise((resolve, reject) =>
-        backup({
-            uri: mongoConnectionString,
-            collections: ['field', 'subresource', 'enrichment'],
-            stream: writeStream,
-            parser: 'json',
-            callback: err => {
-                err ? reject(err) : resolve();
-            },
-        }),
-    );
-
 export const setup = async (ctx, next) => {
     ctx.validateField = validateField;
     ctx.publishFacets = publishFacets;
     ctx.restoreFields = restoreFields;
-    ctx.backupFields = backupFields;
 
     try {
         await next();
@@ -208,13 +204,29 @@ export const removeField = async (ctx, id) => {
 
 export const exportFields = async ctx => {
     const filename = `model_${moment().format('YYYY-MM-DD-HHmmss')}.tar`;
-
-    ctx.status = 200;
     ctx.set('Content-disposition', `attachment; filename=${filename}`);
     ctx.set('Content-type', 'application/x-tar');
-
     try {
-        await ctx.backupFields(ctx.res);
+        const collections = ['field', 'subresource', 'enrichment'];
+        const pack = tar.pack();
+
+        for (const collection of collections) {
+            const docs = await ctx.db
+                .collection(collection)
+                .find()
+                .toArray();
+
+            for (const doc of docs) {
+                await pack.entry(
+                    { name: `dataset/${collection}/${doc._id}.json` },
+                    JSON.stringify(doc),
+                );
+            }
+        }
+
+        await pack.finalize();
+        ctx.status = 200;
+        ctx.body = pack;
     } catch (e) {
         ctx.status = 500;
         ctx.body = e.message;
@@ -292,6 +304,32 @@ export const reorderField = async ctx => {
     }
 };
 
+export const duplicateField = async ctx => {
+    try {
+        // get field id from request body
+        const { fieldId } = ctx.request.body;
+
+        // get field from database
+        const field = await ctx.field.findOneById(fieldId);
+
+        // change name of field
+        field.label = `${field.label}_copy`;
+        field.name = await generateUid();
+        field.position = field.position + 1;
+        delete field._id;
+
+        // save field in database
+        const newField = await ctx.field.create(field);
+        ctx.status = 200;
+        ctx.body = newField;
+    } catch (error) {
+        ctx.status = 400;
+        ctx.body = {
+            error: error.message,
+        };
+    }
+};
+
 const app = new Koa();
 
 app.use(setup);
@@ -301,6 +339,7 @@ app.use(route.get('/export', exportFields));
 app.use(route.post('/import', importFields(asyncBusboy)));
 app.use(koaBodyParser());
 app.use(route.post('/', postField));
+app.use(route.post('/duplicate', duplicateField));
 app.use(route.put('/reorder', reorderField));
 app.use(route.put('/:id', putField));
 app.use(route.del('/:id', removeField));

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import { fromFields } from '../../sharedSelectors';
 import PublishButton from './PublishButton';
-import ValidationButton from './ValidationButton';
 import { fromPublication } from '../selectors';
 import compose from 'recompose/compose';
 import { ClearPublishedButton } from '../clear/ClearPublishedButton';
@@ -19,9 +18,5 @@ export default compose(
     branch(
         ({ hasPublishedDataset }) => hasPublishedDataset,
         renderComponent(ClearPublishedButton),
-    ),
-    branch(
-        ({ invalidFields }) => invalidFields.length > 0,
-        renderComponent(ValidationButton),
     ),
 )(PublishButton);

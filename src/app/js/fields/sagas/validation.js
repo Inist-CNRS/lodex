@@ -5,7 +5,7 @@ import {
     setValidation,
     LOAD_FIELD_SUCCESS,
     REMOVE_FIELD_SUCCESS,
-    SAVE_FIELD_SUCCESS,
+    LOAD_PUBLICATION_SUCCESS,
 } from '../';
 
 import { fromFields } from '../../sharedSelectors';
@@ -19,7 +19,7 @@ export function* handleNeedValidation() {
 
 export default function* watch() {
     yield takeLatest(
-        [LOAD_FIELD_SUCCESS, REMOVE_FIELD_SUCCESS, SAVE_FIELD_SUCCESS],
+        [LOAD_FIELD_SUCCESS, REMOVE_FIELD_SUCCESS, LOAD_PUBLICATION_SUCCESS],
         handleNeedValidation,
     );
 }

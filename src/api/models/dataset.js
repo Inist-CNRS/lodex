@@ -4,22 +4,27 @@ import omit from 'lodash.omit';
 import JSONStream from 'jsonstream';
 import { Transform } from 'stream';
 
-import { URI_FIELD_NAME } from '../../common/uris';
+import { URI_FIELD_NAME, moveUriToFirstPosition } from '../../common/uris';
 import countNotUnique from './countNotUnique';
 import countNotUniqueSubresources from './countNotUniqueSubresources';
 
 export default db => {
     const collection = db.collection('dataset');
-    collection.insertBatch = documents =>
-        chunk(documents, 100).map(data =>
-            collection.insertMany(data, {
-                forceServerObjectId: true,
-                w: 1,
+    collection.insertBatch = documents => {
+        return Promise.all(
+            chunk(documents, 100).map(data => {
+                const orderedData = moveUriToFirstPosition(data);
+                return collection.insertMany(orderedData, {
+                    forceServerObjectId: true,
+                    w: 1,
+                });
             }),
         );
+    };
     collection.getExcerpt = filter =>
         collection
             .find(filter)
+            .sort({ $natural: 1 })
             .limit(8)
             .toArray();
     collection.findLimitFromSkip = (limit, skip, query = {}, sortBy, sortDir) =>
@@ -48,7 +53,7 @@ export default db => {
 
     collection.bulkUpdate = async (items, getFilter, upsert = false) => {
         if (items.length) {
-            collection.bulkWrite(
+            await collection.bulkWrite(
                 items.map(item => ({
                     updateOne: {
                         filter: getFilter(item),
@@ -102,6 +107,16 @@ export default db => {
             .pipe(JSONStream.stringify());
     };
 
+    collection.dumpAsJsonLStream = async () => {
+        const omitMongoId = new Transform({ objectMode: true });
+        omitMongoId._transform = function(data, enc, cb) {
+            this.push(JSON.stringify(omit(data, ['_id'])).concat('\n'));
+            cb();
+        };
+
+        return (await collection.find({}).stream()).pipe(omitMongoId);
+    };
+
     collection.removeAttribute = async attribute =>
         collection.update({}, { $unset: { [attribute]: 1 } }, { multi: true });
 
@@ -123,9 +138,13 @@ export default db => {
     collection.getColumns = async () => {
         const firstLine = await collection.findOne();
         const columns = [];
-        Object.keys(firstLine).forEach(key => {
-            columns.push({ key, type: typeof firstLine[key] });
-        });
+        if (firstLine) {
+            Object.keys(firstLine).forEach(key => {
+                columns.push({ key, type: typeof firstLine[key] });
+            });
+        } else {
+            throw new Error('Unable to get columns, first line is empty.');
+        }
         return columns;
     };
 
@@ -142,12 +161,18 @@ export default db => {
                 },
             ])
             .toArray();
-        for (const key of aggregation[0].keys) {
-            try {
-                await collection.createIndex({ [key]: 1 });
-            } catch {
-                console.error(`Failed to index ${key}`);
+        if (aggregation[0]) {
+            for (const key of aggregation[0].keys) {
+                try {
+                    await collection.createIndex({ [key]: 1 });
+                } catch {
+                    console.error(`Failed to index ${key}`);
+                }
             }
+        } else {
+            console.warn(
+                'Unable to create datagrid indexes, columns are invalid.',
+            );
         }
     };
 

@@ -1,29 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import SearchIcon from '@material-ui/icons/Search';
-import { Grid, Box, Typography, Button } from '@material-ui/core';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import {
+    Box,
+    Button,
+    Select,
+    InputLabel,
+    MenuItem,
+    FormControl,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import ListDialog from './ListDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import CustomLoader from './CustomLoader';
 
-const styles = {
-    button: {
-        color: 'white',
-        marginLeft: 4,
-        marginRight: 4,
+const useStyles = makeStyles({
+    formControl: {
+        minWidth: 200,
     },
-};
+    disableUppercase: {
+        textTransform: 'initial',
+    },
+});
 
-const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
-    const [open, setOpen] = useState(false);
+const LoaderSelectComponent = ({
+    loaders,
+    value,
+    setLoader,
+    p: polyglot,
+    disabled,
+}) => {
+    const [openLoadersDialog, setOpenLoadersDialog] = useState(false);
+    const [openCustomLoadersDialog, setOpenCustomLoadersDialog] = useState(
+        false,
+    );
+
+    const classes = useStyles();
+
+    useEffect(() => {
+        if (value === 'custom-loader') {
+            setOpenCustomLoadersDialog(true);
+        }
+    }, [value]);
 
     const handleOpen = () => {
-        setOpen(true);
+        setOpenLoadersDialog(true);
     };
 
     const handleClose = () => {
-        setOpen(false);
+        setOpenLoadersDialog(false);
     };
 
     const actions = [
@@ -38,59 +65,97 @@ const LoaderSelectComponent = ({ loaders, value, setLoader, p: polyglot }) => {
     ];
 
     return (
-        <div>
-            <Grid
-                container={true}
-                direction="row"
+        <Box>
+            <Box
+                display="flex"
                 justifyContent="center"
-                style={{
-                    width: '100%',
-                    marginBottom: 25,
-                    marginTop: 25,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
+                alignItems="center"
+                marginBottom="10px"
+                marginTop="60px"
             >
-                <Box
-                    style={{
-                        display: 'grid',
-                        alignContent: 'center',
-                        marginRight: 20,
-                    }}
-                >
-                    <Typography variant="h6" style={{ marginBottom: 10 }}>
-                        2. {polyglot.t('loader_name')}
-                    </Typography>
-                </Box>
-                <Box>
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="select-loader-input-label" shrink={!!value}>
+                        {polyglot.t('loader_name')}
+                    </InputLabel>
+                    <Select
+                        className="select-loader"
+                        labelId="select-loader-input-label"
+                        onChange={e => setLoader(e.target.value)}
+                        value={value}
+                        autoWidth
+                        disabled={disabled}
+                    >
+                        <MenuItem
+                            className="select-loader-item"
+                            key={'automatic'}
+                            value={'automatic'}
+                        >
+                            {polyglot.t('automatic-loader')}
+                        </MenuItem>
+                        <MenuItem
+                            className="select-loader-item"
+                            key={'custom-loader'}
+                            value={'custom-loader'}
+                        >
+                            {polyglot.t('custom-loader')}
+                        </MenuItem>
+                        {loaders
+                            .sort((x, y) =>
+                                polyglot
+                                    .t(x.name)
+                                    .localeCompare(polyglot.t(y.name)),
+                            )
+                            .map(loader => (
+                                <MenuItem
+                                    className="select-loader-item"
+                                    key={loader.name}
+                                    value={loader.name}
+                                >
+                                    {polyglot.t(loader.name)}
+                                </MenuItem>
+                            ))}
+                    </Select>
+                </FormControl>
+                <Box mt="10px" ml="10px">
                     <Button
                         variant="contained"
-                        style={styles.button}
                         className="open-loaders"
                         color="primary"
                         onClick={handleOpen}
-                        fullWidth
+                        disabled={disabled}
                     >
-                        {value === 'automatic'
-                            ? polyglot.t('automatic-loader')
-                            : polyglot.t(value)}
-                        <SearchIcon
-                            fontSize="large"
-                            style={{ marginLeft: 20 }}
-                        />
+                        <ListAltIcon fontSize="small" />
                     </Button>
                 </Box>
-            </Grid>
+            </Box>
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                marginBottom="48px"
+            >
+                <Button
+                    className={classes.disableUppercase}
+                    color="primary"
+                    onClick={() => setOpenCustomLoadersDialog(true)}
+                    disabled={disabled}
+                >
+                    {polyglot.t(`add-custom-loader`)}
+                </Button>
+            </Box>
             <ListDialog
-                open={open}
+                open={openLoadersDialog}
                 handleClose={handleClose}
                 actions={actions}
                 loaders={loaders}
                 setLoader={setLoader}
                 value={value}
             />
-        </div>
+            <CustomLoader
+                isOpen={openCustomLoadersDialog}
+                handleClose={() => setOpenCustomLoadersDialog(false)}
+            />
+        </Box>
     );
 };
 
@@ -99,6 +164,7 @@ LoaderSelectComponent.propTypes = {
     setLoader: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
+    disabled: PropTypes.bool,
 };
 
 LoaderSelectComponent.defaultProps = {

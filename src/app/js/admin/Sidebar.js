@@ -1,15 +1,15 @@
 import React, { Fragment } from 'react';
 import { Box } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
-import DescriptionIcon from '@material-ui/icons/Description';
+import SourceIcon from '@mui/icons-material/Source';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import GridOnIcon from '@material-ui/icons/GridOn';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PlusIcon from '@material-ui/icons/Add';
 import PostAddIcon from '@material-ui/icons/PostAdd';
-import MainResourceIcon from '@material-ui/icons/InsertDriveFile';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+import ArticleIcon from '@mui/icons-material/Article';
+import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -23,7 +23,7 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import PrivateRoute from './PrivateRoute';
 import ImportModelButton from './ImportModelButton.js';
 import { fromPublication, fromParsing, fromEnrichments } from './selectors';
-import theme from './../theme';
+import colorsTheme from '../../custom/colorsTheme';
 import {
     SCOPE_DOCUMENT,
     SCOPE_DATASET,
@@ -36,14 +36,14 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: theme.black.veryDark,
+        backgroundColor: colorsTheme.black.veryDark,
         textAlign: 'center',
         position: 'sticky',
         top: 0,
         height: '100vh',
     },
     sidebarNavLink: {
-        color: theme.white.primary,
+        color: colorsTheme.white.primary,
         textDecoration: 'none',
         display: 'flex',
         flexDirection: 'column',
@@ -53,36 +53,36 @@ const useStyles = makeStyles({
         '&:hover': {
             transition: 'all ease-in-out 400ms',
             textDecoration: 'none',
-            color: theme.white.primary,
-            backgroundColor: theme.black.light,
+            color: colorsTheme.white.primary,
+            backgroundColor: colorsTheme.black.light,
         },
     },
     sidebarCallToAction: {
-        color: theme.white.primary,
+        color: colorsTheme.white.primary,
         textDecoration: 'none',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         margin: 20,
         padding: '10px 10px',
-        border: `3px dashed ${theme.white.transparent}`,
+        border: `3px dashed ${colorsTheme.white.transparent}`,
         borderRadius: 10,
         '&:hover': {
             transition: 'all ease-in-out 400ms',
             textDecoration: 'none',
-            color: theme.white.primary,
-            backgroundColor: theme.black.light,
+            color: colorsTheme.white.primary,
+            backgroundColor: colorsTheme.black.light,
         },
     },
     sidebarCallToActionDisabled: {
-        color: theme.white.light,
+        color: colorsTheme.white.light,
         textDecoration: 'none',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         margin: 20,
         padding: '10px 10px',
-        border: `3px dashed ${theme.white.transparent}`,
+        border: `3px dashed ${colorsTheme.white.transparent}`,
         borderRadius: 10,
     },
     sidebarDeleteNavLink: {
@@ -94,7 +94,7 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: theme.black.dark,
+        backgroundColor: colorsTheme.black.dark,
         position: 'sticky',
         top: 0,
         height: '100vh',
@@ -121,18 +121,18 @@ const useStyles = makeStyles({
     separator: {
         width: '90%',
         border: 'none',
-        borderTop: `1px solid ${theme.white.transparent}`,
+        borderTop: `1px solid ${colorsTheme.white.transparent}`,
     },
 });
 
 const sidebarNavLinkActiveStyle = {
-    color: theme.white.primary,
-    backgroundColor: theme.black.dark,
+    color: colorsTheme.white.primary,
+    backgroundColor: colorsTheme.black.dark,
 };
 
 const subSidebarNavLinkActiveStyle = {
-    color: theme.white.primary,
-    backgroundColor: theme.white.transparent,
+    color: colorsTheme.white.primary,
+    backgroundColor: colorsTheme.white.transparent,
 };
 
 const DocumentMenu = compose(
@@ -148,7 +148,7 @@ const DocumentMenu = compose(
                     activeStyle={subSidebarNavLinkActiveStyle}
                     to="/display/document/main"
                 >
-                    <MainResourceIcon />
+                    <ArticleIcon />
                     {polyglot.t('main_resource')}
                 </NavLink>
             </Box>
@@ -171,7 +171,7 @@ const DocumentMenu = compose(
                             activeStyle={subSidebarNavLinkActiveStyle}
                             to={`/display/document/${r._id}`}
                         >
-                            <FileCopyIcon />
+                            <DocumentScannerIcon />
                             {r.name}
                         </NavLink>
                     </Box>
@@ -242,7 +242,7 @@ const InnerSidebarComponent = ({
                             activeStyle={sidebarNavLinkActiveStyle}
                             to={`/display/${SCOPE_DOCUMENT}`}
                         >
-                            <DescriptionIcon />
+                            <SourceIcon />
                             {polyglot.t('resource_pages')}
                         </NavLink>
                     </Box>

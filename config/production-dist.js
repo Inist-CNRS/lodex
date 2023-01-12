@@ -4,10 +4,9 @@ const getMongoConfig = () => {
     const { mongo = {} } = config;
 
     const defaultConfig = {
-        host: process.env.EZMASTER_MONGODB_HOST_PORT,
         dbName: String(process.env.EZMASTER_TECHNICAL_NAME).replace(
-            /(-[0-9]+)$/,
-            '',
+            /(-[^-]*)-[0-9]+$/,
+            '$1',
         ),
     };
 
@@ -16,7 +15,7 @@ const getMongoConfig = () => {
     }
 
     return {
-        host: mongo.host || defaultConfig.host,
+        host: mongo.host,
         dbName: mongo.dbName || defaultConfig.dbName,
     };
 };

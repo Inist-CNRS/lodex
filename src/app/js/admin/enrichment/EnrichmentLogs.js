@@ -5,7 +5,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import { EnrichmentContext } from './EnrichmentContext';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import { io } from 'socket.io-client';
 import { ERROR, FINISHED } from '../../../../common/enrichmentStatus';
 import jobsApi from '../api/job';
@@ -32,17 +32,17 @@ const useStyles = makeStyles({
         overflowX: 'auto !important',
     },
     Log_info: {
-        color: theme.black.light,
+        color: colorsTheme.black.light,
         lineHeight: '0.8rem',
         whiteSpace: 'nowrap',
     },
     Log_ok: {
-        color: theme.green.primary,
+        color: colorsTheme.green.primary,
         fontWeight: 'bold',
         whiteSpace: 'nowrap',
     },
     Log_error: {
-        color: theme.red.primary,
+        color: colorsTheme.red.primary,
         fontWeight: 'bold',
         whiteSpace: 'nowrap',
     },
@@ -54,10 +54,12 @@ const LogLine = props => {
     try {
         parsedLog = JSON.parse(log);
     } catch (e) {
-        console.error('Error parsing log', e);
+        console.error(`Error parsing log : "${data[index]}"`);
+        return null;
     }
     const classes = useStyles();
 
+    const timestamp = new Date(parsedLog?.timestamp);
     let date;
     try {
         date = Intl.DateTimeFormat('fr', {
@@ -68,14 +70,14 @@ const LogLine = props => {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric',
-        }).format(new Date(parsedLog?.timestamp));
+        }).format(timestamp);
     } catch (e) {
         date = 'No date';
     }
 
     return (
         <p
-            key={parsedLog.timestamp}
+            key={timestamp.valueOf()}
             style={style}
             className={classes[`Log_${parsedLog.level}`]}
             title={parsedLog.message}
@@ -126,7 +128,6 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
             } else {
                 setLogs(currentState => [data, ...currentState]);
                 let parsedData;
-
                 try {
                     parsedData = JSON.parse(data);
                 } catch {
@@ -163,7 +164,7 @@ export const EnrichmentLogsComponent = ({ p: polyglot }) => {
                     </div>
                 )}
                 {isLoaded && logs.length < 1 && (
-                    <div>{polyglot.t('empty')}</div>
+                    <div>{polyglot.t('empty_logs')}</div>
                 )}
                 {isLoaded && logs && (
                     <FixedSizeList

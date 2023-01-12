@@ -11,33 +11,28 @@ import {
     ListItem,
     ListItemText,
     Dialog,
-    DialogTitle,
     DialogContent,
     DialogActions,
 } from '@material-ui/core';
 import FilterIcon from '@material-ui/icons/FilterList';
 import { makeStyles } from '@material-ui/core/styles';
 
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const useStyles = makeStyles({
     item: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: theme.black.veryLight,
+            backgroundColor: colorsTheme.black.veryLight,
         },
-        borderBottom: `1px solid ${theme.black.light}`,
+        borderBottom: `1px solid ${colorsTheme.black.light}`,
     },
     selectedItem: {
-        backgroundColor: theme.green.secondary,
+        backgroundColor: colorsTheme.green.secondary,
         '&:hover': {
-            backgroundColor: theme.green.primary,
+            backgroundColor: colorsTheme.green.primary,
         },
-    },
-    list: {
-        width: 800,
-        height: '70vh',
     },
 });
 
@@ -50,8 +45,13 @@ export const ListDialogComponent = ({
     handleClose,
     actions,
 }) => {
-    const classes = useStyles();
     const [filteredLoaders, setFilter] = useState(loaders.map(l => l.name));
+
+    const scrollTo = el => {
+        if (el) {
+            el.scrollIntoView({ inline: 'center', block: 'center' });
+        }
+    };
 
     useEffect(() => {
         setFilter(loaders.map(l => l.name));
@@ -74,21 +74,20 @@ export const ListDialogComponent = ({
                 comment={polyglot.t(`${pn}-comment`)}
                 selected={value === pn}
                 changeValue={changeValue}
+                scrollTo={scrollTo}
             />
         ));
 
     return (
         <Dialog open={open} onClose={handleClose} scroll="body" maxWidth="xl">
-            <DialogTitle>
+            <DialogContent style={{ padding: 0, width: '1100px' }}>
                 <FilterComponent
                     p={polyglot}
                     loaders={loaders}
                     filter={filteredLoaders}
                     setFilter={setFilter}
                 />
-            </DialogTitle>
-            <DialogContent>
-                <List className={classnames(classes.list)}>
+                <List style={{ height: '70vh' }}>
                     <ListItemComponent
                         key={'automatic'}
                         value={'automatic'}
@@ -96,6 +95,7 @@ export const ListDialogComponent = ({
                         selected={value === 'automatic'}
                         comment={polyglot.t('automatic-loader-comment')}
                         changeValue={changeValue}
+                        scrollTo={scrollTo}
                     />
                     {loaderNames}
                 </List>
@@ -110,6 +110,9 @@ ListDialogComponent.propTypes = {
     loaders: PropTypes.array,
     setLoader: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
+    open: PropTypes.bool.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    actions: PropTypes.node,
 };
 
 const ListItemComponent = ({
@@ -118,8 +121,10 @@ const ListItemComponent = ({
     comment,
     selected,
     changeValue,
+    scrollTo,
 }) => {
     const classes = useStyles();
+
     return (
         <ListItem
             value={value}
@@ -127,6 +132,7 @@ const ListItemComponent = ({
             className={classnames(classes.item, {
                 [classes.selectedItem]: selected,
             })}
+            ref={selected ? scrollTo : null}
         >
             <ListItemText
                 primary={title}
@@ -144,6 +150,8 @@ ListItemComponent.propTypes = {
     comment: PropTypes.string,
     title: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
+    changeValue: PropTypes.func.isRequired,
+    scrollTo: PropTypes.func.isRequired,
 };
 
 const FilterComponent = ({ loaders, filter, setFilter, p: polyglot }) => {
@@ -157,7 +165,15 @@ const FilterComponent = ({ loaders, filter, setFilter, p: polyglot }) => {
             .map(l => l.name),
         xmlFormat: loaders
             .filter(l =>
-                ['xml', 'rss', 'atom', 'mods', 'tei', 'skos'].includes(l.name),
+                [
+                    'xml',
+                    'rss',
+                    'atom',
+                    'mods',
+                    'tei',
+                    'tei-persee',
+                    'skos',
+                ].includes(l.name),
             )
             .map(l => l.name),
         jsonFormat: loaders
@@ -176,8 +192,14 @@ const FilterComponent = ({ loaders, filter, setFilter, p: polyglot }) => {
         <Grid
             container={true}
             direction="row"
-            style={{ width: '100%', marginBottom: 25 }}
-            justify="space-around"
+            style={{
+                width: '100%',
+                marginBottom: 25,
+                marginTop: 25,
+                padding: 10,
+            }}
+            justifyContent="space-around"
+            spacing={2}
         >
             <Box>
                 <FilterIcon fontSize="large" style={{ marginRight: 10 }} />

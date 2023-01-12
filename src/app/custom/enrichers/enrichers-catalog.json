@@ -1,0 +1,170 @@
+[
+    {
+        "id": "post-v1-rnsr-json",
+        "url": "https://affiliations-tools.services.inist.fr/v1/rnsr/json",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/affiliations-tools#v1%252frnsr%252fjson",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Structuration%20%26%20enrichissements%20d%27affiliations#/affiliations/post-v1-rnsr-conditor",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/09/identifiants-rnsr-adresse/",
+        "type": "affiliation"
+    },
+    {
+        "id": "post-v1-halauthorid-idref-json",
+        "url": "https://mapping-tools.services.inist.fr/v1/halAuthorId/idRef/json",
+        "doc": "",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-halauthorid-idref-json",
+        "objectifTDM": "",
+        "type": "other"
+    },
+    {
+        "id": "post-v1-homogenize-document-type-json",
+        "url": "https://mapping-tools.services.inist.fr/v1/homogenize/documentType/json",
+        "doc": "",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-homogenize-document-type-json",
+        "objectifTDM": "",
+        "type": "other"
+    },
+    {
+        "id": "post-v1-homogenize-publisher-json",
+        "url": "https://mapping-tools.services.inist.fr/v1/homogenize/publisher/json",
+        "doc": "",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-homogenize-publisher-json",
+        "objectifTDM": "",
+        "type": "other"
+    },
+    {
+        "id": "post-v1-homogenize-source-json",
+        "url": "https://mapping-tools.services.inist.fr/v1/homogenize/source/json",
+        "doc": "",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-homogenize-source-json",
+        "objectifTDM": "",
+        "type": "other"
+    },
+    {
+        "id": "post-v1-idref-orcid-json",
+        "url": "https://mapping-tools.services.inist.fr/v1/idRef/orcid/json",
+        "doc": "",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-idref-orcid-json",
+        "objectifTDM": "",
+        "type": "other"
+    },
+    {
+        "id": "post-v1-rnsr-instituts-cnrs-json",
+        "url": "https://mapping-tools.services.inist.fr/v1/rnsr/instituts-cnrs/json",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools#v1%252frnsr%252finstituts-cnrs%252fjson",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-rnsr-instituts-cnrs-json",
+        "objectifTDM": "",
+        "type": "affiliation"
+    },
+    {
+        "id": "post-v1-crossref-prefixes-expand",
+        "url": "https://biblio-tools.services.inist.fr/v1/crossref/prefixes/expand",
+        "doc": "",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/21/verbalisation-des-prefixes-de-doi/",
+        "type": "metadata"
+    },
+    {
+        "id": "post-v1-teeft-en",
+        "url": "https://terms-extraction.services.inist.fr/v1/teeft/en",
+        "doc": "",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Extraction%20de%20termes#/terms-extraction/post-v1-teeft-en",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/20/extraction-de-termes-teeft/",
+        "type": "indexation"
+    },
+    {
+        "id": "post-v1-teeft-fr",
+        "url": "https://terms-extraction.services.inist.fr/v1/teeft/fr",
+        "doc": "",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Extraction%20de%20termes#/terms-extraction/post-v1-teeft-fr",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/20/extraction-de-termes-teeft/",
+        "type": "indexation"
+    },
+    {
+        "id": "post-v1-addresses-parse",
+        "url": "https://affiliations-tools.services.inist.fr/v1/addresses/parse",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/affiliations-tools",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Traitements%20d%27affiliation%20avec%20libpostal#/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/20/decoupage-dune-adresse/",
+        "type": "affiliation"
+    },
+    {
+        "id": "post-v1-detect-lang",
+        "url": "https://nlp-tools2.services.inist.fr/v1/detect-lang",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/nlp-tools2",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Outils%20de%20NLP#/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/16/detection-de-la-llangue-dun-texte/",
+        "type": "other"
+    },
+    {
+        "id": "post-v1-en-classify",
+        "url": "https://domains-classifier.services.inist.fr/v1/en/classify",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/domains-classifier",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Classification%20en%20domaines%20scientifiques#/default/post_v1_en_classify",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/08/classification-en-domaines-scientifiques/",
+        "type": "classification"
+    },
+    {
+        "id": "post-v1-en-classhalen",
+        "url": "https://hal-classifier.services.inist.fr/v1/en/classhalen",
+        "doc": "",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Classification%20HAL#/Classification%20supervis%C3%A9e/post-v1-en-classhalen",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2022/02/10/classification-dans-les-domaines-hal/",
+        "type": "classification"
+    },
+    {
+        "id": "post-v1-unpaywall-expand",
+        "url": "https://biblio-tools.services.inist.fr/v1/unpaywall/expand",
+        "doc": "",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/biblio-tools/post-v1-unpaywall-is_oa",
+        "objectifTDM": "",
+        "type": "other"
+    },
+    {
+        "id": "post-v1-cnrsunit",
+        "url": "https://address-kit.services.inist.fr/v1/cnrsunit/cnrsunit",
+        "doc": "",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Informations%20sur%20des%20adresses%20d%27affiliations#/address/post-v1-cnrsunit",
+        "objectif TDM": "https://objectif-tdm.inist.fr/2022/11/09/detection-dunites-cnrs/",
+        "type": "affiliation"
+    },
+    {
+        "id": "post-v1-D63-identify",
+        "url": "https://loterre-resolvers.services.inist.fr/v1/D63/identify",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/loterre-resolvers",
+        "swagger": "https://openapi.services.inist.fr/#/loterre-resolvers/post-v1-D63-identify",
+        "objectif TDM": "https://objectif-tdm.inist.fr/2022/02/01/associer-un-terme-au-vocabulaire-des-communes-de-france/",
+        "type": "geography"
+    },
+    {
+        "id": "post-v1-tools",
+        "url": "https://terms-extraction.services.inist.fr/v1/tools/normalize",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/terms-extraction",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=Extraction%20de%20termes#/terms-extraction/post-v1-tools",
+        "objectif TDM": "https://objectif-tdm.inist.fr/2022/01/12/normaliser-un-texte-ou-un-terme/",
+        "type": "metadata"
+    },
+    {
+        "id": "post-v1-9SD-identify",
+        "url": "https://loterre-resolvers.services.inist.fr/v1/9SD/identify",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/loterre-resolvers",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-9SD-identify",
+        "objectif TDM": "https://objectif-tdm.inist.fr/2021/12/21/associer-un-pays-ou-subdivision-au-vocabulaire-loterre-correspondant/",
+        "type": "geography"
+    },
+    {
+        "id": "post-v1-perseeBaipTagger",
+        "url": "https://ner-tagger-1.services.inist.fr/v1/perseeBaipTagger/tagger",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/geo-tagger",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=D%C3%A9tection%20d%27entit%C3%A9s%20nomm%C3%A9es#/default/post_v1_perseeBaipTagger_tagger",
+        "objectif TDM": "https://objectif-tdm.inist.fr/2022/03/29/detection-dentites-nommees-dans-les-bulletins-administratifs-de-linstruction-publique-persee/",
+        "type": "geography"
+    },
+    {
+        "id": "post-v1-gotagger",
+        "url": "https://ner-tagger-1.services.inist.fr/v1/geotagger/tagger",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/geo-tagger",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=D%C3%A9tection%20d%27entit%C3%A9s%20nomm%C3%A9es#/default/post_v1_geoTagger_geoTagger",
+        "objectif TDM": "https://objectif-tdm.inist.fr/2022/03/08/detection-dentites-nommees/",
+        "type": "geography"
+    }
+]

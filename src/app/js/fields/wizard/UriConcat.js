@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 import get from 'lodash.get';
 
-import { FIELD_FORM_NAME } from '../';
+import { FIELD_FORM_NAME } from '..';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ConcatField from './ConcatField';
 
@@ -21,7 +21,7 @@ const styles = {
     },
 };
 
-export const StepValueConcatComponent = ({
+export const UriConcatComponent = ({
     handleSelect,
     p: polyglot,
     selected,
@@ -71,7 +71,7 @@ export const StepValueConcatComponent = ({
     </div>
 );
 
-StepValueConcatComponent.propTypes = {
+UriConcatComponent.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.string),
     handleChange: PropTypes.func.isRequired,
     handleSelect: PropTypes.func.isRequired,
@@ -83,7 +83,7 @@ StepValueConcatComponent.propTypes = {
     separator: PropTypes.string.isRequired,
 };
 
-StepValueConcatComponent.defaultProps = {
+UriConcatComponent.defaultProps = {
     columns: ['', ''],
     separator: '',
 };
@@ -185,4 +185,4 @@ export default compose(
         },
     }),
     translate,
-)(StepValueConcatComponent);
+)(UriConcatComponent);

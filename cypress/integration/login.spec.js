@@ -10,7 +10,7 @@ describe('Login', () => {
 
     it('should successfully login as an admin', () => {
         login();
-        cy.contains('No dataset').should('be.visible');
+        cy.contains('No data published').should('be.visible');
     });
 
     it('should successfully sign out and go to login page', () => {

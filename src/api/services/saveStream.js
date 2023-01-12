@@ -1,50 +1,43 @@
-import through from 'through';
-
-import safePipe from './safePipe';
+import ezs from '@ezs/core';
 import progress from './progress';
+import { CancelWorkerError } from '../workers';
 
-const defaultChunkSize = 100;
+async function insert(data, feed) {
+    const method = this.getParam('method');
+    const ctx = this.getEnv();
+    if (this.isLast()) {
+        return feed.close();
+    }
+    const isActive = await ctx.job?.isActive();
+    if (!isActive) {
+        return feed.stop(new CancelWorkerError('Job has been canceled'));
+    }
+    try {
+        const result = await ctx.dataset[method](data);
+        progress.incrementProgress(data.length);
+        return feed.send(result);
+    } catch (error) {
+        return feed.stop(error);
+    }
+}
 
-export const chunkStream = chunkSize => {
-    let acc = [];
-    return through(
-        function write(d) {
-            acc.push(d);
-            if (acc.length >= chunkSize) {
-                this.queue(acc);
-                acc = [];
-            }
-        },
-        function end() {
-            if (acc.length) {
-                this.queue(acc);
-            }
-        },
-    );
-};
-
-export default upsertMany => (stream, modifier) =>
-    new Promise((resolve, reject) => {
-        safePipe(stream, [
-            chunkStream(defaultChunkSize),
-            through(function(chunk) {
-                typeof modifier !== 'function'
-                    ? this.queue(chunk)
-                    : modifier(chunk)
-                          .then(this.queue)
-                          .catch(error => this.emit('error', error));
-            }),
-            through(function(chunk) {
-                upsertMany(chunk)
-                    .then(data => {
-                        this.emit('data', data);
-                        progress.incrementProgress(defaultChunkSize);
-                    })
-                    .catch(error => this.emit('error', error));
-            }),
-        ])
-            .on('error', reject)
-            .on('end', resolve);
-
-        stream.on('end', resolve);
+export default async (stream, ctx) => {
+    const datasetSize = await ctx.dataset.count();
+    const method = datasetSize === 0 ? 'insertBatch' : 'bulkUpsertByUri';
+    return new Promise((resolve, reject) => {
+        let insertedTotal = 0;
+        stream
+            .pipe(ezs('group', { length: 100 }))
+            .pipe(ezs(insert, { method }, ctx))
+            .pipe(ezs.catch())
+            .on('error', e => {
+                reject(e.sourceError || e);
+            })
+            .on('data', ({ insertedCount = 0 }) => {
+                insertedTotal += insertedCount;
+            })
+            .on('end', () => {
+                resolve(insertedTotal);
+            });
     });
+};

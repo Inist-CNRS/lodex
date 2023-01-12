@@ -20,7 +20,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import LoadingGraph from '../shared/LoadingGraph';
 import MouseIcon from '../shared/MouseIcon';
 
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import CenterIcon from '../shared/CenterIcon';
 import stylesToClassname from '../../lib/stylesToClassName';
 
@@ -101,9 +101,9 @@ export const defaultArgs = {
 
 const stylesWithClassnames = stylesToClassname({
     icon: {
-        color: theme.green.primary,
+        color: colorsTheme.green.primary,
         ':hover': {
-            color: theme.purple.primary,
+            color: colorsTheme.purple.primary,
             cursor: 'pointer',
         },
     },

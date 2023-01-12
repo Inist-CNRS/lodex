@@ -4,19 +4,19 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
-import translate from 'redux-polyglot/translate';
-import { List, Popover, Button } from '@material-ui/core';
+import { List, Popover, IconButton, Tooltip } from '@material-ui/core';
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 
 import { fromFields } from '../../sharedSelectors';
 import ValidationField from './ValidationField';
 import { editField as editFieldAction } from '../../fields';
 
 import {
-    polyglot as polyglotPropTypes,
     validationField as validationFieldPropType,
+    polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import { useHistory } from 'react-router';
-import { SCOPE_DATASET, SCOPE_DOCUMENT } from '../../../../common/scope';
+import { SCOPE_DOCUMENT } from '../../../../common/scope';
+import translate from 'redux-polyglot/translate';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };
@@ -24,8 +24,8 @@ const styles = {
     container: {
         display: 'flex',
         alignItems: 'center',
-        marginLeft: 4,
-        marginRight: 4,
+        marginLeft: 0,
+        marginRight: 10,
     },
 };
 
@@ -34,34 +34,31 @@ const ValidationButtonComponent = ({
     fields,
     handleHideErrors,
     handleShowErrorsClick,
-    p: polyglot,
     popover,
+    p: polyglot,
 }) => {
-    const history = useHistory();
-
     // @TODO: Find a better way to handle fix error from data tab
     const redirectAndHandleEditField = (...args) => {
         const field = fields.find(({ name }) => name === args[0]);
-        history.push(
-            `/display/${
-                field && field.scope === SCOPE_DATASET
-                    ? SCOPE_DATASET
-                    : SCOPE_DOCUMENT
-            }`,
-        );
 
-        setTimeout(() => handleEditField(...args), 1000);
+        setTimeout(
+            () => handleEditField(field?.name, field?.scope || SCOPE_DOCUMENT),
+            1000,
+        );
     };
 
     return (
         <div style={styles.container}>
-            <Button
-                color="secondary"
-                variant="contained"
-                onClick={handleShowErrorsClick}
-            >
-                {polyglot.t('show_publication_errors')}
-            </Button>
+            <Tooltip title={polyglot.t(`show_publication_errors`)}>
+                <IconButton
+                    color="secondary"
+                    variant="contained"
+                    onClick={handleShowErrorsClick}
+                    className={'validation-button'}
+                >
+                    <ReportProblemIcon />
+                </IconButton>
+            </Tooltip>
             <Popover
                 open={popover.show}
                 anchorEl={popover.anchorEl}
@@ -112,9 +109,9 @@ export default compose(
         handleHideErrors: ({ setShowPopover }) => () => {
             setShowPopover({ show: false });
         },
-        handleEditField: ({ editField, setShowPopover }) => field => {
+        handleEditField: ({ editField, setShowPopover }) => (field, filter) => {
             setShowPopover({ show: false });
-            editField(field);
+            editField({ field, filter });
         },
     }),
     translate,

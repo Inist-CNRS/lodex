@@ -13,7 +13,6 @@ const styles = {
     container: {
         display: 'flex',
         flexWrap: 'wrap',
-        width: '200%',
         justifyContent: 'space-between',
     },
     input: {
@@ -54,6 +53,10 @@ class StreamgraphAdmin extends Component {
 
     static defaultProps = {
         args: defaultArgs,
+        showMaxSize: true,
+        showMaxValue: false,
+        showMinValue: false,
+        showOrderBy: true,
     };
 
     constructor(props) {
@@ -82,10 +85,10 @@ class StreamgraphAdmin extends Component {
         const {
             p: polyglot,
             args: { params, maxLegendLength, height },
-            showMaxSize = true,
-            showMaxValue = false,
-            showMinValue = false,
-            showOrderBy = false,
+            showMaxSize,
+            showMaxValue,
+            showMinValue,
+            showOrderBy,
         } = this.props;
 
         return (

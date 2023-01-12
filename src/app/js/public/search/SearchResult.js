@@ -8,7 +8,7 @@ import {
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { isURL, getResourceUri } from '../../../../common/uris';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import stylesToClassname from '../../lib/stylesToClassName';
 
 const ellipsis = {
@@ -36,7 +36,7 @@ const styles = stylesToClassname(
             },
         },
         activeLink: {
-            color: theme.orange.primary,
+            color: colorsTheme.orange.primary,
         },
         row: {
             flex: '0 0 auto',

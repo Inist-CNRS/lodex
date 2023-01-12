@@ -4,10 +4,16 @@ import { Button } from '@material-ui/core';
 
 import { AddSubresourceFieldButtonComponent as AddSubresourceFieldButton } from './AddSubresourceFieldButton';
 
+jest.mock('react-router', () => ({
+    ...jest.requireActual('react-router'),
+    useParams: () => ({
+        filter: 'bar',
+    }),
+}));
+
 describe('<AddSubresourceFieldButton />', () => {
     it('should call addField with subresourceField created from default one on click if subresource is truthy', () => {
         const addField = jest.fn();
-        const editField = jest.fn();
         const subresource = { _id: 'ID', path: 'path' };
 
         const wrapper = shallow(
@@ -35,11 +41,8 @@ describe('<AddSubresourceFieldButton />', () => {
                     ],
                 },
                 { operation: 'PARSE' },
-                {
-                    operation: 'GET',
-                    args: [{ name: 'path', type: 'string', value: '' }],
-                },
             ],
+            filter: 'bar',
         });
     });
 

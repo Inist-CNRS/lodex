@@ -1,11 +1,45 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { propTypes as reduxFormPropTypes, Field } from 'redux-form';
-import { TextField as MUITextField, Grid, Button } from '@material-ui/core';
+import {
+    TextField as MUITextField,
+    Grid,
+    Button,
+    ListItem,
+    Typography,
+    makeStyles,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import classnames from 'classnames';
+import SubressourceFieldAutoComplete from './SubressourceFieldAutoComplete';
+import colorsTheme from '../../../custom/colorsTheme';
+import { connect } from 'react-redux';
+import { fromParsing } from '../selectors';
+
+const useStyles = makeStyles({
+    item: {
+        cursor: 'pointer',
+        '&:hover': {
+            backgroundColor: colorsTheme.black.veryLight,
+        },
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        borderBottom: `1px solid ${colorsTheme.black.light}`,
+        '&:last-child': {
+            borderBottom: 'none',
+        },
+    },
+    selectedItem: {
+        backgroundColor: colorsTheme.green.secondary,
+        '&:hover': {
+            backgroundColor: colorsTheme.green.primary,
+        },
+    },
+});
 
 const TextField = ({
     label,
@@ -23,62 +57,141 @@ const TextField = ({
     />
 );
 
+export const getKeys = value => {
+    if (!value || value.length === 0) {
+        return [];
+    }
+    if (typeof value === 'string') {
+        try {
+            value = JSON.parse(value);
+        } catch (error) {
+            return [];
+        }
+    }
+    if (Array.isArray(value)) {
+        if (value[0] && typeof value[0] === 'object') {
+            return Object.keys(value[0]);
+        }
+        return [];
+    }
+    return Object.keys(value);
+};
+
 const SubresourceFormComponent = ({
     handleSubmit,
     pristine,
     submitting,
     additionnalActions,
     p: polyglot,
-}) => (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 800 }}>
-        <Grid container align="center">
-            <Grid item style={{ padding: 8 }}>
-                <Field
-                    name="name"
-                    autoFocus
-                    component={TextField}
-                    label={polyglot.t('subresource_name')}
-                    fullWidth
-                />
-            </Grid>
-        </Grid>
-        <Grid container align="center">
-            <Grid item xs={6} style={{ padding: 8 }}>
-                <Field
-                    name="identifier"
-                    component={TextField}
-                    label={polyglot.t('subresource_id')}
-                    fullWidth
-                />
-            </Grid>
-            <Grid item xs={6} style={{ padding: 8 }}>
-                <Field
-                    name="path"
-                    component={TextField}
-                    label={polyglot.t('subresource_path')}
-                    fullWidth
-                />
-            </Grid>
-        </Grid>
-        <Grid container align="center" justifyContent="space-between">
-            <Grid item style={{ padding: 8 }}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    disabled={pristine || submitting}
-                >
-                    OK
-                </Button>
-            </Grid>
-            {additionnalActions && (
+    datasetFields,
+    excerptLines,
+    pathSelected,
+    change,
+}) => {
+    const classes = useStyles();
+    const optionsIdentifier = useMemo(() => {
+        const firstExcerptLine = excerptLines[0]?.[pathSelected] || [];
+        return getKeys(firstExcerptLine);
+    }, [excerptLines, pathSelected]);
+
+    return (
+        <form onSubmit={handleSubmit} style={{ maxWidth: 800 }}>
+            <Grid container align="center" style={{ marginBottom: 20 }}>
                 <Grid item style={{ padding: 8 }}>
-                    {additionnalActions}
+                    <Field
+                        name="name"
+                        autoFocus
+                        component={TextField}
+                        label={polyglot.t('subresource_name')}
+                        fullWidth
+                        aria-label="input-name"
+                    />
                 </Grid>
-            )}
-        </Grid>
-    </form>
-);
+            </Grid>
+            <Grid container align="center" style={{ marginBottom: 20 }}>
+                <Grid item xs={6} style={{ padding: 8 }}>
+                    <Field
+                        className="path"
+                        name="path"
+                        type="text"
+                        component={SubressourceFieldAutoComplete}
+                        options={datasetFields}
+                        renderInput={params => (
+                            <MUITextField
+                                {...params}
+                                label={polyglot.t('subresource_path')}
+                                variant="outlined"
+                                aria-label="input-path"
+                            />
+                        )}
+                        renderOption={(props, option, state) => {
+                            return (
+                                <ListItem
+                                    {...props}
+                                    className={classnames(classes.item, {
+                                        [classes.selectedItem]: state.selected,
+                                    })}
+                                >
+                                    <Typography>{option}</Typography>
+                                </ListItem>
+                            );
+                        }}
+                        clearIdentifier={() => {
+                            change('identifier', '');
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={6} style={{ padding: 8 }}>
+                    <Field
+                        className="identifier"
+                        name="identifier"
+                        type="text"
+                        component={SubressourceFieldAutoComplete}
+                        options={optionsIdentifier}
+                        disabled={!pathSelected}
+                        renderInput={params => (
+                            <MUITextField
+                                {...params}
+                                label={polyglot.t('subresource_id')}
+                                aria-label="input-identifier"
+                                variant="outlined"
+                            />
+                        )}
+                        renderOption={(props, option, state) => {
+                            return (
+                                <ListItem
+                                    {...props}
+                                    className={classnames(classes.item, {
+                                        [classes.selectedItem]: state.selected,
+                                    })}
+                                >
+                                    <Typography>{option}</Typography>
+                                </ListItem>
+                            );
+                        }}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container align="center" justifyContent="space-between">
+                <Grid item style={{ padding: 8 }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                        disabled={pristine || submitting}
+                    >
+                        OK
+                    </Button>
+                </Grid>
+                {additionnalActions && (
+                    <Grid item style={{ padding: 8 }}>
+                        {additionnalActions}
+                    </Grid>
+                )}
+            </Grid>
+        </form>
+    );
+};
 
 SubresourceFormComponent.propTypes = {
     ...reduxFormPropTypes,
@@ -95,4 +208,12 @@ TextField.propTypes = {
     }),
 };
 
-export default compose(translate)(SubresourceFormComponent);
+const mapStateToProps = state => ({
+    datasetFields: fromParsing.getParsedExcerptColumns(state),
+    excerptLines: fromParsing.getExcerptLines(state),
+});
+
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(SubresourceFormComponent);

@@ -19,6 +19,7 @@ import { addPublisherListener } from './workers/publisher';
 
 import progress from './services/progress';
 import { addEnrichmentJobListener } from './services/enrichment/enrichment';
+import { addImportListener } from './workers/import';
 
 import Meter from '@uswitch/koa-prometheus';
 import MeterConfig from '@uswitch/koa-prometheus/build/koa-prometheus.defaults.json';
@@ -71,6 +72,15 @@ app.use(async (ctx, next) => {
 const meters = Meter(MeterConfig, { loadStandards: true, loadDefaults: true });
 app.use(meters.middleware); // The middleware that makes the meters available
 app.use(route.get('/metrics', ctx => (ctx.body = meters.print())));
+app.use(function*(next) {
+    try {
+        yield next;
+    } catch (err) {
+        this.status = err.status || 500;
+        this.body = err.message;
+        this.app.emit('error', err, this);
+    }
+});
 
 app.use(mount('/', controller));
 
@@ -90,6 +100,9 @@ if (!module.parent) {
         });
         addEnrichmentJobListener(payload => {
             socket.emit(payload.room, payload.data);
+        });
+        addImportListener(payload => {
+            socket.emit('import', payload);
         });
     });
 }

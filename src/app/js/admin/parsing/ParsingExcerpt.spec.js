@@ -9,7 +9,13 @@ import {
     getEnrichmentsNames,
     getColumnStyle,
 } from './ParsingExcerpt';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
+
+jest.mock('react-router', () => ({
+    useParams: () => ({
+        filter: 'bar',
+    }),
+}));
 
 describe('<ParsingExcerpt />', () => {
     it('should return an empty array of enrichments name', () => {
@@ -35,7 +41,7 @@ describe('<ParsingExcerpt />', () => {
         ];
         const enrichmentsName = getEnrichmentsNames(enrichments);
         const style = getColumnStyle(enrichmentsName, column);
-        expect(style).toEqual({ backgroundColor: theme.green.light });
+        expect(style).toEqual({ backgroundColor: colorsTheme.green.light });
     });
 
     it('should return a empty style for basic column', () => {

@@ -8,9 +8,11 @@ import withState from 'recompose/withState';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 
-import { FIELD_FORM_NAME } from '../';
+import { FIELD_FORM_NAME } from '..';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import SelectSubresourceField from './SelectSubresourceField';
+import SelectDatasetField from './SelectDatasetField';
+import { isSubresourceTransformation } from './TabValueSubresource';
+import { isSubresourceFieldTransformation } from './TabValueSubresourceField';
 
 const styles = {
     inset: {
@@ -18,15 +20,14 @@ const styles = {
     },
 };
 
-export const StepValueSubresourceColumnComponent = ({
+export const TabValueColumnComponent = ({
     column,
     handleChange,
     handleSelect,
     p: polyglot,
     selected,
-    subresourceUri,
 }) => (
-    <div id="step-value-subresource-column">
+    <div id="tab-value-column">
         <FormControlLabel
             control={
                 <Switch
@@ -39,8 +40,7 @@ export const StepValueSubresourceColumnComponent = ({
         />
         {selected && (
             <div style={styles.inset}>
-                <SelectSubresourceField
-                    subresourceUri={subresourceUri}
+                <SelectDatasetField
                     handleChange={handleChange}
                     label="select_a_column"
                     column={column}
@@ -50,47 +50,36 @@ export const StepValueSubresourceColumnComponent = ({
     </div>
 );
 
-StepValueSubresourceColumnComponent.propTypes = {
+TabValueColumnComponent.propTypes = {
     column: PropTypes.string,
     handleChange: PropTypes.func.isRequired,
     handleSelect: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     selected: PropTypes.bool.isRequired,
-    subresourceUri: PropTypes.string,
 };
 
-StepValueSubresourceColumnComponent.defaultProps = {
+TabValueColumnComponent.defaultProps = {
     column: '',
 };
 
-export const isSubresourceValueColumnTransformation = transformers => {
-    const operations = transformers.map(t => t.operation).join('|');
-    return operations === 'COLUMN|PARSE|GET';
-};
-
-export const mapStateToProps = (state, { subresourceUri }) => {
-    const { subresources } = state.subresource;
-
-    const subresource = subresources.find(s => s._id === subresourceUri);
-    if (!subresource) {
-        return { selected: false, column: null, subresourcePath: null };
-    }
-
+const mapStateToProps = state => {
     const transformers = formValueSelector(FIELD_FORM_NAME)(
         state,
         'transformers',
     );
 
-    const getOperationIndex = (transformers || []).findIndex(
-        t => t.operation === 'GET',
-    );
+    const valueTransformer =
+        transformers &&
+        transformers[0] &&
+        transformers[0].operation === 'COLUMN'
+            ? transformers[0]
+            : null;
 
-    if (getOperationIndex !== -1) {
-        const valueTransformer = transformers[getOperationIndex];
-
+    if (valueTransformer) {
         return {
-            selected: isSubresourceValueColumnTransformation(transformers),
-            subresourcePath: subresource.path,
+            selected:
+                !isSubresourceTransformation(transformers) &&
+                !isSubresourceFieldTransformation(transformers),
             column:
                 (valueTransformer.args &&
                     valueTransformer.args[0] &&
@@ -99,14 +88,14 @@ export const mapStateToProps = (state, { subresourceUri }) => {
         };
     }
 
-    return { selected: false, column: null, subresourcePath: subresource.path };
+    return { selected: false, column: null };
 };
 
 export default compose(
     connect(mapStateToProps),
     withState('column', 'setColumn', ({ column }) => column),
     withHandlers({
-        handleSelect: ({ onChange, column, subresourcePath }) => () => {
+        handleSelect: ({ onChange, column }) => () => {
             onChange([
                 {
                     operation: 'COLUMN',
@@ -114,26 +103,13 @@ export default compose(
                         {
                             name: 'column',
                             type: 'column',
-                            value: subresourcePath,
-                        },
-                    ],
-                },
-                {
-                    operation: 'PARSE',
-                },
-                {
-                    operation: 'GET',
-                    args: [
-                        {
-                            name: 'path',
-                            type: 'string',
                             value: column,
                         },
                     ],
                 },
             ]);
         },
-        handleChange: ({ onChange, setColumn, subresourcePath }) => value => {
+        handleChange: ({ onChange, setColumn }) => value => {
             setColumn(value);
             onChange([
                 {
@@ -142,20 +118,7 @@ export default compose(
                         {
                             name: 'column',
                             type: 'column',
-                            value: subresourcePath,
-                        },
-                    ],
-                },
-                {
-                    operation: 'PARSE',
-                },
-                {
-                    operation: 'GET',
-                    args: [
-                        {
-                            name: 'path',
-                            type: 'string',
-                            value: value,
+                            value,
                         },
                     ],
                 },
@@ -163,4 +126,4 @@ export default compose(
         },
     }),
     translate,
-)(StepValueSubresourceColumnComponent);
+)(TabValueColumnComponent);

@@ -7,9 +7,13 @@ import {
     FormControlLabel,
     ListItemText,
 } from '@material-ui/core';
+import ErrorIcon from '@material-ui/icons/Error';
+import translate from 'redux-polyglot/translate';
+import compose from 'recompose/compose';
+import { polyglot as polyglotPropType } from '../../propTypes';
 
-import { fromFacet } from '../selectors';
 import FacetActionsContext from './FacetActionsContext';
+import { fromFacet } from '../selectors';
 
 const styles = {
     container: {
@@ -30,32 +34,49 @@ const styles = {
 const onCheck = (toggleFacetValue, name, value) => () =>
     toggleFacetValue({ name, value });
 
-const FacetValueItem = ({ name, value, count, isChecked }) => (
-    <FacetActionsContext.Consumer>
-        {({ toggleFacetValue }) => (
+const FacetValueItem = ({ name, value, count, isChecked, p: polyglot }) => {
+    if (value instanceof Object) {
+        return (
             <ListItem className="facet-value-item" style={styles.listItem}>
                 <ListItemText>
-                    <div style={styles.container}>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={isChecked}
-                                    onChange={onCheck(
-                                        toggleFacetValue,
-                                        name,
-                                        value,
-                                    )}
-                                />
-                            }
-                            label={value}
-                        />
-                        <span style={styles.count}>{count}</span>
+                    <div style={{ display: 'flex' }}>
+                        <ErrorIcon style={{ marginRight: 6 }} />
+                        {polyglot.t('facet_invalid_format')}
                     </div>
                 </ListItemText>
             </ListItem>
-        )}
-    </FacetActionsContext.Consumer>
-);
+        );
+    }
+
+    return (
+        <FacetActionsContext.Consumer>
+            {({ toggleFacetValue }) => (
+                <ListItem className="facet-value-item" style={styles.listItem}>
+                    <ListItemText>
+                        <div style={styles.container}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={isChecked}
+                                        onChange={onCheck(
+                                            toggleFacetValue,
+                                            name,
+                                            value,
+                                        )}
+                                    />
+                                }
+                                label={
+                                    value === '' ? polyglot.t('empty') : value
+                                }
+                            />
+                            <span style={styles.count}>{count}</span>
+                        </div>
+                    </ListItemText>
+                </ListItem>
+            )}
+        </FacetActionsContext.Consumer>
+    );
+};
 
 FacetValueItem.propTypes = {
     name: PropTypes.string.isRequired,
@@ -63,10 +84,11 @@ FacetValueItem.propTypes = {
     count: PropTypes.number.isRequired,
     isChecked: PropTypes.bool.isRequired,
     page: PropTypes.oneOf(['dataset', 'search']).isRequired,
+    p: polyglotPropType.isRequired,
 };
 
 const mapStateToProps = (state, { name, value, page }) => ({
     isChecked: fromFacet(page).isFacetValuesChecked(state, { name, value }),
 });
 
-export default connect(mapStateToProps)(FacetValueItem);
+export default compose(translate, connect(mapStateToProps))(FacetValueItem);

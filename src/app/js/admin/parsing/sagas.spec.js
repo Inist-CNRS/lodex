@@ -12,8 +12,6 @@ import { fromUser } from '../../sharedSelectors';
 
 import { handleLoadParsingResult } from './sagas';
 import { UPLOAD_SUCCESS } from '../upload';
-import { clearProgress, updateProgress } from '../progress/reducer';
-import { INDEXATION } from '../../../../common/progressStatus';
 import { delay } from 'redux-saga';
 
 describe('parsing saga', () => {
@@ -47,24 +45,6 @@ describe('parsing saga', () => {
             expect(failedSaga.next({ error: 'foo' }).value).toEqual(
                 put(loadParsingResultError('foo')),
             );
-        });
-
-        it('should add a delay with progress if action type is UPLOAD_SUCCESS', () => {
-            const saga = handleLoadParsingResult({
-                type: UPLOAD_SUCCESS,
-            });
-
-            expect(saga.next().value).toEqual(
-                select(fromUser.getLoadParsingResultRequest),
-            );
-
-            expect(saga.next().value).toEqual(
-                put(updateProgress({ status: INDEXATION })),
-            );
-
-            expect(saga.next().value).toEqual(call(delay, 5000));
-
-            expect(saga.next().value).toEqual(put(clearProgress()));
         });
     });
 });

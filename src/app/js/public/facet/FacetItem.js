@@ -10,9 +10,9 @@ import { connect } from 'react-redux';
 import { field as fieldPropType } from '../../propTypes';
 import { fromFacet } from '../selectors';
 import getFieldClassName from '../../lib/getFieldClassName';
-import FacetValueList from './FacetValueList';
+import FacetValueListComponent from './FacetValueList';
 import FacetActionsContext from './FacetActionsContext';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 
 const onClick = (openFacet, field) => () => openFacet({ name: field.name });
 
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     facetTitle: {
         padding: 5,
         '&:hover': {
-            backgroundColor: theme.black.veryLight,
+            backgroundColor: colorsTheme.black.veryLight,
             cursor: 'pointer',
         },
     },
@@ -60,7 +60,7 @@ const FacetItem = ({ className, isOpen, field, total, page }) => (
                     }
                     secondary={
                         isOpen && (
-                            <FacetValueList
+                            <FacetValueListComponent
                                 name={field.name}
                                 label={field.label}
                                 page={page}
@@ -72,6 +72,12 @@ const FacetItem = ({ className, isOpen, field, total, page }) => (
         )}
     </FacetActionsContext.Consumer>
 );
+
+FacetTitle.propTypes = {
+    title: PropTypes.string.isRequired,
+    total: PropTypes.number,
+    isOpen: PropTypes.bool.isRequired,
+};
 
 FacetItem.propTypes = {
     className: PropTypes.string,

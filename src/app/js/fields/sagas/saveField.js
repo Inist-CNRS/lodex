@@ -16,6 +16,8 @@ import { getFieldFormData } from '../selectors';
 import { fromFields, fromUser } from '../../sharedSelectors';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';
+import { SCOPE_DOCUMENT } from '../../../../common/scope';
+import { push } from 'connected-react-router';
 
 export const sanitizeField = fieldData => {
     const valueOperation = get(fieldData, 'transformers[0].operation');
@@ -31,7 +33,16 @@ export const sanitizeField = fieldData => {
     return fieldData;
 };
 
-export function* handleSaveField() {
+export function* handleSaveField({ payload }) {
+    const {
+        field: { subresourceId },
+        filter,
+    } = payload;
+
+    const redirectingPath = `/display/${filter}${
+        filter === SCOPE_DOCUMENT && subresourceId ? `/${subresourceId}` : ''
+    }`;
+
     const fieldData = yield select(getFieldFormData);
     const sanitizedFieldData = yield call(sanitizeField, fieldData);
     const request = yield select(
@@ -45,6 +56,7 @@ export function* handleSaveField() {
         return;
     }
     yield put(saveFieldSuccess());
+    yield put(push(redirectingPath));
 
     yield put(loadField());
     yield put(destroy(FIELD_FORM_NAME));

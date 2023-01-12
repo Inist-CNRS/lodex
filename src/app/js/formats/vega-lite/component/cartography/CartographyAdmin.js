@@ -15,7 +15,6 @@ const styles = {
     container: {
         display: 'flex',
         flexWrap: 'wrap',
-        width: '200%',
         justifyContent: 'space-between',
     },
     input: {
@@ -69,10 +68,10 @@ class CartographyAdmin extends Component {
 
     static defaultProps = {
         args: defaultArgs,
-        showMaxSize: false,
-        showMaxValue: false,
-        showMinValue: false,
-        showOrderBy: false,
+        showMaxSize: true,
+        showMaxValue: true,
+        showMinValue: true,
+        showOrderBy: true,
     };
 
     constructor(props) {
@@ -118,10 +117,10 @@ class CartographyAdmin extends Component {
                 tooltipValue,
                 worldPosition,
             },
-            showMaxSize = false,
-            showMaxValue = false,
-            showMinValue = false,
-            showOrderBy = false,
+            showMaxSize,
+            showMaxValue,
+            showMinValue,
+            showOrderBy,
         } = this.props;
 
         return (

@@ -60,9 +60,9 @@ build-app:
 	docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run build
 
 build: ## Build the docker image localy
-	docker build -t inistcnrs/lodex:12.21.0 --build-arg http_proxy --build-arg https_proxy .
+	docker build -t inistcnrs/lodex:12.33.0 --build-arg http_proxy --build-arg https_proxy .
 publish: build  ## publish version to docker hub
-	docker push inistcnrs/lodex:12.21.0
+	docker push inistcnrs/lodex:12.33.0
 
 analyze-code: ## Generate statistics about the bundle. Usage: make analyze-code.
 	docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run analyze
@@ -118,8 +118,6 @@ else
 	$(MAKE) test-e2e-start-dockers
 	npx cypress install
 	./bin/wait-for -t 30 localhost:3000 -- npx cypress run --browser chrome || (\
-		echo "ERROR: Here are the logs:" && \
-		$(MAKE) test-e2e-logs && \
 		$(MAKE) test-e2e-stop-dockers && \
 		exit 1)
 endif

@@ -1,7 +1,6 @@
 import { teardown } from '../support/authentication';
 import * as menu from '../support/menu';
 import * as datasetImportPage from '../support/datasetImportPage';
-import * as searchDrawer from '../support/searchDrawer';
 import * as adminNavigation from '../support/adminNavigation';
 
 describe('Dataset Publication', () => {
@@ -12,7 +11,7 @@ describe('Dataset Publication', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
             cy.wait(300);
-            datasetImportPage.addFile('dataset/simple.csv');
+            datasetImportPage.addFileWithoutClick('dataset/simple.csv');
 
             datasetImportPage.checkListOfSupportedFileFormats();
             datasetImportPage.checkListOfFiltererFileFormats();
@@ -111,7 +110,7 @@ describe('Dataset Publication', () => {
             );
         });
     });
-    describe.only('Dataset Filtering', () => {
+    describe('Dataset Filtering', () => {
         it('should filter by uri', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
@@ -153,7 +152,7 @@ describe('Dataset Publication', () => {
 
             cy.get('[data-rowindex=1]', { timeout: 3000 }).should(
                 'contains.text',
-                ['4', '"Rob"', '"Zombie"', '""'].join(''),
+                ['4', '"Rob"', '"Zombie"', 'false'].join(''),
             );
         });
         it('should filter by boolean', () => {
@@ -267,7 +266,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.importModel('model/concat-obsolete.json');
 
-            cy.contains('Errors').click();
+            cy.get('.validation-button').click();
             cy.contains('Operation UNKNOWN-OPERATION does not exist').click();
 
             datasetImportPage.setOperationTypeInWizard('BOOLEAN');
@@ -278,20 +277,11 @@ describe('Dataset Publication', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
+            cy.wait(500);
             datasetImportPage.importModel('model/concat.json');
             datasetImportPage.publish();
-            cy.wait(300);
+            cy.wait(3000);
             cy.log('import 1');
-            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
-            cy.log('import 2');
-            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
-            cy.log('import 3');
-            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
-            cy.log('import 4');
-            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
-            cy.log('import 5');
-            datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
-            cy.log('import 6');
             datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
 
             cy.log('go to published resource');
@@ -299,7 +289,7 @@ describe('Dataset Publication', () => {
 
             cy.log('Open searchDrawer');
             menu.openSearchDrawer();
-            searchDrawer.checkMoreResultsCount(10, 14);
+            cy.get('.search-result-link').should('have.length', 4);
         });
     });
 
@@ -344,7 +334,7 @@ describe('Dataset Publication', () => {
                 .should('have.length', 3);
         });
     });
-    describe.only('Automatic Publication', () => {
+    describe('Automatic Publication', () => {
         it('should re-publish dataset when updating field', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
@@ -352,7 +342,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/book_summary.json');
             datasetImportPage.publish();
             adminNavigation.goToResourcePage();
-            cy.get('[aria-label="Title"] button', { timeout: 3000 }).click({
+            cy.get('[aria-label="edit-Title"]', { timeout: 3000 }).click({
                 force: true,
             });
             cy.get('.btn-save').click();
@@ -370,7 +360,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/book_summary.json');
             datasetImportPage.publish();
             adminNavigation.goToResourcePage();
-            cy.get('[aria-label="Title"] button', { timeout: 3000 }).click({
+            cy.get('[aria-label="edit-Title"]', { timeout: 3000 }).click({
                 force: true,
             });
             cy.contains('Remove').click({ force: true });

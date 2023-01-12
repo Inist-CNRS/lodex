@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Portal, Snackbar } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Alert from '@material-ui/lab/Alert';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -18,6 +17,7 @@ import {
 
 import { fromPublication, fromImport } from './selectors';
 import { fromFields } from '../sharedSelectors';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles({
     container: {
@@ -55,19 +55,32 @@ export const ImportModelButtonComponent = ({
         setShowImportFieldsConfirmation,
     ] = useState(false);
 
-    const [isAlertDisplayed, setIsAlertDisplayed] = useState(false);
     const [applyUploadInput, setApplyUploadInput] = useState(false);
+    const initialRender = useRef(true);
 
     useEffect(() => {
-        if (succeeded || failed) {
-            setIsAlertDisplayed(true);
+        if (initialRender.current) {
+            initialRender.current = false;
+            return;
         }
+        if (failed) {
+            toast(polyglot.t('import_fields_failed'), {
+                type: toast.TYPE.ERROR,
+            });
+        } else if (succeeded) {
+            toast(polyglot.t('model_imported_with_success'), {
+                type: toast.TYPE.SUCCESS,
+            });
+        }
+    }, [succeeded, failed]);
+
+    useEffect(() => {
         if (nbFields === 0) {
             setApplyUploadInput(true);
         } else {
             setApplyUploadInput(false);
         }
-    }, [succeeded, failed, nbFields]);
+    }, [nbFields]);
 
     const handleImportFieldsClose = () => {
         importFieldsClosed();
@@ -106,23 +119,6 @@ export const ImportModelButtonComponent = ({
             {!hasPublishedDataset && showImportFieldsConfirmation && (
                 <ImportModelDialog onClose={handleImportFieldsClose} />
             )}
-            <Portal>
-                <Snackbar
-                    open={isAlertDisplayed}
-                    autoHideDuration={60000}
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                    onClose={() => setIsAlertDisplayed(false)}
-                >
-                    <Alert
-                        variant="filled"
-                        severity={succeeded ? 'success' : 'error'}
-                    >
-                        {succeeded
-                            ? polyglot.t('model_imported_with_success')
-                            : polyglot.t('import_fields_failed')}
-                    </Alert>
-                </Snackbar>
-            </Portal>
         </div>
     );
 };

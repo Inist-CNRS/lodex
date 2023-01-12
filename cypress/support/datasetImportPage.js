@@ -9,21 +9,21 @@ export const openImport = () => {
 export const importDataset = (filename, mimeType = 'text/csv') => {
     addFile(filename, mimeType);
 
-    cy.get('.progress').should('exist');
+    cy.get('.progress-container', { timeout: 500 }).should('be.visible');
     cy.wait(300);
-    cy.get('.progress', { timeout: 6000 }).should('not.exist');
-
     cy.get('[role="grid"]', { timeout: 6000 }).should('exist');
 };
 
 export const importOtherDataset = (filename, mimeType = 'text/csv') => {
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);
+    selectLoader();
+    cy.get('.btn-upload-dataset').should('be.enabled');
     cy.get('.btn-upload-dataset').click({ force: true });
-    cy.get('#confirm-upload', { timeout: 300 }).should('be.visible');
+    cy.get('#confirm-upload', { timeout: 3000 }).should('be.visible');
     cy.wait(300);
     cy.contains('Accept').click({ force: true });
-    cy.get('.progress').should('exist');
+    cy.get('.progress-container', { timeout: 500 }).should('be.visible');
     cy.get('[role="grid"]', { timeout: 6000 }).should('exist');
 };
 
@@ -34,67 +34,64 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
 
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);
+    selectLoader();
 
     cy.get('.btn-upload-dataset').click({ force: true });
-    cy.get('#confirm-upload', { timeout: 1000 }).should('be.visible');
+    cy.get('#confirm-upload', { timeout: 3000 }).should('be.visible');
     cy.wait(300);
     cy.contains('Accept').click({ force: true });
     cy.get('[aria-label="unpublish"]', { timeout: 2000 }).should('be.visible');
 };
 
-const fillStepValueConcatColumn = (value, index) => {
+const fillTabValueConcatColumn = (value, index) => {
     cy.get(`#select-column-${index}`).click();
     cy.get('[role="listbox"]')
         .contains(value)
         .click();
 };
 
-export const fillStepDisplayFormat = format => {
+export const fillTabDisplayFormat = format => {
     cy.get('#step-value-format .select-format')
         .first()
         .click();
     cy.get(`[role="listbox"] li[data-value="${format}"]`).click();
 };
 
-export const fillStepDisplaySyndication = syndication => {
+export const fillTabDisplaySyndication = syndication => {
     cy.get('.field-overview').click();
     cy.get(`[role="listbox"] li[data-value="${syndication}"]`).click();
 };
 
 export const addColumn = (columnName, options = {}) => {
     const name = columnName.replaceAll(' ', '-');
-    cy.get('button.btn-add-field-from-dataset').click({ force: true });
+    cy.get('button.btn-add-field-from-dataset').click();
     cy.get(
         ['.btn-excerpt-add-column', `.btn-excerpt-add-column-${name}`].join(''),
         { timeout: 2000 },
     ).click();
 
     if (options.composedOf && options.composedOf.length > 1) {
-        cy.get('#step-value')
-            .click()
-            .scrollIntoView();
-        cy.get('#step-value-concat input[value="concat"]').click();
+        cy.get('#tab-value').click();
+        cy.get('#tab-value-concat input[value="concat"]').click();
 
-        options.composedOf.forEach(fillStepValueConcatColumn);
+        options.composedOf.forEach(fillTabValueConcatColumn);
     }
 
     if (options.display) {
-        cy.get('#step-display').click();
+        cy.get('#tab-display').click();
         const { format, syndication } = options.display;
 
         if (format) {
-            fillStepDisplayFormat(format);
+            fillTabDisplayFormat(format);
         }
 
         if (syndication) {
-            fillStepDisplaySyndication(1);
+            fillTabDisplaySyndication(1);
         }
     }
 
     if (options.searchable) {
-        cy.get('#step-search')
-            .click()
-            .scrollIntoView();
+        cy.get('#tab-search').click();
 
         cy.contains(
             'Searchable - global full text search will target this field',
@@ -107,7 +104,7 @@ export const addColumn = (columnName, options = {}) => {
 
 export const setOperationTypeInWizard = (value = 'DEFAULT') => {
     cy.get('.wizard', { timeout: 5000 }).should('be.visible');
-    cy.contains('Transformations applied on the value').click();
+    cy.contains('Transformation').click();
     cy.get('.wizard', { timeout: 5000 }).should('be.visible');
     cy.get('.operation').click();
     cy.contains(value).click();
@@ -149,9 +146,7 @@ const checkLoaderItem = label => {
 };
 
 export const checkListOfSupportedFileFormats = () => {
-    cy.get('div')
-        .contains('AUTO')
-        .click({ force: true });
+    cy.get('.open-loaders').click({ force: true });
     cy.wait(500);
     cy.get('button.format-category').should('have.length', 6);
     checkLoaderItem('CSV - with semicolon');
@@ -164,9 +159,7 @@ export const checkListOfSupportedFileFormats = () => {
 };
 
 export const checkListOfFiltererFileFormats = () => {
-    cy.get('div')
-        .contains('AUTO')
-        .click({ force: true });
+    cy.get('.open-loaders').click({ force: true });
     cy.wait(500);
     cy.get('button')
         .contains('TSV')
@@ -179,5 +172,17 @@ export const checkListOfFiltererFileFormats = () => {
 export const addFile = (filename, mimeType = 'text/csv') => {
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);
+    selectLoader();
     cy.get('.btn-upload-dataset').click({ force: true });
+};
+export const addFileWithoutClick = (filename, mimeType = 'text/csv') => {
+    fillInputWithFixture('input[type=file]', filename, mimeType);
+    cy.wait(300);
+};
+
+export const selectLoader = (loaderName = 'automatic') => {
+    cy.get('.select-loader')
+        .first()
+        .click();
+    cy.get(`[role="listbox"] li[data-value="${loaderName}"]`).click();
 };

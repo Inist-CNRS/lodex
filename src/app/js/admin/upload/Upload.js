@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -7,12 +7,14 @@ import { withRouter } from 'react-router';
 import { DropzoneAreaBase } from 'material-ui-dropzone';
 import Alert from '../../lib/components/Alert';
 import {
+    Box,
     Button,
     TextField,
     Grid,
     CircularProgress,
     Typography,
 } from '@material-ui/core';
+import PublishIcon from '@material-ui/icons/Publish';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
@@ -20,47 +22,97 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
 import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import PopupConfirmUpload from './PopupConfirmUpload';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles({
     button: {
         marginLeft: 4,
         marginRight: 4,
+        alignSelf: 'center',
+        alignItems: 'flex-start',
     },
     input: {
-        margin: '10px 4px',
+        '@media (min-width: 992px)': {
+            marginBottom: '16px',
+        },
     },
-    link: {
-        color: theme.green.primary,
-        cursor: 'pointer',
+    container: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        marginTop: '48px',
     },
-    alert: {
-        width: 800,
-        margin: 'auto',
+    form: {
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        alignItems: 'center',
+        margin: '0 40px',
+        '@media (min-width: 992px)': {
+            flexDirection: 'row',
+        },
     },
     loader: {
-        zIndex: 5,
-        position: 'absolute',
-        width: 790,
-        height: 240,
-        margin: 5,
-        backgroundColor: theme.white.primary,
-        color: theme.green.primary,
+        minHeight: '220px',
+        backgroundColor: colorsTheme.white.primary,
+        color: colorsTheme.green.primary,
     },
     divider: {
-        display: 'flex',
-        margin: '10px',
-        alignItems: 'center',
-        justifyContent: 'center',
+        textTransform: 'uppercase',
+        position: 'relative',
+        textAlign: 'center',
+        width: '100%',
+        marginTop: '32px',
+        '&:before': {
+            width: '100%',
+            height: '2px',
+            content: '""',
+            backgroundColor: colorsTheme.green.primary,
+            position: 'absolute',
+            top: '50%',
+            left: 0,
+            transform: 'translateY(-50%)',
+        },
+        '@media (min-width: 992px)': {
+            width: 'auto',
+            marginTop: 0,
+            alignSelf: 'stretch',
+            display: 'flex',
+            alignItems: 'center',
+            '&:before': {
+                width: '2px',
+                height: '100%',
+                top: 0,
+                left: '50%',
+                transform: 'translateX(-50%)',
+            },
+        },
     },
     dividerLabel: {
-        margin: '1rem',
+        padding: '1rem',
+        backgroundColor: colorsTheme.white.primary,
+        position: 'relative',
+        display: 'inline-block',
+        '@media (min-width: 992px)': {
+            display: 'block',
+            margin: '0 40px',
+        },
     },
-    dividerHr: {
-        flexGrow: 2,
-        marginLeft: '1rem',
-        marginRight: '1rem',
+    dropzone: {
+        minHeight: '220px',
+        padding: '0 1rem',
+    },
+    disabledDropzone: {
+        opacity: 0.5,
+        cursor: 'not-allowed',
+    },
+    dropzonePreview: {
+        justifyContent: 'center',
+        '& .MuiGrid-item, & .MuiChip-root': {
+            maxWidth: '100%',
+        },
     },
 });
 
@@ -70,6 +122,7 @@ export const UploadComponent = ({
     url,
     loaderName,
     isUrlValid,
+    isUploading,
     onChangeUrl,
     onChangeLoaderName,
     onFileLoad,
@@ -99,6 +152,9 @@ export const UploadComponent = ({
         if (!list || list.length === 0) return;
 
         setFiles([...list]);
+        toast(polyglot.t('add_file_success', { name: list[0].file.name }), {
+            type: toast.TYPE.SUCCESS,
+        });
     };
 
     const handleFileUploaded = () => {
@@ -130,8 +186,17 @@ export const UploadComponent = ({
         }
     };
 
+    useEffect(() => {
+        if (files.length > 0) {
+            setUseUrlForUpload(false);
+        }
+        if (files.length === 0 && url && isUrlValid) {
+            setUseUrlForUpload(true);
+        }
+    }, [files, url, isUrlValid]);
+
     return (
-        <div className={classes.alert}>
+        <Box className={classes.container}>
             {error ? (
                 <Alert>
                     <p>Error uploading given file: </p>
@@ -140,38 +205,50 @@ export const UploadComponent = ({
             ) : (
                 <span />
             )}
-            {dropping && <DroppingLoader text={polyglot.t('inspect_file')} />}
-            {!useUrlForUpload && (
-                <DropzoneAreaBase
-                    filesLimit={1}
-                    maxFileSize={1 * 1024 * 1024 * 1024}
-                    dropzoneText={
-                        <>
+            <Box className={classes.form}>
+                {dropping ? (
+                    <DroppingLoader text={polyglot.t('inspect_file')} />
+                ) : (
+                    <DropzoneAreaBase
+                        fileObjects={files}
+                        filesLimit={1}
+                        maxFileSize={1 * 1024 * 1024 * 1024}
+                        dropzoneText={
                             <Typography variant="h6">
-                                1. {polyglot.t('import_file_text')}
+                                {polyglot.t('import_file_text')}
                             </Typography>
-                            {!!files.length && (
-                                <Typography variant="subtitle1">
-                                    {files[0].file.name}
-                                </Typography>
-                            )}
-                        </>
-                    }
-                    showAlerts={['error']}
-                    showPreviewsInDropzone
-                    showFileNamesInPreview
-                    alertSnackbarProps={{
-                        anchorOrigin: {
-                            vertical: 'bottom',
-                            horizontal: 'center',
-                        },
-                    }}
-                    onAdd={fileObjs => handleFileAdded(fileObjs)}
-                    onDrop={handleAdding}
-                    onDropRejected={handleAddRejected}
-                />
-            )}
-            {useUrlForUpload && (
+                        }
+                        dropzoneProps={{
+                            disabled: !!url,
+                        }}
+                        dropzoneClass={classnames(
+                            classes.dropzone,
+                            !!url && classes.disabledDropzone,
+                        )}
+                        showAlerts={['error']}
+                        showPreviewsInDropzone
+                        showFileNamesInPreview
+                        previewGridClasses={{
+                            container: classes.dropzonePreview,
+                        }}
+                        useChipsForPreview
+                        alertSnackbarProps={{
+                            anchorOrigin: {
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            },
+                        }}
+                        onAdd={fileObjs => handleFileAdded(fileObjs)}
+                        onDrop={handleAdding}
+                        onDropRejected={handleAddRejected}
+                        onDelete={() => setFiles([])}
+                    />
+                )}
+                <Box className={classes.divider}>
+                    <Typography variant="h6" className={classes.dividerLabel}>
+                        {polyglot.t('or')}
+                    </Typography>
+                </Box>
                 <TextField
                     fullWidth
                     className={classes.input}
@@ -180,69 +257,39 @@ export const UploadComponent = ({
                     placeholder="URL"
                     error={!!url && !isUrlValid}
                     helperText={url && !isUrlValid && polyglot.t('invalid_url')}
+                    disabled={!!files.length}
+                    label={polyglot.t('use_url')}
                 />
-            )}
-            {!!files.length && (
-                <>
-                    <LoaderSelect
-                        loaders={loaders}
-                        setLoader={onChangeLoaderName}
-                        value={loaderName}
-                    />
-                    {useUrlForUpload ? (
-                        <Button
-                            variant="contained"
-                            component="label"
-                            color="primary"
-                            fullWidth
-                            className={classnames(
-                                classes.button,
-                                'btn-upload-url',
-                            )}
-                            disabled={!url || !isUrlValid}
-                            onClick={handleUrlAdded}
-                        >
-                            {polyglot.t('upload_url')}
-                        </Button>
-                    ) : (
-                        <Button
-                            variant="contained"
-                            component="label"
-                            color="primary"
-                            fullWidth
-                            className={classnames(
-                                classes.button,
-                                'btn-upload-dataset',
-                            )}
-                            disabled={files.length === 0}
-                            onClick={handleFileUploaded}
-                        >
-                            {polyglot.t('upload_file')}
-                        </Button>
-                    )}
-                </>
-            )}
+            </Box>
+
+            <LoaderSelect
+                loaders={loaders}
+                setLoader={onChangeLoaderName}
+                value={loaderName}
+                disabled={files.length === 0 && (!url || !isUrlValid)}
+            />
+            <Button
+                variant="contained"
+                color="primary"
+                className={classnames(classes.button, 'btn-upload-dataset')}
+                disabled={
+                    isUploading ||
+                    (files.length === 0 && (!url || !isUrlValid)) ||
+                    !loaderName
+                }
+                onClick={useUrlForUpload ? handleUrlAdded : handleFileUploaded}
+                startIcon={<PublishIcon />}
+            >
+                {polyglot.t('upload_data')}
+            </Button>
+
             <PopupConfirmUpload
                 history={history}
                 onConfirm={onConfirm}
                 isOpen={isOpenPopupConfirm}
                 setIsOpenPopupConfirm={setIsOpenPopupConfirm}
             />
-            <div className={classes.divider}>
-                <hr className={classes.dividerHr} />
-                <div className={classes.dividerLabel}>{polyglot.t('or')}</div>
-                <a
-                    onClick={() => setUseUrlForUpload(!useUrlForUpload)}
-                    className={classnames(classes.dividerLabel, classes.link)}
-                >
-                    {useUrlForUpload
-                        ? polyglot.t('not_use_url')
-                        : polyglot.t('use_url')}
-                </a>
-
-                <hr className={classes.dividerHr} />
-            </div>
-        </div>
+        </Box>
     );
 };
 
@@ -257,6 +304,7 @@ UploadComponent.propTypes = {
     loaderName: PropTypes.string.isRequired,
     loaders: PropTypes.array,
     isUrlValid: PropTypes.bool,
+    isUploading: PropTypes.bool,
     onChangeUrl: PropTypes.func.isRequired,
     onFileLoad: PropTypes.func.isRequired,
     onUrlUpload: PropTypes.func.isRequired,
@@ -297,6 +345,7 @@ UploadComponent.propTypes = {
 const mapStateToProps = state => ({
     url: fromUpload.getUrl(state),
     isUrlValid: fromUpload.isUrlValid(state),
+    isUploading: fromUpload.isUploadPending(state),
     loaderName: fromUpload.getLoaderName(state),
     loaders: fromLoaders.getLoaders(state),
 });

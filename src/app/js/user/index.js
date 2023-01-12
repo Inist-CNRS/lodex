@@ -289,6 +289,13 @@ export const getGetDatasetRequest = (state, params) => {
     });
 };
 
+export const putUpdateDataset = (state, data) =>
+    getRequest(state, {
+        url: '/api/dataset',
+        method: 'PUT',
+        body: data,
+    });
+
 export const getGetDatasetColumnsRequest = state => {
     return getRequest(state, {
         url: `/api/dataset/columns`,
@@ -362,13 +369,17 @@ export const getClearUploadRequest = state =>
         url: '/api/upload/clear',
     });
 
-export const getUploadUrlRequest = (state, { url, loaderName }) =>
+export const getUploadUrlRequest = (
+    state,
+    { url, loaderName, customLoader = null },
+) =>
     getRequest(state, {
         method: 'POST',
         url: '/api/upload/url',
         body: {
             url,
             loaderName,
+            customLoader,
         },
     });
 
@@ -464,6 +475,19 @@ export const getClearJobsRequest = state =>
         method: 'POST',
     });
 
+export const getLoaderWithScriptRequest = (state, { name }) =>
+    getRequest(state, {
+        method: 'GET',
+        url: `/api/loader/${name}`,
+    });
+
+export const postDuplicateField = (state, data) =>
+    getRequest(state, {
+        url: '/api/field/duplicate',
+        method: 'POST',
+        body: data,
+    });
+
 export const selectors = {
     isAdmin,
     getRole,
@@ -520,4 +544,6 @@ export const selectors = {
     getLoadLoadersRequest,
     getPreviewDataEnrichmentRequest,
     getCancelJobRequest,
+    getLoaderWithScriptRequest,
+    postDuplicateField,
 };

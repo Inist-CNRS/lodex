@@ -21,7 +21,6 @@ const styles = {
     container: {
         display: 'flex',
         flexWrap: 'wrap',
-        width: '200%',
         justifyContent: 'space-between',
     },
     input: {
@@ -68,6 +67,10 @@ class RadarChartAdmin extends Component {
 
     static defaultProps = {
         args: defaultArgs,
+        showMaxSize: true,
+        showMaxValue: true,
+        showMinValue: true,
+        showOrderBy: true,
     };
 
     constructor(props) {
@@ -119,10 +122,10 @@ class RadarChartAdmin extends Component {
     render() {
         const {
             p: polyglot,
-            showMaxSize = true,
-            showMaxValue = true,
-            showMinValue = true,
-            showOrderBy = true,
+            showMaxSize,
+            showMaxValue,
+            showMinValue,
+            showOrderBy,
         } = this.props;
 
         const {

@@ -6,7 +6,7 @@ import get from 'lodash.get';
 import classnames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
 
-import theme from '../../theme';
+import colorsTheme from '../../../custom/colorsTheme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
 
@@ -19,25 +19,25 @@ const styles = stylesToClassname(
             },
             ':focus': {
                 textDecoration: 'none',
-                color: theme.orange.primary,
+                color: colorsTheme.orange.primary,
             },
             ':visited': {
                 textDecoration: 'none',
             },
             ':active': {
-                color: theme.orange.primary,
+                color: colorsTheme.orange.primary,
             },
         },
         active: {
-            color: theme.orange.primary,
+            color: colorsTheme.orange.primary,
             ':hover': {
-                color: theme.orange.primary,
+                color: colorsTheme.orange.primary,
             },
         },
         drawerActive: {
-            color: `${theme.purple.primary} !important`,
+            color: `${colorsTheme.purple.primary} !important`,
             ':hover': {
-                color: `${theme.purple.primary} !important`,
+                color: `${colorsTheme.purple.primary} !important`,
             },
         },
         menuItem: {
@@ -49,15 +49,15 @@ const styles = stylesToClassname(
             alignItems: 'center',
             justifyContent: 'center',
             textAlign: 'center',
-            color: theme.green.primary,
+            color: colorsTheme.green.primary,
             cursor: 'pointer',
             userSelect: 'none',
             textTransform: 'capitalize',
             ':hover': {
-                color: theme.purple.primary,
+                color: colorsTheme.purple.primary,
             },
             ':active': {
-                color: theme.orange.primary,
+                color: colorsTheme.orange.primary,
             },
         },
         menuItemIcon: {

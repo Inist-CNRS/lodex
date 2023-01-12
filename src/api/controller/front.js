@@ -36,7 +36,7 @@ import {
     customRoutes,
 } from './api/menu';
 import { breadcrumb } from './api/breadcrumb';
-import customTheme from '../../app/js/public/customTheme';
+import customTheme from '../../app/custom/customTheme';
 
 import { getPublication } from './api/publication';
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';

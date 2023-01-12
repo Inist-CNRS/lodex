@@ -2,8 +2,8 @@ import { call, all, put, select, takeLatest } from 'redux-saga/effects';
 import {
     CHANGE as REDUX_FORM_CHANGE,
     ARRAY_REMOVE as REDUX_FORM_ARRAY_REMOVE,
-    DESTROY as REDUX_FORM_DESTROY,
     INITIALIZE as REDUX_FORM_INITIALIZE,
+    ARRAY_MOVE as REDUX_FORM_ARRAY_MOVE,
 } from 'redux-form/lib/actionTypes';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
@@ -45,7 +45,7 @@ export default function* watchComputePreview() {
             REDUX_FORM_CHANGE,
             REDUX_FORM_ARRAY_REMOVE,
             REDUX_FORM_INITIALIZE,
-            REDUX_FORM_DESTROY,
+            REDUX_FORM_ARRAY_MOVE,
         ],
         handleComputeFieldPreview,
     );
