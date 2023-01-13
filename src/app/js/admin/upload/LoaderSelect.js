@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -38,12 +38,6 @@ const LoaderSelectComponent = ({
     );
 
     const classes = useStyles();
-
-    useEffect(() => {
-        if (value === 'custom-loader') {
-            setOpenCustomLoadersDialog(true);
-        }
-    }, [value]);
 
     const handleOpen = () => {
         setOpenLoadersDialog(true);
@@ -153,7 +147,9 @@ const LoaderSelectComponent = ({
             />
             <CustomLoader
                 isOpen={openCustomLoadersDialog}
-                handleClose={() => setOpenCustomLoadersDialog(false)}
+                handleClose={() => {
+                    setOpenCustomLoadersDialog(false);
+                }}
             />
         </Box>
     );

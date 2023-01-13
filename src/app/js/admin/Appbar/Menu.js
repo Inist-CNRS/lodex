@@ -130,14 +130,14 @@ const MenuComponent = ({
                                 {polyglot.t('clear_dataset')}
                             </span>
                         </MenuItem>,
-                        <MenuItem key="clear_jobs" onClick={handleClearJobs}>
-                            <DeleteSweepIcon />
-                            <span className={classes.labelAction}>
-                                {polyglot.t('clear_jobs')}
-                            </span>
-                        </MenuItem>,
-                        <Divider key="divider" />,
                     ]}
+                    <MenuItem key="clear_jobs" onClick={handleClearJobs}>
+                        <DeleteSweepIcon />
+                        <span className={classes.labelAction}>
+                            {polyglot.t('clear_jobs')}
+                        </span>
+                    </MenuItem>
+                    <Divider key="divider" />
                     <MenuItem
                         onClick={() => handleCloseMenu(onSignOut)}
                         aria-label="signout"
