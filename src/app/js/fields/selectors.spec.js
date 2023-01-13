@@ -62,21 +62,6 @@ describe('field selectors', () => {
         });
     });
 
-    describe('getEditedField', () => {
-        it('should return editedField', () => {
-            expect(
-                selectors.getEditedField({
-                    editedFieldName: 'name2',
-                    byName: {
-                        name1: 'field1',
-                        name2: 'field2',
-                        name3: 'field3',
-                    },
-                }),
-            ).toBe('field2');
-        });
-    });
-
     describe('getLineColGetterFromAllFields', () => {
         it('should return a function returning line value for given field', () => {
             const field = {
@@ -98,74 +83,6 @@ describe('field selectors', () => {
         });
     });
 
-    describe('getFieldsForPreview', () => {
-        it('should return all fields if no formData', () => {
-            const state = {
-                list: ['field1', 'field2', 'field3'],
-                editedFieldName: 'field2',
-                byName: {
-                    field1: 'value1',
-                    field2: 'value2',
-                    field3: 'value3',
-                },
-            };
-
-            expect(selectors.getFieldsForPreview(state)).toEqual([
-                'value1',
-                'value2',
-                'value3',
-            ]);
-        });
-
-        it('should return all fields if no editedFieldName', () => {
-            const state = {
-                list: ['field1', 'field2', 'field3'],
-                byName: {
-                    field1: 'value1',
-                    field2: 'value2',
-                    field3: 'value3',
-                },
-            };
-
-            expect(selectors.getFieldsForPreview(state, 'form data')).toEqual([
-                'value1',
-                'value2',
-                'value3',
-            ]);
-        });
-
-        it('should return all fields replacing editedFieldName by formData', () => {
-            const state = {
-                list: ['field1', 'field2', 'field3'],
-                byName: {
-                    field1: 'value1',
-                    field2: 'value2',
-                    field3: 'value3',
-                },
-            };
-
-            expect(
-                selectors.getFieldsForPreview(
-                    { ...state, editedFieldName: 'field1' },
-                    'form data',
-                ),
-            ).toEqual(['form data', 'value2', 'value3']);
-
-            expect(
-                selectors.getFieldsForPreview(
-                    { ...state, editedFieldName: 'field2' },
-                    'form data',
-                ),
-            ).toEqual(['value1', 'form data', 'value3']);
-
-            expect(
-                selectors.getFieldsForPreview(
-                    { ...state, editedFieldName: 'field3' },
-                    'form data',
-                ),
-            ).toEqual(['value1', 'value2', 'form data']);
-        });
-    });
     describe('getCollectionFields', () => {
         it('should return the model', () => {
             expect(

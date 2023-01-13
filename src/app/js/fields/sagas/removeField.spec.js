@@ -33,14 +33,8 @@ describe('fields saga', () => {
             );
         });
 
-        it('should put removeFieldSuccess action', () => {
-            expect(saga.next({ response: 'foo' }).value).toEqual(
-                put(removeFieldSuccess('field')),
-            );
-        });
-
         it('should put push action', () => {
-            expect(saga.next().value).toEqual(
+            expect(saga.next({ response: 'bar' }).value).toEqual(
                 put({
                     type: '@@router/CALL_HISTORY_METHOD',
                     payload: {
@@ -49,6 +43,10 @@ describe('fields saga', () => {
                     },
                 }),
             );
+        });
+
+        it('should put removeFieldSuccess action', () => {
+            expect(saga.next().value).toEqual(put(removeFieldSuccess('field')));
         });
 
         it('should put removeFieldError action with error if any', () => {
@@ -61,7 +59,8 @@ describe('fields saga', () => {
             failedSaga.next();
             failedSaga.next();
             failedSaga.next();
-            expect(failedSaga.next({ error: 'foo' }).value).toEqual(
+            failedSaga.next({ error: 'foo' });
+            expect(failedSaga.next().value).toEqual(
                 put(removeFieldError('foo')),
             );
         });

@@ -1,7 +1,6 @@
 import reducer, {
     defaultState,
     addField,
-    editField,
     loadFieldError,
     loadFieldSuccess,
     removeFieldSuccess,
@@ -45,7 +44,6 @@ describe('field reducer', () => {
 
             expect(state).toEqual({
                 ...state,
-                editedFieldName: 'new',
                 list: ['name1', 'name2', 'new'],
                 byName: {
                     name2: { name: 'name2', label: 'bar' },
@@ -79,7 +77,6 @@ describe('field reducer', () => {
 
             expect(state).toEqual({
                 ...state,
-                editedFieldName: 'new',
                 list: ['name1', 'name2', 'new'],
                 byName: {
                     name2: { name: 'name2', label: 'bar' },
@@ -273,21 +270,6 @@ describe('field reducer', () => {
                     bar_name: { name: 'bar_name', foo: 'bar' },
                     foo_name: { name: 'foo_name', foo: 'foo' },
                 },
-            });
-        });
-    });
-
-    describe('editField', () => {
-        it('should handle the EDIT_FIELD action', () => {
-            const state = reducer(
-                {
-                    list: ['name1', 'name2', 'name3'],
-                },
-                editField({ field: 1 }),
-            );
-            expect(state).toEqual({
-                list: ['name1', 'name2', 'name3'],
-                editedFieldName: 'name2',
             });
         });
     });
