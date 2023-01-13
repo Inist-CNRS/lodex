@@ -66,7 +66,7 @@ export const AddSubresourceFieldButtonComponent = ({
                 subresource &&
                     addField({
                         ...createDefaultSubresourceField(subresource),
-                        filter,
+                        scope: filter,
                     });
             }}
             disabled={isFieldsLoading}

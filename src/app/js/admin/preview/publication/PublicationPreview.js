@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import PublicationExcerpt from './PublicationExcerpt';
-import FieldEditForm from '../../../fields/wizard';
-import { editField, loadField } from '../../../fields';
+import { loadField } from '../../../fields';
 import { fromFields } from '../../../sharedSelectors';
 
 import { field as fieldPropTypes } from '../../../propTypes';
@@ -26,42 +25,21 @@ const styles = {
     },
 };
 
-const PublicationPreviewComponent = ({
-    fields,
-    filter,
-    loadField,
-    editColumn,
-    readonly,
-}) => {
+const PublicationPreviewComponent = ({ fields, loadField }) => {
     useEffect(() => {
         loadField();
     }, []);
 
-    const handleExitColumEdition = e => {
-        e.preventDefault();
-        e.stopPropagation();
-        editColumn(null);
-    };
-
     return (
         <div style={styles.container} className="publication-preview">
             <PublicationExcerpt onHeaderClick={null} fields={fields} />
-            {!readonly && (
-                <FieldEditForm
-                    filter={filter}
-                    onExitEdition={handleExitColumEdition}
-                />
-            )}
         </div>
     );
 };
 
 PublicationPreviewComponent.propTypes = {
-    editColumn: PropTypes.func.isRequired,
     loadField: PropTypes.func.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    filter: PropTypes.string,
-    readonly: PropTypes.boolean,
 };
 
 const mapStateToProps = (state, { filter, subresourceId }) => ({
@@ -69,7 +47,6 @@ const mapStateToProps = (state, { filter, subresourceId }) => ({
 });
 
 const mapDispatchToProps = {
-    editColumn: editField,
     loadField,
 };
 

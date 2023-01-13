@@ -33,7 +33,7 @@ const DisplayRouteComponent = () => {
                 <Route exact path={`${path}/add`}>
                     <AddSubresource />
                 </Route>
-                <Route exact path={`${path}/edit`}>
+                <Route exact path={`${path}/edit/:fieldName?`}>
                     <FieldEditForm filter={filter} />
                 </Route>
                 <Route exact path={`${path}/:subresourceId`}>
@@ -48,7 +48,7 @@ const DisplayRouteComponent = () => {
 
     return (
         <Switch>
-            <Route exact path={`${path}/edit`}>
+            <Route exact path={`${path}/edit/:fieldName?`}>
                 <FieldEditForm filter={filter} />
             </Route>
             <Route>{pageComponent}</Route>

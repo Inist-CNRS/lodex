@@ -1,3 +1,4 @@
+// TODO: check if this is still used
 import { connect } from 'react-redux';
 
 import Excerpt from '../preview/Excerpt';

@@ -150,7 +150,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    handleAddColumn: (name, filter) => addField({ name, filter }),
+    handleAddColumn: (name, filter) => addField({ name, scope: filter }),
 };
 
 export default compose(

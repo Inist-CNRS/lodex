@@ -7,7 +7,7 @@ import translate from 'redux-polyglot/translate';
 import { Box, Typography, Tabs, Tab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { FIELD_FORM_NAME, saveField as saveFieldAction, editField } from '../';
+import { FIELD_FORM_NAME, saveField as saveFieldAction } from '../';
 
 import { hideAddColumns } from '../../admin/parsing';
 import {
@@ -24,12 +24,17 @@ import TabSearch from './TabSearch';
 import TabSemantics from './TabSemantics';
 import FieldExcerpt from '../../admin/preview/field/FieldExcerpt';
 import Actions from './Actions';
-import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../../common/scope';
+import {
+    SCOPE_DATASET,
+    SCOPE_DOCUMENT,
+    SCOPE_GRAPHIC,
+} from '../../../../common/scope';
 import { URI_FIELD_NAME } from '../../../../common/uris';
 import classNames from 'classnames';
 import { TabPanel } from './TabPanel';
 import { reduxForm } from 'redux-form';
-import { useHistory } from 'react-router';
+import { withRouter } from 'react-router';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles({
     wizard: {
@@ -61,21 +66,35 @@ const useStyles = makeStyles({
 const FieldEditionWizardComponent = ({
     field,
     fields,
+    fieldsFromFilter,
     filter,
     saveField,
-    editField,
     handleHideExistingColumns,
+    fieldName,
+    history,
     p: polyglot,
 }) => {
     const classes = useStyles();
-    const history = useHistory();
     const [tabValue, setTabValue] = useState(0);
 
     useEffect(() => {
+        if (!fieldName) {
+            history.push(`/display/${filter}`);
+            return;
+        }
         if (!field) {
+            toast(polyglot.t('no_field', { fieldName }), {
+                type: toast.TYPE.ERROR,
+            });
             history.push(`/display/${filter}`);
         }
-    }, []);
+        if (field && !fieldsFromFilter.some(f => f.name === field.name)) {
+            toast(polyglot.t('no_field_in_scope', { fieldName, filter }), {
+                type: toast.TYPE.ERROR,
+            });
+            history.push(`/display/${filter}`);
+        }
+    }, [fieldName, field, filter]);
 
     const handleChange = (_, newValue) => {
         setTabValue(newValue);
@@ -83,7 +102,13 @@ const FieldEditionWizardComponent = ({
 
     const handleCancel = () => {
         handleHideExistingColumns();
-        editField({ field: null, filter, subresourceId: field.subresourceId });
+        history.push(
+            `/display/${filter}${
+                filter === SCOPE_DOCUMENT && field.subresourceId
+                    ? `/${field.subresourceId}`
+                    : ''
+            }`,
+        );
     };
 
     const handleSave = () => {
@@ -197,35 +222,41 @@ const FieldEditionWizardComponent = ({
 FieldEditionWizardComponent.propTypes = {
     field: fieldPropTypes,
     fields: PropTypes.arrayOf(fieldPropTypes),
+    fieldsFromFilter: PropTypes.arrayOf(fieldPropTypes),
     filter: PropTypes.string,
-    editField: PropTypes.func.isRequired,
     saveField: PropTypes.func.isRequired,
     handleHideExistingColumns: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    fieldName: PropTypes.string,
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired,
+    }),
 };
 
 FieldEditionWizardComponent.defaultProps = {
     field: null,
     fields: null,
-    editedField: null,
 };
 
-const mapStateToProps = state => {
-    const field = fromFields.getEditedField(state);
+const mapStateToProps = (state, { match, filter }) => {
+    const { fieldName } = match.params;
+    const field = fromFields.getFieldByName(state, fieldName);
 
     return {
         field,
-        fields: field ? fromFields.getFieldsExceptEdited(state) : null,
+        fieldName,
+        fields: field ? fromFields.getFieldsExceptField(state, field) : null,
+        fieldsFromFilter: fromFields.getOntologyFields(state, filter),
     };
 };
 
 const mapDispatchToProps = {
     saveField: saveFieldAction,
     handleHideExistingColumns: hideAddColumns,
-    editField: editField,
 };
 
 export default compose(
+    withRouter,
     connect(mapStateToProps, mapDispatchToProps),
     withProps(({ field, filter }) => {
         const fieldFilterAttributes = filter

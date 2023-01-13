@@ -20,13 +20,13 @@ export function* handleRemoveField({ payload }) {
     const request = yield select(fromUser.getRemoveFieldRequest, field);
 
     const { error } = yield call(fetchSaga, request);
+    yield put(push(redirectingPath));
 
     if (error) {
         yield put(removeFieldError(error));
     } else {
         yield put(removeFieldSuccess(field));
     }
-    yield put(push(redirectingPath));
 }
 
 export default function* watchLoadField() {
