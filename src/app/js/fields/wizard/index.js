@@ -72,6 +72,7 @@ const FieldEditionWizardComponent = ({
     handleHideExistingColumns,
     fieldName,
     history,
+    isFieldsLoading,
     p: polyglot,
 }) => {
     const classes = useStyles();
@@ -82,7 +83,7 @@ const FieldEditionWizardComponent = ({
             history.push(`/display/${filter}`);
             return;
         }
-        if (!field) {
+        if (!isFieldsLoading && !field) {
             toast(polyglot.t('no_field', { fieldName }), {
                 type: toast.TYPE.ERROR,
             });
@@ -231,6 +232,7 @@ FieldEditionWizardComponent.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
     }),
+    isFieldsLoading: PropTypes.bool.isRequired,
 };
 
 FieldEditionWizardComponent.defaultProps = {
@@ -247,6 +249,7 @@ const mapStateToProps = (state, { match, filter }) => {
         fieldName,
         fields: field ? fromFields.getFieldsExceptField(state, field) : null,
         fieldsFromFilter: fromFields.getOntologyFields(state, filter),
+        isFieldsLoading: fromFields.isLoading(state),
     };
 };
 
