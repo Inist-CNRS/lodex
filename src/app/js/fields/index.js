@@ -268,13 +268,14 @@ export default handleActions(
             { payload: { fields, published } },
         ) => {
             const { catalog, list } = getCatalogFromArray(fields, 'name');
+            const newField = state.byName.new;
 
             return {
                 ...state,
                 error: null,
                 loading: false,
-                byName: catalog,
-                list,
+                byName: newField ? { ...catalog, new: newField } : catalog,
+                list: newField ? [...list, 'new'] : list,
                 published,
                 editedValueFieldName: null,
             };
