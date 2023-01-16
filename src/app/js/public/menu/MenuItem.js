@@ -147,9 +147,19 @@ const MenuItem = ({
                     <NavLink
                         to="/search"
                         onClick={onClick(config.role, true)}
-                        className={classnames('nav-item', styles.menuItem, {
-                            [styles.drawerActive]: searchDrawer === 'open',
-                        })}
+                        className={classnames(
+                            'nav-item',
+                            styles.menuItem,
+                            styles.link,
+                            {
+                                [styles.drawerActive]: searchDrawer === 'open',
+                            },
+                        )}
+                        isActive={(location, params) =>
+                            get(location, 'url') === '/search' &&
+                            get(params, 'pathname') !== '/search'
+                        }
+                        activeClassName={styles.active}
                     >
                         {icon}
                         {label}
