@@ -343,8 +343,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.publish();
             adminNavigation.goToResourcePage();
             cy.wait(2000);
-            cy.get('[aria-label="edit-Title"]').should('not.be.disabled');
-            cy.get('[aria-label="edit-Title"]', { timeout: 3000 }).click({
+            cy.get('[aria-label="Title"]', { timeout: 3000 }).click({
                 force: true,
             });
             cy.get('.btn-save').click();
@@ -363,8 +362,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.publish();
             adminNavigation.goToResourcePage();
             cy.wait(2000);
-            cy.get('[aria-label="edit-Title"]').should('not.be.disabled');
-            cy.get('[aria-label="edit-Title"]', { timeout: 3000 }).click({
+            cy.get('[aria-label="Title"]', { timeout: 3000 }).click({
                 force: true,
             });
             cy.contains('Remove').click({ force: true });
