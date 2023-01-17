@@ -15,6 +15,7 @@ import { fromParsing, fromPublication } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';
 import colorsTheme from '../../../custom/colorsTheme';
+import SidebarToggleButton from './SidebarToggleButton';
 import Menu from './Menu';
 import GoToPublicationButton from './GoToPublicationButton';
 import JobProgress from './JobProgress';
@@ -157,6 +158,7 @@ const AppbarComponent = ({
     return (
         <AppBar className="appbar">
             <Toolbar>
+                {isAdmin && <SidebarToggleButton />}
                 <Link to="/" className={classes.linkToHome}>
                     Lodex
                 </Link>

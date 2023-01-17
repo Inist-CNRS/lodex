@@ -829,3 +829,5 @@
 "cancelled_import" 	"Import has been successfully cancelled" 	"L'import a été annulé avec succès"
 "no_field" 	"Field %{fieldName} does not exist" 	"Le champ %{fieldName} n'existe pas"
 "no_field_in_scope" 	"Field %{fieldName} is not in scope %{filter}" 	"Le champ %{fieldName} n'est pas dans le scope %{filter}"
+"open_menu" 	"Open menu" 	"Ouvrir le menu"
+"close_menu" 	"Close menu" 	"Fermer le menu"

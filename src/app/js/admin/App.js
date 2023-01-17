@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 
 import AppBar from './Appbar';
 import getTitle from '../lib/getTitle';
 import { Progress } from './progress/Progress';
+import { SidebarContext } from './Appbar/SidebarContext';
 import { Sidebar } from './Sidebar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,39 +25,49 @@ const styles = {
     },
 };
 
-export const AppComponent = ({ children }) => (
-    <>
-        <Helmet>
-            <title>{getTitle()}</title>
-            <style type="text/css">{`
+export const AppComponent = ({ children }) => {
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+    return (
+        <SidebarContext.Provider
+            value={{
+                open: sidebarOpen,
+                toggleSidebar,
+            }}
+        >
+            <Helmet>
+                <title>{getTitle()}</title>
+                <style type="text/css">{`
                 html, body { height: 100%; background: #efefef }
                 #root { height: 100%; }
             `}</style>
-        </Helmet>
-        <div style={styles.layout}>
-            <AppBar />
-            <div style={styles.contentLayout}>
-                <Sidebar />
-                <div className="body" style={styles.body}>
-                    {children}
+            </Helmet>
+            <div style={styles.layout}>
+                <AppBar />
+                <div style={styles.contentLayout}>
+                    <Sidebar />
+                    <div className="body" style={styles.body}>
+                        {children}
+                    </div>
+                    <ToastContainer
+                        position="bottom-left"
+                        autoClose={5000}
+                        hideProgressBar
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="colored"
+                    />
                 </div>
-                <ToastContainer
-                    position="bottom-left"
-                    autoClose={5000}
-                    hideProgressBar
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="colored"
-                />
             </div>
-        </div>
-        <Progress />
-    </>
-);
+            <Progress />
+        </SidebarContext.Provider>
+    );
+};
 
 AppComponent.propTypes = {
     children: PropTypes.node.isRequired,
