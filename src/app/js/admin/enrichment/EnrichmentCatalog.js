@@ -136,7 +136,7 @@ export const EnrichmentCatalog = ({
                     <Box>
                         <FilterIcon
                             fontSize="large"
-                            style={{ marginRight: 10, cursor: 'pointer' }}
+                            style={{ marginRight: 10 }}
                         />
                     </Box>
                     {filters.map(filter => (

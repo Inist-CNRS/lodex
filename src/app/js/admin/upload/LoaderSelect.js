@@ -37,8 +37,6 @@ const LoaderSelectComponent = ({
         false,
     );
 
-    console.log('VALUE', value);
-
     const classes = useStyles();
 
     const handleOpen = () => {
