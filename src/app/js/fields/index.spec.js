@@ -121,7 +121,7 @@ describe('field reducer', () => {
                 published: true,
             });
             const state = reducer(
-                { loading: true, error: true, published: false },
+                { loading: true, error: true, published: false, byName: {} },
                 action,
             );
 
@@ -132,6 +132,41 @@ describe('field reducer', () => {
                     bar: {
                         name: 'bar',
                         value: 'data',
+                    },
+                },
+                loading: false,
+                published: true,
+                editedValueFieldName: null,
+            });
+        });
+
+        it('should handle the LOAD_PUBLICATION_SUCCESS action with existing new field', () => {
+            const action = loadPublicationSuccess({
+                characteristics: ['foo'],
+                fields: [{ name: 'bar', value: 'data' }],
+                published: true,
+            });
+            const state = reducer(
+                {
+                    loading: true,
+                    error: true,
+                    published: false,
+                    byName: { new: { name: 'foo', value: 'bar' } },
+                },
+                action,
+            );
+
+            expect(state).toEqual({
+                error: null,
+                list: ['bar', 'new'],
+                byName: {
+                    bar: {
+                        name: 'bar',
+                        value: 'data',
+                    },
+                    new: {
+                        name: 'foo',
+                        value: 'bar',
                     },
                 },
                 loading: false,
