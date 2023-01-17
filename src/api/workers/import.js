@@ -45,7 +45,9 @@ const handleImportError = async (job, err) => {
         isImporting: false,
         success: false,
         message:
-            err instanceof CancelWorkerError ? 'cancelled_import' : err.message,
+            err instanceof CancelWorkerError
+                ? 'cancelled_import'
+                : err.message.split('Line')[0], // Ezs return all stack trace, we only want the message part. So we split on 'Line'
     });
 };
 
