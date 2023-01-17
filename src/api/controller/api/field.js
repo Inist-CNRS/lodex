@@ -330,6 +330,21 @@ export const duplicateField = async ctx => {
     }
 };
 
+export const dropFieldCollection = async ctx => {
+    try {
+        // drop field collection except the uri field from scope collection
+        await ctx.field.drop();
+        await ctx.field.initializeModel();
+        ctx.status = 200;
+        ctx.body = { message: 'model_cleared' };
+    } catch (error) {
+        ctx.status = 400;
+        ctx.body = {
+            error: error.message,
+        };
+    }
+};
+
 const app = new Koa();
 
 app.use(setup);
@@ -337,6 +352,7 @@ app.use(setup);
 app.use(route.get('/', getAllField));
 app.use(route.get('/export', exportFields));
 app.use(route.post('/import', importFields(asyncBusboy)));
+app.use(route.delete('/', dropFieldCollection));
 app.use(koaBodyParser());
 app.use(route.post('/', postField));
 app.use(route.post('/duplicate', duplicateField));

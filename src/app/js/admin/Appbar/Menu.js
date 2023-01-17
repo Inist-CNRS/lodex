@@ -50,6 +50,7 @@ const MenuComponent = ({
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [showClearDialog, setShowClearDialog] = React.useState(false);
+    const [clearDialogType, setClearDialogType] = React.useState(null);
 
     const open = !!anchorEl;
     const handleOpenMenu = event => {
@@ -109,6 +110,20 @@ const MenuComponent = ({
                             </span>
                         </MenuItem>,
                         <MenuItem
+                            key="clear_model"
+                            onClick={() =>
+                                handleCloseMenu(() => {
+                                    setClearDialogType('model');
+                                    setShowClearDialog(!showClearDialog);
+                                })
+                            }
+                        >
+                            <ClearAllIcon />
+                            <span className={classes.labelAction}>
+                                {polyglot.t('clear_model')}
+                            </span>
+                        </MenuItem>,
+                        <MenuItem
                             key="export_raw_dataset"
                             onClick={() => handleCloseMenu(dumpDataset)}
                         >
@@ -120,9 +135,10 @@ const MenuComponent = ({
                         <MenuItem
                             key="clear_dataset"
                             onClick={() =>
-                                handleCloseMenu(() =>
-                                    setShowClearDialog(!showClearDialog),
-                                )
+                                handleCloseMenu(() => {
+                                    setClearDialogType('dataset');
+                                    setShowClearDialog(!showClearDialog);
+                                })
                             }
                         >
                             <ClearAllIcon />
@@ -151,7 +167,7 @@ const MenuComponent = ({
             </div>
             {showClearDialog && (
                 <ClearDialog
-                    type="dataset"
+                    type={clearDialogType}
                     onClose={() => setShowClearDialog(!showClearDialog)}
                 />
             )}
