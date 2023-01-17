@@ -5,7 +5,6 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
 import { List, Popover, IconButton, Tooltip } from '@material-ui/core';
-import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 
 import { fromFields } from '../../sharedSelectors';
 import ValidationField from './ValidationField';
@@ -17,6 +16,7 @@ import {
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
 import translate from 'redux-polyglot/translate';
 import { useHistory } from 'react-router-dom';
+import ValidationIcon from './ValidationIcon';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };
@@ -24,8 +24,7 @@ const styles = {
     container: {
         display: 'flex',
         alignItems: 'center',
-        marginLeft: 0,
-        marginRight: 10,
+        marginRight: '1rem',
     },
 };
 
@@ -56,7 +55,7 @@ const ValidationButtonComponent = ({
                     onClick={handleShowErrorsClick}
                     className={'validation-button'}
                 >
-                    <ReportProblemIcon />
+                    <ValidationIcon sx={{ fontSize: '30px' }} />
                 </IconButton>
             </Tooltip>
             <Popover
