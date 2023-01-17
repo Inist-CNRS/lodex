@@ -1,4 +1,4 @@
-import { call, put, race, select, take, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 import { fromUser, fromFields } from '../../../sharedSelectors';
@@ -18,15 +18,9 @@ import {
     SAVE_FIELD_SUCCESS,
 } from '../../../fields';
 
-import {
-    clearPublished,
-    CLEAR_PUBLISHED_ERROR,
-    CLEAR_PUBLISHED_SUCCESS,
-} from '../../clear';
-
 export function* handleComputePublicationPreview() {
     try {
-        const fields = yield select(fromFields.getFieldsForPreview);
+        const fields = yield select(fromFields.getFields);
         const lines = yield select(fromParsing.getExcerptLines);
         if (!fields.length || !lines.length) {
             return;

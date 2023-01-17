@@ -50,33 +50,7 @@ const getByName = ({ byName }) => byName;
 
 const getNbFields = ({ list }) => list.length;
 
-const getEditedFieldIndex = state => {
-    const index = state.list.indexOf(state.editedFieldName);
-    return index === -1 ? null : index;
-};
-
-const getFieldsForPreview = createSelector(
-    getFields,
-    getEditedFieldIndex,
-    (_, formData) => formData,
-    (fields, editedIndex, formData) => {
-        if (editedIndex === null || !formData) {
-            return fields;
-        }
-
-        return [
-            ...fields.slice(0, editedIndex),
-            formData,
-            ...fields.slice(editedIndex + 1),
-        ];
-    },
-);
-
 const getParams = (_, params) => params;
-
-const getEditedFieldName = state => state.editedFieldName;
-
-const getEditedField = state => state.byName[state.editedFieldName];
 
 const getEditingFields = (state, { filter, subresourceId }) => {
     return (!subresourceId
@@ -85,7 +59,7 @@ const getEditingFields = (state, { filter, subresourceId }) => {
               // Remove subresource field uri from editable columns
               return !field.name.endsWith('_uri');
           })
-    ).filter(field => field.name !== URI_FIELD_NAME);
+    ).filter(field => field.name !== URI_FIELD_NAME && field.name !== 'new');
 };
 
 export const getCollectionFields = createSelector(getFields, fields =>
@@ -188,12 +162,6 @@ export const getFieldByName = createSelector(
 
 export const getGraphFieldParamsByName = createSelector(getFieldByName, field =>
     get(field, 'format.args.params', {}),
-);
-
-export const getFieldsExceptEdited = createSelector(
-    getFields,
-    getEditedField,
-    (fields, editedField) => fields.filter(f => f._id !== editedField._id),
 );
 
 export const getFieldsExceptField = createSelector(
@@ -393,7 +361,7 @@ const getEditedValueFieldName = ({ editedValueFieldName }) =>
 const isFieldEdited = createSelector(
     getEditedValueFieldName,
     getParams,
-    (editedFieldName, fieldName) => editedFieldName === fieldName,
+    (editedValueFieldName, fieldName) => editedValueFieldName === fieldName,
 );
 
 const getConfiguredFieldName = ({ configuredFieldName }) => configuredFieldName;
@@ -401,7 +369,7 @@ const getConfiguredFieldName = ({ configuredFieldName }) => configuredFieldName;
 const isFieldConfigured = createSelector(
     getConfiguredFieldName,
     (_, fieldName) => fieldName,
-    (editedFieldName, fieldName) => editedFieldName === fieldName,
+    (configuredFieldName, fieldName) => configuredFieldName === fieldName,
 );
 
 export const getNewCharacteristicFormData = state =>
@@ -424,13 +392,10 @@ export default {
     areAllFieldsValid,
     getCollectionFields,
     getCompletedField,
-    getEditedField,
-    getFieldsForPreview,
     getFieldByName,
     getGraphFieldParamsByName,
     getFields,
     getState,
-    getFieldsExceptEdited,
     getFieldsExceptField,
     getInvalidFields,
     getNbFields,
@@ -468,7 +433,6 @@ export default {
     getError,
     getSubresourceFields,
     getFacetFields,
-    getEditedFieldName,
     hasFacetFields,
     hasSearchableFields,
     getNbColumns,

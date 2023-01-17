@@ -1,15 +1,9 @@
-import { call, put, race, select, take } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 import { fromFields, fromUser } from '../../../sharedSelectors';
 import { fromParsing, fromPublication } from '../../selectors';
 import { publish } from '../../publish';
-
-import {
-    clearPublished,
-    CLEAR_PUBLISHED_ERROR,
-    CLEAR_PUBLISHED_SUCCESS,
-} from '../../clear';
 
 import {
     handleComputePublicationPreview,
@@ -51,9 +45,7 @@ describe('publication saga', () => {
         const transformDocument = () => {};
 
         it('should select fromFields.getFields', () => {
-            expect(saga.next().value).toEqual(
-                select(fromFields.getFieldsForPreview),
-            );
+            expect(saga.next().value).toEqual(select(fromFields.getFields));
         });
 
         it('should select fromParsing.getExcerptLines', () => {
@@ -96,9 +88,7 @@ describe('publication saga', () => {
 
         it('should end if no fields returned', () => {
             const it = handleComputePublicationPreview();
-            expect(it.next().value).toEqual(
-                select(fromFields.getFieldsForPreview),
-            );
+            expect(it.next().value).toEqual(select(fromFields.getFields));
             expect(it.next([]).value).toEqual(
                 select(fromParsing.getExcerptLines),
             );
@@ -107,9 +97,7 @@ describe('publication saga', () => {
 
         it('should end if no lines returned', () => {
             const it = handleComputePublicationPreview();
-            expect(it.next().value).toEqual(
-                select(fromFields.getFieldsForPreview),
-            );
+            expect(it.next().value).toEqual(select(fromFields.getFields));
             expect(it.next(fields).value).toEqual(
                 select(fromParsing.getExcerptLines),
             );

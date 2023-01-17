@@ -9,7 +9,6 @@ import changePosition from './changePosition';
 import loadPublication from './loadPublication';
 import configureField from './configureField';
 import addCharacteristic from './addCharacteristic';
-import editField from './editField';
 import addField from './addField';
 
 export default function*() {
@@ -22,6 +21,5 @@ export default function*() {
     yield fork(loadPublication);
     yield fork(configureField);
     yield fork(addCharacteristic);
-    yield fork(editField);
     yield fork(addField);
 }

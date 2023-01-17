@@ -1,3 +1,4 @@
+// TODO: check if this is still used
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';

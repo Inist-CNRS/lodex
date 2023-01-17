@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import HiddenIcon from '@material-ui/icons/VisibilityOff';
 import translate from 'redux-polyglot/translate';
@@ -23,17 +23,12 @@ import { NoField } from './NoField';
 import { useDidUpdateEffect } from '../lib/useDidUpdateEffect';
 import { fromFields } from '../sharedSelectors';
 
-import {
-    loadField,
-    editField,
-    changePositions,
-    saveFieldFromData,
-} from '../fields';
+import { loadField, changePositions, saveFieldFromData } from '../fields';
 import FieldInternalIcon from './FieldInternalIcon';
 
 import fieldApi from '../admin/api/field';
 import { toast } from 'react-toastify';
-import { useLocation } from 'react-router';
+import { useLocation, useHistory } from 'react-router';
 
 const ROOT_PADDING = 16;
 
@@ -101,6 +96,16 @@ const useStyles = makeStyles({
         pointerEvents: 'none',
     },
 });
+
+const scrollToField = fieldLabel => {
+    setTimeout(() => {
+        const field = document.querySelector(`[aria-label="${fieldLabel}"]`);
+        field?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'end',
+        });
+    }, 200);
+};
 
 const ensureTextIsShort = text =>
     isLongText(text) ? getShortText(text) : text;
@@ -201,7 +206,6 @@ const DraggableItemGrid = compose(
     }),
 )(
     ({
-        onEditField,
         onChangeWidth,
         onChangePositions,
         allowResize,
@@ -212,6 +216,7 @@ const DraggableItemGrid = compose(
         isFieldsLoading,
     }) => {
         const classes = useStyles(isFieldsLoading);
+        const history = useHistory();
 
         const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
         const [isEditable, setIsEditable] = useState(true);
@@ -249,9 +254,9 @@ const DraggableItemGrid = compose(
             }
         };
 
-        const handleEditField = (field, filter) => {
+        const handleEditField = (fieldName, filter) => {
             if (isEditable && !isFieldsLoading) {
-                onEditField({ field, filter });
+                history.push(`/display/${filter}/edit/${fieldName}`);
             }
         };
 
@@ -378,7 +383,6 @@ const FieldGridComponent = ({
     fields,
     filter,
     loadField,
-    editField,
     changePositions,
     saveFieldFromData,
     p: polyglot,
@@ -388,9 +392,24 @@ const FieldGridComponent = ({
 
     const { pathname } = useLocation();
 
+    const previousFieldsRef = useRef(fields);
+
     useEffect(() => {
         loadField();
     }, []);
+
+    useEffect(() => {
+        const previousFields = previousFieldsRef.current;
+
+        const newFields = fields.filter(
+            field => !previousFields.find(f => f.name === field.name),
+        );
+
+        if (newFields.length === 1) {
+            scrollToField(newFields[0].label);
+        }
+        previousFieldsRef.current = fields;
+    }, [fields]);
 
     const handleChangePositions = fieldsWithPosition => {
         changePositions({
@@ -424,7 +443,6 @@ const FieldGridComponent = ({
                 <DraggableItemGrid
                     key={filter}
                     fields={fields}
-                    onEditField={editField}
                     onChangeWidth={handleChangeWidth}
                     onChangePositions={handleChangePositions}
                     allowResize={true}
@@ -441,7 +459,6 @@ FieldGridComponent.propTypes = {
     fields: PropTypes.array,
     filter: PropTypes.string,
     loadField: PropTypes.func.isRequired,
-    editField: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     changePositions: PropTypes.func.isRequired,
     saveFieldFromData: PropTypes.func.isRequired,
@@ -457,7 +474,6 @@ export const FieldGrid = compose(
     translate,
     connect(mapStateToProps, {
         loadField,
-        editField,
         changePositions,
         saveFieldFromData,
     }),

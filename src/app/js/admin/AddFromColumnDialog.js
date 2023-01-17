@@ -1,7 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import {
     Button,
@@ -12,7 +10,6 @@ import {
 } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { addField } from '../fields';
 import ParsingResult from './parsing/ParsingResult';
 
 const styles = {
@@ -51,14 +48,6 @@ export const AddFromColumnDialogComponent = ({ p: polyglot, onClose }) => {
 AddFromColumnDialogComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     onClose: PropTypes.func.isRequired,
-    handleAddColumn: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = {
-    handleAddColumn: name => addField({ name }),
-};
-
-export default compose(
-    connect(undefined, mapDispatchToProps),
-    translate,
-)(AddFromColumnDialogComponent);
+export default translate(AddFromColumnDialogComponent);

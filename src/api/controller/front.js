@@ -61,7 +61,6 @@ const getDefaultInitialState = (token, cookie, locale) => ({
         allValid: true,
         list: [],
         invalidFields: [],
-        editedFieldName: undefined,
         editedValueFieldName: null,
         configuredFieldName: null,
         published: true,

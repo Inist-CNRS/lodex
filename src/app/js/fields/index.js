@@ -18,7 +18,6 @@ export const NEW_CHARACTERISTIC_FORM_NAME = formName;
 export const FIELD_FORM_NAME = 'field';
 
 export const ADD_FIELD = 'ADD_FIELD';
-export const EDIT_FIELD = 'EDIT_FIELD';
 export const LOAD_FIELD = 'LOAD_FIELD';
 export const LOAD_FIELD_SUCCESS = 'LOAD_FIELD_SUCCESS';
 export const LOAD_FIELD_ERROR = 'LOAD_FIELD_ERROR';
@@ -59,7 +58,6 @@ export const ADD_CHARACTERISTIC_ERROR = 'ADD_CHARACTERISTIC_ERROR';
 export const ADD_CHARACTERISTIC_CANCEL = 'ADD_CHARACTERISTIC_CANCEL';
 
 export const addField = createAction(ADD_FIELD);
-export const editField = createAction(EDIT_FIELD);
 export const loadField = createAction(LOAD_FIELD);
 export const loadFieldError = createAction(LOAD_FIELD_ERROR);
 export const loadFieldSuccess = createAction(LOAD_FIELD_SUCCESS);
@@ -108,7 +106,6 @@ export const defaultState = {
     allValid: true,
     list: [],
     invalidFields: [],
-    editedFieldName: undefined,
     editedValueFieldName: null,
     configuredFieldName: null,
     published: false,
@@ -146,7 +143,6 @@ export default handleActions(
             const { name, ...rest } = payload || {};
             return {
                 ...state,
-                editedFieldName: 'new',
                 list: [...state.list, 'new'],
                 byName: {
                     ...state.byName,
@@ -160,35 +156,12 @@ export default handleActions(
 
             return {
                 ...state,
-                editedFieldName: undefined,
                 list,
                 byName: catalog,
                 loading: false,
             };
         },
         LOAD_FIELD_ERROR: () => defaultState,
-        EDIT_FIELD: (state, { payload: { field } }) => {
-            if (!field && state.editedFieldName === 'new') {
-                return {
-                    ...state,
-                    editedFieldName: undefined,
-                    byName: omit(state.byName, ['new']),
-                    list: [...state.list.slice(0, -1)],
-                };
-            }
-
-            if (typeof field === 'number') {
-                console.warn(
-                    'Edit field using an index is deprecated, please use the field name instead',
-                );
-            }
-
-            return {
-                ...state,
-                editedFieldName:
-                    typeof field === 'number' ? state.list[field] : field,
-            };
-        },
         REMOVE_FIELD_SUCCESS: (state, { payload: { name: nameToRemove } }) => ({
             ...state,
             list: state.list.filter(name => name !== nameToRemove),
@@ -295,13 +268,14 @@ export default handleActions(
             { payload: { fields, published } },
         ) => {
             const { catalog, list } = getCatalogFromArray(fields, 'name');
+            const newField = state.byName.new;
 
             return {
                 ...state,
                 error: null,
                 loading: false,
-                byName: catalog,
-                list,
+                byName: newField ? { ...catalog, new: newField } : catalog,
+                list: newField ? [...list, 'new'] : list,
                 published,
                 editedValueFieldName: null,
             };

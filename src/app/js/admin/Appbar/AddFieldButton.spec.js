@@ -27,7 +27,7 @@ describe('<AddFieldButton />', () => {
 
         expect(onAddNewField).toHaveBeenCalledWith({
             name: 'foo',
-            filter: 'bar',
+            scope: 'bar',
         });
     });
 });

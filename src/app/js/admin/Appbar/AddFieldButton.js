@@ -36,7 +36,7 @@ export const AddFieldButtonComponent = ({
             variant="contained"
             color="primary"
             onClick={() => {
-                onAddNewField({ name, filter });
+                onAddNewField({ name, scope: filter });
             }}
             className={classnames(
                 classes.containedButton,

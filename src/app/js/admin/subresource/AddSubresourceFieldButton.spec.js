@@ -42,7 +42,7 @@ describe('<AddSubresourceFieldButton />', () => {
                 },
                 { operation: 'PARSE' },
             ],
-            filter: 'bar',
+            scope: 'bar',
         });
     });
 

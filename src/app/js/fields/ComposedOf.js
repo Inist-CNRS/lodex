@@ -1,3 +1,4 @@
+// TODO: check if this is still used
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, FieldArray, change } from 'redux-form';

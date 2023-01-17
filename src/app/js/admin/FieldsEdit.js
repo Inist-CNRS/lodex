@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, Tab, Tabs } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -12,12 +12,8 @@ import translate from 'redux-polyglot/translate';
 import { fromParsing } from './selectors';
 import { FieldGrid } from '../fields/FieldGrid';
 import { hideAddColumns } from './parsing';
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../propTypes';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
-import { fromFields } from '../sharedSelectors';
 
 const useStyles = makeStyles({
     actionsContainer: {
@@ -31,16 +27,6 @@ const useStyles = makeStyles({
     },
 });
 
-const scrollToLastLayoutItem = () => {
-    setTimeout(() => {
-        const lastChild = document.querySelector('.layout > div:last-child');
-        lastChild?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'end',
-        });
-    }, 600);
-};
-
 export const FieldsEditComponent = ({
     addFieldButton,
     defaultTab = 'page',
@@ -49,8 +35,6 @@ export const FieldsEditComponent = ({
     p: polyglot,
     showAddFromColumn,
     subresourceId,
-    field,
-    fields,
 }) => {
     const classes = useStyles();
     const [tab, setTab] = useState(defaultTab);
@@ -61,21 +45,6 @@ export const FieldsEditComponent = ({
             setAddFromColumnDialog(true);
         }
     }, [showAddFromColumn]);
-
-    const fieldsLength = fields.length;
-    const previousFieldsLength = useRef(fieldsLength);
-    const lastField = fields[fieldsLength - 1];
-    const previousLastField = useRef(lastField);
-
-    useEffect(() => {
-        if (!field && previousFieldsLength.current + 1 === fieldsLength) {
-            if (previousLastField.current?._id !== lastField?._id) {
-                scrollToLastLayoutItem();
-            }
-            previousFieldsLength.current = fields.length;
-            previousLastField.current = fields[fieldsLength - 1];
-        }
-    }, [fieldsLength, field]);
 
     const handleChangeTab = (_, newValue) => setTab(newValue);
     const handleCloseAddFromColumnDialog = () => {
@@ -122,7 +91,6 @@ export const FieldsEditComponent = ({
             {tab === 'published' && (
                 <>
                     <PublicationPreview
-                        readonly
                         filter={filter}
                         subresourceId={subresourceId}
                     />
@@ -141,14 +109,10 @@ FieldsEditComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     showAddFromColumn: PropTypes.bool.isRequired,
     subresourceId: PropTypes.string,
-    field: fieldPropTypes,
-    fields: PropTypes.array,
 };
 
-const mapStateToProps = (state, { subresourceId, filter }) => ({
-    field: fromFields.getEditedField(state),
+const mapStateToProps = state => ({
     showAddFromColumn: fromParsing.showAddFromColumn(state),
-    fields: fromFields.getEditingFields(state, { filter, subresourceId }),
 });
 
 const mapDispatchToProps = {

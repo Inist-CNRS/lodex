@@ -9,7 +9,6 @@ import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 
 import { fromFields } from '../../sharedSelectors';
 import ValidationField from './ValidationField';
-import { editField as editFieldAction } from '../../fields';
 
 import {
     validationField as validationFieldPropType,
@@ -17,6 +16,7 @@ import {
 } from '../../propTypes';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
 import translate from 'redux-polyglot/translate';
+import { useHistory } from 'react-router-dom';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };
@@ -37,13 +37,13 @@ const ValidationButtonComponent = ({
     popover,
     p: polyglot,
 }) => {
+    const history = useHistory();
     // @TODO: Find a better way to handle fix error from data tab
     const redirectAndHandleEditField = (...args) => {
         const field = fields.find(({ name }) => name === args[0]);
-
-        setTimeout(
-            () => handleEditField(field?.name, field?.scope || SCOPE_DOCUMENT),
-            1000,
+        handleEditField();
+        history.push(
+            `/display/${field?.scope || SCOPE_DOCUMENT}/edit/${field?.name}`,
         );
     };
 
@@ -96,10 +96,8 @@ const mapStateToProps = state => ({
     fields: fromFields.getInvalidFields(state),
 });
 
-const mapDispatchToProps = { editField: editFieldAction };
-
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps),
     withState('popover', 'setShowPopover', { show: false }),
     withHandlers({
         handleShowErrorsClick: ({ setShowPopover }) => event => {
@@ -109,9 +107,8 @@ export default compose(
         handleHideErrors: ({ setShowPopover }) => () => {
             setShowPopover({ show: false });
         },
-        handleEditField: ({ editField, setShowPopover }) => (field, filter) => {
+        handleEditField: ({ setShowPopover }) => () => {
             setShowPopover({ show: false });
-            editField({ field, filter });
         },
     }),
     translate,
