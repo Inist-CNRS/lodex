@@ -5,15 +5,13 @@ import { IconButton, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import colorsTheme from '../../../custom/colorsTheme';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import classNames from 'classnames';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const useStyles = makeStyles({
     buttonContainer: {
         display: 'flex',
         alignItems: 'center',
-        marginLeft: 10,
-        marginRight: 10,
     },
     button: {
         color: colorsTheme.white.primary,
@@ -37,7 +35,7 @@ const GoToPublicationButtonComponent = ({ p: polyglot }) => {
                     )}
                     onClick={handleGoToPublication}
                 >
-                    <VisibilityIcon />
+                    <VisibilityIcon sx={{ fontSize: '30px' }} />
                 </IconButton>
             </Tooltip>
         </div>
