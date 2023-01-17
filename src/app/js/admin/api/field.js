@@ -1,4 +1,4 @@
-const { postDuplicateField } = require('../../user');
+const { postDuplicateField, clearModelRequest } = require('../../user');
 import { getUserLocalStorageInfo } from './tools';
 import fetch from '../../lib/fetch';
 
@@ -13,4 +13,15 @@ const duplicateField = async ({ fieldId }) => {
     });
 };
 
-export default { duplicateField };
+const clearModel = async () => {
+    const { token } = getUserLocalStorageInfo();
+    const request = clearModelRequest({ token });
+    return fetch(request).then(({ response, error }) => {
+        if (error) {
+            return error;
+        }
+        return response;
+    });
+};
+
+export default { duplicateField, clearModel };
