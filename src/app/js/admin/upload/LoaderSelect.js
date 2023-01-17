@@ -37,6 +37,8 @@ const LoaderSelectComponent = ({
         false,
     );
 
+    console.log('VALUE', value);
+
     const classes = useStyles();
 
     const handleOpen = () => {
@@ -86,13 +88,6 @@ const LoaderSelectComponent = ({
                         >
                             {polyglot.t('automatic-loader')}
                         </MenuItem>
-                        <MenuItem
-                            className="select-loader-item"
-                            key={'custom-loader'}
-                            value={'custom-loader'}
-                        >
-                            {polyglot.t('custom-loader')}
-                        </MenuItem>
                         {loaders
                             .sort((x, y) =>
                                 polyglot
@@ -108,6 +103,15 @@ const LoaderSelectComponent = ({
                                     {polyglot.t(loader.name)}
                                 </MenuItem>
                             ))}
+                        {value === 'custom-loader' && (
+                            <MenuItem
+                                className="select-loader-item"
+                                key={'custom-loader'}
+                                value={'custom-loader'}
+                            >
+                                {polyglot.t('custom-loader')}
+                            </MenuItem>
+                        )}
                     </Select>
                 </FormControl>
                 <Box mt="10px" ml="10px">
@@ -132,7 +136,7 @@ const LoaderSelectComponent = ({
                     className={classes.disableUppercase}
                     color="primary"
                     onClick={() => setOpenCustomLoadersDialog(true)}
-                    disabled={disabled}
+                    disabled={disabled || !value || value === 'automatic'}
                 >
                     {polyglot.t(`add-custom-loader`)}
                 </Button>
