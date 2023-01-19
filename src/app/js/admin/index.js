@@ -9,9 +9,14 @@ import { ConnectedRouter } from 'connected-react-router';
 import { Route, Redirect } from 'react-router';
 
 import {
-    ThemeProvider as MuiThemeProvider,
+    ThemeProvider as MaterialThemeProvider,
     createTheme,
 } from '@material-ui/core/styles';
+
+import {
+    createTheme as createThemeMui,
+    ThemeProvider,
+} from '@mui/material/styles';
 
 import rootReducer from './reducers';
 import sagas from './sagas';
@@ -26,7 +31,7 @@ import PrivateRoute from './PrivateRoute';
 import { Display } from './Display';
 import { Data } from './Data';
 
-const adminTheme = createTheme({
+const theme = {
     palette: {
         secondary: {
             main: colorsTheme.orange.primary,
@@ -42,7 +47,7 @@ const adminTheme = createTheme({
             primary: colorsTheme.black.secondary,
         },
     },
-});
+};
 
 const locale = getLocale();
 const initialState = {
@@ -62,20 +67,22 @@ const store = configureStore(
 
 render(
     <Provider store={store}>
-        <MuiThemeProvider theme={adminTheme}>
-            <ConnectedRouter history={history} onUpdate={scrollToTop}>
-                <App>
-                    <Route
-                        path="/"
-                        exact
-                        render={() => <Redirect to="/data" />}
-                    />
-                    <PrivateRoute path="/data" component={Data} />
-                    <PrivateRoute path="/display" component={Display} />
-                    <Route path="/login" exact component={Login} />
-                </App>
-            </ConnectedRouter>
-        </MuiThemeProvider>
+        <MaterialThemeProvider theme={createTheme(theme)}>
+            <ThemeProvider theme={createThemeMui(theme)}>
+                <ConnectedRouter history={history} onUpdate={scrollToTop}>
+                    <App>
+                        <Route
+                            path="/"
+                            exact
+                            render={() => <Redirect to="/data" />}
+                        />
+                        <PrivateRoute path="/data" component={Data} />
+                        <PrivateRoute path="/display" component={Display} />
+                        <Route path="/login" exact component={Login} />
+                    </App>
+                </ConnectedRouter>
+            </ThemeProvider>
+        </MaterialThemeProvider>
     </Provider>,
     document.getElementById('root'),
 );
