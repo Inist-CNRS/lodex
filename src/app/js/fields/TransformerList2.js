@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
-import pure from 'recompose/pure';
-
 import colorsTheme from './../../custom/colorsTheme';
+import compose from 'recompose/compose';
+import PropTypes from 'prop-types';
+import pure from 'recompose/pure';
+import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
@@ -179,7 +178,9 @@ const TransformerList2 = ({
     };
     return (
         <Box>
-            <Typography>{polyglot.t('transformers')}</Typography>
+            <Typography sx={{ marginBottom: 2 }}>
+                {polyglot.t('transformers')}
+            </Typography>
             {touched && error && <span>{error}</span>}
             <DndContext
                 sensors={sensors}
@@ -218,6 +219,7 @@ const TransformerList2 = ({
             </DndContext>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Button
+                    aria-label={polyglot.t('add_transformer')}
                     color="primary"
                     sx={{ borderWidth: '2px', borderStyle: 'dashed' }}
                     onClick={() => {
