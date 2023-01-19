@@ -6,12 +6,11 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { memoize } from 'lodash';
 
-import TransformerList from '../TransformerList';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { isSubresourceTransformation } from './TabValueSubresource';
 import { FIELD_FORM_NAME } from '..';
-// eslint-disable-next-line import/namespace, import/no-named-as-default, import/no-named-as-default-member, import/default
-import TransformerList2 from '../TransformerList2';
+
+import TransformerList from '../TransformerList';
 
 export const renderTransformerFunction = (
     locked,
@@ -30,16 +29,10 @@ export const renderTransformerFunction = (
         }
 
         return (
-            <>
-                <TransformerList
-                    hideFirstTransformers={isSubresourceField ? 3 : 0}
-                    {...props}
-                />
-                <TransformerList2
-                    hideFirstTransformers={isSubresourceField ? 3 : 0}
-                    {...props}
-                />
-            </>
+            <TransformerList
+                hideFirstTransformers={isSubresourceField ? 3 : 0}
+                {...props}
+            />
         );
     }
 

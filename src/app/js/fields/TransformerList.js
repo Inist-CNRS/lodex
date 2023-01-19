@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
-import pure from 'recompose/pure';
-import { ListSubheader, Button } from '@material-ui/core';
 import memoize from 'lodash.memoize';
-
-import { polyglot as polyglotPropTypes } from '../propTypes';
+import PropTypes from 'prop-types';
+import pure from 'recompose/pure';
+import translate from 'redux-polyglot/translate';
 import TransformerListItem from './TransformerListItem';
+import TransformerUpsertDialog from './TransformerUpsertDialog';
 
+import { Box, Button, Typography } from '@mui/material';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 import {
     DndContext,
     closestCenter,
@@ -23,20 +23,12 @@ import {
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-
 import {
     getTransformerMetas,
     hasRegistredTransformer,
 } from '../../../common/transformers';
 
-const styles = {
-    header: {
-        fontSize: '16px',
-        paddingLeft: 0,
-    },
-};
-
-const showTransformer = memoize(
+const SHOW_TRANSFORMER = memoize(
     (operation, type) =>
         !type ||
         !operation ||
@@ -59,6 +51,9 @@ const TransformerList = ({
     const [fieldsToDrag, setFieldsToDrag] = useState(
         fields.map(fieldName => fieldName),
     );
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [indexFieldToEdit, setIndexFieldToEdit] = useState(null);
 
     useEffect(() => {
         setFieldsToDrag(fields.map(fieldName => fieldName));
@@ -90,10 +85,10 @@ const TransformerList = ({
         });
     };
     return (
-        <div>
-            <ListSubheader style={styles.header}>
+        <Box>
+            <Typography sx={{ marginBottom: 2 }}>
                 {polyglot.t('transformers')}
-            </ListSubheader>
+            </Typography>
             {touched && error && <span>{error}</span>}
             <DndContext
                 sensors={sensors}
@@ -108,14 +103,16 @@ const TransformerList = ({
                         <TransformerListItem
                             key={fieldName}
                             id={fieldName}
-                            fieldName={fieldName}
+                            transformer={fields.get(index)}
                             onRemove={() => {
                                 fields.remove(index);
                             }}
-                            operation={fields.get(index)?.operation}
-                            type={type}
+                            onEdit={() => {
+                                setIndexFieldToEdit(index);
+                                setIsDialogOpen(true);
+                            }}
                             show={
-                                showTransformer(
+                                SHOW_TRANSFORMER(
                                     fields.get(index)?.operation,
                                     type,
                                 ) &&
@@ -126,17 +123,30 @@ const TransformerList = ({
                     ))}
                 </SortableContext>
             </DndContext>
-
-            <div style={{ textAlign: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Button
-                    variant="text"
-                    className="add-transformer"
-                    onClick={() => fields.push({})}
+                    aria-label={polyglot.t('add_transformer')}
+                    color="primary"
+                    sx={{ borderWidth: '2px', borderStyle: 'dashed' }}
+                    onClick={() => {
+                        setIndexFieldToEdit(null);
+                        setIsDialogOpen(true);
+                    }}
                 >
                     {polyglot.t('add_transformer')}
                 </Button>
-            </div>
-        </div>
+            </Box>
+
+            {isDialogOpen && (
+                <TransformerUpsertDialog
+                    isOpen={isDialogOpen}
+                    handleClose={() => setIsDialogOpen(false)}
+                    indexFieldToEdit={indexFieldToEdit}
+                    fields={fields}
+                    type={type}
+                />
+            )}
+        </Box>
     );
 };
 
@@ -148,6 +158,7 @@ TransformerList.propTypes = {
         remove: PropTypes.func.isRequired,
         push: PropTypes.func.isRequired,
         move: PropTypes.func.isRequired,
+        getAll: PropTypes.func.isRequired,
     }).isRequired,
     meta: PropTypes.shape({
         touched: PropTypes.bool,

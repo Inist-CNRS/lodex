@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Box, TextField } from '@mui/material';
 import { fromFields } from '../sharedSelectors';
 
-const TransformerArg = ({ availableArgs, onChange, transformerArgs }) => {
+const TransformerArgs = ({ availableArgs, onChange, transformerArgs }) => {
     if (!availableArgs) {
         return null;
     }
@@ -50,6 +50,7 @@ const TransformerArg = ({ availableArgs, onChange, transformerArgs }) => {
                         label={arg.name}
                         defaultValue={value === null ? '' : value}
                         onChange={e => handleChange(arg.name, e.target.value)}
+                        multiline={arg.type === 'text'}
                     />
                 );
             })}
@@ -57,7 +58,7 @@ const TransformerArg = ({ availableArgs, onChange, transformerArgs }) => {
     );
 };
 
-TransformerArg.propTypes = {
+TransformerArgs.propTypes = {
     availableArgs: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string.isRequired,
@@ -81,4 +82,4 @@ const mapStateToProps = (state, { operation }) => ({
 export default compose(
     connect(mapStateToProps, null),
     translate,
-)(TransformerArg);
+)(TransformerArgs);

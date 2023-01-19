@@ -55,7 +55,7 @@ const TransformerUpsertDialog = ({
 }) => {
     const classes = useStyles();
     const [transformer, setTransformer] = React.useState(
-        indexFieldToEdit ? fields.get(indexFieldToEdit) : {},
+        indexFieldToEdit !== null ? fields.get(indexFieldToEdit) : {},
     );
 
     if (!isOpen) {
@@ -73,7 +73,7 @@ const TransformerUpsertDialog = ({
     };
 
     const handleUpsert = () => {
-        if (indexFieldToEdit) {
+        if (indexFieldToEdit !== null) {
             fields.remove(indexFieldToEdit);
             fields.insert(indexFieldToEdit, transformer);
         } else {
@@ -85,7 +85,7 @@ const TransformerUpsertDialog = ({
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
             <DialogTitle>
-                {indexFieldToEdit
+                {indexFieldToEdit !== null
                     ? polyglot.t('edit_transformer')
                     : polyglot.t('add_transformer')}
             </DialogTitle>
@@ -93,6 +93,7 @@ const TransformerUpsertDialog = ({
             <DialogContent style={{ padding: 10, width: '800px' }}>
                 <Box display={'flex'} flexDirection="column">
                     <Autocomplete
+                        aria-label={polyglot.t('select_an_operation')}
                         value={transformer.operation}
                         onChange={(event, newValue) => {
                             handleChangeOperation(newValue);
