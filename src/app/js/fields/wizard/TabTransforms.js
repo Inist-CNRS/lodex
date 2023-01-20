@@ -9,8 +9,7 @@ import { memoize } from 'lodash';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { isSubresourceTransformation } from './TabValueSubresource';
 import { FIELD_FORM_NAME } from '..';
-
-import TransformerList from '../TransformerList';
+import TransformerList from '../transformers/TransformerList';
 
 export const renderTransformerFunction = (
     locked,

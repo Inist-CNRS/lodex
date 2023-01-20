@@ -834,3 +834,8 @@
 "cancelled_import" 	"Import has been successfully cancelled" 	"L'import a été annulé avec succès"
 "no_field" 	"Field %{fieldName} does not exist" 	"Le champ %{fieldName} n'existe pas"
 "no_field_in_scope" 	"Field %{fieldName} is not in scope %{filter}" 	"Le champ %{fieldName} n'est pas dans le scope %{filter}"
+"source_value" 	"Source value" 	"Source de la valeur"
+"arbitrary_value" 	"Arbitrary value" 	"Valeur arbitraire"
+"enter_an_arbitrary_value" 	"Enter an arbitrary value" 	"Saisir une valeur arbitraire"
+"from_columns" 	"Existing Column(s)" 	"Colonne(s) existante(s)"
+"from_subressource" 	"From Subressource" 	"Depuis une sous-ressource"

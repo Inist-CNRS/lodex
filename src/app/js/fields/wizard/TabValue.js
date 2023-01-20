@@ -12,6 +12,7 @@ import TabValueConcat from './TabValueConcat';
 import TabValueSubresource from './TabValueSubresource';
 import TabValueSubresourceField from './TabValueSubresourceField';
 import TabValueSubresourceColumn from './TabValueSubresourceColumn';
+import SourceValueToggleConnected from '../sourceValue/SourceValueToggle';
 
 export const TabValueComponent = ({
     subresourceUri,
@@ -37,6 +38,7 @@ export const TabValueComponent = ({
                 )}
             </>
         )}
+        <SourceValueToggleConnected />
     </>
 );
 
