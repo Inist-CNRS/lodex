@@ -72,7 +72,7 @@
         "@ezs/loterre": "^2.0.1",
         "@ezs/sparql": "^1.2.1",
         "@ezs/storage": "^1.7.0",
-        "@ezs/transformers": "1.3.11",
+        "@ezs/transformers": "1.4.2",
         "@ezs/xslt": "1.3.21",
         "@fortawesome/fontawesome-svg-core": "^1.2.36",
         "@fortawesome/free-solid-svg-icons": "^5.11.2",
