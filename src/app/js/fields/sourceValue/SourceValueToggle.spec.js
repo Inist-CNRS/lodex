@@ -14,11 +14,11 @@ describe('SourceValueToggle', () => {
 
         it('returns correct values for operation COLUMN', () => {
             const transformers = [
-                { operation: 'COLUMN', args: [{ column: 'columnName' }] },
+                { operation: 'COLUMN', args: [{ value: 'columnName' }] },
             ];
             expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
                 source: 'fromColumns',
-                value: 'columnName',
+                value: ['columnName'],
             });
         });
 

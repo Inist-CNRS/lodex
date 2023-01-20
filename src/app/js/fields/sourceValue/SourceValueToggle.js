@@ -6,7 +6,8 @@ import FromColumnsIcon from '@mui/icons-material/ViewColumn';
 import FromSubRessourceIcon from '@mui/icons-material/DocumentScanner';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import SourceValueArbitraryConnected from './SourceValueArbitrary';
+import SourceValueArbitrary from './SourceValueArbitrary';
+import SourceValueFromColumns from './SourceValueFromColumns';
 
 import { connect } from 'react-redux';
 import { change, formValueSelector } from 'redux-form';
@@ -57,21 +58,20 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = transformers => {
     if (!transformers) {
         return { source: null, value: null };
     }
-
     const operations = {
         VALUE: {
             source: 'arbitrary',
-            value: transformers[0].args && transformers[0].args[0]?.value,
+            value: transformers[0]?.args && transformers[0].args[0]?.value,
         },
         COLUMN: {
             source: 'fromColumns',
-            value: transformers[0].args && transformers[0].args[0]?.column,
+            value: transformers[0]?.args && [transformers[0].args[0]?.value],
         },
         CONCAT: {
             source: 'fromColumns',
             value:
-                transformers[0].args &&
-                transformers[0].args.map(({ value }) => value || ''),
+                transformers[0]?.args &&
+                transformers[0]?.args.map(({ value }) => value || ''),
         },
     };
 
@@ -153,7 +153,14 @@ export const SourceValueToggle = ({
             </ToggleButtonGroup>
 
             {source === 'arbitrary' && (
-                <SourceValueArbitraryConnected
+                <SourceValueArbitrary
+                    updateTransformers={updateTransformers}
+                    value={currentValue}
+                />
+            )}
+
+            {source === 'fromColumns' && (
+                <SourceValueFromColumns
                     updateTransformers={updateTransformers}
                     value={currentValue}
                 />
