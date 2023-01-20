@@ -6,10 +6,11 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { memoize } from 'lodash';
 
-import TransformerList from '../TransformerList';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { isSubresourceTransformation } from './TabValueSubresource';
 import { FIELD_FORM_NAME } from '..';
+
+import TransformerList from '../TransformerList';
 
 export const renderTransformerFunction = (
     locked,
@@ -50,6 +51,7 @@ export const TabTransformComponent = ({
             name="transformers"
             component={renderTransformer(locked, isSubresourceField, polyglot)}
             type="transform"
+            rerenderOnEveryChange
         />
     </>
 );

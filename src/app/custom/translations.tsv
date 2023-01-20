@@ -33,6 +33,7 @@
 "publication_preview"	"Preview"	"Aperçu"
 "click_to_edit_publication_field"	"Click on this icon to edit the field"	"Cliquer sur l'icône pour modifier le champ"
 "add_transformer"	"Add an operation"	"Ajouter une opération"
+"edit_transformer"	"Edit an operation"	"Modifier une opération"
 "add_class"	"Add a semantic class"	"Ajouter une classe sémantique"
 "enter_class"	"Enter your semantic class"	"Entrer votre classe sémantique"
 "class"	"Semantic class"	"Classe sémantique"

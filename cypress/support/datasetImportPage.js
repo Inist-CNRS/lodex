@@ -106,8 +106,10 @@ export const setOperationTypeInWizard = (value = 'DEFAULT') => {
     cy.get('.wizard', { timeout: 5000 }).should('be.visible');
     cy.contains('Transformation').click();
     cy.get('.wizard', { timeout: 5000 }).should('be.visible');
-    cy.get('.operation').click();
+    cy.get('[aria-label="transformer-edit-transformers[0]').click();
+    cy.get('[aria-label="Select an operation"]').click();
     cy.contains(value).click();
+    cy.contains('confirm').click();
     cy.get('.btn-save').click();
     cy.get('.wizard').should('not.exist');
 };
