@@ -27,6 +27,7 @@ export const TabValueSubresourceColumnComponent = ({
     subresourceUri,
 }) => (
     <div id="tab-value-subresource-column">
+        HELLO SUBRESSOURCECOLUMN
         <FormControlLabel
             control={
                 <Switch

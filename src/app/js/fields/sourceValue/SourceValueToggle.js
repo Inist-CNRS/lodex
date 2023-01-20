@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import SourceValueArbitrary from './SourceValueArbitrary';
 import SourceValueFromColumns from './SourceValueFromColumns';
+import SourceValueFromColumnsForSubRessource from './SourceValueFromColumnsForSubRessource';
 
 import { connect } from 'react-redux';
 import { change, formValueSelector } from 'redux-form';
@@ -58,6 +59,19 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = transformers => {
     if (!transformers) {
         return { source: null, value: null };
     }
+
+    const isSubressourceFromColumn = transformers
+        .map(t => t.operation)
+        .join('|')
+        .includes('COLUMN|PARSE|GET');
+
+    if (isSubressourceFromColumn) {
+        return {
+            source: 'fromColumnsForSubRessource',
+            value: transformers[2]?.args && [transformers[2].args[0]?.value],
+        };
+    }
+
     const operations = {
         VALUE: {
             source: 'arbitrary',
@@ -101,9 +115,9 @@ export const SourceValueToggle = ({
     currentValue,
     updateTransformers,
     p: polyglot,
+    subresourceUri,
 }) => {
     const [source, setSource] = React.useState(currentSource);
-
     React.useEffect(() => {
         setSource(currentSource);
     }, [currentSource]);
@@ -114,10 +128,7 @@ export const SourceValueToggle = ({
         }
 
         const transformersFromStatus = TRANSFORMERS_FORM_STATUS.get(newSource);
-
-        if (transformersFromStatus) {
-            updateTransformers(transformersFromStatus);
-        }
+        updateTransformers(transformersFromStatus);
         setSource(newSource);
     };
 
@@ -138,7 +149,13 @@ export const SourceValueToggle = ({
                         {polyglot.t('arbitrary_value')}
                     </Typography>
                 </ToggleButton>
-                <ToggleButton value="fromColumns">
+                <ToggleButton
+                    value={
+                        subresourceUri
+                            ? 'fromColumnsForSubRessource'
+                            : 'fromColumns'
+                    }
+                >
                     <FromColumnsIcon style={{ fontSize: 50 }} />
                     <Typography variant="caption">
                         {polyglot.t('from_columns')}
@@ -165,6 +182,14 @@ export const SourceValueToggle = ({
                     value={currentValue}
                 />
             )}
+
+            {source === 'fromColumnsForSubRessource' && (
+                <SourceValueFromColumnsForSubRessource
+                    updateTransformers={updateTransformers}
+                    value={currentValue}
+                    subresourceUri={subresourceUri}
+                />
+            )}
         </Box>
     );
 };
@@ -174,6 +199,7 @@ SourceValueToggle.propTypes = {
     currentValue: PropTypes.string,
     updateTransformers: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    subresourceUri: PropTypes.string,
 };
 
 const mapStateToProps = state => {

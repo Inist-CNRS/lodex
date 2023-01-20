@@ -9,7 +9,6 @@ import { Box, Button, TextField } from '@mui/material';
 
 const SourceValueArbitrary = ({ updateTransformers, value, p: polyglot }) => {
     const [openRoutineCatalog, setOpenRoutineCatalog] = React.useState(false);
-
     const handleChange = event => {
         const transformers = [
             {
@@ -34,7 +33,7 @@ const SourceValueArbitrary = ({ updateTransformers, value, p: polyglot }) => {
                 placeholder={polyglot.t('enter_an_arbitrary_value')}
                 label={polyglot.t('arbitrary_value')}
                 onChange={handleChange}
-                defaultValue={value}
+                value={value || ''}
                 multiline
             />
             <Box style={{ marginLeft: '10px' }}>

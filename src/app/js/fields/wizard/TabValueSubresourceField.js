@@ -35,6 +35,8 @@ export const TabValueSubresourceFieldComponent = ({
     selected,
 }) => (
     <div id="tab-value-subresource-field">
+                HELLO SUBFIELD
+
         <FormControlLabel
             control={
                 <Switch
