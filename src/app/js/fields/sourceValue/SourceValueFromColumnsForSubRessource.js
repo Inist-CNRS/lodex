@@ -15,7 +15,9 @@ const SourceValueFromColumnsForSubRessource = ({
     value,
     subresourcePath,
 }) => {
+    const [autocompleteValue, setAutocompleteValue] = React.useState(value);
     const handleChange = (event, value) => {
+        setAutocompleteValue(value);
         updateTransformers([
             {
                 operation: 'COLUMN',
@@ -48,7 +50,7 @@ const SourceValueFromColumnsForSubRessource = ({
             <Autocomplete
                 fullWidth
                 options={datasetFields}
-                defaultValue={value || []}
+                value={autocompleteValue ?? []}
                 renderInput={params => (
                     <TextField
                         {...params}

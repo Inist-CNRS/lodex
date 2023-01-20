@@ -13,7 +13,9 @@ const SourceValueFromColumns = ({
     updateTransformers,
     value,
 }) => {
+    const [autocompleteValue, setAutocompleteValue] = React.useState(value);
     const handleChange = (event, value) => {
+        setAutocompleteValue(value);
         updateTransformers([
             {
                 operation: value.length > 1 ? 'CONCAT' : 'COLUMN',
@@ -35,7 +37,7 @@ const SourceValueFromColumns = ({
                 multiple
                 fullWidth
                 options={datasetFields}
-                defaultValue={value || []}
+                value={autocompleteValue ?? []}
                 renderInput={params => (
                     <TextField
                         {...params}

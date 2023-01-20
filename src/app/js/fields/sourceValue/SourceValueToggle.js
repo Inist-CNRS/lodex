@@ -60,10 +60,31 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = transformers => {
         return { source: null, value: null };
     }
 
-    const isSubressourceFromColumn = transformers
-        .map(t => t.operation)
-        .join('|')
-        .includes('COLUMN|PARSE|GET');
+    const transformersOperations = transformers.map(t => t.operation).join('|');
+
+    if (
+        transformersOperations ===
+        'COLUMN|PARSE|GET|STRING|REPLACE_REGEX|MD5|REPLACE_REGEX'
+    ) {
+        return {
+            source: 'fromSubressource',
+            value: null,
+        };
+    }
+
+    if (
+        transformersOperations ===
+        'COLUMN|PARSE|GET|STRING|REPLACE_REGEX|REPLACE_REGEX|TRIM'
+    ) {
+        return {
+            source: 'fromSubressource',
+            value: transformers[2]?.args && [transformers[2].args[0]?.value],
+        };
+    }
+
+    const isSubressourceFromColumn = transformersOperations.includes(
+        'COLUMN|PARSE|GET',
+    );
 
     if (isSubressourceFromColumn) {
         return {
@@ -72,7 +93,7 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = transformers => {
         };
     }
 
-    const operations = {
+    const sourceValues = {
         VALUE: {
             source: 'arbitrary',
             value: transformers[0]?.args && transformers[0].args[0]?.value,
@@ -91,8 +112,8 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = transformers => {
 
     const { operation } = transformers[0];
 
-    return operation in operations
-        ? operations[operation]
+    return operation in sourceValues
+        ? sourceValues[operation]
         : { source: null, value: null };
 };
 
@@ -126,7 +147,6 @@ export const SourceValueToggle = ({
         if (!newSource) {
             return;
         }
-
         const transformersFromStatus = TRANSFORMERS_FORM_STATUS.get(newSource);
         updateTransformers(transformersFromStatus);
         setSource(newSource);
@@ -161,12 +181,14 @@ export const SourceValueToggle = ({
                         {polyglot.t('from_columns')}
                     </Typography>
                 </ToggleButton>
-                <ToggleButton value="fromSubressource">
-                    <FromSubRessourceIcon style={{ fontSize: 50 }} />
-                    <Typography variant="caption">
-                        {polyglot.t('from_subressource')}
-                    </Typography>
-                </ToggleButton>
+                {!subresourceUri && (
+                    <ToggleButton value="fromSubressource">
+                        <FromSubRessourceIcon style={{ fontSize: 50 }} />
+                        <Typography variant="caption">
+                            {polyglot.t('from_subressource')}
+                        </Typography>
+                    </ToggleButton>
+                )}
             </ToggleButtonGroup>
 
             {source === 'arbitrary' && (
