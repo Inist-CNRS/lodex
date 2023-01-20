@@ -53,39 +53,33 @@ const TRANSFORMERS_FORM_STATUS = new Map([
     // ['fromSubressource', 'fromSubressource'],
 ]);
 
-const GET_SOURCE_VALUE_FROM_TRANSFORMERS = transformers => {
+export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = transformers => {
     if (!transformers) {
         return { source: null, value: null };
     }
 
-    if (
-        transformers &&
-        transformers[0] &&
-        transformers[0].operation === 'VALUE'
-    ) {
-        return { source: 'arbitrary', value: transformers[0].args[0].value };
-    }
-
-    if (
-        transformers &&
-        transformers[0] &&
-        transformers[0].operation === 'COLUMN'
-    ) {
-        return { source: 'fromColumns', value: transformers[0].args[0].column };
-    }
-
-    if (
-        transformers &&
-        transformers[0] &&
-        transformers[0].operation === 'CONCAT'
-    ) {
-        return {
+    const operations = {
+        VALUE: {
+            source: 'arbitrary',
+            value: transformers[0].args && transformers[0].args[0]?.value,
+        },
+        COLUMN: {
             source: 'fromColumns',
-            value: transformers[0].args.map(({ value }) => value || ''),
-        };
-    }
+            value: transformers[0].args && transformers[0].args[0]?.column,
+        },
+        CONCAT: {
+            source: 'fromColumns',
+            value:
+                transformers[0].args &&
+                transformers[0].args.map(({ value }) => value || ''),
+        },
+    };
 
-    return { source: null, value: null };
+    const { operation } = transformers[0];
+
+    return operation in operations
+        ? operations[operation]
+        : { source: null, value: null };
 };
 
 const ToggleButton = styled(MuiToggleButton)(() => ({
