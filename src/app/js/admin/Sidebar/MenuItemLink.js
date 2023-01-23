@@ -7,12 +7,13 @@ import { NavLink } from 'react-router-dom';
 // this component is not styled
 // style is herited from src/app/js/admin/Sidebar/Sidebar.js
 
-export const MenuItemLink = ({ to, primaryText, leftIcon }) => (
+export const MenuItemLink = ({ to, primaryText, leftIcon, ...rest }) => (
     <MenuItem
         component={NavLink}
         activeClassName="active"
         to={to}
         disableGutters
+        {...rest}
     >
         <ListItemIcon>{leftIcon}</ListItemIcon>
         {primaryText}

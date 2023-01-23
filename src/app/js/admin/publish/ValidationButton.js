@@ -41,9 +41,14 @@ const ValidationButtonComponent = ({
     const redirectAndHandleEditField = (...args) => {
         const field = fields.find(({ name }) => name === args[0]);
         handleEditField();
-        history.push(
-            `/display/${field?.scope || SCOPE_DOCUMENT}/edit/${field?.name}`,
-        );
+        const redirectUrl =
+            field?.scope === SCOPE_DOCUMENT
+                ? `/display/${SCOPE_DOCUMENT}/${field?.subresourceId ||
+                      'main'}/edit/${field?.name}`
+                : `/display/${field?.scope || SCOPE_DOCUMENT + '/main'}/edit/${
+                      field?.name
+                  }`;
+        history.push(redirectUrl);
     };
 
     return (

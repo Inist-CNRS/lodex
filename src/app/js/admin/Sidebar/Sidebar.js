@@ -136,6 +136,9 @@ const Sidebar = ({ p: polyglot, hasLoadedDataset, hasPublishedDataset }) => {
                     to={`/display/${SCOPE_DOCUMENT}/add`}
                     primaryText={polyglot.t('subresources')}
                     leftIcon={<DocumentScannerIcon />}
+                    isActive={() =>
+                        matchDocumentRoute && !matchMainResourceRoute
+                    }
                 />
             </SubMenu>
         ),
@@ -168,12 +171,13 @@ const Sidebar = ({ p: polyglot, hasLoadedDataset, hasPublishedDataset }) => {
             <Drawer
                 variant="permanent"
                 open={open}
+                className="sidebar"
                 sx={{
                     width: open ? DRAWER_OPEN_WIDTH : DRAWER_CLOSED_WIDTH,
                     zIndex: 0,
-                    overflowX: 'hidden',
                     transition: 'width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
                     '& .MuiDrawer-paper': {
+                        overflowX: 'hidden',
                         paddingTop: '64px',
                         backgroundColor: colorsTheme.black.veryDark,
                         color: colorsTheme.white.primary,

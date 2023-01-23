@@ -27,6 +27,7 @@ import FieldInternalIcon from './FieldInternalIcon';
 import fieldApi from '../admin/api/field';
 import { toast } from 'react-toastify';
 import { useLocation, useHistory } from 'react-router';
+import { SCOPE_DOCUMENT } from '../../../common/scope';
 
 const ROOT_PADDING = 16;
 
@@ -207,6 +208,7 @@ const DraggableItemGrid = compose(
         loadField,
         filter,
         isFieldsLoading,
+        subresourceId,
     }) => {
         const classes = useStyles(isFieldsLoading);
         const history = useHistory();
@@ -249,7 +251,12 @@ const DraggableItemGrid = compose(
 
         const handleEditField = (fieldName, filter) => {
             if (isEditable && !isFieldsLoading) {
-                history.push(`/display/${filter}/edit/${fieldName}`);
+                const redirectUrl =
+                    filter === SCOPE_DOCUMENT
+                        ? `/display/${SCOPE_DOCUMENT}/${subresourceId ||
+                              'main'}/edit/${fieldName}`
+                        : `/display/${filter}/edit/${fieldName}`;
+                history.push(redirectUrl);
             }
         };
 
@@ -370,6 +377,7 @@ DraggableItemGrid.propTypes = {
     loadField: PropTypes.func.isRequired,
     filter: PropTypes.string.isRequired,
     isFieldsLoading: PropTypes.bool,
+    subresourceId: PropTypes.string,
 };
 
 const FieldGridComponent = ({
@@ -380,6 +388,7 @@ const FieldGridComponent = ({
     saveFieldFromData,
     p: polyglot,
     isFieldsLoading,
+    subresourceId,
 }) => {
     const classes = useStyles();
 
@@ -442,6 +451,7 @@ const FieldGridComponent = ({
                     polyglot={polyglot}
                     filter={filter}
                     isFieldsLoading={isFieldsLoading}
+                    subresourceId={subresourceId}
                 />
             )}
         </div>
@@ -456,6 +466,7 @@ FieldGridComponent.propTypes = {
     changePositions: PropTypes.func.isRequired,
     saveFieldFromData: PropTypes.func.isRequired,
     isFieldsLoading: PropTypes.bool,
+    subresourceId: PropTypes.string,
 };
 
 const mapStateToProps = (state, { subresourceId, filter }) => ({
