@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
@@ -14,6 +14,10 @@ const SourceValueFromColumns = ({
     value,
 }) => {
     const [autocompleteValue, setAutocompleteValue] = React.useState(value);
+    useEffect(() => {
+        setAutocompleteValue(value);
+    }, [value]);
+
     const handleChange = (event, value) => {
         setAutocompleteValue(value);
         updateTransformers([

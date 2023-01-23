@@ -52,11 +52,37 @@ const TRANSFORMERS_FORM_STATUS = new Map([
             },
         ],
     ],
+    [
+        'fromColumnsForSubRessource',
+        [
+            {
+                operation: 'COLUMN',
+                args: [
+                    {
+                        name: 'column',
+                        type: 'column',
+                    },
+                ],
+            },
+            {
+                operation: 'PARSE',
+            },
+            {
+                operation: 'GET',
+                args: [
+                    {
+                        name: 'path',
+                        type: 'string',
+                    },
+                ],
+            },
+        ],
+    ],
     // ['fromSubressource', 'fromSubressource'],
 ]);
 
 export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = transformers => {
-    if (!transformers) {
+    if (!transformers || !transformers[0]?.operation) {
         return { source: null, value: null };
     }
 
@@ -100,7 +126,11 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = transformers => {
         },
         COLUMN: {
             source: 'fromColumns',
-            value: transformers[0]?.args && [transformers[0].args[0]?.value],
+            // if value undefined, it will be set to empty array
+            value:
+                transformers[0]?.args && transformers[0].args[0]?.value
+                    ? [transformers[0].args[0]?.value]
+                    : [],
         },
         CONCAT: {
             source: 'fromColumns',
@@ -132,16 +162,21 @@ const ToggleButton = styled(MuiToggleButton)(() => ({
 }));
 
 export const SourceValueToggle = ({
-    currentSource,
-    currentValue,
+    currentTransformers,
     updateTransformers,
     p: polyglot,
     subresourceUri,
 }) => {
-    const [source, setSource] = React.useState(currentSource);
+    const [source, setSource] = React.useState(null);
+    const [value, SetValue] = React.useState(null);
     React.useEffect(() => {
+        const {
+            source: currentSource,
+            value: currentValue,
+        } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(currentTransformers);
         setSource(currentSource);
-    }, [currentSource]);
+        SetValue(currentValue);
+    }, [currentTransformers]);
 
     const handleChange = (event, newSource) => {
         if (!newSource) {
@@ -149,7 +184,6 @@ export const SourceValueToggle = ({
         }
         const transformersFromStatus = TRANSFORMERS_FORM_STATUS.get(newSource);
         updateTransformers(transformersFromStatus);
-        setSource(newSource);
     };
 
     return (
@@ -194,21 +228,21 @@ export const SourceValueToggle = ({
             {source === 'arbitrary' && (
                 <SourceValueArbitrary
                     updateTransformers={updateTransformers}
-                    value={currentValue}
+                    value={value}
                 />
             )}
 
             {source === 'fromColumns' && (
                 <SourceValueFromColumns
                     updateTransformers={updateTransformers}
-                    value={currentValue}
+                    value={value}
                 />
             )}
 
             {source === 'fromColumnsForSubRessource' && (
                 <SourceValueFromColumnsForSubRessource
                     updateTransformers={updateTransformers}
-                    value={currentValue}
+                    value={value}
                     subresourceUri={subresourceUri}
                 />
             )}
@@ -217,8 +251,7 @@ export const SourceValueToggle = ({
 };
 
 SourceValueToggle.propTypes = {
-    currentSource: PropTypes.string,
-    currentValue: PropTypes.string,
+    currentTransformers: PropTypes.arrayOf(PropTypes.object),
     updateTransformers: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     subresourceUri: PropTypes.string,
@@ -230,12 +263,7 @@ const mapStateToProps = state => {
         'transformers',
     );
 
-    const {
-        source: currentSource,
-        value: currentValue,
-    } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(currentTransformers);
-
-    return { currentSource, currentValue };
+    return { currentTransformers };
 };
 
 const mapDispatchToProps = dispatch => ({
