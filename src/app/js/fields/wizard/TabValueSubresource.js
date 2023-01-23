@@ -26,6 +26,7 @@ export const TabValueSubresourceComponent = ({
     selected,
 }) => (
     <div id="tab-value-subresource">
+        TABVALUE SUB
         <FormControlLabel
             control={
                 <Switch

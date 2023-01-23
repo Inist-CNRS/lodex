@@ -8,7 +8,7 @@ import { fromParsing } from '../../admin/selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import parseValue from '../../../../common/tools/parseValue';
 
-const SourceValueFromColumnsForSubRessource = ({
+const SourceValueFromColumnsForSubResource = ({
     datasetFields,
     p: polyglot,
     updateTransformers,
@@ -69,10 +69,12 @@ const SourceValueFromColumnsForSubRessource = ({
     );
 };
 
-export const mapStateToProps = (state, { subresourceUri }) => {
+export const mapStateToProps = (state, { selectedSubresourceUri }) => {
     const { subresources } = state.subresource;
 
-    const subresource = subresources.find(s => s._id === subresourceUri);
+    const subresource = subresources.find(
+        s => s._id === selectedSubresourceUri,
+    );
     const [firstParsedLine] = fromParsing.getExcerptLines(state);
 
     if (!subresource || !firstParsedLine) {
@@ -94,7 +96,7 @@ export const mapStateToProps = (state, { subresourceUri }) => {
     };
 };
 
-SourceValueFromColumnsForSubRessource.propTypes = {
+SourceValueFromColumnsForSubResource.propTypes = {
     datasetFields: PropTypes.arrayOf(PropTypes.string).isRequired,
     p: polyglotPropTypes.isRequired,
     updateTransformers: PropTypes.func.isRequired,
@@ -105,4 +107,4 @@ SourceValueFromColumnsForSubRessource.propTypes = {
 export default compose(
     connect(mapStateToProps),
     translate,
-)(SourceValueFromColumnsForSubRessource);
+)(SourceValueFromColumnsForSubResource);

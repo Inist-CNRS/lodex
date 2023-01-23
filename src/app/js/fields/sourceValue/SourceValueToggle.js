@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import SourceValueArbitrary from './SourceValueArbitrary';
 import SourceValueFromColumns from './SourceValueFromColumns';
-import SourceValueFromColumnsForSubRessource from './SourceValueFromColumnsForSubRessource';
+import SourceValueFromColumnsForSubResource from './SourceValueFromColumnsForSubResource';
 
 import { connect } from 'react-redux';
 import { change, formValueSelector } from 'redux-form';
@@ -22,6 +22,7 @@ import {
     ToggleButtonGroup,
     ToggleButton as MuiToggleButton,
 } from '@mui/material';
+import SourceValueFromSubResource from './SourceValueFromSubResource';
 
 const TRANSFORMERS_FORM_STATUS = new Map([
     [
@@ -78,7 +79,6 @@ const TRANSFORMERS_FORM_STATUS = new Map([
             },
         ],
     ],
-    // ['fromSubressource', 'fromSubressource'],
 ]);
 
 export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = transformers => {
@@ -93,7 +93,7 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = transformers => {
         'COLUMN|PARSE|GET|STRING|REPLACE_REGEX|MD5|REPLACE_REGEX'
     ) {
         return {
-            source: 'fromSubressource',
+            source: 'fromSubresource',
             value: null,
         };
     }
@@ -103,16 +103,16 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = transformers => {
         'COLUMN|PARSE|GET|STRING|REPLACE_REGEX|REPLACE_REGEX|TRIM'
     ) {
         return {
-            source: 'fromSubressource',
-            value: transformers[2]?.args && [transformers[2].args[0]?.value],
+            source: 'fromSubresource',
+            value: transformers[2]?.args && transformers[2].args[0]?.value,
         };
     }
 
-    const isSubressourceFromColumn = transformersOperations.includes(
+    const isFromColumnsForSubRessource = transformersOperations.includes(
         'COLUMN|PARSE|GET',
     );
 
-    if (isSubressourceFromColumn) {
+    if (isFromColumnsForSubRessource) {
         return {
             source: 'fromColumnsForSubRessource',
             value: transformers[2]?.args && [transformers[2].args[0]?.value],
@@ -165,7 +165,8 @@ export const SourceValueToggle = ({
     currentTransformers,
     updateTransformers,
     p: polyglot,
-    subresourceUri,
+    selectedSubresourceUri,
+    subresources,
 }) => {
     const [source, setSource] = React.useState(null);
     const [value, SetValue] = React.useState(null);
@@ -182,6 +183,72 @@ export const SourceValueToggle = ({
         if (!newSource) {
             return;
         }
+
+        if (newSource === 'fromSubresource') {
+            const transformers = subresources
+                ? [
+                      {
+                          operation: 'COLUMN',
+                          args: [
+                              {
+                                  name: 'column',
+                                  type: 'column',
+                                  value: subresources[0].path,
+                              },
+                          ],
+                      },
+                      {
+                          operation: 'PARSE',
+                      },
+                      {
+                          operation: 'GET',
+                          args: [
+                              {
+                                  name: 'path',
+                                  type: 'string',
+                                  value: subresources[0].identifier,
+                              },
+                          ],
+                      },
+                      { operation: 'STRING' },
+                      {
+                          operation: 'REPLACE_REGEX',
+                          args: [
+                              {
+                                  name: 'searchValue',
+                                  type: 'string',
+                                  value: '^(.*)$',
+                              },
+                              {
+                                  name: 'replaceValue',
+                                  type: 'string',
+                                  value: `${subresources[0]._id}/$1`,
+                              },
+                          ],
+                      },
+                      { operation: 'MD5', args: [] },
+                      {
+                          operation: 'REPLACE_REGEX',
+                          args: [
+                              {
+                                  name: 'searchValue',
+                                  type: 'string',
+                                  value: '^(.*)$',
+                              },
+                              {
+                                  name: 'replaceValue',
+                                  type: 'string',
+                                  value: `uid:/$1`,
+                              },
+                          ],
+                      },
+                  ]
+                : [];
+
+            updateTransformers(transformers);
+            return;
+        }
+
         const transformersFromStatus = TRANSFORMERS_FORM_STATUS.get(newSource);
         updateTransformers(transformersFromStatus);
     };
@@ -205,7 +272,7 @@ export const SourceValueToggle = ({
                 </ToggleButton>
                 <ToggleButton
                     value={
-                        subresourceUri
+                        selectedSubresourceUri
                             ? 'fromColumnsForSubRessource'
                             : 'fromColumns'
                     }
@@ -215,8 +282,11 @@ export const SourceValueToggle = ({
                         {polyglot.t('from_columns')}
                     </Typography>
                 </ToggleButton>
-                {!subresourceUri && (
-                    <ToggleButton value="fromSubressource">
+                {!selectedSubresourceUri && (
+                    <ToggleButton
+                        value="fromSubresource"
+                        disabled={!subresources}
+                    >
                         <FromSubRessourceIcon style={{ fontSize: 50 }} />
                         <Typography variant="caption">
                             {polyglot.t('from_subressource')}
@@ -240,10 +310,17 @@ export const SourceValueToggle = ({
             )}
 
             {source === 'fromColumnsForSubRessource' && (
-                <SourceValueFromColumnsForSubRessource
+                <SourceValueFromColumnsForSubResource
                     updateTransformers={updateTransformers}
                     value={value}
-                    subresourceUri={subresourceUri}
+                    selectedSubresourceUri={selectedSubresourceUri}
+                />
+            )}
+
+            {source === 'fromSubresource' && (
+                <SourceValueFromSubResource
+                    updateTransformers={updateTransformers}
+                    value={value}
                 />
             )}
         </Box>
@@ -254,7 +331,8 @@ SourceValueToggle.propTypes = {
     currentTransformers: PropTypes.arrayOf(PropTypes.object),
     updateTransformers: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    subresourceUri: PropTypes.string,
+    selectedSubresourceUri: PropTypes.string,
+    subresources: PropTypes.arrayOf(PropTypes.object),
 };
 
 const mapStateToProps = state => {
@@ -263,7 +341,8 @@ const mapStateToProps = state => {
         'transformers',
     );
 
-    return { currentTransformers };
+    const subresources = state.subresource.subresources;
+    return { currentTransformers, subresources };
 };
 
 const mapDispatchToProps = dispatch => ({

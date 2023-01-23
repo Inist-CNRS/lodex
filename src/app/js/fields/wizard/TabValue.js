@@ -38,7 +38,7 @@ export const TabValueComponent = ({
                 )}
             </>
         )}
-        <SourceValueToggleConnected subresourceUri={subresourceUri} />
+        <SourceValueToggleConnected selectedSubresourceUri={subresourceUri} />
     </>
 );
 
