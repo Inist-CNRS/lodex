@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { Box, IconButton, Tooltip } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import colorsTheme from '../../../custom/colorsTheme';
 import classNames from 'classnames';
-import { SidebarContext } from './SidebarContext';
+import { SidebarContext } from '../Sidebar/SidebarContext';
 
 const useStyles = makeStyles({
     button: {
@@ -24,18 +24,21 @@ const useStyles = makeStyles({
 
 const SidebarToggleButton = ({ p: polyglot }) => {
     const classes = useStyles();
-    const { open, toggleSidebar } = useContext(SidebarContext);
+    const { open, setSidebarOpen } = useContext(SidebarContext);
 
     return (
         <Box mr={1}>
             <Tooltip title={polyglot.t(open ? 'close_menu' : 'open_menu')}>
                 <IconButton
                     className={classNames(
-                        classes.button,
-                        open ? classes.menuOpen : classes.menuClosed,
                         'sidebar-toggle-button',
+                        classes.button,
+                        {
+                            [classes.menuOpen]: open,
+                            [classes.menuClosed]: !open,
+                        },
                     )}
-                    onClick={toggleSidebar}
+                    onClick={() => setSidebarOpen(!open)}
                 >
                     <MenuIcon sx={{ fontSize: '30px' }} />
                 </IconButton>

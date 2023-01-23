@@ -157,7 +157,7 @@ const AppbarComponent = ({
 
     return (
         <AppBar className="appbar">
-            <Toolbar>
+            <Toolbar disableGutters>
                 {isAdmin && <SidebarToggleButton />}
                 <Link to="/" className={classes.linkToHome}>
                     Lodex

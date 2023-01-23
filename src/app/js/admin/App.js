@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 
 import AppBar from './Appbar';
 import getTitle from '../lib/getTitle';
 import { Progress } from './progress/Progress';
-import { SidebarContext } from './Appbar/SidebarContext';
-import { Sidebar } from './Sidebar';
+import { SidebarContext } from './Sidebar/SidebarContext';
+import Sidebar from './Sidebar/Sidebar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -27,15 +27,16 @@ const styles = {
 
 export const AppComponent = ({ children }) => {
     const [sidebarOpen, setSidebarOpen] = useState(true);
-    const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+    const sidebarContextValue = useMemo(
+        () => ({
+            open: sidebarOpen,
+            setSidebarOpen,
+        }),
+        [sidebarOpen],
+    );
 
     return (
-        <SidebarContext.Provider
-            value={{
-                open: sidebarOpen,
-                toggleSidebar,
-            }}
-        >
+        <SidebarContext.Provider value={sidebarContextValue}>
             <Helmet>
                 <title>{getTitle()}</title>
                 <style type="text/css">{`

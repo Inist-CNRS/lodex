@@ -1,3 +1,5 @@
+// TODO: check if this file is still used
+
 import React from 'react';
 import { MenuItem } from '@material-ui/core';
 import PropTypes from 'prop-types';
