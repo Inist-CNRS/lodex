@@ -295,7 +295,7 @@ export const SourceValueToggle = ({
                     >
                         <FromSubRessourceIcon style={{ fontSize: 50 }} />
                         <Typography variant="caption">
-                            {polyglot.t('from_subressource')}
+                            {polyglot.t('from_subresource')}
                         </Typography>
                     </ToggleButton>
                 )}

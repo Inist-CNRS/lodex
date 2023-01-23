@@ -43,13 +43,6 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
     cy.get('[aria-label="unpublish"]', { timeout: 2000 }).should('be.visible');
 };
 
-const fillTabValueConcatColumn = (value, index) => {
-    cy.get(`#select-column-${index}`).click();
-    cy.get('[role="listbox"]')
-        .contains(value)
-        .click();
-};
-
 export const fillTabDisplayFormat = format => {
     cy.get('#step-value-format .select-format')
         .first()
@@ -72,9 +65,16 @@ export const addColumn = (columnName, options = {}) => {
 
     if (options.composedOf && options.composedOf.length > 1) {
         cy.get('#tab-value').click();
-        cy.get('#tab-value-concat input[value="concat"]').click();
+        cy.contains('Existing Column(s)').click();
+        cy.get('[data-testid="source-value-from-columns"]').click();
 
-        options.composedOf.forEach(fillTabValueConcatColumn);
+        options.composedOf.map(value => {
+            if (value !== columnName) {
+                cy.get('[role="listbox"]')
+                    .contains(value)
+                    .click();
+            }
+        });
     }
 
     if (options.display) {

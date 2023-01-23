@@ -38,6 +38,7 @@ const SourceValueFromColumns = ({
     return (
         <Box mt={5} display="flex">
             <Autocomplete
+                data-testid="source-value-from-columns"
                 multiple
                 fullWidth
                 options={datasetFields}

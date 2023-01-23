@@ -53,6 +53,7 @@ const SourceValueFromColumnsForSubResource = ({
     return (
         <Box mt={5} display="flex">
             <Autocomplete
+                data-testid="source-value-from-columns"
                 fullWidth
                 options={datasetFields}
                 value={autocompleteValue ?? []}

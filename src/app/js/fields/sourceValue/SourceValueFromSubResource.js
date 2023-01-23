@@ -107,15 +107,15 @@ const SourceValueFromSubResource = ({
     updateTransformers,
 }) => {
     const [
-        selectedSubressourcePath,
-        setSelectedSubressourcePath,
+        selectedSubresourcePath,
+        setSelectedSubresourcePath,
     ] = React.useState(subresources[0].path);
     const [autocompleteValue, setAutocompleteValue] = React.useState(value);
     const [datasetFields, setDatasetFields] = React.useState([]);
 
     useEffect(() => {
         const subresourceData = parseValue(
-            firstParsedLine[selectedSubressourcePath] || '',
+            firstParsedLine[selectedSubresourcePath] || '',
         );
 
         const datasetFields = [
@@ -126,26 +126,26 @@ const SourceValueFromSubResource = ({
             ),
         ];
         setDatasetFields(datasetFields);
-    }, [selectedSubressourcePath]);
+    }, [selectedSubresourcePath]);
 
     useEffect(() => {
         setAutocompleteValue(value);
     }, [value]);
 
-    const handleChangeSubressource = event => {
+    const handleChangeSubresource = event => {
         const transformers = GET_TRANSFORMERS_FROM_SUBRESOURCE(
             subresources,
             event.target.value,
             null,
         );
-        setSelectedSubressourcePath(event.target.value);
+        setSelectedSubresourcePath(event.target.value);
         updateTransformers(transformers);
     };
 
     const handleChange = (event, value) => {
         const transformers = GET_TRANSFORMERS_FROM_SUBRESOURCE(
             subresources,
-            selectedSubressourcePath,
+            selectedSubresourcePath,
             value,
         );
         updateTransformers(transformers);
@@ -154,14 +154,15 @@ const SourceValueFromSubResource = ({
     return (
         <Box mt={5} display="flex" flexDirection="column" gap={2}>
             <FormControl fullWidth>
-                <InputLabel id="select-subressource-label">
+                <InputLabel id="select-subresource-label">
                     Select subressource
                 </InputLabel>
                 <Select
-                    labelId="select-subressource-label"
-                    value={selectedSubressourcePath}
+                    labelId="select-subresource-label"
+                    data-testid="select-subresource"
+                    value={selectedSubresourcePath}
                     label="Select subressource"
-                    onChange={handleChangeSubressource}
+                    onChange={handleChangeSubresource}
                 >
                     {subresources.map(subresource => (
                         <MenuItem
@@ -174,6 +175,8 @@ const SourceValueFromSubResource = ({
                 </Select>
             </FormControl>
             <Autocomplete
+                labelId="autocomplete-subresource-label"
+                data-testid="autocomplete-subresource-label"
                 fullWidth
                 options={datasetFields}
                 value={autocompleteValue ?? ''}
