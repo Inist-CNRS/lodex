@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import TransformerList from '../TransformerList';
 import { renderTransformerFunction as renderTransformer } from './TabTransforms';
+import TransformerList from '../transformers/TransformerList';
 
 describe('TabTransforms', () => {
     describe('renderTransformer', () => {
