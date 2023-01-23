@@ -4,6 +4,9 @@ import { List, MenuItem, ListItemIcon, Collapse } from '@mui/material';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { SidebarContext } from './SidebarContext';
 
+// this component is not styled
+// style is herited from src/app/js/admin/Sidebar/Sidebar.js
+
 export const SubMenu = ({ handleToggle, isOpen, name, icon, children }) => {
     const { open: sidebarIsOpen } = useContext(SidebarContext);
     return (

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import MenuList from '@material-ui/core/MenuList';
-import Drawer from '@material-ui/core/Drawer';
+import MenuList from '@mui/material/MenuList';
+import Drawer from '@mui/material/Drawer';
 import GridOnIcon from '@mui/icons-material/GridOn';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -20,7 +20,6 @@ import { fromPublication, fromParsing } from '../selectors';
 import { SidebarContext } from './SidebarContext';
 import colorsTheme from '../../../custom/colorsTheme';
 import { useRouteMatch } from 'react-router-dom';
-import classnames from 'classnames';
 import {
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
@@ -36,48 +35,7 @@ const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;
 const ACTIVE_BORDER_WIDTH = 3;
 
-const useStyles = makeStyles(theme => ({
-    sidebar: {
-        width: DRAWER_OPEN_WIDTH,
-        zIndex: 0,
-        '& .MuiDrawer-paper': {
-            paddingTop: 64,
-            backgroundColor: colorsTheme.black.veryDark,
-            color: colorsTheme.white.primary,
-        },
-        '& .MuiMenuItem-root': {
-            fontSize: 'inherit',
-            borderLeft: `${ACTIVE_BORDER_WIDTH}px solid transparent`,
-            '&.active': {
-                borderLeft: `${ACTIVE_BORDER_WIDTH}px solid ${colorsTheme.green.primary}`,
-            },
-            '&:hover': {
-                transition: 'background-color ease-in-out 400ms',
-                color: colorsTheme.white.primary,
-                backgroundColor: colorsTheme.black.light,
-            },
-            '& .MuiListItemIcon-root': {
-                minWidth: DRAWER_CLOSED_WIDTH - ACTIVE_BORDER_WIDTH,
-                justifyContent: 'center',
-                color: colorsTheme.white.primary,
-            },
-        },
-    },
-    sidebarOpen: {
-        width: DRAWER_OPEN_WIDTH,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    sidebarClosed: {
-        width: DRAWER_CLOSED_WIDTH,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        overflowX: 'hidden',
-    },
+const useStyles = makeStyles({
     sidebarCallToAction: {
         color: colorsTheme.white.primary,
         textDecoration: 'none',
@@ -106,7 +64,7 @@ const useStyles = makeStyles(theme => ({
         border: `3px dashed ${colorsTheme.white.transparent}`,
         borderRadius: 10,
     },
-}));
+});
 
 const Sidebar = ({ p: polyglot, hasLoadedDataset, hasPublishedDataset }) => {
     const matchDisplayRoute = useRouteMatch('/display');
@@ -210,15 +168,36 @@ const Sidebar = ({ p: polyglot, hasLoadedDataset, hasPublishedDataset }) => {
             <Drawer
                 variant="permanent"
                 open={open}
-                className={classnames(classes.sidebar, {
-                    [classes.sidebarOpen]: open,
-                    [classes.sidebarClosed]: !open,
-                })}
-                classes={{
-                    paper: classnames({
-                        [classes.sidebarOpen]: open,
-                        [classes.sidebarClosed]: !open,
-                    }),
+                sx={{
+                    width: open ? DRAWER_OPEN_WIDTH : DRAWER_CLOSED_WIDTH,
+                    zIndex: 0,
+                    overflowX: 'hidden',
+                    transition: 'width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
+                    '& .MuiDrawer-paper': {
+                        paddingTop: '64px',
+                        backgroundColor: colorsTheme.black.veryDark,
+                        color: colorsTheme.white.primary,
+                        width: open ? DRAWER_OPEN_WIDTH : DRAWER_CLOSED_WIDTH,
+                        transition:
+                            'width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
+                    },
+                    '& .MuiMenuItem-root': {
+                        fontSize: 'inherit',
+                        borderLeft: `${ACTIVE_BORDER_WIDTH}px solid transparent`,
+                        '&.active': {
+                            borderLeft: `${ACTIVE_BORDER_WIDTH}px solid ${colorsTheme.green.primary}`,
+                        },
+                        '&:hover': {
+                            transition: 'background-color ease-in-out 400ms',
+                            color: colorsTheme.white.primary,
+                            backgroundColor: colorsTheme.black.light,
+                        },
+                        '& .MuiListItemIcon-root': {
+                            minWidth: DRAWER_CLOSED_WIDTH - ACTIVE_BORDER_WIDTH,
+                            justifyContent: 'center',
+                            color: colorsTheme.white.primary,
+                        },
+                    },
                 }}
             >
                 <MenuList>{menuItems}</MenuList>
