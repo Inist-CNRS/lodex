@@ -158,10 +158,14 @@ const ToggleButton = styled(MuiToggleButton)(() => ({
             color: 'white',
             backgroundColor: colorsTheme.green.secondary,
         },
+        '&.Mui-disabled': {
+            backgroundColor: colorsTheme.black.veryLight,
+        },
     },
 }));
 
 export const SourceValueToggle = ({
+    arbitraryMode,
     currentTransformers,
     updateTransformers,
     p: polyglot,
@@ -169,14 +173,14 @@ export const SourceValueToggle = ({
     subresources,
 }) => {
     const [source, setSource] = React.useState(null);
-    const [value, SetValue] = React.useState(null);
+    const [value, setValue] = React.useState(null);
     React.useEffect(() => {
         const {
             source: currentSource,
             value: currentValue,
         } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(currentTransformers);
         setSource(currentSource);
-        SetValue(currentValue);
+        setValue(currentValue);
     }, [currentTransformers]);
 
     const handleChange = (event, newSource) => {
@@ -254,7 +258,7 @@ export const SourceValueToggle = ({
     };
 
     return (
-        <Box mt={20}>
+        <Box>
             <Typography variant="subtitle1">
                 {polyglot.t('source_value')}
             </Typography>
@@ -270,7 +274,9 @@ export const SourceValueToggle = ({
                         {polyglot.t('arbitrary_value')}
                     </Typography>
                 </ToggleButton>
+
                 <ToggleButton
+                    disabled={arbitraryMode}
                     value={
                         selectedSubresourceUri
                             ? 'fromColumnsForSubRessource'
@@ -285,7 +291,7 @@ export const SourceValueToggle = ({
                 {!selectedSubresourceUri && (
                     <ToggleButton
                         value="fromSubresource"
-                        disabled={!subresources}
+                        disabled={!subresources.length > 0 || arbitraryMode}
                     >
                         <FromSubRessourceIcon style={{ fontSize: 50 }} />
                         <Typography variant="caption">
@@ -328,6 +334,7 @@ export const SourceValueToggle = ({
 };
 
 SourceValueToggle.propTypes = {
+    arbitraryMode: PropTypes.bool,
     currentTransformers: PropTypes.arrayOf(PropTypes.object),
     updateTransformers: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
