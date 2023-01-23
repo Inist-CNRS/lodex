@@ -488,6 +488,12 @@ export const postDuplicateField = (state, data) =>
         body: data,
     });
 
+export const clearModelRequest = state =>
+    getRequest(state, {
+        url: '/api/field/',
+        method: 'DELETE',
+    });
+
 export const selectors = {
     isAdmin,
     getRole,
@@ -546,4 +552,5 @@ export const selectors = {
     getCancelJobRequest,
     getLoaderWithScriptRequest,
     postDuplicateField,
+    clearModelRequest,
 };

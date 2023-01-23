@@ -1,66 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
-import { IconButton, ListItem, TextField, Typography } from '@material-ui/core';
-import ActionDeleteIcon from '@material-ui/icons/Delete';
-import { makeStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
-import { Field, FieldArray } from 'redux-form';
-import memoize from 'lodash.memoize';
-
-import { polyglot as polyglotPropTypes } from '../propTypes';
-import { fromFields } from '../sharedSelectors';
-import TransformerArgList from './TransformerArgList';
-import { changeOperation } from './';
 import colorsTheme from '../../custom/colorsTheme';
-import TransformerAutoComplete from './TransformerAutoComplete';
-import { useSortable } from '@dnd-kit/sortable';
+import PropTypes from 'prop-types';
+
+import { Box, Typography } from '@mui/material';
+import {
+    Delete as DeleteIcon,
+    Edit as EditIcon,
+    DragIndicator as DragIndicatorIcon,
+} from '@mui/icons-material';
 import { CSS } from '@dnd-kit/utilities';
+import { useSortable } from '@dnd-kit/sortable';
 
-import { OpenWith as DragIndicatorIcon } from '@material-ui/icons';
-
-const styles = {
-    container: memoize(show => ({
-        alignItems: 'center',
-        gap: '6px',
-        display: show ? 'flex' : 'none',
-        marginBottom: '1rem',
-    })),
-};
-
-const useStyles = makeStyles({
-    item: {
-        cursor: 'pointer',
-        '&:hover': {
-            backgroundColor: colorsTheme.black.veryLight,
-        },
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        borderBottom: `1px solid ${colorsTheme.black.light}`,
-        '&:last-child': {
-            borderBottom: 'none',
-        },
-    },
-    selectedItem: {
-        backgroundColor: colorsTheme.green.secondary,
-        '&:hover': {
-            backgroundColor: colorsTheme.green.primary,
-        },
-    },
-});
-
-const TransformerListItem = ({
-    availableTransformers,
-    fieldName,
-    onRemove,
-    p: polyglot,
-    onChangeOperation,
-    show,
-    id,
-}) => {
+const TransformerListItem = ({ transformer, id, show, onRemove, onEdit }) => {
     const {
         attributes,
         listeners,
@@ -73,84 +24,78 @@ const TransformerListItem = ({
         transform: CSS.Transform.toString(transform),
         transition,
     };
-    const classes = useStyles();
+
+    if (!show) {
+        return null;
+    }
+
     return (
-        <div
+        <Box
             ref={setNodeRef}
-            style={{ ...dragStyle, ...styles.container(show) }}
+            style={{ ...dragStyle }}
             {...attributes}
             {...listeners}
+            sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: 1,
+                marginBottom: 2,
+                borderRadius: 1,
+                backgroundColor: colorsTheme.black.veryLight,
+                '&:hover': {
+                    backgroundColor: colorsTheme.black.lighter,
+                },
+            }}
         >
-            <DragIndicatorIcon />
-            <Field
-                className="operation"
-                name={`${fieldName}.operation`}
-                type="text"
-                onChange={(_, operation) =>
-                    onChangeOperation({ operation, fieldName })
-                }
-                component={TransformerAutoComplete}
-                options={availableTransformers}
-                renderInput={params => (
-                    <TextField
-                        {...params}
-                        label={polyglot.t('select_an_operation')}
-                        variant="outlined"
-                    />
-                )}
-                renderOption={(props, option, state) => {
-                    return (
-                        <ListItem
-                            {...props}
-                            className={classnames(classes.item, {
-                                [classes.selectedItem]: state.selected,
-                            })}
-                        >
-                            <Typography>{option}</Typography>
-                            <Typography variant="body2" color="textSecondary">
-                                {polyglot.t(`transformer_${option}`)}
-                            </Typography>
-                        </ListItem>
-                    );
+            <Box
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
                 }}
-            />
-            <FieldArray
-                name={`${fieldName}.args`}
-                component={TransformerArgList}
-            />
-            <IconButton
-                tooltip={polyglot.t('remove_transformer')}
-                onClick={onRemove}
             >
-                <ActionDeleteIcon />
-            </IconButton>
-        </div>
+                <DragIndicatorIcon sx={{ cursor: 'grab', marginRight: 1 }} />
+                <Typography noWrap>
+                    {transformer?.operation}
+                    {transformer?.args &&
+                        `(${Array.prototype.map
+                            .call(transformer?.args, arg => arg.value)
+                            .toString()})`}
+                </Typography>
+            </Box>
+            <Box
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                }}
+            >
+                <EditIcon
+                    aria-label={`transformer-edit-${id}`}
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => onEdit()}
+                />
+                <DeleteIcon
+                    aria-label={`transformer-delete-${id}`}
+                    sx={{
+                        cursor: 'pointer',
+                        color: colorsTheme.orange.primary,
+                    }}
+                    onClick={() => {
+                        onRemove();
+                    }}
+                />
+            </Box>
+        </Box>
     );
 };
 
 TransformerListItem.propTypes = {
-    availableTransformers: PropTypes.arrayOf(PropTypes.string.isRequired)
-        .isRequired,
-    onChangeOperation: PropTypes.func.isRequired,
-    fieldName: PropTypes.string.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
+    transformer: PropTypes.object,
+    id: PropTypes.string.isRequired,
     show: PropTypes.bool.isRequired,
-    id: PropTypes.number.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, { operation, type }) => ({
-    availableTransformers: fromFields
-        .getTransformers(state, type)
-        .map(transformer => transformer.name),
-    transformerArgs: fromFields.getTransformerArgs(state, operation),
-});
-
-const mapDispatchToProps = {
-    onChangeOperation: changeOperation,
-};
-
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(TransformerListItem);
+export default TransformerListItem;

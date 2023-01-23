@@ -11,11 +11,9 @@ import 'react-grid-layout/css/styles.css';
 import classNames from 'classnames';
 import copy from 'copy-to-clipboard';
 
-import {
-    OpenWith as DragIndicatorIcon,
-    Settings as SettingsIcon,
-    FileCopy as FileCopyIcon,
-} from '@material-ui/icons';
+import { FileCopy as FileCopyIcon } from '@material-ui/icons';
+
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { getShortText, isLongText } from '../lib/longTexts';
@@ -53,29 +51,21 @@ const useStyles = makeStyles({
         fontWeight: 'bold',
         display: 'flex',
         height: '100%',
-        padding: '0 60px',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         position: 'relative',
         alignItems: 'center',
         color: '#444',
         '&:hover': {
             background: '#efefef',
+            // display the duplicate icon
+            '& $duplicateIcon': {
+                opacity: 1,
+            },
         },
     },
     propertyHandle: {
-        position: 'absolute',
-        left: 20,
         cursor: 'pointer',
-    },
-    editIcon: {
-        position: 'absolute',
-        right: 20,
-        minWidth: 30,
-    },
-    duplicateIcon: {
-        position: 'absolute',
-        right: 50,
-        minWidth: 30,
+        margin: '0 5px',
     },
     propertyLabel: {
         marginRight: 10,
@@ -94,6 +84,9 @@ const useStyles = makeStyles({
     },
     fieldChildren: {
         pointerEvents: 'none',
+    },
+    duplicateIcon: {
+        opacity: 0,
     },
 });
 
@@ -287,7 +280,7 @@ const DraggableItemGrid = compose(
                     layout={layout}
                     key={JSON.stringify(items)}
                     cols={10}
-                    rowHeight={150}
+                    rowHeight={75}
                     width={width - ROOT_PADDING}
                     onDragStop={handleLayoutChange}
                     onResizeStop={handleResize}
@@ -300,7 +293,7 @@ const DraggableItemGrid = compose(
                             className={classes.property}
                             onClick={() => handleEditField(field.name, filter)}
                         >
-                            <span
+                            <div
                                 className={classNames(
                                     'draghandle',
                                     classes.propertyHandle,
@@ -308,8 +301,8 @@ const DraggableItemGrid = compose(
                                 )}
                             >
                                 <DragIndicatorIcon />
-                            </span>
-                            <span
+                            </div>
+                            <div
                                 className={classNames(classes.propertyLabel)}
                                 data-field-name={field.name}
                             >
@@ -327,28 +320,28 @@ const DraggableItemGrid = compose(
                                         )
                                     }
                                 />
-                            </span>
-                            <Button
-                                className={classNames(classes.duplicateIcon)}
-                                onClick={e => {
-                                    handleDuplicateField(e, field);
+                            </div>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    marginRight: 10,
                                 }}
-                                aria-label={`duplicate-${field.label}`}
-                                disabled={isFieldsLoading}
                             >
-                                <FileCopyIcon />
-                            </Button>
-                            <Button
-                                className={classNames(
-                                    classes.editIcon,
-                                    classes.fieldChildren,
-                                )}
-                                aria-label={`edit-${field.label}`}
-                                disabled={isFieldsLoading}
-                            >
-                                <SettingsIcon />
-                            </Button>
-                            {!field.display && <HiddenIcon />}
+                                <Button
+                                    className={classNames(
+                                        classes.duplicateIcon,
+                                    )}
+                                    onClick={e => {
+                                        handleDuplicateField(e, field);
+                                    }}
+                                    aria-label={`duplicate-${field.label}`}
+                                    disabled={isFieldsLoading}
+                                >
+                                    <FileCopyIcon />
+                                </Button>
+                                {!field.display && <HiddenIcon />}
+                            </Box>
                         </div>
                     ))}
                 </GridLayout>

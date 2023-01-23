@@ -182,6 +182,40 @@ describe('Dataset Publication', () => {
             );
         });
     });
+
+    describe('Transformers upsert', () => {
+        it('should allow to add and update transformers', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/simple.csv');
+            datasetImportPage.importModel('model/simple.json');
+
+            adminNavigation.goToDisplay();
+            cy.get('.sidebar')
+                .contains('a', 'Resource pages')
+                .click();
+
+            cy.contains('New field').click();
+            cy.get('.wizard', { timeout: 10000 }).should('be.visible');
+
+            cy.get('#tab-transforms').click();
+            cy.contains('Add an operation').click();
+
+            cy.get('[aria-label="Select an operation"]').click();
+            cy.contains('BOOLEAN').click();
+            cy.contains('confirm').click();
+
+            cy.get('[aria-label="transformer-edit-transformers[0]').click();
+            cy.get('[aria-label="Select an operation"]').click();
+            cy.contains('GET').click();
+            cy.get('input[placeholder="path"]').type('example');
+            cy.contains('confirm').click();
+            cy.contains('GET(example)');
+            cy.get('.btn-save').click();
+            cy.get('.wizard').should('not.exist');
+        });
+    });
+
     describe('Publication', () => {
         it('should display a disabled publish button if no model', () => {
             menu.openAdvancedDrawer();
@@ -343,8 +377,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.publish();
             adminNavigation.goToResourcePage();
             cy.wait(2000);
-            cy.get('[aria-label="edit-Title"]').should('not.be.disabled');
-            cy.get('[aria-label="edit-Title"]', { timeout: 3000 }).click({
+            cy.get('[aria-label="Title"]', { timeout: 3000 }).click({
                 force: true,
             });
             cy.get('.btn-save').click();
@@ -363,8 +396,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.publish();
             adminNavigation.goToResourcePage();
             cy.wait(2000);
-            cy.get('[aria-label="edit-Title"]').should('not.be.disabled');
-            cy.get('[aria-label="edit-Title"]', { timeout: 3000 }).click({
+            cy.get('[aria-label="Title"]', { timeout: 3000 }).click({
                 force: true,
             });
             cy.contains('Remove').click({ force: true });

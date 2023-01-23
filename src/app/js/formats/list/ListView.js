@@ -28,6 +28,9 @@ const styles = stylesToClassname(
             ':after': {
                 content: '" ; "',
             },
+            ':last-child:after': {
+                content: 'none',
+            },
         },
     },
     'list-format',

@@ -22,8 +22,17 @@ import {
 
 import { fromClear } from '../selectors';
 import { getHost } from '../../../../common/uris';
+import fieldApi from '../api/field';
+import { toast } from 'react-toastify';
+import { loadField } from '../../fields';
 
 const baseUrl = getHost();
+
+const TRANSLATION_KEY = new Map([
+    ['dataset', 'clear_dataset'],
+    ['published', 'clear_publish'],
+    ['model', 'clear_model'],
+]);
 
 const ClearDialogComponent = props => {
     const [validName, setValidName] = React.useState(false);
@@ -34,6 +43,7 @@ const ClearDialogComponent = props => {
         isLoading,
         hasFailed,
         succeeded,
+        loadField,
     } = props;
 
     useEffect(() => {
@@ -56,7 +66,8 @@ const ClearDialogComponent = props => {
 
     const handleClear = type =>
         (type === 'dataset' && handleClearDataset) ||
-        (type === 'published' && handleClearPublished);
+        (type === 'published' && handleClearPublished) ||
+        (type === 'model' && handleClearModel);
 
     const handleClearDataset = () => {
         props.clearDataset();
@@ -66,18 +77,34 @@ const ClearDialogComponent = props => {
         props.clearPublished();
     };
 
+    const handleClearModel = async () => {
+        const result = await fieldApi.clearModel();
+        if (result.message) {
+            toast(polyglot.t('model_cleared'), {
+                type: toast.TYPE.SUCCESS,
+            });
+            onClose();
+            loadField();
+        } else {
+            toast(polyglot.t('model_not_cleared'), {
+                type: toast.TYPE.ERROR,
+            });
+        }
+    };
+
     const handleKeyPress = (e, type) => {
         if (e.key !== 'Enter' || !validName) {
             return null;
         }
 
-        if (type === 'dataset') {
-            return handleClearDataset();
-        } else if (type === 'published') {
-            return handleClearPublished();
+        switch (type) {
+            case 'dataset':
+                return handleClearDataset();
+            case 'published':
+                return handleClearPublished();
+            default:
+                return null;
         }
-
-        return null;
     };
     const actions = [
         <ButtonWithStatus
@@ -102,15 +129,16 @@ const ClearDialogComponent = props => {
             {polyglot.t('cancel')}
         </Button>,
     ];
+
     return (
         <Dialog open onClose={onClose}>
-            <DialogTitle>
-                {polyglot.t(
-                    type === 'dataset' ? 'clear_dataset' : 'clear_publish',
-                )}
-            </DialogTitle>
+            <DialogTitle>{polyglot.t(TRANSLATION_KEY.get(type))}</DialogTitle>
             <DialogContent>
-                <b>{polyglot.t('listen_up')}</b>
+                <b>
+                    {type === 'model'
+                        ? polyglot.t('listen_up_model')
+                        : polyglot.t('listen_up')}
+                </b>
                 <br />
                 <br />
                 <div>
@@ -140,6 +168,7 @@ ClearDialogComponent.propTypes = {
     reloadParsing: PropTypes.func,
     isLoading: PropTypes.bool.isRequired,
     hasFailed: PropTypes.bool.isRequired,
+    loadField: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -151,6 +180,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     clearDataset: clearDatasetAction,
     clearPublished: clearPublishedAction,
+    loadField: loadField,
 };
 
 export default compose(

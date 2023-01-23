@@ -1,4 +1,12 @@
-import { take, put, select, call, takeEvery, fork } from 'redux-saga/effects';
+import {
+    take,
+    put,
+    select,
+    call,
+    takeEvery,
+    takeLatest,
+    fork,
+} from 'redux-saga/effects';
 
 import {
     loadMoreFailed,
@@ -118,7 +126,7 @@ const facetSagas = facetSagasFactory({
 });
 
 export default function*() {
-    yield takeEvery(
+    yield takeLatest(
         [
             SEARCH,
             SEARCH_SORT,
