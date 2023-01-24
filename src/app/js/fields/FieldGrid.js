@@ -62,7 +62,7 @@ const useStyles = makeStyles({
         color: '#444',
         '&:hover': {
             background: '#efefef',
-            // display the duplicate icon
+            // display the duplicate icon and the settings icon
             '& $otherIcon': {
                 opacity: 1,
             },
