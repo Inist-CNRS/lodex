@@ -2,31 +2,55 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import { reduxForm, change } from 'redux-form';
+import { reduxForm, change, formValueSelector } from 'redux-form';
 
 import { fromParsing } from '../../admin/selectors';
 import { FIELD_FORM_NAME } from '..';
 import { getTransformerMetas } from '../../../../common/transformers';
 
 import UriAutogenerate from './UriAutogenerate';
-import TabValueColumn from './TabValueColumn';
 import UriConcat from './UriConcat';
+import SourceValueFromColumns from '../sourceValue/SourceValueFromColumns';
+import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../sourceValue/SourceValueToggle';
 
-export const UriComponent = ({ handleTransformerChange }) => (
-    <div>
-        <UriAutogenerate onChange={handleTransformerChange} />
-        <TabValueColumn onChange={handleTransformerChange} />
-        <UriConcat onChange={handleTransformerChange} />
-    </div>
-);
+export const UriComponent = ({
+    handleTransformerChange,
+    updateTransformers,
+    currentTransformers,
+}) => {
+    const [value, setValue] = React.useState(null);
+    React.useEffect(() => {
+        const { value: currentValue } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(
+            currentTransformers,
+        );
+        setValue(currentValue);
+    }, [currentTransformers]);
+
+    return (
+        <div>
+            <UriAutogenerate onChange={handleTransformerChange} />
+            <SourceValueFromColumns
+                updateTransformers={updateTransformers}
+                value={value}
+            />
+            <UriConcat onChange={handleTransformerChange} />
+        </div>
+    );
+};
 
 UriComponent.propTypes = {
     handleTransformerChange: PropTypes.func.isRequired,
+    updateTransformers: PropTypes.func.isRequired,
+    currentTransformers: PropTypes.array,
 };
 
 const mapStateToProps = (state, { field }) => ({
     datasetFields: fromParsing.getParsedExcerptColumns(state),
     initialValues: field,
+    currentTransformers: formValueSelector(FIELD_FORM_NAME)(
+        state,
+        'transformers',
+    ),
 });
 
 const mapDispatchToProps = (dispatch, { field: { transformers } }) => ({
@@ -48,6 +72,11 @@ const mapDispatchToProps = (dispatch, { field: { transformers } }) => ({
         ];
 
         dispatch(change(FIELD_FORM_NAME, 'transformers', newTransformers));
+    },
+    updateTransformers: valueTransformers => {
+        return dispatch(
+            change(FIELD_FORM_NAME, 'transformers', valueTransformers),
+        );
     },
 });
 

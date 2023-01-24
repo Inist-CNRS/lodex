@@ -5,7 +5,7 @@ import translate from 'redux-polyglot/translate';
 
 import { connect } from 'react-redux';
 import { Box, TextField } from '@mui/material';
-import { fromFields } from '../sharedSelectors';
+import { fromFields } from '../../sharedSelectors';
 
 const TransformerArgs = ({ availableArgs, onChange, transformerArgs }) => {
     if (!availableArgs) {

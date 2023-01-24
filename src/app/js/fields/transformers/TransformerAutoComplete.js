@@ -3,7 +3,7 @@ import React from 'react';
 import { FormControl, FormHelperText } from '@material-ui/core';
 import Autocomplete from '@mui/material/Autocomplete';
 
-import { formField as formFieldPropTypes } from '../propTypes';
+import { formField as formFieldPropTypes } from '../../propTypes';
 
 const TransformerAutoComplete = ({
     input,

@@ -71,7 +71,7 @@ describe('Subresource Page', () => {
 
         cy.get('#tab-value').click();
 
-        cy.get('#tab-value-subresource input[value="subresource"]').click();
+        cy.contains('From Subresource').click();
 
         cy.get('#tab-display').click();
 
@@ -124,11 +124,13 @@ describe('Subresource Page', () => {
 
         cy.get('#tab-value').click();
 
-        cy.get(
-            '#tab-value-subresource-field input[value="subresource"]',
-        ).click();
+        cy.contains('From Subresource').click();
 
-        cy.get('#tab-value-subresource-field .column_name').type('name');
+        cy.get('[data-testid="autocomplete-subresource-label"]').click();
+
+        cy.get('[role="listbox"]')
+            .contains('name')
+            .click();
 
         cy.get('.wizard')
             .find('.btn-save')
@@ -161,7 +163,7 @@ describe('Subresource Page', () => {
 
         cy.get('#tab-value').click();
 
-        cy.get('#tab-value-subresource input[value="subresource"]').click();
+        cy.contains('From Subresource').click();
 
         cy.get('#tab-display').click();
 
