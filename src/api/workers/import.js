@@ -15,6 +15,16 @@ import { CancelWorkerError, cleanWaitingJobsOfType } from '.';
 export const IMPORT = 'import';
 const listeners = [];
 
+function getEzsMessageError(string) {
+    if (string.includes('Line')) {
+        return string.substring(0, string.indexOf('Line'));
+    } else if (string.includes('<SyntaxError')) {
+        return string.substring(0, string.indexOf('<SyntaxError'));
+    } else {
+        return string;
+    }
+}
+
 export const processImport = (job, done) => {
     cleanWaitingJobsOfType(IMPORT);
     startJobImport(job)
@@ -47,7 +57,7 @@ const handleImportError = async (job, err) => {
         message:
             err instanceof CancelWorkerError
                 ? 'cancelled_import'
-                : err.message.split('Line')[0], // Ezs return all stack trace, we only want the message part. So we split on 'Line'
+                : getEzsMessageError(err.message), // Ezs return all stack trace, we only want the message part. So we split on 'Line'
     });
 };
 
