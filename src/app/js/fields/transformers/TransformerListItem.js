@@ -12,7 +12,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
 import { compose } from 'recompose';
-import { polyglot as polyglotPropTypes } from '../propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const TransformerListItem = ({
     transformer,
