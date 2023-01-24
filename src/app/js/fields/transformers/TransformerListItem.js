@@ -1,5 +1,5 @@
 import React from 'react';
-import colorsTheme from '../../custom/colorsTheme';
+import colorsTheme from '../../../custom/colorsTheme';
 import PropTypes from 'prop-types';
 
 import { Box, Typography } from '@mui/material';

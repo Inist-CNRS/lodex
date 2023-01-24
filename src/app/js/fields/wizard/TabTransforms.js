@@ -7,10 +7,15 @@ import { connect } from 'react-redux';
 import { memoize } from 'lodash';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { isSubresourceTransformation } from './TabValueSubresource';
 import { FIELD_FORM_NAME } from '..';
+import TransformerList from '../transformers/TransformerList';
 
-import TransformerList from '../TransformerList';
+export const isSubresourceTransformation = transformers => {
+    const operations = transformers.map(t => t.operation).join('|');
+    return (
+        operations === 'COLUMN|PARSE|GET|STRING|REPLACE_REGEX|MD5|REPLACE_REGEX'
+    );
+};
 
 export const renderTransformerFunction = (
     locked,
