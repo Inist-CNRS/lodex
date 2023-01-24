@@ -91,6 +91,15 @@ const useStyles = makeStyles({
     },
 });
 
+export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
+    const redirectUrl =
+        scope === SCOPE_DOCUMENT
+            ? `/display/${SCOPE_DOCUMENT}/${subresourceId ||
+                  'main'}/edit/${fieldName}`
+            : `/display/${scope}/edit/${fieldName}`;
+    return redirectUrl;
+};
+
 const scrollToField = fieldLabel => {
     setTimeout(() => {
         const field = document.querySelector(`[aria-label="${fieldLabel}"]`);
@@ -249,13 +258,13 @@ const DraggableItemGrid = compose(
             }
         };
 
-        const handleEditField = (fieldName, filter) => {
+        const handleEditField = (fieldName, filter, subresourceId) => {
             if (isEditable && !isFieldsLoading) {
-                const redirectUrl =
-                    filter === SCOPE_DOCUMENT
-                        ? `/display/${SCOPE_DOCUMENT}/${subresourceId ||
-                              'main'}/edit/${fieldName}`
-                        : `/display/${filter}/edit/${fieldName}`;
+                const redirectUrl = getEditFieldRedirectUrl(
+                    fieldName,
+                    filter,
+                    subresourceId,
+                );
                 history.push(redirectUrl);
             }
         };
@@ -298,7 +307,13 @@ const DraggableItemGrid = compose(
                             key={field.name}
                             aria-label={field.label}
                             className={classes.property}
-                            onClick={() => handleEditField(field.name, filter)}
+                            onClick={() =>
+                                handleEditField(
+                                    field.name,
+                                    filter,
+                                    subresourceId,
+                                )
+                            }
                         >
                             <div
                                 className={classNames(

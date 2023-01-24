@@ -25,7 +25,7 @@ const EnrichmentMenu = ({ p: polyglot, enrichments }) => {
                 position: 'sticky',
                 top: 0,
                 height: '100vh',
-                overflowY: 'scroll',
+                overflowY: 'auto',
                 textAlign: 'center',
             }}
         >
@@ -57,8 +57,8 @@ const EnrichmentMenu = ({ p: polyglot, enrichments }) => {
                 <PlusIcon />
                 {polyglot.t('new_enrichment')}
             </Box>
-            {(enrichments || []).map(e => (
-                <Fragment key={e._id}>
+            {(enrichments || []).map(enrichment => (
+                <Fragment key={enrichment._id}>
                     <Box
                         component="hr"
                         sx={{
@@ -94,9 +94,9 @@ const EnrichmentMenu = ({ p: polyglot, enrichments }) => {
                                 },
                             }}
                             activeClassName="active"
-                            to={`/data/enrichment/${e._id}`}
+                            to={`/data/enrichment/${enrichment._id}`}
                         >
-                            {e.name}
+                            {enrichment.name}
                         </Box>
                     </Box>
                 </Fragment>

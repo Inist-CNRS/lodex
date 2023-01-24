@@ -25,7 +25,7 @@ const SubresourceMenu = ({ p: polyglot, subresources }) => {
                 position: 'sticky',
                 top: 0,
                 height: '100vh',
-                overflowY: 'scroll',
+                overflowY: 'auto',
                 textAlign: 'center',
             }}
         >
@@ -57,8 +57,8 @@ const SubresourceMenu = ({ p: polyglot, subresources }) => {
                 <PlusIcon />
                 {polyglot.t('new_subresource')}
             </Box>
-            {(subresources || []).map(r => (
-                <Fragment key={r._id}>
+            {(subresources || []).map(subresource => (
+                <Fragment key={subresource._id}>
                     <Box
                         component="hr"
                         sx={{
@@ -94,10 +94,10 @@ const SubresourceMenu = ({ p: polyglot, subresources }) => {
                                 },
                             }}
                             activeClassName="active"
-                            to={`/display/document/${r._id}`}
+                            to={`/display/document/${subresource._id}`}
                         >
                             <DocumentScannerIcon />
-                            {r.name}
+                            {subresource.name}
                         </Box>
                     </Box>
                 </Fragment>
