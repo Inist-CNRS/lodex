@@ -31,6 +31,7 @@ import fieldApi from '../admin/api/field';
 import { toast } from 'react-toastify';
 import { useLocation, useHistory } from 'react-router';
 import { IconButton } from '@mui/material';
+import { SCOPE_DOCUMENT } from '../../../common/scope';
 
 const ROOT_PADDING = 16;
 
@@ -95,6 +96,15 @@ const useStyles = makeStyles({
         opacity: 0,
     },
 });
+
+export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
+    const redirectUrl =
+        scope === SCOPE_DOCUMENT
+            ? `/display/${SCOPE_DOCUMENT}/${subresourceId ||
+                  'main'}/edit/${fieldName}`
+            : `/display/${scope}/edit/${fieldName}`;
+    return redirectUrl;
+};
 
 const scrollToField = fieldLabel => {
     setTimeout(() => {
@@ -213,6 +223,7 @@ const DraggableItemGrid = compose(
         loadField,
         filter,
         isFieldsLoading,
+        subresourceId,
     }) => {
         const classes = useStyles(isFieldsLoading);
         const history = useHistory();
@@ -253,9 +264,14 @@ const DraggableItemGrid = compose(
             }
         };
 
-        const handleEditField = (fieldName, filter) => {
+        const handleEditField = (fieldName, filter, subresourceId) => {
             if (isEditable && !isFieldsLoading) {
-                history.push(`/display/${filter}/edit/${fieldName}`);
+                const redirectUrl = getEditFieldRedirectUrl(
+                    fieldName,
+                    filter,
+                    subresourceId,
+                );
+                history.push(redirectUrl);
             }
         };
 
@@ -297,7 +313,13 @@ const DraggableItemGrid = compose(
                             key={field.name}
                             aria-label={field.label}
                             className={classes.property}
-                            onClick={() => handleEditField(field.name, filter)}
+                            onClick={() =>
+                                handleEditField(
+                                    field.name,
+                                    filter,
+                                    subresourceId,
+                                )
+                            }
                         >
                             <div
                                 className={classNames(
@@ -383,6 +405,7 @@ DraggableItemGrid.propTypes = {
     loadField: PropTypes.func.isRequired,
     filter: PropTypes.string.isRequired,
     isFieldsLoading: PropTypes.bool,
+    subresourceId: PropTypes.string,
 };
 
 const FieldGridComponent = ({
@@ -393,6 +416,7 @@ const FieldGridComponent = ({
     saveFieldFromData,
     p: polyglot,
     isFieldsLoading,
+    subresourceId,
 }) => {
     const classes = useStyles();
 
@@ -455,6 +479,7 @@ const FieldGridComponent = ({
                     polyglot={polyglot}
                     filter={filter}
                     isFieldsLoading={isFieldsLoading}
+                    subresourceId={subresourceId}
                 />
             )}
         </div>
@@ -469,6 +494,7 @@ FieldGridComponent.propTypes = {
     changePositions: PropTypes.func.isRequired,
     saveFieldFromData: PropTypes.func.isRequired,
     isFieldsLoading: PropTypes.bool,
+    subresourceId: PropTypes.string,
 };
 
 const mapStateToProps = (state, { subresourceId, filter }) => ({

@@ -14,8 +14,11 @@ describe('Subresource Page', () => {
         navigationPage.goToDisplay();
 
         cy.get('.sidebar')
-            .contains('a', 'Resource pages')
-            .click({ force: true });
+            .contains('Resources')
+            .click();
+        cy.get('.sidebar')
+            .contains('Subresources')
+            .click();
     });
 
     it('should allow to add a subresource', () => {
@@ -56,7 +59,7 @@ describe('Subresource Page', () => {
         subresourcePage.createSubresource();
         subresourcePage.addField('name', 'myField');
 
-        cy.get('.sub-sidebar')
+        cy.get('.sidebar')
             .contains('a', 'Main resource')
             .click();
 
@@ -68,7 +71,7 @@ describe('Subresource Page', () => {
 
         cy.get('#tab-value').click();
 
-        cy.get('#tab-value-subresource input[value="subresource"]').click();
+        cy.contains('From Subresource').click();
 
         cy.get('#tab-display').click();
 
@@ -103,7 +106,7 @@ describe('Subresource Page', () => {
         cy.contains('button', 'Published data').click();
         cy.contains('.publication-excerpt-column', 'Name').should('exist');
 
-        cy.get('.sub-sidebar')
+        cy.get('.sidebar')
             .contains('a', 'Main resource')
             .click();
 
@@ -121,11 +124,13 @@ describe('Subresource Page', () => {
 
         cy.get('#tab-value').click();
 
-        cy.get(
-            '#tab-value-subresource-field input[value="subresource"]',
-        ).click();
+        cy.contains('From Subresource').click();
 
-        cy.get('#tab-value-subresource-field .column_name').type('name');
+        cy.get('[data-testid="autocomplete-subresource-label"]').click();
+
+        cy.get('[role="listbox"]')
+            .contains('name')
+            .click();
 
         cy.get('.wizard')
             .find('.btn-save')
@@ -158,7 +163,7 @@ describe('Subresource Page', () => {
 
         cy.get('#tab-value').click();
 
-        cy.get('#tab-value-subresource input[value="subresource"]').click();
+        cy.contains('From Subresource').click();
 
         cy.get('#tab-display').click();
 

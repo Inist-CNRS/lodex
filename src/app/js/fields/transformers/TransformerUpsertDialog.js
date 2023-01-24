@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
-import { fromFields } from '../sharedSelectors';
+import { fromFields } from '../../sharedSelectors';
 
 import { connect } from 'react-redux';
 import {
@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 
 import classNames from 'classnames';
-import colorsTheme from '../../custom/colorsTheme';
+import colorsTheme from '../../../custom/colorsTheme';
 import { DialogActions, makeStyles } from '@material-ui/core';
 import TransformerArg from './TransformerArg';
 

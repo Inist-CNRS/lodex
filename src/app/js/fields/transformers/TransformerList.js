@@ -8,7 +8,7 @@ import TransformerListItem from './TransformerListItem';
 import TransformerUpsertDialog from './TransformerUpsertDialog';
 
 import { Box, Button, Typography } from '@mui/material';
-import { polyglot as polyglotPropTypes } from '../propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     DndContext,
     closestCenter,
@@ -26,7 +26,7 @@ import {
 import {
     getTransformerMetas,
     hasRegistredTransformer,
-} from '../../../common/transformers';
+} from '../../../../common/transformers';
 
 const SHOW_TRANSFORMER = memoize(
     (operation, type) =>

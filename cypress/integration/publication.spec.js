@@ -192,7 +192,10 @@ describe('Dataset Publication', () => {
 
             adminNavigation.goToDisplay();
             cy.get('.sidebar')
-                .contains('a', 'Resource pages')
+                .contains('Resources')
+                .click();
+            cy.get('.sidebar')
+                .contains('Main resource')
                 .click();
 
             cy.contains('New field').click();
@@ -233,7 +236,10 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
             adminNavigation.goToDisplay();
             cy.get('.sidebar')
-                .contains('a', 'Resource pages')
+                .contains('Resources')
+                .click();
+            cy.get('.sidebar')
+                .contains('Main resource')
                 .click();
 
             datasetImportPage.addColumn('Column 1');
@@ -249,7 +255,10 @@ describe('Dataset Publication', () => {
             adminNavigation.goToDisplay();
 
             cy.get('.sidebar')
-                .contains('a', 'Resource pages')
+                .contains('Resources')
+                .click();
+            cy.get('.sidebar')
+                .contains('Main resource')
                 .click();
 
             datasetImportPage.addColumn('Column 1');
@@ -274,7 +283,10 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/concat.json');
 
             cy.get('.sidebar')
-                .contains('a', 'Resource pages')
+                .contains('Resources')
+                .click();
+            cy.get('.sidebar')
+                .contains('Main resource')
                 .click();
 
             cy.contains('button', 'Published data').click();

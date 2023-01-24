@@ -33,11 +33,14 @@ const DisplayRouteComponent = () => {
                 <Route exact path={`${path}/add`}>
                     <AddSubresource />
                 </Route>
-                <Route exact path={`${path}/edit/:fieldName?`}>
+                <Route exact path={`${path}/main/edit/:fieldName?`}>
                     <FieldEditForm filter={filter} />
                 </Route>
                 <Route exact path={`${path}/:subresourceId`}>
                     <EditSubresource filter={filter} />
+                </Route>
+                <Route exact path={`${path}/:subresourceId/edit/:fieldName?`}>
+                    <FieldEditForm filter={filter} />
                 </Route>
                 <Route>
                     <Redirect to={`${url}/main`} />
