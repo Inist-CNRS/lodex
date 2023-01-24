@@ -22,7 +22,12 @@ export const goToResourcePage = () => {
         .click({ force: true }); // avoid bug due of detached DOM element
 
     cy.location('hash').should('equal', '#/display/dataset');
-    cy.get('[href="#/display/document"]').click({ force: true });
+    cy.get('.sidebar')
+        .contains('Resources')
+        .click();
+    cy.get('.sidebar')
+        .contains('Main resource')
+        .click();
     cy.wait(500);
     cy.location('hash').should('equal', '#/display/document/main');
 };

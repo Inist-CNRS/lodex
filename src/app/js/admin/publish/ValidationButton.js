@@ -17,6 +17,7 @@ import { SCOPE_DOCUMENT } from '../../../../common/scope';
 import translate from 'redux-polyglot/translate';
 import { useHistory } from 'react-router-dom';
 import ValidationIcon from './ValidationIcon';
+import { getEditFieldRedirectUrl } from '../../fields/FieldGrid';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };
@@ -41,9 +42,12 @@ const ValidationButtonComponent = ({
     const redirectAndHandleEditField = (...args) => {
         const field = fields.find(({ name }) => name === args[0]);
         handleEditField();
-        history.push(
-            `/display/${field?.scope || SCOPE_DOCUMENT}/edit/${field?.name}`,
+        const redirectUrl = getEditFieldRedirectUrl(
+            field?.name,
+            field?.scope || SCOPE_DOCUMENT,
+            field?.subresourceId,
         );
+        history.push(redirectUrl);
     };
 
     return (
