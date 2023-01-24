@@ -1,6 +1,7 @@
 import React from 'react';
 import colorsTheme from '../../custom/colorsTheme';
 import PropTypes from 'prop-types';
+import translate from 'redux-polyglot/translate';
 
 import { Box, Typography } from '@mui/material';
 import {
@@ -10,8 +11,17 @@ import {
 } from '@mui/icons-material';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
+import { compose } from 'recompose';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 
-const TransformerListItem = ({ transformer, id, show, onRemove, onEdit }) => {
+const TransformerListItem = ({
+    transformer,
+    id,
+    show,
+    onRemove,
+    onEdit,
+    p: polyglot,
+}) => {
     const {
         attributes,
         listeners,
@@ -58,10 +68,18 @@ const TransformerListItem = ({ transformer, id, show, onRemove, onEdit }) => {
                 <DragIndicatorIcon sx={{ cursor: 'grab', marginRight: 1 }} />
                 <Typography noWrap>
                     {transformer?.operation}
-                    {transformer?.args &&
-                        `(${Array.prototype.map
-                            .call(transformer?.args, arg => arg.value)
-                            .toString()})`}
+                    {transformer?.args && (
+                        <>
+                            {' - '}(
+                            {Array.prototype.map
+                                .call(
+                                    transformer?.args,
+                                    arg => arg.value || polyglot.t('Empty'),
+                                )
+                                .join(', ')}
+                            )
+                        </>
+                    )}
                 </Typography>
             </Box>
             <Box
@@ -96,6 +114,7 @@ TransformerListItem.propTypes = {
     show: PropTypes.bool.isRequired,
     onRemove: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
-export default TransformerListItem;
+export default compose(translate)(TransformerListItem);
