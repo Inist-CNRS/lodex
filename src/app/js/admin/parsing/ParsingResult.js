@@ -9,6 +9,10 @@ import {
     getGridStringOperators,
     getGridBooleanOperators,
     gridClasses,
+    GridToolbarContainer,
+    GridToolbarColumnsButton,
+    GridToolbarFilterButton,
+    GridToolbarDensitySelector,
 } from '@mui/x-data-grid';
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -31,8 +35,10 @@ import {
     IconButton,
     Tooltip,
 } from '@material-ui/core';
-import { TablePagination } from '@mui/material';
+import { Button, TablePagination } from '@mui/material';
 import ParsingEditCell from './ParsingEditCell';
+import { AddBox as AddBoxIcon } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const COLUMN_TYPE = {
     MAIN: 'main',
@@ -381,6 +387,31 @@ export const ParsingResultComponent = props => {
         );
     };
 
+    const MyLink = props => <Link to="/data/add" {...props} />;
+
+    const CustomToolbar = () => {
+        return (
+            <GridToolbarContainer>
+                <GridToolbarColumnsButton />
+                <GridToolbarFilterButton />
+                <GridToolbarDensitySelector />
+                <Button
+                    component={MyLink}
+                    to="/data/add"
+                    startIcon={<AddBoxIcon />}
+                    size="small"
+                    sx={{
+                        '&.MuiButtonBase-root:hover': {
+                            color: 'primary.main',
+                        },
+                    }}
+                >
+                    {polyglot.t('add_more')}
+                </Button>
+            </GridToolbarContainer>
+        );
+    };
+
     return (
         <div className={classes.container}>
             {dataGrid ? (
@@ -402,6 +433,7 @@ export const ParsingResultComponent = props => {
                         onCellClick={handleCellClick}
                         components={{
                             Footer: CustomFooter,
+                            Toolbar: CustomToolbar,
                         }}
                         sx={{
                             [`& .${gridClasses.columnHeaderTitleContainer} .${gridClasses.iconButtonContainer}`]: {
