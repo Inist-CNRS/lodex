@@ -387,8 +387,6 @@ export const ParsingResultComponent = props => {
         );
     };
 
-    const MyLink = props => <Link to="/data/add" {...props} />;
-
     const CustomToolbar = () => {
         return (
             <GridToolbarContainer>
@@ -396,7 +394,7 @@ export const ParsingResultComponent = props => {
                 <GridToolbarFilterButton />
                 <GridToolbarDensitySelector />
                 <Button
-                    component={MyLink}
+                    component={Link}
                     to="/data/add"
                     startIcon={<AddBoxIcon />}
                     size="small"

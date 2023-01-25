@@ -15,7 +15,7 @@ import translate from 'redux-polyglot/translate';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { fromPublication, fromParsing } from '../selectors';
+import { fromPublication } from '../selectors';
 import { SidebarContext } from './SidebarContext';
 import colorsTheme from '../../../custom/colorsTheme';
 import { useRouteMatch } from 'react-router-dom';
@@ -220,7 +220,6 @@ Sidebar.propTypes = {
 
 const mapStateToProps = state => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
-    hasLoadedDataset: fromParsing.hasUploadedFile(state),
 });
 
 export default compose(connect(mapStateToProps), translate)(Sidebar);
