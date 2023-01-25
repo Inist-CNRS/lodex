@@ -10,7 +10,6 @@ import SourceIcon from '@mui/icons-material/Source';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import ArticleIcon from '@mui/icons-material/Article';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
-import { makeStyles } from '@material-ui/styles';
 import translate from 'redux-polyglot/translate';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -24,7 +23,6 @@ import {
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
 } from '../../../../common/scope';
-import ImportModelButton from '../ImportModelButton';
 import { MenuItemLink } from './MenuItemLink';
 import EnrichmentMenu from './EnrichmentMenu';
 import SubresourceMenu from './SubresourceMenu';
@@ -33,37 +31,6 @@ import { SubMenu } from './SubMenu';
 const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;
 const ACTIVE_BORDER_WIDTH = 3;
-
-const useStyles = makeStyles({
-    sidebarCallToAction: {
-        color: colorsTheme.white.primary,
-        textDecoration: 'none',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        margin: 20,
-        padding: '10px 10px',
-        border: `3px dashed ${colorsTheme.white.transparent}`,
-        borderRadius: 10,
-        '&:hover': {
-            transition: 'all ease-in-out 400ms',
-            textDecoration: 'none',
-            color: colorsTheme.white.primary,
-            backgroundColor: colorsTheme.black.light,
-        },
-    },
-    sidebarCallToActionDisabled: {
-        color: colorsTheme.white.light,
-        textDecoration: 'none',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        margin: 20,
-        padding: '10px 10px',
-        border: `3px dashed ${colorsTheme.white.transparent}`,
-        borderRadius: 10,
-    },
-});
 
 const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
     const matchDisplayRoute = useRouteMatch('/display');
@@ -77,7 +44,6 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
     const [menuResourceOpen, setMenuResourceOpen] = useState(false);
 
     const { open } = useContext(SidebarContext);
-    const classes = useStyles();
 
     if (!matchDisplayRoute && !matchDataRoute) {
         return null;
@@ -147,21 +113,6 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                 leftIcon={<EqualizerIcon />}
                 key="display-graph-pages"
             />
-        ),
-        matchDisplayRoute && open && (
-            <div
-                title={
-                    hasPublishedDataset && polyglot.t('import_model_published')
-                }
-            >
-                <ImportModelButton
-                    className={
-                        !hasPublishedDataset
-                            ? classes.sidebarCallToAction
-                            : classes.sidebarCallToActionDisabled
-                    }
-                />
-            </div>
         ),
     ].filter(Boolean);
 

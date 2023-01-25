@@ -280,6 +280,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.importModel('model/concat.json');
 
+            adminNavigation.goToDisplay();
             cy.get('.sidebar')
                 .contains('Resources')
                 .click();

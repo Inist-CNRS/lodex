@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
+    Box,
     IconButton,
     MenuItem,
     Menu,
-    makeStyles,
     Divider,
-} from '@material-ui/core';
-import { MoreVert } from '@material-ui/icons';
+    Fade,
+    MenuList,
+    Paper,
+} from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import AspectRatioIcon from '@mui/icons-material/AspectRatio';
+import ClearAllIcon from '@mui/icons-material/ClearAll';
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+import StorageIcon from '@mui/icons-material/Storage';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import AddIcon from '@mui/icons-material/Add';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import translate from 'redux-polyglot/translate';
 import { compose } from 'recompose';
@@ -16,43 +26,59 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { signOut } from '../../user';
 import { exportFields } from '../../exportFields';
-import { fromParsing } from '../selectors';
+import { fromParsing, fromPublication, fromImport } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
+import { importFields } from '../import';
 import ClearDialog from './ClearDialog';
 import jobsApi from '../api/job';
-import AspectRatioIcon from '@material-ui/icons/AspectRatio';
-import ClearAllIcon from '@material-ui/icons/ClearAll';
-import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
-import StorageIcon from '@material-ui/icons/Storage';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { toast } from 'react-toastify';
-
-const useStyles = makeStyles({
-    container: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    menu: {
-        display: 'flex',
-    },
-    labelAction: {
-        marginLeft: '8px',
-    },
-});
+import ImportModelDialog from '../ImportModelDialog';
 
 const MenuComponent = ({
     dumpDataset,
     exportFields,
     hasLoadedDataset,
+    hasPublishedDataset,
     onSignOut,
+    importFields,
+    nbFields,
+    importSucceeded,
+    importFailed,
     p: polyglot,
 }) => {
-    const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [showClearDialog, setShowClearDialog] = React.useState(false);
-    const [clearDialogType, setClearDialogType] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [subMenuToShow, setSubMenuToShow] = useState('model');
+
+    const [showClearDialog, setShowClearDialog] = useState(false);
+    const [clearDialogType, setClearDialogType] = useState(null);
+    const [
+        showImportFieldsConfirmation,
+        setShowImportFieldsConfirmation,
+    ] = useState(false);
+    const [applyUploadInput, setApplyUploadInput] = useState(false);
+
+    useEffect(() => {
+        if (importFailed) {
+            toast(polyglot.t('import_fields_failed'), {
+                type: toast.TYPE.ERROR,
+            });
+        } else if (importSucceeded) {
+            toast(polyglot.t('model_imported_with_success'), {
+                type: toast.TYPE.SUCCESS,
+            });
+        }
+    }, [importSucceeded, importFailed]);
+
+    useEffect(() => {
+        if (nbFields === 0) {
+            setApplyUploadInput(true);
+        } else {
+            setApplyUploadInput(false);
+        }
+    }, [nbFields]);
 
     const open = !!anchorEl;
+
     const handleOpenMenu = event => {
         setAnchorEl(event.currentTarget);
     };
@@ -60,6 +86,18 @@ const MenuComponent = ({
     const handleCloseMenu = callback => {
         setAnchorEl(null);
         typeof callback === 'function' && callback();
+    };
+
+    const handleOpenModelMenu = () => {
+        setSubMenuToShow('model');
+    };
+
+    const handleOpenAdvancedMenu = () => {
+        setSubMenuToShow('advanced');
+    };
+
+    const handleCloseSubMenu = () => {
+        setSubMenuToShow(null);
     };
 
     const handleClearJobs = async () => {
@@ -72,103 +110,224 @@ const MenuComponent = ({
         setAnchorEl(null);
     };
 
+    const handleImportFieldsClick = () => {
+        if (!applyUploadInput) {
+            setShowImportFieldsConfirmation(true);
+            handleCloseMenu();
+        }
+    };
+
+    const modelMenuItems = [
+        <div
+            key="import_fields"
+            title={hasPublishedDataset && polyglot.t('import_model_published')}
+        >
+            <MenuItem
+                onClick={handleImportFieldsClick}
+                disabled={hasPublishedDataset || !hasLoadedDataset}
+            >
+                <AddIcon />
+                <Box component="span" ml={1}>
+                    {polyglot.t('import_fields')}
+                    {applyUploadInput && (
+                        <input
+                            name="file_model"
+                            type="file"
+                            onChange={event =>
+                                handleCloseMenu(
+                                    importFields(event.target.files[0]),
+                                )
+                            }
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                opacity: 0,
+                                width: '100%',
+                                cursor: 'pointer',
+                                fontSize: 0,
+                            }}
+                        />
+                    )}
+                </Box>
+            </MenuItem>
+        </div>,
+        <MenuItem
+            key="export_fields"
+            onClick={() => handleCloseMenu(exportFields)}
+            disabled={!hasLoadedDataset}
+        >
+            <AspectRatioIcon />
+            <Box component="span" ml={1}>
+                {polyglot.t('export_fields')}
+            </Box>
+        </MenuItem>,
+        <MenuItem
+            key="clear_model"
+            onClick={() =>
+                handleCloseMenu(() => {
+                    setClearDialogType('model');
+                    setShowClearDialog(!showClearDialog);
+                })
+            }
+            disabled={!hasLoadedDataset}
+        >
+            <ClearAllIcon />
+            <Box component="span" ml={1}>
+                {polyglot.t('clear_model')}
+            </Box>
+        </MenuItem>,
+    ];
+
+    const advancedMenuItems = [
+        <MenuItem
+            key="export_raw_dataset"
+            onClick={() => handleCloseMenu(dumpDataset)}
+            disabled={!hasLoadedDataset}
+        >
+            <StorageIcon />
+            <Box component="span" ml={1}>
+                {polyglot.t('export_raw_dataset')}
+            </Box>
+        </MenuItem>,
+        <MenuItem
+            key="clear_dataset"
+            onClick={() =>
+                handleCloseMenu(() => {
+                    setClearDialogType('dataset');
+                    setShowClearDialog(!showClearDialog);
+                })
+            }
+            disabled={!hasLoadedDataset}
+        >
+            <ClearAllIcon />
+            <Box component="span" ml={1}>
+                {polyglot.t('clear_dataset')}
+            </Box>
+        </MenuItem>,
+        <MenuItem key="clear_jobs" onClick={handleClearJobs}>
+            <DeleteSweepIcon />
+            <Box component="span" ml={1}>
+                {polyglot.t('clear_jobs')}
+            </Box>
+        </MenuItem>,
+    ];
+
     return (
         <>
-            <div className={classes.container}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
                 <IconButton
                     color="inherit"
-                    aria-label="more"
+                    aria-label="Open menu"
                     onClick={handleOpenMenu}
                 >
-                    <MoreVert />
+                    <MoreVertIcon />
                 </IconButton>
                 <Menu
                     id="long-menu"
-                    className={classes.menu}
+                    sx={{
+                        display: 'flex',
+                        '& > .MuiPaper-root': {
+                            marginTop: '12px',
+                            borderTopLeftRadius: '0',
+                            borderTopRightRadius: '0',
+                            overflow: 'visible',
+                        },
+                    }}
                     MenuListProps={{
                         'aria-labelledby': 'long-button',
                     }}
                     anchorEl={anchorEl}
                     open={open}
                     onClose={handleCloseMenu}
-                    PaperProps={{
-                        style: {
-                            marginTop: '48px',
-                            borderTopLeftRadius: '0',
-                            borderTopRightRadius: '0',
-                        },
-                    }}
                 >
-                    {hasLoadedDataset && [
+                    <Box
+                        onMouseEnter={handleOpenModelMenu}
+                        onMouseLeave={handleCloseSubMenu}
+                        sx={{
+                            position: 'relative',
+                        }}
+                    >
                         <MenuItem
-                            key="export_fields"
-                            onClick={() => handleCloseMenu(exportFields)}
+                            sx={{
+                                justifyContent: 'space-between',
+                            }}
                         >
-                            <AspectRatioIcon />
-                            <span className={classes.labelAction}>
-                                {polyglot.t('export_fields')}
-                            </span>
-                        </MenuItem>,
+                            <Box component="span" mr={1}>
+                                {polyglot.t('model')}
+                            </Box>
+                            <ChevronRightIcon />
+                        </MenuItem>
+                        <Fade in={subMenuToShow === 'model'}>
+                            <Paper
+                                sx={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    transform: 'translateX(-100%)',
+                                }}
+                            >
+                                <MenuList>{modelMenuItems}</MenuList>
+                            </Paper>
+                        </Fade>
+                    </Box>
+                    <Box
+                        onMouseEnter={handleOpenAdvancedMenu}
+                        onMouseLeave={handleCloseSubMenu}
+                        sx={{
+                            position: 'relative',
+                        }}
+                    >
                         <MenuItem
-                            key="clear_model"
-                            onClick={() =>
-                                handleCloseMenu(() => {
-                                    setClearDialogType('model');
-                                    setShowClearDialog(!showClearDialog);
-                                })
-                            }
+                            sx={{
+                                justifyContent: 'space-between',
+                            }}
                         >
-                            <ClearAllIcon />
-                            <span className={classes.labelAction}>
-                                {polyglot.t('clear_model')}
-                            </span>
-                        </MenuItem>,
-                        <MenuItem
-                            key="export_raw_dataset"
-                            onClick={() => handleCloseMenu(dumpDataset)}
-                        >
-                            <StorageIcon />
-                            <span className={classes.labelAction}>
-                                {polyglot.t('export_raw_dataset')}
-                            </span>
-                        </MenuItem>,
-                        <MenuItem
-                            key="clear_dataset"
-                            onClick={() =>
-                                handleCloseMenu(() => {
-                                    setClearDialogType('dataset');
-                                    setShowClearDialog(!showClearDialog);
-                                })
-                            }
-                        >
-                            <ClearAllIcon />
-                            <span className={classes.labelAction}>
-                                {polyglot.t('clear_dataset')}
-                            </span>
-                        </MenuItem>,
-                    ]}
-                    <MenuItem key="clear_jobs" onClick={handleClearJobs}>
-                        <DeleteSweepIcon />
-                        <span className={classes.labelAction}>
-                            {polyglot.t('clear_jobs')}
-                        </span>
-                    </MenuItem>
-                    <Divider key="divider" />
+                            <Box component="span" mr={1}>
+                                {polyglot.t('advanced')}
+                            </Box>
+                            <ChevronRightIcon />
+                        </MenuItem>
+                        <Fade in={subMenuToShow === 'advanced'}>
+                            <Paper
+                                sx={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    transform: 'translateX(-100%)',
+                                }}
+                            >
+                                <MenuList>{advancedMenuItems}</MenuList>
+                            </Paper>
+                        </Fade>
+                    </Box>
+                    <Divider />
                     <MenuItem
                         onClick={() => handleCloseMenu(onSignOut)}
                         aria-label="signout"
                     >
                         <ExitToAppIcon />
-                        <span className={classes.labelAction}>
+                        <Box component="span" ml={1}>
                             {polyglot.t('sign_out')}
-                        </span>
+                        </Box>
                     </MenuItem>
                 </Menu>
-            </div>
+            </Box>
             {showClearDialog && (
                 <ClearDialog
                     type={clearDialogType}
                     onClose={() => setShowClearDialog(!showClearDialog)}
+                />
+            )}
+            {!hasPublishedDataset && showImportFieldsConfirmation && (
+                <ImportModelDialog
+                    onClose={() => setShowImportFieldsConfirmation(false)}
                 />
             )}
         </>
@@ -178,9 +337,14 @@ const MenuComponent = ({
 MenuComponent.propTypes = {
     dumpDataset: PropTypes.func.isRequired,
     exportFields: PropTypes.func.isRequired,
-    hasLoadedDataset: PropTypes.bool,
-    hasPublishedDataset: PropTypes.bool,
+    hasLoadedDataset: PropTypes.bool.isRequired,
+    hasPublishedDataset: PropTypes.bool.isRequired,
     onSignOut: PropTypes.func.isRequired,
+    importFields: PropTypes.func.isRequired,
+    importFieldsClosed: PropTypes.func.isRequired,
+    nbFields: PropTypes.number.isRequired,
+    importSucceeded: PropTypes.bool.isRequired,
+    importFailed: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 const mapDispatchToProps = dispatch =>
@@ -189,11 +353,17 @@ const mapDispatchToProps = dispatch =>
             dumpDataset,
             exportFields,
             onSignOut: signOut,
+            importFields,
         },
         dispatch,
     );
 const mapStateToProps = state => ({
     hasLoadedDataset: fromParsing.hasUploadedFile(state),
+    hasPublishedDataset: fromPublication.hasPublishedDataset(state),
+    nbFields: fromFields.getAllListFields(state).filter(f => f.name !== 'uri')
+        .length,
+    importSucceeded: fromImport.hasImportSucceeded(state),
+    importFailed: fromImport.hasImportFailed(state),
 });
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
