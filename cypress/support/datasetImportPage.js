@@ -135,7 +135,9 @@ export const goToModel = () => {
 
 export const importModel = (filename, mimeType = 'application/json') => {
     adminNavigation.goToDisplay();
-    cy.get('button.btn-import-fields').click();
+    cy.get('[aria-label="Open menu"]').click();
+    cy.contains('Model').trigger('mouseover');
+    cy.contains('Import a model').click();
     fillInputWithFixture('input[name="file_model"]', filename, mimeType);
     cy.wait(300);
 };
