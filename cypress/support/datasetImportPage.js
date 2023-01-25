@@ -28,9 +28,7 @@ export const importOtherDataset = (filename, mimeType = 'text/csv') => {
 };
 
 export const importMoreDataset = (filename, mimeType = 'text/csv') => {
-    cy.get('.sidebar')
-        .contains('Add more')
-        .click({ force: true });
+    cy.contains('Add more').click({ force: true });
 
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);

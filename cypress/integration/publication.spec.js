@@ -38,10 +38,8 @@ describe('Dataset Publication', () => {
             menu.goToAdminDashboard();
             cy.wait(300);
             datasetImportPage.importDataset('dataset/simple.csv');
-
-            cy.get('.sidebar', { timeout: 500 })
-                .contains('a', 'Add')
-                .click();
+            cy.wait(1000);
+            cy.contains('Add more', { timeout: 1500 }).click();
 
             cy.wait(300);
             datasetImportPage.importOtherDataset('dataset/simple.csv');
@@ -213,7 +211,7 @@ describe('Dataset Publication', () => {
             cy.contains('GET').click();
             cy.get('input[placeholder="path"]').type('example');
             cy.contains('confirm').click();
-            cy.contains('GET(example)');
+            cy.contains('GET - (example)');
             cy.get('.btn-save').click();
             cy.get('.wizard').should('not.exist');
         });

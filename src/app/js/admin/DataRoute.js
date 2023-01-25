@@ -16,7 +16,7 @@ export const DataRouteComponent = ({ canUploadFile }) => {
     }
 
     return (
-        <div style={{ marginLeft: '-20px' }}>
+        <div>
             <ParsingResult dataGrid />
         </div>
     );
