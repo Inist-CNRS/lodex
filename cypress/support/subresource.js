@@ -25,10 +25,11 @@ export const addField = (name, label, save = true) => {
 
     cy.get('#tab-value').click();
 
-    cy.get('#select-subresource-input-label').click();
+    cy.contains('Existing Column(s)').click();
+    cy.get('[data-testid="source-value-from-columns"]').click();
 
-    cy.get('ul[aria-labelledby="select-subresource-input-label"]')
-        .find(`li[data-value="${name}"]`)
+    cy.get('[role="listbox"]')
+        .contains(name)
         .click();
 
     if (save) {

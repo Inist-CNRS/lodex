@@ -38,10 +38,8 @@ describe('Dataset Publication', () => {
             menu.goToAdminDashboard();
             cy.wait(300);
             datasetImportPage.importDataset('dataset/simple.csv');
-
-            cy.get('.sidebar', { timeout: 500 })
-                .contains('a', 'Add')
-                .click();
+            cy.wait(1000);
+            cy.contains('Add more', { timeout: 1500 }).click();
 
             cy.wait(300);
             datasetImportPage.importOtherDataset('dataset/simple.csv');
@@ -192,7 +190,10 @@ describe('Dataset Publication', () => {
 
             adminNavigation.goToDisplay();
             cy.get('.sidebar')
-                .contains('a', 'Resource pages')
+                .contains('Resources')
+                .click();
+            cy.get('.sidebar')
+                .contains('Main resource')
                 .click();
 
             cy.contains('New field').click();
@@ -210,7 +211,7 @@ describe('Dataset Publication', () => {
             cy.contains('GET').click();
             cy.get('input[placeholder="path"]').type('example');
             cy.contains('confirm').click();
-            cy.contains('GET(example)');
+            cy.contains('GET - (example)');
             cy.get('.btn-save').click();
             cy.get('.wizard').should('not.exist');
         });
@@ -233,7 +234,10 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
             adminNavigation.goToDisplay();
             cy.get('.sidebar')
-                .contains('a', 'Resource pages')
+                .contains('Resources')
+                .click();
+            cy.get('.sidebar')
+                .contains('Main resource')
                 .click();
 
             datasetImportPage.addColumn('Column 1');
@@ -249,7 +253,10 @@ describe('Dataset Publication', () => {
             adminNavigation.goToDisplay();
 
             cy.get('.sidebar')
-                .contains('a', 'Resource pages')
+                .contains('Resources')
+                .click();
+            cy.get('.sidebar')
+                .contains('Main resource')
                 .click();
 
             datasetImportPage.addColumn('Column 1');
@@ -274,7 +281,10 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/concat.json');
 
             cy.get('.sidebar')
-                .contains('a', 'Resource pages')
+                .contains('Resources')
+                .click();
+            cy.get('.sidebar')
+                .contains('Main resource')
                 .click();
 
             cy.contains('button', 'Published data').click();

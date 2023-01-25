@@ -15,7 +15,10 @@ describe('Transformers & Formats', () => {
 
             adminNavigation.goToDisplay();
             cy.get('.sidebar')
-                .contains('a', 'Resource pages')
+                .contains('Resources')
+                .click();
+            cy.get('.sidebar')
+                .contains('Main resource')
                 .click();
 
             datasetImportPage.addColumn('Column 1', {

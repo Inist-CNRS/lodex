@@ -20,11 +20,12 @@ import {
     clearPublished as clearPublishedAction,
 } from '../clear';
 
-import { fromClear } from '../selectors';
+import { fromClear, fromPublication } from '../selectors';
 import { getHost } from '../../../../common/uris';
 import fieldApi from '../api/field';
 import { toast } from 'react-toastify';
 import { loadField } from '../../fields';
+import { loadPublication } from '../publication';
 
 const baseUrl = getHost();
 
@@ -44,6 +45,7 @@ const ClearDialogComponent = props => {
         hasFailed,
         succeeded,
         loadField,
+        hasPublishedDataset,
     } = props;
 
     useEffect(() => {
@@ -80,11 +82,16 @@ const ClearDialogComponent = props => {
     const handleClearModel = async () => {
         const result = await fieldApi.clearModel();
         if (result.message) {
-            toast(polyglot.t('model_cleared'), {
-                type: toast.TYPE.SUCCESS,
-            });
-            onClose();
-            loadField();
+            if (hasPublishedDataset) {
+                props.clearPublished();
+                props.loadPublication();
+            } else {
+                loadField();
+                toast(polyglot.t('model_cleared'), {
+                    type: toast.TYPE.SUCCESS,
+                });
+                onClose();
+            }
         } else {
             toast(polyglot.t('model_not_cleared'), {
                 type: toast.TYPE.ERROR,
@@ -169,18 +176,22 @@ ClearDialogComponent.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     hasFailed: PropTypes.bool.isRequired,
     loadField: PropTypes.func.isRequired,
+    loadPublication: PropTypes.func.isRequired,
+    hasPublishedDataset: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
     succeeded: fromClear.hasClearSucceeded(state),
     hasFailed: fromClear.hasClearFailed(state),
     isLoading: fromClear.getIsLoading(state),
+    hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 
 const mapDispatchToProps = {
     clearDataset: clearDatasetAction,
     clearPublished: clearPublishedAction,
     loadField: loadField,
+    loadPublication: loadPublication,
 };
 
 export default compose(

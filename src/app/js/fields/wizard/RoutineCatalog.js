@@ -76,7 +76,7 @@ const RoutineCatalogDescription = ({ routine, polyglot }) => {
     );
 };
 
-export const RoutineCatalog = ({
+const RoutineCatalog = ({
     p: polyglot,
     isOpen,
     handleClose,
@@ -110,12 +110,12 @@ export const RoutineCatalog = ({
                             key={routine.id}
                             onClick={() => handleValueChange(routine.url)}
                             className={classnames(classes.item, {
-                                [classes.selectedItem]: currentValue.includes(
+                                [classes.selectedItem]: currentValue?.includes(
                                     routine.url,
                                 ),
                             })}
                             ref={
-                                currentValue.includes(routine.url)
+                                currentValue?.includes(routine.url)
                                     ? scrollTo
                                     : null
                             }
