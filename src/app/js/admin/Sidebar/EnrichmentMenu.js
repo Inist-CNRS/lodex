@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { Box } from '@mui/material';
+import React from 'react';
+import { Box, Button } from '@mui/material';
 import PlusIcon from '@mui/icons-material/Add';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
@@ -16,91 +16,67 @@ const EnrichmentMenu = ({ p: polyglot, enrichments }) => {
         <Box
             className="sub-sidebar"
             sx={{
-                width: 200,
+                width: 220,
                 paddingTop: '64px',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',
-                backgroundColor: colorsTheme.black.dark,
+                backgroundColor: colorsTheme.white.primary,
                 position: 'sticky',
                 top: 0,
                 height: '100vh',
                 overflowY: 'auto',
-                textAlign: 'center',
+                borderRight: '1px solid #e0e0e0',
             }}
         >
-            <Box
+            <Button
                 component={NavLink}
+                size="small"
+                color="primary"
                 sx={{
-                    color: colorsTheme.white.primary,
-                    textDecoration: 'none',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    margin: '20px',
-                    padding: '10px 10px',
-                    border: `3px dashed ${colorsTheme.white.transparent}`,
-                    borderRadius: '10px',
-                    '&:hover': {
-                        transition: 'all ease-in-out 400ms',
-                        textDecoration: 'none',
-                        color: colorsTheme.white.primary,
-                        backgroundColor: colorsTheme.black.light,
-                    },
-                    '&.active': {
-                        backgroundColor: colorsTheme.white.transparent,
-                    },
+                    borderWidth: '2px',
+                    borderStyle: 'dashed',
+                    textTransform: 'none',
+                    marginTop: '20px',
+                    marginX: '10px',
                 }}
-                activeClassName="active"
                 to="/data/enrichment/add"
+                startIcon={<PlusIcon />}
             >
-                <PlusIcon />
                 {polyglot.t('new_enrichment')}
-            </Box>
-            {(enrichments || []).map(enrichment => (
-                <Fragment key={enrichment._id}>
+            </Button>
+            <Box
+                sx={{ marginTop: '20px' }}
+                display="flex"
+                flexDirection="column"
+            >
+                {(enrichments || []).map(enrichment => (
                     <Box
-                        component="hr"
-                        sx={{
-                            width: '90%',
-                            border: 'none',
-                            borderTop: `1px solid ${colorsTheme.white.transparent}`,
-                        }}
-                    />
-                    <Box
+                        key={enrichment._id}
+                        component={NavLink}
                         sx={{
                             width: '100%',
-                        }}
-                    >
-                        <Box
-                            component={NavLink}
-                            sx={{
-                                color: colorsTheme.white.primary,
+                            textTransform: 'none',
+                            textDecoration: 'none',
+                            padding: '10px 10px',
+                            color: colorsTheme.black.primary,
+                            '&:hover': {
                                 textDecoration: 'none',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                width: '100%',
-                                padding: '20px',
-                                '&:hover': {
-                                    transition: 'all ease-in-out 400ms',
-                                    textDecoration: 'none',
-                                    color: colorsTheme.white.primary,
-                                    backgroundColor: colorsTheme.black.light,
-                                },
-                                '&.active': {
-                                    backgroundColor:
-                                        colorsTheme.white.transparent,
-                                },
-                            }}
-                            activeClassName="active"
-                            to={`/data/enrichment/${enrichment._id}`}
-                        >
-                            {enrichment.name}
-                        </Box>
+                                transition: 'all ease-in-out 400ms',
+                                color: colorsTheme.green.primary,
+                                backgroundColor: colorsTheme.green.light,
+                            },
+                            '&.active': {
+                                color: colorsTheme.green.primary,
+                                backgroundColor: colorsTheme.green.light,
+                            },
+                        }}
+                        activeClassName="active"
+                        to={`/data/enrichment/${enrichment._id}`}
+                    >
+                        {enrichment.name}
                     </Box>
-                </Fragment>
-            ))}
+                ))}
+            </Box>
         </Box>
     );
 };
