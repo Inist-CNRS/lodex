@@ -14,16 +14,11 @@ import { FieldGrid } from '../fields/FieldGrid';
 import { hideAddColumns } from './parsing';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
+import { Box } from '@mui/material';
 
 const useStyles = makeStyles({
     actionsContainer: {
         textAlign: 'right',
-    },
-    editHeaderContainer: {
-        padding: '20px 0',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
     },
 });
 
@@ -54,36 +49,32 @@ export const FieldsEditComponent = ({
 
     return (
         <div>
-            <div className={classes.editHeaderContainer}>
-                <Tabs
-                    value={tab}
-                    onChange={handleChangeTab}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    style={{ paddingBottom: 20 }}
-                >
-                    <Tab value="page" label="Page" />
-                    <Tab
-                        value="published"
-                        label={polyglot.t('published_data')}
-                    />
-                </Tabs>
-                {tab === 'page' && (
-                    <div className={classes.actionsContainer}>
-                        {filter === SCOPE_DOCUMENT && !subresourceId && (
-                            <AddFieldFromColumnButton />
-                        )}
-                        {addFieldButton}
-                    </div>
-                )}
-            </div>
+            <Tabs
+                value={tab}
+                onChange={handleChangeTab}
+                indicatorColor="primary"
+                textColor="primary"
+                style={{ marginBottom: 20 }}
+                variant="fullWidth"
+            >
+                <Tab value="page" label="Page" />
+                <Tab value="published" label={polyglot.t('published_data')} />
+            </Tabs>
             {tab === 'page' && (
                 <>
-                    {showAddFromColumnDialog && (
-                        <AddFromColumnDialog
-                            onClose={handleCloseAddFromColumnDialog}
-                        />
-                    )}
+                    <Box mb={2}>
+                        <div className={classes.actionsContainer}>
+                            {filter === SCOPE_DOCUMENT && !subresourceId && (
+                                <AddFieldFromColumnButton />
+                            )}
+                            {addFieldButton}
+                        </div>
+                        {showAddFromColumnDialog && (
+                            <AddFromColumnDialog
+                                onClose={handleCloseAddFromColumnDialog}
+                            />
+                        )}
+                    </Box>
                     <Statistics filter={filter} subresourceId={subresourceId} />
                     <FieldGrid filter={filter} subresourceId={subresourceId} />
                 </>
