@@ -8,7 +8,7 @@ import {
     exportFields,
     importFields,
     postField,
-    putField,
+    patchField,
     removeField,
     reorderField,
     restoreFields,
@@ -172,7 +172,7 @@ describe('field routes', () => {
         });
     });
 
-    describe('putField', () => {
+    describe('patchField', () => {
         const ctx = {
             request: {
                 body: {
@@ -183,7 +183,7 @@ describe('field routes', () => {
                 updateOneById: jest
                     .fn()
                     .mockImplementation(() => Promise.resolve('update result')),
-                findOneAndUpdate: jest.fn(),
+                updateMany: jest.fn(),
             },
             publishFacets: jest.fn(),
             publishedDataset: {
@@ -193,13 +193,13 @@ describe('field routes', () => {
 
         beforeEach(() => {
             ctx.field.updateOneById.mockClear();
-            ctx.field.findOneAndUpdate.mockClear();
+            ctx.field.updateMany.mockClear();
             ctx.publishFacets.mockClear();
         });
 
         it('should remove overview form other field with same overview, if overview is set', async () => {
-            await putField(ctx, 'id');
-            expect(ctx.field.findOneAndUpdate).toHaveBeenCalledWith(
+            await patchField(ctx, 'id');
+            expect(ctx.field.updateMany).toHaveBeenCalledWith(
                 { overview: 200 },
                 { $unset: { overview: '' } },
             );
@@ -207,7 +207,7 @@ describe('field routes', () => {
         });
 
         it('should not remove overview form other field with same overview, if overview is not set', async () => {
-            await putField(
+            await patchField(
                 {
                     ...ctx,
                     request: {
@@ -216,11 +216,11 @@ describe('field routes', () => {
                 },
                 'id',
             );
-            expect(ctx.field.findOneAndUpdate).not.toHaveBeenCalled();
+            expect(ctx.field.updateMany).not.toHaveBeenCalled();
         });
 
         it('should validateField and then update field', async () => {
-            await putField(ctx, 'id');
+            await patchField(ctx, 'id');
             expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {
                 overview: 200,
             });
@@ -228,7 +228,7 @@ describe('field routes', () => {
         });
 
         it('update the published facets', async () => {
-            await putField(ctx, 'id');
+            await patchField(ctx, 'id');
             expect(ctx.publishFacets).toHaveBeenCalledWith(
                 ctx,
                 ['update result'],

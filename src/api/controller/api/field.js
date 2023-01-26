@@ -174,12 +174,12 @@ export const postField = async ctx => {
     ctx.status = 500;
 };
 
-export const putField = async (ctx, id) => {
+export const patchField = async (ctx, id) => {
     const newField = ctx.request.body;
 
     try {
         if (newField.overview) {
-            await ctx.field.findOneAndUpdate(
+            await ctx.field.updateMany(
                 { overview: newField.overview },
                 { $unset: { overview: '' } },
             );
@@ -357,7 +357,7 @@ app.use(koaBodyParser());
 app.use(route.post('/', postField));
 app.use(route.post('/duplicate', duplicateField));
 app.use(route.put('/reorder', reorderField));
-app.use(route.put('/:id', putField));
+app.use(route.patch('/:id', patchField));
 app.use(route.del('/:id', removeField));
 
 export default app;

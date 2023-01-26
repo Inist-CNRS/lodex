@@ -5,14 +5,16 @@ import FieldFormatInput from '../FieldFormatInput';
 import FieldOverviewInput from '../FieldOverviewInput';
 import FieldDisplayInput from '../FieldDisplay';
 import FieldWidthInput from '../FieldWidthInput';
+import { SCOPE_DATASET } from '../../../../common/scope';
 
 export const TabDisplayComponent = ({
     keepMeta = true,
     isSubresourceField = false,
+    filter,
 }) => (
     <>
         {keepMeta && <FieldDisplayInput />}
-        {keepMeta && (
+        {keepMeta && filter !== SCOPE_DATASET && (
             <FieldOverviewInput isSubresourceField={isSubresourceField} />
         )}
         <FieldFormatInput />
@@ -23,6 +25,7 @@ export const TabDisplayComponent = ({
 TabDisplayComponent.propTypes = {
     keepMeta: PropTypes.bool,
     isSubresourceField: PropTypes.bool,
+    filter: PropTypes.string.isRequired,
 };
 
 export default TabDisplayComponent;
