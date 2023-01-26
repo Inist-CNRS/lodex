@@ -19,4 +19,8 @@ export const resolvers = {
     HAL: 'https://hal.archives-ouvertes.fr/',
     UID: '/',
     ARK: '/',
+    ISSN: 'https://urn.issn.org/urn:issn:',
+    PPN: 'https://www.sudoc.fr/',
+    ORCID: 'https://orcid.org/',
+    IDREF: 'https://www.idref.fr/',
 };
