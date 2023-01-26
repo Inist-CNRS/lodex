@@ -81,7 +81,10 @@ const TRANSFORMERS_FORM_STATUS = new Map([
     ],
 ]);
 
-export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = transformers => {
+export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
+    transformers,
+    isSubresourceField = false,
+) => {
     if (!transformers || !transformers[0]?.operation) {
         return { source: null, value: null };
     }
@@ -108,9 +111,9 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = transformers => {
         };
     }
 
-    const isFromColumnsForSubRessource = transformersOperations.includes(
-        'COLUMN|PARSE|GET',
-    );
+    const isFromColumnsForSubRessource =
+        transformersOperations.includes('COLUMN|PARSE|GET') &&
+        isSubresourceField;
 
     if (isFromColumnsForSubRessource) {
         return {
@@ -178,7 +181,10 @@ export const SourceValueToggle = ({
         const {
             source: currentSource,
             value: currentValue,
-        } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(currentTransformers);
+        } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(
+            currentTransformers,
+            selectedSubresourceUri && true,
+        );
         setSource(currentSource);
         setValue(currentValue);
     }, [currentTransformers]);

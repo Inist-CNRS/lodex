@@ -778,6 +778,7 @@
 "ws_post-v1-gotagger_title"	"Detection of geographical entities"	"Détection d’entités géographiques"
 "ws_post-v1-gotagger_description"	"Detects geographical features in an english text"	"Détecte les entités géographiques d'un texte en anglais"
 "enrichment_advanced_mode_tooltip"	"Don't forget to add enrichment for having preview"	"N'oubliez pas d'ajouter l'enrichissement pour avoir la preview"
+"setting_field_tooltip"	"Edit field"	"Configurer le champ"
 "duplicate_field_tooltip"	"Duplicate field"	"Dupliquer le champ"
 "duplicate_field_success"	"Field duplicated"	"Champ dupliqué"
 "duplicate_field_error"	"Error while duplicating field"	"Erreur lors de la duplication du champ"
@@ -846,3 +847,5 @@
 "enter_from_columns" 	"Enter existing Column(s)" 	"Saisir colonne(s) existante(s)"
 "from_subresource" 	"From Subresource" 	"Depuis une sous-ressource"
 "advanced" 	"Advanced" 	"Avancé"
+"value_preview_title" 	"Value preview*" 	"Aperçu de la valeur*"
+"value_preview_description" 	"* preview of value with transformers applied"	"* aperçu de la valeur avec les transformateurs appliqués"
