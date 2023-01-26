@@ -30,7 +30,7 @@ describe('Subresource Page', () => {
         subresourcePage.addField('name', 'myField', false);
 
         cy.get('.wizard')
-            .find('.publication-excerpt-for-edition tbody tr td')
+            .find('#value-preview')
             .each((item, index) => {
                 cy.wrap(item).should(
                     'contain.text',

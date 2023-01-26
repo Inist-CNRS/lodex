@@ -15,6 +15,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 const ValuePreview = ({ lines, editedField, p: polyglot }) => {
     return (
         <Box
+            id="value-preview"
             sx={{
                 background: colorsTheme.black.veryLight,
                 padding: 2,
