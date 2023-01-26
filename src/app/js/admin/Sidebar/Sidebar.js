@@ -24,7 +24,6 @@ import {
     SCOPE_GRAPHIC,
 } from '../../../../common/scope';
 import { MenuItemLink } from './MenuItemLink';
-import EnrichmentMenu from './EnrichmentMenu';
 import SubresourceMenu from './SubresourceMenu';
 import { SubMenu } from './SubMenu';
 
@@ -39,7 +38,6 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
     const matchMainResourceRoute = useRouteMatch(
         `/display/${SCOPE_DOCUMENT}/main`,
     );
-    const matchEnrichmentRoute = useRouteMatch('/data/enrichment');
 
     const [menuResourceOpen, setMenuResourceOpen] = useState(false);
 
@@ -157,7 +155,6 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
             >
                 <MenuList>{menuItems}</MenuList>
             </Drawer>
-            {matchEnrichmentRoute && <EnrichmentMenu />}
             {matchDocumentRoute && !matchMainResourceRoute && (
                 <SubresourceMenu />
             )}

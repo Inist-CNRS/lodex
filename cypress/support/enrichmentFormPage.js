@@ -24,6 +24,7 @@ export const fillAdvancedEnrichment = () => {
     value = get("value.Column 1")
 
     [debug]`;
+    cy.contains('Add more', { timeout: 500 }).click();
     cy.get('input[name="name"]', { timeout: 12000 }).type('Enrichment');
     cy.get('input[name="advancedMode"]').click({ force: true });
     cy.get('textarea', { timeout: 3000 }).type(rule, { force: true });
