@@ -148,7 +148,10 @@ const FieldEditionWizardComponent = ({
             label: 'field_wizard_tab_display',
             id: 'tab-display',
             component: (
-                <TabDisplay isSubresourceField={!!field.subresourceId} />
+                <TabDisplay
+                    isSubresourceField={!!field.subresourceId}
+                    filter={filter}
+                />
             ),
         },
         !field.subresourceId && {

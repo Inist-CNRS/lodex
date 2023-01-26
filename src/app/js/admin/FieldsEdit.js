@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles, Tab, Tabs } from '@material-ui/core';
+import { Tab, Tabs, Box } from '@mui/material';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -13,14 +13,8 @@ import { fromParsing } from './selectors';
 import { FieldGrid } from '../fields/FieldGrid';
 import { hideAddColumns } from './parsing';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { SCOPE_DOCUMENT } from '../../../common/scope';
-import { Box } from '@mui/material';
-
-const useStyles = makeStyles({
-    actionsContainer: {
-        textAlign: 'right',
-    },
-});
+import { SCOPE_DATASET, SCOPE_DOCUMENT } from '../../../common/scope';
+import OverviewSelect from '../fields/OverviewSelect';
 
 export const FieldsEditComponent = ({
     addFieldButton,
@@ -31,7 +25,6 @@ export const FieldsEditComponent = ({
     showAddFromColumn,
     subresourceId,
 }) => {
-    const classes = useStyles();
     const [tab, setTab] = useState(defaultTab);
     const [showAddFromColumnDialog, setAddFromColumnDialog] = useState(false);
 
@@ -62,13 +55,21 @@ export const FieldsEditComponent = ({
             </Tabs>
             {tab === 'page' && (
                 <>
-                    <Box mb={2}>
-                        <div className={classes.actionsContainer}>
-                            {filter === SCOPE_DOCUMENT && !subresourceId && (
-                                <AddFieldFromColumnButton />
-                            )}
-                            {addFieldButton}
-                        </div>
+                    <Box
+                        mb={2}
+                        display="flex"
+                        justifyContent={
+                            filter === SCOPE_DATASET
+                                ? 'space-between'
+                                : 'flex-end'
+                        }
+                        alignItems="center"
+                    >
+                        {filter === SCOPE_DATASET && <OverviewSelect />}
+                        {filter === SCOPE_DOCUMENT && !subresourceId && (
+                            <AddFieldFromColumnButton />
+                        )}
+                        {addFieldButton}
                         {showAddFromColumnDialog && (
                             <AddFromColumnDialog
                                 onClose={handleCloseAddFromColumnDialog}

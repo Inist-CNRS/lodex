@@ -5,6 +5,10 @@ import { Button } from '@material-ui/core';
 import { ClearPublishedButtonComponent as ClearPublishedButton } from './ClearPublishedButton';
 import ClearDialog from '../Appbar/ClearDialog';
 
+jest.mock('../../admin/api/field', () => ({
+    clearModel: jest.fn(),
+}));
+
 describe('<ClearPublishedButton />', () => {
     it('should only display a button when mounted', () => {
         const wrapper = shallow(
