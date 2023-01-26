@@ -14,7 +14,7 @@ export default {
 
 export const resolvers = {
     DOI: 'http://dx.doi.org/',
-    DOAI: 'http://doai.io/',
+    DOAI: 'http://oadoi.org/',
     PMID: 'https://www.ncbi.nlm.nih.gov/pubmed/',
     HAL: 'https://hal.archives-ouvertes.fr/',
     UID: '/',
