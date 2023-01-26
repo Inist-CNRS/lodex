@@ -88,6 +88,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                 isOpen={menuResourceOpen}
                 name={polyglot.t('resource_pages')}
                 icon={<SourceIcon />}
+                key="subresource-menu"
             >
                 <MenuItemLink
                     to={`/display/${SCOPE_DOCUMENT}/main`}

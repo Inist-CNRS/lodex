@@ -30,7 +30,7 @@ import FieldInternalIcon from './FieldInternalIcon';
 import fieldApi from '../admin/api/field';
 import { toast } from 'react-toastify';
 import { useLocation, useHistory } from 'react-router';
-import { IconButton } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 
 const ROOT_PADDING = 16;
@@ -358,23 +358,37 @@ const DraggableItemGrid = compose(
                                     flex: 1,
                                 }}
                             >
-                                <IconButton
-                                    className={classNames(classes.otherIcon)}
-                                    onClick={e => {
-                                        handleDuplicateField(e, field);
-                                    }}
-                                    aria-label={`duplicate-${field.label}`}
-                                    disabled={isFieldsLoading}
+                                <Tooltip
+                                    title={polyglot.t(
+                                        'duplicate_field_tooltip',
+                                    )}
                                 >
-                                    <FileCopyIcon />
-                                </IconButton>
-                                <IconButton
-                                    className={classNames(classes.otherIcon)}
-                                    aria-label={`edit-${field.label}`}
-                                    disabled={isFieldsLoading}
+                                    <IconButton
+                                        className={classNames(
+                                            classes.otherIcon,
+                                        )}
+                                        onClick={e => {
+                                            handleDuplicateField(e, field);
+                                        }}
+                                        aria-label={`duplicate-${field.label}`}
+                                        disabled={isFieldsLoading}
+                                    >
+                                        <FileCopyIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip
+                                    title={polyglot.t('setting_field_tooltip')}
                                 >
-                                    <SettingsIcon />
-                                </IconButton>
+                                    <IconButton
+                                        className={classNames(
+                                            classes.otherIcon,
+                                        )}
+                                        aria-label={`edit-${field.label}`}
+                                        disabled={isFieldsLoading}
+                                    >
+                                        <SettingsIcon />
+                                    </IconButton>
+                                </Tooltip>
                                 {!field.display && <HiddenIcon />}
                             </Box>
                         </div>

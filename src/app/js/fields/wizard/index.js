@@ -22,7 +22,6 @@ import TabIdentity from './TabIdentity';
 import TabDisplay from './TabDisplay';
 import TabSearch from './TabSearch';
 import TabSemantics from './TabSemantics';
-import FieldExcerpt from '../../admin/preview/field/FieldExcerpt';
 import Actions from './Actions';
 import {
     SCOPE_DATASET,
@@ -35,6 +34,7 @@ import { TabPanel } from './TabPanel';
 import { reduxForm } from 'redux-form';
 import { withRouter } from 'react-router';
 import { toast } from 'react-toastify';
+import ValuePreviewConnected from './ValuePreview';
 
 const useStyles = makeStyles({
     wizard: {
@@ -49,14 +49,13 @@ const useStyles = makeStyles({
         flexGrow: 1,
     },
     form: {
-        borderRight: '1px solid rgb(224, 224, 224)',
         marginRight: '1rem',
         paddingRight: '1rem',
         flexGrow: 1,
         overflowY: 'auto',
     },
     column: {
-        width: '20rem',
+        width: '25rem',
     },
     title: {
         padding: '16px 24px',
@@ -77,7 +76,6 @@ const FieldEditionWizardComponent = ({
 }) => {
     const classes = useStyles();
     const [tabValue, setTabValue] = useState(0);
-
     useEffect(() => {
         if (!fieldName) {
             history.push(`/display/${filter}`);
@@ -203,11 +201,7 @@ const FieldEditionWizardComponent = ({
                         )}
                     </Box>
                     <Box className={classes.column}>
-                        <FieldExcerpt
-                            className="publication-excerpt-for-edition"
-                            onHeaderClick={null}
-                            isPreview
-                        />
+                        <ValuePreviewConnected scope={filter} />
                     </Box>
                 </Box>
             )}
