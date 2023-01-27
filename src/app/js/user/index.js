@@ -182,7 +182,7 @@ export const getUpdateFieldRequest = (state, { _id, ...fieldData }) =>
     getRequest(state, {
         url: `/api/field/${_id}`,
         body: fieldData,
-        method: 'PUT',
+        method: 'PATCH',
     });
 
 export const getSaveFieldRequest = (state, fieldData) => {

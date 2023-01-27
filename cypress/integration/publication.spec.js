@@ -38,10 +38,8 @@ describe('Dataset Publication', () => {
             menu.goToAdminDashboard();
             cy.wait(300);
             datasetImportPage.importDataset('dataset/simple.csv');
-
-            cy.get('.sidebar', { timeout: 500 })
-                .contains('a', 'Add')
-                .click();
+            cy.wait(1000);
+            cy.contains('Add more', { timeout: 1500 }).click();
 
             cy.wait(300);
             datasetImportPage.importOtherDataset('dataset/simple.csv');
@@ -282,6 +280,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.importModel('model/concat.json');
 
+            adminNavigation.goToDisplay();
             cy.get('.sidebar')
                 .contains('Resources')
                 .click();

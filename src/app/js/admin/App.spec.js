@@ -4,6 +4,10 @@ import AppBar from './Appbar';
 
 import { AppComponent } from './App';
 
+jest.mock('../admin/api/field', () => ({
+    clearModel: jest.fn(),
+}));
+
 describe('<App />', () => {
     it('should render', () => {
         const wrapper = shallow(<AppComponent p={{ t: () => {} }} />);

@@ -36,14 +36,6 @@ export const OverviewFieldComponent = ({ p: polyglot, isSubresourceField }) => {
             _id: overview.RESOURCE_DETAIL_2,
             value: 'detail2',
         },
-        {
-            _id: overview.DATASET_TITLE,
-            value: 'datasetTitle',
-        },
-        {
-            _id: overview.DATASET_DESCRIPTION,
-            value: 'datasetDescription',
-        },
     ].filter(
         ov =>
             !isSubresourceField ||

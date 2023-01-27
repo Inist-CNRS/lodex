@@ -2,14 +2,14 @@ import { call, take, put, select, race } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'connected-react-router';
 
 import { fromUser } from '../../sharedSelectors';
-import { importFieldsSuccess, importFieldsError } from './';
+import { importFieldsSuccess, importFieldsError, importFieldsClosed } from './';
 
 import { loadModelFile } from '../../lib/loadFile';
 
 import { handleLoadModel as handleLoadModelSaga } from './sagas';
 
 describe('import model saga', () => {
-    describe('handleLoadParsingResult', () => {
+    describe('handleLoadModel', () => {
         let saga;
 
         beforeEach(() => {
@@ -54,11 +54,27 @@ describe('import model saga', () => {
             expect(value).toEqual(put(importFieldsError(error)));
         });
 
+        it('should put importFieldsClosed after error', () => {
+            saga.next();
+            saga.next('token');
+            saga.throw(new Error('Boom'));
+            const { value } = saga.next();
+            expect(value).toEqual(put(importFieldsClosed()));
+        });
+
         it('should put loadFileSuccess with file', () => {
             saga.next();
             saga.next('token');
             const { value } = saga.next({ file: 'file' });
             expect(value).toEqual(put(importFieldsSuccess('file')));
+        });
+
+        it('should put importFieldsClosed after success', () => {
+            saga.next();
+            saga.next('token');
+            saga.next({ file: 'file' });
+            const { value } = saga.next();
+            expect(value).toEqual(put(importFieldsClosed()));
         });
     });
 });

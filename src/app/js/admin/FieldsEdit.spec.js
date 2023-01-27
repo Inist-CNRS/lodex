@@ -7,6 +7,10 @@ import PublicationPreview from './preview/publication/PublicationPreview';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import AddFieldFromColumnButton from './Appbar/AddFieldFromColumnButton';
 
+jest.mock('../admin/api/field', () => ({
+    duplicateField: jest.fn(),
+}));
+
 describe('<FieldsEdit />', () => {
     it('should display page tab (FieldGrid) per default', () => {
         const wrapper = shallow(

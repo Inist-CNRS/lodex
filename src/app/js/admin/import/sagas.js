@@ -2,7 +2,12 @@ import { call, race, take, put, select, takeEvery } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'connected-react-router';
 
 import { fromUser } from '../../sharedSelectors';
-import { IMPORT_FIELDS, importFieldsError, importFieldsSuccess } from './';
+import {
+    IMPORT_FIELDS,
+    importFieldsError,
+    importFieldsSuccess,
+    importFieldsClosed,
+} from './';
 import { loadModelFile } from '../../lib/loadFile';
 
 export function* handleLoadModel(action) {
@@ -19,8 +24,10 @@ export function* handleLoadModel(action) {
             return;
         }
         yield put(importFieldsSuccess(file));
+        yield put(importFieldsClosed());
     } catch (error) {
         yield put(importFieldsError(error));
+        yield put(importFieldsClosed());
     }
 }
 

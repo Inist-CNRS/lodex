@@ -28,9 +28,7 @@ export const importOtherDataset = (filename, mimeType = 'text/csv') => {
 };
 
 export const importMoreDataset = (filename, mimeType = 'text/csv') => {
-    cy.get('.sidebar')
-        .contains('Add more')
-        .click({ force: true });
+    cy.contains('Add more').click({ force: true });
 
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);
@@ -135,7 +133,9 @@ export const goToModel = () => {
 
 export const importModel = (filename, mimeType = 'application/json') => {
     adminNavigation.goToDisplay();
-    cy.get('button.btn-import-fields').click();
+    cy.get('[aria-label="Open menu"]').click();
+    cy.contains('Model').trigger('mouseover');
+    cy.contains('Import a model').click();
     fillInputWithFixture('input[name="file_model"]', filename, mimeType);
     cy.wait(300);
 };

@@ -45,7 +45,7 @@ const ImportModelDialogComponent = ({ onClose, p: polyglot, importFields }) => {
 
     const handleFileUpload = event => {
         importFields(event.target.files[0]);
-        onClose(true);
+        onClose();
     };
 
     const actions = [
