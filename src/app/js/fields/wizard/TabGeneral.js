@@ -69,7 +69,7 @@ const TextField = ({
 );
 
 export const TabGeneralComponent = ({
-    field,
+    currentEditedField,
     subresourceUri,
     arbitraryMode,
     transformersLocked,
@@ -79,7 +79,7 @@ export const TabGeneralComponent = ({
         <>
             <FieldLabelInput />
             <Field name="scope" component={TextField} type="hidden" />
-            <FieldInternal field={field} />
+            <FieldInternal field={currentEditedField} />
             <SourceValueToggleConnected
                 selectedSubresourceUri={subresourceUri}
                 arbitraryMode={arbitraryMode}
@@ -109,7 +109,7 @@ TextField.propTypes = {
 };
 
 TabGeneralComponent.propTypes = {
-    field: fieldPropTypes.isRequired,
+    currentEditedField: fieldPropTypes.isRequired,
     subresourceUri: PropTypes.string,
     arbitraryMode: PropTypes.bool.isRequired,
     transformersLocked: PropTypes.bool,

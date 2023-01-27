@@ -13,10 +13,9 @@ export const FieldInternalNameComponent = () => (
         name="internalName"
         component={FormTextField}
         labelKey="internalName"
-        fullWidth
+        variant="outlined"
     />
 );
-
 
 FieldInternalNameComponent.propTypes = {
     field: fieldPropTypes.isRequired,

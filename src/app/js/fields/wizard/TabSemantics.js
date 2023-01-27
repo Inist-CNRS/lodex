@@ -8,12 +8,12 @@ import FieldAnnotation from '../FieldAnnotation';
 import FieldSchemeInput from '../FieldSchemeInput';
 import FieldLanguageInput from '../FieldLanguageInput';
 
-export const TabSemanticsComponent = ({ fields, field }) => {
+export const TabSemanticsComponent = ({ fields, currentEditedField }) => {
     const { filter } = useParams();
     return (
         <>
             <FieldSchemeInput />
-            <FieldLanguageInput field={field} />
+            <FieldLanguageInput field={currentEditedField} />
             <FieldAnnotation fields={fields} scope={filter} />
             <FieldComposedOf fields={fields} />
         </>
@@ -22,7 +22,7 @@ export const TabSemanticsComponent = ({ fields, field }) => {
 
 TabSemanticsComponent.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    field: fieldPropTypes.isRequired,
+    currentEditedField: fieldPropTypes.isRequired,
 };
 
 export default TabSemanticsComponent;
