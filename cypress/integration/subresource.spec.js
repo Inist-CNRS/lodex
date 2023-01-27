@@ -69,8 +69,6 @@ describe('Subresource Page', () => {
         cy.contains('New field').click();
         cy.get('.wizard', { timeout: 10000 }).should('be.visible');
 
-        cy.get('#tab-value').click();
-
         cy.contains('From Subresource').click();
 
         cy.get('#tab-display').click();
@@ -122,8 +120,6 @@ describe('Subresource Page', () => {
             .clear()
             .type('Animal name');
 
-        cy.get('#tab-value').click();
-
         cy.contains('From Subresource').click();
 
         cy.get('[data-testid="autocomplete-subresource-label"]').click();
@@ -160,8 +156,6 @@ describe('Subresource Page', () => {
         cy.get('input[name="label"]')
             .clear()
             .type('Animal link');
-
-        cy.get('#tab-value').click();
 
         cy.contains('From Subresource').click();
 

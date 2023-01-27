@@ -23,8 +23,6 @@ export const addField = (name, label, save = true) => {
         .clear()
         .type(label);
 
-    cy.get('#tab-value').click();
-
     cy.contains('Existing Column(s)').click();
     cy.get('[data-testid="source-value-from-columns"]').click();
 

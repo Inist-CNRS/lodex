@@ -2,24 +2,14 @@ import React, { useEffect } from 'react';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import HomeIcon from '@material-ui/icons/Home';
+import HomeIcon from '@mui/icons-material/Home';
 import ArticleIcon from '@mui/icons-material/Article';
-import EqualizerIcon from '@material-ui/icons/Equalizer';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import FilterAtIcon from './FilterAt';
-import { Tooltip } from '@material-ui/core';
-
-const useStyles = makeStyles({
-    container: {
-        marginRight: '1rem',
-    },
-});
+import { ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
 
 export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
-    const classes = useStyles();
     const [values, setValues] = React.useState([]);
 
     useEffect(() => {
@@ -36,7 +26,6 @@ export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
             value={values}
             onChange={handleStateSelected}
             aria-label="text alignment"
-            className={classes.container}
         >
             <ToggleButton value="home" aria-label="left aligned">
                 <Tooltip title={polyglot.t('home_tooltip')}>

@@ -187,8 +187,6 @@
 "after_field"	"After %{field}"	"Après %{field}"
 "first_position"	"At first position"	"En première position"
 "position"	"Position"	"Position"
-"field_wizard_tab_value"	"Value"	"Valeur"
-"field_wizard_tab_tranforms"	"Transformation"	"Transformation"
 "field_wizard_tab_identity"	"General"	"Général"
 "field_wizard_tab_display"	"Display"	"Affichage"
 "field_wizard_tab_search"	"Annotations"	"Annotations"
@@ -851,3 +849,4 @@
 "advanced" 	"Advanced" 	"Avancé"
 "value_preview_title" 	"Value preview*" 	"Aperçu de la valeur*"
 "value_preview_description" 	"* preview of value with transformers applied"	"* aperçu de la valeur avec les transformateurs appliqués"
+"used_in" 	"used in"	"utilisé dans"

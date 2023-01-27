@@ -264,7 +264,7 @@ export const SourceValueToggle = ({
     };
 
     return (
-        <Box>
+        <Box pt={2}>
             <Typography variant="subtitle1">
                 {polyglot.t('source_value')}
             </Typography>

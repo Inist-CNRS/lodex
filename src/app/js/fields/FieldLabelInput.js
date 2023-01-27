@@ -31,6 +31,7 @@ export const FieldLabelInputComponent = ({ disabled }) => (
         labelKey="fieldLabel"
         fullWidth
         disabled={disabled}
+        variant="outlined"
     />
 );
 

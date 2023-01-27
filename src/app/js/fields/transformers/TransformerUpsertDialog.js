@@ -22,6 +22,7 @@ import classNames from 'classnames';
 import colorsTheme from '../../../custom/colorsTheme';
 import { DialogActions, makeStyles } from '@material-ui/core';
 import TransformerArg from './TransformerArg';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const useStyles = makeStyles({
     item: {
@@ -94,7 +95,7 @@ const TransformerUpsertDialog = ({
                 <Box display={'flex'} flexDirection="column">
                     <Autocomplete
                         aria-label={polyglot.t('select_an_operation')}
-                        value={transformer.operation}
+                        value={transformer.operation || ''}
                         onChange={(event, newValue) => {
                             handleChangeOperation(newValue);
                         }}
@@ -170,7 +171,7 @@ TransformerUpsertDialog.propTypes = {
     handleClose: PropTypes.func.isRequired,
     indexFieldToEdit: PropTypes.number,
     isOpen: PropTypes.bool,
-    p: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = (state, { type }) => ({

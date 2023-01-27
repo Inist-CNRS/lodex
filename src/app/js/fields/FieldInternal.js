@@ -1,7 +1,6 @@
 import React from 'react';
 import translate from 'redux-polyglot/translate';
-import { Box } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box } from '@mui/material';
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
@@ -11,26 +10,28 @@ import FieldToggleInternalScope from './FieldToggleInternalScope';
 import FieldInternalName from './FieldInternalName';
 import FieldInput from '../lib/components/FieldInput';
 
-const useStyles = makeStyles({
-    container: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingTop: '2rem',
-    },
-});
-
-export const FieldInternalComponent = field => {
-    const classes = useStyles();
+export const FieldInternalComponent = ({ field, p: polyglot }) => {
     return (
-        <Box className={classes.container}>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '10px',
+                alignItems: 'center',
+                paddingTop: '2rem',
+                '& .MuiTextField-root': {
+                    flex: 1,
+                },
+            }}
+        >
+            <FieldInternalName field={field} />
+            <Box>{polyglot.t('used_in')}</Box>
             <FieldInput
                 name="internalScopes"
                 component={FieldToggleInternalScope}
                 labelKey="internalScope"
                 fullWidth
             />
-            <FieldInternalName field={field} />
         </Box>
     );
 };

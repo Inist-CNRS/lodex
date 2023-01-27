@@ -18,15 +18,20 @@ const styles = {
     },
 };
 
-export const ActionsComponent = ({ field, p: polyglot, onCancel, onSave }) => {
+export const ActionsComponent = ({
+    currentEditedField,
+    p: polyglot,
+    onCancel,
+    onSave,
+}) => {
     const { filter } = useParams();
-    if (!field) return null;
+    if (!currentEditedField) return null;
 
     return (
         <div style={styles.root}>
-            {field.name !== 'uri' && (
+            {currentEditedField.name !== 'uri' && (
                 <div>
-                    <RemoveButton field={field} filter={filter} />
+                    <RemoveButton field={currentEditedField} filter={filter} />
                 </div>
             )}
             <div>
@@ -52,14 +57,14 @@ export const ActionsComponent = ({ field, p: polyglot, onCancel, onSave }) => {
 };
 
 ActionsComponent.propTypes = {
-    field: fieldPropTypes,
+    currentEditedField: fieldPropTypes,
     onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 ActionsComponent.defaultProps = {
-    field: null,
+    currentEditedField: null,
 };
 
 export default translate(ActionsComponent);
