@@ -112,7 +112,7 @@ const FieldEditionWizardComponent = ({
     };
 
     const handleSave = () => {
-        saveField({ currentEditedField, filter });
+        saveField({ field: currentEditedField, filter });
         handleHideExistingColumns();
     };
 
