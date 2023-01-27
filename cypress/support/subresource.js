@@ -9,7 +9,7 @@ export const fillSubcategoryFormAndSubmit = values => {
         cy.get(`[aria-label="input-${key}"]`).type(values[key]);
     });
 
-    cy.get('button[type="submit"]').click();
+    cy.get('button[type="submit"]').click({ force: true });
 };
 
 export const addField = (name, label, save = true) => {
