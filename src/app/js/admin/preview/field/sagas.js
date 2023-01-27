@@ -4,6 +4,7 @@ import {
     ARRAY_REMOVE as REDUX_FORM_ARRAY_REMOVE,
     INITIALIZE as REDUX_FORM_INITIALIZE,
     ARRAY_MOVE as REDUX_FORM_ARRAY_MOVE,
+    ARRAY_PUSH as REDUX_FORM_ARRAY_PUSH,
 } from 'redux-form/lib/actionTypes';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
@@ -46,6 +47,7 @@ export default function* watchComputePreview() {
             REDUX_FORM_ARRAY_REMOVE,
             REDUX_FORM_INITIALIZE,
             REDUX_FORM_ARRAY_MOVE,
+            REDUX_FORM_ARRAY_PUSH,
         ],
         handleComputeFieldPreview,
     );

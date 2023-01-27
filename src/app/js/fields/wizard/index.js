@@ -15,10 +15,8 @@ import {
     field as fieldPropTypes,
 } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
-import TabValue from './TabValue';
 import Uri from './Uri';
-import TabTransforms from './TabTransforms';
-import TabIdentity from './TabIdentity';
+import TabGeneral from './TabGeneral';
 import TabDisplay from './TabDisplay';
 import TabSearch from './TabSearch';
 import TabSemantics from './TabSemantics';
@@ -121,25 +119,14 @@ const FieldEditionWizardComponent = ({
         {
             label: 'field_wizard_tab_identity',
             id: 'tab-identity',
-            component: <TabIdentity field={field} />,
-        },
-        {
-            label: 'field_wizard_tab_value',
-            id: 'tab-value',
             component: (
-                <TabValue
+                <TabGeneral
+                    field={field}
                     subresourceUri={field.subresourceId}
                     arbitraryMode={[SCOPE_DATASET, SCOPE_GRAPHIC].includes(
                         filter,
                     )}
                 />
-            ),
-        },
-        {
-            label: 'field_wizard_tab_tranforms',
-            id: 'tab-transforms',
-            component: (
-                <TabTransforms isSubresourceField={!!field.subresourceId} />
             ),
         },
         {
@@ -155,7 +142,7 @@ const FieldEditionWizardComponent = ({
         !field.subresourceId && {
             label: 'field_wizard_tab_semantic',
             id: 'tab-semantics',
-            component: <TabSemantics fields={fields} />,
+            component: <TabSemantics fields={fields} field={field} />,
         },
         !field.subresourceId && {
             label: 'field_wizard_tab_search',

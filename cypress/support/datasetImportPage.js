@@ -62,7 +62,6 @@ export const addColumn = (columnName, options = {}) => {
     ).click();
 
     if (options.composedOf && options.composedOf.length > 1) {
-        cy.get('#tab-value').click();
         cy.contains('Existing Column(s)').click();
         cy.get('[data-testid="source-value-from-columns"]').click();
 
@@ -101,8 +100,6 @@ export const addColumn = (columnName, options = {}) => {
 };
 
 export const setOperationTypeInWizard = (value = 'DEFAULT') => {
-    cy.get('.wizard', { timeout: 5000 }).should('be.visible');
-    cy.contains('Transformation').click();
     cy.get('.wizard', { timeout: 5000 }).should('be.visible');
     cy.get('[aria-label="transformer-edit-transformers[0]').click();
     cy.get('[aria-label="Select an operation"]').click();
