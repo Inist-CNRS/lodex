@@ -9,6 +9,7 @@ import { compose } from 'recompose';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import colorsTheme from '../../../custom/colorsTheme';
+import { DocumentScanner as DocumentScannerIcon } from '@mui/icons-material';
 
 const SubresourceMenu = ({ p: polyglot, subresources }) => {
     return (
@@ -20,6 +21,7 @@ const SubresourceMenu = ({ p: polyglot, subresources }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 backgroundColor: colorsTheme.white.primary,
+                alignItems: 'center',
                 position: 'sticky',
                 top: 0,
                 height: '100vh',
@@ -57,6 +59,8 @@ const SubresourceMenu = ({ p: polyglot, subresources }) => {
                             textTransform: 'none',
                             textDecoration: 'none',
                             padding: '10px 20px',
+                            display: 'flex',
+                            alignItems: 'center',
                             color: colorsTheme.black.primary,
                             '&:hover': {
                                 textDecoration: 'none',
@@ -72,6 +76,7 @@ const SubresourceMenu = ({ p: polyglot, subresources }) => {
                         activeClassName="active"
                         to={`/display/document/${subresource._id}`}
                     >
+                        <DocumentScannerIcon sx={{ marginRight: 1 }} />
                         {subresource.name}
                     </Box>
                 ))}
