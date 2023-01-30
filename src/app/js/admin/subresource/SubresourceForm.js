@@ -2,44 +2,20 @@ import React, { useMemo } from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { propTypes as reduxFormPropTypes, Field } from 'redux-form';
-import {
-    TextField as MUITextField,
-    Grid,
-    Button,
-    ListItem,
-    Typography,
-    makeStyles,
-} from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import classnames from 'classnames';
 import SubressourceFieldAutoComplete from './SubressourceFieldAutoComplete';
-import colorsTheme from '../../../custom/colorsTheme';
 import { connect } from 'react-redux';
 import { fromParsing } from '../selectors';
-
-const useStyles = makeStyles({
-    item: {
-        cursor: 'pointer',
-        '&:hover': {
-            backgroundColor: colorsTheme.black.veryLight,
-        },
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        borderBottom: `1px solid ${colorsTheme.black.light}`,
-        '&:last-child': {
-            borderBottom: 'none',
-        },
-    },
-    selectedItem: {
-        backgroundColor: colorsTheme.green.secondary,
-        '&:hover': {
-            backgroundColor: colorsTheme.green.primary,
-        },
-    },
-});
+import {
+    Box,
+    Button,
+    ListItem,
+    Typography,
+    TextField as MUITextField,
+} from '@mui/material';
+import colorsTheme from '../../../custom/colorsTheme';
 
 const TextField = ({
     label,
@@ -88,28 +64,25 @@ const SubresourceFormComponent = ({
     pathSelected,
     change,
 }) => {
-    const classes = useStyles();
     const optionsIdentifier = useMemo(() => {
         const firstExcerptLine = excerptLines[0]?.[pathSelected] || [];
         return getKeys(firstExcerptLine);
     }, [excerptLines, pathSelected]);
 
     return (
-        <form onSubmit={handleSubmit} style={{ maxWidth: 800 }}>
-            <Grid container align="center" style={{ marginBottom: 20 }}>
-                <Grid item style={{ padding: 8 }}>
+        <Box sx={{ background: colorsTheme.green.light, padding: '20px' }}>
+            <form onSubmit={handleSubmit}>
+                <Box display="flex" gap={2}>
                     <Field
                         name="name"
+                        variant="outlined"
                         autoFocus
                         component={TextField}
                         label={polyglot.t('subresource_name')}
                         fullWidth
                         aria-label="input-name"
                     />
-                </Grid>
-            </Grid>
-            <Grid container align="center" style={{ marginBottom: 20 }}>
-                <Grid item xs={6} style={{ padding: 8 }}>
+
                     <Field
                         className="path"
                         name="path"
@@ -124,14 +97,9 @@ const SubresourceFormComponent = ({
                                 aria-label="input-path"
                             />
                         )}
-                        renderOption={(props, option, state) => {
+                        renderOption={(props, option) => {
                             return (
-                                <ListItem
-                                    {...props}
-                                    className={classnames(classes.item, {
-                                        [classes.selectedItem]: state.selected,
-                                    })}
-                                >
+                                <ListItem {...props}>
                                     <Typography>{option}</Typography>
                                 </ListItem>
                             );
@@ -140,8 +108,7 @@ const SubresourceFormComponent = ({
                             change('identifier', '');
                         }}
                     />
-                </Grid>
-                <Grid item xs={6} style={{ padding: 8 }}>
+
                     <Field
                         className="identifier"
                         name="identifier"
@@ -157,23 +124,27 @@ const SubresourceFormComponent = ({
                                 variant="outlined"
                             />
                         )}
-                        renderOption={(props, option, state) => {
+                        renderOption={(props, option) => {
                             return (
-                                <ListItem
-                                    {...props}
-                                    className={classnames(classes.item, {
-                                        [classes.selectedItem]: state.selected,
-                                    })}
-                                >
+                                <ListItem {...props}>
                                     <Typography>{option}</Typography>
                                 </ListItem>
                             );
                         }}
                     />
-                </Grid>
-            </Grid>
-            <Grid container align="center" justifyContent="space-between">
-                <Grid item style={{ padding: 8 }}>
+                </Box>
+                <Box
+                    mt={2}
+                    display="flex"
+                    align="center"
+                    sx={{
+                        display: 'flex',
+                        justifyContent: additionnalActions
+                            ? 'space-between'
+                            : 'flex-end',
+                    }}
+                >
+                    {additionnalActions && additionnalActions}
                     <Button
                         variant="contained"
                         color="primary"
@@ -182,14 +153,9 @@ const SubresourceFormComponent = ({
                     >
                         OK
                     </Button>
-                </Grid>
-                {additionnalActions && (
-                    <Grid item style={{ padding: 8 }}>
-                        {additionnalActions}
-                    </Grid>
-                )}
-            </Grid>
-        </form>
+                </Box>
+            </form>
+        </Box>
     );
 };
 

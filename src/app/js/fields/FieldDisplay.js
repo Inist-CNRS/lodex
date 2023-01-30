@@ -1,13 +1,13 @@
 import React from 'react';
 
-import FormCheckboxField from '../lib/components/FormCheckboxField';
+import FormSwitchField from '../lib/components/FormSwitchField';
 import FieldInput from '../lib/components/FieldInput';
 
 const FieldDisplayInput = () => (
     <FieldInput
         className="display"
         name="display"
-        component={FormCheckboxField}
+        component={FormSwitchField}
         labelKey="field_display"
     />
 );

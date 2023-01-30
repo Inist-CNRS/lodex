@@ -198,8 +198,8 @@ describe('Dataset Publication', () => {
 
             cy.contains('New field').click();
             cy.get('.wizard', { timeout: 10000 }).should('be.visible');
+            cy.wait(1000);
 
-            cy.get('#tab-transforms').click();
             cy.contains('Add an operation').click();
 
             cy.get('[aria-label="Select an operation"]').click();

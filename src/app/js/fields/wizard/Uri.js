@@ -44,16 +44,19 @@ UriComponent.propTypes = {
     currentTransformers: PropTypes.array,
 };
 
-const mapStateToProps = (state, { field }) => ({
+const mapStateToProps = (state, { currentEditedField }) => ({
     datasetFields: fromParsing.getParsedExcerptColumns(state),
-    initialValues: field,
+    initialValues: currentEditedField,
     currentTransformers: formValueSelector(FIELD_FORM_NAME)(
         state,
         'transformers',
     ),
 });
 
-const mapDispatchToProps = (dispatch, { field: { transformers } }) => ({
+const mapDispatchToProps = (
+    dispatch,
+    { currentEditedField: { transformers } },
+) => ({
     handleTransformerChange: valueTransformer => {
         let newTransformers = [];
         const firstTransformerIsValueTransformer =

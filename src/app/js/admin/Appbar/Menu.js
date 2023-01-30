@@ -47,7 +47,7 @@ const MenuComponent = ({
     p: polyglot,
 }) => {
     const [anchorEl, setAnchorEl] = useState(null);
-    const [subMenuToShow, setSubMenuToShow] = useState('model');
+    const [subMenuToShow, setSubMenuToShow] = useState(null);
 
     const [showClearDialog, setShowClearDialog] = useState(false);
     const [clearDialogType, setClearDialogType] = useState(null);
@@ -341,7 +341,6 @@ MenuComponent.propTypes = {
     hasPublishedDataset: PropTypes.bool.isRequired,
     onSignOut: PropTypes.func.isRequired,
     importFields: PropTypes.func.isRequired,
-    importFieldsClosed: PropTypes.func.isRequired,
     nbFields: PropTypes.number.isRequired,
     importSucceeded: PropTypes.bool.isRequired,
     importFailed: PropTypes.bool.isRequired,

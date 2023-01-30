@@ -15,10 +15,8 @@ import {
     field as fieldPropTypes,
 } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
-import TabValue from './TabValue';
 import Uri from './Uri';
-import TabTransforms from './TabTransforms';
-import TabIdentity from './TabIdentity';
+import TabGeneral from './TabGeneral';
 import TabDisplay from './TabDisplay';
 import TabSearch from './TabSearch';
 import TabSemantics from './TabSemantics';
@@ -63,7 +61,7 @@ const useStyles = makeStyles({
 });
 
 const FieldEditionWizardComponent = ({
-    field,
+    currentEditedField,
     fields,
     fieldsFromFilter,
     filter,
@@ -81,19 +79,22 @@ const FieldEditionWizardComponent = ({
             history.push(`/display/${filter}`);
             return;
         }
-        if (!isFieldsLoading && !field) {
+        if (!isFieldsLoading && !currentEditedField) {
             toast(polyglot.t('no_field', { fieldName }), {
                 type: toast.TYPE.ERROR,
             });
             history.push(`/display/${filter}`);
         }
-        if (field && !fieldsFromFilter.some(f => f.name === field.name)) {
+        if (
+            currentEditedField &&
+            !fieldsFromFilter.some(f => f.name === currentEditedField.name)
+        ) {
             toast(polyglot.t('no_field_in_scope', { fieldName, filter }), {
                 type: toast.TYPE.ERROR,
             });
             history.push(`/display/${filter}`);
         }
-    }, [fieldName, field, filter]);
+    }, [fieldName, currentEditedField, filter]);
 
     const handleChange = (_, newValue) => {
         setTabValue(newValue);
@@ -103,32 +104,28 @@ const FieldEditionWizardComponent = ({
         handleHideExistingColumns();
         history.push(
             `/display/${filter}${
-                filter === SCOPE_DOCUMENT && field.subresourceId
-                    ? `/${field.subresourceId}`
+                filter === SCOPE_DOCUMENT && currentEditedField.subresourceId
+                    ? `/${currentEditedField.subresourceId}`
                     : ''
             }`,
         );
     };
 
     const handleSave = () => {
-        saveField({ field, filter });
+        saveField({ field: currentEditedField, filter });
         handleHideExistingColumns();
     };
 
-    if (!field) return null;
+    if (!currentEditedField) return null;
 
     const tabs = [
         {
             label: 'field_wizard_tab_identity',
-            id: 'tab-identity',
-            component: <TabIdentity field={field} />,
-        },
-        {
-            label: 'field_wizard_tab_value',
-            id: 'tab-value',
+            id: 'tab-general',
             component: (
-                <TabValue
-                    subresourceUri={field.subresourceId}
+                <TabGeneral
+                    currentEditedField={currentEditedField}
+                    subresourceUri={currentEditedField.subresourceId}
                     arbitraryMode={[SCOPE_DATASET, SCOPE_GRAPHIC].includes(
                         filter,
                     )}
@@ -136,28 +133,26 @@ const FieldEditionWizardComponent = ({
             ),
         },
         {
-            label: 'field_wizard_tab_tranforms',
-            id: 'tab-transforms',
-            component: (
-                <TabTransforms isSubresourceField={!!field.subresourceId} />
-            ),
-        },
-        {
             label: 'field_wizard_tab_display',
             id: 'tab-display',
             component: (
                 <TabDisplay
-                    isSubresourceField={!!field.subresourceId}
+                    isSubresourceField={!!currentEditedField.subresourceId}
                     filter={filter}
                 />
             ),
         },
-        !field.subresourceId && {
+        !currentEditedField.subresourceId && {
             label: 'field_wizard_tab_semantic',
             id: 'tab-semantics',
-            component: <TabSemantics fields={fields} />,
+            component: (
+                <TabSemantics
+                    fields={fields}
+                    currentEditedField={currentEditedField}
+                />
+            ),
         },
-        !field.subresourceId && {
+        !currentEditedField.subresourceId && {
             label: 'field_wizard_tab_search',
             id: 'tab-search',
             component: <TabSearch />,
@@ -167,12 +162,12 @@ const FieldEditionWizardComponent = ({
     return (
         <Box className={classNames(classes.wizard, 'wizard')}>
             <Typography component="h2" variant="h6" className={classes.title}>
-                {field ? field.label : ''}
+                {currentEditedField ? currentEditedField.label : ''}
             </Typography>
-            {field && (
+            {currentEditedField && (
                 <Box className={classes.container}>
                     <Box id="field_form" className={classes.form}>
-                        {field.name !== URI_FIELD_NAME ? (
+                        {currentEditedField.name !== URI_FIELD_NAME ? (
                             <>
                                 <Tabs
                                     value={tabValue}
@@ -200,7 +195,10 @@ const FieldEditionWizardComponent = ({
                                 ))}
                             </>
                         ) : (
-                            <Uri field={field} fields={fields} />
+                            <Uri
+                                currentEditedField={currentEditedField}
+                                fields={fields}
+                            />
                         )}
                     </Box>
                     <Box className={classes.column}>
@@ -209,7 +207,7 @@ const FieldEditionWizardComponent = ({
                 </Box>
             )}
             <Actions
-                field={field}
+                currentEditedField={currentEditedField}
                 onCancel={handleCancel}
                 onSave={handleSave}
             />
@@ -218,7 +216,7 @@ const FieldEditionWizardComponent = ({
 };
 
 FieldEditionWizardComponent.propTypes = {
-    field: fieldPropTypes,
+    currentEditedField: fieldPropTypes,
     fields: PropTypes.arrayOf(fieldPropTypes),
     fieldsFromFilter: PropTypes.arrayOf(fieldPropTypes),
     filter: PropTypes.string,
@@ -233,18 +231,20 @@ FieldEditionWizardComponent.propTypes = {
 };
 
 FieldEditionWizardComponent.defaultProps = {
-    field: null,
+    currentEditedField: null,
     fields: null,
 };
 
 const mapStateToProps = (state, { match, filter }) => {
     const { fieldName } = match.params;
-    const field = fromFields.getFieldByName(state, fieldName);
+    const currentEditedField = fromFields.getFieldByName(state, fieldName);
 
     return {
-        field,
+        currentEditedField,
         fieldName,
-        fields: field ? fromFields.getFieldsExceptField(state, field) : null,
+        fields: currentEditedField
+            ? fromFields.getFieldsExceptField(state, currentEditedField)
+            : null,
         fieldsFromFilter: fromFields.getOntologyFields(state, filter),
         isFieldsLoading: fromFields.isLoading(state),
     };
@@ -258,15 +258,19 @@ const mapDispatchToProps = {
 export default compose(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
-    withProps(({ field, filter }) => {
+    withProps(({ currentEditedField, filter }) => {
         const fieldFilterAttributes = filter
             ? {
                   scope: filter,
-                  display: field ? field.display : true,
+                  display: currentEditedField
+                      ? currentEditedField.display
+                      : true,
               }
             : {};
 
-        return { initialValues: { ...field, ...fieldFilterAttributes } };
+        return {
+            initialValues: { ...currentEditedField, ...fieldFilterAttributes },
+        };
     }),
     reduxForm({
         form: FIELD_FORM_NAME,

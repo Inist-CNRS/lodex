@@ -1,9 +1,13 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { renderTransformerFunction as renderTransformer } from './TabTransforms';
+import {
+    renderTransformer,
+    TabGeneralComponent as TabGeneral,
+} from './TabGeneral';
 import TransformerList from '../transformers/TransformerList';
+import SourceValueToggleConnected from '../sourceValue/SourceValueToggle';
 
-describe('TabTransforms', () => {
+describe('TabGeneral', () => {
     describe('renderTransformer', () => {
         it('should not render TransformerList if locked prop is truthy', () => {
             const Component = renderTransformer(true, true, { t: key => key });
@@ -52,6 +56,17 @@ describe('TabTransforms', () => {
                 foo: 'bar',
                 hideFirstTransformers: 3,
             });
+        });
+    });
+    describe('SourceValue', () => {
+        const defaultProps = {
+            subresourceUri: undefined,
+            tranformersLocked: false,
+        };
+
+        it('should render TabGeneral with all values when is resource field', () => {
+            const wrapper = shallow(<TabGeneral {...defaultProps} />);
+            expect(wrapper.find(SourceValueToggleConnected)).toHaveLength(1);
         });
     });
 });

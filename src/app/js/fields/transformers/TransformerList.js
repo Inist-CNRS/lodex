@@ -85,7 +85,7 @@ const TransformerList = ({
         });
     };
     return (
-        <Box>
+        <Box pt={2}>
             <Typography sx={{ marginBottom: 2 }}>
                 {polyglot.t('transformers')}
             </Typography>
