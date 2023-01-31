@@ -185,6 +185,13 @@ export const getUpdateFieldRequest = (state, { _id, ...fieldData }) =>
         method: 'PATCH',
     });
 
+export const getPatchSearchableFieldsRequest = (state, fieldsData) =>
+    getRequest(state, {
+        url: `/api/field/searchable`,
+        body: fieldsData,
+        method: 'PATCH',
+    });
+
 export const getSaveFieldRequest = (state, fieldData) => {
     if (fieldData.name === 'new') {
         return getCreateFieldRequest(state, omit(fieldData, ['name']));
@@ -553,4 +560,5 @@ export const selectors = {
     getLoaderWithScriptRequest,
     postDuplicateField,
     clearModelRequest,
+    getPatchSearchableFieldsRequest,
 };

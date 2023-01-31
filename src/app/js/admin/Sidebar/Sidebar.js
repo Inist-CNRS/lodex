@@ -10,6 +10,7 @@ import SourceIcon from '@mui/icons-material/Source';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import ArticleIcon from '@mui/icons-material/Article';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import translate from 'redux-polyglot/translate';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -111,6 +112,15 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                 primaryText={polyglot.t('graph_pages')}
                 leftIcon={<EqualizerIcon />}
                 key="display-graph-pages"
+            />
+        ),
+
+        matchDisplayRoute && (
+            <MenuItemLink
+                to={`/display/search`}
+                primaryText={polyglot.t('search_page')}
+                leftIcon={<ManageSearchIcon />}
+                key="display-search-page"
             />
         ),
     ].filter(Boolean);
