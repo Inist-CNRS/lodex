@@ -2,6 +2,7 @@ const {
     postDuplicateField,
     clearModelRequest,
     getUpdateFieldRequest,
+    getPatchSearchableFieldsRequest,
 } = require('../../user');
 
 import { getUserLocalStorageInfo } from './tools';
@@ -43,4 +44,21 @@ const patchField = async field => {
     });
 };
 
-export default { duplicateField, clearModel, patchField };
+const patchSearchableFields = async fields => {
+    const { token } = getUserLocalStorageInfo();
+    const request = getPatchSearchableFieldsRequest({ token }, fields);
+    return fetch(request).then(({ response, error }) => {
+        if (error) {
+            return error;
+        }
+        store.dispatch(saveFieldSuccess());
+        return response;
+    });
+};
+
+export default {
+    duplicateField,
+    clearModel,
+    patchField,
+    patchSearchableFields,
+};

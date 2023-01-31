@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
+import fieldApi from '../../admin/api/field';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
+import SearchAutocomplete from './SearchAutocomplete';
 
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -9,102 +11,121 @@ import { loadField } from '../../fields';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { Box } from '@mui/system';
 import {
-    Autocomplete,
     Checkbox,
     List,
     ListItem,
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    MenuItem,
-    TextField,
 } from '@mui/material';
-import FieldInternalIcon from '../../fields/FieldInternalIcon';
 import { Typography } from '@material-ui/core';
 
-const AutocompleteSearch = ({ fields, onChange, value, translation }) => {
-    return (
-        <Autocomplete
-            labelId="autocomplete_search_in_fields"
-            data-testid="autocomplete_search_in_fields"
-            fullWidth
-            options={fields}
-            value={value}
-            multiple
-            renderInput={params => (
-                <TextField
-                    {...params}
-                    label={translation}
-                    placeholder={translation}
-                />
-            )}
-            renderOption={(props, option) =>
-                !!option.label && (
-                    <MenuItem
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Box>
-                            {option.label} ({option.name})
-                        </Box>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                            {option.internalScopes &&
-                                option.internalScopes.map(internalScope => (
-                                    <FieldInternalIcon
-                                        key={internalScope}
-                                        scope={internalScope}
-                                    />
-                                ))}
-                            {option.internalName}
-                        </Box>
-                    </MenuItem>
-                )
-            }
-            onChange={onChange}
-        />
-    );
-};
+import * as overview from '../../../../common/overview';
+import { toast } from 'react-toastify';
+
+const getSearchableFields = fields => fields.filter(f => f.searchable) || [];
+
+const getFaceFields = fields => fields.filter(f => f.isFacet) || [];
+
+const getResourceTitle = fields =>
+    fields.find(f => f.overview === overview.RESOURCE_TITLE) || null;
+const getResourceDescription = fields =>
+    fields.find(f => f.overview === overview.RESOURCE_DESCRIPTION) || null;
+const getResourceDetailFirst = fields =>
+    fields.find(f => f.overview === overview.RESOURCE_DETAIL_1) || null;
+const getResourceDetailSecond = fields =>
+    fields.find(f => f.overview === overview.RESOURCE_DETAIL_2) || null;
 
 export const SearchForm = ({ fields, loadField, p: polyglot }) => {
-    const [searchInFields, setSearchInFields] = React.useState([]);
-    const [facetChecked, setFacetChecked] = React.useState([]);
-    const [resourceTitle, setResourceTitle] = React.useState([]);
-    const [resourceDescription, setResourceDescription] = React.useState([]);
-    const [resourceDetailFirst, setResourceDetailFirst] = React.useState([]);
-    const [resourceDetailSecond, setResourceDetailSecond] = React.useState([]);
+    const [searchInFields, setSearchInFields] = React.useState(
+        getSearchableFields(fields),
+    );
+
+    const [facetChecked, setFacetChecked] = React.useState(
+        getFaceFields(fields),
+    );
+
+    const [resourceTitle, setResourceTitle] = React.useState(
+        getResourceTitle(fields),
+    );
+    const [resourceDescription, setResourceDescription] = React.useState(
+        getResourceDescription(fields),
+    );
+    const [resourceDetailFirst, setResourceDetailFirst] = React.useState(
+        getResourceDetailFirst(fields),
+    );
+    const [resourceDetailSecond, setResourceDetailSecond] = React.useState(
+        getResourceDetailSecond(fields),
+    );
 
     useEffect(() => {
         loadField();
     }, []);
 
-    const handleSearchInFieldsChange = (event, value) => {
+    // We could lower the complexity with only one map. But it's more readable like this. And the performance is not a problem here.
+    useEffect(() => {
+        setSearchInFields(getSearchableFields(fields));
+        setFacetChecked(getFaceFields(fields));
+        setResourceTitle(getResourceTitle(fields));
+        setResourceDescription(getResourceDescription(fields));
+        setResourceDetailFirst(getResourceDetailFirst(fields));
+        setResourceDetailSecond(getResourceDetailSecond(fields));
+    }, [fields]);
+
+    const handleSearchInFieldsChange = async (event, value) => {
         setSearchInFields(value);
-    };
-    const handleSResourceTitle = (event, value) => {
-        setResourceTitle(value);
-    };
-    const handleSResourceDescription = (event, value) => {
-        setResourceDescription(value);
-    };
-    const handleSResourceDetailFirst = (event, value) => {
-        setResourceDetailFirst(value);
-    };
-    const handleSResourceDetailSecond = (event, value) => {
-        setResourceDetailSecond(value);
+        const res = await fieldApi.patchSearchableFields(value);
+        if (res) {
+            toast(polyglot.t('searchable_success'), {
+                type: toast.TYPE.SUCCESS,
+                autoClose: 2000,
+            });
+        } else {
+            toast(polyglot.t('searchable_error'), {
+                type: toast.TYPE.ERROR,
+                autoClose: 2000,
+            });
+        }
     };
 
-    const handleFacetCheckedChange = value => {
+    const saveSyndication = async (value, overview) => {
+        const { _id } = value;
+        const res = await fieldApi.patchField({
+            _id,
+            overview,
+        });
+        if (res) {
+            toast(polyglot.t('syndication_success'), {
+                type: toast.TYPE.SUCCESS,
+                autoClose: 2000,
+            });
+            loadField();
+        } else {
+            toast(polyglot.t('syndication_error'), {
+                type: toast.TYPE.ERROR,
+                autoClose: 2000,
+            });
+        }
+    };
+
+    const handleSResourceTitle = async (event, value) => {
+        saveSyndication(value, overview.RESOURCE_TITLE);
+    };
+    const handleSResourceDescription = async (event, value) => {
+        saveSyndication(value, overview.RESOURCE_DESCRIPTION);
+    };
+    const handleSResourceDetailFirst = async (event, value) => {
+        saveSyndication(value, overview.RESOURCE_DETAIL_1);
+    };
+    const handleSResourceDetailSecond = async (event, value) => {
+        saveSyndication(value, overview.RESOURCE_DETAIL_2);
+    };
+
+    const handleFacetCheckedChange = async value => {
         const currentIndex = facetChecked.findIndex(
             item => item.name === value.name,
         );
+        const oldChecked = [...facetChecked];
         const newChecked = [...facetChecked];
 
         if (currentIndex === -1) {
@@ -114,34 +135,55 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         }
 
         setFacetChecked(newChecked);
+
+        const { _id } = value;
+        const res = await fieldApi.patchField({
+            _id,
+            isFacet: currentIndex === -1,
+        });
+        if (res) {
+            toast(polyglot.t('facet_success'), {
+                type: toast.TYPE.SUCCESS,
+                autoClose: 2000,
+            });
+        } else {
+            toast(polyglot.t('facet_error'), {
+                type: toast.TYPE.ERROR,
+                autoClose: 2000,
+            });
+            setFacetChecked(oldChecked);
+        }
     };
+
     return (
         <Box>
             <Box display="flex" flexDirection="column" mb={5}>
                 <Typography variant="caption" sx={{ margin: 'auto' }}>
-                    Search input
+                    {polyglot.t('search_input')}
                 </Typography>
                 <Box sx={{ border: '1px dashed', padding: 2 }}>
-                    <AutocompleteSearch
+                    <SearchAutocomplete
+                        testId="autocomplete_search_in_fields"
                         translation={polyglot.t('search_in_fields')}
                         fields={fields}
                         onChange={handleSearchInFieldsChange}
                         value={searchInFields}
+                        multiple
                     />
                 </Box>
             </Box>
 
-            <Box display="flex" gap={10}>
+            <Box display="flex" alignItems={'stretch'} gap={10}>
                 <Box display="flex" flex={1} flexDirection="column">
                     <Typography variant="caption" sx={{ margin: 'auto' }}>
-                        Facet
+                        {polyglot.t('facet')}
                     </Typography>
                     <Box sx={{ border: '1px dashed' }}>
                         <List
                             sx={{
                                 width: '100%',
                                 bgcolor: 'background.paper',
-                                maxHeight: 400,
+                                maxHeight: 300,
                                 overflow: 'auto',
                                 padding: 2,
                             }}
@@ -188,28 +230,36 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
 
                 <Box display="flex" flex={1} flexDirection="column">
                     <Typography variant="caption" sx={{ margin: 'auto' }}>
-                        Resource result
+                        {polyglot.t('search_syndication')}
                     </Typography>
                     <Box
                         display="flex"
                         flexDirection="column"
-                        gap={5}
-                        sx={{ border: '1px dashed', padding: 2 }}
+                        justifyContent={'space-between'}
+                        sx={{
+                            border: '1px dashed',
+                            padding: 2,
+                            flexGrow: 1,
+                            gap: 2,
+                        }}
                     >
-                        <AutocompleteSearch
+                        <SearchAutocomplete
+                            testId="autocomplete_search_title_syndication"
                             translation={polyglot.t('resource_title')}
                             fields={fields}
                             onChange={handleSResourceTitle}
                             value={resourceTitle}
                         />
-                        <AutocompleteSearch
+                        <SearchAutocomplete
+                            testId="autocomplete_search_description_syndication"
                             translation={polyglot.t('resource_description')}
                             fields={fields}
                             onChange={handleSResourceDescription}
                             value={resourceDescription}
                         />
                         <Box display="flex" gap={2}>
-                            <AutocompleteSearch
+                            <SearchAutocomplete
+                                testId="autocomplete_search_detail_first_syndication"
                                 translation={polyglot.t(
                                     'resource_detail_first',
                                 )}
@@ -217,7 +267,8 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 onChange={handleSResourceDetailFirst}
                                 value={resourceDetailFirst}
                             />
-                            <AutocompleteSearch
+                            <SearchAutocomplete
+                                testId="autocomplete_search_detail_second_syndication"
                                 translation={polyglot.t(
                                     'resource_detail_second',
                                 )}
