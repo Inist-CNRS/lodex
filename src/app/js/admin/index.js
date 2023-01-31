@@ -30,6 +30,13 @@ import Login from '../user/Login';
 import PrivateRoute from './PrivateRoute';
 import { Display } from './Display';
 import { Data } from './Data';
+import { frFR as frFRDatagrid, enUS as enUSDatagrid } from '@mui/x-data-grid';
+import { frFR, enUS } from '@mui/material/locale';
+
+const localesMUI = new Map([
+    ['fr', { ...frFR, ...frFRDatagrid }],
+    ['en', { ...enUS, ...enUSDatagrid }],
+]);
 
 const theme = {
     palette: {
@@ -67,8 +74,12 @@ export const store = configureStore(
 
 render(
     <Provider store={store}>
-        <MaterialThemeProvider theme={createTheme(theme)}>
-            <ThemeProvider theme={createThemeMui(theme)}>
+        <MaterialThemeProvider
+            theme={createTheme(theme, localesMUI.get(locale))}
+        >
+            <ThemeProvider
+                theme={createThemeMui(theme, localesMUI.get(locale))}
+            >
                 <ConnectedRouter history={history} onUpdate={scrollToTop}>
                     <App>
                         <Route
