@@ -363,31 +363,35 @@ const DraggableItemGrid = compose(
                                         'duplicate_field_tooltip',
                                     )}
                                 >
-                                    <IconButton
-                                        className={classNames(
-                                            classes.otherIcon,
-                                        )}
-                                        onClick={e => {
-                                            handleDuplicateField(e, field);
-                                        }}
-                                        aria-label={`duplicate-${field.label}`}
-                                        disabled={isFieldsLoading}
-                                    >
-                                        <FileCopyIcon />
-                                    </IconButton>
+                                    <Box>
+                                        <IconButton
+                                            className={classNames(
+                                                classes.otherIcon,
+                                            )}
+                                            onClick={e => {
+                                                handleDuplicateField(e, field);
+                                            }}
+                                            aria-label={`duplicate-${field.label}`}
+                                            disabled={isFieldsLoading}
+                                        >
+                                            <FileCopyIcon />
+                                        </IconButton>
+                                    </Box>
                                 </Tooltip>
                                 <Tooltip
                                     title={polyglot.t('setting_field_tooltip')}
                                 >
-                                    <IconButton
-                                        className={classNames(
-                                            classes.otherIcon,
-                                        )}
-                                        aria-label={`edit-${field.label}`}
-                                        disabled={isFieldsLoading}
-                                    >
-                                        <SettingsIcon />
-                                    </IconButton>
+                                    <Box>
+                                        <IconButton
+                                            className={classNames(
+                                                classes.otherIcon,
+                                            )}
+                                            aria-label={`edit-${field.label}`}
+                                            disabled={isFieldsLoading}
+                                        >
+                                            <SettingsIcon />
+                                        </IconButton>
+                                    </Box>
                                 </Tooltip>
                                 {!field.display && <HiddenIcon />}
                             </Box>
@@ -400,7 +404,7 @@ const DraggableItemGrid = compose(
 );
 
 DraggableItemGrid.propTypes = {
-    onEditField: PropTypes.func.isRequired,
+    onEditField: PropTypes.func,
     onChangeWidth: PropTypes.func.isRequired,
     onChangePositions: PropTypes.func.isRequired,
     allowResize: PropTypes.bool,
@@ -416,7 +420,7 @@ DraggableItemGrid.propTypes = {
         }),
     ).isRequired,
     polyglot: PropTypes.object.isRequired,
-    loadField: PropTypes.func.isRequired,
+    loadField: PropTypes.func,
     filter: PropTypes.string.isRequired,
     isFieldsLoading: PropTypes.bool,
     subresourceId: PropTypes.string,
