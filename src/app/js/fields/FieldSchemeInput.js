@@ -4,31 +4,10 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
-import { MenuItem } from '@material-ui/core';
+import { MenuItem, Box } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormAutoCompleteField from '../lib/components/FormAutoCompleteField';
-
-const styles = {
-    menuItem: {
-        lineHeight: 1,
-    },
-    schemeLabel: {
-        fontSize: '0.9em',
-        margin: 0,
-        padding: '0.2em 0',
-    },
-    schemeUri: {
-        fontSize: '0.7em',
-        color: 'grey',
-        margin: 0,
-        padding: 0,
-    },
-    targetOrigin: {
-        vertical: 'bottom',
-        horizontal: 'left',
-    },
-};
 
 export const FieldSchemeInputComponent = ({
     className,
@@ -46,18 +25,42 @@ export const FieldSchemeInputComponent = ({
         component={FormAutoCompleteField}
         label={polyglot.t('scheme')}
         fullWidth
-        style={styles.targetOrigin}
+        style={{
+            vertical: 'bottom',
+            horizontal: 'left',
+        }}
         getFetchRequest={getSchemeSearchRequest}
         parseResponse={response =>
             getSchemeMenuItemsDataFromResponse(response).map(
                 ({ label, uri }) => ({
                     text: uri,
                     value: (
-                        <MenuItem style={styles.menuItem} value={uri}>
-                            <div style={styles.schemeLabel}>
+                        <MenuItem
+                            sx={{
+                                lineHeight: 1,
+                            }}
+                            value={uri}
+                        >
+                            <Box
+                                sx={{
+                                    fontSize: '0.9em',
+                                    margin: 0,
+                                    padding: '0.2em 0',
+                                }}
+                            >
                                 <b>{label}</b>
-                            </div>
-                            <small style={styles.schemeUri}>{uri}</small>
+                            </Box>
+                            <Box
+                                component="small"
+                                sx={{
+                                    fontSize: '0.7em',
+                                    color: 'grey',
+                                    margin: 0,
+                                    padding: 0,
+                                }}
+                            >
+                                {uri}
+                            </Box>
                         </MenuItem>
                     ),
                 }),

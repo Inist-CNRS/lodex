@@ -14,13 +14,13 @@ import { connect } from 'react-redux';
 import { change, formValueSelector } from 'redux-form';
 import { FIELD_FORM_NAME } from '..';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { Typography } from '@material-ui/core';
 import { styled } from '@mui/material/styles';
 
 import {
     Box,
     ToggleButtonGroup,
     ToggleButton as MuiToggleButton,
+    Typography,
 } from '@mui/material';
 import SourceValueFromSubResource from './SourceValueFromSubResource';
 
@@ -264,8 +264,8 @@ export const SourceValueToggle = ({
     };
 
     return (
-        <Box pt={2}>
-            <Typography variant="subtitle1">
+        <Box pt={5}>
+            <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
                 {polyglot.t('source_value')}
             </Typography>
             <ToggleButtonGroup

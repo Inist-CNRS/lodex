@@ -13,38 +13,15 @@ import {
     Dialog,
     DialogContent,
     DialogTitle,
-    ListItem,
     TextField,
     Typography,
+    DialogActions,
+    ListItemButton,
 } from '@mui/material';
 
-import classNames from 'classnames';
 import colorsTheme from '../../../custom/colorsTheme';
-import { DialogActions, makeStyles } from '@material-ui/core';
 import TransformerArg from './TransformerArg';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-
-const useStyles = makeStyles({
-    item: {
-        cursor: 'pointer',
-        '&:hover': {
-            backgroundColor: colorsTheme.black.veryLight,
-        },
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        borderBottom: `1px solid ${colorsTheme.black.light}`,
-        '&:last-child': {
-            borderBottom: 'none',
-        },
-    },
-    selectedItem: {
-        backgroundColor: colorsTheme.green.secondary,
-        '&:hover': {
-            backgroundColor: colorsTheme.green.primary,
-        },
-    },
-});
 
 const TransformerUpsertDialog = ({
     availableTransformers,
@@ -54,7 +31,6 @@ const TransformerUpsertDialog = ({
     handleClose,
     p: polyglot,
 }) => {
-    const classes = useStyles();
     const [transformer, setTransformer] = React.useState(
         indexFieldToEdit !== null ? fields.get(indexFieldToEdit) : {},
     );
@@ -109,20 +85,40 @@ const TransformerUpsertDialog = ({
                         )}
                         renderOption={(props, option, state) => {
                             return (
-                                <ListItem
+                                <ListItemButton
                                     {...props}
-                                    className={classNames(classes.item, {
-                                        [classes.selectedItem]: state.selected,
-                                    })}
+                                    sx={{
+                                        cursor: 'pointer',
+                                        '&:hover': {
+                                            backgroundColor:
+                                                colorsTheme.black.veryLight,
+                                        },
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        borderBottom: `1px solid ${colorsTheme.black.light}`,
+                                        '&:last-child': {
+                                            borderBottom: 'none',
+                                        },
+                                        '&.MuiAutocomplete-option[aria-selected="true"].Mui-selected': {
+                                            backgroundColor:
+                                                colorsTheme.green.secondary,
+                                            '&:hover': {
+                                                backgroundColor:
+                                                    colorsTheme.green.primary,
+                                            },
+                                        },
+                                    }}
+                                    selected={state.selected}
                                 >
                                     <Typography>{option}</Typography>
                                     <Typography
                                         variant="body2"
                                         color="textSecondary"
+                                        sx={{ width: '100%' }}
                                     >
                                         {polyglot.t(`transformer_${option}`)}
                                     </Typography>
-                                </ListItem>
+                                </ListItemButton>
                             );
                         }}
                     />

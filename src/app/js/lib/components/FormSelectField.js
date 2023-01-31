@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-    Select,
-    FormControl,
-    FormHelperText,
-    InputLabel,
-} from '@material-ui/core';
+import { TextField } from '@mui/material';
 
 import { formField as formFieldPropTypes } from '../../propTypes';
 
@@ -16,16 +11,16 @@ const FormSelectField = ({
     meta: { touched, error },
     ...props
 }) => (
-    <FormControl fullWidth>
-        <InputLabel>{label}</InputLabel>
-        <Select
-            error={touched && error}
-            {...input}
-            onChange={e => input.onChange(e.target.value)}
-            {...props}
-        />
-        <FormHelperText>{hint}</FormHelperText>
-    </FormControl>
+    <TextField
+        select
+        fullWidth
+        label={label}
+        helperText={hint}
+        error={touched && error}
+        {...input}
+        onChange={e => input.onChange(e.target.value)}
+        {...props}
+    />
 );
 
 FormSelectField.propTypes = formFieldPropTypes;

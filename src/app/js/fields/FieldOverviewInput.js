@@ -55,6 +55,9 @@ export const OverviewFieldComponent = ({ p: polyglot, isSubresourceField }) => {
             label={polyglot.t('overview')}
             className="field-overview"
             fullWidth
+            props={{
+                sx: { marginTop: 5 },
+            }}
         >
             {overviewMenuItems}
         </Field>
