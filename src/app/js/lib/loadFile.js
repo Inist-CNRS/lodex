@@ -17,7 +17,10 @@ export const loadFile = (url, file, token, customLoader = null) =>
         }
 
         const resumable = new Resumable(options);
-        resumable.on('complete', resolve);
+
+        resumable.on('fileSuccess', (_, message) => {
+            resolve(message);
+        });
         resumable.on('error', (_, error) => reject(error));
 
         resumable.on('fileAdded', () => {

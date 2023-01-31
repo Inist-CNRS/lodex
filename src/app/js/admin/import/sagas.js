@@ -23,7 +23,11 @@ export function* handleLoadModel(action) {
         if (cancel) {
             return;
         }
-        yield put(importFieldsSuccess(file));
+        yield put(
+            importFieldsSuccess({
+                hasEnrichments: JSON.parse(file).hasEnrichments,
+            }),
+        );
         yield put(importFieldsClosed());
     } catch (error) {
         yield put(importFieldsError(error));
