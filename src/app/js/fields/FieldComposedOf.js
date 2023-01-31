@@ -1,6 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography, Autocomplete, TextField } from '@mui/material';
+import {
+    Box,
+    Typography,
+    Autocomplete,
+    TextField,
+    MenuItem,
+} from '@mui/material';
+import FieldInternalIcon from './FieldInternalIcon';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -14,12 +21,13 @@ import {
 } from '../propTypes';
 
 const FieldComposedOf = ({ onChange, fields, p: polyglot, columns }) => {
-    const autocompleteOptions = fields.map(field => field.name);
-
+    const autocompleteValue = columns.map(column => {
+        return fields.find(field => field.name === column);
+    });
     const handleChange = (event, value) => {
         onChange({
             isComposedOf: value.length > 0,
-            fields: value,
+            fields: value.map(field => field.name),
         });
     };
 
@@ -31,17 +39,49 @@ const FieldComposedOf = ({ onChange, fields, p: polyglot, columns }) => {
             <Autocomplete
                 multiple
                 fullWidth
-                options={autocompleteOptions}
-                getOptionLabel={option =>
-                    fields.find(field => field.name === option)?.label ?? option
-                }
-                value={columns ?? []}
+                options={fields}
+                getOptionLabel={option => `${option.label} (${option.name})`}
+                value={autocompleteValue ?? []}
                 renderInput={params => (
                     <TextField
                         {...params}
                         label={polyglot.t('fields_composed_of')}
                     />
                 )}
+                renderOption={(props, option) =>
+                    !!option.label && (
+                        <MenuItem
+                            sx={{
+                                '&.MuiAutocomplete-option': {
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                },
+                            }}
+                            {...props}
+                        >
+                            <Box>
+                                {option.label} ({option.name})
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                {option.internalScopes &&
+                                    option.internalScopes.map(internalScope => (
+                                        <FieldInternalIcon
+                                            key={internalScope}
+                                            scope={internalScope}
+                                        />
+                                    ))}
+                                {option.internalName}
+                            </Box>
+                        </MenuItem>
+                    )
+                }
                 onChange={handleChange}
             />
         </Box>
