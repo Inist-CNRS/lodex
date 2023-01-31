@@ -22,6 +22,7 @@ import { Typography } from '@material-ui/core';
 
 import * as overview from '../../../../common/overview';
 import { toast } from 'react-toastify';
+import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../../../common/scope';
 
 const getSearchableFields = fields => fields.filter(f => f.searchable) || [];
 
@@ -71,6 +72,10 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         setResourceDetailFirst(getResourceDetailFirst(fields));
         setResourceDetailSecond(getResourceDetailSecond(fields));
     }, [fields]);
+
+    const fieldsForResourceSyndication = fields.filter(
+        f => f.scope === SCOPE_DOCUMENT || f.scope === SCOPE_COLLECTION,
+    );
 
     const handleSearchInFieldsChange = async (event, value) => {
         setSearchInFields(value);
@@ -246,14 +251,14 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                         <SearchAutocomplete
                             testId="autocomplete_search_title_syndication"
                             translation={polyglot.t('resource_title')}
-                            fields={fields}
+                            fields={fieldsForResourceSyndication}
                             onChange={handleSResourceTitle}
                             value={resourceTitle}
                         />
                         <SearchAutocomplete
                             testId="autocomplete_search_description_syndication"
                             translation={polyglot.t('resource_description')}
-                            fields={fields}
+                            fields={fieldsForResourceSyndication}
                             onChange={handleSResourceDescription}
                             value={resourceDescription}
                         />
@@ -263,7 +268,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 translation={polyglot.t(
                                     'resource_detail_first',
                                 )}
-                                fields={fields}
+                                fields={fieldsForResourceSyndication}
                                 onChange={handleSResourceDetailFirst}
                                 value={resourceDetailFirst}
                             />
@@ -272,7 +277,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 translation={polyglot.t(
                                     'resource_detail_second',
                                 )}
-                                fields={fields}
+                                fields={fieldsForResourceSyndication}
                                 onChange={handleSResourceDetailSecond}
                                 value={resourceDetailSecond}
                             />
