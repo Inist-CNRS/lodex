@@ -21,6 +21,7 @@ import {
 import { PENDING } from '../../../common/enrichmentStatus';
 import { dropJobs } from '../../workers/tools';
 import { ENRICHER } from '../../workers/enricher';
+import { ObjectID } from 'mongodb';
 import generateUid from '../../services/generateUid';
 
 const sortByFieldUri = (a, b) =>
@@ -197,6 +198,34 @@ export const patchField = async (ctx, id) => {
     }
 };
 
+export const patchSearchableFields = async ctx => {
+    const fields = ctx.request.body;
+
+    try {
+        const ids = fields.map(field => new ObjectID(field._id));
+        await ctx.field.updateMany(
+            { _id: { $in: ids } },
+            { $set: { searchable: true } },
+        );
+
+        await ctx.field.updateMany(
+            { _id: { $nin: ids } },
+            { $set: { searchable: false } },
+        );
+
+        await indexSearchableFields();
+        ctx.body = 'ok';
+    } catch (error) {
+        ctx.status = 403;
+        ctx.body = { error: error.message };
+        return;
+    }
+
+    if ((await ctx.publishedDataset.countAll()) > 0) {
+        await ctx.publishFacets(ctx, [ctx.body], false);
+    }
+};
+
 export const removeField = async (ctx, id) => {
     ctx.body = await ctx.field.removeById(id);
     await indexSearchableFields();
@@ -357,6 +386,7 @@ app.use(koaBodyParser());
 app.use(route.post('/', postField));
 app.use(route.post('/duplicate', duplicateField));
 app.use(route.put('/reorder', reorderField));
+app.use(route.patch('/searchable', patchSearchableFields));
 app.use(route.patch('/:id', patchField));
 app.use(route.del('/:id', removeField));
 
