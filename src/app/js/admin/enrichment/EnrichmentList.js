@@ -17,6 +17,7 @@ import {
 } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const EnrichmentList = ({ enrichments, p: polyglot }) => {
     const history = useHistory();
@@ -101,7 +102,7 @@ export const EnrichmentList = ({ enrichments, p: polyglot }) => {
 
 EnrichmentList.propTypes = {
     enrichments: PropTypes.array.isRequired,
-    p: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({
