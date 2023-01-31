@@ -48,9 +48,16 @@ export const fillTabDisplayFormat = format => {
     cy.get(`[role="listbox"] li[data-value="${format}"]`).click();
 };
 
-export const fillTabDisplaySyndication = syndication => {
-    cy.get('.field-overview').click();
-    cy.get(`[role="listbox"] li[data-value="${syndication}"]`).click();
+export const fillSyndication = (syndication, columnName) => {
+    cy.get('.sidebar')
+        .contains('Search')
+        .click();
+    cy.get(
+        `[data-testid="autocomplete_search_syndication_${syndication}"]`,
+    ).click();
+    cy.get('[role="listbox"]')
+        .contains(new RegExp(`^${columnName}\\s\\(\\w+\\)`))
+        .click();
 };
 
 export const addColumn = (columnName, options = {}) => {
@@ -76,27 +83,29 @@ export const addColumn = (columnName, options = {}) => {
 
     if (options.display) {
         cy.get('#tab-display').click();
-        const { format, syndication } = options.display;
+        const { format } = options.display;
 
         if (format) {
             fillTabDisplayFormat(format);
         }
-
-        if (syndication) {
-            fillTabDisplaySyndication(1);
-        }
-    }
-
-    if (options.searchable) {
-        cy.get('#tab-search').click();
-
-        cy.contains(
-            'Searchable - global full text search will target this field',
-        ).click();
     }
 
     cy.get('.btn-save').click();
     cy.get('.wizard').should('not.exist');
+
+    if (options.searchable) {
+        cy.get('.sidebar')
+            .contains('Search')
+            .click();
+        cy.get('[data-testid="autocomplete_search_in_fields"]').click();
+        cy.get('[role="listbox"]')
+            .contains(columnName)
+            .click();
+    }
+
+    if (options.syndication) {
+        fillSyndication(options.syndication, columnName);
+    }
 };
 
 export const setOperationTypeInWizard = (value = 'DEFAULT') => {

@@ -8,7 +8,6 @@ import FieldWidthInput from '../FieldWidthInput';
 import FieldComposedOf from '../FieldComposedOf';
 import FieldAnnotation from '../FieldAnnotation';
 import { field as fieldPropTypes } from '../../propTypes';
-import { SCOPE_DATASET } from '../../../../common/scope';
 
 export const TabDisplayComponent = ({
     keepMeta = true,
@@ -18,7 +17,7 @@ export const TabDisplayComponent = ({
 }) => (
     <>
         {keepMeta && <FieldDisplayInput />}
-        {keepMeta && filter !== SCOPE_DATASET && (
+        {keepMeta && isSubresourceField && (
             <FieldOverviewInput isSubresourceField={isSubresourceField} />
         )}
         <FieldFormatInput />

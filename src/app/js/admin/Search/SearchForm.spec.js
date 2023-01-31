@@ -3,6 +3,7 @@ import React from 'react';
 import { SearchForm } from './SearchForm';
 
 import fieldApi from '../../admin/api/field';
+import * as overview from '../../../../common/overview';
 import { fireEvent, render, within } from '@testing-library/react';
 jest.mock('../../admin/api/field', () => ({
     patchSearchableFields: jest.fn(),
@@ -58,7 +59,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = getByTestId(
-            'autocomplete_search_title_syndication',
+            `autocomplete_search_syndication_${overview.RESOURCE_TITLE}}`,
         );
         const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
@@ -91,7 +92,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = getByTestId(
-            'autocomplete_search_description_syndication',
+            `autocomplete_search_syndication_${overview.RESOURCE_DESCRIPTION}}`,
         );
         const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
@@ -124,7 +125,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = getByTestId(
-            'autocomplete_search_detail_first_syndication',
+            `autocomplete_search_syndication_${overview.RESOURCE_DETAIL_1}}`,
         );
         const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
@@ -157,7 +158,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = getByTestId(
-            'autocomplete_search_detail_second_syndication',
+            `autocomplete_search_syndication_${overview.RESOURCE_DETAIL_2}}`,
         );
         const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
