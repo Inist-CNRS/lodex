@@ -9,12 +9,16 @@ import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
 } from '../propTypes';
-import { loadField } from './';
+import { loadField } from '.';
 import { fromFields } from '../sharedSelectors';
 import { SCOPE_DATASET } from '../../../common/scope';
 import fieldApi from '../admin/api/field';
 
-export const OverviewSelectComponent = ({ p: polyglot, fields, loadField }) => {
+export const DatasetOverviewSelectComponent = ({
+    p: polyglot,
+    fields,
+    loadField,
+}) => {
     const [datasetTitle, datasetDescription] = useMemo(() => {
         const datasetTitleField = fields.find(
             field => field.overview === overview.DATASET_TITLE,
@@ -75,7 +79,7 @@ export const OverviewSelectComponent = ({ p: polyglot, fields, loadField }) => {
     );
 };
 
-OverviewSelectComponent.propTypes = {
+DatasetOverviewSelectComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes),
     loadField: PropTypes.func.isRequired,
@@ -92,4 +96,4 @@ const mapDispatchToProps = {
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
-)(OverviewSelectComponent);
+)(DatasetOverviewSelectComponent);

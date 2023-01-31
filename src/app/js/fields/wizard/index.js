@@ -105,13 +105,7 @@ const FieldEditionWizardComponent = ({
         {
             label: 'field_wizard_tab_display',
             id: 'tab-display',
-            component: (
-                <TabDisplay
-                    isSubresourceField={!!currentEditedField.subresourceId}
-                    filter={filter}
-                    fields={fields}
-                />
-            ),
+            component: <TabDisplay filter={filter} fields={fields} />,
         },
         !currentEditedField.subresourceId && {
             label: 'field_wizard_tab_semantic',
