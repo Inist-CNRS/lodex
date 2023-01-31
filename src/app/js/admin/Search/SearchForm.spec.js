@@ -40,8 +40,13 @@ describe('handleSearchInFieldsChange', () => {
 describe('saveSyndication', () => {
     it('should call fieldApi.patchField when update title syndication', async () => {
         const fields = [
-            { _id: '1', label: 'abstract', name: 'abstract' },
-            { _id: '2', label: 'test2', name: 'test2' },
+            {
+                _id: '1',
+                label: 'abstract',
+                name: 'abstract',
+                scope: 'document',
+            },
+            { _id: '2', label: 'test2', name: 'test2', scope: 'document' },
         ];
 
         fieldApi.patchField.mockResolvedValue(true);
@@ -68,8 +73,13 @@ describe('saveSyndication', () => {
     });
     it('should call fieldApi.patchField when update description syndication', async () => {
         const fields = [
-            { _id: '1', label: 'abstract', name: 'abstract' },
-            { _id: '2', label: 'test2', name: 'test2' },
+            {
+                _id: '1',
+                label: 'abstract',
+                name: 'abstract',
+                scope: 'document',
+            },
+            { _id: '2', label: 'test2', name: 'test2', scope: 'document' },
         ];
 
         fieldApi.patchField.mockResolvedValue(true);
@@ -96,8 +106,13 @@ describe('saveSyndication', () => {
     });
     it('should call fieldApi.patchField when update first detail syndication', async () => {
         const fields = [
-            { _id: '1', label: 'abstract', name: 'abstract' },
-            { _id: '2', label: 'test2', name: 'test2' },
+            {
+                _id: '1',
+                label: 'abstract',
+                name: 'abstract',
+                scope: 'document',
+            },
+            { _id: '2', label: 'test2', name: 'test2', scope: 'document' },
         ];
 
         fieldApi.patchField.mockResolvedValue(true);
@@ -124,8 +139,13 @@ describe('saveSyndication', () => {
     });
     it('should call fieldApi.patchField when update second detail syndication', async () => {
         const fields = [
-            { _id: '1', label: 'abstract', name: 'abstract' },
-            { _id: '2', label: 'test2', name: 'test2' },
+            {
+                _id: '1',
+                label: 'abstract',
+                name: 'abstract',
+                scope: 'document',
+            },
+            { _id: '2', label: 'test2', name: 'test2', scope: 'document' },
         ];
 
         fieldApi.patchField.mockResolvedValue(true);

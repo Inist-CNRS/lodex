@@ -26,7 +26,7 @@ import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../../../common/scope';
 
 const getSearchableFields = fields => fields.filter(f => f.searchable) || [];
 
-const getFaceFields = fields => fields.filter(f => f.isFacet) || [];
+const getFacetFields = fields => fields.filter(f => f.isFacet) || [];
 
 const getResourceTitle = fields =>
     fields.find(f => f.overview === overview.RESOURCE_TITLE) || null;
@@ -43,7 +43,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     );
 
     const [facetChecked, setFacetChecked] = React.useState(
-        getFaceFields(fields),
+        getFacetFields(fields),
     );
 
     const [resourceTitle, setResourceTitle] = React.useState(
@@ -66,7 +66,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     // We could lower the complexity with only one map. But it's more readable like this. And the performance is not a problem here.
     useEffect(() => {
         setSearchInFields(getSearchableFields(fields));
-        setFacetChecked(getFaceFields(fields));
+        setFacetChecked(getFacetFields(fields));
         setResourceTitle(getResourceTitle(fields));
         setResourceDescription(getResourceDescription(fields));
         setResourceDetailFirst(getResourceDetailFirst(fields));
