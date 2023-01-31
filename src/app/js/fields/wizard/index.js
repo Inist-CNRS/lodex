@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { compose, withProps } from 'recompose';
 import translate from 'redux-polyglot/translate';
 
-import { Box, Typography, Tabs, Tab } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Tabs, Tab } from '@mui/material';
 
 import { FIELD_FORM_NAME, saveField as saveFieldAction } from '../';
 
@@ -27,38 +26,11 @@ import {
     SCOPE_GRAPHIC,
 } from '../../../../common/scope';
 import { URI_FIELD_NAME } from '../../../../common/uris';
-import classNames from 'classnames';
 import { TabPanel } from './TabPanel';
 import { reduxForm } from 'redux-form';
 import { withRouter } from 'react-router';
 import { toast } from 'react-toastify';
 import ValuePreviewConnected from './ValuePreview';
-
-const useStyles = makeStyles({
-    wizard: {
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-    },
-    container: {
-        display: 'flex',
-        paddingBottom: '1rem',
-        width: '100%',
-        flexGrow: 1,
-    },
-    form: {
-        marginRight: '1rem',
-        paddingRight: '1rem',
-        flexGrow: 1,
-        overflowY: 'auto',
-    },
-    column: {
-        width: '25rem',
-    },
-    title: {
-        padding: '16px 24px',
-    },
-});
 
 const FieldEditionWizardComponent = ({
     currentEditedField,
@@ -72,7 +44,6 @@ const FieldEditionWizardComponent = ({
     isFieldsLoading,
     p: polyglot,
 }) => {
-    const classes = useStyles();
     const [tabValue, setTabValue] = useState(0);
     useEffect(() => {
         if (!fieldName) {
@@ -139,18 +110,14 @@ const FieldEditionWizardComponent = ({
                 <TabDisplay
                     isSubresourceField={!!currentEditedField.subresourceId}
                     filter={filter}
+                    fields={fields}
                 />
             ),
         },
         !currentEditedField.subresourceId && {
             label: 'field_wizard_tab_semantic',
             id: 'tab-semantics',
-            component: (
-                <TabSemantics
-                    fields={fields}
-                    currentEditedField={currentEditedField}
-                />
-            ),
+            component: <TabSemantics currentEditedField={currentEditedField} />,
         },
         !currentEditedField.subresourceId && {
             label: 'field_wizard_tab_search',
@@ -160,13 +127,28 @@ const FieldEditionWizardComponent = ({
     ].filter(x => x);
 
     return (
-        <Box className={classNames(classes.wizard, 'wizard')}>
-            <Typography component="h2" variant="h6" className={classes.title}>
-                {currentEditedField ? currentEditedField.label : ''}
-            </Typography>
+        <Box
+            className="wizard"
+            sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+        >
             {currentEditedField && (
-                <Box className={classes.container}>
-                    <Box id="field_form" className={classes.form}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        paddingBottom: '1rem',
+                        width: '100%',
+                        flexGrow: 1,
+                    }}
+                >
+                    <Box
+                        id="field_form"
+                        sx={{
+                            marginRight: '1rem',
+                            paddingRight: '1rem',
+                            flexGrow: 1,
+                            overflowY: 'auto',
+                        }}
+                    >
                         {currentEditedField.name !== URI_FIELD_NAME ? (
                             <>
                                 <Tabs
@@ -201,7 +183,11 @@ const FieldEditionWizardComponent = ({
                             />
                         )}
                     </Box>
-                    <Box className={classes.column}>
+                    <Box
+                        sx={{
+                            width: '25rem',
+                        }}
+                    >
                         <ValuePreviewConnected scope={filter} />
                     </Box>
                 </Box>

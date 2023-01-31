@@ -4,7 +4,7 @@ import translate from 'redux-polyglot/dist/translate';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { TextField as MUITextField, Box } from '@mui/material';
+import { TextField as MUITextField, Box, Typography } from '@mui/material';
 
 import FieldLabelInput from '../FieldLabelInput';
 import FieldInternal from '../FieldInternal';
@@ -30,21 +30,22 @@ export const renderTransformer = (
     polyglot,
 ) => {
     function RenderTransformer(props) {
-        if (transformersLocked) {
-            return (
-                <Box pt={2}>
-                    {polyglot.t(
-                        'transformer_no_editable_with_subresource_uid_value',
-                    )}
-                </Box>
-            );
-        }
-
         return (
-            <TransformerList
-                hideFirstTransformers={isSubresourceField ? 3 : 0}
-                {...props}
-            />
+            <Box pt={5}>
+                <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
+                    {polyglot.t('transformers')}
+                </Typography>
+                {transformersLocked ? (
+                    polyglot.t(
+                        'transformer_no_editable_with_subresource_uid_value',
+                    )
+                ) : (
+                    <TransformerList
+                        hideFirstTransformers={isSubresourceField ? 3 : 0}
+                        {...props}
+                    />
+                )}
+            </Box>
         );
     }
 

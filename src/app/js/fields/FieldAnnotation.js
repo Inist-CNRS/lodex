@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { MenuItem } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import FormSelectField from '../lib/components/FormSelectField';
@@ -12,35 +11,18 @@ import {
 } from '../propTypes';
 import { hasSimilarScope } from '../../../common/scope';
 import FieldInternalIcon from './FieldInternalIcon';
-
-const styles = {
-    complete: {
-        paddingLeft: '40px',
-    },
-    header: {
-        lineHeight: '48px',
-        paddingLeft: 0,
-    },
-    line: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    internal: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-};
+import { Box, MenuItem, Typography } from '@mui/material';
 
 const FieldAnnotation = ({ fields, scope, p: polyglot }) => (
-    <div>
-        <div style={styles.header}>{polyglot.t('annotate_field')}</div>
+    <Box mt={5}>
+        <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
+            {polyglot.t('annotate_field')}
+        </Typography>
         <Field
-            style={styles.complete}
             className="completes"
             name="completes"
+            label={polyglot.t('field_to_annotate')}
             component={FormSelectField}
-            hint={polyglot.t('select_a_column')}
             fullWidth
         >
             <MenuItem value={null}>
@@ -51,10 +33,14 @@ const FieldAnnotation = ({ fields, scope, p: polyglot }) => (
                     className={`completes-${getFieldClassName(f)}`}
                     key={f.name}
                     value={f.name}
-                    style={styles.line}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
                 >
                     <div>{f.label}</div>
-                    <div style={styles.internal}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         {f.internalScopes &&
                             f.internalScopes.map(internalScope => (
                                 <FieldInternalIcon
@@ -63,11 +49,11 @@ const FieldAnnotation = ({ fields, scope, p: polyglot }) => (
                                 />
                             ))}
                         {f.internalName}
-                    </div>
+                    </Box>
                 </MenuItem>
             ))}
         </Field>
-    </div>
+    </Box>
 );
 
 FieldAnnotation.propTypes = {

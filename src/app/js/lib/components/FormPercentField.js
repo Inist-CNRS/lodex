@@ -1,10 +1,6 @@
 import React from 'react';
-import { TextField } from '@material-ui/core';
+import { TextField } from '@mui/material';
 import { formField as formFieldPropTypes } from '../../propTypes';
-
-const styles = {
-    input: { width: '96%' },
-};
 
 const FormPercentField = ({
     input,
@@ -13,7 +9,10 @@ const FormPercentField = ({
     ...custom
 }) => (
     <TextField
-        style={styles.input}
+        sx={{
+            width: '30%',
+            marginTop: 2,
+        }}
         type="number"
         min={10}
         max={100}

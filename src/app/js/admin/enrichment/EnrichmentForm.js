@@ -89,8 +89,6 @@ const useStyles = makeStyles(theme => {
         },
         valuesContainer: {
             display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'flex-start',
         },
         actionContainer: {
             display: 'flex',
@@ -310,9 +308,9 @@ export const EnrichmentFormComponent = ({
                                     component={FormTextField}
                                     label={polyglot.t('webServiceUrl')}
                                     fullWidth
-                                    style={{ marginBottom: 16 }}
+                                    variant="outlined"
                                 />
-                                <div style={{ margin: '10px 0px 0px 10px' }}>
+                                <Box style={{ marginLeft: '10px' }}>
                                     <Button
                                         variant="contained"
                                         color="primary"
@@ -320,20 +318,19 @@ export const EnrichmentFormComponent = ({
                                         disabled={[IN_PROGRESS].includes(
                                             initialValues?.status,
                                         )}
+                                        style={{ height: '100%' }}
                                     >
-                                        <ListAltIcon fontSize="small" />
+                                        <ListAltIcon fontSize="medium" />
                                     </Button>
-                                    <EnrichmentCatalogDialog
-                                        isOpen={openCatalog}
-                                        handleClose={() =>
-                                            setOpenCatalog(false)
-                                        }
-                                        selectedWebServiceUrl={
-                                            formValues?.webServiceUrl
-                                        }
-                                        onChange={onChangeWebServiceUrl}
-                                    />
-                                </div>
+                                </Box>
+                                <EnrichmentCatalogDialog
+                                    isOpen={openCatalog}
+                                    handleClose={() => setOpenCatalog(false)}
+                                    selectedWebServiceUrl={
+                                        formValues?.webServiceUrl
+                                    }
+                                    onChange={onChangeWebServiceUrl}
+                                />
                             </div>
                             <div className={classes.valuesContainer}>
                                 <Field
@@ -365,6 +362,7 @@ export const EnrichmentFormComponent = ({
                                     fullWidth
                                     style={{ marginLeft: 12 }}
                                     helperText={polyglot.t('subPathHelper')}
+                                    variant="outlined"
                                 />
                             </div>
                         </div>

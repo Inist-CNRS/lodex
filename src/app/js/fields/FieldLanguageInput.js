@@ -1,7 +1,7 @@
 import React from 'react';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
-import { MenuItem } from '@material-ui/core';
+import { MenuItem } from '@mui/material';
 
 import languages from '../../../common/languages';
 import FormSelectField from '../lib/components/FormSelectField';
@@ -33,6 +33,9 @@ export const FieldLanguageInputComponent = ({
             component={FormSelectField}
             label={polyglot.t('language')}
             fullWidth
+            sx={{
+                marginTop: 3,
+            }}
             {...props}
         >
             <MenuItem

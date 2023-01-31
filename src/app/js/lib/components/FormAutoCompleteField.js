@@ -3,8 +3,12 @@ import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { FormControl, FormHelperText, TextField } from '@material-ui/core';
+import {
+    FormControl,
+    FormHelperText,
+    TextField,
+    Autocomplete,
+} from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { fetch as fetchAction } from '../../fetch';
@@ -45,9 +49,9 @@ const FormAutoCompleteField = ({
                 onInputChange={handleComplete}
                 noOptionsText={polyglot.t('no_option')}
             />
-            <FormHelperText>
-                {error ? error.message || error : label}
-            </FormHelperText>
+            {error?.message && (
+                <FormHelperText error>{error.message}</FormHelperText>
+            )}
         </FormControl>
     );
 };

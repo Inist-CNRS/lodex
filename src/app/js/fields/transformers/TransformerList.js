@@ -7,7 +7,7 @@ import translate from 'redux-polyglot/translate';
 import TransformerListItem from './TransformerListItem';
 import TransformerUpsertDialog from './TransformerUpsertDialog';
 
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     DndContext,
@@ -85,10 +85,7 @@ const TransformerList = ({
         });
     };
     return (
-        <Box pt={2}>
-            <Typography sx={{ marginBottom: 2 }}>
-                {polyglot.t('transformers')}
-            </Typography>
+        <>
             {touched && error && <span>{error}</span>}
             <DndContext
                 sensors={sensors}
@@ -146,7 +143,7 @@ const TransformerList = ({
                     type={type}
                 />
             )}
-        </Box>
+        </>
     );
 };
 

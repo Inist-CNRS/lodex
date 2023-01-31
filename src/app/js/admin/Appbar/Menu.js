@@ -268,6 +268,7 @@ const MenuComponent = ({
                         </MenuItem>
                         <Fade in={subMenuToShow === 'model'}>
                             <Paper
+                                elevation={8}
                                 sx={{
                                     position: 'absolute',
                                     top: 0,
@@ -297,6 +298,7 @@ const MenuComponent = ({
                         </MenuItem>
                         <Fade in={subMenuToShow === 'advanced'}>
                             <Paper
+                                elevation={8}
                                 sx={{
                                     position: 'absolute',
                                     top: 0,
