@@ -35,7 +35,14 @@ import {
     IconButton,
     Tooltip,
 } from '@material-ui/core';
-import { Button, TablePagination } from '@mui/material';
+import {
+    Button,
+    Table,
+    TableBody,
+    TableContainer,
+    TablePagination,
+    TableRow,
+} from '@mui/material';
 import ParsingEditCell from './ParsingEditCell';
 import { AddBox as AddBoxIcon } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
@@ -371,17 +378,29 @@ export const ParsingResultComponent = props => {
                             <RefreshIcon />
                         </IconButton>
                     </Tooltip>
-                    <TablePagination
-                        count={rowCount}
-                        page={skip / limit}
-                        rowsPerPage={limit}
-                        onPageChange={(e, page) => onPageChange(page)}
-                        rowsPerPageOptions={[25, 50, 100]}
-                        labelRowsPerPage={polyglot.t('rows_per_page')}
-                        onRowsPerPageChange={rpp => {
-                            setLimit(rpp.target.value);
-                        }}
-                    />
+                    <TableContainer>
+                        <Table>
+                            <TableBody>
+                                <TableRow>
+                                    <TablePagination
+                                        count={rowCount}
+                                        page={skip / limit}
+                                        rowsPerPage={limit}
+                                        onPageChange={(e, page) =>
+                                            onPageChange(page)
+                                        }
+                                        rowsPerPageOptions={[25, 50, 100]}
+                                        labelRowsPerPage={polyglot.t(
+                                            'rows_per_page',
+                                        )}
+                                        onRowsPerPageChange={rpp => {
+                                            setLimit(rpp.target.value);
+                                        }}
+                                    />
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                 </Box>
             </div>
         );
