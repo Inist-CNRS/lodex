@@ -860,3 +860,5 @@
 "resource_description"	"Resource description"	"Description de la ressource"
 "resource_detail_first"	"Resource detail first"	"Premier detail de la ressource"
 "resource_detail_second"	"Resource detail second"	"Second detail de la ressource"
+"dialog_import_has_enrichments"	"Import has enrichments"	"L'import a des enrichissements"
+"dialog_import_has_enrichments_description"     	"Import has enrichments, don't forget to lauch them for having enriched dataset"	"L'import a des enrichissements, n'oubliez pas de les lancer pour avoir un jeu de données enrichi"

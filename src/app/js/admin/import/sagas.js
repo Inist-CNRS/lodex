@@ -16,14 +16,19 @@ export function* handleLoadModel(action) {
     }
     const token = yield select(fromUser.getToken);
     try {
-        const { file, cancel } = yield race({
-            file: call(loadModelFile, action.payload, token),
+        const { loadModelFileStatus, cancel } = yield race({
+            loadModelFileStatus: call(loadModelFile, action.payload, token),
             cancel: take([LOCATION_CHANGE]),
         });
         if (cancel) {
             return;
         }
-        yield put(importFieldsSuccess(file));
+
+        yield put(
+            importFieldsSuccess({
+                hasEnrichments: JSON.parse(loadModelFileStatus).hasEnrichments,
+            }),
+        );
         yield put(importFieldsClosed());
     } catch (error) {
         yield put(importFieldsError(error));

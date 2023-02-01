@@ -268,6 +268,19 @@ export const importFields = asyncBusboyImpl => async ctx => {
 
     try {
         await ctx.restoreFields(fileStream, ctx);
+        // check if model contains an enrichment
+        const enrichments = await ctx.enrichment.findAll();
+        if (enrichments.length > 0) {
+            ctx.body = {
+                message: 'Model imported successfully',
+                hasEnrichments: true,
+            };
+        } else {
+            ctx.body = {
+                message: 'Model imported successfully',
+                hasEnrichments: false,
+            };
+        }
         ctx.status = 200;
     } catch (e) {
         ctx.status = 500;

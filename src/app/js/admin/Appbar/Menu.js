@@ -33,6 +33,7 @@ import ClearDialog from './ClearDialog';
 import jobsApi from '../api/job';
 import { toast } from 'react-toastify';
 import ImportModelDialog from '../ImportModelDialog';
+import ImportHasEnrichmentsDialog from './ImportHasEnrichmentsDialog';
 
 const MenuComponent = ({
     dumpDataset,
@@ -43,6 +44,7 @@ const MenuComponent = ({
     importFields,
     nbFields,
     importSucceeded,
+    importHasEnrichment,
     importFailed,
     p: polyglot,
 }) => {
@@ -55,6 +57,11 @@ const MenuComponent = ({
         showImportFieldsConfirmation,
         setShowImportFieldsConfirmation,
     ] = useState(false);
+    const [
+        showImportedFieldsHasEnrichmentsDialog,
+        setShowImportedFieldsHasEnrichmentsDialog,
+    ] = useState(false);
+
     const [applyUploadInput, setApplyUploadInput] = useState(false);
 
     useEffect(() => {
@@ -76,6 +83,12 @@ const MenuComponent = ({
             setApplyUploadInput(false);
         }
     }, [nbFields]);
+
+    useEffect(() => {
+        if (importHasEnrichment) {
+            setShowImportedFieldsHasEnrichmentsDialog(true);
+        }
+    }, [importHasEnrichment]);
 
     const open = !!anchorEl;
 
@@ -332,6 +345,13 @@ const MenuComponent = ({
                     onClose={() => setShowImportFieldsConfirmation(false)}
                 />
             )}
+            {showImportedFieldsHasEnrichmentsDialog && (
+                <ImportHasEnrichmentsDialog
+                    onClose={() =>
+                        setShowImportedFieldsHasEnrichmentsDialog(false)
+                    }
+                />
+            )}
         </>
     );
 };
@@ -345,6 +365,7 @@ MenuComponent.propTypes = {
     importFields: PropTypes.func.isRequired,
     nbFields: PropTypes.number.isRequired,
     importSucceeded: PropTypes.bool.isRequired,
+    importHasEnrichment: PropTypes.bool.isRequired,
     importFailed: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
@@ -364,6 +385,7 @@ const mapStateToProps = state => ({
     nbFields: fromFields.getAllListFields(state).filter(f => f.name !== 'uri')
         .length,
     importSucceeded: fromImport.hasImportSucceeded(state),
+    importHasEnrichment: fromImport.hasEnrichment(state),
     importFailed: fromImport.hasImportFailed(state),
 });
 export default compose(

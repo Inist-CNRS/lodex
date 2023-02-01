@@ -33,7 +33,11 @@ describe('import model saga', () => {
 
             expect(value).toEqual(
                 race({
-                    file: call(loadModelFile, 'payload', 'token'),
+                    loadModelFileStatus: call(
+                        loadModelFile,
+                        'payload',
+                        'token',
+                    ),
                     cancel: take([LOCATION_CHANGE]),
                 }),
             );
@@ -65,8 +69,12 @@ describe('import model saga', () => {
         it('should put loadFileSuccess with file', () => {
             saga.next();
             saga.next('token');
-            const { value } = saga.next({ file: 'file' });
-            expect(value).toEqual(put(importFieldsSuccess('file')));
+            const { value } = saga.next({
+                loadModelFileStatus: JSON.stringify({ hasEnrichments: false }),
+            });
+            expect(value).toEqual(
+                put(importFieldsSuccess({ hasEnrichments: false })),
+            );
         });
 
         it('should put importFieldsClosed after success', () => {
