@@ -171,9 +171,14 @@ const MenuItem = ({
                 <NavLink
                     to="/advanced"
                     onClick={onClick(config.role, true)}
-                    className={classnames('nav-item', styles.menuItem, {
-                        [styles.drawerActive]: advancedDrawer === 'open',
-                    })}
+                    className={classnames(
+                        'nav-item',
+                        styles.menuItem,
+                        styles.link,
+                        {
+                            [styles.drawerActive]: advancedDrawer === 'open',
+                        },
+                    )}
                 >
                     {icon}
                     {label}
@@ -184,7 +189,11 @@ const MenuItem = ({
                 role === 'admin' && (
                     <a
                         href="/admin"
-                        className={classnames('nav-item', styles.menuItem)}
+                        className={classnames(
+                            'nav-item',
+                            styles.menuItem,
+                            styles.link,
+                        )}
                     >
                         {icon}
                         {label}
@@ -208,7 +217,11 @@ const MenuItem = ({
                 role !== 'not logged' && (
                     <Link
                         to="/login"
-                        className={classnames('nav-item', styles.menuItem)}
+                        className={classnames(
+                            'nav-item',
+                            styles.menuItem,
+                            styles.link,
+                        )}
                         onClick={onClick(config.role)}
                     >
                         {icon}
