@@ -118,22 +118,46 @@ describe('field routes', () => {
             restoreFields: jest
                 .fn()
                 .mockImplementation(() => Promise.resolve('RESTORE OK')),
+            enrichment: {
+                findAll: jest.fn(),
+            },
         };
-
         beforeEach(() => {
             ctx.restoreFields.mockClear();
             ctx.set.mockClear();
+            ctx.enrichment.findAll.mockClear();
         });
 
-        it('should call rawBody and return 200 in ctx.status', async () => {
+        it('should import fields without enrichments', async () => {
             const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
                 files: ['file0'],
             }));
+
+            ctx.enrichment.findAll.mockImplementation(() =>
+                Promise.resolve([]),
+            );
 
             await importFields(asyncBusboyImpl)(ctx);
             expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
             expect(ctx.restoreFields).toHaveBeenCalledWith('file0', ctx);
             expect(ctx.status).toEqual(200);
+            expect(ctx.body.hasEnrichments).toEqual(false);
+        });
+
+        it('should import fields with enrichments', async () => {
+            const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
+                files: ['file0'],
+            }));
+
+            ctx.enrichment.findAll.mockImplementation(() =>
+                Promise.resolve(['id: 1']),
+            );
+
+            await importFields(asyncBusboyImpl)(ctx);
+            expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
+            expect(ctx.restoreFields).toHaveBeenCalledWith('file0', ctx);
+            expect(ctx.status).toEqual(200);
+            expect(ctx.body.hasEnrichments).toEqual(true);
         });
 
         it('should return 500 in ctx.status and error message in ctx.body on error', async () => {
