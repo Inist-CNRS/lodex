@@ -155,13 +155,13 @@ const SourceValueFromSubResource = ({
         <Box mt={5} display="flex" flexDirection="column" gap={2}>
             <FormControl fullWidth>
                 <InputLabel id="select-subresource-label">
-                    Select subressource
+                    {polyglot.t('subRessource_tooltip')}
                 </InputLabel>
                 <Select
                     labelId="select-subresource-label"
                     data-testid="select-subresource"
                     value={selectedSubresourcePath}
-                    label="Select subressource"
+                    label={polyglot.t('subRessource_tooltip')}
                     onChange={handleChangeSubresource}
                 >
                     {subresources.map(subresource => (
