@@ -98,12 +98,15 @@ const useStyles = makeStyles({
 });
 
 export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
-    const redirectUrl =
-        scope === SCOPE_DOCUMENT
-            ? `/display/${SCOPE_DOCUMENT}/${subresourceId ||
-                  'main'}/edit/${fieldName}`
-            : `/display/${scope}/edit/${fieldName}`;
-    return redirectUrl;
+    if (scope === SCOPE_DOCUMENT) {
+        if (subresourceId) {
+            return `/display/${SCOPE_DOCUMENT}/subresource/${subresourceId}/edit/${fieldName}`;
+        } else {
+            return `/display/${SCOPE_DOCUMENT}/main/edit/${fieldName}`;
+        }
+    } else {
+        return `/display/${scope}/edit/${fieldName}`;
+    }
 };
 
 const scrollToField = fieldLabel => {

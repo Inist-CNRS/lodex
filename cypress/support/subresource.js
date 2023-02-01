@@ -45,7 +45,7 @@ export const addField = (name, label, save = true) => {
 export const createSubresource = (subresource = defaultSubresource) => {
     cy.contains('a', 'New subresource').click();
 
-    cy.url().should('contain', '/display/document/add');
+    cy.url().should('contain', '/display/document/subresource/add');
 
     fillSubcategoryFormAndSubmit(subresource);
 
@@ -53,5 +53,5 @@ export const createSubresource = (subresource = defaultSubresource) => {
         .contains('Animals')
         .should('be.visible');
 
-    cy.url().should('not.contain', '/display/document/add');
+    cy.url().should('not.contain', '/display/document/subresource/add');
 };

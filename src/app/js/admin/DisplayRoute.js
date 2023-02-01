@@ -15,6 +15,7 @@ import { SCOPE_DOCUMENT } from '../../../common/scope';
 import { FieldsEdit } from './FieldsEdit';
 import { AddFieldButton } from './Appbar/AddFieldButton';
 import FieldEditForm from '../fields/wizard';
+import SubresourceListConnected from './subresource/SubresourceList';
 
 const DisplayRouteComponent = () => {
     const { filter } = useParams();
@@ -30,16 +31,22 @@ const DisplayRouteComponent = () => {
                 <Route exact path={`${path}/main`}>
                     {pageComponent}
                 </Route>
-                <Route exact path={`${path}/add`}>
-                    <AddSubresource />
-                </Route>
                 <Route exact path={`${path}/main/edit/:fieldName?`}>
                     <FieldEditForm filter={filter} />
                 </Route>
-                <Route exact path={`${path}/:subresourceId`}>
+                <Route exact path={`${path}/subresource`}>
+                    <SubresourceListConnected />
+                </Route>
+                <Route exact path={`${path}/subresource/add`}>
+                    <AddSubresource />
+                </Route>
+                <Route exact path={`${path}/subresource/:subresourceId`}>
                     <EditSubresource filter={filter} />
                 </Route>
-                <Route exact path={`${path}/:subresourceId/edit/:fieldName?`}>
+                <Route
+                    exact
+                    path={`${path}/subresource/:subresourceId/edit/:fieldName?`}
+                >
                     <FieldEditForm filter={filter} />
                 </Route>
                 <Route>
