@@ -59,7 +59,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = getByTestId(
-            `autocomplete_search_syndication_${overview.RESOURCE_TITLE}}`,
+            `autocomplete_search_syndication_${overview.RESOURCE_TITLE}`,
         );
         const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
@@ -92,7 +92,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = getByTestId(
-            `autocomplete_search_syndication_${overview.RESOURCE_DESCRIPTION}}`,
+            `autocomplete_search_syndication_${overview.RESOURCE_DESCRIPTION}`,
         );
         const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
@@ -125,7 +125,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = getByTestId(
-            `autocomplete_search_syndication_${overview.RESOURCE_DETAIL_1}}`,
+            `autocomplete_search_syndication_${overview.RESOURCE_DETAIL_1}`,
         );
         const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
@@ -158,7 +158,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = getByTestId(
-            `autocomplete_search_syndication_${overview.RESOURCE_DETAIL_2}}`,
+            `autocomplete_search_syndication_${overview.RESOURCE_DETAIL_2}`,
         );
         const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
