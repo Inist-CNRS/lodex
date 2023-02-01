@@ -17,7 +17,6 @@ import { fromFields } from '../../sharedSelectors';
 import Uri from './Uri';
 import TabGeneral from './TabGeneral';
 import TabDisplay from './TabDisplay';
-import TabSearch from './TabSearch';
 import TabSemantics from './TabSemantics';
 import Actions from './Actions';
 import {
@@ -106,23 +105,12 @@ const FieldEditionWizardComponent = ({
         {
             label: 'field_wizard_tab_display',
             id: 'tab-display',
-            component: (
-                <TabDisplay
-                    isSubresourceField={!!currentEditedField.subresourceId}
-                    filter={filter}
-                    fields={fields}
-                />
-            ),
+            component: <TabDisplay filter={filter} fields={fields} />,
         },
         !currentEditedField.subresourceId && {
             label: 'field_wizard_tab_semantic',
             id: 'tab-semantics',
             component: <TabSemantics currentEditedField={currentEditedField} />,
-        },
-        !currentEditedField.subresourceId && {
-            label: 'field_wizard_tab_search',
-            id: 'tab-search',
-            component: <TabSearch />,
         },
     ].filter(x => x);
 

@@ -14,7 +14,8 @@ import { FieldGrid } from '../fields/FieldGrid';
 import { hideAddColumns } from './parsing';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { SCOPE_DATASET, SCOPE_DOCUMENT } from '../../../common/scope';
-import OverviewSelect from '../fields/OverviewSelect';
+import DatasetOverviewSelect from '../fields/DatasetOverviewSelect';
+import SubresourceOverviewSelect from '../fields/SubresourceOverviewSelect';
 
 export const FieldsEditComponent = ({
     addFieldButton,
@@ -59,13 +60,19 @@ export const FieldsEditComponent = ({
                         mb={2}
                         display="flex"
                         justifyContent={
-                            filter === SCOPE_DATASET
+                            filter === SCOPE_DATASET ||
+                            (filter === SCOPE_DOCUMENT && subresourceId)
                                 ? 'space-between'
                                 : 'flex-end'
                         }
                         alignItems="center"
                     >
-                        {filter === SCOPE_DATASET && <OverviewSelect />}
+                        {filter === SCOPE_DATASET && <DatasetOverviewSelect />}
+                        {filter === SCOPE_DOCUMENT && subresourceId && (
+                            <SubresourceOverviewSelect
+                                subresourceId={subresourceId}
+                            />
+                        )}
                         {filter === SCOPE_DOCUMENT && !subresourceId && (
                             <AddFieldFromColumnButton />
                         )}

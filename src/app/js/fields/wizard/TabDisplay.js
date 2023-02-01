@@ -2,25 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import FieldFormatInput from '../FieldFormatInput';
-import FieldOverviewInput from '../FieldOverviewInput';
 import FieldDisplayInput from '../FieldDisplay';
 import FieldWidthInput from '../FieldWidthInput';
 import FieldComposedOf from '../FieldComposedOf';
 import FieldAnnotation from '../FieldAnnotation';
 import { field as fieldPropTypes } from '../../propTypes';
-import { SCOPE_DATASET } from '../../../../common/scope';
 
-export const TabDisplayComponent = ({
-    keepMeta = true,
-    isSubresourceField = false,
-    filter,
-    fields,
-}) => (
+export const TabDisplayComponent = ({ keepMeta = true, filter, fields }) => (
     <>
         {keepMeta && <FieldDisplayInput />}
-        {keepMeta && filter !== SCOPE_DATASET && (
-            <FieldOverviewInput isSubresourceField={isSubresourceField} />
-        )}
         <FieldFormatInput />
         <FieldWidthInput />
         <FieldAnnotation fields={fields} scope={filter} />
@@ -30,7 +20,6 @@ export const TabDisplayComponent = ({
 
 TabDisplayComponent.propTypes = {
     keepMeta: PropTypes.bool,
-    isSubresourceField: PropTypes.bool,
     filter: PropTypes.string.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
 };

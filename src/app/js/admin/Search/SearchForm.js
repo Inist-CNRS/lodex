@@ -249,14 +249,14 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                         }}
                     >
                         <SearchAutocomplete
-                            testId="autocomplete_search_title_syndication"
+                            testId={`autocomplete_search_syndication_${overview.RESOURCE_TITLE}`}
                             translation={polyglot.t('resource_title')}
                             fields={fieldsForResourceSyndication}
                             onChange={handleSResourceTitle}
                             value={resourceTitle}
                         />
                         <SearchAutocomplete
-                            testId="autocomplete_search_description_syndication"
+                            testId={`autocomplete_search_syndication_${overview.RESOURCE_DESCRIPTION}`}
                             translation={polyglot.t('resource_description')}
                             fields={fieldsForResourceSyndication}
                             onChange={handleSResourceDescription}
@@ -264,7 +264,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                         />
                         <Box display="flex" gap={2}>
                             <SearchAutocomplete
-                                testId="autocomplete_search_detail_first_syndication"
+                                testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_1}`}
                                 translation={polyglot.t(
                                     'resource_detail_first',
                                 )}
@@ -273,7 +273,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 value={resourceDetailFirst}
                             />
                             <SearchAutocomplete
-                                testId="autocomplete_search_detail_second_syndication"
+                                testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_2}`}
                                 translation={polyglot.t(
                                     'resource_detail_second',
                                 )}

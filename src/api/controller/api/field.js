@@ -181,7 +181,10 @@ export const patchField = async (ctx, id) => {
     try {
         if (newField.overview) {
             await ctx.field.updateMany(
-                { overview: newField.overview },
+                {
+                    overview: newField.overview,
+                    subresourceId: newField.subresourceId,
+                },
                 { $unset: { overview: '' } },
             );
         }
