@@ -112,7 +112,6 @@ const AppbarComponent = ({
                     color="#fff"
                     size={30}
                     thickness={2}
-                    sx={classes.loading}
                 />
             )}
         </>
