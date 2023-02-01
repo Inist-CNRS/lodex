@@ -17,6 +17,7 @@ export const SubresourceOverviewSelectComponent = ({
     p: polyglot,
     fields,
     loadField,
+    subresourceId,
 }) => {
     const subresourceTitle = useMemo(() => {
         const subresourceTitleField = fields.find(
@@ -30,6 +31,7 @@ export const SubresourceOverviewSelectComponent = ({
         await fieldApi.patchField({
             _id,
             overview: overview.SUBRESOURCE_TITLE,
+            subresourceId,
         });
         loadField();
     };
@@ -55,6 +57,7 @@ SubresourceOverviewSelectComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes),
     loadField: PropTypes.func.isRequired,
+    subresourceId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, { subresourceId }) => ({

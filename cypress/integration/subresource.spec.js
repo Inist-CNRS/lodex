@@ -21,39 +21,39 @@ describe('Subresource Page', () => {
             .click();
     });
 
-    // it('should allow to add a subresource', () => {
-    //     subresourcePage.createSubresource();
-    // });
+    it('should allow to add a subresource', () => {
+        subresourcePage.createSubresource();
+    });
 
-    // it('should allow to add a subresource field', () => {
-    //     subresourcePage.createSubresource();
-    //     subresourcePage.addField('name', 'myField', false);
+    it('should allow to add a subresource field', () => {
+        subresourcePage.createSubresource();
+        subresourcePage.addField('name', 'myField', false);
 
-    //     cy.get('.wizard')
-    //         .find('#value-preview')
-    //         .each((item, index) => {
-    //             cy.wrap(item).should(
-    //                 'contain.text',
-    //                 ['Canidae', 'Felinae', 'Canidae'][index],
-    //             );
-    //         });
+        cy.get('.wizard')
+            .find('#value-preview')
+            .each((item, index) => {
+                cy.wrap(item).should(
+                    'contain.text',
+                    ['Canidae', 'Felinae', 'Canidae'][index],
+                );
+            });
 
-    //     cy.get('.wizard')
-    //         .find('.btn-save')
-    //         .click();
+        cy.get('.wizard')
+            .find('.btn-save')
+            .click();
 
-    //     cy.get('.wizard', { timeout: 2000 }).should('not.exist');
+        cy.get('.wizard', { timeout: 2000 }).should('not.exist');
 
-    //     cy.contains('button', 'Published data').click();
-    //     cy.contains('.publication-excerpt-column', 'myField').should('exist');
-    // });
+        cy.contains('button', 'Published data').click();
+        cy.contains('.publication-excerpt-column', 'myField').should('exist');
+    });
 
-    // it('should successfully publish subresources', () => {
-    //     subresourcePage.createSubresource();
-    //     subresourcePage.addField('name', 'myField');
+    it('should successfully publish subresources', () => {
+        subresourcePage.createSubresource();
+        subresourcePage.addField('name', 'myField');
 
-    //     navigationPage.publishAndGoToPublishedData();
-    // });
+        navigationPage.publishAndGoToPublishedData();
+    });
 
     it('should allow to create link to subresource', () => {
         subresourcePage.createSubresource();
