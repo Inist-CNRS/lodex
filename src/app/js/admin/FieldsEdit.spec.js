@@ -54,7 +54,7 @@ describe('<FieldsEdit />', () => {
         expect(wrapper.find(AddFieldFromColumnButton).exists()).toBeTruthy();
     });
 
-    it('should display Statistics before page', () => {
+    it('should display FieldGridComponent before statistic', () => {
         const wrapper = shallow(
             <FieldsEdit
                 showAddFromColumn={true}
@@ -67,7 +67,7 @@ describe('<FieldsEdit />', () => {
 
         expect(
             wrapper.find(
-                'Connect(Translated(StatisticsComponent)) + Translated(FieldGridComponent)',
+                'Translated(FieldGridComponent) + Connect(Translated(StatisticsComponent))',
             ),
         ).toHaveLength(1);
     });

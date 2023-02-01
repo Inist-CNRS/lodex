@@ -42,21 +42,37 @@ export const FieldsEditComponent = ({
 
     return (
         <div>
-            <Tabs
-                value={tab}
-                onChange={handleChangeTab}
-                indicatorColor="primary"
-                textColor="primary"
-                style={{ marginBottom: 20 }}
-                variant="fullWidth"
+            <Box
+                sx={{
+                    borderBottom: 1,
+                    borderColor: 'divider',
+                    marginBottom: 4,
+                }}
             >
-                <Tab value="page" label="Page" />
-                <Tab value="published" label={polyglot.t('published_data')} />
-            </Tabs>
+                <Tabs
+                    value={tab}
+                    onChange={handleChangeTab}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    variant="fullWidth"
+                    sx={{
+                        '& button:hover': {
+                            color: 'primary.main',
+                        },
+                    }}
+                >
+                    <Tab value="page" label="Page" />
+                    <Tab
+                        value="published"
+                        label={polyglot.t('published_data')}
+                    />
+                </Tabs>
+            </Box>
+
             {tab === 'page' && (
-                <>
+                <Box mb={2}>
                     <Box
-                        mb={2}
+                        mb={4}
                         display="flex"
                         justifyContent={
                             filter === SCOPE_DATASET
@@ -76,9 +92,9 @@ export const FieldsEditComponent = ({
                             />
                         )}
                     </Box>
-                    <Statistics filter={filter} subresourceId={subresourceId} />
                     <FieldGrid filter={filter} subresourceId={subresourceId} />
-                </>
+                    <Statistics filter={filter} subresourceId={subresourceId} />
+                </Box>
             )}
             {tab === 'published' && (
                 <>
