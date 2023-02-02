@@ -22,7 +22,12 @@ describe('handleSearchInFieldsChange', () => {
         fieldApi.patchSearchableFields.mockResolvedValue(true);
 
         const { getByTestId } = render(
-            <SearchForm loadField={jest.fn()} fields={fields} p={polyglot} />,
+            <SearchForm
+                loadField={jest.fn()}
+                fields={fields}
+                fieldsForResourceSyndication={fields}
+                p={polyglot}
+            />,
         );
 
         const autocomplete = getByTestId('autocomplete_search_in_fields');
@@ -55,7 +60,12 @@ describe('saveSyndication', () => {
         const polyglot = { t: jest.fn().mockReturnValue('search_input') };
 
         const { getByTestId } = render(
-            <SearchForm loadField={jest.fn()} fields={fields} p={polyglot} />,
+            <SearchForm
+                loadField={jest.fn()}
+                fields={fields}
+                fieldsForResourceSyndication={fields}
+                p={polyglot}
+            />,
         );
 
         const autocomplete = getByTestId(
@@ -88,7 +98,12 @@ describe('saveSyndication', () => {
         const polyglot = { t: jest.fn().mockReturnValue('search_input') };
 
         const { getByTestId } = render(
-            <SearchForm loadField={jest.fn()} fields={fields} p={polyglot} />,
+            <SearchForm
+                loadField={jest.fn()}
+                fields={fields}
+                fieldsForResourceSyndication={fields}
+                p={polyglot}
+            />,
         );
 
         const autocomplete = getByTestId(
@@ -121,7 +136,12 @@ describe('saveSyndication', () => {
         const polyglot = { t: jest.fn().mockReturnValue('search_input') };
 
         const { getByTestId } = render(
-            <SearchForm loadField={jest.fn()} fields={fields} p={polyglot} />,
+            <SearchForm
+                loadField={jest.fn()}
+                fields={fields}
+                fieldsForResourceSyndication={fields}
+                p={polyglot}
+            />,
         );
 
         const autocomplete = getByTestId(
@@ -154,7 +174,12 @@ describe('saveSyndication', () => {
         const polyglot = { t: jest.fn().mockReturnValue('search_input') };
 
         const { getByTestId } = render(
-            <SearchForm loadField={jest.fn()} fields={fields} p={polyglot} />,
+            <SearchForm
+                loadField={jest.fn()}
+                fields={fields}
+                fieldsForResourceSyndication={fields}
+                p={polyglot}
+            />,
         );
 
         const autocomplete = getByTestId(
