@@ -3,6 +3,7 @@ const {
     clearModelRequest,
     getUpdateFieldRequest,
     getPatchSearchableFieldsRequest,
+    getPatchOverviewRequest,
 } = require('../../user');
 
 import { getUserLocalStorageInfo } from './tools';
@@ -44,6 +45,18 @@ const patchField = async field => {
     });
 };
 
+const patchOverview = async field => {
+    const { token } = getUserLocalStorageInfo();
+    const request = getPatchOverviewRequest({ token }, field);
+    return fetch(request).then(({ response, error }) => {
+        if (error) {
+            return error;
+        }
+        store.dispatch(saveFieldSuccess());
+        return response;
+    });
+};
+
 const patchSearchableFields = async fields => {
     const { token } = getUserLocalStorageInfo();
     const request = getPatchSearchableFieldsRequest({ token }, fields);
@@ -60,5 +73,6 @@ export default {
     duplicateField,
     clearModel,
     patchField,
+    patchOverview,
     patchSearchableFields,
 };
