@@ -14,7 +14,9 @@ export function* handleRemoveField({ payload }) {
     } = payload;
 
     const redirectingPath = `/display/${filter}${
-        filter === SCOPE_DOCUMENT && subresourceId ? `/${subresourceId}` : ''
+        filter === SCOPE_DOCUMENT && subresourceId
+            ? `/subresource/${subresourceId}`
+            : ''
     }`;
     const field = yield select(fromFields.getFieldByName, name);
     const request = yield select(fromUser.getRemoveFieldRequest, field);

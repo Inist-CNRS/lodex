@@ -40,7 +40,9 @@ export function* handleSaveField({ payload }) {
     } = payload;
 
     const redirectingPath = `/display/${filter}${
-        filter === SCOPE_DOCUMENT && subresourceId ? `/${subresourceId}` : ''
+        filter === SCOPE_DOCUMENT && subresourceId
+            ? `/subresource/${subresourceId}`
+            : ''
     }`;
 
     const fieldData = yield select(getFieldFormData);

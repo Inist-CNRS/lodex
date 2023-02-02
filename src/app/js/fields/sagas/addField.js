@@ -5,11 +5,13 @@ import { ADD_FIELD } from '../';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
 
 const getAddFieldRedirectUrl = (scope, subresourceId) => {
-    const redirectUrl =
-        scope === SCOPE_DOCUMENT
-            ? `/display/${scope}/${subresourceId || 'main'}/edit/new`
-            : `/display/${scope}/edit/new`;
-    return redirectUrl;
+    if (scope === SCOPE_DOCUMENT) {
+        if (subresourceId) {
+            return `/display/${scope}/subresource/${subresourceId}/edit/new`;
+        }
+        return `/display/${scope}/main/edit/new`;
+    }
+    return `/display/${scope}/edit/new`;
 };
 
 export function* handleAddField({ payload }) {

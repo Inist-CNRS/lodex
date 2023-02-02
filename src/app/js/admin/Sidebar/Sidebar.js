@@ -25,7 +25,6 @@ import {
     SCOPE_GRAPHIC,
 } from '../../../../common/scope';
 import { MenuItemLink } from './MenuItemLink';
-import SubresourceMenu from './SubresourceMenu';
 import { SubMenu } from './SubMenu';
 
 const DRAWER_CLOSED_WIDTH = 50;
@@ -96,7 +95,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                     key="display-main-resource"
                 />
                 <MenuItemLink
-                    to={`/display/${SCOPE_DOCUMENT}/add`}
+                    to={`/display/${SCOPE_DOCUMENT}/subresource`}
                     primaryText={polyglot.t('subresources')}
                     leftIcon={<DocumentScannerIcon />}
                     isActive={() =>
@@ -165,9 +164,6 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
             >
                 <MenuList>{menuItems}</MenuList>
             </Drawer>
-            {matchDocumentRoute && !matchMainResourceRoute && (
-                <SubresourceMenu />
-            )}
         </>
     );
 };

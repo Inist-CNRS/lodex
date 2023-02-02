@@ -18,7 +18,8 @@ export const AddSubresource = compose(
         onSubmit: ({ createSubresource, history }) => resource => {
             createSubresource({
                 resource,
-                callback: id => history.push(`/display/document/${id}`),
+                callback: id =>
+                    history.push(`/display/document/subresource/${id}`),
             });
         },
     }),
