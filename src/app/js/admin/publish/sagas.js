@@ -1,10 +1,9 @@
-import { call, put, take, race, select, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
-import { FINISH_PROGRESS, ERROR_PROGRESS } from '../progress/reducer';
 
-import { PUBLISH, publishSuccess, publishError } from './';
+import { PUBLISH, publishError } from './';
 
 export function* handlePublishRequest() {
     try {
@@ -15,18 +14,6 @@ export function* handlePublishRequest() {
             yield put(publishError(error));
             return;
         }
-
-        const { progressError } = yield race({
-            progressFinish: take(FINISH_PROGRESS),
-            progressError: take(ERROR_PROGRESS),
-        });
-
-        if (progressError) {
-            yield put(publishError(progressError.payload.error));
-            return;
-        }
-
-        yield put(publishSuccess());
     } catch (e) {
         console.log(e);
     }
