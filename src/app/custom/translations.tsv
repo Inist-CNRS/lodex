@@ -862,3 +862,6 @@
 "resource_detail_second"	"Resource detail second"	"Second detail de la ressource"
 "dialog_import_has_enrichments"	"Import has enrichments"	"L'import a des enrichissements"
 "dialog_import_has_enrichments_description"     	"Import has enrichments, don't forget to lauch them for having enriched dataset"	"L'import a des enrichissements, n'oubliez pas de les lancer pour avoir un jeu de données enrichi"
+"enrichment_see_logs"	"See logs"	"Voir les logs"
+"enrichment_status"	"Status"	"Statut"
+"enrichment_preview_description"	"Value from source column or from advanced rule"	"Valeur de la colonne source ou de la règle avancée"
