@@ -7,6 +7,7 @@ import {
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
 } from '../../common/scope';
+import { CancelWorkerError } from '../workers';
 
 const isJobActive = async ctx => !ctx.job || (await ctx.job.isActive());
 
@@ -18,6 +19,9 @@ const chainWhileJobIsActive = async (operations, ctx) => {
         await operation();
         operationIndex++;
         isActive = await isJobActive(ctx);
+        if (!isActive) {
+            throw new CancelWorkerError('Job has been canceled');
+        }
     }
 };
 
