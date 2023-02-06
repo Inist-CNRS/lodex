@@ -12,6 +12,7 @@ import {
     removeField,
     reorderField,
     restoreFields,
+    patchOverview,
 } from './field';
 
 import {
@@ -200,14 +201,13 @@ describe('field routes', () => {
         const ctx = {
             request: {
                 body: {
-                    overview: 200,
+                    label: 'new label',
                 },
             },
             field: {
                 updateOneById: jest
                     .fn()
                     .mockImplementation(() => Promise.resolve('update result')),
-                updateMany: jest.fn(),
             },
             publishFacets: jest.fn(),
             publishedDataset: {
@@ -217,36 +217,13 @@ describe('field routes', () => {
 
         beforeEach(() => {
             ctx.field.updateOneById.mockClear();
-            ctx.field.updateMany.mockClear();
             ctx.publishFacets.mockClear();
-        });
-
-        it('should remove overview form other field with same overview, if overview is set', async () => {
-            await patchField(ctx, 'id');
-            expect(ctx.field.updateMany).toHaveBeenCalledWith(
-                { overview: 200 },
-                { $unset: { overview: '' } },
-            );
-            expect(ctx.body).toContain(['update result']);
-        });
-
-        it('should not remove overview form other field with same overview, if overview is not set', async () => {
-            await patchField(
-                {
-                    ...ctx,
-                    request: {
-                        body: {},
-                    },
-                },
-                'id',
-            );
-            expect(ctx.field.updateMany).not.toHaveBeenCalled();
         });
 
         it('should validateField and then update field', async () => {
             await patchField(ctx, 'id');
             expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {
-                overview: 200,
+                label: 'new label',
             });
             expect(ctx.body).toContain(['update result']);
         });
@@ -265,6 +242,103 @@ describe('field routes', () => {
                 Promise.resolve(0),
             );
             expect(ctx.publishFacets).toHaveBeenCalledTimes(0);
+        });
+    });
+
+    describe('patchOverview', () => {
+        it('should remove overview from other field with same overview', async () => {
+            const ctx = {
+                request: {
+                    body: {
+                        _id: 'id',
+                        overview: 200,
+                    },
+                },
+                field: {
+                    updateMany: jest.fn(),
+                    updateOneById: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve('update result'),
+                        ),
+                },
+            };
+            await patchOverview(ctx);
+            expect(ctx.field.updateMany).toHaveBeenCalledWith(
+                { overview: 200 },
+                { $unset: { overview: '' } },
+            );
+        });
+
+        it('should remove overview from other field with same overview and same subresourceId if subresourceId is set', async () => {
+            const ctx = {
+                request: {
+                    body: {
+                        _id: 'id',
+                        overview: 200,
+                        subresourceId: 'subresourceId',
+                    },
+                },
+                field: {
+                    updateMany: jest.fn(),
+                    updateOneById: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve('update result'),
+                        ),
+                },
+            };
+            await patchOverview(ctx);
+            expect(ctx.field.updateMany).toHaveBeenCalledWith(
+                { overview: 200, subresourceId: 'subresourceId' },
+                { $unset: { overview: '' } },
+            );
+        });
+
+        it('should update field overview if id is set', async () => {
+            const ctx = {
+                request: {
+                    body: {
+                        _id: 'id',
+                        overview: 200,
+                    },
+                },
+                field: {
+                    updateMany: jest.fn(),
+                    updateOneById: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve('update result'),
+                        ),
+                },
+            };
+            await patchOverview(ctx);
+            expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {
+                overview: 200,
+            });
+            expect(ctx.body).toContain(['update result']);
+        });
+
+        it('should not update field overview if id is null', async () => {
+            const ctx = {
+                request: {
+                    body: {
+                        _id: null,
+                        overview: 200,
+                    },
+                },
+                field: {
+                    updateMany: jest.fn(),
+                    updateOneById: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve('update result'),
+                        ),
+                },
+            };
+            await patchOverview(ctx);
+            expect(ctx.field.updateOneById).not.toHaveBeenCalled();
+            expect(ctx.body).toContain('ok');
         });
     });
 

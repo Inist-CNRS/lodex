@@ -37,7 +37,9 @@ const SearchAutocomplete = ({
                     placeholder={translation}
                 />
             )}
-            getOptionLabel={option => `${option.label} (${option.name})`}
+            getOptionLabel={option =>
+                `${option.label} ${option.name ? `(${option.name})` : ''}`
+            }
             renderOption={(props, option) =>
                 !!option.label && (
                     <MenuItem
@@ -48,7 +50,8 @@ const SearchAutocomplete = ({
                         {...props}
                     >
                         <Box>
-                            {option.label} ({option.name})
+                            {option.label}{' '}
+                            {option.name ? `(${option.name})` : ''}
                         </Box>
                         <Box
                             sx={{
@@ -76,7 +79,7 @@ const SearchAutocomplete = ({
 
 SearchAutocomplete.propTypes = {
     translation: PropTypes.string.isRequired,
-    value: PropTypes.array.isRequired || PropTypes.object.isRequired,
+    value: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
     onChange: PropTypes.func.isRequired,
     multiple: PropTypes.bool,
