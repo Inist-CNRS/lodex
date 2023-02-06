@@ -24,6 +24,7 @@ const chainWhileJobIsActive = async (operations, ctx) => {
 export default async ctx => {
     const count = await ctx.dataset.count({});
     const fields = await ctx.field.findAll();
+    const publishedCount = await ctx.publishedDataset.count();
 
     const collectionScopeFields = fields.filter(c =>
         [SCOPE_COLLECTION, SCOPE_DOCUMENT].includes(c.scope),
@@ -31,7 +32,11 @@ export default async ctx => {
 
     await chainWhileJobIsActive(
         [
-            async () => await clearPublished(ctx, true),
+            async () => {
+                if (publishedCount > 0) {
+                    await clearPublished(ctx, true);
+                }
+            },
             async () =>
                 await ctx.publishDocuments(ctx, count, collectionScopeFields),
             async () => {

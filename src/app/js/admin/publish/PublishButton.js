@@ -1,56 +1,54 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import classnames from 'classnames';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { makeStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import { Button, Box } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { publish as publishAction } from './';
 import { fromFields } from '../../sharedSelectors';
-
-const useStyles = makeStyles({
-    button: {
-        marginLeft: 4,
-        marginRight: 4,
-        height: 40,
-    },
-    container: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-});
+import { fromPublish } from '../selectors';
 
 export const PublishButtonComponent = ({
     canPublish,
     p: polyglot,
     onPublish,
+    isPublishing,
 }) => {
-    const classes = useStyles();
     const handleClick = () => {
         onPublish();
     };
 
     return (
-        <div className={classnames('btn-publish', classes.container)}>
+        <Box
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+            }}
+            className="btn-publish"
+        >
             <Button
                 variant="contained"
                 color="primary"
                 onClick={handleClick}
-                disabled={!canPublish}
-                className={classes.button}
+                disabled={!canPublish || isPublishing}
+                sx={{
+                    marginLeft: 4,
+                    marginRight: 4,
+                    height: 40,
+                }}
             >
                 {polyglot.t('publish')}
             </Button>
-        </div>
+        </Box>
     );
 };
 
 PublishButtonComponent.propTypes = {
     canPublish: PropTypes.bool.isRequired,
     onPublish: PropTypes.func.isRequired,
+    isPublishing: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
 };
 
@@ -63,6 +61,7 @@ const mapStateToProps = state => ({
         fromFields.areAllFieldsValid(state),
         fromFields.getAllListFields(state),
     ),
+    isPublishing: fromPublish.getIsPublishing(state),
 });
 
 const mapDispatchToProps = {
