@@ -48,6 +48,12 @@ const theme = {
             contrastText: colorsTheme.white.primary,
         },
         contrastThreshold: 3,
+        error: {
+            main: colorsTheme.red.primary,
+        },
+        info: {
+            main: colorsTheme.black.light,
+        },
         // @TODO: find this usage or remove
         primary2Color: colorsTheme.purple.primary,
         text: {
