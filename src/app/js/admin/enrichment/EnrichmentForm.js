@@ -36,7 +36,7 @@ import {
 } from '../api/enrichment';
 import { getJobLogs } from '../api/job';
 import { toast } from 'react-toastify';
-import { FINISHED } from '../../../../common/enrichmentStatus';
+import { FINISHED, IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import { ERROR } from '../../../../common/progressStatus';
 import { io } from 'socket.io-client';
 
@@ -308,6 +308,7 @@ export const EnrichmentForm = ({
                                 sx={{ height: '100%' }}
                                 startIcon={<PlayArrowIcon />}
                                 onClick={handleLaunchEnrichment}
+                                disabled={initialValues?.status === IN_PROGRESS}
                             >
                                 {polyglot.t('run')}
                             </Button>
@@ -456,7 +457,8 @@ export const EnrichmentForm = ({
                             sx={{ height: '100%' }}
                             onClick={handleDeleteEnrichment}
                             disabled={
-                                initialValues?.status === 'RUNNING' || isLoading
+                                initialValues?.status === IN_PROGRESS ||
+                                isLoading
                             }
                         >
                             {polyglot.t('delete')}
@@ -477,7 +479,8 @@ export const EnrichmentForm = ({
                             sx={{ height: '100%' }}
                             onClick={handleSubmit}
                             disabled={
-                                isLoading || initialValues?.status === 'RUNNING'
+                                isLoading ||
+                                initialValues?.status === IN_PROGRESS
                             }
                         >
                             {polyglot.t('save')}
