@@ -24,9 +24,14 @@ export const isSubresourceTransformation = transformers => {
     );
 };
 
+export const isArbitraryValue = transformers => {
+    return transformers[0]?.operation === 'VALUE';
+};
+
 export const renderTransformer = (
     transformersLocked,
     isSubresourceField,
+    isArbitraryValue,
     polyglot,
 ) => {
     function RenderTransformer(props) {
@@ -41,7 +46,9 @@ export const renderTransformer = (
                     )
                 ) : (
                     <TransformerList
-                        hideFirstTransformers={isSubresourceField ? 3 : 0}
+                        hideFirstTransformers={
+                            isSubresourceField && !isArbitraryValue ? 3 : 0
+                        }
                         {...props}
                     />
                 )}
@@ -74,6 +81,7 @@ export const TabGeneralComponent = ({
     subresourceUri,
     arbitraryMode,
     transformersLocked,
+    isArbitraryValue,
     p: polyglot,
 }) => {
     return (
@@ -90,6 +98,7 @@ export const TabGeneralComponent = ({
                 component={renderTransformer(
                     transformersLocked,
                     !!subresourceUri,
+                    isArbitraryValue,
                     polyglot,
                 )}
                 type="transform"
@@ -114,6 +123,7 @@ TabGeneralComponent.propTypes = {
     subresourceUri: PropTypes.string,
     arbitraryMode: PropTypes.bool.isRequired,
     transformersLocked: PropTypes.bool,
+    isArbitraryValue: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
 };
 
@@ -125,6 +135,7 @@ const mapStateToProps = state => {
 
     return {
         transformersLocked: isSubresourceTransformation(transformers || []),
+        isArbitraryValue: isArbitraryValue(transformers || []),
     };
 };
 

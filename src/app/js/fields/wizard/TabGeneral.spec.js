@@ -10,21 +10,27 @@ import SourceValueToggleConnected from '../sourceValue/SourceValueToggle';
 describe('TabGeneral', () => {
     describe('renderTransformer', () => {
         it('should not render TransformerList if locked prop is truthy', () => {
-            const Component = renderTransformer(true, true, { t: key => key });
+            const Component = renderTransformer(true, true, false, {
+                t: key => key,
+            });
             const element = shallow(<Component />);
 
             expect(element.find(TransformerList).exists()).toBeFalsy();
         });
 
         it('should render TransformerList if locked prop is falsy', () => {
-            const Component = renderTransformer(false, true, { t: key => key });
+            const Component = renderTransformer(false, true, false, {
+                t: key => key,
+            });
             const element = shallow(<Component />);
 
             expect(element.find(TransformerList).exists()).toBeTruthy();
         });
 
-        it('shoud pass 3 as hideFirstTransformers value to TransformerList if isSubresourceField is truthy', () => {
-            const Component = renderTransformer(false, true, { t: key => key });
+        it('shoud pass 3 as hideFirstTransformers value to TransformerList if isSubresourceField is truthy and isArbitrary is falsy', () => {
+            const Component = renderTransformer(false, true, false, {
+                t: key => key,
+            });
             const element = shallow(<Component />);
 
             expect(
@@ -32,8 +38,19 @@ describe('TabGeneral', () => {
             ).toBe(3);
         });
 
+        it('shoud pass 0 as hideFirstTransformers value to TransformerList if isSubresourceField is truthy and isArbitrary is truthy', () => {
+            const Component = renderTransformer(false, true, true, {
+                t: key => key,
+            });
+            const element = shallow(<Component />);
+
+            expect(
+                element.find(TransformerList).prop('hideFirstTransformers'),
+            ).toBe(0);
+        });
+
         it('shoud pass 0 as hideFirstTransformers value to TransformerList if isSubresourceField is falsy', () => {
-            const Component = renderTransformer(false, false, {
+            const Component = renderTransformer(false, false, false, {
                 t: key => key,
             });
 
@@ -45,7 +62,7 @@ describe('TabGeneral', () => {
         });
 
         it('shoud spread other props to TransformerList', () => {
-            const Component = renderTransformer(false, true, {
+            const Component = renderTransformer(false, true, false, {
                 t: key => key,
             });
 

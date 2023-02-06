@@ -75,7 +75,7 @@ const FieldEditionWizardComponent = ({
         history.push(
             `/display/${filter}${
                 filter === SCOPE_DOCUMENT && currentEditedField.subresourceId
-                    ? `/${currentEditedField.subresourceId}`
+                    ? `/subresource/${currentEditedField.subresourceId}`
                     : ''
             }`,
         );
