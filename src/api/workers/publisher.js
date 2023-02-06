@@ -3,7 +3,8 @@ import publishFacets from '../controller/api/publishFacets';
 import publishCharacteristics from '../services/publishCharacteristics';
 import publishDocuments from '../services/publishDocuments';
 import repositoryMiddleware from '../services/repositoryMiddleware';
-import { cleanWaitingJobsOfType } from '.';
+import { CancelWorkerError, cleanWaitingJobsOfType } from '.';
+import clearPublished from '../services/clearPublished';
 
 export const PUBLISHER = 'publisher';
 const listeners = [];
@@ -30,14 +31,16 @@ const startPublishing = async job => {
 };
 
 const handlePublishError = async error => {
+    const ctx = await prepareContext({});
+    await clearPublished(ctx);
     notifyListeners({
         isPublishing: false,
         success: false,
-        message: error.message,
+        message:
+            error instanceof CancelWorkerError
+                ? 'cancelled_publish'
+                : error.message,
     });
-    const ctx = await prepareContext({});
-    await ctx.publishedDataset.remove({});
-    await ctx.publishedCharacteristic.remove({});
 };
 
 const prepareContext = async ctx => {

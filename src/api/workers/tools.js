@@ -1,5 +1,4 @@
 import { cleanWaitingJobsOfType, workerQueue } from '.';
-import clearPublished from '../services/clearPublished';
 import logger from '../services/logger';
 import progress from '../services/progress';
 
@@ -41,16 +40,13 @@ export const getWaitingJobs = async () => {
     return waitingJobs;
 };
 
-export const cancelJob = async (ctx, jobType) => {
+export const cancelJob = async jobType => {
     const activeJob = await getActiveJob();
     if (activeJob?.data?.jobType === jobType) {
         if (jobType === 'publisher') {
             await cleanWaitingJobsOfType(activeJob.data.jobType);
         }
         activeJob.moveToFailed(new Error('cancelled'), true);
-        if (jobType === 'publisher') {
-            await clearPublished(ctx);
-        }
         progress.finish();
     }
 };

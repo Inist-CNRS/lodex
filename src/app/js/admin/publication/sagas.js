@@ -6,7 +6,7 @@ import {
     loadPublicationError,
     computePublication,
 } from './';
-import { PUBLISH_SUCCESS } from '../publish';
+import { PUBLISH_ERROR, PUBLISH_SUCCESS } from '../publish';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
@@ -28,7 +28,7 @@ export function* handleLoadPublicationRequest({ payload }) {
 
 export function* watchLoadPublicationRequest() {
     yield takeLatest(
-        [LOAD_PUBLICATION, PUBLISH_SUCCESS],
+        [LOAD_PUBLICATION, PUBLISH_SUCCESS, PUBLISH_ERROR],
         handleLoadPublicationRequest,
     );
 }

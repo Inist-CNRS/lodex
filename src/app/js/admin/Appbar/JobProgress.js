@@ -107,14 +107,18 @@ const JobProgressComponent = props => {
             if (data.success) {
                 handlePublishSuccess();
                 setProgress();
-            } else if (!data.isPublishing) {
+            }
+            if (!data.success && !data.isPublishing && data.message) {
                 handlePublishError(data);
-                setProgress({
-                    isJobError: true,
-                    status: data.message,
-                    label: 'show_publication_errors',
-                    type: 'publisher',
-                });
+                if (data.message === 'cancelled_publish') {
+                    toast(polyglot.t('cancelled_publish'), {
+                        type: toast.TYPE.SUCCESS,
+                    });
+                } else {
+                    toast(`${polyglot.t('error')} : ${data.message}`, {
+                        type: toast.TYPE.ERROR,
+                    });
+                }
             }
         });
 

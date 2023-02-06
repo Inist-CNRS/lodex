@@ -18,7 +18,7 @@ export const getJobLogs = async (ctx, id) => {
 };
 
 export const postCancelJob = async (ctx, type) => {
-    cancelJob(ctx, type);
+    cancelJob(type);
     ctx.status = 200;
 };
 
