@@ -26,15 +26,16 @@ export const fillAdvancedEnrichment = () => {
     [debug]`;
     cy.contains('Add more', { timeout: 500 }).click();
     cy.get('input[name="name"]', { timeout: 12000 }).type('Enrichment');
-    cy.get('input[name="advancedMode"]').click({ force: true });
+    cy.contains('Advanced mode').click({ force: true });
     cy.get('textarea', { timeout: 3000 }).type(rule, { force: true });
-    cy.get('button[name="submit-enrichment"]', { timeout: 500 }).click({
+    cy.contains('Save', { timeout: 500 }).click({
         force: true,
     });
+    cy.wait(3000);
 };
 
 export const runEnrichment = () => {
-    cy.get('button[name="run-enrichment"]', { timeout: 500 }).click({
+    cy.contains('Run', { timeout: 500 }).click({
         force: true,
     });
     cy.get('.progress-container', { timeout: 500 }).should('be.visible');

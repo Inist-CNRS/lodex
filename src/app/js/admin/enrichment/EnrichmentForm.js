@@ -174,7 +174,7 @@ export const EnrichmentForm = ({
             toast(polyglot.t('enrichment_added_success'), {
                 type: toast.TYPE.SUCCESS,
             });
-            history.push('/data/enrichment');
+            history.push(`/data/enrichment/${res.response._id}`);
         } else {
             toast(`${res.error}`, {
                 type: toast.TYPE.ERROR,
@@ -342,15 +342,13 @@ export const EnrichmentForm = ({
                         </Box>
                     )}
                 </Box>
-                {isEditMode && (
-                    <Box>
-                        <Field
-                            name="advancedMode"
-                            component={renderSwitch}
-                            label={polyglot.t('advancedMode')}
-                        />
-                    </Box>
-                )}
+                <Box>
+                    <Field
+                        name="advancedMode"
+                        component={renderSwitch}
+                        label={polyglot.t('advancedMode')}
+                    />
+                </Box>
 
                 {formValues?.advancedMode && (
                     <Box mb={2}>

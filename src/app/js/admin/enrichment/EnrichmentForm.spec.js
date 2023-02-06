@@ -38,15 +38,15 @@ describe('<EnrichmentFormComponent />', () => {
                 excerptLines={EXCERPT_LINES}
             />,
         );
-        const webServiceUrl = wrapper.find(Field).at(1);
+        const webServiceUrl = wrapper.find(Field).at(2);
         expect(webServiceUrl).toHaveLength(1);
         expect(webServiceUrl.prop('name')).toEqual('webServiceUrl');
 
-        const sourceColumn = wrapper.find(Field).at(2);
+        const sourceColumn = wrapper.find(Field).at(3);
         expect(sourceColumn).toHaveLength(1);
         expect(sourceColumn.prop('name')).toEqual('sourceColumn');
 
-        const subPath = wrapper.find(Field).at(3);
+        const subPath = wrapper.find(Field).at(4);
         expect(subPath).toHaveLength(1);
         expect(subPath.prop('name')).toEqual('subPath');
     });
