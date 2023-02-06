@@ -28,16 +28,16 @@ import FieldInternalIcon from '../../fields/FieldInternalIcon';
 
 const getSearchableFields = fields => fields.filter(f => f.searchable) || [];
 
-const getFacetFields = fields => fields.filter(f => f.isFacet) || [];
+const getFacetFields = fields => fields?.filter(f => f.isFacet) || [];
 
 const getResourceTitle = fields =>
-    fields.find(f => f.overview === overview.RESOURCE_TITLE) || null;
+    fields?.find(f => f.overview === overview.RESOURCE_TITLE) || null;
 const getResourceDescription = fields =>
-    fields.find(f => f.overview === overview.RESOURCE_DESCRIPTION) || null;
+    fields?.find(f => f.overview === overview.RESOURCE_DESCRIPTION) || null;
 const getResourceDetailFirst = fields =>
-    fields.find(f => f.overview === overview.RESOURCE_DETAIL_1) || null;
+    fields?.find(f => f.overview === overview.RESOURCE_DETAIL_1) || null;
 const getResourceDetailSecond = fields =>
-    fields.find(f => f.overview === overview.RESOURCE_DETAIL_2) || null;
+    fields?.find(f => f.overview === overview.RESOURCE_DETAIL_2) || null;
 
 export const SearchForm = ({
     fields,
@@ -203,7 +203,7 @@ export const SearchForm = ({
                                 padding: 2,
                             }}
                         >
-                            {fieldsResource.map(field => {
+                            {fieldsResource?.map(field => {
                                 const labelId = `checkbox-list-label-${field.name}`;
 
                                 return (
