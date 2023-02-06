@@ -17,12 +17,14 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    MenuItem,
 } from '@mui/material';
 import { Typography } from '@material-ui/core';
 
 import * as overview from '../../../../common/overview';
 import { toast } from 'react-toastify';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
+import FieldInternalIcon from '../../fields/FieldInternalIcon';
 
 const getSearchableFields = fields => fields.filter(f => f.searchable) || [];
 
@@ -40,6 +42,7 @@ const getResourceDetailSecond = fields =>
 export const SearchForm = ({
     fields,
     fieldsForResourceSyndication,
+    fieldsResource,
     loadField,
     p: polyglot,
 }) => {
@@ -48,7 +51,7 @@ export const SearchForm = ({
     );
 
     const [facetChecked, setFacetChecked] = React.useState(
-        getFacetFields(fields),
+        getFacetFields(fieldsResource),
     );
 
     const [resourceTitle, setResourceTitle] = React.useState(
@@ -71,7 +74,7 @@ export const SearchForm = ({
     // We could lower the complexity with only one map. But it's more readable like this. And the performance is not a problem here.
     useEffect(() => {
         setSearchInFields(getSearchableFields(fields));
-        setFacetChecked(getFacetFields(fields));
+        setFacetChecked(getFacetFields(fieldsResource));
         setResourceTitle(getResourceTitle(fieldsForResourceSyndication));
         setResourceDescription(
             getResourceDescription(fieldsForResourceSyndication),
@@ -82,7 +85,7 @@ export const SearchForm = ({
         setResourceDetailSecond(
             getResourceDetailSecond(fieldsForResourceSyndication),
         );
-    }, [fields, fieldsForResourceSyndication]);
+    }, [fields, fieldsResource, fieldsForResourceSyndication]);
 
     const handleSearchInFieldsChange = async (event, value) => {
         setSearchInFields(value);
@@ -180,6 +183,7 @@ export const SearchForm = ({
                         onChange={handleSearchInFieldsChange}
                         value={searchInFields}
                         multiple
+                        clearText={polyglot.t('clear')}
                     />
                 </Box>
             </Box>
@@ -199,7 +203,7 @@ export const SearchForm = ({
                                 padding: 2,
                             }}
                         >
-                            {fields.map(field => {
+                            {fieldsResource.map(field => {
                                 const labelId = `checkbox-list-label-${field.name}`;
 
                                 return (
@@ -229,7 +233,47 @@ export const SearchForm = ({
                                             </ListItemIcon>
                                             <ListItemText
                                                 id={labelId}
-                                                primary={`(${field.name}) ${field.label}`}
+                                                primary={
+                                                    <MenuItem
+                                                        sx={{
+                                                            display: 'flex',
+                                                            alignItems:
+                                                                'center',
+                                                            gap: 2,
+                                                        }}
+                                                    >
+                                                        <Box>
+                                                            {field.label}{' '}
+                                                            {field.name
+                                                                ? `(${field.name})`
+                                                                : ''}
+                                                        </Box>
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                justifyContent:
+                                                                    'center',
+                                                                alignItems:
+                                                                    'center',
+                                                            }}
+                                                        >
+                                                            {field.internalScopes &&
+                                                                field.internalScopes.map(
+                                                                    internalScope => (
+                                                                        <FieldInternalIcon
+                                                                            key={
+                                                                                internalScope
+                                                                            }
+                                                                            scope={
+                                                                                internalScope
+                                                                            }
+                                                                        />
+                                                                    ),
+                                                                )}
+                                                            {field.internalName}
+                                                        </Box>
+                                                    </MenuItem>
+                                                }
                                             />
                                         </ListItemButton>
                                     </ListItem>
@@ -297,6 +341,7 @@ export const SearchForm = ({
 
 SearchForm.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
+    fieldsResource: PropTypes.arrayOf(PropTypes.object).isRequired,
     fieldsForResourceSyndication: PropTypes.arrayOf(PropTypes.object)
         .isRequired,
     loadField: PropTypes.func.isRequired,
@@ -311,8 +356,18 @@ const mapStateToProps = (state, { p }) => {
         label: p.t('none'),
     });
     return {
-        fields: fromFields.getFields(state),
-        fieldsForResourceSyndication,
+        // sort by label asc
+        fields: fromFields
+            .getFields(state)
+            .sort((a, b) => a.label.localeCompare(b.label)),
+        fieldsForResourceSyndication: fieldsForResourceSyndication.sort(
+            (a, b) => a.label.localeCompare(b.label),
+        ),
+        fieldsResource: fromFields
+            .getEditingFields(state, {
+                filter: SCOPE_DOCUMENT,
+            })
+            .sort((a, b) => a.label.localeCompare(b.label)),
     };
 };
 

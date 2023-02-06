@@ -11,6 +11,7 @@ const SearchAutocomplete = ({
     value,
     translation,
     multiple = false,
+    clearText = 'Clear',
 }) => {
     const [autocompleteValue, setAutocompleteValue] = React.useState(value);
 
@@ -40,12 +41,14 @@ const SearchAutocomplete = ({
             getOptionLabel={option =>
                 `${option.label} ${option.name ? `(${option.name})` : ''}`
             }
+            clearText={clearText}
             renderOption={(props, option) =>
                 !!option.label && (
                     <MenuItem
                         sx={{
                             display: 'flex',
                             alignItems: 'center',
+                            gap: 2,
                         }}
                         {...props}
                     >
@@ -84,6 +87,7 @@ SearchAutocomplete.propTypes = {
     onChange: PropTypes.func.isRequired,
     multiple: PropTypes.bool,
     testId: PropTypes.string,
+    clearText: PropTypes.string,
 };
 
 export default SearchAutocomplete;
