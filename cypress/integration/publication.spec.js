@@ -22,6 +22,7 @@ describe('Dataset Publication', () => {
             menu.goToAdminDashboard();
             cy.wait(300);
             datasetImportPage.importDataset('dataset/simple.csv');
+            cy.wait(300);
             cy.get('[data-rowindex=0]', { timeout: 500 }).should(
                 'contains.text',
                 ['"1"', '"Row 1"', '"Test 1"'].join(''),
@@ -140,7 +141,8 @@ describe('Dataset Publication', () => {
                     timeout: 500,
                 },
             ).click({ force: true });
-            cy.get('[role=menu] :nth-child(4)').click();
+            cy.wait(100);
+            cy.get('[role=menu] :nth-child(4)').click({ force: true });
             cy.focused().type('b');
 
             cy.get('[data-rowindex=0]', { timeout: 3000 }).should(

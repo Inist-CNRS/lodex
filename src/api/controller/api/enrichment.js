@@ -69,6 +69,7 @@ export const deleteEnrichment = async (ctx, id) => {
         await ctx.enrichment.delete(id);
         await ctx.dataset.removeAttribute(enrichment.name);
         ctx.status = 200;
+        ctx.body = { message: 'ok' };
     } catch (error) {
         ctx.status = 403;
         ctx.body = { error: error.message };

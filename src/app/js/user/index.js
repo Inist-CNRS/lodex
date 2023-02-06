@@ -140,14 +140,14 @@ export const getPreviewDataEnrichmentRequest = (state, body) =>
         body,
     });
 
-export const getUpdateEnrichmentRequest = (state, { enrichment }) =>
+export const getUpdateEnrichmentRequest = (state, enrichment) =>
     getRequest(state, {
         url: `/api/enrichment/${enrichment._id}`,
         method: 'PUT',
         body: enrichment,
     });
 
-export const getDeleteEnrichmentRequest = (state, { id }) =>
+export const getDeleteEnrichmentRequest = (state, id) =>
     getRequest(state, {
         url: `/api/enrichment/${id}`,
         method: 'DELETE',

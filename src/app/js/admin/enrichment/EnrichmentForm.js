@@ -1,467 +1,507 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
-import compose from 'recompose/compose';
-import { Field, formValueSelector, reduxForm, reset, change } from 'redux-form';
+import React, { useEffect, useMemo } from 'react';
+
+import EnrichmentCatalogConnected from './EnrichmentCatalog';
+import EnrichmentPreview from './EnrichmentPreview';
+import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
+import EnrichmentLogsDialogComponent from './EnrichmentLogsDialog';
 import translate from 'redux-polyglot/translate';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PropTypes from 'prop-types';
+import SubressourceFieldAutoComplete from '../subresource/SubressourceFieldAutoComplete';
 
-import {
-    createEnrichment,
-    deleteEnrichment,
-    launchEnrichment,
-    loadEnrichments,
-    previewDataEnrichment,
-    previewDataEnrichmentClear,
-    updateEnrichment,
-    clearEnrichmentError,
-} from '.';
-import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
-import FormSelectField from '../../lib/components/FormSelectField';
-import FormTextField from '../../lib/components/FormTextField';
+import { launchEnrichment, loadEnrichments } from '.';
+import { getKeys } from '../subresource/SubresourceForm';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { Field, formValueSelector, reduxForm, change } from 'redux-form';
 import { fromEnrichments, fromParsing } from '../selectors';
-import EnrichmentExcerpt from './EnrichmentExcerpt';
-
+import { ListAlt as ListAltIcon } from '@mui/icons-material';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { withRouter } from 'react-router';
 import {
     Box,
     Button,
     FormControlLabel,
-    makeStyles,
-    MenuItem,
+    FormGroup,
+    ListItem,
     Switch,
-    Tooltip,
-} from '@material-ui/core';
+    TextField,
+    Typography,
+} from '@mui/material';
 import {
-    FINISHED,
-    IN_PROGRESS,
-    PENDING,
-} from '../../../../common/enrichmentStatus';
-import EnrichmentSidebar from './EnrichmentSidebar';
-
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
-import { EnrichmentContext } from './EnrichmentContext';
-import EnrichmentCatalogDialog from './EnrichmentCatalog';
+    createEnrichment,
+    getPreviewEnrichment,
+    deleteEnrichment,
+    updateEnrichment,
+} from '../api/enrichment';
+import { getJobLogs } from '../api/job';
 import { toast } from 'react-toastify';
+import { FINISHED, IN_PROGRESS } from '../../../../common/enrichmentStatus';
+import { ERROR } from '../../../../common/progressStatus';
+import { io } from 'socket.io-client';
 
-const DEBOUNCE_TIMEOUT = 2000;
+// UTILITARY PART
+const ENRICHMENT_FORM = 'ENRICHMENT_FORM';
 
-const useStyles = makeStyles(theme => {
-    return {
-        enrichmentPageContainer: {
-            display: 'flex',
-            flexDirection: 'row',
-        },
-        enrichmentFormContainer: {
-            display: 'flex',
-            justifyContent: 'center',
-            flex: 3,
-            marginRight: 20,
-        },
-        enrichmentForm: {
-            width: '100%',
-            maxWidth: '900px',
-        },
-        switchMode: {
-            display: 'flex',
-            justifyContent: 'flex-end',
-        },
-        simplifiedRulesFormContainer: {
-            flex: '4',
-            borderRadius: 4,
-            padding: 20,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-around',
-        },
-        excerptContainer: {
-            flex: '2',
-            borderLeft: '1px solid rgb(95, 99, 104, 0.5)',
-        },
-        simplifiedRules: {
-            border: '1px solid rgb(95, 99, 104, 0.5)',
-            display: 'flex',
-            flexDirection: 'column',
-            [theme.breakpoints.up('md')]: {
-                flexDirection: 'row',
-            },
-        },
-        valuesContainer: {
-            display: 'flex',
-        },
-        actionContainer: {
-            display: 'flex',
-            justifyContent: 'flex-end',
-            marginBottom: 20,
-        },
-        advancedRulesFormContainer: {
-            display: 'flex',
-            flexDirection: 'column',
-            [theme.breakpoints.up('md')]: {
-                flexDirection: 'row',
-            },
-        },
-        advancedRulesEditor: {
-            display: 'flex',
-            flex: '4 !important',
-            height: '350px !important',
-        },
-    };
-});
+const renderSwitch = ({ input, label }) => (
+    <FormGroup>
+        <FormControlLabel
+            control={
+                <Switch
+                    checked={input.value ? true : false}
+                    onChange={input.onChange}
+                />
+            }
+            label={label}
+        />
+    </FormGroup>
+);
 
-export const EnrichmentFormComponent = ({
-    dataPreviewEnrichment,
-    excerptColumns,
-    errorEnrichment,
+const renderTextField = ({ input, label, meta: { touched, error } }) => (
+    <TextField
+        placeholder={label}
+        label={label}
+        error={touched && !!error}
+        helperText={touched && error}
+        value={input.value === null ? '' : input.value}
+        {...input}
+        fullWidth
+    />
+);
+
+const renderStatus = (initialValues, polyglot) => {
+    if (initialValues?.status === 'PENDING') {
+        return (
+            <Typography component="span" variant="body2" color="warning.main">
+                {polyglot.t('enrichment_status_pending')}
+            </Typography>
+        );
+    }
+    if (initialValues?.status === 'IN_PROGRESS') {
+        return (
+            <Typography component="span" variant="body2" color="info.main">
+                {polyglot.t('enrichment_status_running')}
+            </Typography>
+        );
+    }
+
+    if (initialValues?.status === 'PAUSED') {
+        return (
+            <Typography component="span" variant="body2" color="info.main">
+                {polyglot.t('enrichment_status_paused')}
+            </Typography>
+        );
+    }
+
+    if (initialValues?.status === 'FINISHED') {
+        return (
+            <Typography component="span" variant="body2" color="success.main">
+                {polyglot.t('enrichment_status_done')}
+            </Typography>
+        );
+    }
+
+    if (initialValues?.status === 'ERROR') {
+        return (
+            <Typography component="span" variant="body2" color="error.main">
+                {polyglot.t('enrichment_status_error')}
+            </Typography>
+        );
+    }
+
+    return (
+        <Typography component="span" variant="body2" color="success.main">
+            {polyglot.t('enrichment_status_not_started')}
+        </Typography>
+    );
+};
+
+// COMPONENT PART
+export const EnrichmentForm = ({
+    datasetFields,
+    excerptLines,
     formValues,
     history,
     initialValues,
-    isDataPreviewLoading,
-    isEdit,
-    isLoading,
-    onClearEnrichmentError,
-    onAddEnrichment,
-    onDeleteEnrichment,
-    onLaunchEnrichment,
-    onPreviewDataEnrichment,
-    onPreviewDataEnrichmentClear,
-    onUpdateEnrichment,
-    onResetForm,
-    onChangeWebServiceUrl,
-    onLoadEnrichments,
-    match,
     p: polyglot,
+    onChangeWebServiceUrl,
+    onLaunchEnrichment,
+    onLoadEnrichments,
 }) => {
-    const classes = useStyles();
-    const [advancedMode, setAdvancedMode] = useState(
-        initialValues?.advancedMode || false,
+    const [openCatalog, setOpenCatalog] = React.useState(false);
+    const [openEnrichmentLogs, setOpenEnrichmentLogs] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [dataPreviewEnrichment, setDataPreviewEnrichment] = React.useState(
+        [],
     );
-    const [openCatalog, setOpenCatalog] = useState(false);
+    const [enrichmentLogs, setEnrichmentLogs] = React.useState([]);
 
-    useEffect(() => {
-        if (errorEnrichment) {
-            toast(`${polyglot.t('error')} : ${errorEnrichment}`, {
-                type: toast.TYPE.ERROR,
-            });
-            onClearEnrichmentError();
-        }
-    }, [errorEnrichment]);
+    const isEditMode = !!initialValues?._id;
 
-    useEffect(() => {
-        const debounceTimeout = setTimeout(() => {
-            getSourcePreview(advancedMode, formValues);
-        }, DEBOUNCE_TIMEOUT);
-        return () => {
-            clearTimeout(debounceTimeout);
-        };
-    }, [
-        formValues?.sourceColumn,
-        formValues?.subPath,
-        formValues?.rule,
-        advancedMode,
-    ]);
+    const optionsIdentifier = useMemo(() => {
+        const firstExcerptLine =
+            excerptLines[0]?.[formValues?.sourceColumn] || [];
+        return getKeys(firstExcerptLine);
+    }, [excerptLines, formValues?.sourceColumn]);
 
-    useEffect(() => {
-        const enrichmentExist = match.params.enrichmentId && initialValues;
-        if (match.params.enrichmentId && !enrichmentExist) {
-            history.push('/data/enrichment');
-        }
-        return () => {
-            onResetForm();
-            onPreviewDataEnrichmentClear();
-        };
-    }, []);
-
-    const getSourcePreview = (advancedMode, formValues) => {
-        if (advancedMode && !formValues?.rule) {
+    const handleSourcePreview = async formValues => {
+        if (formValues?.advancedMode && !formValues?.rule) {
             return;
         }
 
-        if (!advancedMode && !formValues?.sourceColumn) {
+        if (!formValues?.advancedMode && !formValues?.sourceColumn) {
             return;
         }
-        onPreviewDataEnrichment(
-            advancedMode
+
+        const res = await getPreviewEnrichment(
+            formValues?.advancedMode
                 ? { rule: formValues.rule }
                 : {
-                      sourceColumn: formValues.sourceColumn,
+                      sourceColumn: formValues?.sourceColumn,
                       subPath: formValues.subPath,
                   },
         );
+        if (res.response) {
+            setDataPreviewEnrichment(res.response);
+        } else {
+            setDataPreviewEnrichment([]);
+        }
     };
 
-    const saveEnrichment = e => {
-        e.preventDefault();
+    const handleAddEnrichment = async () => {
+        const res = await createEnrichment(formValues);
+        if (res.response) {
+            toast(polyglot.t('enrichment_added_success'), {
+                type: toast.TYPE.SUCCESS,
+            });
+            history.push(`/data/enrichment/${res.response._id}`);
+        } else {
+            toast(`${res.error}`, {
+                type: toast.TYPE.ERROR,
+            });
+        }
+    };
 
-        let payload = {
-            name: formValues.name,
-            advancedMode,
-            status: initialValues?.status || PENDING,
+    const handleUpdateEnrichment = async () => {
+        const enrichmentToUpdate = {
+            ...initialValues,
+            ...formValues,
         };
-
-        if (advancedMode) {
-            payload = {
-                ...payload,
-                rule: formValues.rule,
-            };
-        } else {
-            payload = {
-                ...payload,
-                webServiceUrl: formValues.webServiceUrl,
-                sourceColumn: formValues.sourceColumn,
-                subPath: formValues.subPath,
-            };
-        }
-
-        if (isEdit) {
-            onUpdateEnrichment({
-                enrichment: {
-                    _id: initialValues._id,
-                    jobId: initialValues.jobId,
-                    ...payload,
-                },
+        const res = await updateEnrichment(enrichmentToUpdate);
+        if (res.response) {
+            toast(polyglot.t('enrichment_updated_success'), {
+                type: toast.TYPE.SUCCESS,
             });
+            history.push('/data/enrichment');
         } else {
-            onAddEnrichment({
-                enrichment: payload,
-                callback: id => history.push(`/data/enrichment/${id}`),
+            toast(`${res.error}`, {
+                type: toast.TYPE.ERROR,
             });
         }
     };
 
-    const deleteEnrichment = e => {
-        e.preventDefault();
-        onDeleteEnrichment({
-            id: initialValues._id,
-        });
-        history.push(`/data/enrichment`);
+    const handleSubmit = async () => {
+        setIsLoading(true);
+        if (isEditMode) {
+            await handleUpdateEnrichment();
+        } else {
+            await handleAddEnrichment();
+        }
+        setIsLoading(false);
     };
 
-    const toggleAdvancedMode = () => {
-        setAdvancedMode(!advancedMode);
+    const handleDeleteEnrichment = async () => {
+        setIsLoading(true);
+        const res = await deleteEnrichment(initialValues._id);
+        if (res.response) {
+            toast(polyglot.t('enrichment_deleted_success'), {
+                type: toast.TYPE.SUCCESS,
+            });
+            history.push('/data/enrichment');
+        } else {
+            toast(`${res.error}`, {
+                type: toast.TYPE.ERROR,
+            });
+        }
+        setIsLoading(false);
     };
 
-    const launchEnrichment = () => {
+    const handleCancel = () => {
+        history.push('/data/enrichment');
+    };
+
+    const handleLaunchEnrichment = () => {
         onLaunchEnrichment({
             id: initialValues._id,
             action: initialValues?.status === FINISHED ? 'relaunch' : 'launch',
         });
     };
 
-    const getRuleFields = () => {
-        const columnItems = excerptColumns.map(column => (
-            <MenuItem key={column} value={column}>
-                {column}
-            </MenuItem>
-        ));
+    const handleGetLogs = async () => {
+        if (initialValues?.jobId) {
+            getJobLogs(initialValues.jobId).then(
+                result => {
+                    setEnrichmentLogs(result.response.logs.reverse());
+                },
+                () => {
+                    toast(polyglot.t('enrichment_logs_error'), {
+                        type: toast.TYPE.ERROR,
+                    });
+                },
+            );
+        }
+    };
 
-        return (
-            <Box>
-                <div className={classes.switchMode}>
-                    <Tooltip
-                        title={
-                            !advancedMode &&
-                            polyglot.t(`enrichment_advanced_mode_tooltip`)
-                        }
+    useEffect(() => {
+        handleGetLogs();
+        const socket = io();
+        socket.on(`enrichment-job-${initialValues?.jobId}`, data => {
+            if (Array.isArray(data)) {
+                setEnrichmentLogs(currentState => [...data, ...currentState]);
+            } else {
+                setEnrichmentLogs(currentState => [data, ...currentState]);
+                let parsedData;
+                try {
+                    parsedData = JSON.parse(data);
+                } catch {
+                    console.error('Error parsing data', data);
+                }
+
+                if (
+                    parsedData &&
+                    [FINISHED, ERROR].includes(parsedData.status)
+                ) {
+                    onLoadEnrichments();
+                }
+            }
+        });
+        socket.on('connect_error', () => {
+            handleGetLogs();
+        });
+        return () => socket.disconnect();
+    }, []);
+
+    useEffect(() => {
+        handleSourcePreview(formValues);
+    }, [formValues?.rule, formValues?.sourceColumn, formValues?.subPath]);
+
+    return (
+        <Box mt={3} display="flex" gap={6}>
+            <Box sx={{ flex: 2 }}>
+                <Box>
+                    <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        gap={2}
+                        mb={2}
                     >
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={advancedMode}
-                                    onChange={toggleAdvancedMode}
-                                    color="primary"
-                                    name="advancedMode"
-                                />
-                            }
-                            label={polyglot.t('advancedMode')}
+                        <Field
+                            name="name"
+                            component={renderTextField}
+                            label={polyglot.t('fieldName')}
                         />
-                    </Tooltip>
-                </div>
-                {advancedMode ? (
-                    <div
-                        style={{
-                            display: 'flex',
-                        }}
-                        className={classes.advancedRulesFormContainer}
-                    >
+                        {isEditMode && (
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                sx={{ height: '100%' }}
+                                startIcon={<PlayArrowIcon />}
+                                onClick={handleLaunchEnrichment}
+                                disabled={initialValues?.status === IN_PROGRESS}
+                            >
+                                {polyglot.t('run')}
+                            </Button>
+                        )}
+                    </Box>
+                    {isEditMode && (
+                        <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            gap={2}
+                        >
+                            <Typography variant="body2">
+                                {polyglot.t('enrichment_status')} :
+                                {renderStatus(initialValues, polyglot)}
+                            </Typography>
+                            <Button
+                                variant="link"
+                                sx={{
+                                    paddingRight: 0,
+                                    textDecoration: 'underline',
+                                }}
+                                onClick={() => setOpenEnrichmentLogs(true)}
+                            >
+                                {polyglot.t('enrichment_see_logs')}
+                            </Button>
+                            <EnrichmentLogsDialogComponent
+                                isOpen={openEnrichmentLogs}
+                                logs={enrichmentLogs}
+                                handleClose={() => setOpenEnrichmentLogs(false)}
+                            />
+                        </Box>
+                    )}
+                </Box>
+                <Box>
+                    <Field
+                        name="advancedMode"
+                        component={renderSwitch}
+                        label={polyglot.t('advancedMode')}
+                    />
+                </Box>
+
+                {formValues?.advancedMode && (
+                    <Box mb={2}>
                         <Field
                             name="rule"
                             component={FormSourceCodeField}
                             label={polyglot.t('expand_rules')}
-                            className={classes.advancedRulesEditor}
+                            width="100%"
                         />
-                        <div className={classes.excerptContainer}>
-                            <EnrichmentExcerpt
-                                lines={dataPreviewEnrichment}
-                                loading={isDataPreviewLoading}
-                                advancedMode
-                            />
-                        </div>
-                    </div>
-                ) : (
-                    <Box className={classes.simplifiedRules}>
-                        <div className={classes.simplifiedRulesFormContainer}>
-                            <div className={classes.valuesContainer}>
-                                <Field
-                                    name="webServiceUrl"
-                                    component={FormTextField}
-                                    label={polyglot.t('webServiceUrl')}
-                                    fullWidth
-                                    variant="outlined"
-                                />
-                                <Box style={{ marginLeft: '10px' }}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={() => setOpenCatalog(true)}
-                                        disabled={[IN_PROGRESS].includes(
-                                            initialValues?.status,
-                                        )}
-                                        style={{ height: '100%' }}
-                                    >
-                                        <ListAltIcon fontSize="medium" />
-                                    </Button>
-                                </Box>
-                                <EnrichmentCatalogDialog
-                                    isOpen={openCatalog}
-                                    handleClose={() => setOpenCatalog(false)}
-                                    selectedWebServiceUrl={
-                                        formValues?.webServiceUrl
-                                    }
-                                    onChange={onChangeWebServiceUrl}
-                                />
-                            </div>
-                            <div className={classes.valuesContainer}>
-                                <Field
-                                    name="sourceColumn"
-                                    component={FormSelectField}
-                                    label={polyglot.t('sourceColumn')}
-                                    fullWidth
-                                    style={{ marginBottom: 20 }}
-                                >
-                                    <MenuItem key={null} value={null}>
-                                        {polyglot.t('none')}
-                                    </MenuItem>
-                                    {columnItems}
-                                </Field>
-
-                                <div
-                                    style={{
-                                        fontSize: 24,
-                                        marginLeft: 12,
-                                        marginTop: 15,
-                                    }}
-                                >
-                                    •
-                                </div>
-                                <Field
-                                    name="subPath"
-                                    component={FormTextField}
-                                    label={polyglot.t('subPath')}
-                                    fullWidth
-                                    style={{ marginLeft: 12 }}
-                                    helperText={polyglot.t('subPathHelper')}
-                                    variant="outlined"
-                                />
-                            </div>
-                        </div>
-                        <div className={classes.excerptContainer}>
-                            <EnrichmentExcerpt
-                                lines={dataPreviewEnrichment}
-                                loading={isDataPreviewLoading}
-                            />
-                        </div>
                     </Box>
                 )}
-            </Box>
-        );
-    };
 
-    return (
-        <div className={classes.enrichmentPageContainer}>
-            <div className={classes.enrichmentFormContainer}>
-                <form
-                    id="enrichment_form"
-                    onSubmit={saveEnrichment}
-                    className={classes.enrichmentForm}
+                {!formValues?.advancedMode && (
+                    <Box>
+                        <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            gap={2}
+                            mb={2}
+                        >
+                            <Field
+                                name="webServiceUrl"
+                                component={renderTextField}
+                                label={polyglot.t('webServiceUrl')}
+                            />
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => setOpenCatalog(true)}
+                                style={{ height: '100%' }}
+                            >
+                                <ListAltIcon fontSize="medium" />
+                            </Button>
+                            <EnrichmentCatalogConnected
+                                isOpen={openCatalog}
+                                handleClose={() => setOpenCatalog(false)}
+                                selectedWebServiceUrl={
+                                    formValues?.webServiceUrl
+                                }
+                                onChange={onChangeWebServiceUrl}
+                            />
+                        </Box>
+
+                        <Box display="flex" gap={2} mb={2}>
+                            <Field
+                                name="sourceColumn"
+                                type="text"
+                                component={SubressourceFieldAutoComplete}
+                                options={datasetFields}
+                                renderInput={params => (
+                                    <TextField
+                                        {...params}
+                                        label={polyglot.t('sourceColumn')}
+                                        variant="outlined"
+                                        aria-label="input-path"
+                                    />
+                                )}
+                                renderOption={(props, option) => {
+                                    return (
+                                        <ListItem {...props}>
+                                            <Typography>{option}</Typography>
+                                        </ListItem>
+                                    );
+                                }}
+                                clearIdentifier={() => {
+                                    change('subPath', '');
+                                }}
+                            />
+
+                            <Field
+                                name="subPath"
+                                type="text"
+                                component={SubressourceFieldAutoComplete}
+                                options={optionsIdentifier}
+                                renderInput={params => (
+                                    <TextField
+                                        {...params}
+                                        label={polyglot.t('subPath')}
+                                        aria-label="subPath"
+                                        variant="outlined"
+                                    />
+                                )}
+                                disabled={!formValues?.sourceColumn}
+                                renderOption={(props, option) => {
+                                    return (
+                                        <ListItem {...props}>
+                                            <Typography>{option}</Typography>
+                                        </ListItem>
+                                    );
+                                }}
+                            />
+                        </Box>
+                    </Box>
+                )}
+
+                <Box
+                    display="flex"
+                    justifyContent={isEditMode ? 'space-between' : 'flex-end'}
                 >
-                    <Field
-                        name="name"
-                        component={FormTextField}
-                        label={polyglot.t('fieldName')}
-                        autoFocus
-                        fullWidth
-                        style={{ marginBottom: 24 }}
-                        disabled={isEdit}
-                    />
-                    {getRuleFields()}
-                    <ButtonWithStatus
-                        raised
-                        key="save"
-                        color="primary"
-                        type="submit"
-                        loading={isLoading}
-                        style={{ marginTop: 24 }}
-                        name="submit-enrichment"
-                        disabled={[IN_PROGRESS].includes(initialValues?.status)}
-                    >
-                        {polyglot.t(isEdit ? 'save' : 'add_more')}
-                    </ButtonWithStatus>
-                </form>
-            </div>
-            <EnrichmentContext.Provider
-                value={{
-                    isEdit,
-                    enrichment: initialValues,
-                    handleLaunchEnrichment: launchEnrichment,
-                    handleDeleteEnrichment: deleteEnrichment,
-                    onLoadEnrichments,
-                }}
-            >
-                <EnrichmentSidebar />
-            </EnrichmentContext.Provider>
-        </div>
+                    {isEditMode && (
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            sx={{ height: '100%' }}
+                            onClick={handleDeleteEnrichment}
+                            disabled={
+                                initialValues?.status === IN_PROGRESS ||
+                                isLoading
+                            }
+                        >
+                            {polyglot.t('delete')}
+                        </Button>
+                    )}
+                    <Box>
+                        <Button
+                            variant="link"
+                            color="secondary"
+                            sx={{ height: '100%' }}
+                            onClick={handleCancel}
+                        >
+                            {polyglot.t('cancel')}
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            sx={{ height: '100%' }}
+                            onClick={handleSubmit}
+                            disabled={
+                                isLoading ||
+                                initialValues?.status === IN_PROGRESS
+                            }
+                        >
+                            {polyglot.t('save')}
+                        </Button>
+                    </Box>
+                </Box>
+            </Box>
+            <Box sx={{ flex: 1 }}>
+                <EnrichmentPreview
+                    lines={dataPreviewEnrichment}
+                    sourceColumn={formValues?.sourceColumn}
+                />
+            </Box>
+        </Box>
     );
 };
 
-EnrichmentFormComponent.propTypes = {
-    dataPreviewEnrichment: PropTypes.array,
-    errorEnrichment: PropTypes.string,
-    excerptColumns: PropTypes.arrayOf(PropTypes.string),
-    formValues: PropTypes.shape({
-        sourceColumn: PropTypes.string,
-        subPath: PropTypes.string,
-        rule: PropTypes.string,
-        webServiceUrl: PropTypes.string,
-        name: PropTypes.string,
-    }),
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }),
-    initialValues: PropTypes.any,
-    isDataPreviewLoading: PropTypes.bool,
-    isEdit: PropTypes.bool,
-    isLoading: PropTypes.bool.isRequired,
-    onAddEnrichment: PropTypes.func.isRequired,
-    onUpdateEnrichment: PropTypes.func.isRequired,
-    onDeleteEnrichment: PropTypes.func.isRequired,
-    onLaunchEnrichment: PropTypes.func.isRequired,
-    onPreviewDataEnrichment: PropTypes.func.isRequired,
-    onClearEnrichmentError: PropTypes.func.isRequired,
-    onPreviewDataEnrichmentClear: PropTypes.func.isRequired,
-    onResetForm: PropTypes.func.isRequired,
-    onLoadEnrichments: PropTypes.func.isRequired,
-    onChangeWebServiceUrl: PropTypes.func.isRequired,
-    match: PropTypes.object.isRequired,
-    p: polyglotPropTypes.isRequired,
-};
-
+// REDUX PART
 const formSelector = formValueSelector('ENRICHMENT_FORM');
+
 const mapStateToProps = (state, { match }) => ({
-    dataPreviewEnrichment: fromEnrichments.dataPreviewEnrichment(state),
-    errorEnrichment: fromEnrichments.getError(state),
-    excerptColumns: fromParsing.getParsedExcerptColumns(state),
     formValues: formSelector(
         state,
         'sourceColumn',
@@ -469,41 +509,39 @@ const mapStateToProps = (state, { match }) => ({
         'rule',
         'name',
         'webServiceUrl',
+        'advancedMode',
     ),
     initialValues: fromEnrichments
         .enrichments(state)
         .find(enrichment => enrichment._id === match.params.enrichmentId),
-    isLoading: fromEnrichments.isLoading(state),
-    isDataPreviewLoading: fromEnrichments.isDataPreviewLoading(state),
-    lines: fromParsing.getExcerptLines(state),
+    datasetFields: fromParsing.getParsedExcerptColumns(state),
+    excerptLines: fromParsing.getExcerptLines(state),
 });
-
 const mapDispatchToProps = {
-    onAddEnrichment: createEnrichment,
-    onDeleteEnrichment: deleteEnrichment,
-    onLaunchEnrichment: launchEnrichment,
-    onUpdateEnrichment: updateEnrichment,
-    onClearEnrichmentError: clearEnrichmentError,
-    onPreviewDataEnrichment: previewDataEnrichment,
-    onPreviewDataEnrichmentClear: previewDataEnrichmentClear,
-    onLoadEnrichments: loadEnrichments,
-    onResetForm: () => reset('ENRICHMENT_FORM'),
     onChangeWebServiceUrl: value =>
         change('ENRICHMENT_FORM', 'webServiceUrl', value),
+    onLaunchEnrichment: launchEnrichment,
+    onLoadEnrichments: loadEnrichments,
 };
 
-const validate = (values, { p: polyglot }) => {
-    const errors = ['name', 'rule'].reduce((currentErrors, field) => {
-        if (!values[field]) {
-            return {
-                ...currentErrors,
-                [field]: polyglot.t('required'),
-            };
-        }
-        return currentErrors;
-    }, {});
-
-    return errors;
+EnrichmentForm.propTypes = {
+    datasetFields: PropTypes.array.isRequired,
+    excerptLines: PropTypes.array.isRequired,
+    formValues: PropTypes.shape({
+        sourceColumn: PropTypes.string,
+        subPath: PropTypes.string,
+        rule: PropTypes.string,
+        webServiceUrl: PropTypes.string,
+        name: PropTypes.string,
+        advancedMode: PropTypes.bool,
+    }),
+    history: PropTypes.object.isRequired,
+    initialValues: PropTypes.any,
+    match: PropTypes.object.isRequired,
+    onChangeWebServiceUrl: PropTypes.func.isRequired,
+    onLaunchEnrichment: PropTypes.func.isRequired,
+    onLoadEnrichments: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
 export default compose(
@@ -511,7 +549,6 @@ export default compose(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
     reduxForm({
-        form: 'ENRICHMENT_FORM',
-        validate,
+        form: ENRICHMENT_FORM,
     }),
-)(EnrichmentFormComponent);
+)(EnrichmentForm);
