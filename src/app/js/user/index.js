@@ -192,6 +192,13 @@ export const getPatchSearchableFieldsRequest = (state, fieldsData) =>
         method: 'PATCH',
     });
 
+export const getPatchOverviewRequest = (state, fieldData) =>
+    getRequest(state, {
+        url: `/api/field/overview`,
+        body: fieldData,
+        method: 'PATCH',
+    });
+
 export const getSaveFieldRequest = (state, fieldData) => {
     if (fieldData.name === 'new') {
         return getCreateFieldRequest(state, omit(fieldData, ['name']));

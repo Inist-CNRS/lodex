@@ -31,7 +31,7 @@ export const DatasetOverviewSelectComponent = ({
 
     const handleDatasetTitleChange = async event => {
         const { value: _id } = event.target;
-        await fieldApi.patchField({
+        await fieldApi.patchOverview({
             _id,
             overview: overview.DATASET_TITLE,
         });
@@ -40,7 +40,7 @@ export const DatasetOverviewSelectComponent = ({
 
     const handleDatasetDescriptionChange = async event => {
         const { value: _id } = event.target;
-        await fieldApi.patchField({
+        await fieldApi.patchOverview({
             _id,
             overview: overview.DATASET_DESCRIPTION,
         });
@@ -56,6 +56,7 @@ export const DatasetOverviewSelectComponent = ({
                 onChange={handleDatasetTitleChange}
                 sx={{ minWidth: 220 }}
             >
+                <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
                 {fields.map(field => (
                     <MenuItem key={field._id} value={field._id}>
                         {field.label} ({field.name})
@@ -69,6 +70,7 @@ export const DatasetOverviewSelectComponent = ({
                 onChange={handleDatasetDescriptionChange}
                 sx={{ minWidth: 220 }}
             >
+                <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
                 {fields.map(field => (
                     <MenuItem key={field._id} value={field._id}>
                         {field.label} ({field.name})

@@ -14,6 +14,9 @@ export default {
         transparent: 'rgba(255, 255, 255, .1)',
         light: 'rgba(255, 255, 255, .2)',
     },
+    gray: {
+        primary: '#e0e0e0',
+    },
     red: {
         primary: '#f44336',
     },

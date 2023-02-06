@@ -13,6 +13,7 @@ import interleave from '../../lib/interleave';
 const styles = {
     chip: {
         margin: 5,
+        maxWidth: '100%',
     },
 };
 

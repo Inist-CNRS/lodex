@@ -47,6 +47,9 @@ const theme = {
             main: colorsTheme.green.primary,
             contrastText: colorsTheme.white.primary,
         },
+        neutral: {
+            main: colorsTheme.gray.primary,
+        },
         contrastThreshold: 3,
         error: {
             main: colorsTheme.red.primary,

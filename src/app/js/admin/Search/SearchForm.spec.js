@@ -7,7 +7,7 @@ import * as overview from '../../../../common/overview';
 import { fireEvent, render, within } from '@testing-library/react';
 jest.mock('../../admin/api/field', () => ({
     patchSearchableFields: jest.fn(),
-    patchField: jest.fn(),
+    patchOverview: jest.fn(),
 }));
 
 describe('handleSearchInFieldsChange', () => {
@@ -22,7 +22,12 @@ describe('handleSearchInFieldsChange', () => {
         fieldApi.patchSearchableFields.mockResolvedValue(true);
 
         const { getByTestId } = render(
-            <SearchForm loadField={jest.fn()} fields={fields} p={polyglot} />,
+            <SearchForm
+                loadField={jest.fn()}
+                fields={fields}
+                fieldsForResourceSyndication={fields}
+                p={polyglot}
+            />,
         );
 
         const autocomplete = getByTestId('autocomplete_search_in_fields');
@@ -39,7 +44,7 @@ describe('handleSearchInFieldsChange', () => {
 });
 
 describe('saveSyndication', () => {
-    it('should call fieldApi.patchField when update title syndication', async () => {
+    it('should call fieldApi.patchOverview when update title syndication', async () => {
         const fields = [
             {
                 _id: '1',
@@ -50,12 +55,17 @@ describe('saveSyndication', () => {
             { _id: '2', label: 'test2', name: 'test2', scope: 'document' },
         ];
 
-        fieldApi.patchField.mockResolvedValue(true);
+        fieldApi.patchOverview.mockResolvedValue(true);
 
         const polyglot = { t: jest.fn().mockReturnValue('search_input') };
 
         const { getByTestId } = render(
-            <SearchForm loadField={jest.fn()} fields={fields} p={polyglot} />,
+            <SearchForm
+                loadField={jest.fn()}
+                fields={fields}
+                fieldsForResourceSyndication={fields}
+                p={polyglot}
+            />,
         );
 
         const autocomplete = getByTestId(
@@ -67,12 +77,12 @@ describe('saveSyndication', () => {
         fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
         fireEvent.keyDown(autocomplete, { key: 'Enter' });
 
-        expect(fieldApi.patchField).toHaveBeenCalledWith({
+        expect(fieldApi.patchOverview).toHaveBeenCalledWith({
             _id: '1',
             overview: 1,
         });
     });
-    it('should call fieldApi.patchField when update description syndication', async () => {
+    it('should call fieldApi.patchOverview when update description syndication', async () => {
         const fields = [
             {
                 _id: '1',
@@ -83,12 +93,17 @@ describe('saveSyndication', () => {
             { _id: '2', label: 'test2', name: 'test2', scope: 'document' },
         ];
 
-        fieldApi.patchField.mockResolvedValue(true);
+        fieldApi.patchOverview.mockResolvedValue(true);
 
         const polyglot = { t: jest.fn().mockReturnValue('search_input') };
 
         const { getByTestId } = render(
-            <SearchForm loadField={jest.fn()} fields={fields} p={polyglot} />,
+            <SearchForm
+                loadField={jest.fn()}
+                fields={fields}
+                fieldsForResourceSyndication={fields}
+                p={polyglot}
+            />,
         );
 
         const autocomplete = getByTestId(
@@ -100,12 +115,12 @@ describe('saveSyndication', () => {
         fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
         fireEvent.keyDown(autocomplete, { key: 'Enter' });
 
-        expect(fieldApi.patchField).toHaveBeenCalledWith({
+        expect(fieldApi.patchOverview).toHaveBeenCalledWith({
             _id: '1',
             overview: 2,
         });
     });
-    it('should call fieldApi.patchField when update first detail syndication', async () => {
+    it('should call fieldApi.patchOverview when update first detail syndication', async () => {
         const fields = [
             {
                 _id: '1',
@@ -116,12 +131,17 @@ describe('saveSyndication', () => {
             { _id: '2', label: 'test2', name: 'test2', scope: 'document' },
         ];
 
-        fieldApi.patchField.mockResolvedValue(true);
+        fieldApi.patchOverview.mockResolvedValue(true);
 
         const polyglot = { t: jest.fn().mockReturnValue('search_input') };
 
         const { getByTestId } = render(
-            <SearchForm loadField={jest.fn()} fields={fields} p={polyglot} />,
+            <SearchForm
+                loadField={jest.fn()}
+                fields={fields}
+                fieldsForResourceSyndication={fields}
+                p={polyglot}
+            />,
         );
 
         const autocomplete = getByTestId(
@@ -133,12 +153,12 @@ describe('saveSyndication', () => {
         fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
         fireEvent.keyDown(autocomplete, { key: 'Enter' });
 
-        expect(fieldApi.patchField).toHaveBeenCalledWith({
+        expect(fieldApi.patchOverview).toHaveBeenCalledWith({
             _id: '1',
             overview: 3,
         });
     });
-    it('should call fieldApi.patchField when update second detail syndication', async () => {
+    it('should call fieldApi.patchOverview when update second detail syndication', async () => {
         const fields = [
             {
                 _id: '1',
@@ -149,12 +169,17 @@ describe('saveSyndication', () => {
             { _id: '2', label: 'test2', name: 'test2', scope: 'document' },
         ];
 
-        fieldApi.patchField.mockResolvedValue(true);
+        fieldApi.patchOverview.mockResolvedValue(true);
 
         const polyglot = { t: jest.fn().mockReturnValue('search_input') };
 
         const { getByTestId } = render(
-            <SearchForm loadField={jest.fn()} fields={fields} p={polyglot} />,
+            <SearchForm
+                loadField={jest.fn()}
+                fields={fields}
+                fieldsForResourceSyndication={fields}
+                p={polyglot}
+            />,
         );
 
         const autocomplete = getByTestId(
@@ -166,7 +191,7 @@ describe('saveSyndication', () => {
         fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
         fireEvent.keyDown(autocomplete, { key: 'Enter' });
 
-        expect(fieldApi.patchField).toHaveBeenCalledWith({
+        expect(fieldApi.patchOverview).toHaveBeenCalledWith({
             _id: '1',
             overview: 4,
         });

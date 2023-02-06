@@ -5,7 +5,7 @@ import {
     canPublish,
     PublishButtonComponent as PublishButton,
 } from './PublishButton';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 
 describe('<Publish />', () => {
     it('should render a publish button', () => {

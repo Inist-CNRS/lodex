@@ -179,15 +179,6 @@ export const patchField = async (ctx, id) => {
     const newField = ctx.request.body;
 
     try {
-        if (newField.overview) {
-            await ctx.field.updateMany(
-                {
-                    overview: newField.overview,
-                    subresourceId: newField.subresourceId,
-                },
-                { $unset: { overview: '' } },
-            );
-        }
         ctx.body = await ctx.field.updateOneById(id, newField);
         await indexSearchableFields();
     } catch (error) {
@@ -198,6 +189,29 @@ export const patchField = async (ctx, id) => {
 
     if ((await ctx.publishedDataset.countAll()) > 0) {
         await ctx.publishFacets(ctx, [ctx.body], false);
+    }
+};
+
+export const patchOverview = async ctx => {
+    const { _id, overview, subresourceId } = ctx.request.body;
+
+    try {
+        await ctx.field.updateMany(
+            {
+                overview,
+                subresourceId,
+            },
+            { $unset: { overview: '' } },
+        );
+        if (_id) {
+            ctx.body = await ctx.field.updateOneById(_id, { overview });
+        } else {
+            ctx.body = 'ok';
+        }
+    } catch (error) {
+        ctx.status = 403;
+        ctx.body = { error: error.message };
+        return;
     }
 };
 
@@ -403,6 +417,7 @@ app.use(route.post('/', postField));
 app.use(route.post('/duplicate', duplicateField));
 app.use(route.put('/reorder', reorderField));
 app.use(route.patch('/searchable', patchSearchableFields));
+app.use(route.patch('/overview', patchOverview));
 app.use(route.patch('/:id', patchField));
 app.use(route.del('/:id', removeField));
 

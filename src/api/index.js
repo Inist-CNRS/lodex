@@ -26,7 +26,10 @@ import MeterConfig from '@uswitch/koa-prometheus/build/koa-prometheus.defaults.j
 import tracer, { eventTrace, eventError } from '@uswitch/koa-tracer';
 import access, { eventAccess } from '@uswitch/koa-access';
 
-const app = koaQs(new Koa());
+// KoaQs use qs to parse query string. There is an default limit of 20 items in an array. Above this limit, qs will transform the array into an key/value object.
+// We need to increase this limit to 1000 to be able to handle the facets array in the query string.
+// https://github.com/ljharb/qs#parsing-arrays
+const app = koaQs(new Koa(), 'extended', { arrayLimit: 1000 });
 
 app.use(cors({ credentials: true }));
 

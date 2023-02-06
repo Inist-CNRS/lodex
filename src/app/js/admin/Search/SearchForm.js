@@ -22,7 +22,7 @@ import { Typography } from '@material-ui/core';
 
 import * as overview from '../../../../common/overview';
 import { toast } from 'react-toastify';
-import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../../../common/scope';
+import { SCOPE_DOCUMENT } from '../../../../common/scope';
 
 const getSearchableFields = fields => fields.filter(f => f.searchable) || [];
 
@@ -37,7 +37,12 @@ const getResourceDetailFirst = fields =>
 const getResourceDetailSecond = fields =>
     fields.find(f => f.overview === overview.RESOURCE_DETAIL_2) || null;
 
-export const SearchForm = ({ fields, loadField, p: polyglot }) => {
+export const SearchForm = ({
+    fields,
+    fieldsForResourceSyndication,
+    loadField,
+    p: polyglot,
+}) => {
     const [searchInFields, setSearchInFields] = React.useState(
         getSearchableFields(fields),
     );
@@ -47,16 +52,16 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     );
 
     const [resourceTitle, setResourceTitle] = React.useState(
-        getResourceTitle(fields),
+        getResourceTitle(fieldsForResourceSyndication),
     );
     const [resourceDescription, setResourceDescription] = React.useState(
-        getResourceDescription(fields),
+        getResourceDescription(fieldsForResourceSyndication),
     );
     const [resourceDetailFirst, setResourceDetailFirst] = React.useState(
-        getResourceDetailFirst(fields),
+        getResourceDetailFirst(fieldsForResourceSyndication),
     );
     const [resourceDetailSecond, setResourceDetailSecond] = React.useState(
-        getResourceDetailSecond(fields),
+        getResourceDetailSecond(fieldsForResourceSyndication),
     );
 
     useEffect(() => {
@@ -67,15 +72,17 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     useEffect(() => {
         setSearchInFields(getSearchableFields(fields));
         setFacetChecked(getFacetFields(fields));
-        setResourceTitle(getResourceTitle(fields));
-        setResourceDescription(getResourceDescription(fields));
-        setResourceDetailFirst(getResourceDetailFirst(fields));
-        setResourceDetailSecond(getResourceDetailSecond(fields));
-    }, [fields]);
-
-    const fieldsForResourceSyndication = fields.filter(
-        f => f.scope === SCOPE_DOCUMENT || f.scope === SCOPE_COLLECTION,
-    );
+        setResourceTitle(getResourceTitle(fieldsForResourceSyndication));
+        setResourceDescription(
+            getResourceDescription(fieldsForResourceSyndication),
+        );
+        setResourceDetailFirst(
+            getResourceDetailFirst(fieldsForResourceSyndication),
+        );
+        setResourceDetailSecond(
+            getResourceDetailSecond(fieldsForResourceSyndication),
+        );
+    }, [fields, fieldsForResourceSyndication]);
 
     const handleSearchInFieldsChange = async (event, value) => {
         setSearchInFields(value);
@@ -94,9 +101,8 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     };
 
     const saveSyndication = async (value, overview) => {
-        const { _id } = value;
-        const res = await fieldApi.patchField({
-            _id,
+        const res = await fieldApi.patchOverview({
+            _id: value?._id,
             overview,
         });
         if (res) {
@@ -181,7 +187,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
             <Box display="flex" alignItems={'stretch'} gap={10}>
                 <Box display="flex" flex={1} flexDirection="column">
                     <Typography variant="caption" sx={{ margin: 'auto' }}>
-                        {polyglot.t('facet')}
+                        {polyglot.t('facets')}
                     </Typography>
                     <Box sx={{ border: '1px dashed' }}>
                         <List
@@ -291,13 +297,24 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
 
 SearchForm.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
+    fieldsForResourceSyndication: PropTypes.arrayOf(PropTypes.object)
+        .isRequired,
     loadField: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
-    fields: fromFields.getFields(state),
-});
+const mapStateToProps = (state, { p }) => {
+    const fieldsForResourceSyndication = fromFields.getEditingFields(state, {
+        filter: SCOPE_DOCUMENT,
+    });
+    fieldsForResourceSyndication.unshift({
+        label: p.t('none'),
+    });
+    return {
+        fields: fromFields.getFields(state),
+        fieldsForResourceSyndication,
+    };
+};
 
 const mapDispatchToProps = {
     loadField,
