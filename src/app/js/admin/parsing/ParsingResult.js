@@ -44,8 +44,9 @@ import {
     TableRow,
 } from '@mui/material';
 import ParsingEditCell from './ParsingEditCell';
-import { AddBox as AddBoxIcon } from '@mui/icons-material';
+import { AddBox as AddBoxIcon, Delete } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import ParsingDeleteRowDialogComponent from './ParsingDeleteRowDialog';
 
 const COLUMN_TYPE = {
     MAIN: 'main',
@@ -145,10 +146,20 @@ export const ParsingResultComponent = props => {
     const [toggleDrawer, setToggleDrawer] = useState(false);
     const [selectedCell, setSelectedCell] = useState(null);
 
+    const [selectedRowForDelete, setSelectedRowForDelete] = useState(null);
+    const [openDialogDeleteRow, setOpenDialogDeleteRow] = useState(false);
+
+    const handleDeleteRow = (event, row) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setSelectedRowForDelete(row);
+        setOpenDialogDeleteRow(true);
+    };
+
     const getColumnsToShow = () => {
         const enrichmentsNames = enrichments.map(enrichment => enrichment.name);
 
-        return columns
+        const res = columns
             .filter(({ key }) => {
                 const isEnrichment = enrichmentsNames.includes(key);
                 return (
@@ -221,6 +232,27 @@ export const ParsingResultComponent = props => {
                     },
                 };
             });
+        res.unshift({
+            field: 'delete-row',
+            headerName: 'delete-row',
+            width: 150,
+            filterable: false,
+            sortable: false,
+            renderCell: params => {
+                return (
+                    <Tooltip title={polyglot.t('parsing_delete_row_tooltip')}>
+                        <IconButton
+                            aria-label="delete row"
+                            onClick={e => handleDeleteRow(e, params.row)}
+                        >
+                            <Delete sx={{ color: 'error.main' }} />
+                        </IconButton>
+                    </Tooltip>
+                );
+            },
+        });
+
+        return res;
     };
 
     const columnsToShow = useMemo(
@@ -457,6 +489,28 @@ export const ParsingResultComponent = props => {
                                 visibility: 'visible',
                                 width: 'auto',
                             },
+                            // hide the `delete-row` column and disable the `delete-row` button on row hover
+                            [`& .${gridClasses.row} .${gridClasses.cellWithRenderer} .${gridClasses.iconButtonContainer}`]: {
+                                visibility: 'hidden',
+                            },
+                            [`& .MuiDataGrid-columnHeader[data-field="delete-row"]`]: {
+                                backgroundColor: 'red',
+                                display: 'none',
+                            },
+                            [`& .MuiDataGrid-cell[data-field="delete-row"]`]: {
+                                position: 'absolute',
+                                left: 0,
+                                visibility: 'hidden',
+                                opacity: 0,
+                                transform: 'translateX(-100%)',
+                            },
+                            [`& .MuiDataGrid-row:hover > .MuiDataGrid-cell[data-field="delete-row"]`]: {
+                                visibility: 'visible',
+                                backgroundColor: 'white',
+                                transition: 'all 0.3s ease-in-out',
+                                opacity: 1,
+                                transform: 'translateX(0)',
+                            },
                         }}
                     />
                     <Drawer
@@ -475,6 +529,12 @@ export const ParsingResultComponent = props => {
                             />
                         ) : null}
                     </Drawer>
+                    <ParsingDeleteRowDialogComponent
+                        isOpen={openDialogDeleteRow}
+                        handleClose={() => setOpenDialogDeleteRow(false)}
+                        selectedRowForDelete={selectedRowForDelete}
+                        reloadDataset={() => fetchDataset()}
+                    />
                 </React.Fragment>
             ) : (
                 <ParsingExcerpt

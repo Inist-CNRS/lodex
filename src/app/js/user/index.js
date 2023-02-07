@@ -316,6 +316,14 @@ export const getGetDatasetColumnsRequest = state => {
         method: 'GET',
     });
 };
+
+export const getDeleteDatasetRowRequest = (state, id) => {
+    return getRequest(state, {
+        url: `/api/dataset/${id}`,
+        method: 'DELETE',
+    });
+};
+
 export const getClearDatasetRequest = state =>
     getRequest(state, {
         url: '/api/dataset',
@@ -568,4 +576,5 @@ export const selectors = {
     postDuplicateField,
     clearModelRequest,
     getPatchSearchableFieldsRequest,
+    getDeleteDatasetRowRequest,
 };
