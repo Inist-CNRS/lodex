@@ -3,6 +3,7 @@ import groupBy from 'lodash.groupby';
 import omit from 'lodash.omit';
 import JSONStream from 'jsonstream';
 import { Transform } from 'stream';
+import { ObjectID } from 'mongodb';
 
 import { URI_FIELD_NAME, moveUriToFirstPosition } from '../../common/uris';
 import countNotUnique from './countNotUnique';
@@ -175,6 +176,9 @@ export default db => {
             );
         }
     };
+
+    collection.deleteOne = async id =>
+        collection.remove({ _id: new ObjectID(id) });
 
     return collection;
 };
