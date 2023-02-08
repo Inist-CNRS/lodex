@@ -36,7 +36,6 @@ const FieldAddDropdownButton = ({
 }) => {
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef();
-    const [selectedIndex, setSelectedIndex] = React.useState(0);
 
     const handleClick = index => {
         if (index === 2) {
@@ -46,7 +45,6 @@ const FieldAddDropdownButton = ({
     };
 
     const handleMenuItemClick = (event, index) => {
-        setSelectedIndex(index);
         setOpen(false);
         handleClick(index);
     };
@@ -68,21 +66,22 @@ const FieldAddDropdownButton = ({
             <ButtonGroup
                 variant="contained"
                 ref={anchorRef}
-                aria-label="split button"
+                aria-label="add split button"
                 disabled={isFieldsLoading}
             >
                 <Button
-                    onClick={() => handleClick(selectedIndex)}
-                    startIcon={options[selectedIndex].icon}
+                    onClick={() => handleClick(0)}
+                    startIcon={options[0].icon}
                 >
-                    {polyglot.t(options[selectedIndex].label)}
+                    {polyglot.t(options[0].label)}
                 </Button>
                 <Button
                     size="small"
                     aria-controls={open ? 'split-button-menu' : undefined}
                     aria-expanded={open ? 'true' : undefined}
-                    aria-label="select merge strategy"
+                    aria-label="select add strategy"
                     aria-haspopup="menu"
+                    data-testid="add-field-dropdown"
                     onClick={handleToggle}
                 >
                     <ArrowDropDownIcon />
@@ -116,9 +115,6 @@ const FieldAddDropdownButton = ({
                                             return (
                                                 <MenuItem
                                                     key={option.label}
-                                                    selected={
-                                                        index === selectedIndex
-                                                    }
                                                     onClick={event =>
                                                         handleMenuItemClick(
                                                             event,

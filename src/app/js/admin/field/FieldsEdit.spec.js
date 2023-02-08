@@ -5,9 +5,9 @@ import { FieldsEditComponent as FieldsEdit } from './FieldsEdit';
 import { FieldGrid } from '../../fields/FieldGrid';
 import PublicationPreview from '../preview/publication/PublicationPreview';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
-import AddFieldFromColumnButton from './AddFieldFromColumnButton';
+import FieldAddDropdownButton from './FieldAddDropdownButton';
 
-jest.mock('../admin/api/field', () => ({
+jest.mock('../../admin/api/field', () => ({
     duplicateField: jest.fn(),
 }));
 
@@ -40,7 +40,7 @@ describe('<FieldsEdit />', () => {
         expect(wrapper.find(PublicationPreview).exists()).toBeTruthy();
     });
 
-    it('should display AddFieldFromColumnButton in page tab if filter === SCOPE_DOCUMENT', () => {
+    it('should display FieldAddDropdownButton in page tab if filter === SCOPE_DOCUMENT', () => {
         const wrapper = shallow(
             <FieldsEdit
                 showAddFromColumn={false}
@@ -51,7 +51,7 @@ describe('<FieldsEdit />', () => {
             />,
         );
 
-        expect(wrapper.find(AddFieldFromColumnButton).exists()).toBeTruthy();
+        expect(wrapper.find(FieldAddDropdownButton).exists()).toBeTruthy();
     });
 
     it('should display FieldGridComponent before statistic', () => {
