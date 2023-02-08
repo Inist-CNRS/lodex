@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, TextField, FormControlLabel } from '@material-ui/core';
+import { Checkbox, TextField, FormControlLabel } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
     input: {
         width: '100%',
+        marginBottom: '15px',
     },
 };
 
@@ -161,7 +162,11 @@ class ToolTips extends Component {
      */
     render() {
         return (
-            <>
+            <div
+                style={{
+                    marginBottom: '15px',
+                }}
+            >
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -172,7 +177,7 @@ class ToolTips extends Component {
                     label={this.props.polyglot.t('toggle_tooltip')}
                 />
                 {this.createUserInterface()}
-            </>
+            </div>
         );
     }
 }
