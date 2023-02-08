@@ -888,3 +888,4 @@
 "facet_error"     	"Error while updating facets"	"Erreur lors de la mise à jour des facettes"
 "syndication_success"     	"Syndication successfully updated"	"Syndication mise à jour avec succès"
 "syndication_error"     	"Error while updating syndication"	"Erreur lors de la mise à jour de la syndication"
+"blank_space"	"Blank space"	"Espace"

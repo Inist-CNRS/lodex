@@ -3,7 +3,7 @@ import colorsTheme from '../../../custom/colorsTheme';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Chip, Typography } from '@mui/material';
 import {
     Delete as DeleteIcon,
     Edit as EditIcon,
@@ -30,6 +30,31 @@ const TransformerListItem = ({
         transition,
     } = useSortable({ id });
 
+    const renderChip = (name, value) => {
+        if (value === undefined || value === null || value === '') {
+            return <Chip key={name} label={polyglot.t('empty')} />;
+        }
+
+        if (value === ' ') {
+            return <Chip key={name} label={polyglot.t('blank_space')} />;
+        }
+
+        return (
+            <Chip
+                key={name}
+                label={value}
+                sx={{ color: 'text.primary', fontWeight: 'bold' }}
+            />
+        );
+    };
+
+    const renderTransformersArgs = args => {
+        return (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {args.map(item => renderChip(item.name, item.value))}
+            </Box>
+        );
+    };
     const dragStyle = {
         transform: CSS.Transform.toString(transform),
         transition,
@@ -66,21 +91,10 @@ const TransformerListItem = ({
                 }}
             >
                 <DragIndicatorIcon sx={{ cursor: 'grab', marginRight: 1 }} />
-                <Typography noWrap>
+                <Typography noWrap sx={{ marginRight: 1 }}>
                     {transformer?.operation}
-                    {transformer?.args && (
-                        <>
-                            {' - '}(
-                            {Array.prototype.map
-                                .call(
-                                    transformer?.args,
-                                    arg => arg.value || polyglot.t('Empty'),
-                                )
-                                .join(', ')}
-                            )
-                        </>
-                    )}
                 </Typography>
+                {transformer?.args && renderTransformersArgs(transformer.args)}
             </Box>
             <Box
                 style={{
