@@ -102,6 +102,7 @@ const FormatEdition = ({ p: polyglot, ...props }) => {
                         color="primary"
                         onClick={() => setOpenCatalog(true)}
                         sx={{ height: '100%' }}
+                        data-testid="open-format-catalog"
                     >
                         <ListAltIcon fontSize="small" />
                     </Button>

@@ -41,11 +41,14 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
     cy.get('[aria-label="unpublish"]', { timeout: 2000 }).should('be.visible');
 };
 
-export const fillTabDisplayFormat = format => {
-    cy.get('#step-value-format .select-format')
-        .first()
-        .click();
-    cy.get(`[role="listbox"] li[data-value="${format}"]`).click();
+export const fillTabDisplayFormat = (format, save = true) => {
+    cy.get('[data-testid="open-format-catalog"]').click();
+    cy.get(`li[data-value="${format}"]`).click();
+    const editDialog = cy.get('#format-edit-dialog');
+    editDialog.should('be.visible');
+    if (save) {
+        editDialog.contains('save', { matchCase: false }).click();
+    }
 };
 
 export const fillSyndication = (syndication, columnName) => {

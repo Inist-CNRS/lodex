@@ -50,7 +50,13 @@ const FormatEditionDialog = ({
     const AdminComponent = getAdminComponent(name);
 
     return (
-        <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
+        <Dialog
+            open={isOpen}
+            onClose={handleClose}
+            scroll="body"
+            maxWidth="lg"
+            id="format-edit-dialog"
+        >
             <DialogTitle>
                 {polyglot.t('format_settings')}
                 <IconButton

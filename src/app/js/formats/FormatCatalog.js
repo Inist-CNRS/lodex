@@ -143,6 +143,7 @@ export const FormatCatalog = ({
                                     ? scrollTo
                                     : null
                             }
+                            data-value={format.componentName}
                         >
                             <ListItemText
                                 primary={polyglot.t(format.name)}
