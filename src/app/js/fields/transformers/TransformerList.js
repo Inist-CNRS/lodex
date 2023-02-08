@@ -120,7 +120,7 @@ const TransformerList = ({
                     ))}
                 </SortableContext>
             </DndContext>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Button
                     aria-label={polyglot.t('add_transformer')}
                     color="primary"
