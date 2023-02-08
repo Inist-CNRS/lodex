@@ -43,7 +43,12 @@ const TransformerListItem = ({
             <Chip
                 key={name}
                 label={value}
-                sx={{ color: 'text.primary', fontWeight: 'bold' }}
+                title={value}
+                sx={{
+                    color: 'text.primary',
+                    fontWeight: 'bold',
+                    maxWidth: 200,
+                }}
             />
         );
     };
