@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    MenuItem,
-    Select,
-    FormControl,
-    InputLabel,
-    Button,
-} from '@material-ui/core';
-import ListAltIcon from '@material-ui/icons/ListAlt';
+import { MenuItem, Button, TextField, Box } from '@mui/material';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormatCatalogDialog from './FormatCatalog';
@@ -15,46 +9,37 @@ import FormatCatalogDialog from './FormatCatalog';
 const SelectFormat = ({ formats, value, onChange, p: polyglot }) => {
     const [openCatalog, setOpenCatalog] = React.useState(false);
     return (
-        <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-            <FormControl fullWidth>
-                <InputLabel id="select-form-input-label">
-                    {polyglot.t('select_a_format')}
-                </InputLabel>
-                <Select
-                    className="select-format"
-                    labelId="select-form-input-label"
-                    onChange={e => onChange(e.target.value)}
-                    value={value}
-                    autoWidth
-                >
-                    <MenuItem value="None">{'None'}</MenuItem>
-                    {formats
-                        .sort((x, y) =>
-                            polyglot
-                                .t(x.name)
-                                .localeCompare(polyglot.t(y.name)),
-                        )
-                        .map(format => (
-                            <MenuItem
-                                className="select-format-item"
-                                key={format.name}
-                                value={format.componentName}
-                            >
-                                {polyglot.t(format.name)}
-                                <div data-value={format.componentName} />
-                            </MenuItem>
-                        ))}
-                </Select>
-            </FormControl>
-            <div style={{ margin: '10px 0px 0px 10px' }}>
+        <Box sx={{ display: 'flex', marginBottom: 3 }}>
+            <TextField
+                select
+                className="select-format"
+                label={polyglot.t('select_a_format')}
+                onChange={e => onChange(e.target.value)}
+                value={value}
+                fullWidth
+            >
+                <MenuItem value="">{polyglot.t('none')}</MenuItem>
+                {formats.map(format => (
+                    <MenuItem
+                        className="select-format-item"
+                        key={format.name}
+                        value={format.componentName}
+                    >
+                        {polyglot.t(format.name)}
+                        <div data-value={format.componentName} />
+                    </MenuItem>
+                ))}
+            </TextField>
+            <Box sx={{ marginLeft: '10px' }}>
                 <Button
                     variant="contained"
                     color="primary"
                     onClick={() => setOpenCatalog(true)}
+                    sx={{ height: '100%' }}
                 >
-                    <ListAltIcon fontSize="small" />
+                    <ListAltIcon fontSize="medium" />
                 </Button>
-            </div>
+            </Box>
             <FormatCatalogDialog
                 isOpen={openCatalog}
                 handleClose={() => setOpenCatalog(false)}
@@ -62,7 +47,7 @@ const SelectFormat = ({ formats, value, onChange, p: polyglot }) => {
                 onChange={onChange}
                 currentValue={value}
             />
-        </div>
+        </Box>
     );
 };
 

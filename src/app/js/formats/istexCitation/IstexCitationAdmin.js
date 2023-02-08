@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import {
-    Select,
-    MenuItem,
-    TextField,
-    FormControl,
-    InputLabel,
-} from '@material-ui/core';
+import { MenuItem, TextField, Box } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -15,17 +9,6 @@ import {
     SEARCHED_FIELD_VALUES,
     CUSTOM_ISTEX_QUERY,
 } from '../istexSummary/constants';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        width: '100%',
-    },
-};
 
 export const defaultArgs = {
     searchedField: CUSTOM_ISTEX_QUERY,
@@ -60,33 +43,33 @@ export class IstexCitationAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
-                <FormControl fullWidth>
-                    <InputLabel id="istex-citation-admin-input-label">
-                        {polyglot.t('searched_field')}
-                    </InputLabel>
-                    <Select
-                        className="searched_field"
-                        labelId="istex-citation-admin-input-label"
-                        onChange={this.setSearchedField}
-                        style={styles.input}
-                        value={searchedField}
-                    >
-                        {SEARCHED_FIELD_VALUES.map(value => (
-                            <MenuItem key={value} value={value}>
-                                {polyglot.t(value)}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
+                <TextField
+                    fullWidth
+                    select
+                    label={polyglot.t('searched_field')}
+                    value={searchedField}
+                    onChange={this.setSearchedField}
+                >
+                    {SEARCHED_FIELD_VALUES.map(value => (
+                        <MenuItem key={value} value={value}>
+                            {polyglot.t(value)}
+                        </MenuItem>
+                    ))}
+                </TextField>
                 <TextField
                     className="document_sort_by"
                     label={polyglot.t('document_sort_by')}
                     onChange={this.setDocumentSortBy}
-                    style={styles.input}
                     value={documentSortBy}
+                    fullWidth
                 />
-            </div>
+            </Box>
         );
     }
 }

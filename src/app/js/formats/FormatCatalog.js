@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import FilterIcon from '@material-ui/icons/FilterList';
+import FilterIcon from '@mui/icons-material/FilterList';
 import {
     List,
     ListItemText,
@@ -17,27 +17,9 @@ import {
     Typography,
     Tooltip,
     Link,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
 import colorsTheme from '../../custom/colorsTheme';
-import classNames from 'classnames';
-import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
-
-const useStyles = makeStyles({
-    item: {
-        cursor: 'pointer',
-        '&:hover': {
-            backgroundColor: colorsTheme.black.veryLight,
-        },
-        borderBottom: `1px solid ${colorsTheme.black.light}`,
-    },
-    selectedItem: {
-        backgroundColor: colorsTheme.green.secondary,
-        '&:hover': {
-            backgroundColor: colorsTheme.green.primary,
-        },
-    },
-});
+import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 
 const FormatCatalogDescription = ({ format, polyglot }) => {
     return (
@@ -69,7 +51,6 @@ export const FormatCatalog = ({
     onChange,
     currentValue,
 }) => {
-    const classes = useStyles();
     const filters = [...new Set(formats.map(item => item.type))].sort((x, y) =>
         polyglot.t(x).localeCompare(polyglot.t(y)),
     );
@@ -100,23 +81,20 @@ export const FormatCatalog = ({
 
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
-            <DialogContent style={{ padding: 0, width: '1100px' }}>
+            <DialogContent sx={{ padding: 0, width: '1100px' }}>
                 <Grid
                     container={true}
                     direction="row"
-                    style={{
+                    sx={{
                         width: '100%',
-                        marginBottom: 25,
-                        marginTop: 25,
-                        padding: 10,
+                        marginBottom: '25px',
+                        marginTop: '25px',
+                        padding: '10px',
                     }}
                     justifyContent="space-around"
                 >
                     <Box>
-                        <FilterIcon
-                            fontSize="large"
-                            style={{ marginRight: 10 }}
-                        />
+                        <FilterIcon fontSize="large" sx={{ marginRight: 10 }} />
                     </Box>
                     {filters.map(filter => (
                         <Box key={filter}>
@@ -146,10 +124,20 @@ export const FormatCatalog = ({
                             onClick={() =>
                                 handleValueChange(format.componentName)
                             }
-                            className={classNames(classes.item, {
-                                [classes.selectedItem]:
-                                    currentValue === format.componentName,
-                            })}
+                            sx={{
+                                cursor: 'pointer',
+                                borderBottom: `1px solid ${colorsTheme.black.light}`,
+                                backgroundColor:
+                                    currentValue === format.componentName
+                                        ? colorsTheme.green.secondary
+                                        : 'transparent',
+                                '&:hover': {
+                                    backgroundColor:
+                                        currentValue === format.componentName
+                                            ? colorsTheme.green.primary
+                                            : colorsTheme.black.veryLight,
+                                },
+                            }}
                             ref={
                                 currentValue === format.componentName
                                     ? scrollTo
@@ -200,7 +188,7 @@ FormatCatalog.propTypes = {
     handleClose: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     onChange: PropTypes.func.isRequired,
-    currentValue: PropTypes.object,
+    currentValue: PropTypes.string,
 };
 
 export default compose(translate)(FormatCatalog);

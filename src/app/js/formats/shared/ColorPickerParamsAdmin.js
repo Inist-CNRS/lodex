@@ -1,18 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField } from '@material-ui/core';
+import { Box, TextField, Typography } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-
-const styles = {
-    input: {
-        width: '100%',
-    },
-    colorpicker: {
-        width: '100%',
-        marginBottom: '15px',
-    },
-};
 
 const multichromatic_maxLength = 100 * 8 - 1; // "#RRGGBB " is 8 chars, minus the last space, so we can set 100 pickers
 
@@ -50,16 +40,19 @@ class ColorPickerParamsAdmin extends Component {
 
     createUI() {
         const colors = this.state.colors;
-        return colors.map((element, i) => (
-            <div key={i}>
-                <input
-                    name="color"
-                    type="color"
-                    onChange={this.handleChangePicker.bind(this, i)}
-                    value={colors[i].color}
-                />
-            </div>
-        ));
+        return (
+            <Box display="flex" gap={1}>
+                {colors.map((element, i) => (
+                    <input
+                        key={i}
+                        name="color"
+                        type="color"
+                        onChange={this.handleChangePicker.bind(this, i)}
+                        value={colors[i].color}
+                    />
+                ))}
+            </Box>
+        );
     }
 
     getStateColorsString() {
@@ -69,20 +62,25 @@ class ColorPickerParamsAdmin extends Component {
     render() {
         const { monochromatic } = this.props;
         return (
-            <>
+            <Box marginBottom={2} display="flex" flexWrap="wrap" width="100%">
+                <Typography>
+                    {monochromatic
+                        ? this.props.polyglot.t('Color')
+                        : this.props.polyglot.t('colors_set')}
+                </Typography>
                 <TextField
-                    label={
-                        monochromatic
-                            ? this.props.polyglot.t('Color')
-                            : this.props.polyglot.t('colors_set')
-                    }
+                    label={this.props.polyglot.t('colors_string')}
                     onChange={this.handleChangeText}
-                    style={styles.colorpicker}
                     value={this.getStateColorsString()}
                     maxLength={monochromatic ? 7 : multichromatic_maxLength}
+                    fullWidth
+                    sx={{
+                        marginBottom: 1,
+                        marginTop: 1,
+                    }}
                 />
                 {this.createUI()}
-            </>
+            </Box>
         );
     }
 }

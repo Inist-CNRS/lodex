@@ -2,19 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
     TextField,
-    Select,
-    MenuItem,
+    Grid,
     FormControl,
-    InputLabel,
-} from '@material-ui/core';
+    RadioGroup,
+    FormControlLabel,
+    Radio,
+} from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-
-const styles = {
-    input: {
-        width: '100%',
-    },
-};
+import { Typography } from '@material-ui/core';
 
 const RoutineParamsAdmin = ({
     polyglot,
@@ -56,12 +52,22 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const setOrderBy = e => {
+    const setSortField = e => {
         onChange({
             maxSize,
             maxValue,
             minValue,
-            orderBy: e.target.value,
+            orderBy: `${e.target.value}/${orderBy?.split('/')[1]}`,
+            uri,
+        });
+    };
+
+    const setSortOrder = e => {
+        onChange({
+            maxSize,
+            maxValue,
+            minValue,
+            orderBy: `${orderBy?.split('/')[0]}/${e.target.value}`,
             uri,
         });
     };
@@ -77,66 +83,91 @@ const RoutineParamsAdmin = ({
     };
 
     return (
-        <>
+        <Grid container spacing={2} marginBottom={2}>
             {showMaxSize && (
-                <TextField
-                    label={polyglot.t('max_fields')}
-                    onChange={setMaxSize}
-                    style={styles.input}
-                    value={maxSize}
-                />
+                <Grid item xs={6}>
+                    <TextField
+                        label={polyglot.t('max_fields')}
+                        onChange={setMaxSize}
+                        value={maxSize}
+                        fullWidth
+                    />
+                </Grid>
             )}
-            {showMinValue && (
-                <TextField
-                    label={polyglot.t('min_value')}
-                    onChange={setMinValue}
-                    style={styles.input}
-                    value={minValue}
-                />
-            )}
-            {showMaxValue && (
-                <TextField
-                    label={polyglot.t('max_value')}
-                    onChange={setMaxValue}
-                    style={styles.input}
-                    value={maxValue}
-                />
+            {(showMinValue || showMaxValue) && (
+                <Grid container item spacing={1}>
+                    {showMinValue && (
+                        <Grid item xs={6}>
+                            <TextField
+                                label={polyglot.t('min_value')}
+                                onChange={setMinValue}
+                                value={minValue}
+                                fullWidth
+                            />
+                        </Grid>
+                    )}
+                    {showMaxValue && (
+                        <Grid item xs={6}>
+                            <TextField
+                                label={polyglot.t('max_value')}
+                                onChange={setMaxValue}
+                                value={maxValue}
+                                fullWidth
+                            />
+                        </Grid>
+                    )}
+                </Grid>
             )}
             {showOrderBy && (
-                <FormControl fullWidth>
-                    <InputLabel id="routine-params-admin-input-label">
-                        {polyglot.t('order_by')}
-                    </InputLabel>
-                    <Select
-                        labelId="routine-params-admin-input-label"
-                        onChange={setOrderBy}
-                        style={styles.input}
-                        value={orderBy}
-                    >
-                        <MenuItem value="_id/asc">
-                            {polyglot.t('label_asc')}
-                        </MenuItem>
-                        <MenuItem value="_id/desc">
-                            {polyglot.t('label_desc')}
-                        </MenuItem>
-                        <MenuItem value="value/asc">
-                            {polyglot.t('value_asc')}
-                        </MenuItem>
-                        <MenuItem value="value/desc">
-                            {polyglot.t('value_desc')}
-                        </MenuItem>
-                    </Select>
-                </FormControl>
+                <Grid item xs={12}>
+                    <Typography>{polyglot.t('order_by')}</Typography>
+                    <FormControl sx={{ display: 'flex', flexDirection: 'row' }}>
+                        <RadioGroup
+                            value={orderBy?.split('/')[0]}
+                            onChange={setSortField}
+                            name="sort-field"
+                        >
+                            <FormControlLabel
+                                value="_id"
+                                control={<Radio />}
+                                label={polyglot.t('label')}
+                            />
+                            <FormControlLabel
+                                value="value"
+                                control={<Radio />}
+                                label={polyglot.t('value')}
+                            />
+                        </RadioGroup>
+                        <RadioGroup
+                            value={orderBy?.split('/')[1]}
+                            onChange={setSortOrder}
+                            name="sort-order"
+                        >
+                            <FormControlLabel
+                                value="asc"
+                                control={<Radio />}
+                                label={polyglot.t('asc')}
+                            />
+                            <FormControlLabel
+                                value="desc"
+                                control={<Radio />}
+                                label={polyglot.t('desc')}
+                            />
+                        </RadioGroup>
+                    </FormControl>
+                </Grid>
             )}
             {showUri && (
-                <TextField
-                    label={polyglot.t('uri')}
-                    onChange={setUri}
-                    style={styles.input}
-                    value={uri}
-                />
+                <Grid item xs={6}>
+                    <TextField
+                        label={polyglot.t('uri')}
+                        onChange={setUri}
+                        value={uri}
+                        fullWidth
+                    />
+                </Grid>
             )}
-        </>
+        </Grid>
     );
 };
 

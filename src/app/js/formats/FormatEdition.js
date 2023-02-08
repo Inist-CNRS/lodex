@@ -1,46 +1,138 @@
 import React from 'react';
-import merge from '../lib/merge';
+import { FORMATS } from '../formats';
+import {
+    formField as formFieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../propTypes';
+import { Box, Button, Typography } from '@mui/material';
+import {
+    Delete as DeleteIcon,
+    Edit as EditIcon,
+    ListAlt as ListAltIcon,
+} from '@mui/icons-material';
+import colorsTheme from '../../custom/colorsTheme';
+import translate from 'redux-polyglot/translate';
+import FormatCatalogDialog from './FormatCatalog';
+import FormatEditionDialog from './FormatEditionDialog';
 
-import SelectFormat from './SelectFormat';
-import { getAdminComponent, FORMATS, getFormatInitialArgs } from '../formats';
-import { formField as formFieldPropTypes } from '../propTypes';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-    },
-};
-
-const FormatEdition = props => {
+const FormatEdition = ({ p: polyglot, ...props }) => {
     const { input } = props;
-    const [name, setName] = React.useState(input.value.name || '');
-    const [args, setArgs] = React.useState(
-        merge(getFormatInitialArgs(input.value.name), input.value.args),
+
+    const formats = FORMATS.sort((x, y) =>
+        polyglot.t(x.name).localeCompare(polyglot.t(y.name)),
     );
 
-    const setArguments = args => {
-        setArgs(args);
-        input.onChange({ name, args });
+    const displayedName =
+        FORMATS.find(format => format.componentName === input.value.name)
+            ?.name || 'no_format';
+
+    const [componentName, setComponentName] = React.useState(
+        input.value.name || '',
+    );
+    const [openCatalog, setOpenCatalog] = React.useState(false);
+    const [openEditDialog, setOpenEditDialog] = React.useState(false);
+
+    React.useEffect(() => {
+        setComponentName(input.value.name || '');
+    }, [input.value.name]);
+
+    const handleFormatChange = name => {
+        setComponentName(name);
+        setOpenCatalog(false);
+        setOpenEditDialog(true);
     };
 
-    const setFormat = name => {
-        setName(name);
-        setArgs(getFormatInitialArgs(name));
-        input.onChange({ name, args: getFormatInitialArgs(name) });
+    const onEdit = () => {
+        setOpenEditDialog(true);
     };
-
-    const AdminComponent = getAdminComponent(name);
+    const onRemove = () => {
+        input.onChange(null);
+    };
 
     return (
-        <div style={styles.container}>
-            <SelectFormat formats={FORMATS} value={name} onChange={setFormat} />
-            <AdminComponent onChange={setArguments} {...props} args={args} />
-        </div>
+        <>
+            <Box
+                sx={{
+                    display: 'flex',
+                }}
+            >
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        flexGrow: 1,
+                        padding: 1,
+                        borderRadius: 1,
+                        backgroundColor: colorsTheme.black.veryLight,
+                        '&:hover': {
+                            backgroundColor: colorsTheme.black.lighter,
+                        },
+                    }}
+                >
+                    <Typography noWrap>{polyglot.t(displayedName)}</Typography>
+                    {componentName && (
+                        <Box
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <EditIcon
+                                aria-label={`format-edit`}
+                                sx={{ cursor: 'pointer' }}
+                                onClick={() => onEdit()}
+                            />
+                            <DeleteIcon
+                                aria-label={`format-delete`}
+                                sx={{
+                                    cursor: 'pointer',
+                                    color: colorsTheme.orange.primary,
+                                }}
+                                onClick={() => {
+                                    onRemove();
+                                }}
+                            />
+                        </Box>
+                    )}
+                </Box>
+                <Box sx={{ marginLeft: '10px' }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => setOpenCatalog(true)}
+                        sx={{ height: '100%' }}
+                    >
+                        <ListAltIcon fontSize="small" />
+                    </Button>
+                </Box>
+                <FormatCatalogDialog
+                    isOpen={openCatalog}
+                    handleClose={() => setOpenCatalog(false)}
+                    formats={formats}
+                    onChange={handleFormatChange}
+                    currentValue={componentName}
+                />
+                {openEditDialog && (
+                    <FormatEditionDialog
+                        isOpen={openEditDialog}
+                        handleClose={() => {
+                            setOpenEditDialog(false);
+                            setComponentName(input.value.name || '');
+                        }}
+                        formats={formats}
+                        input={input}
+                        currentValue={componentName}
+                    />
+                )}
+            </Box>
+        </>
     );
 };
 
-FormatEdition.propTypes = formFieldPropTypes;
+FormatEdition.propTypes = {
+    p: polyglotPropTypes.isRequired,
+    ...formFieldPropTypes,
+};
 
-export default FormatEdition;
+export default translate(FormatEdition);
