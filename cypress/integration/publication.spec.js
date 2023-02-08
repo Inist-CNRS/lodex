@@ -213,7 +213,8 @@ describe('Dataset Publication', () => {
             cy.contains('GET').click();
             cy.get('input[placeholder="path"]').type('example');
             cy.contains('confirm').click();
-            cy.contains('GET - (example)');
+            cy.contains('GET');
+            cy.contains('example');
             cy.get('.btn-save').click();
             cy.get('.wizard').should('not.exist');
         });

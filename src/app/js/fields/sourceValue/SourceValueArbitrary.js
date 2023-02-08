@@ -27,7 +27,7 @@ const SourceValueArbitrary = ({ updateTransformers, value, p: polyglot }) => {
     };
 
     return (
-        <Box mt={5} display="flex">
+        <Box mt={5} display="flex" alignItems="center">
             <TextField
                 fullWidth
                 placeholder={polyglot.t('enter_an_arbitrary_value')}
@@ -36,7 +36,7 @@ const SourceValueArbitrary = ({ updateTransformers, value, p: polyglot }) => {
                 value={value || ''}
                 multiline
             />
-            <Box style={{ marginLeft: '10px' }}>
+            <Box style={{ marginLeft: '10px', height: '56px' }}>
                 <Button
                     variant="contained"
                     color="primary"
