@@ -133,7 +133,7 @@ const isError = value => {
     );
 };
 
-const ButtonWithDropdown = ({ polyglot, loading, handleChange }) => {
+const ButtonEditCellWithDropdown = ({ polyglot, loading, handleChange }) => {
     const [isOpen, setOpen] = React.useState(false);
     const classes = useStyles();
     const anchorRef = React.useRef(null);
@@ -198,7 +198,7 @@ const ButtonWithDropdown = ({ polyglot, loading, handleChange }) => {
     );
 };
 
-ButtonWithDropdown.propTypes = {
+ButtonEditCellWithDropdown.propTypes = {
     polyglot: polyglotPropTypes.isRequired,
     loading: PropTypes.bool.isRequired,
     handleChange: PropTypes.func.isRequired,
@@ -314,11 +314,6 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                     alignItems="flex-end"
                     justifyContent="flex-end"
                 >
-                    <ButtonWithDropdown
-                        handleChange={handleChange}
-                        loading={loading}
-                        polyglot={polyglot}
-                    />
                     <Button
                         color="secondary"
                         key="cancel"
@@ -327,6 +322,11 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                     >
                         {polyglot.t('cancel')}
                     </Button>
+                    <ButtonEditCellWithDropdown
+                        handleChange={handleChange}
+                        loading={loading}
+                        polyglot={polyglot}
+                    />
                 </Box>
             </div>
         </div>

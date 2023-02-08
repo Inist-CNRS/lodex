@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 
-import { FieldsEdit } from '../FieldsEdit';
+import { FieldsEdit } from '../field/FieldsEdit';
 import { AddSubresourceFieldButton } from './AddSubresourceFieldButton';
 import { EditSubresourceForm } from './EditSubresourceForm';
 

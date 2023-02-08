@@ -2,10 +2,10 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { FieldsEditComponent as FieldsEdit } from './FieldsEdit';
-import { FieldGrid } from '../fields/FieldGrid';
-import PublicationPreview from './preview/publication/PublicationPreview';
-import { SCOPE_DOCUMENT } from '../../../common/scope';
-import AddFieldFromColumnButton from './Appbar/AddFieldFromColumnButton';
+import { FieldGrid } from '../../fields/FieldGrid';
+import PublicationPreview from '../preview/publication/PublicationPreview';
+import { SCOPE_DOCUMENT } from '../../../../common/scope';
+import AddFieldFromColumnButton from './AddFieldFromColumnButton';
 
 jest.mock('../admin/api/field', () => ({
     duplicateField: jest.fn(),

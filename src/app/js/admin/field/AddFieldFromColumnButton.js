@@ -1,16 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
-import { Add as AddNewIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { useParams } from 'react-router';
 
+import AddFromDatasetIcon from '../Appbar/AddFromDatasetIcon';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { addField } from '../../fields';
+import { showAddFromColumn } from '../parsing';
 import { fromFields } from '../../sharedSelectors';
 
 const useStyles = makeStyles({
@@ -22,38 +21,34 @@ const useStyles = makeStyles({
     },
 });
 
-export const AddFieldButtonComponent = ({
-    onAddNewField,
+export const AddFieldFromColumnButtonComponent = ({
+    onShowExistingColumns,
     p: polyglot,
-    name,
     isFieldsLoading,
 }) => {
     const classes = useStyles();
-    const { filter } = useParams();
 
     return (
         <Button
             variant="contained"
             color="primary"
-            onClick={() => {
-                onAddNewField({ name, scope: filter });
-            }}
+            onClick={onShowExistingColumns}
             className={classnames(
                 classes.containedButton,
-                'btn-add-free-field',
+                'btn-add-field-from-dataset',
             )}
             disabled={isFieldsLoading}
         >
-            <AddNewIcon className={classes.icon} />
-            {polyglot.t('new_field')}
+            <AddFromDatasetIcon className={classes.icon} />
+            {polyglot.t('from_original_dataset')}
         </Button>
     );
 };
 
-AddFieldButtonComponent.propTypes = {
-    onAddNewField: PropTypes.func.isRequired,
+AddFieldFromColumnButtonComponent.propTypes = {
+    onShowExistingColumns: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    name: PropTypes.string,
+    scope: PropTypes.string,
     isFieldsLoading: PropTypes.bool,
 };
 
@@ -62,10 +57,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    onAddNewField: addField,
+    onShowExistingColumns: showAddFromColumn,
 };
 
-export const AddFieldButton = compose(
+export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
-)(AddFieldButtonComponent);
+)(AddFieldFromColumnButtonComponent);
