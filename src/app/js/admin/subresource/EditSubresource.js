@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router';
 
 import { FieldsEdit } from '../field/FieldsEdit';
-import { AddSubresourceFieldButton } from './AddSubresourceFieldButton';
 import { EditSubresourceForm } from './EditSubresourceForm';
 
 const EditSubresourceComponent = withRouter(({ match, filter }) => {
@@ -12,11 +11,7 @@ const EditSubresourceComponent = withRouter(({ match, filter }) => {
         <>
             <EditSubresourceForm />
             <div style={{ marginTop: 20 }}>
-                <FieldsEdit
-                    filter={filter}
-                    subresourceId={subresourceId}
-                    addFieldButton={<AddSubresourceFieldButton />}
-                />
+                <FieldsEdit filter={filter} subresourceId={subresourceId} />
             </div>
         </>
     );
