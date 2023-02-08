@@ -3,6 +3,7 @@ const {
     getGetDatasetRequest,
     getGetDatasetColumnsRequest,
     putUpdateDataset,
+    getDeleteDatasetRowRequest,
 } = require('../../user');
 const { getUserLocalStorageInfo } = require('./tools');
 
@@ -44,4 +45,21 @@ const updateDataset = async ({ uri, field, value }) => {
     });
 };
 
-export default { getDataset, getDatasetColumns, updateDataset };
+const deleteDatasetRow = async id => {
+    const { token } = getUserLocalStorageInfo();
+
+    const request = getDeleteDatasetRowRequest({ token }, id);
+    return fetch(request).then(({ response, error }) => {
+        if (error) {
+            return [];
+        }
+        return response;
+    });
+};
+
+export default {
+    getDataset,
+    getDatasetColumns,
+    updateDataset,
+    deleteDatasetRow,
+};

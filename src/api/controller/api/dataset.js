@@ -89,9 +89,22 @@ export const updateDataset = async ctx => {
     ctx.body = { status: 'success' };
 };
 
+export const deleteDatasetRow = async (ctx, id) => {
+    try {
+        await ctx.dataset.deleteOne(id);
+        ctx.body = { status: 'deleted' };
+    } catch (error) {
+        logger.error('delete dataset row error', {
+            error,
+        });
+        ctx.body = { status: 'error', error };
+    }
+};
+
 app.use(route.delete('/', clearDataset));
 app.use(route.get('/columns', getDatasetColumns));
 app.use(route.get('/', getDataset));
+app.use(route.delete('/:id', deleteDatasetRow));
 app.use(koaBodyParser());
 app.use(route.put('/', updateDataset));
 
