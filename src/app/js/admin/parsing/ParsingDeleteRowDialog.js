@@ -42,10 +42,8 @@ export const ParsingDeleteRowDialog = ({
                 type: toast.TYPE.ERROR,
             });
         }
-        setTimeout(() => {
-            setIsLoading(false);
-            handleClose();
-        }, 1000);
+        setIsLoading(false);
+        handleClose();
     };
 
     return (

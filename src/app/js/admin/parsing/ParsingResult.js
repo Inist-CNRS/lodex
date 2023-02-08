@@ -494,7 +494,6 @@ export const ParsingResultComponent = props => {
                                 visibility: 'hidden',
                             },
                             [`& .MuiDataGrid-columnHeader[data-field="delete-row"]`]: {
-                                backgroundColor: 'red',
                                 display: 'none',
                             },
                             [`& .MuiDataGrid-cell[data-field="delete-row"]`]: {
