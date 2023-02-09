@@ -49,6 +49,11 @@ const ValuePreview = ({ lines, editedField, p: polyglot }) => {
                                     WebkitLineClamp: '2',
                                     WebkitBoxOrient: 'vertical',
                                 }}
+                                title={
+                                    typeof line[editedField.name] === 'object'
+                                        ? JSON.stringify(line[editedField.name])
+                                        : line[editedField.name]
+                                }
                             >
                                 {typeof line[editedField.name] === 'object'
                                     ? JSON.stringify(line[editedField.name])

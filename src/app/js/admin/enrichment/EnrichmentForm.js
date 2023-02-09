@@ -322,7 +322,7 @@ export const EnrichmentForm = ({
                             gap={2}
                         >
                             <Typography variant="body2">
-                                {polyglot.t('enrichment_status')} :
+                                {polyglot.t('enrichment_status')} : &nbsp;
                                 {renderStatus(initialValues, polyglot)}
                             </Typography>
                             <Button
