@@ -901,3 +901,8 @@
 "deleting"	"Deleting..."	"Suppression..."
 "parsing_delete_row_success"	"Row deleted successfully"	"Ligne supprimée avec succès"
 "parsing_delete_row_error"	"Error while deleting row"	"Erreur lors de la suppression de la ligne"
+"add_more_data"	"Add more data"	"Ajouter plus de données"
+"add_more_enrichment"	"Add more enrichment"	"Ajouter plus d'enrichissement"
+"add_more_subresource"	"Add more subresource"	"Ajouter plus de sous-ressource"
+"density_tooltip"	"Data density"	"Choisir la densité de données"
+"column_tooltip"	"Column"	"Choisir les colonnes"
