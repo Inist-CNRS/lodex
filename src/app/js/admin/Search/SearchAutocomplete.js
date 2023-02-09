@@ -49,6 +49,7 @@ const SearchAutocomplete = ({
                             display: 'flex',
                             alignItems: 'center',
                             gap: 2,
+                            whiteSpace: 'normal',
                         }}
                         {...props}
                     >
