@@ -49,7 +49,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     );
 
     const fieldsForResourceSyndication = React.useMemo(() => {
-        const filteredFields = fieldsResource.filter(
+        const filteredFields = fields.filter(
             f => f.scope === SCOPE_DOCUMENT || f.scope === SCOPE_COLLECTION,
         );
         filteredFields?.unshift({
@@ -126,7 +126,6 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                 type: toast.TYPE.SUCCESS,
                 autoClose: 2000,
             });
-            // loadField();
         } else {
             toast(polyglot.t('syndication_error'), {
                 type: toast.TYPE.ERROR,
