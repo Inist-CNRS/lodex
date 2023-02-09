@@ -868,7 +868,7 @@
 "resource_detail_first"	"Resource detail first"	"Premier detail de la ressource"
 "resource_detail_second"	"Resource detail second"	"Second detail de la ressource"
 "dialog_import_has_enrichments"	"Import has enrichments"	"L'import a des enrichissements"
-"dialog_import_has_enrichments_description"     	"Import has enrichments, don't forget to lauch them for having enriched dataset"	"L'import a des enrichissements, n'oubliez pas de les lancer pour avoir un jeu de données enrichi"
+"dialog_import_has_enrichments_description"     	"Enrichments are present, restart them if necessary to display the enriched data according to the model"	"Des enrichissements sont présents, les relancer si besoin pour afficher les données enrichies selon le modèle"
 "enrichment_see_logs"	"See logs"	"Voir les logs"
 "enrichment_status"	"Status"	"Statut"
 "enrichment_preview_description"	"Value from source column or from advanced rule"	"Valeur de la colonne source ou de la règle avancée"
