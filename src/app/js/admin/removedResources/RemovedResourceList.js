@@ -62,7 +62,7 @@ export class RemovedResourceListComponent extends Component {
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
 
         return (
-            <CardContent className="removed_resources">
+            <CardContent className="hidden_resources">
                 <Table style={styles.table}>
                     <TableHead>
                         <TableRow>

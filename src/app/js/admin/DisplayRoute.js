@@ -12,8 +12,7 @@ import withInitialData from './withInitialData';
 import { AddSubresource } from './subresource/AddSubresource';
 import { EditSubresource } from './subresource/EditSubresource';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
-import { FieldsEdit } from './FieldsEdit';
-import { AddFieldButton } from './Appbar/AddFieldButton';
+import { FieldsEdit } from './field/FieldsEdit';
 import FieldEditForm from '../fields/wizard';
 import SubresourceListConnected from './subresource/SubresourceList';
 
@@ -21,9 +20,7 @@ const DisplayRouteComponent = () => {
     const { filter } = useParams();
     const { url, path } = useRouteMatch();
 
-    const pageComponent = (
-        <FieldsEdit filter={filter} addFieldButton={<AddFieldButton />} />
-    );
+    const pageComponent = <FieldsEdit filter={filter} />;
 
     if (filter === SCOPE_DOCUMENT) {
         return (

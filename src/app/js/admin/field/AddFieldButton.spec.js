@@ -26,7 +26,6 @@ describe('<AddFieldButton />', () => {
         wrapper.find(Button).simulate('click');
 
         expect(onAddNewField).toHaveBeenCalledWith({
-            name: 'foo',
             scope: 'bar',
         });
     });

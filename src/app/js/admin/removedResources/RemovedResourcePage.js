@@ -10,7 +10,7 @@ import redirectToDashboardIfNoField from '../../admin/redirectToDashboardIfNoFie
 
 export const RemovedResourcePageComponent = ({ p: polyglot }) => (
     <Card>
-        <CardHeader title={<h3>{polyglot.t('removed_resources')}</h3>} />
+        <CardHeader title={<h3>{polyglot.t('hidden_resources')}</h3>} />
         <Divider />
         <RemovedResourceList />
     </Card>
