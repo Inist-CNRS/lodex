@@ -2,32 +2,13 @@ import React, { Component } from 'react';
 import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
 import PropTypes from 'prop-types';
-import { Checkbox, FormControlLabel } from '@material-ui/core';
+import { Checkbox, FormControlLabel, Box } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import ToolTips from '../../../shared/ToolTips';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        width: '100%',
-    },
-    previewDefaultColor: color => ({
-        display: 'inline-block',
-        backgroundColor: color,
-        height: '1em',
-        width: '1em',
-        marginLeft: 5,
-        border: 'solid 1px black',
-    }),
-};
 
 export const defaultArgs = {
     params: {
@@ -132,7 +113,12 @@ class HeatMapAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
@@ -157,20 +143,18 @@ class HeatMapAdmin extends Component {
                 <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}
                     onChange={this.handleColorSchemeChange}
-                    style={styles.input}
                     value={colorScheme}
                 />
                 <FormControlLabel
                     control={
                         <Checkbox
                             onChange={this.toggleFlipAxis}
-                            style={styles.input}
                             checked={flipAxis}
                         />
                     }
                     label={polyglot.t('flip_axis')}
                 />
-            </div>
+            </Box>
         );
     }
 }

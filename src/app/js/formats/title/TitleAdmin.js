@@ -1,24 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
+import { MenuItem, Box, TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../colorUtils';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        width: '100%',
-        justifyContent: 'space-between',
-    },
-    input: {
-        width: '100%',
-    },
-};
 
 export const defaultArgs = {
     level: 1,
@@ -62,30 +50,31 @@ class TitleAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
-                <FormControl fullWidth>
-                    <InputLabel id="title-admin-input-label">
-                        {polyglot.t('list_format_select_level')}
-                    </InputLabel>
-                    <Select
-                        labelId="title-admin-input-label"
-                        onChange={e => this.setLevel(e.target.value)}
-                        style={styles.input}
-                        value={level}
-                    >
-                        <MenuItem value={1}>{polyglot.t('level1')}</MenuItem>
-                        <MenuItem value={2}>{polyglot.t('level2')}</MenuItem>
-                        <MenuItem value={3}>{polyglot.t('level3')}</MenuItem>
-                        <MenuItem value={4}>{polyglot.t('level4')}</MenuItem>
-                    </Select>
-                </FormControl>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
+                <TextField
+                    fullWidth
+                    select
+                    label={polyglot.t('list_format_select_level')}
+                    onChange={e => this.setLevel(e.target.value)}
+                    value={level}
+                >
+                    <MenuItem value={1}>{polyglot.t('level1')}</MenuItem>
+                    <MenuItem value={2}>{polyglot.t('level2')}</MenuItem>
+                    <MenuItem value={3}>{polyglot.t('level3')}</MenuItem>
+                    <MenuItem value={4}>{polyglot.t('level4')}</MenuItem>
+                </TextField>
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}
                     polyglot={polyglot}
                     monochromatic={true}
                 />
-            </div>
+            </Box>
         );
     }
 }

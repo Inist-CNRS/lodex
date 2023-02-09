@@ -65,7 +65,8 @@ export const fillSyndication = (syndication, columnName) => {
 
 export const addColumn = (columnName, options = {}) => {
     const name = columnName.replaceAll(' ', '-');
-    cy.get('button.btn-add-field-from-dataset').click();
+    cy.get(`[data-testid="add-field-dropdown"]`).click();
+    cy.contains('From a column').click();
     cy.get(
         ['.btn-excerpt-add-column', `.btn-excerpt-add-column-${name}`].join(''),
         { timeout: 2000 },

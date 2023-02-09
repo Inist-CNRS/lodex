@@ -67,7 +67,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
         matchDataRoute && hasPublishedDataset && (
             <MenuItemLink
                 to="/data/removed"
-                primaryText={polyglot.t('removed_resources')}
+                primaryText={polyglot.t('hidden_resources')}
                 leftIcon={<DeleteIcon />}
                 key="data-removed"
             />

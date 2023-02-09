@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
+import { MenuItem, TextField } from '@mui/material';
 import { scaleQuantize } from 'd3-scale';
 
 import {
@@ -62,34 +62,31 @@ const categorySchemes = [
 import ColorScalePreview from '../../lib/components/ColorScalePreview';
 
 const getColorSchemeSelector = schemes => {
-    const ColorSchemeSelector = ({ value = [], style, label, onChange }) => (
-        <FormControl fullWidth>
-            <InputLabel id="colorscheme-input-label">{label}</InputLabel>
-            <Select
-                labelId="colorscheme-input-label"
-                onChange={onChange}
-                style={style}
-                value={value.join(',')}
-            >
-                {schemes.map(scheme => (
-                    <MenuItem key={scheme} value={scheme.join(',')}>
-                        {
-                            <ColorScalePreview
-                                colorScale={scaleQuantize()
-                                    .domain([0, 100])
-                                    .range(scheme)}
-                            />
-                        }
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+    const ColorSchemeSelector = ({ value = [], label, onChange }) => (
+        <TextField
+            fullWidth
+            select
+            label={label}
+            value={value.join(',')}
+            onChange={onChange}
+        >
+            {schemes.map(scheme => (
+                <MenuItem key={scheme} value={scheme.join(',')}>
+                    {
+                        <ColorScalePreview
+                            colorScale={scaleQuantize()
+                                .domain([0, 100])
+                                .range(scheme)}
+                        />
+                    }
+                </MenuItem>
+            ))}
+        </TextField>
     );
     ColorSchemeSelector.propTypes = {
         value: PropTypes.arrayOf(PropTypes.string),
         onChange: PropTypes.func.isRequired,
         label: PropTypes.string.isRequired,
-        style: PropTypes.any,
     };
 
     return ColorSchemeSelector;

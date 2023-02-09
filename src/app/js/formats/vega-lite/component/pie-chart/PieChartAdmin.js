@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { Checkbox, FormControlLabel } from '@material-ui/core';
+import { Box, Checkbox, FormControlLabel } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
@@ -9,17 +9,6 @@ import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
 import ToolTips from '../../../shared/ToolTips';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        width: '100%',
-    },
-};
 
 export const defaultArgs = {
     params: {
@@ -107,7 +96,12 @@ class PieChartAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
@@ -121,7 +115,6 @@ class PieChartAdmin extends Component {
                     control={
                         <Checkbox
                             onChange={this.toggleLabels}
-                            style={styles.input}
                             checked={labels}
                         />
                     }
@@ -142,7 +135,7 @@ class PieChartAdmin extends Component {
                     onChange={this.setColors}
                     polyglot={polyglot}
                 />
-            </div>
+            </Box>
         );
     }
 }

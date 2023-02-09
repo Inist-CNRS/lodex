@@ -9,8 +9,8 @@ import {
     DialogTitle,
 } from '@material-ui/core';
 
-import { polyglot as polyglotPropTypes } from '../propTypes';
-import ParsingResult from './parsing/ParsingResult';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import ParsingResult from '../parsing/ParsingResult';
 
 const styles = {
     container: {

@@ -1,20 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField, FormControl } from '@material-ui/core';
+import { TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        marginLeft: '1rem',
-        width: '100%',
-    },
-};
 
 export const defaultArgs = {
     delimiter: '',
@@ -46,20 +34,15 @@ class LatexAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
-                <FormControl fullWidth>
-                    <TextField
-                        label={polyglot.t('choose_delimiter')}
-                        type="string"
-                        onChange={this.setDelimiter}
-                        style={styles.input}
-                        value={delimiter}
-                    />
-                </FormControl>
-            </div>
+            <TextField
+                label={polyglot.t('choose_delimiter')}
+                type="string"
+                onChange={this.setDelimiter}
+                value={delimiter}
+                fullWidth
+            />
         );
     }
 }
 
 export default translate(LatexAdmin);
-

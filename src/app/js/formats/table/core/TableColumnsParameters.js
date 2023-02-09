@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import { TextField } from '@material-ui/core';
+import { Box, TextField } from '@mui/material';
 import TableColumnParameter from './TableColumnParameter';
 import _ from 'lodash';
-
-const styles = {
-    input: {
-        width: '100%',
-    },
-};
 
 class TableColumnsParameters extends Component {
     /**
@@ -61,7 +55,7 @@ class TableColumnsParameters extends Component {
                     field: 'a_routine_field',
                     title: 'Column ' + (parameters.length + 1),
                     format: {
-                        name: 'None',
+                        name: '',
                         option: undefined,
                     },
                 });
@@ -103,9 +97,9 @@ class TableColumnsParameters extends Component {
         const { polyglot } = this.props;
         const { parameters, parameterCount } = this.state;
         return (
-            <div>
+            <Box width="100%">
                 <TextField
-                    style={styles.input}
+                    fullWidth
                     type="number"
                     label={polyglot.t('number_of_column')}
                     onChange={this.onParameterCountChange}
@@ -119,7 +113,7 @@ class TableColumnsParameters extends Component {
                         onParameterChange={this.onParameterChange}
                     />
                 ))}
-            </div>
+            </Box>
         );
     }
 }

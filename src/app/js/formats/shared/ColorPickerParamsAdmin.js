@@ -41,7 +41,7 @@ class ColorPickerParamsAdmin extends Component {
     createUI() {
         const colors = this.state.colors;
         return (
-            <Box display="flex" gap={1}>
+            <Box display="flex" flexWrap="wrap" gap={1}>
                 {colors.map((element, i) => (
                     <input
                         key={i}
@@ -62,7 +62,7 @@ class ColorPickerParamsAdmin extends Component {
     render() {
         const { monochromatic } = this.props;
         return (
-            <Box marginBottom={2} display="flex" flexWrap="wrap" width="100%">
+            <Box display="flex" flexWrap="wrap" width="100%">
                 <Typography>
                     {monochromatic
                         ? this.props.polyglot.t('Color')

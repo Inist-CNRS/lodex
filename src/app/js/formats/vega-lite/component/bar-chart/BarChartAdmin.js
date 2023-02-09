@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField, MenuItem, Checkbox, FormControlLabel } from '@mui/material';
+import {
+    TextField,
+    MenuItem,
+    Checkbox,
+    FormControlLabel,
+    Box,
+} from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
@@ -9,26 +15,6 @@ import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
 import ToolTips from '../../../shared/ToolTips';
-
-// set frond-end styles
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        marginBottom: '15px',
-    },
-    previewDefaultColor: color => ({
-        display: 'inline-block',
-        backgroundColor: color,
-        height: '1em',
-        width: '1em',
-        marginLeft: 5,
-        border: 'solid 1px black',
-    }),
-};
 
 export const defaultArgs = {
     params: {
@@ -187,7 +173,12 @@ class BarChartAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
@@ -217,7 +208,6 @@ class BarChartAdmin extends Component {
                     select
                     label={polyglot.t('direction')}
                     onChange={this.setDirection}
-                    style={styles.input}
                     value={direction}
                 >
                     <MenuItem value="horizontal">
@@ -277,7 +267,6 @@ class BarChartAdmin extends Component {
                     select
                     label={polyglot.t('scale')}
                     onChange={this.setScale}
-                    style={styles.input}
                     value={scale}
                 >
                     <MenuItem value="linear">{polyglot.t('linear')}</MenuItem>
@@ -286,10 +275,9 @@ class BarChartAdmin extends Component {
                 <TextField
                     label={polyglot.t('bar_size')}
                     onChange={this.setBarSize}
-                    style={styles.input}
                     value={barSize}
                 />
-            </div>
+            </Box>
         );
     }
 }

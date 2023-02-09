@@ -4,21 +4,22 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import AddFieldFromColumnButton from './Appbar/AddFieldFromColumnButton';
 import AddFromColumnDialog from './AddFromColumnDialog';
-import PublicationPreview from './preview/publication/PublicationPreview';
-import Statistics from './Statistics';
+import PublicationPreview from '../preview/publication/PublicationPreview';
+import Statistics from '../Statistics';
 import translate from 'redux-polyglot/translate';
-import { fromParsing } from './selectors';
-import { FieldGrid } from '../fields/FieldGrid';
-import { hideAddColumns } from './parsing';
-import { polyglot as polyglotPropTypes } from '../propTypes';
-import { SCOPE_DATASET, SCOPE_DOCUMENT } from '../../../common/scope';
-import DatasetOverviewSelect from '../fields/DatasetOverviewSelect';
-import SubresourceOverviewSelect from '../fields/SubresourceOverviewSelect';
+import { fromParsing } from '../selectors';
+import { FieldGrid } from '../../fields/FieldGrid';
+import { hideAddColumns } from '../parsing';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { SCOPE_DATASET, SCOPE_DOCUMENT } from '../../../../common/scope';
+import DatasetOverviewSelect from '../../fields/DatasetOverviewSelect';
+import SubresourceOverviewSelect from '../../fields/SubresourceOverviewSelect';
+import FieldAddDropdownButtonConnected from './FieldAddDropdownButton';
+import { AddFieldButton } from './AddFieldButton';
+import { AddSubresourceFieldButton } from '../subresource/AddSubresourceFieldButton';
 
 export const FieldsEditComponent = ({
-    addFieldButton,
     defaultTab = 'page',
     filter,
     hideAddColumns,
@@ -90,9 +91,14 @@ export const FieldsEditComponent = ({
                             />
                         )}
                         {filter === SCOPE_DOCUMENT && !subresourceId && (
-                            <AddFieldFromColumnButton />
+                            <FieldAddDropdownButtonConnected />
                         )}
-                        {addFieldButton}
+                        {filter !== SCOPE_DOCUMENT && !subresourceId && (
+                            <AddFieldButton />
+                        )}
+                        {filter === SCOPE_DOCUMENT && subresourceId && (
+                            <AddSubresourceFieldButton />
+                        )}
                         {showAddFromColumnDialog && (
                             <AddFromColumnDialog
                                 onClose={handleCloseAddFromColumnDialog}
