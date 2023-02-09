@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 
 import { connect } from 'react-redux';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Tooltip } from '@mui/material';
 import {
     DataGrid,
     GridToolbarColumnsButton,
@@ -28,22 +28,28 @@ export const EnrichmentList = ({ enrichments, p: polyglot }) => {
     const CustomToolbar = () => {
         return (
             <GridToolbarContainer>
-                <GridToolbarColumnsButton />
+                <Tooltip title={polyglot.t(`column_tooltip`)}>
+                    <GridToolbarColumnsButton />
+                </Tooltip>
                 <GridToolbarFilterButton />
-                <GridToolbarDensitySelector />
-                <Button
-                    component={Link}
-                    to="/data/enrichment/add"
-                    startIcon={<AddBoxIcon />}
-                    size="small"
-                    sx={{
-                        '&.MuiButtonBase-root:hover': {
-                            color: 'primary.main',
-                        },
-                    }}
-                >
-                    {polyglot.t('add_more')}
-                </Button>
+                <Tooltip title={polyglot.t(`density_tooltip`)}>
+                    <GridToolbarDensitySelector />
+                </Tooltip>
+                <Tooltip title={polyglot.t(`add_more_enrichment`)}>
+                    <Button
+                        component={Link}
+                        to="/data/enrichment/add"
+                        startIcon={<AddBoxIcon />}
+                        size="small"
+                        sx={{
+                            '&.MuiButtonBase-root:hover': {
+                                color: 'primary.main',
+                            },
+                        }}
+                    >
+                        {polyglot.t('add_more')}
+                    </Button>
+                </Tooltip>
             </GridToolbarContainer>
         );
     };

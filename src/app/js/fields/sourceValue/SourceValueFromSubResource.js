@@ -112,7 +112,6 @@ const SourceValueFromSubResource = ({
     ] = React.useState(subresources[0].path);
     const [autocompleteValue, setAutocompleteValue] = React.useState(value);
     const [datasetFields, setDatasetFields] = React.useState([]);
-
     useEffect(() => {
         const subresourceData = parseValue(
             firstParsedLine[selectedSubresourcePath] || '',
@@ -124,7 +123,7 @@ const SourceValueFromSubResource = ({
                     ? subresourceData[0]
                     : subresourceData) || {},
             ),
-        ];
+        ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
         setDatasetFields(datasetFields);
     }, [selectedSubresourcePath]);
 

@@ -57,7 +57,9 @@ const SourceValueFromColumns = ({
 };
 
 const mapStateToProps = state => ({
-    datasetFields: fromParsing.getParsedExcerptColumns(state),
+    datasetFields: fromParsing
+        .getParsedExcerptColumns(state)
+        .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
 });
 
 SourceValueFromColumns.propTypes = {
