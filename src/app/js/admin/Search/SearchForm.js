@@ -318,6 +318,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                             fields={fieldsForResourceSyndication}
                             onChange={handleSResourceTitle}
                             value={resourceTitle}
+                            clearText={polyglot.t('clear')}
                         />
                         <SearchAutocomplete
                             testId={`autocomplete_search_syndication_${overview.RESOURCE_DESCRIPTION}`}
@@ -325,6 +326,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                             fields={fieldsForResourceSyndication}
                             onChange={handleSResourceDescription}
                             value={resourceDescription}
+                            clearText={polyglot.t('clear')}
                         />
                         <Box display="flex" gap={2}>
                             <SearchAutocomplete
@@ -335,6 +337,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 fields={fieldsForResourceSyndication}
                                 onChange={handleSResourceDetailFirst}
                                 value={resourceDetailFirst}
+                                clearText={polyglot.t('clear')}
                             />
                             <SearchAutocomplete
                                 testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_2}`}
@@ -344,6 +347,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 fields={fieldsForResourceSyndication}
                                 onChange={handleSResourceDetailSecond}
                                 value={resourceDetailSecond}
+                                clearText={polyglot.t('clear')}
                             />
                         </Box>
                     </Box>
