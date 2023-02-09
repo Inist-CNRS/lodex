@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, TextField, FormControlLabel } from '@mui/material';
+import { Checkbox, TextField, FormControlLabel, Box } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-
-const styles = {
-    input: {
-        width: '100%',
-        marginBottom: '15px',
-    },
-};
 
 /**
  * React component use for edit the tooltip
@@ -122,7 +115,7 @@ class ToolTips extends Component {
                         label={this.props.polyglot.t('tooltip_third_3')}
                         value={this.state.thirdValueTitle}
                         onChange={this.onThirdValueChange.bind(this)}
-                        style={styles.input}
+                        fullWidth
                     />
                 );
             }
@@ -130,7 +123,7 @@ class ToolTips extends Component {
 
         if (checked) {
             return (
-                <div>
+                <Box display="flex" flexDirection="column" flexGrow={1} gap={2}>
                     <TextField
                         label={this.props.polyglot.t(
                             this.props.thirdValue
@@ -139,7 +132,7 @@ class ToolTips extends Component {
                         )}
                         value={this.state.categoryTitle}
                         onChange={this.onCategoryTitleChange.bind(this)}
-                        style={styles.input}
+                        fullWidth
                     />
                     <TextField
                         label={this.props.polyglot.t(
@@ -149,10 +142,10 @@ class ToolTips extends Component {
                         )}
                         value={this.state.valueTitle}
                         onChange={this.onValueTitleChange.bind(this)}
-                        style={styles.input}
+                        fullWidth
                     />
                     {thirdValue()}
-                </div>
+                </Box>
             );
         }
     }
@@ -162,11 +155,7 @@ class ToolTips extends Component {
      */
     render() {
         return (
-            <div
-                style={{
-                    marginBottom: '15px',
-                }}
-            >
+            <Box mb={2} display="flex" width="100%">
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -177,7 +166,7 @@ class ToolTips extends Component {
                     label={this.props.polyglot.t('toggle_tooltip')}
                 />
                 {this.createUserInterface()}
-            </div>
+            </Box>
         );
     }
 }

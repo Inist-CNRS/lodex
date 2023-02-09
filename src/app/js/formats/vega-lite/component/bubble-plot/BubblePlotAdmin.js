@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
-import { Checkbox, FormControlLabel } from '@material-ui/core';
+import { Box, Checkbox, FormControlLabel } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
@@ -9,25 +9,6 @@ import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ToolTips from '../../../shared/ToolTips';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        width: '100%',
-    },
-    previewDefaultColor: color => ({
-        display: 'inline-block',
-        backgroundColor: color,
-        height: '1em',
-        width: '1em',
-        marginLeft: 5,
-        border: 'solid 1px black',
-    }),
-};
 
 export const defaultArgs = {
     params: {
@@ -131,7 +112,12 @@ class BubblePlotAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
@@ -145,7 +131,6 @@ class BubblePlotAdmin extends Component {
                     control={
                         <Checkbox
                             onChange={this.toggleFlipAxis}
-                            style={styles.input}
                             checked={flipAxis}
                         />
                     }
@@ -168,7 +153,7 @@ class BubblePlotAdmin extends Component {
                     onChange={this.setColors}
                     polyglot={polyglot}
                 />
-            </div>
+            </Box>
         );
     }
 }

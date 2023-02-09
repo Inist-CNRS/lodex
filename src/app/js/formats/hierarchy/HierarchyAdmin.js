@@ -1,24 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { TextField } from '@material-ui/core';
+import { Box, TextField } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../colorUtils';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        width: '100%',
-    },
-};
 
 export const defaultArgs = {
     params: {
@@ -112,7 +101,12 @@ class HierarchyAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
@@ -131,22 +125,22 @@ class HierarchyAdmin extends Component {
                 <TextField
                     label={polyglot.t('max_char_number_in_labels')}
                     onChange={this.setMaxLabelLength}
-                    style={styles.input}
                     value={this.props.args.params.maxLabelLength}
+                    fullWidth
                 />
                 <TextField
                     label={polyglot.t('label_offset')}
                     onChange={this.setLabelOffset}
-                    style={styles.input}
                     value={this.props.args.params.labelOffset}
+                    fullWidth
                 />
                 <TextField
                     label={polyglot.t('minimum_scale_value')}
                     onChange={this.setMinimumScaleValue}
-                    style={styles.input}
                     value={this.props.args.params.minimumScaleValue}
+                    fullWidth
                 />
-            </div>
+            </Box>
         );
     }
 }

@@ -1,32 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { TextField } from '@material-ui/core';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        width: '100%',
-    },
-    checkbox: {
-        marginTop: 12,
-        marginRight: 5,
-        verticalAlign: 'sub',
-    },
-    previewDefaultColor: color => ({
-        display: 'inline-block',
-        backgroundColor: color,
-        height: '1em',
-        width: '1em',
-        marginLeft: 5,
-        border: 'solid 1px black',
-    }),
-};
+import { Box, Checkbox, FormControlLabel, TextField } from '@mui/material';
 
 export const defaultArgs = {
     param: {
@@ -73,24 +49,29 @@ class LodexFieldAdmin extends Component {
         const label = labelArray.join(';');
 
         return (
-            <div style={styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <TextField
                     label={polyglot.t('param_labels')}
                     multiline
                     onChange={this.setRequest}
-                    style={styles.input}
                     value={label}
+                    fullWidth
                 />
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={hiddenInfo}
-                        onChange={this.setHiddenInfo}
-                        style={styles.checkbox}
-                    />
-                    {polyglot.t('hidden_info')}
-                </label>
-            </div>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.setHiddenInfo}
+                            checked={hiddenInfo}
+                        />
+                    }
+                    label={polyglot.t('hidden_info')}
+                />
+            </Box>
         );
     }
 }

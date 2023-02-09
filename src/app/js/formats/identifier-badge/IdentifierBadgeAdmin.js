@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -8,18 +7,7 @@ import updateAdminArgs from '../shared/updateAdminArgs';
 import { resolvers } from '.';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../colorUtils';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        marginLeft: '1rem',
-        width: '40%',
-    },
-};
+import { Box, TextField, MenuItem } from '@mui/material';
 
 export const defaultArgs = {
     typid: 1,
@@ -69,27 +57,30 @@ class IdentifierBadgeAdmin extends Component {
             </MenuItem>
         ));
         return (
-            <div style={styles.container}>
-                <FormControl fullWidth>
-                    <InputLabel id="identifier-badge-admin-input-label">
-                        {polyglot.t('list_format_select_identifier')}
-                    </InputLabel>
-                    <Select
-                        labelId="identifier-badge-admin-input-label"
-                        onChange={e => this.setTypid(e.target.value)}
-                        style={styles.input}
-                        value={typid}
-                    >
-                        {items}
-                    </Select>
-                </FormControl>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
+                <TextField
+                    select
+                    label={polyglot.t('list_format_select_identifier')}
+                    value={typid}
+                    onChange={e => this.setTypid(e.target.value)}
+                    sx={{
+                        width: '50%',
+                    }}
+                >
+                    {items}
+                </TextField>
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}
                     polyglot={polyglot}
                     monochromatic={true}
                 />
-            </div>
+            </Box>
         );
     }
 }

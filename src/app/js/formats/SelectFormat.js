@@ -9,7 +9,7 @@ import FormatCatalogDialog from './FormatCatalog';
 const SelectFormat = ({ formats, value, onChange, p: polyglot }) => {
     const [openCatalog, setOpenCatalog] = React.useState(false);
     return (
-        <Box sx={{ display: 'flex', marginBottom: 3 }}>
+        <Box sx={{ display: 'flex' }}>
             <TextField
                 select
                 className="select-format"

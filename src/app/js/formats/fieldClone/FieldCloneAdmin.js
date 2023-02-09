@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { useParams } from 'react-router';
 
-import { MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { field as fieldPropTypes } from '../../propTypes';
+import { MenuItem, TextField } from '@mui/material';
+import {
+    polyglot as polyglotPropTypes,
+    field as fieldPropTypes,
+} from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import {
     SCOPE_DATASET,
@@ -16,14 +18,6 @@ import {
     SCOPE_COLLECTION,
 } from '../../../../common/scope';
 
-const styles = {
-    container: {
-        display: 'flex',
-    },
-    input: {
-        marginLeft: '1rem',
-    },
-};
 export const defaultArgs = {
     value: '',
 };
@@ -38,27 +32,21 @@ const FieldCloneAdmin = ({ args, onChange, p: polyglot, fields }) => {
     const filteredFields = fields.filter(f => isValidClonableField(f, filter));
 
     return (
-        <div style={styles.container}>
-            <FormControl fullWidth>
-                <InputLabel id="fieldclone-input-label">
-                    {polyglot.t('fieldclone_format_value')}
-                </InputLabel>
-                <Select
-                    labelId="fieldclone-input-label"
-                    onChange={setValue}
-                    style={styles.input}
-                    value={args.value}
-                >
-                    {filteredFields.map(field => {
-                        return (
-                            <MenuItem value={field.name} key={field.name}>
-                                {field.name} - {field.label}
-                            </MenuItem>
-                        );
-                    })}
-                </Select>
-            </FormControl>
-        </div>
+        <TextField
+            fullWidth
+            select
+            onChange={setValue}
+            value={args.value}
+            label={polyglot.t('fieldclone_format_value')}
+        >
+            {filteredFields.map(field => {
+                return (
+                    <MenuItem value={field.name} key={field.name}>
+                        {field.name} - {field.label}
+                    </MenuItem>
+                );
+            })}
+        </TextField>
     );
 };
 

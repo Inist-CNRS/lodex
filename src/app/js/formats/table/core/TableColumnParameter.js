@@ -1,40 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import {
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField,
-} from '@material-ui/core';
+import { Box, MenuItem, TextField } from '@mui/material';
 import SelectFormat from '../../SelectFormat';
 import {
-    TABLE_COMPATIBLE_FORMATS,
+    COMPATIBLE_FORMATS,
     getAdminComponent,
     getFormatInitialArgs,
 } from '../../index';
-
-const styles = {
-    input50: {
-        width: '50%',
-    },
-    input100: {
-        width: '100%',
-    },
-    container: {
-        width: '80%',
-        display: 'inline-block',
-        'padding-left': '2%',
-        margin: '2%',
-        'border-left': '1px solid grey',
-        'border-radius': '2px',
-    },
-    labelId: {
-        'margin-right': '4%',
-        display: 'inline-block',
-    },
-};
 
 class TableColumnParameter extends Component {
     static propTypes = {
@@ -139,12 +112,32 @@ class TableColumnParameter extends Component {
         ];
 
         return (
-            <div>
-                <label style={styles.labelId}>{'#' + (id + 1)}</label>
-                <div style={styles.container}>
-                    <FormControl style={styles.input50}>
-                        <InputLabel>{polyglot.t('table_field')}</InputLabel>
-                        <Select value={field} onChange={this.changeField}>
+            <Box display="flex" alignItems="center">
+                <Box component="label" mr={1}>
+                    {'#' + (id + 1)}
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexGrow: 1,
+                        gap: 2,
+                        paddingTop: 2,
+                        paddingBottom: 2,
+                        paddingLeft: 1,
+                        marginTop: 1,
+                        borderLeft: '1px solid grey',
+                        borderRadius: '2px',
+                    }}
+                >
+                    <Box display="flex" gap={1}>
+                        <TextField
+                            select
+                            label={polyglot.t('table_field')}
+                            value={field}
+                            onChange={this.changeField}
+                            sx={{ flexGrow: 1 }}
+                        >
                             {availableField.map(value => (
                                 <MenuItem
                                     key={`table_parameter_${value}`}
@@ -162,42 +155,35 @@ class TableColumnParameter extends Component {
                             >
                                 {polyglot.t('table_other')}
                             </MenuItem>
-                        </Select>
-                    </FormControl>
-                    <TextField
-                        style={styles.input50}
-                        value={title}
-                        label={polyglot.t('column_title')}
-                        onChange={this.changeTitle}
-                    />
-                    {!availableField.includes(field) ? (
-                        <>
-                            <br />
-                            <TextField
-                                style={styles.input100}
-                                value={field}
-                                label={polyglot.t('table_other_field')}
-                                onChange={this.changeField}
-                            />
-                            <br />
-                        </>
-                    ) : (
-                        <br />
-                    )}
-                    <FormControl style={styles.input100}>
-                        <SelectFormat
-                            formats={TABLE_COMPATIBLE_FORMATS}
-                            value={format.name}
-                            onChange={this.changeFormat}
+                        </TextField>
+                        <TextField
+                            value={title}
+                            label={polyglot.t('column_title')}
+                            onChange={this.changeTitle}
+                            sx={{ flexGrow: 1 }}
                         />
+                    </Box>
+                    {!availableField.includes(field) && (
+                        <TextField
+                            fullWidth
+                            value={field}
+                            label={polyglot.t('table_other_field')}
+                            onChange={this.changeField}
+                        />
+                    )}
+                    <SelectFormat
+                        formats={COMPATIBLE_FORMATS}
+                        value={format.name}
+                        onChange={this.changeFormat}
+                    />
+                    {format.name && (
                         <SubAdminComponent
-                            style={styles.input100}
                             onChange={this.changeFormatOption}
                             args={format.option}
                         />
-                    </FormControl>
-                </div>
-            </div>
+                    )}
+                </Box>
+            </Box>
         );
     }
 }

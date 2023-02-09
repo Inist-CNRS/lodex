@@ -1,25 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    MenuItem,
-    Select,
-    TextField,
-    FormControl,
-    InputLabel,
-} from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        marginLeft: '1rem',
-    },
-};
+import { Box, TextField, MenuItem } from '@mui/material';
 
 export const defaultArgs = {
     type: 'value',
@@ -65,43 +48,53 @@ class LinkImageAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
-                <FormControl fullWidth>
-                    <InputLabel id="linkimage-admin-input-label">
-                        {polyglot.t('select_a_format')}
-                    </InputLabel>
-                    <Select
-                        labelId="linkimage-admin-input-label"
-                        onChange={this.setType}
-                        style={styles.input}
-                        value={type}
-                    >
-                        <MenuItem value="text">
-                            {polyglot.t('item_other_column_content')}
-                        </MenuItem>
-                        <MenuItem value="column">
-                            {polyglot.t('item_custom_url')}
-                        </MenuItem>
-                    </Select>
-                </FormControl>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <TextField
-                    label={
-                        type !== 'text'
-                            ? polyglot.t('Custom URL')
-                            : polyglot.t("Column's name")
-                    }
-                    onChange={this.setValue}
-                    style={styles.input}
-                    value={value}
-                />
-                <TextField
-                    label={polyglot.t('height_px')}
-                    type="number"
-                    onChange={this.setMaxHeight}
-                    style={styles.input}
-                    value={maxHeight}
-                />
-            </div>
+                    fullWidth
+                    select
+                    label={polyglot.t('select_a_format')}
+                    onChange={this.setType}
+                    value={type}
+                >
+                    <MenuItem value="text">
+                        {polyglot.t('item_other_column_content')}
+                    </MenuItem>
+                    <MenuItem value="column">
+                        {polyglot.t('item_custom_url')}
+                    </MenuItem>
+                </TextField>
+                <Box
+                    display="flex"
+                    gap={1}
+                    width="100%"
+                    sx={{
+                        '& > *': {
+                            flexBasis: '50%',
+                        },
+                    }}
+                >
+                    <TextField
+                        label={
+                            type !== 'text'
+                                ? polyglot.t('Custom URL')
+                                : polyglot.t("Column's name")
+                        }
+                        onChange={this.setValue}
+                        value={value}
+                    />
+                    <TextField
+                        label={polyglot.t('height_px')}
+                        type="number"
+                        onChange={this.setMaxHeight}
+                        value={maxHeight}
+                    />
+                </Box>
+            </Box>
         );
     }
 }

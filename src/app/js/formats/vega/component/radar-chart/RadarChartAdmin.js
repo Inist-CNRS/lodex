@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    Select,
     MenuItem,
     Checkbox,
     FormControlLabel,
-    FormControl,
-    InputLabel,
-} from '@material-ui/core';
+    Box,
+    TextField,
+} from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
@@ -16,17 +15,6 @@ import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
 import ToolTips from '../../../shared/ToolTips';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        width: '100%',
-    },
-};
 
 export const defaultArgs = {
     params: {
@@ -138,7 +126,12 @@ class RadarChartAdmin extends Component {
         } = this.props.args;
 
         return (
-            <div style={styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
@@ -168,29 +161,22 @@ class RadarChartAdmin extends Component {
                     control={
                         <Checkbox
                             onChange={this.setAxisRoundValue}
-                            style={styles.input}
                             checked={axisRoundValue}
                         />
                     }
                     label={polyglot.t('axis_round_value')}
                 />
-                <FormControl fullWidth>
-                    <InputLabel id="radarchart-admin-scale-label-input">
-                        {polyglot.t('scale')}
-                    </InputLabel>
-                    <Select
-                        labelId="radarchart-admin-scale-label-input"
-                        onChange={this.setScale}
-                        style={styles.input}
-                        value={scale}
-                    >
-                        <MenuItem value="linear">
-                            {polyglot.t('linear')}
-                        </MenuItem>
-                        <MenuItem value="log">{polyglot.t('log')}</MenuItem>
-                    </Select>
-                </FormControl>
-            </div>
+                <TextField
+                    fullWidth
+                    select
+                    label={polyglot.t('scale')}
+                    onChange={this.setScale}
+                    value={scale}
+                >
+                    <MenuItem value="linear">{polyglot.t('linear')}</MenuItem>
+                    <MenuItem value="log">{polyglot.t('log')}</MenuItem>
+                </TextField>
+            </Box>
         );
     }
 }

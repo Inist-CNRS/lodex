@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField } from '@material-ui/core';
+import { Box, TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -8,17 +8,6 @@ import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../colorUtils';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        width: '100%',
-    },
-};
 
 export const defaultArgs = {
     params: {
@@ -92,7 +81,12 @@ class StreamgraphAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
@@ -110,16 +104,16 @@ class StreamgraphAdmin extends Component {
                 <TextField
                     label={polyglot.t('max_char_number_in_legends')}
                     onChange={this.setMaxLegendLength}
-                    style={styles.input}
                     value={maxLegendLength}
+                    fullWidth
                 />
                 <TextField
                     label={polyglot.t('height_px')}
                     onChange={this.setHeight}
-                    style={styles.input}
                     value={height}
+                    fullWidth
                 />
-            </div>
+            </Box>
         );
     }
 }
