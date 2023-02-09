@@ -35,7 +35,9 @@ const ValuePreview = ({ lines, editedField, p: polyglot }) => {
             </Box>
 
             <Box textAlign={'center'} mb={2}>
-                <Typography variant="body1">{editedField.label}</Typography>
+                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    {editedField.label}
+                </Typography>
             </Box>
             <Box mb={4}>
                 {lines.length > 0 &&

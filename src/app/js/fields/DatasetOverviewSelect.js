@@ -67,6 +67,7 @@ export const DatasetOverviewSelectComponent = ({
                                     alignItems: 'center',
                                     gap: 2,
                                 }}
+                                value={field._id}
                             >
                                 <Box>
                                     {field.label}{' '}
@@ -111,6 +112,7 @@ export const DatasetOverviewSelectComponent = ({
                                     alignItems: 'center',
                                     gap: 2,
                                 }}
+                                value={field._id}
                             >
                                 <Box>
                                     {field.label}{' '}
@@ -149,7 +151,9 @@ DatasetOverviewSelectComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    fields: fromFields.getEditingFields(state, { filter: SCOPE_DATASET }),
+    fields: fromFields
+        .getEditingFields(state, { filter: SCOPE_DATASET })
+        .sort((a, b) => a.label.localeCompare(b.label)),
 });
 
 const mapDispatchToProps = {

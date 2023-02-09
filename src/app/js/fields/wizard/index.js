@@ -217,7 +217,13 @@ const mapStateToProps = (state, { match, filter }) => {
         currentEditedField,
         fieldName,
         fields: currentEditedField
-            ? fromFields.getFieldsExceptField(state, currentEditedField)
+            ? fromFields
+                  .getFieldsExceptField(state, currentEditedField)
+                  .sort((a, b) =>
+                      a.label
+                          ?.toLowerCase()
+                          .localeCompare(b.label?.toLowerCase()),
+                  )
             : null,
         fieldsFromFilter: fromFields.getOntologyFields(state, filter),
         isFieldsLoading: fromFields.isLoading(state),
