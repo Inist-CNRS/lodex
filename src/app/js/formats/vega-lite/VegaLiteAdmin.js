@@ -6,9 +6,6 @@ import { Box, TextField } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
-import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/theme-monokai';
 
 export const defaultArgs = {
     params: {
@@ -55,9 +52,9 @@ const VegaLiteAdmin = ({
         updateAdminArgs('params', params, { args, onChange });
     };
 
-    const setSpecTemplate = value => {
-        setDisplayedSpecTemplate(value);
-        updateAdminArgs('specTemplate', value, { args, onChange });
+    const setSpecTemplate = e => {
+        setDisplayedSpecTemplate(e.target.value);
+        updateAdminArgs('specTemplate', e.target.value, { args, onChange });
     };
 
     const setWidth = e => {
@@ -102,17 +99,11 @@ const VegaLiteAdmin = ({
                 >
                     {polyglot.t('vega_validator')}
                 </a>
-                <AceEditor
-                    mode="json"
-                    theme="monokai"
-                    wrapEnabled={true}
-                    fontSize={14}
-                    value={displayedSpecTemplate}
+                <TextField
                     onChange={setSpecTemplate}
-                    style={{
-                        width: '100%',
-                        height: '400px',
-                    }}
+                    value={displayedSpecTemplate}
+                    fullWidth
+                    multiline
                 />
                 <a onClick={() => sizeStep()}>{polyglot.t('vega_size_step')}</a>
             </Box>
