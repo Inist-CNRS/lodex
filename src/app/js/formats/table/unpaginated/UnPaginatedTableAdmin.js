@@ -3,6 +3,7 @@ import translate from 'redux-polyglot/translate';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 import TableColumnsParameters from '../core/TableColumnsParameters';
 import React from 'react';
+import { Box } from '@mui/material';
 
 export const defaultArgs = {
     params: {
@@ -24,7 +25,12 @@ class UnPaginatedTableAdmin extends AbstractTableAdmin {
             args: { params, columnsCount, columnsParameters },
         } = this.props;
         return (
-            <div style={this.styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
@@ -40,7 +46,7 @@ class UnPaginatedTableAdmin extends AbstractTableAdmin {
                     parameterCount={columnsCount}
                     parameters={columnsParameters}
                 />
-            </div>
+            </Box>
         );
     }
 }

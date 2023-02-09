@@ -7,10 +7,10 @@ import {
     RadioGroup,
     FormControlLabel,
     Radio,
+    Typography,
 } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { Typography } from '@material-ui/core';
 
 const RoutineParamsAdmin = ({
     polyglot,
@@ -83,7 +83,7 @@ const RoutineParamsAdmin = ({
     };
 
     return (
-        <Grid container spacing={2} marginBottom={2}>
+        <Grid container spacing={2}>
             {showMaxSize && (
                 <Grid item xs={6}>
                     <TextField

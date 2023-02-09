@@ -1,23 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import {
-    MenuItem,
-    Select,
-    TextField,
-    FormControl,
-    InputLabel,
-} from '@material-ui/core';
+import { MenuItem, TextField, Box } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-const styles = {
-    container: {
-        display: 'inline-flex',
-    },
-    input: {
-        marginLeft: '1rem',
-    },
-};
 export const defaultArgs = {
     type: 'value',
     value: '',
@@ -54,15 +40,21 @@ class UriAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
-                <FormControl fullWidth>
-                    <InputLabel id="urladmin-input-label">
-                        {polyglot.t('uri_format_select_type')}
-                    </InputLabel>
-                    <Select
-                        labelId="urladmin-input-label"
+            <Box
+                display="flex"
+                gap={1}
+                sx={{
+                    '& > *': {
+                        flexBasis: '50%',
+                    },
+                }}
+            >
+                <Box>
+                    <TextField
+                        fullWidth
+                        select
+                        label={polyglot.t('uri_format_select_type')}
                         onChange={this.setType}
-                        style={styles.input}
                         value={type}
                     >
                         <MenuItem value="value">
@@ -74,21 +66,25 @@ class UriAdmin extends Component {
                         <MenuItem value="column">
                             {polyglot.t('uri_format_another_column')}
                         </MenuItem>
-                    </Select>
-                </FormControl>
-                {type !== 'value' && (
-                    <TextField
-                        label={
-                            type !== 'text'
-                                ? polyglot.t('uri_format_custom_value')
-                                : polyglot.t('uri_format_another_column_value')
-                        }
-                        onChange={this.setValue}
-                        style={styles.input}
-                        value={value}
-                    />
-                )}
-            </div>
+                    </TextField>
+                </Box>
+                <Box>
+                    {type !== 'value' && (
+                        <TextField
+                            fullWidth
+                            label={
+                                type !== 'text'
+                                    ? polyglot.t('uri_format_custom_value')
+                                    : polyglot.t(
+                                          'uri_format_another_column_value',
+                                      )
+                            }
+                            onChange={this.setValue}
+                            value={value}
+                        />
+                    )}
+                </Box>
+            </Box>
         );
     }
 }

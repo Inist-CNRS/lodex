@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField } from '@material-ui/core';
+import { Box, TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-const styles = {
-    container: {
-        display: 'inline-flex',
-    },
-    input: {
-        marginLeft: '1rem',
-    },
-};
 export const defaultArgs = {
     prefix: '',
     suffix: '',
@@ -48,22 +40,30 @@ class SentenceAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={1}
+                sx={{
+                    '& > *': {
+                        flexGrow: 1,
+                    },
+                }}
+            >
                 <TextField
                     key="prefix"
                     label={polyglot.t('prefix')}
                     onChange={e => this.setPrefix(e.target.value)}
-                    style={styles.input}
                     value={prefix}
                 />
                 <TextField
                     key="suffix"
                     label={polyglot.t('suffix')}
                     onChange={e => this.setSuffix(e.target.value)}
-                    style={styles.input}
                     value={suffix}
                 />
-            </div>
+            </Box>
         );
     }
 }
