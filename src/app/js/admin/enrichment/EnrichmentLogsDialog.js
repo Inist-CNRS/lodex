@@ -87,6 +87,15 @@ export const EnrichmentLogsDialog = ({
 }) => {
     const [logsContainerRef, { width }] = useMeasure();
 
+    const handleDownloadLogs = () => {
+        const file = new Blob(logs, { type: 'text/plain' });
+        const element = document.createElement('a');
+        element.href = URL.createObjectURL(file);
+        element.download = 'enrichment-logs-' + Date.now() + '.log';
+        document.body.appendChild(element);
+        element.click();
+    };
+
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
             <DialogTitle>{polyglot.t('enrichment_logs')}</DialogTitle>
@@ -118,6 +127,13 @@ export const EnrichmentLogsDialog = ({
                         variant="link"
                     >
                         {polyglot.t('close')}
+                    </Button>
+                    <Button
+                        onClick={handleDownloadLogs}
+                        color="primary"
+                        variant="contained"
+                    >
+                        {polyglot.t('download_logs')}
                     </Button>
                 </Box>
             </DialogActions>

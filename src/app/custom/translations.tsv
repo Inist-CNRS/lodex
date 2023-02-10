@@ -906,3 +906,4 @@
 "density_tooltip"	"Data density"	"Choisir la densité de données"
 "column_tooltip"	"Column"	"Choisir les colonnes"
 "blank_field"	"Blank field"	"Champ vide"
+"download_logs"	"Download logs"	"Télécharger les logs"
