@@ -135,6 +135,8 @@ const FieldEditionWizardComponent = ({
                             paddingRight: '1rem',
                             flexGrow: 1,
                             overflowY: 'auto',
+                            display: 'flex',
+                            flexDirection: 'column',
                         }}
                     >
                         {currentEditedField.name !== URI_FIELD_NAME ? (
@@ -154,15 +156,17 @@ const FieldEditionWizardComponent = ({
                                         />
                                     ))}
                                 </Tabs>
-                                {tabs.map((tab, index) => (
-                                    <TabPanel
-                                        value={tabValue}
-                                        index={index}
-                                        key={index}
-                                    >
-                                        {tab.component}
-                                    </TabPanel>
-                                ))}
+                                <Box flexGrow={1}>
+                                    {tabs.map((tab, index) => (
+                                        <TabPanel
+                                            value={tabValue}
+                                            index={index}
+                                            key={index}
+                                        >
+                                            {tab.component}
+                                        </TabPanel>
+                                    ))}
+                                </Box>
                             </>
                         ) : (
                             <Uri
@@ -170,6 +174,11 @@ const FieldEditionWizardComponent = ({
                                 fields={fields}
                             />
                         )}
+                        <Actions
+                            currentEditedField={currentEditedField}
+                            onCancel={handleCancel}
+                            onSave={handleSave}
+                        />
                     </Box>
                     <Box
                         sx={{
@@ -180,11 +189,6 @@ const FieldEditionWizardComponent = ({
                     </Box>
                 </Box>
             )}
-            <Actions
-                currentEditedField={currentEditedField}
-                onCancel={handleCancel}
-                onSave={handleSave}
-            />
         </Box>
     );
 };

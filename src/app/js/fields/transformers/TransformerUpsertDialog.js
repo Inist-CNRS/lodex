@@ -22,6 +22,7 @@ import {
 import colorsTheme from '../../../custom/colorsTheme';
 import TransformerArg from './TransformerArg';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import CancelButton from '../../lib/components/CancelButton';
 
 const TransformerUpsertDialog = ({
     availableTransformers,
@@ -135,14 +136,12 @@ const TransformerUpsertDialog = ({
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button
+                <CancelButton
                     aria-label={polyglot.t('cancel')}
-                    color="secondary"
-                    variant="text"
                     onClick={handleClose}
                 >
                     {polyglot.t('cancel')}
-                </Button>
+                </CancelButton>
                 <Button
                     aria-label={polyglot.t('confirm')}
                     color="primary"

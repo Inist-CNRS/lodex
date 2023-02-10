@@ -39,6 +39,7 @@ import { toast } from 'react-toastify';
 import { FINISHED, IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import { ERROR } from '../../../../common/progressStatus';
 import { io } from 'socket.io-client';
+import CancelButton from '../../lib/components/CancelButton';
 
 // UTILITARY PART
 const ENRICHMENT_FORM = 'ENRICHMENT_FORM';
@@ -465,14 +466,12 @@ export const EnrichmentForm = ({
                         </Button>
                     )}
                     <Box>
-                        <Button
-                            variant="link"
-                            color="secondary"
+                        <CancelButton
                             sx={{ height: '100%' }}
                             onClick={handleCancel}
                         >
                             {polyglot.t('cancel')}
-                        </Button>
+                        </CancelButton>
                         <Button
                             variant="contained"
                             color="primary"

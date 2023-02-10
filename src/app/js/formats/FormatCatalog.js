@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import colorsTheme from '../../custom/colorsTheme';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
+import CancelButton from '../lib/components/CancelButton';
 
 const FormatCatalogDescription = ({ format, polyglot }) => {
     return (
@@ -162,14 +163,9 @@ export const FormatCatalog = ({
                 </List>
             </DialogContent>
             <DialogActions>
-                <Button
-                    variant="text"
-                    key="cancel"
-                    color="secondary"
-                    onClick={handleClose}
-                >
+                <CancelButton variant="text" onClick={handleClose}>
                     {polyglot.t('cancel')}
-                </Button>
+                </CancelButton>
             </DialogActions>
         </Dialog>
     );

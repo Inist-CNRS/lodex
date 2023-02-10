@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import CancelButton from '../../lib/components/CancelButton';
 
 const styles = {
     container: {
@@ -31,6 +32,9 @@ export const PopupConfirmUploadComponent = ({
         handleClose();
     };
     const actions = [
+        <CancelButton key="cancel" onClick={handleClose}>
+            {polyglot.t('Cancel')}
+        </CancelButton>,
         <Button
             variant="contained"
             color="primary"
@@ -38,14 +42,6 @@ export const PopupConfirmUploadComponent = ({
             onClick={handleConfirmAction}
         >
             {polyglot.t('Accept')}
-        </Button>,
-        <Button
-            variant="text"
-            color="secondary"
-            key="cancel"
-            onClick={handleClose}
-        >
-            {polyglot.t('Cancel')}
         </Button>,
     ];
 
