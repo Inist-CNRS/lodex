@@ -1,4 +1,4 @@
-FROM node:12-alpine AS build
+FROM node:14-alpine AS build
 RUN apk add --no-cache make gcc g++ python3 bash git openssh jq
 WORKDIR /app
 # see .dockerignore to know all copied files
@@ -13,7 +13,7 @@ RUN mkdir /app/upload && \
     npm run clean && \
     ./lodex-extended-sync
 
-FROM node:12-alpine AS release
+FROM node:14-alpine AS release
 RUN apk add --no-cache su-exec redis
 COPY --from=build /app /app
 
