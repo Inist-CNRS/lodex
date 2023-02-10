@@ -40,6 +40,7 @@ export const ParsingDeleteRowDialog = ({
         } else {
             toast.error(polyglot.t('parsing_delete_row_error'), {
                 type: toast.TYPE.ERROR,
+                autoClose: false,
             });
         }
         setIsLoading(false);

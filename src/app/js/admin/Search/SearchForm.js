@@ -111,7 +111,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         } else {
             toast(polyglot.t('searchable_error'), {
                 type: toast.TYPE.ERROR,
-                autoClose: 2000,
+                autoClose: false,
             });
         }
     };
@@ -129,7 +129,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         } else {
             toast(polyglot.t('syndication_error'), {
                 type: toast.TYPE.ERROR,
-                autoClose: 2000,
+                autoClose: false,
             });
         }
     };
@@ -175,7 +175,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         } else {
             toast(polyglot.t('facet_error'), {
                 type: toast.TYPE.ERROR,
-                autoClose: 2000,
+                autoClose: false,
             });
             setFacetChecked(oldChecked);
         }

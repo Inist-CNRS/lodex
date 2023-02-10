@@ -95,6 +95,7 @@ const ClearDialogComponent = props => {
         } else {
             toast(polyglot.t('model_not_cleared'), {
                 type: toast.TYPE.ERROR,
+                autoClose: false,
             });
         }
     };

@@ -219,6 +219,7 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
             } catch (e) {
                 toast(polyglot.t(e.message), {
                     type: toast.TYPE.ERROR,
+                    autoClose: false,
                 });
                 throw new Error(polyglot.t(e.message));
             }

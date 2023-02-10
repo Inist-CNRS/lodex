@@ -68,6 +68,7 @@ const MenuComponent = ({
         if (importFailed) {
             toast(polyglot.t('import_fields_failed'), {
                 type: toast.TYPE.ERROR,
+                autoClose: false,
             });
         } else if (importSucceeded) {
             toast(polyglot.t('model_imported_with_success'), {

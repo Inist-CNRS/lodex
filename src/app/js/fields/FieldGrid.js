@@ -289,6 +289,7 @@ const DraggableItemGrid = compose(
             if (!res) {
                 toast(`${polyglot.t('duplicate_field_error')}`, {
                     type: toast.TYPE.ERROR,
+                    autoClose: false,
                 });
             }
 

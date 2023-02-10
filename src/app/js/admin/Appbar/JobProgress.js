@@ -117,6 +117,7 @@ const JobProgressComponent = props => {
                 } else {
                     toast(`${polyglot.t('error')} : ${data.message}`, {
                         type: toast.TYPE.ERROR,
+                        autoClose: false,
                     });
                 }
             }
@@ -133,6 +134,7 @@ const JobProgressComponent = props => {
             if (data.message && data.message !== 'cancelled_import') {
                 toast(`${polyglot.t('error')} : ${data.message}`, {
                     type: toast.TYPE.ERROR,
+                    autoClose: false,
                 });
             }
             if (data.message === 'cancelled_import') {

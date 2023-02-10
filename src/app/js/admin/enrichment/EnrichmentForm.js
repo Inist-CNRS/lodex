@@ -178,6 +178,7 @@ export const EnrichmentForm = ({
         } else {
             toast(`${res.error}`, {
                 type: toast.TYPE.ERROR,
+                autoClose: false,
             });
         }
     };
@@ -196,6 +197,7 @@ export const EnrichmentForm = ({
         } else {
             toast(`${res.error}`, {
                 type: toast.TYPE.ERROR,
+                autoClose: false,
             });
         }
     };
@@ -221,6 +223,7 @@ export const EnrichmentForm = ({
         } else {
             toast(`${res.error}`, {
                 type: toast.TYPE.ERROR,
+                autoClose: false,
             });
         }
         setIsLoading(false);
@@ -246,6 +249,7 @@ export const EnrichmentForm = ({
                 () => {
                     toast(polyglot.t('enrichment_logs_error'), {
                         type: toast.TYPE.ERROR,
+                        autoClose: false,
                     });
                 },
             );

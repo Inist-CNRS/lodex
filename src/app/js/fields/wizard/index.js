@@ -52,6 +52,7 @@ const FieldEditionWizardComponent = ({
         if (!isFieldsLoading && !currentEditedField) {
             toast(polyglot.t('no_field', { fieldName }), {
                 type: toast.TYPE.ERROR,
+                autoClose: false,
             });
             history.push(`/display/${filter}`);
         }
@@ -61,6 +62,7 @@ const FieldEditionWizardComponent = ({
         ) {
             toast(polyglot.t('no_field_in_scope', { fieldName, filter }), {
                 type: toast.TYPE.ERROR,
+                autoClose: false,
             });
             history.push(`/display/${filter}`);
         }
