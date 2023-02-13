@@ -1,30 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    Select,
     MenuItem,
     Checkbox,
     TextField,
     FormControlLabel,
-    FormControl,
-    InputLabel,
-} from '@material-ui/core';
+    Box,
+} from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        width: '100%',
-    },
-};
 
 export const defaultArgs = {
     allowToLoadMore: true,
@@ -124,7 +111,12 @@ class RessourcesGridAdmin extends Component {
         } = this.props.args;
 
         return (
-            <div style={styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
@@ -134,36 +126,30 @@ class RessourcesGridAdmin extends Component {
                     showMinValue={false}
                     showOrderBy={false}
                 />
-                <FormControl fullWidth>
-                    <InputLabel id="resourcesgrid-admin-input-label">
-                        {polyglot.t('list_format_select_image_width')}
-                    </InputLabel>
-                    <Select
-                        labelId="resourcesgrid-admin-input-label"
-                        onChange={e => this.setWidth(e.target.value)}
-                        style={styles.input}
-                        value={spaceWidth}
-                    >
-                        <MenuItem value="10%">
-                            {polyglot.t('ten_percent')}
-                        </MenuItem>
-                        <MenuItem value="20%">
-                            {polyglot.t('twenty_percent')}
-                        </MenuItem>
-                        <MenuItem value="30%">
-                            {polyglot.t('thirty_percent')}
-                        </MenuItem>
-                        <MenuItem value="50%">
-                            {polyglot.t('fifty_percent')}
-                        </MenuItem>
-                        <MenuItem value="80%">
-                            {polyglot.t('eighty_percent')}
-                        </MenuItem>
-                        <MenuItem value="100%">
-                            {polyglot.t('hundred_percent')}
-                        </MenuItem>
-                    </Select>
-                </FormControl>
+                <TextField
+                    fullWidth
+                    select
+                    label={polyglot.t('list_format_select_image_width')}
+                    onChange={e => this.setWidth(e.target.value)}
+                    value={spaceWidth}
+                >
+                    <MenuItem value="10%">{polyglot.t('ten_percent')}</MenuItem>
+                    <MenuItem value="20%">
+                        {polyglot.t('twenty_percent')}
+                    </MenuItem>
+                    <MenuItem value="30%">
+                        {polyglot.t('thirty_percent')}
+                    </MenuItem>
+                    <MenuItem value="50%">
+                        {polyglot.t('fifty_percent')}
+                    </MenuItem>
+                    <MenuItem value="80%">
+                        {polyglot.t('eighty_percent')}
+                    </MenuItem>
+                    <MenuItem value="100%">
+                        {polyglot.t('hundred_percent')}
+                    </MenuItem>
+                </TextField>
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -185,25 +171,25 @@ class RessourcesGridAdmin extends Component {
                 <TextField
                     label={polyglot.t('number_of_char_title')}
                     onChange={this.setTitleSize}
-                    style={styles.input}
                     value={titleSize}
                     type="number"
+                    fullWidth
                 />
                 <TextField
                     label={polyglot.t('number_of_char_summary')}
                     onChange={this.setSummarySize}
-                    style={styles.input}
                     value={summarySize}
                     type="number"
+                    fullWidth
                 />
                 <TextField
                     label={polyglot.t('items_per_page')}
                     onChange={this.setPageSize}
-                    style={styles.input}
                     value={pageSize}
                     type="number"
+                    fullWidth
                 />
-            </div>
+            </Box>
         );
     }
 }

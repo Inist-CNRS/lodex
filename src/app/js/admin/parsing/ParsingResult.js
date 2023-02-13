@@ -441,22 +441,28 @@ export const ParsingResultComponent = props => {
     const CustomToolbar = () => {
         return (
             <GridToolbarContainer>
-                <GridToolbarColumnsButton />
+                <Tooltip title={polyglot.t(`column_tooltip`)}>
+                    <GridToolbarColumnsButton />
+                </Tooltip>
                 <GridToolbarFilterButton />
-                <GridToolbarDensitySelector />
-                <Button
-                    component={Link}
-                    to="/data/add"
-                    startIcon={<AddBoxIcon />}
-                    size="small"
-                    sx={{
-                        '&.MuiButtonBase-root:hover': {
-                            color: 'primary.main',
-                        },
-                    }}
-                >
-                    {polyglot.t('add_more')}
-                </Button>
+                <Tooltip title={polyglot.t(`density_tooltip`)}>
+                    <GridToolbarDensitySelector />
+                </Tooltip>
+                <Tooltip title={polyglot.t(`add_more_data`)}>
+                    <Button
+                        component={Link}
+                        to="/data/add"
+                        startIcon={<AddBoxIcon />}
+                        size="small"
+                        sx={{
+                            '&.MuiButtonBase-root:hover': {
+                                color: 'primary.main',
+                            },
+                        }}
+                    >
+                        {polyglot.t('add_more')}
+                    </Button>
+                </Tooltip>
             </GridToolbarContainer>
         );
     };

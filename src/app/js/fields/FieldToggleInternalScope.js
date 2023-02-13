@@ -26,6 +26,7 @@ export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
             value={values}
             onChange={handleStateSelected}
             aria-label="text alignment"
+            color="primary"
         >
             <ToggleButton value="home" aria-label="left aligned">
                 <Tooltip title={polyglot.t('home_tooltip')}>

@@ -40,7 +40,6 @@ const patchField = async field => {
         if (error) {
             return error;
         }
-        store.dispatch(saveFieldSuccess());
         return response;
     });
 };

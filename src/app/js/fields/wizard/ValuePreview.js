@@ -35,7 +35,9 @@ const ValuePreview = ({ lines, editedField, p: polyglot }) => {
             </Box>
 
             <Box textAlign={'center'} mb={2}>
-                <Typography variant="body1">{editedField.label}</Typography>
+                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    {editedField.label}
+                </Typography>
             </Box>
             <Box mb={4}>
                 {lines.length > 0 &&
@@ -49,6 +51,11 @@ const ValuePreview = ({ lines, editedField, p: polyglot }) => {
                                     WebkitLineClamp: '2',
                                     WebkitBoxOrient: 'vertical',
                                 }}
+                                title={
+                                    typeof line[editedField.name] === 'object'
+                                        ? JSON.stringify(line[editedField.name])
+                                        : line[editedField.name]
+                                }
                             >
                                 {typeof line[editedField.name] === 'object'
                                     ? JSON.stringify(line[editedField.name])

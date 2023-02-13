@@ -23,7 +23,7 @@ import { Typography } from '@material-ui/core';
 
 import * as overview from '../../../../common/overview';
 import { toast } from 'react-toastify';
-import { SCOPE_DOCUMENT } from '../../../../common/scope';
+import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../../../common/scope';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
 
 const getSearchableFields = fields => fields.filter(f => f.searchable) || [];
@@ -39,15 +39,27 @@ const getResourceDetailFirst = fields =>
 const getResourceDetailSecond = fields =>
     fields?.find(f => f.overview === overview.RESOURCE_DETAIL_2) || null;
 
-export const SearchForm = ({
-    fields,
-    fieldsForResourceSyndication,
-    fieldsResource,
-    loadField,
-    p: polyglot,
-}) => {
+export const SearchForm = ({ fields, loadField, p: polyglot }) => {
+    const fieldsResource = React.useMemo(
+        () =>
+            fields.filter(
+                f => f.scope === SCOPE_DOCUMENT || f.scope === SCOPE_COLLECTION,
+            ),
+        [fields],
+    );
+
+    const fieldsForResourceSyndication = React.useMemo(() => {
+        const filteredFields = fields.filter(
+            f => f.scope === SCOPE_DOCUMENT || f.scope === SCOPE_COLLECTION,
+        );
+        filteredFields?.unshift({
+            label: polyglot.t('none'),
+        });
+        return filteredFields;
+    }, [fields]);
+
     const [searchInFields, setSearchInFields] = React.useState(
-        getSearchableFields(fields),
+        getSearchableFields(fieldsResource),
     );
 
     const [facetChecked, setFacetChecked] = React.useState(
@@ -71,10 +83,9 @@ export const SearchForm = ({
         loadField();
     }, []);
 
-    // We could lower the complexity with only one map. But it's more readable like this. And the performance is not a problem here.
     useEffect(() => {
-        setSearchInFields(getSearchableFields(fields));
         setFacetChecked(getFacetFields(fieldsResource));
+        setSearchInFields(getSearchableFields(fieldsResource));
         setResourceTitle(getResourceTitle(fieldsForResourceSyndication));
         setResourceDescription(
             getResourceDescription(fieldsForResourceSyndication),
@@ -85,7 +96,9 @@ export const SearchForm = ({
         setResourceDetailSecond(
             getResourceDetailSecond(fieldsForResourceSyndication),
         );
-    }, [fields, fieldsResource, fieldsForResourceSyndication]);
+    }, [fieldsResource]);
+
+    // We could lower the complexity with only one map. But it's more readable like this. And the performance is not a problem here.
 
     const handleSearchInFieldsChange = async (event, value) => {
         setSearchInFields(value);
@@ -113,7 +126,6 @@ export const SearchForm = ({
                 type: toast.TYPE.SUCCESS,
                 autoClose: 2000,
             });
-            loadField();
         } else {
             toast(polyglot.t('syndication_error'), {
                 type: toast.TYPE.ERROR,
@@ -179,7 +191,7 @@ export const SearchForm = ({
                     <SearchAutocomplete
                         testId="autocomplete_search_in_fields"
                         translation={polyglot.t('search_in_fields')}
-                        fields={fields}
+                        fields={fieldsResource}
                         onChange={handleSearchInFieldsChange}
                         value={searchInFields}
                         multiple
@@ -240,6 +252,8 @@ export const SearchForm = ({
                                                             alignItems:
                                                                 'center',
                                                             gap: 2,
+                                                            whiteSpace:
+                                                                'normal',
                                                         }}
                                                     >
                                                         <Box>
@@ -283,7 +297,7 @@ export const SearchForm = ({
                     </Box>
                 </Box>
 
-                <Box display="flex" flex={1} flexDirection="column">
+                <Box display="flex" flex={2} flexDirection="column">
                     <Typography variant="caption" sx={{ margin: 'auto' }}>
                         {polyglot.t('search_syndication')}
                     </Typography>
@@ -304,6 +318,7 @@ export const SearchForm = ({
                             fields={fieldsForResourceSyndication}
                             onChange={handleSResourceTitle}
                             value={resourceTitle}
+                            clearText={polyglot.t('clear')}
                         />
                         <SearchAutocomplete
                             testId={`autocomplete_search_syndication_${overview.RESOURCE_DESCRIPTION}`}
@@ -311,6 +326,7 @@ export const SearchForm = ({
                             fields={fieldsForResourceSyndication}
                             onChange={handleSResourceDescription}
                             value={resourceDescription}
+                            clearText={polyglot.t('clear')}
                         />
                         <Box display="flex" gap={2}>
                             <SearchAutocomplete
@@ -321,6 +337,7 @@ export const SearchForm = ({
                                 fields={fieldsForResourceSyndication}
                                 onChange={handleSResourceDetailFirst}
                                 value={resourceDetailFirst}
+                                clearText={polyglot.t('clear')}
                             />
                             <SearchAutocomplete
                                 testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_2}`}
@@ -330,6 +347,7 @@ export const SearchForm = ({
                                 fields={fieldsForResourceSyndication}
                                 onChange={handleSResourceDetailSecond}
                                 value={resourceDetailSecond}
+                                clearText={polyglot.t('clear')}
                             />
                         </Box>
                     </Box>
@@ -341,32 +359,15 @@ export const SearchForm = ({
 
 SearchForm.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
-    fieldsResource: PropTypes.arrayOf(PropTypes.object).isRequired,
-    fieldsForResourceSyndication: PropTypes.arrayOf(PropTypes.object)
-        .isRequired,
     loadField: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = (state, { p }) => {
-    const fieldsForResourceSyndication = fromFields.getEditingFields(state, {
-        filter: SCOPE_DOCUMENT,
-    });
-    fieldsForResourceSyndication.unshift({
-        label: p.t('none'),
-    });
+const mapStateToProps = state => {
     return {
         // sort by label asc
         fields: fromFields
             .getFields(state)
-            .sort((a, b) => a.label.localeCompare(b.label)),
-        fieldsForResourceSyndication: fieldsForResourceSyndication.sort(
-            (a, b) => a.label.localeCompare(b.label),
-        ),
-        fieldsResource: fromFields
-            .getEditingFields(state, {
-                filter: SCOPE_DOCUMENT,
-            })
             .sort((a, b) => a.label.localeCompare(b.label)),
     };
 };

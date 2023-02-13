@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import {
-    Select,
-    MenuItem,
-    TextField,
-    FormControl,
-    InputLabel,
-} from '@material-ui/core';
+import { MenuItem, TextField, Box } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -17,17 +11,6 @@ import {
     CUSTOM_ISTEX_QUERY,
     SORT_YEAR_DESC,
 } from './constants';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        width: '100%',
-    },
-};
 
 export const defaultArgs = {
     searchedField: CUSTOM_ISTEX_QUERY,
@@ -42,6 +25,7 @@ export class IstexSummaryAdmin extends Component {
             searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
             sortDir: PropTypes.oneOf(SORT_YEAR_VALUES),
             yearThreshold: PropTypes.number,
+            documentSortBy: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -76,59 +60,56 @@ export class IstexSummaryAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
-                <FormControl fullWidth>
-                    <InputLabel id="istex-summary-searchfield-input-label">
-                        {polyglot.t('searched_field')}
-                    </InputLabel>
-                    <Select
-                        className="searched_field"
-                        labelId="istex-summary-searchfield-input-label"
-                        onChange={this.setSearchedField}
-                        style={styles.input}
-                        value={searchedField}
-                    >
-                        {SEARCHED_FIELD_VALUES.map(value => (
-                            <MenuItem key={value} value={value}>
-                                {polyglot.t(value)}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-                <FormControl fullWidth>
-                    <InputLabel id="istex-summary-yearsort-input-label">
-                        {polyglot.t('year_sort_dir')}
-                    </InputLabel>
-                    <Select
-                        className="year_sort_dir"
-                        labelId="istex-summary-yearsort-input-label"
-                        onChange={this.setSortDir}
-                        style={styles.input}
-                        value={sortDir}
-                    >
-                        {SORT_YEAR_VALUES.map(value => (
-                            <MenuItem key={value} value={value}>
-                                {polyglot.t(value)}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
+                <TextField
+                    fullWidth
+                    select
+                    label={polyglot.t('searched_field')}
+                    value={searchedField}
+                    onChange={this.setSearchedField}
+                    className="searched_field"
+                >
+                    {SEARCHED_FIELD_VALUES.map(value => (
+                        <MenuItem key={value} value={value}>
+                            {polyglot.t(value)}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    fullWidth
+                    select
+                    label={polyglot.t('year_sort_dir')}
+                    value={sortDir}
+                    onChange={this.setSortDir}
+                    className="year_sort_dir"
+                >
+                    {SORT_YEAR_VALUES.map(value => (
+                        <MenuItem key={value} value={value}>
+                            {polyglot.t(value)}
+                        </MenuItem>
+                    ))}
+                </TextField>
                 <TextField
                     className="year_threshold"
                     type="number"
                     label={polyglot.t('year_threshold')}
                     onChange={this.setYearThreshold}
-                    style={styles.input}
                     value={yearThreshold}
+                    fullWidth
                 />
                 <TextField
                     className="document_sort_by"
                     label={polyglot.t('document_sort_by')}
                     onChange={this.setDocumentSortBy}
-                    style={styles.input}
                     value={documentSortBy}
+                    fullWidth
                 />
-            </div>
+            </Box>
         );
     }
 }

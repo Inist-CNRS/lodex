@@ -92,7 +92,7 @@ export const mapStateToProps = (state, { selectedSubresourceUri }) => {
                     : subresourceData) || {},
             ),
             ...[state.polyglot.phrases['other']],
-        ],
+        ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
         subresourcePath: subresource.path,
     };
 };

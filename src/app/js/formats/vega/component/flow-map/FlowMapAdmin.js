@@ -8,17 +8,7 @@ import ToolTips from '../../../shared/ToolTips';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { schemeBlues } from 'd3-scale-chromatic';
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        width: '100%',
-    },
-};
+import { Box } from '@mui/material';
 
 export const defaultArgs = {
     params: {
@@ -122,7 +112,12 @@ class FlowMapAdmin extends Component {
         } = this.props.args;
 
         return (
-            <div style={styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
@@ -135,7 +130,6 @@ class FlowMapAdmin extends Component {
                 <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}
                     onChange={this.setColorScheme}
-                    style={styles.input}
                     value={colorScheme}
                 />
                 <ColorPickerParamsAdmin
@@ -154,7 +148,7 @@ class FlowMapAdmin extends Component {
                     polyglot={polyglot}
                     thirdValue={false}
                 />
-            </div>
+            </Box>
         );
     }
 }

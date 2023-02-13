@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
-import { TextField, MenuItem } from '@mui/material';
+import { TextField, MenuItem, Box } from '@mui/material';
 import * as overview from '../../../common/overview';
 import {
     polyglot as polyglotPropTypes,
@@ -12,6 +12,7 @@ import {
 import { loadField } from '.';
 import { fromFields } from '../sharedSelectors';
 import fieldApi from '../admin/api/field';
+import FieldInternalIcon from './FieldInternalIcon';
 
 export const SubresourceOverviewSelectComponent = ({
     p: polyglot,
@@ -45,11 +46,39 @@ export const SubresourceOverviewSelectComponent = ({
             sx={{ minWidth: 220 }}
         >
             <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
-            {fields.map(field => (
-                <MenuItem key={field._id} value={field._id}>
-                    {field.label} ({field.name})
-                </MenuItem>
-            ))}
+            {fields.map(
+                field =>
+                    !!field.label && (
+                        <MenuItem
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 2,
+                            }}
+                        >
+                            <Box>
+                                {field.label}{' '}
+                                {field.name ? `(${field.name})` : ''}
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                {field.internalScopes &&
+                                    field.internalScopes.map(internalScope => (
+                                        <FieldInternalIcon
+                                            key={internalScope}
+                                            scope={internalScope}
+                                        />
+                                    ))}
+                                {field.internalName}
+                            </Box>
+                        </MenuItem>
+                    ),
+            )}
         </TextField>
     );
 };

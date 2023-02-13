@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
-import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
+import { Box, MenuItem, TextField } from '@mui/material';
 
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
@@ -10,26 +10,6 @@ import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ToolTips from '../../../shared/ToolTips';
 import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../chartsUtils';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        marginLeft: '1rem',
-        width: '87%',
-    },
-    previewDefaultColor: color => ({
-        display: 'inline-block',
-        backgroundColor: color,
-        height: '1em',
-        width: '1em',
-        marginLeft: 5,
-        border: 'solid 1px black',
-    }),
-};
 
 export const defaultArgs = {
     params: {
@@ -124,7 +104,12 @@ class CartographyAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
@@ -134,31 +119,26 @@ class CartographyAdmin extends Component {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-                <FormControl fullWidth>
-                    <InputLabel id="cartography-worldposition-input-label">
-                        {polyglot.t('world_position')}
-                    </InputLabel>
-                    <Select
-                        labelId="cartography-worldposition-input-label"
-                        onChange={this.setWorldPosition}
-                        style={styles.input}
-                        value={worldPosition}
-                    >
-                        <MenuItem value={MAP_WORLD}>
-                            {polyglot.t('world_position_world')}
-                        </MenuItem>
-                        <MenuItem value={MAP_EUROPE}>
-                            {polyglot.t('world_position_europe')}
-                        </MenuItem>
-                        <MenuItem value={MAP_FRANCE}>
-                            {polyglot.t('world_position_france')}
-                        </MenuItem>
-                    </Select>
-                </FormControl>
+                <TextField
+                    fullWidth
+                    select
+                    label={polyglot.t('world_position')}
+                    value={worldPosition}
+                    onChange={this.setWorldPosition}
+                >
+                    <MenuItem value={MAP_WORLD}>
+                        {polyglot.t('world_position_world')}
+                    </MenuItem>
+                    <MenuItem value={MAP_EUROPE}>
+                        {polyglot.t('world_position_europe')}
+                    </MenuItem>
+                    <MenuItem value={MAP_FRANCE}>
+                        {polyglot.t('world_position_france')}
+                    </MenuItem>
+                </TextField>
                 <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}
                     onChange={this.setColorScheme}
-                    style={styles.input}
                     value={colorScheme}
                 />
                 <ToolTips
@@ -171,7 +151,7 @@ class CartographyAdmin extends Component {
                     polyglot={polyglot}
                     thirdValue={false}
                 />
-            </div>
+            </Box>
         );
     }
 }

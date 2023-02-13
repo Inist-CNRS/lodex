@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
+import { MenuItem, Box, TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -8,19 +8,6 @@ import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../colorUtils';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        width: '100%',
-        justifyContent: 'space-between',
-    },
-    input: {
-        marginLeft: '1rem',
-        width: '40%',
-    },
-};
 
 export const defaultArgs = {
     size: 4,
@@ -79,23 +66,24 @@ class EmphasedNumberAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
-                <FormControl fullWidth>
-                    <InputLabel id="emphased-number-admin-input-label">
-                        {polyglot.t('list_format_select_size')}
-                    </InputLabel>
-                    <Select
-                        labelId="emphased-number-admin-input-label"
-                        onChange={e => this.setSize(e.target.value)}
-                        style={styles.input}
-                        value={size}
-                    >
-                        <MenuItem value={1}>{polyglot.t('size1')}</MenuItem>
-                        <MenuItem value={2}>{polyglot.t('size2')}</MenuItem>
-                        <MenuItem value={3}>{polyglot.t('size3')}</MenuItem>
-                        <MenuItem value={4}>{polyglot.t('size4')}</MenuItem>
-                    </Select>
-                </FormControl>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
+                <TextField
+                    select
+                    label={polyglot.t('list_format_select_size')}
+                    onChange={e => this.setSize(e.target.value)}
+                    value={size}
+                    sx={{ width: '50%' }}
+                >
+                    <MenuItem value={1}>{polyglot.t('size1')}</MenuItem>
+                    <MenuItem value={2}>{polyglot.t('size2')}</MenuItem>
+                    <MenuItem value={3}>{polyglot.t('size3')}</MenuItem>
+                    <MenuItem value={4}>{polyglot.t('size4')}</MenuItem>
+                </TextField>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
@@ -111,7 +99,7 @@ class EmphasedNumberAdmin extends Component {
                     polyglot={polyglot}
                     monochromatic={true}
                 />
-            </div>
+            </Box>
         );
     }
 }

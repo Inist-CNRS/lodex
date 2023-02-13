@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { TextField } from '@material-ui/core';
-import ContentAdd from '@material-ui/icons/Add';
-import ContentClear from '@material-ui/icons/Clear';
+import { Box, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import ContentAdd from '@mui/icons-material/Add';
+import ContentClear from '@mui/icons-material/Clear';
 
 import config from '../../../../../../config.json';
 import SelectFormat from '../../SelectFormat';
@@ -11,77 +11,6 @@ import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { FORMATS, getAdminComponent } from '../../';
 
 const endpoints = config.sparqlEndpoints;
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    pointer: {
-        cursor: 'pointer',
-        marginTop: 12,
-        marginBottom: '5px',
-    },
-    input: {
-        width: '100%',
-    },
-    checkbox: {
-        marginTop: 12,
-        marginRight: 5,
-        verticalAlign: 'sub',
-    },
-    previewDefaultColor: color => ({
-        display: 'inline-block',
-        backgroundColor: color,
-        height: '1em',
-        width: '1em',
-        marginLeft: 5,
-        border: 'solid 1px black',
-    }),
-    subformatPointer: {
-        cursor: 'pointer',
-        width: '7%',
-        color: 'red',
-        verticalAlign: 'top',
-        marginTop: 14,
-    },
-    subformatInput: {
-        width: '40%',
-        marginLeft: '1%',
-        marginRight: '1%',
-        marginTop: '0',
-    },
-    link: {
-        fontSize: 'small',
-    },
-    inline: {
-        width: '90%',
-        display: 'inline-block',
-    },
-    applyFormat: {
-        width: '40%',
-        display: 'inline',
-        verticalAlign: 'top',
-        marginTop: 14,
-    },
-    color1: {
-        backgroundColor: '#e9e9e9',
-        width: '100%',
-        borderStyle: 'solid',
-        borderColor: 'darkGrey',
-        borderWidth: '1px',
-        marginBottom: '2px',
-    },
-    color2: {
-        backgroundColor: '#d0d0d0',
-        width: '100%',
-        borderStyle: 'solid',
-        borderColor: 'darkGrey',
-        borderWidth: '1px',
-        marginBottom: '2px',
-    },
-};
 
 export const defaultArgs = {
     sparql: {
@@ -208,26 +137,28 @@ class SparqlTextFieldAdmin extends Component {
         const SubAdminComponent = getAdminComponent(result.sub);
 
         return (
-            <div style={styles.inline}>
+            <Box display="flex" flexDirection="column" flexGrow={1} gap={2}>
                 <TextField
                     label={polyglot.t('sparql_attribute')}
                     type="string"
                     onChange={e => this.setAttribute(e.target.value, key)}
-                    style={styles.subformatInput}
                     value={result.attribute}
+                    sx={{
+                        width: '40%',
+                    }}
                 />
-                <div style={styles.applyFormat}>
-                    <SelectFormat
-                        onChange={e => this.setSubformat(e, key)}
-                        formats={FORMATS}
-                        value={result.sub}
+                <SelectFormat
+                    onChange={e => this.setSubformat(e, key)}
+                    formats={FORMATS}
+                    value={result.sub}
+                />
+                {result.sub && (
+                    <SubAdminComponent
+                        onChange={e => this.setSubformatOption(e, key)}
+                        args={result.option}
                     />
-                </div>
-                <SubAdminComponent
-                    onChange={e => this.setSubformatOption(e, key)}
-                    args={result.option}
-                />
-            </div>
+                )}
+            </Box>
         );
     };
 
@@ -240,90 +171,112 @@ class SparqlTextFieldAdmin extends Component {
             sparql || defaultArgs.sparql;
 
         return (
-            <div style={styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <TextField
                     label={polyglot.t('sparql_endpoint')}
-                    style={styles.input}
                     value={endpoint}
                     onChange={this.setEndpoint}
                     type="text"
                     name="valueEnpoint"
                     list="listEnpoint"
                     required="true"
+                    fullWidth
                 />
                 <datalist id="listEnpoint">
                     {endpoints.map(source => (
                         <option key={source} value={source} />
                     ))}
                 </datalist>
-                <TextField
-                    label={polyglot.t('sparql_request')}
-                    multiline
-                    onChange={this.setRequest}
-                    style={styles.input}
-                    value={request}
-                />
-                <a
-                    onClick={() => {
-                        this.validator();
-                    }}
-                    className="link_validator"
-                    style={(styles.pointer, styles.link)}
-                >
-                    {polyglot.t('sparql_validator')}
-                </a>
+                <Box width="100%">
+                    <TextField
+                        label={polyglot.t('sparql_request')}
+                        multiline
+                        onChange={this.setRequest}
+                        value={request}
+                        fullWidth
+                    />
+                    <a
+                        onClick={() => {
+                            this.validator();
+                        }}
+                        className="link_validator"
+                    >
+                        {polyglot.t('sparql_validator')}
+                    </a>
+                </Box>
                 <TextField
                     label={polyglot.t('max_value')}
                     type="number"
                     onChange={this.setMaxValue}
-                    style={styles.input}
                     value={maxValue}
+                    fullWidth
                 />
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={hiddenInfo}
-                        onChange={this.setHiddenInfo}
-                        style={styles.checkbox}
-                    />
-                    {polyglot.t('hidden_info')}
-                </label>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={this.setHiddenInfo}
+                            checked={hiddenInfo}
+                        />
+                    }
+                    label={polyglot.t('hidden_info')}
+                />
                 <TextField
                     label={polyglot.t('sparql_list_separator')}
                     type="string"
                     onChange={this.setSeparator}
-                    style={styles.input}
                     value={separator}
+                    fullWidth
                 />
-                <div style={{ width: '100%' }}>
-                    <div
+                <Box width="100%" display="flex" flexDirection="column" gap={2}>
+                    <Box
+                        display="flex"
+                        alignItems="center"
                         onClick={() => this.addSubformat()}
-                        style={styles.pointer}
+                        sx={{
+                            cursor: 'pointer',
+                        }}
                     >
                         <ContentAdd style={{ verticalAlign: 'sub' }} />
                         {polyglot.t('sparql_add_subformat')}
-                    </div>
+                    </Box>
                     {sparql.subformat.map((result, key) => {
                         return (
-                            <div
+                            <Box
                                 id={key}
                                 key={key}
-                                style={
-                                    key % 2 == 1 ? styles.color1 : styles.color2
-                                }
+                                sx={{
+                                    display: 'flex',
+                                    width: '100%',
+                                    borderStyle: 'solid',
+                                    borderColor: 'darkGrey',
+                                    borderWidth: '1px',
+                                    marginBottom: '2px',
+                                    padding: 2,
+                                    backgroundColor:
+                                        key % 2 == 1 ? '#e9e9e9' : '#d0d0d0',
+                                }}
                             >
                                 <ContentClear
                                     onClick={() =>
                                         this.removeSubformat({ key })
                                     }
-                                    style={styles.subformatPointer}
+                                    sx={{
+                                        cursor: 'pointer',
+                                        color: 'red',
+                                        margin: 1,
+                                    }}
                                 />
                                 {this.loadSubformat(result, key)}
-                            </div>
+                            </Box>
                         );
                     })}
-                </div>
-            </div>
+                </Box>
+            </Box>
         );
     }
 }

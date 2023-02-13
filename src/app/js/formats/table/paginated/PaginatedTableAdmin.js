@@ -1,6 +1,6 @@
 import AbstractTableAdmin from '../core/AbstractTableAdmin';
 import translate from 'redux-polyglot/translate';
-import { TextField } from '@material-ui/core';
+import { Box, TextField } from '@mui/material';
 import TableColumnsParameters from '../core/TableColumnsParameters';
 import React from 'react';
 
@@ -36,13 +36,18 @@ class PaginatedTableAdmin extends AbstractTableAdmin {
             args: { pageSize, columnsCount, columnsParameters },
         } = this.props;
         return (
-            <div style={this.styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <TextField
                     label={polyglot.t('items_per_page')}
                     onChange={this.setPageSize}
-                    style={this.styles.input}
                     value={pageSize}
                     type="number"
+                    fullWidth
                 />
                 <TableColumnsParameters
                     onChange={this.setColumnParameter}
@@ -50,7 +55,7 @@ class PaginatedTableAdmin extends AbstractTableAdmin {
                     parameterCount={columnsCount}
                     parameters={columnsParameters}
                 />
-            </div>
+            </Box>
         );
     }
 }

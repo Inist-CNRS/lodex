@@ -7,17 +7,7 @@ import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../colorUtils';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    input: {
-        width: '100%',
-    },
-};
+import { Box } from '@mui/material';
 
 export const defaultArgs = {
     params: {
@@ -85,7 +75,12 @@ class NetworkAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
+            >
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
@@ -101,7 +96,7 @@ class NetworkAdmin extends Component {
                     polyglot={polyglot}
                     monochromatic={true}
                 />
-            </div>
+            </Box>
         );
     }
 }

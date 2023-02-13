@@ -1,17 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-
-const styles = {
-    container: {
-        display: 'inline-flex',
-    },
-    input: {
-        marginLeft: '1rem',
-    },
-};
+import { TextField, MenuItem } from '@mui/material';
 
 export const defaultArgs = {
     PDFWidth: '100%',
@@ -45,38 +36,24 @@ class PDFAdmin extends Component {
         } = this.props;
 
         return (
-            <div style={styles.container}>
-                <FormControl fullWidth>
-                    <InputLabel id="pdf-admin-input-label">
-                        {polyglot.t('list_format_select_image_width')}
-                    </InputLabel>
-                    <Select
-                        labelId="pdf-admin-input-label"
-                        onChange={e => this.setWidth(e.target.value)}
-                        style={styles.input}
-                        value={PDFWidth}
-                    >
-                        <MenuItem value="10%">
-                            {polyglot.t('ten_percent')}
-                        </MenuItem>
-                        <MenuItem value="20%">
-                            {polyglot.t('twenty_percent')}
-                        </MenuItem>
-                        <MenuItem value="30%">
-                            {polyglot.t('thirty_percent')}
-                        </MenuItem>
-                        <MenuItem value="50%">
-                            {polyglot.t('fifty_percent')}
-                        </MenuItem>
-                        <MenuItem value="80%">
-                            {polyglot.t('eighty_percent')}
-                        </MenuItem>
-                        <MenuItem value="100%">
-                            {polyglot.t('hundred_percent')}
-                        </MenuItem>
-                    </Select>
-                </FormControl>
-            </div>
+            <TextField
+                select
+                label={polyglot.t('list_format_select_image_width')}
+                onChange={e => this.setWidth(e.target.value)}
+                value={PDFWidth}
+                sx={{
+                    width: '50%',
+                }}
+            >
+                <MenuItem value="10%">{polyglot.t('ten_percent')}</MenuItem>
+                <MenuItem value="20%">{polyglot.t('twenty_percent')}</MenuItem>
+                <MenuItem value="30%">{polyglot.t('thirty_percent')}</MenuItem>
+                <MenuItem value="50%">{polyglot.t('fifty_percent')}</MenuItem>
+                <MenuItem value="80%">{polyglot.t('eighty_percent')}</MenuItem>
+                <MenuItem value="100%">
+                    {polyglot.t('hundred_percent')}
+                </MenuItem>
+            </TextField>
         );
     }
 }

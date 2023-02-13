@@ -1,16 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField } from '@material-ui/core';
+import { Box, TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
-
-const styles = {
-    container: {
-        display: 'inline-flex',
-    },
-    input: {
-        marginLeft: '1rem',
-    },
-};
 
 export const defaultArgs = {
     trelloKey: '',
@@ -43,20 +34,20 @@ class TrelloTimelineAdmin extends Component {
     render() {
         const { trelloToken, trelloKey } = this.props.args;
         return (
-            <div style={styles.container}>
+            <Box display="flex" gap={1}>
                 <TextField
                     label="Trello key"
                     onChange={e => this.setKey(e.target.value)}
-                    style={styles.input}
                     value={trelloKey}
+                    sx={{ flexGrow: 1 }}
                 />
                 <TextField
                     label="Trello Token"
                     onChange={e => this.setToken(e.target.value)}
-                    style={styles.input}
                     value={trelloToken}
+                    sx={{ flexGrow: 1 }}
                 />
-            </div>
+            </Box>
         );
     }
 }

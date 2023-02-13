@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
     TextField,
-    Grid,
     FormControl,
     RadioGroup,
     FormControlLabel,
     Radio,
+    Typography,
+    Box,
 } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { Typography } from '@material-ui/core';
 
 const RoutineParamsAdmin = ({
     polyglot,
@@ -83,43 +83,37 @@ const RoutineParamsAdmin = ({
     };
 
     return (
-        <Grid container spacing={2} marginBottom={2}>
+        <Box display="flex" flexDirection="column" gap={2} width="100%">
             {showMaxSize && (
-                <Grid item xs={6}>
-                    <TextField
-                        label={polyglot.t('max_fields')}
-                        onChange={setMaxSize}
-                        value={maxSize}
-                        fullWidth
-                    />
-                </Grid>
+                <TextField
+                    label={polyglot.t('max_fields')}
+                    onChange={setMaxSize}
+                    value={maxSize}
+                    sx={{ width: '50%' }}
+                />
             )}
             {(showMinValue || showMaxValue) && (
-                <Grid container item spacing={1}>
+                <Box display="flex" gap={1}>
                     {showMinValue && (
-                        <Grid item xs={6}>
-                            <TextField
-                                label={polyglot.t('min_value')}
-                                onChange={setMinValue}
-                                value={minValue}
-                                fullWidth
-                            />
-                        </Grid>
+                        <TextField
+                            label={polyglot.t('min_value')}
+                            onChange={setMinValue}
+                            value={minValue}
+                            fullWidth
+                        />
                     )}
                     {showMaxValue && (
-                        <Grid item xs={6}>
-                            <TextField
-                                label={polyglot.t('max_value')}
-                                onChange={setMaxValue}
-                                value={maxValue}
-                                fullWidth
-                            />
-                        </Grid>
+                        <TextField
+                            label={polyglot.t('max_value')}
+                            onChange={setMaxValue}
+                            value={maxValue}
+                            fullWidth
+                        />
                     )}
-                </Grid>
+                </Box>
             )}
             {showOrderBy && (
-                <Grid item xs={12}>
+                <Box>
                     <Typography>{polyglot.t('order_by')}</Typography>
                     <FormControl sx={{ display: 'flex', flexDirection: 'row' }}>
                         <RadioGroup
@@ -155,19 +149,17 @@ const RoutineParamsAdmin = ({
                             />
                         </RadioGroup>
                     </FormControl>
-                </Grid>
+                </Box>
             )}
             {showUri && (
-                <Grid item xs={6}>
-                    <TextField
-                        label={polyglot.t('uri')}
-                        onChange={setUri}
-                        value={uri}
-                        fullWidth
-                    />
-                </Grid>
+                <TextField
+                    label={polyglot.t('uri')}
+                    onChange={setUri}
+                    value={uri}
+                    sx={{ width: '50%' }}
+                />
             )}
-        </Grid>
+        </Box>
     );
 };
 

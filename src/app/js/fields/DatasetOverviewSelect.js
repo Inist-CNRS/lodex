@@ -13,6 +13,7 @@ import { loadField } from '.';
 import { fromFields } from '../sharedSelectors';
 import { SCOPE_DATASET } from '../../../common/scope';
 import fieldApi from '../admin/api/field';
+import FieldInternalIcon from './FieldInternalIcon';
 
 export const DatasetOverviewSelectComponent = ({
     p: polyglot,
@@ -57,11 +58,42 @@ export const DatasetOverviewSelectComponent = ({
                 sx={{ minWidth: 220 }}
             >
                 <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
-                {fields.map(field => (
-                    <MenuItem key={field._id} value={field._id}>
-                        {field.label} ({field.name})
-                    </MenuItem>
-                ))}
+                {fields.map(
+                    field =>
+                        !!field.label && (
+                            <MenuItem
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 2,
+                                }}
+                                value={field._id}
+                            >
+                                <Box>
+                                    {field.label}{' '}
+                                    {field.name ? `(${field.name})` : ''}
+                                </Box>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    {field.internalScopes &&
+                                        field.internalScopes.map(
+                                            internalScope => (
+                                                <FieldInternalIcon
+                                                    key={internalScope}
+                                                    scope={internalScope}
+                                                />
+                                            ),
+                                        )}
+                                    {field.internalName}
+                                </Box>
+                            </MenuItem>
+                        ),
+                )}
             </TextField>
             <TextField
                 select
@@ -71,11 +103,42 @@ export const DatasetOverviewSelectComponent = ({
                 sx={{ minWidth: 220 }}
             >
                 <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
-                {fields.map(field => (
-                    <MenuItem key={field._id} value={field._id}>
-                        {field.label} ({field.name})
-                    </MenuItem>
-                ))}
+                {fields.map(
+                    field =>
+                        !!field.label && (
+                            <MenuItem
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 2,
+                                }}
+                                value={field._id}
+                            >
+                                <Box>
+                                    {field.label}{' '}
+                                    {field.name ? `(${field.name})` : ''}
+                                </Box>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    {field.internalScopes &&
+                                        field.internalScopes.map(
+                                            internalScope => (
+                                                <FieldInternalIcon
+                                                    key={internalScope}
+                                                    scope={internalScope}
+                                                />
+                                            ),
+                                        )}
+                                    {field.internalName}
+                                </Box>
+                            </MenuItem>
+                        ),
+                )}
             </TextField>
         </Box>
     );
@@ -88,7 +151,9 @@ DatasetOverviewSelectComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    fields: fromFields.getEditingFields(state, { filter: SCOPE_DATASET }),
+    fields: fromFields
+        .getEditingFields(state, { filter: SCOPE_DATASET })
+        .sort((a, b) => a.label.localeCompare(b.label)),
 });
 
 const mapDispatchToProps = {

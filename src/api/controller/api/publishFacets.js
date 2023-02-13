@@ -41,6 +41,6 @@ export default async (ctx, fields, withProgress = false) => {
             }
             progress.throw(error);
         });
-    progress.finish();
+    withProgress && progress.finish();
     jobLogger.info(ctx.job, 'Facets published');
 };

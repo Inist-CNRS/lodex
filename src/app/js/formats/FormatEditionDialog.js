@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import merge from '../lib/merge';
 import {
+    Box,
     Button,
     Dialog,
     DialogActions,
@@ -72,12 +73,14 @@ const FormatEditionDialog = ({
                 </IconButton>
             </DialogTitle>
 
-            <DialogContent style={{ padding: 10, width: '800px' }} childre>
-                <SelectFormat
-                    formats={formats}
-                    value={name}
-                    onChange={setFormat}
-                />
+            <DialogContent style={{ padding: 10, width: '800px' }}>
+                <Box mb={3}>
+                    <SelectFormat
+                        formats={formats}
+                        value={name}
+                        onChange={setFormat}
+                    />
+                </Box>
                 <AdminComponent onChange={setArgs} args={args} />
             </DialogContent>
             <DialogActions>
