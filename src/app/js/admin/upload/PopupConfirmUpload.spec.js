@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { Button, Dialog } from '@material-ui/core';
 import { PopupConfirmUploadComponent as PopupConfirmUpload } from './PopupConfirmUpload';
+import CancelButton from '../../lib/components/CancelButton';
 
 describe('<PopupConfirmUpload />', () => {
     it('should render a popup for confirm upload', () => {
@@ -50,11 +51,8 @@ describe('<PopupConfirmUpload />', () => {
         );
 
         expect(wrapper.find(Dialog).exists()).toBeTruthy();
-        expect(wrapper.find(Button).exists()).toBeTruthy();
-        wrapper
-            .find(Button)
-            .at(1)
-            .simulate('click');
+        expect(wrapper.find(CancelButton).exists()).toBeTruthy();
+        wrapper.find(CancelButton).simulate('click');
         expect(handleClose).toHaveBeenCalled();
     });
 });

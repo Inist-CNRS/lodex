@@ -7,13 +7,13 @@ import { FixedSizeList } from 'react-window';
 import { useMeasure } from 'react-use';
 import {
     Box,
-    Button,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     Typography,
 } from '@mui/material';
+import CancelButton from '../../lib/components/CancelButton';
 
 const styles = {
     info: {
@@ -112,13 +112,9 @@ export const EnrichmentLogsDialog = ({
             </DialogContent>
             <DialogActions>
                 <Box display="flex" justifyContent="flex-end">
-                    <Button
-                        onClick={handleClose}
-                        color="primary"
-                        variant="link"
-                    >
+                    <CancelButton onClick={handleClose}>
                         {polyglot.t('close')}
-                    </Button>
+                    </CancelButton>
                 </Box>
             </DialogActions>
         </Dialog>
