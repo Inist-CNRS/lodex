@@ -8,6 +8,28 @@ import { field as fieldPropTypes } from '../../propTypes';
 import Bigbold from './Bigbold';
 import injectData from '../injectData';
 
+function getNumber(numb) {
+    if (Number.isInteger(numb)) {
+        // /api/run/count-all
+        // /api/run/total-of
+        return numb;
+    }
+    if (Array.isArray(numb) && numb.length === 1) {
+        // /api/run/count-by-fields
+        const { value } = numb.shift();
+        return Number(value);
+    }
+    if (Array.isArray(numb)) {
+        // just an array
+        return Number(numb.length);
+    }
+    if (Number.isInteger(numb.total)) {
+        // all others routines
+        return Number(numb.total);
+    }
+    return 0;
+}
+
 class EmphasedNumberView extends Component {
     render() {
         const {
@@ -18,8 +40,8 @@ class EmphasedNumberView extends Component {
             size,
             colors,
         } = this.props;
-        const value = formatData || resource[field.name];
 
+        const value = getNumber(formatData || resource[field.name]);
         return (
             <div className={className}>
                 <Bigbold
@@ -48,6 +70,7 @@ EmphasedNumberView.defaultProps = {
 export default compose(
     translate,
     injectData(({ field, resource }) => {
+        // Try to use the field value as a number, otherwise it's probably a routine
         const value = resource[field.name];
         return isNaN(value) ? value : null;
     }),
