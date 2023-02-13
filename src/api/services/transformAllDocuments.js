@@ -9,6 +9,7 @@ export default async function transformAllDocument(
     job,
 ) {
     let handled = 0;
+    const chunkSize = 200;
     const isJobActive = async () => {
         return !job || (job.isActive && (await job.isActive()));
     };
@@ -19,7 +20,7 @@ export default async function transformAllDocument(
         }
 
         const dataset = datasetChunkExtractor(
-            await findLimitFromSkip(200, handled, {
+            await findLimitFromSkip(chunkSize, handled, {
                 lodex_published: { $exists: false },
             }),
         );
@@ -36,6 +37,6 @@ export default async function transformAllDocument(
             transformedDataset.filter(({ subresourceId }) => !subresourceId)
                 .length,
         );
-        handled += dataset.length;
+        handled += chunkSize;
     }
 }
