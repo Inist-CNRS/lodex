@@ -1,6 +1,7 @@
 import React from 'react';
 import compose from 'recompose/compose';
 import datasetApi from '../api/dataset';
+import publishApi from '../api/publish';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import PropTypes from 'prop-types';
@@ -21,6 +22,7 @@ export const ParsingDeleteRowDialog = ({
     handleClose,
     selectedRowForDelete,
     reloadDataset,
+    shouldRepublish,
 }) => {
     const [isLoading, setIsLoading] = React.useState(false);
 
@@ -35,6 +37,9 @@ export const ParsingDeleteRowDialog = ({
                 type: toast.TYPE.SUCCESS,
             });
             reloadDataset();
+            if (shouldRepublish) {
+                publishApi.publish();
+            }
             handleClose();
             setIsLoading(false);
         } else {
@@ -94,6 +99,7 @@ ParsingDeleteRowDialog.propTypes = {
     p: polyglotPropTypes.isRequired,
     selectedRowForDelete: PropTypes.object,
     reloadDataset: PropTypes.func.isRequired,
+    shouldRepublish: PropTypes.bool,
 };
 
 export default compose(translate)(ParsingDeleteRowDialog);
