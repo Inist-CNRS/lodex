@@ -56,6 +56,7 @@ export const SubresourceOverviewSelectComponent = ({
                                 gap: 2,
                             }}
                             key={field._id}
+                            value={field._id}
                         >
                             <Box>
                                 {field.label}{' '}

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Button, Dialog, DialogTitle, DialogActions } from '@material-ui/core';
 import { compose, withState } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import CancelButton from '../../lib/components/CancelButton';
 
 export const DeleteSubresourceButtonComponent = ({
     p: polyglot,
@@ -25,19 +26,15 @@ export const DeleteSubresourceButtonComponent = ({
                     {polyglot.t('confirm_delete_subresource')}
                 </DialogTitle>
                 <DialogActions>
+                    <CancelButton onClick={() => setShowDeletePopup(false)}>
+                        {polyglot.t('Cancel')}
+                    </CancelButton>
                     <Button
                         color="primary"
                         variant="contained"
                         onClick={onClick}
                     >
                         {polyglot.t('Accept')}
-                    </Button>
-                    <Button
-                        color="secondary"
-                        variant="text"
-                        onClick={() => setShowDeletePopup(false)}
-                    >
-                        {polyglot.t('Cancel')}
                     </Button>
                 </DialogActions>
             </Dialog>

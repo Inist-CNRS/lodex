@@ -18,6 +18,7 @@ import {
 } from '@material-ui/core';
 import colorsTheme from '../../../custom/colorsTheme';
 import { toast } from 'react-toastify';
+import CancelButton from '../../lib/components/CancelButton';
 
 const style = {
     container: {
@@ -314,14 +315,12 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                     alignItems="flex-end"
                     justifyContent="flex-end"
                 >
-                    <Button
-                        color="secondary"
+                    <CancelButton
                         key="cancel"
-                        variant="text"
                         onClick={() => setToggleDrawer(false)}
                     >
                         {polyglot.t('cancel')}
-                    </Button>
+                    </CancelButton>
                     <ButtonEditCellWithDropdown
                         handleChange={handleChange}
                         loading={loading}

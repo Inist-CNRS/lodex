@@ -21,7 +21,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { fromEnrichments, fromParsing } from '../selectors';
+import { fromEnrichments, fromParsing, fromPublication } from '../selectors';
 import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
 import colorsTheme from '../../../custom/colorsTheme';
@@ -124,7 +124,12 @@ const getFiltersOperatorsForType = type => {
 };
 
 export const ParsingResultComponent = props => {
-    const { p: polyglot, enrichments, loadingParsingResult } = props;
+    const {
+        p: polyglot,
+        enrichments,
+        loadingParsingResult,
+        isPublished,
+    } = props;
 
     const classes = useStyles();
     const [showEnrichmentColumns, setShowEnrichmentColumns] = useState(true);
@@ -526,6 +531,7 @@ export const ParsingResultComponent = props => {
                 handleClose={() => setOpenDialogDeleteRow(false)}
                 selectedRowForDelete={selectedRowForDelete}
                 reloadDataset={() => fetchDataset()}
+                shouldRepublish={isPublished}
             />
         </div>
     );
@@ -535,11 +541,13 @@ ParsingResultComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     loadingParsingResult: PropTypes.bool.isRequired,
     enrichments: PropTypes.arrayOf(PropTypes.object),
+    isPublished: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
     loadingParsingResult: fromParsing.isParsingLoading(state),
     enrichments: fromEnrichments.enrichments(state),
+    isPublished: fromPublication.hasPublishedDataset(state),
 });
 
 export default compose(

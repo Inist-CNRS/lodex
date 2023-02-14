@@ -10,7 +10,6 @@ import {
     Dialog,
     DialogContent,
     DialogActions,
-    Button,
     Typography,
     ListItem,
     Box,
@@ -24,6 +23,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import routines from '../../../custom/routines/routines-catalog.json';
 import classnames from 'classnames';
 import colorsTheme from '../../../custom/colorsTheme';
+import CancelButton from '../../lib/components/CancelButton';
 
 const useStyles = makeStyles({
     item: {
@@ -137,14 +137,9 @@ const RoutineCatalog = ({
                 </List>
             </DialogContent>
             <DialogActions>
-                <Button
-                    variant="text"
-                    key="cancel"
-                    color="secondary"
-                    onClick={handleClose}
-                >
+                <CancelButton key="cancel" onClick={handleClose}>
                     {polyglot.t('cancel')}
-                </Button>
+                </CancelButton>
             </DialogActions>
         </Dialog>
     );

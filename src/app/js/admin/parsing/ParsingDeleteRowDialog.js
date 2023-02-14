@@ -1,6 +1,7 @@
 import React from 'react';
 import compose from 'recompose/compose';
 import datasetApi from '../api/dataset';
+import publishApi from '../api/publish';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import PropTypes from 'prop-types';
@@ -14,6 +15,7 @@ import {
     Typography,
 } from '@mui/material';
 import { toast } from 'react-toastify';
+import CancelButton from '../../lib/components/CancelButton';
 
 export const ParsingDeleteRowDialog = ({
     isOpen,
@@ -21,6 +23,7 @@ export const ParsingDeleteRowDialog = ({
     handleClose,
     selectedRowForDelete,
     reloadDataset,
+    shouldRepublish,
 }) => {
     const [isLoading, setIsLoading] = React.useState(false);
 
@@ -35,6 +38,9 @@ export const ParsingDeleteRowDialog = ({
                 type: toast.TYPE.SUCCESS,
             });
             reloadDataset();
+            if (shouldRepublish) {
+                publishApi.publish();
+            }
             handleClose();
             setIsLoading(false);
         } else {
@@ -65,13 +71,9 @@ export const ParsingDeleteRowDialog = ({
             </DialogContent>
             <DialogActions>
                 <Box display="flex" justifyContent="flex-end">
-                    <Button
-                        onClick={handleClose}
-                        color="primary"
-                        variant="link"
-                    >
+                    <CancelButton onClick={handleClose}>
                         {polyglot.t('close')}
-                    </Button>
+                    </CancelButton>
                     <Button
                         onClick={handleDelete}
                         color="primary"
@@ -94,6 +96,7 @@ ParsingDeleteRowDialog.propTypes = {
     p: polyglotPropTypes.isRequired,
     selectedRowForDelete: PropTypes.object,
     reloadDataset: PropTypes.func.isRequired,
+    shouldRepublish: PropTypes.bool,
 };
 
 export default compose(translate)(ParsingDeleteRowDialog);
