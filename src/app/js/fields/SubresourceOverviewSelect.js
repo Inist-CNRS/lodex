@@ -55,6 +55,7 @@ export const SubresourceOverviewSelectComponent = ({
                                 alignItems: 'center',
                                 gap: 2,
                             }}
+                            key={field._id}
                         >
                             <Box>
                                 {field.label}{' '}

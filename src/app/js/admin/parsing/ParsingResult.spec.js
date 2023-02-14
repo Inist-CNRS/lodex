@@ -1,23 +1,20 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import ParsingExcerpt from './ParsingExcerpt';
+import { DataGrid } from '@mui/x-data-grid';
 
 import { ParsingResultComponent as ParsingResult } from './ParsingResult';
+jest.mock('../api/dataset');
 
 describe('<ParsingResult />', () => {
-    it('should render the ParsingExcerpt', () => {
+    it('should render the DataGrid', () => {
         const wrapper = shallow(
             <ParsingResult
-                excerptColumns={['foo']}
-                excerptLines={['bar']}
                 enrichments={[]}
                 p={{ t: () => {} }}
-                totalLoadedLines={24}
+                loadingParsingResult={false}
             />,
         );
-        const parsingExcerpt = wrapper.find(ParsingExcerpt).at(0);
-
-        expect(parsingExcerpt.prop('columns')).toEqual(['foo']);
-        expect(parsingExcerpt.prop('lines')).toEqual(['bar']);
+        const dataGrid = wrapper.find(DataGrid).at(0);
+        expect(dataGrid).toHaveLength(1);
     });
 });

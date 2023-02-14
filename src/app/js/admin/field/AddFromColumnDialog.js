@@ -7,34 +7,24 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-} from '@material-ui/core';
+    Box,
+} from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import ParsingResult from '../parsing/ParsingResult';
-
-const styles = {
-    container: {
-        display: 'flex',
-        padding: '1rem',
-        width: 1000,
-    },
-    dialogContent: {
-        height: 'calc(90vh - 64px - 52px)',
-    },
-};
+import ParsingExcerpt from '../parsing/ParsingExcerpt';
 
 export const AddFromColumnDialogComponent = ({ p: polyglot, onClose }) => {
     return (
         <Dialog open onClose={onClose} maxWidth="xl">
             <DialogTitle> {polyglot.t('a_column')}</DialogTitle>
-            <DialogContent style={styles.dialogContent}>
-                <div style={styles.container}>
-                    <ParsingResult
-                        showAddFromColumn
-                        maxLines={6}
-                        onAddField={onClose}
-                    />
-                </div>
+            <DialogContent
+                sx={{
+                    height: 'calc(90vh - 64px - 52px)',
+                }}
+            >
+                <Box display="flex" p={2} width="1000px">
+                    <ParsingExcerpt showAddFromColumn onAddField={onClose} />
+                </Box>
             </DialogContent>
             <DialogActions>
                 <Button color="secondary" variant="text" onClick={onClose}>

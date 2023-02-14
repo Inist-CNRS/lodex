@@ -60,7 +60,9 @@ export default handleActions(
 );
 
 export const isLoading = state => state.loading;
+export const getSubresources = state => state.subresources;
 
 export const selectors = {
     isLoading,
+    getSubresources,
 };

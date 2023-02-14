@@ -17,7 +17,7 @@ export const DataRouteComponent = ({ canUploadFile }) => {
 
     return (
         <div>
-            <ParsingResult dataGrid />
+            <ParsingResult />
         </div>
     );
 };

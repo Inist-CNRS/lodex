@@ -47,7 +47,7 @@ export const AdminComponent = ({
 
     return (
         <Card className="admin">
-            <ParsingResult dataGrid />
+            <ParsingResult />
             <PublicationPreview />
             <div style={styles.punchLine}>
                 {polyglot.t('publish-punchline')}

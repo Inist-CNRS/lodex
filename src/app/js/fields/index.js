@@ -110,25 +110,51 @@ export const defaultState = {
     invalidProperties: [],
 };
 
-const getDefaultField = (name, index, rest = {}) => ({
+const getTransformers = (name, subresource) => {
+    if (subresource && name) {
+        return [
+            {
+                operation: 'COLUMN',
+                args: [
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value: subresource.path,
+                    },
+                ],
+            },
+            {
+                operation: 'PARSE',
+            },
+            {
+                operation: 'GET',
+                args: [{ name: 'path', type: 'string', value: name }],
+            },
+        ];
+    }
+    if (name) {
+        return [
+            {
+                operation: 'COLUMN',
+                args: [
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value: name,
+                    },
+                ],
+            },
+        ];
+    }
+    return [];
+};
+
+const getDefaultField = (name, subresource, index, rest = {}) => ({
     label: name || `newField ${index + 1}`,
     name: 'new',
     display: true,
     searchable: false,
-    transformers: name
-        ? [
-              {
-                  operation: 'COLUMN',
-                  args: [
-                      {
-                          name: 'column',
-                          type: 'column',
-                          value: name,
-                      },
-                  ],
-              },
-          ]
-        : [],
+    transformers: getTransformers(name, subresource),
     classes: [],
     position: index,
     overview: 0,
@@ -138,13 +164,18 @@ const getDefaultField = (name, index, rest = {}) => ({
 export default handleActions(
     {
         ADD_FIELD: (state, { payload }) => {
-            const { name, ...rest } = payload || {};
+            const { name, subresource, ...rest } = payload || {};
             return {
                 ...state,
                 list: [...state.list, 'new'],
                 byName: {
                     ...state.byName,
-                    new: getDefaultField(name, state.list.length, rest),
+                    new: getDefaultField(
+                        name,
+                        subresource,
+                        state.list.length,
+                        rest,
+                    ),
                 },
             };
         },

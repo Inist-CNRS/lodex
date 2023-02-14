@@ -24,7 +24,6 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromEnrichments, fromParsing } from '../selectors';
 import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
-import ParsingExcerpt from './ParsingExcerpt';
 import colorsTheme from '../../../custom/colorsTheme';
 import { makeStyles } from '@material-ui/styles';
 import {
@@ -125,17 +124,7 @@ const getFiltersOperatorsForType = type => {
 };
 
 export const ParsingResultComponent = props => {
-    const {
-        p: polyglot,
-        excerptColumns,
-        excerptLines,
-        maxLines,
-        showAddFromColumn,
-        onAddField,
-        dataGrid,
-        enrichments,
-        loadingParsingResult,
-    } = props;
+    const { p: polyglot, enrichments, loadingParsingResult } = props;
 
     const classes = useStyles();
     const [showEnrichmentColumns, setShowEnrichmentColumns] = useState(true);
@@ -469,110 +458,86 @@ export const ParsingResultComponent = props => {
 
     return (
         <div className={classes.container}>
-            {dataGrid ? (
-                <React.Fragment>
-                    <DataGrid
-                        columns={columnsToShow}
-                        rows={rows}
-                        rowCount={rowCount}
-                        pageSize={limit}
-                        paginationMode="server"
-                        onPageChange={onPageChange}
-                        onPageSizeChange={setLimit}
-                        sortingMode="server"
-                        onSortModelChange={handleSortModelChange}
-                        filterMode="server"
-                        onFilterModelChange={handleFilterModelChange}
-                        rowsPerPageOptions={[10, 25, 50]}
-                        disableSelectionOnClick={true}
-                        onCellClick={handleCellClick}
-                        components={{
-                            Footer: CustomFooter,
-                            Toolbar: CustomToolbar,
-                        }}
-                        sx={{
-                            [`& .${gridClasses.columnHeaderTitleContainer} .${gridClasses.iconButtonContainer}`]: {
-                                visibility: 'visible',
-                                width: 'auto',
-                            },
-                            // hide the `delete-row` column and disable the `delete-row` button on row hover
-                            [`& .${gridClasses.row} .${gridClasses.cellWithRenderer} .${gridClasses.iconButtonContainer}`]: {
-                                visibility: 'hidden',
-                            },
-                            [`& .MuiDataGrid-columnHeader[data-field="delete-row"]`]: {
-                                display: 'none',
-                            },
-                            [`& .MuiDataGrid-cell[data-field="delete-row"]`]: {
-                                position: 'absolute',
-                                left: 0,
-                                visibility: 'hidden',
-                                opacity: 0,
-                                transform: 'translateX(-100%)',
-                            },
-                            [`& .MuiDataGrid-row:hover > .MuiDataGrid-cell[data-field="delete-row"]`]: {
-                                visibility: 'visible',
-                                backgroundColor: 'white',
-                                transition: 'all 0.3s ease-in-out',
-                                opacity: 1,
-                                transform: 'translateX(0)',
-                            },
-                        }}
+            <DataGrid
+                columns={columnsToShow}
+                rows={rows}
+                rowCount={rowCount}
+                pageSize={limit}
+                paginationMode="server"
+                onPageChange={onPageChange}
+                onPageSizeChange={setLimit}
+                sortingMode="server"
+                onSortModelChange={handleSortModelChange}
+                filterMode="server"
+                onFilterModelChange={handleFilterModelChange}
+                rowsPerPageOptions={[10, 25, 50]}
+                disableSelectionOnClick={true}
+                onCellClick={handleCellClick}
+                components={{
+                    Footer: CustomFooter,
+                    Toolbar: CustomToolbar,
+                }}
+                sx={{
+                    [`& .${gridClasses.columnHeaderTitleContainer} .${gridClasses.iconButtonContainer}`]: {
+                        visibility: 'visible',
+                        width: 'auto',
+                    },
+                    // hide the `delete-row` column and disable the `delete-row` button on row hover
+                    [`& .${gridClasses.row} .${gridClasses.cellWithRenderer} .${gridClasses.iconButtonContainer}`]: {
+                        visibility: 'hidden',
+                    },
+                    [`& .MuiDataGrid-columnHeader[data-field="delete-row"]`]: {
+                        display: 'none',
+                    },
+                    [`& .MuiDataGrid-cell[data-field="delete-row"]`]: {
+                        position: 'absolute',
+                        left: 0,
+                        visibility: 'hidden',
+                        opacity: 0,
+                        transform: 'translateX(-100%)',
+                    },
+                    [`& .MuiDataGrid-row:hover > .MuiDataGrid-cell[data-field="delete-row"]`]: {
+                        visibility: 'visible',
+                        backgroundColor: 'white',
+                        transition: 'all 0.3s ease-in-out',
+                        opacity: 1,
+                        transform: 'translateX(0)',
+                    },
+                }}
+            />
+            <Drawer
+                anchor="right"
+                open={toggleDrawer}
+                onClose={() => setToggleDrawer(false)}
+                className={classes.drawer}
+                classes={{
+                    paper: classes.drawer,
+                }}
+            >
+                {selectedCell ? (
+                    <ParsingEditCell
+                        cell={selectedCell}
+                        setToggleDrawer={setToggleDrawer}
                     />
-                    <Drawer
-                        anchor="right"
-                        open={toggleDrawer}
-                        onClose={() => setToggleDrawer(false)}
-                        className={classes.drawer}
-                        classes={{
-                            paper: classes.drawer,
-                        }}
-                    >
-                        {selectedCell ? (
-                            <ParsingEditCell
-                                cell={selectedCell}
-                                setToggleDrawer={setToggleDrawer}
-                            />
-                        ) : null}
-                    </Drawer>
-                    <ParsingDeleteRowDialogComponent
-                        isOpen={openDialogDeleteRow}
-                        handleClose={() => setOpenDialogDeleteRow(false)}
-                        selectedRowForDelete={selectedRowForDelete}
-                        reloadDataset={() => fetchDataset()}
-                    />
-                </React.Fragment>
-            ) : (
-                <ParsingExcerpt
-                    columns={excerptColumns}
-                    lines={excerptLines.slice(0, maxLines)}
-                    showAddFromColumn={showAddFromColumn}
-                    onAddField={onAddField}
-                />
-            )}
+                ) : null}
+            </Drawer>
+            <ParsingDeleteRowDialogComponent
+                isOpen={openDialogDeleteRow}
+                handleClose={() => setOpenDialogDeleteRow(false)}
+                selectedRowForDelete={selectedRowForDelete}
+                reloadDataset={() => fetchDataset()}
+            />
         </div>
     );
 };
 
 ParsingResultComponent.propTypes = {
-    excerptColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
-    excerptLines: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
-    showAddFromColumn: PropTypes.bool.isRequired,
-    onAddField: PropTypes.func,
-    maxLines: PropTypes.number,
     loadingParsingResult: PropTypes.bool.isRequired,
-    dataGrid: PropTypes.bool,
     enrichments: PropTypes.arrayOf(PropTypes.object),
 };
 
-ParsingResultComponent.defaultProps = {
-    maxLines: 10,
-    showAddFromColumn: false,
-};
-
 const mapStateToProps = state => ({
-    excerptColumns: fromParsing.getParsedExcerptColumns(state),
-    excerptLines: fromParsing.getExcerptLines(state),
     loadingParsingResult: fromParsing.isParsingLoading(state),
     enrichments: fromEnrichments.enrichments(state),
 });
