@@ -15,6 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ListDialog from './ListDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CustomLoader from './CustomLoader';
+import CancelButton from '../../lib/components/CancelButton';
 
 const useStyles = makeStyles({
     formControl: {
@@ -48,14 +49,9 @@ const LoaderSelectComponent = ({
     };
 
     const actions = [
-        <Button
-            variant="text"
-            key="cancel"
-            color="secondary"
-            onClick={handleClose}
-        >
+        <CancelButton key="cancel" onClick={handleClose}>
             {polyglot.t('cancel')}
-        </Button>,
+        </CancelButton>,
     ];
 
     return (

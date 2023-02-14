@@ -63,7 +63,11 @@ export const UriConcatComponent = ({
                         handleRemoveColumn={handleRemoveColumn}
                     />
                 ))}
-                <Button variant="text" onClick={handleAddColumn}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleAddColumn}
+                >
                     {polyglot.t('add_column')}
                 </Button>
             </div>

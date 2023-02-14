@@ -24,6 +24,7 @@ import colorsTheme from '../../../custom/colorsTheme';
 import FilterIcon from '@material-ui/icons/FilterList';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
+import CancelButton from '../../lib/components/CancelButton';
 
 const useStyles = makeStyles({
     item: {
@@ -192,14 +193,9 @@ export const EnrichmentCatalog = ({
                 </List>
             </DialogContent>
             <DialogActions>
-                <Button
-                    variant="text"
-                    key="cancel"
-                    color="secondary"
-                    onClick={handleClose}
-                >
+                <CancelButton key="cancel" onClick={handleClose}>
                     {polyglot.t('cancel')}
-                </Button>
+                </CancelButton>
             </DialogActions>
         </Dialog>
     );

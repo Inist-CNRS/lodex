@@ -7,9 +7,10 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-} from '@material-ui/core';
+} from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import translate from 'redux-polyglot/translate';
+import CancelButton from '../../lib/components/CancelButton';
 
 const CancelPublicationDialog = props => {
     const { p: polyglot, isOpen, title, content, onConfirm, onCancel } = props;
@@ -18,11 +19,11 @@ const CancelPublicationDialog = props => {
             <DialogTitle>{polyglot.t(title)}</DialogTitle>
             <DialogContent>{polyglot.t(content)}</DialogContent>
             <DialogActions>
+                <CancelButton onClick={onCancel}>
+                    {polyglot.t('Cancel')}
+                </CancelButton>
                 <Button color="primary" variant="contained" onClick={onConfirm}>
                     {polyglot.t('Accept')}
-                </Button>
-                <Button color="secondary" variant="text" onClick={onCancel}>
-                    {polyglot.t('Cancel')}
                 </Button>
             </DialogActions>
         </Dialog>

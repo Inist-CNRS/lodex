@@ -21,7 +21,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { fromEnrichments, fromParsing } from '../selectors';
+import { fromEnrichments, fromParsing, fromPublication } from '../selectors';
 import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
 import ParsingExcerpt from './ParsingExcerpt';
@@ -135,6 +135,7 @@ export const ParsingResultComponent = props => {
         dataGrid,
         enrichments,
         loadingParsingResult,
+        isPublished,
     } = props;
 
     const classes = useStyles();
@@ -539,6 +540,7 @@ export const ParsingResultComponent = props => {
                         handleClose={() => setOpenDialogDeleteRow(false)}
                         selectedRowForDelete={selectedRowForDelete}
                         reloadDataset={() => fetchDataset()}
+                        shouldRepublish={isPublished}
                     />
                 </React.Fragment>
             ) : (
@@ -563,6 +565,7 @@ ParsingResultComponent.propTypes = {
     loadingParsingResult: PropTypes.bool.isRequired,
     dataGrid: PropTypes.bool,
     enrichments: PropTypes.arrayOf(PropTypes.object),
+    isPublished: PropTypes.bool.isRequired,
 };
 
 ParsingResultComponent.defaultProps = {
@@ -575,6 +578,7 @@ const mapStateToProps = state => ({
     excerptLines: fromParsing.getExcerptLines(state),
     loadingParsingResult: fromParsing.isParsingLoading(state),
     enrichments: fromEnrichments.enrichments(state),
+    isPublished: fromPublication.hasPublishedDataset(state),
 });
 
 export default compose(

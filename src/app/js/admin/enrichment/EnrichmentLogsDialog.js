@@ -14,6 +14,7 @@ import {
     DialogTitle,
     Typography,
 } from '@mui/material';
+import CancelButton from '../../lib/components/CancelButton';
 
 const styles = {
     info: {
@@ -121,13 +122,9 @@ export const EnrichmentLogsDialog = ({
             </DialogContent>
             <DialogActions>
                 <Box display="flex" justifyContent="flex-end">
-                    <Button
-                        onClick={handleClose}
-                        color="primary"
-                        variant="link"
-                    >
+                    <CancelButton onClick={handleClose}>
                         {polyglot.t('close')}
-                    </Button>
+                    </CancelButton>
                     <Button
                         onClick={handleDownloadLogs}
                         color="primary"

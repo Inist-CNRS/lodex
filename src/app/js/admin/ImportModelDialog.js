@@ -3,20 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import {
-    Dialog,
-    Button,
-    DialogContent,
-    DialogActions,
-} from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
-import { makeStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
+import { Dialog, Button, DialogContent, DialogActions } from '@mui/material';
 
 import { importFields as importFieldsAction } from './import';
 import { polyglot as polyglotPropTypes } from '../propTypes';
+import CancelButton from '../lib/components/CancelButton';
 
-const useStyles = makeStyles({
+const styles = {
     input: {
         position: 'absolute',
         top: 0,
@@ -27,59 +20,55 @@ const useStyles = makeStyles({
         width: '100%',
         cursor: 'pointer',
     },
-    button: {
-        marginTop: '12px',
-    },
-    error: {
-        color: red[300],
-    },
-    dialog: {
-        '& > div > div': {
-            overflowY: 'unset',
-        },
-    },
-});
+};
 
 const ImportModelDialogComponent = ({ onClose, p: polyglot, importFields }) => {
-    const classes = useStyles();
-
     const handleFileUpload = event => {
         importFields(event.target.files[0]);
         onClose();
     };
 
     const actions = [
+        <CancelButton
+            key="cancel"
+            onClick={onClose}
+            className="btn-cancel"
+            sx={{
+                marginTop: '12px',
+            }}
+        >
+            {polyglot.t('cancel')}
+        </CancelButton>,
         <Button
             variant="contained"
             key="confirm"
             component="label"
             color="primary"
-            className={classnames(classes.button, 'btn-save')}
+            className="btn-save"
+            sx={{
+                marginTop: '12px',
+            }}
         >
             {polyglot.t('confirm')}
             <input
                 name="file_model"
                 type="file"
                 onChange={handleFileUpload}
-                className={classes.input}
+                style={styles.input}
             />
-        </Button>,
-        <Button
-            color="secondary"
-            key="cancel"
-            variant="text"
-            onClick={onClose}
-            className={classnames(classes.button, 'btn-cancel')}
-        >
-            {polyglot.t('cancel')}
         </Button>,
     ];
 
     return (
         <Dialog
-            className={classnames(classes.dialog, 'dialog-import-fields')}
+            className="dialog-import-fields"
             onClose={onClose}
             open
+            sx={{
+                '& > div > div': {
+                    overflowY: 'unset',
+                },
+            }}
         >
             <DialogContent>{polyglot.t('confirm_import_fields')}</DialogContent>
             <DialogActions>{actions}</DialogActions>
