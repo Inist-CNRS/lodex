@@ -5,12 +5,16 @@ import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
+import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../colorUtils';
 
 export const defaultArgs = {
     size: 4,
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
+    params: {
+        maxSize: 200,
+    },
 };
 
 class EmphasedNumberAdmin extends Component {
@@ -18,6 +22,12 @@ class EmphasedNumberAdmin extends Component {
         args: PropTypes.shape({
             size: PropTypes.number,
             colors: PropTypes.string,
+            params: PropTypes.shape({
+                maxSize: PropTypes.number,
+                maxValue: PropTypes.number,
+                minValue: PropTypes.number,
+                orderBy: PropTypes.string,
+            }),
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -47,10 +57,12 @@ class EmphasedNumberAdmin extends Component {
         updateAdminArgs('colors', colors.split(' ')[0], this.props);
     }
 
+    setParams = params => updateAdminArgs('params', params, this.props);
+
     render() {
         const {
             p: polyglot,
-            args: { size },
+            args: { size, params },
         } = this.props;
 
         return (
@@ -72,6 +84,15 @@ class EmphasedNumberAdmin extends Component {
                     <MenuItem value={3}>{polyglot.t('size3')}</MenuItem>
                     <MenuItem value={4}>{polyglot.t('size4')}</MenuItem>
                 </TextField>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    onChange={this.setParams}
+                    polyglot={polyglot}
+                    showMaxSize={true}
+                    showMaxValue={true}
+                    showMinValue={true}
+                    showOrderBy={false}
+                />
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}

@@ -15,6 +15,7 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import SelectFormat from './SelectFormat';
 import { getAdminComponent, getFormatInitialArgs } from '.';
+import CancelButton from '../lib/components/CancelButton';
 
 const FormatEditionDialog = ({
     p: polyglot,
@@ -84,14 +85,12 @@ const FormatEditionDialog = ({
                 <AdminComponent onChange={setArgs} args={args} />
             </DialogContent>
             <DialogActions>
-                <Button
+                <CancelButton
                     aria-label={polyglot.t('cancel')}
-                    color="secondary"
-                    variant="text"
                     onClick={handleClose}
                 >
                     {polyglot.t('cancel')}
-                </Button>
+                </CancelButton>
                 <Button
                     aria-label={polyglot.t('save')}
                     color="primary"

@@ -22,6 +22,7 @@ import {
 } from './index';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import loaderApi from '../api/loader';
+import CancelButton from '../../lib/components/CancelButton';
 
 const useStyles = makeStyles(() => {
     return {
@@ -96,19 +97,23 @@ const CustomLoader = ({
                 </div>
             </DialogContent>
             <DialogActions style={{ justifyContent: 'space-between' }}>
-                <Button onClick={handleDelete} color="secondary">
+                <Button
+                    onClick={handleDelete}
+                    color="secondary"
+                    variant="contained"
+                >
                     {polyglot.t('remove')}
                 </Button>
                 <div>
+                    <CancelButton onClick={handleClose}>
+                        {polyglot.t('cancel')}
+                    </CancelButton>
                     <Button
                         onClick={handleSave}
                         color="primary"
                         variant="contained"
                     >
                         {polyglot.t('save')}
-                    </Button>
-                    <Button onClick={handleClose} color="secondary">
-                        {polyglot.t('cancel')}
                     </Button>
                 </div>
             </DialogActions>

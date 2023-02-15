@@ -1,10 +1,14 @@
 import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
 import datasetApi from '../api/dataset';
+import publishApi from '../api/publish';
 import { ParsingDeleteRowDialog } from './ParsingDeleteRowDialog';
 import '@testing-library/jest-dom';
 
 jest.mock('../api/dataset');
+jest.mock('../api/publish', () => ({
+    publish: jest.fn(),
+}));
 
 describe('ParsingDeleteRowDialog component', () => {
     let mockReloadDataset,
@@ -80,5 +84,47 @@ describe('ParsingDeleteRowDialog component', () => {
 
         expect(datasetApi.deleteDatasetRow).toHaveBeenCalledWith('1');
         expect(mockReloadDataset).toHaveBeenCalled();
+    });
+
+    it('should not call publish when shouldRepublish is false', async () => {
+        datasetApi.deleteDatasetRow.mockResolvedValue({ status: 'deleted' });
+
+        const { getByText } = render(
+            <ParsingDeleteRowDialog
+                isOpen={isOpen}
+                handleClose={mockHandleClose}
+                p={polyglot}
+                selectedRowForDelete={selectedRowForDelete}
+                reloadDataset={mockReloadDataset}
+                shouldRepublish={false}
+            />,
+        );
+
+        await act(async () => {
+            fireEvent.click(getByText('delete'));
+        });
+
+        expect(publishApi.publish).not.toHaveBeenCalled();
+    });
+
+    it('should call publish when shouldRepublish is true', async () => {
+        datasetApi.deleteDatasetRow.mockResolvedValue({ status: 'deleted' });
+
+        const { getByText } = render(
+            <ParsingDeleteRowDialog
+                isOpen={isOpen}
+                handleClose={mockHandleClose}
+                p={polyglot}
+                selectedRowForDelete={selectedRowForDelete}
+                reloadDataset={mockReloadDataset}
+                shouldRepublish={true}
+            />,
+        );
+
+        await act(async () => {
+            fireEvent.click(getByText('delete'));
+        });
+
+        expect(publishApi.publish).toHaveBeenCalled();
     });
 });

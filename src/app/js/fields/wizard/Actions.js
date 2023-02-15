@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import { Box, Button } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 import { useParams } from 'react-router';
 
@@ -9,14 +9,7 @@ import {
     field as fieldPropTypes,
 } from '../../propTypes';
 import RemoveButton from '../../admin/preview/RemoveButton';
-
-const styles = {
-    root: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginBottom: '1rem',
-    },
-};
+import CancelButton from '../../lib/components/CancelButton';
 
 export const ActionsComponent = ({
     currentEditedField,
@@ -28,13 +21,17 @@ export const ActionsComponent = ({
     if (!currentEditedField) return null;
 
     return (
-        <div style={styles.root}>
+        <Box display="flex" justifyContent="space-between" mb={2}>
             {currentEditedField.name !== 'uri' && (
-                <div>
-                    <RemoveButton field={currentEditedField} filter={filter} />
-                </div>
+                <RemoveButton field={currentEditedField} filter={filter} />
             )}
-            <div>
+            <Box display="flex" gap={1}>
+                <CancelButton
+                    className="btn-exit-column-edition"
+                    onClick={onCancel}
+                >
+                    {polyglot.t('cancel')}
+                </CancelButton>
                 <Button
                     variant="contained"
                     className="btn-save"
@@ -43,16 +40,8 @@ export const ActionsComponent = ({
                 >
                     {polyglot.t('save')}
                 </Button>
-                <Button
-                    variant="text"
-                    className="btn-exit-column-edition"
-                    color="secondary"
-                    onClick={onCancel}
-                >
-                    {polyglot.t('cancel')}
-                </Button>
-            </div>
-        </div>
+            </Box>
+        </Box>
     );
 };
 

@@ -5,12 +5,11 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import {
     Dialog,
-    Button,
     TextField,
     DialogContent,
     DialogActions,
     DialogTitle,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
@@ -26,6 +25,7 @@ import fieldApi from '../api/field';
 import { toast } from '../../../../common/tools/toast';
 import { loadField } from '../../fields';
 import { loadPublication } from '../publication';
+import CancelButton from '../../lib/components/CancelButton';
 
 const baseUrl = getHost();
 
@@ -114,6 +114,9 @@ const ClearDialogComponent = props => {
         }
     };
     const actions = [
+        <CancelButton key="cancel" className="btn-cancel" onClick={onClose}>
+            {polyglot.t('cancel')}
+        </CancelButton>,
         <ButtonWithStatus
             raised
             key="submit"
@@ -126,15 +129,6 @@ const ClearDialogComponent = props => {
         >
             {polyglot.t('confirm')}
         </ButtonWithStatus>,
-        <Button
-            key="cancel"
-            color="secondary"
-            variant="text"
-            className="btn-cancel"
-            onClick={onClose}
-        >
-            {polyglot.t('cancel')}
-        </Button>,
     ];
 
     return (
@@ -157,6 +151,7 @@ const ClearDialogComponent = props => {
                         onChange={handleChangeField}
                         onKeyPress={e => handleKeyPress(e, type)}
                         error={hasFailed && polyglot.t('error')}
+                        variant="standard"
                     />
                 </div>
             </DialogContent>
