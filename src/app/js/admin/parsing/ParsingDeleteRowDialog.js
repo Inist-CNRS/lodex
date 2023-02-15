@@ -34,7 +34,7 @@ export const ParsingDeleteRowDialog = ({
         );
 
         if (res.status === 'deleted') {
-            toast.success(polyglot.t('parsing_delete_row_success'), {
+            toast(polyglot.t('parsing_delete_row_success'), {
                 type: toast.TYPE.SUCCESS,
             });
             reloadDataset();
@@ -44,7 +44,7 @@ export const ParsingDeleteRowDialog = ({
             handleClose();
             setIsLoading(false);
         } else {
-            toast.error(polyglot.t('parsing_delete_row_error'), {
+            toast(polyglot.t('parsing_delete_row_error'), {
                 type: toast.TYPE.ERROR,
             });
         }
