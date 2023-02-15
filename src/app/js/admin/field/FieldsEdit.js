@@ -17,7 +17,6 @@ import DatasetOverviewSelect from '../../fields/DatasetOverviewSelect';
 import SubresourceOverviewSelect from '../../fields/SubresourceOverviewSelect';
 import FieldAddDropdownButtonConnected from './FieldAddDropdownButton';
 import { AddFieldButton } from './AddFieldButton';
-import { AddSubresourceFieldButton } from '../subresource/AddSubresourceFieldButton';
 
 export const FieldsEditComponent = ({
     defaultTab = 'page',
@@ -90,14 +89,13 @@ export const FieldsEditComponent = ({
                                 subresourceId={subresourceId}
                             />
                         )}
-                        {filter === SCOPE_DOCUMENT && !subresourceId && (
-                            <FieldAddDropdownButtonConnected />
+                        {filter === SCOPE_DOCUMENT && (
+                            <FieldAddDropdownButtonConnected
+                                subresourceId={subresourceId}
+                            />
                         )}
                         {filter !== SCOPE_DOCUMENT && !subresourceId && (
                             <AddFieldButton />
-                        )}
-                        {filter === SCOPE_DOCUMENT && subresourceId && (
-                            <AddSubresourceFieldButton />
                         )}
                         {showAddFromColumnDialog && (
                             <AddFromColumnDialog

@@ -68,6 +68,7 @@ export const DatasetOverviewSelectComponent = ({
                                     gap: 2,
                                 }}
                                 value={field._id}
+                                key={field._id}
                             >
                                 <Box>
                                     {field.label}{' '}
@@ -113,6 +114,7 @@ export const DatasetOverviewSelectComponent = ({
                                     gap: 2,
                                 }}
                                 value={field._id}
+                                key={field._id}
                             >
                                 <Box>
                                     {field.label}{' '}

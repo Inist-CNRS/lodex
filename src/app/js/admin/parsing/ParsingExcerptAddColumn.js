@@ -4,23 +4,10 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import memoize from 'lodash.memoize';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
-
-const styles = {
-    button: memoize(atTop => ({
-        bottom: atTop ? '0' : '-68px',
-        position: 'absolute',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        width: '80%',
-        display: 'flex',
-        zIndex: 1,
-    })),
-};
 
 export const ParsingExcerptAddColumnComponent = ({
     handleAddColumn,
@@ -37,8 +24,17 @@ export const ParsingExcerptAddColumnComponent = ({
         )}`}
         onClick={handleAddColumn}
         color="primary"
-        style={styles.button(atTop)}
         disabled={isFieldsLoading}
+        sx={{
+            bottom: atTop ? '0' : '-50%',
+            transform: atTop ? 'translateY(0)' : 'translateY(50%)',
+            position: 'absolute',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            width: '80%',
+            display: 'flex',
+            zIndex: 1,
+        }}
     >
         {polyglot.t('add_to_publication')}
     </Button>

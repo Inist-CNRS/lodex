@@ -22,7 +22,7 @@ describe('<Admin />', () => {
         const wrapper = shallow(
             <AdminComponent hasUploadedFile p={{ t: () => {} }} />,
         );
-        expect(wrapper.contains(<ParsingResult dataGrid />)).toEqual(true);
+        expect(wrapper.contains(<ParsingResult />)).toEqual(true);
     });
 
     it('should render the Upload when no file uploaded', () => {

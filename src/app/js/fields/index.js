@@ -110,41 +110,81 @@ export const defaultState = {
     invalidProperties: [],
 };
 
-const getDefaultField = (name, index, rest = {}) => ({
+const getTransformers = (name, subresourcePath) => {
+    if (subresourcePath && name) {
+        return [
+            {
+                operation: 'COLUMN',
+                args: [
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value: subresourcePath,
+                    },
+                ],
+            },
+            {
+                operation: 'PARSE',
+            },
+            {
+                operation: 'GET',
+                args: [{ name: 'path', type: 'string', value: name }],
+            },
+        ];
+    }
+    if (name) {
+        return [
+            {
+                operation: 'COLUMN',
+                args: [
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value: name,
+                    },
+                ],
+            },
+        ];
+    }
+    return [];
+};
+
+const getDefaultField = (
+    name,
+    index,
+    scope,
+    subresourceId,
+    subresourcePath,
+) => ({
     label: name || `newField ${index + 1}`,
     name: 'new',
     display: true,
     searchable: false,
-    transformers: name
-        ? [
-              {
-                  operation: 'COLUMN',
-                  args: [
-                      {
-                          name: 'column',
-                          type: 'column',
-                          value: name,
-                      },
-                  ],
-              },
-          ]
-        : [],
+    transformers: getTransformers(name, subresourcePath),
     classes: [],
     position: index,
     overview: 0,
-    ...rest,
+    scope,
+    subresourceId,
 });
 
 export default handleActions(
     {
         ADD_FIELD: (state, { payload }) => {
-            const { name, ...rest } = payload || {};
+            const { name, scope, subresourceId, subresourcePath } =
+                payload || {};
             return {
                 ...state,
                 list: [...state.list, 'new'],
                 byName: {
                     ...state.byName,
-                    new: getDefaultField(name, state.list.length, rest),
+                    new: getDefaultField(
+                        name,
+                        state.list.length,
+                        scope,
+                        subresourceId,
+                        subresourcePath,
+                    ),
                 },
             };
         },
