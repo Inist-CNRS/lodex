@@ -30,7 +30,7 @@ import Warning from '@material-ui/icons/Warning';
 import { loadParsingResult } from '../parsing';
 import { clearPublished } from '../clear';
 import { fromPublication } from '../selectors';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../common/tools/toast';
 import { finishProgress } from '../progress/reducer';
 
 const useStyles = makeStyles({
@@ -117,7 +117,6 @@ const JobProgressComponent = props => {
                 } else {
                     toast(`${polyglot.t('error')} : ${data.message}`, {
                         type: toast.TYPE.ERROR,
-                        autoClose: false,
                     });
                 }
             }
@@ -134,7 +133,6 @@ const JobProgressComponent = props => {
             if (data.message && data.message !== 'cancelled_import') {
                 toast(`${polyglot.t('error')} : ${data.message}`, {
                     type: toast.TYPE.ERROR,
-                    autoClose: false,
                 });
             }
             if (data.message === 'cancelled_import') {

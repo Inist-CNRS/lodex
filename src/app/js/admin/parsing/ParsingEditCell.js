@@ -17,7 +17,7 @@ import {
     MenuItem,
 } from '@material-ui/core';
 import colorsTheme from '../../../custom/colorsTheme';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../common/tools/toast';
 
 const style = {
     container: {
@@ -219,7 +219,6 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
             } catch (e) {
                 toast(polyglot.t(e.message), {
                     type: toast.TYPE.ERROR,
-                    autoClose: false,
                 });
                 throw new Error(polyglot.t(e.message));
             }

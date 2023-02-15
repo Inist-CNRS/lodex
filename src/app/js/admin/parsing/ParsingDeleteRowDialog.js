@@ -13,7 +13,7 @@ import {
     DialogTitle,
     Typography,
 } from '@mui/material';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../common/tools/toast';
 
 export const ParsingDeleteRowDialog = ({
     isOpen,
@@ -40,7 +40,6 @@ export const ParsingDeleteRowDialog = ({
         } else {
             toast.error(polyglot.t('parsing_delete_row_error'), {
                 type: toast.TYPE.ERROR,
-                autoClose: false,
             });
         }
         setIsLoading(false);

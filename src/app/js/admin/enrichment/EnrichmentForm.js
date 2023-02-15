@@ -35,7 +35,7 @@ import {
     updateEnrichment,
 } from '../api/enrichment';
 import { getJobLogs } from '../api/job';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../common/tools/toast';
 import { FINISHED, IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import { ERROR } from '../../../../common/progressStatus';
 import { io } from 'socket.io-client';
@@ -178,7 +178,6 @@ export const EnrichmentForm = ({
         } else {
             toast(`${res.error}`, {
                 type: toast.TYPE.ERROR,
-                autoClose: false,
             });
         }
     };
@@ -197,7 +196,6 @@ export const EnrichmentForm = ({
         } else {
             toast(`${res.error}`, {
                 type: toast.TYPE.ERROR,
-                autoClose: false,
             });
         }
     };
@@ -223,7 +221,6 @@ export const EnrichmentForm = ({
         } else {
             toast(`${res.error}`, {
                 type: toast.TYPE.ERROR,
-                autoClose: false,
             });
         }
         setIsLoading(false);
@@ -249,7 +246,6 @@ export const EnrichmentForm = ({
                 () => {
                     toast(polyglot.t('enrichment_logs_error'), {
                         type: toast.TYPE.ERROR,
-                        autoClose: false,
                     });
                 },
             );

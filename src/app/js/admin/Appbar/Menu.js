@@ -31,7 +31,7 @@ import { fromFields } from '../../sharedSelectors';
 import { importFields } from '../import';
 import ClearDialog from './ClearDialog';
 import jobsApi from '../api/job';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../common/tools/toast';
 import ImportModelDialog from '../ImportModelDialog';
 import ImportHasEnrichmentsDialog from './ImportHasEnrichmentsDialog';
 
@@ -68,7 +68,6 @@ const MenuComponent = ({
         if (importFailed) {
             toast(polyglot.t('import_fields_failed'), {
                 type: toast.TYPE.ERROR,
-                autoClose: false,
             });
         } else if (importSucceeded) {
             toast(polyglot.t('model_imported_with_success'), {

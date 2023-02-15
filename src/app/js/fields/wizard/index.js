@@ -28,7 +28,7 @@ import { URI_FIELD_NAME } from '../../../../common/uris';
 import { TabPanel } from './TabPanel';
 import { reduxForm } from 'redux-form';
 import { withRouter } from 'react-router';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../common/tools/toast';
 import ValuePreviewConnected from './ValuePreview';
 
 const FieldEditionWizardComponent = ({
@@ -52,7 +52,6 @@ const FieldEditionWizardComponent = ({
         if (!isFieldsLoading && !currentEditedField) {
             toast(polyglot.t('no_field', { fieldName }), {
                 type: toast.TYPE.ERROR,
-                autoClose: false,
             });
             history.push(`/display/${filter}`);
         }
@@ -62,7 +61,6 @@ const FieldEditionWizardComponent = ({
         ) {
             toast(polyglot.t('no_field_in_scope', { fieldName, filter }), {
                 type: toast.TYPE.ERROR,
-                autoClose: false,
             });
             history.push(`/display/${filter}`);
         }

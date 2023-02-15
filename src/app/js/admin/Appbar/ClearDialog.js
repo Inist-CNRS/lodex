@@ -23,7 +23,7 @@ import {
 import { fromClear, fromPublication } from '../selectors';
 import { getHost } from '../../../../common/uris';
 import fieldApi from '../api/field';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../common/tools/toast';
 import { loadField } from '../../fields';
 import { loadPublication } from '../publication';
 
@@ -95,7 +95,6 @@ const ClearDialogComponent = props => {
         } else {
             toast(polyglot.t('model_not_cleared'), {
                 type: toast.TYPE.ERROR,
-                autoClose: false,
             });
         }
     };
