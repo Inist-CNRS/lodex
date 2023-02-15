@@ -102,8 +102,9 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
     }
 
     if (
-        transformersOperations ===
-        'COLUMN|PARSE|GET|STRING|REPLACE_REGEX|REPLACE_REGEX|TRIM'
+        transformersOperations.startsWith(
+            'COLUMN|PARSE|GET|STRING|REPLACE_REGEX|REPLACE_REGEX|TRIM',
+        )
     ) {
         return {
             source: 'fromSubresource',
@@ -112,7 +113,7 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
     }
 
     const isFromColumnsForSubRessource =
-        transformersOperations.includes('COLUMN|PARSE|GET') &&
+        transformersOperations.startsWith('COLUMN|PARSE|GET') &&
         isSubresourceField;
 
     if (isFromColumnsForSubRessource) {

@@ -24,14 +24,34 @@ export const isSubresourceTransformation = transformers => {
     );
 };
 
+const isSubResourceTransformationWithColumn = transformers => {
+    const operations = transformers.map(t => t.operation).join('|');
+    return operations.startsWith(
+        'COLUMN|PARSE|GET|STRING|REPLACE_REGEX|REPLACE_REGEX|TRIM',
+    );
+};
+
 export const isArbitraryValue = transformers => {
     return transformers[0]?.operation === 'VALUE';
 };
 
-export const renderTransformer = (
-    transformersLocked,
+const getHiddenTransformers = (
     isSubresourceField,
     isArbitraryValue,
+    isSubResourceTransformationWithColumn,
+) => {
+    if (isSubResourceTransformationWithColumn) {
+        return 7;
+    }
+    if (isSubresourceField && !isArbitraryValue) {
+        return 3;
+    }
+    return 0;
+};
+
+export const renderTransformer = (
+    transformersLocked,
+    hideFirstTransformers,
     polyglot,
 ) => {
     function RenderTransformer(props) {
@@ -46,9 +66,7 @@ export const renderTransformer = (
                     )
                 ) : (
                     <TransformerList
-                        hideFirstTransformers={
-                            isSubresourceField && !isArbitraryValue ? 3 : 0
-                        }
+                        hideFirstTransformers={hideFirstTransformers}
                         {...props}
                     />
                 )}
@@ -82,8 +100,14 @@ export const TabGeneralComponent = ({
     arbitraryMode,
     transformersLocked,
     isArbitraryValue,
+    isSubResourceTransformationWithColumn,
     p: polyglot,
 }) => {
+    const hideFirstTransformers = getHiddenTransformers(
+        !!subresourceUri,
+        isArbitraryValue,
+        isSubResourceTransformationWithColumn,
+    );
     return (
         <>
             <FieldLabelInput />
@@ -97,8 +121,7 @@ export const TabGeneralComponent = ({
                 name="transformers"
                 component={renderTransformer(
                     transformersLocked,
-                    !!subresourceUri,
-                    isArbitraryValue,
+                    hideFirstTransformers,
                     polyglot,
                 )}
                 type="transform"
@@ -124,6 +147,7 @@ TabGeneralComponent.propTypes = {
     arbitraryMode: PropTypes.bool.isRequired,
     transformersLocked: PropTypes.bool,
     isArbitraryValue: PropTypes.bool,
+    isSubResourceTransformationWithColumn: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
 };
 
@@ -136,6 +160,9 @@ const mapStateToProps = state => {
     return {
         transformersLocked: isSubresourceTransformation(transformers || []),
         isArbitraryValue: isArbitraryValue(transformers || []),
+        isSubResourceTransformationWithColumn: isSubResourceTransformationWithColumn(
+            transformers || [],
+        ),
     };
 };
 
