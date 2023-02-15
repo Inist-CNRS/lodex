@@ -28,7 +28,7 @@ import { URI_FIELD_NAME } from '../../../../common/uris';
 import { TabPanel } from './TabPanel';
 import { reduxForm } from 'redux-form';
 import { withRouter } from 'react-router';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../common/tools/toast';
 import ValuePreviewConnected from './ValuePreview';
 
 const FieldEditionWizardComponent = ({

@@ -22,7 +22,7 @@ import {
 import { Typography } from '@material-ui/core';
 
 import * as overview from '../../../../common/overview';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../common/tools/toast';
 import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../../../common/scope';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
 
@@ -111,7 +111,6 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         } else {
             toast(polyglot.t('searchable_error'), {
                 type: toast.TYPE.ERROR,
-                autoClose: 2000,
             });
         }
     };
@@ -124,12 +123,10 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         if (res) {
             toast(polyglot.t('syndication_success'), {
                 type: toast.TYPE.SUCCESS,
-                autoClose: 2000,
             });
         } else {
             toast(polyglot.t('syndication_error'), {
                 type: toast.TYPE.ERROR,
-                autoClose: 2000,
             });
         }
     };
@@ -175,7 +172,6 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         } else {
             toast(polyglot.t('facet_error'), {
                 type: toast.TYPE.ERROR,
-                autoClose: 2000,
             });
             setFacetChecked(oldChecked);
         }

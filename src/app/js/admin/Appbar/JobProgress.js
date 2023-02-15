@@ -30,7 +30,7 @@ import Warning from '@material-ui/icons/Warning';
 import { loadParsingResult } from '../parsing';
 import { clearPublished } from '../clear';
 import { fromPublication } from '../selectors';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../common/tools/toast';
 import { finishProgress } from '../progress/reducer';
 
 const useStyles = makeStyles({

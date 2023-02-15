@@ -35,7 +35,7 @@ import {
     updateEnrichment,
 } from '../api/enrichment';
 import { getJobLogs } from '../api/job';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../common/tools/toast';
 import { FINISHED, IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import { ERROR } from '../../../../common/progressStatus';
 import { io } from 'socket.io-client';
