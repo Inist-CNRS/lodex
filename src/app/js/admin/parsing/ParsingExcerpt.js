@@ -156,7 +156,8 @@ export const ParsingExcerptComponent = ({
                                                     name,
                                                     scope: filter,
                                                     subresourceId,
-                                                    subresource,
+                                                    subresourcePath:
+                                                        subresource?.path,
                                                 });
                                             }}
                                             atTop={total < 3}

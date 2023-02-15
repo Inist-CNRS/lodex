@@ -21,7 +21,6 @@ import { fromFields } from '../../sharedSelectors';
 import { addField } from '../../fields';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
-import { useParams } from 'react-router';
 
 const options = [
     { label: 'new_field', icon: <Add /> },
@@ -33,10 +32,10 @@ export const FieldAddDropdownButtonComponent = ({
     onAddNewField,
     onShowExistingColumns,
     isFieldsLoading,
+    subresourceId,
     p: polyglot,
 }) => {
     const [open, setOpen] = React.useState(false);
-    const { subresourceId } = useParams();
     const anchorRef = React.useRef();
 
     const handleClick = index => {
@@ -160,6 +159,7 @@ FieldAddDropdownButtonComponent.propTypes = {
     onShowExistingColumns: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     isFieldsLoading: PropTypes.bool,
+    subresourceId: PropTypes.string,
 };
 
 export default compose(

@@ -90,7 +90,9 @@ export const FieldsEditComponent = ({
                             />
                         )}
                         {filter === SCOPE_DOCUMENT && (
-                            <FieldAddDropdownButtonConnected />
+                            <FieldAddDropdownButtonConnected
+                                subresourceId={subresourceId}
+                            />
                         )}
                         {filter !== SCOPE_DOCUMENT && !subresourceId && (
                             <AddFieldButton />

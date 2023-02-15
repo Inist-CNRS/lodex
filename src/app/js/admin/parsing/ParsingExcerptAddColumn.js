@@ -26,7 +26,8 @@ export const ParsingExcerptAddColumnComponent = ({
         color="primary"
         disabled={isFieldsLoading}
         sx={{
-            bottom: atTop ? '0' : '-68px',
+            bottom: atTop ? '0' : '-50%',
+            transform: atTop ? 'translateY(0)' : 'translateY(50%)',
             position: 'absolute',
             marginLeft: 'auto',
             marginRight: 'auto',

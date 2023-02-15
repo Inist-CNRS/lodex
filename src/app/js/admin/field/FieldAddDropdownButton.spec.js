@@ -3,20 +3,9 @@ import { render, fireEvent, act } from '@testing-library/react';
 
 import { FieldAddDropdownButtonComponent as FieldAddDropdownButton } from './FieldAddDropdownButton';
 
-let mockedParams = {
-    subresourceId: undefined,
-};
-jest.mock('react-router', () => ({
-    ...jest.requireActual('react-router'),
-    useParams: () => mockedParams,
-}));
-
 describe('<FieldAddDropdownButton />', () => {
     let mockAddField, mockShowAddFromColumn, polyglot;
     beforeEach(() => {
-        mockedParams = {
-            subresourceId: undefined,
-        };
         mockAddField = jest.fn();
         mockShowAddFromColumn = jest.fn();
         polyglot = {
@@ -85,14 +74,12 @@ describe('<FieldAddDropdownButton />', () => {
     });
 
     it('should call addField with subresourceId on click if subresourceId is defined', () => {
-        mockedParams = {
-            subresourceId: '1',
-        };
         const { getByText } = render(
             <FieldAddDropdownButton
                 onAddNewField={mockAddField}
                 onShowExistingColumns={mockShowAddFromColumn}
                 p={polyglot}
+                subresourceId="1"
             />,
         );
 
@@ -106,14 +93,12 @@ describe('<FieldAddDropdownButton />', () => {
     });
 
     it('should call addField with subresourceId on click on blank field dropdown if subresourceId is defined', () => {
-        mockedParams = {
-            subresourceId: '1',
-        };
         const { getByTestId, getByText } = render(
             <FieldAddDropdownButton
                 onAddNewField={mockAddField}
                 onShowExistingColumns={mockShowAddFromColumn}
                 p={polyglot}
+                subresourceId="1"
             />,
         );
 

@@ -110,8 +110,8 @@ export const defaultState = {
     invalidProperties: [],
 };
 
-const getTransformers = (name, subresource) => {
-    if (subresource && name) {
+const getTransformers = (name, subresourcePath) => {
+    if (subresourcePath && name) {
         return [
             {
                 operation: 'COLUMN',
@@ -119,7 +119,7 @@ const getTransformers = (name, subresource) => {
                     {
                         name: 'column',
                         type: 'column',
-                        value: subresource.path,
+                        value: subresourcePath,
                     },
                 ],
             },
@@ -149,22 +149,30 @@ const getTransformers = (name, subresource) => {
     return [];
 };
 
-const getDefaultField = (name, subresource, index, rest = {}) => ({
+const getDefaultField = (
+    name,
+    index,
+    scope,
+    subresourceId,
+    subresourcePath,
+) => ({
     label: name || `newField ${index + 1}`,
     name: 'new',
     display: true,
     searchable: false,
-    transformers: getTransformers(name, subresource),
+    transformers: getTransformers(name, subresourcePath),
     classes: [],
     position: index,
     overview: 0,
-    ...rest,
+    scope,
+    subresourceId,
 });
 
 export default handleActions(
     {
         ADD_FIELD: (state, { payload }) => {
-            const { name, subresource, ...rest } = payload || {};
+            const { name, scope, subresourceId, subresourcePath } =
+                payload || {};
             return {
                 ...state,
                 list: [...state.list, 'new'],
@@ -172,9 +180,10 @@ export default handleActions(
                     ...state.byName,
                     new: getDefaultField(
                         name,
-                        subresource,
                         state.list.length,
-                        rest,
+                        scope,
+                        subresourceId,
+                        subresourcePath,
                     ),
                 },
             };

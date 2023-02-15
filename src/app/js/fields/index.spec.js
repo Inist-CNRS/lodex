@@ -143,7 +143,7 @@ describe('field reducer', () => {
                 },
             });
         });
-        it('should handle the ADD_FIELD action with name and subresource', () => {
+        it('should handle the ADD_FIELD action with name and subresourcePath', () => {
             const state = reducer(
                 {
                     byName: {
@@ -156,12 +156,7 @@ describe('field reducer', () => {
                     name: 'target_col',
                     scope: SCOPE_DOCUMENT,
                     subresourceId: 'subresourceId',
-                    subresource: {
-                        _id: 'subresourceId',
-                        name: 'subresourceName',
-                        path: 'subresourcePath',
-                        identifier: 'subresourceIdentifier',
-                    },
+                    subresourcePath: 'subresourcePath',
                 }),
             );
 

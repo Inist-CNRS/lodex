@@ -15,13 +15,14 @@ import ParsingExcerpt from '../parsing/ParsingExcerpt';
 
 export const AddFromColumnDialogComponent = ({ p: polyglot, onClose }) => {
     return (
-        <Dialog open onClose={onClose} maxWidth="xl">
+        <Dialog
+            open
+            onClose={onClose}
+            maxWidth="xl"
+            PaperProps={{ sx: { height: '90vh' } }}
+        >
             <DialogTitle> {polyglot.t('a_column')}</DialogTitle>
-            <DialogContent
-                sx={{
-                    height: 'calc(90vh - 64px - 52px)',
-                }}
-            >
+            <DialogContent>
                 <Box display="flex" p={2} width="1000px">
                     <ParsingExcerpt showAddFromColumn onAddField={onClose} />
                 </Box>
