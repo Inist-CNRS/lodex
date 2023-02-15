@@ -274,7 +274,7 @@ describe('<ParsingExcerpt />', () => {
         expect(wrapper.find(ParsingExcerptAddColumn).exists()).toBe(true);
     });
 
-    it('should call handleAddColumn without subresource when ParsingExcerptAddColumn is clicked and this not a subresource', () => {
+    it('should call handleAddColumn without subresourcePath when ParsingExcerptAddColumn is clicked and this not a subresource', () => {
         mockedParams = {
             filter: 'document',
             subresourceId: undefined,
@@ -302,11 +302,11 @@ describe('<ParsingExcerpt />', () => {
             name: 'foo',
             scope: 'document',
             subresourceId: undefined,
-            subresource: undefined,
+            subresourcePath: undefined,
         });
     });
 
-    it('should call handleAddColumn with subresource when ParsingExcerptAddColumn is clicked and this is a subresource', () => {
+    it('should call handleAddColumn with subresourcePath when ParsingExcerptAddColumn is clicked and this is a subresource', () => {
         mockedParams = {
             filter: 'document',
             subresourceId: '1234',
@@ -357,12 +357,7 @@ describe('<ParsingExcerpt />', () => {
             name: 'column1',
             scope: 'document',
             subresourceId: '1234',
-            subresource: {
-                _id: '1234',
-                name: 'subresource1',
-                identifier: 'identifier',
-                path: 'subresourcePath',
-            },
+            subresourcePath: 'subresourcePath',
         });
     });
 });
