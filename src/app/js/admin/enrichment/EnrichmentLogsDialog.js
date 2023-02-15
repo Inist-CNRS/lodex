@@ -7,6 +7,7 @@ import { FixedSizeList } from 'react-window';
 import { useMeasure } from 'react-use';
 import {
     Box,
+    Button,
     Dialog,
     DialogActions,
     DialogContent,
@@ -87,6 +88,16 @@ export const EnrichmentLogsDialog = ({
 }) => {
     const [logsContainerRef, { width }] = useMeasure();
 
+    const handleDownloadLogs = () => {
+        const file = new Blob(logs, { type: 'text/plain' });
+        const element = document.createElement('a');
+        element.href = URL.createObjectURL(file);
+        element.download = 'enrichment-logs-' + Date.now() + '.log';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    };
+
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
             <DialogTitle>{polyglot.t('enrichment_logs')}</DialogTitle>
@@ -115,6 +126,13 @@ export const EnrichmentLogsDialog = ({
                     <CancelButton onClick={handleClose}>
                         {polyglot.t('close')}
                     </CancelButton>
+                    <Button
+                        onClick={handleDownloadLogs}
+                        color="primary"
+                        variant="contained"
+                    >
+                        {polyglot.t('download_logs')}
+                    </Button>
                 </Box>
             </DialogActions>
         </Dialog>
