@@ -3,32 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
-import { Table, TableBody, TableHead, TableRow } from '@material-ui/core';
+import { Table, TableBody, TableHead, TableRow } from '@mui/material';
 
 import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
-import { fromEnrichments } from '../selectors';
+import { fromEnrichments, fromParsing, fromSubresources } from '../selectors';
 import colorsTheme from '../../../custom/colorsTheme';
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import { addField } from '../../fields';
 import { useParams } from 'react-router';
-
-const styles = {
-    table: {
-        display: 'block',
-        overflowX: 'auto',
-        width: 'auto',
-        minWidth: '100%',
-        border: '4px solid rgb(95, 99, 104, 0.1)',
-    },
-    body: {
-        position: 'relative',
-    },
-    enrichedColumn: {
-        backgroundColor: colorsTheme.green.light,
-    },
-};
+import parseValue from '../../../../common/tools/parseValue';
 
 export const getRowStyle = (index, total) => {
     let opacity = 1;
@@ -49,7 +34,11 @@ export const getEnrichmentsNames = enrichments => {
 };
 
 export const getColumnStyle = (enrichmentsNames, column) => {
-    return enrichmentsNames?.includes(column) ? styles.enrichedColumn : {};
+    return enrichmentsNames?.includes(column)
+        ? {
+              backgroundColor: colorsTheme.green.light,
+          }
+        : {};
 };
 
 const formatValue = value => {
@@ -63,12 +52,36 @@ export const ParsingExcerptComponent = ({
     showAddFromColumn,
     onAddField,
     enrichments,
+    maxLines,
+    subresources,
 }) => {
     const enrichmentsNames = useMemo(() => getEnrichmentsNames(enrichments), [
         enrichments,
     ]);
 
-    const { filter } = useParams();
+    const { filter, subresourceId } = useParams();
+
+    const subresource = subresources.find(
+        subresource => subresource._id === subresourceId,
+    );
+
+    const subresourceData = parseValue(lines[0][subresource?.path] || '');
+
+    const displayedLines = subresourceId
+        ? lines
+              .map(line => parseValue(line[subresource?.path]))
+              .slice(0, maxLines)
+        : lines.slice(0, maxLines);
+
+    const displayedColumns = subresourceId
+        ? [
+              ...Object.keys(
+                  (Array.isArray(subresourceData)
+                      ? subresourceData[0]
+                      : subresourceData) || {},
+              ),
+          ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+        : columns;
 
     const checkIsEnrichmentLoading = column => {
         return (
@@ -77,27 +90,39 @@ export const ParsingExcerptComponent = ({
         );
     };
 
-    const total = lines.length;
+    const total = displayedLines.length;
     return (
-        <Table style={styles.table}>
+        <Table
+            sx={{
+                display: 'block',
+                overflowX: 'auto',
+                width: 'auto',
+                minWidth: '100%',
+                border: '4px solid rgb(95, 99, 104, 0.1)',
+            }}
+        >
             <TableHead>
                 <TableRow>
-                    {columns.map(column => (
+                    {displayedColumns.map(column => (
                         <ParsingExcerptHeaderColumn
                             key={`header_${column}`}
                             column={column}
-                            style={getColumnStyle(enrichmentsNames, column)}
+                            sx={getColumnStyle(enrichmentsNames, column)}
                         />
                     ))}
                 </TableRow>
             </TableHead>
-            <TableBody style={styles.body}>
-                {lines.map((line, index) => (
+            <TableBody
+                sx={{
+                    position: 'relative',
+                }}
+            >
+                {displayedLines.map((line, index) => (
                     <TableRow
-                        key={`${line._id}_data_row`}
+                        key={`${line._id || index}_data_row`}
                         style={getRowStyle(index, total)}
                     >
-                        {columns.map(column => {
+                        {displayedColumns.map(column => {
                             const showAddColumnButton =
                                 showAddFromColumn &&
                                 (index === total - 3 ||
@@ -105,9 +130,15 @@ export const ParsingExcerptComponent = ({
 
                             return (
                                 <ParsingExcerptColumn
-                                    key={`${column}_${line._id}`}
-                                    value={formatValue(line[column])}
-                                    style={getColumnStyle(
+                                    key={`${column}_${line._id || index}`}
+                                    value={formatValue(
+                                        Array.isArray(line)
+                                            ? line.map(
+                                                  lineItem => lineItem[column],
+                                              )
+                                            : line[column],
+                                    )}
+                                    sx={getColumnStyle(
                                         enrichmentsNames,
                                         column,
                                     )}
@@ -121,7 +152,13 @@ export const ParsingExcerptComponent = ({
                                             name={column}
                                             onAddColumn={name => {
                                                 onAddField && onAddField();
-                                                handleAddColumn(name, filter);
+                                                handleAddColumn({
+                                                    name,
+                                                    scope: filter,
+                                                    subresourceId,
+                                                    subresourcePath:
+                                                        subresource?.path,
+                                                });
                                             }}
                                             atTop={total < 3}
                                         />
@@ -143,14 +180,23 @@ ParsingExcerptComponent.propTypes = {
     handleAddColumn: PropTypes.func.isRequired,
     showAddFromColumn: PropTypes.bool.isRequired,
     onAddField: PropTypes.func,
+    maxLines: PropTypes.number,
+    subresources: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
+ParsingExcerptComponent.defaultProps = {
+    maxLines: 6,
 };
 
 const mapStateToProps = state => ({
     enrichments: fromEnrichments.enrichments(state),
+    columns: fromParsing.getParsedExcerptColumns(state),
+    lines: fromParsing.getExcerptLines(state),
+    subresources: fromSubresources.getSubresources(state),
 });
 
 const mapDispatchToProps = {
-    handleAddColumn: (name, filter) => addField({ name, scope: filter }),
+    handleAddColumn: addField,
 };
 
 export default compose(

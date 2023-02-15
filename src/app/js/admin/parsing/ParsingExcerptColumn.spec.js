@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { TableCell, CircularProgress } from '@material-ui/core';
+import { TableCell, CircularProgress } from '@mui/material';
 
 import { getShortText } from '../../lib/longTexts';
 import { ParsingExcerptColumnComponent as ParsingExcerptColumn } from './ParsingExcerptColumn';

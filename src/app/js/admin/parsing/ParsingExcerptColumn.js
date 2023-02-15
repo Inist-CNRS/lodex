@@ -1,32 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import { CircularProgress, TableCell } from '@material-ui/core';
+import { CircularProgress, TableCell } from '@mui/material';
 import { isLongText, getShortText } from '../../lib/longTexts';
-
-const styles = {
-    col: {
-        position: 'relative',
-        minWidth: '10rem',
-        overflow: 'visible',
-        height: '5rem',
-    },
-};
 
 export const ParsingExcerptColumnComponent = ({
     children,
-    style,
+    sx,
     value,
     isEnrichmentLoading,
 }) => (
-    <TableCell style={{ ...styles.col, ...style }} title={value}>
+    <TableCell
+        sx={[
+            {
+                position: 'relative',
+                minWidth: '10rem',
+                overflow: 'visible',
+                height: '6rem',
+            },
+            ...(Array.isArray(sx) ? sx : [sx]),
+        ]}
+        title={value}
+    >
         {isEnrichmentLoading && value === undefined ? (
             <>
-                <CircularProgress
-                    variant="indeterminate"
-                    style={styles.progress}
-                    size={20}
-                />
+                <CircularProgress variant="indeterminate" size={20} />
             </>
         ) : (
             <>
@@ -39,7 +37,17 @@ export const ParsingExcerptColumnComponent = ({
 
 ParsingExcerptColumnComponent.propTypes = {
     children: PropTypes.node,
-    style: PropTypes.object,
+    sx: PropTypes.oneOfType([
+        PropTypes.arrayOf(
+            PropTypes.oneOfType([
+                PropTypes.func,
+                PropTypes.object,
+                PropTypes.bool,
+            ]),
+        ),
+        PropTypes.func,
+        PropTypes.object,
+    ]),
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     isEnrichmentLoading: PropTypes.bool,
 };

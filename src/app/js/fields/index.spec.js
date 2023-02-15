@@ -106,6 +106,105 @@ describe('field reducer', () => {
                 },
             });
         });
+        it('should handle the ADD_FIELD action with no name and subresourceId', () => {
+            const state = reducer(
+                {
+                    byName: {
+                        name1: { name: 'name1', label: 'foo' },
+                        name2: { name: 'name2', label: 'bar' },
+                    },
+                    list: ['name1', 'name2'],
+                },
+                addField({
+                    name: undefined,
+                    scope: SCOPE_DOCUMENT,
+                    subresourceId: 'subresourceId',
+                }),
+            );
+
+            expect(state).toEqual({
+                ...state,
+                list: ['name1', 'name2', 'new'],
+                byName: {
+                    name2: { name: 'name2', label: 'bar' },
+                    name1: { name: 'name1', label: 'foo' },
+                    new: {
+                        label: 'newField 3',
+                        scope: SCOPE_DOCUMENT,
+                        name: 'new',
+                        display: true,
+                        searchable: false,
+                        transformers: [],
+                        position: 2,
+                        overview: 0,
+                        classes: [],
+                        subresourceId: 'subresourceId',
+                    },
+                },
+            });
+        });
+        it('should handle the ADD_FIELD action with name and subresourcePath', () => {
+            const state = reducer(
+                {
+                    byName: {
+                        name1: { name: 'name1', label: 'foo' },
+                        name2: { name: 'name2', label: 'bar' },
+                    },
+                    list: ['name1', 'name2'],
+                },
+                addField({
+                    name: 'target_col',
+                    scope: SCOPE_DOCUMENT,
+                    subresourceId: 'subresourceId',
+                    subresourcePath: 'subresourcePath',
+                }),
+            );
+
+            expect(state).toEqual({
+                ...state,
+                list: ['name1', 'name2', 'new'],
+                byName: {
+                    name2: { name: 'name2', label: 'bar' },
+                    name1: { name: 'name1', label: 'foo' },
+                    new: {
+                        label: 'target_col',
+                        scope: SCOPE_DOCUMENT,
+                        name: 'new',
+                        display: true,
+                        searchable: false,
+                        transformers: [
+                            {
+                                operation: 'COLUMN',
+                                args: [
+                                    {
+                                        name: 'column',
+                                        type: 'column',
+                                        value: 'subresourcePath',
+                                    },
+                                ],
+                            },
+                            {
+                                operation: 'PARSE',
+                            },
+                            {
+                                operation: 'GET',
+                                args: [
+                                    {
+                                        name: 'path',
+                                        type: 'string',
+                                        value: 'target_col',
+                                    },
+                                ],
+                            },
+                        ],
+                        position: 2,
+                        overview: 0,
+                        classes: [],
+                        subresourceId: 'subresourceId',
+                    },
+                },
+            });
+        });
         it('should handle the LOAD_PUBLICATION action', () => {
             const state = reducer(undefined, loadPublication());
             expect(state).toEqual({

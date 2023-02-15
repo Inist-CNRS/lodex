@@ -1,34 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import { TableCell } from '@material-ui/core';
+import { TableCell } from '@mui/material';
 import { isLongText, getShortText } from '../../lib/longTexts';
 
-const styles = {
-    col: {
-        position: 'relative',
-        minWidth: '10rem',
-        overflow: 'visible',
-        height: '6rem',
-    },
-};
-
-export const ParsingExcerptHeaderColumnComponent = ({ style, column }) =>
-    isLongText(column) ? (
-        <TableCell style={{ ...styles.col, ...style }} title={column}>
-            {getShortText(column)}
-        </TableCell>
-    ) : (
-        <TableCell style={{ ...styles.col, ...style }}>{column}</TableCell>
-    );
+export const ParsingExcerptHeaderColumnComponent = ({ sx, column }) => (
+    <TableCell
+        sx={[
+            {
+                position: 'relative',
+                minWidth: '10rem',
+                overflow: 'visible',
+                height: '6rem',
+            },
+            ...(Array.isArray(sx) ? sx : [sx]),
+        ]}
+        title={isLongText(column) ? column : undefined}
+    >
+        {isLongText(column) ? getShortText(column) : column}
+    </TableCell>
+);
 
 ParsingExcerptHeaderColumnComponent.propTypes = {
-    style: PropTypes.object,
     column: PropTypes.string.isRequired,
+    sx: PropTypes.oneOfType([
+        PropTypes.arrayOf(
+            PropTypes.oneOfType([
+                PropTypes.func,
+                PropTypes.object,
+                PropTypes.bool,
+            ]),
+        ),
+        PropTypes.func,
+        PropTypes.object,
+    ]),
 };
 
 ParsingExcerptHeaderColumnComponent.defaultProps = {
-    style: null,
+    sx: null,
 };
 
 export default pure(ParsingExcerptHeaderColumnComponent);

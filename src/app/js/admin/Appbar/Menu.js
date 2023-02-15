@@ -31,7 +31,7 @@ import { fromFields } from '../../sharedSelectors';
 import { importFields } from '../import';
 import ClearDialog from './ClearDialog';
 import jobsApi from '../api/job';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../common/tools/toast';
 import ImportModelDialog from '../ImportModelDialog';
 import ImportHasEnrichmentsDialog from './ImportHasEnrichmentsDialog';
 

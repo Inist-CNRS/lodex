@@ -28,7 +28,7 @@ import { loadField, changePositions, saveFieldFromData } from '../fields';
 import FieldInternalIcon from './FieldInternalIcon';
 
 import fieldApi from '../admin/api/field';
-import { toast } from 'react-toastify';
+import { toast } from '../../../common/tools/toast';
 import { useLocation, useHistory } from 'react-router';
 import { IconButton, Tooltip } from '@mui/material';
 import { SCOPE_DOCUMENT } from '../../../common/scope';

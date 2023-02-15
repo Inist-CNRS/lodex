@@ -17,7 +17,7 @@ import {
     MenuItem,
 } from '@material-ui/core';
 import colorsTheme from '../../../custom/colorsTheme';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../common/tools/toast';
 import CancelButton from '../../lib/components/CancelButton';
 
 const style = {

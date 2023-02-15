@@ -24,7 +24,7 @@ import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
 import colorsTheme from '../../../custom/colorsTheme';
 import PopupConfirmUpload from './PopupConfirmUpload';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../common/tools/toast';
 
 const useStyles = makeStyles({
     button: {
