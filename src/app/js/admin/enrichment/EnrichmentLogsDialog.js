@@ -95,6 +95,7 @@ export const EnrichmentLogsDialog = ({
         element.download = 'enrichment-logs-' + Date.now() + '.log';
         document.body.appendChild(element);
         element.click();
+        document.body.removeChild(element);
     };
 
     return (
