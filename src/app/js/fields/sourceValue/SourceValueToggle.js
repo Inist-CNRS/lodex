@@ -190,6 +190,27 @@ export const SourceValueToggle = ({
         setValue(currentValue);
     }, [currentTransformers]);
 
+    const updateDefaultValueTransformers = (
+        currentSource,
+        currentTransformers,
+        newTransformers,
+    ) => {
+        let defaultTransformersLength = 0;
+        if (currentSource === 'arbitrary' || currentSource === 'fromColumns') {
+            defaultTransformersLength = 1;
+        }
+        if (currentSource === 'fromColumnsForSubRessource') {
+            defaultTransformersLength = 3;
+        }
+        if (currentSource === 'fromSubresource') {
+            defaultTransformersLength = 7;
+        }
+        const nonDefaultTransformers = currentTransformers.slice(
+            defaultTransformersLength,
+        );
+        updateTransformers([...newTransformers, ...nonDefaultTransformers]);
+    };
+
     const handleChange = (event, newSource) => {
         if (!newSource) {
             return;
@@ -256,12 +277,18 @@ export const SourceValueToggle = ({
                   ]
                 : [];
 
+            // if the new source is fromSubresource, we can not keep other transformers
+            // because we can not add other transformers to a field from a subresource without a specified column
             updateTransformers(transformers);
             return;
         }
 
         const transformersFromStatus = TRANSFORMERS_FORM_STATUS.get(newSource);
-        updateTransformers(transformersFromStatus);
+        updateDefaultValueTransformers(
+            source,
+            currentTransformers,
+            transformersFromStatus,
+        );
     };
 
     return (
@@ -310,21 +337,39 @@ export const SourceValueToggle = ({
 
             {source === 'arbitrary' && (
                 <SourceValueArbitrary
-                    updateTransformers={updateTransformers}
+                    updateDefaultValueTransformers={newTransformers =>
+                        updateDefaultValueTransformers(
+                            source,
+                            currentTransformers,
+                            newTransformers,
+                        )
+                    }
                     value={value}
                 />
             )}
 
             {source === 'fromColumns' && (
                 <SourceValueFromColumns
-                    updateTransformers={updateTransformers}
+                    updateDefaultValueTransformers={newTransformers =>
+                        updateDefaultValueTransformers(
+                            source,
+                            currentTransformers,
+                            newTransformers,
+                        )
+                    }
                     value={value}
                 />
             )}
 
             {source === 'fromColumnsForSubRessource' && (
                 <SourceValueFromColumnsForSubResource
-                    updateTransformers={updateTransformers}
+                    updateDefaultValueTransformers={newTransformers =>
+                        updateDefaultValueTransformers(
+                            source,
+                            currentTransformers,
+                            newTransformers,
+                        )
+                    }
                     value={value}
                     selectedSubresourceUri={selectedSubresourceUri}
                 />
@@ -332,7 +377,13 @@ export const SourceValueToggle = ({
 
             {source === 'fromSubresource' && (
                 <SourceValueFromSubResource
-                    updateTransformers={updateTransformers}
+                    updateDefaultValueTransformers={newTransformers =>
+                        updateDefaultValueTransformers(
+                            source,
+                            currentTransformers,
+                            newTransformers,
+                        )
+                    }
                     value={value}
                 />
             )}

@@ -7,7 +7,11 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { Box, Button, TextField } from '@mui/material';
 
-const SourceValueArbitrary = ({ updateTransformers, value, p: polyglot }) => {
+const SourceValueArbitrary = ({
+    updateDefaultValueTransformers,
+    value,
+    p: polyglot,
+}) => {
     const [openRoutineCatalog, setOpenRoutineCatalog] = React.useState(false);
     const handleChange = event => {
         const transformers = [
@@ -23,7 +27,7 @@ const SourceValueArbitrary = ({ updateTransformers, value, p: polyglot }) => {
             },
         ];
 
-        updateTransformers(transformers);
+        updateDefaultValueTransformers(transformers);
     };
 
     return (
@@ -58,7 +62,7 @@ const SourceValueArbitrary = ({ updateTransformers, value, p: polyglot }) => {
 
 SourceValueArbitrary.propTypes = {
     p: polyglotPropTypes.isRequired,
-    updateTransformers: PropTypes.func.isRequired,
+    updateDefaultValueTransformers: PropTypes.func.isRequired,
     value: PropTypes.string,
 };
 

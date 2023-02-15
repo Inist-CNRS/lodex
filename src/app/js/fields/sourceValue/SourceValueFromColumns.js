@@ -10,7 +10,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 const SourceValueFromColumns = ({
     datasetFields,
     p: polyglot,
-    updateTransformers,
+    updateDefaultValueTransformers,
     value,
 }) => {
     const [autocompleteValue, setAutocompleteValue] = React.useState(value);
@@ -20,7 +20,7 @@ const SourceValueFromColumns = ({
 
     const handleChange = (event, value) => {
         setAutocompleteValue(value);
-        updateTransformers([
+        updateDefaultValueTransformers([
             {
                 operation: value.length > 1 ? 'CONCAT' : 'COLUMN',
                 args:
@@ -65,7 +65,7 @@ const mapStateToProps = state => ({
 SourceValueFromColumns.propTypes = {
     datasetFields: PropTypes.arrayOf(PropTypes.string).isRequired,
     p: polyglotPropTypes.isRequired,
-    updateTransformers: PropTypes.func.isRequired,
+    updateDefaultValueTransformers: PropTypes.func.isRequired,
     value: PropTypes.array,
 };
 
