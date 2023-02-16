@@ -192,9 +192,6 @@ describe('Dataset Publication', () => {
 
             adminNavigation.goToDisplay();
             cy.get('.sidebar')
-                .contains('Resources')
-                .click();
-            cy.get('.sidebar')
                 .contains('Main resource')
                 .click();
 
@@ -335,9 +332,6 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
             adminNavigation.goToDisplay();
             cy.get('.sidebar')
-                .contains('Resources')
-                .click();
-            cy.get('.sidebar')
                 .contains('Main resource')
                 .click();
 
@@ -353,9 +347,6 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
             adminNavigation.goToDisplay();
 
-            cy.get('.sidebar')
-                .contains('Resources')
-                .click();
             cy.get('.sidebar')
                 .contains('Main resource')
                 .click();
@@ -382,9 +373,6 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/concat.json');
 
             adminNavigation.goToDisplay();
-            cy.get('.sidebar')
-                .contains('Resources')
-                .click();
             cy.get('.sidebar')
                 .contains('Main resource')
                 .click();

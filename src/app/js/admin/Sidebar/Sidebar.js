@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import MenuList from '@mui/material/MenuList';
 import Drawer from '@mui/material/Drawer';
@@ -6,7 +6,6 @@ import GridOnIcon from '@mui/icons-material/GridOn';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HomeIcon from '@mui/icons-material/Home';
-import SourceIcon from '@mui/icons-material/Source';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import ArticleIcon from '@mui/icons-material/Article';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
@@ -25,7 +24,6 @@ import {
     SCOPE_GRAPHIC,
 } from '../../../../common/scope';
 import { MenuItemLink } from './MenuItemLink';
-import { SubMenu } from './SubMenu';
 
 const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;
@@ -34,12 +32,6 @@ const ACTIVE_BORDER_WIDTH = 3;
 const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
     const matchDisplayRoute = useRouteMatch('/display');
     const matchDataRoute = useRouteMatch('/data');
-    const matchDocumentRoute = useRouteMatch(`/display/${SCOPE_DOCUMENT}`);
-    const matchMainResourceRoute = useRouteMatch(
-        `/display/${SCOPE_DOCUMENT}/main`,
-    );
-
-    const [menuResourceOpen, setMenuResourceOpen] = useState(false);
 
     const { open } = useContext(SidebarContext);
 
@@ -81,29 +73,20 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
             />
         ),
         matchDisplayRoute && (
-            <SubMenu
-                handleToggle={() => setMenuResourceOpen(!menuResourceOpen)}
-                isOpen={menuResourceOpen}
-                name={polyglot.t('resource_pages')}
-                icon={<SourceIcon />}
-                key="subresource-menu"
-            >
-                <MenuItemLink
-                    to={`/display/${SCOPE_DOCUMENT}/main`}
-                    primaryText={polyglot.t('main_resource')}
-                    leftIcon={<ArticleIcon />}
-                    key="display-main-resource"
-                />
-                <MenuItemLink
-                    to={`/display/${SCOPE_DOCUMENT}/subresource`}
-                    primaryText={polyglot.t('subresources')}
-                    leftIcon={<DocumentScannerIcon />}
-                    isActive={() =>
-                        matchDocumentRoute && !matchMainResourceRoute
-                    }
-                    key="display-subresources"
-                />
-            </SubMenu>
+            <MenuItemLink
+                to={`/display/${SCOPE_DOCUMENT}/main`}
+                primaryText={polyglot.t('main_resource')}
+                leftIcon={<ArticleIcon />}
+                key="display-main-resource"
+            />
+        ),
+        matchDisplayRoute && (
+            <MenuItemLink
+                to={`/display/${SCOPE_DOCUMENT}/subresource`}
+                primaryText={polyglot.t('subresources')}
+                leftIcon={<DocumentScannerIcon />}
+                key="display-subresources"
+            />
         ),
         matchDisplayRoute && (
             <MenuItemLink
@@ -148,6 +131,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                         borderLeft: `${ACTIVE_BORDER_WIDTH}px solid transparent`,
                         '&.active': {
                             borderLeft: `${ACTIVE_BORDER_WIDTH}px solid ${colorsTheme.green.primary}`,
+                            backgroundColor: colorsTheme.black.dark,
                         },
                         '&:hover': {
                             transition: 'background-color ease-in-out 400ms',
