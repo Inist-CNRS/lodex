@@ -225,9 +225,6 @@ describe('Dataset Publication', () => {
 
             adminNavigation.goToDisplay();
             cy.get('.sidebar')
-                .contains('Resources')
-                .click();
-            cy.get('.sidebar')
                 .contains('Main resource')
                 .click();
 
@@ -275,9 +272,6 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/simple.json');
 
             adminNavigation.goToDisplay();
-            cy.get('.sidebar')
-                .contains('Resources')
-                .click();
             cy.get('.sidebar')
                 .contains('Main resource')
                 .click();
