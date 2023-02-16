@@ -57,7 +57,7 @@ const getHiddenTransformers = source => {
     return 0;
 };
 
-const TransformerList = ({
+export const TransformerListComponent = ({
     fields,
     meta: { touched, error },
     type,
@@ -217,7 +217,7 @@ const TransformerList = ({
     );
 };
 
-TransformerList.propTypes = {
+TransformerListComponent.propTypes = {
     fields: PropTypes.shape({
         map: PropTypes.func.isRequired,
         get: PropTypes.func.isRequired,
@@ -237,8 +237,8 @@ TransformerList.propTypes = {
     isSubresourceField: PropTypes.bool,
 };
 
-TransformerList.defaultProps = {
+TransformerListComponent.defaultProps = {
     type: null,
 };
 
-export default compose(translate, pure)(TransformerList);
+export default compose(translate, pure)(TransformerListComponent);
