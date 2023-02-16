@@ -29,6 +29,7 @@ import {
     hasRegistredTransformer,
 } from '../../../../common/transformers';
 import TransformerRemoveAllDialog from './TransformerRemoveAllDialog';
+import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../sourceValue/SourceValueToggle';
 
 const SHOW_TRANSFORMER = memoize(
     (operation, type) =>
@@ -43,17 +44,38 @@ const SHOW_TRANSFORMER = memoize(
     (operation, type) => `${operation}_${type}`,
 );
 
+const getHiddenTransformers = source => {
+    if (source === 'fromSubresource') {
+        return 7;
+    }
+    if (source === 'fromColumnsForSubRessource') {
+        return 3;
+    }
+    if (source === 'fromColumns' || source === 'arbitrary') {
+        return 1;
+    }
+    return 0;
+};
+
 const TransformerList = ({
     fields,
     meta: { touched, error },
     type,
-    hideFirstTransformers,
-    transformersLocked,
+    isSubresourceField,
     p: polyglot,
 }) => {
     const [fieldsToDrag, setFieldsToDrag] = useState(
         fields.map(fieldName => fieldName),
     );
+
+    const { source, value } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(
+        fields.getAll(),
+        isSubresourceField,
+    );
+
+    const hideFirstTransformers = getHiddenTransformers(source);
+
+    const transformersLocked = source === 'fromSubresource' && !value;
 
     const [
         isTransformerUpsertDialogOpen,
@@ -196,7 +218,6 @@ const TransformerList = ({
 };
 
 TransformerList.propTypes = {
-    hideFirstTransformers: PropTypes.number,
     fields: PropTypes.shape({
         map: PropTypes.func.isRequired,
         get: PropTypes.func.isRequired,
@@ -213,7 +234,7 @@ TransformerList.propTypes = {
     }).isRequired,
     p: polyglotPropTypes.isRequired,
     type: PropTypes.string,
-    transformersLocked: PropTypes.bool,
+    isSubresourceField: PropTypes.bool,
 };
 
 TransformerList.defaultProps = {
