@@ -1,20 +1,16 @@
 import React from 'react';
 import { Field, FieldArray, formValueSelector } from 'redux-form';
-import translate from 'redux-polyglot/dist/translate';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { TextField as MUITextField, Box, Typography } from '@mui/material';
+import { TextField as MUITextField } from '@mui/material';
 
 import FieldLabelInput from '../FieldLabelInput';
 import FieldInternal from '../FieldInternal';
 import SourceValueToggleConnected from '../sourceValue/SourceValueToggle';
 import TransformerList from '../transformers/TransformerList';
 
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../propTypes';
+import { field as fieldPropTypes } from '../../propTypes';
 import { FIELD_FORM_NAME } from '..';
 
 export const isSubresourceTransformation = transformers => {
@@ -46,35 +42,7 @@ const getHiddenTransformers = (
     if (isSubresourceField && !isArbitraryValue) {
         return 3;
     }
-    return 0;
-};
-
-export const renderTransformer = (
-    transformersLocked,
-    hideFirstTransformers,
-    polyglot,
-) => {
-    function RenderTransformer(props) {
-        return (
-            <Box pt={5}>
-                <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
-                    {polyglot.t('transformers')}
-                </Typography>
-                {transformersLocked ? (
-                    polyglot.t(
-                        'transformer_no_editable_with_subresource_uid_value',
-                    )
-                ) : (
-                    <TransformerList
-                        hideFirstTransformers={hideFirstTransformers}
-                        {...props}
-                    />
-                )}
-            </Box>
-        );
-    }
-
-    return RenderTransformer;
+    return 1;
 };
 
 const TextField = ({
@@ -101,7 +69,6 @@ export const TabGeneralComponent = ({
     transformersLocked,
     isArbitraryValue,
     isSubResourceTransformationWithColumn,
-    p: polyglot,
 }) => {
     const hideFirstTransformers = getHiddenTransformers(
         !!subresourceUri,
@@ -119,13 +86,13 @@ export const TabGeneralComponent = ({
             />
             <FieldArray
                 name="transformers"
-                component={renderTransformer(
-                    transformersLocked,
-                    hideFirstTransformers,
-                    polyglot,
-                )}
                 type="transform"
                 rerenderOnEveryChange
+                component={TransformerList}
+                props={{
+                    hideFirstTransformers,
+                    transformersLocked,
+                }}
             />
         </>
     );
@@ -148,7 +115,6 @@ TabGeneralComponent.propTypes = {
     transformersLocked: PropTypes.bool,
     isArbitraryValue: PropTypes.bool,
     isSubResourceTransformationWithColumn: PropTypes.bool,
-    p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => {
@@ -166,7 +132,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default compose(
-    connect(mapStateToProps),
-    translate,
-)(TabGeneralComponent);
+export default compose(connect(mapStateToProps))(TabGeneralComponent);

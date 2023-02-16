@@ -6,6 +6,7 @@ import {
     ARRAY_REMOVE as REDUX_FORM_ARRAY_REMOVE,
     ARRAY_MOVE as REDUX_FORM_ARRAY_MOVE,
     ARRAY_PUSH as REDUX_FORM_ARRAY_PUSH,
+    ARRAY_SPLICE as REDUX_FORM_ARRAY_SPLICE,
     REGISTER_FIELD as REDUX_FORM_REGISTER_FIELD,
     UNREGISTER_FIELD as REDUX_FORM_UNREGISTER_FIELD,
 } from 'redux-form/lib/actionTypes';
@@ -33,6 +34,7 @@ export default handleActions(
             REDUX_FORM_ARRAY_REMOVE,
             REDUX_FORM_ARRAY_MOVE,
             REDUX_FORM_ARRAY_PUSH,
+            REDUX_FORM_ARRAY_SPLICE,
             REDUX_FORM_REGISTER_FIELD,
             REDUX_FORM_UNREGISTER_FIELD,
         )]: state => ({ ...state, isComputing: true }),
