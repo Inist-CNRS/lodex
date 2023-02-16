@@ -14,9 +14,6 @@ describe('Subresource Page', () => {
         navigationPage.goToDisplay();
 
         cy.get('.sidebar')
-            .contains('Resources')
-            .click();
-        cy.get('.sidebar')
             .contains('Subresources')
             .click();
     });

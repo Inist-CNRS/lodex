@@ -15,9 +15,6 @@ describe('Transformers & Formats', () => {
 
             adminNavigation.goToDisplay();
             cy.get('.sidebar')
-                .contains('Resources')
-                .click();
-            cy.get('.sidebar')
                 .contains('Main resource')
                 .click();
 
