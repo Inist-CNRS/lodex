@@ -21,6 +21,7 @@ import { withRouter } from 'react-router';
 import {
     Box,
     Button,
+    Chip,
     FormControlLabel,
     FormGroup,
     ListItem,
@@ -73,47 +74,59 @@ const renderTextField = ({ input, label, meta: { touched, error } }) => (
 const renderStatus = (initialValues, polyglot) => {
     if (initialValues?.status === 'PENDING') {
         return (
-            <Typography component="span" variant="body2" color="warning.main">
-                {polyglot.t('enrichment_status_pending')}
-            </Typography>
+            <Chip
+                component="span"
+                label={polyglot.t('enrichment_status_pending')}
+                color="warning"
+            />
         );
     }
     if (initialValues?.status === 'IN_PROGRESS') {
         return (
-            <Typography component="span" variant="body2" color="info.main">
-                {polyglot.t('enrichment_status_running')}
-            </Typography>
+            <Chip
+                component="span"
+                label={polyglot.t('enrichment_status_running')}
+                color="info"
+            />
         );
     }
 
     if (initialValues?.status === 'PAUSED') {
         return (
-            <Typography component="span" variant="body2" color="info.main">
-                {polyglot.t('enrichment_status_paused')}
-            </Typography>
+            <Chip
+                component="span"
+                label={polyglot.t('enrichment_status_paused')}
+                color="info"
+            />
         );
     }
 
     if (initialValues?.status === 'FINISHED') {
         return (
-            <Typography component="span" variant="body2" color="success.main">
-                {polyglot.t('enrichment_status_done')}
-            </Typography>
+            <Chip
+                component="span"
+                label={polyglot.t('enrichment_status_done')}
+                color="success"
+            />
         );
     }
 
     if (initialValues?.status === 'ERROR') {
         return (
-            <Typography component="span" variant="body2" color="error.main">
-                {polyglot.t('enrichment_status_error')}
-            </Typography>
+            <Chip
+                component="span"
+                label={polyglot.t('enrichment_status_error')}
+                color="error"
+            />
         );
     }
 
     return (
-        <Typography component="span" variant="body2" color="success.main">
-            {polyglot.t('enrichment_status_not_started')}
-        </Typography>
+        <Chip
+            component="span"
+            label={polyglot.t('enrichment_status_not_started')}
+            color="success"
+        />
     );
 };
 
@@ -322,7 +335,7 @@ export const EnrichmentForm = ({
                             alignItems="center"
                             gap={2}
                         >
-                            <Typography variant="body2">
+                            <Typography>
                                 {polyglot.t('enrichment_status')} : &nbsp;
                                 {renderStatus(initialValues, polyglot)}
                             </Typography>
