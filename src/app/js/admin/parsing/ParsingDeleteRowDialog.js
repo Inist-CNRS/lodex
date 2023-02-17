@@ -62,7 +62,6 @@ export const ParsingDeleteRowDialog = ({
                 style={{
                     margin: 20,
                     padding: 10,
-                    width: '1100px',
                 }}
             >
                 <Typography variant="body1">

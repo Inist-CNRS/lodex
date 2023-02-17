@@ -4,7 +4,7 @@ import MenuList from '@mui/material/MenuList';
 import Drawer from '@mui/material/Drawer';
 import GridOnIcon from '@mui/icons-material/GridOn';
 import PostAddIcon from '@mui/icons-material/PostAdd';
-import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import HomeIcon from '@mui/icons-material/Home';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import ArticleIcon from '@mui/icons-material/Article';
@@ -60,7 +60,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
             <MenuItemLink
                 to="/data/removed"
                 primaryText={polyglot.t('hidden_resources')}
-                leftIcon={<DeleteIcon />}
+                leftIcon={<VisibilityOffIcon />}
                 key="data-removed"
             />
         ),
