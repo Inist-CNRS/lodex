@@ -75,8 +75,8 @@ const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
 };
 
 EnrichmentPreview.propTypes = {
-    lines: PropTypes.arrayOf(PropTypes.object),
-    sourceColumn: PropTypes.object,
+    lines: PropTypes.array,
+    sourceColumn: PropTypes.string,
     p: polyglotPropTypes.isRequired,
 };
 

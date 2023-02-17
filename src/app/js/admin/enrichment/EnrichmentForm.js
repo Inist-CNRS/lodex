@@ -206,7 +206,7 @@ export const EnrichmentForm = ({
             toast(polyglot.t('enrichment_updated_success'), {
                 type: toast.TYPE.SUCCESS,
             });
-            onLoadEnrichments();
+            // onLoadEnrichments();
         } else {
             toast(`${res.error}`, {
                 type: toast.TYPE.ERROR,

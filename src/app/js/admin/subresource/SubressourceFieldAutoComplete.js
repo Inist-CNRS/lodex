@@ -15,7 +15,7 @@ const SubressourceFieldAutoComplete = ({
     return (
         <FormControl fullWidth>
             <Autocomplete
-                error={touched && error}
+                error={touched ? error : undefined}
                 {...input}
                 onChange={(event, newValue, reason) => {
                     if (reason === 'clear') {

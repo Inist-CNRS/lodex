@@ -165,7 +165,6 @@ const JobProgressComponent = props => {
         <>
             <Fade
                 in={progress && (progress.isJobProgress || progress.isJobError)}
-                out={progress && !progress.isJobProgress}
             >
                 <Box
                     className={classNames(
