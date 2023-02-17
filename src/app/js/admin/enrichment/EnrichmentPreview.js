@@ -45,15 +45,9 @@ const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
                                     WebkitLineClamp: '2',
                                     WebkitBoxOrient: 'vertical',
                                 }}
-                                title={
-                                    typeof line === 'object'
-                                        ? JSON.stringify(line)
-                                        : line
-                                }
+                                title={JSON.stringify(line)}
                             >
-                                {typeof line === 'object'
-                                    ? JSON.stringify(line)
-                                    : line}
+                                {JSON.stringify(line)}
                             </Typography>
                         </Box>
                     ))}
@@ -75,7 +69,7 @@ const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
 };
 
 EnrichmentPreview.propTypes = {
-    lines: PropTypes.array,
+    lines: PropTypes.array.isRequired,
     sourceColumn: PropTypes.string,
     p: polyglotPropTypes.isRequired,
 };
