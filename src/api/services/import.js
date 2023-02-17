@@ -1,8 +1,10 @@
 import ezs from '@ezs/core';
+import fs from 'fs';
 import Script from './script';
 import fetch from 'fetch-with-proxy';
 import progress from './progress';
 import { INDEXATION, SAVING_DATASET } from '../../common/progressStatus';
+import safePipe from './safePipe';
 
 const loaders = new Script('loaders', '../app/custom/loaders');
 
@@ -69,7 +71,22 @@ export const startImport = async ctx => {
         if (filename && totalChunks) {
             stream = ctx.mergeChunks(filename, totalChunks);
         }
+
+        // save incoming stream to a file to check if it contains invalid characters
+        safePipe(stream, [fs.createWriteStream('upload/test.csv')]);
+
         const parsedStream = await parseStream(stream);
+
+        parsedStream.on('data', data => {
+            if (
+                data['Data Annotations Nom'].includes('�') ||
+                data['Data Annotations Termes Génériques'].includes('�')
+            ) {
+                console.log('####### PARSED DATA #######');
+                console.log(data);
+                console.log('###########################');
+            }
+        });
         await ctx.saveParsedStream(ctx, parsedStream);
         progress.start({
             status: INDEXATION,
