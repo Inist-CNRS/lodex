@@ -104,7 +104,7 @@ const SourceValueFromSubResource = ({
     p: polyglot,
     subresources,
     value,
-    updateTransformers,
+    updateDefaultValueTransformers,
 }) => {
     const [
         selectedSubresourcePath,
@@ -138,7 +138,7 @@ const SourceValueFromSubResource = ({
             null,
         );
         setSelectedSubresourcePath(event.target.value);
-        updateTransformers(transformers);
+        updateDefaultValueTransformers(transformers);
     };
 
     const handleChange = (event, value) => {
@@ -147,7 +147,7 @@ const SourceValueFromSubResource = ({
             selectedSubresourcePath,
             value,
         );
-        updateTransformers(transformers);
+        updateDefaultValueTransformers(transformers);
     };
 
     return (
@@ -203,7 +203,7 @@ SourceValueFromSubResource.propTypes = {
     firstParsedLine: PropTypes.object,
     p: polyglotPropTypes.isRequired,
     subresources: PropTypes.array,
-    updateTransformers: PropTypes.func.isRequired,
+    updateDefaultValueTransformers: PropTypes.func.isRequired,
     value: PropTypes.string,
 };
 

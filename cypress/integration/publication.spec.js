@@ -199,19 +199,111 @@ describe('Dataset Publication', () => {
             cy.get('.wizard', { timeout: 10000 }).should('be.visible');
             cy.wait(1000);
 
+            cy.contains('Arbitrary value').click();
             cy.contains('Add an operation').click();
 
             cy.get('[aria-label="Select an operation"]').click();
             cy.contains('BOOLEAN').click();
             cy.contains('confirm').click();
 
-            cy.get('[aria-label="transformer-edit-transformers[0]').click();
+            cy.get('[aria-label="transformer-edit-transformers[1]').click();
             cy.get('[aria-label="Select an operation"]').click();
             cy.contains('GET').click();
             cy.get('input[placeholder="path"]').type('example');
             cy.contains('confirm').click();
             cy.contains('GET');
             cy.contains('example');
+            cy.get('.btn-save').click();
+            cy.get('.wizard').should('not.exist');
+        });
+
+        it('should keep transformers when changing source value', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/simple.csv');
+            datasetImportPage.importModel('model/simple.json');
+
+            adminNavigation.goToDisplay();
+            cy.get('.sidebar')
+                .contains('Main resource')
+                .click();
+
+            cy.contains('New field').click();
+            cy.get('.wizard', { timeout: 10000 }).should('be.visible');
+            cy.wait(1000);
+
+            cy.contains('Arbitrary value').click();
+            cy.get('textarea[placeholder="Enter an arbitrary value"]').type(
+                'test',
+            );
+
+            cy.contains('Add an operation').click();
+
+            cy.get('[aria-label="Select an operation"]').click();
+            cy.contains('UPPERCASE').click();
+            cy.contains('confirm').click();
+
+            cy.get('textarea[placeholder="Enter an arbitrary value"]').type(
+                'updated',
+            );
+            cy.contains('UPPERCASE').should('be.visible');
+
+            cy.contains('Existing Column(s)').click();
+            cy.get('[data-testid="source-value-from-columns"]').click();
+            cy.get('[role="listbox"]')
+                .contains('Column 1')
+                .click();
+            cy.contains('UPPERCASE').should('be.visible');
+
+            cy.get('[data-testid="source-value-from-columns"]').click();
+            cy.get('[role="listbox"]')
+                .contains('Column 2')
+                .click();
+            cy.contains('UPPERCASE').should('be.visible');
+
+            cy.get('.btn-save').click();
+            cy.get('.wizard').should('not.exist');
+        });
+
+        it('should remove transformers when clicking on delete all', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/simple.csv');
+            datasetImportPage.importModel('model/simple.json');
+
+            adminNavigation.goToDisplay();
+            cy.get('.sidebar')
+                .contains('Main resource')
+                .click();
+
+            cy.contains('New field').click();
+            cy.get('.wizard', { timeout: 10000 }).should('be.visible');
+            cy.wait(1000);
+
+            cy.contains('Arbitrary value').click();
+            cy.get('textarea[placeholder="Enter an arbitrary value"]').type(
+                'test',
+            );
+
+            cy.contains('Add an operation').click();
+            cy.get('[aria-label="Select an operation"]').click();
+            cy.contains('UPPERCASE').click();
+            cy.contains('confirm').click();
+
+            cy.contains('Add an operation').click();
+            cy.get('[aria-label="Select an operation"]').click();
+            cy.contains('SUFFIX').click();
+            cy.get('input[placeholder="with"]').type('suffix');
+            cy.contains('confirm').click();
+
+            cy.contains('UPPERCASE').should('be.visible');
+            cy.contains('SUFFIX').should('be.visible');
+
+            cy.contains('Delete all').click();
+            cy.get('.confirm-delete-all').click();
+            cy.contains('UPPERCASE').should('not.exist');
+            cy.contains('SUFFIX').should('not.exist');
+
             cy.get('.btn-save').click();
             cy.get('.wizard').should('not.exist');
         });

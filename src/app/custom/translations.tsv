@@ -907,3 +907,6 @@
 "column_tooltip"	"Column"	"Choisir les colonnes"
 "download_logs"	"Download logs"	"Télécharger les logs"
 "blank_field"	"Blank field"	"Champ vierge"
+"delete_all"	"Delete all"	"Tout supprimer"
+"transformer_delete_all_title"	"Delete all transformation operation"	"Supprimer toutes les opérations de transformation"
+"transformer_delete_all_description"	"Are you sure you want to delete all transformation operations ?"	"Êtes-vous sûr de vouloir supprimer toutes les opérations de transformation ?"
