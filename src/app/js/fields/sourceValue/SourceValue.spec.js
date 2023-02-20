@@ -50,6 +50,125 @@ describe('SourceValueToggle', () => {
                 value: null,
             });
         });
+
+        it('returns correct values for transformers from a column for subresource', () => {
+            const transformers = [
+                {
+                    operation: 'COLUMN',
+                    args: [{ name: 'column', type: 'column', value: 'path1' }],
+                },
+                { operation: 'PARSE' },
+                {
+                    operation: 'GET',
+                    args: [{ name: 'path', type: 'string', value: 'id1' }],
+                },
+                { operation: 'STRING' },
+                { operation: 'BOOLEAN' },
+            ];
+            expect(
+                GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers, true),
+            ).toEqual({
+                source: 'fromColumnsForSubRessource',
+                value: ['id1'],
+            });
+        });
+
+        it('returns correct values for transformers from a subresource', () => {
+            const transformers = [
+                {
+                    operation: 'COLUMN',
+                    args: [{ name: 'column', type: 'column', value: 'path1' }],
+                },
+                { operation: 'PARSE' },
+                {
+                    operation: 'GET',
+                    args: [{ name: 'path', type: 'string', value: 'id1' }],
+                },
+                { operation: 'STRING' },
+                {
+                    operation: 'REPLACE_REGEX',
+                    args: [
+                        {
+                            name: 'searchValue',
+                            type: 'string',
+                            value: '^(.*)$',
+                        },
+                        {
+                            name: 'replaceValue',
+                            type: 'string',
+                            value: 'sub1/$1',
+                        },
+                    ],
+                },
+                { operation: 'MD5', args: [] },
+                {
+                    operation: 'REPLACE_REGEX',
+                    args: [
+                        {
+                            name: 'searchValue',
+                            type: 'string',
+                            value: '^(.*)$',
+                        },
+                        {
+                            name: 'replaceValue',
+                            type: 'string',
+                            value: 'uid:/$1',
+                        },
+                    ],
+                },
+            ];
+            expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
+                source: 'fromSubresource',
+                value: null,
+            });
+        });
+
+        it('returns correct values for transformers from a subresource with column', () => {
+            const transformers = [
+                {
+                    operation: 'COLUMN',
+                    args: [{ name: 'column', type: 'column', value: 'path1' }],
+                },
+                { operation: 'PARSE' },
+                {
+                    operation: 'GET',
+                    args: [{ name: 'path', type: 'string', value: 'id1' }],
+                },
+                { operation: 'STRING' },
+                {
+                    operation: 'REPLACE_REGEX',
+                    args: [
+                        {
+                            name: 'searchValue',
+                            type: 'string',
+                            value: '^(.*)$',
+                        },
+                        {
+                            name: 'replaceValue',
+                            type: 'string',
+                            value: `(sub1)$1`,
+                        },
+                    ],
+                },
+                {
+                    operation: 'REPLACE_REGEX',
+                    args: [
+                        {
+                            name: 'searchValue',
+                            type: 'string',
+                            value: `/^\\((.*)\\)/`,
+                        },
+                        { name: 'replaceValue', type: 'string', value: ' ' },
+                    ],
+                },
+                { operation: 'TRIM' },
+                { operation: 'BOOLEAN' },
+            ];
+            expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
+                source: 'fromSubresource',
+                value: 'id1',
+            });
+        });
     });
 });
 

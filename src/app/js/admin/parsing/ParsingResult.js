@@ -232,6 +232,7 @@ export const ParsingResultComponent = props => {
             width: 150,
             filterable: false,
             sortable: false,
+            hideable: false,
             renderCell: params => {
                 return (
                     <Tooltip title={polyglot.t('parsing_delete_row_tooltip')}>
@@ -239,7 +240,7 @@ export const ParsingResultComponent = props => {
                             aria-label="delete row"
                             onClick={e => handleDeleteRow(e, params.row)}
                         >
-                            <Delete sx={{ color: 'error.main' }} />
+                            <Delete color="secondary" />
                         </IconButton>
                     </Tooltip>
                 );
@@ -481,6 +482,16 @@ export const ParsingResultComponent = props => {
                 components={{
                     Footer: CustomFooter,
                     Toolbar: CustomToolbar,
+                }}
+                componentsProps={{
+                    panel: {
+                        sx: {
+                            // hide delete-row in column hide/display panel
+                            '& .MuiDataGrid-columnsPanelRow:first-child': {
+                                display: 'none',
+                            },
+                        },
+                    },
                 }}
                 sx={{
                     [`& .${gridClasses.columnHeaderTitleContainer} .${gridClasses.iconButtonContainer}`]: {

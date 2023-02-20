@@ -7,7 +7,8 @@ import translate from 'redux-polyglot/translate';
 import TransformerListItem from './TransformerListItem';
 import TransformerUpsertDialog from './TransformerUpsertDialog';
 
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     DndContext,
@@ -27,6 +28,8 @@ import {
     getTransformerMetas,
     hasRegistredTransformer,
 } from '../../../../common/transformers';
+import TransformerRemoveAllDialog from './TransformerRemoveAllDialog';
+import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../sourceValue/SourceValueToggle';
 
 const SHOW_TRANSFORMER = memoize(
     (operation, type) =>
@@ -41,18 +44,44 @@ const SHOW_TRANSFORMER = memoize(
     (operation, type) => `${operation}_${type}`,
 );
 
-const TransformerList = ({
+const getHiddenTransformers = source => {
+    if (source === 'fromSubresource') {
+        return 7;
+    }
+    if (source === 'fromColumnsForSubRessource') {
+        return 3;
+    }
+    if (source === 'fromColumns' || source === 'arbitrary') {
+        return 1;
+    }
+    return 0;
+};
+
+export const TransformerListComponent = ({
     fields,
     meta: { touched, error },
     type,
-    hideFirstTransformers,
+    isSubresourceField,
     p: polyglot,
 }) => {
     const [fieldsToDrag, setFieldsToDrag] = useState(
         fields.map(fieldName => fieldName),
     );
 
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const { source, value } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(
+        fields.getAll(),
+        isSubresourceField,
+    );
+
+    const hideFirstTransformers = getHiddenTransformers(source);
+
+    const transformersLocked = source === 'fromSubresource' && !value;
+
+    const [
+        isTransformerUpsertDialogOpen,
+        setIsTransformerUpsertDialogOpen,
+    ] = useState(false);
+    const [isRemoveAllDialogOpen, setIsRemoveAllDialogOpen] = useState(false);
     const [indexFieldToEdit, setIndexFieldToEdit] = useState(null);
 
     useEffect(() => {
@@ -85,70 +114,110 @@ const TransformerList = ({
         });
     };
     return (
-        <>
-            {touched && error && <span>{error}</span>}
-            <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={handleDragEnd}
+        <Box pt={5}>
+            <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                mb={2}
             >
-                <SortableContext
-                    items={fieldsToDrag}
-                    strategy={verticalListSortingStrategy}
-                >
-                    {fieldsToDrag?.map((fieldName, index) => (
-                        <TransformerListItem
-                            key={fieldName}
-                            id={fieldName}
-                            transformer={fields.get(index)}
-                            onRemove={() => {
-                                fields.remove(index);
+                <Typography variant="subtitle1">
+                    {polyglot.t('transformers')}
+                </Typography>
+                {!transformersLocked && (
+                    <Button
+                        variant="text"
+                        color="secondary"
+                        disabled={fieldsToDrag?.length <= hideFirstTransformers}
+                        onClick={() => setIsRemoveAllDialogOpen(true)}
+                        startIcon={<DeleteIcon />}
+                    >
+                        {polyglot.t('delete_all')}
+                    </Button>
+                )}
+            </Box>
+            {transformersLocked ? (
+                polyglot.t('transformer_no_editable_with_subresource_uid_value')
+            ) : (
+                <>
+                    {touched && error && <span>{error}</span>}
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
+                    >
+                        <SortableContext
+                            items={fieldsToDrag}
+                            strategy={verticalListSortingStrategy}
+                        >
+                            {fieldsToDrag?.map((fieldName, index) => (
+                                <TransformerListItem
+                                    key={fieldName}
+                                    id={fieldName}
+                                    transformer={fields.get(index)}
+                                    onRemove={() => {
+                                        fields.remove(index);
+                                    }}
+                                    onEdit={() => {
+                                        setIndexFieldToEdit(index);
+                                        setIsTransformerUpsertDialogOpen(true);
+                                    }}
+                                    show={
+                                        SHOW_TRANSFORMER(
+                                            fields.get(index)?.operation,
+                                            type,
+                                        ) &&
+                                        (!hideFirstTransformers ||
+                                            index >= hideFirstTransformers)
+                                    }
+                                />
+                            ))}
+                        </SortableContext>
+                    </DndContext>
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Button
+                            aria-label={polyglot.t('add_transformer')}
+                            color="primary"
+                            sx={{ borderWidth: '2px', borderStyle: 'dashed' }}
+                            onClick={() => {
+                                setIndexFieldToEdit(null);
+                                setIsTransformerUpsertDialogOpen(true);
                             }}
-                            onEdit={() => {
-                                setIndexFieldToEdit(index);
-                                setIsDialogOpen(true);
-                            }}
-                            show={
-                                SHOW_TRANSFORMER(
-                                    fields.get(index)?.operation,
-                                    type,
-                                ) &&
-                                (!hideFirstTransformers ||
-                                    index >= hideFirstTransformers)
+                        >
+                            {polyglot.t('add_transformer')}
+                        </Button>
+                    </Box>
+
+                    {isTransformerUpsertDialogOpen && (
+                        <TransformerUpsertDialog
+                            isOpen={isTransformerUpsertDialogOpen}
+                            handleClose={() =>
+                                setIsTransformerUpsertDialogOpen(false)
+                            }
+                            indexFieldToEdit={indexFieldToEdit}
+                            fields={fields}
+                            type={type}
+                        />
+                    )}
+                    {isRemoveAllDialogOpen && (
+                        <TransformerRemoveAllDialog
+                            isOpen={isRemoveAllDialogOpen}
+                            handleClose={() => setIsRemoveAllDialogOpen(false)}
+                            removeAll={() =>
+                                fields.splice(
+                                    hideFirstTransformers,
+                                    fields.length - hideFirstTransformers,
+                                )
                             }
                         />
-                    ))}
-                </SortableContext>
-            </DndContext>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Button
-                    aria-label={polyglot.t('add_transformer')}
-                    color="primary"
-                    sx={{ borderWidth: '2px', borderStyle: 'dashed' }}
-                    onClick={() => {
-                        setIndexFieldToEdit(null);
-                        setIsDialogOpen(true);
-                    }}
-                >
-                    {polyglot.t('add_transformer')}
-                </Button>
-            </Box>
-
-            {isDialogOpen && (
-                <TransformerUpsertDialog
-                    isOpen={isDialogOpen}
-                    handleClose={() => setIsDialogOpen(false)}
-                    indexFieldToEdit={indexFieldToEdit}
-                    fields={fields}
-                    type={type}
-                />
+                    )}
+                </>
             )}
-        </>
+        </Box>
     );
 };
 
-TransformerList.propTypes = {
-    hideFirstTransformers: PropTypes.number,
+TransformerListComponent.propTypes = {
     fields: PropTypes.shape({
         map: PropTypes.func.isRequired,
         get: PropTypes.func.isRequired,
@@ -156,6 +225,8 @@ TransformerList.propTypes = {
         push: PropTypes.func.isRequired,
         move: PropTypes.func.isRequired,
         getAll: PropTypes.func.isRequired,
+        splice: PropTypes.func.isRequired,
+        length: PropTypes.number.isRequired,
     }).isRequired,
     meta: PropTypes.shape({
         touched: PropTypes.bool,
@@ -163,10 +234,11 @@ TransformerList.propTypes = {
     }).isRequired,
     p: polyglotPropTypes.isRequired,
     type: PropTypes.string,
+    isSubresourceField: PropTypes.bool,
 };
 
-TransformerList.defaultProps = {
+TransformerListComponent.defaultProps = {
     type: null,
 };
 
-export default compose(translate, pure)(TransformerList);
+export default compose(translate, pure)(TransformerListComponent);

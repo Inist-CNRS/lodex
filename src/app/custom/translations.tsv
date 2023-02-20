@@ -910,3 +910,6 @@
 "download_logs"	"Download logs"	"Télécharger les logs"
 "blank_field"	"Blank field"	"Champ vierge"
 "pending_enrichment"	"This enrichment is in waiting list because an enrichment is already in progress"	"Cet enrichissement est en liste d'attente car un enrichissement est déjà en cours"
+"delete_all"	"Delete all"	"Tout supprimer"
+"transformer_delete_all_title"	"Delete all transformation operation"	"Supprimer toutes les opérations de transformation"
+"transformer_delete_all_description"	"Are you sure you want to delete all transformation operations ?"	"Êtes-vous sûr de vouloir supprimer toutes les opérations de transformation ?"

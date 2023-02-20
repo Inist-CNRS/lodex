@@ -11,7 +11,7 @@ import parseValue from '../../../../common/tools/parseValue';
 const SourceValueFromColumnsForSubResource = ({
     datasetFields,
     p: polyglot,
-    updateTransformers,
+    updateDefaultValueTransformers,
     value,
     subresourcePath,
 }) => {
@@ -23,7 +23,7 @@ const SourceValueFromColumnsForSubResource = ({
 
     const handleChange = (event, value) => {
         setAutocompleteValue(value);
-        updateTransformers([
+        updateDefaultValueTransformers([
             {
                 operation: 'COLUMN',
                 args: [
@@ -100,7 +100,7 @@ export const mapStateToProps = (state, { selectedSubresourceUri }) => {
 SourceValueFromColumnsForSubResource.propTypes = {
     datasetFields: PropTypes.arrayOf(PropTypes.string).isRequired,
     p: polyglotPropTypes.isRequired,
-    updateTransformers: PropTypes.func.isRequired,
+    updateDefaultValueTransformers: PropTypes.func.isRequired,
     value: PropTypes.array,
     subresourcePath: PropTypes.string,
 };
