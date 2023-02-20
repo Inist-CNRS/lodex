@@ -2,6 +2,7 @@ import { CancelWorkerError } from '.';
 import {
     startEnrichment,
     setEnrichmentError,
+    notifyListeners,
 } from '../services/enrichment/enrichment';
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
@@ -9,8 +10,13 @@ export const ENRICHER = 'enricher';
 
 export const processEnrichment = (job, done) => {
     startJobEnrichment(job)
-        .then(() => {
+        .then(async () => {
             job.progress(100);
+            const isFailed = await job.isFailed();
+            notifyListeners('enricher', {
+                isEnriching: false,
+                success: !isFailed,
+            });
             done();
         })
         .catch(err => {
@@ -20,6 +26,7 @@ export const processEnrichment = (job, done) => {
 };
 
 const startJobEnrichment = async job => {
+    notifyListeners('enricher', { isEnriching: true, success: false });
     const ctx = await prepareContext({ job });
     await startEnrichment(ctx);
 };

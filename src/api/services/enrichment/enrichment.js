@@ -6,7 +6,13 @@ import localConfig from '../../../../config.json';
 
 import { ObjectId } from 'mongodb';
 import from from 'from';
-import { IN_PROGRESS, FINISHED, ERROR } from '../../../common/enrichmentStatus';
+import {
+    PENDING as ENRICHMENT_PENDING,
+    IN_PROGRESS,
+    FINISHED,
+    ERROR,
+    CANCELED,
+} from '../../../common/enrichmentStatus';
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError } from '../../workers';
@@ -338,7 +344,7 @@ export const setEnrichmentJobId = async (ctx, enrichmentID, job) => {
         {
             $or: [{ _id: new ObjectId(enrichmentID) }, { _id: enrichmentID }],
         },
-        { $set: { ['jobId']: job.id } },
+        { $set: { ['jobId']: job.id, ['status']: ENRICHMENT_PENDING } },
     );
 };
 
@@ -373,7 +379,12 @@ export const setEnrichmentError = async (ctx, err) => {
         {
             $or: [{ _id: new ObjectId(id) }, { _id: id }],
         },
-        { $set: { ['status']: ERROR, ['message']: err?.message } },
+        {
+            $set: {
+                ['status']: err instanceof CancelWorkerError ? CANCELED : ERROR,
+                ['message']: err?.message,
+            },
+        },
     );
 
     const room = `enrichment-job-${ctx.job.id}`;
@@ -384,10 +395,18 @@ export const setEnrichmentError = async (ctx, err) => {
                 ? `${err?.message}`
                 : `Enrichement errored : ${err?.message}`,
         timestamp: new Date(),
-        status: ERROR,
+        status: err instanceof CancelWorkerError ? CANCELED : ERROR,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
+    notifyListeners('enricher', {
+        isEnriching: false,
+        success: false,
+        message:
+            err instanceof CancelWorkerError
+                ? 'cancelled_enricher'
+                : err?.message,
+    });
 };
 
 const LISTENERS = [];
@@ -395,6 +414,6 @@ export const addEnrichmentJobListener = listener => {
     LISTENERS.push(listener);
 };
 
-const notifyListeners = (room, payload) => {
+export const notifyListeners = (room, payload) => {
     LISTENERS.forEach(listener => listener({ room, data: payload }));
 };

@@ -32,6 +32,7 @@ import { clearPublished } from '../clear';
 import { fromPublication } from '../selectors';
 import { toast } from '../../../../common/tools/toast';
 import { finishProgress } from '../progress/reducer';
+import { loadEnrichments } from '../enrichment';
 
 const useStyles = makeStyles({
     progress: {
@@ -84,6 +85,7 @@ const JobProgressComponent = props => {
         loadParsingResult,
         handleRepublish,
         finishProgress,
+        loadEnrichments,
     } = props;
     const [progress, setProgress] = useState();
     const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
@@ -139,6 +141,22 @@ const JobProgressComponent = props => {
                 loadParsingResult();
                 setHasLoadedParsingResult(false);
                 toast(polyglot.t('cancelled_import'), {
+                    type: toast.TYPE.SUCCESS,
+                });
+            }
+        });
+
+        socket.on('enricher', data => {
+            if (!data.isEnriching) {
+                loadEnrichments();
+            }
+            if (data.message && data.message !== 'cancelled_enricher') {
+                toast(`${polyglot.t('error')} : ${data.message}`, {
+                    type: toast.TYPE.ERROR,
+                });
+            }
+            if (data.message === 'cancelled_enricher') {
+                toast(polyglot.t('cancelled_enricher'), {
                     type: toast.TYPE.SUCCESS,
                 });
             }
@@ -288,6 +306,7 @@ JobProgressComponent.propTypes = {
     loadParsingResult: PropTypes.func.isRequired,
     handleRepublish: PropTypes.func.isRequired,
     finishProgress: PropTypes.func.isRequired,
+    loadEnrichments: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
@@ -302,6 +321,7 @@ const mapDispatchToProps = {
         await publish();
     },
     finishProgress,
+    loadEnrichments,
 };
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),

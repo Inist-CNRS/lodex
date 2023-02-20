@@ -18,6 +18,7 @@ import {
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { renderStatus } from './EnrichmentForm';
 
 export const EnrichmentList = ({ enrichments, p: polyglot }) => {
     const history = useHistory();
@@ -86,6 +87,13 @@ export const EnrichmentList = ({ enrichments, p: polyglot }) => {
                         renderCell: params => {
                             return params.value ? <CheckIcon /> : <CloseIcon />;
                         },
+                    },
+                    {
+                        field: 'status',
+                        headerName: polyglot.t('enrichment_status'),
+                        flex: 1,
+                        renderCell: params =>
+                            renderStatus(params.value, polyglot),
                     },
                 ]}
                 rows={enrichments}

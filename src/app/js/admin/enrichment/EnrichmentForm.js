@@ -37,8 +37,14 @@ import {
 } from '../api/enrichment';
 import { getJobLogs } from '../api/job';
 import { toast } from '../../../../common/tools/toast';
-import { FINISHED, IN_PROGRESS } from '../../../../common/enrichmentStatus';
-import { ERROR } from '../../../../common/progressStatus';
+import {
+    FINISHED,
+    IN_PROGRESS,
+    PENDING,
+    ERROR,
+    CANCELED,
+    PAUSED,
+} from '../../../../common/enrichmentStatus';
 import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
 
@@ -71,8 +77,8 @@ const renderTextField = ({ input, label, meta: { touched, error } }) => (
     />
 );
 
-const renderStatus = (initialValues, polyglot) => {
-    if (initialValues?.status === 'PENDING') {
+export const renderStatus = (status, polyglot) => {
+    if (status === PENDING) {
         return (
             <Chip
                 component="span"
@@ -81,7 +87,7 @@ const renderStatus = (initialValues, polyglot) => {
             />
         );
     }
-    if (initialValues?.status === 'IN_PROGRESS') {
+    if (status === IN_PROGRESS) {
         return (
             <Chip
                 component="span"
@@ -91,7 +97,7 @@ const renderStatus = (initialValues, polyglot) => {
         );
     }
 
-    if (initialValues?.status === 'PAUSED') {
+    if (status === PAUSED) {
         return (
             <Chip
                 component="span"
@@ -101,7 +107,7 @@ const renderStatus = (initialValues, polyglot) => {
         );
     }
 
-    if (initialValues?.status === 'FINISHED') {
+    if (status === FINISHED) {
         return (
             <Chip
                 component="span"
@@ -111,12 +117,22 @@ const renderStatus = (initialValues, polyglot) => {
         );
     }
 
-    if (initialValues?.status === 'ERROR') {
+    if (status === ERROR) {
         return (
             <Chip
                 component="span"
                 label={polyglot.t('enrichment_status_error')}
                 color="error"
+            />
+        );
+    }
+
+    if (status === CANCELED) {
+        return (
+            <Chip
+                component="span"
+                label={polyglot.t('enrichment_status_canceled')}
+                color="warning"
             />
         );
     }
@@ -141,6 +157,7 @@ export const EnrichmentForm = ({
     onChangeWebServiceUrl,
     onLaunchEnrichment,
     onLoadEnrichments,
+    isEnrichmentRunning,
 }) => {
     const [openCatalog, setOpenCatalog] = React.useState(false);
     const [openEnrichmentLogs, setOpenEnrichmentLogs] = React.useState(false);
@@ -149,6 +166,9 @@ export const EnrichmentForm = ({
         [],
     );
     const [enrichmentLogs, setEnrichmentLogs] = React.useState([]);
+    const [enrichmentStatus, setEnrichmentStatus] = React.useState(
+        initialValues?.status,
+    );
 
     const isEditMode = !!initialValues?._id;
 
@@ -206,7 +226,7 @@ export const EnrichmentForm = ({
             toast(polyglot.t('enrichment_updated_success'), {
                 type: toast.TYPE.SUCCESS,
             });
-            // onLoadEnrichments();
+            onLoadEnrichments();
         } else {
             toast(`${res.error}`, {
                 type: toast.TYPE.ERROR,
@@ -245,9 +265,14 @@ export const EnrichmentForm = ({
     };
 
     const handleLaunchEnrichment = () => {
+        if (isEnrichmentRunning) {
+            toast(polyglot.t('pending_enrichment'), {
+                type: toast.TYPE.INFO,
+            });
+        }
         onLaunchEnrichment({
             id: initialValues._id,
-            action: initialValues?.status === FINISHED ? 'relaunch' : 'launch',
+            action: enrichmentStatus === FINISHED ? 'relaunch' : 'launch',
         });
     };
 
@@ -270,23 +295,23 @@ export const EnrichmentForm = ({
         handleGetLogs();
         const socket = io();
         socket.on(`enrichment-job-${initialValues?.jobId}`, data => {
+            let lastLine;
+            let parsedData;
             if (Array.isArray(data)) {
                 setEnrichmentLogs(currentState => [...data, ...currentState]);
+                lastLine = data[0];
             } else {
                 setEnrichmentLogs(currentState => [data, ...currentState]);
-                let parsedData;
-                try {
-                    parsedData = JSON.parse(data);
-                } catch {
-                    console.error('Error parsing data', data);
-                }
+                lastLine = data;
+            }
+            try {
+                parsedData = JSON.parse(lastLine);
+            } catch {
+                console.error('Error parsing data', lastLine);
+            }
 
-                if (
-                    parsedData &&
-                    [FINISHED, ERROR].includes(parsedData.status)
-                ) {
-                    onLoadEnrichments();
-                }
+            if (parsedData && parsedData.status) {
+                setEnrichmentStatus(parsedData.status);
             }
         });
         socket.on('connect_error', () => {
@@ -322,7 +347,10 @@ export const EnrichmentForm = ({
                                 sx={{ height: '100%' }}
                                 startIcon={<PlayArrowIcon />}
                                 onClick={handleLaunchEnrichment}
-                                disabled={initialValues?.status === IN_PROGRESS}
+                                disabled={
+                                    enrichmentStatus === IN_PROGRESS ||
+                                    enrichmentStatus === PENDING
+                                }
                             >
                                 {polyglot.t('run')}
                             </Button>
@@ -337,7 +365,7 @@ export const EnrichmentForm = ({
                         >
                             <Typography>
                                 {polyglot.t('enrichment_status')} : &nbsp;
-                                {renderStatus(initialValues, polyglot)}
+                                {renderStatus(enrichmentStatus, polyglot)}
                             </Typography>
                             <Button
                                 variant="link"
@@ -471,7 +499,8 @@ export const EnrichmentForm = ({
                             sx={{ height: '100%' }}
                             onClick={handleDeleteEnrichment}
                             disabled={
-                                initialValues?.status === IN_PROGRESS ||
+                                enrichmentStatus === IN_PROGRESS ||
+                                enrichmentStatus === PENDING ||
                                 isLoading
                             }
                         >
@@ -492,7 +521,8 @@ export const EnrichmentForm = ({
                             onClick={handleSubmit}
                             disabled={
                                 isLoading ||
-                                initialValues?.status === IN_PROGRESS
+                                enrichmentStatus === IN_PROGRESS ||
+                                enrichmentStatus === PENDING
                             }
                         >
                             {polyglot.t('save')}
@@ -528,6 +558,9 @@ const mapStateToProps = (state, { match }) => ({
         .find(enrichment => enrichment._id === match.params.enrichmentId),
     datasetFields: fromParsing.getParsedExcerptColumns(state),
     excerptLines: fromParsing.getExcerptLines(state),
+    isEnrichmentRunning: !!fromEnrichments
+        .enrichments(state)
+        .find(enrichment => enrichment.status === IN_PROGRESS),
 });
 const mapDispatchToProps = {
     onChangeWebServiceUrl: value =>
@@ -554,6 +587,7 @@ EnrichmentForm.propTypes = {
     onLaunchEnrichment: PropTypes.func.isRequired,
     onLoadEnrichments: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    isEnrichmentRunning: PropTypes.bool,
 };
 
 export default compose(
