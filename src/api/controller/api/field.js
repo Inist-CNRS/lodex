@@ -18,7 +18,6 @@ import {
     SCOPE_COLLECTION,
     SCOPE_DOCUMENT,
 } from '../../../common/scope';
-import { PENDING } from '../../../common/enrichmentStatus';
 import { dropJobs } from '../../workers/tools';
 import { ENRICHER } from '../../workers/enricher';
 import { ObjectID } from 'mongodb';
@@ -68,7 +67,7 @@ export const restoreFields = (fileStream, ctx) => {
             Promise.all([
                 ctx.field.castIds(),
                 ctx.subresource.castIds(),
-                ctx.enrichment.updateMany({}, { $set: { status: PENDING } }),
+                ctx.enrichment.updateMany({}, { $unset: { status: '' } }),
             ]),
         );
 };

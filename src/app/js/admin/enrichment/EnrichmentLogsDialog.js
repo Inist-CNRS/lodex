@@ -89,7 +89,8 @@ export const EnrichmentLogsDialog = ({
     const [logsContainerRef, { width }] = useMeasure();
 
     const handleDownloadLogs = () => {
-        const file = new Blob(logs, { type: 'text/plain' });
+        const stringLogs = logs.join('\n');
+        const file = new Blob([stringLogs], { type: 'text/plain' });
         const element = document.createElement('a');
         element.href = URL.createObjectURL(file);
         element.download = 'enrichment-logs-' + Date.now() + '.log';

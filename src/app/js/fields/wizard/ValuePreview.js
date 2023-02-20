@@ -51,15 +51,9 @@ const ValuePreview = ({ lines, editedField, p: polyglot }) => {
                                     WebkitLineClamp: '2',
                                     WebkitBoxOrient: 'vertical',
                                 }}
-                                title={
-                                    typeof line[editedField.name] === 'object'
-                                        ? JSON.stringify(line[editedField.name])
-                                        : line[editedField.name]
-                                }
+                                title={JSON.stringify(line[editedField.name])}
                             >
-                                {typeof line[editedField.name] === 'object'
-                                    ? JSON.stringify(line[editedField.name])
-                                    : line[editedField.name]}
+                                {JSON.stringify(line[editedField.name])}
                             </Typography>
                         </Box>
                     ))}
@@ -87,7 +81,7 @@ const mapStateToProps = (state, { scope }) => {
 };
 
 ValuePreview.propTypes = {
-    lines: PropTypes.arrayOf(PropTypes.object),
+    lines: PropTypes.array.isRequired,
     editedField: PropTypes.object,
     p: polyglotPropTypes.isRequired,
 };

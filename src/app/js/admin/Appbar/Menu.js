@@ -133,7 +133,11 @@ const MenuComponent = ({
     const modelMenuItems = [
         <div
             key="import_fields"
-            title={hasPublishedDataset && polyglot.t('import_model_published')}
+            title={
+                hasPublishedDataset
+                    ? polyglot.t('import_model_published')
+                    : undefined
+            }
         >
             <MenuItem
                 onClick={handleImportFieldsClick}

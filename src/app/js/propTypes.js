@@ -49,7 +49,7 @@ export const validationField = PropTypes.shape({
 
 export const formField = {
     input: PropTypes.shape({}).isRequired,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.string,
     meta: PropTypes.shape({
         touched: PropTypes.bool.isRequired,
         error: PropTypes.string,
