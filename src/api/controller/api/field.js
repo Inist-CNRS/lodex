@@ -22,6 +22,7 @@ import { dropJobs } from '../../workers/tools';
 import { ENRICHER } from '../../workers/enricher';
 import { ObjectID } from 'mongodb';
 import generateUid from '../../services/generateUid';
+import { restoreEnrichments } from '../../services/enrichment/enrichment';
 
 const sortByFieldUri = (a, b) =>
     (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
@@ -67,7 +68,7 @@ export const restoreFields = (fileStream, ctx) => {
             Promise.all([
                 ctx.field.castIds(),
                 ctx.subresource.castIds(),
-                ctx.enrichment.updateMany({}, { $unset: { status: '' } }),
+                restoreEnrichments(ctx),
             ]),
         );
 };
