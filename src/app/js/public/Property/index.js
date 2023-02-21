@@ -16,7 +16,6 @@ import { changeFieldStatus } from '../resource';
 import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
 import { fromUser } from '../../sharedSelectors';
-import EditButton from '../../fields/editFieldValue/EditButton';
 import getFieldClassName from '../../lib/getFieldClassName';
 import addSchemePrefix from '../../lib/addSchemePrefix';
 import Format from '../Format';
@@ -24,7 +23,11 @@ import GraphLink from '../graph/GraphLink';
 import Link from '../../lib/components/Link';
 import { getPredicate } from '../../formats';
 import shouldDisplayField from '../../fields/shouldDisplayField';
-import { SCOPE_GRAPHIC, SCOPE_DATASET } from '../../../../common/scope';
+import {
+    SCOPE_GRAPHIC,
+    SCOPE_DATASET,
+    SCOPE_DOCUMENT,
+} from '../../../../common/scope';
 import CompositeProperty from './CompositeProperty';
 
 import propositionStatus, {
@@ -35,6 +38,8 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
+import { IconButton } from '@mui/material';
+import { Settings } from '@mui/icons-material';
 
 const styles = {
     container: memoize(
@@ -69,9 +74,6 @@ const styles = {
     schemeLink: {
         color: 'grey',
     },
-    editButton: {
-        display: 'inline-block',
-    },
     labelContainer: {
         display: 'flex',
         justifyContent: 'flex-end',
@@ -89,6 +91,18 @@ const styles = {
     },
 };
 
+export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
+    if (scope === SCOPE_DOCUMENT) {
+        if (subresourceId) {
+            return `/admin#/display/${SCOPE_DOCUMENT}/subresource/${subresourceId}/edit/${fieldName}`;
+        } else {
+            return `/admin#/display/${SCOPE_DOCUMENT}/main/edit/${fieldName}`;
+        }
+    } else {
+        return `/admin#/display/${scope}/edit/${fieldName}`;
+    }
+};
+
 export const PropertyComponent = ({
     className,
     field,
@@ -100,13 +114,21 @@ export const PropertyComponent = ({
     changeStatus,
     style,
     parents,
-    p: polyglot,
 }) => {
     if (!shouldDisplayField(resource, field, fieldStatus, predicate, isAdmin)) {
         return null;
     }
 
     const fieldClassName = getFieldClassName(field);
+
+    const handleEditField = () => {
+        const redirectUrl = getEditFieldRedirectUrl(
+            field.name,
+            field.scope,
+            field.subresourceId,
+        );
+        window.open(redirectUrl, '_blank');
+    };
 
     const formatChildren = [
         <Format
@@ -162,15 +184,13 @@ export const PropertyComponent = ({
                     >
                         {field.label}
                         {isAdmin && (
-                            <span style={styles.editButton}>
-                                <EditButton
-                                    field={field}
-                                    resource={resource}
-                                    warningMessage={polyglot.t(
-                                        'warning_frontend_modification',
-                                    )}
+                            <IconButton onClick={handleEditField}>
+                                <Settings
+                                    sx={{
+                                        fontSize: '1.2rem',
+                                    }}
                                 />
-                            </span>
+                            </IconButton>
                         )}
                     </span>
                     <span
