@@ -58,9 +58,6 @@ const theme = {
         info: {
             main: colorsTheme.black.light,
         },
-        warning: {
-            main: colorsTheme.orange.primary,
-        },
         // @TODO: find this usage or remove
         primary2Color: colorsTheme.purple.primary,
         text: {

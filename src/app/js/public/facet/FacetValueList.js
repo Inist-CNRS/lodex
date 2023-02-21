@@ -128,8 +128,11 @@ export const FacetValueList = ({
                     </div>
                 </div>
                 <div>
-                    {total <= MAX_VALUE_FOR_ALL_FACET && filter && (
-                        <FacetValueAll name={name} />
+                    {filter && (
+                        <FacetValueAll
+                            disabled={total > MAX_VALUE_FOR_ALL_FACET}
+                            name={name}
+                        />
                     )}
                     {facetValues.map(({ value, count }) => {
                         return (

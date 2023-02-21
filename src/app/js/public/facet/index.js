@@ -102,7 +102,9 @@ export const createReducer = prefix => {
                     ...state,
                     appliedFacets: {
                         ...appliedFacets,
-                        [name]: values,
+                        [name]: appliedFacets[name]
+                            ? [...new Set([...appliedFacets[name], ...values])]
+                            : values,
                     },
                 };
             },
