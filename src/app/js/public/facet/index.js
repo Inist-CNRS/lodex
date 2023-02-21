@@ -11,6 +11,8 @@ import { isFacetValuesChecked } from './selectors';
 
 import { SAVE_RESOURCE_SUCCESS } from '../resource/index';
 
+export const MAX_VALUE_FOR_ALL_FACET = 20;
+
 export const initialState = {
     error: null,
     appliedFacets: {},
@@ -27,6 +29,7 @@ export const createActionTypes = prefix => ({
     LOAD_FACET_VALUES_ERROR: `${prefix}_LOAD_FACET_VALUES_ERROR`,
     INVERT_FACET: `${prefix}_INVERT_FACET`,
     SET_FACETS: `${prefix}_SET_FACETS`,
+    SET_ALL_VALUE_FOR_FACET: `${prefix}_SET_ALL_VALUE_FOR_FACET`,
     ...createFacetValueActionTypes(prefix),
 });
 
@@ -38,6 +41,7 @@ export const createActions = actionTypes => ({
     loadFacetValuesError: createAction(actionTypes.LOAD_FACET_VALUES_ERROR),
     invertFacet: createAction(actionTypes.INVERT_FACET),
     setFacets: createAction(actionTypes.SET_FACETS),
+    setAllValueForFacet: createAction(actionTypes.SET_ALL_VALUE_FOR_FACET),
     ...createFacetValueActions(actionTypes),
 });
 
@@ -82,12 +86,23 @@ export const createReducer = prefix => {
                         appliedFacets: omit(appliedFacets, name),
                     };
                 }
-
                 return {
                     ...state,
                     appliedFacets: {
                         ...appliedFacets,
                         [name]: newValues,
+                    },
+                };
+            },
+            [actionTypes.SET_ALL_VALUE_FOR_FACET]: (
+                { appliedFacets, ...state },
+                { payload: { name, values } },
+            ) => {
+                return {
+                    ...state,
+                    appliedFacets: {
+                        ...appliedFacets,
+                        [name]: values,
                     },
                 };
             },

@@ -131,6 +131,7 @@ export default function*() {
             SEARCH,
             SEARCH_SORT,
             facetActionTypes.TOGGLE_FACET_VALUE,
+            facetActionTypes.SET_ALL_VALUE_FOR_FACET,
             facetActionTypes.INVERT_FACET,
             facetActionTypes.CLEAR_FACET,
             facetActionTypes.SET_FACETS,

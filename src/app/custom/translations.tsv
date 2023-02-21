@@ -910,3 +910,5 @@
 "delete_all"	"Delete all"	"Tout supprimer"
 "transformer_delete_all_title"	"Delete all transformation operation"	"Supprimer toutes les opérations de transformation"
 "transformer_delete_all_description"	"Are you sure you want to delete all transformation operations ?"	"Êtes-vous sûr de vouloir supprimer toutes les opérations de transformation ?"
+"uncheck_all_value_facet"	"Uncheck all"	"Tout décocher"
+"check_all_value_facet"	"Check all"	"Tout cocher"
