@@ -30,7 +30,13 @@ const FacetValueAll = ({
     return (
         <Tooltip
             placement="left"
-            title={disabled ? polyglot.t('check_all_value_facet_tooltip') : ''}
+            title={
+                disabled
+                    ? polyglot.t('check_all_value_facet_tooltip', {
+                          limit: MAX_VALUE_FOR_ALL_FACET,
+                      })
+                    : ''
+            }
         >
             <Box sx={{ fontSize: '1rem', padding: 0, margin: 0 }}>
                 <Button
