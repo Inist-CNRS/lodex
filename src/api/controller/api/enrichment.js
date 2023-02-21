@@ -23,7 +23,11 @@ export const setup = async (ctx, next) => {
 
 export const postEnrichment = async ctx => {
     try {
-        const newEnrichmentWithRule = await createEnrichmentRule(ctx);
+        const enrichment = ctx.request.body;
+        const newEnrichmentWithRule = await createEnrichmentRule(
+            ctx,
+            enrichment,
+        );
         const result = await ctx.enrichment.create(newEnrichmentWithRule);
 
         if (result) {

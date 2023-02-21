@@ -36,8 +36,7 @@ const getSourceData = async (ctx, sourceColumn) => {
     }
 };
 
-export const createEnrichmentRule = async ctx => {
-    const enrichment = ctx.request.body;
+export const createEnrichmentRule = async (ctx, enrichment) => {
     if (enrichment.advancedMode) {
         return enrichment;
     }
@@ -407,6 +406,21 @@ export const setEnrichmentError = async (ctx, err) => {
                 ? 'cancelled_enricher'
                 : err?.message,
     });
+};
+
+export const restoreEnrichments = async ctx => {
+    ctx.enrichment.updateMany({}, { $unset: { status: '' } });
+    // some enrichments are exported without a rule, we need to recreate the rule if it is the case
+    const enrichments = await ctx.enrichment.find({}).toArray();
+    for (const enrichment of enrichments) {
+        if (!enrichment.rule) {
+            const enrichmentWithRule = await createEnrichmentRule(
+                ctx,
+                enrichment,
+            );
+            await ctx.enrichment.update(enrichment._id, enrichmentWithRule);
+        }
+    }
 };
 
 const LISTENERS = [];
