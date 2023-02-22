@@ -343,7 +343,7 @@ const DraggableItemGrid = compose(
                                     onShowNameCopied={() =>
                                         toast(
                                             polyglot.t(
-                                                'fieldname_copied_clipboard',
+                                                'fieldidentifier_copied_clipboard',
                                             ),
                                             {
                                                 type: toast.TYPE.SUCCESS,
