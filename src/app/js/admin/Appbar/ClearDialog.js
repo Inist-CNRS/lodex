@@ -26,6 +26,7 @@ import { toast } from '../../../../common/tools/toast';
 import { loadField } from '../../fields';
 import { loadPublication } from '../publication';
 import CancelButton from '../../lib/components/CancelButton';
+import { loadSubresources } from '../subresource';
 
 const baseUrl = getHost();
 
@@ -45,6 +46,7 @@ const ClearDialogComponent = props => {
         hasFailed,
         succeeded,
         loadField,
+        loadSubResources,
         hasPublishedDataset,
     } = props;
 
@@ -85,8 +87,10 @@ const ClearDialogComponent = props => {
             if (hasPublishedDataset) {
                 props.clearPublished();
                 props.loadPublication();
+                loadSubResources();
             } else {
                 loadField();
+                loadSubResources();
                 toast(polyglot.t('model_cleared'), {
                     type: toast.TYPE.SUCCESS,
                 });
@@ -173,6 +177,7 @@ ClearDialogComponent.propTypes = {
     loadField: PropTypes.func.isRequired,
     loadPublication: PropTypes.func.isRequired,
     hasPublishedDataset: PropTypes.bool.isRequired,
+    loadSubResources: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -187,6 +192,7 @@ const mapDispatchToProps = {
     clearPublished: clearPublishedAction,
     loadField: loadField,
     loadPublication: loadPublication,
+    loadSubResources: loadSubresources,
 };
 
 export default compose(
