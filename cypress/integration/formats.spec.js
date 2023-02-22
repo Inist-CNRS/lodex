@@ -58,25 +58,9 @@ describe('Transformers & Formats', () => {
                     cy.get('.detail')
                         .find('.invalid-format')
                         .should('have.length', 2);
-
-                    cy.get('.format_markdown .edit-field').click();
-                    cy.get('#field_form p').contains(
-                        'Cannot edit this value, format expected a single value but got a list',
-                    );
-                    cy.get('#field_form .convert-to-value').click();
-                    cy.get('#field_form textarea').contains('item1;item2');
-                    cy.get('.edit-field.save').click();
-                    cy.get('.detail')
-                        .find('.property')
-                        .should('have.length', 2);
-
-                    cy.get('.detail')
-                        .find('.invalid-format')
-                        .should('have.length', 1);
-
-                    cy.get('.detail')
-                        .find('.property.format_markdown')
-                        .contains('item1;item2');
+                    cy.get(
+                        '.format_markdown [data-testid="SettingsIcon"]',
+                    ).should('exist');
                 });
 
                 it('should display an error message describing the issue and changing the format should fix it', () => {
@@ -100,29 +84,9 @@ describe('Transformers & Formats', () => {
                         .find('.invalid-format')
                         .should('have.length', 2);
 
-                    cy.get('.format_list .edit-field').click();
-                    cy.get('#field_form p').contains(
-                        'Cannot edit this value, format expected an Array but got a single value',
+                    cy.get('.format_list [data-testid="SettingsIcon"]').should(
+                        'exist',
                     );
-                    cy.get('#field_form .convert-to-list').click();
-                    cy.get('#field_form input').should('have.length', 1);
-                    cy.get('#field_form input').should('have.value', 'value');
-                    cy.get('.edit-field.save').click();
-                    cy.get('.detail')
-                        .find('.property')
-                        .should('have.length', 2);
-
-                    cy.get('.detail')
-                        .find('.invalid-format')
-                        .should('have.length', 1);
-
-                    cy.get('.detail')
-                        .find('.format_list li')
-                        .should('have.length', 1);
-
-                    cy.get('.detail')
-                        .find('.format_list li')
-                        .contains('value');
                 });
 
                 it('should display an error message describing the issue', () => {

@@ -184,7 +184,10 @@ export const PropertyComponent = ({
                     >
                         {field.label}
                         {isAdmin && (
-                            <IconButton onClick={handleEditField}>
+                            <IconButton
+                                onClick={handleEditField}
+                                classnames={'edit-field-icon'}
+                            >
                                 <Settings
                                     sx={{
                                         fontSize: '1.2rem',
