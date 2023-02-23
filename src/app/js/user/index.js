@@ -512,7 +512,7 @@ export const postDuplicateField = (state, data) =>
 
 export const clearModelRequest = state =>
     getRequest(state, {
-        url: '/api/field/',
+        url: '/api/field',
         method: 'DELETE',
     });
 

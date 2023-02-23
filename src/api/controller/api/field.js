@@ -394,6 +394,10 @@ export const dropFieldCollection = async ctx => {
         // drop field collection except the uri field from scope collection
         await ctx.field.drop();
         await ctx.field.initializeModel();
+        const collectionNames = await ctx.db.listCollections().toArray();
+        if (collectionNames.map(c => c.name).includes('subresource')) {
+            await ctx.subresource.drop();
+        }
         ctx.status = 200;
         ctx.body = { message: 'model_cleared' };
     } catch (error) {
