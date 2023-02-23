@@ -44,7 +44,7 @@ describe('ParsingDeleteRowDialog component', () => {
 
         expect(getByText(/dataset.csv/)).toBeInTheDocument();
         expect(getByText('parsing_delete_row_description')).toBeInTheDocument();
-        expect(getByText('close')).toBeInTheDocument();
+        expect(getByText('cancel')).toBeInTheDocument();
         expect(getByText('delete')).toBeInTheDocument();
     });
 
@@ -60,7 +60,7 @@ describe('ParsingDeleteRowDialog component', () => {
         );
 
         act(() => {
-            fireEvent.click(getByText('close'));
+            fireEvent.click(getByText('cancel'));
         });
         expect(mockHandleClose).toHaveBeenCalled();
     });
