@@ -25,7 +25,7 @@ export default db => {
             .find(filters)
             .skip(skip)
             .limit(limit)
-            .sort({ [sortBy]: sortDir === 'ASC' ? 1 : -1 })
+            .sort({ [sortBy]: sortDir === 'ASC' ? 1 : -1, _id: 1 })
             .toArray();
 
     collection.findValuesForField = ({
