@@ -20,6 +20,7 @@ const ImportHasEnrichmentsDialog = ({ p: polyglot, onClose }) => {
             className="btn-save"
             onClick={onClose}
             color="primary"
+            variant="contained"
         >
             {polyglot.t('confirm')}
         </Button>,

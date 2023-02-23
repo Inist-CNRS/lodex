@@ -16,6 +16,8 @@ import {
     TextField as MUITextField,
 } from '@mui/material';
 import colorsTheme from '../../../custom/colorsTheme';
+import CancelButton from '../../lib/components/CancelButton';
+import { useHistory } from 'react-router';
 
 const TextField = ({
     label,
@@ -68,6 +70,11 @@ const SubresourceFormComponent = ({
         const firstExcerptLine = excerptLines[0]?.[pathSelected] || [];
         return getKeys(firstExcerptLine);
     }, [excerptLines, pathSelected]);
+
+    const history = useHistory();
+    const handleCancel = () => {
+        history.push('/display/document/subresource');
+    };
 
     return (
         <Box sx={{ background: colorsTheme.green.light, padding: '20px' }}>
@@ -145,14 +152,23 @@ const SubresourceFormComponent = ({
                     }}
                 >
                     {additionnalActions && additionnalActions}
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                        disabled={pristine || submitting}
-                    >
-                        OK
-                    </Button>
+                    <Box>
+                        <CancelButton
+                            sx={{ height: '100%' }}
+                            onClick={handleCancel}
+                        >
+                            {polyglot.t('cancel')}
+                        </CancelButton>
+
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                            disabled={pristine || submitting}
+                        >
+                            {polyglot.t('save')}
+                        </Button>
+                    </Box>
                 </Box>
             </form>
         </Box>

@@ -51,7 +51,7 @@ const TransformerRemoveAllDialog = ({
                     </CancelButton>
                     <Button
                         onClick={handleRemoveAll}
-                        color="primary"
+                        color="secondary"
                         variant="contained"
                         className="confirm-delete-all"
                     >

@@ -10,7 +10,7 @@ export const TabPanel = ({ children, value, index, ...other }) => {
             id={`full-width-tabpanel-${index}`}
             {...other}
         >
-            {value === index && <Box p={3}>{children}</Box>}
+            {value === index && <Box py={3}>{children}</Box>}
         </div>
     );
 };
