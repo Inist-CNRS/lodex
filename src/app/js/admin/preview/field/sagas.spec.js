@@ -55,7 +55,6 @@ describe('field saga', () => {
             });
             const error = { message: 'foo' };
             failedSaga.next();
-            failedSaga.next();
             expect(failedSaga.throw(error).value).toEqual(
                 put(computeFieldPreviewError(error)),
             );
