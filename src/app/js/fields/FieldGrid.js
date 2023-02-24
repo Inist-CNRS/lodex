@@ -158,7 +158,7 @@ const itemsFromLayout = layout =>
 
 const ItemGridLabel = connect((state, { field }) => ({
     completedField: fromFields.getCompletedField(state, field),
-}))(({ field, onShowNameCopied }) => {
+}))(({ field, onShowNameCopied, completedField, polyglot }) => {
     const handleCopyToClipboard = (event, text) => {
         event.stopPropagation();
         event.preventDefault();
@@ -180,6 +180,13 @@ const ItemGridLabel = connect((state, { field }) => ({
                 }}
             >
                 <FieldRepresentation field={field} />
+                {completedField && (
+                    <span>
+                        {polyglot.t('completes_field_X', {
+                            field: completedField.label,
+                        })}
+                    </span>
+                )}
             </Box>
         </>
     );

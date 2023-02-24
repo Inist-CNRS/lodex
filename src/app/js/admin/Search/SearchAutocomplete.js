@@ -76,9 +76,13 @@ const SearchAutocomplete = ({
                     placeholder={translation}
                 />
             )}
-            getOptionLabel={option => (
-                <FieldRepresentation field={option} shortMode />
-            )}
+            getOptionLabel={option =>
+                multiple ? (
+                    <FieldRepresentation field={option} shortMode />
+                ) : (
+                    `${option.label} ${option.name && `[${option.name}]`}  `
+                )
+            }
             clearText={clearText}
             renderOption={(props, option, { selected }) =>
                 !!option.label && multiple

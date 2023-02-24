@@ -190,7 +190,6 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                         onChange={handleSearchInFieldsChange}
                         value={searchInFields}
                         multiple
-                        disableCloseOnSelect
                         clearText={polyglot.t('clear')}
                     />
                 </Box>

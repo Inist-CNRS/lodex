@@ -59,8 +59,8 @@ export const fillSyndication = (syndication, columnName) => {
         `[data-testid="autocomplete_search_syndication_${syndication}"]`,
     ).click();
     cy.get('[role="listbox"]')
-        .contains(new RegExp(`^${columnName}\\s\\(\\w+\\)`))
-        .click();
+        .contains(columnName)
+        .click({ force: true });
 };
 
 export const addColumn = (columnName, options = {}) => {
@@ -96,6 +96,8 @@ export const addColumn = (columnName, options = {}) => {
 
     cy.get('.btn-save').click();
     cy.get('.wizard').should('not.exist');
+
+    cy.wait(1000);
 
     if (options.searchable) {
         cy.get('.sidebar')

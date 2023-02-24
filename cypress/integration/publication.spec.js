@@ -471,9 +471,11 @@ describe('Dataset Publication', () => {
             datasetImportPage.publish();
             adminNavigation.goToResourcePage();
             cy.wait(2000);
-            cy.get('[aria-label="Title"]', { timeout: 3000 }).click({
-                force: true,
-            });
+            cy.get('[aria-label="Title"]', { timeout: 3000 })
+                .eq(0)
+                .click({
+                    force: true,
+                });
             cy.get('.btn-save').click();
 
             cy.get('[aria-label="job-progress"]', { timeout: 3000 }).should(
@@ -490,9 +492,11 @@ describe('Dataset Publication', () => {
             datasetImportPage.publish();
             adminNavigation.goToResourcePage();
             cy.wait(2000);
-            cy.get('[aria-label="Title"]', { timeout: 3000 }).click({
-                force: true,
-            });
+            cy.get('[aria-label="Title"]', { timeout: 3000 })
+                .eq(0)
+                .click({
+                    force: true,
+                });
             cy.contains('Remove').click({ force: true });
             cy.contains('Accept').click({ force: true });
 
