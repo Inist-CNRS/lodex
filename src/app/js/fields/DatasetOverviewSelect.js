@@ -13,7 +13,7 @@ import { loadField } from '.';
 import { fromFields } from '../sharedSelectors';
 import { SCOPE_DATASET } from '../../../common/scope';
 import fieldApi from '../admin/api/field';
-import FieldInternalIcon from './FieldInternalIcon';
+import FieldRepresentation from './FieldRepresentation';
 
 export const DatasetOverviewSelectComponent = ({
     p: polyglot,
@@ -56,45 +56,29 @@ export const DatasetOverviewSelectComponent = ({
                 label={polyglot.t('overviewDatasetTitle')}
                 onChange={handleDatasetTitleChange}
                 sx={{ minWidth: 220 }}
+                SelectProps={{
+                    renderValue: option => (
+                        <FieldRepresentation
+                            field={fields.find(f => f._id === option)}
+                            shortMode
+                        />
+                    ),
+                }}
             >
                 <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
-                {fields.map(
-                    field =>
-                        !!field.label && (
-                            <MenuItem
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 2,
-                                }}
-                                value={field._id}
-                                key={field._id}
-                            >
-                                <Box>
-                                    {field.label}{' '}
-                                    {field.name ? `(${field.name})` : ''}
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    {field.internalScopes &&
-                                        field.internalScopes.map(
-                                            internalScope => (
-                                                <FieldInternalIcon
-                                                    key={internalScope}
-                                                    scope={internalScope}
-                                                />
-                                            ),
-                                        )}
-                                    {field.internalName}
-                                </Box>
-                            </MenuItem>
-                        ),
-                )}
+                {fields.map(field => (
+                    <MenuItem
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 2,
+                        }}
+                        value={field._id}
+                        key={field._id}
+                    >
+                        <FieldRepresentation field={field} />
+                    </MenuItem>
+                ))}
             </TextField>
             <TextField
                 select
@@ -102,45 +86,29 @@ export const DatasetOverviewSelectComponent = ({
                 label={polyglot.t('overviewDatasetDescription')}
                 onChange={handleDatasetDescriptionChange}
                 sx={{ minWidth: 220 }}
+                SelectProps={{
+                    renderValue: option => (
+                        <FieldRepresentation
+                            field={fields.find(f => f._id === option)}
+                            shortMode
+                        />
+                    ),
+                }}
             >
                 <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
-                {fields.map(
-                    field =>
-                        !!field.label && (
-                            <MenuItem
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 2,
-                                }}
-                                value={field._id}
-                                key={field._id}
-                            >
-                                <Box>
-                                    {field.label}{' '}
-                                    {field.name ? `(${field.name})` : ''}
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    {field.internalScopes &&
-                                        field.internalScopes.map(
-                                            internalScope => (
-                                                <FieldInternalIcon
-                                                    key={internalScope}
-                                                    scope={internalScope}
-                                                />
-                                            ),
-                                        )}
-                                    {field.internalName}
-                                </Box>
-                            </MenuItem>
-                        ),
-                )}
+                {fields.map(field => (
+                    <MenuItem
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 2,
+                        }}
+                        value={field._id}
+                        key={field._id}
+                    >
+                        <FieldRepresentation field={field} />
+                    </MenuItem>
+                ))}
             </TextField>
         </Box>
     );

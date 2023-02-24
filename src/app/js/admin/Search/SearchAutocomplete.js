@@ -76,9 +76,9 @@ const SearchAutocomplete = ({
                     placeholder={translation}
                 />
             )}
-            getOptionLabel={option =>
-                `${option.label} ${option.name ? `(${option.name})` : ''}`
-            }
+            getOptionLabel={option => (
+                <FieldRepresentation field={option} shortMode />
+            )}
             clearText={clearText}
             renderOption={(props, option, { selected }) =>
                 !!option.label && multiple
@@ -86,14 +86,6 @@ const SearchAutocomplete = ({
                     : renderItem(props, option)
             }
             onChange={handleChange}
-            sx={{
-                '& .MuiChip-label': {
-                    maxWidth: '300px',
-                },
-                '& .MuiChip-label:hover': {
-                    maxWidth: 'none',
-                },
-            }}
         />
     );
 };

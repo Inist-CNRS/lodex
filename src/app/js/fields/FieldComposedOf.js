@@ -7,7 +7,6 @@ import {
     TextField,
     MenuItem,
 } from '@mui/material';
-import FieldInternalIcon from './FieldInternalIcon';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -19,6 +18,7 @@ import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
 } from '../propTypes';
+import FieldRepresentation from './FieldRepresentation';
 
 const FieldComposedOf = ({ onChange, fields, p: polyglot, columns }) => {
     const autocompleteValue = columns.map(column => {
@@ -40,7 +40,9 @@ const FieldComposedOf = ({ onChange, fields, p: polyglot, columns }) => {
                 multiple
                 fullWidth
                 options={fields}
-                getOptionLabel={option => `${option.label} (${option.name})`}
+                getOptionLabel={option => (
+                    <FieldRepresentation field={option} shortMode />
+                )}
                 value={autocompleteValue ?? []}
                 renderInput={params => (
                     <TextField
@@ -60,25 +62,7 @@ const FieldComposedOf = ({ onChange, fields, p: polyglot, columns }) => {
                             }}
                             {...props}
                         >
-                            <Box>
-                                {option.label} ({option.name})
-                            </Box>
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                {option.internalScopes &&
-                                    option.internalScopes.map(internalScope => (
-                                        <FieldInternalIcon
-                                            key={internalScope}
-                                            scope={internalScope}
-                                        />
-                                    ))}
-                                {option.internalName}
-                            </Box>
+                            <FieldRepresentation field={option} />
                         </MenuItem>
                     )
                 }

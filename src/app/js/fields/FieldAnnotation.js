@@ -10,8 +10,8 @@ import {
     field as fieldPropTypes,
 } from '../propTypes';
 import { hasSimilarScope } from '../../../common/scope';
-import FieldInternalIcon from './FieldInternalIcon';
 import { Box, MenuItem, Typography } from '@mui/material';
+import FieldRepresentation from './FieldRepresentation';
 
 const FieldAnnotation = ({ fields, scope, p: polyglot }) => (
     <Box mt={5}>
@@ -24,6 +24,14 @@ const FieldAnnotation = ({ fields, scope, p: polyglot }) => (
             label={polyglot.t('field_to_annotate')}
             component={FormSelectField}
             fullWidth
+            SelectProps={{
+                renderValue: option => (
+                    <FieldRepresentation
+                        field={fields.find(f => f.name === option)}
+                        shortMode
+                    />
+                ),
+            }}
         >
             <MenuItem value={null}>
                 {polyglot.t('completes_field_none')}
@@ -39,17 +47,7 @@ const FieldAnnotation = ({ fields, scope, p: polyglot }) => (
                         alignItems: 'center',
                     }}
                 >
-                    <div>{f.label}</div>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        {f.internalScopes &&
-                            f.internalScopes.map(internalScope => (
-                                <FieldInternalIcon
-                                    key={internalScope}
-                                    scope={internalScope}
-                                />
-                            ))}
-                        {f.internalName}
-                    </Box>
+                    <FieldRepresentation field={f} />
                 </MenuItem>
             ))}
         </Field>
