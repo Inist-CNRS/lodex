@@ -121,7 +121,7 @@ describe('Subresource Page', () => {
 
         cy.get('input[name="label"]')
             .clear()
-            .type('Animal name');
+            .type('Animal crossing');
 
         cy.contains('From Subresource').click();
 
@@ -140,7 +140,7 @@ describe('Subresource Page', () => {
         cy.contains('button', 'Published data').click();
 
         let fieldName;
-        cy.contains('span', 'Animal name')
+        cy.contains('span', 'Animal crossing')
             .parent('p')
             .within(() => {
                 cy.get('span[data-field-name]')
@@ -199,7 +199,7 @@ describe('Subresource Page', () => {
 
         cy.location('pathname').should('not.equal', '/');
 
-        cy.contains('.property', 'Animal name').within(() => {
+        cy.contains('.property', 'Animal crossing').within(() => {
             cy.contains('Canidae').should('be.visible');
         });
 

@@ -6,8 +6,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import ArticleIcon from '@mui/icons-material/Article';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
-import FilterAtIcon from './FilterAt';
 import { ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
+import { FilterAlt } from '@mui/icons-material';
 
 export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
     const [values, setValues] = React.useState([]);
@@ -45,7 +45,7 @@ export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
             </ToggleButton>
             <ToggleButton value="facet" aria-label="centered">
                 <Tooltip title={polyglot.t('facet_tooltip')}>
-                    <FilterAtIcon />
+                    <FilterAlt />
                 </Tooltip>
             </ToggleButton>
             <ToggleButton value="chart" aria-label="right aligned">

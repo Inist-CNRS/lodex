@@ -17,14 +17,13 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    MenuItem,
 } from '@mui/material';
 import { Typography } from '@material-ui/core';
 
 import * as overview from '../../../../common/overview';
 import { toast } from '../../../../common/tools/toast';
 import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../../../common/scope';
-import FieldInternalIcon from '../../fields/FieldInternalIcon';
+import FieldRepresentation from '../../fields/FieldRepresentation';
 
 const getSearchableFields = fields => fields.filter(f => f.searchable) || [];
 
@@ -196,8 +195,13 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                 </Box>
             </Box>
 
-            <Box display="flex" alignItems={'stretch'} gap={10}>
-                <Box display="flex" flex={1} flexDirection="column">
+            <Box display="flex" alignItems={'stretch'} gap={5}>
+                <Box
+                    display="flex"
+                    flex={3}
+                    flexDirection="column"
+                    overflow="auto"
+                >
                     <Typography variant="caption" sx={{ margin: 'auto' }}>
                         {polyglot.t('facets')}
                     </Typography>
@@ -208,21 +212,29 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 bgcolor: 'background.paper',
                                 maxHeight: 300,
                                 overflow: 'auto',
-                                padding: 2,
+                                padding: 0,
                             }}
                         >
                             {fieldsResource?.map(field => {
                                 const labelId = `checkbox-list-label-${field.name}`;
 
                                 return (
-                                    <ListItem key={field.name} disablePadding>
+                                    <ListItem
+                                        key={field.name}
+                                        disablePadding
+                                        dense
+                                    >
                                         <ListItemButton
                                             onClick={() =>
                                                 handleFacetCheckedChange(field)
                                             }
-                                            dense
                                         >
-                                            <ListItemIcon>
+                                            <ListItemIcon
+                                                sx={{
+                                                    minWidth: '30px',
+                                                    padding: 0,
+                                                }}
+                                            >
                                                 <Checkbox
                                                     edge="start"
                                                     checked={
@@ -237,52 +249,17 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                                     inputProps={{
                                                         'aria-labelledby': labelId,
                                                     }}
+                                                    sx={{
+                                                        padding: 0,
+                                                    }}
                                                 />
                                             </ListItemIcon>
                                             <ListItemText
                                                 id={labelId}
                                                 primary={
-                                                    <MenuItem
-                                                        sx={{
-                                                            display: 'flex',
-                                                            alignItems:
-                                                                'center',
-                                                            gap: 2,
-                                                            whiteSpace:
-                                                                'normal',
-                                                        }}
-                                                    >
-                                                        <Box>
-                                                            {field.label}{' '}
-                                                            {field.name
-                                                                ? `(${field.name})`
-                                                                : ''}
-                                                        </Box>
-                                                        <Box
-                                                            sx={{
-                                                                display: 'flex',
-                                                                justifyContent:
-                                                                    'center',
-                                                                alignItems:
-                                                                    'center',
-                                                            }}
-                                                        >
-                                                            {field.internalScopes &&
-                                                                field.internalScopes.map(
-                                                                    internalScope => (
-                                                                        <FieldInternalIcon
-                                                                            key={
-                                                                                internalScope
-                                                                            }
-                                                                            scope={
-                                                                                internalScope
-                                                                            }
-                                                                        />
-                                                                    ),
-                                                                )}
-                                                            {field.internalName}
-                                                        </Box>
-                                                    </MenuItem>
+                                                    <FieldRepresentation
+                                                        field={field}
+                                                    />
                                                 }
                                             />
                                         </ListItemButton>
@@ -293,7 +270,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                     </Box>
                 </Box>
 
-                <Box display="flex" flex={2} flexDirection="column">
+                <Box display="flex" flex={7} flexDirection="column">
                     <Typography variant="caption" sx={{ margin: 'auto' }}>
                         {polyglot.t('search_syndication')}
                     </Typography>

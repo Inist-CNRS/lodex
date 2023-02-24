@@ -19,19 +19,18 @@ import {
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { getShortText, isLongText } from '../lib/longTexts';
 import { NoField } from './NoField';
 import { useDidUpdateEffect } from '../lib/useDidUpdateEffect';
 import { fromFields } from '../sharedSelectors';
 
 import { loadField, changePositions, saveFieldFromData } from '../fields';
-import FieldInternalIcon from './FieldInternalIcon';
 
 import fieldApi from '../admin/api/field';
 import { toast } from '../../../common/tools/toast';
 import { useLocation, useHistory } from 'react-router';
 import { IconButton, Tooltip } from '@mui/material';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
+import FieldRepresentation from './FieldRepresentation';
 
 const ROOT_PADDING = 16;
 
@@ -119,9 +118,6 @@ const scrollToField = fieldLabel => {
     }, 200);
 };
 
-const ensureTextIsShort = text =>
-    isLongText(text) ? getShortText(text) : text;
-
 const layoutFromItems = items => {
     const result = items
         .sort((a, b) => a.position - b.position)
@@ -162,9 +158,7 @@ const itemsFromLayout = layout =>
 
 const ItemGridLabel = connect((state, { field }) => ({
     completedField: fromFields.getCompletedField(state, field),
-}))(({ field, completedField, polyglot, onShowNameCopied }) => {
-    const classes = useStyles();
-
+}))(({ field, onShowNameCopied, completedField, polyglot }) => {
     const handleCopyToClipboard = (event, text) => {
         event.stopPropagation();
         event.preventDefault();
@@ -178,29 +172,22 @@ const ItemGridLabel = connect((state, { field }) => ({
                 onClick={e => {
                     handleCopyToClipboard(e, field.name);
                 }}
+                sx={{
+                    '& .MuiBox-root': {
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    },
+                }}
             >
-                <span>
-                    {ensureTextIsShort(field.label)}
-                    {` (${ensureTextIsShort(field.name)})`}
-                    {completedField && (
-                        <span>
-                            {polyglot.t('completes_field_X', {
-                                field: completedField.label,
-                            })}
-                        </span>
-                    )}
-                </span>
+                <FieldRepresentation field={field} />
+                {completedField && (
+                    <span>
+                        {polyglot.t('completes_field_X', {
+                            field: completedField.label,
+                        })}
+                    </span>
+                )}
             </Box>
-            <div className={classes.internal}>
-                {field.internalScopes &&
-                    field.internalScopes.map(internalScope => (
-                        <FieldInternalIcon
-                            key={internalScope}
-                            scope={internalScope}
-                        />
-                    ))}
-                {field.internalName}
-            </div>
         </>
     );
 });

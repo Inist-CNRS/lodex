@@ -37,7 +37,7 @@ const SourceValueArbitrary = ({
                 placeholder={polyglot.t('enter_an_arbitrary_value')}
                 label={polyglot.t('arbitrary_value')}
                 onChange={handleChange}
-                value={value || ''}
+                defaultValue={value || ''}
                 multiline
             />
             <Box style={{ marginLeft: '10px', height: '56px' }}>
