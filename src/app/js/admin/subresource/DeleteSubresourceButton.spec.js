@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Button, Dialog } from '@material-ui/core';
+import { Button, Dialog } from '@mui/material';
 
 import { DeleteSubresourceButtonComponent as DeleteSubresourceButton } from './DeleteSubresourceButton';
 
@@ -56,12 +56,13 @@ describe('<DeleteSubresourceButton />', () => {
             />,
         );
 
-        const okButton = wrapper.findWhere(node => {
-            return node.type() === Button && node.text() === 'Accept';
+        const dialog = wrapper.find(Dialog);
+        const confirmButton = dialog.findWhere(node => {
+            return node.type() === Button && node.text() === 'delete';
         });
 
-        expect(okButton.exists()).toBeTruthy();
-        okButton.simulate('click');
+        expect(confirmButton.exists()).toBeTruthy();
+        confirmButton.simulate('click');
 
         expect(onClick).toHaveBeenCalledTimes(1);
     });

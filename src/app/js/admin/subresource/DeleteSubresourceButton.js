@@ -1,7 +1,7 @@
 import React from 'react';
 import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
-import { Button, Dialog, DialogTitle, DialogActions } from '@material-ui/core';
+import { Button, Dialog, DialogTitle, DialogActions } from '@mui/material';
 import { compose, withState } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
@@ -30,11 +30,11 @@ export const DeleteSubresourceButtonComponent = ({
                         {polyglot.t('Cancel')}
                     </CancelButton>
                     <Button
-                        color="primary"
+                        color="secondary"
                         variant="contained"
                         onClick={onClick}
                     >
-                        {polyglot.t('Accept')}
+                        {polyglot.t('delete')}
                     </Button>
                 </DialogActions>
             </Dialog>

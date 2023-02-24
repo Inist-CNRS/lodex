@@ -144,8 +144,15 @@ const FieldEditionWizardComponent = ({
                                 <Tabs
                                     value={tabValue}
                                     onChange={handleChange}
-                                    variant="scrollable"
-                                    scrollButtons="auto"
+                                    variant="fullWidth"
+                                    sx={{
+                                        borderBottom: 1,
+                                        borderColor: 'divider',
+                                        marginBottom: 4,
+                                        '& button:hover': {
+                                            color: 'primary.main',
+                                        },
+                                    }}
                                 >
                                     {tabs.map((tab, index) => (
                                         <Tab

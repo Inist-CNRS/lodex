@@ -71,11 +71,11 @@ export const ParsingDeleteRowDialog = ({
             <DialogActions>
                 <Box display="flex" justifyContent="flex-end">
                     <CancelButton onClick={handleClose}>
-                        {polyglot.t('close')}
+                        {polyglot.t('cancel')}
                     </CancelButton>
                     <Button
                         onClick={handleDelete}
-                        color="primary"
+                        color="secondary"
                         variant="contained"
                         disabled={isLoading}
                     >
