@@ -40,12 +40,12 @@ const localesMUI = new Map([
 
 const theme = {
     palette: {
-        secondary: {
-            main: colorsTheme.orange.primary,
-            contrastText: colorsTheme.white.primary,
-        },
         primary: {
             main: colorsTheme.green.primary,
+            contrastText: colorsTheme.white.primary,
+        },
+        secondary: {
+            main: colorsTheme.orange.primary,
             contrastText: colorsTheme.white.primary,
         },
         neutral: {

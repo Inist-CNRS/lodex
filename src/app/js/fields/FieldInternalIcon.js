@@ -2,35 +2,44 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import HomeIcon from '@material-ui/icons/Home';
+import HomeIcon from '@mui/icons-material/Home';
 import ArticleIcon from '@mui/icons-material/Article';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
-import EqualizerIcon from '@material-ui/icons/Equalizer';
-import FilterAtIcon from './FilterAt';
-import { Tooltip } from '@material-ui/core';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
+import { Tooltip } from '@mui/material';
+import { FilterAlt } from '@mui/icons-material';
 
-const INTERNAL_SCOPE_ICONS = [];
-INTERNAL_SCOPE_ICONS['home'] = <HomeIcon />;
-INTERNAL_SCOPE_ICONS['document'] = <ArticleIcon />;
-INTERNAL_SCOPE_ICONS['subRessource'] = <DocumentScannerIcon />;
-INTERNAL_SCOPE_ICONS['facet'] = <FilterAtIcon />;
-INTERNAL_SCOPE_ICONS['chart'] = <EqualizerIcon />;
-
-const getIconInternalScope = (scope, polyglot) => {
+function Icon({ scope, ...rest }) {
+    switch (scope) {
+        case 'home':
+            return <HomeIcon {...rest} />;
+        case 'document':
+            return <ArticleIcon {...rest} />;
+        case 'subRessource':
+            return <DocumentScannerIcon {...rest} />;
+        case 'facet':
+            return <FilterAlt {...rest} />;
+        case 'chart':
+            return <EqualizerIcon {...rest} />;
+        default:
+            return null;
+    }
+}
+function FieldInternalIcon({ scope, p: polyglot, ...rest }) {
     if (scope) {
         return (
             <Tooltip title={polyglot.t(`${scope}_tooltip`)}>
-                {INTERNAL_SCOPE_ICONS[scope]}
+                <Icon scope={scope} {...rest} />
             </Tooltip>
         );
     }
+}
+Icon.propTypes = {
+    scope: PropTypes.string.isRequired,
+    props: polyglotPropTypes.isRequired,
 };
-
-const FieldInternalIcon = ({ scope, p: polyglot }) =>
-    getIconInternalScope(scope, polyglot);
-
 FieldInternalIcon.propTypes = {
-    scope: PropTypes.oneOf(Object.keys(INTERNAL_SCOPE_ICONS)),
+    scope: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 

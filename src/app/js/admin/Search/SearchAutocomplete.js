@@ -1,16 +1,10 @@
 import React, { useEffect } from 'react';
-import {
-    Autocomplete,
-    Box,
-    Checkbox,
-    MenuItem,
-    TextField,
-} from '@mui/material';
-import FieldInternalIcon from '../../fields/FieldInternalIcon';
+import { Autocomplete, Checkbox, MenuItem, TextField } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 import PropTypes from 'prop-types';
+import FieldRepresentation from '../../fields/FieldRepresentation';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -26,25 +20,7 @@ const renderItem = (props, option) => {
             }}
             {...props}
         >
-            <Box>
-                {option.label} {option.name ? `(${option.name})` : ''}
-            </Box>
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                {option.internalScopes &&
-                    option.internalScopes.map(internalScope => (
-                        <FieldInternalIcon
-                            key={internalScope}
-                            scope={internalScope}
-                        />
-                    ))}
-                {option.internalName}
-            </Box>
+            <FieldRepresentation field={option} />
         </MenuItem>
     );
 };
@@ -58,25 +34,7 @@ const renderCheckboxItem = (props, option, selected) => {
                 style={{ marginRight: 8 }}
                 checked={selected}
             />
-            <Box>
-                {option.label} {option.name ? `(${option.name})` : ''}
-            </Box>
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                {option.internalScopes &&
-                    option.internalScopes.map(internalScope => (
-                        <FieldInternalIcon
-                            key={internalScope}
-                            scope={internalScope}
-                        />
-                    ))}
-                {option.internalName}
-            </Box>
+            <FieldRepresentation field={option} />
         </li>
     );
 };
@@ -128,6 +86,14 @@ const SearchAutocomplete = ({
                     : renderItem(props, option)
             }
             onChange={handleChange}
+            sx={{
+                '& .MuiChip-label': {
+                    maxWidth: '300px',
+                },
+                '& .MuiChip-label:hover': {
+                    maxWidth: 'none',
+                },
+            }}
         />
     );
 };
