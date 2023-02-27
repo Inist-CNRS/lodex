@@ -28,6 +28,10 @@ const getSourceData = async (ctx, sourceColumn) => {
               }
             : {},
     );
+    if (excerptLines.length === 0) {
+        return null;
+    }
+
     const sourceData = excerptLines[0][sourceColumn];
     try {
         return JSON.parse(sourceData);
