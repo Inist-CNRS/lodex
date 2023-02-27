@@ -75,13 +75,12 @@ export const ParsingDeleteRowDialog = ({
                     </CancelButton>
                     <Button
                         onClick={handleDelete}
-                        color="secondary"
                         variant="contained"
                         disabled={isLoading}
                     >
                         {isLoading
                             ? polyglot.t('deleting')
-                            : polyglot.t('delete')}
+                            : polyglot.t('confirm')}
                     </Button>
                 </Box>
             </DialogActions>
