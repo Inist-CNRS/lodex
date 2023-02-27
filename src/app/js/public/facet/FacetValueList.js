@@ -132,6 +132,7 @@ export const FacetValueList = ({
                         <FacetValueAll
                             disabled={total > MAX_VALUE_FOR_ALL_FACET}
                             name={name}
+                            page={page}
                         />
                     )}
                     {facetValues.map(({ value, count }) => {

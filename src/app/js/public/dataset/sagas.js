@@ -85,6 +85,7 @@ export default function*() {
                 LOAD_DATASET_PAGE,
                 APPLY_FILTER,
                 facetActionTypes.TOGGLE_FACET_VALUE,
+                facetActionTypes.SET_ALL_VALUE_FOR_FACET,
                 facetActionTypes.CLEAR_FACET,
                 facetActionTypes.INVERT_FACET,
                 SORT_DATASET,
