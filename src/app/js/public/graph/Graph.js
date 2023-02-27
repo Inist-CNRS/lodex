@@ -14,18 +14,24 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 
-import { fromFields, fromCharacteristic } from '../../sharedSelectors';
+import {
+    fromFields,
+    fromCharacteristic,
+    fromUser,
+} from '../../sharedSelectors';
 import Format from '../Format';
 import FacetList from '../facet/FacetList';
 import DatasetSearchBar from '../dataset/DatasetSearchBar';
 import AppliedFacetList from '../dataset/AppliedDatasetFacetList';
-import EditButton from '../../fields/editFieldValue/EditButton';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
 import CompositeProperty from '../Property/CompositeProperty';
 import DatasetStats from '../dataset/DatasetStats';
 import stylesToClassname from '../../lib/stylesToClassName';
 import { preLoadPublication } from '../../fields';
 import { preLoadDatasetPage as preLoadDatasetPageAction } from '../dataset';
+import { getEditFieldRedirectUrl } from '../Property';
+import { IconButton } from '@mui/material';
+import { Settings } from '@mui/icons-material';
 
 const styles = stylesToClassname(
     {
@@ -93,6 +99,15 @@ class Graph extends Component {
         this.setState({ showFacets: !showFacets });
     };
 
+    handleEditField = field => {
+        const redirectUrl = getEditFieldRedirectUrl(
+            field.name,
+            field.scope,
+            field.subresourceId,
+        );
+        window.open(redirectUrl, '_blank');
+    };
+
     render() {
         const { showFacets } = this.state;
         const {
@@ -101,6 +116,7 @@ class Graph extends Component {
             resource,
             p: polyglot,
             onSearch,
+            isAdmin,
         } = this.props;
 
         return (
@@ -133,13 +149,24 @@ class Graph extends Component {
                                         <>
                                             {' '}
                                             {graphField.label}
-                                            <EditButton
-                                                field={graphField}
-                                                resource={resource}
-                                                warningMessage={polyglot.t(
-                                                    'warning_frontend_modification',
-                                                )}
-                                            />
+                                            {isAdmin && (
+                                                <IconButton
+                                                    onClick={() =>
+                                                        this.handleEditField(
+                                                            graphField,
+                                                        )
+                                                    }
+                                                    classnames={
+                                                        'edit-field-icon'
+                                                    }
+                                                >
+                                                    <Settings
+                                                        sx={{
+                                                            fontSize: '1.2rem',
+                                                        }}
+                                                    />
+                                                </IconButton>
+                                            )}
                                         </>
                                     }
                                 />
@@ -188,6 +215,7 @@ Graph.propTypes = {
     preLoadDatasetPage: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     onSearch: PropTypes.func.isRequired,
+    isAdmin: PropTypes.bool,
 };
 
 const mapStateToProps = (state, { name }) => ({
@@ -195,6 +223,7 @@ const mapStateToProps = (state, { name }) => ({
     graphField: name && fromFields.getFieldByName(state, name),
     hasFacetFields: fromFields.hasFacetFields(state),
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
+    isAdmin: fromUser.isAdmin(state),
 });
 
 const mapDispatchToProps = {
