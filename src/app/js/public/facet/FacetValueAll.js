@@ -9,7 +9,8 @@ import { fromFacet } from '../selectors';
 import { connect } from 'react-redux';
 
 import apiFacet from '../../admin/api/facet';
-import { facetActions } from '../search/reducer';
+import { facetActions as datasetActions } from '../dataset';
+import { facetActions as searchActions } from '../search/reducer';
 import { MAX_VALUE_FOR_ALL_FACET } from '.';
 
 const FacetValueAll = ({
@@ -60,16 +61,22 @@ FacetValueAll.propTypes = {
     setAllValueForFacet: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, { name }) => {
-    const selectors = fromFacet('search');
+const actionsByPage = {
+    dataset: datasetActions,
+    search: searchActions,
+};
+
+const mapStateToProps = (state, { name, page }) => {
+    const selectors = fromFacet(page);
     return {
         facetData: selectors.getFacetValueRequestData(state, name),
     };
 };
 
-const mapDispatchToProps = {
-    setAllValueForFacet: facetActions.setAllValueForFacet,
-};
+const mapDispatchToProps = (dispatch, { page }) => ({
+    setAllValueForFacet: (...args) =>
+        dispatch(actionsByPage[page].setAllValueForFacet(...args)),
+});
 
 export default compose(
     translate,
