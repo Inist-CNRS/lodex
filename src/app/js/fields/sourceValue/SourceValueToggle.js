@@ -384,7 +384,8 @@ export const SourceValueToggle = ({
                             newTransformers,
                         )
                     }
-                    value={value}
+                    column={value}
+                    path={currentTransformers[0].args[0].value}
                 />
             )}
         </Box>
