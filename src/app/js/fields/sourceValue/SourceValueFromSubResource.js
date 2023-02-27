@@ -103,19 +103,14 @@ const SourceValueFromSubResource = ({
     firstParsedLine,
     p: polyglot,
     subresources,
-    value,
+    path,
+    column,
     updateDefaultValueTransformers,
 }) => {
-    const [
-        selectedSubresourcePath,
-        setSelectedSubresourcePath,
-    ] = React.useState(subresources[0].path);
-    const [autocompleteValue, setAutocompleteValue] = React.useState(value);
+    const [autocompleteValue, setAutocompleteValue] = React.useState(column);
     const [datasetFields, setDatasetFields] = React.useState([]);
     useEffect(() => {
-        const subresourceData = parseValue(
-            firstParsedLine[selectedSubresourcePath] || '',
-        );
+        const subresourceData = parseValue(firstParsedLine[path] || '');
 
         const datasetFields = [
             ...Object.keys(
@@ -125,11 +120,11 @@ const SourceValueFromSubResource = ({
             ),
         ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
         setDatasetFields(datasetFields);
-    }, [selectedSubresourcePath]);
+    }, [path]);
 
     useEffect(() => {
-        setAutocompleteValue(value);
-    }, [value]);
+        setAutocompleteValue(column);
+    }, [column]);
 
     const handleChangeSubresource = event => {
         const transformers = GET_TRANSFORMERS_FROM_SUBRESOURCE(
@@ -137,14 +132,13 @@ const SourceValueFromSubResource = ({
             event.target.value,
             null,
         );
-        setSelectedSubresourcePath(event.target.value);
         updateDefaultValueTransformers(transformers);
     };
 
     const handleChange = (event, value) => {
         const transformers = GET_TRANSFORMERS_FROM_SUBRESOURCE(
             subresources,
-            selectedSubresourcePath,
+            path,
             value,
         );
         updateDefaultValueTransformers(transformers);
@@ -159,11 +153,13 @@ const SourceValueFromSubResource = ({
                 <Select
                     labelId="select-subresource-label"
                     data-testid="select-subresource"
-                    value={selectedSubresourcePath}
+                    value={path}
                     label={polyglot.t('subRessource_tooltip')}
                     onChange={handleChangeSubresource}
                 >
                     {subresources.map(subresource => (
+                        // TODO: manage selected subresource with its id because two subresources can have the same path
+                        // but currently we store only the path in mongo and not the id
                         <MenuItem
                             key={subresource.path}
                             value={subresource.path}
@@ -204,7 +200,8 @@ SourceValueFromSubResource.propTypes = {
     p: polyglotPropTypes.isRequired,
     subresources: PropTypes.array,
     updateDefaultValueTransformers: PropTypes.func.isRequired,
-    value: PropTypes.string,
+    column: PropTypes.string,
+    path: PropTypes.string,
 };
 
 export default compose(
