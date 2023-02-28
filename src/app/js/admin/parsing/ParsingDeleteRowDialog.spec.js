@@ -45,7 +45,7 @@ describe('ParsingDeleteRowDialog component', () => {
         expect(getByText(/dataset.csv/)).toBeInTheDocument();
         expect(getByText('parsing_delete_row_description')).toBeInTheDocument();
         expect(getByText('cancel')).toBeInTheDocument();
-        expect(getByText('delete')).toBeInTheDocument();
+        expect(getByText('confirm')).toBeInTheDocument();
     });
 
     it('calls handleClose when close button is clicked', () => {
@@ -65,7 +65,7 @@ describe('ParsingDeleteRowDialog component', () => {
         expect(mockHandleClose).toHaveBeenCalled();
     });
 
-    it('calls deleteDatasetRow and reloadDataset when delete button is clicked', async () => {
+    it('calls deleteDatasetRow and reloadDataset when confirm button is clicked', async () => {
         datasetApi.deleteDatasetRow.mockResolvedValue({ status: 'deleted' });
 
         const { getByText } = render(
@@ -79,7 +79,7 @@ describe('ParsingDeleteRowDialog component', () => {
         );
 
         await act(async () => {
-            fireEvent.click(getByText('delete'));
+            fireEvent.click(getByText('confirm'));
         });
 
         expect(datasetApi.deleteDatasetRow).toHaveBeenCalledWith('1');
@@ -101,7 +101,7 @@ describe('ParsingDeleteRowDialog component', () => {
         );
 
         await act(async () => {
-            fireEvent.click(getByText('delete'));
+            fireEvent.click(getByText('confirm'));
         });
 
         expect(publishApi.publish).not.toHaveBeenCalled();
@@ -122,7 +122,7 @@ describe('ParsingDeleteRowDialog component', () => {
         );
 
         await act(async () => {
-            fireEvent.click(getByText('delete'));
+            fireEvent.click(getByText('confirm'));
         });
 
         expect(publishApi.publish).toHaveBeenCalled();

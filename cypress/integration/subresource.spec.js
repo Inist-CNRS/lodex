@@ -85,7 +85,7 @@ describe('Subresource Page', () => {
         datasetImportPage.addColumn('name', { syndication: 1 });
 
         cy.get('.sidebar')
-            .contains('Search')
+            .contains('Search & Facet')
             .click();
         cy.get('[data-testid="autocomplete_search_in_fields"]').click();
         cy.get('[role="listbox"]')
@@ -185,7 +185,7 @@ describe('Subresource Page', () => {
         datasetImportPage.addColumn('name', { syndication: 1 });
 
         cy.get('.sidebar')
-            .contains('Search')
+            .contains('Search & Facet')
             .click();
         cy.get('[data-testid="autocomplete_search_in_fields"]').click();
         cy.get('[role="listbox"]')

@@ -168,6 +168,7 @@ export default function*() {
         500,
         [
             facetActionTypes.TOGGLE_FACET_VALUE,
+            facetActionTypes.SET_ALL_VALUE_FOR_FACET,
             facetActionTypes.CLEAR_FACET,
             APPLY_FILTER,
             facetActionTypes.INVERT_FACET,

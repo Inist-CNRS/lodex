@@ -53,7 +53,7 @@ export const fillTabDisplayFormat = (format, save = true) => {
 
 export const fillSyndication = (syndication, columnName) => {
     cy.get('.sidebar')
-        .contains('Search')
+        .contains('Search & Facet')
         .click();
     cy.get(
         `[data-testid="autocomplete_search_syndication_${syndication}"]`,
@@ -101,7 +101,7 @@ export const addColumn = (columnName, options = {}) => {
 
     if (options.searchable) {
         cy.get('.sidebar')
-            .contains('Search')
+            .contains('Search & Facet')
             .click();
         cy.get('[data-testid="autocomplete_search_in_fields"]').click();
         cy.get('[role="listbox"]')

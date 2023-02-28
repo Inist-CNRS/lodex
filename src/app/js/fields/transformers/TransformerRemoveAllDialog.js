@@ -51,11 +51,10 @@ const TransformerRemoveAllDialog = ({
                     </CancelButton>
                     <Button
                         onClick={handleRemoveAll}
-                        color="secondary"
                         variant="contained"
                         className="confirm-delete-all"
                     >
-                        {polyglot.t('delete_all')}
+                        {polyglot.t('confirm')}
                     </Button>
                 </Box>
             </DialogActions>
