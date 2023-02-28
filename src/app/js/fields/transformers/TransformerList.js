@@ -71,7 +71,7 @@ export const TransformerListComponent = ({
         fields.map(fieldName => fieldName),
     );
 
-    let isTransformersModified = !isEqual(
+    const isTransformersModified = !isEqual(
         fields.getAll(),
         currentEditedField.transformers,
     );
