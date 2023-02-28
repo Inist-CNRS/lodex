@@ -17,13 +17,14 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    Typography,
 } from '@mui/material';
-import { Typography } from '@material-ui/core';
 
 import * as overview from '../../../../common/overview';
 import { toast } from '../../../../common/tools/toast';
 import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../../../common/scope';
 import FieldRepresentation from '../../fields/FieldRepresentation';
+import withInitialData from '../withInitialData';
 
 const getSearchableFields = fields => fields.filter(f => f.searchable) || [];
 
@@ -179,7 +180,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     return (
         <Box>
             <Box display="flex" flexDirection="column" mb={5}>
-                <Typography variant="caption" sx={{ margin: 'auto' }}>
+                <Typography variant="caption">
                     {polyglot.t('search_input')}
                 </Typography>
                 <Box sx={{ border: '1px dashed', padding: 2 }}>
@@ -202,7 +203,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                     flexDirection="column"
                     overflow="auto"
                 >
-                    <Typography variant="caption" sx={{ margin: 'auto' }}>
+                    <Typography variant="caption">
                         {polyglot.t('facets')}
                     </Typography>
                     <Box sx={{ border: '1px dashed' }}>
@@ -271,7 +272,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                 </Box>
 
                 <Box display="flex" flex={7} flexDirection="column">
-                    <Typography variant="caption" sx={{ margin: 'auto' }}>
+                    <Typography variant="caption">
                         {polyglot.t('search_syndication')}
                     </Typography>
                     <Box
@@ -350,6 +351,7 @@ const mapDispatchToProps = {
 };
 
 export default compose(
+    withInitialData,
     translate,
     connect(mapStateToProps, mapDispatchToProps),
 )(SearchForm);

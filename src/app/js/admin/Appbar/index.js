@@ -4,9 +4,8 @@ import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import StorageIcon from '@material-ui/icons/Storage';
-import AspectRatioIcon from '@material-ui/icons/AspectRatio';
-import { makeStyles } from '@material-ui/core/styles';
+import StorageIcon from '@mui/icons-material/Storage';
+import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 
 import PublicationButton from '../publish/PublicationButton';
 import { fromFields, fromUser } from '../../sharedSelectors';
@@ -18,9 +17,23 @@ import Menu from './Menu';
 import GoToPublicationButton from './GoToPublicationButton';
 import JobProgress from './JobProgress';
 import ValidationButton from '../publish/ValidationButton';
-import { AppBar, Box, Button, CircularProgress, Toolbar } from '@mui/material';
+import {
+    AppBar,
+    Box,
+    Button,
+    CircularProgress,
+    Toolbar,
+    Link as MuiLink,
+} from '@mui/material';
 
-const useStyles = makeStyles({
+const styles = {
+    linksContainer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        flex: 1,
+        alignItems: 'stretch',
+        height: 64,
+    },
     linkToHome: {
         color: `${colorsTheme.white.primary} !important`,
         textDecoration: 'none',
@@ -30,29 +43,21 @@ const useStyles = makeStyles({
         lineHeight: '54px',
         fontSize: 26,
     },
-    linksContainer: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        flex: 1,
-        alignItems: 'stretch',
-        height: 64,
-    },
-});
-
-const styleButton = {
-    color: colorsTheme.white.primary,
-    borderRadius: 0,
-    padding: '0 20px',
-    boxSizing: 'border-box',
-    borderBottom: `3px solid ${colorsTheme.green.primary}`,
-    '&:hover': {
-        transition: 'all ease-in-out 400ms',
-        borderBottom: `3px solid ${colorsTheme.white.primary}`,
+    button: {
         color: colorsTheme.white.primary,
-    },
-    '&.active': {
-        borderBottom: `3px solid ${colorsTheme.white.primary}`,
-        backgroundColor: colorsTheme.black.transparent,
+        borderRadius: 0,
+        padding: '0 20px',
+        boxSizing: 'border-box',
+        borderBottom: `3px solid ${colorsTheme.green.primary}`,
+        '&:hover': {
+            transition: 'all ease-in-out 400ms',
+            borderBottom: `3px solid ${colorsTheme.white.primary}`,
+            color: colorsTheme.white.primary,
+        },
+        '&.active': {
+            borderBottom: `3px solid ${colorsTheme.white.primary}`,
+            backgroundColor: colorsTheme.black.transparent,
+        },
     },
 };
 
@@ -64,8 +69,6 @@ const AppbarComponent = ({
     hasPublishedDataset,
     invalidFields,
 }) => {
-    const classes = useStyles();
-
     const leftElement = (
         <Box sx={{ display: 'flex', paddingLeft: '80px' }}>
             {isAdmin && (
@@ -75,7 +78,7 @@ const AppbarComponent = ({
                         to="/data"
                         variant="text"
                         startIcon={<StorageIcon />}
-                        sx={styleButton}
+                        sx={styles.button}
                     >
                         <span>{polyglot.t('data')}</span>
                     </Button>
@@ -85,7 +88,7 @@ const AppbarComponent = ({
                             to="/display"
                             variant="text"
                             startIcon={<AspectRatioIcon />}
-                            sx={styleButton}
+                            sx={styles.button}
                         >
                             <span>{polyglot.t('display')}</span>
                         </Button>
@@ -102,7 +105,7 @@ const AppbarComponent = ({
                     <JobProgress />
                     {hasPublishedDataset && <GoToPublicationButton />}
                     {invalidFields.length > 0 && <ValidationButton />}
-                    <PublicationButton className={classes.button} />
+                    <PublicationButton />
                     <Menu />
                 </div>
             )}
@@ -121,13 +124,13 @@ const AppbarComponent = ({
         <AppBar className="appbar">
             <Toolbar disableGutters>
                 {isAdmin && <SidebarToggleButton />}
-                <Link to="/" className={classes.linkToHome}>
+                <MuiLink component={Link} to="/" sx={styles.linkToHome}>
                     Lodex
-                </Link>
-                <div className={classes.linksContainer}>
+                </MuiLink>
+                <Box sx={styles.linksContainer}>
                     {leftElement}
                     {rightElement}
-                </div>
+                </Box>
             </Toolbar>
         </AppBar>
     );

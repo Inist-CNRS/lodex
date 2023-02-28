@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
 import memoize from 'lodash.memoize';
-import HiddenIcon from '@material-ui/icons/VisibilityOff';
+import HiddenIcon from '@mui/icons-material/VisibilityOff';
 
 import { SCOPE_DATASET } from '../../../../common/scope';
 import { fromFields } from '../../sharedSelectors';

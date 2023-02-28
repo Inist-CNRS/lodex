@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
-import { List, Popover, IconButton, Tooltip } from '@material-ui/core';
+import { List, Popover, IconButton, Tooltip, Box } from '@mui/material';
 
 import { fromFields } from '../../sharedSelectors';
 import ValidationField from './ValidationField';
@@ -51,7 +51,7 @@ const ValidationButtonComponent = ({
     };
 
     return (
-        <div style={styles.container}>
+        <Box sx={styles.container}>
             <Tooltip title={polyglot.t(`show_publication_errors`)}>
                 <IconButton
                     color="secondary"
@@ -79,7 +79,7 @@ const ValidationButtonComponent = ({
                     ))}
                 </List>
             </Popover>
-        </div>
+        </Box>
     );
 };
 

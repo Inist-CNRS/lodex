@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { TableCell, Button } from '@material-ui/core';
+import { TableCell, Button } from '@mui/material';
 
 import { removeField } from '../../fields';
 import {

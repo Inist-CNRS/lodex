@@ -5,8 +5,7 @@ import {
     Fade,
     LinearProgress,
     Typography,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import colorsTheme from '../../../custom/colorsTheme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -21,12 +20,11 @@ import {
     SAVING_DATASET,
     UPLOADING_DATASET,
 } from '../../../../common/progressStatus';
-import classNames from 'classnames';
-import { Cancel } from '@material-ui/icons';
+import { Cancel } from '@mui/icons-material';
 import jobsApi from '../api/job';
 import CancelPublicationDialog from './CancelPublicationDialog';
 import { publicationCleared } from '../publication';
-import Warning from '@material-ui/icons/Warning';
+import Warning from '@mui/icons-material/Warning';
 import { loadParsingResult } from '../parsing';
 import { clearPublished } from '../clear';
 import { fromPublication } from '../selectors';
@@ -34,7 +32,7 @@ import { toast } from '../../../../common/tools/toast';
 import { finishProgress } from '../progress/reducer';
 import { loadEnrichments } from '../enrichment';
 
-const useStyles = makeStyles({
+const styles = {
     progress: {
         width: '100%',
         display: 'flex',
@@ -72,10 +70,9 @@ const useStyles = makeStyles({
         minWidth: '0',
         padding: '0',
     },
-});
+};
 
 const JobProgressComponent = props => {
-    const classes = useStyles();
     const {
         hasPublishedDataset,
         p: polyglot,
@@ -185,13 +182,11 @@ const JobProgressComponent = props => {
                 in={progress && (progress.isJobProgress || progress.isJobError)}
             >
                 <Box
-                    className={classNames(
-                        classes.progressContainer,
-                        'progress-container',
-                    )}
+                    className="progress-container"
+                    sx={styles.progressContainer}
                 >
-                    <div
-                        className={classes.progressLabelContainer}
+                    <Box
+                        sx={styles.progressLabelContainer}
                         aria-label="job-progress"
                     >
                         {progress?.isJobError ? (
@@ -203,7 +198,7 @@ const JobProgressComponent = props => {
                                 size={20}
                             />
                         )}
-                        <div className={classes.progressLabel}>
+                        <Box sx={styles.progressLabel}>
                             {(progress?.label || progress?.status) && (
                                 <Typography variant="subtitle2">
                                     {polyglot.t(
@@ -217,7 +212,7 @@ const JobProgressComponent = props => {
                                     <Typography
                                         variant="caption"
                                         title={progress?.status}
-                                        className={classes.progressStatus}
+                                        sx={styles.progressStatus}
                                         noWrap={true}
                                     >
                                         {polyglot.t(progress.status)}
@@ -237,10 +232,10 @@ const JobProgressComponent = props => {
                                         )}`}
                                     </Typography>
                                 )}
-                        </div>
+                        </Box>
                         {progress?.status !== UPLOADING_DATASET && (
                             <Button
-                                className={classes.cancelButton}
+                                sx={styles.cancelButton}
                                 color="inherit"
                                 onClick={() => {
                                     setIsCancelDialogOpen(true);
@@ -249,13 +244,17 @@ const JobProgressComponent = props => {
                                 <Cancel />
                             </Button>
                         )}
-                    </div>
+                    </Box>
                     {!!progress?.progress && !!progress?.target && (
                         <LinearProgress
-                            classes={{
-                                root: classes.progress,
-                                colorPrimary: classes.colorPrimary,
-                                barColorPrimary: classes.barColorPrimary,
+                            sx={{
+                                ...styles.progress,
+                                '& .MuiLinearProgress-colorPrimary': {
+                                    ...styles.colorPrimary,
+                                },
+                                '& .MuiLinearProgress-barColorPrimary': {
+                                    ...styles.barColorPrimary,
+                                },
                             }}
                             variant="determinate"
                             value={(progress.progress / progress.target) * 100}

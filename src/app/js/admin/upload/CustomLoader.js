@@ -10,8 +10,7 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Field, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { fromUpload } from '../selectors';
@@ -24,15 +23,13 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import loaderApi from '../api/loader';
 import CancelButton from '../../lib/components/CancelButton';
 
-const useStyles = makeStyles(() => {
-    return {
-        advancedRulesEditor: {
-            display: 'flex',
-            flex: '4 !important',
-            height: '350px !important',
-        },
-    };
-});
+const styles = {
+    advancedRulesEditor: {
+        display: 'flex',
+        flex: '4 !important',
+        height: '350px !important',
+    },
+};
 
 const CustomLoader = ({
     formValue,
@@ -45,7 +42,6 @@ const CustomLoader = ({
     p: polyglot,
 }) => {
     const [isLoading, setIsLoading] = React.useState(false);
-    const classes = useStyles();
 
     const handleSave = () => {
         onUpsertCustomLoader(formValue);
@@ -91,7 +87,7 @@ const CustomLoader = ({
                             name="customLoader"
                             component={FormSourceCodeField}
                             label={polyglot.t('expand_rules')}
-                            className={classes.advancedRulesEditor}
+                            style={styles.advancedRulesEditor}
                         />
                     )}
                 </div>

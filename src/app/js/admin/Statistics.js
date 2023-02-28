@@ -3,22 +3,14 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
+import { Box, CircularProgress } from '@mui/material';
 
 import { fromPublicationPreview } from './selectors';
 import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import colorsTheme from '../../custom/colorsTheme';
 
-const useStyles = makeStyles({
-    progress: {
-        visibility: 'visible',
-    },
-    notProgress: {
-        visibility: 'hidden',
-    },
+const styles = {
     container: {
         height: 30,
         alignItems: 'center',
@@ -36,40 +28,28 @@ const useStyles = makeStyles({
         alignItems: 'center',
         display: 'flex',
     },
-    isPublished: {
-        backgroundColor: colorsTheme.green.tertiary,
-    },
-    toggle: {
-        cursor: 'pointer',
-    },
-});
+};
 
 export const StatisticsComponent = ({
     isComputing,
     p: polyglot,
     totalPublishedFields,
 }) => {
-    const classes = useStyles();
-
     return (
-        <div className={classes.container}>
-            <CircularProgress
-                variant="indeterminate"
-                className={classnames(
-                    {
-                        [classes.progress]: isComputing,
-                        [classes.notProgress]: !isComputing,
-                    },
-                    'publication-preview-is-computing',
-                )}
-                size={20}
-            />
-            <div className={classes.item}>
+        <Box sx={styles.container}>
+            {isComputing && (
+                <CircularProgress
+                    variant="indeterminate"
+                    className="publication-preview-is-computing"
+                    size={20}
+                />
+            )}
+            <Box sx={styles.item}>
                 {polyglot.t('publication_summary_fields', {
                     smart_count: totalPublishedFields,
                 })}
-            </div>
-        </div>
+            </Box>
+        </Box>
     );
 };
 
@@ -85,7 +65,6 @@ const mapStateToProps = (state, { filter, subresourceId }) => ({
         filter,
         subresourceId,
     }).length,
-    fields: fromFields.getEditingFields(state, { filter, subresourceId }),
 });
 
 export default compose(

@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { FormControl, FormHelperText } from '@material-ui/core';
-import Autocomplete from '@mui/material/Autocomplete';
+import { FormControl, FormHelperText, Autocomplete } from '@mui/material';
 
 import { formField as formFieldPropTypes } from '../../propTypes';
 

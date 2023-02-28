@@ -63,6 +63,9 @@ const theme = {
         text: {
             primary: colorsTheme.black.secondary,
         },
+        white: {
+            main: colorsTheme.white.primary,
+        },
     },
 };
 
