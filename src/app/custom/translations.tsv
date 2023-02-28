@@ -858,7 +858,7 @@
 "value_preview_description" 	"* preview of value with transformation operations applied"	"* aperçu de la valeur avec les opérations de transformation appliquées"
 "used_in" 	"used in"	"utilisé dans"
 "field_to_annotate" 	"Field to annonate"	"Champ à annoter"
-"search_page"	"Search"	"Recherche"
+"search_page"	"Search & Facet"	"Recherche et facette"
 "search_input"	"Search inputs"	"Champs de recherche"
 "search_in_fields" 	"Search in fields"	"Rechercher dans les champs"
 "facets"	"Facets"	"Facettes"
