@@ -253,7 +253,7 @@ TransformerListComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     type: PropTypes.string,
     isSubresourceField: PropTypes.bool,
-    currentEditedField: PropTypes.array,
+    currentEditedField: PropTypes.object,
 };
 
 TransformerListComponent.defaultProps = {
