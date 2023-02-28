@@ -6,7 +6,6 @@ services:
         volumes:
             - .:/app
         working_dir: /app
-        user: '${UID}:${GID}'
         environment:
             DEBUG: ${DEBUG}
             NODE_ENV: ${NODE_ENV}

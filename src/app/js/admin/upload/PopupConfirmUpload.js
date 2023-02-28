@@ -7,7 +7,8 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-} from '@material-ui/core';
+    Box,
+} from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
@@ -49,9 +50,9 @@ export const PopupConfirmUploadComponent = ({
         <Dialog open={isOpen} onClose={handleClose}>
             <DialogTitle>{polyglot.t('info_upload')}</DialogTitle>
             <DialogContent>
-                <div style={styles.container} id="confirm-upload">
+                <Box sx={styles.container} id="confirm-upload">
                     {polyglot.t('info_publish_desc')}
-                </div>
+                </Box>
             </DialogContent>
             <DialogActions>{actions}</DialogActions>
         </Dialog>

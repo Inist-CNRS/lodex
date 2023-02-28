@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Button, Dialog } from '@material-ui/core';
+import { Button, Dialog } from '@mui/material';
 import { PopupConfirmUploadComponent as PopupConfirmUpload } from './PopupConfirmUpload';
 import CancelButton from '../../lib/components/CancelButton';
 

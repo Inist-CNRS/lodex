@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import ListAltIcon from '@material-ui/icons/ListAlt';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import {
     Box,
     Button,
@@ -10,21 +10,20 @@ import {
     InputLabel,
     MenuItem,
     FormControl,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
 import ListDialog from './ListDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CustomLoader from './CustomLoader';
 import CancelButton from '../../lib/components/CancelButton';
 
-const useStyles = makeStyles({
+const styles = {
     formControl: {
         minWidth: 200,
     },
     disableUppercase: {
         textTransform: 'initial',
     },
-});
+};
 
 const LoaderSelectComponent = ({
     loaders,
@@ -37,8 +36,6 @@ const LoaderSelectComponent = ({
     const [openCustomLoadersDialog, setOpenCustomLoadersDialog] = useState(
         false,
     );
-
-    const classes = useStyles();
 
     const handleOpen = () => {
         setOpenLoadersDialog(true);
@@ -63,7 +60,7 @@ const LoaderSelectComponent = ({
                 marginBottom="10px"
                 marginTop="60px"
             >
-                <FormControl className={classes.formControl}>
+                <FormControl sx={styles.formControl}>
                     <InputLabel id="select-loader-input-label" shrink={!!value}>
                         {polyglot.t('loader_name')}
                     </InputLabel>
@@ -127,7 +124,7 @@ const LoaderSelectComponent = ({
                 marginBottom="48px"
             >
                 <Button
-                    className={classes.disableUppercase}
+                    sx={styles.disableUppercase}
                     color="primary"
                     onClick={() => setOpenCustomLoadersDialog(true)}
                     disabled={disabled || !value || value === 'automatic'}
