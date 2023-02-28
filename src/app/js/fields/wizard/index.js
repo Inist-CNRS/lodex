@@ -117,14 +117,18 @@ const FieldEditionWizardComponent = ({
     return (
         <Box
             className="wizard"
-            sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+                width: '70%',
+            }}
         >
             {currentEditedField && (
                 <Box
                     sx={{
                         display: 'flex',
                         paddingBottom: '1rem',
-                        width: '100%',
                         flexGrow: 1,
                     }}
                 >
@@ -187,15 +191,20 @@ const FieldEditionWizardComponent = ({
                             onSave={handleSave}
                         />
                     </Box>
-                    <Box
-                        sx={{
-                            width: '25rem',
-                        }}
-                    >
-                        <ValuePreviewConnected scope={filter} />
-                    </Box>
                 </Box>
             )}
+            <Box
+                sx={{
+                    width: '25%',
+                    position: 'fixed',
+                    right: 0,
+                    marginX: '1rem',
+                    height: '100%',
+                    overflowY: 'auto',
+                }}
+            >
+                <ValuePreviewConnected scope={filter} />
+            </Box>
         </Box>
     );
 };
