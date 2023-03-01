@@ -9,11 +9,11 @@ import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
 } from '../propTypes';
-import { hasSimilarScope } from '../../../common/scope';
+import { getFieldForSpecificScope } from '../../../common/scope';
 import { Box, MenuItem, Typography } from '@mui/material';
 import FieldRepresentation from './FieldRepresentation';
 
-const FieldAnnotation = ({ fields, scope, p: polyglot }) => (
+const FieldAnnotation = ({ fields, scope, p: polyglot, subresourceId }) => (
     <Box mt={5}>
         <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
             {polyglot.t('annotate_field')}
@@ -36,7 +36,7 @@ const FieldAnnotation = ({ fields, scope, p: polyglot }) => (
             <MenuItem value={null}>
                 {polyglot.t('completes_field_none')}
             </MenuItem>
-            {fields.filter(hasSimilarScope(scope)).map(f => (
+            {getFieldForSpecificScope(fields, scope, subresourceId).map(f => (
                 <MenuItem
                     className={`completes-${getFieldClassName(f)}`}
                     key={f.name}
@@ -58,6 +58,7 @@ FieldAnnotation.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     scope: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
+    subresourceId: PropTypes.string,
 };
 
 export default translate(FieldAnnotation);

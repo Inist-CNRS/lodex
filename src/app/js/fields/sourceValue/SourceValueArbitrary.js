@@ -13,7 +13,9 @@ const SourceValueArbitrary = ({
     p: polyglot,
 }) => {
     const [openRoutineCatalog, setOpenRoutineCatalog] = React.useState(false);
+    const [valueInput, setValueInput] = React.useState(value || '');
     const handleChange = event => {
+        setValueInput(event.target.value);
         const transformers = [
             {
                 operation: 'VALUE',
@@ -37,7 +39,7 @@ const SourceValueArbitrary = ({
                 placeholder={polyglot.t('enter_an_arbitrary_value')}
                 label={polyglot.t('arbitrary_value')}
                 onChange={handleChange}
-                defaultValue={value || ''}
+                value={valueInput}
                 multiline
             />
             <Box style={{ marginLeft: '10px', height: '56px' }}>

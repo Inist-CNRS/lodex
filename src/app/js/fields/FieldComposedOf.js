@@ -19,11 +19,20 @@ import {
     field as fieldPropTypes,
 } from '../propTypes';
 import FieldRepresentation from './FieldRepresentation';
+import { getFieldForSpecificScope } from '../../../common/scope';
 
-const FieldComposedOf = ({ onChange, fields, p: polyglot, columns }) => {
+const FieldComposedOf = ({
+    onChange,
+    fields,
+    p: polyglot,
+    columns,
+    scope,
+    subresourceId,
+}) => {
     const autocompleteValue = columns.map(column => {
         return fields.find(field => field.name === column);
     });
+
     const handleChange = (event, value) => {
         onChange({
             isComposedOf: value.length > 0,
@@ -39,7 +48,7 @@ const FieldComposedOf = ({ onChange, fields, p: polyglot, columns }) => {
             <Autocomplete
                 multiple
                 fullWidth
-                options={fields}
+                options={getFieldForSpecificScope(fields, scope, subresourceId)}
                 getOptionLabel={option => (
                     <FieldRepresentation field={option} shortMode />
                 )}
@@ -77,6 +86,8 @@ FieldComposedOf.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     onChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    scope: PropTypes.string.isRequired,
+    subresourceId: PropTypes.string,
 };
 
 FieldComposedOf.defaultProps = {
