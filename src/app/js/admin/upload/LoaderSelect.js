@@ -3,23 +3,13 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import {
-    Box,
-    Button,
-    Select,
-    InputLabel,
-    MenuItem,
-    FormControl,
-} from '@mui/material';
+import { Box, Button, MenuItem, TextField } from '@mui/material';
 import ListDialog from './ListDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CustomLoader from './CustomLoader';
 import CancelButton from '../../lib/components/CancelButton';
 
 const styles = {
-    formControl: {
-        minWidth: 200,
-    },
     disableUppercase: {
         textTransform: 'initial',
     },
@@ -60,51 +50,49 @@ const LoaderSelectComponent = ({
                 marginBottom="10px"
                 marginTop="60px"
             >
-                <FormControl sx={styles.formControl}>
-                    <InputLabel id="select-loader-input-label" shrink={!!value}>
-                        {polyglot.t('loader_name')}
-                    </InputLabel>
-                    <Select
-                        className="select-loader"
-                        labelId="select-loader-input-label"
-                        onChange={e => setLoader(e.target.value)}
-                        value={value}
-                        autoWidth
-                        disabled={disabled}
+                <TextField
+                    select
+                    sx={{ minWidth: 200 }}
+                    className="select-loader"
+                    label={polyglot.t('loader_name')}
+                    onChange={e => setLoader(e.target.value)}
+                    value={value}
+                    autoWidth
+                    disabled={disabled}
+                    variant="standard"
+                >
+                    <MenuItem
+                        className="select-loader-item"
+                        key={'automatic'}
+                        value={'automatic'}
                     >
-                        <MenuItem
-                            className="select-loader-item"
-                            key={'automatic'}
-                            value={'automatic'}
-                        >
-                            {polyglot.t('automatic-loader')}
-                        </MenuItem>
-                        {loaders
-                            .sort((x, y) =>
-                                polyglot
-                                    .t(x.name)
-                                    .localeCompare(polyglot.t(y.name)),
-                            )
-                            .map(loader => (
-                                <MenuItem
-                                    className="select-loader-item"
-                                    key={loader.name}
-                                    value={loader.name}
-                                >
-                                    {polyglot.t(loader.name)}
-                                </MenuItem>
-                            ))}
-                        {value === 'custom-loader' && (
+                        {polyglot.t('automatic-loader')}
+                    </MenuItem>
+                    {loaders
+                        .sort((x, y) =>
+                            polyglot
+                                .t(x.name)
+                                .localeCompare(polyglot.t(y.name)),
+                        )
+                        .map(loader => (
                             <MenuItem
                                 className="select-loader-item"
-                                key={'custom-loader'}
-                                value={'custom-loader'}
+                                key={loader.name}
+                                value={loader.name}
                             >
-                                {polyglot.t('custom-loader')}
+                                {polyglot.t(loader.name)}
                             </MenuItem>
-                        )}
-                    </Select>
-                </FormControl>
+                        ))}
+                    {value === 'custom-loader' && (
+                        <MenuItem
+                            className="select-loader-item"
+                            key={'custom-loader'}
+                            value={'custom-loader'}
+                        >
+                            {polyglot.t('custom-loader')}
+                        </MenuItem>
+                    )}
+                </TextField>
                 <Box mt="10px" ml="10px">
                     <Button
                         variant="contained"

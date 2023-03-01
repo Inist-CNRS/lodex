@@ -11,7 +11,7 @@ import {
     TablePagination,
     TableRow,
     TableSortLabel,
-} from '@material-ui/core';
+} from '@mui/material';
 import { getViewComponent } from '../../index';
 import _ from 'lodash';
 

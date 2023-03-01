@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';

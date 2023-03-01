@@ -14,6 +14,7 @@ export default {
         primary2Color: colorsTheme.purple.primary,
         text: {
             primary: colorsTheme.black.secondary,
+            main: colorsTheme.black.secondary,
         },
     },
     typography: {

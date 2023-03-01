@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { Button, CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress } from '@mui/material';
 import memoize from 'lodash.memoize';
 
 import LodexResource from '../shared/LodexResource';

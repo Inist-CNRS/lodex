@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
-import { grey } from '@material-ui/core/colors';
+import { grey } from '@mui/material/colors';
 import memoize from 'lodash.memoize';
 import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';

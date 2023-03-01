@@ -1,6 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Button, TextField, FormControlLabel } from '@material-ui/core';
+import {
+    Switch,
+    Button,
+    TextField,
+    FormControlLabel,
+    Box,
+} from '@mui/material';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -11,15 +17,6 @@ import get from 'lodash.get';
 import { FIELD_FORM_NAME } from '..';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ConcatField from './ConcatField';
-
-const styles = {
-    inset: {
-        paddingLeft: 40,
-    },
-    select: {
-        width: '100%',
-    },
-};
 
 export const UriConcatComponent = ({
     handleSelect,
@@ -45,7 +42,13 @@ export const UriConcatComponent = ({
             label={polyglot.t('multi_field_concat')}
         />
         {selected && (
-            <div style={styles.inset}>
+            <Box
+                display="flex"
+                flexDirection="column"
+                gap={2}
+                paddingLeft="40px"
+                marginBottom={2}
+            >
                 <TextField
                     id="separator"
                     fullWidth
@@ -70,7 +73,7 @@ export const UriConcatComponent = ({
                 >
                     {polyglot.t('add_column')}
                 </Button>
-            </div>
+            </Box>
         )}
     </div>
 );

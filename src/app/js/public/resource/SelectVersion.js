@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Menu, MenuItem, Button, Popover } from '@material-ui/core';
+import { Menu, MenuItem, Button } from '@mui/material';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import ArrowDown from '@material-ui/icons/KeyboardArrowDown';
+import ArrowDown from '@mui/icons-material/KeyboardArrowDown';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { selectVersion } from '../resource';

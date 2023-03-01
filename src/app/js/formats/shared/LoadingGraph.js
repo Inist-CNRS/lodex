@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { CircularProgress } from '@material-ui/core';
-import colorsTheme from '../../../custom/colorsTheme';
+import { CircularProgress } from '@mui/material';
 
 class LoadingGraph extends Component {
     static propTypes = {
@@ -14,11 +13,7 @@ class LoadingGraph extends Component {
         return (
             <>
                 {polyglot.t('loading')}
-                <CircularProgress
-                    variant="indeterminate"
-                    color={colorsTheme.green.primary}
-                    size={28}
-                />
+                <CircularProgress variant="indeterminate" size={28} />
             </>
         );
     }

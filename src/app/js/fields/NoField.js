@@ -1,9 +1,9 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
+import { Box } from '@mui/material';
 
-const useStyles = makeStyles({
+const styles = {
     noFieldZone: {
         display: 'flex',
         flexDirection: 'row',
@@ -12,24 +12,16 @@ const useStyles = makeStyles({
         textAlign: 'center',
         width: '100%',
     },
-    addFieldButton: {
-        marginBottom: 20,
-    },
-    icon: {
-        marginRight: 10,
-    },
-});
+};
 
 const NoFieldComponent = ({ label, addFieldButton }) => {
-    const classes = useStyles();
-
     return (
-        <div className={classes.noFieldZone}>
+        <Box sx={styles.noFieldZone}>
             <div>
                 <h2 style={{ color: '#888' }}>{label}</h2>
                 {addFieldButton && <div>{addFieldButton}</div>}
             </div>
-        </div>
+        </Box>
     );
 };
 

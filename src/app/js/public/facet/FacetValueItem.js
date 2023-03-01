@@ -6,8 +6,8 @@ import {
     Checkbox,
     FormControlLabel,
     ListItemText,
-} from '@material-ui/core';
-import ErrorIcon from '@material-ui/icons/Error';
+} from '@mui/material';
+import ErrorIcon from '@mui/icons-material/Error';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { polyglot as polyglotPropType } from '../../propTypes';
@@ -37,10 +37,10 @@ const onCheck = (toggleFacetValue, name, value) => () =>
 const FacetValueItem = ({ name, value, count, isChecked, p: polyglot }) => {
     if (value instanceof Object) {
         return (
-            <ListItem className="facet-value-item" style={styles.listItem}>
+            <ListItem className="facet-value-item" sx={styles.listItem}>
                 <ListItemText>
                     <div style={{ display: 'flex' }}>
-                        <ErrorIcon style={{ marginRight: 6 }} />
+                        <ErrorIcon sx={{ marginRight: 6 }} />
                         {polyglot.t('facet_invalid_format')}
                     </div>
                 </ListItemText>
@@ -51,7 +51,7 @@ const FacetValueItem = ({ name, value, count, isChecked, p: polyglot }) => {
     return (
         <FacetActionsContext.Consumer>
             {({ toggleFacetValue }) => (
-                <ListItem className="facet-value-item" style={styles.listItem}>
+                <ListItem className="facet-value-item" sx={styles.listItem}>
                     <ListItemText>
                         <div style={styles.container}>
                             <FormControlLabel

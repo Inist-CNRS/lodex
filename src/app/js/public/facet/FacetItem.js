@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { ListItem, Grid, ListItemText } from '@material-ui/core';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { makeStyles } from '@material-ui/core/styles';
+import { ListItem, Grid, ListItemText } from '@mui/material';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { connect } from 'react-redux';
 
 import { field as fieldPropType } from '../../propTypes';
@@ -16,20 +15,19 @@ import colorsTheme from '../../../custom/colorsTheme';
 
 const onClick = (openFacet, field) => () => openFacet({ name: field.name });
 
-const useStyles = makeStyles({
+const styles = {
     facetTitle: {
-        padding: 5,
+        padding: '5px',
         '&:hover': {
             backgroundColor: colorsTheme.black.veryLight,
             cursor: 'pointer',
         },
     },
-});
+};
 
 const FacetTitle = ({ title, total, isOpen }) => {
-    const classes = useStyles();
     return (
-        <Grid container justify="space-between" className={classes.facetTitle}>
+        <Grid container justify="space-between" sx={styles.facetTitle}>
             <Grid item>{`${title} ${total ? `(${total})` : ''}`}</Grid>
             <Grid item>{isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}</Grid>
         </Grid>

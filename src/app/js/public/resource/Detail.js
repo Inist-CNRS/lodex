@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { CardActions, Button } from '@material-ui/core';
-import { grey } from '@material-ui/core/colors';
+import { CardActions } from '@mui/material';
+import { grey } from '@mui/material/colors';
 import memoize from 'lodash.memoize';
 import { Helmet } from 'react-helmet';
 import get from 'lodash.get';
@@ -18,7 +18,6 @@ import SelectVersion from './SelectVersion';
 import Version from '../Version';
 import getTitle from '../../lib/getTitle';
 import ExportButton from '../ExportButton';
-import { getCleanHost } from '../../../../common/uris';
 
 const TOP_FIELDS_LIMIT = 1;
 

@@ -4,7 +4,7 @@ import { change } from 'redux-form';
 import get from 'lodash.get';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 
 import { formField as formFieldPropTypes } from '../../propTypes';
 import FormTextField from '../../lib/components/FormTextField';
@@ -40,7 +40,13 @@ class DefaultEditon extends Component {
             );
         }
 
-        return <FormTextField {...this.props} value={currentValue} />;
+        return (
+            <FormTextField
+                variant="standard"
+                {...this.props}
+                value={currentValue}
+            />
+        );
     }
 }
 

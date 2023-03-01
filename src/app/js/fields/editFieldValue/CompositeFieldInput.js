@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { ListSubheader } from '@material-ui/core';
+import { ListSubheader } from '@mui/material';
 import { Field } from 'redux-form';
 
 import { getEditionComponent } from '../../formats';

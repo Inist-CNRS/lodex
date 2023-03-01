@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import FileDownload from '@material-ui/icons/GetApp';
+import FileDownload from '@mui/icons-material/GetApp';
 import Link from '../../lib/components/Link';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';

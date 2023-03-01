@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import {
-    Button,
     Dialog,
     DialogActions,
     DialogContent,
@@ -12,6 +11,7 @@ import {
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ParsingExcerpt from '../parsing/ParsingExcerpt';
+import CancelButton from '../../lib/components/CancelButton';
 
 export const AddFromColumnDialogComponent = ({ p: polyglot, onClose }) => {
     return (
@@ -28,9 +28,9 @@ export const AddFromColumnDialogComponent = ({ p: polyglot, onClose }) => {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button color="secondary" variant="text" onClick={onClose}>
+                <CancelButton onClick={onClose}>
                     {polyglot.t('Cancel')}
-                </Button>
+                </CancelButton>
             </DialogActions>
         </Dialog>
     );

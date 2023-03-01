@@ -261,6 +261,7 @@ export const UploadComponent = ({
                     helperText={url && !isUrlValid && polyglot.t('invalid_url')}
                     disabled={!!files.length}
                     label={polyglot.t('use_url')}
+                    variant="standard"
                 />
             </Box>
 

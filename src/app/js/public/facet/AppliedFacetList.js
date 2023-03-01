@@ -1,7 +1,7 @@
 import React, { Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { Chip } from '@material-ui/core';
+import { Chip } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -13,7 +13,7 @@ const styles = {
         width: '100%',
     },
     chip: {
-        margin: 5,
+        margin: '5px',
     },
 };
 

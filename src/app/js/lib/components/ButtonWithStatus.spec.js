@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { lightGreen, red } from '@material-ui/core/colors';
-import { CircularProgress, Button, LinearProgress } from '@material-ui/core';
-import Warning from '@material-ui/icons/Warning';
-import Success from '@material-ui/icons/Done';
+import { lightGreen, red } from '@mui/material/colors';
+import { CircularProgress, Button, LinearProgress } from '@mui/material';
+import Warning from '@mui/icons-material/Warning';
+import Success from '@mui/icons-material/Done';
 
 import ButtonWithStatus from './ButtonWithStatus';
 
@@ -18,7 +18,7 @@ describe('<ButtonWithStatus />', () => {
                 .props();
             expect(button.variant).toEqual('text');
             expect(button.disabled).toEqual(false);
-            expect(button.startIcon).toEqual(null);
+            expect(button.startIcon).toBeNull();
             expect(button.children).toEqual('Foo');
         });
 
@@ -83,7 +83,7 @@ describe('<ButtonWithStatus />', () => {
                 .props();
             expect(button.variant).toEqual('contained');
             expect(button.disabled).toEqual(false);
-            expect(button.startIcon).toEqual(null);
+            expect(button.startIcon).toBeNull();
             expect(button.children).toEqual('Foo');
         });
 
@@ -151,7 +151,8 @@ describe('<ButtonWithStatus />', () => {
             expect(button.variant).toEqual('contained');
             expect(button.disabled).toEqual(true);
             expect(button.startIcon).toEqual(
-                <CircularProgress variant="indeterminate" size={20} />);
+                <CircularProgress variant="indeterminate" size={20} />,
+            );
             expect(button.children).toEqual('Foo');
             expect(button.className).toContain('loadingProgress');
             const progressBar = wrapper

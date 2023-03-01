@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField } from '@material-ui/core';
+import { TextField } from '@mui/material';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
 const FormTextField = ({

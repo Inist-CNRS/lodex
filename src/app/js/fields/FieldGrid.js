@@ -1,20 +1,19 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { connect } from 'react-redux';
-import HiddenIcon from '@material-ui/icons/VisibilityOff';
 import translate from 'redux-polyglot/translate';
 import compose from 'lodash.compose';
 import PropTypes from 'prop-types';
 import GridLayout from 'react-grid-layout';
-import { Box, makeStyles } from '@material-ui/core';
+import { Box, IconButton, Tooltip } from '@mui/material';
 import { useMeasure } from 'react-use';
 import 'react-grid-layout/css/styles.css';
-import classNames from 'classnames';
 import copy from 'copy-to-clipboard';
 
 import {
     FileCopy as FileCopyIcon,
     Settings as SettingsIcon,
-} from '@material-ui/icons';
+    VisibilityOff as HiddenIcon,
+} from '@mui/icons-material';
 
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
@@ -28,17 +27,16 @@ import { loadField, changePositions, saveFieldFromData } from '../fields';
 import fieldApi from '../admin/api/field';
 import { toast } from '../../../common/tools/toast';
 import { useLocation, useHistory } from 'react-router';
-import { IconButton, Tooltip } from '@mui/material';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import FieldRepresentation from './FieldRepresentation';
 
 const ROOT_PADDING = 16;
 
-const useStyles = makeStyles({
+const styles = {
     root: {
-        padding: ROOT_PADDING,
+        padding: `${ROOT_PADDING}px}`,
         border: '1px dashed #ccc',
-        borderRadius: 5,
+        borderRadius: '5px',
         overflow: 'hidden',
         display: 'flex',
         flexFlow: 'row wrap',
@@ -49,8 +47,7 @@ const useStyles = makeStyles({
     },
     property: {
         border: '1px solid #ccc',
-        cursor: disabled => (disabled ? 'auto' : 'pointer'),
-        borderRadius: 3,
+        borderRadius: '3px',
         textAlign: 'center',
         fontWeight: 'bold',
         display: 'flex',
@@ -62,7 +59,7 @@ const useStyles = makeStyles({
         '&:hover': {
             background: '#efefef',
             // display the duplicate icon and the settings icon
-            '& $otherIcon': {
+            '& .MuiIconButton-root': {
                 opacity: 1,
             },
         },
@@ -74,19 +71,8 @@ const useStyles = makeStyles({
         textAlign: 'left',
     },
     propertyLabel: {
-        marginRight: 10,
+        marginRight: '10px',
         cursor: 'copy',
-    },
-    actionsContainer: {
-        marginLeft: 'auto',
-        padding: '20px 10px 20px 0',
-    },
-    internal: {
-        display: 'flex',
-        justifyContent: 'center',
-        fontSize: '0.8rem',
-        fontWeight: 'normal',
-        alignItems: 'center',
     },
     fieldChildren: {
         pointerEvents: 'none',
@@ -94,7 +80,7 @@ const useStyles = makeStyles({
     otherIcon: {
         opacity: 0,
     },
-});
+};
 
 export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
     if (scope === SCOPE_DOCUMENT) {
@@ -215,7 +201,6 @@ const DraggableItemGrid = compose(
         isFieldsLoading,
         subresourceId,
     }) => {
-        const classes = useStyles(isFieldsLoading);
         const history = useHistory();
 
         const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
@@ -286,7 +271,7 @@ const DraggableItemGrid = compose(
         };
 
         return (
-            <div className={classes.layoutContainer} ref={gridLayoutRef}>
+            <Box sx={styles.layoutContainer} ref={gridLayoutRef}>
                 <GridLayout
                     className="layout"
                     layout={layout}
@@ -299,10 +284,13 @@ const DraggableItemGrid = compose(
                     isResizable={allowResize}
                 >
                     {fields.map(field => (
-                        <div
+                        <Box
                             key={field.name}
                             aria-label={field.label}
-                            className={classes.property}
+                            sx={{
+                                ...styles.property,
+                                cursor: isFieldsLoading ? 'auto' : 'pointer',
+                            }}
                             onClick={() =>
                                 handleEditField(
                                     field.name,
@@ -311,17 +299,17 @@ const DraggableItemGrid = compose(
                                 )
                             }
                         >
-                            <div
-                                className={classNames(
-                                    'draghandle',
-                                    classes.propertyHandle,
-                                    classes.fieldChildren,
-                                )}
+                            <Box
+                                sx={{
+                                    ...styles.propertyHandle,
+                                    ...styles.fieldChildren,
+                                }}
+                                className="draghandle"
                             >
                                 <DragIndicatorIcon />
-                            </div>
-                            <div
-                                className={classNames(classes.propertyLabel)}
+                            </Box>
+                            <Box
+                                sx={styles.propertyLabel}
                                 data-field-name={field.name}
                             >
                                 <ItemGridLabel
@@ -338,13 +326,13 @@ const DraggableItemGrid = compose(
                                         )
                                     }
                                 />
-                            </div>
+                            </Box>
                             <Box
                                 sx={{
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'flex-end',
-                                    marginRight: 10,
+                                    marginRight: '10px',
                                     flex: 1,
                                 }}
                             >
@@ -355,9 +343,7 @@ const DraggableItemGrid = compose(
                                 >
                                     <Box>
                                         <IconButton
-                                            className={classNames(
-                                                classes.otherIcon,
-                                            )}
+                                            sx={styles.otherIcon}
                                             onClick={e => {
                                                 handleDuplicateField(e, field);
                                             }}
@@ -373,9 +359,7 @@ const DraggableItemGrid = compose(
                                 >
                                     <Box>
                                         <IconButton
-                                            className={classNames(
-                                                classes.otherIcon,
-                                            )}
+                                            sx={styles.otherIcon}
                                             aria-label={`edit-${field.label}`}
                                             disabled={isFieldsLoading}
                                         >
@@ -385,10 +369,10 @@ const DraggableItemGrid = compose(
                                 </Tooltip>
                                 {!field.display && <HiddenIcon />}
                             </Box>
-                        </div>
+                        </Box>
                     ))}
                 </GridLayout>
-            </div>
+            </Box>
         );
     },
 );
@@ -426,8 +410,6 @@ const FieldGridComponent = ({
     isFieldsLoading,
     subresourceId,
 }) => {
-    const classes = useStyles();
-
     const { pathname } = useLocation();
 
     const previousFieldsRef = useRef(fields);
@@ -468,7 +450,7 @@ const FieldGridComponent = ({
     };
 
     return (
-        <div className={classNames(classes.root, 'field-grid')}>
+        <Box sx={styles.root} className="field-grid">
             {fields.length === 0 ? (
                 <NoField
                     label={polyglot.t(
@@ -490,7 +472,7 @@ const FieldGridComponent = ({
                     subresourceId={subresourceId}
                 />
             )}
-        </div>
+        </Box>
     );
 };
 
