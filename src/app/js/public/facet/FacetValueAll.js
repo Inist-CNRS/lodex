@@ -19,14 +19,15 @@ const FacetValueAll = ({
     name,
     p: polyglot,
     setAllValueForFacet,
+    page,
 }) => {
     const handleChange = async () => {
         const result = await apiFacet.getFacetsFiltered({
             field: name,
             ...facetData,
-            perPage: MAX_VALUE_FOR_ALL_FACET,
+            perPage: MAX_VALUE_FOR_ALL_FACET[page],
         });
-        setAllValueForFacet({ name, values: result.data.map(d => d.value) });
+        setAllValueForFacet({ name, values: result.data });
     };
     return (
         <Tooltip
@@ -34,7 +35,7 @@ const FacetValueAll = ({
             title={
                 disabled
                     ? polyglot.t('check_all_value_facet_tooltip', {
-                          limit: MAX_VALUE_FOR_ALL_FACET,
+                          limit: MAX_VALUE_FOR_ALL_FACET[page],
                       })
                     : ''
             }
@@ -59,6 +60,7 @@ FacetValueAll.propTypes = {
     name: PropTypes.string.isRequired,
     p: polyglotPropType.isRequired,
     setAllValueForFacet: PropTypes.func.isRequired,
+    page: PropTypes.string.isRequired,
 };
 
 const actionsByPage = {

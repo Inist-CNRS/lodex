@@ -130,7 +130,7 @@ export const FacetValueList = ({
                 <div>
                     {filter && (
                         <FacetValueAll
-                            disabled={total > MAX_VALUE_FOR_ALL_FACET}
+                            disabled={total > MAX_VALUE_FOR_ALL_FACET[page]}
                             name={name}
                             page={page}
                         />

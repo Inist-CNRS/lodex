@@ -135,7 +135,11 @@ export function* loadFormatDataForName(name, filter) {
 
     const params = yield select(fromFields.getGraphFieldParamsByName, name);
 
-    const facets = yield select(fromDataset.getAppliedFacets);
+    let facets = yield select(fromDataset.getAppliedFacets);
+    facets = Object.keys(facets).reduce((acc, facetName) => {
+        acc[facetName] = facets[facetName].map(facetValue => facetValue.value);
+        return acc;
+    }, {});
     const invertedFacets = yield select(fromDataset.getInvertedFacetKeys);
     const match = yield select(fromDataset.getFilter);
 

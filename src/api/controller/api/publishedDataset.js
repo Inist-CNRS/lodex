@@ -6,6 +6,7 @@ import { PROPOSED } from '../../../common/propositionStatus';
 import generateUri from '../../../common/transformers/AUTOGENERATE_URI';
 import ark from './ark';
 import updateFacetValue from '../../services/updateFacetValue';
+import { ObjectID } from 'mongodb';
 
 const app = new Koa();
 
@@ -17,8 +18,21 @@ export const getPage = async ctx => {
         sortBy,
         sortDir,
         invertedFacets = [],
-        ...facets
+        ...facetsWithValueIds
     } = ctx.request.query;
+
+    const facets = {};
+    Object.keys(facetsWithValueIds).forEach(facetName => {
+        facetsWithValueIds[facetName].map(async facetValueId => {
+            const publishedFacet = await ctx.publishedFacet.findOne({
+                _id: new ObjectID(facetValueId),
+            });
+            if (!facets[facetName]) {
+                facets[facetName] = [];
+            }
+            facets[facetName].push(publishedFacet.value);
+        });
+    });
 
     const intPage = parseInt(page, 10);
     const intPerPage = parseInt(perPage, 10);
