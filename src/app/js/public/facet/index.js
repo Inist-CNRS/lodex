@@ -69,16 +69,17 @@ export const createReducer = prefix => {
             }),
             [actionTypes.TOGGLE_FACET_VALUE]: (
                 { appliedFacets, ...state },
-                { payload: { name, value } },
+                { payload: { name, facetValue } },
             ) => {
                 const isChecked = isFacetValuesChecked(
                     { appliedFacets },
-                    { name, value },
+                    { name, facetValue },
                 );
                 const prevValues = appliedFacets[name] || [];
+
                 const newValues = isChecked
-                    ? prevValues.filter(v => v !== value)
-                    : prevValues.concat(value);
+                    ? prevValues.filter(v => v.value !== facetValue.value)
+                    : prevValues.concat(facetValue);
 
                 if (!newValues.length) {
                     return {

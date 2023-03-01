@@ -32,8 +32,10 @@ export const getFacetValuesSort = (state, name) =>
 export const isFacetValuesInverted = ({ invertedFacets }, name) =>
     !!invertedFacets[name];
 
-export const isFacetValuesChecked = (state, { name, value }) =>
-    get(state, ['appliedFacets', name], []).indexOf(value) !== -1;
+export const isFacetValuesChecked = (state, { name, facetValue }) =>
+    get(state, ['appliedFacets', name], []).some(
+        facet => facet?.value == facetValue?.value,
+    );
 
 export const getInvertedFacetKeys = ({ invertedFacets }) =>
     Object.keys(invertedFacets);

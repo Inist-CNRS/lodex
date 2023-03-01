@@ -135,13 +135,12 @@ export const FacetValueList = ({
                             page={page}
                         />
                     )}
-                    {facetValues.map(({ value, count }) => {
+                    {facetValues.map(facetValue => {
                         return (
                             <FacetValueItem
-                                key={value}
+                                key={facetValue.value}
                                 name={name}
-                                value={value}
-                                count={count}
+                                facetValue={facetValue}
                                 page={page}
                             />
                         );

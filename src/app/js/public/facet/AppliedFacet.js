@@ -18,7 +18,7 @@ const styles = {
 };
 
 export const AppliedFacetComponent = ({
-    value,
+    facetValues,
     field,
     inverted,
     p: polyglot,
@@ -35,9 +35,9 @@ export const AppliedFacetComponent = ({
                     {field.label}
                 </b>{' '}
                 {interleave(
-                    value.map(v => (
-                        <span key={v} style={styles.labelValue}>
-                            {v}
+                    facetValues.map(facetValue => (
+                        <span key={facetValue.value} style={styles.labelValue}>
+                            {facetValue.value}
                         </span>
                     )),
                     <span> | </span>,
@@ -48,7 +48,7 @@ export const AppliedFacetComponent = ({
 );
 
 AppliedFacetComponent.propTypes = {
-    value: PropTypes.arrayOf(PropTypes.string).isRequired,
+    facetValues: PropTypes.arrayOf(PropTypes.string).isRequired,
     field: fieldPropTypes.isRequired,
     onRequestDelete: PropTypes.func.isRequired,
     inverted: PropTypes.bool.isRequired,

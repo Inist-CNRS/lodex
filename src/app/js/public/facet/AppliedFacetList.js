@@ -32,9 +32,9 @@ export const AppliedFacetListComponent = ({
                             return;
                         }
                         return cloneElement(child, {
-                            key: `${name}-${value}`,
+                            key: `${name}-${value.value}`,
                             name: name,
-                            value: value,
+                            value: value?.value,
                         });
                     }),
                 )}
