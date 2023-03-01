@@ -51,7 +51,7 @@ export const ExcerptComponent = ({
     isPreview = false,
 }) => (
     <TableContainer>
-        <Table sx={styles.table(isPreview)}>
+        <Table className="publication-excerpt" sx={styles.table(isPreview)}>
             <TableHead>
                 <TableRow>
                     {columns.map(field => (
@@ -121,7 +121,6 @@ ExcerptComponent.propTypes = {
 };
 
 ExcerptComponent.defaultProps = {
-    className: 'publication-excerpt',
     colStyle: null,
 };
 
