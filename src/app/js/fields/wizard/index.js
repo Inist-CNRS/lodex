@@ -87,7 +87,6 @@ const FieldEditionWizardComponent = ({
     };
 
     if (!currentEditedField) return null;
-
     const tabs = [
         {
             label: 'field_wizard_tab_identity',
@@ -105,7 +104,13 @@ const FieldEditionWizardComponent = ({
         {
             label: 'field_wizard_tab_display',
             id: 'tab-display',
-            component: <TabDisplay filter={filter} fields={fields} />,
+            component: (
+                <TabDisplay
+                    filter={filter}
+                    fields={fields}
+                    subresourceId={currentEditedField.subresourceId}
+                />
+            ),
         },
         !currentEditedField.subresourceId && {
             label: 'field_wizard_tab_semantic',

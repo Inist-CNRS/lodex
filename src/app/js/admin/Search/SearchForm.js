@@ -22,7 +22,7 @@ import { Typography } from '@material-ui/core';
 
 import * as overview from '../../../../common/overview';
 import { toast } from '../../../../common/tools/toast';
-import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../../../common/scope';
+import { getFieldForSpecificScope } from '../../../../common/scope';
 import FieldRepresentation from '../../fields/FieldRepresentation';
 
 const getSearchableFields = fields => fields.filter(f => f.searchable) || [];
@@ -40,17 +40,12 @@ const getResourceDetailSecond = fields =>
 
 export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     const fieldsResource = React.useMemo(
-        () =>
-            fields.filter(
-                f => f.scope === SCOPE_DOCUMENT || f.scope === SCOPE_COLLECTION,
-            ),
+        () => getFieldForSpecificScope(fields, 'collection'),
         [fields],
     );
 
     const fieldsForResourceSyndication = React.useMemo(() => {
-        const filteredFields = fields.filter(
-            f => f.scope === SCOPE_DOCUMENT || f.scope === SCOPE_COLLECTION,
-        );
+        const filteredFields = getFieldForSpecificScope(fields, 'collection');
         filteredFields?.unshift({
             label: polyglot.t('none'),
         });

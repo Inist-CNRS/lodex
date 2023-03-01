@@ -8,13 +8,26 @@ import FieldComposedOf from '../FieldComposedOf';
 import FieldAnnotation from '../FieldAnnotation';
 import { field as fieldPropTypes } from '../../propTypes';
 
-export const TabDisplayComponent = ({ keepMeta = true, filter, fields }) => (
+export const TabDisplayComponent = ({
+    keepMeta = true,
+    filter,
+    fields,
+    subresourceId,
+}) => (
     <>
         {keepMeta && <FieldDisplayInput />}
         <FieldFormatInput />
         <FieldWidthInput />
-        <FieldAnnotation fields={fields} scope={filter} />
-        <FieldComposedOf fields={fields} />
+        <FieldAnnotation
+            fields={fields}
+            scope={filter}
+            subresourceId={subresourceId}
+        />
+        <FieldComposedOf
+            fields={fields}
+            scope={filter}
+            subresourceId={subresourceId}
+        />
     </>
 );
 
@@ -22,6 +35,7 @@ TabDisplayComponent.propTypes = {
     keepMeta: PropTypes.bool,
     filter: PropTypes.string.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    subresourceId: PropTypes.string,
 };
 
 export default TabDisplayComponent;
