@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardMedia, CardActions, Button } from '@material-ui/core';
-import Forward from '@material-ui/icons/Forward';
+import { Card, CardMedia, CardActions, Button } from '@mui/material';
+import Forward from '@mui/icons-material/Forward';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -30,16 +30,16 @@ const styles = {
 
 const GraphLink = ({ link, children, p: polyglot }) => (
     <Card>
-        <CardMedia style={styles.media}>{children}</CardMedia>
-        <CardActions style={styles.actions}>
+        <CardMedia sx={styles.media}>{children}</CardMedia>
+        <CardActions sx={styles.actions}>
             <Button
                 variant="text"
                 color="primary"
                 fullWidth
-                style={styles.detailsButton}
+                sx={styles.detailsButton}
                 component={props => <Link to={link} {...props} />}
                 to={link}
-                endIcon={<Forward style={styles.icon} />}
+                endIcon={<Forward sx={styles.icon} />}
             >
                 {polyglot.t('view_details')}
             </Button>

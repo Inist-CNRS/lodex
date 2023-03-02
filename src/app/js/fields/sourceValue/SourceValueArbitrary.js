@@ -1,6 +1,6 @@
 import React from 'react';
 import compose from 'recompose/compose';
-import ListAltIcon from '@material-ui/icons/ListAlt';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import PropTypes from 'prop-types';
 import RoutineCatalog from '../wizard/RoutineCatalog';
 import translate from 'redux-polyglot/translate';

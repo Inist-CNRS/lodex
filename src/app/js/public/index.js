@@ -6,9 +6,9 @@ import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
 
 import {
-    createTheme,
-    ThemeProvider as MuiThemeProvider,
-} from '@material-ui/core/styles';
+    createTheme as createThemeMui,
+    ThemeProvider,
+} from '@mui/material/styles';
 
 import rootReducer from './reducers';
 import Routes from './Routes';
@@ -17,8 +17,6 @@ import configureStore from '../configureStore';
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import customTheme from '../../custom/customTheme';
-
-const theme = createTheme(customTheme);
 
 const locale = getLocale();
 const initialState = {
@@ -39,9 +37,9 @@ const store = configureStore(
 
 hydrate(
     <Provider {...{ store }}>
-        <MuiThemeProvider theme={theme}>
+        <ThemeProvider theme={createThemeMui(customTheme)}>
             <Routes history={history} />
-        </MuiThemeProvider>
+        </ThemeProvider>
     </Provider>,
     document.getElementById('root'),
 );

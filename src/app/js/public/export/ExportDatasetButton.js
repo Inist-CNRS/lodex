@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 

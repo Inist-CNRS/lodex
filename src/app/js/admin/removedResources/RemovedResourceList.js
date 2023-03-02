@@ -12,7 +12,7 @@ import {
     TableHead,
     TableCell,
     TableRow,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import Loading from '../../lib/components/Loading';
@@ -63,7 +63,7 @@ export class RemovedResourceListComponent extends Component {
 
         return (
             <CardContent className="hidden_resources">
-                <Table style={styles.table}>
+                <Table sx={styles.table}>
                     <TableHead>
                         <TableRow>
                             <TableCell>{polyglot.t('removed_at')}</TableCell>

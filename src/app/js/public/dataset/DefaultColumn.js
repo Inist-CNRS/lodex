@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { TableCell } from '@material-ui/core';
+import { TableCell } from '@mui/material';
 
 import Format from '../Format';
 import { field as fieldPropTypes } from '../../propTypes';

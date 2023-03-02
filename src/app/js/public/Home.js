@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { push } from 'connected-react-router';
 import { Helmet } from 'react-helmet';
-import { Card } from '@material-ui/core';
+import { Card } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../fields';
@@ -62,7 +62,7 @@ export class HomeComponent extends Component {
 
         if (error) {
             return (
-                <Card style={{ marginTop: '0.5rem' }}>
+                <Card sx={{ marginTop: '0.5rem' }}>
                     <Alert>{error}</Alert>
                 </Card>
             );

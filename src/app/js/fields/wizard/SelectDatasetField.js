@@ -1,18 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
+import { MenuItem, TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
 import { fromParsing } from '../../admin/selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-
-const styles = {
-    select: {
-        width: '100%',
-    },
-};
 
 export const SelectDatasetFieldComponent = ({
     datasetFields,
@@ -22,26 +16,24 @@ export const SelectDatasetFieldComponent = ({
     label,
     id,
 }) => (
-    <FormControl id="select-dataset-input-label" fullWidth>
-        <InputLabel>{polyglot.t(label)}</InputLabel>
-        <Select
-            id={id}
-            onChange={e => handleChange(e.target.value)}
-            style={styles.select}
-            labelId="select-dataset-input-label"
-            value={column}
-        >
-            {datasetFields.map(datasetField => (
-                <MenuItem
-                    key={`id_${datasetField}`}
-                    className={`column-${datasetField.replaceAll(' ', '-')}`}
-                    value={datasetField}
-                >
-                    {datasetField}
-                </MenuItem>
-            ))}
-        </Select>
-    </FormControl>
+    <TextField
+        select
+        fullWidth
+        id={id}
+        onChange={e => handleChange(e.target.value)}
+        label={polyglot.t(label)}
+        value={column}
+    >
+        {datasetFields.map(datasetField => (
+            <MenuItem
+                key={`id_${datasetField}`}
+                className={`column-${datasetField.replaceAll(' ', '-')}`}
+                value={datasetField}
+            >
+                {datasetField}
+            </MenuItem>
+        ))}
+    </TextField>
 );
 
 SelectDatasetFieldComponent.propTypes = {

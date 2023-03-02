@@ -16,17 +16,15 @@ import {
     Box,
     Tooltip,
     Grid,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
 import enrichers from '../../../custom/enrichers/enrichers-catalog.json';
-import classnames from 'classnames';
 import colorsTheme from '../../../custom/colorsTheme';
-import FilterIcon from '@material-ui/icons/FilterList';
-import MenuBookIcon from '@material-ui/icons/MenuBook';
-import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
+import FilterIcon from '@mui/icons-material/FilterList';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import CancelButton from '../../lib/components/CancelButton';
 
-const useStyles = makeStyles({
+const styles = {
     item: {
         cursor: 'pointer',
         '&:hover': {
@@ -40,10 +38,10 @@ const useStyles = makeStyles({
             backgroundColor: colorsTheme.green.primary,
         },
         '& a': {
-            color: 'white',
+            color: colorsTheme.white.primary,
         },
     },
-});
+};
 
 const EnricherDescription = ({ enricher, polyglot }) => {
     return (
@@ -89,8 +87,6 @@ export const EnrichmentCatalog = ({
     onChange,
     selectedWebServiceUrl,
 }) => {
-    const classes = useStyles();
-
     const filters = [
         ...new Set(enrichers.map(item => item.type)),
     ].sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)));
@@ -166,10 +162,12 @@ export const EnrichmentCatalog = ({
                         <ListItem
                             key={enricher.id}
                             onClick={() => handleValueChange(enricher.url)}
-                            className={classnames(classes.item, {
-                                [classes.selectedItem]:
-                                    selectedWebServiceUrl === enricher.url,
-                            })}
+                            sx={{
+                                ...styles.item,
+                                ...(selectedWebServiceUrl === enricher.url
+                                    ? styles.selectedItem
+                                    : {}),
+                            }}
                             ref={
                                 selectedWebServiceUrl === enricher.url
                                     ? scrollTo

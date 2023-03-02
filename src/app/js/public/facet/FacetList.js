@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { List } from '@material-ui/core';
+import { List } from '@mui/material';
 
 import { field as fieldPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';

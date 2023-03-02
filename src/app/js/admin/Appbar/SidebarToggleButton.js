@@ -4,7 +4,6 @@ import compose from 'recompose/compose';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import colorsTheme from '../../../custom/colorsTheme';
 import { SidebarContext } from '../Sidebar/SidebarContext';
 
 const SidebarToggleButton = ({ p: polyglot }) => {
@@ -15,10 +14,10 @@ const SidebarToggleButton = ({ p: polyglot }) => {
             <Tooltip title={polyglot.t(open ? 'close_menu' : 'open_menu')}>
                 <IconButton
                     sx={{
-                        color: colorsTheme.white.primary,
                         transition: 'transform 0.3s ease-in-out',
                         transform: open ? 'rotate(0deg)' : 'rotate(180deg)',
                     }}
+                    color="white"
                     onClick={() => setSidebarOpen(!open)}
                 >
                     <MenuIcon sx={{ fontSize: '30px' }} />

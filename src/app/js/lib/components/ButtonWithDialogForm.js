@@ -5,7 +5,7 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { submit as submitAction } from 'redux-form';
-import { IconButton, Button, CircularProgress } from '@material-ui/core';
+import { IconButton, Button, CircularProgress } from '@mui/material';
 import classnames from 'classnames';
 
 import ButtonWithStatus from './ButtonWithStatus';
@@ -13,6 +13,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithDialog from './ButtonWithDialog';
 import colorsTheme from '../../../custom/colorsTheme';
 import stylesToClassname from '../../lib/stylesToClassName';
+import CancelButton from './CancelButton';
 
 const styles = stylesToClassname(
     {
@@ -68,6 +69,9 @@ export const PureButtonWithDialogForm = ({
     }
 
     const actions = [
+        <CancelButton key="cancel" onClick={handleClose}>
+            {polyglot.t('cancel')}
+        </CancelButton>,
         <ButtonWithStatus
             raised
             key="save"
@@ -78,14 +82,6 @@ export const PureButtonWithDialogForm = ({
         >
             {polyglot.t('save')}
         </ButtonWithStatus>,
-        <Button
-            variant="text"
-            color="secondary"
-            key="cancel"
-            onClick={handleClose}
-        >
-            {polyglot.t('cancel')}
-        </Button>,
     ];
 
     return (

@@ -8,7 +8,7 @@ import Polyglot from 'node-polyglot';
 import {
     createTheme,
     ThemeProvider as MuiThemeProvider,
-} from '@material-ui/core/styles';
+} from '@mui/material/styles';
 
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';

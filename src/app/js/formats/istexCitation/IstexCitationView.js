@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FileDownload from '@material-ui/icons/GetApp';
+import FileDownload from '@mui/icons-material/GetApp';
 import Link from '../../lib/components/Link';
 
 import {

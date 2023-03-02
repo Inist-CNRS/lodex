@@ -1,7 +1,7 @@
 import React from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Card, CardHeader, Divider } from '@material-ui/core';
+import { Card, CardHeader, Divider } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import RemovedResourceList from './RemovedResourceList';

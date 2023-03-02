@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { IconButton } from '@material-ui/core';
-import CodeIcon from '@material-ui/icons/Code';
+import { IconButton } from '@mui/material';
+import CodeIcon from '@mui/icons-material/Code';
 import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';

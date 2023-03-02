@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
-import { CircularProgress, Button } from '@material-ui/core';
+import { CircularProgress, Button } from '@mui/material';
 
 import {
     facetActions,

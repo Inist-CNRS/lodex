@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { Card } from '@material-ui/core';
+import { Card } from '@mui/material';
 
 /**
  * @TODO: Remove this file

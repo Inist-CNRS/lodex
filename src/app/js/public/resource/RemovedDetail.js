@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { CardHeader, Card, CardContent } from '@material-ui/core';
+import { CardHeader, Card, CardContent } from '@mui/material';
 import moment from 'moment';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -21,7 +21,7 @@ const styles = {
 };
 
 export const RemovedDetailComponent = ({ reason, removedAt, p: polyglot }) => (
-    <Card className="removed-detail" style={{ marginTop: '0.5rem' }}>
+    <Card className="removed-detail" sx={{ marginTop: '0.5rem' }}>
         <CardHeader
             title={polyglot.t('removed_resource_at', {
                 date: moment(removedAt).format('ll'),

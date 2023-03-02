@@ -47,6 +47,7 @@ export const LoginFormComponent = ({
             onKeyPress={handleKeyPress}
             autoFocus
             fullWidth
+            variant="standard"
         />
         <Field
             name="password"
@@ -55,6 +56,7 @@ export const LoginFormComponent = ({
             label={polyglot.t('Password')}
             onKeyPress={handleKeyPress}
             fullWidth
+            variant="standard"
         />
     </form>
 );

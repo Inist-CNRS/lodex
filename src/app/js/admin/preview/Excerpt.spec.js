@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { TableCell, TableContainer } from '@material-ui/core';
+import { TableCell, TableContainer } from '@mui/material';
 import ExcerptLine from './ExcerptLine';
 
 import { ExcerptComponent as Excerpt } from './Excerpt';

@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IconButton } from '@material-ui/core';
-import RejectedIcon from '@material-ui/icons/Clear';
-import ProposedIcon from '@material-ui/icons/Remove';
-import ValidatedIcon from '@material-ui/icons/Done';
+import { IconButton } from '@mui/material';
+import RejectedIcon from '@mui/icons-material/Clear';
+import ProposedIcon from '@mui/icons-material/Remove';
+import ValidatedIcon from '@mui/icons-material/Done';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { red, yellow, green, grey } from '@material-ui/core/colors';
+import { red, yellow, green, grey } from '@mui/material/colors';
 import classnames from 'classnames';
 
 import propositionStatus from '../../../../common/propositionStatus';
@@ -62,7 +62,7 @@ export const ModerateButtonComponent = ({
                     className={classnames(availableStatus, {
                         active: availableStatus === status,
                     })}
-                    style={styles.iconButton}
+                    sx={styles.iconButton}
                     key={availableStatus}
                     tooltip={polyglot.t(availableStatus)}
                     onClick={e => {

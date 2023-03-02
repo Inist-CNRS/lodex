@@ -9,11 +9,6 @@ import { ConnectedRouter } from 'connected-react-router';
 import { Route, Redirect } from 'react-router';
 
 import {
-    ThemeProvider as MaterialThemeProvider,
-    createTheme,
-} from '@material-ui/core/styles';
-
-import {
     createTheme as createThemeMui,
     ThemeProvider,
 } from '@mui/material/styles';
@@ -63,6 +58,9 @@ const theme = {
         text: {
             primary: colorsTheme.black.secondary,
         },
+        white: {
+            main: colorsTheme.white.primary,
+        },
     },
 };
 
@@ -84,26 +82,20 @@ export const store = configureStore(
 
 render(
     <Provider store={store}>
-        <MaterialThemeProvider
-            theme={createTheme(theme, localesMUI.get(locale))}
-        >
-            <ThemeProvider
-                theme={createThemeMui(theme, localesMUI.get(locale))}
-            >
-                <ConnectedRouter history={history} onUpdate={scrollToTop}>
-                    <App>
-                        <Route
-                            path="/"
-                            exact
-                            render={() => <Redirect to="/data" />}
-                        />
-                        <PrivateRoute path="/data" component={Data} />
-                        <PrivateRoute path="/display" component={Display} />
-                        <Route path="/login" exact component={Login} />
-                    </App>
-                </ConnectedRouter>
-            </ThemeProvider>
-        </MaterialThemeProvider>
+        <ThemeProvider theme={createThemeMui(theme, localesMUI.get(locale))}>
+            <ConnectedRouter history={history} onUpdate={scrollToTop}>
+                <App>
+                    <Route
+                        path="/"
+                        exact
+                        render={() => <Redirect to="/data" />}
+                    />
+                    <PrivateRoute path="/data" component={Data} />
+                    <PrivateRoute path="/display" component={Display} />
+                    <Route path="/login" exact component={Login} />
+                </App>
+            </ConnectedRouter>
+        </ThemeProvider>
     </Provider>,
     document.getElementById('root'),
 );

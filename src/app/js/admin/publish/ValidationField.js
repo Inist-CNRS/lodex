@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import { ListItem, IconButton, Grid } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
+import { ListItem, IconButton, Grid, Box } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 
 import {
     polyglot as polyglotPropTypes,
@@ -36,8 +36,8 @@ const ValidationFieldComponent = ({
         disabled={isFieldsLoading}
     >
         <Grid container alignItems="center">
-            <Grid item style={{ minWidth: 250 }}>
-                <div style={styles.label}>{label}:</div>
+            <Grid item sx={{ minWidth: 250 }}>
+                <Box sx={styles.label}>{label}:</Box>
             </Grid>
             <Grid item>
                 <ul>
@@ -53,7 +53,7 @@ const ValidationFieldComponent = ({
                         ))}
                 </ul>
             </Grid>
-            <Grid item style={{ width: 70, textAlign: 'center' }}>
+            <Grid item sx={{ width: 70, textAlign: 'center' }}>
                 <IconButton disabled={isFieldsLoading}>
                     <EditIcon />
                 </IconButton>

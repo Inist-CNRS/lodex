@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import Alert from '../../lib/components/Alert';
 
 import { UploadComponent as Upload } from './Upload';

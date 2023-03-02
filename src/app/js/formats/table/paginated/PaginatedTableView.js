@@ -3,7 +3,7 @@ import injectData from '../../injectData';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import AbstractTableView from '../core/AbstractTableView';
-import { Table, TableBody, TableContainer, TableRow } from '@material-ui/core';
+import { Table, TableBody, TableContainer, TableRow } from '@mui/material';
 import React from 'react';
 
 class PaginatedTableView extends AbstractTableView {

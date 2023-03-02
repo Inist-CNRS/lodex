@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet';
 import {
     ThemeProvider as MuiThemeProvider,
     createTheme,
-} from '@material-ui/core/styles';
+} from '@mui/material/styles';
 import { END } from 'redux-saga';
 import fs from 'fs';
 import { StyleSheetServer } from 'aphrodite/no-important';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { TableCell } from '@material-ui/core';
+import { TableCell } from '@mui/material';
 
 import DefaultColumn from './DefaultColumn';
 import Format from '../Format';

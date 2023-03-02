@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { IconButton, Button } from '@material-ui/core';
-import ActionDeleteIcon from '@material-ui/icons/Delete';
-import ActionAddIcon from '@material-ui/icons/Add';
+import { IconButton, Button } from '@mui/material';
+import ActionDeleteIcon from '@mui/icons-material/Delete';
+import ActionAddIcon from '@mui/icons-material/Add';
 import classnames from 'classnames';
 import memoize from 'lodash.memoize';
 

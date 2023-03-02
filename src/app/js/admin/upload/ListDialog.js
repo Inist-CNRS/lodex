@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import classnames from 'classnames';
 import compose from 'recompose/compose';
 import {
     Button,
@@ -13,14 +12,13 @@ import {
     Dialog,
     DialogContent,
     DialogActions,
-} from '@material-ui/core';
-import FilterIcon from '@material-ui/icons/FilterList';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
+import FilterIcon from '@mui/icons-material/FilterList';
 
 import colorsTheme from '../../../custom/colorsTheme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-const useStyles = makeStyles({
+const styles = {
     item: {
         cursor: 'pointer',
         '&:hover': {
@@ -34,7 +32,7 @@ const useStyles = makeStyles({
             backgroundColor: colorsTheme.green.primary,
         },
     },
-});
+};
 
 export const ListDialogComponent = ({
     p: polyglot,
@@ -80,14 +78,14 @@ export const ListDialogComponent = ({
 
     return (
         <Dialog open={open} onClose={handleClose} scroll="body" maxWidth="xl">
-            <DialogContent style={{ padding: 0, width: '1100px' }}>
+            <DialogContent sx={{ padding: 0, width: '1100px' }}>
                 <FilterComponent
                     p={polyglot}
                     loaders={loaders}
                     filter={filteredLoaders}
                     setFilter={setFilter}
                 />
-                <List style={{ height: '70vh' }}>
+                <List sx={{ height: '70vh' }}>
                     <ListItemComponent
                         key={'automatic'}
                         value={'automatic'}
@@ -123,20 +121,19 @@ const ListItemComponent = ({
     changeValue,
     scrollTo,
 }) => {
-    const classes = useStyles();
-
     return (
         <ListItem
             value={value}
             onClick={() => changeValue(value)}
-            className={classnames(classes.item, {
-                [classes.selectedItem]: selected,
-            })}
+            sx={{
+                ...styles.item,
+                ...(selected ? styles.selectedItem : {}),
+            }}
             ref={selected ? scrollTo : null}
         >
             <ListItemText
                 primary={title}
-                primaryTypographyProps={{ style: { fontWeight: 'bold' } }}
+                primaryTypographyProps={{ sx: { fontWeight: 'bold' } }}
                 secondary={
                     <span dangerouslySetInnerHTML={{ __html: comment }} />
                 }
@@ -192,17 +189,17 @@ const FilterComponent = ({ loaders, filter, setFilter, p: polyglot }) => {
         <Grid
             container={true}
             direction="row"
-            style={{
+            sx={{
                 width: '100%',
-                marginBottom: 25,
-                marginTop: 25,
-                padding: 10,
+                marginBottom: '25px',
+                marginTop: '25px',
+                padding: '10px',
             }}
             justifyContent="space-around"
             spacing={2}
         >
             <Box>
-                <FilterIcon fontSize="large" style={{ marginRight: 10 }} />
+                <FilterIcon fontSize="large" sx={{ marginRight: '10px' }} />
             </Box>
             {Object.keys(allFilters).map(key => (
                 <Box key={key}>
