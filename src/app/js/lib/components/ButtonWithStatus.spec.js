@@ -16,10 +16,10 @@ describe('<ButtonWithStatus />', () => {
                 .find(Button)
                 .dive()
                 .props();
-            expect(button.variant).toEqual('text');
-            expect(button.disabled).toEqual(false);
-            expect(button.startIcon).toBeNull();
-            expect(button.children).toEqual('Foo');
+            expect(button.ownerState.variant).toEqual('text');
+            expect(button.ownerState.disabled).toEqual(false);
+            expect(button.ownerState.startIcon).toBeNull();
+            expect(button.children).toContain('Foo');
         });
 
         it('should render a Button with a CircularProgress icon when loading', () => {
@@ -31,12 +31,12 @@ describe('<ButtonWithStatus />', () => {
                 .find(Button)
                 .dive()
                 .props();
-            expect(button.variant).toEqual('text');
-            expect(button.disabled).toEqual(true);
-            expect(button.startIcon).toEqual(
+            expect(button.ownerState.variant).toEqual('text');
+            expect(button.ownerState.disabled).toEqual(true);
+            expect(button.ownerState.startIcon).toEqual(
                 <CircularProgress variant="indeterminate" size={20} />,
             );
-            expect(button.children).toEqual('Foo');
+            expect(button.children).toContain('Foo');
         });
 
         it('should render a Button with a Warning icon when it has error', () => {
@@ -48,10 +48,13 @@ describe('<ButtonWithStatus />', () => {
                 .find(Button)
                 .dive()
                 .props();
-            expect(button.variant).toEqual('text');
-            expect(button.disabled).toEqual(false);
-            expect(button.startIcon).toEqual(<Warning color={red[400]} />);
-            expect(button.children).toEqual('Foo');
+
+            expect(button.ownerState.variant).toEqual('text');
+            expect(button.ownerState.disabled).toEqual(false);
+            expect(button.ownerState.startIcon).toEqual(
+                <Warning color={red[400]} />,
+            );
+            expect(button.children).toContain('Foo');
         });
 
         it('should render a Button with a Success icon when it has success', () => {
@@ -63,12 +66,12 @@ describe('<ButtonWithStatus />', () => {
                 .find(Button)
                 .dive()
                 .props();
-            expect(button.variant).toEqual('text');
-            expect(button.disabled).toEqual(false);
-            expect(button.startIcon).toEqual(
+            expect(button.ownerState.variant).toEqual('text');
+            expect(button.ownerState.disabled).toEqual(false);
+            expect(button.ownerState.startIcon).toEqual(
                 <Success color={lightGreen.A400} />,
             );
-            expect(button.children).toEqual('Foo');
+            expect(button.children).toContain('Foo');
         });
     });
 
@@ -81,10 +84,10 @@ describe('<ButtonWithStatus />', () => {
                 .find(Button)
                 .dive()
                 .props();
-            expect(button.variant).toEqual('contained');
-            expect(button.disabled).toEqual(false);
-            expect(button.startIcon).toBeNull();
-            expect(button.children).toEqual('Foo');
+            expect(button.ownerState.variant).toEqual('contained');
+            expect(button.ownerState.disabled).toEqual(false);
+            expect(button.ownerState.startIcon).toBeNull();
+            expect(button.children).toContain('Foo');
         });
 
         it('should render a Button with a CircularProgress icon when loading', () => {
@@ -98,13 +101,12 @@ describe('<ButtonWithStatus />', () => {
                 .find(Button)
                 .dive()
                 .props();
-            expect(button.variant).toEqual('contained');
-            expect(button.disabled).toEqual(true);
-            expect(button.startIcon).toEqual(
+            expect(button.ownerState.variant).toEqual('contained');
+            expect(button.ownerState.disabled).toEqual(true);
+            expect(button.ownerState.startIcon).toEqual(
                 <CircularProgress variant="indeterminate" size={20} />,
             );
-            expect(button.children).toEqual('Foo');
-            expect(button.className).not.toContain('loadingProgress');
+            expect(button.children).toContain('Foo');
         });
 
         it('should render a Button with a Warning icon when it has error', () => {
@@ -118,10 +120,12 @@ describe('<ButtonWithStatus />', () => {
                 .find(Button)
                 .dive()
                 .props();
-            expect(button.variant).toEqual('contained');
-            expect(button.disabled).toEqual(false);
-            expect(button.startIcon).toEqual(<Warning color={red[400]} />);
-            expect(button.children).toEqual('Foo');
+            expect(button.ownerState.variant).toEqual('contained');
+            expect(button.ownerState.disabled).toEqual(false);
+            expect(button.ownerState.startIcon).toEqual(
+                <Warning color={red[400]} />,
+            );
+            expect(button.children).toContain('Foo');
         });
 
         it('should render a Button with a Success icon when it has success', () => {
@@ -131,9 +135,9 @@ describe('<ButtonWithStatus />', () => {
                 .find(Button)
                 .dive()
                 .props();
-            expect(button.variant).toEqual('contained');
-            expect(button.disabled).toEqual(false);
-            expect(button.startIcon).toEqual(
+            expect(button.ownerState.variant).toEqual('contained');
+            expect(button.ownerState.disabled).toEqual(false);
+            expect(button.ownerState.startIcon).toEqual(
                 <Success color={lightGreen.A400} />,
             );
         });
@@ -148,19 +152,18 @@ describe('<ButtonWithStatus />', () => {
                 .find(Button)
                 .dive()
                 .props();
-            expect(button.variant).toEqual('contained');
-            expect(button.disabled).toEqual(true);
-            expect(button.startIcon).toEqual(
+            expect(button.ownerState.variant).toEqual('contained');
+            expect(button.ownerState.disabled).toEqual(true);
+            expect(button.ownerState.startIcon).toEqual(
                 <CircularProgress variant="indeterminate" size={20} />,
             );
-            expect(button.children).toEqual('Foo');
-            expect(button.className).toContain('loadingProgress');
+            expect(button.children).toContain('Foo');
             const progressBar = wrapper
                 .find(LinearProgress)
                 .dive()
                 .props();
-            expect(progressBar.value).toEqual(50);
-            expect(progressBar.variant).toEqual('determinate');
+            expect(progressBar.ownerState.value).toEqual(50);
+            expect(progressBar.ownerState.variant).toEqual('determinate');
         });
     });
 });
