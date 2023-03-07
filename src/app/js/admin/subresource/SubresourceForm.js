@@ -15,7 +15,6 @@ import {
     Typography,
     TextField as MUITextField,
 } from '@mui/material';
-import colorsTheme from '../../../custom/colorsTheme';
 import CancelButton from '../../lib/components/CancelButton';
 import { useHistory } from 'react-router';
 
@@ -77,7 +76,7 @@ const SubresourceFormComponent = ({
     };
 
     return (
-        <Box sx={{ background: colorsTheme.green.light, padding: '20px' }}>
+        <Box sx={{ background: 'primary', padding: '20px' }}>
             <form onSubmit={handleSubmit}>
                 <Box display="flex" gap={2}>
                     <Field

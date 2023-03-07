@@ -1,6 +1,5 @@
 import React from 'react';
 import translate from 'redux-polyglot/translate';
-import colorsTheme from '../../../custom/colorsTheme';
 import PreviewIcon from '@mui/icons-material/Preview';
 import PropTypes from 'prop-types';
 
@@ -11,13 +10,14 @@ import { fromFieldPreview } from '../../admin/selectors';
 import { getFieldFormData } from '../selectors';
 import { SCOPE_DATASET } from '../../../../common/scope';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import customTheme from '../../../custom/customTheme';
 
 const ValuePreview = ({ lines, editedField, p: polyglot }) => {
     return (
         <Box
             id="value-preview"
             sx={{
-                background: colorsTheme.black.veryLight,
+                background: customTheme.palette.neutralDark.veryLight,
                 padding: 2,
                 borderRadius: 2,
             }}

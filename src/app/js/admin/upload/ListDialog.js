@@ -15,21 +15,21 @@ import {
 } from '@mui/material';
 import FilterIcon from '@mui/icons-material/FilterList';
 
-import colorsTheme from '../../../custom/colorsTheme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import customTheme from '../../../custom/customTheme';
 
 const styles = {
     item: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: colorsTheme.black.veryLight,
+            backgroundColor: customTheme.palette.neutralDark.veryLight,
         },
-        borderBottom: `1px solid ${colorsTheme.black.light}`,
+        borderBottom: `1px solid ${customTheme.palette.neutralDark.light}`,
     },
     selectedItem: {
-        backgroundColor: colorsTheme.green.secondary,
+        backgroundColor: customTheme.palette.primary.secondary,
         '&:hover': {
-            backgroundColor: colorsTheme.green.primary,
+            backgroundColor: customTheme.palette.primary.main,
         },
     },
 };

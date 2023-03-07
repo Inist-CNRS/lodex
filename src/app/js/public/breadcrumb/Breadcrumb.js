@@ -6,10 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { withRouter } from 'react-router';
 
-import colorsTheme from '../../../custom/colorsTheme';
 import { fromBreadcrumb } from '../selectors';
 import BreadcrumbItem from './BreadcrumbItem';
 import stylesToClassname from '../../lib/stylesToClassName';
+import customTheme from '../../../custom/customTheme';
 
 const styles = stylesToClassname(
     {
@@ -19,7 +19,7 @@ const styles = stylesToClassname(
             justifyContent: 'flex-start',
         },
         icon: {
-            color: colorsTheme.green.primary,
+            color: customTheme.palette.primary.main,
             margin: '5px 0px',
         },
         trail: {
