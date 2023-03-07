@@ -17,7 +17,7 @@ const SidebarToggleButton = ({ p: polyglot }) => {
                         transition: 'transform 0.3s ease-in-out',
                         transform: open ? 'rotate(0deg)' : 'rotate(180deg)',
                     }}
-                    color="white"
+                    color="contrast"
                     onClick={() => setSidebarOpen(!open)}
                 >
                     <MenuIcon sx={{ fontSize: '30px' }} />

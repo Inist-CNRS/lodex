@@ -8,7 +8,7 @@ import { Box, CircularProgress } from '@mui/material';
 import { fromPublicationPreview } from './selectors';
 import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import colorsTheme from '../../custom/colorsTheme';
+import customTheme from '../../custom/customTheme';
 
 const styles = {
     container: {
@@ -22,7 +22,7 @@ const styles = {
     item: {
         paddingLeft: '1rem',
         paddingRight: '1rem',
-        backgroundColor: colorsTheme.black.veryLight,
+        backgroundColor: customTheme.palette.neutralDark.transparent,
         lineHeight: '30px',
         height: '100%',
         alignItems: 'center',

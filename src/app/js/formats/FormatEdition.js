@@ -87,7 +87,7 @@ const FormatEdition = ({ p: polyglot, ...props }) => {
                                 aria-label={`format-delete`}
                                 sx={{
                                     cursor: 'pointer',
-                                    color: colorsTheme.orange.primary,
+                                    color: 'secondary.main',
                                 }}
                                 onClick={() => {
                                     onRemove();

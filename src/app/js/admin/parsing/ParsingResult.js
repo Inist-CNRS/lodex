@@ -23,7 +23,6 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromEnrichments, fromParsing, fromPublication } from '../selectors';
 import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
-import colorsTheme from '../../../custom/colorsTheme';
 import {
     Box,
     Chip,
@@ -55,7 +54,7 @@ const styles = {
         height: 'calc(100vh - 90px)',
     },
     enrichedColumn: {
-        backgroundColor: colorsTheme.green.light,
+        backgroundColor: 'primary.light',
     },
     footer: {
         overflow: 'hidden',
@@ -72,7 +71,7 @@ const styles = {
     footerItem: {
         paddingLeft: '1rem',
         paddingRight: '1rem',
-        backgroundColor: colorsTheme.black.veryLight,
+        backgroundColor: 'neutralDark.veryLight',
         lineHeight: '30px',
         height: '100%',
         alignItems: 'center',
@@ -88,11 +87,11 @@ const styles = {
         width: '45%',
     },
     errorChip: {
-        backgroundColor: colorsTheme.red.primary,
-        color: colorsTheme.white.primary,
+        backgroundColor: 'danger.main',
+        color: 'contrast.main',
     },
     errorHeader: {
-        color: colorsTheme.orange.primary,
+        color: 'warning.main',
     },
 };
 
@@ -495,7 +494,7 @@ export const ParsingResultComponent = props => {
                         visibility: 'hidden',
                         opacity: 0,
                         transform: 'translateX(-100%)',
-                        backgroundColor: colorsTheme.white.primary,
+                        backgroundColor: 'contrast.main',
                     },
                     [`& .MuiDataGrid-row:hover > .MuiDataGrid-cell[data-field="delete-row"]`]: {
                         visibility: 'visible',

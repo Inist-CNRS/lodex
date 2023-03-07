@@ -18,27 +18,27 @@ import {
     Grid,
 } from '@mui/material';
 import enrichers from '../../../custom/enrichers/enrichers-catalog.json';
-import colorsTheme from '../../../custom/colorsTheme';
 import FilterIcon from '@mui/icons-material/FilterList';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import CancelButton from '../../lib/components/CancelButton';
+import customTheme from '../../../custom/customTheme';
 
 const styles = {
     item: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: colorsTheme.black.veryLight,
+            backgroundColor: customTheme.palette.neutralDark.veryLight,
         },
-        borderBottom: `1px solid ${colorsTheme.black.light}`,
+        borderBottom: `1px solid ${customTheme.palette.neutralDark.light}`,
     },
     selectedItem: {
-        backgroundColor: colorsTheme.green.secondary,
+        backgroundColor: customTheme.palette.primary.secondary,
         '&:hover': {
-            backgroundColor: colorsTheme.green.primary,
+            backgroundColor: customTheme.palette.primary.main,
         },
         '& a': {
-            color: colorsTheme.white.primary,
+            color: customTheme.palette.contrast.main,
         },
     },
 };

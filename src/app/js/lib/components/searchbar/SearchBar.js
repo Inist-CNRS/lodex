@@ -8,8 +8,8 @@ import { faSearch, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import stylesToClassname from '../../stylesToClassName';
-import colorsTheme from '../../../../custom/colorsTheme';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import customTheme from '../../../../custom/customTheme';
 
 const styles = stylesToClassname(
     {
@@ -27,10 +27,10 @@ const styles = stylesToClassname(
             paddingRight: 10,
         },
         searchIcon: {
-            color: colorsTheme.black.secondary,
+            color: customTheme.palette.neutralDark.secondary,
         },
         clearIcon: {
-            color: colorsTheme.orange.primary,
+            color: customTheme.palette.secondary.main,
         },
         actions: {
             display: 'flex',
