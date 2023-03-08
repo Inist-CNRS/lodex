@@ -17,14 +17,14 @@ import ParsingResult from './parsing/ParsingResult';
 import PublicationPreview from './preview/publication/PublicationPreview';
 import Upload from './upload/Upload';
 import Loading from '../lib/components/Loading';
-import colorsTheme from '../../custom/colorsTheme';
 import { preLoadLoaders } from './loader/';
+import customTheme from '../../custom/customTheme';
 
 const styles = {
     punchLine: {
         padding: '16px',
         textAlign: 'center',
-        color: colorsTheme.purple.primary,
+        color: customTheme.palette.info.main,
     },
 };
 

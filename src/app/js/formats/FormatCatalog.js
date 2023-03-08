@@ -18,9 +18,9 @@ import {
     Tooltip,
     Link,
 } from '@mui/material';
-import colorsTheme from '../../custom/colorsTheme';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import CancelButton from '../lib/components/CancelButton';
+import customTheme from '../../custom/customTheme';
 
 const FormatCatalogDescription = ({ format, polyglot }) => {
     return (
@@ -127,16 +127,17 @@ export const FormatCatalog = ({
                             }
                             sx={{
                                 cursor: 'pointer',
-                                borderBottom: `1px solid ${colorsTheme.black.light}`,
+                                borderBottom: `1px solid ${customTheme.palette.neutralDark.light}`,
                                 backgroundColor:
                                     currentValue === format.componentName
-                                        ? colorsTheme.green.secondary
+                                        ? customTheme.palette.primary.secondary
                                         : 'transparent',
                                 '&:hover': {
                                     backgroundColor:
                                         currentValue === format.componentName
-                                            ? colorsTheme.green.primary
-                                            : colorsTheme.black.veryLight,
+                                            ? customTheme.palette.primary.main
+                                            : customTheme.palette.neutralDark
+                                                  .veryLight,
                                 },
                             }}
                             ref={

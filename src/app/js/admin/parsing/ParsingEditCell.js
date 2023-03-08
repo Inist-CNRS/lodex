@@ -14,8 +14,8 @@ import {
     Input,
     Menu,
     MenuItem,
+    useTheme,
 } from '@mui/material';
-import colorsTheme from '../../../custom/colorsTheme';
 import { toast } from '../../../../common/tools/toast';
 import CancelButton from '../../lib/components/CancelButton';
 
@@ -33,12 +33,6 @@ const style = {
     },
     icon: {
         marginRight: '10px',
-    },
-    menuPaper: {
-        backgroundColor: colorsTheme.green.primary,
-        '& .MuiMenuItem-root': {
-            color: colorsTheme.white.primary,
-        },
     },
 };
 
@@ -133,6 +127,7 @@ const isError = value => {
 };
 
 const ButtonEditCellWithDropdown = ({ polyglot, loading, handleChange }) => {
+    const theme = useTheme();
     const [isOpen, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
 
@@ -153,7 +148,7 @@ const ButtonEditCellWithDropdown = ({ polyglot, loading, handleChange }) => {
                         <CircularProgress
                             size={20}
                             sx={style.icon}
-                            color="white"
+                            color="contrast"
                         />
                     ) : (
                         <SaveIcon sx={style.icon} />
@@ -177,7 +172,12 @@ const ButtonEditCellWithDropdown = ({ polyglot, loading, handleChange }) => {
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'left' }}
                 sx={{
-                    '& .MuiMenu-paper': style.menuPaper,
+                    '& .MuiMenu-paper': {
+                        backgroundColor: theme.palette.primary.main,
+                        '& .MuiMenuItem-root': {
+                            color: theme.palette.contrast.main,
+                        },
+                    },
                 }}
             >
                 {types.map(type => (
@@ -205,6 +205,7 @@ ButtonEditCellWithDropdown.propTypes = {
 };
 
 const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
+    const theme = useTheme();
     const [loading, setLoading] = React.useState(false);
     const [value, setValue] = React.useState(cell.value);
 
@@ -243,7 +244,7 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                 <h2
                     style={{
                         textAlign: 'center',
-                        color: '#f44336',
+                        color: theme.palette.danger.main,
                         fontWeight: 'initial',
                     }}
                 >
@@ -261,11 +262,11 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
         <div>
             <h2 style={{ textAlign: 'center' }}>
                 {polyglot.t('column')}{' '}
-                <span style={{ color: colorsTheme.green.primary }}>
+                <span style={{ color: theme.palette.primary.main }}>
                     {cell.field}
                 </span>{' '}
                 {polyglot.t('for_row')}{' '}
-                <span style={{ color: colorsTheme.orange.primary }}>
+                <span style={{ color: theme.palette.secondary.main }}>
                     {cell?.row?.uri || cell?.row?.ark}
                 </span>
             </h2>

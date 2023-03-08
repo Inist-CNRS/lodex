@@ -7,7 +7,6 @@ import {
     Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import colorsTheme from '../../../custom/colorsTheme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { io } from 'socket.io-client';
 import translate from 'redux-polyglot/dist/translate';
@@ -31,6 +30,7 @@ import { fromPublication } from '../selectors';
 import { toast } from '../../../../common/tools/toast';
 import { finishProgress } from '../progress/reducer';
 import { loadEnrichments } from '../enrichment';
+import customTheme from '../../../custom/customTheme';
 
 const styles = {
     progress: {
@@ -38,8 +38,8 @@ const styles = {
         display: 'flex',
         margin: '0 4px 0',
     },
-    colorPrimary: { backgroundColor: colorsTheme.white.light },
-    barColorPrimary: { backgroundColor: colorsTheme.white.primary },
+    colorPrimary: { backgroundColor: customTheme.palette.contrast.light },
+    barColorPrimary: { backgroundColor: customTheme.palette.contrast.main },
     progressContainer: {
         display: 'flex',
         flexDirection: 'column',

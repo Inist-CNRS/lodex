@@ -20,9 +20,9 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import LoadingGraph from '../shared/LoadingGraph';
 import MouseIcon from '../shared/MouseIcon';
 
-import colorsTheme from '../../../custom/colorsTheme';
 import CenterIcon from '../shared/CenterIcon';
 import stylesToClassname from '../../lib/stylesToClassName';
+import customTheme from '../../../custom/customTheme';
 
 const styles = StyleSheet.create({
     divContainer: {
@@ -101,9 +101,9 @@ export const defaultArgs = {
 
 const stylesWithClassnames = stylesToClassname({
     icon: {
-        color: colorsTheme.green.primary,
+        color: customTheme.palette.primary.main,
         ':hover': {
-            color: colorsTheme.purple.primary,
+            color: customTheme.palette.info.main,
             cursor: 'pointer',
         },
     },

@@ -7,9 +7,9 @@ import { fromFields } from '../../sharedSelectors';
 import { field as fieldPropTypes } from '../../propTypes';
 import { getIconComponent } from '../../formats';
 import MixedChartIcon from './MixedChartIcon';
-import colorsTheme from '../../../custom/colorsTheme';
 import Link from '../../lib/components/Link';
 import stylesToClassname from '../../lib/stylesToClassName';
+import customTheme from '../../../custom/customTheme';
 
 const styles = stylesToClassname(
     {
@@ -24,25 +24,25 @@ const styles = stylesToClassname(
             margin: 20,
         },
         activeLink: {
-            color: colorsTheme.orange.primary,
-            fill: colorsTheme.orange.primary,
+            color: customTheme.palette.secondary.main,
+            fill: customTheme.palette.secondary.main,
             ':hover': {
-                fill: colorsTheme.orange.primary,
-                color: colorsTheme.orange.primary,
+                fill: customTheme.palette.secondary.main,
+                color: customTheme.palette.secondary.main,
             },
         },
         link: {
             textDecoration: 'none',
             backgroundColor: '#f8f8f8',
-            fill: colorsTheme.green.primary,
-            color: colorsTheme.green.primary,
+            fill: customTheme.palette.primary.main,
+            color: customTheme.palette.primary.main,
             cursor: 'pointer',
             userSelect: 'none',
             textTransform: 'capitalize',
             ':hover': {
                 textDecoration: 'none',
-                fill: colorsTheme.purple.primary,
-                color: colorsTheme.purple.primary,
+                fill: customTheme.palette.info.main,
+                color: customTheme.palette.info.main,
             },
             ':focus': {
                 textDecoration: 'none',

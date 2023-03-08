@@ -4,20 +4,46 @@ export default {
     palette: {
         primary: {
             main: colorsTheme.green.primary,
+            secondary: colorsTheme.green.secondary,
+            light: colorsTheme.green.light,
             contrastText: colorsTheme.white.primary,
         },
-        contrastThreshold: 3,
         secondary: {
             main: colorsTheme.orange.primary,
         },
-        //TODO : find this usage or remove
-        primary2Color: colorsTheme.purple.primary,
+        info: {
+            main: colorsTheme.purple.primary,
+        },
+        warning: {
+            main: colorsTheme.orange.primary,
+        },
+        danger: {
+            main: colorsTheme.red.primary,
+        },
+        success: {
+            main: colorsTheme.green.primary,
+        },
+        neutral: {
+            main: colorsTheme.gray.primary,
+        },
+        neutralDark: {
+            main: colorsTheme.black.dark,
+            secondary: colorsTheme.black.secondary,
+            veryDark: colorsTheme.black.veryDark,
+            dark: colorsTheme.black.dark,
+            light: colorsTheme.black.light,
+            lighter: colorsTheme.black.lighter,
+            veryLight: colorsTheme.black.veryLight,
+            transparent: colorsTheme.black.transparent,
+        },
         text: {
             primary: colorsTheme.black.secondary,
             main: colorsTheme.black.secondary,
         },
-    },
-    typography: {
-        fontFamily: 'Quicksand, sans-serif',
+        contrast: {
+            main: colorsTheme.white.primary,
+            light: colorsTheme.white.light,
+        },
+        contrastThreshold: 3,
     },
 };

@@ -16,7 +16,7 @@ const GoToPublicationButtonComponent = ({ p: polyglot }) => {
                 <IconButton
                     className="go-published-button"
                     onClick={handleGoToPublication}
-                    color="white"
+                    color="contrast"
                 >
                     <VisibilityIcon sx={{ fontSize: '30px' }} />
                 </IconButton>

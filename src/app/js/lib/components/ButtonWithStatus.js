@@ -4,7 +4,7 @@ import { lightGreen, red } from '@mui/material/colors';
 import { CircularProgress, LinearProgress, Button, Box } from '@mui/material';
 import Warning from '@mui/icons-material/Warning';
 import Success from '@mui/icons-material/Done';
-import colorsTheme from '../../../custom/colorsTheme';
+import customTheme from '../../../custom/customTheme';
 
 const styles = {
     container: {
@@ -18,8 +18,8 @@ const styles = {
     progress: {
         margin: '0 4px 0',
     },
-    colorPrimary: { backgroundColor: colorsTheme.white.primary },
-    barColorPrimary: { backgroundColor: colorsTheme.green.secondary },
+    colorPrimary: { backgroundColor: customTheme.palette.contrast.main },
+    barColorPrimary: { backgroundColor: customTheme.palette.primary.secondary },
 };
 
 const ButtonWithStatus = ({

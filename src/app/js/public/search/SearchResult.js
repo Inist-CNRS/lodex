@@ -10,6 +10,7 @@ import {
 import { isURL, getResourceUri } from '../../../../common/uris';
 import colorsTheme from '../../../custom/colorsTheme';
 import stylesToClassname from '../../lib/stylesToClassName';
+import customTheme from '../../../custom/customTheme';
 
 const ellipsis = {
     whiteSpace: 'nowrap',
@@ -36,7 +37,7 @@ const styles = stylesToClassname(
             },
         },
         activeLink: {
-            color: colorsTheme.orange.primary,
+            color: customTheme.palette.secondary.main,
         },
         row: {
             flex: '0 0 auto',
