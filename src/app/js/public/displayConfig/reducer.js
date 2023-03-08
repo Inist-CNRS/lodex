@@ -12,17 +12,17 @@ export const loadDisplayConfigError = createAction(LOAD_DISPLAY_CONFIG_ERROR);
 
 export const initialState = {
     error: null,
-    displayConfig: null,
+    displayDensity: null,
 };
 
 export default handleActions(
     {
         [LOAD_DISPLAY_CONFIG_SUCCESS]: (
             state,
-            { payload: { displayConfig } },
+            { payload: { displayDensity } },
         ) => ({
             ...state,
-            displayConfig,
+            displayDensity,
             error: null,
         }),
         [LOAD_DISPLAY_CONFIG_ERROR]: (state, { payload: { error } }) => ({
@@ -35,9 +35,9 @@ export default handleActions(
 
 export const hasDisplayConfig = state => state;
 
-const getDisplayConfig = state => state.displayConfig;
+const isDense = state => state.displayDensity === 'dense';
 
 export const fromDisplayConfig = {
     hasDisplayConfig,
-    getDisplayConfig,
+    isDense,
 };
