@@ -6,9 +6,9 @@ import get from 'lodash.get';
 import classnames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
 
-import colorsTheme from '../../../custom/colorsTheme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
+import customTheme from '../../../custom/customTheme';
 
 const styles = stylesToClassname(
     {
@@ -19,25 +19,25 @@ const styles = stylesToClassname(
             },
             ':focus': {
                 textDecoration: 'none',
-                color: colorsTheme.orange.primary,
+                color: customTheme.palette.secondary.main,
             },
             ':visited': {
                 textDecoration: 'none',
             },
             ':active': {
-                color: colorsTheme.orange.primary,
+                color: customTheme.palette.secondary.main,
             },
         },
         active: {
-            color: colorsTheme.orange.primary,
+            color: customTheme.palette.secondary.main,
             ':hover': {
-                color: colorsTheme.orange.primary,
+                color: customTheme.palette.secondary.main,
             },
         },
         drawerActive: {
-            color: `${colorsTheme.purple.primary} !important`,
+            color: `${customTheme.palette.info.main} !important`,
             ':hover': {
-                color: `${colorsTheme.purple.primary} !important`,
+                color: `${customTheme.palette.info.main} !important`,
             },
         },
         menuItem: {
@@ -49,15 +49,15 @@ const styles = stylesToClassname(
             alignItems: 'center',
             justifyContent: 'center',
             textAlign: 'center',
-            color: colorsTheme.green.primary,
+            color: customTheme.palette.primary.main,
             cursor: 'pointer',
             userSelect: 'none',
             textTransform: 'capitalize',
             ':hover': {
-                color: colorsTheme.purple.primary,
+                color: customTheme.palette.info.main,
             },
             ':active': {
-                color: colorsTheme.orange.primary,
+                color: customTheme.palette.secondary.main,
             },
         },
         menuItemIcon: {

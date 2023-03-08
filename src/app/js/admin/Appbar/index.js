@@ -11,7 +11,6 @@ import PublicationButton from '../publish/PublicationButton';
 import { fromFields, fromUser } from '../../sharedSelectors';
 import { fromParsing, fromPublication } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import colorsTheme from '../../../custom/colorsTheme';
 import SidebarToggleButton from './SidebarToggleButton';
 import Menu from './Menu';
 import GoToPublicationButton from './GoToPublicationButton';
@@ -25,6 +24,7 @@ import {
     Toolbar,
     Link as MuiLink,
 } from '@mui/material';
+import customTheme from '../../../custom/customTheme';
 
 const styles = {
     linksContainer: {
@@ -35,7 +35,7 @@ const styles = {
         height: 64,
     },
     linkToHome: {
-        color: `${colorsTheme.white.primary} !important`,
+        color: `${customTheme.palette.contrast.main} !important`,
         textDecoration: 'none',
         marginRight: '1rem',
         textTransform: 'uppercase',
@@ -44,19 +44,19 @@ const styles = {
         fontSize: 26,
     },
     button: {
-        color: colorsTheme.white.primary,
+        color: customTheme.palette.contrast.main,
         borderRadius: 0,
         padding: '0 20px',
         boxSizing: 'border-box',
-        borderBottom: `3px solid ${colorsTheme.green.primary}`,
+        borderBottom: `3px solid ${customTheme.palette.primary.main}`,
         '&:hover': {
             transition: 'all ease-in-out 400ms',
-            borderBottom: `3px solid ${colorsTheme.white.primary}`,
-            color: colorsTheme.white.primary,
+            borderBottom: `3px solid ${customTheme.palette.contrast.main}`,
+            color: customTheme.palette.contrast.main,
         },
         '&.active': {
-            borderBottom: `3px solid ${colorsTheme.white.primary}`,
-            backgroundColor: colorsTheme.black.transparent,
+            borderBottom: `3px solid ${customTheme.palette.contrast.main}`,
+            backgroundColor: customTheme.palette.neutralDark.transparent,
         },
     },
 };

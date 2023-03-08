@@ -1,6 +1,5 @@
 import * as React from 'react';
 import ArbitraryIcon from '@mui/icons-material/FormatQuote';
-import colorsTheme from '../../../custom/colorsTheme';
 import compose from 'recompose/compose';
 import FromColumnsIcon from '@mui/icons-material/ViewColumn';
 import FromSubRessourceIcon from '@mui/icons-material/DocumentScanner';
@@ -23,6 +22,7 @@ import {
     Typography,
 } from '@mui/material';
 import SourceValueFromSubResource from './SourceValueFromSubResource';
+import customTheme from '../../../custom/customTheme';
 
 const TRANSFORMERS_FORM_STATUS = new Map([
     [
@@ -160,10 +160,10 @@ const ToggleButton = styled(MuiToggleButton)(() => ({
         gap: '5px',
         '&.Mui-selected, &.Mui-selected:hover': {
             color: 'white',
-            backgroundColor: colorsTheme.green.secondary,
+            backgroundColor: customTheme.palette.primary.secondary,
         },
         '&.Mui-disabled': {
-            backgroundColor: colorsTheme.black.veryLight,
+            backgroundColor: customTheme.palette.neutralDark.veryLight,
         },
     },
 }));

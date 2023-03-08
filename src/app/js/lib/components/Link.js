@@ -1,26 +1,26 @@
 import React from 'react';
 import { Link as RouterLink, NavLink } from 'react-router-dom';
 import classnames from 'classnames';
-
-import colorsTheme from '../../../custom/colorsTheme';
+import PropTypes from 'prop-types';
 import stylesToClassname from '../../lib/stylesToClassName';
+import customTheme from '../../../custom/customTheme';
 
 const styles = stylesToClassname(
     {
         link: {
-            color: colorsTheme.green.primary,
+            color: customTheme.palette.primary.main,
             textDecoration: 'none',
             ':hover': {
-                color: colorsTheme.green.primary,
+                color: customTheme.palette.primary.main,
                 textDecoration: 'underline',
             },
             ':active': {
                 textDecoration: 'underline',
-                color: colorsTheme.orange.primary,
+                color: customTheme.palette.secondary.main,
             },
             ':focus': {
                 textDecoration: 'underline',
-                color: colorsTheme.orange.primary,
+                color: customTheme.palette.secondary.main,
             },
         },
     },
@@ -49,6 +49,15 @@ const Link = ({ to, href, className, children, routeAware, ...rest }) => {
             {children}
         </a>
     );
+};
+
+// create PropTypes
+Link.propTypes = {
+    children: PropTypes.any,
+    className: PropTypes.string,
+    href: PropTypes.string,
+    routeAware: PropTypes.bool,
+    to: PropTypes.string,
 };
 
 export default Link;

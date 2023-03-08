@@ -11,14 +11,14 @@ import classnames from 'classnames';
 import ButtonWithStatus from './ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithDialog from './ButtonWithDialog';
-import colorsTheme from '../../../custom/colorsTheme';
 import stylesToClassname from '../../lib/stylesToClassName';
 import CancelButton from './CancelButton';
+import customTheme from '../../../custom/customTheme';
 
 const styles = stylesToClassname(
     {
         icon: {
-            color: colorsTheme.green.primary,
+            color: customTheme.palette.primary.main,
         },
     },
     'dialog-button',

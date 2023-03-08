@@ -33,7 +33,7 @@ export const ClearPublishedButtonComponent = ({
                 role="button"
                 aria-label="unpublish"
                 sx={{
-                    color: 'green',
+                    color: 'primary.main',
                     padding: '0 20px',
                     height: 40,
                 }}

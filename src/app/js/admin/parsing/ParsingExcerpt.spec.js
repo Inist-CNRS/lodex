@@ -9,8 +9,8 @@ import {
     getEnrichmentsNames,
     getColumnStyle,
 } from './ParsingExcerpt';
-import colorsTheme from '../../../custom/colorsTheme';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
+import customTheme from '../../../custom/customTheme';
 
 let mockedParams = {
     filter: undefined,
@@ -56,7 +56,9 @@ describe('<ParsingExcerpt />', () => {
         ];
         const enrichmentsName = getEnrichmentsNames(enrichments);
         const style = getColumnStyle(enrichmentsName, column);
-        expect(style).toEqual({ backgroundColor: colorsTheme.green.light });
+        expect(style).toEqual({
+            backgroundColor: customTheme.palette.primary.light,
+        });
     });
 
     it('should return a empty style for basic column', () => {
