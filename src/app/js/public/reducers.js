@@ -14,6 +14,7 @@ import user from '../user';
 import searchReducer from './search/reducer';
 import breadcrumb from './breadcrumb/reducer';
 import menu from './menu/reducer';
+import displayConfig from './displayConfig/reducer';
 
 const rootReducer = combineReducers({
     characteristic,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
     search: searchReducer,
     menu,
     breadcrumb,
+    displayConfig,
 });
 
 export default rootReducer;

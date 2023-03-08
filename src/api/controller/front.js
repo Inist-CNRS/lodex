@@ -36,6 +36,7 @@ import {
     customRoutes,
 } from './api/menu';
 import { breadcrumb } from './api/breadcrumb';
+import { displayDensity } from './api/displayConfig';
 import customTheme from '../../app/custom/customTheme';
 
 import { getPublication } from './api/publication';
@@ -80,6 +81,10 @@ const getDefaultInitialState = (token, cookie, locale) => ({
         advancedMenu,
         advancedMenuButton,
         customRoutes,
+        error: null,
+    },
+    displayConfig: {
+        displayDensity,
         error: null,
     },
 });

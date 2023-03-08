@@ -7,6 +7,7 @@ import { fromFormat as localFromFormat } from '../formats/reducer';
 import { fromBreadcrumb as localFromBreadcrumb } from './breadcrumb/reducer';
 import { fromMenu as localFromMenu } from './menu/reducer';
 import { fromSearch as localFromSearch } from './search/reducer';
+import { fromDisplayConfig as localFromDisplayConfig } from './displayConfig/reducer';
 import localFromFacet from './facet/selectors';
 
 const getDatasetState = state => state.dataset;
@@ -46,6 +47,12 @@ const getSearchState = state => state.search;
 export const fromSearch = createGlobalSelectors(
     getSearchState,
     localFromSearch,
+);
+
+const getDisplayConfigState = state => state.displayConfig;
+export const fromDisplayConfig = createGlobalSelectors(
+    getDisplayConfigState,
+    localFromDisplayConfig,
 );
 
 const getFacet = page => state => state[page].facet;
