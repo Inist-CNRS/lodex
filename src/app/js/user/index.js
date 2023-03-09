@@ -485,6 +485,12 @@ export const getMenuRequest = state =>
         url: '/api/menu',
     });
 
+export const getDisplayConfigRequest = state =>
+    getRequest(state, {
+        method: 'GET',
+        url: '/api/displayConfig',
+    });
+
 export const getLoadLoadersRequest = state =>
     getRequest(state, {
         url: '/api/loader',
@@ -588,4 +594,5 @@ export const selectors = {
     getPatchSearchableFieldsRequest,
     getDeleteDatasetRowRequest,
     getExportPDFRequest,
+    getDisplayConfigRequest,
 };

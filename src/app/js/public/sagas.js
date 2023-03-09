@@ -13,6 +13,7 @@ import userSagas from '../user/sagas';
 import searchSagas from './search/sagas';
 import breadcrumbSagas from './breadcrumb/loadBreadcrumbSaga';
 import menuSagas from './menu/loadMenuSaga';
+import displayConfigSagas from './displayConfig/loadDisplayConfigSaga';
 
 export default function*() {
     yield fork(characteristicSaga);
@@ -28,4 +29,5 @@ export default function*() {
     yield fork(searchSagas);
     yield fork(menuSagas);
     yield fork(breadcrumbSagas);
+    yield fork(displayConfigSagas);
 }
