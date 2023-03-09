@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { IconButton, Menu, Button } from '@mui/material';
+import { IconButton, Menu, Button, MenuItem } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import translate from 'redux-polyglot/translate';
@@ -14,6 +14,8 @@ import ExportItem from './export/ExportMenuItem';
 import stylesToClassname from '../lib/stylesToClassName';
 
 import { exportPublishedDataset as exportPublishedDatasetAction } from './export';
+
+import PDFApi from './api/exportPDF';
 
 const styles = stylesToClassname(
     {
@@ -63,6 +65,16 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
         onExport(event);
     };
 
+    const handleExportPDF = async () => {
+        handleClose();
+        try {
+            const response = await PDFApi.exportPDF();
+            window.open(URL.createObjectURL(response));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     const buttonLabel = polyglot.t('export');
     const menuTitle = polyglot.t(uri ? 'export_resource' : 'export_results');
 
@@ -108,6 +120,7 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
                             onClick={handleExport}
                         />
                     ))}
+                    <MenuItem onClick={handleExportPDF}>PDF</MenuItem>
                 </Menu>
             </div>
         </>

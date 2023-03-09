@@ -448,6 +448,16 @@ export const getExportPublishedDatasetRequest = (
         url: `/api/export/${type}?${queryString}`,
     });
 
+// download pdf file
+export const getExportPDFRequest = state =>
+    getRequest(state, {
+        method: 'GET',
+        url: `/api/pdf`,
+        head: {
+            Accept: 'application/pdf',
+        },
+    });
+
 export const getReorderFieldRequest = (state, fields) =>
     getRequest(state, {
         method: 'PUT',
@@ -577,4 +587,5 @@ export const selectors = {
     clearModelRequest,
     getPatchSearchableFieldsRequest,
     getDeleteDatasetRowRequest,
+    getExportPDFRequest,
 };

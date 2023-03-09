@@ -8,6 +8,7 @@ import get from 'lodash.get';
 import ezMasterConfig from '../../services/ezMasterConfig';
 import characteristic from './characteristic';
 import exportPublishedDataset from './export';
+import exportPDFPublishedDataset from './pdf';
 import facet from './facet';
 import fieldRoutes from './field';
 import login from './login';
@@ -68,6 +69,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(mount('/export', exportPublishedDataset));
+app.use(mount('/pdf', exportPDFPublishedDataset));
 app.use(mount('/facet', facet));
 app.use(mount('/run', run));
 app.use(route.get('/publication', publication));
