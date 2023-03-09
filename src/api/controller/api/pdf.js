@@ -40,6 +40,9 @@ function getFontSize(index) {
 async function exportPDF(ctx) {
     try {
         const locale = ctx.request.query.locale;
+        const maxExportPDFSize =
+            parseInt(ctx.request.query.maxExportPDFSize) || 1000;
+
         const fields = await ctx.field
             .find({ overview: { $in: [1, 2, 3, 4] } })
             .toArray();
@@ -51,15 +54,32 @@ async function exportPDF(ctx) {
         }, {});
 
         // return the last version of the dataset and only the fields we need
+
+        // FIlter only on lastVersion not null or empty object
         let publishedDataset = await ctx.publishedDataset
             .aggregate([
-                { $addFields: { lastVersion: { $last: '$versions' } } },
+                {
+                    $addFields: {
+                        lastVersion: { $last: '$versions' },
+                    },
+                },
+
                 {
                     $project: {
                         lastVersion: fieldsNames,
                         _id: 0,
                     },
                 },
+                {
+                    $match: {
+                        lastVersion: {
+                            $ne: null,
+                            // eslint-disable-next-line no-dupe-keys
+                            $ne: {},
+                        },
+                    },
+                },
+                { $limit: maxExportPDFSize },
             ])
             .toArray();
 

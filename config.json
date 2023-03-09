@@ -79,11 +79,7 @@
         "zip",
         "doi-list"
     ],
-    "exporters": [
-        "csv",
-        "tsv",
-        "jsonallvalue"
-    ],
+    "exporters": ["csv", "tsv", "jsonallvalue"],
     "datasetClass": "http://test.fr/datasetClass",
     "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
     "exportDataset": "true",
@@ -170,6 +166,8 @@
                 "fr": "Voir Plus"
             },
             "icon": "faBars"
-        }
+        },
+        "displayExportPDF": false,
+        "maxExportPDFSize": 0
     }
 }

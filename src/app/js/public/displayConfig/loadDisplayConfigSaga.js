@@ -23,7 +23,6 @@ export function* handleLoadDisplayConfig() {
         yield put(loadDisplayConfigError(error.message));
         return;
     }
-
     yield put(loadDisplayConfigSuccess(response));
 }
 

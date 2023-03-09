@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { fromExport } from './selectors';
+import { fromDisplayConfig, fromExport } from './selectors';
 import ExportItem from './export/ExportMenuItem';
 import stylesToClassname from '../lib/stylesToClassName';
 
@@ -37,7 +37,15 @@ const styles = stylesToClassname(
     'export',
 );
 
-const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
+const ExportButton = ({
+    exporters,
+    onExport,
+    uri,
+    p: polyglot,
+    withText,
+    displayExportPDF,
+    maxExportPDFSize,
+}) => {
     if (!exporters || !exporters.length) {
         return null;
     }
@@ -68,7 +76,7 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
     const handleExportPDF = async () => {
         handleClose();
         try {
-            const response = await PDFApi.exportPDF();
+            const response = await PDFApi.exportPDF(maxExportPDFSize);
             window.open(URL.createObjectURL(response));
         } catch (error) {
             console.error(error);
@@ -120,7 +128,9 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
                             onClick={handleExport}
                         />
                     ))}
-                    <MenuItem onClick={handleExportPDF}>PDF</MenuItem>
+                    {displayExportPDF && (
+                        <MenuItem onClick={handleExportPDF}>PDF</MenuItem>
+                    )}
                 </Menu>
             </div>
         </>
@@ -133,6 +143,8 @@ ExportButton.propTypes = {
     uri: PropTypes.string,
     p: polyglotPropTypes.isRequired,
     withText: PropTypes.bool.isRequired,
+    displayExportPDF: PropTypes.bool,
+    maxExportPDFSize: PropTypes.number,
 };
 
 ExportButton.defaultProps = {
@@ -141,6 +153,8 @@ ExportButton.defaultProps = {
 
 const mapStateToProps = state => ({
     exporters: fromExport.getExporters(state),
+    displayExportPDF: fromDisplayConfig.getDisplayExportPDF(state),
+    maxExportPDFSize: fromDisplayConfig.getMaxExportPDFSize(state),
 });
 
 const mapDispatchToProps = dispatch =>
