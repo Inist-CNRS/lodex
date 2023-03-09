@@ -3,35 +3,14 @@ import route from 'koa-route';
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
 
-const day = {
-    0: 'Dimanche',
-    1: 'Lundi',
-    2: 'Mardi',
-    3: 'Mercredi',
-    4: 'Jeudi',
-    5: 'Vendredi',
-    6: 'Samedi',
-};
+import moment from 'moment';
 
-const month = {
-    0: 'Janvier',
-    1: 'Février',
-    2: 'Mars',
-    3: 'Avril',
-    4: 'Mai',
-    5: 'Juin',
-    6: 'Juillet',
-    7: 'Août',
-    8: 'Septembre',
-    9: 'Octobre',
-    10: 'Novembre',
-    11: 'Décembre',
-};
-
-function getDateInFrench(date) {
-    return `Date de téléchargement : Le ${
-        day[date.getDay()]
-    }, ${date.getDate()} ${month[date.getMonth()]}, ${date.getFullYear()}`;
+function getDateFromLocale(locale = 'fr') {
+    moment.locale(locale);
+    if (locale === 'fr') {
+        return `Date de téléchargement : Le ${moment().format('LLL')}`;
+    }
+    return `Download date : ${moment().format('LLL')}`;
 }
 
 function getFont(index) {
@@ -46,9 +25,9 @@ function getFont(index) {
 function getFontSize(index) {
     switch (index) {
         case 0:
-            return 15;
-        case 1:
             return 12;
+        case 1:
+            return 10;
         case 2:
             return 9;
         case 3:
@@ -60,6 +39,7 @@ function getFontSize(index) {
 
 async function exportPDF(ctx) {
     try {
+        const locale = ctx.request.query.locale;
         const fields = await ctx.field
             .find({ overview: { $in: [1, 2, 3, 4] } })
             .toArray();
@@ -97,14 +77,17 @@ async function exportPDF(ctx) {
 
         doc.font('Helvetica-Bold')
             .fontSize(25)
-            .text('Données publiées', { align: 'center' });
+            .text(
+                `${locale === 'fr' ? 'Données publiées' : 'Published dataset'}`,
+                { align: 'center' },
+            );
         doc.moveDown();
 
         // Add date of publication at right
         doc.font('Helvetica')
             .fontSize(12)
             // display date in a french readable format without toLocaleDateString because node imcompatible
-            .text(getDateInFrench(new Date()), { align: 'right' });
+            .text(getDateFromLocale(locale), { align: 'right' });
 
         doc.moveDown();
 
