@@ -12,6 +12,7 @@ import GraphPage from './graph/GraphPage';
 import NavBar from './menu/NavBar';
 import CustomPage from './CustomPage';
 import { loadMenu } from './menu/reducer';
+import { loadDisplayConfig } from './displayConfig/reducer';
 import { fromMenu } from './selectors';
 import scrollToTop from '../lib/scrollToTop';
 import CreateResource from './resource/CreateResource';
@@ -25,6 +26,7 @@ const Routes = props => {
 
     useEffect(() => {
         props.loadMenu();
+        props.loadDisplayConfig();
     }, []);
 
     const { customRoutes, history } = props;
@@ -88,6 +90,7 @@ const Routes = props => {
 Routes.propTypes = {
     customRoutes: PropTypes.arrayOf(PropTypes.string),
     loadMenu: PropTypes.func.isRequired,
+    loadDisplayConfig: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
 };
 
@@ -97,6 +100,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     loadMenu,
+    loadDisplayConfig,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Routes);

@@ -27,6 +27,7 @@ import subresource from './subresource';
 import enrichment from './enrichment';
 import job from './job';
 import dump from './dump';
+import displayConfig from './displayConfig';
 
 const app = new Koa();
 
@@ -35,6 +36,7 @@ app.use(ezMasterConfig);
 app.use(mount('/login', login));
 app.use(route.get('/breadcrumb', breadcrumbs));
 app.use(route.get('/menu', menu));
+app.use(route.get('/displayConfig', displayConfig));
 app.use(mount('/translations', translate));
 
 app.use(
