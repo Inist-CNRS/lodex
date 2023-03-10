@@ -167,7 +167,7 @@
             },
             "icon": "faBars"
         },
-        "displayExportPDF": true,
-        "maxExportPDFSize": 200
+        "displayExportPDF": false,
+        "maxExportPDFSize": 0
     }
 }
