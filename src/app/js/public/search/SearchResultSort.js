@@ -10,6 +10,7 @@ export const getSortableFieldNames = fieldNames =>
         fieldNames.description,
         fieldNames.detail1,
         fieldNames.detail2,
+        fieldNames.detail3,
     ].filter(x => !!x);
 
 export const getSortableFields = (fields, sortedFieldNames) =>
@@ -55,6 +56,7 @@ SearchResultSort.propTypes = {
         description: PropTypes.string,
         detail1: PropTypes.string,
         detail2: PropTypes.string,
+        detail3: PropTypes.string,
     }).isRequired,
     sortBy: PropTypes.string,
     sortDir: PropTypes.oneOf(['ASC', 'DESC']),

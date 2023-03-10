@@ -321,6 +321,11 @@ const getResourceDetail2FieldName = createSelector(
     findFieldWithOverviewID(overview.RESOURCE_DETAIL_2),
 );
 
+const getResourceDetail3FieldName = createSelector(
+    getAllListFields,
+    findFieldWithOverviewID(overview.RESOURCE_DETAIL_3),
+);
+
 const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
     published,
     editedFieldIndex,
@@ -426,6 +431,7 @@ export default {
     getResourceDescriptionFieldName,
     getResourceDetail1FieldName,
     getResourceDetail2FieldName,
+    getResourceDetail3FieldName,
     getPublishData,
     isLoading,
     isSaving,

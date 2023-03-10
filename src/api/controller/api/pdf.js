@@ -4,6 +4,13 @@ import PDFDocument from 'pdfkit';
 import fs from 'fs';
 
 import moment from 'moment';
+import {
+    RESOURCE_DESCRIPTION,
+    RESOURCE_DETAIL_1,
+    RESOURCE_DETAIL_2,
+    RESOURCE_DETAIL_3,
+    RESOURCE_TITLE,
+} from '../../../common/overview';
 
 function getDateFromLocale(locale = 'fr') {
     moment.locale(locale);
@@ -27,10 +34,12 @@ function getFontSize(index) {
         case 0:
             return 12;
         case 1:
-            return 10;
-        case 2:
             return 9;
+        case 2:
+            return 10;
         case 3:
+            return 9;
+        case 4:
             return 9;
         default:
             return 12;
@@ -44,11 +53,33 @@ async function exportPDF(ctx) {
             parseInt(ctx.request.query.maxExportPDFSize) || 1000;
 
         const fields = await ctx.field
-            .find({ overview: { $in: [1, 2, 3, 4] } })
+            .find({
+                overview: {
+                    $in: [
+                        RESOURCE_TITLE,
+                        RESOURCE_DETAIL_3,
+                        RESOURCE_DESCRIPTION,
+                        RESOURCE_DETAIL_1,
+                        RESOURCE_DETAIL_2,
+                    ],
+                },
+            })
             .toArray();
 
+        // sort by overview
+        const sortedFields = fields.sort((a, b) => a.overview - b.overview);
+
+        // place overview with value 6 at the second position
+        const overview6Index = sortedFields.findIndex(
+            field => field.overview === RESOURCE_DETAIL_3,
+        );
+        if (overview6Index !== -1) {
+            const overview6 = sortedFields.splice(overview6Index, 1);
+            sortedFields.splice(1, 0, overview6[0]);
+        }
+
         // return field names to have a result like {name1:1, name2:1}
-        const fieldsNames = fields.reduce((acc, field) => {
+        const fieldsNames = sortedFields.reduce((acc, field) => {
             acc[field.name] = 1;
             return acc;
         }, {});
@@ -110,10 +141,9 @@ async function exportPDF(ctx) {
             .text(getDateFromLocale(locale), { align: 'right' });
 
         doc.moveDown();
-
         // We gonna iterate over the publishedDataset lastVersion. And for each field, we gonna add a line to the pdf
         publishedDataset.forEach((dataset, datasetIndex) => {
-            Object.keys(dataset.lastVersion).forEach((key, index) => {
+            Object.keys(fieldsNames).forEach((key, index) => {
                 const font = getFont(index);
                 const fontSize = getFontSize(index);
                 doc.font(font)
@@ -125,7 +155,7 @@ async function exportPDF(ctx) {
                               }`
                             : dataset.lastVersion[key],
                     );
-                if (index === 1) {
+                if (index === 1 || index === 2) {
                     doc.moveDown();
                 }
             });

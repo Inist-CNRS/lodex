@@ -8,7 +8,6 @@ import {
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { isURL, getResourceUri } from '../../../../common/uris';
-import colorsTheme from '../../../custom/colorsTheme';
 import stylesToClassname from '../../lib/stylesToClassName';
 import customTheme from '../../../custom/customTheme';
 
@@ -85,6 +84,10 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
         field => field.name === fieldNames.detail2,
     );
 
+    const thirdDetailField = fields.find(
+        field => field.name === fieldNames.detail3,
+    );
+
     const shouldDisplayDetails =
         (firstDetailField && result[firstDetailField.name]) ||
         (secondDetailField && result[secondDetailField.name]);
@@ -114,6 +117,24 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                         title={result[titleField.name]}
                     >
                         {result[titleField.name]}
+                    </div>
+                )}
+                {thirdDetailField && result[thirdDetailField.name] && (
+                    <div
+                        className={classnames(
+                            'search-result-detail-third',
+                            styles.details,
+                        )}
+                    >
+                        <div
+                            className={classnames(
+                                'search-result-detail-3',
+                                styles.detailsColumn,
+                            )}
+                            title={result[thirdDetailField.name]}
+                        >
+                            {result[thirdDetailField.name]}
+                        </div>
                     </div>
                 )}
                 {descriptionField && result[descriptionField.name] && (
@@ -171,6 +192,7 @@ SearchResult.propTypes = {
         description: PropTypes.string,
         detail1: PropTypes.string,
         detail2: PropTypes.string,
+        detail3: PropTypes.string,
     }).isRequired,
     result: resourcePropTypes.isRequired,
     closeDrawer: PropTypes.func.isRequired,
