@@ -3,6 +3,7 @@ import {
     RESOURCE_DESCRIPTION,
     RESOURCE_DETAIL_1,
     RESOURCE_DETAIL_2,
+    RESOURCE_DETAIL_3,
     SUBRESOURCE_TITLE,
 } from '../overview';
 
@@ -11,6 +12,7 @@ const overviewValues = [
     RESOURCE_DESCRIPTION,
     RESOURCE_DETAIL_1,
     RESOURCE_DETAIL_2,
+    RESOURCE_DETAIL_3,
     SUBRESOURCE_TITLE,
 ];
 

@@ -38,6 +38,8 @@ const getResourceDetailFirst = fields =>
     fields?.find(f => f.overview === overview.RESOURCE_DETAIL_1) || null;
 const getResourceDetailSecond = fields =>
     fields?.find(f => f.overview === overview.RESOURCE_DETAIL_2) || null;
+const getResourceDetailThird = fields =>
+    fields?.find(f => f.overview === overview.RESOURCE_DETAIL_3) || null;
 
 export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     const fieldsResource = React.useMemo(
@@ -73,6 +75,9 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     const [resourceDetailSecond, setResourceDetailSecond] = React.useState(
         getResourceDetailSecond(fieldsForResourceSyndication),
     );
+    const [resourceDetailThird, setResourceDetailThird] = React.useState(
+        getResourceDetailThird(fieldsForResourceSyndication),
+    );
 
     useEffect(() => {
         loadField();
@@ -90,6 +95,9 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         );
         setResourceDetailSecond(
             getResourceDetailSecond(fieldsForResourceSyndication),
+        );
+        setResourceDetailThird(
+            getResourceDetailThird(fieldsForResourceSyndication),
         );
     }, [fieldsResource]);
 
@@ -137,6 +145,9 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     };
     const handleSResourceDetailSecond = async (event, value) => {
         saveSyndication(value, overview.RESOURCE_DETAIL_2);
+    };
+    const handleSResourceDetailThird = async (event, value) => {
+        saveSyndication(value, overview.RESOURCE_DETAIL_3);
     };
 
     const handleFacetCheckedChange = async value => {
@@ -316,6 +327,16 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 fields={fieldsForResourceSyndication}
                                 onChange={handleSResourceDetailSecond}
                                 value={resourceDetailSecond}
+                                clearText={polyglot.t('clear')}
+                            />
+                            <SearchAutocomplete
+                                testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_3}`}
+                                translation={polyglot.t(
+                                    'resource_detail_third',
+                                )}
+                                fields={fieldsForResourceSyndication}
+                                onChange={handleSResourceDetailThird}
+                                value={resourceDetailThird}
                                 clearText={polyglot.t('clear')}
                             />
                         </Box>

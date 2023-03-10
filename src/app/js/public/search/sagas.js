@@ -68,6 +68,7 @@ const handleSearch = function*() {
         description: yield select(fromFields.getResourceDescriptionFieldName),
         detail1: yield select(fromFields.getResourceDetail1FieldName),
         detail2: yield select(fromFields.getResourceDetail2FieldName),
+        detail3: yield select(fromFields.getResourceDetail3FieldName),
     };
 
     yield put(
