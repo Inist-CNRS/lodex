@@ -89,7 +89,7 @@ const styles = {
     value: dense => ({
         flexGrow: 2,
         width: '100%',
-        padding: dense ? '0.5rem 0.5rem 0 0' : '0.75rem 0.75rem 0.75rem 0',
+        padding: dense ? '0.5rem 0.5rem 0.5rem 0' : '0.75rem 0.75rem 0.75rem 0',
         textAlign: 'justify',
     }),
 };
