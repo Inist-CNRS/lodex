@@ -13,8 +13,7 @@ export const loadDisplayConfigError = createAction(LOAD_DISPLAY_CONFIG_ERROR);
 export const initialState = {
     error: null,
     displayDensity: null,
-    displayExportPDF: null,
-    maxExportPDFSize: null,
+    PDFExportOptions: null,
 };
 
 export default handleActions(
@@ -38,8 +37,8 @@ export default handleActions(
 export const hasDisplayConfig = state => state;
 
 const isDense = state => state.displayDensity === 'dense';
-const getDisplayExportPDF = state => state.displayExportPDF || false;
-const getMaxExportPDFSize = state => state.maxExportPDFSize || 0;
+const getDisplayExportPDF = state => state.PDFExportOptions?.display || false;
+const getMaxExportPDFSize = state => state.PDFExportOptions?.maxSize || 0;
 
 export const fromDisplayConfig = {
     hasDisplayConfig,

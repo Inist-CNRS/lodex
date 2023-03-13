@@ -1,8 +1,7 @@
 import jsonConfig from '../../../../config.json';
 
 export const displayDensity = jsonConfig.front.displayDensity;
-export const displayExportPDF = jsonConfig.front.displayExportPDF;
-export const maxExportPDFSize = jsonConfig.front.maxExportPDFSize;
+export const PDFExportOptions = jsonConfig.front.PDFExportOptions;
 
 export default async ctx => {
     ctx.body = {

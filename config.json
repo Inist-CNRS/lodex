@@ -167,7 +167,19 @@
             },
             "icon": "faBars"
         },
-        "displayExportPDF": false,
-        "maxExportPDFSize": 0
+        "PDFExportOptions": {
+            "display": false,
+            "maxSize": 100,
+            "logo": "",
+            "title": {
+                "en": "Données publiées",
+                "fr": "Published dataset"
+            },
+            "footer": {
+                "en": "Footer",
+                "fr": "Pied de page"
+            },
+            "highlightColor": "#00ade9"
+        }
     }
 }
