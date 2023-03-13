@@ -53,6 +53,22 @@ async function getExportedData(ctx) {
 
     const match = ctx.request.query.match || null;
 
+    // facets looks like  {"MwzR":["Multidisciplinary Sciences","Oncology"],"a2E3":["B"]}
+    const facets = ctx.request.query.facets || null;
+
+    // set facets to look like an array of key value pairs [{key: MwzR, value: "Multidisciplinary Sciences"}, {key: MwzR, value: "Oncology"}, {key:a2E3, value: "B"}]
+    const facetsArray = facets
+        ? Object.keys(JSON.parse(facets)).reduce((acc, key) => {
+              const values = JSON.parse(facets)[key];
+              return acc.concat(
+                  values.map(value => ({
+                      key,
+                      value,
+                  })),
+              );
+          }, [])
+        : null;
+
     const fields = await ctx.field
         .find({
             overview: {
@@ -101,7 +117,36 @@ async function getExportedData(ctx) {
                     lastVersion: { $last: '$versions' },
                 },
             },
-
+            {
+                $match: {
+                    // if facets is not null, filter resuls
+                    ...(facetsArray && facetsArray.length
+                        ? {
+                              // Regroup same key facets in an $or (mongoDB query)
+                              $and: facetsArray
+                                  .reduce((acc, facet) => {
+                                      const index = acc.findIndex(
+                                          item => item.key === facet.key,
+                                      );
+                                      if (index === -1) {
+                                          acc.push({
+                                              key: facet.key,
+                                              value: [facet.value],
+                                          });
+                                      } else {
+                                          acc[index].value.push(facet.value);
+                                      }
+                                      return acc;
+                                  }, [])
+                                  .map(facet => ({
+                                      $or: facet.value.map(value => ({
+                                          [`lastVersion.${facet.key}`]: value,
+                                      })),
+                                  })),
+                          }
+                        : {}),
+                },
+            },
             {
                 $project: {
                     lastVersion: fieldsNames,
@@ -115,7 +160,6 @@ async function getExportedData(ctx) {
                         // eslint-disable-next-line no-dupe-keys
                         $ne: {},
                     },
-
                     // if match is not null, search in searchable fields
                     ...(match
                         ? {
