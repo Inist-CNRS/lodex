@@ -62,6 +62,7 @@ const styles = stylesToClassname(
         },
         menuItemIcon: {
             margin: '0',
+            height: '34px',
         },
     },
     'menu-item',

@@ -50,7 +50,7 @@ export const useDrawer = (
 const styles = stylesToClassname(
     {
         drawer: {
-            zIndex: 1001,
+            zIndex: 1100,
             position: 'fixed',
             top: '100vh',
             left: '0px',
@@ -80,7 +80,7 @@ const styles = stylesToClassname(
             filter: 'brightness(0.98)',
         },
         mask: {
-            zIndex: 1000,
+            zIndex: 1050,
             position: 'fixed',
             bottom: '0px',
             left: '0px',
