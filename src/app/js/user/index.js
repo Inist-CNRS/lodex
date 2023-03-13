@@ -449,10 +449,10 @@ export const getExportPublishedDatasetRequest = (
     });
 
 // download pdf file
-export const getExportPDFRequest = (state, locale, maxExportPDFSize) =>
+export const getExportPDFRequest = (state, options) =>
     getRequest(state, {
         method: 'GET',
-        url: `/api/pdf?locale=${locale}&maxExportPDFSize=${maxExportPDFSize}`,
+        url: `/api/pdf?locale=${options.locale}&maxExportPDFSize=${options.maxExportPDFSize}&match=${options.match}&facets=${options.facets}`,
         head: {
             Accept: 'application/pdf',
         },

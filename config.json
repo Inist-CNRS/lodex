@@ -168,7 +168,7 @@
             "icon": "faBars"
         },
         "PDFExportOptions": {
-            "display": false,
+            "display": true,
             "maxSize": 100,
             "logo": "",
             "title": {

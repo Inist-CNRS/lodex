@@ -51,6 +51,8 @@ async function getExportedData(ctx) {
     const maxExportPDFSize =
         parseInt(ctx.request.query.maxExportPDFSize) || 1000;
 
+    const match = ctx.request.query.match || null;
+
     const fields = await ctx.field
         .find({
             overview: {
@@ -64,6 +66,14 @@ async function getExportedData(ctx) {
             },
         })
         .toArray();
+
+    let searchableFields = [];
+    if (match)
+        searchableFields = await ctx.field
+            .find({
+                searchable: true,
+            })
+            .toArray();
 
     // sort by overview
     const sortedFields = fields.sort((a, b) => a.overview - b.overview);
@@ -82,8 +92,6 @@ async function getExportedData(ctx) {
         acc[field.name] = 1;
         return acc;
     }, {});
-
-    // return the last version of the dataset and only the fields we need
 
     // FIlter only on lastVersion not null or empty object
     let publishedDataset = await ctx.publishedDataset
@@ -107,6 +115,20 @@ async function getExportedData(ctx) {
                         // eslint-disable-next-line no-dupe-keys
                         $ne: {},
                     },
+
+                    // if match is not null, search in searchable fields
+                    ...(match
+                        ? {
+                              $or: [
+                                  ...searchableFields.map(field => ({
+                                      [`lastVersion.${field.name}`]: {
+                                          // should match tot and be case insensitive
+                                          $regex: new RegExp(match, 'i'),
+                                      },
+                                  })),
+                              ],
+                          }
+                        : {}),
                 },
             },
             { $limit: maxExportPDFSize },
