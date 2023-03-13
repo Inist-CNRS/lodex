@@ -10,7 +10,7 @@ import memoize from 'lodash.memoize';
 import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
 
-import { fromResource } from '../selectors';
+import { fromDisplayConfig, fromResource } from '../selectors';
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from '../resource';
 import PropertyContributor from './PropertyContributor';
@@ -86,12 +86,12 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
     },
-    value: {
+    value: dense => ({
         flexGrow: 2,
         width: '100%',
-        padding: '0.75rem 0.75rem 0.75rem 0',
+        padding: dense ? '0.5rem 0.5rem 0 0' : '0.75rem 0.75rem 0.75rem 0',
         textAlign: 'justify',
-    },
+    }),
 };
 
 export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
@@ -117,6 +117,7 @@ export const PropertyComponent = ({
     changeStatus,
     style,
     parents,
+    dense,
 }) => {
     if (!shouldDisplayField(resource, field, fieldStatus, predicate, isAdmin)) {
         return null;
@@ -220,7 +221,7 @@ export const PropertyComponent = ({
                 className={classnames('property_value_container')}
                 style={styles.valueContainer}
             >
-                <div style={styles.value}>{format}</div>
+                <div style={styles.value(dense)}>{format}</div>
                 {field.language && (
                     <span
                         className={classnames(
@@ -254,6 +255,7 @@ PropertyComponent.propTypes = {
     parents: PropTypes.arrayOf(PropTypes.string).isRequired,
     style: PropTypes.object,
     p: polyglotPropTypes.isRequired,
+    dense: PropTypes.bool,
 };
 
 PropertyComponent.defaultProps = {
@@ -267,6 +269,7 @@ const mapStateToProps = (state, { field }) => ({
     isAdmin: fromUser.isAdmin(state),
     fieldStatus: fromResource.getFieldStatus(state, field),
     predicate: getPredicate(field),
+    dense: fromDisplayConfig.isDense(state),
 });
 
 const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>

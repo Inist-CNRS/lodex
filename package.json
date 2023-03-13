@@ -3,7 +3,7 @@
         "node": ">= 12"
     },
     "name": "lodex",
-    "version": "12.47.0",
+    "version": "12.48.0",
     "description": "",
     "main": "src/api/index.js",
     "browser": {
@@ -68,7 +68,7 @@
         "@ezs/conditor": "^2.10.3",
         "@ezs/core": "2.3.1",
         "@ezs/istex": "1.5.6",
-        "@ezs/lodex": "1.16.2",
+        "@ezs/lodex": "1.16.3",
         "@ezs/loterre": "^2.0.1",
         "@ezs/sparql": "^1.2.1",
         "@ezs/storage": "^1.7.0",
@@ -162,6 +162,7 @@
         "n3": "^0.11.3",
         "node-object-hash": "^1.4.2",
         "node-polyglot": "^2.3.1",
+        "pdfkit": "0.13.0",
         "qs": "^6.5.3",
         "react": "^16.14.0",
         "react-ace": "9.5.0",

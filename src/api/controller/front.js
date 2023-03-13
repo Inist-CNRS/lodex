@@ -36,6 +36,11 @@ import {
     customRoutes,
 } from './api/menu';
 import { breadcrumb } from './api/breadcrumb';
+import {
+    displayDensity,
+    displayExportPDF,
+    maxExportPDFSize,
+} from './api/displayConfig';
 import customTheme from '../../app/custom/customTheme';
 
 import { getPublication } from './api/publication';
@@ -80,6 +85,12 @@ const getDefaultInitialState = (token, cookie, locale) => ({
         advancedMenu,
         advancedMenuButton,
         customRoutes,
+        error: null,
+    },
+    displayConfig: {
+        displayDensity,
+        displayExportPDF,
+        maxExportPDFSize,
         error: null,
     },
 });
@@ -203,7 +214,9 @@ export const getRenderingData = async (
 const handleRender = async (ctx, next) => {
     const { url, headers } = ctx.request;
     if (
-        (url.match(/[^\\]*\.(\w+)$/) && !url.match(/[^\\]*\.html$/)) ||
+        (url.match(/[^\\]*\.(\w+)$/) &&
+            !url.match(/[^\\]*\.html$/) &&
+            !url.match(/\/uid:\//)) ||
         url.match('/admin') ||
         url.match('__webpack_hmr')
     ) {
