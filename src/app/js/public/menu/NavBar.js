@@ -23,7 +23,7 @@ config.autoAddCss = false;
 const styles = stylesToClassname(
     {
         menu: {
-            zIndex: 1002,
+            zIndex: 1150,
             position: 'fixed',
             bottom: 0,
             left: 0,
