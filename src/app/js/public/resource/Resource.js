@@ -24,6 +24,7 @@ import stylesToClassname from '../../lib/stylesToClassName';
 import NavButton, { NEXT, PREV } from '../../lib/components/NavButton';
 import isEqual from 'lodash.isequal';
 import get from 'lodash.get';
+import { getResourceUri } from '../../../../common/uris';
 
 const navStyles = stylesToClassname(
     {
@@ -50,7 +51,7 @@ const navStyles = stylesToClassname(
 const buildLocationFromResource = resource =>
     resource
         ? {
-              pathname: `/${resource.uri}`,
+              pathname: getResourceUri(resource),
               state: {},
           }
         : {};
