@@ -19,7 +19,6 @@ const styles = stylesToClassname(
             },
             ':focus': {
                 textDecoration: 'none',
-                color: customTheme.palette.secondary.main,
             },
             ':visited': {
                 textDecoration: 'none',
@@ -32,12 +31,6 @@ const styles = stylesToClassname(
             color: customTheme.palette.secondary.main,
             ':hover': {
                 color: customTheme.palette.secondary.main,
-            },
-        },
-        drawerActive: {
-            color: `${customTheme.palette.info.main} !important`,
-            ':hover': {
-                color: `${customTheme.palette.info.main} !important`,
             },
         },
         menuItem: {
@@ -112,6 +105,17 @@ const MenuItem = ({
                     )}
                     activeClassName={styles.active}
                     onClick={onClick(config.role)}
+                    isActive={match => {
+                        if (
+                            !match ||
+                            graphDrawer === 'open' ||
+                            searchDrawer === 'open' ||
+                            advancedDrawer === 'open'
+                        ) {
+                            return false;
+                        }
+                        return true;
+                    }}
                 >
                     {icon}
                     {label}
@@ -128,7 +132,7 @@ const MenuItem = ({
                             styles.menuItem,
                             styles.link,
                             {
-                                [styles.drawerActive]: graphDrawer === 'open',
+                                [styles.active]: graphDrawer === 'open',
                             },
                         )}
                         isActive={(location, params) =>
@@ -153,7 +157,7 @@ const MenuItem = ({
                             styles.menuItem,
                             styles.link,
                             {
-                                [styles.drawerActive]: searchDrawer === 'open',
+                                [styles.active]: searchDrawer === 'open',
                             },
                         )}
                         isActive={(location, params) =>
@@ -177,7 +181,7 @@ const MenuItem = ({
                         styles.menuItem,
                         styles.link,
                         {
-                            [styles.drawerActive]: advancedDrawer === 'open',
+                            [styles.active]: advancedDrawer === 'open',
                         },
                     )}
                 >
