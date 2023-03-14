@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { fromDisplayConfig, fromExport } from './selectors';
+import { fromDisplayConfig, fromExport, fromSearch } from './selectors';
 import ExportItem from './export/ExportMenuItem';
 import stylesToClassname from '../lib/stylesToClassName';
 
@@ -45,6 +45,8 @@ const ExportButton = ({
     withText,
     displayExportPDF,
     maxExportPDFSize,
+    match,
+    facets,
 }) => {
     if (!exporters || !exporters.length) {
         return null;
@@ -76,7 +78,11 @@ const ExportButton = ({
     const handleExportPDF = async () => {
         handleClose();
         try {
-            const response = await PDFApi.exportPDF(maxExportPDFSize);
+            const response = await PDFApi.exportPDF({
+                maxExportPDFSize,
+                match,
+                facets,
+            });
             window.open(URL.createObjectURL(response));
         } catch (error) {
             console.error(error);
@@ -145,6 +151,8 @@ ExportButton.propTypes = {
     withText: PropTypes.bool.isRequired,
     displayExportPDF: PropTypes.bool,
     maxExportPDFSize: PropTypes.number,
+    match: PropTypes.string,
+    facets: PropTypes.arrayOf(PropTypes.object),
 };
 
 ExportButton.defaultProps = {
@@ -155,6 +163,8 @@ const mapStateToProps = state => ({
     exporters: fromExport.getExporters(state),
     displayExportPDF: fromDisplayConfig.getDisplayExportPDF(state),
     maxExportPDFSize: fromDisplayConfig.getMaxExportPDFSize(state),
+    facets: fromSearch.getAppliedFacets(state),
+    match: fromSearch.getQuery(state),
 });
 
 const mapDispatchToProps = dispatch =>

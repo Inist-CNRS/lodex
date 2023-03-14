@@ -35,11 +35,11 @@ export function* handleExportPublishedDatasetSuccess({
         'blob',
     );
 
-    if (error) {
+    if (error || !response) {
         yield put(exportPublishedDatasetError(error));
+    } else {
+        yield call(downloadFile, response, filename);
     }
-
-    yield call(downloadFile, response, filename);
 }
 
 export default function*() {

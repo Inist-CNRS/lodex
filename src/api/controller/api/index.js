@@ -8,7 +8,7 @@ import get from 'lodash.get';
 import ezMasterConfig from '../../services/ezMasterConfig';
 import characteristic from './characteristic';
 import exportPublishedDataset from './export';
-import exportPDFPublishedDataset from './pdf';
+import exportPDFPublishedDataset from './exportPDF';
 import facet from './facet';
 import fieldRoutes from './field';
 import login from './login';
