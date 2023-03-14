@@ -3,6 +3,8 @@ import route from 'koa-route';
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
 
+import _escapeRegExp from 'lodash.escaperegexp';
+
 import moment from 'moment';
 import {
     RESOURCE_DESCRIPTION,
@@ -12,6 +14,12 @@ import {
     RESOURCE_TITLE,
 } from '../../../common/overview';
 import { PDFExportOptions } from './displayConfig';
+
+const PDF_MARGIN_LEFT = 70;
+const PDF_IMAGE_TOP_POSITION = 50;
+const PDF_IMAGE_WIDTH = 100;
+const PDF_TITLE_TOP_POSITION = 90;
+const PDF_TITLE_WITH_IMAGE_LEFT_POSITION = 180;
 
 function getDateFromLocale(locale = 'fr') {
     moment.locale(locale);
@@ -51,7 +59,7 @@ async function getExportedData(ctx) {
     const maxExportPDFSize =
         parseInt(ctx.request.query.maxExportPDFSize) || 1000;
 
-    const match = ctx.request.query.match || null;
+    const match = _escapeRegExp(ctx.request.query.match) || null;
 
     // facets looks like  {"MwzR":["Multidisciplinary Sciences","Oncology"],"a2E3":["B"]}
     const facets = ctx.request.query.facets || null;
@@ -104,7 +112,7 @@ async function getExportedData(ctx) {
     }
 
     // return field names to have a result like {name1:1, name2:1}
-    const fieldsNames = sortedFields.reduce((acc, field) => {
+    const syndicatedFields = sortedFields.reduce((acc, field) => {
         acc[field.name] = 1;
         return acc;
     }, {});
@@ -149,7 +157,7 @@ async function getExportedData(ctx) {
             },
             {
                 $project: {
-                    lastVersion: fieldsNames,
+                    lastVersion: syndicatedFields,
                     _id: 0,
                 },
             },
@@ -185,25 +193,32 @@ async function getExportedData(ctx) {
             dataset.lastVersion && Object.keys(dataset.lastVersion).length,
     );
 
-    return [publishedDataset, fieldsNames];
+    return [publishedDataset, syndicatedFields];
 }
 
 function renderHeader(doc, locale) {
     if (PDFExportOptions.logo) {
         try {
             // Set logo and title in the same line
-            doc.image(`src/app${PDFExportOptions.logo}`, 70, 50, {
-                width: 100,
-                align: 'left',
-            });
+            doc.image(
+                `src/app/custom/${PDFExportOptions.logo}`,
+                PDF_MARGIN_LEFT,
+                PDF_IMAGE_TOP_POSITION,
+                {
+                    width: PDF_IMAGE_WIDTH,
+                    align: 'left',
+                },
+            );
 
             doc.font('Helvetica-Bold')
                 .fontSize(20)
                 .text(
                     PDFExportOptions.title[locale] ||
                         PDFExportOptions.title['en'],
-                    PDFExportOptions.logo ? 180 : 70,
-                    90,
+                    PDFExportOptions.logo
+                        ? PDF_TITLE_WITH_IMAGE_LEFT_POSITION
+                        : PDF_MARGIN_LEFT,
+                    PDF_TITLE_TOP_POSITION,
                     {
                         align: 'center',
                     },
@@ -216,8 +231,8 @@ function renderHeader(doc, locale) {
                 .text(
                     PDFExportOptions.title[locale] ||
                         PDFExportOptions.title['en'],
-                    70,
-                    90,
+                    PDF_MARGIN_LEFT,
+                    PDF_TITLE_TOP_POSITION,
                     {
                         align: 'center',
                     },
@@ -238,7 +253,7 @@ function renderDate(doc, locale) {
 
     doc.moveDown();
 
-    doc.moveTo(70, doc.y)
+    doc.moveTo(PDF_MARGIN_LEFT, doc.y)
         .lineTo(540, doc.y)
         .lineWidth(2)
         .fillOpacity(0.8)
@@ -249,10 +264,10 @@ function renderDate(doc, locale) {
     doc.moveDown();
 }
 
-function renderData(doc, publishedDataset, fieldsNames) {
+function renderData(doc, publishedDataset, syndicatedFields) {
     // We gonna iterate over the publishedDataset lastVersion. And for each field, we gonna add a line to the pdf
     publishedDataset.forEach((dataset, datasetIndex) => {
-        Object.keys(fieldsNames).forEach((key, index) => {
+        Object.keys(syndicatedFields).forEach((key, index) => {
             const font = getFont(index);
             const fontSize = getFontSize(index);
             doc.font(font)
@@ -262,7 +277,7 @@ function renderData(doc, publishedDataset, fieldsNames) {
                     index === 0
                         ? `${datasetIndex + 1} - ${dataset.lastVersion[key]}`
                         : dataset.lastVersion[key],
-                    70,
+                    PDF_MARGIN_LEFT,
                 );
             if (index === 1 || index === 2) {
                 doc.moveDown();
@@ -288,7 +303,7 @@ function renderFooter(doc, locale) {
                 locale === 'fr'
                     ? PDFExportOptions?.footer['fr']
                     : PDFExportOptions?.footer['en'],
-                70,
+                PDF_MARGIN_LEFT,
                 doc.page.height - 40,
 
                 {
@@ -303,7 +318,7 @@ function renderFooter(doc, locale) {
 async function exportPDF(ctx) {
     try {
         const locale = ctx.request.query.locale;
-        const [publishedDataset, fieldsNames] = await getExportedData(ctx);
+        const [publishedDataset, syndicatedFields] = await getExportedData(ctx);
 
         // Create a document
         const doc = new PDFDocument({ bufferPages: true });
@@ -313,7 +328,7 @@ async function exportPDF(ctx) {
 
         renderHeader(doc, locale);
         renderDate(doc, locale);
-        renderData(doc, publishedDataset, fieldsNames);
+        renderData(doc, publishedDataset, syndicatedFields);
         renderFooter(doc, locale);
         // Finalize PDF file
         doc.end();
