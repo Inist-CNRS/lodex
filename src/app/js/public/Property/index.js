@@ -38,7 +38,7 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import { IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import { Settings } from '@mui/icons-material';
 
 const styles = {
@@ -46,7 +46,11 @@ const styles = {
         (style, width) => ({
             display: 'flex',
             flexDirection: 'column',
-            width: `${width || 100}%`,
+            width: {
+                xs: '100%',
+                sm: width === '50' ? '100%' : `${width || 100}%`,
+                md: `${width || 100}%`,
+            },
             ...style,
         }),
         (style, value) => ({ style, value }),
@@ -59,13 +63,12 @@ const styles = {
         textDecoration: status === REJECTED ? 'line-through' : 'none',
         fontFamily: 'Quicksand, sans-serif',
     }),
-    language: memoize(hide => ({
+    language: {
         marginRight: '1rem',
         fontSize: '0.6rem',
         color: 'grey',
         textTransform: 'uppercase',
-        visibility: hide ? 'hidden' : 'visible',
-    })),
+    },
     scheme: {
         fontWeight: 'normale',
         fontSize: '0.75rem',
@@ -86,7 +89,7 @@ const styles = {
     value: dense => ({
         flexGrow: 2,
         width: '100%',
-        padding: dense ? '0.5rem 0.5rem 0 0' : '0.75rem 0.75rem 0.75rem 0',
+        padding: dense ? '0.5rem 0.5rem 0.5rem 0' : '0.75rem 0.75rem 0.75rem 0',
         textAlign: 'justify',
     }),
 };
@@ -168,14 +171,14 @@ export const PropertyComponent = ({
             <div>{formatChildren}</div>
         );
     return (
-        <div
+        <Box
             className={classnames(
                 'property',
                 fieldClassName,
                 className,
                 `format_${formatName}`,
             )}
-            style={styles.container(style, field.width)}
+            sx={styles.container(style, field.width)}
         >
             <div className={classnames('property_label_container')}>
                 <div style={styles.labelContainer}>
@@ -219,19 +222,24 @@ export const PropertyComponent = ({
                 style={styles.valueContainer}
             >
                 <div style={styles.value(dense)}>{format}</div>
-                <span
-                    className={classnames('property_language', fieldClassName)}
-                    style={styles.language(!field.language)}
-                >
-                    {field.language || 'XX'}
-                </span>
+                {field.language && (
+                    <span
+                        className={classnames(
+                            'property_language',
+                            fieldClassName,
+                        )}
+                        style={styles.language}
+                    >
+                        {field.language}
+                    </span>
+                )}
             </div>
             <ModerateButton
                 fieldName={field.name}
                 status={fieldStatus}
                 changeStatus={changeStatus}
             />
-        </div>
+        </Box>
     );
 };
 
