@@ -7,6 +7,7 @@ import _escapeRegExp from 'lodash.escaperegexp';
 
 import moment from 'moment';
 import {
+    DATASET_TITLE,
     RESOURCE_DESCRIPTION,
     RESOURCE_DETAIL_1,
     RESOURCE_DETAIL_2,
@@ -196,7 +197,34 @@ async function getExportedData(ctx) {
     return [publishedDataset, syndicatedFields];
 }
 
-function renderHeader(doc, locale) {
+async function getPDFTitle(ctx, locale) {
+    let configTitle =
+        PDFExportOptions?.title?.[locale] || PDFExportOptions?.title?.['en'];
+
+    if (configTitle) {
+        return configTitle;
+    }
+
+    // get pubished data field who is dataset_title
+    const datasetTitleField = await ctx.field
+        .find({
+            overview: DATASET_TITLE,
+        })
+        .toArray();
+
+    // FIlter only on lastVersion not null or empty object
+    let publishedCharacteristic = await ctx.publishedCharacteristic.findLastVersion();
+    let publishedDatasetTitle =
+        publishedCharacteristic[datasetTitleField[0]?.name];
+
+    if (publishedDatasetTitle) {
+        return publishedDatasetTitle;
+    }
+
+    return locale === 'fr' ? 'Données publiées' : 'Published data';
+}
+
+async function renderHeader(doc, PDFTitle) {
     if (PDFExportOptions.logo) {
         try {
             // Set logo and title in the same line
@@ -209,12 +237,10 @@ function renderHeader(doc, locale) {
                     align: 'left',
                 },
             );
-
             doc.font('Helvetica-Bold')
                 .fontSize(20)
                 .text(
-                    PDFExportOptions.title[locale] ||
-                        PDFExportOptions.title['en'],
+                    PDFTitle,
                     PDFExportOptions.logo
                         ? PDF_TITLE_WITH_IMAGE_LEFT_POSITION
                         : PDF_MARGIN_LEFT,
@@ -228,16 +254,16 @@ function renderHeader(doc, locale) {
 
             doc.font('Helvetica-Bold')
                 .fontSize(20)
-                .text(
-                    PDFExportOptions.title[locale] ||
-                        PDFExportOptions.title['en'],
-                    PDF_MARGIN_LEFT,
-                    PDF_TITLE_TOP_POSITION,
-                    {
-                        align: 'center',
-                    },
-                );
+                .text(PDFTitle, PDF_MARGIN_LEFT, PDF_TITLE_TOP_POSITION, {
+                    align: 'center',
+                });
         }
+    } else {
+        doc.font('Helvetica-Bold')
+            .fontSize(20)
+            .text(PDFTitle, PDF_MARGIN_LEFT, PDF_TITLE_TOP_POSITION, {
+                align: 'center',
+            });
     }
 
     doc.moveDown();
@@ -319,6 +345,7 @@ async function exportPDF(ctx) {
     try {
         const locale = ctx.request.query.locale;
         const [publishedDataset, syndicatedFields] = await getExportedData(ctx);
+        const PDFTitle = await getPDFTitle(ctx, locale);
 
         // Create a document
         const doc = new PDFDocument({ bufferPages: true });
@@ -326,7 +353,7 @@ async function exportPDF(ctx) {
         // Pipe its output somewhere, like to a file or HTTP response
         doc.pipe(fs.createWriteStream('/tmp/publication.pdf'));
 
-        renderHeader(doc, locale);
+        await renderHeader(doc, PDFTitle);
         renderDate(doc, locale);
         renderData(doc, publishedDataset, syndicatedFields);
         renderFooter(doc, locale);
