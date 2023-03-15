@@ -30,7 +30,7 @@ export const DeleteSubresourceButtonComponent = ({
                         {polyglot.t('Cancel')}
                     </CancelButton>
                     <Button
-                        color="secondary"
+                        color="warning"
                         variant="contained"
                         onClick={onClick}
                     >
