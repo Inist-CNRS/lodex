@@ -32,7 +32,7 @@ describe('Search', () => {
             searchDrawer.checkResultsCount(10);
             cy.get('.export').click();
             cy.wait(300);
-            cy.get('li[role="menuitem"]')
+            cy.get('.export-menuList  li[role="menuitem"]')
                 .should('have.length', 3)
                 .contains('CSV')
                 .should('be.visible');

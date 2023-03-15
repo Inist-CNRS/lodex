@@ -75,7 +75,7 @@ const SearchBar = ({
                     endAdornment: (
                         <IconButton
                             className="searchbar-clear"
-                            tooltip={polyglot.t('clear')}
+                            title={polyglot.t('clear')}
                             onClick={onClear}
                         >
                             <Icon>

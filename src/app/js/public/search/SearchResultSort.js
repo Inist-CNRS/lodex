@@ -28,7 +28,7 @@ const styles = stylesToClassname(
             margin: '0px',
         },
     },
-    'export',
+    'sort',
 );
 
 export const getSortableFieldNames = fieldNames =>
@@ -86,7 +86,7 @@ const SearchResultSort = ({
             <Button
                 variant="text"
                 onClick={handleOpen}
-                className="export"
+                className="sort-button"
                 startIcon={<SortIcon />}
                 endIcon={<ArrowDropDownIcon />}
             >
@@ -106,7 +106,9 @@ const SearchResultSort = ({
                     open={popover.open}
                     onClose={handleClose}
                 >
-                    <h3 className={styles.menuTitle}>Trier les resulats</h3>
+                    <h3 className={styles.menuTitle}>
+                        {polyglot.t('sort_search_title')}
+                    </h3>
                     {sortableFields.map(field => (
                         <MenuItem
                             key={field.name}
