@@ -14,15 +14,19 @@ export default {
         },
         info: {
             main: colorsTheme.purple.primary,
+            contrastText: colorsTheme.white.primary,
         },
         warning: {
             main: colorsTheme.orange.primary,
+            contrastText: colorsTheme.white.primary,
         },
         danger: {
             main: colorsTheme.red.primary,
+            contrastText: colorsTheme.white.primary,
         },
         success: {
             main: colorsTheme.green.primary,
+            contrastText: colorsTheme.white.primary,
         },
         neutral: {
             main: colorsTheme.gray.primary,

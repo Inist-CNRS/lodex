@@ -495,7 +495,7 @@ export const EnrichmentForm = ({
                     {isEditMode && (
                         <Button
                             variant="contained"
-                            color="secondary"
+                            color="warning"
                             sx={{ height: '100%' }}
                             onClick={handleDeleteEnrichment}
                             disabled={

@@ -223,7 +223,7 @@ export const ParsingResultComponent = props => {
                             aria-label="delete row"
                             onClick={e => handleDeleteRow(e, params.row)}
                         >
-                            <Delete color="secondary" />
+                            <Delete color="warning" />
                         </IconButton>
                     </Tooltip>
                 );

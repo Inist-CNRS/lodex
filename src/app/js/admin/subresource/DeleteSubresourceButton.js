@@ -15,7 +15,7 @@ export const DeleteSubresourceButtonComponent = ({
     <>
         <Button
             variant="contained"
-            color="secondary"
+            color="warning"
             onClick={() => setShowDeletePopup(true)}
         >
             {polyglot.t('delete')}

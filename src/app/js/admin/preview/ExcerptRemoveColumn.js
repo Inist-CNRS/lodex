@@ -26,7 +26,7 @@ export const ExcerptRemoveColumnComponent = ({
                     { name },
                 )}`}
                 onClick={removeColumn}
-                color="secondary"
+                color="warning"
             >
                 {polyglot.t('remove_from_publication')}
             </Button>

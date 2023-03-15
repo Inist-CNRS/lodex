@@ -115,7 +115,7 @@ const TransformerListItem = ({
                     aria-label={`transformer-delete-${id}`}
                     sx={{
                         cursor: 'pointer',
-                        color: 'secondary.main',
+                        color: 'warning.main',
                     }}
                     onClick={() => {
                         onRemove();
