@@ -38,6 +38,7 @@ const styles = stylesToClassname(
         header: {
             display: 'flex',
             flexDirection: 'column',
+            marginBottom: '15px',
         },
         advanced: {
             display: 'flex',

@@ -17,6 +17,7 @@ export default {
         },
         warning: {
             main: colorsTheme.orange.primary,
+            contrastText: colorsTheme.white.primary,
         },
         danger: {
             main: colorsTheme.red.primary,
