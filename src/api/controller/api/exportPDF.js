@@ -224,7 +224,7 @@ async function getPDFTitle(ctx, locale) {
     return locale === 'fr' ? 'Données publiées' : 'Published data';
 }
 
-async function renderHeader(doc, PDFTitle) {
+function renderHeader(doc, PDFTitle) {
     if (PDFExportOptions.logo) {
         try {
             // Set logo and title in the same line
@@ -241,9 +241,7 @@ async function renderHeader(doc, PDFTitle) {
                 .fontSize(20)
                 .text(
                     PDFTitle,
-                    PDFExportOptions.logo
-                        ? PDF_TITLE_WITH_IMAGE_LEFT_POSITION
-                        : PDF_MARGIN_LEFT,
+                    PDF_TITLE_WITH_IMAGE_LEFT_POSITION,
                     PDF_TITLE_TOP_POSITION,
                     {
                         align: 'center',
@@ -353,7 +351,7 @@ async function exportPDF(ctx) {
         // Pipe its output somewhere, like to a file or HTTP response
         doc.pipe(fs.createWriteStream('/tmp/publication.pdf'));
 
-        await renderHeader(doc, PDFTitle);
+        renderHeader(doc, PDFTitle);
         renderDate(doc, locale);
         renderData(doc, publishedDataset, syndicatedFields);
         renderFooter(doc, locale);
