@@ -8,30 +8,10 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import { fromSearch } from '../selectors';
 import { search as searchAction } from './reducer';
-import ExportButton from '../ExportButton';
-import stylesToClassname from '../../lib/stylesToClassName';
 import SearchBar from '../../lib/components/searchbar/SearchBar';
-import ToggleFacetsButton from '../../lib/components/searchbar/ToggleFacetsButton';
 import useSearchBar from '../../lib/components/searchbar/useSearchBar';
 
-const styles = stylesToClassname(
-    {
-        toggleFacetsButton: {
-            '@media (min-width: 992px)': {
-                display: 'none !important',
-            },
-        },
-    },
-    'search-searchbar',
-);
-
-const SearchSearchBar = ({
-    defaultQuery,
-    search,
-    hasSearchableFields,
-    onToggleFacets,
-    withFacets,
-}) => {
+const SearchSearchBar = ({ defaultQuery, search, hasSearchableFields }) => {
     if (!hasSearchableFields) {
         return null;
     }
@@ -47,17 +27,7 @@ const SearchSearchBar = ({
             value={localQuery}
             onChange={e => handleSearch(e.target.value)}
             onClear={handleClearSearch}
-            actions={
-                <>
-                    {withFacets && (
-                        <ToggleFacetsButton
-                            onChange={onToggleFacets}
-                            className={styles.toggleFacetsButton}
-                        />
-                    )}
-                    <ExportButton />
-                </>
-            }
+            maxWidth={865}
         />
     );
 };
@@ -71,8 +41,6 @@ SearchSearchBar.propTypes = {
     hasSearchableFields: PropTypes.bool.isRequired,
     search: PropTypes.func.isRequired,
     defaultQuery: PropTypes.string,
-    withFacets: PropTypes.bool.isRequired,
-    onToggleFacets: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

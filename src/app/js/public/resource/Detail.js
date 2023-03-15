@@ -169,7 +169,7 @@ export const DetailComponent = ({
                             <ExportButton
                                 style={{ float: 'right' }}
                                 uri={resource.uri}
-                                withText
+                                isResourceExport
                             />
                         )}
                     </CardActions>
