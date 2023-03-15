@@ -48,6 +48,8 @@ const styles = stylesToClassname(
             display: 'flex',
             flex: '0 0 auto',
             flexDirection: 'column',
+            maxWidth: '400px',
+            justifyContent: 'center',
         },
         content: {
             '@media (min-width: 992px)': {

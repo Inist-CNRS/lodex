@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { IconButton, Menu, Button, MenuItem } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { Menu, Button, MenuItem } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import DownloadIcon from '@mui/icons-material/Download';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import compose from 'recompose/compose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -22,7 +22,6 @@ const styles = stylesToClassname(
         menuContainer: {
             display: 'flex',
             flexDirection: 'column',
-            marginTop: '16px',
             zIndex: 1003, // on top of Navbar (with zIndex 1002)
         },
         menuTitle: {
@@ -42,7 +41,7 @@ const ExportButton = ({
     onExport,
     uri,
     p: polyglot,
-    withText,
+    isResourceExport,
     displayExportPDF,
     maxExportPDFSize,
     match,
@@ -94,28 +93,15 @@ const ExportButton = ({
 
     return (
         <>
-            {withText ? (
-                <Button
-                    variant="text"
-                    color="primary"
-                    onClick={handleOpen}
-                    startIcon={
-                        <FontAwesomeIcon icon={faExternalLinkAlt} height={20} />
-                    }
-                    className="export"
-                >
-                    {buttonLabel}
-                </Button>
-            ) : (
-                <IconButton
-                    tooltip={buttonLabel}
-                    onClick={handleOpen}
-                    className="export"
-                    color="primary"
-                >
-                    <FontAwesomeIcon icon={faExternalLinkAlt} height={20} />
-                </IconButton>
-            )}
+            <Button
+                variant="text"
+                onClick={handleOpen}
+                className="export"
+                startIcon={<DownloadIcon />}
+                endIcon={<ArrowDropDownIcon />}
+            >
+                {buttonLabel}
+            </Button>
             <div className={styles.menuContainer}>
                 <Menu
                     className={styles.menuList}
@@ -134,7 +120,7 @@ const ExportButton = ({
                             onClick={handleExport}
                         />
                     ))}
-                    {displayExportPDF && (
+                    {displayExportPDF && !isResourceExport && (
                         <MenuItem onClick={handleExportPDF}>PDF</MenuItem>
                     )}
                 </Menu>
@@ -148,7 +134,7 @@ ExportButton.propTypes = {
     onExport: PropTypes.func.isRequired,
     uri: PropTypes.string,
     p: polyglotPropTypes.isRequired,
-    withText: PropTypes.bool.isRequired,
+    isResourceExport: PropTypes.bool.isRequired,
     displayExportPDF: PropTypes.bool,
     maxExportPDFSize: PropTypes.number,
     match: PropTypes.string,
@@ -156,7 +142,7 @@ ExportButton.propTypes = {
 };
 
 ExportButton.defaultProps = {
-    withText: false,
+    isResourceExport: false,
 };
 
 const mapStateToProps = state => ({

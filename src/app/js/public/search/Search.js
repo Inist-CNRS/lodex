@@ -27,7 +27,8 @@ import FacetList from '../facet/FacetList';
 import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
 import SearchSearchBar from './SearchSearchBar';
-import SearchStats from './SearchStats';
+import customTheme from '../../../custom/customTheme';
+import SearchResultHeader from './SearchResultHeader';
 
 const styles = stylesToClassname(
     {
@@ -37,9 +38,6 @@ const styles = stylesToClassname(
         header: {
             display: 'flex',
             flexDirection: 'column',
-            '@media (min-width: 992px)': {
-                padding: '1rem',
-            },
         },
         advanced: {
             display: 'flex',
@@ -47,6 +45,7 @@ const styles = stylesToClassname(
             flexDirection: 'column',
         },
         content: {
+            backgroundColor: customTheme.palette.neutralDark.veryLight,
             '@media (min-width: 992px)': {
                 display: 'flex',
             },
@@ -207,13 +206,7 @@ class Search extends Component {
         return (
             <div className={classnames(className, styles.container)}>
                 <div className={styles.header}>
-                    <SearchSearchBar
-                        withFacets={withFacets}
-                        onToggleFacets={this.handleToggleFacets}
-                    />
-                    <div className={styles.advanced}>
-                        {(everythingIsOk || noResults) && <SearchStats />}
-                    </div>
+                    <SearchSearchBar />
                 </div>
                 {withFacets && <AppliedFacetList />}
                 <div className={styles.content}>
@@ -233,12 +226,19 @@ class Search extends Component {
                         {noResults && this.renderNoResults()}
                         {(everythingIsOk || loading) && (
                             <>
-                                <SearchResultSort
-                                    fields={fields}
-                                    fieldNames={fieldNames}
-                                    sort={this.handleSort}
-                                    sortBy={sortBy}
-                                    sortDir={sortDir}
+                                <SearchResultHeader
+                                    displayStats={everythingIsOk || noResults}
+                                    withFacets={withFacets}
+                                    onToggleFacets={this.handleToggleFacets}
+                                    sortComponent={
+                                        <SearchResultSort
+                                            fields={fields}
+                                            fieldNames={fieldNames}
+                                            sort={this.handleSort}
+                                            sortBy={sortBy}
+                                            sortDir={sortDir}
+                                        />
+                                    }
                                 />
                                 <SearchResultList
                                     results={results}

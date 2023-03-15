@@ -10,6 +10,7 @@ export default {
         },
         secondary: {
             main: colorsTheme.orange.primary,
+            contrastText: colorsTheme.white.primary,
         },
         info: {
             main: colorsTheme.purple.primary,

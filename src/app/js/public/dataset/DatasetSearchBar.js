@@ -12,6 +12,7 @@ import stylesToClassname from '../../lib/stylesToClassName';
 import SearchBar from '../../lib/components/searchbar/SearchBar';
 import ToggleFacetsButton from '../../lib/components/searchbar/ToggleFacetsButton';
 import useSearchBar from '../../lib/components/searchbar/useSearchBar';
+import { Box } from '@mui/material';
 
 const styles = stylesToClassname(
     {
@@ -40,18 +41,20 @@ const DatasetSearchBar = ({
     );
 
     return (
-        <SearchBar
-            className="dataset-searchbar"
-            value={localQuery}
-            onChange={e => handleSearch(e.target.value)}
-            onClear={handleClearSearch}
-            actions={
-                <ToggleFacetsButton
-                    onChange={onToggleFacets}
-                    className={styles.toggleFacetsButton}
+        <Box display="flex">
+            <Box flexGrow={1}>
+                <SearchBar
+                    className="dataset-searchbar"
+                    value={localQuery}
+                    onChange={e => handleSearch(e.target.value)}
+                    onClear={handleClearSearch}
                 />
-            }
-        />
+            </Box>
+            <ToggleFacetsButton
+                onChange={onToggleFacets}
+                className={styles.toggleFacetsButton}
+            />
+        </Box>
     );
 };
 
