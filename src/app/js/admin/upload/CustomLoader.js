@@ -84,7 +84,7 @@ const CustomLoader = ({
             <DialogActions style={{ justifyContent: 'space-between' }}>
                 <Button
                     onClick={handleDelete}
-                    color="secondary"
+                    color="warning"
                     variant="contained"
                 >
                     {polyglot.t('remove')}
