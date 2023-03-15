@@ -86,12 +86,7 @@ class FlowMap {
             this.model.marks.forEach(e => {
                 if (e.name === 'cell') {
                     e.encode.enter.tooltip = {
-                        signal:
-                            "{'" +
-                            this.tooltip.category.title +
-                            "': datum.name, '" +
-                            this.tooltip.value.title +
-                            "': datum.link_data.count}",
+                        signal: `{"${this.tooltip.category.title}": datum.name, "${this.tooltip.value.title}": datum.link_data.count}`,
                     };
                 }
             });
