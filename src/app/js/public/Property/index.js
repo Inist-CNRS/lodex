@@ -89,7 +89,10 @@ const styles = {
     value: dense => ({
         flexGrow: 2,
         width: '100%',
-        padding: dense ? '0.5rem 0.5rem 0.5rem 0' : '0.75rem 0.75rem 0.75rem 0',
+        padding: {
+            xs: dense ? '0' : '0.75rem 0.75rem 0.75rem 0',
+            sm: dense ? '0.5rem 0.5rem 0.5rem 0' : '0.75rem 0.75rem 0.75rem 0',
+        },
         textAlign: 'justify',
     }),
 };
@@ -221,7 +224,7 @@ export const PropertyComponent = ({
                 className={classnames('property_value_container')}
                 style={styles.valueContainer}
             >
-                <div style={styles.value(dense)}>{format}</div>
+                <Box sx={styles.value(dense)}>{format}</Box>
                 {field.language && (
                     <span
                         className={classnames(
