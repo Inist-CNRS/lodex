@@ -76,12 +76,7 @@ class RadarChart {
                     e1.marks.forEach(e2 => {
                         if (e2.type === 'text') {
                             e2.encode.enter.tooltip = {
-                                signal:
-                                    "{'" +
-                                    this.tooltip.category.title +
-                                    "': datum.datum._id, '" +
-                                    this.tooltip.value.title +
-                                    "': datum.datum.value}",
+                                signal: `{"${this.tooltip.category.title}": datum.datum._id, "${this.tooltip.value.title}": datum.datum.value}`,
                             };
                         }
                     });
