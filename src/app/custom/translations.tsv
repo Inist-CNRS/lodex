@@ -919,5 +919,5 @@
 "transformers_is_modified"	"Transformers are modified, remember to save them"	"Les opérations de transformations sont modifiées, pensez à les sauvegarder"	
 "sort_search"	"Sort"	"Trier"
 "sort_search_by_field"	"Sort by %{field}"	"Trier par %{field}"
-"sort_search_title"	"Sort results"	"Trier les resulats"	
+"sort_search_title"	"Sort results"	"Trier les résultats"	
 "no_sort_search"	"Remove sorting"	"Supprimer le tri"	
