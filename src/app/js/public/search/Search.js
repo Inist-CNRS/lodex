@@ -207,7 +207,10 @@ class Search extends Component {
         return (
             <div className={classnames(className, styles.container)}>
                 <div className={styles.header}>
-                    <SearchSearchBar />
+                    <SearchSearchBar
+                        withFacets={withFacets}
+                        onToggleFacets={this.handleToggleFacets}
+                    />
                 </div>
                 {withFacets && <AppliedFacetList />}
                 <div className={styles.content}>
@@ -229,8 +232,6 @@ class Search extends Component {
                             <>
                                 <SearchResultHeader
                                     displayStats={everythingIsOk || noResults}
-                                    withFacets={withFacets}
-                                    onToggleFacets={this.handleToggleFacets}
                                     sortComponent={
                                         <SearchResultSort
                                             fields={fields}

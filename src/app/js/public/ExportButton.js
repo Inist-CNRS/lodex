@@ -82,7 +82,17 @@ const ExportButton = ({
                 match,
                 facets,
             });
-            window.open(URL.createObjectURL(response));
+
+            // Detect if the user is on a mobile device and redirect to the PDF
+            if (
+                /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                    navigator.userAgent,
+                )
+            ) {
+                window.location.replace(URL.createObjectURL(response));
+            } else {
+                window.open(URL.createObjectURL(response));
+            }
         } catch (error) {
             console.error(error);
         }
