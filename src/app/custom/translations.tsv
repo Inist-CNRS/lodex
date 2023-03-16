@@ -920,3 +920,4 @@
 "sort_search"	"Sort"	"Trier"
 "sort_search_by_field"	"Sort by %{field}"	"Trier par %{field}"
 "sort_search_title"	"Sort results"	"Trier les resulats"	
+"no_sort_search"	"Remove sorting"	"Supprimer le tri"	
