@@ -63,6 +63,9 @@ const SearchResultSort = ({
 
     const handleSort = name => {
         sort({ sortBy: name });
+        setPopover({
+            open: false,
+        });
     };
 
     const handleOpen = event => {
@@ -102,6 +105,11 @@ const SearchResultSort = ({
                 <Menu
                     className={styles.menuList}
                     anchorEl={popover.anchorEl}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
                     keepMounted
                     open={popover.open}
                     onClose={handleClose}
@@ -126,6 +134,16 @@ const SearchResultSort = ({
                             )}
                         </MenuItem>
                     ))}
+                    {sortBy && (
+                        <MenuItem
+                            onClick={() => handleSort('')}
+                            sx={{
+                                color: 'warning.main',
+                            }}
+                        >
+                            {polyglot.t('no_sort_search')}
+                        </MenuItem>
+                    )}
                 </Menu>
             </div>
         </>
