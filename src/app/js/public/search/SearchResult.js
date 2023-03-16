@@ -35,14 +35,18 @@ const styles = stylesToClassname(
             position: 'relative',
         },
         link: {
-            color: 'black',
+            color: 'black !important',
             ':hover': {
+                textDecoration: 'none !important',
+                color: 'inherit',
+            },
+            ':focus': {
                 textDecoration: 'none !important',
                 color: 'inherit',
             },
         },
         activeLink: {
-            color: customTheme.palette.secondary.main,
+            color: `${customTheme.palette.secondary.main} !important`,
         },
         row: {
             flex: '0 0 auto',

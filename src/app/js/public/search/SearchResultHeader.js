@@ -3,26 +3,8 @@ import React from 'react';
 import SearchStats from './SearchStats';
 import PropTypes from 'prop-types';
 import ExportButton from '../ExportButton';
-import stylesToClassName from '../../lib/stylesToClassName';
-import ToggleFacetsButton from '../../lib/components/searchbar/ToggleFacetsButton';
 
-const styles = stylesToClassName(
-    {
-        toggleFacetsButton: {
-            '@media (min-width: 992px)': {
-                display: 'none !important',
-            },
-        },
-    },
-    'search-searchbar',
-);
-
-const SearchResultHeader = ({
-    displayStats,
-    withFacets,
-    onToggleFacets,
-    sortComponent,
-}) => {
+const SearchResultHeader = ({ displayStats, sortComponent }) => {
     return (
         <Box
             display="flex"
@@ -38,18 +20,26 @@ const SearchResultHeader = ({
             {displayStats && <SearchStats />}
             <Box
                 display="flex"
-                alignItems="center"
-                justifyContent="space-between"
                 gap={2}
+                sx={{
+                    gap: {
+                        xs: 0,
+                        md: 2,
+                    },
+                    flexDirection: {
+                        xs: 'column',
+                        md: 'row',
+                    },
+                    justifyContent: {
+                        xs: 'flex-start',
+                        md: 'space-between',
+                    },
+                    alignItems: {
+                        xs: 'flex-start',
+                        md: 'center',
+                    },
+                }}
             >
-                {withFacets && (
-                    <Box>
-                        <ToggleFacetsButton
-                            onChange={onToggleFacets}
-                            className={styles.toggleFacetsButton}
-                        />
-                    </Box>
-                )}
                 <Box>{sortComponent}</Box>
                 <Box>
                     <ExportButton />
@@ -61,8 +51,6 @@ const SearchResultHeader = ({
 
 SearchResultHeader.propTypes = {
     displayStats: PropTypes.bool,
-    withFacets: PropTypes.bool,
-    onToggleFacets: PropTypes.func,
     sortComponent: PropTypes.node,
 };
 

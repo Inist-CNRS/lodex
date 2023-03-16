@@ -57,7 +57,7 @@ const styles = stylesToClassname(
             width: '100vw',
             height: '100vh',
             marginBottom: '100px',
-            padding: '15px',
+            padding: '15px 0 15px 0',
             overflowY: 'auto',
             backgroundColor: 'white',
             transition: `top 300ms ease-in-out`,
