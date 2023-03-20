@@ -44,6 +44,39 @@ export const getFieldForSpecificScope = (
     return fields;
 };
 
+export const getFieldToAnnotateForSpecificScope = (
+    fields,
+    scope,
+    subresourceId = undefined,
+) => {
+    if (scope === SCOPE_DATASET) {
+        return fields.filter(field => field.scope === SCOPE_DATASET);
+    }
+    if (scope === SCOPE_GRAPHIC) {
+        return fields.filter(field => field.scope === SCOPE_GRAPHIC);
+    }
+
+    if (scope === SCOPE_COLLECTION || scope === SCOPE_DOCUMENT) {
+        if (subresourceId === undefined) {
+            return fields.filter(
+                field =>
+                    (field.scope === SCOPE_COLLECTION ||
+                        field.scope === SCOPE_DOCUMENT) &&
+                    field.subresourceId === undefined,
+            );
+        }
+
+        return fields.filter(
+            field =>
+                (field.scope === SCOPE_COLLECTION ||
+                    field.scope === SCOPE_DOCUMENT) &&
+                field.subresourceId === subresourceId,
+        );
+    }
+
+    return fields;
+};
+
 export const SCOPES = [
     SCOPE_DATASET,
     SCOPE_GRAPHIC,
