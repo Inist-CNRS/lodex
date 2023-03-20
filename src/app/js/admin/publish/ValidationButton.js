@@ -59,8 +59,24 @@ const ValidationButtonComponent = ({
                     variant="contained"
                     onClick={handleShowErrorsClick}
                     className={'validation-button'}
+                    sx={{
+                        '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            width: '10px',
+                            height: '10px',
+                            background: ({ palette }) => palette.contrast.main,
+                            zIndex: -1,
+                            marginTop: '5px',
+                        },
+                    }}
                 >
-                    <WarningIcon sx={{ fontSize: '30px' }} />
+                    {/* Set a warningIcon with an after block white */}
+                    <WarningIcon
+                        sx={{
+                            fontSize: '30px',
+                        }}
+                    />
                 </IconButton>
             </Tooltip>
             <Popover
