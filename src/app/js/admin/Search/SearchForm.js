@@ -106,12 +106,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     const handleSearchInFieldsChange = async (event, value) => {
         setSearchInFields(value);
         const res = await fieldApi.patchSearchableFields(value);
-        if (res) {
-            toast(polyglot.t('searchable_success'), {
-                type: toast.TYPE.SUCCESS,
-                autoClose: 2000,
-            });
-        } else {
+        if (!res) {
             toast(polyglot.t('searchable_error'), {
                 type: toast.TYPE.ERROR,
             });
@@ -123,11 +118,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
             _id: value?._id,
             overview,
         });
-        if (res) {
-            toast(polyglot.t('syndication_success'), {
-                type: toast.TYPE.SUCCESS,
-            });
-        } else {
+        if (!res) {
             toast(polyglot.t('syndication_error'), {
                 type: toast.TYPE.ERROR,
             });
@@ -170,12 +161,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
             _id,
             isFacet: currentIndex === -1,
         });
-        if (res) {
-            toast(polyglot.t('facet_success'), {
-                type: toast.TYPE.SUCCESS,
-                autoClose: 2000,
-            });
-        } else {
+        if (!res) {
             toast(polyglot.t('facet_error'), {
                 type: toast.TYPE.ERROR,
             });
