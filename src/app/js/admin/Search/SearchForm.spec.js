@@ -10,6 +10,12 @@ jest.mock('../../admin/api/field', () => ({
     patchOverview: jest.fn(),
 }));
 
+// eslint-disable-next-line react/display-name, react/prop-types
+jest.mock('../../fields/FieldRepresentation', () => () => (
+    // eslint-disable-next-line react/prop-types
+    <div>FieldRepresentation</div>
+));
+
 describe('handleSearchInFieldsChange', () => {
     it('should call fieldApi.patchSearchableFields with correct parameters', async () => {
         const fields = [
@@ -25,6 +31,7 @@ describe('handleSearchInFieldsChange', () => {
         const polyglot = { t: jest.fn().mockReturnValue('searchable_success') };
 
         fieldApi.patchSearchableFields.mockResolvedValue(true);
+        
 
         const { getByTestId } = render(
             <SearchForm loadField={jest.fn()} fields={fields} p={polyglot} />,
