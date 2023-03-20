@@ -2,8 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Tooltip, Typography } from '@mui/material';
 import FieldInternalIcon from './FieldInternalIcon';
+import translate from 'redux-polyglot/translate';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 
-export default function FieldRepresentation({ field, shortMode = false }) {
+function FieldRepresentation({ field, shortMode = false, p: polyglot }) {
+    if (!field) {
+        return (
+            <Typography
+                noWrap
+                marginRight={1}
+                variant="body2"
+                sx={{ color: 'neutralDark.light' }}
+            >
+                {polyglot.t('field_not_found')}
+            </Typography>
+        );
+    }
     return (
         <Box display="flex" flexDirection="column">
             <Box display="flex" flexDirection="row" maxWidth="300px">
@@ -59,4 +73,7 @@ export default function FieldRepresentation({ field, shortMode = false }) {
 FieldRepresentation.propTypes = {
     field: PropTypes.isRequired,
     shortMode: PropTypes.bool,
+    p: polyglotPropTypes.isRequired,
 };
+
+export default translate(FieldRepresentation);

@@ -921,3 +921,4 @@
 "sort_search_by_field"	"Sort by %{field}"	"Trier par %{field}"
 "sort_search_title"	"Sort results"	"Trier les résultats"	
 "no_sort_search"	"Remove sorting"	"Supprimer le tri"	
+"field_not_found"	"Field not found"	"Champ non trouvé"
