@@ -48,7 +48,6 @@ export const TabGeneralComponent = ({
                 component={TransformerList}
                 props={{
                     isSubresourceField: !!subresourceUri,
-                    currentEditedField,
                 }}
             />
         </>
