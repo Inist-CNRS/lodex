@@ -5,12 +5,12 @@ import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
-import { grey } from '@material-ui/core/colors';
+import { grey } from '@mui/material/colors';
 import memoize from 'lodash.memoize';
 import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
 
-import { fromResource } from '../selectors';
+import { fromDisplayConfig, fromResource } from '../selectors';
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from '../resource';
 import PropertyContributor from './PropertyContributor';
@@ -38,7 +38,7 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import { IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import { Settings } from '@mui/icons-material';
 
 const styles = {
@@ -46,7 +46,11 @@ const styles = {
         (style, width) => ({
             display: 'flex',
             flexDirection: 'column',
-            width: `${width || 100}%`,
+            width: {
+                xs: '100%',
+                sm: width === '50' ? '100%' : `${width || 100}%`,
+                md: `${width || 100}%`,
+            },
             ...style,
         }),
         (style, value) => ({ style, value }),
@@ -59,13 +63,12 @@ const styles = {
         textDecoration: status === REJECTED ? 'line-through' : 'none',
         fontFamily: 'Quicksand, sans-serif',
     }),
-    language: memoize(hide => ({
+    language: {
         marginRight: '1rem',
         fontSize: '0.6rem',
         color: 'grey',
         textTransform: 'uppercase',
-        visibility: hide ? 'hidden' : 'visible',
-    })),
+    },
     scheme: {
         fontWeight: 'normale',
         fontSize: '0.75rem',
@@ -83,12 +86,15 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
     },
-    value: {
+    value: dense => ({
         flexGrow: 2,
         width: '100%',
-        padding: '0.75rem 0.75rem 0.75rem 0',
+        padding: {
+            xs: dense ? '0' : '0.75rem 0.75rem 0.75rem 0',
+            sm: dense ? '0.5rem 0.5rem 0.5rem 0' : '0.75rem 0.75rem 0.75rem 0',
+        },
         textAlign: 'justify',
-    },
+    }),
 };
 
 export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
@@ -114,6 +120,7 @@ export const PropertyComponent = ({
     changeStatus,
     style,
     parents,
+    dense,
 }) => {
     if (!shouldDisplayField(resource, field, fieldStatus, predicate, isAdmin)) {
         return null;
@@ -167,14 +174,14 @@ export const PropertyComponent = ({
             <div>{formatChildren}</div>
         );
     return (
-        <div
+        <Box
             className={classnames(
                 'property',
                 fieldClassName,
                 className,
                 `format_${formatName}`,
             )}
-            style={styles.container(style, field.width)}
+            sx={styles.container(style, field.width)}
         >
             <div className={classnames('property_label_container')}>
                 <div style={styles.labelContainer}>
@@ -217,20 +224,25 @@ export const PropertyComponent = ({
                 className={classnames('property_value_container')}
                 style={styles.valueContainer}
             >
-                <div style={styles.value}>{format}</div>
-                <span
-                    className={classnames('property_language', fieldClassName)}
-                    style={styles.language(!field.language)}
-                >
-                    {field.language || 'XX'}
-                </span>
+                <Box sx={styles.value(dense)}>{format}</Box>
+                {field.language && (
+                    <span
+                        className={classnames(
+                            'property_language',
+                            fieldClassName,
+                        )}
+                        style={styles.language}
+                    >
+                        {field.language}
+                    </span>
+                )}
             </div>
             <ModerateButton
                 fieldName={field.name}
                 status={fieldStatus}
                 changeStatus={changeStatus}
             />
-        </div>
+        </Box>
     );
 };
 
@@ -246,6 +258,7 @@ PropertyComponent.propTypes = {
     parents: PropTypes.arrayOf(PropTypes.string).isRequired,
     style: PropTypes.object,
     p: polyglotPropTypes.isRequired,
+    dense: PropTypes.bool,
 };
 
 PropertyComponent.defaultProps = {
@@ -259,6 +272,7 @@ const mapStateToProps = (state, { field }) => ({
     isAdmin: fromUser.isAdmin(state),
     fieldStatus: fromResource.getFieldStatus(state, field),
     predicate: getPredicate(field),
+    dense: fromDisplayConfig.isDense(state),
 });
 
 const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>

@@ -3,10 +3,9 @@ import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import ReactJson from 'react-json-view';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { makeStyles } from '@material-ui/styles';
-import { Save as SaveIcon } from '@material-ui/icons';
+import { Save as SaveIcon } from '@mui/icons-material';
 import datasetApi from '../api/dataset';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {
     Box,
     Button,
@@ -15,8 +14,8 @@ import {
     Input,
     Menu,
     MenuItem,
-} from '@material-ui/core';
-import colorsTheme from '../../../custom/colorsTheme';
+    useTheme,
+} from '@mui/material';
 import { toast } from '../../../../common/tools/toast';
 import CancelButton from '../../lib/components/CancelButton';
 
@@ -30,19 +29,12 @@ const style = {
         minHeight: '100px',
     },
     containedButton: {
-        marginTop: 15,
+        marginTop: '15px',
     },
     icon: {
-        marginRight: 10,
-    },
-    menuPaper: {
-        backgroundColor: colorsTheme.green.primary,
-        '& .MuiMenuItem-root': {
-            color: 'white',
-        },
+        marginRight: '10px',
     },
 };
-const useStyles = makeStyles(style);
 
 export const returnParsedValue = value => {
     try {
@@ -135,8 +127,8 @@ const isError = value => {
 };
 
 const ButtonEditCellWithDropdown = ({ polyglot, loading, handleChange }) => {
+    const theme = useTheme();
     const [isOpen, setOpen] = React.useState(false);
-    const classes = useStyles();
     const anchorRef = React.useRef(null);
 
     const types = ['number', 'string', 'boolean', 'array', 'object'];
@@ -145,7 +137,7 @@ const ButtonEditCellWithDropdown = ({ polyglot, loading, handleChange }) => {
             <ButtonGroup
                 variant="contained"
                 ref={anchorRef}
-                className={classes.containedButton}
+                sx={style.containedButton}
             >
                 <Button
                     variant="contained"
@@ -155,11 +147,11 @@ const ButtonEditCellWithDropdown = ({ polyglot, loading, handleChange }) => {
                     {loading ? (
                         <CircularProgress
                             size={20}
-                            className={classes.icon}
-                            color="white"
+                            sx={style.icon}
+                            color="contrast"
                         />
                     ) : (
-                        <SaveIcon className={classes.icon} />
+                        <SaveIcon sx={style.icon} />
                     )}
                     {polyglot.t('save')}
                 </Button>
@@ -179,7 +171,14 @@ const ButtonEditCellWithDropdown = ({ polyglot, loading, handleChange }) => {
                 anchorEl={anchorRef.current}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-                classes={{ paper: classes.menuPaper }}
+                sx={{
+                    '& .MuiMenu-paper': {
+                        backgroundColor: theme.palette.primary.main,
+                        '& .MuiMenuItem-root': {
+                            color: theme.palette.contrast.main,
+                        },
+                    },
+                }}
             >
                 {types.map(type => (
                     <MenuItem
@@ -206,10 +205,9 @@ ButtonEditCellWithDropdown.propTypes = {
 };
 
 const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
+    const theme = useTheme();
     const [loading, setLoading] = React.useState(false);
     const [value, setValue] = React.useState(cell.value);
-
-    const classes = useStyles();
 
     const handleChange = async type => {
         setLoading(true);
@@ -246,7 +244,7 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                 <h2
                     style={{
                         textAlign: 'center',
-                        color: '#f44336',
+                        color: theme.palette.danger.main,
                         fontWeight: 'initial',
                     }}
                 >
@@ -255,7 +253,7 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                         row_name: cell?.row?.uri || cell?.row?.ark,
                     })}
                 </h2>
-                <div className={classes.container}>{cell.value}</div>
+                <Box sx={style.container}>{cell.value}</Box>
             </div>
         );
     }
@@ -264,11 +262,11 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
         <div>
             <h2 style={{ textAlign: 'center' }}>
                 {polyglot.t('column')}{' '}
-                <span style={{ color: colorsTheme.green.primary }}>
+                <span style={{ color: theme.palette.primary.main }}>
                     {cell.field}
                 </span>{' '}
                 {polyglot.t('for_row')}{' '}
-                <span style={{ color: colorsTheme.orange.primary }}>
+                <span style={{ color: theme.palette.secondary.main }}>
                     {cell?.row?.uri || cell?.row?.ark}
                 </span>
             </h2>

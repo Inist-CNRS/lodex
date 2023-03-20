@@ -7,7 +7,7 @@ import {
     Bookmark,
     RecordVoiceOver,
     TrendingUp,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { milestones } from 'inist-roadmap';
 import { field as fieldPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';

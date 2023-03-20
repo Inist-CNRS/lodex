@@ -15,17 +15,14 @@ import {
     GridToolbarDensitySelector,
 } from '@mui/x-data-grid';
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import classnames from 'classnames';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromEnrichments, fromParsing, fromPublication } from '../selectors';
 import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
-import colorsTheme from '../../../custom/colorsTheme';
-import { makeStyles } from '@material-ui/styles';
 import {
     Box,
     Chip,
@@ -33,8 +30,6 @@ import {
     Drawer,
     IconButton,
     Tooltip,
-} from '@material-ui/core';
-import {
     Button,
     Table,
     TableBody,
@@ -58,11 +53,8 @@ const styles = {
         display: 'flex',
         height: 'calc(100vh - 90px)',
     },
-    header: {
-        backgroundColor: colorsTheme.black.veryLight,
-    },
     enrichedColumn: {
-        backgroundColor: colorsTheme.green.light,
+        backgroundColor: 'primary.light',
     },
     footer: {
         overflow: 'hidden',
@@ -79,7 +71,7 @@ const styles = {
     footerItem: {
         paddingLeft: '1rem',
         paddingRight: '1rem',
-        backgroundColor: colorsTheme.black.veryLight,
+        backgroundColor: 'neutralDark.veryLight',
         lineHeight: '30px',
         height: '100%',
         alignItems: 'center',
@@ -95,15 +87,13 @@ const styles = {
         width: '45%',
     },
     errorChip: {
-        backgroundColor: colorsTheme.red.primary,
-        color: colorsTheme.white.primary,
+        backgroundColor: 'danger.main',
+        color: 'contrast.main',
     },
     errorHeader: {
-        color: colorsTheme.orange.primary,
+        color: 'warning.main',
     },
 };
-
-const useStyles = makeStyles(styles);
 
 const getFiltersOperatorsForType = type => {
     switch (type) {
@@ -131,7 +121,6 @@ export const ParsingResultComponent = props => {
         isPublished,
     } = props;
 
-    const classes = useStyles();
     const [showEnrichmentColumns, setShowEnrichmentColumns] = useState(true);
     const [showMainColumns, setShowMainColumns] = useState(true);
 
@@ -184,8 +173,8 @@ export const ParsingResultComponent = props => {
                               errorCount,
                           })
                         : key,
-                    headerClassName: errorCount && classes.errorHeader,
-                    cellClassName: isEnrichment && classes.enrichedColumn,
+                    headerClassName: errorCount && 'error-header',
+                    cellClassName: isEnrichment && 'enriched-column',
                     width: 150,
                     filterable: type !== 'object',
                     sortable: type !== 'object',
@@ -196,7 +185,6 @@ export const ParsingResultComponent = props => {
                             return (
                                 <CircularProgress
                                     variant="indeterminate"
-                                    style={styles.progress}
                                     size={20}
                                 />
                             );
@@ -211,12 +199,7 @@ export const ParsingResultComponent = props => {
                             (params.value.startsWith('[Error]') ||
                                 params.value.startsWith('ERROR'))
                         ) {
-                            return (
-                                <Chip
-                                    className={classes.errorChip}
-                                    label="Error"
-                                />
-                            );
+                            return <Chip sx={styles.errorChip} label="Error" />;
                         }
                         return (
                             <div title={JSON.stringify(params.value)}>
@@ -240,7 +223,7 @@ export const ParsingResultComponent = props => {
                             aria-label="delete row"
                             onClick={e => handleDeleteRow(e, params.row)}
                         >
-                            <Delete color="secondary" />
+                            <Delete color="warning" />
                         </IconButton>
                     </Tooltip>
                 );
@@ -348,22 +331,22 @@ export const ParsingResultComponent = props => {
 
     const CustomFooter = () => {
         return (
-            <div className={classes.footer}>
-                <div className={classes.columnToggle}>
+            <Box sx={styles.footer}>
+                <Box sx={styles.columnToggle}>
                     <Box
-                        className={classnames(
-                            classes.footerItem,
-                            classes.toggle,
-                        )}
+                        sx={{
+                            ...styles.footerItem,
+                            ...styles.toggle,
+                        }}
                         onClick={() => {
                             setShowMainColumns(!showMainColumns);
                         }}
                     >
-                        <div className={classes.footerItemText}>
+                        <Box sx={styles.footerItemText}>
                             {polyglot.t('parsing_summary_columns', {
                                 smart_count: numberOfColumns(COLUMN_TYPE.MAIN),
                             })}
-                        </div>
+                        </Box>
                         <Tooltip title={polyglot.t(`toggle_loaded`)}>
                             {showMainColumns ? (
                                 <VisibilityIcon />
@@ -374,22 +357,22 @@ export const ParsingResultComponent = props => {
                     </Box>
 
                     <Box
-                        className={classnames(
-                            classes.enrichedColumn,
-                            classes.footerItem,
-                            classes.toggle,
-                        )}
+                        sx={{
+                            ...styles.enrichedColumn,
+                            ...styles.footerItem,
+                            ...styles.toggle,
+                        }}
                         onClick={() => {
                             setShowEnrichmentColumns(!showEnrichmentColumns);
                         }}
                     >
-                        <div className={classes.footerItemText}>
+                        <Box sx={styles.footerItemText}>
                             {polyglot.t('parsing_enriched_columns', {
                                 smart_count: numberOfColumns(
                                     COLUMN_TYPE.ENRICHMENT,
                                 ),
                             })}
-                        </div>
+                        </Box>
                         <Tooltip title={polyglot.t(`toggle_enriched`)}>
                             {showEnrichmentColumns ? (
                                 <VisibilityIcon />
@@ -398,7 +381,7 @@ export const ParsingResultComponent = props => {
                             )}
                         </Tooltip>
                     </Box>
-                </div>
+                </Box>
                 <Box display="flex">
                     <Tooltip title={polyglot.t(`refresh_button`)}>
                         <IconButton onClick={() => fetchDataset()}>
@@ -429,7 +412,7 @@ export const ParsingResultComponent = props => {
                         </Table>
                     </TableContainer>
                 </Box>
-            </div>
+            </Box>
         );
     };
 
@@ -463,7 +446,7 @@ export const ParsingResultComponent = props => {
     };
 
     return (
-        <div className={classes.container}>
+        <Box sx={styles.container}>
             <DataGrid
                 columns={columnsToShow}
                 rows={rows}
@@ -511,23 +494,25 @@ export const ParsingResultComponent = props => {
                         visibility: 'hidden',
                         opacity: 0,
                         transform: 'translateX(-100%)',
+                        backgroundColor: 'contrast.main',
                     },
                     [`& .MuiDataGrid-row:hover > .MuiDataGrid-cell[data-field="delete-row"]`]: {
                         visibility: 'visible',
-                        backgroundColor: 'white',
                         transition: 'all 0.3s ease-in-out',
                         opacity: 1,
                         transform: 'translateX(0)',
                     },
+                    ['& .error-header']: styles.errorHeader,
+                    ['& .enriched-column']: styles.enrichedColumn,
                 }}
             />
             <Drawer
                 anchor="right"
                 open={toggleDrawer}
                 onClose={() => setToggleDrawer(false)}
-                className={classes.drawer}
-                classes={{
-                    paper: classes.drawer,
+                sx={{
+                    ...styles.drawer,
+                    '& .MuiDrawer-paper': styles.drawer,
                 }}
             >
                 {selectedCell ? (
@@ -544,7 +529,7 @@ export const ParsingResultComponent = props => {
                 reloadDataset={() => fetchDataset()}
                 shouldRepublish={isPublished}
             />
-        </div>
+        </Box>
     );
 };
 

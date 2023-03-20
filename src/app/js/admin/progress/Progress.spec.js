@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Dialog, LinearProgress } from '@material-ui/core';
+import { Dialog, LinearProgress } from '@mui/material';
 
 import { ProgressComponent as Progress } from './Progress';
 import { PENDING, STARTING } from '../../../../common/progressStatus';

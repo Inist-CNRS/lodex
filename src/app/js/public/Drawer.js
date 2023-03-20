@@ -50,14 +50,14 @@ export const useDrawer = (
 const styles = stylesToClassname(
     {
         drawer: {
-            zIndex: 1001,
+            zIndex: 1100,
             position: 'fixed',
             top: '100vh',
             left: '0px',
             width: '100vw',
             height: '100vh',
             marginBottom: '100px',
-            padding: '15px',
+            padding: '15px 0 15px 0',
             overflowY: 'auto',
             backgroundColor: 'white',
             transition: `top 300ms ease-in-out`,
@@ -80,7 +80,7 @@ const styles = stylesToClassname(
             filter: 'brightness(0.98)',
         },
         mask: {
-            zIndex: 1000,
+            zIndex: 1050,
             position: 'fixed',
             bottom: '0px',
             left: '0px',

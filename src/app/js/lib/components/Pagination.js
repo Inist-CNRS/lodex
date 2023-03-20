@@ -5,9 +5,9 @@ Could not use it from npm at the time as it has not been compiled correctly
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { IconButton, MenuItem, Select, TextField } from '@material-ui/core';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
+import { IconButton, MenuItem, Select, TextField } from '@mui/material';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
 
 const styles = {
     container: {
@@ -168,7 +168,8 @@ class Pagination extends Component {
                         <Select
                             onChange={this.handleChangePageFromSelect}
                             value={currentPage}
-                            style={styles.input}
+                            sx={styles.input}
+                            variant="standard"
                         >
                             {pages.map(page => (
                                 <MenuItem value={page} key={`page-${page}`}>
@@ -181,9 +182,10 @@ class Pagination extends Component {
                         <TextField
                             name="page"
                             onChange={this.handleChangePageFromText}
-                            style={styles.input}
+                            sx={styles.input}
                             value={pageToDisplay}
                             type="number"
+                            variant="standard"
                         />
                     )}
                 </div>
@@ -192,7 +194,8 @@ class Pagination extends Component {
                     <Select
                         onChange={this.handleChangePerPage}
                         value={perPage}
-                        style={styles.input}
+                        sx={styles.input}
+                        variant="standard"
                     >
                         <MenuItem value={10}>10</MenuItem>
                         <MenuItem value={20}>20</MenuItem>

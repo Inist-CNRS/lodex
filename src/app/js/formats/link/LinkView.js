@@ -15,7 +15,12 @@ const LinkView = ({ className, resource, field, fields, type, value }) => {
             <ul>
                 {links.map((link, index) => (
                     <li key={index}>
-                        <Link className={className} href={`${link}`}>
+                        <Link
+                            className={className}
+                            href={`${link}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             {link}
                         </Link>
                     </li>
@@ -27,7 +32,12 @@ const LinkView = ({ className, resource, field, fields, type, value }) => {
     const link = resource[field.name];
 
     return (
-        <Link className={className} href={`${link}`}>
+        <Link
+            className={className}
+            href={`${link}`}
+            target="_blank"
+            rel="noopener noreferrer"
+        >
             {label}
         </Link>
     );

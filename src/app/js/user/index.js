@@ -448,6 +448,16 @@ export const getExportPublishedDatasetRequest = (
         url: `/api/export/${type}?${queryString}`,
     });
 
+// download pdf file
+export const getExportPDFRequest = (state, options) =>
+    getRequest(state, {
+        method: 'GET',
+        url: `/api/pdf?locale=${options.locale}&maxExportPDFSize=${options.maxExportPDFSize}&match=${options.match}&facets=${options.facets}`,
+        head: {
+            Accept: 'application/pdf',
+        },
+    });
+
 export const getReorderFieldRequest = (state, fields) =>
     getRequest(state, {
         method: 'PUT',
@@ -473,6 +483,12 @@ export const getMenuRequest = state =>
     getRequest(state, {
         method: 'GET',
         url: '/api/menu',
+    });
+
+export const getDisplayConfigRequest = state =>
+    getRequest(state, {
+        method: 'GET',
+        url: '/api/displayConfig',
     });
 
 export const getLoadLoadersRequest = state =>
@@ -577,4 +593,6 @@ export const selectors = {
     clearModelRequest,
     getPatchSearchableFieldsRequest,
     getDeleteDatasetRowRequest,
+    getExportPDFRequest,
+    getDisplayConfigRequest,
 };

@@ -10,10 +10,10 @@ import {
     Edit as EditIcon,
     ListAlt as ListAltIcon,
 } from '@mui/icons-material';
-import colorsTheme from '../../custom/colorsTheme';
 import translate from 'redux-polyglot/translate';
 import FormatCatalogDialog from './FormatCatalog';
 import FormatEditionDialog from './FormatEditionDialog';
+import customTheme from '../../custom/customTheme';
 
 const FormatEdition = ({ p: polyglot, ...props }) => {
     const { input } = props;
@@ -64,9 +64,11 @@ const FormatEdition = ({ p: polyglot, ...props }) => {
                         flexGrow: 1,
                         padding: 1,
                         borderRadius: 1,
-                        backgroundColor: colorsTheme.black.veryLight,
+                        backgroundColor:
+                            customTheme.palette.neutralDark.veryLight,
                         '&:hover': {
-                            backgroundColor: colorsTheme.black.lighter,
+                            backgroundColor:
+                                customTheme.palette.neutralDark.lighter,
                         },
                     }}
                 >
@@ -87,7 +89,7 @@ const FormatEdition = ({ p: polyglot, ...props }) => {
                                 aria-label={`format-delete`}
                                 sx={{
                                     cursor: 'pointer',
-                                    color: colorsTheme.orange.primary,
+                                    color: 'warning.main',
                                 }}
                                 onClick={() => {
                                     onRemove();

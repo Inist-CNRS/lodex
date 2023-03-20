@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { TextField, Checkbox, FormControlLabel } from '@material-ui/core';
+import { TextField, Checkbox, FormControlLabel } from '@mui/material';
 
 import {
     facetValue as facetValuePropType,
@@ -103,6 +103,7 @@ export const FacetValueList = ({
                     currentPage,
                     perPage,
                 )}
+                variant="standard"
             />
             <div>
                 <div style={styles.listHeader}>

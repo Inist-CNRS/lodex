@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { withRouter } from 'react-router';
-import { DropzoneAreaBase } from 'material-ui-dropzone';
+import { DropzoneAreaBase } from 'mui-file-dropzone';
 import Alert from '../../lib/components/Alert';
 import {
     Box,
@@ -13,20 +13,18 @@ import {
     Grid,
     CircularProgress,
     Typography,
-} from '@material-ui/core';
-import PublishIcon from '@material-ui/icons/Publish';
-import { makeStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
+} from '@mui/material';
+import PublishIcon from '@mui/icons-material/Publish';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
 import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
-import colorsTheme from '../../../custom/colorsTheme';
 import PopupConfirmUpload from './PopupConfirmUpload';
 import { toast } from '../../../../common/tools/toast';
+import customTheme from '../../../custom/customTheme';
 
-const useStyles = makeStyles({
+const styles = {
     button: {
         marginLeft: 4,
         marginRight: 4,
@@ -56,8 +54,8 @@ const useStyles = makeStyles({
     },
     loader: {
         minHeight: '220px',
-        backgroundColor: colorsTheme.white.primary,
-        color: colorsTheme.green.primary,
+        backgroundColor: customTheme.palette.contrast.main,
+        color: customTheme.palette.primary.secondary,
     },
     divider: {
         textTransform: 'uppercase',
@@ -69,7 +67,7 @@ const useStyles = makeStyles({
             width: '100%',
             height: '2px',
             content: '""',
-            backgroundColor: colorsTheme.green.primary,
+            backgroundColor: customTheme.palette.primary.secondary,
             position: 'absolute',
             top: '50%',
             left: 0,
@@ -92,7 +90,7 @@ const useStyles = makeStyles({
     },
     dividerLabel: {
         padding: '1rem',
-        backgroundColor: colorsTheme.white.primary,
+        backgroundColor: customTheme.palette.contrast.main,
         position: 'relative',
         display: 'inline-block',
         '@media (min-width: 992px)': {
@@ -114,7 +112,7 @@ const useStyles = makeStyles({
             maxWidth: '100%',
         },
     },
-});
+};
 
 export const UploadComponent = ({
     history,
@@ -131,7 +129,6 @@ export const UploadComponent = ({
     loaders,
     isFirstFile,
 }) => {
-    const classes = useStyles();
     const [files, setFiles] = useState([]);
     const [dropping, setDropping] = useState(false);
     const [useUrlForUpload, setUseUrlForUpload] = useState(false);
@@ -196,7 +193,7 @@ export const UploadComponent = ({
     }, [files, url, isUrlValid]);
 
     return (
-        <Box className={classes.container}>
+        <Box sx={styles.container}>
             {error ? (
                 <Alert>
                     <p>Error uploading given file: </p>
@@ -205,7 +202,14 @@ export const UploadComponent = ({
             ) : (
                 <span />
             )}
-            <Box className={classes.form}>
+            <Box
+                sx={{
+                    ...styles.form,
+                    '& .dropzone': styles.dropzone,
+                    '& .disabledDropzone': styles.disabledDropzone,
+                    '& .dropzonePreview': styles.dropzonePreview,
+                }}
+            >
                 {dropping ? (
                     <DroppingLoader text={polyglot.t('inspect_file')} />
                 ) : (
@@ -221,15 +225,13 @@ export const UploadComponent = ({
                         dropzoneProps={{
                             disabled: !!url,
                         }}
-                        dropzoneClass={classnames(
-                            classes.dropzone,
-                            !!url && classes.disabledDropzone,
-                        )}
+                        dropzoneClass={`dropzone ${!!url &&
+                            'disabledDropzone'}`}
                         showAlerts={['error']}
                         showPreviewsInDropzone
                         showFileNamesInPreview
                         previewGridClasses={{
-                            container: classes.dropzonePreview,
+                            container: 'dropzonePreview',
                         }}
                         useChipsForPreview
                         alertSnackbarProps={{
@@ -244,14 +246,14 @@ export const UploadComponent = ({
                         onDelete={() => setFiles([])}
                     />
                 )}
-                <Box className={classes.divider}>
-                    <Typography variant="h6" className={classes.dividerLabel}>
+                <Box sx={styles.divider}>
+                    <Typography variant="h6" sx={styles.dividerLabel}>
                         {polyglot.t('or')}
                     </Typography>
                 </Box>
                 <TextField
                     fullWidth
-                    className={classes.input}
+                    sx={styles.input}
                     value={url}
                     onChange={onChangeUrl}
                     placeholder="URL"
@@ -259,6 +261,7 @@ export const UploadComponent = ({
                     helperText={url && !isUrlValid && polyglot.t('invalid_url')}
                     disabled={!!files.length}
                     label={polyglot.t('use_url')}
+                    variant="standard"
                 />
             </Box>
 
@@ -271,7 +274,8 @@ export const UploadComponent = ({
             <Button
                 variant="contained"
                 color="primary"
-                className={classnames(classes.button, 'btn-upload-dataset')}
+                className="btn-upload-dataset"
+                sx={styles.button}
                 disabled={
                     isUploading ||
                     (files.length === 0 && (!url || !isUrlValid)) ||
@@ -320,10 +324,9 @@ UploadComponent.defaultProps = {
 };
 
 const DroppingLoader = ({ text }) => {
-    const classes = useStyles();
     return (
         <Grid
-            className={classes.loader}
+            sx={styles.loader}
             container
             direction="column"
             alignItems="center"

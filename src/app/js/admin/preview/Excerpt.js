@@ -13,7 +13,7 @@ import {
     TableCell,
     TableRow,
     TableContainer,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import {
     polyglot as polyglotPropTypes,
@@ -43,7 +43,6 @@ const getColStyle = memoize(style => ({ ...styles.header, ...style }));
 export const ExcerptComponent = ({
     colStyle,
     areHeadersClickable,
-    className,
     columns,
     lines,
     onCellClick,
@@ -52,7 +51,7 @@ export const ExcerptComponent = ({
     isPreview = false,
 }) => (
     <TableContainer>
-        <Table className={className} style={styles.table(isPreview)}>
+        <Table className="publication-excerpt" sx={styles.table(isPreview)}>
             <TableHead>
                 <TableRow>
                     {columns.map(field => (
@@ -61,7 +60,7 @@ export const ExcerptComponent = ({
                             className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
                                 field,
                             )}`}
-                            style={getColStyle({
+                            sx={getColStyle({
                                 ...(areHeadersClickable
                                     ? {}
                                     : { cursor: 'default' }),
@@ -111,7 +110,6 @@ export const ExcerptComponent = ({
 
 ExcerptComponent.propTypes = {
     areHeadersClickable: PropTypes.bool.isRequired,
-    className: PropTypes.string,
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
     colStyle: PropTypes.object,
     isPreview: PropTypes.bool,
@@ -123,7 +121,6 @@ ExcerptComponent.propTypes = {
 };
 
 ExcerptComponent.defaultProps = {
-    className: 'publication-excerpt',
     colStyle: null,
 };
 

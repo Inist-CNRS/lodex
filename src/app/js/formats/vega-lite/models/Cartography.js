@@ -1,5 +1,6 @@
 import BasicChart from './BasicChart';
 import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../chartsUtils';
+import { VEGA_ACTIONS_WIDTH } from '../component/vega-lite-component/VegaLiteComponent';
 
 /**
  * Class use for create cartography spec
@@ -13,6 +14,10 @@ class Cartography extends BasicChart {
         this.model = require('./json/cartography.vl.json');
         this.tooltip.category.field = 'properties.name';
         this.worldPosition = 'world';
+        this.autosize = {
+            type: 'fit',
+            contains: 'padding',
+        };
     }
 
     setWorldPosition(worldPosition) {
@@ -122,8 +127,9 @@ class Cartography extends BasicChart {
                 break;
         }
 
-        this.model.width = widthIn - widthIn * 0.1 - 30;
-        this.model.height = (widthIn - widthIn * 0.1) * 0.6 - 30;
+        this.model.width = widthIn - VEGA_ACTIONS_WIDTH;
+        this.model.height = widthIn * 0.6;
+        this.model.autosize = this.autosize;
 
         return this.model;
     }

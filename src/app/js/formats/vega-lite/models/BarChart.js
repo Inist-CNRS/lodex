@@ -12,6 +12,7 @@ import {
     VALUES_ASC,
     VALUES_DESC,
 } from '../../chartsUtils';
+import { VEGA_ACTIONS_WIDTH } from '../component/vega-lite-component/VegaLiteComponent';
 import BasicChart from './BasicChart';
 
 /**
@@ -50,6 +51,10 @@ class BarChart extends BasicChart {
         this.round = false;
         this.labels = false;
         this.labelOverlap = false;
+        this.autosize = {
+            type: 'fit',
+            contains: 'padding',
+        };
     }
 
     /**
@@ -247,11 +252,7 @@ class BarChart extends BasicChart {
         let width, height;
 
         if (this.direction === AXIS_VERTICAL) {
-            width =
-                widthIn -
-                widthIn * 0.09 -
-                (!this.labels ? 30 : 0) -
-                (this.padding.right + this.padding.left);
+            width = widthIn - VEGA_ACTIONS_WIDTH;
             height = 300;
             if (dataNumber * (parseInt(this.size) + 4) >= width) {
                 encoding.size = {
@@ -263,12 +264,7 @@ class BarChart extends BasicChart {
                 };
             }
         } else {
-            width =
-                widthIn -
-                widthIn * 0.25 -
-                (widthIn <= 800 ? 80 : 0) -
-                (this.labelAngle.x !== 0 ? 80 : 0) -
-                (this.padding.right + this.padding.left);
+            width = widthIn - VEGA_ACTIONS_WIDTH;
             height = { step: parseInt(this.size) };
         }
 
@@ -279,6 +275,7 @@ class BarChart extends BasicChart {
                 padding: this.padding,
                 width: width,
                 height: height,
+                autosize: this.autosize,
             };
         } else {
             const mark = labelsModel.mark;
@@ -310,6 +307,7 @@ class BarChart extends BasicChart {
                 },
                 width: width,
                 height: height,
+                autosize: this.autosize,
             };
         }
     }

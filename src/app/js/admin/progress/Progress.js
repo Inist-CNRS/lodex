@@ -5,7 +5,7 @@ import {
     LinearProgress,
     DialogTitle,
     DialogContent,
-} from '@material-ui/core';
+} from '@mui/material';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';

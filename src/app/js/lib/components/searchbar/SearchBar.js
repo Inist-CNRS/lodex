@@ -3,34 +3,29 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
-import { IconButton, TextField, RootRef } from '@material-ui/core';
-import { faSearch, faUndo } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Icon, IconButton, TextField } from '@mui/material';
 
 import stylesToClassname from '../../stylesToClassName';
-import colorsTheme from '../../../../custom/colorsTheme';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import customTheme from '../../../../custom/customTheme';
+import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
 
 const styles = stylesToClassname(
     {
         container: {
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
         },
         text: {
             flexGrow: 3,
             margin: '0px 8px',
         },
-        searchIconContainer: {
-            marginTop: '8px',
-            paddingRight: 10,
-        },
         searchIcon: {
-            color: colorsTheme.black.secondary,
+            color: customTheme.palette.neutralDark.secondary,
         },
         clearIcon: {
-            color: colorsTheme.orange.primary,
+            color: customTheme.palette.secondary.main,
         },
         actions: {
             display: 'flex',
@@ -45,7 +40,7 @@ const SearchBar = ({
     value,
     onChange,
     onClear,
-    actions,
+    maxWidth,
 }) => {
     const refTextField = useRef(null);
 
@@ -59,38 +54,37 @@ const SearchBar = ({
 
     return (
         <div className={classnames(className, styles.container)}>
-            <div className={styles.searchIconContainer}>
-                <FontAwesomeIcon
-                    className={styles.searchIcon}
-                    icon={faSearch}
-                    height={20}
-                />
-            </div>
-            <RootRef rootRef={refTextField}>
-                <TextField
-                    className={styles.text}
-                    placeholder={polyglot.t('search')}
-                    onChange={onChange}
-                    onFocus={event => {
-                        event && event.target && event.target.select();
-                    }}
-                    value={value}
-                />
-            </RootRef>
-            <div className={styles.actions}>
-                <IconButton
-                    className="searchbar-clear"
-                    tooltip={polyglot.t('clear')}
-                    onClick={onClear}
-                >
-                    <FontAwesomeIcon
-                        className={styles.clearIcon}
-                        icon={faUndo}
-                        height={20}
-                    />
-                </IconButton>
-                {React.cloneElement(actions)}
-            </div>
+            <TextField
+                ref={refTextField}
+                className={styles.text}
+                sx={{ maxWidth: maxWidth }}
+                placeholder={polyglot.t('search')}
+                onChange={onChange}
+                onFocus={event => {
+                    event && event.target && event.target.select();
+                }}
+                value={value}
+                variant="outlined"
+                InputProps={{
+                    startAdornment: (
+                        <Icon sx={{ mr: 2 }}>
+                            <SearchIcon />
+                        </Icon>
+                    ),
+
+                    endAdornment: (
+                        <IconButton
+                            className="searchbar-clear"
+                            title={polyglot.t('clear')}
+                            onClick={onClear}
+                        >
+                            <Icon>
+                                <ClearIcon />
+                            </Icon>
+                        </IconButton>
+                    ),
+                }}
+            />
         </div>
     );
 };
@@ -101,7 +95,7 @@ SearchBar.propTypes = {
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     onClear: PropTypes.func.isRequired,
-    actions: PropTypes.element,
+    maxWidth: PropTypes.number,
 };
 
 SearchBar.defaultProps = {

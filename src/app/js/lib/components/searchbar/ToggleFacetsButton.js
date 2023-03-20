@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IconButton } from '@material-ui/core';
+import { IconButton } from '@mui/material';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import colorsTheme from '../../../../custom/colorsTheme';
 import stylesToClassname from '../../../lib/stylesToClassName';
+import customTheme from '../../../../custom/customTheme';
 
 const styles = stylesToClassname(
     {
         icon: {
-            color: colorsTheme.green.primary,
+            color: customTheme.palette.primary.main,
         },
     },
     'searchbar-facets-toggler',

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Chip } from '@material-ui/core';
+import { Chip } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import {
@@ -12,7 +12,7 @@ import interleave from '../../lib/interleave';
 
 const styles = {
     chip: {
-        margin: 5,
+        margin: '5px',
         maxWidth: '100%',
     },
 };
@@ -25,7 +25,7 @@ export const AppliedFacetComponent = ({
     onRequestDelete,
 }) => (
     <Chip
-        style={styles.chip}
+        sx={styles.chip}
         className={`applied-facet-${getFieldClassName(field)}`}
         onDelete={onRequestDelete}
         label={

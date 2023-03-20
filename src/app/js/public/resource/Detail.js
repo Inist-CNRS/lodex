@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { CardActions, Button } from '@material-ui/core';
-import { grey } from '@material-ui/core/colors';
+import { CardActions } from '@mui/material';
+import { grey } from '@mui/material/colors';
 import memoize from 'lodash.memoize';
 import { Helmet } from 'react-helmet';
 import get from 'lodash.get';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { fromResource } from '../selectors';
+import { fromDisplayConfig, fromResource } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
 import Property from '../Property';
 import HideResource from './HideResource';
@@ -18,7 +18,6 @@ import SelectVersion from './SelectVersion';
 import Version from '../Version';
 import getTitle from '../../lib/getTitle';
 import ExportButton from '../ExportButton';
-import { getCleanHost } from '../../../../common/uris';
 
 const TOP_FIELDS_LIMIT = 1;
 
@@ -31,11 +30,11 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
     },
-    property: {
+    property: dense => ({
         display: 'flex',
         flexDirection: 'column',
-        padding: '2rem 1rem 1rem',
-    },
+        padding: dense ? '0.5rem 0.5rem 0' : '2rem 1rem 1rem',
+    }),
     firstItem: {
         display: 'flex',
         flexDirection: 'column',
@@ -56,13 +55,13 @@ const styles = {
     inkBarStyle: {
         backgroundColor: 'black',
     },
-    propertiesContainer: {
+    propertiesContainer: dense => ({
         display: 'flex',
         flexFlow: 'row wrap',
-        paddingTop: '1rem',
+        paddingTop: dense ? '0.5rem' : '1rem',
         paddingLeft: '1rem',
         paddingRight: '1rem',
-    },
+    }),
     valueContainer: {
         display: 'flex',
         alignItems: 'center',
@@ -113,7 +112,13 @@ const styles = {
     },
 };
 
-export const DetailComponent = ({ fields, resource, title, description }) => {
+export const DetailComponent = ({
+    fields,
+    resource,
+    title,
+    description,
+    dense,
+}) => {
     if (!resource) {
         return null;
     }
@@ -133,13 +138,13 @@ export const DetailComponent = ({ fields, resource, title, description }) => {
             </Helmet>
             <div className="header-resource-section">
                 <div style={styles.container}>
-                    <div style={styles.propertiesContainer}>
+                    <div style={styles.propertiesContainer(dense)}>
                         {topFields.map(field => (
                             <Property
                                 key={field.name}
                                 field={field}
                                 resource={resource}
-                                style={styles.property}
+                                style={styles.property(dense)}
                             />
                         ))}
                     </div>
@@ -147,13 +152,13 @@ export const DetailComponent = ({ fields, resource, title, description }) => {
             </div>
             <div className="main-resource-section">
                 <div style={styles.container}>
-                    <div style={styles.propertiesContainer}>
+                    <div style={styles.propertiesContainer(dense)}>
                         {otherFields.map(field => (
                             <Property
                                 key={field.name}
                                 field={field}
                                 resource={resource}
-                                style={styles.property}
+                                style={styles.property(dense)}
                             />
                         ))}
                     </div>
@@ -164,7 +169,7 @@ export const DetailComponent = ({ fields, resource, title, description }) => {
                             <ExportButton
                                 style={{ float: 'right' }}
                                 uri={resource.uri}
-                                withText
+                                isResourceExport
                             />
                         )}
                     </CardActions>
@@ -193,6 +198,7 @@ DetailComponent.propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
     backToListLabel: PropTypes.string,
+    dense: PropTypes.bool,
 };
 
 const mapStateToProps = state => {
@@ -214,11 +220,14 @@ const mapStateToProps = state => {
             field.subresourceId === resource.subresourceId,
     );
 
+    const dense = fromDisplayConfig.isDense(state);
+
     return {
         resource,
         fields: subresourceFilteredFields,
         title,
         description,
+        dense,
     };
 };
 

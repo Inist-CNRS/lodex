@@ -16,34 +16,32 @@ import {
     Box,
     Tooltip,
     Grid,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
 import enrichers from '../../../custom/enrichers/enrichers-catalog.json';
-import classnames from 'classnames';
-import colorsTheme from '../../../custom/colorsTheme';
-import FilterIcon from '@material-ui/icons/FilterList';
-import MenuBookIcon from '@material-ui/icons/MenuBook';
-import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
+import FilterIcon from '@mui/icons-material/FilterList';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import CancelButton from '../../lib/components/CancelButton';
+import customTheme from '../../../custom/customTheme';
 
-const useStyles = makeStyles({
+const styles = {
     item: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: colorsTheme.black.veryLight,
+            backgroundColor: customTheme.palette.neutralDark.veryLight,
         },
-        borderBottom: `1px solid ${colorsTheme.black.light}`,
+        borderBottom: `1px solid ${customTheme.palette.neutralDark.light}`,
     },
     selectedItem: {
-        backgroundColor: colorsTheme.green.secondary,
+        backgroundColor: customTheme.palette.primary.secondary,
         '&:hover': {
-            backgroundColor: colorsTheme.green.primary,
+            backgroundColor: customTheme.palette.primary.main,
         },
         '& a': {
-            color: 'white',
+            color: customTheme.palette.contrast.main,
         },
     },
-});
+};
 
 const EnricherDescription = ({ enricher, polyglot }) => {
     return (
@@ -89,8 +87,6 @@ export const EnrichmentCatalog = ({
     onChange,
     selectedWebServiceUrl,
 }) => {
-    const classes = useStyles();
-
     const filters = [
         ...new Set(enrichers.map(item => item.type)),
     ].sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)));
@@ -166,10 +162,12 @@ export const EnrichmentCatalog = ({
                         <ListItem
                             key={enricher.id}
                             onClick={() => handleValueChange(enricher.url)}
-                            className={classnames(classes.item, {
-                                [classes.selectedItem]:
-                                    selectedWebServiceUrl === enricher.url,
-                            })}
+                            sx={{
+                                ...styles.item,
+                                ...(selectedWebServiceUrl === enricher.url
+                                    ? styles.selectedItem
+                                    : {}),
+                            }}
                             ref={
                                 selectedWebServiceUrl === enricher.url
                                     ? scrollTo

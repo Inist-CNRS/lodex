@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { Card, CardHeader, Button } from '@material-ui/core';
+import { Card, CardHeader, Button, IconButton } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { grey } from '@material-ui/core/colors';
+import { grey } from '@mui/material/colors';
 
 import {
     field as fieldPropTypes,
@@ -30,7 +30,6 @@ import stylesToClassname from '../../lib/stylesToClassName';
 import { preLoadPublication } from '../../fields';
 import { preLoadDatasetPage as preLoadDatasetPageAction } from '../dataset';
 import { getEditFieldRedirectUrl } from '../Property';
-import { IconButton } from '@mui/material';
 import { Settings } from '@mui/icons-material';
 
 const styles = stylesToClassname(
@@ -49,6 +48,8 @@ const styles = stylesToClassname(
             display: 'flex',
             flex: '0 0 auto',
             flexDirection: 'column',
+            maxWidth: '400px',
+            justifyContent: 'center',
         },
         content: {
             '@media (min-width: 992px)': {
@@ -140,11 +141,11 @@ class Graph extends Component {
                         {graphField && (
                             <Card
                                 className="graph"
-                                style={muiStyles.graphContainer}
+                                sx={muiStyles.graphContainer}
                             >
                                 <CardHeader
                                     className="title"
-                                    style={muiStyles.graphTitle}
+                                    sx={muiStyles.graphTitle}
                                     title={
                                         <>
                                             {' '}

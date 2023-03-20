@@ -1,26 +1,27 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { IconButton, Menu, Button } from '@material-ui/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { Menu, Button, MenuItem } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import DownloadIcon from '@mui/icons-material/Download';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import compose from 'recompose/compose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { fromExport } from './selectors';
+import { fromDisplayConfig, fromExport, fromSearch } from './selectors';
 import ExportItem from './export/ExportMenuItem';
 import stylesToClassname from '../lib/stylesToClassName';
 
 import { exportPublishedDataset as exportPublishedDatasetAction } from './export';
+
+import PDFApi from './api/exportPDF';
 
 const styles = stylesToClassname(
     {
         menuContainer: {
             display: 'flex',
             flexDirection: 'column',
-            marginTop: '16px',
             zIndex: 1003, // on top of Navbar (with zIndex 1002)
         },
         menuTitle: {
@@ -35,7 +36,17 @@ const styles = stylesToClassname(
     'export',
 );
 
-const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
+const ExportButton = ({
+    exporters,
+    onExport,
+    uri,
+    p: polyglot,
+    isResourceExport,
+    displayExportPDF,
+    maxExportPDFSize,
+    match,
+    facets,
+}) => {
     if (!exporters || !exporters.length) {
         return null;
     }
@@ -63,33 +74,44 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
         onExport(event);
     };
 
+    const handleExportPDF = async () => {
+        handleClose();
+        try {
+            const response = await PDFApi.exportPDF({
+                maxExportPDFSize,
+                match,
+                facets,
+            });
+
+            // Detect if the user is on a mobile device and redirect to the PDF
+            if (
+                /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                    navigator.userAgent,
+                )
+            ) {
+                window.location.replace(URL.createObjectURL(response));
+            } else {
+                window.open(URL.createObjectURL(response));
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     const buttonLabel = polyglot.t('export');
     const menuTitle = polyglot.t(uri ? 'export_resource' : 'export_results');
 
     return (
         <>
-            {withText ? (
-                <Button
-                    variant="text"
-                    color="primary"
-                    onClick={handleOpen}
-                    startIcon={
-                        <FontAwesomeIcon icon={faExternalLinkAlt} height={20} />
-                    }
-                    className="export"
-                >
-                    {buttonLabel}
-                </Button>
-            ) : (
-                <IconButton
-                    tooltip={buttonLabel}
-                    onClick={handleOpen}
-                    className="export"
-                    color="primary"
-                >
-                    <FontAwesomeIcon icon={faExternalLinkAlt} height={20} />
-                </IconButton>
-            )}
+            <Button
+                variant="text"
+                onClick={handleOpen}
+                className="export"
+                startIcon={<DownloadIcon />}
+                endIcon={<ArrowDropDownIcon />}
+            >
+                {buttonLabel}
+            </Button>
             <div className={styles.menuContainer}>
                 <Menu
                     className={styles.menuList}
@@ -108,6 +130,9 @@ const ExportButton = ({ exporters, onExport, uri, p: polyglot, withText }) => {
                             onClick={handleExport}
                         />
                     ))}
+                    {displayExportPDF && !isResourceExport && (
+                        <MenuItem onClick={handleExportPDF}>PDF</MenuItem>
+                    )}
                 </Menu>
             </div>
         </>
@@ -119,15 +144,23 @@ ExportButton.propTypes = {
     onExport: PropTypes.func.isRequired,
     uri: PropTypes.string,
     p: polyglotPropTypes.isRequired,
-    withText: PropTypes.bool.isRequired,
+    isResourceExport: PropTypes.bool.isRequired,
+    displayExportPDF: PropTypes.bool,
+    maxExportPDFSize: PropTypes.number,
+    match: PropTypes.string,
+    facets: PropTypes.arrayOf(PropTypes.object),
 };
 
 ExportButton.defaultProps = {
-    withText: false,
+    isResourceExport: false,
 };
 
 const mapStateToProps = state => ({
     exporters: fromExport.getExporters(state),
+    displayExportPDF: fromDisplayConfig.getDisplayExportPDF(state),
+    maxExportPDFSize: fromDisplayConfig.getMaxExportPDFSize(state),
+    facets: fromSearch.getAppliedFacets(state),
+    match: fromSearch.getQuery(state),
 });
 
 const mapDispatchToProps = dispatch =>

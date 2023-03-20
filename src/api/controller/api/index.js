@@ -8,6 +8,7 @@ import get from 'lodash.get';
 import ezMasterConfig from '../../services/ezMasterConfig';
 import characteristic from './characteristic';
 import exportPublishedDataset from './export';
+import exportPDFPublishedDataset from './exportPDF';
 import facet from './facet';
 import fieldRoutes from './field';
 import login from './login';
@@ -27,6 +28,7 @@ import subresource from './subresource';
 import enrichment from './enrichment';
 import job from './job';
 import dump from './dump';
+import displayConfig from './displayConfig';
 
 const app = new Koa();
 
@@ -35,6 +37,7 @@ app.use(ezMasterConfig);
 app.use(mount('/login', login));
 app.use(route.get('/breadcrumb', breadcrumbs));
 app.use(route.get('/menu', menu));
+app.use(route.get('/displayConfig', displayConfig));
 app.use(mount('/translations', translate));
 
 app.use(
@@ -68,6 +71,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(mount('/export', exportPublishedDataset));
+app.use(mount('/pdf', exportPDFPublishedDataset));
 app.use(mount('/facet', facet));
 app.use(mount('/run', run));
 app.use(route.get('/publication', publication));

@@ -1,4 +1,5 @@
 import { schemeBlues } from 'd3-scale-chromatic';
+import { VEGA_ACTIONS_WIDTH } from '../../vega-lite/component/vega-lite-component/VegaLiteComponent';
 
 /**
  * Class use for create radar chart spec
@@ -63,8 +64,8 @@ class FlowMap {
      * @param widthIn
      */
     buildSpec(widthIn) {
-        this.model.width = widthIn - widthIn * 0.06;
-        this.model.height = widthIn - widthIn * 0.35;
+        this.model.width = widthIn - VEGA_ACTIONS_WIDTH;
+        this.model.height = widthIn * 0.6;
 
         this.model.marks.forEach(e => {
             if (e.type === 'text') {
@@ -85,12 +86,7 @@ class FlowMap {
             this.model.marks.forEach(e => {
                 if (e.name === 'cell') {
                     e.encode.enter.tooltip = {
-                        signal:
-                            "{'" +
-                            this.tooltip.category.title +
-                            "': datum.name, '" +
-                            this.tooltip.value.title +
-                            "': datum.link_data.count}",
+                        signal: `{"${this.tooltip.category.title}": datum.name, "${this.tooltip.value.title}": datum.link_data.count}`,
                     };
                 }
             });

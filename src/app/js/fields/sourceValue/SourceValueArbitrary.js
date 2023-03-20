@@ -1,6 +1,6 @@
 import React from 'react';
 import compose from 'recompose/compose';
-import ListAltIcon from '@material-ui/icons/ListAlt';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import PropTypes from 'prop-types';
 import RoutineCatalog from '../wizard/RoutineCatalog';
 import translate from 'redux-polyglot/translate';
@@ -13,7 +13,9 @@ const SourceValueArbitrary = ({
     p: polyglot,
 }) => {
     const [openRoutineCatalog, setOpenRoutineCatalog] = React.useState(false);
+    const [valueInput, setValueInput] = React.useState(value || '');
     const handleChange = event => {
+        setValueInput(event.target.value);
         const transformers = [
             {
                 operation: 'VALUE',
@@ -37,7 +39,7 @@ const SourceValueArbitrary = ({
                 placeholder={polyglot.t('enter_an_arbitrary_value')}
                 label={polyglot.t('arbitrary_value')}
                 onChange={handleChange}
-                defaultValue={value || ''}
+                value={valueInput}
                 multiline
             />
             <Box style={{ marginLeft: '10px', height: '56px' }}>

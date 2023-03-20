@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Folder from '@material-ui/icons/Folder';
-import FolderOpen from '@material-ui/icons/FolderOpen';
-import Arrow from '@material-ui/icons/KeyboardArrowDown';
-import { Button, CircularProgress } from '@material-ui/core';
+import Folder from '@mui/icons-material/Folder';
+import FolderOpen from '@mui/icons-material/FolderOpen';
+import Arrow from '@mui/icons-material/KeyboardArrowDown';
+import { Button, CircularProgress } from '@mui/material';
 import get from 'lodash.get';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -106,7 +106,10 @@ class FetchFold extends Component {
         return (
             <div className="istex-fold">
                 <div>
-                    <Button onClick={isOpen ? this.close : this.open}>
+                    <Button
+                        color="text"
+                        onClick={isOpen ? this.close : this.open}
+                    >
                         <div className={styles.buttonLabel}>
                             <Arrow
                                 className={

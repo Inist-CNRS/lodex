@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TableCell } from '@material-ui/core';
+import { TableCell } from '@mui/material';
 import { connect } from 'react-redux';
 
 import { sortDataset as sortDatasetAction } from './';

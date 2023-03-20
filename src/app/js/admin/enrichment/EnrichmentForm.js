@@ -141,7 +141,7 @@ export const renderStatus = (status, polyglot) => {
         <Chip
             component="span"
             label={polyglot.t('enrichment_status_not_started')}
-            color="success"
+            sx={{ backgroundColor: 'neutral' }}
         />
     );
 };
@@ -495,7 +495,7 @@ export const EnrichmentForm = ({
                     {isEditMode && (
                         <Button
                             variant="contained"
-                            color="secondary"
+                            color="warning"
                             sx={{ height: '100%' }}
                             onClick={handleDeleteEnrichment}
                             disabled={

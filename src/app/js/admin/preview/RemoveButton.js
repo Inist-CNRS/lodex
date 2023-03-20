@@ -25,7 +25,7 @@ export const RemoveButtonComponent = ({ onRemove, p: polyglot }) => {
             <Button
                 variant="contained"
                 onClick={handleShowDialog}
-                color="secondary"
+                color="warning"
             >
                 {polyglot.t('remove_from_publication')}
             </Button>

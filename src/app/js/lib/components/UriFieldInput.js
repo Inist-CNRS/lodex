@@ -15,6 +15,7 @@ export const UriFieldInputComponent = ({ p: polyglot, input }) => (
         fullWidth
         placeholder={polyglot.t('auto_generate_uri')}
         label="uri"
+        variant="standard"
         {...input}
     />
 );

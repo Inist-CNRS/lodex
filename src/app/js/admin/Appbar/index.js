@@ -4,32 +4,29 @@ import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import StorageIcon from '@material-ui/icons/Storage';
-import AspectRatioIcon from '@material-ui/icons/AspectRatio';
-import { makeStyles } from '@material-ui/core/styles';
+import StorageIcon from '@mui/icons-material/Storage';
+import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 
 import PublicationButton from '../publish/PublicationButton';
 import { fromFields, fromUser } from '../../sharedSelectors';
 import { fromParsing, fromPublication } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import colorsTheme from '../../../custom/colorsTheme';
 import SidebarToggleButton from './SidebarToggleButton';
 import Menu from './Menu';
 import GoToPublicationButton from './GoToPublicationButton';
 import JobProgress from './JobProgress';
 import ValidationButton from '../publish/ValidationButton';
-import { AppBar, Box, Button, CircularProgress, Toolbar } from '@mui/material';
+import {
+    AppBar,
+    Box,
+    Button,
+    CircularProgress,
+    Toolbar,
+    Link as MuiLink,
+} from '@mui/material';
+import customTheme from '../../../custom/customTheme';
 
-const useStyles = makeStyles({
-    linkToHome: {
-        color: `${colorsTheme.white.primary} !important`,
-        textDecoration: 'none',
-        marginRight: '1rem',
-        textTransform: 'uppercase',
-        fontWeight: 'bold',
-        lineHeight: '54px',
-        fontSize: 26,
-    },
+const styles = {
     linksContainer: {
         display: 'flex',
         justifyContent: 'space-between',
@@ -37,22 +34,30 @@ const useStyles = makeStyles({
         alignItems: 'stretch',
         height: 64,
     },
-});
-
-const styleButton = {
-    color: colorsTheme.white.primary,
-    borderRadius: 0,
-    padding: '0 20px',
-    boxSizing: 'border-box',
-    borderBottom: `3px solid ${colorsTheme.green.primary}`,
-    '&:hover': {
-        transition: 'all ease-in-out 400ms',
-        borderBottom: `3px solid ${colorsTheme.white.primary}`,
-        color: colorsTheme.white.primary,
+    linkToHome: {
+        color: `${customTheme.palette.contrast.main} !important`,
+        textDecoration: 'none',
+        marginRight: '1rem',
+        textTransform: 'uppercase',
+        fontWeight: 'bold',
+        lineHeight: '54px',
+        fontSize: 26,
     },
-    '&.active': {
-        borderBottom: `3px solid ${colorsTheme.white.primary}`,
-        backgroundColor: colorsTheme.black.transparent,
+    button: {
+        color: customTheme.palette.contrast.main,
+        borderRadius: 0,
+        padding: '0 20px',
+        boxSizing: 'border-box',
+        borderBottom: `3px solid ${customTheme.palette.primary.main}`,
+        '&:hover': {
+            transition: 'all ease-in-out 400ms',
+            borderBottom: `3px solid ${customTheme.palette.contrast.main}`,
+            color: customTheme.palette.contrast.main,
+        },
+        '&.active': {
+            borderBottom: `3px solid ${customTheme.palette.contrast.main}`,
+            backgroundColor: customTheme.palette.neutralDark.transparent,
+        },
     },
 };
 
@@ -64,8 +69,6 @@ const AppbarComponent = ({
     hasPublishedDataset,
     invalidFields,
 }) => {
-    const classes = useStyles();
-
     const leftElement = (
         <Box sx={{ display: 'flex', paddingLeft: '80px' }}>
             {isAdmin && (
@@ -75,7 +78,7 @@ const AppbarComponent = ({
                         to="/data"
                         variant="text"
                         startIcon={<StorageIcon />}
-                        sx={styleButton}
+                        sx={styles.button}
                     >
                         <span>{polyglot.t('data')}</span>
                     </Button>
@@ -85,7 +88,7 @@ const AppbarComponent = ({
                             to="/display"
                             variant="text"
                             startIcon={<AspectRatioIcon />}
-                            sx={styleButton}
+                            sx={styles.button}
                         >
                             <span>{polyglot.t('display')}</span>
                         </Button>
@@ -102,7 +105,7 @@ const AppbarComponent = ({
                     <JobProgress />
                     {hasPublishedDataset && <GoToPublicationButton />}
                     {invalidFields.length > 0 && <ValidationButton />}
-                    <PublicationButton className={classes.button} />
+                    <PublicationButton />
                     <Menu />
                 </div>
             )}
@@ -121,13 +124,13 @@ const AppbarComponent = ({
         <AppBar className="appbar">
             <Toolbar disableGutters>
                 {isAdmin && <SidebarToggleButton />}
-                <Link to="/" className={classes.linkToHome}>
+                <MuiLink component={Link} to="/" sx={styles.linkToHome}>
                     Lodex
-                </Link>
-                <div className={classes.linksContainer}>
+                </MuiLink>
+                <Box sx={styles.linksContainer}>
                     {leftElement}
                     {rightElement}
-                </div>
+                </Box>
             </Toolbar>
         </AppBar>
     );

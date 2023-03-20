@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import {
+    Box,
     Button,
     CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
-    makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Field, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { fromUpload } from '../selectors';
@@ -24,16 +24,6 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import loaderApi from '../api/loader';
 import CancelButton from '../../lib/components/CancelButton';
 
-const useStyles = makeStyles(() => {
-    return {
-        advancedRulesEditor: {
-            display: 'flex',
-            flex: '4 !important',
-            height: '350px !important',
-        },
-    };
-});
-
 const CustomLoader = ({
     formValue,
     handleClose,
@@ -45,7 +35,6 @@ const CustomLoader = ({
     p: polyglot,
 }) => {
     const [isLoading, setIsLoading] = React.useState(false);
-    const classes = useStyles();
 
     const handleSave = () => {
         onUpsertCustomLoader(formValue);
@@ -79,11 +68,7 @@ const CustomLoader = ({
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="xl">
             <DialogTitle>{polyglot.t('custom-loader')}</DialogTitle>
             <DialogContent>
-                <div
-                    style={{
-                        display: 'flex',
-                    }}
-                >
+                <Box display="flex">
                     {isLoading ? (
                         <CircularProgress />
                     ) : (
@@ -91,15 +76,15 @@ const CustomLoader = ({
                             name="customLoader"
                             component={FormSourceCodeField}
                             label={polyglot.t('expand_rules')}
-                            className={classes.advancedRulesEditor}
+                            height="350px"
                         />
                     )}
-                </div>
+                </Box>
             </DialogContent>
             <DialogActions style={{ justifyContent: 'space-between' }}>
                 <Button
                     onClick={handleDelete}
-                    color="secondary"
+                    color="warning"
                     variant="contained"
                 >
                     {polyglot.t('remove')}

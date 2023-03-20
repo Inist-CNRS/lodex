@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
-import { List, Popover, IconButton, Tooltip } from '@material-ui/core';
+import { List, Popover, IconButton, Tooltip, Box } from '@mui/material';
 
 import { fromFields } from '../../sharedSelectors';
 import ValidationField from './ValidationField';
@@ -16,11 +16,12 @@ import {
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
 import translate from 'redux-polyglot/translate';
 import { useHistory } from 'react-router-dom';
-import ValidationIcon from './ValidationIcon';
 import { getEditFieldRedirectUrl } from '../../fields/FieldGrid';
+import WarningIcon from '@mui/icons-material/Warning';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };
+
 const styles = {
     container: {
         display: 'flex',
@@ -51,15 +52,15 @@ const ValidationButtonComponent = ({
     };
 
     return (
-        <div style={styles.container}>
+        <Box sx={styles.container}>
             <Tooltip title={polyglot.t(`show_publication_errors`)}>
                 <IconButton
-                    color="secondary"
+                    color="warning"
                     variant="contained"
                     onClick={handleShowErrorsClick}
                     className={'validation-button'}
                 >
-                    <ValidationIcon sx={{ fontSize: '30px' }} />
+                    <WarningIcon sx={{ fontSize: '30px' }} />
                 </IconButton>
             </Tooltip>
             <Popover
@@ -79,7 +80,7 @@ const ValidationButtonComponent = ({
                     ))}
                 </List>
             </Popover>
-        </div>
+        </Box>
     );
 };
 

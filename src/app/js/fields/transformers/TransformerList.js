@@ -145,7 +145,7 @@ export const TransformerListComponent = ({
                 {!transformersLocked && (
                     <Button
                         variant="text"
-                        color="secondary"
+                        color="warning"
                         disabled={fieldsToDrag?.length <= hideFirstTransformers}
                         onClick={() => setIsRemoveAllDialogOpen(true)}
                         startIcon={<DeleteIcon />}

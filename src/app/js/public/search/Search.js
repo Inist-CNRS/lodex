@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
-import { CircularProgress, Button } from '@material-ui/core';
+import { CircularProgress, Button } from '@mui/material';
 
 import {
     facetActions,
@@ -27,7 +27,8 @@ import FacetList from '../facet/FacetList';
 import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
 import SearchSearchBar from './SearchSearchBar';
-import SearchStats from './SearchStats';
+import customTheme from '../../../custom/customTheme';
+import SearchResultHeader from './SearchResultHeader';
 
 const styles = stylesToClassname(
     {
@@ -37,9 +38,7 @@ const styles = stylesToClassname(
         header: {
             display: 'flex',
             flexDirection: 'column',
-            '@media (min-width: 992px)': {
-                padding: '1rem',
-            },
+            marginBottom: '15px',
         },
         advanced: {
             display: 'flex',
@@ -47,6 +46,7 @@ const styles = stylesToClassname(
             flexDirection: 'column',
         },
         content: {
+            backgroundColor: customTheme.palette.neutralDark.veryLight,
             '@media (min-width: 992px)': {
                 display: 'flex',
             },
@@ -211,9 +211,6 @@ class Search extends Component {
                         withFacets={withFacets}
                         onToggleFacets={this.handleToggleFacets}
                     />
-                    <div className={styles.advanced}>
-                        {(everythingIsOk || noResults) && <SearchStats />}
-                    </div>
                 </div>
                 {withFacets && <AppliedFacetList />}
                 <div className={styles.content}>
@@ -233,12 +230,17 @@ class Search extends Component {
                         {noResults && this.renderNoResults()}
                         {(everythingIsOk || loading) && (
                             <>
-                                <SearchResultSort
-                                    fields={fields}
-                                    fieldNames={fieldNames}
-                                    sort={this.handleSort}
-                                    sortBy={sortBy}
-                                    sortDir={sortDir}
+                                <SearchResultHeader
+                                    displayStats={everythingIsOk || noResults}
+                                    sortComponent={
+                                        <SearchResultSort
+                                            fields={fields}
+                                            fieldNames={fieldNames}
+                                            sort={this.handleSort}
+                                            sortBy={sortBy}
+                                            sortDir={sortDir}
+                                        />
+                                    }
                                 />
                                 <SearchResultList
                                     results={results}

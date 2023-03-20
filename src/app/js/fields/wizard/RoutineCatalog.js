@@ -15,34 +15,32 @@ import {
     Box,
     Link,
     Tooltip,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+} from '@mui/material';
+import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 import routines from '../../../custom/routines/routines-catalog.json';
-import classnames from 'classnames';
-import colorsTheme from '../../../custom/colorsTheme';
 import CancelButton from '../../lib/components/CancelButton';
+import customTheme from '../../../custom/customTheme';
 
-const useStyles = makeStyles({
+const styles = {
     item: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: colorsTheme.black.veryLight,
+            backgroundColor: customTheme.palette.neutralDark.veryLight,
         },
-        borderBottom: `1px solid ${colorsTheme.black.light}`,
+        borderBottom: `1px solid ${customTheme.palette.neutralDark.light}`,
     },
     selectedItem: {
-        backgroundColor: colorsTheme.green.secondary,
+        backgroundColor: customTheme.palette.primary.secondary,
         '&:hover': {
-            backgroundColor: colorsTheme.green.primary,
+            backgroundColor: customTheme.palette.primary.main,
         },
         '& a': {
-            color: 'white',
+            color: customTheme.palette.contrast.main,
         },
     },
-});
+};
 
 const RoutineCatalogDescription = ({ routine, polyglot }) => {
     return (
@@ -51,7 +49,7 @@ const RoutineCatalogDescription = ({ routine, polyglot }) => {
             <Box justifyContent="space-between" display="flex" mt={2}>
                 {routine.recommendedWith && (
                     <Tooltip title={polyglot.t(`tooltip_recommendedWith`)}>
-                        <Box style={{ display: 'flex', gap: '10px' }}>
+                        <Box sx={{ display: 'flex', gap: '10px' }}>
                             <ThumbUpIcon color="primary" />
                             <Typography>
                                 {routine.recommendedWith.toString()}
@@ -83,8 +81,6 @@ const RoutineCatalog = ({
     onChange,
     currentValue,
 }) => {
-    const classes = useStyles();
-
     const handleValueChange = newValue => {
         const event = { target: { value: newValue } };
         onChange(event);
@@ -99,21 +95,22 @@ const RoutineCatalog = ({
 
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
-            <DialogContent style={{ padding: 0, width: '1100px' }}>
+            <DialogContent sx={{ padding: 0, width: '1100px' }}>
                 <List
                     component="nav"
                     aria-label="format list"
-                    style={{ height: '70vh' }}
+                    sx={{ height: '70vh' }}
                 >
                     {routines.map(routine => (
                         <ListItem
                             key={routine.id}
                             onClick={() => handleValueChange(routine.url)}
-                            className={classnames(classes.item, {
-                                [classes.selectedItem]: currentValue?.includes(
-                                    routine.url,
-                                ),
-                            })}
+                            sx={{
+                                ...styles.item,
+                                ...(currentValue?.includes(routine.url)
+                                    ? styles.selectedItem
+                                    : {}),
+                            }}
                             ref={
                                 currentValue?.includes(routine.url)
                                     ? scrollTo
@@ -123,7 +120,7 @@ const RoutineCatalog = ({
                             <ListItemText
                                 primary={polyglot.t(`${routine.id}_title`)}
                                 primaryTypographyProps={{
-                                    style: { fontWeight: 'bold' },
+                                    sx: { fontWeight: 'bold' },
                                 }}
                                 secondary={
                                     <RoutineCatalogDescription

@@ -18,8 +18,6 @@ export const fillResourceFormInput = (inputName, inputValue) => {
 
 export const saveResourceForm = () => {
     getDialogActions()
-        .find('button')
-        .first()
         .contains('Save')
         .click();
 

@@ -1,14 +1,12 @@
 import React from 'react';
-import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { lightGreen, red } from '@material-ui/core/colors';
-import { CircularProgress, LinearProgress, Button } from '@material-ui/core';
-import Warning from '@material-ui/icons/Warning';
-import Success from '@material-ui/icons/Done';
-import { makeStyles } from '@material-ui/styles';
-import colorsTheme from '../../../custom/colorsTheme';
+import { lightGreen, red } from '@mui/material/colors';
+import { CircularProgress, LinearProgress, Button, Box } from '@mui/material';
+import Warning from '@mui/icons-material/Warning';
+import Success from '@mui/icons-material/Done';
+import customTheme from '../../../custom/customTheme';
 
-const useStyles = makeStyles({
+const styles = {
     container: {
         display: 'flex',
         flexDirection: 'column',
@@ -20,9 +18,9 @@ const useStyles = makeStyles({
     progress: {
         margin: '0 4px 0',
     },
-    colorPrimary: { backgroundColor: colorsTheme.white.primary },
-    barColorPrimary: { backgroundColor: colorsTheme.green.secondary },
-});
+    colorPrimary: { backgroundColor: customTheme.palette.contrast.main },
+    barColorPrimary: { backgroundColor: customTheme.palette.primary.secondary },
+};
 
 const ButtonWithStatus = ({
     raised,
@@ -35,15 +33,13 @@ const ButtonWithStatus = ({
     className,
     ...props
 }) => {
-    const classes = useStyles();
     return (
-        <div className={classes.container}>
+        <Box sx={styles.container}>
             {raised ? (
                 <Button
                     variant="contained"
-                    className={classnames(className, {
-                        [classes.loadingProgress]: loading && target,
-                    })}
+                    className={className}
+                    sx={loading && target ? styles.loadingProgress : {}}
                     disabled={disabled || loading}
                     startIcon={getIcon(error, success, loading, target)}
                     {...props}
@@ -58,11 +54,12 @@ const ButtonWithStatus = ({
             )}
             {loading && target ? (
                 <LinearProgress
-                    // className={classes.progress}
-                    classes={{
-                        root: classes.progress,
-                        colorPrimary: classes.colorPrimary,
-                        barColorPrimary: classes.barColorPrimary,
+                    sx={{
+                        ...styles.progress,
+                        '& .MuiLinearProgress-colorPrimary':
+                            styles.colorPrimary,
+                        '& .MuiLinearProgress-barColorPrimary':
+                            styles.barColorPrimary,
                     }}
                     variant="determinate"
                     value={target ? (progress / target) * 100 : 0}
@@ -70,7 +67,7 @@ const ButtonWithStatus = ({
             ) : (
                 undefined
             )}
-        </div>
+        </Box>
     );
 };
 

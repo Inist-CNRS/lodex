@@ -10,6 +10,8 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../../chartsUtils';
 
+export const VEGA_ACTIONS_WIDTH = 40;
+
 /**
  * small component use to handle vega lite display
  * @param props args taken by the component

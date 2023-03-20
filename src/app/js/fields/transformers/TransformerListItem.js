@@ -1,5 +1,4 @@
 import React from 'react';
-import colorsTheme from '../../../custom/colorsTheme';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 
@@ -82,9 +81,9 @@ const TransformerListItem = ({
                 padding: 1,
                 marginBottom: 2,
                 borderRadius: 1,
-                backgroundColor: colorsTheme.black.veryLight,
+                backgroundColor: 'neutralDark.veryLight',
                 '&:hover': {
-                    backgroundColor: colorsTheme.black.lighter,
+                    backgroundColor: 'neutralDark.lighter',
                 },
             }}
         >
@@ -116,7 +115,7 @@ const TransformerListItem = ({
                     aria-label={`transformer-delete-${id}`}
                     sx={{
                         cursor: 'pointer',
-                        color: colorsTheme.orange.primary,
+                        color: 'warning.main',
                     }}
                     onClick={() => {
                         onRemove();

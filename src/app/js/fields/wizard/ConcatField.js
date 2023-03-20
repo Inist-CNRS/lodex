@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IconButton } from '@material-ui/core';
-import ActionDeleteIcon from '@material-ui/icons/Delete';
+import { IconButton } from '@mui/material';
+import ActionDeleteIcon from '@mui/icons-material/Delete';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -15,9 +15,6 @@ const styles = {
     container: {
         display: 'flex',
         alignItems: 'flex-end',
-    },
-    select: {
-        width: '100%',
     },
 };
 

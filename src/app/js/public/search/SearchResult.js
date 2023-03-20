@@ -8,8 +8,10 @@ import {
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { isURL, getResourceUri } from '../../../../common/uris';
-import colorsTheme from '../../../custom/colorsTheme';
 import stylesToClassname from '../../lib/stylesToClassName';
+import customTheme from '../../../custom/customTheme';
+import { Box } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const ellipsis = {
     whiteSpace: 'nowrap',
@@ -23,20 +25,28 @@ const styles = stylesToClassname(
             display: 'flex',
             flexDirection: 'column',
             padding: '1rem',
-            borderTop: '1px solid rgba(153, 153, 153, 0.2)',
+            paddingRight: '2.5rem',
+            border: `1px solid ${customTheme.palette.neutralDark.light}`,
+            backgroundColor: customTheme.palette.contrast.main,
             ':hover': {
-                backgroundColor: '#f8f8f8',
+                backgroundColor: customTheme.palette.neutralDark.veryLight,
             },
+            marginBottom: '1rem',
+            position: 'relative',
         },
         link: {
-            color: 'black',
+            color: 'black !important',
             ':hover': {
+                textDecoration: 'none !important',
+                color: 'inherit',
+            },
+            ':focus': {
                 textDecoration: 'none !important',
                 color: 'inherit',
             },
         },
         activeLink: {
-            color: colorsTheme.orange.primary,
+            color: `${customTheme.palette.secondary.main} !important`,
         },
         row: {
             flex: '0 0 auto',
@@ -45,17 +55,12 @@ const styles = stylesToClassname(
             flex: '0 0 auto',
             fontWeight: 'bold',
             marginBottom: '.75rem',
-            ...ellipsis,
         },
         description: {
             flex: '0 0 auto',
             marginBottom: '.75rem',
             overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            maxHeight: 60,
-            display: '-webkit-box',
-            '-webkit-line-clamp': '3',
-            '-webkit-box-orient': 'vertical',
+            transition: '1s',
         },
         details: {
             display: 'flex',
@@ -66,13 +71,13 @@ const styles = stylesToClassname(
         detailsColumn: {
             flex: '1 0 0',
             paddingRight: '1rem',
-            ...ellipsis,
         },
     },
     'search-result',
 );
 
 const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
+    const [showMore, setShowMore] = React.useState(false);
     const titleField = fields.find(field => field.name === fieldNames.title);
     const descriptionField = fields.find(
         field => field.name === fieldNames.description,
@@ -82,6 +87,10 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
     );
     const secondDetailField = fields.find(
         field => field.name === fieldNames.detail2,
+    );
+
+    const thirdDetailField = fields.find(
+        field => field.name === fieldNames.detail3,
     );
 
     const shouldDisplayDetails =
@@ -105,26 +114,61 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                 className={classnames('search-result', styles.container)}
             >
                 {titleField && result[titleField.name] && (
-                    <div
+                    <Box
                         className={classnames(
                             'search-result-title',
                             styles.title,
                         )}
                         title={result[titleField.name]}
+                        sx={
+                            showMore
+                                ? { maxHeight: 90000, transition: '1s' }
+                                : { ...ellipsis }
+                        }
                     >
                         {result[titleField.name]}
+                    </Box>
+                )}
+                {thirdDetailField && result[thirdDetailField.name] && (
+                    <div
+                        className={classnames(
+                            'search-result-detail-third',
+                            styles.details,
+                        )}
+                    >
+                        <div
+                            className={classnames(
+                                'search-result-detail-3',
+                                styles.detailsColumn,
+                            )}
+                            title={result[thirdDetailField.name]}
+                        >
+                            {result[thirdDetailField.name]}
+                        </div>
                     </div>
                 )}
                 {descriptionField && result[descriptionField.name] && (
-                    <div
+                    <Box
                         className={classnames(
                             'search-result-description',
                             styles.description,
                         )}
                         title={result[descriptionField.name]}
+                        sx={
+                            showMore
+                                ? { maxHeight: 90000, transition: '1s' }
+                                : {
+                                      textOverflow: 'ellipsis',
+                                      transition: '1s',
+                                      maxHeight: 60,
+                                      display: '-webkit-box',
+                                      '-webkit-line-clamp': '3',
+                                      '-webkit-box-orient': 'vertical',
+                                  }
+                        }
                     >
                         {result[descriptionField.name]}
-                    </div>
+                    </Box>
                 )}
                 {shouldDisplayDetails && (
                     <div
@@ -134,29 +178,61 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                         )}
                     >
                         {firstDetailField && result[firstDetailField.name] && (
-                            <div
+                            <Box
                                 className={classnames(
                                     'search-result-detail1',
                                     styles.detailsColumn,
                                 )}
                                 title={result[firstDetailField.name]}
+                                sx={
+                                    showMore
+                                        ? { maxHeight: 90000, transition: '1s' }
+                                        : { ...ellipsis }
+                                }
                             >
                                 {result[firstDetailField.name]}
-                            </div>
+                            </Box>
                         )}
                         {secondDetailField && result[secondDetailField.name] && (
-                            <div
+                            <Box
                                 className={classnames(
                                     'search-result-detail2',
                                     styles.detailsColumn,
                                 )}
                                 title={result[secondDetailField.name]}
+                                sx={
+                                    showMore
+                                        ? { maxHeight: 90000, transition: '1s' }
+                                        : { ...ellipsis }
+                                }
                             >
                                 {result[secondDetailField.name]}
-                            </div>
+                            </Box>
                         )}
                     </div>
                 )}
+                <ExpandMoreIcon
+                    fontSize="large"
+                    sx={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        cursor: 'pointer',
+                        transform: showMore ? 'rotate(180deg)' : 'rotate(0deg)',
+                        transition: '0.6s',
+                        padding: '5px',
+                        borderRadius: '50%',
+                        ':hover': {
+                            backgroundColor:
+                                customTheme.palette.neutralDark.veryLight,
+                        },
+                    }}
+                    onClick={event => {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        setShowMore(!showMore);
+                    }}
+                />
             </div>
         </Link>
     );
@@ -170,6 +246,7 @@ SearchResult.propTypes = {
         description: PropTypes.string,
         detail1: PropTypes.string,
         detail2: PropTypes.string,
+        detail3: PropTypes.string,
     }).isRequired,
     result: resourcePropTypes.isRequired,
     closeDrawer: PropTypes.func.isRequired,

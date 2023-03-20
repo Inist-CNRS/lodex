@@ -13,7 +13,6 @@ export const FieldInternalNameComponent = () => (
         name="internalName"
         component={FormTextField}
         labelKey="internalName"
-        variant="outlined"
     />
 );
 

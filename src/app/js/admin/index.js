@@ -9,11 +9,6 @@ import { ConnectedRouter } from 'connected-react-router';
 import { Route, Redirect } from 'react-router';
 
 import {
-    ThemeProvider as MaterialThemeProvider,
-    createTheme,
-} from '@material-ui/core/styles';
-
-import {
     createTheme as createThemeMui,
     ThemeProvider,
 } from '@mui/material/styles';
@@ -24,7 +19,6 @@ import configureStore from '../configureStore';
 import scrollToTop from '../lib/scrollToTop';
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
-import colorsTheme from '../../custom/colorsTheme';
 import App from './App';
 import Login from '../user/Login';
 import PrivateRoute from './PrivateRoute';
@@ -32,39 +26,12 @@ import { Display } from './Display';
 import { Data } from './Data';
 import { frFR as frFRDatagrid, enUS as enUSDatagrid } from '@mui/x-data-grid';
 import { frFR, enUS } from '@mui/material/locale';
+import customTheme from '../../custom/customTheme';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],
     ['en', { ...enUS, ...enUSDatagrid }],
 ]);
-
-const theme = {
-    palette: {
-        primary: {
-            main: colorsTheme.green.primary,
-            contrastText: colorsTheme.white.primary,
-        },
-        secondary: {
-            main: colorsTheme.orange.primary,
-            contrastText: colorsTheme.white.primary,
-        },
-        neutral: {
-            main: colorsTheme.gray.primary,
-        },
-        contrastThreshold: 3,
-        error: {
-            main: colorsTheme.red.primary,
-        },
-        info: {
-            main: colorsTheme.black.light,
-        },
-        // @TODO: find this usage or remove
-        primary2Color: colorsTheme.purple.primary,
-        text: {
-            primary: colorsTheme.black.secondary,
-        },
-    },
-};
 
 const locale = getLocale();
 const initialState = {
@@ -84,26 +51,22 @@ export const store = configureStore(
 
 render(
     <Provider store={store}>
-        <MaterialThemeProvider
-            theme={createTheme(theme, localesMUI.get(locale))}
+        <ThemeProvider
+            theme={createThemeMui(customTheme, localesMUI.get(locale))}
         >
-            <ThemeProvider
-                theme={createThemeMui(theme, localesMUI.get(locale))}
-            >
-                <ConnectedRouter history={history} onUpdate={scrollToTop}>
-                    <App>
-                        <Route
-                            path="/"
-                            exact
-                            render={() => <Redirect to="/data" />}
-                        />
-                        <PrivateRoute path="/data" component={Data} />
-                        <PrivateRoute path="/display" component={Display} />
-                        <Route path="/login" exact component={Login} />
-                    </App>
-                </ConnectedRouter>
-            </ThemeProvider>
-        </MaterialThemeProvider>
+            <ConnectedRouter history={history} onUpdate={scrollToTop}>
+                <App>
+                    <Route
+                        path="/"
+                        exact
+                        render={() => <Redirect to="/data" />}
+                    />
+                    <PrivateRoute path="/data" component={Data} />
+                    <PrivateRoute path="/display" component={Display} />
+                    <Route path="/login" exact component={Login} />
+                </App>
+            </ConnectedRouter>
+        </ThemeProvider>
     </Provider>,
     document.getElementById('root'),
 );

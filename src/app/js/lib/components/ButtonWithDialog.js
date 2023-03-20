@@ -8,9 +8,11 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-} from '@material-ui/core';
+    Box,
+} from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import CancelButton from './CancelButton';
 
 const dialogStyle = {
     container: {
@@ -34,9 +36,9 @@ export const PureButtonWithDialog = ({
     icon,
     p: polyglot,
     actions = [
-        <Button variant="text" key="cancel" onClick={handleClose}>
+        <CancelButton key="cancel" onClick={handleClose}>
             {polyglot.t('close')}
-        </Button>,
+        </CancelButton>,
     ],
     openButton = (
         <Button
@@ -70,7 +72,13 @@ export const PureButtonWithDialog = ({
                     </div>
                 </DialogContent>
                 <DialogActions>
-                    <div className="dialog-actions">{actions}</div>
+                    <Box
+                        display="flex"
+                        justifyContent="flex-end"
+                        className="dialog-actions"
+                    >
+                        {actions}
+                    </Box>
                 </DialogActions>
             </Dialog>
         </span>

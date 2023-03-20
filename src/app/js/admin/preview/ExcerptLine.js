@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TableRow } from '@material-ui/core';
+import { TableRow } from '@mui/material';
 
 import {
     field as fieldPropTypes,
@@ -15,7 +15,7 @@ const styles = {
 };
 
 const ExcerptLine = ({ columns, line, readonly }) => (
-    <TableRow style={styles.row}>
+    <TableRow sx={styles.row}>
         {columns.map(col => (
             <ExcerptLineCol
                 key={`${line.uri}_${col.name}`}

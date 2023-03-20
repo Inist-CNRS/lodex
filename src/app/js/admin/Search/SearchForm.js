@@ -17,13 +17,14 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    Typography,
 } from '@mui/material';
-import { Typography } from '@material-ui/core';
 
 import * as overview from '../../../../common/overview';
 import { toast } from '../../../../common/tools/toast';
-import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../../../common/scope';
+import { getFieldForSpecificScope } from '../../../../common/scope';
 import FieldRepresentation from '../../fields/FieldRepresentation';
+import withInitialData from '../withInitialData';
 
 const getSearchableFields = fields => fields.filter(f => f.searchable) || [];
 
@@ -37,20 +38,17 @@ const getResourceDetailFirst = fields =>
     fields?.find(f => f.overview === overview.RESOURCE_DETAIL_1) || null;
 const getResourceDetailSecond = fields =>
     fields?.find(f => f.overview === overview.RESOURCE_DETAIL_2) || null;
+const getResourceDetailThird = fields =>
+    fields?.find(f => f.overview === overview.RESOURCE_DETAIL_3) || null;
 
 export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     const fieldsResource = React.useMemo(
-        () =>
-            fields.filter(
-                f => f.scope === SCOPE_DOCUMENT || f.scope === SCOPE_COLLECTION,
-            ),
+        () => getFieldForSpecificScope(fields, 'collection'),
         [fields],
     );
 
     const fieldsForResourceSyndication = React.useMemo(() => {
-        const filteredFields = fields.filter(
-            f => f.scope === SCOPE_DOCUMENT || f.scope === SCOPE_COLLECTION,
-        );
+        const filteredFields = getFieldForSpecificScope(fields, 'collection');
         filteredFields?.unshift({
             label: polyglot.t('none'),
         });
@@ -77,6 +75,9 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     const [resourceDetailSecond, setResourceDetailSecond] = React.useState(
         getResourceDetailSecond(fieldsForResourceSyndication),
     );
+    const [resourceDetailThird, setResourceDetailThird] = React.useState(
+        getResourceDetailThird(fieldsForResourceSyndication),
+    );
 
     useEffect(() => {
         loadField();
@@ -94,6 +95,9 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         );
         setResourceDetailSecond(
             getResourceDetailSecond(fieldsForResourceSyndication),
+        );
+        setResourceDetailThird(
+            getResourceDetailThird(fieldsForResourceSyndication),
         );
     }, [fieldsResource]);
 
@@ -142,6 +146,9 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     const handleSResourceDetailSecond = async (event, value) => {
         saveSyndication(value, overview.RESOURCE_DETAIL_2);
     };
+    const handleSResourceDetailThird = async (event, value) => {
+        saveSyndication(value, overview.RESOURCE_DETAIL_3);
+    };
 
     const handleFacetCheckedChange = async value => {
         const currentIndex = facetChecked.findIndex(
@@ -179,7 +186,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     return (
         <Box>
             <Box display="flex" flexDirection="column" mb={5}>
-                <Typography variant="caption" sx={{ margin: 'auto' }}>
+                <Typography variant="caption">
                     {polyglot.t('search_input')}
                 </Typography>
                 <Box sx={{ border: '1px dashed', padding: 2 }}>
@@ -202,7 +209,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                     flexDirection="column"
                     overflow="auto"
                 >
-                    <Typography variant="caption" sx={{ margin: 'auto' }}>
+                    <Typography variant="caption">
                         {polyglot.t('facets')}
                     </Typography>
                     <Box sx={{ border: '1px dashed' }}>
@@ -271,7 +278,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                 </Box>
 
                 <Box display="flex" flex={7} flexDirection="column">
-                    <Typography variant="caption" sx={{ margin: 'auto' }}>
+                    <Typography variant="caption">
                         {polyglot.t('search_syndication')}
                     </Typography>
                     <Box
@@ -322,6 +329,16 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 value={resourceDetailSecond}
                                 clearText={polyglot.t('clear')}
                             />
+                            <SearchAutocomplete
+                                testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_3}`}
+                                translation={polyglot.t(
+                                    'resource_detail_third',
+                                )}
+                                fields={fieldsForResourceSyndication}
+                                onChange={handleSResourceDetailThird}
+                                value={resourceDetailThird}
+                                clearText={polyglot.t('clear')}
+                            />
                         </Box>
                     </Box>
                 </Box>
@@ -350,6 +367,7 @@ const mapDispatchToProps = {
 };
 
 export default compose(
+    withInitialData,
     translate,
     connect(mapStateToProps, mapDispatchToProps),
 )(SearchForm);

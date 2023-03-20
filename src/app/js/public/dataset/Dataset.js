@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { grey } from '@material-ui/core/colors';
+import { grey } from '@mui/material/colors';
 
 import {
     Table,
@@ -11,7 +11,7 @@ import {
     TableHead,
     TableRow,
     TableCell,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
@@ -88,7 +88,7 @@ export class DatasetComponent extends Component {
                         </div>
                     </div>
                 </div>
-                <Table style={styles.table}>
+                <Table sx={styles.table}>
                     <TableHead>
                         <TableRow>
                             {columns.map(c => (

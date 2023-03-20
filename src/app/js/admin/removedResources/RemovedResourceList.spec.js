@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import moment from 'moment';
-import { TableCell, TableBody } from '@material-ui/core';
+import { TableCell, TableBody } from '@mui/material';
 
 import { RemovedResourceListComponent as RemovedResourceList } from './RemovedResourceList';
 import Pagination from '../../lib/components/Pagination';

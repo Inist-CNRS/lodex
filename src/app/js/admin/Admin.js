@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { Card } from '@material-ui/core';
+import { Card } from '@mui/material';
 
 /**
  * @TODO: Remove this file
@@ -17,14 +17,14 @@ import ParsingResult from './parsing/ParsingResult';
 import PublicationPreview from './preview/publication/PublicationPreview';
 import Upload from './upload/Upload';
 import Loading from '../lib/components/Loading';
-import colorsTheme from '../../custom/colorsTheme';
 import { preLoadLoaders } from './loader/';
+import customTheme from '../../custom/customTheme';
 
 const styles = {
     punchLine: {
         padding: '16px',
         textAlign: 'center',
-        color: colorsTheme.purple.primary,
+        color: customTheme.palette.info.main,
     },
 };
 

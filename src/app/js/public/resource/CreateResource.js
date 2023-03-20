@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { Fab } from '@material-ui/core';
-import ContentAdd from '@material-ui/icons/Add';
+import { Fab } from '@mui/material';
+import ContentAdd from '@mui/icons-material/Add';
 
 import { fromResource } from '../selectors';
 import CreateResourceForm from './CreateResourceForm';

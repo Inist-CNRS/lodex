@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import PropTypes from 'prop-types';

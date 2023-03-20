@@ -9,11 +9,11 @@ import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 import { fromEnrichments, fromParsing, fromSubresources } from '../selectors';
-import colorsTheme from '../../../custom/colorsTheme';
 import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
 import { addField } from '../../fields';
 import { useParams } from 'react-router';
 import parseValue from '../../../../common/tools/parseValue';
+import customTheme from '../../../custom/customTheme';
 
 export const getRowStyle = (index, total) => {
     let opacity = 1;
@@ -36,7 +36,7 @@ export const getEnrichmentsNames = enrichments => {
 export const getColumnStyle = (enrichmentsNames, column) => {
     return enrichmentsNames?.includes(column)
         ? {
-              backgroundColor: colorsTheme.green.light,
+              backgroundColor: customTheme.palette.primary.light,
           }
         : {};
 };

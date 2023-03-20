@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router-dom';
 import translate from 'redux-polyglot/translate';
-import HomeIcon from '@material-ui/icons/Home';
-import BackIcon from '@material-ui/icons/ArrowBack';
-import { CardContent, CardActions, Card, Button } from '@material-ui/core';
+import HomeIcon from '@mui/icons-material/Home';
+import BackIcon from '@mui/icons-material/ArrowBack';
+import { CardContent, CardActions, Card, Button } from '@mui/material';
 import { Swipeable } from 'react-swipeable';
 
 import { fromResource, fromSearch } from '../selectors';
@@ -24,6 +24,7 @@ import stylesToClassname from '../../lib/stylesToClassName';
 import NavButton, { NEXT, PREV } from '../../lib/components/NavButton';
 import isEqual from 'lodash.isequal';
 import get from 'lodash.get';
+import { getResourceUri } from '../../../../common/uris';
 
 const navStyles = stylesToClassname(
     {
@@ -50,7 +51,7 @@ const navStyles = stylesToClassname(
 const buildLocationFromResource = resource =>
     resource
         ? {
-              pathname: `/${resource.uri}`,
+              pathname: getResourceUri(resource),
               state: {},
           }
         : {};
@@ -133,10 +134,10 @@ export class ResourceComponent extends React.Component {
         if (!resource && !loading) {
             return (
                 <div className="not-found">
-                    <Card style={{ marginTop: '0.5rem' }}>
+                    <Card sx={{ marginTop: '0.5rem' }}>
                         <CardActions>{backToListButton}</CardActions>
                     </Card>
-                    <Card style={{ marginTop: '0.5rem' }}>
+                    <Card sx={{ marginTop: '0.5rem' }}>
                         <CardContent>
                             <h1>{polyglot.t('not_found')}</h1>
                         </CardContent>
@@ -203,7 +204,7 @@ export class ResourceComponent extends React.Component {
                         </div>
                     )}
                     {goBackButton && (
-                        <Card style={{ marginTop: '0.5rem' }}>
+                        <Card sx={{ marginTop: '0.5rem' }}>
                             <CardActions>{goBackButton}</CardActions>
                         </Card>
                     )}

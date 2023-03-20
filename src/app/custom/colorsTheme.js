@@ -31,6 +31,5 @@ export default {
     },
     orange: {
         primary: '#f48022',
-        secondary: 'rgba(244, 128, 34, .7)',
     },
 };

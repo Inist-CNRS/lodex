@@ -43,6 +43,7 @@ export const HideResourceFormComponent = ({
             label={polyglot.t('enter_reason')}
             fullWidth
             multiline
+            variant="standard"
         />
     </form>
 );

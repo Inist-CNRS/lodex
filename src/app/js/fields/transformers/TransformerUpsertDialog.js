@@ -19,10 +19,10 @@ import {
     ListItemButton,
 } from '@mui/material';
 
-import colorsTheme from '../../../custom/colorsTheme';
 import TransformerArg from './TransformerArg';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
+import customTheme from '../../../custom/customTheme';
 
 const TransformerUpsertDialog = ({
     availableTransformers,
@@ -92,20 +92,23 @@ const TransformerUpsertDialog = ({
                                         cursor: 'pointer',
                                         '&:hover': {
                                             backgroundColor:
-                                                colorsTheme.black.veryLight,
+                                                customTheme.palette.neutralDark
+                                                    .veryLight,
                                         },
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        borderBottom: `1px solid ${colorsTheme.black.light}`,
+                                        borderBottom: `1px solid ${customTheme.palette.neutralDark.light}`,
                                         '&:last-child': {
                                             borderBottom: 'none',
                                         },
                                         '&.MuiAutocomplete-option[aria-selected="true"].Mui-selected': {
                                             backgroundColor:
-                                                colorsTheme.green.secondary,
+                                                customTheme.palette.primary
+                                                    .secondary,
                                             '&:hover': {
                                                 backgroundColor:
-                                                    colorsTheme.green.primary,
+                                                    customTheme.palette.primary
+                                                        .main,
                                             },
                                         },
                                     }}

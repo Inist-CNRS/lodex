@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet';
 import {
     ThemeProvider as MuiThemeProvider,
     createTheme,
-} from '@material-ui/core/styles';
+} from '@mui/material/styles';
 import { END } from 'redux-saga';
 import fs from 'fs';
 import { StyleSheetServer } from 'aphrodite/no-important';
@@ -36,6 +36,7 @@ import {
     customRoutes,
 } from './api/menu';
 import { breadcrumb } from './api/breadcrumb';
+import { displayDensity, PDFExportOptions } from './api/displayConfig';
 import customTheme from '../../app/custom/customTheme';
 
 import { getPublication } from './api/publication';
@@ -80,6 +81,11 @@ const getDefaultInitialState = (token, cookie, locale) => ({
         advancedMenu,
         advancedMenuButton,
         customRoutes,
+        error: null,
+    },
+    displayConfig: {
+        displayDensity,
+        PDFExportOptions,
         error: null,
     },
 });
@@ -203,7 +209,9 @@ export const getRenderingData = async (
 const handleRender = async (ctx, next) => {
     const { url, headers } = ctx.request;
     if (
-        (url.match(/[^\\]*\.(\w+)$/) && !url.match(/[^\\]*\.html$/)) ||
+        (url.match(/[^\\]*\.(\w+)$/) &&
+            !url.match(/[^\\]*\.html$/) &&
+            !url.match(/\/uid:\//)) ||
         url.match('/admin') ||
         url.match('__webpack_hmr')
     ) {
