@@ -55,9 +55,47 @@ const TransformerListItem = ({
         }
 
         // detect if value contains a space at the end of string
-        if (value.endsWith(' ') || value.startsWith(' ')) {
-            const replaceValue = value.replace(' ', '\u00a0');
-            return <Chip key={name} label={replaceValue} />;
+        if (
+            (value.endsWith(' ') || value.startsWith(' ')) &&
+            value.length < 3
+        ) {
+            if (value.startsWith(' ')) {
+                // get value after first space
+                const valueAfterFirstSpace = value.split(' ').slice(1);
+                return (
+                    <Chip
+                        key={name}
+                        label={
+                            <Box>
+                                <span style={{ fontStyle: 'italic' }}>
+                                    {polyglot.t('blank_space')}
+                                </span>
+                                <span style={{ fontWeight: 'bold' }}>
+                                    {valueAfterFirstSpace}
+                                </span>
+                            </Box>
+                        }
+                    />
+                );
+            } else {
+                // get value before last space
+                const valueBeforeLastSpace = value.split(' ').slice(0, -1);
+                return (
+                    <Chip
+                        key={name}
+                        label={
+                            <Box>
+                                <span style={{ fontWeight: 'bold' }}>
+                                    {valueBeforeLastSpace}
+                                </span>
+                                <span style={{ fontStyle: 'italic' }}>
+                                    {polyglot.t('blank_space')}
+                                </span>
+                            </Box>
+                        }
+                    />
+                );
+            }
         }
 
         return (
