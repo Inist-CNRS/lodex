@@ -65,7 +65,7 @@ export const fromFacet = page => facetSelectorsByPage[page];
 export const fromRouter = {
     getResourceUri: state => {
         const pathname = state.router.location.pathname;
-        const match = pathname.match(/^\/((?:ark|uid):\/.*$)/);
+        const match = pathname.match(/^\/((?:ark|uid|sha):\/.*$)/);
 
         if (match) {
             return match[1];

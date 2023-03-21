@@ -13,7 +13,7 @@ import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { fromResource, fromRouter } from '../../selectors';
 
 export const parsePathName = pathname => {
-    const match = pathname.match(/^\/((?:ark|uid):\/.*$)/);
+    const match = pathname.match(/^\/((?:ark|uid|sha):\/.*$)/);
 
     return match && match[1];
 };

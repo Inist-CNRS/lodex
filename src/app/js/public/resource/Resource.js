@@ -108,8 +108,6 @@ export class ResourceComponent extends React.Component {
             match,
         } = this.props;
 
-        console.log(lastResourceUri);
-
         if (loading) {
             return (
                 <Loading className="resource">
