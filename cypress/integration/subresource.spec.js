@@ -174,7 +174,7 @@ describe('Subresource Page', () => {
                 cy.get('input').type(fieldName);
             });
         cy.get('#format-edit-dialog')
-            .contains('save', { matchCase: false })
+            .contains('confirm', { matchCase: false })
             .click();
         cy.get('.wizard')
             .find('.btn-save')
