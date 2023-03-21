@@ -11,11 +11,6 @@ import { isFacetValuesChecked } from './selectors';
 
 import { SAVE_RESOURCE_SUCCESS } from '../resource/index';
 
-export const MAX_VALUE_FOR_ALL_FACET = {
-    dataset: 60,
-    search: 300,
-};
-
 export const initialState = {
     error: null,
     appliedFacets: {},

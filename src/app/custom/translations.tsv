@@ -915,7 +915,7 @@
 "transformer_delete_all_title"	"Delete all transformation operation"	"Supprimer toutes les opérations de transformation"
 "transformer_delete_all_description"	"Are you sure you want to delete all transformation operations ?"	"Êtes-vous sûr de vouloir supprimer toutes les opérations de transformation ?"
 "check_all_value_facet"	"Check all"	"Tout cocher"
-"check_all_value_facet_tooltip"	"You have more than %{limit} values for this facet. So we disable select all optional"	"Vous avez plus de %{limit} valeurs pour cette facette. Nous avons donc désactivé la sélection de toutes les valeurs"
+"check_x_first_value_facet"	"Check %{limit} first values"	"Cocher les %{limit} premières valeurs"
 "transformers_is_modified"	"Transformers are modified, remember to save them"	"Les opérations de transformations sont modifiées, pensez à les sauvegarder"	
 "sort_search"	"Sort"	"Trier"
 "sort_search_by_field"	"Sort by %{field}"	"Trier par %{field}"

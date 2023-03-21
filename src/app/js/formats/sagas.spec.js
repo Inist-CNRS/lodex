@@ -71,7 +71,11 @@ describe('format sagas', () => {
                 value: select(fromDataset.getAppliedFacets),
                 done: false,
             });
-            expect(it.next('facets')).toEqual({
+            expect(
+                it.next({
+                    facetName: [{ value: 'facetValue', count: 1, id: 'id' }],
+                }),
+            ).toEqual({
                 value: select(fromDataset.getInvertedFacetKeys),
                 done: false,
             });
@@ -81,7 +85,7 @@ describe('format sagas', () => {
             });
             expect(it.next('filter')).toEqual({
                 value: call(getQueryString, {
-                    facets: 'facets',
+                    facets: { facetName: ['facetValue'] },
                     invertedFacets: 'invertedFacets',
                     match: 'filter',
                     params: {

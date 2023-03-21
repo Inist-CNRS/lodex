@@ -26,8 +26,9 @@ describe('dataset saga', () => {
 
         it('should select fromDataset.getInvertedFacetKeys', () => {
             expect(
-                saga.next([{ field: { name: 'aFacet' }, value: 'aFacetValue' }])
-                    .value,
+                saga.next({
+                    aFacet: [{ value: 'aFacetValue', count: 1, id: 'id' }],
+                }).value,
             ).toEqual(select(fromDataset.getInvertedFacetKeys));
         });
 
@@ -59,9 +60,9 @@ describe('dataset saga', () => {
             expect(saga.next(20).value).toEqual(
                 select(fromUser.getLoadDatasetPageRequest, {
                     match: 'aFilter',
-                    facets: [
-                        { field: { name: 'aFacet' }, value: 'aFacetValue' },
-                    ],
+                    facets: {
+                        aFacet: ['id'],
+                    },
                     invertedFacets: ['facet'],
                     sort: {
                         sortBy: 'field',

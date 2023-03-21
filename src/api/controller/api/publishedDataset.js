@@ -21,18 +21,21 @@ export const getPage = async ctx => {
         ...facetsWithValueIds
     } = ctx.request.query;
 
-    const facets = {};
-    Object.keys(facetsWithValueIds).forEach(facetName => {
-        facetsWithValueIds[facetName].map(async facetValueId => {
-            const publishedFacet = await ctx.publishedFacet.findOne({
-                _id: new ObjectID(facetValueId),
-            });
-            if (!facets[facetName]) {
-                facets[facetName] = [];
-            }
-            facets[facetName].push(publishedFacet.value);
-        });
-    });
+    let facets = {};
+    facets = await Object.keys(facetsWithValueIds).reduce(
+        async (acc, facetName) => {
+            acc[facetName] = await Promise.all(
+                facetsWithValueIds[facetName].map(async facetValueId => {
+                    const publishedFacet = await ctx.publishedFacet.findOne({
+                        _id: new ObjectID(facetValueId),
+                    });
+                    return publishedFacet.value;
+                }),
+            );
+            return acc;
+        },
+        {},
+    );
 
     const intPage = parseInt(page, 10);
     const intPerPage = parseInt(perPage, 10);

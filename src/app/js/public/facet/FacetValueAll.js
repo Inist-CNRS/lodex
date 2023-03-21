@@ -3,64 +3,54 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { polyglot as polyglotPropType } from '../../propTypes';
-import { Box, Button, Tooltip } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
-import { fromFacet } from '../selectors';
+import { fromFacet, fromDisplayConfig } from '../selectors';
 import { connect } from 'react-redux';
 
 import apiFacet from '../../admin/api/facet';
 import { facetActions as datasetActions } from '../dataset';
 import { facetActions as searchActions } from '../search/reducer';
-import { MAX_VALUE_FOR_ALL_FACET } from '.';
 
 const FacetValueAll = ({
-    disabled = false,
     facetData,
     name,
     p: polyglot,
     setAllValueForFacet,
-    page,
+    total,
+    maxCheckAllValue,
 }) => {
     const handleChange = async () => {
         const result = await apiFacet.getFacetsFiltered({
             field: name,
             ...facetData,
-            perPage: MAX_VALUE_FOR_ALL_FACET[page],
+            currentPage: 0,
+            perPage: maxCheckAllValue,
         });
         setAllValueForFacet({ name, values: result.data });
     };
+
     return (
-        <Tooltip
-            placement="left"
-            title={
-                disabled
-                    ? polyglot.t('check_all_value_facet_tooltip', {
-                          limit: MAX_VALUE_FOR_ALL_FACET[page],
+        <Box sx={{ fontSize: '1rem', padding: 0, margin: 0 }}>
+            <Button onClick={handleChange} variant="link" sx={{ paddingX: 0 }}>
+                {total > maxCheckAllValue
+                    ? polyglot.t('check_x_first_value_facet', {
+                          limit: maxCheckAllValue,
                       })
-                    : ''
-            }
-        >
-            <Box sx={{ fontSize: '1rem', padding: 0, margin: 0 }}>
-                <Button
-                    onClick={handleChange}
-                    variant="link"
-                    disabled={disabled}
-                    sx={{ paddingX: 0 }}
-                >
-                    {polyglot.t('check_all_value_facet')}
-                </Button>
-            </Box>
-        </Tooltip>
+                    : polyglot.t('check_all_value_facet')}
+            </Button>
+        </Box>
     );
 };
 
 FacetValueAll.propTypes = {
-    disabled: PropTypes.bool,
     facetData: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
     p: polyglotPropType.isRequired,
     setAllValueForFacet: PropTypes.func.isRequired,
     page: PropTypes.string.isRequired,
+    total: PropTypes.number.isRequired,
+    maxCheckAllValue: PropTypes.number.isRequired,
 };
 
 const actionsByPage = {
@@ -72,6 +62,10 @@ const mapStateToProps = (state, { name, page }) => {
     const selectors = fromFacet(page);
     return {
         facetData: selectors.getFacetValueRequestData(state, name),
+        total: selectors.getFacetValuesTotal(state, name),
+        maxCheckAllValue: fromDisplayConfig.getMaxCheckAllFacetsValue(state)[
+            page
+        ],
     };
 };
 

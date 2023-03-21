@@ -36,7 +36,11 @@ import {
     customRoutes,
 } from './api/menu';
 import { breadcrumb } from './api/breadcrumb';
-import { displayDensity, PDFExportOptions } from './api/displayConfig';
+import {
+    displayDensity,
+    PDFExportOptions,
+    maxCheckAllFacetsValue,
+} from './api/displayConfig';
 import customTheme from '../../app/custom/customTheme';
 
 import { getPublication } from './api/publication';
@@ -86,6 +90,7 @@ const getDefaultInitialState = (token, cookie, locale) => ({
     displayConfig: {
         displayDensity,
         PDFExportOptions,
+        maxCheckAllFacetsValue,
         error: null,
     },
 });

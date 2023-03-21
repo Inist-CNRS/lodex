@@ -146,90 +146,104 @@ describe('facet reducer', () => {
     describe('TOGGLE_FACET_VALUE', () => {
         it('should add payload value to appliedFacets[name] array', () => {
             const state = {
-                foo: 'bar',
                 appliedFacets: {
-                    foo: 'bar',
-                    name: ['value'],
+                    foo: [{ value: 'bar' }],
+                    name: [{ value: 'value1', count: 1, id: 'id1' }],
                 },
             };
 
             const action = {
                 type: TOGGLE_FACET_VALUE,
-                payload: { name: 'name', value: 'new value' },
+                payload: {
+                    name: 'name',
+                    facetValue: { value: 'value2', count: 4, id: 'id2' },
+                },
             };
 
             expect(facetReducer(state, action)).toEqual({
-                foo: 'bar',
                 appliedFacets: {
-                    foo: 'bar',
-                    name: ['value', 'new value'],
+                    foo: [{ value: 'bar' }],
+                    name: [
+                        { value: 'value1', count: 1, id: 'id1' },
+                        { value: 'value2', count: 4, id: 'id2' },
+                    ],
                 },
             });
         });
 
         it('should add payload value to appliedFacets[name] and create an array if none here', () => {
             const state = {
-                foo: 'bar',
                 appliedFacets: {
-                    foo: 'bar',
+                    foo: [{ value: 'bar' }],
                 },
             };
 
             const action = {
                 type: TOGGLE_FACET_VALUE,
-                payload: { name: 'fieldName', value: 'new value' },
+                payload: {
+                    name: 'name',
+                    facetValue: { value: 'value', count: 4, id: 'id' },
+                },
             };
 
             expect(facetReducer(state, action)).toEqual({
-                foo: 'bar',
                 appliedFacets: {
-                    foo: 'bar',
-                    fieldName: ['new value'],
+                    foo: [{ value: 'bar' }],
+                    name: [{ value: 'value', count: 4, id: 'id' }],
                 },
             });
         });
 
         it('should remove value from appliedFacets[name]', () => {
             const state = {
-                foo: 'bar',
                 appliedFacets: {
-                    foo: 'bar',
-                    name: ['value1', 'value2', 'value3'],
+                    foo: [{ value: 'bar' }],
+                    name: [
+                        { value: 'value1', count: 1, id: 'id1' },
+                        { value: 'value2', count: 4, id: 'id2' },
+                        { value: 'value3', count: 3, id: 'id3' },
+                    ],
                 },
             };
 
             const action = {
                 type: TOGGLE_FACET_VALUE,
-                payload: { name: 'name', value: 'value2' },
+                payload: {
+                    name: 'name',
+                    facetValue: { value: 'value2', count: 4, id: 'id2' },
+                },
             };
 
             expect(facetReducer(state, action)).toEqual({
-                foo: 'bar',
                 appliedFacets: {
-                    foo: 'bar',
-                    name: ['value1', 'value3'],
+                    foo: [{ value: 'bar' }],
+                    name: [
+                        { value: 'value1', count: 1, id: 'id1' },
+                        { value: 'value3', count: 3, id: 'id3' },
+                    ],
                 },
             });
         });
 
         it('should remove value from appliedFacets[name] and remove the array if no more values', () => {
             const state = {
-                foo: 'bar',
                 appliedFacets: {
-                    foo: 'bar',
-                    name: ['value'],
+                    foo: [{ value: 'bar' }],
+                    name: [{ value: 'value', count: 1, id: 'id' }],
                 },
             };
 
             const action = {
                 type: TOGGLE_FACET_VALUE,
-                payload: { name: 'name', value: 'value' },
+                payload: {
+                    name: 'name',
+                    facetValue: { value: 'value', count: 1, id: 'id' },
+                },
             };
 
             expect(facetReducer(state, action)).toEqual({
-                foo: 'bar',
                 appliedFacets: {
-                    foo: 'bar',
+                    foo: [{ value: 'bar' }],
                 },
             });
         });

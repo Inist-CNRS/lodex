@@ -54,6 +54,8 @@ export const getOpenedFacets = ({ openedFacets }) => openedFacets;
 
 export const getInvertedFacets = ({ invertedFacets }) => invertedFacets;
 
+export const getMaxCheckAllValue = ({ maxCheckAllValue }) => maxCheckAllValue;
+
 export default {
     getAppliedFacets,
     getAppliedFacetList,
@@ -71,4 +73,5 @@ export default {
     getOpenedFacets,
     getFacetsValues,
     getInvertedFacets,
+    getMaxCheckAllValue,
 };
