@@ -62,6 +62,7 @@ const Routes = props => {
                     <Route path="/resource" component={Resource} />
                     <Route path="/ark:/:naan/:rest" component={Resource} />
                     <Route path="/uid:/:uri" component={Resource} />
+                    <Route path="/sha:/:uri" component={Resource} />
                     <Route path="/login" component={Login} />
                     <Route
                         path="/graph/:name"

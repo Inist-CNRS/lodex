@@ -9,6 +9,7 @@ export const isLocalURL = v =>
     (typeof v === 'string' &&
         (v.startsWith('/api/') ||
             v.startsWith('uid:') ||
+            v.startsWith('sha:') ||
             v.startsWith('ark:'))) ||
     false;
 
@@ -31,6 +32,9 @@ export const getResourceUri = resource => {
     }
     if (uri.startsWith('uid:/')) {
         return `/uid:/${encodeURIComponent(uri.substr(5))}`;
+    }
+    if (uri.startsWith('sha:/')) {
+        return `/sha:/${encodeURIComponent(uri.substr(5))}`;
     }
     if (uri.startsWith('ark:/')) {
         return `/${uri}`;

@@ -25,6 +25,7 @@ export const sanitizeUris = doc => {
 
     if (
         (doc.uri + '').startsWith('ark:') ||
+        (doc.uri + '').startsWith('sha:') ||
         (doc.uri + '').startsWith('uid:')
     ) {
         return doc;
