@@ -32,6 +32,7 @@ import { toast } from '../../../../common/tools/toast';
 import ValuePreviewConnected from './ValuePreview';
 
 const ACTIONS_BAR_HEIGHT = 70;
+const PREVIEW_WIDTH = 320;
 
 const FieldEditionWizardComponent = ({
     currentEditedField,
@@ -130,7 +131,7 @@ const FieldEditionWizardComponent = ({
                 height: '100%',
                 width: {
                     xs: '100%',
-                    md: '70%',
+                    md: `calc(100% - ${PREVIEW_WIDTH}px)`,
                 },
             }}
         >
@@ -207,13 +208,15 @@ const FieldEditionWizardComponent = ({
                         xs: 'none',
                         md: 'block',
                     },
-                    width: '25%',
+                    width: `${PREVIEW_WIDTH}px`,
+                    boxSizing: 'content-box',
                     position: 'fixed',
                     right: 0,
                     marginX: '1rem',
                     height: `calc(100% - ${ACTIONS_BAR_HEIGHT * 2.5}px)`,
                     overflowY: 'auto',
                 }}
+                className="mui-fixed"
             >
                 <ValuePreviewConnected scope={filter} />
             </Box>
@@ -229,6 +232,7 @@ const FieldEditionWizardComponent = ({
                     maxHeight: ACTIONS_BAR_HEIGHT,
                     zIndex: 999,
                 }}
+                className="mui-fixed"
             >
                 <Box className="container">
                     <Actions
