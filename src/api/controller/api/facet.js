@@ -16,7 +16,7 @@ export const getFacetFilteredValues = async (ctx, name, filter) => {
         typeof filter === 'function' ? undefined : filter,
     );
     ctx.body = {
-        data: data.map(d => ({ value: d.value, count: d.count })),
+        data: data.map(d => ({ value: d.value, count: d.count, id: d._id })),
         total,
     };
 };

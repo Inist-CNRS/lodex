@@ -34,12 +34,18 @@ describe('publishedDataset', () => {
                     .fn()
                     .mockImplementation(() => ['searchable1', 'searchable2']),
             },
+            publishedFacet: {
+                findOne: jest.fn().mockImplementation(() => ({
+                    _id: '64130aaeb844aa0021b2960f',
+                    value: 'facet1value',
+                })),
+            },
             request: {
                 query: {
                     page: 1,
                     perPage: 100,
                     match: 'match',
-                    facet1: 'facet1value',
+                    facet1: ['64130aaeb844aa0021b2960f'],
                 },
             },
         };
@@ -53,7 +59,7 @@ describe('publishedDataset', () => {
                 sortBy: undefined,
                 sortDir: undefined,
                 match: 'match',
-                facets: { facet1: 'facet1value' },
+                facets: { facet1: ['facet1value'] },
                 invertedFacets: [],
                 searchableFieldNames: ['searchable1', 'searchable2'],
                 facetFieldNames: ['facet1', 'facet2'],

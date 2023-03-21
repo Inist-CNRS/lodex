@@ -32,7 +32,11 @@ const PER_PAGE = 10;
 const doSearchRequest = function*(page = 0) {
     const query = yield select(fromSearch.getQuery);
     const sort = yield select(fromSearch.getSort);
-    const facets = yield select(fromSearch.getAppliedFacets);
+    let facets = yield select(fromSearch.getAppliedFacets);
+    facets = Object.keys(facets).reduce((acc, facetName) => {
+        acc[facetName] = facets[facetName].map(facetValue => facetValue.id);
+        return acc;
+    }, {});
     const invertedFacets = yield select(fromSearch.getInvertedFacetKeys);
 
     const request = yield select(fromUser.getLoadDatasetPageRequest, {

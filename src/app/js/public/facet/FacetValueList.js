@@ -16,7 +16,6 @@ import Pagination from '../../lib/components/Pagination';
 import SortButton from '../../lib/components/SortButton';
 import FacetActionsContext from './FacetActionsContext';
 import FacetValueAll from './FacetValueAll';
-import { MAX_VALUE_FOR_ALL_FACET } from '.';
 
 const styles = {
     list: {
@@ -129,20 +128,13 @@ export const FacetValueList = ({
                     </div>
                 </div>
                 <div>
-                    {filter && (
-                        <FacetValueAll
-                            disabled={total > MAX_VALUE_FOR_ALL_FACET}
-                            name={name}
-                            page={page}
-                        />
-                    )}
-                    {facetValues.map(({ value, count }) => {
+                    {filter && <FacetValueAll name={name} page={page} />}
+                    {facetValues.map(facetValue => {
                         return (
                             <FacetValueItem
-                                key={value}
+                                key={facetValue.value}
                                 name={name}
-                                value={value}
-                                count={count}
+                                facetValue={facetValue}
                                 page={page}
                             />
                         );

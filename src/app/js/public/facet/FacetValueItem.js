@@ -31,11 +31,11 @@ const styles = {
     },
 };
 
-const onCheck = (toggleFacetValue, name, value) => () =>
-    toggleFacetValue({ name, value });
+const onCheck = (toggleFacetValue, name, facetValue) => () =>
+    toggleFacetValue({ name, facetValue });
 
-const FacetValueItem = ({ name, value, count, isChecked, p: polyglot }) => {
-    if (value instanceof Object) {
+const FacetValueItem = ({ name, facetValue, isChecked, p: polyglot }) => {
+    if (facetValue.value instanceof Object) {
         return (
             <ListItem className="facet-value-item" sx={styles.listItem}>
                 <ListItemText>
@@ -61,15 +61,17 @@ const FacetValueItem = ({ name, value, count, isChecked, p: polyglot }) => {
                                         onChange={onCheck(
                                             toggleFacetValue,
                                             name,
-                                            value,
+                                            facetValue,
                                         )}
                                     />
                                 }
                                 label={
-                                    value === '' ? polyglot.t('empty') : value
+                                    facetValue.value === ''
+                                        ? polyglot.t('empty')
+                                        : facetValue.value
                                 }
                             />
-                            <span style={styles.count}>{count}</span>
+                            <span style={styles.count}>{facetValue.count}</span>
                         </div>
                     </ListItemText>
                 </ListItem>
@@ -80,15 +82,21 @@ const FacetValueItem = ({ name, value, count, isChecked, p: polyglot }) => {
 
 FacetValueItem.propTypes = {
     name: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    count: PropTypes.number.isRequired,
     isChecked: PropTypes.bool.isRequired,
     page: PropTypes.oneOf(['dataset', 'search']).isRequired,
     p: polyglotPropType.isRequired,
+    facetValue: PropTypes.shape({
+        value: PropTypes.string,
+        count: PropTypes.number,
+        id: PropTypes.string,
+    }).isRequired,
 };
 
-const mapStateToProps = (state, { name, value, page }) => ({
-    isChecked: fromFacet(page).isFacetValuesChecked(state, { name, value }),
+const mapStateToProps = (state, { name, facetValue, page }) => ({
+    isChecked: fromFacet(page).isFacetValuesChecked(state, {
+        name,
+        facetValue,
+    }),
 });
 
 export default compose(translate, connect(mapStateToProps))(FacetValueItem);
