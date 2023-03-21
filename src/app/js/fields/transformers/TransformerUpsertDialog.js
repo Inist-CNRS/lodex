@@ -52,8 +52,7 @@ const TransformerUpsertDialog = ({
 
     const handleUpsert = () => {
         if (indexFieldToEdit !== null) {
-            fields.remove(indexFieldToEdit);
-            fields.insert(indexFieldToEdit, transformer);
+            fields.splice(indexFieldToEdit, 1, transformer);
         } else {
             fields.push(transformer);
         }
@@ -162,9 +161,8 @@ TransformerUpsertDialog.propTypes = {
     availableTransformers: PropTypes.array,
     fields: PropTypes.shape({
         get: PropTypes.func.isRequired,
-        remove: PropTypes.func.isRequired,
         push: PropTypes.func.isRequired,
-        insert: PropTypes.func.isRequired,
+        splice: PropTypes.func.isRequired,
     }).isRequired,
     handleClose: PropTypes.func.isRequired,
     indexFieldToEdit: PropTypes.number,
