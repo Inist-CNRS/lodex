@@ -59,43 +59,27 @@ const TransformerListItem = ({
             (value.endsWith(' ') || value.startsWith(' ')) &&
             value.length < 3
         ) {
-            if (value.startsWith(' ')) {
-                // get value after first space
-                const valueAfterFirstSpace = value.split(' ').slice(1);
-                return (
-                    <Chip
-                        key={name}
-                        label={
-                            <Box>
-                                <span style={{ fontStyle: 'italic' }}>
-                                    {polyglot.t('blank_space')}
-                                </span>
-                                <span style={{ fontWeight: 'bold' }}>
-                                    {valueAfterFirstSpace}
-                                </span>
-                            </Box>
-                        }
-                    />
-                );
-            } else {
-                // get value before last space
-                const valueBeforeLastSpace = value.split(' ').slice(0, -1);
-                return (
-                    <Chip
-                        key={name}
-                        label={
-                            <Box>
-                                <span style={{ fontWeight: 'bold' }}>
-                                    {valueBeforeLastSpace}
-                                </span>
-                                <span style={{ fontStyle: 'italic' }}>
-                                    {polyglot.t('blank_space')}
-                                </span>
-                            </Box>
-                        }
-                    />
-                );
-            }
+            const valueWithoutSpace = value.trim();
+            return (
+                <Chip
+                    key={name}
+                    label={
+                        <Box
+                            display="flex"
+                            flexDirection={
+                                value.startsWith(' ') ? 'row' : 'row-reverse'
+                            }
+                        >
+                            <span style={{ fontStyle: 'italic' }}>
+                                {polyglot.t('blank_space')}
+                            </span>
+                            <span style={{ fontWeight: 'bold' }}>
+                                {valueWithoutSpace}
+                            </span>
+                        </Box>
+                    }
+                />
+            );
         }
 
         return (
