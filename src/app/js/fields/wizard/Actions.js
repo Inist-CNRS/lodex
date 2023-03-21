@@ -13,7 +13,7 @@ import {
 import RemoveButton from '../../admin/preview/RemoveButton';
 import CancelButton from '../../lib/components/CancelButton';
 import isEqual from 'lodash.isequal';
-import { formValueSelector } from 'redux-form';
+import { getFormValues } from 'redux-form';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { SaveAs } from '@mui/icons-material';
@@ -36,39 +36,17 @@ const shake = keyframes`
   }
 `;
 
-function getTranslationForTooltip(
-    transformersModified = false,
-    formatModified = false,
-) {
-    if (transformersModified && formatModified) {
-        return 'transformers_and_format_are_modified';
-    }
-    if (transformersModified) {
-        return 'transformers_are_modified';
-    }
-    if (formatModified) {
-        return 'format_is_modified';
-    }
-    return '';
-}
-
 export const ActionsComponent = ({
     currentEditedField,
     p: polyglot,
     onCancel,
     onSave,
-    currentTransformers,
-    currentFormat,
+    currentFormValues,
 }) => {
     const { filter } = useParams();
     if (!currentEditedField) return null;
 
-    const isTransformersModified = !isEqual(
-        currentTransformers,
-        currentEditedField.transformers,
-    );
-
-    const isFormatModified = !isEqual(currentFormat, currentEditedField.format);
+    const isFormModified = !isEqual(currentEditedField, currentFormValues);
 
     return (
         <Box display="flex" justifyContent="space-between">
@@ -88,24 +66,14 @@ export const ActionsComponent = ({
                     color="primary"
                     onClick={onSave}
                     startIcon={
-                        (isTransformersModified || isFormatModified) && (
-                            <Tooltip
-                                title={polyglot.t(
-                                    getTranslationForTooltip(
-                                        isTransformersModified,
-                                        isFormatModified,
-                                    ),
-                                )}
-                            >
+                        isFormModified && (
+                            <Tooltip title={polyglot.t('form_is_modified')}>
                                 <SaveAs />
                             </Tooltip>
                         )
                     }
                     sx={{
-                        animation:
-                            isTransformersModified || isFormatModified
-                                ? `${shake} 1s ease`
-                                : '',
+                        animation: isFormModified ? `${shake} 1s ease` : '',
                     }}
                 >
                     {polyglot.t('save')}
@@ -120,8 +88,7 @@ ActionsComponent.propTypes = {
     onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    currentTransformers: PropTypes.array,
-    currentFormat: PropTypes.object,
+    currentFormValues: PropTypes.object,
 };
 
 ActionsComponent.defaultProps = {
@@ -129,14 +96,10 @@ ActionsComponent.defaultProps = {
 };
 
 // REDUX PART
-const formSelector = formValueSelector(FIELD_FORM_NAME);
-
 const mapStateToProps = state => {
-    const currentTransformers = formSelector(state, 'transformers');
-    const currentFormat = formSelector(state, 'format');
+    const currentFormValues = getFormValues(FIELD_FORM_NAME)(state);
     return {
-        currentTransformers,
-        currentFormat,
+        currentFormValues,
     };
 };
 
