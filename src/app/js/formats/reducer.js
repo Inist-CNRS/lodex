@@ -22,9 +22,12 @@ export default handleActions(
             ...state,
             [field.name]: 'loading',
         }),
-        [LOAD_FORMAT_DATA_SUCCESS]: (state, { payload: { name, data } }) => ({
+        [LOAD_FORMAT_DATA_SUCCESS]: (
+            state,
+            { payload: { name, data, total } },
+        ) => ({
             ...state,
-            [name]: { data },
+            [name]: { data, total },
         }),
         [LOAD_RESOURCE_SUCCESS]: (state, { payload }) => ({
             ...state,
@@ -45,6 +48,7 @@ export default handleActions(
 const isFormatDataLoaded = (state, name) => state[name] !== 'loading';
 
 const getFormatData = (state, name) => get(state, [name, 'data']);
+const getFormatTotal = (state, name) => get(state, [name, 'total']);
 const getFormatError = (state, name) => get(state, [name, 'error']);
 
 export const getCurrentFieldNames = state =>
@@ -53,6 +57,7 @@ export const getCurrentFieldNames = state =>
 export const fromFormat = {
     isFormatDataLoaded,
     getFormatData,
+    getFormatTotal,
     getFormatError,
     getCurrentFieldNames,
 };
