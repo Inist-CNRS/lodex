@@ -9,7 +9,7 @@ import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
 } from '../propTypes';
-import { getFieldForSpecificScope } from '../../../common/scope';
+import { getFieldToAnnotateForSpecificScope } from '../../../common/scope';
 import { Box, MenuItem, Typography } from '@mui/material';
 import FieldRepresentation from './FieldRepresentation';
 
@@ -36,7 +36,11 @@ const FieldAnnotation = ({ fields, scope, p: polyglot, subresourceId }) => (
             <MenuItem value={null}>
                 {polyglot.t('completes_field_none')}
             </MenuItem>
-            {getFieldForSpecificScope(fields, scope, subresourceId).map(f => (
+            {getFieldToAnnotateForSpecificScope(
+                fields,
+                scope,
+                subresourceId,
+            ).map(f => (
                 <MenuItem
                     className={`completes-${getFieldClassName(f)}`}
                     key={f.name}

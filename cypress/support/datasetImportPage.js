@@ -47,7 +47,7 @@ export const fillTabDisplayFormat = (format, save = true) => {
     const editDialog = cy.get('#format-edit-dialog');
     editDialog.should('be.visible');
     if (save) {
-        editDialog.contains('save', { matchCase: false }).click();
+        editDialog.contains('confirm', { matchCase: false }).click();
     }
 };
 

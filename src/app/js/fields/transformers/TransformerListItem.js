@@ -31,11 +31,33 @@ const TransformerListItem = ({
 
     const renderChip = (name, value) => {
         if (value === undefined || value === null || value === '') {
-            return <Chip key={name} label={polyglot.t('empty')} />;
+            return (
+                <Chip
+                    key={name}
+                    label={polyglot.t('empty')}
+                    sx={{
+                        fontStyle: 'italic',
+                    }}
+                />
+            );
         }
 
         if (value === ' ') {
-            return <Chip key={name} label={polyglot.t('blank_space')} />;
+            return (
+                <Chip
+                    key={name}
+                    label={polyglot.t('blank_space')}
+                    sx={{
+                        fontStyle: 'italic',
+                    }}
+                />
+            );
+        }
+
+        // detect if value contains a space at the end of string
+        if (value.endsWith(' ') || value.startsWith(' ')) {
+            const replaceValue = value.replace(' ', '\u00a0');
+            return <Chip key={name} label={replaceValue} />;
         }
 
         return (

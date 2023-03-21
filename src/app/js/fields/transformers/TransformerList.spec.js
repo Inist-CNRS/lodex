@@ -66,7 +66,6 @@ describe('TransformerList', () => {
                 fields={mockFields}
                 meta={mockMeta}
                 p={polyglot}
-                currentEditedField={{ transformers: [] }}
             />,
         );
 
@@ -99,7 +98,6 @@ describe('TransformerList', () => {
                 fields={mockFields}
                 meta={mockMeta}
                 p={polyglot}
-                currentEditedField={{ transformers: [] }}
             />,
         );
 
@@ -135,7 +133,6 @@ describe('TransformerList', () => {
                 fields={mockFields}
                 meta={mockMeta}
                 p={polyglot}
-                currentEditedField={{ transformers: [] }}
             />,
         );
 
@@ -202,7 +199,6 @@ describe('TransformerList', () => {
                 fields={mockFields}
                 meta={mockMeta}
                 p={polyglot}
-                currentEditedField={{ transformers: [] }}
             />,
         );
 
@@ -267,7 +263,6 @@ describe('TransformerList', () => {
                 fields={mockFields}
                 meta={mockMeta}
                 p={polyglot}
-                currentEditedField={{ transformers: [] }}
             />,
         );
 
@@ -309,7 +304,6 @@ describe('TransformerList', () => {
                 fields={mockFields}
                 meta={mockMeta}
                 p={polyglot}
-                currentEditedField={{ transformers: [] }}
             />,
         );
 

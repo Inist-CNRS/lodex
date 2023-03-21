@@ -7,10 +7,8 @@ import translate from 'redux-polyglot/translate';
 import TransformerListItem from './TransformerListItem';
 import TransformerUpsertDialog from './TransformerUpsertDialog';
 
-import isEqual from 'lodash.isequal';
-
-import { Box, Button, Tooltip, Typography } from '@mui/material';
-import { Delete as DeleteIcon, SaveAs } from '@mui/icons-material';
+import { Box, Button, Typography } from '@mui/material';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     DndContext,
@@ -65,15 +63,9 @@ export const TransformerListComponent = ({
     type,
     isSubresourceField,
     p: polyglot,
-    currentEditedField,
 }) => {
     const [fieldsToDrag, setFieldsToDrag] = useState(
         fields.map(fieldName => fieldName),
-    );
-
-    const isTransformersModified = !isEqual(
-        fields.getAll(),
-        currentEditedField.transformers,
     );
 
     const { source, value } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(
@@ -133,14 +125,6 @@ export const TransformerListComponent = ({
                     <Typography variant="subtitle1">
                         {polyglot.t('transformers')}
                     </Typography>
-                    {isTransformersModified && (
-                        <Tooltip
-                            title={polyglot.t('transformers_is_modified')}
-                            sx={{ marginLeft: 1 }}
-                        >
-                            <SaveAs fontSize="small" />
-                        </Tooltip>
-                    )}
                 </Box>
                 {!transformersLocked && (
                     <Button
@@ -253,7 +237,6 @@ TransformerListComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     type: PropTypes.string,
     isSubresourceField: PropTypes.bool,
-    currentEditedField: PropTypes.object,
 };
 
 TransformerListComponent.defaultProps = {

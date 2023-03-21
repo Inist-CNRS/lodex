@@ -31,6 +31,8 @@ import { withRouter } from 'react-router';
 import { toast } from '../../../../common/tools/toast';
 import ValuePreviewConnected from './ValuePreview';
 
+const ACTIONS_BAR_HEIGHT = 70;
+
 const FieldEditionWizardComponent = ({
     currentEditedField,
     fields,
@@ -126,7 +128,10 @@ const FieldEditionWizardComponent = ({
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100%',
-                width: '70%',
+                width: {
+                    xs: '100%',
+                    md: '70%',
+                },
             }}
         >
             {currentEditedField && (
@@ -172,7 +177,10 @@ const FieldEditionWizardComponent = ({
                                         />
                                     ))}
                                 </Tabs>
-                                <Box flexGrow={1}>
+                                <Box
+                                    flexGrow={1}
+                                    marginBottom={`${ACTIONS_BAR_HEIGHT}px`}
+                                >
                                     {tabs.map((tab, index) => (
                                         <TabPanel
                                             value={tabValue}
@@ -190,25 +198,45 @@ const FieldEditionWizardComponent = ({
                                 fields={fields}
                             />
                         )}
-                        <Actions
-                            currentEditedField={currentEditedField}
-                            onCancel={handleCancel}
-                            onSave={handleSave}
-                        />
                     </Box>
                 </Box>
             )}
             <Box
                 sx={{
+                    display: {
+                        xs: 'none',
+                        md: 'block',
+                    },
                     width: '25%',
                     position: 'fixed',
                     right: 0,
                     marginX: '1rem',
-                    height: '100%',
+                    height: `calc(100% - ${ACTIONS_BAR_HEIGHT * 2.5}px)`,
                     overflowY: 'auto',
                 }}
             >
                 <ValuePreviewConnected scope={filter} />
+            </Box>
+            <Box
+                sx={{
+                    position: 'fixed',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    background: 'white',
+                    boxShadow: '-3px -12px 15px -3px rgba(0,0,0,0.1)',
+                    padding: '1rem',
+                    maxHeight: ACTIONS_BAR_HEIGHT,
+                    zIndex: 999,
+                }}
+            >
+                <Box className="container">
+                    <Actions
+                        currentEditedField={currentEditedField}
+                        onCancel={handleCancel}
+                        onSave={handleSave}
+                    />
+                </Box>
             </Box>
         </Box>
     );

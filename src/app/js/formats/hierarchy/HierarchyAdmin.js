@@ -58,7 +58,11 @@ class HierarchyAdmin extends Component {
         };
     }
     setParams = params => {
-        updateAdminArgs('params', params, this.props);
+        const newParams = {
+            ...this.props.args.params,
+            ...params,
+        };
+        updateAdminArgs('params', newParams, this.props);
     };
 
     setColors(colors) {
@@ -69,21 +73,24 @@ class HierarchyAdmin extends Component {
         );
     }
 
-    setMaxLabelLength = (_, maxLabelLength) => {
+    setMaxLabelLength = event => {
+        const maxLabelLength = event.target.value;
         this.setParams({
             ...this.props.args.params,
             maxLabelLength: parseInt(maxLabelLength, 10),
         });
     };
 
-    setLabelOffset = (_, labelOffset) => {
+    setLabelOffset = event => {
+        const labelOffset = event.target.value;
         this.setParams({
             ...this.props.args.params,
             labelOffset: parseInt(labelOffset, 10),
         });
     };
 
-    setMinimumScaleValue = (_, minimumScaleValue) => {
+    setMinimumScaleValue = event => {
+        const minimumScaleValue = event.target.value;
         this.setParams({
             ...this.props.args.params,
             minimumScaleValue: parseInt(minimumScaleValue, 10),

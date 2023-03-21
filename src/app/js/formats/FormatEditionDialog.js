@@ -92,12 +92,12 @@ const FormatEditionDialog = ({
                     {polyglot.t('cancel')}
                 </CancelButton>
                 <Button
-                    aria-label={polyglot.t('save')}
+                    aria-label={polyglot.t('confirm')}
                     color="primary"
                     variant="contained"
                     onClick={handleSave}
                 >
-                    {polyglot.t('save')}
+                    {polyglot.t('confirm')}
                 </Button>
             </DialogActions>
         </Dialog>

@@ -18,6 +18,7 @@ const renderItem = (props, option) => {
                 gap: 2,
                 whiteSpace: 'normal',
             }}
+            key={option._id}
             {...props}
         >
             <FieldRepresentation field={option} />
@@ -27,7 +28,7 @@ const renderItem = (props, option) => {
 
 const renderCheckboxItem = (props, option, selected) => {
     return (
-        <li {...props}>
+        <li key={option._id} {...props}>
             <Checkbox
                 icon={icon}
                 checkedIcon={checkedIcon}
@@ -85,7 +86,7 @@ const SearchAutocomplete = ({
             }
             clearText={clearText}
             renderOption={(props, option, { selected }) =>
-                !!option.label && multiple
+                multiple
                     ? renderCheckboxItem(props, option, selected)
                     : renderItem(props, option)
             }
