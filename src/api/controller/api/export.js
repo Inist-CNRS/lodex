@@ -20,6 +20,16 @@ ezs.use(Storage);
 
 const scripts = new Script('exporters', '../app/custom/exporters');
 
+export function getFacetsWithoutId(facets) {
+    if (!facets) {
+        return {};
+    }
+    return Object.keys(facets).reduce((acc, facetName) => {
+        acc[facetName] = facets[facetName].map(facetValue => facetValue.value);
+        return acc;
+    }, {});
+}
+
 const parseFieldsParams = fieldsParams =>
     typeof fieldsParams === 'string' && fieldsParams !== ''
         ? fieldsParams.split('/').filter(x => x)
@@ -51,10 +61,16 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         ...localConfig,
     };
     const host = getCleanHost();
+
+    const { sortDir, ...facets } = ctx.query;
+
+    const facetsWithoutId = getFacetsWithoutId(facets);
+
     const query = {
         orderBy,
         field: parseFieldsParams(fieldsParams),
-        ...ctx.query,
+        sortDir,
+        ...facetsWithoutId,
         connectionStringURI: mongoConnectionString,
         host,
     };
