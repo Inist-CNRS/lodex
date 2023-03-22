@@ -22,20 +22,20 @@ export const getPage = async ctx => {
     } = ctx.request.query;
 
     let facets = {};
-    facets = await Object.keys(facetsWithValueIds).reduce(
-        async (acc, facetName) => {
-            acc[facetName] = await Promise.all(
-                facetsWithValueIds[facetName].map(async facetValueId => {
-                    const publishedFacet = await ctx.publishedFacet.findOne({
-                        _id: new ObjectID(facetValueId),
-                    });
-                    return publishedFacet.value;
-                }),
-            );
-            return acc;
-        },
-        {},
-    );
+
+    for (const [facetName, facetValueIds] of Object.entries(
+        facetsWithValueIds,
+    )) {
+        const facetValues = await Promise.all(
+            facetValueIds.map(async facetValueId => {
+                const facetValue = await ctx.publishedFacet.findOne({
+                    _id: new ObjectID(facetValueId),
+                });
+                return facetValue.value;
+            }),
+        );
+        facets[facetName] = facetValues;
+    }
 
     const intPage = parseInt(page, 10);
     const intPerPage = parseInt(perPage, 10);
