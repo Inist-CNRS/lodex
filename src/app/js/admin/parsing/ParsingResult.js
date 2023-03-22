@@ -246,14 +246,14 @@ export const ParsingResultComponent = props => {
 
     const numberOfColumns = useCallback(
         columnType => {
-            if (!datas || datas.length === 0 || !enrichments) return 0;
-            return Object.keys(datas[0]).filter(key => {
+            if (!columns || columns.length === 0 || !enrichments) return 0;
+            return columns.filter(({ key }) => {
                 const isEnrichmentColumn = enrichments.some(
                     enrichment => enrichment.name === key,
                 );
                 switch (columnType) {
                     case COLUMN_TYPE.MAIN:
-                        return !isEnrichmentColumn;
+                        return key !== '_id' && !isEnrichmentColumn;
                     case COLUMN_TYPE.ENRICHMENT:
                         return isEnrichmentColumn;
                     default:
@@ -261,7 +261,7 @@ export const ParsingResultComponent = props => {
                 }
             }).length;
         },
-        [datas, enrichments],
+        [columns, enrichments],
     );
 
     const rows = useMemo(() => {
