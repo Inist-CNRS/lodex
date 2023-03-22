@@ -11,7 +11,6 @@ import ContainerDimensions from 'react-container-dimensions';
 
 const styles = {
     container: {
-        overflow: 'hidden',
         userSelect: 'none',
     },
 };
