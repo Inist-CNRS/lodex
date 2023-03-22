@@ -240,7 +240,9 @@ describe('format sagas', () => {
                 done: false,
             });
             expect(it.next({ response: { total: 0 } })).toEqual({
-                value: put(loadFormatDataSuccess({ name: 'name', data: [] })),
+                value: put(
+                    loadFormatDataSuccess({ name: 'name', data: [], total: 0 }),
+                ),
                 done: false,
             });
             expect(it.next()).toEqual({

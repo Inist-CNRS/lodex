@@ -35,7 +35,7 @@ class AbstractTableView extends Component {
         ).isRequired,
     };
 
-    static mapStateToProps = (_, { formatData, spaceWidth }) => {
+    static mapStateToProps = (_, { formatData, formatTotal, spaceWidth }) => {
         if (!formatData) {
             return {
                 data: [],
@@ -54,7 +54,7 @@ class AbstractTableView extends Component {
         if (Array.isArray(formatData)) {
             return {
                 data: formatData,
-                total: formatData.length,
+                total: formatTotal || formatData.length,
                 spaceWidth,
             };
         }
@@ -212,7 +212,6 @@ class AbstractTableView extends Component {
                 .replace('{total}', count)
                 .replace('{from}', from)
                 .replace('{to}', to);
-
         return (
             <TableFooter>
                 <TablePagination
@@ -225,8 +224,8 @@ class AbstractTableView extends Component {
                     rowsPerPage={this.state.rowsPerPage}
                     count={dataTotal}
                     page={this.state.page}
-                    onChangePage={this.onChangePage}
-                    onChangeRowsPerPage={this.onChangeRowsPerPage}
+                    onPageChange={this.onChangePage}
+                    onRowsPerPageChange={this.onChangeRowsPerPage}
                     labelRowsPerPage={polyglot.t('rows_per_page')}
                     backIconButtonText={polyglot.t('previous')}
                     nextIconButtonText={polyglot.t('next')}

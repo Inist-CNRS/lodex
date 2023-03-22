@@ -77,16 +77,26 @@ export function* loadFormatData(name, url, queryString) {
         return;
     }
     if (response.data) {
-        yield put(loadFormatDataSuccess({ name, data: response.data }));
+        yield put(
+            loadFormatDataSuccess({
+                name,
+                data: response.data,
+                total: response.total,
+            }),
+        );
         return;
     }
 
     if (response.total === 0) {
-        yield put(loadFormatDataSuccess({ name, data: [] }));
+        yield put(
+            loadFormatDataSuccess({ name, data: [], total: response.total }),
+        );
         return;
     }
 
-    yield put(loadFormatDataSuccess({ name, data: response }));
+    yield put(
+        loadFormatDataSuccess({ name, data: response, total: response.total }),
+    );
 }
 
 export function* handleLoadFormatDataRequest({

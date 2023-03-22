@@ -53,6 +53,7 @@ export default (
             unLoadFormatData: PropTypes.func.isRequired,
             loadFormatData: PropTypes.func.isRequired,
             formatData: PropTypes.any,
+            formatTotal: PropTypes.any,
             isLoaded: PropTypes.bool.isRequired,
             error: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
             location: PropTypes.shape({ pathname: PropTypes.string }),
@@ -123,6 +124,7 @@ export default (
         render() {
             const {
                 loadFormatData,
+                formatTotal,
                 formatData,
                 p: polyglot,
                 field,
@@ -163,6 +165,7 @@ export default (
                     field={field}
                     resource={resource}
                     formatData={formatData}
+                    formatTotal={formatTotal}
                     filterFormatData={this.filterFormatData}
                 />
             );
@@ -179,6 +182,7 @@ export default (
         return {
             resource,
             formatData: fromFormat.getFormatData(state, field.name),
+            formatTotal: fromFormat.getFormatTotal(state, field.name),
             isLoaded,
             error: fromFormat.getFormatError(state, field.name),
         };
