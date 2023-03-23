@@ -10,7 +10,7 @@ import { Helmet } from 'react-helmet';
 import get from 'lodash.get';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { fromDisplayConfig, fromResource } from '../selectors';
+import { fromDisplayConfig, fromI18n, fromResource } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
 import Property from '../Property';
 import HideResource from './HideResource';
@@ -118,11 +118,17 @@ export const DetailComponent = ({
     title,
     description,
     dense,
+    isMultilingual,
+    locale,
 }) => {
     if (!resource) {
         return null;
     }
-    const sortedFields = [...fields]; // Isolation
+    const filteredFields = fields.filter(
+        field =>
+            !isMultilingual || !field.language || field.language === locale,
+    );
+    const sortedFields = [...filteredFields]; // Isolation
     sortedFields.sort((a, b) => a.position - b.position);
 
     const topFields = sortedFields.slice(0, TOP_FIELDS_LIMIT);
@@ -199,6 +205,8 @@ DetailComponent.propTypes = {
     description: PropTypes.string,
     backToListLabel: PropTypes.string,
     dense: PropTypes.bool,
+    isMultilingual: PropTypes.bool,
+    locale: PropTypes.string,
 };
 
 const mapStateToProps = state => {
@@ -221,6 +229,8 @@ const mapStateToProps = state => {
     );
 
     const dense = fromDisplayConfig.isDense(state);
+    const isMultilingual = fromDisplayConfig.isMultilingual(state);
+    const locale = fromI18n.getLocale(state);
 
     return {
         resource,
@@ -228,6 +238,8 @@ const mapStateToProps = state => {
         title,
         description,
         dense,
+        isMultilingual,
+        locale,
     };
 };
 

@@ -178,8 +178,8 @@
             "maxSize": 100,
             "logo": "",
             "title": {
-                "en": "Données publiées",
-                "fr": "Published dataset"
+                "en": "Published dataset",
+                "fr": "Données publiées"
             },
             "footer": {
                 "en": "Footer",
@@ -190,6 +190,7 @@
         "maxCheckAllFacetsValue": {
             "dataset": 60,
             "search": 300
-        }
+        },
+        "multilingual": true
     }
 }

@@ -35,3 +35,9 @@ export default handleActions(
     },
     defaultState,
 );
+
+const getLocale = state => state.language;
+
+export const fromI18n = {
+    getLocale,
+};

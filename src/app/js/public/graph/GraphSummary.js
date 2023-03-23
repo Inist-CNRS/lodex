@@ -10,6 +10,7 @@ import MixedChartIcon from './MixedChartIcon';
 import Link from '../../lib/components/Link';
 import stylesToClassname from '../../lib/stylesToClassName';
 import customTheme from '../../../custom/customTheme';
+import { fromDisplayConfig, fromI18n } from '../selectors';
 
 const styles = stylesToClassname(
     {
@@ -84,47 +85,62 @@ const styles = stylesToClassname(
     'graph-summary',
 );
 
-const PureGraphSummary = ({ graphicFields, closeDrawer }) => (
-    <div className={styles.container}>
-        <div className={classnames('graph-summary', styles.links)}>
-            {graphicFields.map(field => {
-                const Icon = getIconComponent(field);
-                return (
-                    <Link
-                        routeAware
-                        key={field.name}
-                        className={classnames(
-                            'graph-link',
-                            styles.link,
-                            styles.item,
-                        )}
-                        activeClassName={classnames(
-                            'active',
-                            styles.activeLink,
-                        )}
-                        to={`/graph/${field.name}`}
-                        onClick={closeDrawer}
-                    >
-                        {Icon ? (
-                            <Icon className={styles.icon} />
-                        ) : (
-                            <MixedChartIcon className={styles.icon} />
-                        )}
-                        <div className={styles.label}>{field.label}</div>
-                    </Link>
-                );
-            })}
+const PureGraphSummary = ({
+    graphicFields,
+    closeDrawer,
+    isMultilingual,
+    locale,
+}) => {
+    const filteredGraphs = graphicFields.filter(
+        graph =>
+            !isMultilingual || !graph.language || graph.language === locale,
+    );
+    return (
+        <div className={styles.container}>
+            <div className={classnames('graph-summary', styles.links)}>
+                {filteredGraphs.map(field => {
+                    const Icon = getIconComponent(field);
+                    return (
+                        <Link
+                            routeAware
+                            key={field.name}
+                            className={classnames(
+                                'graph-link',
+                                styles.link,
+                                styles.item,
+                            )}
+                            activeClassName={classnames(
+                                'active',
+                                styles.activeLink,
+                            )}
+                            to={`/graph/${field.name}`}
+                            onClick={closeDrawer}
+                        >
+                            {Icon ? (
+                                <Icon className={styles.icon} />
+                            ) : (
+                                <MixedChartIcon className={styles.icon} />
+                            )}
+                            <div className={styles.label}>{field.label}</div>
+                        </Link>
+                    );
+                })}
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 PureGraphSummary.propTypes = {
     graphicFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     closeDrawer: PropTypes.func.isRequired,
+    isMultilingual: PropTypes.bool.isRequired,
+    locale: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
     graphicFields: fromFields.getGraphicFields(state).filter(f => !!f.display),
+    isMultilingual: fromDisplayConfig.isMultilingual(state),
+    locale: fromI18n.getLocale(state),
 });
 
 export default connect(mapStateToProps)(PureGraphSummary);

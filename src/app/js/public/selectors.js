@@ -8,6 +8,7 @@ import { fromBreadcrumb as localFromBreadcrumb } from './breadcrumb/reducer';
 import { fromMenu as localFromMenu } from './menu/reducer';
 import { fromSearch as localFromSearch } from './search/reducer';
 import { fromDisplayConfig as localFromDisplayConfig } from './displayConfig/reducer';
+import { fromI18n as localFromI18n } from '../i18n';
 import localFromFacet from './facet/selectors';
 
 const getDatasetState = state => state.dataset;
@@ -61,6 +62,9 @@ const facetSelectorsByPage = {
     search: createGlobalSelectors(getFacet('search'), localFromFacet),
 };
 export const fromFacet = page => facetSelectorsByPage[page];
+
+const getI18nState = state => state.i18n;
+export const fromI18n = createGlobalSelectors(getI18nState, localFromI18n);
 
 export const fromRouter = {
     getResourceUri: state => {
