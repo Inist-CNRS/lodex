@@ -42,6 +42,8 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     }
 
     const [, metaData, , script] = currentScript;
+    const { sortDir, sortBy, match, ...facets } = ctx.query;
+
     ctx.type = metaData.mimeType;
     ctx.status = 200;
     if (metaData.fileName) {
@@ -53,8 +55,8 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     }
     // Legacy
     const orderBy = [
-        ctx.query.sortBy || '_id',
-        String(ctx.query.sortDir || 'asc').toLowerCase(),
+        sortBy || '_id',
+        String(sortDir || 'asc').toLowerCase(),
     ].join('/');
 
     const environment = {
@@ -62,14 +64,11 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     };
     const host = getCleanHost();
 
-    const { sortDir, ...facets } = ctx.query;
-
     const facetsWithoutId = getFacetsWithoutId(facets);
-
     const query = {
         orderBy,
         field: parseFieldsParams(fieldsParams),
-        sortDir,
+        match: match,
         ...facetsWithoutId,
         connectionStringURI: mongoConnectionString,
         host,
