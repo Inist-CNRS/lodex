@@ -17,7 +17,6 @@ import { schemeOrRd } from 'd3-scale-chromatic';
 
 const styles = {
     container: {
-        overflow: 'hidden',
         userSelect: 'none',
     },
 };

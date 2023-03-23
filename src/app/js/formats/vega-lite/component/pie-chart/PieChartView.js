@@ -12,7 +12,6 @@ import deepClone from 'lodash.clonedeep';
 
 const styles = {
     container: {
-        overflow: 'hidden',
         userSelect: 'none',
     },
 };

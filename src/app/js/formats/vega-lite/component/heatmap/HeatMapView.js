@@ -15,7 +15,6 @@ import {
 
 const styles = {
     container: {
-        overflow: 'hidden',
         userSelect: 'none',
     },
 };

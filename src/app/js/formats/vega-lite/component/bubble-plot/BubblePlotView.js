@@ -3,7 +3,6 @@ import { CustomActionVegaLite } from '../vega-lite-component';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import HeatMap from '../../models/HeatMap';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
 import ContainerDimensions from 'react-container-dimensions';
@@ -16,7 +15,6 @@ import BubblePlot from '../../models/BubblePlot';
 
 const styles = {
     container: {
-        overflow: 'hidden',
         userSelect: 'none',
     },
 };
