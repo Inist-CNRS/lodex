@@ -60,6 +60,7 @@ const LoaderSelectComponent = ({
                     autoWidth
                     disabled={disabled}
                     variant="standard"
+                    InputLabelProps={{ shrink: !!value }}
                 >
                     <MenuItem
                         className="select-loader-item"
