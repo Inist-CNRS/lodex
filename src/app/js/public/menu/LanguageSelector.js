@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromI18n } from '../selectors';
 import { setLanguage } from '../../i18n';
 import { Button, Menu, MenuItem } from '@mui/material';
-import LanguageIcon from '@mui/icons-material/Language';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-const LanguageSelector = ({ locale, setLanguage }) => {
+const LanguageSelector = ({ locale, setLanguage, p: polyglot }) => {
     const [languageSelectorAnchorEl, setLanguageSelectorAnchorEl] = useState(
         null,
     );
@@ -27,22 +29,27 @@ const LanguageSelector = ({ locale, setLanguage }) => {
                 }
                 aria-haspopup="true"
                 aria-expanded={languageSelectorOpen ? 'true' : undefined}
-                startIcon={<LanguageIcon />}
                 endIcon={<KeyboardArrowUpIcon />}
                 onClick={handleLanguageSelectorClick}
+                sx={{
+                    textTransform: 'none',
+                    marginRight: 2,
+                }}
             >
-                {locale.toUpperCase()}
+                {polyglot.t('semantic_language')}
+                <br />
+                {locale === 'fr' ? 'français' : 'english'}
             </Button>
             <Menu
                 id="language-selector-menu"
                 anchorEl={languageSelectorAnchorEl}
                 anchorOrigin={{
                     vertical: 'top',
-                    horizontal: 'left',
+                    horizontal: 'right',
                 }}
                 transformOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'left',
+                    horizontal: 'right',
                 }}
                 open={languageSelectorOpen}
                 onClose={handleLanguageSelectorClose}
@@ -71,6 +78,7 @@ const LanguageSelector = ({ locale, setLanguage }) => {
 LanguageSelector.propTypes = {
     setLanguage: PropTypes.func.isRequired,
     locale: PropTypes.string.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -81,4 +89,7 @@ const mapDispatchToProps = {
     setLanguage,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageSelector);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate,
+)(LanguageSelector);

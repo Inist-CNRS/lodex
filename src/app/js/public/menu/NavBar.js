@@ -181,7 +181,6 @@ export const NavBar = ({
                                 advancedDrawer={advancedMenuDrawer}
                             />
                         ))}
-                        {isMultilingual && <LanguageSelector />}
                     </div>
                     <div className={styles.last}>
                         {rightMenu.map((config, index) => (
@@ -198,6 +197,7 @@ export const NavBar = ({
                                 advancedDrawer={advancedMenuDrawer}
                             />
                         ))}
+                        {isMultilingual && <LanguageSelector />}
                     </div>
                     {advancedMenu.length > 0 && (
                         <MenuItem

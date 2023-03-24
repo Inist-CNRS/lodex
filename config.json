@@ -189,8 +189,8 @@
         },
         "maxCheckAllFacetsValue": {
             "dataset": 60,
-            "search": 300
+            "search": 200
         },
-        "multilingual": true
+        "multilingual": false
     }
 }
