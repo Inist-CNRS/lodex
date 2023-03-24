@@ -63,7 +63,7 @@
         "@emotion/react": "11.7.1",
         "@emotion/styled": "11.6.0",
         "@ezs/analytics": "^2.0.21",
-        "@ezs/basics": "^1.23.4",
+        "@ezs/basics": "^1.23.5",
         "@ezs/booster": "^1.2.4",
         "@ezs/conditor": "^2.10.3",
         "@ezs/core": "2.5.0",
