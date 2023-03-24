@@ -2,10 +2,12 @@ import { createAction, handleActions } from 'redux-actions';
 
 export const SUPPORTED_LANGUAGES = ['en', 'fr'];
 
+export const INITIALIZE_LANGUAGE = 'INITIALIZE_LANGUAGE';
 export const SET_LANGUAGE_REQUEST = 'SET_LANGUAGE_REQUEST';
 export const SET_LANGUAGE_REQUEST_SUCCESS = 'SET_LANGUAGE_REQUEST_SUCCESS';
 export const SET_LANGUAGE_REQUEST_ERROR = 'SET_LANGUAGE_REQUEST_ERROR';
 
+export const initializeLanguage = createAction(INITIALIZE_LANGUAGE);
 export const setLanguage = createAction(SET_LANGUAGE_REQUEST);
 export const setLanguageSuccess = createAction(SET_LANGUAGE_REQUEST_SUCCESS);
 export const setLanguageError = createAction(SET_LANGUAGE_REQUEST_ERROR);

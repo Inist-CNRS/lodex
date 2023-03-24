@@ -1,23 +1,13 @@
-import { put, call, takeEvery } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'connected-react-router';
-import qs from 'qs';
+import { put, takeEvery } from 'redux-saga/effects';
 
-import { setLanguage } from '../';
+import { INITIALIZE_LANGUAGE, setLanguage } from '../';
 import getLocale from '../../../../common/getLocale';
 
-const getLanguage = queryString => {
-    const locale = qs.parse(queryString, { ignorePrefix: true }).language;
-    if (!locale) {
-        return getLocale();
-    }
-    return locale;
-};
-
-export function* handleInitializeLanguage({ payload: { search } }) {
-    const language = yield call(getLanguage, search);
-    yield put(setLanguage(language));
+export function* handleInitializeLanguage() {
+    const locale = getLocale();
+    yield put(setLanguage(locale));
 }
 
 export default function* watchInitializeLanguage() {
-    yield takeEvery(LOCATION_CHANGE, handleInitializeLanguage);
+    yield takeEvery(INITIALIZE_LANGUAGE, handleInitializeLanguage);
 }

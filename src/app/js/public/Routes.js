@@ -18,6 +18,7 @@ import scrollToTop from '../lib/scrollToTop';
 import CreateResource from './resource/CreateResource';
 import ScrollToTop from './ScrollToTop';
 import Breadcrumb from './breadcrumb/Breadcrumb';
+import { initializeLanguage } from '../i18n';
 
 const notLogin = new RegExp('^(?!.*(/login)).*$');
 
@@ -27,6 +28,7 @@ const Routes = props => {
     useEffect(() => {
         props.loadMenu();
         props.loadDisplayConfig();
+        props.initializeLanguage();
     }, []);
 
     const { customRoutes, history } = props;
@@ -91,6 +93,7 @@ Routes.propTypes = {
     customRoutes: PropTypes.arrayOf(PropTypes.string),
     loadMenu: PropTypes.func.isRequired,
     loadDisplayConfig: PropTypes.func.isRequired,
+    initializeLanguage: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
 };
 
@@ -101,6 +104,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     loadMenu,
     loadDisplayConfig,
+    initializeLanguage,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Routes);
