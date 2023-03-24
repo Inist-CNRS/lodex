@@ -47,6 +47,7 @@ const getDisplayExportPDF = state => state.PDFExportOptions?.display || false;
 const getMaxExportPDFSize = state => state.PDFExportOptions?.maxSize || 0;
 const getMaxCheckAllFacetsValue = state =>
     state.maxCheckAllFacetsValue || DEFAULT_MAX_VALUE_FOR_CHECK_ALL_FACET;
+const isMultilingual = state => state.multilingual;
 
 export const fromDisplayConfig = {
     hasDisplayConfig,
@@ -54,4 +55,5 @@ export const fromDisplayConfig = {
     getMaxExportPDFSize,
     getMaxCheckAllFacetsValue,
     isDense,
+    isMultilingual,
 };

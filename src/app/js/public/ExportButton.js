@@ -9,7 +9,12 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import compose from 'recompose/compose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { fromDisplayConfig, fromExport, fromSearch } from './selectors';
+import {
+    fromDisplayConfig,
+    fromExport,
+    fromI18n,
+    fromSearch,
+} from './selectors';
 import ExportItem from './export/ExportMenuItem';
 import stylesToClassname from '../lib/stylesToClassName';
 
@@ -46,6 +51,7 @@ const ExportButton = ({
     maxExportPDFSize,
     match,
     facets,
+    locale,
 }) => {
     if (!exporters || !exporters.length) {
         return null;
@@ -81,6 +87,7 @@ const ExportButton = ({
                 maxExportPDFSize,
                 match,
                 facets,
+                locale,
             });
 
             // Detect if the user is on a mobile device and redirect to the PDF
@@ -149,6 +156,7 @@ ExportButton.propTypes = {
     maxExportPDFSize: PropTypes.number,
     match: PropTypes.string,
     facets: PropTypes.arrayOf(PropTypes.object),
+    locale: PropTypes.string.isRequired,
 };
 
 ExportButton.defaultProps = {
@@ -161,6 +169,7 @@ const mapStateToProps = state => ({
     maxExportPDFSize: fromDisplayConfig.getMaxExportPDFSize(state),
     facets: fromSearch.getAppliedFacets(state),
     match: fromSearch.getQuery(state),
+    locale: fromI18n.getLocale(state),
 });
 
 const mapDispatchToProps = dispatch =>

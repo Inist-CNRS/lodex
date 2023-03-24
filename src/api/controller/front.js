@@ -40,6 +40,7 @@ import {
     displayDensity,
     PDFExportOptions,
     maxCheckAllFacetsValue,
+    multilingual,
 } from './api/displayConfig';
 import customTheme from '../../app/custom/customTheme';
 
@@ -91,6 +92,7 @@ const getDefaultInitialState = (token, cookie, locale) => ({
         displayDensity,
         PDFExportOptions,
         maxCheckAllFacetsValue,
+        multilingual,
         error: null,
     },
 });

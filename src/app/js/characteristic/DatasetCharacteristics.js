@@ -8,6 +8,7 @@ import { field as fieldPropTypes } from '../propTypes';
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
 
 import DatasetCharacteristicItem from './DatasetCharacteristicItem';
+import { fromDisplayConfig, fromI18n } from '../public/selectors';
 
 const styles = {
     container: {
@@ -22,22 +23,36 @@ const styles = {
     },
 };
 
-const DatasetCharacteristicsView = ({ characteristics }) => (
-    <div className="dataset-characteristics">
-        <div style={styles.container}>
-            {characteristics.map(characteristicField => (
-                <DatasetCharacteristicItem
-                    key={characteristicField.name}
-                    characteristic={characteristicField}
-                    style={styles.item}
-                />
-            ))}
+const DatasetCharacteristicsView = ({
+    characteristics,
+    isMultilingual,
+    locale,
+}) => {
+    const filteredCharacteristics = characteristics.filter(
+        characteristic =>
+            !isMultilingual ||
+            !characteristic.language ||
+            characteristic.language === locale,
+    );
+    return (
+        <div className="dataset-characteristics">
+            <div style={styles.container}>
+                {filteredCharacteristics.map(characteristicField => (
+                    <DatasetCharacteristicItem
+                        key={characteristicField.name}
+                        characteristic={characteristicField}
+                        style={styles.item}
+                    />
+                ))}
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 DatasetCharacteristicsView.propTypes = {
     characteristics: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    isMultilingual: PropTypes.bool.isRequired,
+    locale: PropTypes.string.isRequired,
 };
 
 DatasetCharacteristicsView.defaultProps = {
@@ -54,6 +69,8 @@ const mapStateToProps = state => {
             fields,
         ),
         fields,
+        isMultilingual: fromDisplayConfig.isMultilingual(state),
+        locale: fromI18n.getLocale(state),
     };
 };
 

@@ -7,7 +7,7 @@ import compose from 'recompose/compose';
 import classnames from 'classnames';
 
 import { fromUser, fromFields } from '../../sharedSelectors';
-import { fromMenu } from '../selectors';
+import { fromDisplayConfig, fromMenu } from '../selectors';
 import { logout } from '../../user';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Drawer, { useDrawer, DRAWER_CLOSED } from '../Drawer';
@@ -17,6 +17,7 @@ import AdvancedPage from './AdvancedPage';
 import Favicon from '../Favicon';
 import MenuItem from './MenuItem';
 import stylesToClassname from '../../lib/stylesToClassName';
+import LanguageSelector from './LanguageSelector';
 
 config.autoAddCss = false;
 
@@ -74,6 +75,7 @@ export const NavBar = ({
     hasFacetFields,
     search,
     closeSearch,
+    isMultilingual,
 }) => {
     if (!leftMenu || !rightMenu) {
         return null;
@@ -195,6 +197,7 @@ export const NavBar = ({
                                 advancedDrawer={advancedMenuDrawer}
                             />
                         ))}
+                        {isMultilingual && <LanguageSelector />}
                     </div>
                     {advancedMenu.length > 0 && (
                         <MenuItem
@@ -278,6 +281,7 @@ NavBar.propTypes = {
     hasFacetFields: PropTypes.bool.isRequired,
     search: PropTypes.bool.isRequired,
     closeSearch: PropTypes.func.isRequired,
+    isMultilingual: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -290,6 +294,7 @@ const mapStateToProps = state => ({
     advancedMenu: fromMenu.getAdvancedMenu(state),
     advancedMenuButton: fromMenu.getAdvancedMenuButton(state),
     hasFacetFields: fromFields.hasFacetFields(state),
+    isMultilingual: fromDisplayConfig.isMultilingual(state),
 });
 
 const mapDispatchToProps = {

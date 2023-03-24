@@ -121,6 +121,7 @@ export const PropertyComponent = ({
     style,
     parents,
     dense,
+    isMultilingual,
 }) => {
     if (!shouldDisplayField(resource, field, fieldStatus, predicate, isAdmin)) {
         return null;
@@ -225,7 +226,7 @@ export const PropertyComponent = ({
                 style={styles.valueContainer}
             >
                 <Box sx={styles.value(dense)}>{format}</Box>
-                {field.language && (
+                {field.language && !isMultilingual && (
                     <span
                         className={classnames(
                             'property_language',
@@ -259,6 +260,7 @@ PropertyComponent.propTypes = {
     style: PropTypes.object,
     p: polyglotPropTypes.isRequired,
     dense: PropTypes.bool,
+    isMultilingual: PropTypes.bool,
 };
 
 PropertyComponent.defaultProps = {
@@ -273,6 +275,7 @@ const mapStateToProps = (state, { field }) => ({
     fieldStatus: fromResource.getFieldStatus(state, field),
     predicate: getPredicate(field),
     dense: fromDisplayConfig.isDense(state),
+    isMultilingual: fromDisplayConfig.isMultilingual(state),
 });
 
 const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>

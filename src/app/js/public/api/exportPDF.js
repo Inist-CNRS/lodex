@@ -5,13 +5,10 @@ import { getExportPDFRequest } from '../../user';
 const exportPDF = async options => {
     const { token } = getUserLocalStorageInfo();
 
-    // get local language
-    const locale = window.navigator.language;
-
     // set facets for url query
     options.facets = encodeURIComponent(JSON.stringify(options.facets));
 
-    const request = getExportPDFRequest({ token }, { locale, ...options });
+    const request = getExportPDFRequest({ token }, options);
     return fetch(request, 'blob').then(({ response, error }) => {
         if (error) {
             return error;
