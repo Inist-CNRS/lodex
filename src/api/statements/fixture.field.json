@@ -1,0 +1,555 @@
+{
+    "field": [
+        {
+            "_id": "5b2bd064c767d60017eb12fc",
+            "cover": "collection",
+            "label": "titre",
+            "display_in_list": true,
+            "display_in_resource": true,
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "titre"
+                        }
+                    ]
+                }
+            ],
+            "position": 2,
+            "scheme": "http://purl.org/dc/terms/title",
+            "language": null,
+            "overview": 1,
+            "format": {
+                "args": {
+                    "level": 4
+                },
+                "name": "title"
+            },
+            "isFacet": true,
+            "name": "tfFF"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb12fe",
+            "cover": "collection",
+            "label": "définition anglais",
+            "display_in_list": true,
+            "display_in_resource": true,
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "définition anglais"
+                        }
+                    ]
+                }
+            ],
+            "position": 5,
+            "scheme": "http://www.w3.org/2004/02/skos/core#definition",
+            "language": "en",
+            "isFacet": true,
+            "name": "BoJb"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb12fd",
+            "cover": "collection",
+            "label": "libellé anglais",
+            "display_in_list": false,
+            "display_in_resource": true,
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "libellé anglais"
+                        }
+                    ]
+                }
+            ],
+            "position": 3,
+            "scheme": "http://www.w3.org/2004/02/skos/core#prefLabel",
+            "language": "en",
+            "name": "6gfz"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb1301",
+            "cover": "collection",
+            "label": "définition français",
+            "display_in_list": false,
+            "display_in_resource": true,
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "définition français"
+                        }
+                    ]
+                }
+            ],
+            "position": 7,
+            "scheme": "http://www.w3.org/2004/02/skos/core#definition",
+            "language": "fr",
+            "overview": 2,
+            "name": "7Ygl"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb1303",
+            "cover": "collection",
+            "label": "note supplémentaire",
+            "display_in_list": false,
+            "display_in_resource": true,
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "note supplémentaire"
+                        }
+                    ]
+                }
+            ],
+            "position": 9,
+            "scheme": "http://www.w3.org/2004/02/skos/core#scopeNote",
+            "language": "fr",
+            "format": {
+                "name": "markdown"
+            },
+            "name": "EbSk"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb1302",
+            "cover": "collection",
+            "label": "commentaire",
+            "display_in_list": false,
+            "display_in_resource": true,
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "commentaire"
+                        }
+                    ]
+                }
+            ],
+            "position": 7,
+            "scheme": "http://www.w3.org/2004/02/skos/core#note",
+            "language": "fr",
+            "name": "XanQ"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb1300",
+            "cover": "collection",
+            "label": "source",
+            "display_in_list": false,
+            "display_in_resource": true,
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "source"
+                        }
+                    ]
+                }
+            ],
+            "position": 5,
+            "scheme": "http://purl.org/dc/terms/source",
+            "language": "en",
+            "completes": "BoJb",
+            "format": {
+                "name": "link"
+            },
+            "classes": [],
+            "name": "0Vpg"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb12ff",
+            "cover": "collection",
+            "label": "libellé français",
+            "display_in_list": true,
+            "display_in_resource": true,
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "libellé français"
+                        }
+                    ]
+                }
+            ],
+            "position": 3,
+            "scheme": "http://www.w3.org/2004/02/skos/core#altLabel",
+            "language": "fr",
+            "name": "6uOV"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb1304",
+            "cover": "collection",
+            "label": "exemples",
+            "display_in_list": false,
+            "display_in_resource": true,
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "exemples"
+                        }
+                    ]
+                }
+            ],
+            "position": 9,
+            "scheme": "http://www.w3.org/2004/02/skos/core#example",
+            "language": "en",
+            "name": "PNRk"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb1305",
+            "cover": "collection",
+            "label": "est contenu par",
+            "display_in_list": false,
+            "display_in_resource": true,
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "est contenu par"
+                        }
+                    ]
+                },
+                {
+                    "args": [
+                        {
+                            "name": "separator",
+                            "type": "string",
+                            "value": ","
+                        }
+                    ],
+                    "operation": "SPLIT"
+                }
+            ],
+            "position": 10,
+            "scheme": "http://purl.org/dc/terms/isPartOf",
+            "classes": [],
+            "format": {
+                "args": {
+                    "type": "value",
+                    "value": ""
+                },
+                "name": "link"
+            },
+            "name": "vlM0",
+            "count": 13,
+            "overview": 0
+        },
+        {
+            "_id": "5b2bd064c767d60017eb1306",
+            "cover": "dataset",
+            "label": "Modèle conceptuel",
+            "display_in_list": "",
+            "display_in_resource": "",
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "Modèle conceptuel"
+                        }
+                    ]
+                }
+            ],
+            "position": 15,
+            "scheme": "http://schema.org/image",
+            "format": {
+                "args": {
+                    "imageWidth": "50%"
+                },
+                "name": "image"
+            },
+            "classes": [],
+            "count": 0,
+            "display_in_home": true,
+            "name": "G0Ux"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb1307",
+            "cover": "collection",
+            "label": "cette ressource dans ISTEX",
+            "display_in_list": false,
+            "display_in_resource": true,
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "cette ressource dans ISTEX"
+                        }
+                    ]
+                }
+            ],
+            "position": 11,
+            "scheme": "https://data.istex.fr/ontology/istex#query",
+            "format": {
+                "name": "istex"
+            },
+            "classes": [],
+            "name": "D0n9"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb1308",
+            "cover": "dataset",
+            "label": "Date de création",
+            "display_in_list": "",
+            "display_in_resource": "",
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "Date de création"
+                        }
+                    ]
+                }
+            ],
+            "position": 17,
+            "scheme": "http://purl.org/dc/terms/created",
+            "classes": [],
+            "count": 0,
+            "display_in_home": true,
+            "name": "etxw"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb1309",
+            "cover": "dataset",
+            "label": "",
+            "display_in_list": "",
+            "display_in_resource": "",
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "V99c"
+                        }
+                    ]
+                }
+            ],
+            "position": 12,
+            "scheme": "http://purl.org/dc/terms/title",
+            "language": "fr",
+            "format": {
+                "args": {
+                    "level": 2
+                },
+                "name": "title"
+            },
+            "count": 0,
+            "display_in_home": true,
+            "name": "V99c"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb130a",
+            "cover": "dataset",
+            "label": "Créateur",
+            "display_in_list": "",
+            "display_in_resource": "",
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "Créateur"
+                        }
+                    ]
+                }
+            ],
+            "position": 18,
+            "scheme": "http://purl.org/dc/terms/creator",
+            "count": 0,
+            "display_in_home": true,
+            "name": "7IpS"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb130b",
+            "cover": "dataset",
+            "label": "Description",
+            "display_in_list": "",
+            "display_in_resource": "",
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "Description"
+                        }
+                    ]
+                }
+            ],
+            "position": 13,
+            "scheme": "http://purl.org/dc/terms/description",
+            "language": "fr",
+            "format": {
+                "name": "markdown"
+            },
+            "count": 0,
+            "display_in_home": true,
+            "name": "AtQO"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb130c",
+            "cover": "dataset",
+            "label": "Licence",
+            "display_in_list": "",
+            "display_in_resource": "",
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "Licence"
+                        }
+                    ]
+                }
+            ],
+            "position": 19,
+            "scheme": "http://purl.org/dc/terms/license",
+            "classes": [],
+            "format": {
+                "name": "link"
+            },
+            "count": 0,
+            "display_in_home": true,
+            "name": "CAhi"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb130d",
+            "label": "Liste des ressources",
+            "format": {
+                "args": {
+                    "spaceWidth": "30%",
+                    "pageSize": 50,
+                    "orderBy": "value/asc"
+                },
+                "name": "resourcesGrid"
+            },
+            "cover": "dataset",
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "Liste des ressources"
+                        }
+                    ]
+                }
+            ],
+            "position": 14,
+            "display_in_home": true,
+            "count": 0,
+            "name": "gLBB"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb130e",
+            "cover": "dataset",
+            "label": "Editeur",
+            "display_in_list": "",
+            "display_in_resource": "",
+            "searchable": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "Editeur"
+                        }
+                    ]
+                }
+            ],
+            "position": 19,
+            "scheme": "http://purl.org/dc/terms/publisher",
+            "count": 0,
+            "display_in_home": true,
+            "name": "PJTS"
+        },
+        {
+            "_id": "5b2bd064c767d60017eb130f",
+            "cover": "collection",
+            "label": "uri",
+            "display_on_list": true,
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "uri"
+                        }
+                    ]
+                }
+            ],
+            "position": 0,
+            "name": "uri"
+        }
+    ]
+}

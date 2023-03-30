@@ -1,9 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import ezs from '@ezs/core';
-import Booster from '@ezs/booster';
-import Storage from '@ezs/storage';
-import Lodex from '@ezs/lodex';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
@@ -13,10 +10,9 @@ import Script from '../../services/script';
 import localConfig from '../../../../config.json';
 import { getCleanHost } from '../../../common/uris';
 import { mongoConnectionString } from '../../services/mongoClient';
+import statements from '../../statements';
 
-ezs.use(Lodex);
-ezs.use(Booster);
-ezs.use(Storage);
+ezs.use(statements);
 
 const scripts = new Script('exporters', '../app/custom/exporters');
 
