@@ -160,5 +160,35 @@
         "url": "/api/run/tree-by/",
         "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/treeby",
         "recommendedWith": ["HierarchicalGraph"]
+    },
+    {
+        "id": "r-filter",
+        "url": "/api/run/filter/",
+        "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
+        "recommendedWith": ["RessourcesGrid","PaginatedTable","UnpaginatedTable"]
+    },
+    {
+        "id": "r-labeled-ressources",
+        "url": "/api/run/labeled-ressources/",
+        "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
+        "recommendedWith": ["All"]
+    },
+    {
+        "id": "r-sub-resources-asterplot",
+        "url": "/api/run/sub-resources-asterplot/",
+        "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
+        "recommendedWith": ["AsterPlot"]
+    },
+    {
+        "id": "r-sub-resources-co-occurrences",
+        "url": "/api/run/sub-resources-co-occurrences/",
+        "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
+        "recommendedWith": ["PaginatedTable","UnpaginatedTable"]
+    },
+    {
+        "id": "r-close-by",
+        "url": "/api/run/close-by/",
+        "doc": "https://lodex.inist.fr/docs/partie-2-2/les-routines-et-graphes/les-routines/",
+        "recommendedWith": ["AsterPlot"]
     }
 ]
