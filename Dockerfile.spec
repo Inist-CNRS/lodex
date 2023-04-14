@@ -18,9 +18,8 @@ WORKDIR /app
 ARG node_env="production"
 ENV NODE_ENV=$node_env
 
-RUN cp -n ./config/production-dist.js ./config/production.js
-
-RUN npm run build
+RUN cp -n ./config/production-dist.js ./config/production.js \
+    && npm run build
 
 EXPOSE 3000
 CMD ["npm", "start"]
