@@ -939,10 +939,7 @@
 "ws_post-v1-inspire-labos-in2p3-labos-json_description"	"(Made for IN2P3) assigns the name of one of the IN2P3 laboratories from the IN2P3 laboratory codes"	"(Fait pour l'IN2P3) attribue le nom d’un des laboratoires IN2P3 à partir des codes laboratoires IN2P3"
 "ws_post-v1-inspire-category-meta-category-json_title"	"Grouping of Inspire categories into meta-categories IN2P3"	"Regroupement des catégories Inspire en méta-catégories IN2P3"
 "ws_post-v1-inspire-category-meta-category-json_description"	"(Made for IN2P3) homogenizes the Inspire categories and groups them into meta-categories specific to IN2P3"	"(Fait pour l'IN2P3) homogénéise les catégories Inspire et les regroupe en méta-catégories propres à l’IN2P3"
-<<<<<<< HEAD
 "ws_post-v1-first-name-gender_title"	"Detection of the gender of a first name"	"Détection du genre d'un prénom"
 "ws_post-v1-first-name-gender_description"	"This web service allows to detect the gender of a first name from a list of gendered first names"	"Ce web service permet de détecter le genre d’un prénom à partir d’une liste de prénoms genrés"
 "ws_post-v1-lemma_title"	"Lemmatizer for English terms"	"Lemmatiseur de termes anglais"
 "ws_post-v1-lemma_description"	"This service allows you to lemmatize terms in English."	"Ce service permet de lemmatiser des termes en anglais"
-=======
->>>>>>> ab81a4e5cf0311509a35d0a87e9acc9e44dd563b

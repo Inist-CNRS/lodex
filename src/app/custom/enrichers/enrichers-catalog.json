@@ -194,11 +194,7 @@
     {
         "id": "post-v2-affiliation-rnsr",
         "url": "https://affiliation-rnsr.services.inist.fr/v2/affiliation/rnsr",
-<<<<<<< HEAD
         "doc": "",
-=======
-        "doc": "https://github.com/Inist-CNRS/ezmaster-apps/tree/main/applications/ws-affiliation-rnsr/public",
->>>>>>> ab81a4e5cf0311509a35d0a87e9acc9e44dd563b
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=affiliation-rnsr%20-%20Recherche%20d%27identifiants%20RNSR#/default/post_v2_affiliation_rnsr",
         "objectif TDM": "",
         "type": "affiliation"
@@ -218,7 +214,6 @@
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-inspire-category-meta-category-json",
         "objectif TDM": "https://objectif-tdm.inist.fr/2023/02/06/regroupement-des-categories-inspire-en-meta-categorie-in2p3/",
         "type": "other"
-<<<<<<< HEAD
     },
     {
         "id": "post-v1-first-name-gender",
@@ -235,7 +230,5 @@
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=nlp-tools2%20-%20Outils%20de%20NLP#/NLP/post-v1-lemma",
         "objectif TDM": "https://objectif-tdm.inist.fr/2023/04/19/lemmatiseur_eng/",
         "type": "other"
-=======
->>>>>>> ab81a4e5cf0311509a35d0a87e9acc9e44dd563b
     }
 ]
