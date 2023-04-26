@@ -3,7 +3,7 @@ import generateUid from './JSONLDObject/generateUid';
 describe('generateUid', () => {
     it('should generate random 4 char uid', async () => {
         const uid = await generateUid();
-        expect(uid).toMatch(/^[A-za-z0-9+/]{4}$/);
+        expect(uid).toMatch(/^[\w]{4}$/);
     });
 
     it('should generate different uid on eac call', async () => {
