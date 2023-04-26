@@ -25,7 +25,13 @@ export function getFacetsWithoutId(facets) {
         return {};
     }
     return Object.keys(facets).reduce((acc, facetName) => {
-        acc[facetName] = facets[facetName].map(facetValue => facetValue.value);
+        if (Array.isArray(facets[facetName])) {
+            acc[facetName] = facets[facetName].map(
+                facetValue => facetValue.value,
+            );
+        } else {
+            acc[facetName] = facets[facetName];
+        }
         return acc;
     }, {});
 }
@@ -65,6 +71,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     const host = getCleanHost();
 
     const facetsWithoutId = getFacetsWithoutId(facets);
+
     const query = {
         orderBy,
         field: parseFieldsParams(fieldsParams),
