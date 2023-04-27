@@ -124,7 +124,7 @@
         "url": "https://address-kit.services.inist.fr/v1/cnrsunit/cnrsunit",
         "doc": "",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=address-kit%20-%20Informations%20sur%20des%20adresses%20d%27affiliations",
-        "objectif TDM": "https://objectif-tdm.inist.fr/2022/11/09/detection-dunites-cnrs/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2022/11/09/detection-dunites-cnrs/",
         "type": "affiliation"
     },
     {
@@ -132,7 +132,7 @@
         "url": "https://loterre-resolvers.services.inist.fr/v1/D63/identify",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/loterre-resolvers",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-D63-identify",
-        "objectif TDM": "https://objectif-tdm.inist.fr/2022/02/01/associer-un-terme-au-vocabulaire-des-communes-de-france/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2022/02/01/associer-un-terme-au-vocabulaire-des-communes-de-france/",
         "type": "geography"
     },
     {
@@ -140,7 +140,7 @@
         "url": "https://terms-extraction.services.inist.fr/v1/tools/normalize",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/terms-extraction",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-tools",
-        "objectif TDM": "https://objectif-tdm.inist.fr/2022/01/12/normaliser-un-texte-ou-un-terme/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2022/01/12/normaliser-un-texte-ou-un-terme/",
         "type": "metadata"
     },
     {
@@ -148,7 +148,7 @@
         "url": "https://loterre-resolvers.services.inist.fr/v1/9SD/identify",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/loterre-resolvers",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-9SD-identify",
-        "objectif TDM": "https://objectif-tdm.inist.fr/2021/12/21/associer-un-pays-ou-subdivision-au-vocabulaire-loterre-correspondant/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/21/associer-un-pays-ou-subdivision-au-vocabulaire-loterre-correspondant/",
         "type": "geography"
     },
     {
@@ -156,7 +156,7 @@
         "url": "https://ner-tagger.services.inist.fr/v1/perseeBaipTagger/tagger",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/geo-tagger",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=ner-tagger%20-%20D%C3%A9tection%20d%27entit%C3%A9s%20nomm%C3%A9es#/default/post_v1_perseeBaipTagger_tagger",
-        "objectif TDM": "https://objectif-tdm.inist.fr/2022/03/29/detection-dentites-nommees-dans-les-bulletins-administratifs-de-linstruction-publique-persee/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2022/03/29/detection-dentites-nommees-dans-les-bulletins-administratifs-de-linstruction-publique-persee/",
         "type": "geography"
     },
     {
@@ -164,7 +164,7 @@
         "url": "https://ner-tagger.services.inist.fr/v1/geoTagger/geoTagger",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/geo-tagger",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=ner-tagger%20-%20D%C3%A9tection%20d%27entit%C3%A9s%20nomm%C3%A9es#/default/post_v1_geoTagger_geoTagger",
-        "objectif TDM": "https://objectif-tdm.inist.fr/2022/03/08/detection-dentites-nommees/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2022/03/08/detection-dentites-nommees/",
         "type": "geography"
     },
     {
@@ -172,7 +172,7 @@
         "url": "https://irc3-species.services.inist.fr/v1/irc3sp",
         "doc": "",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=irc3-species%20-%20IRC3%20esp%C3%A8ces%20animales#/default/post_v1_irc3sp",
-        "objectif TDM": "https://objectif-tdm.inist.fr/2023/03/22/irc3-species-recherche-despeces-animales/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2023/03/22/irc3-species-recherche-despeces-animales/",
         "type": "indexation"
     },
     {
@@ -180,7 +180,7 @@
         "url": "https://mapping-tools.services.inist.fr/v1/hospital/affiliations",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools/v1/hospital",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/default/post_v1_hospital_affiliations",
-        "objectif TDM": "https://objectif-tdm.inist.fr/2023/04/18/affiliations-hospitalieres/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2023/04/18/affiliations-hospitalieres/",
         "type": "affiliation"
     },
     {
@@ -188,7 +188,7 @@
         "url": "https://authors-tools.services.inist.fr/v1/orcid-disambiguation/orcidDisambiguation",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/authors-tools",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=authors-tools%20-%20Outils%20sur%20les%20auteurs#/default/post_v1_orcid_disambiguation_orcidDisambiguation",
-        "objectif TDM": "",
+        "objectifTDM": "",
         "type": "other"
     },
     {
@@ -196,7 +196,7 @@
         "url": "https://affiliation-rnsr.services.inist.fr/v2/affiliation/rnsr",
         "doc": "",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=affiliation-rnsr%20-%20Recherche%20d%27identifiants%20RNSR#/default/post_v2_affiliation_rnsr",
-        "objectif TDM": "https://objectif-tdm.inist.fr/2023/04/20/attribution-dun-rnsr-a-une-affiliation-apprentissage/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2023/04/20/attribution-dun-rnsr-a-une-affiliation-apprentissage/",
         "type": "affiliation"
     },
     {
@@ -204,7 +204,7 @@
         "url": "https://mapping-tools.services.inist.fr/v1/inspire-labos/in2p3-labos/json",
         "doc": "",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-inspire-labos-in2p3-labos-json",
-        "objectif TDM": "https://objectif-tdm.inist.fr/2023/02/06/identification-des-laboratoires-in2p3/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2023/02/06/identification-des-laboratoires-in2p3/",
         "type": "other"
     },
     {
@@ -212,7 +212,7 @@
         "url": "https://mapping-tools.services.inist.fr/v1/inspire-category/meta-category/json",
         "doc": "",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-inspire-category-meta-category-json",
-        "objectif TDM": "https://objectif-tdm.inist.fr/2023/02/06/regroupement-des-categories-inspire-en-meta-categorie-in2p3/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2023/02/06/regroupement-des-categories-inspire-en-meta-categorie-in2p3/",
         "type": "other"
     },
     {
@@ -220,7 +220,7 @@
         "url": "https://authors-tools.services.inist.fr/v1/first-name/gender",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/authors-tools#v1%2ffirst-name%2fgender",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=authors-tools%20-%20Outils%20sur%20les%20auteurs#/default/post_v1_first_name_gender",
-        "objectif TDM": "https://objectif-tdm.inist.fr/2023/04/20/detection-du-genre-dun-prenom/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2023/04/20/detection-du-genre-dun-prenom/",
         "type": "classification"
     },
     {
@@ -228,7 +228,7 @@
         "url": "https://nlp-tools2.services.inist.fr/v1/lemma",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/nlp-tools2#v1%2flemma",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=nlp-tools2%20-%20Outils%20de%20NLP#/NLP/post-v1-lemma",
-        "objectif TDM": "https://objectif-tdm.inist.fr/2023/04/19/lemmatiseur_eng/",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2023/04/19/lemmatiseur_eng/",
         "type": "other"
     }
 ]
