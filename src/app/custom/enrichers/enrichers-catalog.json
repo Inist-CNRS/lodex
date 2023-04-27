@@ -116,7 +116,7 @@
         "url": "https://biblio-tools.services.inist.fr/v1/unpaywall/expand",
         "doc": "",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=biblio-tools%20-%20Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/biblio-tools/post-v1-unpaywall-expand",
-        "objectifTDM": "",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2022/02/09/enrichissement-par-doi/",
         "type": "other"
     },
     {
@@ -180,7 +180,7 @@
         "url": "https://mapping-tools.services.inist.fr/v1/hospital/affiliations",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools/v1/hospital",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/default/post_v1_hospital_affiliations",
-        "objectif TDM": "",
+        "objectif TDM": "https://objectif-tdm.inist.fr/2023/04/18/affiliations-hospitalieres/",
         "type": "affiliation"
     },
     {
@@ -196,7 +196,7 @@
         "url": "https://affiliation-rnsr.services.inist.fr/v2/affiliation/rnsr",
         "doc": "",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=affiliation-rnsr%20-%20Recherche%20d%27identifiants%20RNSR#/default/post_v2_affiliation_rnsr",
-        "objectif TDM": "",
+        "objectif TDM": "https://objectif-tdm.inist.fr/2023/04/20/attribution-dun-rnsr-a-une-affiliation-apprentissage/",
         "type": "affiliation"
     },
     {
