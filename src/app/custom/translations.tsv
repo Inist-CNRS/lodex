@@ -656,7 +656,7 @@
 "column_title"	"Column title"	"Titre de la colonne"
 "number_of_column"	"Number of columns"	"Nombre de colonnes"
 "info_upload"	"Warning"	"Attention"
-"info_publish_desc"	"The data you are about to add will be merged or substituted, if same identifiers, with those already loaded"	"Les données que vous vous apprêtez à ajouter seront fusionnées ou se substitueront, si même identifiants, avec celles déjà chargées"
+"info_publish_desc"	"The data you are about to add will replace the data already loaded if they have identical identifiers."	"Les données que vous vous apprêtez à ajouter se substitueront aux données déjà chargées si elles possèdent des identifiants identiques."
 "enrichments"	"Enrichments"	"Enrichissements"
 "new_enrichment"	"New enrichment"	"Nouvel enrichissement"
 "expand_rules"	"Expand rules"	"Règles de développement"
