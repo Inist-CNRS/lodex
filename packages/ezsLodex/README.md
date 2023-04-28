@@ -14,36 +14,36 @@ npm install @ezs/core
 
 #### Table of Contents
 
--   [convertJsonLdToNQuads](#convertjsonldtonquads)
--   [convertToAtom](#converttoatom)
--   [convertToExtendedJsonLd](#converttoextendedjsonld)
--   [extractIstexQuery](#extractistexquery)
--   [Field](#field)
--   [flattenPatch](#flattenpatch)
--   [getLastCharacteristic](#getlastcharacteristic)
--   [getParam](#getparam)
--   [injectDatasetFields](#injectdatasetfields)
--   [keyMapping](#keymapping)
--   [labelizeFieldID](#labelizefieldid)
--   [LodexAggregateQuery](#lodexaggregatequery)
--   [LodexBuildContext](#lodexbuildcontext)
--   [LodexGetCharacteristics](#lodexgetcharacteristics)
--   [LodexGetFields](#lodexgetfields)
--   [LodexInjectCountFrom](#lodexinjectcountfrom)
--   [LodexInjectSyndicationFrom](#lodexinjectsyndicationfrom)
--   [LodexJoinQuery](#lodexjoinquery)
--   [LodexOutput](#lodexoutput)
--   [LodexReduceQuery](#lodexreducequery)
--   [LodexRunQuery](#lodexrunquery)
--   [objects2columns](#objects2columns)
--   [parseNQuads](#parsenquads)
--   [writeTurtle](#writeturtle)
+*   [convertJsonLdToNQuads](#convertjsonldtonquads)
+*   [convertToAtom](#converttoatom)
+*   [convertToExtendedJsonLd](#converttoextendedjsonld)
+*   [extractIstexQuery](#extractistexquery)
+*   [Field](#field)
+*   [flattenPatch](#flattenpatch)
+*   [getLastCharacteristic](#getlastcharacteristic)
+*   [getParam](#getparam)
+*   [injectDatasetFields](#injectdatasetfields)
+*   [keyMapping](#keymapping)
+*   [labelizeFieldID](#labelizefieldid)
+*   [LodexAggregateQuery](#lodexaggregatequery)
+*   [LodexBuildContext](#lodexbuildcontext)
+*   [LodexGetCharacteristics](#lodexgetcharacteristics)
+*   [LodexGetFields](#lodexgetfields)
+*   [LodexInjectCountFrom](#lodexinjectcountfrom)
+*   [LodexInjectSyndicationFrom](#lodexinjectsyndicationfrom)
+*   [LodexJoinQuery](#lodexjoinquery)
+*   [LodexOutput](#lodexoutput)
+*   [LodexReduceQuery](#lodexreducequery)
+*   [LodexRunQuery](#lodexrunquery)
+*   [objects2columns](#objects2columns)
+*   [parseNQuads](#parsenquads)
+*   [writeTurtle](#writeturtle)
 
 ### convertJsonLdToNQuads
 
 Take a JSON-LD object and transform it into NQuads triples.
 
-Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**&#x20;
 
 ### convertToAtom
 
@@ -52,11 +52,11 @@ model.
 
 #### Parameters
 
--   `fields` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** LODEX model (optional, default `{}`)
--   `atomFeed` **Feed** A feed of resources, see [feed](https://github.com/jpmonette/feed) (optional, default `{}`)
--   `config` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** LODEX configuration (with `perPage`) (optional, default `{}`)
+*   `fields` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** LODEX model (optional, default `{}`)
+*   `atomFeed` **Feed** A feed of resources, see [feed](https://github.com/jpmonette/feed) (optional, default `{}`)
+*   `config` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** LODEX configuration (with `perPage`) (optional, default `{}`)
 
-Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**&#x20;
 
 ### convertToExtendedJsonLd
 
@@ -67,7 +67,7 @@ query.
 
 #### Parameters
 
--   `schemeForIstexQuery` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** URI to put between document and resource
+*   `schemeForIstexQuery` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** URI to put between document and resource
 
 ### extractIstexQuery
 
@@ -75,12 +75,11 @@ Extract an ISTEX API query.
 
 #### Parameters
 
--   `fields` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Field](#field)>** list of LODEX fields (optional, default `[]`)
+*   `fields` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[Field](#field)>** list of LODEX fields (optional, default `[]`)
 
 #### Examples
 
 Output:
-
 
 ```javascript
 {
@@ -93,12 +92,12 @@ Output:
 
 ### Field
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), any>
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), any>
 
 #### Properties
 
--   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The identifier of the field.
--   `scheme` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The semantic property of the field.
+*   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The identifier of the field.
+*   `scheme` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The semantic property of the field.
 
 ### flattenPatch
 
@@ -106,9 +105,9 @@ Take `Object` and transform all key ending byu number on array.
 
 #### Parameters
 
--   `none` **[undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
+*   `none` **[undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined)**&#x20;
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
 ### getLastCharacteristic
 
@@ -117,7 +116,6 @@ Get last characteristic (list of all dataset covering fields).
 #### Examples
 
 Input:
-
 
 ```javascript
 [
@@ -150,7 +148,6 @@ Input:
 
 Output:
 
-
 ```javascript
 {
   "_id" : ObjectId("5cee530e3e9676001909ba24"),
@@ -158,7 +155,7 @@ Output:
 }
 ```
 
-Returns **any** 
+Returns **any**&#x20;
 
 ### getParam
 
@@ -168,12 +165,11 @@ Inject in each item the last characteristics (the dataset covering fields) of a 
 
 #### Parameters
 
--   `connectionStringURI` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** MongoDB connection string
+*   `connectionStringURI` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** MongoDB connection string
 
 #### Examples
 
 Output:
-
 
 ```javascript
 [
@@ -232,8 +228,8 @@ to = Description
 
 #### Parameters
 
--   `from` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** keys of the input
--   `to` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** matching keys for the output
+*   `from` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** keys of the input
+*   `to` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** matching keys for the output
 
 Returns **any** Same object with modified keys
 
@@ -243,13 +239,12 @@ Inject in each item the last characteristics (the dataset covering fields) of a 
 
 #### Parameters
 
--   `connectionStringURI` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** MongoDB connection string
--   `suffix` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Add ID field as a suffix
+*   `connectionStringURI` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** MongoDB connection string
+*   `suffix` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Add ID field as a suffix
 
 #### Examples
 
 Input:
-
 
 ```javascript
 [
@@ -263,7 +258,6 @@ Input:
 ```
 
 Output:
-
 
 ```javascript
 [
@@ -285,13 +279,13 @@ the connection string to MongoDB.
 
 #### Parameters
 
--   `collection` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** collection to use (optional, default `"publishedDataset"`)
--   `referer` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** data injected into every result object
--   `filter` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** MongoDB filter
--   `limit` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
--   `skip` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
+*   `collection` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** collection to use (optional, default `"publishedDataset"`)
+*   `referer` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** data injected into every result object
+*   `filter` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** MongoDB filter
+*   `limit` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
+*   `skip` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
 ### LodexBuildContext
 
@@ -300,10 +294,10 @@ compatible with runQuery or reduceQuery
 
 #### Parameters
 
--   `connectionStringURI` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** to connect to MongoDB (optional, default `"mongodb://ezmaster_db:27017"`)
--   `host` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** to set host (usefull to build some links)
+*   `connectionStringURI` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** to connect to MongoDB (optional, default `"mongodb://ezmaster_db:27017"`)
+*   `host` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** to set host (usefull to build some links)
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
 ### LodexGetCharacteristics
 
@@ -311,12 +305,11 @@ Return the last characteristics (the dataset covering fields) of a LODEX.
 
 #### Parameters
 
--   `connectionStringURI` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** MongoDB connection string
+*   `connectionStringURI` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** MongoDB connection string
 
 #### Examples
 
 Output:
-
 
 ```javascript
 [
@@ -346,7 +339,7 @@ Return the fields (the model) of a LODEX.
 
 #### Parameters
 
--   `connectionStringURI` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** MongoDB connection string
+*   `connectionStringURI` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** MongoDB connection string
 
 ### LodexInjectCountFrom
 
@@ -392,9 +385,9 @@ field = publicationDate
 
 #### Parameters
 
--   `connectionStringURI` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** MongoDB connection string
--   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** to get value to find
--   `field` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** name contains the value to find (generaly equals to path) (optional, default `auto`)
+*   `connectionStringURI` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** MongoDB connection string
+*   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** to get value to find
+*   `field` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** name contains the value to find (generaly equals to path) (optional, default `auto`)
 
 ### LodexInjectSyndicationFrom
 
@@ -402,13 +395,12 @@ Inject title & description (syndicationà from field what conatsin the uri of on
 
 #### Parameters
 
--   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Field path contains URI
--   `connectionStringURI` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** MongoDB connection string
+*   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Field path contains URI
+*   `connectionStringURI` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** MongoDB connection string
 
 #### Examples
 
 Output:
-
 
 ```javascript
 [
@@ -432,18 +424,18 @@ the connection string to MongoDB.
 
 #### Parameters
 
--   `collection` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** collection to use (optional, default `"publishedDataset"`)
--   `referer` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** data injected into every result object
--   `filter` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** MongoDB filter (optional, default `{}`)
--   `sortOn` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Field to sort on
--   `sortOrder` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Oder to sort
--   `matchField` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Lodex field, containing matchable element
--   `matchValue` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Value used with the match field to get items
--   `joinField` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Lodex field used for the join request
--   `limit` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
--   `skip` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
+*   `collection` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** collection to use (optional, default `"publishedDataset"`)
+*   `referer` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** data injected into every result object
+*   `filter` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** MongoDB filter (optional, default `{}`)
+*   `sortOn` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Field to sort on
+*   `sortOrder` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Oder to sort
+*   `matchField` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Lodex field, containing matchable element
+*   `matchValue` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Value used with the match field to get items
+*   `joinField` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Lodex field used for the join request
+*   `limit` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
+*   `skip` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
 ### LodexOutput
 
@@ -451,15 +443,14 @@ Format the output in compliance with LODEX routines format.
 
 #### Parameters
 
--   `keyName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** name of the `data` property (optional, default `"data"`)
--   `indent` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indent or not (optional, default `false`)
--   `extract` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** fields to put at the root of the output
-                                      object
+*   `keyName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** name of the `data` property (optional, default `"data"`)
+*   `indent` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indent or not (optional, default `false`)
+*   `extract` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** fields to put at the root of the output
+    object
 
 #### Examples
 
 Input
-
 
 ```javascript
 [
@@ -470,13 +461,11 @@ Input
 
 Script
 
-
 ```javascript
 .pipe(ezs('LodexOutput', { extract: 'total' }))
 ```
 
 Output
-
 
 ```javascript
 {
@@ -488,7 +477,7 @@ Output
 }
 ```
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**&#x20;
 
 ### LodexReduceQuery
 
@@ -500,16 +489,16 @@ the connection string to MongoDB.
 
 #### Parameters
 
--   `reducer` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The name of the reducer to use
--   `referer` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** data injected into every result object
--   `filter` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** MongoDB filter (optional, default `{}`)
--   `field` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** limit the result to some fields (optional, default `"uri"`)
--   `minValue` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
--   `maxValue` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
--   `maxSize` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** limit the result (optional, default `1000000`)
--   `orderBy` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** sort the result
+*   `reducer` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The name of the reducer to use
+*   `referer` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** data injected into every result object
+*   `filter` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** MongoDB filter (optional, default `{}`)
+*   `field` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** limit the result to some fields (optional, default `"uri"`)
+*   `minValue` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
+*   `maxValue` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
+*   `maxSize` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** limit the result (optional, default `1000000`)
+*   `orderBy` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** sort the result
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
 ### LodexRunQuery
 
@@ -520,16 +509,16 @@ the connection string to MongoDB.
 
 #### Parameters
 
--   `collection` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** collection to use (optional, default `"publishedDataset"`)
--   `referer` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** data injected into every result object
--   `filter` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** MongoDB filter
--   `sortOn` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Field to sort on
--   `sortOrder` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Oder to sort
--   `field` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** limit the result to some fields (optional, default `"uri"`)
--   `limit` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
--   `skip` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
+*   `collection` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** collection to use (optional, default `"publishedDataset"`)
+*   `referer` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** data injected into every result object
+*   `filter` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** MongoDB filter
+*   `sortOn` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Field to sort on
+*   `sortOrder` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Oder to sort
+*   `field` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** limit the result to some fields (optional, default `"uri"`)
+*   `limit` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
+*   `skip` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** limit the result
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
 ### objects2columns
 
@@ -559,15 +548,15 @@ Take an `Object` and flatten it to get only one level of keys.
 
 #### Parameters
 
--   `none` **[undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
+*   `none` **[undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined)**&#x20;
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
 ### parseNQuads
 
 Take N-Quads string and transform it to Objects.
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**&#x20;
 
 ### writeTurtle
 
