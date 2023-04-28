@@ -1,0 +1,16 @@
+{
+    "publishedCharacteristic": [
+        {
+            "_id": "5b2cc39cc767d60017eb131f",
+            "V99c": "Jeu de données sur les types de contenu",
+            "AtQO": "Ce jeu correspond au choix de documenter des données ISTEX et plus particulièrement les types de contenu utilisés dans ISTEX.\r\n \r\nIls ont fait l'objet d'une homogénéisation opérée par l'équipe ISTEX-DATA et d'un alignement avec le jeu de données types de publication. \r\n\r\nCes types permettent de retranscrire la structuration initiale de l'ouvrage.",
+            "gLBB": "/api/run/syndication",
+            "G0Ux": "https://docs.google.com/drawings/d/1rtQ5_GT9QIHKzEjXU5vzSiAnmcu-hdNuyuEArOwUEU4/pub?w=960&h=720",
+            "etxw": "2017-10-02",
+            "7IpS": "LODEX Team",
+            "CAhi": "http://www.istex.fr/wp-content/uploads/2015/02/2015_Licence-type-ISTEX.pdf",
+            "PJTS": "ISTEX",
+            "publicationDate": "2018-06-22T09:38:36.475Z"
+        }
+    ]
+}

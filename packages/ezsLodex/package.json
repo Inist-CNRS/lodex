@@ -1,0 +1,68 @@
+{
+    "private": true,
+    "name": "@ezs/lodex",
+    "description": "ezs dedicated statements for Lodex",
+    "version": "1.16.4",
+    "dependencies": {
+        "jsonld": "3.1.1",
+        "lodash.compose": "2.4.1",
+        "lodash.find": "4.6.0",
+        "lodash.get": "4.4.2",
+        "lodash.mapkeys": "4.6.0",
+        "lodash.omit": "4.5.0",
+        "lodash.set": "4.3.2",
+        "lodash.unset": "4.5.2",
+        "lodash.zipobject": "4.1.3",
+        "mongodb": "4.12.0",
+        "n3": "1.9.0",
+        "node-object-hash": "2.3.10",
+        "quick-lru": "4.0.1",
+        "relaxed-json": "1.0.3",
+        "valid-url": "1.0.9",
+        "xml-writer": "1.7.0"
+    },
+    "directories": {
+        "test": "test"
+    },
+    "main": "./src/index.js",
+    "peerDependencies": {
+        "@ezs/core": "*"
+    },
+    "devDependencies": {
+        "@ezs/core": "2.5.0",
+        "@shelf/jest-mongodb": "1.2.4",
+        "@types/jest": "26.0.22",
+        "@types/ramda": "0.27.40",
+        "array-parallel": "0.1.3",
+        "array-series": "0.1.5",
+        "babel-eslint": "10.1.0",
+        "babel-jest": "26.6.3",
+        "coveralls": "3.1.0",
+        "documentation": "13.2.1",
+        "eslint": "7.24.0",
+        "eslint-config-airbnb-base": "14.2.1",
+        "eslint-config-prettier": "8.3.0",
+        "eslint-plugin-import": "2.22.1",
+        "eslint-plugin-prettier": "3.4.0",
+        "feed": "4.2.2",
+        "from": "0.1.7",
+        "get-stream": "6.0.1",
+        "git-cz": "4.7.6",
+        "jest": "26.6.3",
+        "nock": "13.0.11",
+        "node-fetch": "2.6.7",
+        "prettier": "2.3.2",
+        "semver": "7.3.5",
+        "sleepjs": "3.0.1"
+    },
+    "scripts": {
+        "doc": "documentation readme src/* --sort-order=alpha --shallow --markdown-toc-max-depth=2 --readme-file=./README.md --section=usage",
+        "lint": "eslint --ext=.js ./test/*.js ./src/*.js",
+        "preversion": "npm run doc",
+        "test": "NODE_ENV=test jest --maxWorkers 4 --verbose",
+        "test:debug": "NODE_ENV=test jest --runInBand --detectOpenHandles",
+        "coverage": "NODE_ENV=test jest --ci --runInBand --reporters=default --collectCoverage --coverageReporters=text --coverage",
+        "coverage:html": "NODE_ENV=test jest --ci --runInBand --reporters=default --collectCoverage --coverageReporters=html --coverage",
+        "coveralls": "cat ./coverage/lcov.info | coveralls"
+    }
+}
