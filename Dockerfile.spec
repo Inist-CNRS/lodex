@@ -1,25 +1,24 @@
-FROM node:12
+FROM node:12-alpine AS build
+RUN apk add --no-cache make gcc g++ python3 bash git openssh jq
+WORKDIR /app
+# see .dockerignore to know all copied files
+COPY . /app/
+ENV NODE_ENV="production"
+RUN mkdir /app/upload && \
+    cp /app/config/production-dist.js /app/config/production.js && \
+    npm install --production && \
+    npm run build && \
+    npm cache clean --force  && \
+    npm prune --production && \
+    npm run clean && \
+    ./lodex-extended-sync
 
-RUN mkdir /app
-COPY ./package.json /app
-COPY ./package-lock.json /app
+FROM node:12-alpine AS release
+COPY --from=build /app /app
+
+# no ezmasterizion
 
 WORKDIR /app
-
-RUN npm install --production && \
-    npm cache clean --force
-
-COPY ./src /app/src
-COPY ./config /app/config
-COPY ./config.json ./babel.config.js ./jest.config.js ./jsconfig.json ./typings.json /app/
-RUN mkdir /app/upload
-WORKDIR /app
-
-ARG node_env="production"
-ENV NODE_ENV=$node_env
-
-RUN cp -n ./config/production-dist.js ./config/production.js \
-    && npm run build
-
+ENV NODE_ENV="production"
 EXPOSE 3000
 CMD ["npm", "start"]

@@ -14,3 +14,4 @@
 !jsconfig.json
 !typings.json
 !docker-entrypoint.sh
+!packages
