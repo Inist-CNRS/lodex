@@ -4,7 +4,7 @@
     "description": "ezs dedicated statements for Lodex",
     "version": "1.16.4",
     "dependencies": {
-        "jsonld": "3.1.1",
+        "jsonld": "^8.1.1",
         "lodash.compose": "2.4.1",
         "lodash.find": "4.6.0",
         "lodash.get": "4.4.2",
@@ -37,7 +37,7 @@
         "array-series": "0.1.5",
         "babel-eslint": "10.1.0",
         "babel-jest": "26.6.3",
-        "coveralls": "3.1.0",
+        "coveralls": "^3.1.1",
         "documentation": "^14.0.1",
         "eslint": "7.24.0",
         "eslint-config-airbnb-base": "14.2.1",
