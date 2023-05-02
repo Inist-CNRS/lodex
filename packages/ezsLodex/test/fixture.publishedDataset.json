@@ -1,0 +1,234 @@
+{
+    "publishedDataset": [
+        {
+            "_id": "5b2cc39c9b538cca99be8f99",
+            "uri": "ark:/67375/XTP-1JC4F85T-7",
+            "versions": [
+                {
+                    "tfFF": "research-article",
+                    "6gfz": "research article",
+                    "6uOV": "papier de recherche",
+                    "BoJb": "Primary source. Article reporting on primary research (The related value “review-article” describes a literature review, research summary, or state-of-the-art article).",
+                    "0Vpg": "http://dtd.nlm.nih.gov/archiving/tag-library/3.0/index.html?attr=article-type",
+                    "7Ygl": "Il s’agit d’une source primaire. L’article rapporte les résultats de travaux de recherche originaux. Un article de recherche est composé d’un titre, résumé, introduction, méthodologie, résultats, discussion et références.",
+                    "XanQ": "Le type 'research-article' regroupe différents intitulés qui varient selon l'éditeur, la discipline, voire la revue. ",
+                    "EbSk": "Cette catégorisation émane du type d'article original fourni par l'éditeur. \r\n\r\nAttention, rien ne vaut la lecture d'un article pour en mesurer le contenu et la qualité ! ",
+                    "PNRk": "original paper, research, categtxt,",
+                    "vlM0": [
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-0GLKJH51-B",
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-5WTPMB5N-F",
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-0G6R5W5T-Z"
+                    ],
+                    "D0n9": "genre.raw:\"research-article\"",
+                    "publicationDate": "2018-06-22T09:38:36.468Z"
+                }
+            ]
+        },
+        {
+            "_id": "5b2cc39c9b538cca99be8f9a",
+            "uri": "ark:/67375/XTP-29919SZJ-6",
+            "versions": [
+                {
+                    "tfFF": "case-report",
+                    "6gfz": "case report",
+                    "6uOV": "étude de cas",
+                    "BoJb": "Case study, case report, or other description of a case.",
+                    "0Vpg": "http://dtd.nlm.nih.gov/archiving/tag-library/3.0/index.html?attr=article-type",
+                    "7Ygl": "Étude de cas, rapport de cas",
+                    "XanQ": "Le type 'case-report' regroupe différents intitulés qui varient selon l'éditeur, la discipline, voire la revue. ",
+                    "EbSk": "Cette catégorisation émane du type d'article original fourni par l'éditeur. \r\n\r\nAttention, rien ne vaut la lecture d'un article pour en mesurer le contenu et la qualité ! ",
+                    "PNRk": "case study",
+                    "vlM0": [
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-0GLKJH51-B"
+                    ],
+                    "D0n9": "genre.raw:\"case-report\"",
+                    "publicationDate": "2018-06-22T09:38:36.468Z"
+                }
+            ]
+        },
+        {
+            "_id": "5b2cc39c9b538cca99be8f9b",
+            "uri": "ark:/67375/XTP-36WXPZKG-C",
+            "versions": [
+                {
+                    "tfFF": "collected-courses",
+                    "6gfz": "collected courses",
+                    "6uOV": "recueil de cours",
+                    "BoJb": "Courses at the Hague Academy are published in the Collected Courses (the Academy’s flagship collection). These contributions by prestigious authors deal with the theoretical and practical aspects of the subject, including legislation and case law",
+                    "0Vpg": "",
+                    "7Ygl": "Les cours de l'Académie de La Haye sont publiés sous forme de recueil de cours (collection phare de l'Académie). Ces contributions d'auteurs prestigieux portent sur les aspects théoriques et pratiques des sujets choisis du droit international, y compris la législation et la jurisprudence",
+                    "XanQ": "",
+                    "EbSk": "",
+                    "PNRk": "collected-courses, course",
+                    "vlM0": [
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-5540BQ2P-Q"
+                    ],
+                    "D0n9": "genre.raw:\"collected-courses\"",
+                    "publicationDate": "2018-06-22T09:38:36.468Z"
+                }
+            ]
+        },
+        {
+            "_id": "5b2cc39c9b538cca99be8f9c",
+            "uri": "ark:/67375/XTP-6N5SZHKN-D",
+            "versions": [
+                {
+                    "tfFF": "article",
+                    "6gfz": "article",
+                    "6uOV": "article",
+                    "BoJb": "It is impossible to identify whether it is a primary or secondary article.",
+                    "0Vpg": "",
+                    "7Ygl": "Il est impossible d’identifier s’il s’agit d’un article primaire ou secondaire. ",
+                    "XanQ": "Le type 'article' regroupe différents intitulés qui varient selon l'éditeur, la discipline, voire la revue. ",
+                    "EbSk": "Cette catégorisation émane du type d'article original fourni par l'éditeur. \r\n\r\nAttention, rien ne vaut la lecture d'un article pour en mesurer le contenu et la qualité ! ",
+                    "PNRk": "regular features, highlights, essay",
+                    "vlM0": [
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-0GLKJH51-B",
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-0G6R5W5T-Z"
+                    ],
+                    "D0n9": "genre.raw:\"article\"",
+                    "publicationDate": "2018-06-22T09:38:36.468Z"
+                }
+            ]
+        },
+        {
+            "_id": "5b2cc39c9b538cca99be8f9d",
+            "uri": "ark:/67375/XTP-7474895G-0",
+            "versions": [
+                {
+                    "tfFF": "other",
+                    "6gfz": "other",
+                    "6uOV": "autre",
+                    "BoJb": "If the article is not one of the listed types or the type of article cannot be determined, the “other” attribute value may be used.",
+                    "0Vpg": "http://dtd.nlm.nih.gov/archiving/tag-library/3.0/index.html?attr=article-type",
+                    "7Ygl": "Si l'article ne figure pas dans la liste des types ou que l'article ne peut pas être défini, la valeur 'autre' est utilisée.",
+                    "XanQ": "Le type 'other' regroupe tous les autres types de contenus. ",
+                    "EbSk": "Cette catégorisation regroupe tous les autres contenus. \r\n\r\nAttention, rien ne vaut la lecture d'un article pour en mesurer le contenu et la qualité ! ",
+                    "PNRk": "obituary, announcement, content, interview, correspondence, index, calendar, appendix, bibliography….",
+                    "vlM0": [
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-0GLKJH51-B",
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-5WTPMB5N-F",
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-0G6R5W5T-Z",
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-NTSGR1R0-Z"
+                    ],
+                    "D0n9": "genre.raw:\"other\"",
+                    "publicationDate": "2018-06-22T09:38:36.468Z"
+                }
+            ]
+        },
+        {
+            "_id": "5b2cc39c9b538cca99be8f9e",
+            "uri": "ark:/67375/XTP-94FB0L8V-T",
+            "versions": [
+                {
+                    "tfFF": "book",
+                    "6gfz": "monograph",
+                    "6uOV": "monographie",
+                    "BoJb": "Books refer to works of literature, or a main division of such a work. In library and information science, a book is called a monograph, to distinguish it from serial periodicals such as magazines, journals, or newspapers.",
+                    "0Vpg": "",
+                    "7Ygl": "Les monographies se réfèrent à des ouvrages de littérature, ou à une division principale de telles œuvres. Dans la bibliothèque et la science de l'information, un livre est appelé une monographie, pour le distinguer des périodiques en série tels que les magazines, les journaux scientifiques ou les journaux.",
+                    "XanQ": "Le type 'book' regroupe les manuels de droit de l'Académie de La Haye (collection de monographies sur des sujets choisis du droit international), ainsi que des monographies issues de chez Numérique Premium sur des sujets en Histoire et Sciences Humaines.",
+                    "EbSk": "",
+                    "PNRk": "",
+                    "vlM0": [
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-5WTPMB5N-F",
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-5540BQ2P-Q"
+                    ],
+                    "D0n9": "genre.raw:\"book\"",
+                    "publicationDate": "2018-06-22T09:38:36.469Z"
+                }
+            ]
+        },
+        {
+            "_id": "5b2cc39c9b538cca99be8f9f",
+            "uri": "ark:/67375/XTP-BFHXPBJJ-3",
+            "versions": [
+                {
+                    "tfFF": "conference",
+                    "6gfz": "conference",
+                    "6uOV": "congrès",
+                    "BoJb": "Report of a conference, symposium, or meeting.",
+                    "0Vpg": "http://dtd.nlm.nih.gov/archiving/tag-library/3.0/index.html?attr=article-type",
+                    "7Ygl": "Rapport d'une conférence, symposium et réunion",
+                    "XanQ": "Le type 'conference' regroupe différents intitulés qui varient selon l'éditeur, la discipline, voire la revue. ",
+                    "EbSk": "Cette catégorisation émane du type d'article original fourni par l'éditeur. \r\n\r\nAttention, rien ne vaut la lecture d'un article pour en mesurer le contenu et la qualité ! ",
+                    "PNRk": "meeting-report (BMJ + deGruyter), Conference",
+                    "vlM0": [
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-0GLKJH51-B",
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-5WTPMB5N-F",
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-0G6R5W5T-Z"
+                    ],
+                    "D0n9": "genre.raw:\"conference\"",
+                    "publicationDate": "2018-06-22T09:38:36.469Z"
+                }
+            ]
+        },
+        {
+            "_id": "5b2cc39c9b538cca99be8fa0",
+            "uri": "ark:/67375/XTP-CGT4WMJM-6",
+            "versions": [
+                {
+                    "tfFF": "chapter",
+                    "6gfz": "chapter",
+                    "6uOV": "chapitre",
+                    "BoJb": "Division of a book",
+                    "0Vpg": "",
+                    "7Ygl": "Division d'une monographie",
+                    "XanQ": "Ces chapitres proviennent de monographies et de monographies en séries (en général)",
+                    "EbSk": "",
+                    "PNRk": "chapter",
+                    "vlM0": [
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-0G6R5W5T-Z"
+                    ],
+                    "D0n9": "genre.raw:\"chapter\"",
+                    "publicationDate": "2018-06-22T09:38:36.469Z"
+                }
+            ]
+        },
+        {
+            "_id": "5b2cc39c9b538cca99be8fa1",
+            "uri": "ark:/67375/XTP-HPN7T1Q2-R",
+            "versions": [
+                {
+                    "tfFF": "abstract",
+                    "6gfz": "abstract",
+                    "6uOV": "résumé",
+                    "BoJb": "The article itself is an abstract (of a paper or presentation) that usually has been presented or published separately.",
+                    "0Vpg": "http://dtd.nlm.nih.gov/archiving/tag-library/3.0/index.html?attr=article-type",
+                    "7Ygl": "Résumé d’un papier ou d’une présentation qui a été présentée ou publiée séparément.",
+                    "XanQ": "",
+                    "EbSk": "",
+                    "PNRk": "",
+                    "vlM0": [
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-0GLKJH51-B"
+                    ],
+                    "D0n9": "genre.raw:\"abstract\"",
+                    "publicationDate": "2018-06-22T09:38:36.469Z"
+                }
+            ]
+        },
+        {
+            "_id": "5b2cc39c9b538cca99be8fa2",
+            "uri": "ark:/67375/XTP-L5L7X3NF-P",
+            "versions": [
+                {
+                    "tfFF": "review-article",
+                    "6gfz": "review article",
+                    "6uOV": "article de synthèse",
+                    "BoJb": "Secondary source. Review or state-of-the-art summary article (The related value “research-article” describes original research)",
+                    "0Vpg": "http://dtd.nlm.nih.gov/archiving/tag-library/3.0/index.html?attr=article-type",
+                    "7Ygl": "Il s’agit d’une source secondaire. L’article passe en revue des sources primaires, il se base sur des articles déjà publiés et discute des expériences. I constitue ainsi une analyse, une synthèse.",
+                    "XanQ": "Le type 'review-article' regroupe différents intitulés qui varient selon l'éditeur, la discipline, voire la revue. ",
+                    "EbSk": "Cette catégorisation émane du type d'article original fourni par l'éditeur. \r\n\r\nAttention, rien ne vaut la lecture d'un article pour en mesurer le contenu et la qualité ! ",
+                    "PNRk": "review, article-commentary, review paper",
+                    "vlM0": [
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-0GLKJH51-B",
+                        "https://publication-type.data.istex.fr/ark:/67375/JMC-0G6R5W5T-Z"
+                    ],
+                    "D0n9": "genre.raw:\"review-article\"",
+                    "publicationDate": "2018-06-22T09:38:36.469Z"
+                }
+            ]
+        }
+    ]
+}
