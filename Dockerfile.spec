@@ -3,11 +3,10 @@ FROM node:12-alpine
 RUN mkdir /app
 COPY ./package.json /app
 COPY ./package-lock.json /app
-
+COPY ./packages /app/packages
 WORKDIR /app
 
-RUN npm install --production && \
-    npm cache clean --force
+RUN npm install
 
 COPY ./src /app/src
 COPY ./config /app/config
