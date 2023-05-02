@@ -29,13 +29,6 @@
         "@ezs/core": "*"
     },
     "scripts": {
-        "doc": "documentation readme src/* --sort-order=alpha --shallow --markdown-toc-max-depth=2 --readme-file=./README.md --section=usage",
-        "lint": "eslint --ext=.js ./test/*.js ./src/*.js",
-        "preversion": "npm run doc",
-        "test": "NODE_ENV=test jest --maxWorkers 4 --verbose",
-        "test:debug": "NODE_ENV=test jest --runInBand --detectOpenHandles",
-        "coverage": "NODE_ENV=test jest --ci --runInBand --reporters=default --collectCoverage --coverageReporters=text --coverage",
-        "coverage:html": "NODE_ENV=test jest --ci --runInBand --reporters=default --collectCoverage --coverageReporters=html --coverage",
-        "coveralls": "cat ./coverage/lcov.info | coveralls"
+        "doc": "npx documentation readme src/* --sort-order=alpha --shallow --markdown-toc-max-depth=2 --readme-file=./README.md --section=usage"
     }
 }
