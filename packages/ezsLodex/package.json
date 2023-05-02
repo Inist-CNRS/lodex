@@ -1,0 +1,34 @@
+{
+    "private": true,
+    "name": "@ezs/lodex",
+    "description": "ezs dedicated statements for Lodex",
+    "version": "1.16.4",
+    "dependencies": {
+        "jsonld": "3.1.1",
+        "lodash.compose": "2.4.1",
+        "lodash.find": "4.6.0",
+        "lodash.get": "4.4.2",
+        "lodash.mapkeys": "4.6.0",
+        "lodash.omit": "4.5.0",
+        "lodash.set": "4.3.2",
+        "lodash.unset": "4.5.2",
+        "lodash.zipobject": "4.1.3",
+        "mongodb": "4.12.0",
+        "n3": "1.9.0",
+        "node-object-hash": "2.3.10",
+        "quick-lru": "4.0.1",
+        "relaxed-json": "1.0.3",
+        "valid-url": "1.0.9",
+        "xml-writer": "1.7.0"
+    },
+    "directories": {
+        "test": "test"
+    },
+    "main": "./src/index.js",
+    "peerDependencies": {
+        "@ezs/core": "*"
+    },
+    "scripts": {
+        "doc": "npx documentation readme src/* --sort-order=alpha --shallow --markdown-toc-max-depth=2 --readme-file=./README.md --section=usage"
+    }
+}
