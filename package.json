@@ -209,7 +209,7 @@
         "through": "^2.3.8",
         "url-api-polyfill": "^1.1.0",
         "uuid": "8.3.2",
-        "vega": "5.13.0",
+        "vega": "5.23.0",
         "vega-crossfilter": "4.0.5",
         "vega-encode": "4.8.3",
         "vega-force": "4.0.7",
