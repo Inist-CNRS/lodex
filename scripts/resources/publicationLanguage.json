@@ -1,0 +1,3306 @@
+[
+	{
+		"English name" : "Afar",
+		"French name" : "afar",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#aar",
+		"alpha-2 code" : "aa",
+		"alpha-3 code" : "aar"
+	},
+	{
+		"English name" : "Abkhazian",
+		"French name" : "abkhaze",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#abk",
+		"alpha-2 code" : "ab",
+		"alpha-3 code" : "abk"
+	},
+	{
+		"English name" : "Achinese",
+		"French name" : "aceh",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ace",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ace"
+	},
+	{
+		"English name" : "Acoli",
+		"French name" : "acoli",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ach",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ach"
+	},
+	{
+		"English name" : "Adangme",
+		"French name" : "adangme",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ada",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ada"
+	},
+	{
+		"English name" : "Adyghe; Adygei",
+		"French name" : "adygh",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ady",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ady"
+	},
+	{
+		"English name" : "Afro-Asiatic (Other)",
+		"French name" : "afro-asiatiques, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#afa",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "afa"
+	},
+	{
+		"English name" : "Afrihili",
+		"French name" : "afrihili",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#afh",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "afh"
+	},
+	{
+		"English name" : "Afrikaans",
+		"French name" : "afrikaans",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#afr",
+		"alpha-2 code" : "af",
+		"alpha-3 code" : "afr"
+	},
+	{
+		"English name" : "Akan",
+		"French name" : "akan",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#aka",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "aka"
+	},
+	{
+		"English name" : "Akkadian",
+		"French name" : "akkadien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#akk",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "akk"
+	},
+	{
+		"English name" : "Aleut",
+		"French name" : "aléoute",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ale",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ale"
+	},
+	{
+		"English name" : "Algonquian languages",
+		"French name" : "algonquines, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#alg",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "alg"
+	},
+	{
+		"English name" : "Amharic",
+		"French name" : "amharique",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#amh",
+		"alpha-2 code" : "am",
+		"alpha-3 code" : "amh"
+	},
+	{
+		"English name" : "Aragonese",
+		"French name" : "aragonais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#an",
+		"alpha-2 code" : "arg",
+		"alpha-3 code" : "an"
+	},
+	{
+		"English name" : "English, Old (ca.450-1100)",
+		"French name" : "anglo-saxon (ca.450-1100)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ang",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ang"
+	},
+	{
+		"English name" : "Apache languages",
+		"French name" : "apache",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#apa",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "apa"
+	},
+	{
+		"English name" : "Arabic",
+		"French name" : "arabe",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ara",
+		"alpha-2 code" : "ar",
+		"alpha-3 code" : "ara"
+	},
+	{
+		"English name" : "Aramaic",
+		"French name" : "araméen",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#arc",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "arc"
+	},
+	{
+		"English name" : "Araucanian",
+		"French name" : "araucan",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#arn",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "arn"
+	},
+	{
+		"English name" : "Arapaho",
+		"French name" : "arapaho",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#arp",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "arp"
+	},
+	{
+		"English name" : "Artificial (Other)",
+		"French name" : "artificielles, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#art",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "art"
+	},
+	{
+		"English name" : "Arawak",
+		"French name" : "arawak",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#arw",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "arw"
+	},
+	{
+		"English name" : "Assamese",
+		"French name" : "assamais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#asm",
+		"alpha-2 code" : "as",
+		"alpha-3 code" : "asm"
+	},
+	{
+		"English name" : "Bable; Asturian",
+		"French name" : "bable; asturien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ast",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ast"
+	},
+	{
+		"English name" : "Athapascan languages",
+		"French name" : "athapascanes, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ath",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ath"
+	},
+	{
+		"English name" : "Australian languages",
+		"French name" : "australiennes, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#aus",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "aus"
+	},
+	{
+		"English name" : "Avaric",
+		"French name" : "avar",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ava",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ava"
+	},
+	{
+		"English name" : "Avestan",
+		"French name" : "avestique",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ave",
+		"alpha-2 code" : "ae",
+		"alpha-3 code" : "ave"
+	},
+	{
+		"English name" : "Awadhi",
+		"French name" : "awadhi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#awa",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "awa"
+	},
+	{
+		"English name" : "Aymara",
+		"French name" : "aymara",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#aym",
+		"alpha-2 code" : "ay",
+		"alpha-3 code" : "aym"
+	},
+	{
+		"English name" : "Azerbaijani",
+		"French name" : "azéri",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#aze",
+		"alpha-2 code" : "az",
+		"alpha-3 code" : "aze"
+	},
+	{
+		"English name" : "Banda",
+		"French name" : "banda",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bad",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bad"
+	},
+	{
+		"English name" : "Bamileke languages",
+		"French name" : "bamilékés, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bai",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bai"
+	},
+	{
+		"English name" : "Bashkir",
+		"French name" : "bachkir",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bak",
+		"alpha-2 code" : "ba",
+		"alpha-3 code" : "bak"
+	},
+	{
+		"English name" : "Baluchi",
+		"French name" : "baloutchi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bal",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bal"
+	},
+	{
+		"English name" : "Bambara",
+		"French name" : "bambara",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bam",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bam"
+	},
+	{
+		"English name" : "Balinese",
+		"French name" : "balinais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ban",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ban"
+	},
+	{
+		"English name" : "Basa",
+		"French name" : "basa",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bas",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bas"
+	},
+	{
+		"English name" : "Baltic (Other)",
+		"French name" : "baltiques, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bat",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bat"
+	},
+	{
+		"English name" : "Beja",
+		"French name" : "bedja",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bej",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bej"
+	},
+	{
+		"English name" : "Belarusian",
+		"French name" : "biélorusse",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bel",
+		"alpha-2 code" : "be",
+		"alpha-3 code" : "bel"
+	},
+	{
+		"English name" : "Bemba",
+		"French name" : "bemba",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bem",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bem"
+	},
+	{
+		"English name" : "Bengali",
+		"French name" : "bengali",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ben",
+		"alpha-2 code" : "bn",
+		"alpha-3 code" : "ben"
+	},
+	{
+		"English name" : "Berber (Other)",
+		"French name" : "berbères, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ber",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ber"
+	},
+	{
+		"English name" : "Bhojpuri",
+		"French name" : "bhojpuri",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bho",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bho"
+	},
+	{
+		"English name" : "Bihari",
+		"French name" : "bihari",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bih",
+		"alpha-2 code" : "bh",
+		"alpha-3 code" : "bih"
+	},
+	{
+		"English name" : "Bikol",
+		"French name" : "bikol",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bik",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bik"
+	},
+	{
+		"English name" : "Bini",
+		"French name" : "bini",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bin",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bin"
+	},
+	{
+		"English name" : "Bislama",
+		"French name" : "bichlamar",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bis",
+		"alpha-2 code" : "bi",
+		"alpha-3 code" : "bis"
+	},
+	{
+		"English name" : "Siksika",
+		"French name" : "blackfoot",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bla",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bla"
+	},
+	{
+		"English name" : "Bantu (Other)",
+		"French name" : "bantoues, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bnt",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bnt"
+	},
+	{
+		"English name" : "Tibetan",
+		"French name" : "tibétain",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bod",
+		"alpha-2 code" : "bo",
+		"alpha-3 code" : "tib"
+	},
+	{
+		"English name" : "Bosnian",
+		"French name" : "bosniaque",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bos",
+		"alpha-2 code" : "bs",
+		"alpha-3 code" : "bos"
+	},
+	{
+		"English name" : "Braj",
+		"French name" : "braj",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bra",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bra"
+	},
+	{
+		"English name" : "Breton",
+		"French name" : "breton",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bre",
+		"alpha-2 code" : "br",
+		"alpha-3 code" : "bre"
+	},
+	{
+		"English name" : "Batak (Indonesia)",
+		"French name" : "batak (Indonésie)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#btk",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "btk"
+	},
+	{
+		"English name" : "Buriat",
+		"French name" : "bouriate",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bua",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bua"
+	},
+	{
+		"English name" : "Buginese",
+		"French name" : "bugi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bug",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "bug"
+	},
+	{
+		"English name" : "Bulgarian",
+		"French name" : "bulgare",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#bul",
+		"alpha-2 code" : "bg",
+		"alpha-3 code" : "bul"
+	},
+	{
+		"English name" : "Blin; Bilin",
+		"French name" : "blin; bilen",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#byn",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "byn"
+	},
+	{
+		"English name" : "Caddo",
+		"French name" : "caddo",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cad",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "cad"
+	},
+	{
+		"English name" : "Central American Indian (Other)",
+		"French name" : "indiennes d'Amérique centrale, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cai",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "cai"
+	},
+	{
+		"English name" : "Carib",
+		"French name" : "caribe",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#car",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "car"
+	},
+	{
+		"English name" : "Catalan",
+		"French name" : "catalan",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cat",
+		"alpha-2 code" : "ca",
+		"alpha-3 code" : "cat"
+	},
+	{
+		"English name" : "Caucasian (Other)",
+		"French name" : "caucasiennes, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cau",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "cau"
+	},
+	{
+		"English name" : "Cebuano",
+		"French name" : "cebuano",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ceb",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ceb"
+	},
+	{
+		"English name" : "Celtic (Other)",
+		"French name" : "celtiques, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cel",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "cel"
+	},
+	{
+		"English name" : "Czech",
+		"French name" : "tchèque",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ces",
+		"alpha-2 code" : "cs",
+		"alpha-3 code" : "cze"
+	},
+	{
+		"English name" : "Chamorro",
+		"French name" : "chamorro",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cha",
+		"alpha-2 code" : "ch",
+		"alpha-3 code" : "cha"
+	},
+	{
+		"English name" : "Chibcha",
+		"French name" : "chibcha",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#chb",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "chb"
+	},
+	{
+		"English name" : "Chechen",
+		"French name" : "tchÉtchène",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#che",
+		"alpha-2 code" : "ce",
+		"alpha-3 code" : "che"
+	},
+	{
+		"English name" : "Chagatai",
+		"French name" : "djaghataï",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#chg",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "chg"
+	},
+	{
+		"English name" : "Chuukese",
+		"French name" : "chuuk",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#chk",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "chk"
+	},
+	{
+		"English name" : "Mari",
+		"French name" : "mari",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#chm",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "chm"
+	},
+	{
+		"English name" : "Chinook jargon",
+		"French name" : "chinook, jargon",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#chn",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "chn"
+	},
+	{
+		"English name" : "Choctaw",
+		"French name" : "choctaw",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cho",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "cho"
+	},
+	{
+		"English name" : "Chipewyan",
+		"French name" : "chipewyan",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#chp",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "chp"
+	},
+	{
+		"English name" : "Cherokee",
+		"French name" : "cherokee",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#chr",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "chr"
+	},
+	{
+		"English name" : "Old Slavonic; Church Slavonic; Old Bulgarian; Church Slavic; Old Church Slavonic",
+		"French name" : "vieux slave; slavon liturgique; vieux bulgare; slavon d'église",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#chu",
+		"alpha-2 code" : "cu",
+		"alpha-3 code" : "chu"
+	},
+	{
+		"English name" : "Chuvash",
+		"French name" : "tchouvache",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#chv",
+		"alpha-2 code" : "cv",
+		"alpha-3 code" : "chv"
+	},
+	{
+		"English name" : "Cheyenne",
+		"French name" : "cheyenne",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#chy",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "chy"
+	},
+	{
+		"English name" : "Chamic languages",
+		"French name" : "chames, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cmc",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "cmc"
+	},
+	{
+		"English name" : "Coptic",
+		"French name" : "copte",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cop",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "cop"
+	},
+	{
+		"English name" : "Cornish",
+		"French name" : "cornique",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cor",
+		"alpha-2 code" : "kw",
+		"alpha-3 code" : "cor"
+	},
+	{
+		"English name" : "Corsican",
+		"French name" : "corse",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cos",
+		"alpha-2 code" : "co",
+		"alpha-3 code" : "cos"
+	},
+	{
+		"English name" : "Creoles and pidgins, English-based (Other)",
+		"French name" : "créoles et pidgins anglais, autres",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cpe",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "cpe"
+	},
+	{
+		"English name" : "Creoles and pidgins, French-based (Other)",
+		"French name" : "créoles et pidgins français, autres",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cpf",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "cpf"
+	},
+	{
+		"English name" : "Creoles and pidgins, Portuguese-based (Other)",
+		"French name" : "créoles et pidgins portugais, autres",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cpp",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "cpp"
+	},
+	{
+		"English name" : "Cree",
+		"French name" : "cree",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cre",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "cre"
+	},
+	{
+		"English name" : "Crimean Turkish; Crimean Tatar",
+		"French name" : "tatar de CrimÃ©",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#crh",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "crh"
+	},
+	{
+		"English name" : "Creoles and pidgins (Other)",
+		"French name" : "créoles et pidgins divers",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#crp",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "crp"
+	},
+	{
+		"English name" : "Kashubian",
+		"French name" : "kachoube",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#csb",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "csb"
+	},
+	{
+		"English name" : "Cushitic (Other)",
+		"French name" : "couchitiques, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cus",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "cus"
+	},
+	{
+		"English name" : "Welsh",
+		"French name" : "gallois",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#cym",
+		"alpha-2 code" : "cy",
+		"alpha-3 code" : "wel"
+	},
+	{
+		"English name" : "Dakota",
+		"French name" : "dakota",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#dak",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "dak"
+	},
+	{
+		"English name" : "Danish",
+		"French name" : "danois",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#dan",
+		"alpha-2 code" : "da",
+		"alpha-3 code" : "dan"
+	},
+	{
+		"English name" : "Dargwa",
+		"French name" : "dargwa",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#dar",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "dar"
+	},
+	{
+		"English name" : "Dayak",
+		"French name" : "dayak",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#day",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "day"
+	},
+	{
+		"English name" : "Delaware",
+		"French name" : "delaware",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#del",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "del"
+	},
+	{
+		"English name" : "Slave (Athapascan)",
+		"French name" : "esclave (athapascan)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#den",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "den"
+	},
+	{
+		"English name" : "German",
+		"French name" : "allemand",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#deu",
+		"alpha-2 code" : "de",
+		"alpha-3 code" : "ger"
+	},
+	{
+		"English name" : "Dogrib",
+		"French name" : "dogrib",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#dgr",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "dgr"
+	},
+	{
+		"English name" : "Dinka",
+		"French name" : "dinka",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#din",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "din"
+	},
+	{
+		"English name" : "Divehi",
+		"French name" : "maldivien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#div",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "div"
+	},
+	{
+		"English name" : "Dogri",
+		"French name" : "dogri",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#doi",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "doi"
+	},
+	{
+		"English name" : "Dravidian (Other)",
+		"French name" : "dravidiennes, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#dra",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "dra"
+	},
+	{
+		"English name" : "Lower Sorbian",
+		"French name" : "bas-sorabe",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#dsb",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "dsb"
+	},
+	{
+		"English name" : "Duala",
+		"French name" : "douala",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#dua",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "dua"
+	},
+	{
+		"English name" : "Dutch, Middle (ca. 1050-1350)",
+		"French name" : "néerlandais moyen (ca. 1050-1350)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#dum",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "dum"
+	},
+	{
+		"English name" : "Dyula",
+		"French name" : "dioula",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#dyu",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "dyu"
+	},
+	{
+		"English name" : "Dzongkha",
+		"French name" : "dzongkha",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#dzo",
+		"alpha-2 code" : "dz",
+		"alpha-3 code" : "dzo"
+	},
+	{
+		"English name" : "Efik",
+		"French name" : "efik",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#efi",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "efi"
+	},
+	{
+		"English name" : "Egyptian (Ancient)",
+		"French name" : "égyptien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#egy",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "egy"
+	},
+	{
+		"English name" : "Ekajuk",
+		"French name" : "ekajuk",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#eka",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "eka"
+	},
+	{
+		"English name" : "Greek, Modern (1453-)",
+		"French name" : "grec moderne (après 1453)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ell",
+		"alpha-2 code" : "el",
+		"alpha-3 code" : "gre"
+	},
+	{
+		"English name" : "Elamite",
+		"French name" : "élamite",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#elx",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "elx"
+	},
+	{
+		"English name" : "English",
+		"French name" : "anglais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#eng",
+		"alpha-2 code" : "en",
+		"alpha-3 code" : "eng"
+	},
+	{
+		"English name" : "English, Middle (1100-1500)",
+		"French name" : "anglais moyen (1100-1500)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#enm",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "enm"
+	},
+	{
+		"English name" : "Esperanto",
+		"French name" : "espéranto",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#epo",
+		"alpha-2 code" : "eo",
+		"alpha-3 code" : "epo"
+	},
+	{
+		"English name" : "Estonian",
+		"French name" : "estonien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#est",
+		"alpha-2 code" : "et",
+		"alpha-3 code" : "est"
+	},
+	{
+		"English name" : "Basque",
+		"French name" : "basque",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#eus",
+		"alpha-2 code" : "eu",
+		"alpha-3 code" : "baq"
+	},
+	{
+		"English name" : "Ewe",
+		"French name" : "éwé",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ewe",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ewe"
+	},
+	{
+		"English name" : "Ewondo",
+		"French name" : "éwondo",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ewo",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ewo"
+	},
+	{
+		"English name" : "Fang",
+		"French name" : "fang",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#fan",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "fan"
+	},
+	{
+		"English name" : "Faroese",
+		"French name" : "féroïen",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#fao",
+		"alpha-2 code" : "fo",
+		"alpha-3 code" : "fao"
+	},
+	{
+		"English name" : "Persian",
+		"French name" : "persan",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#fas",
+		"alpha-2 code" : "fa",
+		"alpha-3 code" : "per"
+	},
+	{
+		"English name" : "Fanti",
+		"French name" : "fanti",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#fat",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "fat"
+	},
+	{
+		"English name" : "Fijian",
+		"French name" : "fidjien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#fij",
+		"alpha-2 code" : "fj",
+		"alpha-3 code" : "fij"
+	},
+	{
+		"English name" : "Filipino; Pilipino",
+		"French name" : "filipino; pilipino",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#fil",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "fil"
+	},
+	{
+		"English name" : "Finnish",
+		"French name" : "finnois",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#fin",
+		"alpha-2 code" : "fi",
+		"alpha-3 code" : "fin"
+	},
+	{
+		"English name" : "Finno-Ugrian (Other)",
+		"French name" : "finno-ougriennes, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#fiu",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "fiu"
+	},
+	{
+		"English name" : "Fon",
+		"French name" : "fon",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#fon",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "fon"
+	},
+	{
+		"English name" : "French",
+		"French name" : "français",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#fra",
+		"alpha-2 code" : "fr",
+		"alpha-3 code" : "fre"
+	},
+	{
+		"English name" : "French, Middle (ca.1400-1600)",
+		"French name" : "français moyen (1400-1600)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#frm",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "frm"
+	},
+	{
+		"English name" : "French, Old (842-ca.1400)",
+		"French name" : "français ancien (842-ca.1400)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#fro",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "fro"
+	},
+	{
+		"English name" : "Frisian",
+		"French name" : "frison",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#fry",
+		"alpha-2 code" : "fy",
+		"alpha-3 code" : "fry"
+	},
+	{
+		"English name" : "Fulah",
+		"French name" : "peul",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ful",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ful"
+	},
+	{
+		"English name" : "Friulian",
+		"French name" : "frioulan",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#fur",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "fur"
+	},
+	{
+		"English name" : "Ga",
+		"French name" : "ga",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#gaa",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "gaa"
+	},
+	{
+		"English name" : "Gayo",
+		"French name" : "gayo",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#gay",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "gay"
+	},
+	{
+		"English name" : "Gbaya",
+		"French name" : "gbaya",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#gba",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "gba"
+	},
+	{
+		"English name" : "Germanic (Other)",
+		"French name" : "germaniques, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#gem",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "gem"
+	},
+	{
+		"English name" : "Geez",
+		"French name" : "guèze",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#gez",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "gez"
+	},
+	{
+		"English name" : "Gilbertese",
+		"French name" : "kiribati",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#gil",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "gil"
+	},
+	{
+		"English name" : "Scottish Gaelic; Gaelic",
+		"French name" : "gaélique écossais; gaélique",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#gla",
+		"alpha-2 code" : "gd",
+		"alpha-3 code" : "gla"
+	},
+	{
+		"English name" : "Irish",
+		"French name" : "irlandais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#gle",
+		"alpha-2 code" : "ga",
+		"alpha-3 code" : "gle"
+	},
+	{
+		"English name" : "Gallegan",
+		"French name" : "galicien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#glg",
+		"alpha-2 code" : "gl",
+		"alpha-3 code" : "glg"
+	},
+	{
+		"English name" : "Manx",
+		"French name" : "manx; mannois",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#glv",
+		"alpha-2 code" : "gv",
+		"alpha-3 code" : "glv"
+	},
+	{
+		"English name" : "German, Middle High (ca.1050-1500)",
+		"French name" : "allemand, moyen haut (ca. 1050-1500)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#gmh",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "gmh"
+	},
+	{
+		"English name" : "German, Old High (ca.750-1050)",
+		"French name" : "allemand, vieux haut (ca. 750-1050)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#goh",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "goh"
+	},
+	{
+		"English name" : "Gondi",
+		"French name" : "gond",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#gon",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "gon"
+	},
+	{
+		"English name" : "Gorontalo",
+		"French name" : "gorontalo",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#gor",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "gor"
+	},
+	{
+		"English name" : "Gothic",
+		"French name" : "gothique",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#got",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "got"
+	},
+	{
+		"English name" : "Grebo",
+		"French name" : "grebo",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#grb",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "grb"
+	},
+	{
+		"English name" : "Greek, Ancient (to 1453)",
+		"French name" : "grec ancien (jusqu'à 1453)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#grc",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "grc"
+	},
+	{
+		"English name" : "Guarani",
+		"French name" : "guarani",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#grn",
+		"alpha-2 code" : "gn",
+		"alpha-3 code" : "grn"
+	},
+	{
+		"English name" : "Gujarati",
+		"French name" : "goudjrati",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#guj",
+		"alpha-2 code" : "gu",
+		"alpha-3 code" : "guj"
+	},
+	{
+		"English name" : "Gwich´in",
+		"French name" : "gwich´in",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#gwi",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "gwi"
+	},
+	{
+		"English name" : "Haida",
+		"French name" : "haida",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#hai",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "hai"
+	},
+	{
+		"English name" : "Haitian; Haitian Creole",
+		"French name" : "haÃ¯tien; crÃ©ole haÃ¯tien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#hat",
+		"alpha-2 code" : "ht",
+		"alpha-3 code" : "hat"
+	},
+	{
+		"English name" : "Hausa",
+		"French name" : "haoussa",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#hau",
+		"alpha-2 code" : "ha",
+		"alpha-3 code" : "hau"
+	},
+	{
+		"English name" : "Hawaiian",
+		"French name" : "hawaïen",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#haw",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "haw"
+	},
+	{
+		"English name" : "Hebrew",
+		"French name" : "hébreu",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#heb",
+		"alpha-2 code" : "he",
+		"alpha-3 code" : "heb"
+	},
+	{
+		"English name" : "Herero",
+		"French name" : "herero",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#her",
+		"alpha-2 code" : "hz",
+		"alpha-3 code" : "her"
+	},
+	{
+		"English name" : "Hiligaynon",
+		"French name" : "hiligaynon",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#hil",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "hil"
+	},
+	{
+		"English name" : "Himachali",
+		"French name" : "himachali",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#him",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "him"
+	},
+	{
+		"English name" : "Hindi",
+		"French name" : "hindi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#hin",
+		"alpha-2 code" : "hi",
+		"alpha-3 code" : "hin"
+	},
+	{
+		"English name" : "Hittite",
+		"French name" : "hittite",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#hit",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "hit"
+	},
+	{
+		"English name" : "Hmong",
+		"French name" : "hmong",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#hmn",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "hmn"
+	},
+	{
+		"English name" : "Hiri Motu",
+		"French name" : "hiri motu",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#hmo",
+		"alpha-2 code" : "ho",
+		"alpha-3 code" : "hmo"
+	},
+	{
+		"English name" : "Croatian",
+		"French name" : "croate",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#hrv",
+		"alpha-2 code" : "hr",
+		"alpha-3 code" : "scr"
+	},
+	{
+		"English name" : "Upper Sorbian",
+		"French name" : "haut-sorabe",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#hsb",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "hsb"
+	},
+	{
+		"English name" : "Hungarian",
+		"French name" : "hongrois",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#hun",
+		"alpha-2 code" : "hu",
+		"alpha-3 code" : "hun"
+	},
+	{
+		"English name" : "Hupa",
+		"French name" : "hupa",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#hup",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "hup"
+	},
+	{
+		"English name" : "Armenian",
+		"French name" : "arménien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#hye",
+		"alpha-2 code" : "hy",
+		"alpha-3 code" : "arm"
+	},
+	{
+		"English name" : "Iban",
+		"French name" : "iban",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#iba",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "iba"
+	},
+	{
+		"English name" : "Igbo",
+		"French name" : "igbo",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ibo",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ibo"
+	},
+	{
+		"English name" : "Ido",
+		"French name" : "ido",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ido",
+		"alpha-2 code" : "io",
+		"alpha-3 code" : "ido"
+	},
+	{
+		"English name" : "Sichuan Yi",
+		"French name" : "yi de Sichuan",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#iii",
+		"alpha-2 code" : "ii",
+		"alpha-3 code" : "iii"
+	},
+	{
+		"English name" : "Ijo",
+		"French name" : "ijo",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ijo",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ijo"
+	},
+	{
+		"English name" : "Inuktitut",
+		"French name" : "inuktitut",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#iku",
+		"alpha-2 code" : "iu",
+		"alpha-3 code" : "iku"
+	},
+	{
+		"English name" : "Interlingue",
+		"French name" : "interlingue",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ile",
+		"alpha-2 code" : "ie",
+		"alpha-3 code" : "ile"
+	},
+	{
+		"English name" : "Iloko",
+		"French name" : "ilocano",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ilo",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ilo"
+	},
+	{
+		"English name" : "Interlingua (International Auxiliary Language Association)",
+		"French name" : "interlingua (langue auxiliaire internationale)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ina",
+		"alpha-2 code" : "ia",
+		"alpha-3 code" : "ina"
+	},
+	{
+		"English name" : "Indic (Other)",
+		"French name" : "indo-aryennes, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#inc",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "inc"
+	},
+	{
+		"English name" : "Indonesian",
+		"French name" : "indonésien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ind",
+		"alpha-2 code" : "id",
+		"alpha-3 code" : "ind"
+	},
+	{
+		"English name" : "Indo-European (Other)",
+		"French name" : "indo-européennes, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ine",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ine"
+	},
+	{
+		"English name" : "Ingush",
+		"French name" : "ingouche",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#inh",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "inh"
+	},
+	{
+		"English name" : "Inupiaq",
+		"French name" : "inupiaq",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ipk",
+		"alpha-2 code" : "ik",
+		"alpha-3 code" : "ipk"
+	},
+	{
+		"English name" : "Iranian (Other)",
+		"French name" : "iraniennes, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ira",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ira"
+	},
+	{
+		"English name" : "Iroquoian languages",
+		"French name" : "iroquoises, langues (famille)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#iro",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "iro"
+	},
+	{
+		"English name" : "Icelandic",
+		"French name" : "islandais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#isl",
+		"alpha-2 code" : "is",
+		"alpha-3 code" : "ice"
+	},
+	{
+		"English name" : "Italian",
+		"French name" : "italien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ita",
+		"alpha-2 code" : "it",
+		"alpha-3 code" : "ita"
+	},
+	{
+		"English name" : "Javanese",
+		"French name" : "javanais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#jav",
+		"alpha-2 code" : "jv",
+		"alpha-3 code" : "jav"
+	},
+	{
+		"English name" : "Lojban",
+		"French name" : "lojban",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#jbo",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "jbo"
+	},
+	{
+		"English name" : "Japanese",
+		"French name" : "japonais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#jpn",
+		"alpha-2 code" : "ja",
+		"alpha-3 code" : "jpn"
+	},
+	{
+		"English name" : "Judeo-Persian",
+		"French name" : "judéo-persan",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#jpr",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "jpr"
+	},
+	{
+		"English name" : "Judeo-Arabic",
+		"French name" : "judéo-arabe",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#jrb",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "jrb"
+	},
+	{
+		"English name" : "Kara-Kalpak",
+		"French name" : "karakalpak",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kaa",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kaa"
+	},
+	{
+		"English name" : "Kabyle",
+		"French name" : "kabyle",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kab",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kab"
+	},
+	{
+		"English name" : "Kachin",
+		"French name" : "kachin",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kac",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kac"
+	},
+	{
+		"English name" : "Kalaallisut",
+		"French name" : "groenlandais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kal",
+		"alpha-2 code" : "kl",
+		"alpha-3 code" : "kal"
+	},
+	{
+		"English name" : "Kamba",
+		"French name" : "kamba",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kam",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kam"
+	},
+	{
+		"English name" : "Kannada",
+		"French name" : "kannada",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kan",
+		"alpha-2 code" : "kn",
+		"alpha-3 code" : "kan"
+	},
+	{
+		"English name" : "Karen",
+		"French name" : "karen",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kar",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kar"
+	},
+	{
+		"English name" : "Kashmiri",
+		"French name" : "kashmiri",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kas",
+		"alpha-2 code" : "ks",
+		"alpha-3 code" : "kas"
+	},
+	{
+		"English name" : "Georgian",
+		"French name" : "géorgien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kat",
+		"alpha-2 code" : "ka",
+		"alpha-3 code" : "geo"
+	},
+	{
+		"English name" : "Kanuri",
+		"French name" : "kanouri",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kau",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kau"
+	},
+	{
+		"English name" : "Kawi",
+		"French name" : "kawi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kaw",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kaw"
+	},
+	{
+		"English name" : "Kazakh",
+		"French name" : "kazakh",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kaz",
+		"alpha-2 code" : "kk",
+		"alpha-3 code" : "kaz"
+	},
+	{
+		"English name" : "Kabardian",
+		"French name" : "kabardien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kbd",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kbd"
+	},
+	{
+		"English name" : "Khasi",
+		"French name" : "khasi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kha",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kha"
+	},
+	{
+		"English name" : "Khoisan (Other)",
+		"French name" : "khoisan, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#khi",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "khi"
+	},
+	{
+		"English name" : "Khmer",
+		"French name" : "khmer",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#khm",
+		"alpha-2 code" : "km",
+		"alpha-3 code" : "khm"
+	},
+	{
+		"English name" : "Khotanese",
+		"French name" : "khotanais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kho",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kho"
+	},
+	{
+		"English name" : "Kikuyu; Gikuyu",
+		"French name" : "kikuyu",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kik",
+		"alpha-2 code" : "ki",
+		"alpha-3 code" : "kik"
+	},
+	{
+		"English name" : "Kinyarwanda",
+		"French name" : "rwanda",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kin",
+		"alpha-2 code" : "rw",
+		"alpha-3 code" : "kin"
+	},
+	{
+		"English name" : "Kirghiz",
+		"French name" : "kirghize",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kir",
+		"alpha-2 code" : "ky",
+		"alpha-3 code" : "kir"
+	},
+	{
+		"English name" : "Kimbundu",
+		"French name" : "kimbundu",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kmb",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kmb"
+	},
+	{
+		"English name" : "Konkani",
+		"French name" : "konkani",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kok",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kok"
+	},
+	{
+		"English name" : "Komi",
+		"French name" : "komi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kom",
+		"alpha-2 code" : "kv",
+		"alpha-3 code" : "kom"
+	},
+	{
+		"English name" : "Kongo",
+		"French name" : "kongo",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kon",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kon"
+	},
+	{
+		"English name" : "Korean",
+		"French name" : "coréen",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kor",
+		"alpha-2 code" : "ko",
+		"alpha-3 code" : "kor"
+	},
+	{
+		"English name" : "Kosraean",
+		"French name" : "kosrae",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kos",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kos"
+	},
+	{
+		"English name" : "Kpelle",
+		"French name" : "kpellé",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kpe",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kpe"
+	},
+	{
+		"English name" : "Karachay-Balkar",
+		"French name" : "karatchaÃ¯ balkar",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#krc",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "krc"
+	},
+	{
+		"English name" : "Kru",
+		"French name" : "krou",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kro",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kro"
+	},
+	{
+		"English name" : "Kurukh",
+		"French name" : "kurukh",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kru",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kru"
+	},
+	{
+		"English name" : "Kwanyama, Kuanyama",
+		"French name" : "kwanyama; kuanyama",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kua",
+		"alpha-2 code" : "kj",
+		"alpha-3 code" : "kua"
+	},
+	{
+		"English name" : "Kumyk",
+		"French name" : "koumyk",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kum",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kum"
+	},
+	{
+		"English name" : "Kurdish",
+		"French name" : "kurde",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kur",
+		"alpha-2 code" : "ku",
+		"alpha-3 code" : "kur"
+	},
+	{
+		"English name" : "Kutenai",
+		"French name" : "kutenai",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#kut",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "kut"
+	},
+	{
+		"English name" : "Ladino",
+		"French name" : "judéo-espagnol",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lad",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "lad"
+	},
+	{
+		"English name" : "Lahnda",
+		"French name" : "lahnda",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lah",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "lah"
+	},
+	{
+		"English name" : "Lamba",
+		"French name" : "lamba",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lam",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "lam"
+	},
+	{
+		"English name" : "Lao",
+		"French name" : "lao",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lao",
+		"alpha-2 code" : "lo",
+		"alpha-3 code" : "lao"
+	},
+	{
+		"English name" : "Latin",
+		"French name" : "latin",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lat",
+		"alpha-2 code" : "la",
+		"alpha-3 code" : "lat"
+	},
+	{
+		"English name" : "Latvian",
+		"French name" : "letton",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lav",
+		"alpha-2 code" : "lv",
+		"alpha-3 code" : "lav"
+	},
+	{
+		"English name" : "Lezghian",
+		"French name" : "lezghien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lez",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "lez"
+	},
+	{
+		"English name" : "Limburgish; Limburger; Limburgan",
+		"French name" : "limbourgeois",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lim",
+		"alpha-2 code" : "li",
+		"alpha-3 code" : "lim"
+	},
+	{
+		"English name" : "Lingala",
+		"French name" : "lingala",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lin",
+		"alpha-2 code" : "ln",
+		"alpha-3 code" : "lin"
+	},
+	{
+		"English name" : "Lithuanian",
+		"French name" : "lituanien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lit",
+		"alpha-2 code" : "lt",
+		"alpha-3 code" : "lit"
+	},
+	{
+		"English name" : "Mongo",
+		"French name" : "mongo",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lol",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "lol"
+	},
+	{
+		"English name" : "Lozi",
+		"French name" : "lozi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#loz",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "loz"
+	},
+	{
+		"English name" : "Luxembourgish; Letzeburgesch",
+		"French name" : "luxembourgeois",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ltz",
+		"alpha-2 code" : "lb",
+		"alpha-3 code" : "ltz"
+	},
+	{
+		"English name" : "Luba-Lulua",
+		"French name" : "luba-lulua",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lua",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "lua"
+	},
+	{
+		"English name" : "Luba-Katanga",
+		"French name" : "luba-katanga",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lub",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "lub"
+	},
+	{
+		"English name" : "Ganda",
+		"French name" : "ganda",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lug",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "lug"
+	},
+	{
+		"English name" : "Luiseno",
+		"French name" : "luiseno",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lui",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "lui"
+	},
+	{
+		"English name" : "Lunda",
+		"French name" : "lunda",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lun",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "lun"
+	},
+	{
+		"English name" : "Luo (Kenya and Tanzania)",
+		"French name" : "luo (Kenya et Tanzanie)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#luo",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "luo"
+	},
+	{
+		"English name" : "Lushai",
+		"French name" : "lushai",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#lus",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "lus"
+	},
+	{
+		"English name" : "Madurese",
+		"French name" : "madourais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mad",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mad"
+	},
+	{
+		"English name" : "Magahi",
+		"French name" : "magahi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mag",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mag"
+	},
+	{
+		"English name" : "Marshallese",
+		"French name" : "marshall",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mah",
+		"alpha-2 code" : "mh",
+		"alpha-3 code" : "mah"
+	},
+	{
+		"English name" : "Maithili",
+		"French name" : "maithili",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mai",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mai"
+	},
+	{
+		"English name" : "Makasar",
+		"French name" : "makassar",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mak",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mak"
+	},
+	{
+		"English name" : "Malayalam",
+		"French name" : "malayalam",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mal",
+		"alpha-2 code" : "ml",
+		"alpha-3 code" : "mal"
+	},
+	{
+		"English name" : "Mandingo",
+		"French name" : "mandingue",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#man",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "man"
+	},
+	{
+		"English name" : "Austronesian (Other)",
+		"French name" : "malayo-polynésiennes, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#map",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "map"
+	},
+	{
+		"English name" : "Marathi",
+		"French name" : "marathe",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mar",
+		"alpha-2 code" : "mr",
+		"alpha-3 code" : "mar"
+	},
+	{
+		"English name" : "Masai",
+		"French name" : "massaï",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mas",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mas"
+	},
+	{
+		"English name" : "Moksha",
+		"French name" : "moksa",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mdf",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mdf"
+	},
+	{
+		"English name" : "Mandar",
+		"French name" : "mandar",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mdr",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mdr"
+	},
+	{
+		"English name" : "Mende",
+		"French name" : "mendé",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#men",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "men"
+	},
+	{
+		"English name" : "Irish, Middle (900-1200)",
+		"French name" : "irlandais moyen (900-1200)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mga",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mga"
+	},
+	{
+		"English name" : "Mi'kmaq; Micmac",
+		"French name" : "mi'kmaq; micmac",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mic",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mic"
+	},
+	{
+		"English name" : "Minangkabau",
+		"French name" : "minangkabau",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#min",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "min"
+	},
+	{
+		"English name" : "Miscellaneous languages",
+		"French name" : "diverses, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mis",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mis"
+	},
+	{
+		"English name" : "Macedonian",
+		"French name" : "macédonien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mkd",
+		"alpha-2 code" : "mk",
+		"alpha-3 code" : "mac"
+	},
+	{
+		"English name" : "Mon-Khmer (Other)",
+		"French name" : "môn-khmer, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mkh",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mkh"
+	},
+	{
+		"English name" : "Malagasy",
+		"French name" : "malgache",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mlg",
+		"alpha-2 code" : "mg",
+		"alpha-3 code" : "mlg"
+	},
+	{
+		"English name" : "Maltese",
+		"French name" : "maltais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mlt",
+		"alpha-2 code" : "mt",
+		"alpha-3 code" : "mlt"
+	},
+	{
+		"English name" : "Manchu",
+		"French name" : "mandchou",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mnc",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mnc"
+	},
+	{
+		"English name" : "Manipuri",
+		"French name" : "manipuri",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mni",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mni"
+	},
+	{
+		"English name" : "Manobo languages",
+		"French name" : "manobo, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mno",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mno"
+	},
+	{
+		"English name" : "Mohawk",
+		"French name" : "mohawk",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#moh",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "moh"
+	},
+	{
+		"English name" : "Moldavian",
+		"French name" : "moldave",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mol",
+		"alpha-2 code" : "mo",
+		"alpha-3 code" : "mol"
+	},
+	{
+		"English name" : "Mongolian",
+		"French name" : "mongol",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mon",
+		"alpha-2 code" : "mn",
+		"alpha-3 code" : "mon"
+	},
+	{
+		"English name" : "Mossi",
+		"French name" : "moré",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mos",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mos"
+	},
+	{
+		"English name" : "Maori",
+		"French name" : "maori",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mri",
+		"alpha-2 code" : "mi",
+		"alpha-3 code" : "mao"
+	},
+	{
+		"English name" : "Malay",
+		"French name" : "malais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#msa",
+		"alpha-2 code" : "ms",
+		"alpha-3 code" : "may"
+	},
+	{
+		"English name" : "Multiple languages",
+		"French name" : "multilingue",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mul",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mul"
+	},
+	{
+		"English name" : "Munda languages",
+		"French name" : "mounda, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mun",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mun"
+	},
+	{
+		"English name" : "Creek",
+		"French name" : "muskogee",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mus",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mus"
+	},
+	{
+		"English name" : "Mirandese",
+		"French name" : "mirandais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mwl",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mwl"
+	},
+	{
+		"English name" : "Marwari",
+		"French name" : "marvari",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mwr",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "mwr"
+	},
+	{
+		"English name" : "Burmese",
+		"French name" : "birman",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#mya",
+		"alpha-2 code" : "my",
+		"alpha-3 code" : "bur"
+	},
+	{
+		"English name" : "Mayan languages",
+		"French name" : "maya, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#myn",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "myn"
+	},
+	{
+		"English name" : "Erzya",
+		"French name" : "erza",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#myv",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "myv"
+	},
+	{
+		"English name" : "Nahuatl",
+		"French name" : "nahuatl",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nah",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "nah"
+	},
+	{
+		"English name" : "North American Indian (Other)",
+		"French name" : "indiennes d'Amérique du Nord, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nai",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "nai"
+	},
+	{
+		"English name" : "Neapolitan",
+		"French name" : "napolitain",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nap",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "nap"
+	},
+	{
+		"English name" : "Nauru",
+		"French name" : "nauruan",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nau",
+		"alpha-2 code" : "na",
+		"alpha-3 code" : "nau"
+	},
+	{
+		"English name" : "Navajo; Navaho",
+		"French name" : "navaho",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nav",
+		"alpha-2 code" : "nv",
+		"alpha-3 code" : "nav"
+	},
+	{
+		"English name" : "South Ndebele",
+		"French name" : "ndébélé du Sud",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nbl",
+		"alpha-2 code" : "nr",
+		"alpha-3 code" : "nbl"
+	},
+	{
+		"English name" : "North Ndebele",
+		"French name" : "ndébélé du Nord",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nde",
+		"alpha-2 code" : "nd",
+		"alpha-3 code" : "nde"
+	},
+	{
+		"English name" : "Ndonga",
+		"French name" : "ndonga",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ndo",
+		"alpha-2 code" : "ng",
+		"alpha-3 code" : "ndo"
+	},
+	{
+		"English name" : "Saxon, Low; German, Low; Low Saxon; Low German",
+		"French name" : "saxon, bas; allemand, bas; bas saxon; bas allemand",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nds",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "nds"
+	},
+	{
+		"English name" : "Nepali",
+		"French name" : "népalais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nep",
+		"alpha-2 code" : "ne",
+		"alpha-3 code" : "nep"
+	},
+	{
+		"English name" : "Newari",
+		"French name" : "newari",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#new",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "new"
+	},
+	{
+		"English name" : "Nias",
+		"French name" : "nias",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nia",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "nia"
+	},
+	{
+		"English name" : "Niger-Kordofanian (Other)",
+		"French name" : "nigéro-congolaises, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nic",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "nic"
+	},
+	{
+		"English name" : "Niuean",
+		"French name" : "niué",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#niu",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "niu"
+	},
+	{
+		"English name" : "Dutch",
+		"French name" : "néerlandais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nld",
+		"alpha-2 code" : "nl",
+		"alpha-3 code" : "dut"
+	},
+	{
+		"English name" : "Nynorsk, Norwegian; Norwegian Nynorsk",
+		"French name" : "nynorsk, norvégien; norvégien nynorsk",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nno",
+		"alpha-2 code" : "nn",
+		"alpha-3 code" : "nno"
+	},
+	{
+		"English name" : "Norwegian Bokmål; Bokmål, Norwegian",
+		"French name" : "norvégien bokmål; bokmål, norvégien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nob",
+		"alpha-2 code" : "nb",
+		"alpha-3 code" : "nob"
+	},
+	{
+		"English name" : "Nogai",
+		"French name" : "nogaÃ¯; nogay",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nog",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "nog"
+	},
+	{
+		"English name" : "Norse, Old",
+		"French name" : "norrois, vieux",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#non",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "non"
+	},
+	{
+		"English name" : "Norwegian",
+		"French name" : "norvégien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nor",
+		"alpha-2 code" : "no",
+		"alpha-3 code" : "nor"
+	},
+	{
+		"English name" : "Pedi; Sepedi; Northern Sotho",
+		"French name" : "pedi; sepedi; sotho du Nord",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nso",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "nso"
+	},
+	{
+		"English name" : "Nubian languages",
+		"French name" : "nubiennes, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nub",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "nub"
+	},
+	{
+		"English name" : "Classical Newari; Old Newari",
+		"French name" : "newari classique",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nwc",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "nwc"
+	},
+	{
+		"English name" : "Nyanja; Chichewa; Chewa",
+		"French name" : "nyanja; chichewa; chewa",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nya",
+		"alpha-2 code" : "ny",
+		"alpha-3 code" : "nya"
+	},
+	{
+		"English name" : "Nyamwezi",
+		"French name" : "nyamwezi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nym",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "nym"
+	},
+	{
+		"English name" : "Nyankole",
+		"French name" : "nyankolé",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nyn",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "nyn"
+	},
+	{
+		"English name" : "Nyoro",
+		"French name" : "nyoro",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nyo",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "nyo"
+	},
+	{
+		"English name" : "Nzima",
+		"French name" : "nzema",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#nzi",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "nzi"
+	},
+	{
+		"English name" : "Provençal; Occitan (post 1500)",
+		"French name" : "provençal; occitan (après 1500)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#oci",
+		"alpha-2 code" : "oc",
+		"alpha-3 code" : "oci"
+	},
+	{
+		"English name" : "Ojibwa",
+		"French name" : "ojibwa",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#oji",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "oji"
+	},
+	{
+		"English name" : "Oriya",
+		"French name" : "oriya",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ori",
+		"alpha-2 code" : "or",
+		"alpha-3 code" : "ori"
+	},
+	{
+		"English name" : "Oromo",
+		"French name" : "galla",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#orm",
+		"alpha-2 code" : "om",
+		"alpha-3 code" : "orm"
+	},
+	{
+		"English name" : "Osage",
+		"French name" : "osage",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#osa",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "osa"
+	},
+	{
+		"English name" : "Ossetic; Ossetian",
+		"French name" : "ossète",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#oss",
+		"alpha-2 code" : "os",
+		"alpha-3 code" : "oss"
+	},
+	{
+		"English name" : "Turkish, Ottoman (1500-1928)",
+		"French name" : "turc ottoman (1500-1928)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ota",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ota"
+	},
+	{
+		"English name" : "Otomian languages",
+		"French name" : "otomangue, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#oto",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "oto"
+	},
+	{
+		"English name" : "Papuan (Other)",
+		"French name" : "papoues, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#paa",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "paa"
+	},
+	{
+		"English name" : "Pangasinan",
+		"French name" : "pangasinan",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#pag",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "pag"
+	},
+	{
+		"English name" : "Pahlavi",
+		"French name" : "pahlavi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#pal",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "pal"
+	},
+	{
+		"English name" : "Pampanga",
+		"French name" : "pampangan",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#pam",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "pam"
+	},
+	{
+		"English name" : "Panjabi",
+		"French name" : "pendjabi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#pan",
+		"alpha-2 code" : "pa",
+		"alpha-3 code" : "pan"
+	},
+	{
+		"English name" : "Papiamento",
+		"French name" : "papiamento",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#pap",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "pap"
+	},
+	{
+		"English name" : "Palauan",
+		"French name" : "palau",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#pau",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "pau"
+	},
+	{
+		"English name" : "Persian, Old (ca.600-400 B.C.)",
+		"French name" : "perse, vieux (ca. 600-400 av. J.-C.)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#peo",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "peo"
+	},
+	{
+		"English name" : "Philippine (Other)",
+		"French name" : "philippines, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#phi",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "phi"
+	},
+	{
+		"English name" : "Phoenician",
+		"French name" : "phénicien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#phn",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "phn"
+	},
+	{
+		"English name" : "Pali",
+		"French name" : "pali",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#pli",
+		"alpha-2 code" : "pi",
+		"alpha-3 code" : "pli"
+	},
+	{
+		"English name" : "Polish",
+		"French name" : "polonais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#pol",
+		"alpha-2 code" : "pl",
+		"alpha-3 code" : "pol"
+	},
+	{
+		"English name" : "Pohnpeian",
+		"French name" : "pohnpei",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#pon",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "pon"
+	},
+	{
+		"English name" : "Portuguese",
+		"French name" : "portugais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#por",
+		"alpha-2 code" : "pt",
+		"alpha-3 code" : "por"
+	},
+	{
+		"English name" : "Prakrit languages",
+		"French name" : "prâkrit",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#pra",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "pra"
+	},
+	{
+		"English name" : "Provençal, Old (to 1500)",
+		"French name" : "provençal ancien (jusqu'à 1500)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#pro",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "pro"
+	},
+	{
+		"English name" : "Pushto",
+		"French name" : "pachto",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#pus",
+		"alpha-2 code" : "ps",
+		"alpha-3 code" : "pus"
+	},
+	{
+		"English name" : "Quechua",
+		"French name" : "quechua",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#que",
+		"alpha-2 code" : "qu",
+		"alpha-3 code" : "que"
+	},
+	{
+		"English name" : "Rajasthani",
+		"French name" : "rajasthani",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#raj",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "raj"
+	},
+	{
+		"English name" : "Rapanui",
+		"French name" : "rapanui",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#rap",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "rap"
+	},
+	{
+		"English name" : "Rarotongan",
+		"French name" : "rarotonga",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#rar",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "rar"
+	},
+	{
+		"English name" : "Romance (Other)",
+		"French name" : "romanes, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#roa",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "roa"
+	},
+	{
+		"English name" : "Raeto-Romance",
+		"French name" : "rhéto-roman",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#roh",
+		"alpha-2 code" : "rm",
+		"alpha-3 code" : "roh"
+	},
+	{
+		"English name" : "Romany",
+		"French name" : "tsigane",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#rom",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "rom"
+	},
+	{
+		"English name" : "Romanian",
+		"French name" : "roumain",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ron",
+		"alpha-2 code" : "ro",
+		"alpha-3 code" : "rum"
+	},
+	{
+		"English name" : "Rundi",
+		"French name" : "rundi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#run",
+		"alpha-2 code" : "rn",
+		"alpha-3 code" : "run"
+	},
+	{
+		"English name" : "Russian",
+		"French name" : "russe",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#rus",
+		"alpha-2 code" : "ru",
+		"alpha-3 code" : "rus"
+	},
+	{
+		"English name" : "Sandawe",
+		"French name" : "sandawe",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sad",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sad"
+	},
+	{
+		"English name" : "Sango",
+		"French name" : "sango",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sag",
+		"alpha-2 code" : "sg",
+		"alpha-3 code" : "sag"
+	},
+	{
+		"English name" : "Yakut",
+		"French name" : "iakoute",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sah",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sah"
+	},
+	{
+		"English name" : "South American Indian (Other)",
+		"French name" : "indiennes d'Amérique du Sud, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sai",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sai"
+	},
+	{
+		"English name" : "Salishan languages",
+		"French name" : "salish, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sal",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sal"
+	},
+	{
+		"English name" : "Samaritan Aramaic",
+		"French name" : "samaritain",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sam",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sam"
+	},
+	{
+		"English name" : "Sanskrit",
+		"French name" : "sanskrit",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#san",
+		"alpha-2 code" : "sa",
+		"alpha-3 code" : "san"
+	},
+	{
+		"English name" : "Sasak",
+		"French name" : "sasak",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sas",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sas"
+	},
+	{
+		"English name" : "Santali",
+		"French name" : "santal",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sat",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sat"
+	},
+	{
+		"English name" : "Sicilian",
+		"French name" : "sicilien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#scn",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "scn"
+	},
+	{
+		"English name" : "Scots",
+		"French name" : "écossais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sco",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sco"
+	},
+	{
+		"English name" : "Selkup",
+		"French name" : "selkoupe",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sel",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sel"
+	},
+	{
+		"English name" : "Semitic (Other)",
+		"French name" : "sémitiques, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sem",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sem"
+	},
+	{
+		"English name" : "Irish, Old (to 900)",
+		"French name" : "irlandais ancien (jusqu'à 900)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sga",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sga"
+	},
+	{
+		"English name" : "Sign languages",
+		"French name" : "langues des signes",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sgn",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sgn"
+	},
+	{
+		"English name" : "Shan",
+		"French name" : "chan",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#shn",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "shn"
+	},
+	{
+		"English name" : "Sidamo",
+		"French name" : "sidamo",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sid",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sid"
+	},
+	{
+		"English name" : "Sinhala; Sinhalese",
+		"French name" : "singhalais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sin",
+		"alpha-2 code" : "si",
+		"alpha-3 code" : "sin"
+	},
+	{
+		"English name" : "Siouan languages",
+		"French name" : "sioux, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sio",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sio"
+	},
+	{
+		"English name" : "Sino-Tibetan (Other)",
+		"French name" : "sino-tibétaines, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sit",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sit"
+	},
+	{
+		"English name" : "Slavic (Other)",
+		"French name" : "slaves, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sla",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sla"
+	},
+	{
+		"English name" : "Slovak",
+		"French name" : "slovaque",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#slk",
+		"alpha-2 code" : "sk",
+		"alpha-3 code" : "slo"
+	},
+	{
+		"English name" : "Slovenian",
+		"French name" : "slovène",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#slv",
+		"alpha-2 code" : "sl",
+		"alpha-3 code" : "slv"
+	},
+	{
+		"English name" : "Southern Sami",
+		"French name" : "sami du Sud",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sma",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sma"
+	},
+	{
+		"English name" : "Northern Sami",
+		"French name" : "sami du Nord",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sme",
+		"alpha-2 code" : "se",
+		"alpha-3 code" : "sme"
+	},
+	{
+		"English name" : "Sami languages (Other)",
+		"French name" : "sami, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#smi",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "smi"
+	},
+	{
+		"English name" : "Lule Sami",
+		"French name" : "sami de Lule",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#smj",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "smj"
+	},
+	{
+		"English name" : "Inari Sami",
+		"French name" : "sami d'Inari",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#smn",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "smn"
+	},
+	{
+		"English name" : "Samoan",
+		"French name" : "samoan",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#smo",
+		"alpha-2 code" : "sm",
+		"alpha-3 code" : "smo"
+	},
+	{
+		"English name" : "Skolt Sami",
+		"French name" : "sami skolt",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sms",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sms"
+	},
+	{
+		"English name" : "Shona",
+		"French name" : "shona",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sna",
+		"alpha-2 code" : "sn",
+		"alpha-3 code" : "sna"
+	},
+	{
+		"English name" : "Sindhi",
+		"French name" : "sindhi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#snd",
+		"alpha-2 code" : "sd",
+		"alpha-3 code" : "snd"
+	},
+	{
+		"English name" : "Soninke",
+		"French name" : "soninké",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#snk",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "snk"
+	},
+	{
+		"English name" : "Sogdian",
+		"French name" : "sogdien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sog",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sog"
+	},
+	{
+		"English name" : "Somali",
+		"French name" : "somali",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#som",
+		"alpha-2 code" : "so",
+		"alpha-3 code" : "som"
+	},
+	{
+		"English name" : "Songhai",
+		"French name" : "songhai",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#son",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "son"
+	},
+	{
+		"English name" : "Sotho, Southern",
+		"French name" : "sotho du Sud",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sot",
+		"alpha-2 code" : "st",
+		"alpha-3 code" : "sot"
+	},
+	{
+		"English name" : "Spanish; Castilian",
+		"French name" : "espagnol; castillan",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#spa",
+		"alpha-2 code" : "es",
+		"alpha-3 code" : "spa"
+	},
+	{
+		"English name" : "Albanian",
+		"French name" : "albanais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sqi",
+		"alpha-2 code" : "sq",
+		"alpha-3 code" : "alb"
+	},
+	{
+		"English name" : "Sardinian",
+		"French name" : "sarde",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#srd",
+		"alpha-2 code" : "sc",
+		"alpha-3 code" : "srd"
+	},
+	{
+		"English name" : "Sranan Tongo",
+		"French name" : "sranan tongo",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#srn",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "srn"
+	},
+	{
+		"English name" : "Serbian",
+		"French name" : "serbe",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#srp",
+		"alpha-2 code" : "sr",
+		"alpha-3 code" : "scc"
+	},
+	{
+		"English name" : "Serer",
+		"French name" : "sérère",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#srr",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "srr"
+	},
+	{
+		"English name" : "Nilo-Saharan (Other)",
+		"French name" : "nilo-sahariennes, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ssa",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ssa"
+	},
+	{
+		"English name" : "Swati",
+		"French name" : "swati",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ssw",
+		"alpha-2 code" : "ss",
+		"alpha-3 code" : "ssw"
+	},
+	{
+		"English name" : "Sukuma",
+		"French name" : "sukuma",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#suk",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "suk"
+	},
+	{
+		"English name" : "Sundanese",
+		"French name" : "soundanais",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sun",
+		"alpha-2 code" : "su",
+		"alpha-3 code" : "sun"
+	},
+	{
+		"English name" : "Susu",
+		"French name" : "soussou",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sus",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sus"
+	},
+	{
+		"English name" : "Sumerian",
+		"French name" : "sumérien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#sux",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "sux"
+	},
+	{
+		"English name" : "Swahili",
+		"French name" : "swahili",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#swa",
+		"alpha-2 code" : "sw",
+		"alpha-3 code" : "swa"
+	},
+	{
+		"English name" : "Swedish",
+		"French name" : "suédois",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#swe",
+		"alpha-2 code" : "sv",
+		"alpha-3 code" : "swe"
+	},
+	{
+		"English name" : "Syriac",
+		"French name" : "syriaque",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#syr",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "syr"
+	},
+	{
+		"English name" : "Tahitian",
+		"French name" : "tahitien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tah",
+		"alpha-2 code" : "ty",
+		"alpha-3 code" : "tah"
+	},
+	{
+		"English name" : "Tai (Other)",
+		"French name" : "thaïes, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tai",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tai"
+	},
+	{
+		"English name" : "Tamil",
+		"French name" : "tamoul",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tam",
+		"alpha-2 code" : "ta",
+		"alpha-3 code" : "tam"
+	},
+	{
+		"English name" : "Tatar",
+		"French name" : "tatar",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tat",
+		"alpha-2 code" : "tt",
+		"alpha-3 code" : "tat"
+	},
+	{
+		"English name" : "Telugu",
+		"French name" : "télougou",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tel",
+		"alpha-2 code" : "te",
+		"alpha-3 code" : "tel"
+	},
+	{
+		"English name" : "Timne",
+		"French name" : "temne",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tem",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tem"
+	},
+	{
+		"English name" : "Tereno",
+		"French name" : "tereno",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ter",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ter"
+	},
+	{
+		"English name" : "Tetum",
+		"French name" : "tetum",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tet",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tet"
+	},
+	{
+		"English name" : "Tajik",
+		"French name" : "tadjik",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tgk",
+		"alpha-2 code" : "tg",
+		"alpha-3 code" : "tgk"
+	},
+	{
+		"English name" : "Tagalog",
+		"French name" : "tagalog",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tgl",
+		"alpha-2 code" : "tl",
+		"alpha-3 code" : "tgl"
+	},
+	{
+		"English name" : "Thai",
+		"French name" : "thaï",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tha",
+		"alpha-2 code" : "th",
+		"alpha-3 code" : "tha"
+	},
+	{
+		"English name" : "Tigre",
+		"French name" : "tigré",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tig",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tig"
+	},
+	{
+		"English name" : "Tigrinya",
+		"French name" : "tigrigna",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tir",
+		"alpha-2 code" : "ti",
+		"alpha-3 code" : "tir"
+	},
+	{
+		"English name" : "Tiv",
+		"French name" : "tiv",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tiv",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tiv"
+	},
+	{
+		"English name" : "Tokelau",
+		"French name" : "tokelau",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tkl",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tkl"
+	},
+	{
+		"English name" : "Klingon; tlhIngan-Hol",
+		"French name" : "klingon",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tlh",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tlh"
+	},
+	{
+		"English name" : "Tlingit",
+		"French name" : "tlingit",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tli",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tli"
+	},
+	{
+		"English name" : "Tamashek",
+		"French name" : "tamacheq",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tmh",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tmh"
+	},
+	{
+		"English name" : "Tonga (Nyasa)",
+		"French name" : "tonga (Nyasa)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tog",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tog"
+	},
+	{
+		"English name" : "Tonga (Tonga Islands)",
+		"French name" : "tongan (Îles Tonga)",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ton",
+		"alpha-2 code" : "to",
+		"alpha-3 code" : "ton"
+	},
+	{
+		"English name" : "Tok Pisin",
+		"French name" : "tok pisin",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tpi",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tpi"
+	},
+	{
+		"English name" : "Tsimshian",
+		"French name" : "tsimshian",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tsi",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tsi"
+	},
+	{
+		"English name" : "Tswana",
+		"French name" : "tswana",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tsn",
+		"alpha-2 code" : "tn",
+		"alpha-3 code" : "tsn"
+	},
+	{
+		"English name" : "Tsonga",
+		"French name" : "tsonga",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tso",
+		"alpha-2 code" : "ts",
+		"alpha-3 code" : "tso"
+	},
+	{
+		"English name" : "Turkmen",
+		"French name" : "turkmène",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tuk",
+		"alpha-2 code" : "tk",
+		"alpha-3 code" : "tuk"
+	},
+	{
+		"English name" : "Tumbuka",
+		"French name" : "tumbuka",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tum",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tum"
+	},
+	{
+		"English name" : "Tupi languages",
+		"French name" : "tupi, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tup",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tup"
+	},
+	{
+		"English name" : "Turkish",
+		"French name" : "turc",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tur",
+		"alpha-2 code" : "tr",
+		"alpha-3 code" : "tur"
+	},
+	{
+		"English name" : "Altaic (Other)",
+		"French name" : "altaïques, autres langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tut",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tut"
+	},
+	{
+		"English name" : "Tuvalu",
+		"French name" : "tuvalu",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tvl",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tvl"
+	},
+	{
+		"English name" : "Twi",
+		"French name" : "twi",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#twi",
+		"alpha-2 code" : "tw",
+		"alpha-3 code" : "twi"
+	},
+	{
+		"English name" : "Tuvinian",
+		"French name" : "touva",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#tyv",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "tyv"
+	},
+	{
+		"English name" : "Udmurt",
+		"French name" : "oudmourte",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#udm",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "udm"
+	},
+	{
+		"English name" : "Ugaritic",
+		"French name" : "ougaritique",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#uga",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "uga"
+	},
+	{
+		"English name" : "Uighur",
+		"French name" : "ouïgour",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#uig",
+		"alpha-2 code" : "ug",
+		"alpha-3 code" : "uig"
+	},
+	{
+		"English name" : "Ukrainian",
+		"French name" : "ukrainien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ukr",
+		"alpha-2 code" : "uk",
+		"alpha-3 code" : "ukr"
+	},
+	{
+		"English name" : "Umbundu",
+		"French name" : "umbundu",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#umb",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "umb"
+	},
+	{
+		"English name" : "Undetermined",
+		"French name" : "indéterminée",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#und",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "und"
+	},
+	{
+		"English name" : "Urdu",
+		"French name" : "ourdou",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#urd",
+		"alpha-2 code" : "ur",
+		"alpha-3 code" : "urd"
+	},
+	{
+		"English name" : "Uzbek",
+		"French name" : "ouszbek",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#uzb",
+		"alpha-2 code" : "uz",
+		"alpha-3 code" : "uzb"
+	},
+	{
+		"English name" : "Vai",
+		"French name" : "vaï",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#vai",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "vai"
+	},
+	{
+		"English name" : "Venda",
+		"French name" : "venda",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ven",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ven"
+	},
+	{
+		"English name" : "Vietnamese",
+		"French name" : "vietnamien",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#vie",
+		"alpha-2 code" : "vi",
+		"alpha-3 code" : "vie"
+	},
+	{
+		"English name" : "Volapük",
+		"French name" : "volapük",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#vol",
+		"alpha-2 code" : "vo",
+		"alpha-3 code" : "vol"
+	},
+	{
+		"English name" : "Votic",
+		"French name" : "vote",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#vot",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "vot"
+	},
+	{
+		"English name" : "Wakashan languages",
+		"French name" : "wakashennes, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#wak",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "wak"
+	},
+	{
+		"English name" : "Walamo",
+		"French name" : "walamo",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#wal",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "wal"
+	},
+	{
+		"English name" : "Waray",
+		"French name" : "waray",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#war",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "war"
+	},
+	{
+		"English name" : "Washo",
+		"French name" : "washo",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#was",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "was"
+	},
+	{
+		"English name" : "Sorbian languages",
+		"French name" : "sorabes, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#wen",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "wen"
+	},
+	{
+		"English name" : "Walloon",
+		"French name" : "wallon",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#wln",
+		"alpha-2 code" : "wa",
+		"alpha-3 code" : "wln"
+	},
+	{
+		"English name" : "Wolof",
+		"French name" : "wolof",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#wol",
+		"alpha-2 code" : "wo",
+		"alpha-3 code" : "wol"
+	},
+	{
+		"English name" : "Kalmyk",
+		"French name" : "kalmouk",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#xal",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "xal"
+	},
+	{
+		"English name" : "Xhosa",
+		"French name" : "xhosa",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#xho",
+		"alpha-2 code" : "xh",
+		"alpha-3 code" : "xho"
+	},
+	{
+		"English name" : "Yao",
+		"French name" : "yao",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#yao",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "yao"
+	},
+	{
+		"English name" : "Yapese",
+		"French name" : "yapois",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#yap",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "yap"
+	},
+	{
+		"English name" : "Yiddish",
+		"French name" : "yiddish",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#yid",
+		"alpha-2 code" : "yi",
+		"alpha-3 code" : "yid"
+	},
+	{
+		"English name" : "Yoruba",
+		"French name" : "yoruba",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#yor",
+		"alpha-2 code" : "yo",
+		"alpha-3 code" : "yor"
+	},
+	{
+		"English name" : "Yupik languages",
+		"French name" : "yupik, langues",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#ypk",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "ypk"
+	},
+	{
+		"English name" : "Zapotec",
+		"French name" : "zapotèque",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#zap",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "zap"
+	},
+	{
+		"English name" : "Zenaga",
+		"French name" : "zenaga",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#zen",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "zen"
+	},
+	{
+		"English name" : "Zhuang; Chuang",
+		"French name" : "zhuang; chuang",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#zha",
+		"alpha-2 code" : "za",
+		"alpha-3 code" : "zha"
+	},
+	{
+		"English name" : "Chinese",
+		"French name" : "chinois",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#zho",
+		"alpha-2 code" : "zh",
+		"alpha-3 code" : "chi"
+	},
+	{
+		"English name" : "Zande",
+		"French name" : "zandé",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#znd",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "znd"
+	},
+	{
+		"English name" : "Zulu",
+		"French name" : "zoulou",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#zul",
+		"alpha-2 code" : "zu",
+		"alpha-3 code" : "zul"
+	},
+	{
+		"English name" : "Zuni",
+		"French name" : "zuni",
+		"Published Subject Identifier" : "http://psi.oasis-open.org/iso/639/#zun",
+		"alpha-2 code" : "",
+		"alpha-3 code" : "zun"
+	}
+]
