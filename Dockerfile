@@ -11,7 +11,6 @@ RUN mkdir /app/upload && \
     npm cache clean --force  && \
     npm prune --production && \
     npm run clean && \
-    ./lodex-extended-sync
 
 FROM node:12-alpine AS release
 RUN apk add --no-cache su-exec redis
