@@ -20,9 +20,11 @@ services:
         links:
             - mongo
             - redis
+            - workers
         depends_on:
             - mongo
             - redis
+            - workers
         ports:
             - 3000:3000
             - 9229:9229 # Enable Nodemon inspect to attach to Docker Node
@@ -49,3 +51,13 @@ services:
         image: redis:6
         ports:
             - 6379:6379
+
+    workers:
+        image: inistcnrs/lodex-workers:9.3.0
+        volumes:
+            - ./scripts:/app/public
+        user: '${UID}:${GID}'
+        environment:
+            EZS_VERBOSE: 'true'
+        ports:
+            - 31976:31976
