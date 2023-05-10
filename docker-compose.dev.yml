@@ -82,4 +82,3 @@ services:
             - mongo
         depends_on:
             - mongo
-
