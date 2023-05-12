@@ -34,7 +34,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     }
 
     try {
-        const [, metaData, , script] = currentScript;
+        const [, metaData, routineName] = currentScript;
         ctx.type = metaData.mimeType;
         ctx.status = 200;
         if (metaData.fileName) {
@@ -65,7 +65,6 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             host,
         };
         const input = new PassThrough({ objectMode: true });
-        const commands = ezs.parseString(script, environment);
         const errorHandle = err => {
             ctx.status = 503;
             ctx.body.destroy();
@@ -89,30 +88,23 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
                 );
             }
         };
-        if (localConfig.pluginsAPI) {
-            const wurl = URL.parse(localConfig.pluginsAPI);
-            wurl.pathname = `/routines/${scriptNameCalledParam}.ini`;
-            wurl.search = qs.stringify(query, { indices: false });
-            const href = URL.format(wurl);
-            // Warning : Don't use proxy with docker virtual network
-            process.env.no_proxy = String(process.env.no_proxy || 'localhost')
-                .split(',')
-                .concat(wurl.hostname)
-                .filter((value, index, self) => self.indexOf(value) === index)
-                .join(',');
-            const response = await fetch(href);
-            ctx.body = response.body
-                .on('finish', emptyHandle)
-                .on('error', errorHandle);
-        } else {
-            const statement = scripts.useCache() ? 'boost' : 'delegate';
-            ctx.body = input
-                .pipe(ezs(statement, { commands }, environment))
-                .pipe(ezs.catch())
-                .on('finish', emptyHandle)
-                .on('error', errorHandle)
-                .pipe(ezs.toBuffer());
-        }
+        ctx.body = input
+            .pipe(
+                ezs(
+                    'URLConnect',
+                    {
+                        url: `${process.env.WORKERS_URL}/routines/${routineName}`,
+                        retries: 1,
+                        json: true,
+                        encoder: 'transit',
+                    },
+                    environment,
+                ),
+            )
+            .pipe(ezs.catch())
+            .on('finish', emptyHandle)
+            .on('error', errorHandle)
+            .pipe(ezs.toBuffer());
         input.write(query);
         input.end();
     } catch (err) {

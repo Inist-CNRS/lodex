@@ -7,7 +7,6 @@ import Lodex from '@ezs/lodex';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
-import URL from 'url';
 
 import Script from '../../services/script';
 import localConfig from '../../../../config.json';
@@ -47,7 +46,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         ctx.throw(404, `Unknown script '${scriptNameCalledParam}'.ini`);
     }
 
-    const [, metaData, , script] = currentScript;
+    const [, metaData, exporterName] = currentScript;
     const { sortDir, sortBy, match, ...facets } = ctx.query;
 
     ctx.type = metaData.mimeType;
@@ -82,7 +81,6 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     };
 
     const input = new PassThrough({ objectMode: true });
-    const commands = ezs.parseString(script, environment);
     const errorHandle = err => {
         ctx.status = 503;
         ctx.body.destroy();
@@ -101,25 +99,23 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             );
         }
     };
-    if (localConfig.pluginsAPI) {
-        const statement = 'dispatch';
-        const wurl = URL.parse(localConfig.pluginsAPI);
-        const server = wurl.hostname;
-        ctx.body = input
-            .pipe(ezs(statement, { commands, server }, environment))
-            .pipe(ezs.catch())
-            .on('finish', emptyHandle)
-            .on('error', errorHandle)
-            .pipe(ezs.toBuffer());
-    } else {
-        const statement = 'delegate';
-        ctx.body = input
-            .pipe(ezs(statement, { commands }, environment))
-            .pipe(ezs.catch())
-            .on('finish', emptyHandle)
-            .on('error', errorHandle)
-            .pipe(ezs.toBuffer());
-    }
+    ctx.body = input
+        .pipe(
+            ezs(
+                'URLConnect',
+                {
+                    url: `${process.env.WORKERS_URL}/exporters/${exporterName}`,
+                    retries: 1,
+                    json: true,
+                    encoder: 'transit',
+                },
+                environment,
+            ),
+        )
+        .pipe(ezs.catch())
+        .on('finish', emptyHandle)
+        .on('error', errorHandle)
+        .pipe(ezs.toBuffer());
     input.write(query);
     input.end();
 };
