@@ -1,0 +1,1988 @@
+[
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#004",
+      "English name" : "AFGHANISTAN",
+      "French name" : "AFGHANISTAN",
+      "alpha-3 code" : "AFG",
+      "alpha-2 code" : "AF",
+      "Num" : "004 "
+   },
+   {
+      "English name" : "ALBANIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#008",
+      "alpha-3 code" : "ALB",
+      "French name" : "ALBANIE",
+      "Num" : "008",
+      "alpha-2 code" : "AL"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#010",
+      "English name" : "ANTARCTICA",
+      "alpha-2 code" : "AQ",
+      "Num" : "010",
+      "French name" : "ANTARCTIQUE",
+      "alpha-3 code" : "ATA"
+   },
+   {
+      "Num" : "012",
+      "alpha-2 code" : "DZ",
+      "alpha-3 code" : "DZA",
+      "French name" : "ALGÉRIE",
+      "English name" : "ALGERIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#012"
+   },
+   {
+      "French name" : "SAMOA AMÉRICAINES",
+      "alpha-3 code" : "ASM",
+      "alpha-2 code" : "AS",
+      "Num" : "016",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#016",
+      "English name" : "AMERICAN SAMOA"
+   },
+   {
+      "French name" : "ANDORRE",
+      "alpha-3 code" : "AND",
+      "alpha-2 code" : "AD",
+      "Num" : "020",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#020",
+      "English name" : "ANDORRA"
+   },
+   {
+      "alpha-3 code" : "AGO",
+      "French name" : "ANGOLA",
+      "Num" : "024",
+      "alpha-2 code" : "AO",
+      "English name" : "ANGOLA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#024"
+   },
+   {
+      "French name" : "ANTIGUA-ET-BARBUDA",
+      "alpha-3 code" : "ATG",
+      "alpha-2 code" : "AG",
+      "Num" : "028",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#028",
+      "English name" : "ANTIGUA AND BARBUDA"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#031",
+      "English name" : "AZERBAIJAN",
+      "French name" : "AZERBAÏDJAN",
+      "alpha-3 code" : "AZE",
+      "alpha-2 code" : "AZ",
+      "Num" : "031"
+   },
+   {
+      "alpha-3 code" : "ARG",
+      "French name" : "ARGENTINE",
+      "Num" : "032",
+      "alpha-2 code" : "AR",
+      "English name" : "ARGENTINA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#032"
+   },
+   {
+      "Num" : "036",
+      "alpha-2 code" : "AU",
+      "alpha-3 code" : "AUS",
+      "French name" : "AUSTRALIE",
+      "English name" : "AUSTRALIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#036"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#040",
+      "English name" : "AUSTRIA",
+      "French name" : "AUTRICHE",
+      "alpha-3 code" : "AUT",
+      "alpha-2 code" : "AT",
+      "Num" : "040"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#044",
+      "English name" : "BAHAMAS",
+      "French name" : "BAHAMAS",
+      "alpha-3 code" : "BHS",
+      "alpha-2 code" : "BS",
+      "Num" : "044"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#048",
+      "English name" : "BAHRAIN",
+      "French name" : "BAHREÏN",
+      "alpha-3 code" : "BHR",
+      "alpha-2 code" : "BH",
+      "Num" : "048"
+   },
+   {
+      "alpha-2 code" : "BD",
+      "Num" : "050",
+      "French name" : "BANGLADESH",
+      "alpha-3 code" : "BGD",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#050",
+      "English name" : "BANGLADESH"
+   },
+   {
+      "English name" : "ARMENIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#051",
+      "alpha-3 code" : "ARM",
+      "French name" : "ARMÉNIE",
+      "Num" : "051",
+      "alpha-2 code" : "AM"
+   },
+   {
+      "English name" : "BARBADOS",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#052",
+      "Num" : "052",
+      "alpha-2 code" : "BB",
+      "alpha-3 code" : "BRB",
+      "French name" : "BARBADE"
+   },
+   {
+      "French name" : "BELGIQUE",
+      "alpha-3 code" : "BEL",
+      "alpha-2 code" : "BE",
+      "Num" : "056",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#056",
+      "English name" : "BELGIUM"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#060",
+      "English name" : "BERMUDA",
+      "French name" : "BERMUDES",
+      "alpha-3 code" : "BMU",
+      "alpha-2 code" : "BM",
+      "Num" : "060"
+   },
+   {
+      "Num" : "064",
+      "alpha-2 code" : "BT",
+      "alpha-3 code" : "BTN",
+      "French name" : "BHOUTAN",
+      "English name" : "BHUTAN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#064"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#068",
+      "English name" : "BOLIVIA",
+      "French name" : "BOLIVIE",
+      "alpha-3 code" : "BOL",
+      "alpha-2 code" : "BO",
+      "Num" : "068"
+   },
+   {
+      "alpha-2 code" : "BA",
+      "Num" : "070",
+      "French name" : "BOSNIE-HERZÉGOVINE",
+      "alpha-3 code" : "BIH",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#070",
+      "English name" : "BOSNIA AND HERZEGOVINA"
+   },
+   {
+      "Num" : "072",
+      "alpha-2 code" : "BW",
+      "alpha-3 code" : "BWA",
+      "French name" : "BOTSWANA",
+      "English name" : "BOTSWANA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#072"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#074",
+      "English name" : "BOUVET ISLAND",
+      "alpha-2 code" : "BV",
+      "Num" : "074",
+      "French name" : "BOUVET, ÎLE",
+      "alpha-3 code" : "BVT"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#076",
+      "English name" : "BRAZIL",
+      "alpha-2 code" : "BR",
+      "Num" : "076",
+      "French name" : "BRÉSIL",
+      "alpha-3 code" : "BRA"
+   },
+   {
+      "Num" : "084",
+      "alpha-2 code" : "BZ",
+      "alpha-3 code" : "BLZ",
+      "French name" : "BELIZE",
+      "English name" : "BELIZE",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#084"
+   },
+   {
+      "Num" : "086",
+      "alpha-2 code" : "IO",
+      "alpha-3 code" : "IOT",
+      "French name" : "OCÉAN INDIEN, TERRITOIRE BRITANNIQUE DE L'",
+      "English name" : "BRITISH INDIAN OCEAN TERRITORY",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#086"
+   },
+   {
+      "English name" : "SOLOMON ISLANDS",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#090",
+      "alpha-3 code" : "SLB",
+      "French name" : "SALOMON, ÎLES",
+      "Num" : "090",
+      "alpha-2 code" : "SB"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#092",
+      "English name" : "VIRGIN ISLANDS, BRITISH",
+      "alpha-2 code" : "VG",
+      "Num" : "092",
+      "French name" : "ÎLES VIERGES BRITANNIQUES",
+      "alpha-3 code" : "VGB"
+   },
+   {
+      "Num" : "096",
+      "alpha-2 code" : "BN",
+      "alpha-3 code" : "BRN",
+      "French name" : "BRUNÉI DARUSSALAM",
+      "English name" : "BRUNEI DARUSSALAM",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#096"
+   },
+   {
+      "alpha-2 code" : "BG",
+      "Num" : "100",
+      "French name" : "BULGARIE",
+      "alpha-3 code" : "BGR",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#100",
+      "English name" : "BULGARIA"
+   },
+   {
+      "alpha-2 code" : "MM",
+      "Num" : "104",
+      "French name" : "MYANMAR",
+      "alpha-3 code" : "MMR",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#104",
+      "English name" : "MYANMAR"
+   },
+   {
+      "Num" : "108",
+      "alpha-2 code" : "BI",
+      "alpha-3 code" : "BDI",
+      "French name" : "BURUNDI",
+      "English name" : "BURUNDI",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#108"
+   },
+   {
+      "English name" : "BELARUS",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#112",
+      "Num" : "112",
+      "alpha-2 code" : "BY",
+      "alpha-3 code" : "BLR",
+      "French name" : "BÉLARUS"
+   },
+   {
+      "Num" : "116",
+      "alpha-2 code" : "KH",
+      "alpha-3 code" : "KHM",
+      "French name" : "CAMBODGE",
+      "English name" : "CAMBODIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#116"
+   },
+   {
+      "English name" : "CAMEROON",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#120",
+      "alpha-3 code" : "CMR",
+      "French name" : "CAMEROUN",
+      "Num" : "120",
+      "alpha-2 code" : "CM"
+   },
+   {
+      "French name" : "CANADA",
+      "alpha-3 code" : "CAN",
+      "alpha-2 code" : "CA",
+      "Num" : "124",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#124",
+      "English name" : "CANADA"
+   },
+   {
+      "alpha-2 code" : "CV",
+      "Num" : "132",
+      "French name" : "CAP-VERT",
+      "alpha-3 code" : "CPV",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#132",
+      "English name" : "CAPE VERDE"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#136",
+      "English name" : "CAYMAN ISLANDS",
+      "alpha-2 code" : "KY",
+      "Num" : "136",
+      "French name" : "CAÏMANES, ÎLES",
+      "alpha-3 code" : "CYM"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#140",
+      "English name" : "CENTRAL AFRICAN REPUBLIC",
+      "alpha-2 code" : "CF",
+      "Num" : "140",
+      "French name" : "CENTRAFRICAINE, RÉPUBLIQUE",
+      "alpha-3 code" : "CAF"
+   },
+   {
+      "alpha-3 code" : "LKA",
+      "French name" : "SRI LANKA",
+      "Num" : "144",
+      "alpha-2 code" : "LK",
+      "English name" : "SRI LANKA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#144"
+   },
+   {
+      "alpha-2 code" : "TD",
+      "Num" : "148",
+      "French name" : "TCHAD",
+      "alpha-3 code" : "TCD",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#148",
+      "English name" : "CHAD"
+   },
+   {
+      "French name" : "CHILI",
+      "alpha-3 code" : "CHL",
+      "alpha-2 code" : "CL",
+      "Num" : "152",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#152",
+      "English name" : "CHILE"
+   },
+   {
+      "Num" : "156",
+      "alpha-2 code" : "CN",
+      "alpha-3 code" : "CHN",
+      "French name" : "CHINE",
+      "English name" : "CHINA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#156"
+   },
+   {
+      "English name" : "TAIWAN, PROVINCE OF CHINA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#158",
+      "alpha-3 code" : "TWN",
+      "French name" : "TAÏWAN, PROVINCE DE CHINE",
+      "Num" : "158",
+      "alpha-2 code" : "TW"
+   },
+   {
+      "Num" : "162",
+      "alpha-2 code" : "CX",
+      "alpha-3 code" : "CXR",
+      "French name" : "CHRISTMAS, ÎLE",
+      "English name" : "CHRISTMAS ISLAND",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#162"
+   },
+   {
+      "alpha-3 code" : "CCK",
+      "French name" : "COCOS (KEELING), ÎLES",
+      "Num" : "166",
+      "alpha-2 code" : "CC",
+      "English name" : "COCOS (KEELING) ISLANDS",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#166"
+   },
+   {
+      "English name" : "COLOMBIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#170",
+      "alpha-3 code" : "COL",
+      "French name" : "COLOMBIE",
+      "Num" : "170",
+      "alpha-2 code" : "CO"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#174",
+      "English name" : "COMOROS",
+      "French name" : "COMORES",
+      "alpha-3 code" : "COM",
+      "alpha-2 code" : "KM",
+      "Num" : "174"
+   },
+   {
+      "English name" : "MAYOTTE",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#175",
+      "Num" : "175",
+      "alpha-2 code" : "YT",
+      "alpha-3 code" : "MYT",
+      "French name" : "MAYOTTE"
+   },
+   {
+      "alpha-2 code" : "CG",
+      "Num" : "178",
+      "French name" : "CONGO",
+      "alpha-3 code" : "COG",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#178",
+      "English name" : "CONGO"
+   },
+   {
+      "English name" : "CONGO, THE DEMOCRATIC REPUBLIC OF THE",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#180",
+      "alpha-3 code" : "COD",
+      "French name" : "CONGO, LA RÉPUBLIQUE DÉMOCRATIQUE DU",
+      "Num" : "180",
+      "alpha-2 code" : "CD"
+   },
+   {
+      "Num" : "184",
+      "alpha-2 code" : "CK",
+      "alpha-3 code" : "COK",
+      "French name" : "COOK, ÎLES",
+      "English name" : "COOK ISLANDS",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#184"
+   },
+   {
+      "English name" : "COSTA RICA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#188",
+      "Num" : "188",
+      "alpha-2 code" : "CR",
+      "alpha-3 code" : "CRI",
+      "French name" : "COSTA RICA"
+   },
+   {
+      "alpha-2 code" : "HR",
+      "Num" : "191",
+      "French name" : "CROATIE",
+      "alpha-3 code" : "HRV",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#191",
+      "English name" : "CROATIA"
+   },
+   {
+      "alpha-2 code" : "CU",
+      "Num" : "192",
+      "French name" : "CUBA",
+      "alpha-3 code" : "CUB",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#192",
+      "English name" : "CUBA"
+   },
+   {
+      "alpha-2 code" : "CY",
+      "Num" : "196",
+      "French name" : "CHYPRE",
+      "alpha-3 code" : "CYP",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#196",
+      "English name" : "CYPRUS"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#203",
+      "English name" : "CZECH REPUBLIC",
+      "alpha-2 code" : "CZ",
+      "Num" : "203",
+      "French name" : "TCHÈQUE, RÉPUBLIQUE",
+      "alpha-3 code" : "CZE"
+   },
+   {
+      "alpha-2 code" : "BJ",
+      "Num" : "204",
+      "French name" : "BÉNIN",
+      "alpha-3 code" : "BEN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#204",
+      "English name" : "BENIN"
+   },
+   {
+      "alpha-3 code" : "DNK",
+      "French name" : "DANEMARK",
+      "Num" : "208",
+      "alpha-2 code" : "DK",
+      "English name" : "DENMARK",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#208"
+   },
+   {
+      "French name" : "DOMINIQUE",
+      "alpha-3 code" : "DMA",
+      "alpha-2 code" : "DM",
+      "Num" : "212",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#212",
+      "English name" : "DOMINICA"
+   },
+   {
+      "alpha-2 code" : "DO",
+      "Num" : "214",
+      "French name" : "DOMINICAINE, RÉPUBLIQUE",
+      "alpha-3 code" : "DOM",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#214",
+      "English name" : "DOMINICAN REPUBLIC"
+   },
+   {
+      "English name" : "ECUADOR",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#218",
+      "alpha-3 code" : "ECU",
+      "French name" : "ÉQUATEUR",
+      "Num" : "218",
+      "alpha-2 code" : "EC"
+   },
+   {
+      "Num" : "222",
+      "alpha-2 code" : "SV",
+      "alpha-3 code" : "SLV",
+      "French name" : "EL SALVADOR",
+      "English name" : "EL SALVADOR",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#222"
+   },
+   {
+      "French name" : "GUINÉE ÉQUATORIALE",
+      "alpha-3 code" : "GNQ",
+      "alpha-2 code" : "GQ",
+      "Num" : "226",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#226",
+      "English name" : "EQUATORIAL GUINEA"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#231",
+      "English name" : "ETHIOPIA",
+      "French name" : "ÉTHIOPIE",
+      "alpha-3 code" : "ETH",
+      "alpha-2 code" : "ET",
+      "Num" : "231"
+   },
+   {
+      "alpha-3 code" : "ERI",
+      "French name" : "ÉRYTHRÉE",
+      "Num" : "232",
+      "alpha-2 code" : "ER",
+      "English name" : "ERITREA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#232"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#233",
+      "English name" : "ESTONIA",
+      "alpha-2 code" : "EE",
+      "Num" : "233",
+      "French name" : "ESTONIE",
+      "alpha-3 code" : "EST"
+   },
+   {
+      "English name" : "FAROE ISLANDS",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#234",
+      "Num" : "234",
+      "alpha-2 code" : "FO",
+      "alpha-3 code" : "FRO",
+      "French name" : "FÉROÉ, ÎLES"
+   },
+   {
+      "French name" : "FALKLAND, ÎLES (MALVINAS)",
+      "alpha-3 code" : "FLK",
+      "alpha-2 code" : "FK",
+      "Num" : "238",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#238",
+      "English name" : "FALKLAND ISLANDS (MALVINAS)"
+   },
+   {
+      "English name" : "SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#239",
+      "alpha-3 code" : "SGS",
+      "French name" : "GÉORGIE DU SUD ET LES ÎLES SANDWICH DU SUD",
+      "Num" : "239",
+      "alpha-2 code" : "GS"
+   },
+   {
+      "alpha-3 code" : "FJI",
+      "French name" : "FIDJI",
+      "Num" : "242",
+      "alpha-2 code" : "FJ",
+      "English name" : "FIJI",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#242"
+   },
+   {
+      "alpha-2 code" : "FI",
+      "Num" : "246",
+      "French name" : "FINLANDE",
+      "alpha-3 code" : "FIN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#246",
+      "English name" : "FINLAND"
+   },
+   {
+      "Num" : "248",
+      "alpha-2 code" : "AX",
+      "alpha-3 code" : "ALA",
+      "French name" : "ÅLAND, ÎLES",
+      "English name" : "ÅLAND ISLANDS",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#248"
+   },
+   {
+      "Num" : "250",
+      "alpha-2 code" : "FR",
+      "alpha-3 code" : "FRA",
+      "French name" : "FRANCE",
+      "English name" : "FRANCE",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#250"
+   },
+   {
+      "English name" : "FRENCH GUIANA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#254",
+      "Num" : "254",
+      "alpha-2 code" : "GF",
+      "alpha-3 code" : "GUF",
+      "French name" : "GUYANE FRANÇAISE"
+   },
+   {
+      "English name" : "FRENCH POLYNESIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#258",
+      "alpha-3 code" : "PYF",
+      "French name" : "POLYNÉSIE FRANÇAISE",
+      "Num" : "258",
+      "alpha-2 code" : "PF"
+   },
+   {
+      "English name" : "FRENCH SOUTHERN TERRITORIES",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#260",
+      "Num" : "260",
+      "alpha-2 code" : "TF",
+      "alpha-3 code" : "ATF",
+      "French name" : "TERRES AUSTRALES FRANÇAISES"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#262",
+      "English name" : "DJIBOUTI",
+      "French name" : "DJIBOUTI",
+      "alpha-3 code" : "DJI",
+      "alpha-2 code" : "DJ",
+      "Num" : "262"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#266",
+      "English name" : "GABON",
+      "French name" : "GABON",
+      "alpha-3 code" : "GAB",
+      "alpha-2 code" : "GA",
+      "Num" : "266"
+   },
+   {
+      "alpha-2 code" : "GE",
+      "Num" : "268",
+      "French name" : "GÉORGIE",
+      "alpha-3 code" : "GEO",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#268",
+      "English name" : "GEORGIA"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#270",
+      "English name" : "GAMBIA",
+      "alpha-2 code" : "GM",
+      "Num" : "270",
+      "French name" : "GAMBIE",
+      "alpha-3 code" : "GMB"
+   },
+   {
+      "French name" : "PALESTINIEN OCCUPÉ, TERRITOIRE",
+      "alpha-3 code" : "PSE",
+      "alpha-2 code" : "PS",
+      "Num" : "275",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#275",
+      "English name" : "PALESTINIAN TERRITORY, OCCUPIED"
+   },
+   {
+      "Num" : "276",
+      "alpha-2 code" : "DE",
+      "alpha-3 code" : "DEU",
+      "French name" : "ALLEMAGNE",
+      "English name" : "GERMANY",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#276"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#288",
+      "English name" : "GHANA",
+      "French name" : "GHANA",
+      "alpha-3 code" : "GHA",
+      "alpha-2 code" : "GH",
+      "Num" : "288"
+   },
+   {
+      "English name" : "GIBRALTAR",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#292",
+      "Num" : "292",
+      "alpha-2 code" : "GI",
+      "alpha-3 code" : "GIB",
+      "French name" : "GIBRALTAR"
+   },
+   {
+      "French name" : "KIRIBATI",
+      "alpha-3 code" : "KIR",
+      "alpha-2 code" : "KI",
+      "Num" : "296",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#296",
+      "English name" : "KIRIBATI"
+   },
+   {
+      "alpha-3 code" : "GRC",
+      "French name" : "GRÈCE",
+      "Num" : "300",
+      "alpha-2 code" : "GR",
+      "English name" : "GREECE",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#300"
+   },
+   {
+      "Num" : "304",
+      "alpha-2 code" : "GL",
+      "alpha-3 code" : "GRL",
+      "French name" : "GROENLAND",
+      "English name" : "GREENLAND",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#304"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#308",
+      "English name" : "GRENADA",
+      "alpha-2 code" : "GD",
+      "Num" : "308",
+      "French name" : "GRENADE",
+      "alpha-3 code" : "GRD"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#312",
+      "English name" : "GUADELOUPE",
+      "French name" : "GUADELOUPE",
+      "alpha-3 code" : "GLP",
+      "alpha-2 code" : "GP",
+      "Num" : "312"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#316",
+      "English name" : "GUAM",
+      "French name" : "GUAM",
+      "alpha-3 code" : "GUM",
+      "alpha-2 code" : "GU",
+      "Num" : "316"
+   },
+   {
+      "French name" : "GUATEMALA",
+      "alpha-3 code" : "GTM",
+      "alpha-2 code" : "GT",
+      "Num" : "320",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#320",
+      "English name" : "GUATEMALA"
+   },
+   {
+      "alpha-2 code" : "GN",
+      "Num" : "324",
+      "French name" : "GUINÉE",
+      "alpha-3 code" : "GIN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#324",
+      "English name" : "GUINEA"
+   },
+   {
+      "Num" : "328",
+      "alpha-2 code" : "GY",
+      "alpha-3 code" : "GUY",
+      "French name" : "GUYANA",
+      "English name" : "GUYANA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#328"
+   },
+   {
+      "English name" : "HAITI",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#332",
+      "alpha-3 code" : "HTI",
+      "French name" : "HAÏTI",
+      "Num" : "332",
+      "alpha-2 code" : "HT"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#334",
+      "English name" : "HEARD ISLAND AND MCDONALD ISLANDS",
+      "French name" : "HEARD, ÎLE ET MCDONALD, ÎLES",
+      "alpha-3 code" : "HMD",
+      "alpha-2 code" : "HM",
+      "Num" : "334"
+   },
+   {
+      "Num" : "336",
+      "alpha-2 code" : "VA",
+      "alpha-3 code" : "VAT",
+      "French name" : "SAINT-SIÈGE (ÉTAT DE LA CITÉ DU VATICAN)",
+      "English name" : "HOLY SEE (VATICAN CITY STATE)",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#336"
+   },
+   {
+      "French name" : "HONDURAS",
+      "alpha-3 code" : "HND",
+      "alpha-2 code" : "HN",
+      "Num" : "340",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#340",
+      "English name" : "HONDURAS"
+   },
+   {
+      "English name" : "HONG KONG",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#344",
+      "alpha-3 code" : "HKG",
+      "French name" : "HONG-KONG",
+      "Num" : "344",
+      "alpha-2 code" : "HK"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#348",
+      "English name" : "HUNGARY",
+      "alpha-2 code" : "HU",
+      "Num" : "348",
+      "French name" : "HONGRIE",
+      "alpha-3 code" : "HUN"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#352",
+      "English name" : "ICELAND",
+      "alpha-2 code" : "IS",
+      "Num" : "352",
+      "French name" : "ISLANDE",
+      "alpha-3 code" : "ISL"
+   },
+   {
+      "Num" : "356",
+      "alpha-2 code" : "IN",
+      "alpha-3 code" : "IND",
+      "French name" : "INDE",
+      "English name" : "INDIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#356"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#360",
+      "English name" : "INDONESIA",
+      "French name" : "INDONÉSIE",
+      "alpha-3 code" : "IDN",
+      "alpha-2 code" : "ID",
+      "Num" : "360"
+   },
+   {
+      "French name" : "IRAN, RÉPUBLIQUE ISLAMIQUE D'",
+      "alpha-3 code" : "IRN",
+      "alpha-2 code" : "IR",
+      "Num" : "364",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#364",
+      "English name" : "IRAN, ISLAMIC REPUBLIC OF"
+   },
+   {
+      "alpha-2 code" : "IQ",
+      "Num" : "368",
+      "French name" : "IRAQ",
+      "alpha-3 code" : "IRQ",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#368",
+      "English name" : "IRAQ"
+   },
+   {
+      "alpha-3 code" : "IRL",
+      "French name" : "IRLANDE",
+      "Num" : "372",
+      "alpha-2 code" : "IE",
+      "English name" : "IRELAND",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#372"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#376",
+      "English name" : "ISRAEL",
+      "alpha-2 code" : "IL",
+      "Num" : "376",
+      "French name" : "ISRAËL",
+      "alpha-3 code" : "ISR"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#380",
+      "English name" : "ITALY",
+      "French name" : "ITALIE",
+      "alpha-3 code" : "ITA",
+      "alpha-2 code" : "IT",
+      "Num" : "380"
+   },
+   {
+      "English name" : "COTE D'IVOIRE",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#384",
+      "Num" : "384",
+      "alpha-2 code" : "CI",
+      "alpha-3 code" : "CIV",
+      "French name" : "CÔTE D'IVOIRE"
+   },
+   {
+      "alpha-3 code" : "JAM",
+      "French name" : "JAMAÏQUE",
+      "Num" : "388",
+      "alpha-2 code" : "JM",
+      "English name" : "JAMAICA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#388"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#392",
+      "English name" : "JAPAN",
+      "alpha-2 code" : "JP",
+      "Num" : "392",
+      "French name" : "JAPON",
+      "alpha-3 code" : "JPN"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#398",
+      "English name" : "KAZAKHSTAN",
+      "alpha-2 code" : "KZ",
+      "Num" : "398",
+      "French name" : "KAZAKHSTAN",
+      "alpha-3 code" : "KAZ"
+   },
+   {
+      "alpha-3 code" : "JOR",
+      "French name" : "JORDANIE",
+      "Num" : "400",
+      "alpha-2 code" : "JO",
+      "English name" : "JORDAN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#400"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#404",
+      "English name" : "KENYA",
+      "alpha-2 code" : "KE",
+      "Num" : "404",
+      "French name" : "KENYA",
+      "alpha-3 code" : "KEN"
+   },
+   {
+      "Num" : "408",
+      "alpha-2 code" : "KP",
+      "alpha-3 code" : "PRK",
+      "French name" : "CORÉE, RÉPUBLIQUE POPULAIRE DÉMOCRATIQUE DE",
+      "English name" : "KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#408"
+   },
+   {
+      "English name" : "KOREA, REPUBLIC OF",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#410",
+      "Num" : "410",
+      "alpha-2 code" : "KR",
+      "alpha-3 code" : "KOR",
+      "French name" : "CORÉE, RÉPUBLIQUE DE"
+   },
+   {
+      "French name" : "KOWEÏT",
+      "alpha-3 code" : "KWT",
+      "alpha-2 code" : "KW",
+      "Num" : "414",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#414",
+      "English name" : "KUWAIT"
+   },
+   {
+      "English name" : "KYRGYZSTAN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#417",
+      "alpha-3 code" : "KGZ",
+      "French name" : "KIRGHIZISTAN",
+      "Num" : "417",
+      "alpha-2 code" : "KG"
+   },
+   {
+      "alpha-3 code" : "LAO",
+      "French name" : "LAO, RÉPUBLIQUE DÉMOCRATIQUE POPULAIRE",
+      "Num" : "418",
+      "alpha-2 code" : "LA",
+      "English name" : "LAO PEOPLE'S DEMOCRATIC REPUBLIC",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#418"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#422",
+      "English name" : "LEBANON",
+      "alpha-2 code" : "LB",
+      "Num" : "422",
+      "French name" : "LIBAN",
+      "alpha-3 code" : "LBN"
+   },
+   {
+      "alpha-3 code" : "LSO",
+      "French name" : "LESOTHO",
+      "Num" : "426",
+      "alpha-2 code" : "LS",
+      "English name" : "LESOTHO",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#426"
+   },
+   {
+      "alpha-2 code" : "LV",
+      "Num" : "428",
+      "French name" : "LETTONIE",
+      "alpha-3 code" : "LVA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#428",
+      "English name" : "LATVIA"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#430",
+      "English name" : "LIBERIA",
+      "alpha-2 code" : "LR",
+      "Num" : "430",
+      "French name" : "LIBÉRIA",
+      "alpha-3 code" : "LBR"
+   },
+   {
+      "English name" : "LIBYAN ARAB JAMAHIRIYA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#434",
+      "alpha-3 code" : "LBY",
+      "French name" : "LIBYENNE, JAMAHIRIYA ARABE",
+      "Num" : "434",
+      "alpha-2 code" : "LY"
+   },
+   {
+      "Num" : "438",
+      "alpha-2 code" : "LI",
+      "alpha-3 code" : "LIE",
+      "French name" : "LIECHTENSTEIN",
+      "English name" : "LIECHTENSTEIN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#438"
+   },
+   {
+      "English name" : "LITHUANIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#440",
+      "Num" : "440",
+      "alpha-2 code" : "LT",
+      "alpha-3 code" : "LTU",
+      "French name" : "LITUANIE"
+   },
+   {
+      "English name" : "LUXEMBOURG",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#442",
+      "alpha-3 code" : "LUX",
+      "French name" : "LUXEMBOURG",
+      "Num" : "442",
+      "alpha-2 code" : "LU"
+   },
+   {
+      "French name" : "MACAO",
+      "alpha-3 code" : "MAC",
+      "alpha-2 code" : "MO",
+      "Num" : "446",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#446",
+      "English name" : "MACAO"
+   },
+   {
+      "English name" : "MADAGASCAR",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#450",
+      "alpha-3 code" : "MDG",
+      "French name" : "MADAGASCAR",
+      "Num" : "450",
+      "alpha-2 code" : "MG"
+   },
+   {
+      "Num" : "454",
+      "alpha-2 code" : "MW",
+      "alpha-3 code" : "MWI",
+      "French name" : "MALAWI",
+      "English name" : "MALAWI",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#454"
+   },
+   {
+      "French name" : "MALAISIE",
+      "alpha-3 code" : "MYS",
+      "alpha-2 code" : "MY",
+      "Num" : "458",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#458",
+      "English name" : "MALAYSIA"
+   },
+   {
+      "English name" : "MALDIVES",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#462",
+      "Num" : "462",
+      "alpha-2 code" : "MV",
+      "alpha-3 code" : "MDV",
+      "French name" : "MALDIVES"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#466",
+      "English name" : "MALI",
+      "alpha-2 code" : "ML",
+      "Num" : "466",
+      "French name" : "MALI",
+      "alpha-3 code" : "MLI"
+   },
+   {
+      "Num" : "470",
+      "alpha-2 code" : "MT",
+      "alpha-3 code" : "MLT",
+      "French name" : "MALTE",
+      "English name" : "MALTA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#470"
+   },
+   {
+      "alpha-2 code" : "MQ",
+      "Num" : "474",
+      "French name" : "MARTINIQUE",
+      "alpha-3 code" : "MTQ",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#474",
+      "English name" : "MARTINIQUE"
+   },
+   {
+      "English name" : "MAURITANIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#478",
+      "Num" : "478",
+      "alpha-2 code" : "MR",
+      "alpha-3 code" : "MRT",
+      "French name" : "MAURITANIE"
+   },
+   {
+      "Num" : "480",
+      "alpha-2 code" : "MU",
+      "alpha-3 code" : "MUS",
+      "French name" : "MAURICE",
+      "English name" : "MAURITIUS",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#480"
+   },
+   {
+      "French name" : "MEXIQUE",
+      "alpha-3 code" : "MEX",
+      "alpha-2 code" : "MX",
+      "Num" : "484",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#484",
+      "English name" : "MEXICO"
+   },
+   {
+      "English name" : "MONACO",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#492",
+      "alpha-3 code" : "MCO",
+      "French name" : "MONACO",
+      "Num" : "492",
+      "alpha-2 code" : "MC"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#496",
+      "English name" : "MONGOLIA",
+      "alpha-2 code" : "MN",
+      "Num" : "496",
+      "French name" : "MONGOLIE",
+      "alpha-3 code" : "MNG"
+   },
+   {
+      "alpha-3 code" : "MDA",
+      "French name" : "MOLDOVA, RÉPUBLIQUE DE",
+      "Num" : "498",
+      "alpha-2 code" : "MD",
+      "English name" : "MOLDOVA, REPUBLIC OF",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#498"
+   },
+   {
+      "English name" : "MONTSERRAT",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#500",
+      "Num" : "500",
+      "alpha-2 code" : "MS",
+      "alpha-3 code" : "MSR",
+      "French name" : "MONTSERRAT"
+   },
+   {
+      "Num" : "504",
+      "alpha-2 code" : "MA",
+      "alpha-3 code" : "MAR",
+      "French name" : "MAROC",
+      "English name" : "MOROCCO",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#504"
+   },
+   {
+      "Num" : "508",
+      "alpha-2 code" : "MZ",
+      "alpha-3 code" : "MOZ",
+      "French name" : "MOZAMBIQUE",
+      "English name" : "MOZAMBIQUE",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#508"
+   },
+   {
+      "French name" : "OMAN",
+      "alpha-3 code" : "OMN",
+      "alpha-2 code" : "OM",
+      "Num" : "512",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#512",
+      "English name" : "OMAN"
+   },
+   {
+      "French name" : "NAMIBIE",
+      "alpha-3 code" : "NAM",
+      "alpha-2 code" : "NA",
+      "Num" : "516",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#516",
+      "English name" : "NAMIBIA"
+   },
+   {
+      "Num" : "520",
+      "alpha-2 code" : "NR",
+      "alpha-3 code" : "NRU",
+      "French name" : "NAURU",
+      "English name" : "NAURU",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#520"
+   },
+   {
+      "English name" : "NEPAL",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#524",
+      "alpha-3 code" : "NPL",
+      "French name" : "NÉPAL",
+      "Num" : "524",
+      "alpha-2 code" : "NP"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#528",
+      "English name" : "NETHERLANDS",
+      "French name" : "PAYS-BAS",
+      "alpha-3 code" : "NLD",
+      "alpha-2 code" : "NL",
+      "Num" : "528"
+   },
+   {
+      "French name" : "ANTILLES NÉERLANDAISES",
+      "alpha-3 code" : "ANT",
+      "alpha-2 code" : "AN",
+      "Num" : "530",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#530",
+      "English name" : "NETHERLANDS ANTILLES"
+   },
+   {
+      "Num" : "533",
+      "alpha-2 code" : "AW",
+      "alpha-3 code" : "ABW",
+      "French name" : "ARUBA",
+      "English name" : "ARUBA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#533"
+   },
+   {
+      "alpha-3 code" : "NCL",
+      "French name" : "NOUVELLE-CALÉDONIE",
+      "Num" : "540",
+      "alpha-2 code" : "NC",
+      "English name" : "NEW CALEDONIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#540"
+   },
+   {
+      "alpha-2 code" : "VU",
+      "Num" : "548",
+      "French name" : "VANUATU",
+      "alpha-3 code" : "VUT",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#548",
+      "English name" : "VANUATU"
+   },
+   {
+      "French name" : "NOUVELLE-ZÉLANDE",
+      "alpha-3 code" : "NZL",
+      "alpha-2 code" : "NZ",
+      "Num" : "554",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#554",
+      "English name" : "NEW ZEALAND"
+   },
+   {
+      "French name" : "NICARAGUA",
+      "alpha-3 code" : "NIC",
+      "alpha-2 code" : "NI",
+      "Num" : "558",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#558",
+      "English name" : "NICARAGUA"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#562",
+      "English name" : "NIGER",
+      "French name" : "NIGER",
+      "alpha-3 code" : "NER",
+      "alpha-2 code" : "NE",
+      "Num" : "562"
+   },
+   {
+      "alpha-2 code" : "NG",
+      "Num" : "566",
+      "French name" : "NIGÉRIA",
+      "alpha-3 code" : "NGA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#566",
+      "English name" : "NIGERIA"
+   },
+   {
+      "alpha-3 code" : "NIU",
+      "French name" : "NIUÉ",
+      "Num" : "570",
+      "alpha-2 code" : "NU",
+      "English name" : "NIUE",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#570"
+   },
+   {
+      "alpha-3 code" : "NFK",
+      "French name" : "NORFOLK, ÎLE",
+      "Num" : "574",
+      "alpha-2 code" : "NF",
+      "English name" : "NORFOLK ISLAND",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#574"
+   },
+   {
+      "French name" : "NORVÈGE",
+      "alpha-3 code" : "NOR",
+      "alpha-2 code" : "NO",
+      "Num" : "578",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#578",
+      "English name" : "NORWAY"
+   },
+   {
+      "alpha-3 code" : "MNP",
+      "French name" : "MARIANNES DU NORD, ÎLES",
+      "Num" : "580",
+      "alpha-2 code" : "MP",
+      "English name" : "NORTHERN MARIANA ISLANDS",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#580"
+   },
+   {
+      "alpha-3 code" : "UMI",
+      "French name" : "ÎLES MINEURES ÉLOIGNÉES DES ÉTATS-UNIS",
+      "Num" : "581",
+      "alpha-2 code" : "UM",
+      "English name" : "UNITED STATES MINOR OUTLYING ISLANDS",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#581"
+   },
+   {
+      "French name" : "MICRONÉSIE, ÉTATS FÉDÉRÉS DE",
+      "alpha-3 code" : "FSM",
+      "alpha-2 code" : "FM",
+      "Num" : "583",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#583",
+      "English name" : "MICRONESIA, FEDERATED STATES OF"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#584",
+      "English name" : "MARSHALL ISLANDS",
+      "alpha-2 code" : "MH",
+      "Num" : "584",
+      "French name" : "MARSHALL, ÎLES",
+      "alpha-3 code" : "MHL"
+   },
+   {
+      "alpha-2 code" : "PW",
+      "Num" : "585",
+      "French name" : "PALAOS",
+      "alpha-3 code" : "PLW",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#585",
+      "English name" : "PALAU"
+   },
+   {
+      "English name" : "PAKISTAN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#586",
+      "Num" : "586",
+      "alpha-2 code" : "PK",
+      "alpha-3 code" : "PAK",
+      "French name" : "PAKISTAN"
+   },
+   {
+      "French name" : "PANAMA",
+      "alpha-3 code" : "PAN",
+      "alpha-2 code" : "PA",
+      "Num" : "591",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#591",
+      "English name" : "PANAMA"
+   },
+   {
+      "Num" : "598",
+      "alpha-2 code" : "PG",
+      "alpha-3 code" : "PNG",
+      "French name" : "PAPOUASIE-NOUVELLE-GUINÉE",
+      "English name" : "PAPUA NEW GUINEA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#598"
+   },
+   {
+      "English name" : "PARAGUAY",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#600",
+      "Num" : "600",
+      "alpha-2 code" : "PY",
+      "alpha-3 code" : "PRY",
+      "French name" : "PARAGUAY"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#604",
+      "English name" : "PERU",
+      "French name" : "PÉROU",
+      "alpha-3 code" : "PER",
+      "alpha-2 code" : "PE",
+      "Num" : "604"
+   },
+   {
+      "alpha-3 code" : "PHL",
+      "French name" : "PHILIPPINES",
+      "Num" : "608",
+      "alpha-2 code" : "PH",
+      "English name" : "PHILIPPINES",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#608"
+   },
+   {
+      "alpha-2 code" : "PN",
+      "Num" : "612",
+      "French name" : "PITCAIRN",
+      "alpha-3 code" : "PCN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#612",
+      "English name" : "PITCAIRN"
+   },
+   {
+      "Num" : "616",
+      "alpha-2 code" : "PL",
+      "alpha-3 code" : "POL",
+      "French name" : "POLOGNE",
+      "English name" : "POLAND",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#616"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#620",
+      "English name" : "PORTUGAL",
+      "French name" : "PORTUGAL",
+      "alpha-3 code" : "PRT",
+      "alpha-2 code" : "PT",
+      "Num" : "620"
+   },
+   {
+      "alpha-3 code" : "GNB",
+      "French name" : "GUINÉE-BISSAU",
+      "Num" : "624",
+      "alpha-2 code" : "GW",
+      "English name" : "GUINEA-BISSAU",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#624"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#626",
+      "English name" : "TIMOR-LESTE",
+      "alpha-2 code" : "TL",
+      "Num" : "626",
+      "French name" : "TIMOR-LESTE",
+      "alpha-3 code" : "TLS"
+   },
+   {
+      "Num" : "630",
+      "alpha-2 code" : "PR",
+      "alpha-3 code" : "PRI",
+      "French name" : "PORTO RICO",
+      "English name" : "PUERTO RICO",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#630"
+   },
+   {
+      "Num" : "634",
+      "alpha-2 code" : "QA",
+      "alpha-3 code" : "QAT",
+      "French name" : "QATAR",
+      "English name" : "QATAR",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#634"
+   },
+   {
+      "English name" : "REUNION",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#638",
+      "Num" : "638",
+      "alpha-2 code" : "RE",
+      "alpha-3 code" : "REU",
+      "French name" : "RÉUNION"
+   },
+   {
+      "English name" : "ROMANIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#642",
+      "Num" : "642",
+      "alpha-2 code" : "RO",
+      "alpha-3 code" : "ROU",
+      "French name" : "ROUMANIE"
+   },
+   {
+      "alpha-3 code" : "RUS",
+      "French name" : "RUSSIE, FÉDÉRATION DE",
+      "Num" : "643",
+      "alpha-2 code" : "RU",
+      "English name" : "RUSSIAN FEDERATION",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#643"
+   },
+   {
+      "English name" : "RWANDA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#646",
+      "alpha-3 code" : "RWA",
+      "French name" : "RWANDA",
+      "Num" : "646",
+      "alpha-2 code" : "RW"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#654",
+      "English name" : "SAINT HELENA",
+      "French name" : "SAINTE-HÉLÈNE",
+      "alpha-3 code" : "SHN",
+      "alpha-2 code" : "SH",
+      "Num" : "654"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#659",
+      "English name" : "SAINT KITTS AND NEVIS",
+      "alpha-2 code" : "KN",
+      "Num" : "659",
+      "French name" : "SAINT-KITTS-ET-NEVIS",
+      "alpha-3 code" : "KNA"
+   },
+   {
+      "English name" : "ANGUILLA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#660",
+      "Num" : "660",
+      "alpha-2 code" : "AI",
+      "alpha-3 code" : "AIA",
+      "French name" : "ANGUILLA"
+   },
+   {
+      "Num" : "662",
+      "alpha-2 code" : "LC",
+      "alpha-3 code" : "LCA",
+      "French name" : "SAINTE-LUCIE",
+      "English name" : "SAINT LUCIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#662"
+   },
+   {
+      "French name" : "SAINT-PIERRE-ET-MIQUELON",
+      "alpha-3 code" : "SPM",
+      "alpha-2 code" : "PM",
+      "Num" : "666",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#666",
+      "English name" : "SAINT PIERRE AND MIQUELON"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#670",
+      "English name" : "SAINT VINCENT AND THE GRENADINES",
+      "alpha-2 code" : "VC",
+      "Num" : "670",
+      "French name" : "SAINT-VINCENT-ET-LES GRENADINES",
+      "alpha-3 code" : "VCT"
+   },
+   {
+      "English name" : "SAN MARINO",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#674",
+      "Num" : "674",
+      "alpha-2 code" : "SM",
+      "alpha-3 code" : "SMR",
+      "French name" : "SAINT-MARIN"
+   },
+   {
+      "alpha-3 code" : "STP",
+      "French name" : "SAO TOMÉ-ET-PRINCIPE",
+      "Num" : "678",
+      "alpha-2 code" : "ST",
+      "English name" : "SAO TOME AND PRINCIPE",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#678"
+   },
+   {
+      "English name" : "SAUDI ARABIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#682",
+      "alpha-3 code" : "SAU",
+      "French name" : "ARABIE SAOUDITE",
+      "Num" : "682",
+      "alpha-2 code" : "SA"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#686",
+      "English name" : "SENEGAL",
+      "alpha-2 code" : "SN",
+      "Num" : "686",
+      "French name" : "SÉNÉGAL",
+      "alpha-3 code" : "SEN"
+   },
+   {
+      "English name" : "SEYCHELLES",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#690",
+      "Num" : "690",
+      "alpha-2 code" : "SC",
+      "alpha-3 code" : "SYC",
+      "French name" : "SEYCHELLES"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#694",
+      "English name" : "SIERRA LEONE",
+      "alpha-2 code" : "SL",
+      "Num" : "694",
+      "French name" : "SIERRA LEONE",
+      "alpha-3 code" : "SLE"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#702",
+      "English name" : "SINGAPORE",
+      "alpha-2 code" : "SG",
+      "Num" : "702",
+      "French name" : "SINGAPOUR",
+      "alpha-3 code" : "SGP"
+   },
+   {
+      "alpha-3 code" : "SVK",
+      "French name" : "SLOVAQUIE",
+      "Num" : "703",
+      "alpha-2 code" : "SK",
+      "English name" : "SLOVAKIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#703"
+   },
+   {
+      "alpha-2 code" : "VN",
+      "Num" : "704",
+      "French name" : "VIET NAM",
+      "alpha-3 code" : "VNM",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#704",
+      "English name" : "VIET NAM"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#705",
+      "English name" : "SLOVENIA",
+      "alpha-2 code" : "SI",
+      "Num" : "705",
+      "French name" : "SLOVÉNIE",
+      "alpha-3 code" : "SVN"
+   },
+   {
+      "English name" : "SOMALIA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#706",
+      "Num" : "706",
+      "alpha-2 code" : "SO",
+      "alpha-3 code" : "SOM",
+      "French name" : "SOMALIE"
+   },
+   {
+      "French name" : "AFRIQUE DU SUD",
+      "alpha-3 code" : "ZAF",
+      "alpha-2 code" : "ZA",
+      "Num" : "710",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#710",
+      "English name" : "SOUTH AFRICA"
+   },
+   {
+      "alpha-3 code" : "ZWE",
+      "French name" : "ZIMBABWE",
+      "Num" : "716",
+      "alpha-2 code" : "ZW",
+      "English name" : "ZIMBABWE",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#716"
+   },
+   {
+      "Num" : "724",
+      "alpha-2 code" : "ES",
+      "alpha-3 code" : "ESP",
+      "French name" : "ESPAGNE",
+      "English name" : "SPAIN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#724"
+   },
+   {
+      "French name" : "SAHARA OCCIDENTAL",
+      "alpha-3 code" : "ESH",
+      "alpha-2 code" : "EH",
+      "Num" : "732",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#732",
+      "English name" : "WESTERN SAHARA"
+   },
+   {
+      "alpha-3 code" : "SDN",
+      "French name" : "SOUDAN",
+      "Num" : "736",
+      "alpha-2 code" : "SD",
+      "English name" : "SUDAN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#736"
+   },
+   {
+      "Num" : "740",
+      "alpha-2 code" : "SR",
+      "alpha-3 code" : "SUR",
+      "French name" : "SURINAME",
+      "English name" : "SURINAME",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#740"
+   },
+   {
+      "Num" : "744",
+      "alpha-2 code" : "SJ",
+      "alpha-3 code" : "SJM",
+      "French name" : "SVALBARD ET ÎLE JAN MAYEN",
+      "English name" : "SVALBARD AND JAN MAYEN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#744"
+   },
+   {
+      "English name" : "SWAZILAND",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#748",
+      "alpha-3 code" : "SWZ",
+      "French name" : "SWAZILAND",
+      "Num" : "748",
+      "alpha-2 code" : "SZ"
+   },
+   {
+      "English name" : "SWEDEN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#752",
+      "alpha-3 code" : "SWE",
+      "French name" : "SUÈDE",
+      "Num" : "752",
+      "alpha-2 code" : "SE"
+   },
+   {
+      "alpha-3 code" : "CHE",
+      "French name" : "SUISSE",
+      "Num" : "756",
+      "alpha-2 code" : "CH",
+      "English name" : "SWITZERLAND",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#756"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#760",
+      "English name" : "SYRIAN ARAB REPUBLIC",
+      "alpha-2 code" : "SY",
+      "Num" : "760",
+      "French name" : "SYRIENNE, RÉPUBLIQUE ARABE",
+      "alpha-3 code" : "SYR"
+   },
+   {
+      "English name" : "TAJIKISTAN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#762",
+      "Num" : "762",
+      "alpha-2 code" : "TJ",
+      "alpha-3 code" : "TJK",
+      "French name" : "TADJIKISTAN"
+   },
+   {
+      "alpha-2 code" : "TH",
+      "Num" : "764",
+      "French name" : "THAÏLANDE",
+      "alpha-3 code" : "THA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#764",
+      "English name" : "THAILAND"
+   },
+   {
+      "alpha-3 code" : "TGO",
+      "French name" : "TOGO",
+      "Num" : "768",
+      "alpha-2 code" : "TG",
+      "English name" : "TOGO",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#768"
+   },
+   {
+      "English name" : "TOKELAU",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#772",
+      "Num" : "772",
+      "alpha-2 code" : "TK",
+      "alpha-3 code" : "TKL",
+      "French name" : "TOKELAU"
+   },
+   {
+      "alpha-3 code" : "TON",
+      "French name" : "TONGA",
+      "Num" : "776",
+      "alpha-2 code" : "TO",
+      "English name" : "TONGA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#776"
+   },
+   {
+      "Num" : "780",
+      "alpha-2 code" : "TT",
+      "alpha-3 code" : "TTO",
+      "French name" : "TRINITÉ-ET-TOBAGO",
+      "English name" : "TRINIDAD AND TOBAGO",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#780"
+   },
+   {
+      "Num" : "784",
+      "alpha-2 code" : "AE",
+      "alpha-3 code" : "ARE",
+      "French name" : "ÉMIRATS ARABES UNIS",
+      "English name" : "UNITED ARAB EMIRATES",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#784"
+   },
+   {
+      "French name" : "TUNISIE",
+      "alpha-3 code" : "TUN",
+      "alpha-2 code" : "TN",
+      "Num" : "788",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#788",
+      "English name" : "TUNISIA"
+   },
+   {
+      "French name" : "TURQUIE",
+      "alpha-3 code" : "TUR",
+      "alpha-2 code" : "TR",
+      "Num" : "792",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#792",
+      "English name" : "TURKEY"
+   },
+   {
+      "Num" : "795",
+      "alpha-2 code" : "TM",
+      "alpha-3 code" : "TKM",
+      "French name" : "TURKMÉNISTAN",
+      "English name" : "TURKMENISTAN",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#795"
+   },
+   {
+      "French name" : "TURKS ET CAÏQUES, ÎLES",
+      "alpha-3 code" : "TCA",
+      "alpha-2 code" : "TC",
+      "Num" : "796",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#796",
+      "English name" : "TURKS AND CAICOS ISLANDS"
+   },
+   {
+      "French name" : "TUVALU",
+      "alpha-3 code" : "TUV",
+      "alpha-2 code" : "TV",
+      "Num" : "798",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#798",
+      "English name" : "TUVALU"
+   },
+   {
+      "Num" : "800",
+      "alpha-2 code" : "UG",
+      "alpha-3 code" : "UGA",
+      "French name" : "OUGANDA",
+      "English name" : "UGANDA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#800"
+   },
+   {
+      "alpha-3 code" : "UKR",
+      "French name" : "UKRAINE",
+      "Num" : "804",
+      "alpha-2 code" : "UA",
+      "English name" : "UKRAINE",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#804"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#807",
+      "English name" : "MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF",
+      "French name" : "MACÉDOINE, L'EX-RÉPUBLIQUE YOUGOSLAVE DE",
+      "alpha-3 code" : "MKD",
+      "alpha-2 code" : "MK",
+      "Num" : "807"
+   },
+   {
+      "English name" : "EGYPT",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#818",
+      "alpha-3 code" : "EGY",
+      "French name" : "ÉGYPTE",
+      "Num" : "818",
+      "alpha-2 code" : "EG"
+   },
+   {
+      "alpha-2 code" : "GB",
+      "Num" : "826",
+      "French name" : "ROYAUME-UNI",
+      "alpha-3 code" : "GBR",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#826",
+      "English name" : "UNITED KINGDOM"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#834",
+      "English name" : "TANZANIA, UNITED REPUBLIC OF",
+      "alpha-2 code" : "TZ",
+      "Num" : "834",
+      "French name" : "TANZANIE, RÉPUBLIQUE-UNIE DE",
+      "alpha-3 code" : "TZA"
+   },
+   {
+      "English name" : "UNITED STATES",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#840",
+      "alpha-3 code" : "USA",
+      "French name" : "ÉTATS-UNIS",
+      "Num" : "840",
+      "alpha-2 code" : "US"
+   },
+   {
+      "French name" : "ÎLES VIERGES DES ÉTATS-UNIS",
+      "alpha-3 code" : "VIR",
+      "alpha-2 code" : "VI",
+      "Num" : "850",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#850",
+      "English name" : "VIRGIN ISLANDS, U.S."
+   },
+   {
+      "alpha-2 code" : "BF",
+      "Num" : "854",
+      "French name" : "BURKINA FASO",
+      "alpha-3 code" : "BFA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#854",
+      "English name" : "BURKINA FASO"
+   },
+   {
+      "Num" : "858",
+      "alpha-2 code" : "UY",
+      "alpha-3 code" : "URY",
+      "French name" : "URUGUAY",
+      "English name" : "URUGUAY",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#858"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#860",
+      "English name" : "UZBEKISTAN",
+      "alpha-2 code" : "UZ",
+      "Num" : "860",
+      "French name" : "OUZBÉKISTAN",
+      "alpha-3 code" : "UZB"
+   },
+   {
+      "Num" : "862",
+      "alpha-2 code" : "VE",
+      "alpha-3 code" : "VEN",
+      "French name" : "VENEZUELA",
+      "English name" : "VENEZUELA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#862"
+   },
+   {
+      "English name" : "WALLIS AND FUTUNA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#876",
+      "alpha-3 code" : "WLF",
+      "French name" : "WALLIS ET FUTUNA",
+      "Num" : "876",
+      "alpha-2 code" : "WF"
+   },
+   {
+      "English name" : "SAMOA",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#882",
+      "alpha-3 code" : "WSM",
+      "French name" : "SAMOA",
+      "Num" : "882",
+      "alpha-2 code" : "WS"
+   },
+   {
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#887",
+      "English name" : "YEMEN",
+      "alpha-2 code" : "YE",
+      "Num" : "887",
+      "French name" : "YÉMEN",
+      "alpha-3 code" : "YEM"
+   },
+   {
+      "English name" : "SERBIA AND MONTENEGRO",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#891",
+      "Num" : "891",
+      "alpha-2 code" : "CS",
+      "alpha-3 code" : "SCG",
+      "French name" : "SERBIE-ET-MONTÉNÉGRO"
+   },
+   {
+      "alpha-2 code" : "ZM",
+      "Num" : "894",
+      "French name" : "ZAMBIE",
+      "alpha-3 code" : "ZMB",
+      "Published Subject Identifier" : "http://psi.oasis-open.org/iso/3166/#894",
+      "English name" : "ZAMBIA"
+   },
+   {
+      "English name" : "SAINT-MARTIN",
+      "alpha-2 code" : "MF",
+      "alpha-3 code" : "MAF",
+      "French name" : "SAINT-MARTIN"
+   },
+   {
+      "English name" : "SINT MAARTEN",
+      "alpha-2 code" : "SX",
+      "alpha-3 code" : "SXM",
+      "French name" : "SINT MAARTEN"
+   },
+   {
+      "English name" : "SERBIA",
+      "alpha-2 code" : "RS",
+      "alpha-3 code" : "SRB",
+      "French name" : "SERBIE"
+   },
+   {
+      "English name" : "MONTENEGRO",
+      "alpha-2 code" : "ME",
+      "alpha-3 code" : "MNE",
+      "French name" : "MONTÉNÉGRO"
+   },
+   {
+      "Published Subject Identifier" : "https://www.iso.org/obp/ui/#iso:code:3166:BL",
+      "English name" : "SAINT BARTHELEMY",
+      "French name" : "SAINT BARTHÉLEMY",
+      "alpha-3 code" : "BLM",
+      "alpha-2 code" : "BL"
+   },
+   {
+      "Published Subject Identifier" : "https://www.iso.org/obp/ui/#iso:code:3166:JE",
+      "English name" : "JERSEY",
+      "French name" : "JERSEY",
+      "alpha-3 code" : "JEY",
+      "alpha-2 code" : "JE"
+   },
+   {
+      "Published Subject Identifier" : "https://www.iso.org/obp/ui/#iso:code:3166:GG",
+      "English name" : "GUERNSEY",
+      "French name" : "GUERNESEY",
+      "alpha-3 code" : "GGY",
+      "alpha-2 code" : "GG"
+   },
+   {
+      "Published Subject Identifier" : "https://www.iso.org/obp/ui/#iso:code:3166:IM",
+      "English name" : "ISLE OF MAN",
+      "French name" : "ILE DE MAN",
+      "alpha-3 code" : "IMN",
+      "alpha-2 code" : "IM"
+   },
+   {
+      "Published Subject Identifier" : "https://www.iso.org/obp/ui/#iso:code:3166:BQ",
+      "English name" : "BONAIRE, SINT EUSTATIUS AND SABA",
+      "French name" : "BONAIRE, SAINT-EUSTACHE ET SABA",
+      "alpha-3 code" : "BES",
+      "alpha-2 code" : "BQ"
+   },
+   {
+      "Published Subject Identifier" : "https://www.iso.org/obp/ui/#iso:code:3166:CW",
+      "English name" : "CURAÇAO",
+      "French name" : "CURAÇAO",
+      "alpha-3 code" : "CUW",
+      "alpha-2 code" : "CW"
+   }
+]

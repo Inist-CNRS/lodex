@@ -20,7 +20,7 @@ ezs.use(Lodex);
 ezs.use(Booster);
 ezs.use(Storage);
 
-const scripts = new Script('routines', '../app/custom/routines');
+const scripts = new Script('routines', '../../../../scripts/routines');
 
 const parseFieldsParams = fieldsParams =>
     typeof fieldsParams === 'string' && fieldsParams !== ''

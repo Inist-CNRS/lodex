@@ -4,7 +4,7 @@ import fetch from 'fetch-with-proxy';
 import progress from './progress';
 import { INDEXATION, SAVING_DATASET } from '../../common/progressStatus';
 
-const loaders = new Script('loaders', '../app/custom/loaders');
+const loaders = new Script('loaders', '../../../scripts/loaders');
 
 export const getLoader = async (loaderName, loaderEnvironment) => {
     const currentLoader = await loaders.get(loaderName);
