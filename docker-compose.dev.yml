@@ -53,11 +53,37 @@ services:
             - 6379:6379
 
     workers:
-        image: inistcnrs/lodex-workers:9.3.0
+        build:
+            context: .
+            dockerfile: Dockerfile.spec
         volumes:
-            - ./scripts:/app/public
+            - .:/app
+        working_dir: /app
         user: '${UID}:${GID}'
         environment:
+            DEBUG: ${DEBUG}
+            NODE_ENV: ${NODE_ENV}
+            NODE_OPTIONS: ${NODE_OPTIONS}
+            http_proxy: ${http_proxy}
+            https_proxy: ${https_proxy}
+            no_proxy: 'localhost,127.0.0.1'
+            REDIS_URL: 'redis://redis:6379'
+            EZS_TITLE: 'Lodex internals workers'
+            EZS_DESCRIPTION: 'All scripts through a webserver'
+            EZS_METRICS: 'true'
+            EZS_CONCURRENCY: 4
+            EZS_CONTINUE_DELAY: 60
+            EZS_NSHARDS: 32
+            EZS_CACHE: 'false'
             EZS_VERBOSE: 'true'
+        links:
+            - mongo
+            - redis
+        depends_on:
+            - mongo
+            - redis
         ports:
             - 31976:31976
+        command: npx ezs --daemon /app/scripts
+
+
