@@ -1,0 +1,1009 @@
+{
+"publishedDataset": [
+  {
+    "_id": "60adf8b8e5d8b500212acf38",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Mus caroli",
+    "versions": [
+      {
+        "dqff": "Mus caroli",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae"],
+        "O3v1": "",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp"],
+        "a696": "/api/run/filter/aHOZ/Mus caroli",
+        "publicationDate": {"date": "2021-05-26T07:28:56.382Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf39",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Mus macedonicus",
+    "versions": [
+      {
+        "dqff": "Mus macedonicus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae"],
+        "O3v1": "",
+        "BdwY": [],
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Mus macedonicus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.382Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf3a",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Mus musculus",
+    "versions": [
+      {
+        "dqff": "Mus musculus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae"],
+        "O3v1": "",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Mus musculus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.383Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf3b",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Mus spretus",
+    "versions": [
+      {
+        "dqff": "Mus spretus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae"],
+        "O3v1": "",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Mus spretus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.383Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf3c",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Panthera leo",
+    "versions": [
+      {
+        "dqff": "Panthera leo",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/c67c449dc0cc8bf14732d7fabf8f2b10",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Panthera leo",
+        "publicationDate": {"date": "2021-05-26T07:28:56.383Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf3d",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Panthera tigris",
+    "versions": [
+      {
+        "dqff": "Panthera tigris",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/9c35aba4cb7f388bf29a05fba221135c",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Panthera tigris",
+        "publicationDate": {"date": "2021-05-26T07:28:56.383Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf3e",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Peromyscus maniculatus",
+    "versions": [
+      {
+        "dqff": "Peromyscus maniculatus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/9273321d9887cdf1233bb07274db3e95",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Peromyscus maniculatus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.383Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf3f",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Peromyscus polionotus",
+    "versions": [
+      {
+        "dqff": "Peromyscus polionotus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/15b221fdbebfa8b0e0e7d1bb13d9924f",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Peromyscus polionotus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.383Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf40",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Phodopus campbelli",
+    "versions": [
+      {
+        "dqff": "Phodopus campbelli",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/a40118a458f2dd61d3499f38cb7f0bbc",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Phodopus campbelli",
+        "publicationDate": {"date": "2021-05-26T07:28:56.384Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf41",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Phodopus sungorus",
+    "versions": [
+      {
+        "dqff": "Phodopus sungorus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/6ea70511b7d82c313de80372ea72f4b2",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Phodopus sungorus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.384Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf42",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Acheta domesticus",
+    "versions": [
+      {
+        "dqff": "Acheta domesticus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Orthoptera", "Family: Gryllidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/3438e5879ecc7c8315855c23232cb6d4",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Acheta domesticus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.387Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf43",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Alligator mississippiensis",
+    "versions": [
+      {
+        "dqff": "Alligator mississippiensis",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Crocodylia", "Family: Alligatoridae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/258a54f64c1a663997eb9cca0549f840",
+        "BdwY": [],
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Alligator mississippiensis",
+        "publicationDate": {"date": "2021-05-26T07:28:56.387Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf44",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Eublepharis macularius",
+    "versions": [
+      {
+        "dqff": "Eublepharis macularius",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Eublepharidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/3914e73d5db7e7f90f3494b48f93ac36",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Eublepharis macularius",
+        "publicationDate": {"date": "2021-05-26T07:28:56.387Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf45",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Gallus gallus",
+    "versions": [
+      {
+        "dqff": "Gallus gallus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Galliformes", "Family: Phasianidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/e9bd1de9ad04b90064cf96a24cf98310",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Gallus gallus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.387Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf46",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Mesocricetus auratus",
+    "versions": [
+      {
+        "dqff": "Mesocricetus auratus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/b79bdefda9cfb476d2c33fc441258226",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Mesocricetus auratus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.388Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf48",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Rattus norvegicus",
+    "versions": [
+      {
+        "dqff": "Rattus norvegicus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/58d474ec035208b2194df25dde8f9259",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Rattus norvegicus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.388Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf49",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Sceloporus occidentalis",
+    "versions": [
+      {
+        "dqff": "Sceloporus occidentalis",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Phrynosomatidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/489944a4e2afe310ce2b89d8cbd2c580",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Sceloporus occidentalis",
+        "publicationDate": {"date": "2021-05-26T07:28:56.388Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf4a",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Tenebrio molitor",
+    "versions": [
+      {
+        "dqff": "Tenebrio molitor",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Coleoptera", "Family: Tenebrionidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/dac79a0fd6b2370030300b9b4cb5493b",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Tenebrio molitor",
+        "publicationDate": {"date": "2021-05-26T07:28:56.388Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf4b",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Apis mellifera",
+    "versions": [
+      {
+        "dqff": "Apis mellifera",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Hymenoptera", "Family: Apidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/67cbbcf92cd60748759e58e802d98518",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Apis mellifera",
+        "publicationDate": {"date": "2021-05-26T07:28:56.388Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf4c",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Diphaglossa gayi",
+    "versions": [
+      {
+        "dqff": "Diphaglossa gayi",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Hymenoptera", "Family: Colletidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/558345f5e975aab900305c69cd6a4a24",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp"],
+        "a696": "/api/run/filter/aHOZ/Diphaglossa gayi",
+        "publicationDate": {"date": "2021-05-26T07:28:56.389Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf4d",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Elaenia albiceps",
+    "versions": [
+      {
+        "dqff": "Elaenia albiceps",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Passeriformes", "Family: Tyrannidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/cf733c40539e200df8b56c6fe6ee9815",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Elaenia albiceps",
+        "publicationDate": {"date": "2021-05-26T07:28:56.389Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf4e",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Sephanoides sephaniodes",
+    "versions": [
+      {
+        "dqff": "Sephanoides sephaniodes",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Apodiformes", "Family: Trochilidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/5ab3d442f1618db6240f1a1b5cea2bf2",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Sephanoides sephaniodes",
+        "publicationDate": {"date": "2021-05-26T07:28:56.389Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf4f",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Trichophthalma philippii",
+    "versions": [
+      {
+        "dqff": "Trichophthalma philippii",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Diptera", "Family: Nemestrinidae"],
+        "O3v1": "",
+        "BdwY": [],
+        "z3tQ": ["T+rex", "IRC3sp"],
+        "a696": "/api/run/filter/aHOZ/Trichophthalma philippii",
+        "publicationDate": {"date": "2021-05-26T07:28:56.389Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf50",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Culicicapa ceylonensis",
+    "versions": [
+      {
+        "dqff": "Culicicapa ceylonensis",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Passeriformes", "Family: Stenostiridae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/33c6e94634549b69697cc46dbcc37b02",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Culicicapa ceylonensis",
+        "publicationDate": {"date": "2021-05-26T07:28:56.390Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf51",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Elephas maximus",
+    "versions": [
+      {
+        "dqff": "Elephas maximus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Proboscidea", "Family: Elephantidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/6fb47237753f0901b5bb779c6e9e1369",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Elephas maximus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.390Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf52",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Homo sapiens",
+    "versions": [
+      {
+        "dqff": "Homo sapiens",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Hominidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/e3b90576561f93a8ac8b59e185b01511",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp"],
+        "a696": "/api/run/filter/aHOZ/Homo sapiens",
+        "publicationDate": {"date": "2021-05-26T07:28:56.391Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf53",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Neofelis diardi",
+    "versions": [
+      {
+        "dqff": "Neofelis diardi",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/d9dda6d55de7c09056b0bce20d6bd5b9",
+        "BdwY": [],
+        "z3tQ": "T+rex",
+        "a696": "/api/run/filter/aHOZ/Neofelis diardi",
+        "publicationDate": {"date": "2021-05-26T07:28:56.397Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf54",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Neofelis nebulosa",
+    "versions": [
+      {
+        "dqff": "Neofelis nebulosa",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/c0dc3b3850869e22d6c3e67f0841c371",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Neofelis nebulosa",
+        "publicationDate": {"date": "2021-05-26T07:28:56.397Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf55",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Panthera pardus",
+    "versions": [
+      {
+        "dqff": "Panthera pardus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/fd90e5f300d0c6eb358333ea2ad7f92e",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Panthera pardus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.397Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf57",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Pycnonotus atriceps",
+    "versions": [
+      {
+        "dqff": "Pycnonotus atriceps",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Passeriformes", "Family: Pycnonotidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/f5c2c8dd361151d43f8317f3e94371f7",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Pycnonotus atriceps",
+        "publicationDate": {"date": "2021-05-26T07:28:56.398Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf58",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Pycnonotus melanoleucos",
+    "versions": [
+      {
+        "dqff": "Pycnonotus melanoleucos",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Passeriformes", "Family: Pycnonotidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/0412e8419a406f3228c4482decf29ae4",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Pycnonotus melanoleucos",
+        "publicationDate": {"date": "2021-05-26T07:28:56.398Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf59",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Python reticulatus",
+    "versions": [
+      {
+        "dqff": "Python reticulatus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Pythonidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/017f7af0513ab96c2b31eabbeb74d8d6",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Python reticulatus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.398Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf5a",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Simias concolor",
+    "versions": [
+      {
+        "dqff": "Simias concolor",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cercopithecidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/6248e82a21003c1ae999dd3843fee74d",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Simias concolor",
+        "publicationDate": {"date": "2021-05-26T07:28:56.398Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf5b",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Spilornis cheela",
+    "versions": [
+      {
+        "dqff": "Spilornis cheela",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Accipitriformes", "Family: Accipitridae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/b2e9560b2d47cc4fdf95afcb878f91cb",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Spilornis cheela",
+        "publicationDate": {"date": "2021-05-26T07:28:56.398Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf5c",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Sus scrofa",
+    "versions": [
+      {
+        "dqff": "Sus scrofa",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Artiodactyla", "Family: Suidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/7f9608b34955e65ca451e980dec66dba",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Sus scrofa",
+        "publicationDate": {"date": "2021-05-26T07:28:56.399Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf5e",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Crocodylus siamensis",
+    "versions": [
+      {
+        "dqff": "Crocodylus siamensis",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Crocodylia", "Family: Crocodylidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/c1ded88af13a17e29964118deec3baad",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Crocodylus siamensis",
+        "publicationDate": {"date": "2021-05-26T07:28:56.399Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf60",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Odontochelys semitestacea",
+    "versions": [
+      {
+        "dqff": "Odontochelys semitestacea",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Testudines", "Family: Odontochelyidae"],
+        "O3v1": "",
+        "BdwY": [],
+        "z3tQ": "T+rex",
+        "a696": "/api/run/filter/aHOZ/Odontochelys semitestacea",
+        "publicationDate": {"date": "2021-05-26T07:28:56.400Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf61",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Pelodiscus sinensis",
+    "versions": [
+      {
+        "dqff": "Pelodiscus sinensis",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Testudines", "Family: Trionychidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/17dc384b0c37a70b562261c8f9f1df1d",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Pelodiscus sinensis",
+        "publicationDate": {"date": "2021-05-26T07:28:56.400Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf62",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Proganochelys quenstedti",
+    "versions": [
+      {
+        "dqff": "Proganochelys quenstedti",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Testudines"],
+        "O3v1": "",
+        "BdwY": [],
+        "z3tQ": "T+rex",
+        "a696": "/api/run/filter/aHOZ/Proganochelys quenstedti",
+        "publicationDate": {"date": "2021-05-26T07:28:56.400Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf63",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Boa constrictor",
+    "versions": [
+      {
+        "dqff": "Boa constrictor",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Boidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/253bb4ac5026b77a3adf9b78516913b9",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Boa constrictor",
+        "publicationDate": {"date": "2021-05-26T07:28:56.400Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf64",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Cebus capucinus",
+    "versions": [
+      {
+        "dqff": "Cebus capucinus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cebidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/0b4728552da36e92bba7b084a347127a",
+        "BdwY": [],
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Cebus capucinus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.401Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf65",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Chlorocebus pygerythrus",
+    "versions": [
+      {
+        "dqff": "Chlorocebus pygerythrus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cercopithecidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/ee1cafbd7eb9323157cb141395dedb43",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Chlorocebus pygerythrus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.401Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf66",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Crotalus durissus",
+    "versions": [
+      {
+        "dqff": "Crotalus durissus",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Viperidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/e05d1a51d5e7150a12ff3ae6be311675",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Crotalus durissus",
+        "publicationDate": {"date": "2021-05-26T07:28:56.404Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf67",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Drymarchon corais",
+    "versions": [
+      {
+        "dqff": "Drymarchon corais",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Colubridae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/5ee332123a4242752643cae17baadbf5",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Drymarchon corais",
+        "publicationDate": {"date": "2021-05-26T07:28:56.404Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf68",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Macaca mulatta",
+    "versions": [
+      {
+        "dqff": "Macaca mulatta",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cercopithecidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/8302d6488dd331326b175296ccfbab12",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Macaca mulatta",
+        "publicationDate": {"date": "2021-05-26T07:28:56.404Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf69",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Macaca radiata",
+    "versions": [
+      {
+        "dqff": "Macaca radiata",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cercopithecidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/0a0b0610f7ba9633b469514645db0694",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Macaca radiata",
+        "publicationDate": {"date": "2021-05-26T07:28:56.405Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf6a",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Otolemur garnettii",
+    "versions": [
+      {
+        "dqff": "Otolemur garnettii",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Galagidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/7fd9d5efb6f5baeaf1733336ff1011d2",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Otolemur garnettii",
+        "publicationDate": {"date": "2021-05-26T07:28:56.405Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf6b",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Saguinus fuscicollis",
+    "versions": [
+      {
+        "dqff": "Saguinus fuscicollis",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Callitrichidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/af09d1aee330c89b58c5fae57f9bc46d",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Saguinus fuscicollis",
+        "publicationDate": {"date": "2021-05-26T07:28:56.405Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b8e5d8b500212acf6c",
+    "subresourceId": "60769182d8cfd90012c21d46",
+    "uri": "uid:/60769182d8cfd90012c21d46/Tarsius spectrum",
+    "versions": [
+      {
+        "dqff": "Tarsius spectrum",
+        "aLoz": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Tarsiidae"],
+        "O3v1": "http://www.catalogueoflife.org/col/details/species/id/363ad8f84b1e80546fe32ad936b16e48",
+        "BdwY": "",
+        "z3tQ": ["T+rex", "IRC3sp", "entity-fishing"],
+        "a696": "/api/run/filter/aHOZ/Tarsius spectrum",
+        "publicationDate": {"date": "2021-05-26T07:28:56.405Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b83fe8adf42eb56d71",
+    "subresourceId": null,
+    "uri": "uid:/JTL0PF5R",
+    "versions": [
+      {
+        "YGKH": "Parent‐of‐origin growth effects and the evolution of hybrid inviability in dwarf hamsters",
+        "P7Yr": "Mammalian hybrids often show abnormal growth, indicating that developmental inviability may play an important role in mammalian speciation. Yet, it is unclear if this recurrent phenotype reflects a common genetic basis. Here, we describe extreme parent‐of‐origin‐dependent growth in hybrids from crosses between two species of dwarf hamsters, Phodopus campbelli and Phodopus sungorus. One cross type resulted in massive placental and embryonic overgrowth, severe developmental defects, and maternal death. Embryos from the reciprocal cross were viable and normal sized, but adult hybrid males were relatively small. These effects are strikingly similar to patterns from several other mammalian hybrids. Using comparative sequence data from dwarf hamsters and several other hybridizing mammals, we argue that extreme hybrid growth can contribute to reproductive isolation during the early stages of species divergence. Next, we tested if abnormal growth in hybrid hamsters was associated with disrupted genomic imprinting. We found no association between imprinting status at several candidate genes and hybrid growth, though two interacting genes involved in embryonic growth did show reduced expression in overgrown hybrids. Collectively, our study indicates that growth‐related hybrid inviability may play an important role in mammalian speciation but that the genetic underpinnings of these phenotypes remain unresolved.",
+        "aAkU": "Wiley",
+        "Hegq": "Evolution",
+        "ZrNi": "2014",
+        "NCzv": "https://api.istex.fr/ark:/67375/WNG-ZVJTMQT0-R/fulltext.pdf",
+        "GLJr": ["uid:/60769182d8cfd90012c21d46/Mus caroli", "uid:/60769182d8cfd90012c21d46/Mus macedonicus", "uid:/60769182d8cfd90012c21d46/Mus musculus", "uid:/60769182d8cfd90012c21d46/Mus spretus", "uid:/60769182d8cfd90012c21d46/Panthera leo", "uid:/60769182d8cfd90012c21d46/Panthera tigris", "uid:/60769182d8cfd90012c21d46/Peromyscus maniculatus", "uid:/60769182d8cfd90012c21d46/Peromyscus polionotus", "uid:/60769182d8cfd90012c21d46/Phodopus campbelli", "uid:/60769182d8cfd90012c21d46/Phodopus sungorus"],
+        "zMmz": ["T+rex,IRC3sp", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing"],
+        "aHOZ": ["Mus caroli", "Mus macedonicus", "Mus musculus", "Mus spretus", "Panthera leo", "Panthera tigris", "Peromyscus maniculatus", "Peromyscus polionotus", "Phodopus campbelli", "Phodopus sungorus"],
+        "mVME": ["Genetic imprinting", "Haldane's rule", "Phodopus", "reproductive isolation", "speciation"],
+        "j0Ez": "/api/run/close-by/mVME",
+        "asyl": "/api/run/close-by/ZrNi/Hegq/aAkU",
+        "XiM5": ["T+rex", "IRC3sp", "entity-fishing"],
+        "aJuX": ["Mus caroli", "Mus macedonicus", "Mus musculus", "Mus spretus", "Panthera leo", "Panthera tigris", "Peromyscus maniculatus", "Peromyscus polionotus", "Phodopus campbelli", "Phodopus sungorus"],
+        "bFpH": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae"],
+        "aXbz": ["T+rex", "IRC3sp", "entity-fishing"],
+        "oldH": [
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae", "Mus caroli"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae", "Mus macedonicus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae", "Mus musculus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae", "Mus spretus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae", "Panthera leo"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae", "Panthera tigris"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae", "Peromyscus maniculatus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae", "Peromyscus polionotus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae", "Phodopus campbelli"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae", "Phodopus sungorus"]
+        ],
+        "publicationDate": {"date": "2021-05-26T07:28:56.465Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b83fe8adf42eb56d72",
+    "subresourceId": null,
+    "uri": "uid:/CTNZ9JNV",
+    "versions": [
+      {
+        "YGKH": "Soil ingestion may be an important route for the uptake of contaminants by some reptiles",
+        "P7Yr": "Some species of reptiles regularly ingest soil in the wild. Therefore, we evaluated the importance of soil ingestion as a route for the uptake of contaminants in lizards. We used sand as a substitute for soil during the present study. Different groups of leopard geckos (Eublepharis macularius) were provided with a control and five sodium selenite–spiked sand mixtures during a 28‐d study. Twenty lizards were assigned to a control group and to each of five selenium‐spiked sand mixtures that consisted of nominal selenium (Se) concentrations of 0.05, 0.46, 4.57, 11.41, and 22.83 mg Se/kg dry sand. Leopard geckos readily ingested the Se‐spiked sand. We observed concentration‐related effects in several endpoints. Overall growth in body mass was the most sensitive endpoint and was significantly (p < 0.05) lower in lizards that ingested the 4.57, 11.41, and 22.83 mg Se/kg sand mixtures compared to controls. Growth in snout‐vent length, mean daily food ingestion, and food conversion efficiency were less sensitive and were significantly (p < 0.05) lower in lizards that ingested the 11.41 and 22.83 mg Se/kg sand mixtures compared to controls. Although our results are based on nominal amounts of Se ingested, leopard geckos appear to be as sensitive to sodium selenite as birds and mammals. The present study suggests that ingestion of soil could be an important potential route for the uptake of soil contaminants in some reptiles and should be evaluated in ecotoxicological studies and risk analyses of reptiles.",
+        "aAkU": "Wiley",
+        "Hegq": "Environmental Toxicology and Chemistry",
+        "ZrNi": "2009",
+        "NCzv": "https://api.istex.fr/ark:/67375/WNG-QRQ8JGS7-8/fulltext.pdf",
+        "GLJr": ["uid:/60769182d8cfd90012c21d46/Acheta domesticus", "uid:/60769182d8cfd90012c21d46/Alligator mississippiensis", "uid:/60769182d8cfd90012c21d46/Eublepharis macularius", "uid:/60769182d8cfd90012c21d46/Gallus gallus", "uid:/60769182d8cfd90012c21d46/Mesocricetus auratus", "uid:/60769182d8cfd90012c21d46/Mus musculus", "uid:/60769182d8cfd90012c21d46/Rattus norvegicus", "uid:/60769182d8cfd90012c21d46/Sceloporus occidentalis", "uid:/60769182d8cfd90012c21d46/Tenebrio molitor"],
+        "zMmz": ["T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing"],
+        "aHOZ": ["Acheta domesticus", "Alligator mississippiensis", "Eublepharis macularius", "Gallus gallus", "Mesocricetus auratus", "Mus musculus", "Rattus norvegicus", "Sceloporus occidentalis", "Tenebrio molitor"],
+        "mVME": ["Soil ingestion", "Selenium", "Contaminant uptake", "Lizard", "Growth"],
+        "j0Ez": "/api/run/close-by/mVME",
+        "asyl": "/api/run/close-by/ZrNi/Hegq/aAkU",
+        "XiM5": ["T+rex", "IRC3sp", "entity-fishing"],
+        "aJuX": ["Acheta domesticus", "Alligator mississippiensis", "Eublepharis macularius", "Gallus gallus", "Mesocricetus auratus", "Mus musculus", "Rattus norvegicus", "Sceloporus occidentalis", "Tenebrio molitor"],
+        "bFpH": ["Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Orthoptera", "Family: Gryllidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Crocodylia", "Family: Alligatoridae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Eublepharidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Galliformes", "Family: Phasianidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Phrynosomatidae", "Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Coleoptera", "Family: Tenebrionidae"],
+        "aXbz": ["T+rex", "IRC3sp", "entity-fishing"],
+        "oldH": [
+          ["Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Orthoptera", "Family: Gryllidae", "Acheta domesticus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Crocodylia", "Family: Alligatoridae", "Alligator mississippiensis"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Eublepharidae", "Eublepharis macularius"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Galliformes", "Family: Phasianidae", "Gallus gallus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Cricetidae", "Mesocricetus auratus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae", "Mus musculus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Rodentia", "Family: Muridae", "Rattus norvegicus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Phrynosomatidae", "Sceloporus occidentalis"],
+          ["Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Coleoptera", "Family: Tenebrionidae", "Tenebrio molitor"]
+        ],
+        "publicationDate": {"date": "2021-05-26T07:28:56.466Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b83fe8adf42eb56d73",
+    "subresourceId": null,
+    "uri": "uid:/Z2X2ZWR3",
+    "versions": [
+      {
+        "YGKH": "Erosion of a pollination mutualism along an environmental gradient in a south Andean treelet, Embothrium coccineum (Proteaceae)",
+        "P7Yr": "The limit of a species’ distribution can be determined biotically if an environmental gradient causes the loss of critical mutualists such as pollinators. We assessed this hypothesis for Embothrium coccineum, a self‐incompatible red‐flowered treelet growing along a strong west‐east precipitation gradient from rainforest to forest‐steppe ecotone in the rain shadow of the southern Andes in northwestern Patagonia. For 16 populations along this gradient, we quantified composition of the pollinator assemblage, pollination efficiency and limitation, and reproductive output. The treelet has a generalized pollination system, but the hummingbird Sephanoides sephaniodes was the most effective pollinator. The relative importance of this hummingbird as a flower visitor within populations influenced pollen transfer and fruit set more strongly than local precipitation. As hummingbirds and other pollinators, including passerine birds and nemestrinid flies, were replaced by bees towards the dry eastern range limit, pollen limitation increased and reproduction eventually failed. These results support the hypothesis that pollinators can act as important biotic filters influencing plant distribution, and warn against predictions of geographical range shifts based solely on climatic variables.",
+        "aAkU": "Wiley",
+        "Hegq": "Oikos",
+        "ZrNi": "2012",
+        "NCzv": "https://api.istex.fr/ark:/67375/WNG-JJG7WMCN-B/fulltext.pdf",
+        "GLJr": ["uid:/60769182d8cfd90012c21d46/Apis mellifera", "uid:/60769182d8cfd90012c21d46/Diphaglossa gayi", "uid:/60769182d8cfd90012c21d46/Elaenia albiceps", "uid:/60769182d8cfd90012c21d46/Sephanoides sephaniodes", "uid:/60769182d8cfd90012c21d46/Trichophthalma philippii"],
+        "zMmz": ["T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp"],
+        "aHOZ": ["Apis mellifera", "Diphaglossa gayi", "Elaenia albiceps", "Sephanoides sephaniodes", "Trichophthalma philippii"],
+        "mVME": [],
+        "j0Ez": "/api/run/close-by/mVME",
+        "asyl": "/api/run/close-by/ZrNi/Hegq/aAkU",
+        "XiM5": ["T+rex", "IRC3sp", "entity-fishing"],
+        "aJuX": ["Apis mellifera", "Diphaglossa gayi", "Elaenia albiceps", "Sephanoides sephaniodes", "Trichophthalma philippii"],
+        "bFpH": ["Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Hymenoptera", "Family: Apidae", "Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Hymenoptera", "Family: Colletidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Passeriformes", "Family: Tyrannidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Apodiformes", "Family: Trochilidae", "Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Diptera", "Family: Nemestrinidae"],
+        "aXbz": ["T+rex", "IRC3sp", "entity-fishing"],
+        "oldH": [
+          ["Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Hymenoptera", "Family: Apidae", "Apis mellifera"],
+          ["Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Hymenoptera", "Family: Colletidae", "Diphaglossa gayi"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Passeriformes", "Family: Tyrannidae", "Elaenia albiceps"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Apodiformes", "Family: Trochilidae", "Sephanoides sephaniodes"],
+          ["Kingdom: Animalia", "Phylum: Arthropoda", "Class: Insecta", "Order: Diptera", "Family: Nemestrinidae", "Trichophthalma philippii"]
+        ],
+        "publicationDate": {"date": "2021-05-26T07:28:56.466Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b83fe8adf42eb56d74",
+    "subresourceId": null,
+    "uri": "uid:/BXHP054G",
+    "versions": [
+      {
+        "YGKH": "Do Naïve Primates Recognize the Vocalizations of Felid Predators?",
+        "P7Yr": "Traits that were adaptive under previous conditions may no longer have fitness benefits. However, some species still retain appropriate antipredator behaviors even though they do not coexist with the predators that their ancestors once faced. Studies have examined the responses of a variety of naïve species to these predators, but none have specifically investigated whether naïve primates retain antipredator behaviors against felid predators. We studied the pig‐tailed langur (Simias concolor) to determine whether it still recognizes felids as predators even though dangerous felids do not exist on the islands on which it inhabits. The responses of the langurs to the playbacks of the vocalizations of felids (an ancestral predator), elephants (an unknown animal but not a predator), humans (a known predator) and, pigs and birds (known animals but not predators) were compared. Langurs fled more slowly and looked at the speaker less in response to the felid and elephant calls than they did in response to the human voices. Similar numbers of langurs fled in response to all playback treatments except the pig and bird. The results suggest that langurs are afraid of novel vocalizations but have not retained specific acoustic knowledge of felid predator vocalizations. For long‐lived species that have extended periods of learning, being able to modify general behavioral responses, such as antipredator behaviors, based on individual experiences may be more adaptive than having fixed behavioral strategies.",
+        "aAkU": "Wiley",
+        "Hegq": "Ethology",
+        "ZrNi": "2007",
+        "NCzv": "https://api.istex.fr/ark:/67375/WNG-6STLRBDG-S/fulltext.pdf",
+        "GLJr": ["uid:/60769182d8cfd90012c21d46/Culicicapa ceylonensis", "uid:/60769182d8cfd90012c21d46/Elephas maximus", "uid:/60769182d8cfd90012c21d46/Homo sapiens", "uid:/60769182d8cfd90012c21d46/Neofelis diardi", "uid:/60769182d8cfd90012c21d46/Neofelis nebulosa", "uid:/60769182d8cfd90012c21d46/Panthera pardus", "uid:/60769182d8cfd90012c21d46/Panthera tigris", "uid:/60769182d8cfd90012c21d46/Pycnonotus atriceps", "uid:/60769182d8cfd90012c21d46/Pycnonotus melanoleucos", "uid:/60769182d8cfd90012c21d46/Python reticulatus", "uid:/60769182d8cfd90012c21d46/Simias concolor", "uid:/60769182d8cfd90012c21d46/Spilornis cheela", "uid:/60769182d8cfd90012c21d46/Sus scrofa"],
+        "zMmz": ["T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp", "T+rex", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing"],
+        "aHOZ": ["Culicicapa ceylonensis", "Elephas maximus", "Homo sapiens", "Neofelis diardi", "Neofelis nebulosa", "Panthera pardus", "Panthera tigris", "Pycnonotus atriceps", "Pycnonotus melanoleucos", "Python reticulatus", "Simias concolor", "Spilornis cheela", "Sus scrofa"],
+        "mVME": [],
+        "j0Ez": "/api/run/close-by/mVME",
+        "asyl": "/api/run/close-by/ZrNi/Hegq/aAkU",
+        "XiM5": ["T+rex", "IRC3sp", "entity-fishing"],
+        "aJuX": ["Culicicapa ceylonensis", "Elephas maximus", "Homo sapiens", "Neofelis diardi", "Neofelis nebulosa", "Panthera pardus", "Panthera tigris", "Pycnonotus atriceps", "Pycnonotus melanoleucos", "Python reticulatus", "Simias concolor", "Spilornis cheela", "Sus scrofa"],
+        "bFpH": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Passeriformes", "Family: Stenostiridae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Proboscidea", "Family: Elephantidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Hominidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Passeriformes", "Family: Pycnonotidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Passeriformes", "Family: Pycnonotidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Pythonidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cercopithecidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Accipitriformes", "Family: Accipitridae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Artiodactyla", "Family: Suidae"],
+        "aXbz": ["T+rex", "IRC3sp", "entity-fishing"],
+        "oldH": [
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Passeriformes", "Family: Stenostiridae", "Culicicapa ceylonensis"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Proboscidea", "Family: Elephantidae", "Elephas maximus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Hominidae", "Homo sapiens"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae", "Neofelis diardi"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae", "Neofelis nebulosa"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae", "Panthera pardus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Carnivora", "Family: Felidae", "Panthera tigris"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Passeriformes", "Family: Pycnonotidae", "Pycnonotus atriceps"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Passeriformes", "Family: Pycnonotidae", "Pycnonotus melanoleucos"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Pythonidae", "Python reticulatus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cercopithecidae", "Simias concolor"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Accipitriformes", "Family: Accipitridae", "Spilornis cheela"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Artiodactyla", "Family: Suidae", "Sus scrofa"]
+        ],
+        "publicationDate": {"date": "2021-05-26T07:28:56.466Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b83fe8adf42eb56d75",
+    "subresourceId": null,
+    "uri": "uid:/L7QWSCWM",
+    "versions": [
+      {
+        "YGKH": "DEVELOPMENTAL BASIS OF TOOTHLESSNESS IN TURTLES: INSIGHT INTO CONVERGENT EVOLUTION OF VERTEBRATE MORPHOLOGY",
+        "P7Yr": "The tooth is a major component of the vertebrate feeding apparatus and plays a crucial role in species survival, thus subjecting tooth developmental programs to strong selective constraints. However, irrespective of their functional importance, teeth have been lost in multiple lineages of tetrapod vertebrates independently. To understand both the generality and the diversity of developmental mechanisms that cause tooth agenesis in tetrapods, we investigated expression patterns of a series of tooth developmental genes in the lower jaw of toothless turtles and compared them to that of toothed crocodiles and the chicken as a representative of toothless modern birds. In turtle embryos, we found impairment of Shh signaling in the oral epithelium and early‐stage arrest of odontoblast development caused by termination of Msx2 expression in the dental mesenchyme. Our data indicate that such changes underlie tooth agenesis in turtles and suggest that the mechanism that leads to early‐stage odontogenic arrest differs between birds and turtles. Our results demonstrate that the cellular and molecular mechanisms that regulate early‐stage arrest of tooth development are diverse in tetrapod lineages, and odontogenic developmental programs may respond to changes in upstream molecules similarly thereby evolving convergently with feeding morphology.",
+        "aAkU": "Wiley",
+        "Hegq": "Evolution",
+        "ZrNi": "2013",
+        "NCzv": "https://api.istex.fr/ark:/67375/WNG-862TV8Z5-T/fulltext.pdf",
+        "GLJr": ["uid:/60769182d8cfd90012c21d46/Alligator mississippiensis", "uid:/60769182d8cfd90012c21d46/Crocodylus siamensis", "uid:/60769182d8cfd90012c21d46/Gallus gallus", "uid:/60769182d8cfd90012c21d46/Odontochelys semitestacea", "uid:/60769182d8cfd90012c21d46/Pelodiscus sinensis", "uid:/60769182d8cfd90012c21d46/Proganochelys quenstedti"],
+        "zMmz": ["T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex", "T+rex,IRC3sp,entity-fishing", "T+rex"],
+        "aHOZ": ["Alligator mississippiensis", "Crocodylus siamensis", "Gallus gallus", "Odontochelys semitestacea", "Pelodiscus sinensis", "Proganochelys quenstedti"],
+        "mVME": ["Beak", "convergent evolution", "development", "teeth", "tetrapods"],
+        "j0Ez": "/api/run/close-by/mVME",
+        "asyl": "/api/run/close-by/ZrNi/Hegq/aAkU",
+        "XiM5": ["T+rex", "IRC3sp", "entity-fishing"],
+        "aJuX": ["Alligator mississippiensis", "Crocodylus siamensis", "Gallus gallus", "Odontochelys semitestacea", "Pelodiscus sinensis", "Proganochelys quenstedti"],
+        "bFpH": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Crocodylia", "Family: Alligatoridae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Crocodylia", "Family: Crocodylidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Galliformes", "Family: Phasianidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Testudines", "Family: Odontochelyidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Testudines", "Family: Trionychidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Testudines"],
+        "aXbz": ["T+rex", "IRC3sp", "entity-fishing"],
+        "oldH": [
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Crocodylia", "Family: Alligatoridae", "Alligator mississippiensis"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Crocodylia", "Family: Crocodylidae", "Crocodylus siamensis"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Aves", "Order: Galliformes", "Family: Phasianidae", "Gallus gallus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Testudines", "Family: Odontochelyidae", "Odontochelys semitestacea"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Testudines", "Family: Trionychidae", "Pelodiscus sinensis"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Testudines", "Proganochelys quenstedti"]
+        ],
+        "publicationDate": {"date": "2021-05-26T07:28:56.466Z"}
+      }
+    ]
+  },
+  {
+    "_id": "60adf8b83fe8adf42eb56d76",
+    "subresourceId": null,
+    "uri": "uid:/GXQSMX8C",
+    "versions": [
+      {
+        "YGKH": "Development of Snake‐Directed Antipredator Behavior by Wild White‐faced Capuchin Monkeys: I. Snake‐Species Discrimination",
+        "P7Yr": "Young animals are known to direct alarm calls at a wider range of species than adults. Our field study examined age‐related differences in the snake‐directed antipredator behavior of infant, juvenile, and adult white‐faced capuchin monkeys (Cebus capucinus) in terms of alarm calling, looking behavior, and aggressive behavior. In the first experiment, we exposed infant and juvenile white‐faced capuchins to realistic‐looking inflatable models of their two snake predators, the boa constrictior (Boa constrictor) and neotropical rattlesnake (Crotalus durissus) and a white airplane as a novel control. In the second experiment, infants, juveniles, and adults were presented photographic models of a coiled boa constrictor, rattlesnake, indigo snake (Drymarchon corais), a noncapuchin predator, and a white snake‐like model. We found that antipredator behavior changed during the immature stage. Infants as young as 4 months old were able to recognize snakes and display antipredator behavior, but engaged in less snake‐model discrimination than juveniles. All age classes exhibited a lower response to the white snake‐like model, indicating that the absence of color and snake‐scale patterns affected snake recognition. Infants also showed a higher level of vigilance after snake‐model detection as exhibited by a higher proportion of time spent looking and head cocking at the models. Aggressive antipredator behavior was found in all age classes, but was more prevalent in juveniles and adults than infants. This study adds to the knowledge of development of antipredator behavior in primates by showing that, although alarm calling behavior and predator recognition appear at a very young age in capuchins, snake‐species discrimination does not become apparent until the juvenile stage. Am. J. Primatol. 75:281‐291, 2013. © 2012 Wiley Periodicals, Inc.",
+        "aAkU": "Wiley",
+        "Hegq": "American Journal of Primatology",
+        "ZrNi": "2013",
+        "NCzv": "https://api.istex.fr/ark:/67375/WNG-S9QNV783-X/fulltext.pdf",
+        "GLJr": ["uid:/60769182d8cfd90012c21d46/Boa constrictor", "uid:/60769182d8cfd90012c21d46/Cebus capucinus", "uid:/60769182d8cfd90012c21d46/Chlorocebus pygerythrus", "uid:/60769182d8cfd90012c21d46/Crotalus durissus", "uid:/60769182d8cfd90012c21d46/Drymarchon corais", "uid:/60769182d8cfd90012c21d46/Macaca mulatta", "uid:/60769182d8cfd90012c21d46/Macaca radiata", "uid:/60769182d8cfd90012c21d46/Otolemur garnettii", "uid:/60769182d8cfd90012c21d46/Saguinus fuscicollis", "uid:/60769182d8cfd90012c21d46/Tarsius spectrum"],
+        "zMmz": ["T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing", "T+rex,IRC3sp,entity-fishing"],
+        "aHOZ": ["Boa constrictor", "Cebus capucinus", "Chlorocebus pygerythrus", "Crotalus durissus", "Drymarchon corais", "Macaca mulatta", "Macaca radiata", "Otolemur garnettii", "Saguinus fuscicollis", "Tarsius spectrum"],
+        "mVME": ["antipredator behavior", "alarm calling", "snake‐species discrimination", "Cebus capucinus"],
+        "j0Ez": "/api/run/close-by/mVME",
+        "asyl": "/api/run/close-by/ZrNi/Hegq/aAkU",
+        "XiM5": ["T+rex", "IRC3sp", "entity-fishing"],
+        "aJuX": ["Boa constrictor", "Cebus capucinus", "Chlorocebus pygerythrus", "Crotalus durissus", "Drymarchon corais", "Macaca mulatta", "Macaca radiata", "Otolemur garnettii", "Saguinus fuscicollis", "Tarsius spectrum"],
+        "bFpH": ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Boidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cebidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cercopithecidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Viperidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Colubridae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cercopithecidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cercopithecidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Galagidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Callitrichidae", "Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Tarsiidae"],
+        "aXbz": ["T+rex", "IRC3sp", "entity-fishing"],
+        "oldH": [
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Boidae", "Boa constrictor"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cebidae", "Cebus capucinus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cercopithecidae", "Chlorocebus pygerythrus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Viperidae", "Crotalus durissus"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Reptilia", "Order: Squamata", "Family: Colubridae", "Drymarchon corais"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cercopithecidae", "Macaca mulatta"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Cercopithecidae", "Macaca radiata"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Galagidae", "Otolemur garnettii"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Callitrichidae", "Saguinus fuscicollis"],
+          ["Kingdom: Animalia", "Phylum: Chordata", "Class: Mammalia", "Order: Primates", "Family: Tarsiidae", "Tarsius spectrum"]
+        ],
+        "publicationDate": {"date": "2021-05-26T07:28:56.466Z"}
+      }
+    ]
+  }
+]
+}

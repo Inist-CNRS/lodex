@@ -1,12 +1,18 @@
 FROM node:12-alpine AS build
 RUN apk add --no-cache make gcc g++ python3 bash git openssh jq
 WORKDIR /app
+COPY ./package.json /app
+COPY ./package-lock.json /app
+COPY ./packages /app/packages
+
+RUN npm install
 # see .dockerignore to know all copied files
 COPY . /app/
+
 ENV NODE_ENV="production"
+
 RUN mkdir /app/upload && \
-    cp /app/config/production-dist.js /app/config/production.js && \
-    npm install --production && \
+    cp -n ./config/production-dist.js ./config/production.js && \
     npm run build && \
     npm cache clean --force  && \
     npm prune --production && \
@@ -37,4 +43,4 @@ WORKDIR /app
 ENV NODE_ENV="production"
 EXPOSE 3000
 ENTRYPOINT [ "/app/docker-entrypoint.sh" ]
-CMD [ "npm", "start" ]
+CMD ["npm", "start"]
