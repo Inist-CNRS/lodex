@@ -72,12 +72,11 @@ services:
             EZS_METRICS: 'true'
             EZS_CONCURRENCY: '4'
             EZS_CONTINUE_DELAY: '60'
-            EZS_NSHARDS: '31'                    
+            EZS_NSHARDS: '31'
             EZS_CACHE: 'false'
-            EZS_VERBOSE: 'true'
         ports:
             - 31976:31976
-        command: npx ezs -d /app/scripts
+        command: npm run workers
         links:
             - mongo
         depends_on:
