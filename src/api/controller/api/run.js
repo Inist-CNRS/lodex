@@ -88,15 +88,18 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
                 );
             }
         };
+        const workers_url = `${process.env.WORKERS_URL}/routines/${routineName}?${ctx.querystring}`;
+        console.error('Connecting to workers', workers_url);
         ctx.body = input
             .pipe(
                 ezs(
                     'URLConnect',
                     {
-                        url: `${process.env.WORKERS_URL}/routines/${routineName}`,
+                        url: workers_url,
+                        timeout: 120000,
                         retries: 1,
-                        json: true,
-                        encoder: 'transit',
+                        json: false,
+                        encoder: 'pack',
                     },
                     environment,
                 ),
