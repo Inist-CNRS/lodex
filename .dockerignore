@@ -14,3 +14,4 @@
 !packages
 !typings.json
 !docker-entrypoint.sh
+!workers*

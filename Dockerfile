@@ -16,7 +16,7 @@ RUN mkdir /app/upload && \
     npm run build && \
     npm cache clean --force  && \
     npm prune --production && \
-    npm run clean && \
+    npm run clean
 
 FROM node:12-alpine AS release
 RUN apk add --no-cache su-exec redis

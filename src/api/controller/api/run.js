@@ -7,12 +7,8 @@ import Lodex from '@ezs/lodex';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
-import fetch from 'fetch-with-proxy';
-import URL from 'url';
-import qs from 'qs';
 
 import Script from '../../services/script';
-import localConfig from '../../../../config.json';
 import { getCleanHost } from '../../../common/uris';
 import { mongoConnectionString } from '../../services/mongoClient';
 
@@ -20,7 +16,7 @@ ezs.use(Lodex);
 ezs.use(Booster);
 ezs.use(Storage);
 
-const scripts = new Script('routines', '../../../../scripts/routines');
+const scripts = new Script('routines', '../../../../workers/routines');
 
 const parseFieldsParams = fieldsParams =>
     typeof fieldsParams === 'string' && fieldsParams !== ''
@@ -51,16 +47,12 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         ].join('/');
 
         const field = parseFieldsParams(fieldsParams);
-        const environment = {
-            ...localConfig,
-            ...ctx.query, // like lodex-extended server
-            field,
-        };
+        const environment = {};
         const host = getCleanHost();
         const query = {
             orderBy,
             field,
-            ...ctx.query, //usefull ?
+            ...ctx.query,
             connectionStringURI: mongoConnectionString,
             host,
         };

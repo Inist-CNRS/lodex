@@ -10,9 +10,9 @@
         "config": false
     },
     "scripts": {
-        "dev:server": "BABEL_ENV=browser webpack-dev-server --config ./src/app/webpack.config.babel.js --host 0.0.0.0",
-        "start": "node --max-http-header-size=32768 --require @babel/register src/api",
-        "workers": "node --require @babel/register workers.js",
+        "start": "concurrently \"npm:production:*\"",
+        "production:api": "node --max-http-header-size=32768 --require @babel/register src/api",
+        "production:workers": "node --require @babel/register workers",
         "build": "BABEL_ENV=browser node --max_old_space_size=4096 --max-http-header-size=32768 ./node_modules/.bin/webpack --config=./src/app/webpack.config.babel.js",
         "analyze": "BABEL_ENV=browser NODE_ENV=analyze npx webpack --config=./src/app/webpack.config.babel.js --profile --json > stats.json",
         "development:api": "nodemon --inspect=0.0.0.0:9229 --max-http-header-size=32768 --require @babel/register --watch src/api src/api",
@@ -95,6 +95,7 @@
         "comma-number": "^2.0.2",
         "common-tags": "^1.8.2",
         "compression-webpack-plugin": "^2.0.0",
+        "concurrently": "7.6.0",
         "config": "^2.0.2",
         "connected-react-router": "^4.4.1",
         "copy-to-clipboard": "3.3.1",

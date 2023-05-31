@@ -41,7 +41,7 @@ services:
             NODE_ENV: development
         ports:
             - 8080:8080
-        command: npm run dev:server
+        command: npm run development:app
 
     mongo:
         image: mongo:4.4.4-bionic
@@ -76,7 +76,7 @@ services:
             EZS_CACHE: 'false'
         ports:
             - 31976:31976
-        command: npm run workers
+        command: npm run production:workers
         links:
             - mongo
         depends_on:
