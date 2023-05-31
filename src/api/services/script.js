@@ -27,8 +27,7 @@ export default class Script {
                 fs.readFileSync(fileName).toString(),
             ]);
 
-        const pluginsURL = config.pluginsURL || '';
-        const routineRepository = URL.resolve(pluginsURL, `./${source}/`);
+        const routineRepository = `./${source}/`;
         const routinesDistant = routinesDeclared
             .map(routineName =>
                 URL.resolve(routineRepository, routineName.concat('.ini')),
