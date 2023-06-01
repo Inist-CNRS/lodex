@@ -8,10 +8,6 @@ describe('script ', () => {
         const current = await routine.get('distinct-by');
         assert.equal(current.length, 4);
     });
-    it('should exist remotely', async () => {
-        const current = await routine.get('hello-world');
-        assert.equal(current.length, 4);
-    });
     it('should not exist', async () => {
         const current = await routine.get('fake-world');
         assert.equal(current, undefined);

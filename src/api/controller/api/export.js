@@ -17,7 +17,7 @@ ezs.use(Lodex);
 ezs.use(Booster);
 ezs.use(Storage);
 
-const scripts = new Script('exporters', '../../../../workers/exporters');
+const scripts = new Script('exporters');
 
 export function getFacetsWithoutId(facets) {
     if (!facets) {
