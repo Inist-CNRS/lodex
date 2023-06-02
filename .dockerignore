@@ -9,8 +9,8 @@
 !config.json
 !babel.config.js
 !modclean.config.js
-!lodex-extended-sync
 !jest.config.js
 !jsconfig.json
+!packages
 !typings.json
 !docker-entrypoint.sh
