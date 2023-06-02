@@ -1,9 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import ezs from '@ezs/core';
-import Booster from '@ezs/booster';
-import Storage from '@ezs/storage';
-import Lodex from '@ezs/lodex';
+import Basics from '@ezs/basics';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
@@ -13,10 +11,7 @@ import localConfig from '../../../../config.json';
 import { getCleanHost } from '../../../common/uris';
 import { mongoConnectionString } from '../../services/mongoClient';
 
-ezs.use(Lodex);
-ezs.use(Booster);
-ezs.use(Storage);
-
+ezs.use(Basics);
 const scripts = new Script('exporters');
 
 export function getFacetsWithoutId(facets) {
@@ -105,9 +100,10 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
                 'URLConnect',
                 {
                     url: `${process.env.WORKERS_URL}/exporters/${exporterName}`,
+                    timeout: 120000,
                     retries: 1,
-                    json: true,
-                    encoder: 'transit',
+                    json: false,
+                    encoder: 'pack',
                 },
                 environment,
             ),
