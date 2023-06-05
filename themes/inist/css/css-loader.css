@@ -1,0 +1,35 @@
+/*class css generees par css-loader dans index.js?*/
+/* justification des titres annulée*/
+.css-oa9bdm {
+  text-align: inherit!important;
+}
+/* -> declaration dans colorsTheme.js, custom/css/ styles_aphrodite et css-loader.css*/
+/*initial vert #7dbd42 devient bleu #25809a ou rgb(37, 128, 154)*/
+/*green:{ primary: "#25809a",
+secondary: "rgba(37, 128, 154, 0.7)",
+tertiary: "rgba(37, 128, 154, .5)",
+light: "rgba(37, 128, 154, .1)",
+}*/
+/*active et focus orange #f48022 devient fushia #da1d64*/
+/* hover violet reste violet #b22f90*/
+
+/* boutton:hover bleu fonce #1f6a81 rgb(31, 106, 129)*/
+/*home page : bouton vert ‘plus de résultats'*/
+.css-aasjfl {background-color: rgb(37, 128, 154)!important;}
+.css-aasjfl:hover {background-color: rgb(31, 106, 129)!important;}
+/*pages modales des graphiques : bouton vert 'parcourir les résultats'*/
+.css-1fzg62x {background-color: rgb(37, 128, 154)!important;}
+.css-1fzg62x:hover {background-color: rgb(31, 106, 129)!important;}
+/*boite recherche*/
+/*bouton fond blanc ‘voir plus de résultats'*/
+.css-144fbo8{color:#25809a!important;}
+/*Boite recherche + page notice*/
+/*tri, date et export texte + svg verts*/
+.css-124f0p3, .css-1082qr1 {color:#25809a!important;}
+.css-1ne2wwb:focus{border-color: #da1d64!important;}/* */
+/*notice*/
+/*button fond transparent de la fleche verte*/
+/*pose probleme avec l’image en bg du theme inist*/ 
+/*ces ajout ne fonctionnent pas*/
+/*.css-1yxmbwk{background-color: #fff!important;}
+.css-1yxmbwk:hover {background-color: rgba(0, 0, 0, 0.04)!important;}*/

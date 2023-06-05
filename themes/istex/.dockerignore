@@ -1,0 +1,14 @@
+node_modules/
+package.json
+package-lock.json
+docker-compose.yml
+Dockerfile
+Makefile
+.dockerignore
+
+# vim swap files
+*.swp
+*.swo
+
+
+
