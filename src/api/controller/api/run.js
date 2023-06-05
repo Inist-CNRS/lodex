@@ -7,12 +7,8 @@ import Lodex from '@ezs/lodex';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
-import fetch from 'fetch-with-proxy';
-import URL from 'url';
-import qs from 'qs';
 
 import Script from '../../services/script';
-import localConfig from '../../../../config.json';
 import { getCleanHost } from '../../../common/uris';
 import { mongoConnectionString } from '../../services/mongoClient';
 
@@ -20,7 +16,7 @@ ezs.use(Lodex);
 ezs.use(Booster);
 ezs.use(Storage);
 
-const scripts = new Script('routines', '../../../../scripts/routines');
+const scripts = new Script('routines');
 
 const parseFieldsParams = fieldsParams =>
     typeof fieldsParams === 'string' && fieldsParams !== ''
@@ -34,7 +30,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     }
 
     try {
-        const [, metaData, , script] = currentScript;
+        const [, metaData, routineName] = currentScript;
         ctx.type = metaData.mimeType;
         ctx.status = 200;
         if (metaData.fileName) {
@@ -51,21 +47,16 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         ].join('/');
 
         const field = parseFieldsParams(fieldsParams);
-        const environment = {
-            ...localConfig,
-            ...ctx.query, // like lodex-extended server
-            field,
-        };
+        const environment = {};
         const host = getCleanHost();
         const query = {
             orderBy,
             field,
-            ...ctx.query, //usefull ?
+            ...ctx.query,
             connectionStringURI: mongoConnectionString,
             host,
         };
         const input = new PassThrough({ objectMode: true });
-        const commands = ezs.parseString(script, environment);
         const errorHandle = err => {
             ctx.status = 503;
             ctx.body.destroy();
@@ -89,30 +80,26 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
                 );
             }
         };
-        if (localConfig.pluginsAPI) {
-            const wurl = URL.parse(localConfig.pluginsAPI);
-            wurl.pathname = `/routines/${scriptNameCalledParam}.ini`;
-            wurl.search = qs.stringify(query, { indices: false });
-            const href = URL.format(wurl);
-            // Warning : Don't use proxy with docker virtual network
-            process.env.no_proxy = String(process.env.no_proxy || 'localhost')
-                .split(',')
-                .concat(wurl.hostname)
-                .filter((value, index, self) => self.indexOf(value) === index)
-                .join(',');
-            const response = await fetch(href);
-            ctx.body = response.body
-                .on('finish', emptyHandle)
-                .on('error', errorHandle);
-        } else {
-            const statement = scripts.useCache() ? 'boost' : 'delegate';
-            ctx.body = input
-                .pipe(ezs(statement, { commands }, environment))
-                .pipe(ezs.catch())
-                .on('finish', emptyHandle)
-                .on('error', errorHandle)
-                .pipe(ezs.toBuffer());
-        }
+        const workers_url = `${process.env.WORKERS_URL}/routines/${routineName}?${ctx.querystring}`;
+        console.error('Connecting to workers', workers_url);
+        ctx.body = input
+            .pipe(
+                ezs(
+                    'URLConnect',
+                    {
+                        url: workers_url,
+                        timeout: 120000,
+                        retries: 1,
+                        json: false,
+                        encoder: 'pack',
+                    },
+                    environment,
+                ),
+            )
+            .pipe(ezs.catch())
+            .on('finish', emptyHandle)
+            .on('error', errorHandle)
+            .pipe(ezs.toBuffer());
         input.write(query);
         input.end();
     } catch (err) {

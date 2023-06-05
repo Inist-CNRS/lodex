@@ -1,23 +1,24 @@
 import ezs from '@ezs/core';
-import Script from './script';
+import ezsBasics from '@ezs/basics';
 import fetch from 'fetch-with-proxy';
 import progress from './progress';
 import { INDEXATION, SAVING_DATASET } from '../../common/progressStatus';
 
-const loaders = new Script('loaders', '../../../scripts/loaders');
+ezs.use(ezsBasics);
 
-export const getLoader = async (loaderName, loaderEnvironment) => {
-    const currentLoader = await loaders.get(loaderName);
-    if (!currentLoader) {
-        throw new Error(`Unknown loader: ${loaderName}`);
-    }
-
-    const [, , , script] = currentLoader;
-
-    // ezs is safe : errors do not break the pipeline
-    return stream =>
-        stream.pipe(ezs('delegate', { script }, loaderEnvironment));
-};
+export const getLoader = (loaderName, loaderEnvironment) => stream =>
+    stream.pipe(
+        ezs(
+            'URLConnect',
+            {
+                url: `${process.env.WORKERS_URL}/loaders/${loaderName}`,
+                retries: 1,
+                json: true,
+                encoder: 'transit',
+            },
+            loaderEnvironment,
+        ),
+    );
 
 export const getCustomLoader = async (script, loaderEnvironment) => {
     return stream =>
@@ -60,7 +61,7 @@ export const startImport = async ctx => {
                 loaderEnvironment,
             );
         } else {
-            parseStream = await ctx.getLoader(parser, loaderEnvironment);
+            parseStream = ctx.getLoader(parser, loaderEnvironment);
         }
         let stream;
         if (url) {

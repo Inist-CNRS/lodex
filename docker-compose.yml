@@ -13,6 +13,7 @@ services:
             no_proxy: 'localhost,127.0.0.1,'
             BABEL_DISABLE_CACHE: 1
             REDIS_URL: 'redis://localhost:6379'
+            WORKERS_URL: 'http://localhost:31976'
         volumes:
             - ./upload:/app/upload
         links:

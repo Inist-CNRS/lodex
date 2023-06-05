@@ -1,24 +1,18 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import ezs from '@ezs/core';
-import Booster from '@ezs/booster';
-import Storage from '@ezs/storage';
-import Lodex from '@ezs/lodex';
+import Basics from '@ezs/basics';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
-import URL from 'url';
 
 import Script from '../../services/script';
 import localConfig from '../../../../config.json';
 import { getCleanHost } from '../../../common/uris';
 import { mongoConnectionString } from '../../services/mongoClient';
 
-ezs.use(Lodex);
-ezs.use(Booster);
-ezs.use(Storage);
-
-const scripts = new Script('exporters', '../../../../scripts/exporters');
+ezs.use(Basics);
+const scripts = new Script('exporters');
 
 export function getFacetsWithoutId(facets) {
     if (!facets) {
@@ -47,7 +41,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         ctx.throw(404, `Unknown script '${scriptNameCalledParam}'.ini`);
     }
 
-    const [, metaData, , script] = currentScript;
+    const [, metaData, exporterName] = currentScript;
     const { sortDir, sortBy, match, ...facets } = ctx.query;
 
     ctx.type = metaData.mimeType;
@@ -82,7 +76,6 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     };
 
     const input = new PassThrough({ objectMode: true });
-    const commands = ezs.parseString(script, environment);
     const errorHandle = err => {
         ctx.status = 503;
         ctx.body.destroy();
@@ -101,25 +94,24 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             );
         }
     };
-    if (localConfig.pluginsAPI) {
-        const statement = 'dispatch';
-        const wurl = URL.parse(localConfig.pluginsAPI);
-        const server = wurl.hostname;
-        ctx.body = input
-            .pipe(ezs(statement, { commands, server }, environment))
-            .pipe(ezs.catch())
-            .on('finish', emptyHandle)
-            .on('error', errorHandle)
-            .pipe(ezs.toBuffer());
-    } else {
-        const statement = 'delegate';
-        ctx.body = input
-            .pipe(ezs(statement, { commands }, environment))
-            .pipe(ezs.catch())
-            .on('finish', emptyHandle)
-            .on('error', errorHandle)
-            .pipe(ezs.toBuffer());
-    }
+    ctx.body = input
+        .pipe(
+            ezs(
+                'URLConnect',
+                {
+                    url: `${process.env.WORKERS_URL}/exporters/${exporterName}`,
+                    timeout: 120000,
+                    retries: 1,
+                    json: false,
+                    encoder: 'pack',
+                },
+                environment,
+            ),
+        )
+        .pipe(ezs.catch())
+        .on('finish', emptyHandle)
+        .on('error', errorHandle)
+        .pipe(ezs.toBuffer());
     input.write(query);
     input.end();
 };

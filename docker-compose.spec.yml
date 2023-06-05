@@ -13,12 +13,15 @@ services:
             EZMASTER_MONGODB_HOST_PORT: mongo:27017
             EXPOSE_TEST_CONTROLLER: 'true'
             REDIS_URL: 'redis://redis:6379'
+            WORKERS_URL: 'http://workers:31976'
         links:
             - mongo
             - redis
+            - workers
         depends_on:
             - mongo
             - redis
+            - workers
         ports:
             - 3000:3000
         volumes:
@@ -45,3 +48,32 @@ services:
         image: redis:6
         ports:
             - 6379:6379
+
+    workers:
+        image: node:12
+        volumes:
+            - .:/app
+        working_dir: /app
+        user: '${UID}:${GID}'
+        environment:
+            NODE_ENV: development
+            DEBUG: ${DEBUG}
+            NODE_ENV: ${NODE_ENV}
+            NODE_OPTIONS: ${NODE_OPTIONS}
+            http_proxy: ${http_proxy}
+            https_proxy: ${https_proxy}
+            no_proxy: 'localhost,127.0.0.1'
+            EZS_TITLE: 'Lodex internals workers'
+            EZS_DESCRIPTION: 'All scripts through a webserver'
+            EZS_METRICS: 'true'
+            EZS_CONCURRENCY: '4'
+            EZS_CONTINUE_DELAY: '60'
+            EZS_NSHARDS: '31'
+            EZS_CACHE: 'false'
+        ports:
+            - 31976:31976
+        command: npm run production:workers
+        links:
+            - mongo
+        depends_on:
+            - mongo
