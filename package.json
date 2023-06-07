@@ -27,7 +27,7 @@
         "insertversion:readme": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" README.md",
         "insertversion:makefile": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" Makefile",
         "insertversion:docker": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose*.yml",
-        "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && git add README.md Makefile docker-compose.debug.yml",
+        "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && git add README.md Makefile",
         "postinstall": "cd ./packages/ezsLodex/ && npm install  --production --install-strategy=nested"
     },
     "nodemonConfig": {
