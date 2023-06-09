@@ -80,7 +80,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
                 );
             }
         };
-        const workers_url = `${process.env.WORKERS_URL}/routines/${routineName}?${ctx.querystring}`;
+        const workers_url = `${process.env.WORKERS_URL || 'http://localhost:31968'}/routines/${routineName}?${ctx.querystring}`;
         console.error('Connecting to workers', workers_url);
         ctx.body = input
             .pipe(
