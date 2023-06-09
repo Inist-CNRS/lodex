@@ -57,6 +57,7 @@ module.exports = {
             '*.cpp',
             '*.spec.js',
             '*.prettierc.*',
+            '*fixture*',
             // ... glob patterns here
         ],
         ignore: [
