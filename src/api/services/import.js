@@ -11,7 +11,7 @@ export const getLoader = (loaderName, loaderEnvironment) => stream =>
         ezs(
             'URLConnect',
             {
-                url: `${process.env.WORKERS_URL}/loaders/${loaderName}`,
+                url: `${process.env.WORKERS_URL || 'http://localhost:31968'}/loaders/${loaderName}`,
                 retries: 1,
                 json: true,
                 encoder: 'transit',

@@ -99,7 +99,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             ezs(
                 'URLConnect',
                 {
-                    url: `${process.env.WORKERS_URL}/exporters/${exporterName}`,
+                    url: `${process.env.WORKERS_URL || 'http://localhost:31968'}/exporters/${exporterName}`,
                     timeout: 120000,
                     retries: 1,
                     json: false,
