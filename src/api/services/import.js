@@ -7,19 +7,21 @@ import { INDEXATION, SAVING_DATASET } from '../../common/progressStatus';
 ezs.use(ezsBasics);
 
 export const getLoader = (loaderName, loaderEnvironment) => stream =>
-    stream.pipe(
-        ezs(
-            'URLConnect',
-            {
-                url: `${process.env.WORKERS_URL || 'http://localhost:31976'}/loaders/${loaderName}`,
-                retries: 1,
-                json: true,
-                encoder: 'transit',
-            },
-            loaderEnvironment,
-        ),
-    );
-
+    stream
+        .pipe(
+            ezs(
+                'URLConnect',
+                {
+                    url: `${process.env.WORKERS_URL ||
+                        'http://localhost:31976'}/loaders/${loaderName}`,
+                    retries: 1,
+                    json: false,
+                    encoder: 'transit',
+                },
+                loaderEnvironment,
+            ),
+        )
+        .pipe(ezs('unpack'));
 export const getCustomLoader = async (script, loaderEnvironment) => {
     return stream =>
         stream.pipe(ezs('delegate', { script }, loaderEnvironment));
