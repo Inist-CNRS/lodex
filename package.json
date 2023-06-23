@@ -193,7 +193,7 @@
         "redux-saga": "^0.16.2",
         "reselect": "^3.0.1",
         "scheduler": "0.18.0",
-        "semver": "7.3.5",
+        "semver": "7.5.2",
         "socket.io": "4.5.4",
         "socket.io-client": "4.5.4",
         "stream-to-string": "^1.2.0",
