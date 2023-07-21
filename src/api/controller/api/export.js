@@ -94,12 +94,14 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             );
         }
     };
+    const workers_url = `${process.env.WORKERS_URL || 'http://localhost:31976'}/exporters/${exporterName}`;
+    console.error('Connecting to workers', workers_url, 'with', query);
     ctx.body = input
         .pipe(
             ezs(
                 'URLConnect',
                 {
-                    url: `${process.env.WORKERS_URL || 'http://localhost:31976'}/exporters/${exporterName}`,
+                    url: workers_url,
                     timeout: 120000,
                     retries: 1,
                     json: false,

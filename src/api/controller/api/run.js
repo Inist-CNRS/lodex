@@ -1,8 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import ezs from '@ezs/core';
-import Booster from '@ezs/booster';
-import Storage from '@ezs/storage';
 import Lodex from '@ezs/lodex';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
@@ -13,8 +11,6 @@ import { getCleanHost } from '../../../common/uris';
 import { mongoConnectionString } from '../../services/mongoClient';
 
 ezs.use(Lodex);
-ezs.use(Booster);
-ezs.use(Storage);
 
 const scripts = new Script('routines');
 
@@ -81,7 +77,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             }
         };
         const workers_url = `${process.env.WORKERS_URL || 'http://localhost:31976'}/routines/${routineName}?${ctx.querystring}`;
-        console.error('Connecting to workers', workers_url);
+        console.error('Connecting to workers', workers_url, 'with', query);
         ctx.body = input
             .pipe(
                 ezs(
