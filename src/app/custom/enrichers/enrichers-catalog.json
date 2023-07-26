@@ -72,11 +72,27 @@
         "type": "indexation"
     },
     {
+        "id": "post-v1-teeft-with-numbers-en",
+        "url": "https://terms-extraction.services.inist.fr/v1/teeft/with-numbers/en",
+        "doc": "",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-en",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2023/06/30/extraction-de-termes-via-teeft-nombres-compris/",
+        "type": "indexation"
+    },
+    {
         "id": "post-v1-teeft-fr",
         "url": "https://terms-extraction.services.inist.fr/v1/teeft/fr",
         "doc": "",
         "swagger": "https://openapi.services.inist.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-fr",
         "objectifTDM": "https://objectif-tdm.inist.fr/2021/12/20/extraction-de-termes-teeft/",
+        "type": "indexation"
+    },
+    {
+        "id": "post-v1-teeft-with-numbers-fr",
+        "url": "https://terms-extraction.services.inist.fr/v1/teeft/with-numbers/fr",
+        "doc": "",
+        "swagger": "https://openapi.services.inist.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-fr",
+        "objectifTDM": "https://objectif-tdm.inist.fr/2023/06/30/extraction-de-termes-via-teeft-nombres-compris/",
         "type": "indexation"
     },
     {
