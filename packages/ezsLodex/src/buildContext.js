@@ -82,6 +82,7 @@ export const createFunction = () => async function LodexBuildContext(data, feed)
         maxValue,
         minValue,
         orderBy,
+        skip,
         uri,
         host,
         // to allow script to connect to MongoDB
