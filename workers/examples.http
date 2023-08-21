@@ -1,0 +1,41 @@
+# File Global Variables: Variables defined in Region without name or request (see httpyac documentation)
+@baseUrl = http://localhost:31976
+@maxSize = 10
+@orderBy = value%2Fasc
+@field = [ "oldH" ]
+@match = null
+###
+
+# @name routines/tree-by
+POST {{baseUrl}}/routines/tree-by?maxSize={{maxSize}}&orderBy={{orderBy}} HTTP/1.1
+Content-Type: application/jsonl
+
+{"orderBy": "value/asc", "field": [ "oldH" ], "maxSize": 5000, "maxLabelLength": 25, "labelOffset": 50, "minimumScaleValue": 5, "connectionStringURI": "mongodb://mongo:27017/lodex"}
+
+
+###
+
+# @name export/raw
+POST {{baseUrl}}/exporters/raw
+Content-Type: application/jsonl
+
+{"orderBy": "{{orderBy}}", "field": {{field}}, "match": {{match}}, "connectionStringURI": "mongodb://mongo:27017/lodex", "host": "http://localhost:3000"}
+
+###
+
+# @name export/jsonallvalue
+POST {{baseUrl}}/exporters/jsonallvalue
+Content-Type: application/jsonl
+
+{"orderBy": "{{orderBy}}", "field": {{field}}, "match": {{match}}, "connectionStringURI": "mongodb://mongo:27017/lodex", "host": "http://localhost:3000"}
+
+###
+
+# @name export/bundle
+# @save
+POST {{baseUrl}}/exporters/bundle
+Content-Type: application/jsonl
+
+{"orderBy": "{{orderBy}}", "field": {{field}}, "match": {{match}}, "connectionStringURI": "mongodb://mongo:27017/lodex", "host": "http://localhost:3000"}
+
+###
