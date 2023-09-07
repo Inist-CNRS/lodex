@@ -118,10 +118,12 @@ const RoutineCatalog = ({
                             }
                         >
                             <ListItemText
-                                primary={polyglot.t(`${routine.id}_title`)}
-                                primaryTypographyProps={{
-                                    sx: { fontWeight: 'bold' },
-                                }}
+                                disableTypography
+                                primary={
+                                    <Typography sx={{ fontWeight: 'bold' }}>
+                                        {polyglot.t(`${routine.id}_title`)}
+                                    </Typography>
+                                }
                                 secondary={
                                     <RoutineCatalogDescription
                                         routine={routine}
