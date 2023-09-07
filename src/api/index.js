@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import { Server } from 'socket.io';
-import config from 'config';
+import config, { mongo } from 'config';
 import mount from 'koa-mount';
 import route from 'koa-route';
 import cors from 'kcors';
@@ -32,6 +32,15 @@ import access, { eventAccess } from '@uswitch/koa-access';
 const app = koaQs(new Koa(), 'extended', { arrayLimit: 1000 });
 
 app.use(cors({ credentials: true }));
+
+const setTenant = async (ctx, next) => {
+    // Get Tenant from request header
+    ctx.tenant = ctx.get('X-Lodex-Tenant') || mongo.dbName;
+    progress.initialize(ctx.tenant);
+    await next();
+};
+
+app.use(setTenant);
 
 if (process.env.EXPOSE_TEST_CONTROLLER) {
     app.use(mount('/tests', testController));
@@ -98,25 +107,31 @@ app.use(function*(next) {
 
 app.use(mount('/', controller));
 
+app.use(async (ctx, next) => {
+    if (!module.parent) {
+        indexSearchableFields(ctx);
+    }
+    await next();
+});
+
 if (!module.parent) {
-    indexSearchableFields();
     global.console.log(`Server listening on port ${config.port}`);
     global.console.log('Press CTRL+C to stop server');
     const httpServer = app.listen(config.port);
     const io = new Server(httpServer);
 
     io.on('connection', socket => {
-        progress.addProgressListener(progress => {
-            socket.emit('progress', progress);
+        progress.addProgressListener(payload => {
+            socket.emit(payload.room, payload.data);
         });
         addPublisherListener(payload => {
-            socket.emit('publisher', payload);
+            socket.emit(payload.room, payload.data);
         });
         addEnrichmentJobListener(payload => {
             socket.emit(payload.room, payload.data);
         });
         addImportListener(payload => {
-            socket.emit('import', payload);
+            socket.emit(payload.room, payload.data);
         });
     });
 }

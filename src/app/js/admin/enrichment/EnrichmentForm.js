@@ -294,7 +294,7 @@ export const EnrichmentForm = ({
     useEffect(() => {
         handleGetLogs();
         const socket = io();
-        socket.on(`enrichment-job-${initialValues?.jobId}`, data => {
+        socket.on(`toto-enrichment-job-${initialValues?.jobId}`, data => {
             let lastLine;
             let parsedData;
             if (Array.isArray(data)) {
@@ -314,7 +314,7 @@ export const EnrichmentForm = ({
                 setEnrichmentStatus(parsedData.status);
             }
         });
-        socket.on('connect_error', () => {
+        socket.on('toto-connect_error', () => {
             handleGetLogs();
         });
         return () => socket.disconnect();

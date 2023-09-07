@@ -49,7 +49,12 @@ export default function configureStore(
     const store = createStore(
         reducer,
         initialState,
-        compose(middlewares, persistSessionStateEnhancer,persistLocalStateEnhancer, devtools),
+        compose(
+            middlewares,
+            persistSessionStateEnhancer,
+            persistLocalStateEnhancer,
+            devtools,
+        ),
     );
 
     sagaMiddleware.run(sagas);

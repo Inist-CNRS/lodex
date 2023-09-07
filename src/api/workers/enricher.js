@@ -13,7 +13,7 @@ export const processEnrichment = (job, done) => {
         .then(async () => {
             job.progress(100);
             const isFailed = await job.isFailed();
-            notifyListeners('enricher', {
+            notifyListeners(`toto-enricher`, {
                 isEnriching: false,
                 success: !isFailed,
             });
@@ -26,7 +26,10 @@ export const processEnrichment = (job, done) => {
 };
 
 const startJobEnrichment = async job => {
-    notifyListeners('enricher', { isEnriching: true, success: false });
+    notifyListeners(`toto-enricher`, {
+        isEnriching: true,
+        success: false,
+    });
     const ctx = await prepareContext({ job });
     await startEnrichment(ctx);
 };
@@ -41,6 +44,7 @@ const handleEnrichmentError = async (job, err) => {
 };
 
 const prepareContext = async ctx => {
+    ctx.tenant = ctx.job.data.tenant;
     await repositoryMiddleware(ctx, () => Promise.resolve());
     return ctx;
 };

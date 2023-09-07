@@ -49,7 +49,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             orderBy,
             field,
             ...ctx.query,
-            connectionStringURI: mongoConnectionString,
+            connectionStringURI: mongoConnectionString + ctx.tenant,
             host,
         };
         const input = new PassThrough({ objectMode: true });
@@ -76,7 +76,10 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
                 );
             }
         };
-        const workers_url = `${process.env.WORKERS_URL || 'http://localhost:31976'}/routines/${routineName}?${ctx.querystring}`;
+        const workers_url = `${process.env.WORKERS_URL ||
+            'http://localhost:31976'}/routines/${routineName}?${
+            ctx.querystring
+        }`;
         console.error('Connecting to workers', workers_url, 'with', query);
         ctx.body = input
             .pipe(

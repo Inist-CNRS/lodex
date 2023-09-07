@@ -50,10 +50,14 @@ export const ProgressComponent = props => {
 
     useEffect(() => {
         const socket = io();
-        socket.on('progress', data => {
+        // log all messages
+        socket.onAny((event, ...args) => {
+            console.log(event, args);
+        });
+        socket.on('toto-progress', data => {
             setUpdatedProgress(data);
         });
-        socket.on('connect_error', () => {
+        socket.on('toto-connect_error', () => {
             loadProgress();
         });
         return () => socket.disconnect();

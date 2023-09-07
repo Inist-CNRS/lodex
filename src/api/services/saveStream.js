@@ -14,7 +14,7 @@ async function insert(data, feed) {
     }
     try {
         const result = await ctx.dataset[method](data);
-        progress.incrementProgress(data.length);
+        progress.incrementProgress(ctx.tenant, data.length);
         return feed.send(result);
     } catch (error) {
         return feed.stop(error);

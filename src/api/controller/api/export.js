@@ -71,7 +71,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         field: parseFieldsParams(fieldsParams),
         match: match,
         ...facetsWithoutId,
-        connectionStringURI: mongoConnectionString,
+        connectionStringURI: mongoConnectionString + ctx.tenant,
         host,
     };
 
@@ -94,7 +94,8 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             );
         }
     };
-    const workers_url = `${process.env.WORKERS_URL || 'http://localhost:31976'}/exporters/${exporterName}`;
+    const workers_url = `${process.env.WORKERS_URL ||
+        'http://localhost:31976'}/exporters/${exporterName}`;
     console.error('Connecting to workers', workers_url, 'with', query);
     ctx.body = input
         .pipe(

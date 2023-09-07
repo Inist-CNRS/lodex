@@ -1,4 +1,5 @@
 import progress from './progress';
+import { mongo } from 'config';
 
 export default async function transformAllDocument(
     count,
@@ -34,6 +35,7 @@ export default async function transformAllDocument(
         ).filter(x => x);
         await insertBatch(transformedDataset);
         progress.incrementProgress(
+            job.data.tenant || mongo.dbName,
             transformedDataset.filter(({ subresourceId }) => !subresourceId)
                 .length,
         );

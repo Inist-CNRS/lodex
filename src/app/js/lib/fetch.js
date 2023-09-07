@@ -4,6 +4,20 @@ import { getHost } from '../../../common/uris';
 
 export default ({ url, ...config }, mode = 'json') => {
     const fullUrl = url.startsWith('http') ? url : getHost() + url;
+
+    // if session storage is available, we add the tenant in the header
+    if (typeof sessionStorage !== 'undefined') {
+        const tenant = sessionStorage.getItem('lodex-tenant');
+        // Set Tenant in header if not already set
+        if (!config.headers) {
+            config.headers = {};
+        }
+
+        if (!config.headers['X-Lodex-Tenant']) {
+            config.headers['X-Lodex-Tenant'] = tenant;
+        }
+    }
+
     return fetch(fullUrl, config).then(
         response => {
             if (response.status === 204) {

@@ -220,7 +220,7 @@ export const processEnrichment = async (enrichment, ctx) => {
         { $set: { ['status']: IN_PROGRESS } },
     );
     let errorCount = 0;
-    const room = `enrichment-job-${ctx.job.id}`;
+    const room = `toto-enrichment-job-${ctx.job.id}`;
     const commands = createEzsRuleCommands(enrichment.rule);
     const dataSetSize = await ctx.dataset.count();
     for (let index = 0; index < dataSetSize; index += BATCH_SIZE) {
@@ -296,7 +296,7 @@ export const processEnrichment = async (enrichment, ctx) => {
                     );
                 }
             }
-            progress.incrementProgress(BATCH_SIZE);
+            progress.incrementProgress(ctx.tenant, BATCH_SIZE);
             notifyListeners(room, logsEnrichedValue.reverse());
         } catch (e) {
             for (const entry of entries) {
@@ -318,7 +318,7 @@ export const processEnrichment = async (enrichment, ctx) => {
                 jobLogger.info(ctx.job, logData);
                 notifyListeners(room, logData);
                 errorCount++;
-                progress.incrementProgress(1);
+                progress.incrementProgress(ctx.tenant, 1);
             }
         }
     }
@@ -331,10 +331,10 @@ export const processEnrichment = async (enrichment, ctx) => {
         },
         { $set: { ['status']: FINISHED, ['errorCount']: errorCount } },
     );
-    progress.finish();
+    progress.finish(ctx.tenant);
     const logData = JSON.stringify({
         level: 'ok',
-        message: `Enrichement finished`,
+        message: `Enrichement finished - ${ctx.tenant}`,
         timestamp: new Date(),
         status: FINISHED,
     });
@@ -355,8 +355,9 @@ export const startEnrichment = async ctx => {
     const id = ctx.job?.data?.id;
     const enrichment = await ctx.enrichment.findOneById(id);
     const dataSetSize = await ctx.dataset.count();
-    if (progress.getProgress().status === PENDING) {
-        progress.start({
+
+    if (progress.getProgress(ctx.tenant).status === PENDING) {
+        progress.start(ctx.tenant, {
             status: ENRICHING,
             target: dataSetSize,
             label: 'ENRICHING',
@@ -402,7 +403,7 @@ export const setEnrichmentError = async (ctx, err) => {
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-    notifyListeners('enricher', {
+    notifyListeners('toto-enricher', {
         isEnriching: false,
         success: false,
         message:

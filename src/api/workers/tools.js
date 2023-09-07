@@ -40,14 +40,14 @@ export const getWaitingJobs = async () => {
     return waitingJobs;
 };
 
-export const cancelJob = async jobType => {
+export const cancelJob = async (ctx, jobType) => {
     const activeJob = await getActiveJob();
     if (activeJob?.data?.jobType === jobType) {
         if (jobType === 'publisher') {
             await cleanWaitingJobsOfType(activeJob.data.jobType);
         }
         activeJob.moveToFailed(new Error('cancelled'), true);
-        progress.finish();
+        progress.finish(ctx.tenant);
     }
 };
 
@@ -58,12 +58,12 @@ export const dropJobs = async jobType => {
     });
 };
 
-export const clearJobs = async () => {
+export const clearJobs = async (ctx) => {
     const waitingJobs = await getWaitingJobs();
     const activeJobs = await getActiveJobs();
     waitingJobs?.forEach(waitingJob => waitingJob.remove());
     activeJobs?.forEach(activeJob =>
         activeJob.moveToFailed(new Error('cancelled'), true),
     );
-    progress.finish();
+    progress.finish(ctx.tenant);
 };

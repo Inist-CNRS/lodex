@@ -289,6 +289,7 @@ if (config.userAuth) {
 }
 
 app.use(handleRender);
+
 app.use(
     route.get('/admin', async ctx => {
         ctx.body = adminIndexHtml;

@@ -50,7 +50,7 @@ export const restoreFields = (fileStream, ctx) => {
         dropJobs(ENRICHER);
         return new Promise((resolve, reject) =>
             restore({
-                uri: mongoConnectionString,
+                uri: mongoConnectionString + ctx.tenant,
                 stream: fileStream,
                 parser: 'json',
                 dropCollections: ['field', 'subresource', 'enrichment'],
@@ -164,7 +164,7 @@ export const postField = async ctx => {
     const result = await ctx.field.create(newField);
 
     if (searchable) {
-        await indexSearchableFields();
+        await indexSearchableFields(ctx.tenant);
     }
 
     if (result) {
@@ -180,7 +180,7 @@ export const patchField = async (ctx, id) => {
 
     try {
         ctx.body = await ctx.field.updateOneById(id, newField);
-        await indexSearchableFields();
+        await indexSearchableFields(ctx.tenant);
     } catch (error) {
         ctx.status = 403;
         ctx.body = { error: error.message };
@@ -230,7 +230,7 @@ export const patchSearchableFields = async ctx => {
             { $set: { searchable: false } },
         );
 
-        await indexSearchableFields();
+        await indexSearchableFields(ctx.tenant);
         ctx.body = 'ok';
     } catch (error) {
         ctx.status = 403;
@@ -245,7 +245,7 @@ export const patchSearchableFields = async ctx => {
 
 export const removeField = async (ctx, id) => {
     ctx.body = await ctx.field.removeById(id);
-    await indexSearchableFields();
+    await indexSearchableFields(ctx.tenant);
 };
 
 export const exportFields = async ctx => {

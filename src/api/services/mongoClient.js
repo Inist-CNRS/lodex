@@ -1,25 +1,21 @@
 import { MongoClient } from 'mongodb';
 import config from 'config';
 
-let db = null;
-
-export const mongoConnectionString = `mongodb://${config.mongo.host}/${config.mongo.dbName}`;
-
-export const mongoClientFactory = MongoClientImpl => async () => {
-    if (!db) {
-        try {
-            db = await MongoClientImpl.connect(mongoConnectionString, {
-                poolSize: 10,
-            });
-        } catch (error) {
-            console.error(error);
-            throw new Error(
-                `L'url de la base mongoDB n'est pas bonne, ou non renseignée.`,
-            );
-        }
+export const mongoConnectionString = `mongodb://${config.mongo.host}/`;
+export const mongoClientFactory = MongoClientImpl => async tenant => {
+    if (!tenant) {
+        throw new Error(`Le tenant n'est pas renseigné.`);
     }
-
-    return db;
+    try {
+        return await MongoClientImpl.connect(mongoConnectionString + tenant, {
+            poolSize: 10,
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error(
+            `L'url de la base mongoDB n'est pas bonne, ou non renseignée.`,
+        );
+    }
 };
 
 export default mongoClientFactory(MongoClient);
