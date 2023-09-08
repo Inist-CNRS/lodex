@@ -6,6 +6,7 @@ export const loadFile = (url, file, token, customLoader = null) =>
             target: url,
             headers: {
                 Authorization: `Bearer ${token}`,
+                'X-Lodex-Tenant': sessionStorage.getItem('lodex-tenant'),
             },
             multipart: true,
         };

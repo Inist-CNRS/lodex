@@ -133,7 +133,7 @@ const getInitialState = async (token, cookie, locale, ctx) => {
     };
 };
 
-const renderFullPage = (html, css, preloadedState, helmet) =>
+const renderFullPage = (html, css, preloadedState, helmet, tenant) =>
     indexHtml
         .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
         .replace(/<title>.*?<\/title>/, helmet.title.toString())
@@ -151,6 +151,7 @@ const renderFullPage = (html, css, preloadedState, helmet) =>
             ).replace(/</g, '\\u003c')};window.ISTEX_API_URL=${JSON.stringify(
                 istexApiUrl,
             )}</script>
+            <script>window.__TENANT__ = ${JSON.stringify(tenant)}</script>
             <script src="${jsHost}/index.js"></script>
             </body>`,
         );
@@ -254,7 +255,7 @@ const handleRender = async (ctx, next) => {
         return ctx.redirect(redirect);
     }
 
-    ctx.body = renderFullPage(html, css, preloadedState, helmet);
+    ctx.body = renderFullPage(html, css, preloadedState, helmet, ctx.tenant);
 };
 
 const app = new Koa();

@@ -26,12 +26,18 @@ const initialState = {
     },
 };
 
-// get url with with first part of path
-const baseUrl = window.location.pathname.split('/')[1];
+const tenant = window.__TENANT__;
 
 const history = createBrowserHistory({
-    basename: `/${baseUrl}`,
+    basename: `/instance/${tenant}`,
 });
+
+// if tenant is different from the current session storage tenant, we clear the session storage
+
+if (sessionStorage.getItem('lodex-tenant') !== tenant) {
+    sessionStorage.clear();
+    sessionStorage.setItem('lodex-tenant', tenant);
+}
 
 const store = configureStore(
     rootReducer,

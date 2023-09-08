@@ -33,21 +33,20 @@ const app = koaQs(new Koa(), 'extended', { arrayLimit: 1000 });
 
 app.use(cors({ credentials: true }));
 
+function extractTenantFromUrl(url) {
+    const match = url.match(/\/instance\/([^/]+)/);
+    return match ? match[1] : null;
+}
+
 const setTenant = async (ctx, next) => {
-    // get url first part
-    const tenantFromUrl = ctx.request.url.split('/')[1];
+    if (extractTenantFromUrl(ctx.request.url)) {
+        ctx.tenant = extractTenantFromUrl(ctx.request.url);
+    } else if (ctx.get('X-Lodex-Tenant')) {
+        ctx.tenant = ctx.get('X-Lodex-Tenant');
+    } else {
+        ctx.tenant = mongo.dbName;
+    }
 
-    // Get Tenant from request header
-    ctx.tenant = ctx.get('X-Lodex-Tenant') || tenantFromUrl || mongo.dbName;
-
-    console.log('###############################');
-    console.log('###############################');
-    console.log('###############################');
-    console.log(tenantFromUrl);
-    console.log('###############################');
-    console.log('###############################');
-    console.log('###############################');
-    console.log('###############################');
     progress.initialize(ctx.tenant);
     await next();
 };

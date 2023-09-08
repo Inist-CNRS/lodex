@@ -90,44 +90,39 @@ const JobProgressComponent = props => {
 
     useEffect(() => {
         const socket = io();
-        socket.on(
-            `${sessionStorage.getItem('lodex-tenant')}-progress`,
-            data => {
-                data.isJobProgress =
-                    data.status !== PENDING &&
-                    (data.type === 'enricher' ||
-                        data.type === 'publisher' ||
-                        data.type === 'import');
-                setProgress(data);
-                if (data.status === PENDING) {
-                    finishProgress();
-                }
-            },
-        );
+        const tenant = sessionStorage.getItem('lodex-tenant');
+        socket.on(`${tenant}-progress`, data => {
+            data.isJobProgress =
+                data.status !== PENDING &&
+                (data.type === 'enricher' ||
+                    data.type === 'publisher' ||
+                    data.type === 'import');
+            setProgress(data);
+            if (data.status === PENDING) {
+                finishProgress();
+            }
+        });
 
-        socket.on(
-            `${sessionStorage.getItem('lodex-tenant')}-publisher`,
-            data => {
-                if (data.success) {
-                    handlePublishSuccess();
-                    setProgress();
+        socket.on(`${tenant}-publisher`, data => {
+            if (data.success) {
+                handlePublishSuccess();
+                setProgress();
+            }
+            if (!data.success && !data.isPublishing && data.message) {
+                handlePublishError(data);
+                if (data.message === 'cancelled_publish') {
+                    toast(polyglot.t('cancelled_publish'), {
+                        type: toast.TYPE.SUCCESS,
+                    });
+                } else {
+                    toast(`${polyglot.t('error')} : ${data.message}`, {
+                        type: toast.TYPE.ERROR,
+                    });
                 }
-                if (!data.success && !data.isPublishing && data.message) {
-                    handlePublishError(data);
-                    if (data.message === 'cancelled_publish') {
-                        toast(polyglot.t('cancelled_publish'), {
-                            type: toast.TYPE.SUCCESS,
-                        });
-                    } else {
-                        toast(`${polyglot.t('error')} : ${data.message}`, {
-                            type: toast.TYPE.ERROR,
-                        });
-                    }
-                }
-            },
-        );
+            }
+        });
 
-        socket.on(`${sessionStorage.getItem('lodex-tenant')}-import`, data => {
+        socket.on(`${tenant}-import`, data => {
             if (!data.isImporting && data.success) {
                 loadParsingResult();
                 setHasLoadedParsingResult(false);
@@ -149,24 +144,21 @@ const JobProgressComponent = props => {
             }
         });
 
-        socket.on(
-            `${sessionStorage.getItem('lodex-tenant')}-enricher`,
-            data => {
-                if (!data.isEnriching) {
-                    loadEnrichments();
-                }
-                if (data.message && data.message !== 'cancelled_enricher') {
-                    toast(`${polyglot.t('error')} : ${data.message}`, {
-                        type: toast.TYPE.ERROR,
-                    });
-                }
-                if (data.message === 'cancelled_enricher') {
-                    toast(polyglot.t('cancelled_enricher'), {
-                        type: toast.TYPE.SUCCESS,
-                    });
-                }
-            },
-        );
+        socket.on(`${tenant}-enricher`, data => {
+            if (!data.isEnriching) {
+                loadEnrichments();
+            }
+            if (data.message && data.message !== 'cancelled_enricher') {
+                toast(`${polyglot.t('error')} : ${data.message}`, {
+                    type: toast.TYPE.ERROR,
+                });
+            }
+            if (data.message === 'cancelled_enricher') {
+                toast(polyglot.t('cancelled_enricher'), {
+                    type: toast.TYPE.SUCCESS,
+                });
+            }
+        });
 
         return () => {
             socket.disconnect();
