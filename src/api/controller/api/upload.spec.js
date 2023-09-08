@@ -3,12 +3,19 @@ import config from 'config';
 import { parseRequest, uploadChunkMiddleware, uploadUrl } from './upload';
 import { IMPORT } from '../../workers/import';
 import { workerQueue } from '../../workers';
+import { Progress } from '../../services/progress';
 jest.mock('../../workers');
 jest.mock('uuid', () => ({ v1: () => 'uuid' }));
 
 describe('upload', () => {
+    beforeAll(async () => {
+        const progress = new Progress();
+        progress.initialize('lodex_test');
+    });
+
     describe('parseRequest', () => {
         const ctx = {
+            tenant: 'lodex_test',
             req: 'req',
             requestToStream: jest.fn().mockImplementation(() => ({
                 stream: 'stream',
@@ -46,6 +53,7 @@ describe('upload', () => {
     describe('uploadChunkMiddleware', () => {
         describe('when chunk already exists but not all chunk are present', () => {
             const ctx = {
+                tenant: 'lodex_test',
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => true),
                 saveStreamInFile: jest.fn(),
@@ -99,6 +107,7 @@ describe('upload', () => {
 
         describe('when chunk already exists and all chunk are present', () => {
             const ctx = {
+                tenant: 'lodex_test',
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => true),
                 saveStreamInFile: jest.fn(),
@@ -154,6 +163,7 @@ describe('upload', () => {
 
         describe('when chunk do not already exists and all chunk become present', () => {
             const ctx = {
+                tenant: 'lodex_test',
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => false),
                 saveStreamInFile: jest.fn(),
@@ -212,6 +222,7 @@ describe('upload', () => {
 
         describe('when chunk do not already exists and all chunk are not present', () => {
             const ctx = {
+                tenant: 'lodex_test',
                 getUploadedFileSize: jest.fn(() => false),
                 checkFileExists: jest.fn().mockImplementation(() => false),
                 saveStreamInFile: jest.fn(),
@@ -269,6 +280,7 @@ describe('upload', () => {
 
     describe('uploadUrl', () => {
         const ctx = {
+            tenant: 'lodex_test',
             request: {
                 body: {
                     url: 'http://host/file.name.ext',
@@ -297,6 +309,7 @@ describe('upload', () => {
 
     describe('uploadUrl with customLoader', () => {
         const ctx = {
+            tenant: 'lodex_test',
             request: {
                 body: {
                     url: 'http://host/file.name.ext',

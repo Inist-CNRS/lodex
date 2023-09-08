@@ -160,7 +160,8 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                         opacity: '0.5',
                     }}
                 >
-                    Instance: {sessionStorage.getItem('lodex-tenant')}
+                    Instance:{' '}
+                    {sessionStorage.getItem('lodex-tenant') || 'lodex'}
                 </Box>
             </Drawer>
         </>

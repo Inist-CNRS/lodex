@@ -136,6 +136,8 @@ export const publishDocumentsFactory = ({
         mainResourceFields,
     );
 
+    console.log(progress)
+
     progress.start(ctx.tenant, {
         status: PUBLISH_DOCUMENT,
         target: count,

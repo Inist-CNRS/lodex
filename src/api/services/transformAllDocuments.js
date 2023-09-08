@@ -35,7 +35,7 @@ export default async function transformAllDocument(
         ).filter(x => x);
         await insertBatch(transformedDataset);
         progress.incrementProgress(
-            job.data.tenant || mongo.dbName,
+            job?.data?.tenant || mongo.dbName,
             transformedDataset.filter(({ subresourceId }) => !subresourceId)
                 .length,
         );

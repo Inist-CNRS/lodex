@@ -90,7 +90,6 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
         extension,
         customLoader,
     } = ctx.resumable;
-
     if (progress.getProgress(ctx.tenant).status === PENDING) {
         progress.start(ctx.tenant, {
             status: UPLOADING_DATASET,

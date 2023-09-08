@@ -294,7 +294,7 @@ export const EnrichmentForm = ({
     useEffect(() => {
         handleGetLogs();
         const socket = io();
-        const tenant = sessionStorage.getItem('lodex-tenant');
+        const tenant = sessionStorage.getItem('lodex-tenant') || 'lodex';
         socket.on(`${tenant}-enrichment-job-${initialValues?.jobId}`, data => {
             let lastLine;
             let parsedData;

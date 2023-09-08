@@ -50,7 +50,7 @@ export const ProgressComponent = props => {
 
     useEffect(() => {
         const socket = io();
-        const tenant = sessionStorage.getItem('lodex-tenant');
+        const tenant = sessionStorage.getItem('lodex-tenant') || 'lodex';
         // log all messages
         socket.on(`${tenant}-progress`, data => {
             setUpdatedProgress(data);

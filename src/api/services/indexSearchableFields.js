@@ -6,12 +6,12 @@ import publishedDataset from '../models/publishedDataset';
 export default async ctx => {
     return composeAsync(
         await composeAsync(
-            () => mongoClient(ctx.tenant),
+            () => mongoClient(ctx?.tenant),
             field,
             f => f.findSearchableNames,
         )(),
         await composeAsync(
-            () => mongoClient(ctx.tenant),
+            () => mongoClient(ctx?.tenant),
             publishedDataset,
             p => p.createTextIndexes,
         )(),
