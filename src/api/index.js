@@ -34,8 +34,20 @@ const app = koaQs(new Koa(), 'extended', { arrayLimit: 1000 });
 app.use(cors({ credentials: true }));
 
 const setTenant = async (ctx, next) => {
+    // get url first part
+    const tenantFromUrl = ctx.request.url.split('/')[1];
+
     // Get Tenant from request header
-    ctx.tenant = ctx.get('X-Lodex-Tenant') || mongo.dbName;
+    ctx.tenant = ctx.get('X-Lodex-Tenant') || tenantFromUrl || mongo.dbName;
+
+    console.log('###############################');
+    console.log('###############################');
+    console.log('###############################');
+    console.log(tenantFromUrl);
+    console.log('###############################');
+    console.log('###############################');
+    console.log('###############################');
+    console.log('###############################');
     progress.initialize(ctx.tenant);
     await next();
 };

@@ -26,7 +26,12 @@ const initialState = {
     },
 };
 
-const history = createBrowserHistory();
+// get url with with first part of path
+const baseUrl = window.location.pathname.split('/')[1];
+
+const history = createBrowserHistory({
+    basename: `/${baseUrl}`,
+});
 
 const store = configureStore(
     rootReducer,
