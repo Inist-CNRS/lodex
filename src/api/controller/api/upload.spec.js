@@ -3,13 +3,12 @@ import config from 'config';
 import { parseRequest, uploadChunkMiddleware, uploadUrl } from './upload';
 import { IMPORT } from '../../workers/import';
 import { workerQueue } from '../../workers';
-import { Progress } from '../../services/progress';
+import progress from '../../services/progress';
 jest.mock('../../workers');
 jest.mock('uuid', () => ({ v1: () => 'uuid' }));
 
 describe('upload', () => {
     beforeAll(async () => {
-        const progress = new Progress();
         progress.initialize('lodex_test');
     });
 
@@ -155,6 +154,8 @@ describe('upload', () => {
                         jobType: IMPORT,
                         loaderName: 'type',
                         totalChunks: 'totalChunks',
+                        customLoader: undefined,
+                        tenant: 'lodex_test',
                     },
                     { jobId: 'uuid' },
                 );
@@ -214,6 +215,8 @@ describe('upload', () => {
                         jobType: IMPORT,
                         loaderName: 'type',
                         totalChunks: 'totalChunks',
+                        customLoader: undefined,
+                        tenant: 'lodex_test',
                     },
                     { jobId: 'uuid' },
                 );
@@ -301,6 +304,8 @@ describe('upload', () => {
                     url: 'http://host/file.name.ext',
                     jobType: IMPORT,
                     loaderName: 'type',
+                    customLoader: undefined,
+                    tenant: 'lodex_test',
                 },
                 { jobId: 'uuid' },
             );
@@ -330,6 +335,8 @@ describe('upload', () => {
                     url: 'http://host/file.name.ext',
                     jobType: IMPORT,
                     customLoader: 'customLoader',
+                    loaderName: undefined,
+                    tenant: 'lodex_test',
                 },
                 { jobId: 'uuid' },
             );

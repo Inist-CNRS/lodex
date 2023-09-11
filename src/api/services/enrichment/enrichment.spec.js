@@ -7,7 +7,7 @@ import {
 import * as fs from 'fs';
 import path from 'path';
 import { ObjectId } from 'mongodb';
-import { Progress } from '../../services/progress';
+import progress from '../../services/progress';
 
 describe('enrichment', () => {
     describe('getEnrichmentRuleModel', () => {
@@ -349,7 +349,6 @@ describe('enrichment', () => {
 
     describe('processEnrichment', () => {
         it('should log error when ws is out', async () => {
-            const progress = new Progress();
             progress.initialize('lodex_test');
 
             // GIVEN

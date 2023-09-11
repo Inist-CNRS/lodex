@@ -103,13 +103,13 @@ describe('Progress', () => {
                 target: 30,
             });
             const error = new Error('Boom');
-            progress.throw('lodex', error);
-            progress.incrementProgress('lodex');
-            progress.finish('lodex');
+            progress.throw('lodex_test', error);
+            progress.incrementProgress('lodex_test');
+            progress.finish('lodex_test');
 
-            expect(() => progress.getProgress('lodex')).toThrow(error);
+            expect(() => progress.getProgress('lodex_test')).toThrow(error);
 
-            expect(progress.getProgress('lodex')).toEqual({
+            expect(progress.getProgress('lodex_test')).toEqual({
                 error: null,
                 progress: 0,
                 status: 'PENDING',

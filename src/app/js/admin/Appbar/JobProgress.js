@@ -91,6 +91,11 @@ const JobProgressComponent = props => {
     useEffect(() => {
         const socket = io();
         const tenant = sessionStorage.getItem('lodex-tenant') || 'lodex';
+        
+        // console all events
+        socket.onAny((event, ...args) => {
+            console.log(event, args);
+        });
         socket.on(`${tenant}-progress`, data => {
             data.isJobProgress =
                 data.status !== PENDING &&

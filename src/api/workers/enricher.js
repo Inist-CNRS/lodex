@@ -13,7 +13,7 @@ export const processEnrichment = (job, done) => {
         .then(async () => {
             job.progress(100);
             const isFailed = await job.isFailed();
-            notifyListeners(`toto-enricher`, {
+            notifyListeners(`lodex-enricher`, {
                 isEnriching: false,
                 success: !isFailed,
             });
@@ -26,7 +26,7 @@ export const processEnrichment = (job, done) => {
 };
 
 const startJobEnrichment = async job => {
-    notifyListeners(`toto-enricher`, {
+    notifyListeners(`lodex-enricher`, {
         isEnriching: true,
         success: false,
     });

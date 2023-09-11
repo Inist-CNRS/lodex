@@ -1,4 +1,4 @@
-import { Progress } from './progress';
+import progress from './progress';
 import {
     versionTransformerDecorator,
     publishDocumentsFactory,
@@ -66,7 +66,6 @@ describe('publishDocuments', () => {
         } = getMocks();
 
         beforeAll(async () => {
-            const progress = new Progress();
             progress.initialize('lodex_test');
             await publishDocumentsFactory({
                 versionTransformerDecorator,
