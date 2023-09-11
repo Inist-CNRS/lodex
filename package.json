@@ -88,7 +88,7 @@
         "@uswitch/koa-tracer": "1.7.2",
         "ace-builds": "1.4.14",
         "aphrodite": "^1.2.5",
-        "async-busboy": "^0.7.0",
+        "async-busboy": "^1.1.0",
         "babel-loader": "^8.2.4",
         "bull": "4.1.4",
         "classnames": "^2.2.6",
