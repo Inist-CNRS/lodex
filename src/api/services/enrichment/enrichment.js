@@ -220,8 +220,8 @@ export const processEnrichment = async (enrichment, ctx) => {
         { $set: { ['status']: IN_PROGRESS } },
     );
     let errorCount = 0;
-
-    const room = `lodex-enrichment-job-${ctx.job.id}`;
+    
+    const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
     const commands = createEzsRuleCommands(enrichment.rule);
     const dataSetSize = await ctx.dataset.count();
     for (let index = 0; index < dataSetSize; index += BATCH_SIZE) {
@@ -404,7 +404,7 @@ export const setEnrichmentError = async (ctx, err) => {
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-    notifyListeners(`lodex-enricher`, {
+    notifyListeners(`${ctx.tenant}-enricher`, {
         isEnriching: false,
         success: false,
         message:
