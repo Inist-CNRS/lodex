@@ -117,6 +117,7 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
 
     if (uploadedFileSize >= totalSize) {
         await workerQueue.add(
+            ctx.tenant, // Name of the job
             {
                 loaderName,
                 filename,
@@ -140,6 +141,7 @@ export const uploadUrl = async ctx => {
     const { url, loaderName, customLoader } = ctx.request.body;
     const [extension] = url.match(/[^.]*$/);
     await workerQueue.add(
+        ctx.tenant, // Name of the job
         {
             loaderName,
             url,
@@ -174,6 +176,7 @@ export const checkChunkMiddleware = async (ctx, loaderName) => {
 
     if (exists && chunkNumber === totalChunks) {
         await workerQueue.add(
+            ctx.tenant, // Name of the job
             {
                 loaderName,
                 filename,

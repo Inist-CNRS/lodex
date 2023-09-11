@@ -11,6 +11,7 @@ const app = new Koa();
 
 export const doPublish = async ctx => {
     await workerQueue.add(
+        ctx.tenant, // Name of the job
         { jobType: PUBLISHER, tenant: ctx.tenant },
         { jobId: uuid() },
     );

@@ -58,7 +58,7 @@ export const dropJobs = async jobType => {
     });
 };
 
-export const clearJobs = async (ctx) => {
+export const clearJobs = async ctx => {
     const waitingJobs = await getWaitingJobs();
     const activeJobs = await getActiveJobs();
     waitingJobs?.forEach(waitingJob => waitingJob.remove());

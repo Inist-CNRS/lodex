@@ -330,6 +330,7 @@ describe('upload', () => {
 
         it('should add job to the queue', () => {
             expect(workerQueue.add).toHaveBeenCalledWith(
+                'lodex_test',
                 {
                     extension: 'ext',
                     url: 'http://host/file.name.ext',

@@ -97,6 +97,7 @@ export const enrichmentAction = async (ctx, action, id) => {
     if (action === 'launch') {
         await workerQueue
             .add(
+                ctx.tenant, // Name of the job
                 {
                     id,
                     jobType: ENRICHER,
@@ -117,6 +118,7 @@ export const enrichmentAction = async (ctx, action, id) => {
         await ctx.dataset.removeAttribute(enrichment.name);
         await workerQueue
             .add(
+                ctx.tenant, // Name of the job
                 {
                     id,
                     jobType: ENRICHER,
