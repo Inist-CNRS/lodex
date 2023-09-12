@@ -1,11 +1,11 @@
 import from from 'from';
-import ezs from '../../core/src';
+import ezs from '@ezs/core';
 import statements from '.';
 
 ezs.use(statements);
 
 describe('$REPLACE', () => {
-    test('with valid parameter', (done) => {
+    test('with valid parameter', done => {
         const script = `
             [$REPLACE]
             field = b
@@ -25,12 +25,12 @@ describe('$REPLACE', () => {
             .pipe(ezs('delegate', { script }))
             .pipe(ezs.catch())
             .on('error', done)
-            .on('data', (chunk) => {
+            .on('data', chunk => {
                 expect(chunk).toEqual(expect.any(Object));
                 res.push(chunk);
             })
             .on('end', () => {
-                expect(res.length).toBe(4);
+                expect(res).toHaveLengt(4);
                 expect(res[0].b).toEqual('1 deux');
                 expect(res[1].b).toEqual('1 trois');
                 expect(res[2].b).toEqual('1 quatre');

@@ -45,12 +45,11 @@ const TRANSFORMERS_FORM_STATUS = new Map([
         'external',
         [
             {
-                operation: 'VALUE',
+                operation: 'WEBSERVICE',
                 args: [
                     {
                         name: 'webservice',
                         type: 'string',
-                        status: 'TO_COMPUTE',
                     },
                 ],
             },
@@ -129,17 +128,6 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
         };
     }
 
-    if (
-        transformersOperations.startsWith('VALUE') &&
-        transformers[0]?.args &&
-        transformers[0]?.args[0]?.name === 'webservice'
-    ) {
-        return {
-            source: 'external',
-            value: transformers[0].args[0].webservice,
-        };
-    }
-
     const isFromColumnsForSubRessource =
         transformersOperations.startsWith('COLUMN|PARSE|GET') &&
         isSubresourceField;
@@ -154,6 +142,10 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
     const sourceValues = {
         VALUE: {
             source: 'arbitrary',
+            value: transformers[0]?.args && transformers[0].args[0]?.value,
+        },
+        WEBSERVICE: {
+            source: 'external',
             value: transformers[0]?.args && transformers[0].args[0]?.value,
         },
         COLUMN: {

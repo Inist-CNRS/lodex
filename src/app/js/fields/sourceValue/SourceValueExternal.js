@@ -15,13 +15,12 @@ const SourceValueExternal = ({
         setValueInput(event.target.value);
         const transformers = [
             {
-                operation: 'VALUE',
+                operation: 'WEBSERVICE',
                 args: [
                     {
                         name: 'webservice',
                         type: 'string',
-                        status: 'TO_COMPUTE',
-                        webservice: event.target.value,
+                        value: event.target.value,
                     },
                 ],
             },

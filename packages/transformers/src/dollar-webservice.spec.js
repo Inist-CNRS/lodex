@@ -4,15 +4,15 @@ import statements from '.';
 
 ezs.use(statements);
 
-describe('$VALUE', () => {
+describe('$WEBSERVICE', () => {
     test('with valid parameter', done => {
         const script = `
-            [$VALUE]
+            [$WEBSERVICE]
             field = aaa
-            value = toto
+            webservice = toto
 
             [exchange]
-            value = omit('$origin')
+            webservice = omit('$origin')
         `;
         const res = [];
         from([

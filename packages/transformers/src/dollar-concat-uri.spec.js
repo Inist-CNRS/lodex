@@ -1,11 +1,11 @@
 import from from 'from';
-import ezs from '../../core/src';
+import ezs from '@ezs/core';
 import statements from '.';
 
 ezs.use(statements);
 
 describe('$CONCAT_URI', () => {
-    test('with valid parameter', (done) => {
+    test('with valid parameter', done => {
         const script = `
             [$CONCAT_URI]
             field = d
@@ -27,12 +27,12 @@ describe('$CONCAT_URI', () => {
             .pipe(ezs('delegate', { script }))
             .pipe(ezs.catch())
             .on('error', done)
-            .on('data', (chunk) => {
+            .on('data', chunk => {
                 expect(chunk).toEqual(expect.any(Object));
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output.length).toBe(4);
+                expect(output).toHaveLengt(4);
                 expect(output[0].d).toEqual('1%un');
                 expect(output[1].d).toEqual('2%deux');
                 expect(output[2].d).toEqual('3%trois');

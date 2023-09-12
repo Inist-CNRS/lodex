@@ -1,11 +1,11 @@
 import from from 'from';
-import ezs from '../../core/src';
+import ezs from '@ezs/core';
 import statements from '.';
 
 ezs.use(statements);
 
 describe('$GET', () => {
-    test('with valid parameter', (done) => {
+    test('with valid parameter', done => {
         const script = `
             [$GET]
             field = c
@@ -25,12 +25,12 @@ describe('$GET', () => {
             .pipe(ezs('delegate', { script }))
             .pipe(ezs.catch())
             .on('error', done)
-            .on('data', (chunk) => {
+            .on('data', chunk => {
                 expect(chunk).toEqual(expect.any(Object));
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output.length).toBe(4);
+                expect(output).toHaveLengt(4);
                 expect(output[0].c).toEqual('OK');
                 expect(output[1].c).toEqual('OK');
                 expect(output[2].c).toEqual('OK');
