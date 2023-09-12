@@ -1,4 +1,5 @@
-const isUndefinedOrEmpty = (value) => typeof value === 'undefined' || value === '';
+const isUndefinedOrEmpty = value =>
+    typeof value === 'undefined' || value === '';
 
 const transformation = (_, args) => () =>
     new Promise((resolve, reject) => {
