@@ -128,17 +128,6 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
         };
     }
 
-    if (
-        transformersOperations.startsWith('VALUE') &&
-        transformers[0]?.args &&
-        transformers[0]?.args[0]?.name === 'webservice'
-    ) {
-        return {
-            source: 'external',
-            value: transformers[0].args[0].webservice,
-        };
-    }
-
     const isFromColumnsForSubRessource =
         transformersOperations.startsWith('COLUMN|PARSE|GET') &&
         isSubresourceField;
