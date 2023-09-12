@@ -70,7 +70,10 @@ if (process.env.NODE_ENV === 'development') {
 app.use(async (ctx, next) => {
     try {
         const activeJobs = await workerQueue.getActive();
-        ctx.job = activeJobs[0];
+        const filteredActiveJobs = activeJobs.filter(
+            job => job.data.tenant === ctx.tenant,
+        );
+        ctx.job = filteredActiveJobs[0];
     } catch (e) {
         logger.error('An error occured on loading running job', e);
     }

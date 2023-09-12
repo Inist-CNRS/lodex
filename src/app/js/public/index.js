@@ -32,12 +32,9 @@ const history = createBrowserHistory({
     basename: `/instance/${tenant}`,
 });
 
-// if tenant is different from the current session storage tenant, we clear the session storage
-
-if (sessionStorage.getItem('lodex-tenant') !== tenant) {
-    sessionStorage.clear();
-    sessionStorage.setItem('lodex-tenant', tenant);
-}
+console.log(window.__PRELOADED_STATE__)
+// sessionStorage.clear();
+sessionStorage.setItem('lodex-tenant', tenant);
 
 const store = configureStore(
     rootReducer,

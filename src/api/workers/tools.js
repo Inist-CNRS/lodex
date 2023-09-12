@@ -19,25 +19,33 @@ export const jobLogger = {
     },
 };
 
-export const getActiveJob = async () => {
-    const activeJobs = await getActiveJobs();
+export const getActiveJob = async tenant => {
+    const activeJobs = await getActiveJobs(tenant);
     return activeJobs?.[0] || undefined;
 };
 
-export const getActiveJobs = async () => {
-    const activeJobs = await workerQueue.getActive();
-    if (activeJobs.length === 0) {
+export const getActiveJobs = async tenant => {
+    const allActiveJobs = await workerQueue.getActive();
+    const filteredActiveJobs = allActiveJobs.filter(
+        job => job.data.tenant === tenant,
+    );
+
+    if (filteredActiveJobs.length === 0) {
         return undefined;
     }
-    return activeJobs;
+    return filteredActiveJobs;
 };
 
-export const getWaitingJobs = async () => {
-    const waitingJobs = await workerQueue.getWaiting();
-    if (waitingJobs.length === 0) {
+export const getWaitingJobs = async tenant => {
+    const allWaitingJobs = await workerQueue.getWaiting();
+    const filteredWaitingJobs = allWaitingJobs.filter(
+        job => job.data.tenant === tenant,
+    );
+
+    if (filteredWaitingJobs.length === 0) {
         return undefined;
     }
-    return waitingJobs;
+    return filteredWaitingJobs;
 };
 
 export const cancelJob = async (ctx, jobType) => {
@@ -59,8 +67,9 @@ export const dropJobs = async jobType => {
 };
 
 export const clearJobs = async ctx => {
-    const waitingJobs = await getWaitingJobs();
-    const activeJobs = await getActiveJobs();
+    const waitingJobs = await getWaitingJobs(ctx.tenant);
+    const activeJobs = await getActiveJobs(ctx.tenant);
+
     waitingJobs?.forEach(waitingJob => waitingJob.remove());
     activeJobs?.forEach(activeJob =>
         activeJob.moveToFailed(new Error('cancelled'), true),

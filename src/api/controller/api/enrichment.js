@@ -63,7 +63,7 @@ export const putEnrichment = async (ctx, id) => {
 export const deleteEnrichment = async (ctx, id) => {
     try {
         const enrichment = await ctx.enrichment.findOneById(id);
-        const activeJob = await getActiveJob();
+        const activeJob = await getActiveJob(ctx.tenant);
         if (
             activeJob?.data?.jobType === ENRICHER &&
             activeJob?.data?.id === id

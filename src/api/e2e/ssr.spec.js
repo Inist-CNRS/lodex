@@ -25,7 +25,7 @@ const authentifiedHeader = {
 describe('ssr', () => {
     let server;
 
-    beforeAll((done) => {
+    beforeAll(done => {
         server = requestServer();
         done();
     });
@@ -126,7 +126,9 @@ describe('ssr', () => {
             });
 
             it('should redirect to login', () => {
-                expect(state.router.location.pathname).toBe('/login');
+                expect(state.router.location.pathname).toBe(
+                    '/intance/lodex_test/login',
+                );
             });
 
             it('should not preload the dataset for home', () => {
@@ -226,7 +228,9 @@ describe('ssr', () => {
             });
 
             it('should redirect to login', () => {
-                expect(state.router.location.pathname).toEqual('/login');
+                expect(state.router.location.pathname).toEqual(
+                    '/intance/lodex_test/login',
+                );
             });
 
             it('should not preload fields', () => {
@@ -234,7 +238,7 @@ describe('ssr', () => {
                 expect(Object.keys(state.fields.byName)).toEqual([]);
             });
 
-            it('should not preload characteristics',  () => {
+            it('should not preload characteristics', () => {
                 expect(
                     state.characteristic.characteristics.map(d =>
                         omit(d, '_id'),
@@ -242,7 +246,7 @@ describe('ssr', () => {
                 ).toEqual([]);
             });
 
-            it('should not preload resource',  () => {
+            it('should not preload resource', () => {
                 expect(omit(state.resource.resource, '_id')).toEqual({});
             });
 

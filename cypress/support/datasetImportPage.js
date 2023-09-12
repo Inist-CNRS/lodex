@@ -133,7 +133,7 @@ export const publish = () => {
 
 export const goToPublishedResources = () => {
     cy.get('.go-published-button', { timeout: 1000 }).click();
-    cy.location('pathname').should('equal', '/');
+    cy.location('pathname').should('equal', '/instance/lodex_test');
 };
 
 export const goToModel = () => {
