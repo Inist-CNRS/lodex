@@ -7,9 +7,9 @@ import mongoClient from '../../api/services/mongoClient';
 
 let db;
 
-export async function connect(tenant) {
+export async function connect() {
     if (!db) {
-        db = await mongoClient(tenant);
+        db = await mongoClient('lodex_test');
         db.dataset = await datasetFactory(db);
         db.publishedDataset = await publishedDatasetFactory(db);
         db.publishedCharacteristic = await publishedCharacteristicFactory(db);
@@ -48,8 +48,12 @@ export function loadFixtures(fixtures) {
     return Promise.all(promises);
 }
 
-export async function clear(tenant) {
-    await connect(tenant);
+export async function clear() {
+    // await connect();
+
+    if (!db) {
+        return;
+    }
 
     await Promise.all([
         db.dataset.remove({}),
@@ -63,5 +67,6 @@ export async function clear(tenant) {
 }
 
 export const close = () => {
+    db.close();
     db = undefined;
 };

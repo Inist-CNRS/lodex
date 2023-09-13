@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { auth } from 'config';
 
-import mongoClient from '../services/mongoClient';
 import requestServer from './utils/requestServer';
 import fixtures from './ssr.json';
 import {
@@ -50,8 +49,8 @@ describe('e2e publishedDataset Authentication', () => {
 
     beforeAll(async () => {
         server = requestServer();
-        await clear('lodex_test');
-        await connect('lodex_test');
+        // await clear();
+        await connect();
         await loadFixtures(fixtures);
     });
 
@@ -392,10 +391,7 @@ describe('e2e publishedDataset Authentication', () => {
 
     afterAll(async () => {
         server.close();
-
-        await clear('lodex_test');
+        await clear();
         await close();
-        const db = await mongoClient('lodex_test');
-        db.close();
     });
 });

@@ -2,7 +2,6 @@ import omit from 'lodash.omit';
 import jwt from 'jsonwebtoken';
 import { auth } from 'config';
 
-import mongoClient from '../services/mongoClient';
 import requestServer from './utils/requestServer';
 import fixtures from './ssr.json';
 import {
@@ -34,7 +33,7 @@ describe('ssr', () => {
     });
 
     beforeEach(async () => {
-        await clear('lodex_test');
+        await clear();
         await connect('lodex_test');
         await loadFixtures(fixtures);
     });
@@ -257,14 +256,9 @@ describe('ssr', () => {
         });
     });
 
-    afterEach(async () => {
-        await clear('lodex_test');
-        await close();
-    });
-
     afterAll(async () => {
         server.close();
-        const db = await mongoClient('lodex_test');
-        db.close();
+        await clear();
+        await close();
     });
 });
