@@ -32,8 +32,6 @@ const history = createBrowserHistory({
     basename: `/instance/${tenant}`,
 });
 
-console.log(window.__PRELOADED_STATE__)
-// sessionStorage.clear();
 sessionStorage.setItem('lodex-tenant', tenant);
 
 const store = configureStore(

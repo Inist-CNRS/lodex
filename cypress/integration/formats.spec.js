@@ -24,6 +24,7 @@ describe('Transformers & Formats', () => {
                     format: 'list',
                 },
                 searchable: true,
+                syndication: 1,
             });
 
             datasetImportPage.publish();
