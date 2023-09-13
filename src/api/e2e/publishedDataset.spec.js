@@ -50,8 +50,8 @@ describe('e2e publishedDataset Authentication', () => {
 
     beforeAll(async () => {
         server = requestServer();
-        await clear();
-        await connect();
+        await clear('lodex_test');
+        await connect('lodex_test');
         await loadFixtures(fixtures);
     });
 
@@ -393,9 +393,9 @@ describe('e2e publishedDataset Authentication', () => {
     afterAll(async () => {
         server.close();
 
-        await clear();
+        await clear('lodex_test');
         await close();
-        const db = await mongoClient();
+        const db = await mongoClient('lodex_test');
         db.close();
     });
 });

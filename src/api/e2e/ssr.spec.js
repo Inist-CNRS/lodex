@@ -20,6 +20,9 @@ const authentifiedHeader = {
         },
         auth.cookieSecret,
     )}`,
+    headers: {
+        'X-Lodex-Tenant': 'lodex_test',
+    },
 };
 
 describe('ssr', () => {
@@ -31,8 +34,8 @@ describe('ssr', () => {
     });
 
     beforeEach(async () => {
-        await clear();
-        await connect();
+        await clear('lodex_test');
+        await connect('lodex_test');
         await loadFixtures(fixtures);
     });
 
@@ -126,9 +129,7 @@ describe('ssr', () => {
             });
 
             it('should redirect to login', () => {
-                expect(state.router.location.pathname).toBe(
-                    '/intance/lodex_test/login',
-                );
+                expect(state.router.location.pathname).toBe('/login');
             });
 
             it('should not preload the dataset for home', () => {
@@ -228,9 +229,7 @@ describe('ssr', () => {
             });
 
             it('should redirect to login', () => {
-                expect(state.router.location.pathname).toEqual(
-                    '/intance/lodex_test/login',
-                );
+                expect(state.router.location.pathname).toEqual('/login');
             });
 
             it('should not preload fields', () => {
@@ -259,13 +258,13 @@ describe('ssr', () => {
     });
 
     afterEach(async () => {
-        await clear();
+        await clear('lodex_test');
         await close();
     });
 
     afterAll(async () => {
         server.close();
-        const db = await mongoClient();
+        const db = await mongoClient('lodex_test');
         db.close();
     });
 });

@@ -7,9 +7,9 @@ import mongoClient from '../../api/services/mongoClient';
 
 let db;
 
-export async function connect() {
+export async function connect(tenant) {
     if (!db) {
-        db = await mongoClient();
+        db = await mongoClient(tenant);
         db.dataset = await datasetFactory(db);
         db.publishedDataset = await publishedDatasetFactory(db);
         db.publishedCharacteristic = await publishedCharacteristicFactory(db);
@@ -48,8 +48,8 @@ export function loadFixtures(fixtures) {
     return Promise.all(promises);
 }
 
-export async function clear() {
-    await connect();
+export async function clear(tenant) {
+    await connect(tenant);
 
     await Promise.all([
         db.dataset.remove({}),
