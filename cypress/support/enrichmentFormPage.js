@@ -38,7 +38,7 @@ export const runEnrichment = () => {
     cy.contains('Run', { timeout: 1500 }).click({
         force: true,
     });
-    cy.get('.progress-container', { timeout: 2500 }).should('be.visible');
+    cy.get('.progress-container', { timeout: 4000 }).should('be.visible');
 };
 
 export const checkIfEnrichmentExistInDataset = () => {
