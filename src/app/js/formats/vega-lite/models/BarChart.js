@@ -172,9 +172,11 @@ class BarChart extends BasicChart {
 
     /**
      * Function use for rebuild the edited spec
-     * @param widthIn
+     * @param widthIn{number | null}
+     * @param dataNumber{number | null}
+     * @param editMode{boolean}
      */
-    buildSpec(widthIn, dataNumber) {
+    buildSpec(widthIn, dataNumber, editMode = false) {
         let model = this.model;
         let labelsModel = this.labelsModel;
         model.encoding.color.scale.range = this.colors;
@@ -216,7 +218,7 @@ class BarChart extends BasicChart {
             model.encoding.y.axis.tickMinStep = 1;
         }
 
-        if (widthIn <= 300) {
+        if (!editMode && widthIn <= 300) {
             model.encoding.x.axis.labelLimit = 120;
         }
 
@@ -251,31 +253,40 @@ class BarChart extends BasicChart {
 
         let width, height;
 
-        if (this.direction === AXIS_VERTICAL) {
-            width = widthIn - VEGA_ACTIONS_WIDTH;
-            height = 300;
-            if (dataNumber * (parseInt(this.size) + 4) >= width) {
-                encoding.size = {
-                    value: width / (dataNumber + 1),
-                };
+        if (!editMode) {
+            if (this.direction === AXIS_VERTICAL) {
+                width = widthIn - VEGA_ACTIONS_WIDTH;
+                height = 300;
+                if (dataNumber * (parseInt(this.size) + 4) >= width) {
+                    encoding.size = {
+                        value: width / (dataNumber + 1),
+                    };
+                } else {
+                    encoding.size = {
+                        value: parseInt(this.size),
+                    };
+                }
             } else {
-                encoding.size = {
-                    value: parseInt(this.size),
-                };
+                width = widthIn - VEGA_ACTIONS_WIDTH;
+                height = { step: parseInt(this.size) };
             }
-        } else {
-            width = widthIn - VEGA_ACTIONS_WIDTH;
-            height = { step: parseInt(this.size) };
         }
 
         if (!this.labels) {
-            return {
+            const toReturn = {
                 mark: model.mark,
                 encoding: encoding,
                 padding: this.padding,
-                width: width,
-                height: height,
                 autosize: this.autosize,
+            };
+
+            if (editMode) {
+                return toReturn;
+            }
+            return {
+                ...toReturn,
+                width,
+                height,
             };
         } else {
             const mark = labelsModel.mark;
@@ -290,7 +301,7 @@ class BarChart extends BasicChart {
                 mark.align = 'center';
             }
 
-            return {
+            const toReturn = {
                 layer: [
                     {
                         mark: model.mark,
@@ -305,9 +316,17 @@ class BarChart extends BasicChart {
                 config: {
                     view: { strokeWidth: 0 },
                 },
-                width: width,
-                height: height,
                 autosize: this.autosize,
+            };
+
+            if (editMode) {
+                return toReturn;
+            }
+
+            return {
+                ...toReturn,
+                width,
+                height,
             };
         }
     }

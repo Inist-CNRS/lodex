@@ -73,3 +73,19 @@ export const lodexOrderToIdOrder = orderBy => {
             return INVALID_VALUE;
     }
 };
+
+/**
+ * Convert text value to code value
+ * @param direction{'vertical' | 'horizontal'}
+ * @returns {number}
+ */
+export const lodexDirectionToIdDirection = direction => {
+    switch (direction) {
+        case 'vertical':
+            return AXIS_VERTICAL;
+        case 'horizontal':
+            return AXIS_HORIZONTAL;
+        default:
+            return INVALID_VALUE;
+    }
+};
