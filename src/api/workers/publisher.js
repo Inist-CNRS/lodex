@@ -15,25 +15,31 @@ export const processPublication = (job, done) => {
         .then(async () => {
             job.progress(100);
             const isFailed = await job.isFailed();
-            notifyListeners({ isPublishing: false, success: !isFailed });
+            notifyListeners(`${job.data.tenant}-publisher`, {
+                isPublishing: false,
+                success: !isFailed,
+            });
             done();
         })
         .catch(err => {
-            handlePublishError(err);
+            handlePublishError(job, err);
             done(err);
         });
 };
 
 const startPublishing = async job => {
-    notifyListeners({ isPublishing: true, success: false });
+    notifyListeners(`${job.data.tenant}-publisher`, {
+        isPublishing: true,
+        success: false,
+    });
     const ctx = await prepareContext({ job });
     await publish(ctx);
 };
 
-const handlePublishError = async error => {
-    const ctx = await prepareContext({});
+const handlePublishError = async (job, error) => {
+    const ctx = await prepareContext({ job });
     await clearPublished(ctx);
-    notifyListeners({
+    notifyListeners(`${job.data.tenant}-publisher`, {
         isPublishing: false,
         success: false,
         message:
@@ -44,6 +50,7 @@ const handlePublishError = async error => {
 };
 
 const prepareContext = async ctx => {
+    ctx.tenant = ctx.job.data.tenant;
     await repositoryMiddleware(ctx, () => Promise.resolve());
     ctx.publishDocuments = publishDocuments;
     ctx.publishCharacteristics = publishCharacteristics;
@@ -52,5 +59,6 @@ const prepareContext = async ctx => {
 };
 
 export const addPublisherListener = listener => listeners.push(listener);
-const notifyListeners = payload =>
-    listeners.forEach(listener => listener(payload));
+const notifyListeners = (room, payload) => {
+    listeners.forEach(listener => listener({ room, data: payload }));
+};

@@ -18,12 +18,12 @@ export const getJobLogs = async (ctx, id) => {
 };
 
 export const postCancelJob = async (ctx, type) => {
-    cancelJob(type);
+    cancelJob(ctx, type);
     ctx.status = 200;
 };
 
 export const postClearJobs = async ctx => {
-    clearJobs();
+    clearJobs(ctx);
     ctx.body = { status: 'success' };
     ctx.status = 200;
 };

@@ -3,7 +3,7 @@ export const login = (username = 'admin', password = 'secret') => {
     cy.get('input[name="username"]').type(username);
     cy.get('input[name="password"]').type(password);
     cy.get('button').click();
-    cy.location('pathname').should('equal', '/');
+    cy.location('pathname').should('equal', '/instance/lodex_test/');
 };
 
 export const logout = () => {
@@ -26,6 +26,10 @@ export const teardown = (withoutLogin = false) => {
         logout();
         return;
     }
+
+    cy.window().then(win => {
+        win.sessionStorage.setItem('tenant', 'lodex_test');
+    });
 
     logoutAndLoginAs('admin');
 };

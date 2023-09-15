@@ -26,7 +26,13 @@ const initialState = {
     },
 };
 
-const history = createBrowserHistory();
+const tenant = window.__TENANT__;
+
+const history = createBrowserHistory({
+    basename: `/instance/${tenant}`,
+});
+
+sessionStorage.setItem('lodex-tenant', tenant);
 
 const store = configureStore(
     rootReducer,

@@ -10,7 +10,11 @@ import { PUBLISHER } from '../../workers/publisher';
 const app = new Koa();
 
 export const doPublish = async ctx => {
-    await workerQueue.add({ jobType: PUBLISHER }, { jobId: uuid() });
+    await workerQueue.add(
+        ctx.tenant, // Name of the job
+        { jobType: PUBLISHER, tenant: ctx.tenant },
+        { jobId: uuid() },
+    );
     ctx.status = 200;
     ctx.body = {
         status: 'publishing',
@@ -24,7 +28,7 @@ export const handleClearPublished = async ctx => {
             status: 'success',
         };
     } catch (error) {
-        logger.error('handle clear published error', {
+        logger.error(`handle clear published error - ${ctx.tenant}`, {
             error,
         });
         ctx.body = {

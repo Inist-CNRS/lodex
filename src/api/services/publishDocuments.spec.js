@@ -1,3 +1,4 @@
+import progress from './progress';
 import {
     versionTransformerDecorator,
     publishDocumentsFactory,
@@ -24,6 +25,7 @@ const job = {
     isActive: () => true,
 };
 const getCtx = ({ subresources } = {}) => ({
+    tenant: 'lodex_test',
     dataset: {
         findLimitFromSkip: 'dataset.findLimitFromSkip()',
         findBy: 'dataset.findBy()',
@@ -64,6 +66,7 @@ describe('publishDocuments', () => {
         } = getMocks();
 
         beforeAll(async () => {
+            progress.initialize('lodex_test');
             await publishDocumentsFactory({
                 versionTransformerDecorator,
                 getDocumentTransformer,

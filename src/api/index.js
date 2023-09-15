@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import { Server } from 'socket.io';
-import config from 'config';
+import config, { mongo } from 'config';
 import mount from 'koa-mount';
 import route from 'koa-route';
 import cors from 'kcors';
@@ -33,6 +33,26 @@ const app = koaQs(new Koa(), 'extended', { arrayLimit: 1000 });
 
 app.use(cors({ credentials: true }));
 
+function extractTenantFromUrl(url) {
+    const match = url.match(/\/instance\/([^/]+)/);
+    return match ? match[1] : null;
+}
+
+const setTenant = async (ctx, next) => {
+    if (extractTenantFromUrl(ctx.request.url)) {
+        ctx.tenant = extractTenantFromUrl(ctx.request.url);
+    } else if (ctx.get('X-Lodex-Tenant')) {
+        ctx.tenant = ctx.get('X-Lodex-Tenant');
+    } else {
+        ctx.tenant = mongo.dbName;
+    }
+
+    progress.initialize(ctx.tenant);
+    await next();
+};
+
+app.use(setTenant);
+
 if (process.env.EXPOSE_TEST_CONTROLLER) {
     app.use(mount('/tests', testController));
 }
@@ -50,7 +70,10 @@ if (process.env.NODE_ENV === 'development') {
 app.use(async (ctx, next) => {
     try {
         const activeJobs = await workerQueue.getActive();
-        ctx.job = activeJobs[0];
+        const filteredActiveJobs = activeJobs.filter(
+            job => job.data.tenant === ctx.tenant,
+        );
+        ctx.job = filteredActiveJobs[0];
     } catch (e) {
         logger.error('An error occured on loading running job', e);
     }
@@ -98,26 +121,28 @@ app.use(function*(next) {
 
 app.use(mount('/', controller));
 
+app.use(async (ctx, next) => {
+    if (!module.parent) {
+        indexSearchableFields(ctx);
+    }
+    await next();
+});
+
 if (!module.parent) {
-    indexSearchableFields();
     global.console.log(`Server listening on port ${config.port}`);
     global.console.log('Press CTRL+C to stop server');
     const httpServer = app.listen(config.port);
     const io = new Server(httpServer);
 
     io.on('connection', socket => {
-        progress.addProgressListener(progress => {
-            socket.emit('progress', progress);
-        });
-        addPublisherListener(payload => {
-            socket.emit('publisher', payload);
-        });
-        addEnrichmentJobListener(payload => {
+        const emitPayload = payload => {
             socket.emit(payload.room, payload.data);
-        });
-        addImportListener(payload => {
-            socket.emit('import', payload);
-        });
+        };
+
+        progress.addProgressListener(emitPayload);
+        addPublisherListener(emitPayload);
+        addEnrichmentJobListener(emitPayload);
+        addImportListener(emitPayload);
     });
 }
 

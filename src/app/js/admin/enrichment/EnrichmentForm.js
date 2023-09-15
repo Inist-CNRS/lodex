@@ -294,7 +294,8 @@ export const EnrichmentForm = ({
     useEffect(() => {
         handleGetLogs();
         const socket = io();
-        socket.on(`enrichment-job-${initialValues?.jobId}`, data => {
+        const tenant = sessionStorage.getItem('lodex-tenant') || 'lodex';
+        socket.on(`${tenant}-enrichment-job-${initialValues?.jobId}`, data => {
             let lastLine;
             let parsedData;
             if (Array.isArray(data)) {
@@ -314,7 +315,7 @@ export const EnrichmentForm = ({
                 setEnrichmentStatus(parsedData.status);
             }
         });
-        socket.on('connect_error', () => {
+        socket.on('${tenant}-connect_error', () => {
             handleGetLogs();
         });
         return () => socket.disconnect();

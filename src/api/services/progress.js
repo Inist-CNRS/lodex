@@ -8,90 +8,88 @@ import {
     UNPUBLISH_DOCUMENT,
     SAVING_DATASET,
     INDEXATION,
-    UPLOADING_DATASET,
 } from '../../common/progressStatus';
 
 export class Progress {
     listeners = [];
-    status = PENDING;
-    start({ status, target, symbol, label, subLabel, type }) {
-        this.status = status;
-        this.target = target;
-        this.progress = 0;
-        this.symbol = symbol;
-        this.label = label;
-        this.error = null;
-        this.type = type;
-        this.subLabel = subLabel;
-        this.notifyListeners();
+
+    initialize(tenant) {
+        // if (this[tenant]) {
+        //     return;
+        // }
+        this[tenant] = {
+            status: PENDING,
+        };
     }
 
-    finish() {
-        if (this.status === ERROR) {
+    start(tenant, { status, target, symbol, label, subLabel, type }) {
+        this[tenant].status = status;
+        this[tenant].target = target;
+        this[tenant].progress = 0;
+        this[tenant].symbol = symbol;
+        this[tenant].label = label;
+        this[tenant].error = null;
+        this[tenant].type = type;
+        this[tenant].subLabel = subLabel;
+        this.notifyListeners(tenant);
+    }
+
+    finish(tenant) {
+        if (this[tenant].status === ERROR) {
             return;
         }
-        this.status = PENDING;
-        this.notifyListeners();
+        this[tenant].status = PENDING;
+        this.notifyListeners(tenant);
     }
 
-    throw(error) {
-        this.status = ERROR;
-        this.error = error;
+    throw(tenant, error) {
+        this[tenant].status = ERROR;
+        this[tenant].error = error;
     }
 
-    incrementProgress(progress = 1) {
-        if (this.status === PENDING || this.status === ERROR) {
+    incrementProgress(tenant, progress = 1) {
+        if (this[tenant].status === PENDING || this[tenant].status === ERROR) {
             return;
         }
-        this.progress += progress;
-        this.notifyListeners();
+        this[tenant].progress += progress;
+        this.notifyListeners(tenant);
     }
 
-    setProgress(progress) {
-        if (this.status === PENDING || this.status === ERROR) {
-            return;
-        }
-
-        this.progress = progress;
-        this.notifyListeners();
-    }
-
-    incrementTarget(target = 1) {
-        if (this.status === PENDING || this.status === ERROR) {
+    setProgress(tenant, progress) {
+        if (this[tenant].status === PENDING || this[tenant].status === ERROR) {
             return;
         }
 
-        this.target += target;
-        this.notifyListeners();
+        this[tenant].progress = progress;
+        this.notifyListeners(tenant);
     }
 
-    getProgress() {
-        if (this.status === ERROR) {
-            const error = this.error;
-            this.error = null;
-            this.status = PENDING;
+    getProgress(tenant) {
+        if (this[tenant].status === ERROR) {
+            const error = this[tenant].error;
+            this[tenant].error = null;
+            this[tenant].status = PENDING;
             throw error;
         }
 
         return {
-            status: this.status,
-            target: this.target,
-            progress: this.progress,
-            symbol: this.symbol,
-            error: this.error,
-            label: this.label,
-            subLabel: this.subLabel,
-            type: this.type,
+            status: this[tenant].status,
+            target: this[tenant].target,
+            progress: this[tenant].progress,
+            symbol: this[tenant].symbol,
+            error: this[tenant].error,
+            label: this[tenant].label,
+            subLabel: this[tenant].subLabel,
+            type: this[tenant].type,
             isBackground: [
                 PUBLISH_DOCUMENT,
                 UNPUBLISH_DOCUMENT,
                 ENRICHING,
                 PUBLISH_FACET,
                 CREATE_INDEX,
-                UPLOADING_DATASET,
                 SAVING_DATASET,
                 INDEXATION,
-            ].includes(this.status),
+            ].includes(this[tenant].status),
         };
     }
 
@@ -99,8 +97,13 @@ export class Progress {
         this.listeners.push(listener);
     };
 
-    notifyListeners = () => {
-        this.listeners.forEach(listener => listener(this.getProgress()));
+    notifyListeners = tenant => {
+        this.listeners.forEach(listener =>
+            listener({
+                room: `${tenant}-progress`,
+                data: this.getProgress(tenant),
+            }),
+        );
     };
 }
 

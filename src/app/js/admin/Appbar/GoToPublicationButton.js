@@ -7,7 +7,11 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const GoToPublicationButtonComponent = ({ p: polyglot }) => {
     const handleGoToPublication = () => {
-        window.location.replace(window.location.origin);
+        window.location.replace(
+            window.location.origin +
+                '/instance/' +
+                sessionStorage.getItem('lodex-tenant'),
+        );
     };
 
     return (
