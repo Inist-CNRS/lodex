@@ -16,7 +16,6 @@ import {
 } from '../../../chartsUtils';
 import BarChart from '../../models/BarChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
-import deepClone from 'lodash.clonedeep';
 import InvalidFormat from '../../../InvalidFormat';
 import { VEGA_ACTIONS_WIDTH } from '../vega-lite-component/VegaLiteComponent';
 
@@ -33,7 +32,7 @@ class BarChartView extends Component {
 
         // Create a new bar chart instance
 
-        const barChartSpec = deepClone(new BarChart());
+        const barChartSpec = new BarChart();
 
         // Set all bar chart parameter the chosen by the administrator
 

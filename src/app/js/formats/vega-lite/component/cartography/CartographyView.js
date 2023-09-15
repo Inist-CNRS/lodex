@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import deepClone from 'lodash.clonedeep';
 import ContainerDimensions from 'react-container-dimensions';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import {
@@ -27,7 +26,7 @@ class CartographyView extends Component {
 
         // Create a new cartography instance
 
-        const cartography = deepClone(new Cartography());
+        const cartography = new Cartography();
 
         // Set all cartography parameter the chosen by the administrator
 

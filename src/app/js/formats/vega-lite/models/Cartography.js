@@ -1,9 +1,11 @@
 import BasicChart from './BasicChart';
 import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../chartsUtils';
 import { VEGA_ACTIONS_WIDTH } from '../component/vega-lite-component/VegaLiteComponent';
+import cartographyVL from './json/cartography.vl.json';
+import deepClone from 'lodash.clonedeep';
 
 /**
- * Class use for create cartography spec
+ * Class used to create cartography spec
  */
 class Cartography extends BasicChart {
     /**
@@ -11,7 +13,7 @@ class Cartography extends BasicChart {
      */
     constructor() {
         super();
-        this.model = require('./json/cartography.vl.json');
+        this.model = deepClone(cartographyVL);
         this.tooltip.category.field = 'properties.name';
         this.worldPosition = 'world';
         this.autosize = {

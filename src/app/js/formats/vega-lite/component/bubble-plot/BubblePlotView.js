@@ -6,7 +6,6 @@ import compose from 'recompose/compose';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
 import ContainerDimensions from 'react-container-dimensions';
-import deepClone from 'lodash.clonedeep';
 import {
     lodexOrderToIdOrder,
     VEGA_LITE_DATA_INJECT_TYPE_A,
@@ -25,7 +24,7 @@ class BubblePlotView extends Component {
 
         // Create a new bubble plot instance
 
-        const bubblePlot = deepClone(new BubblePlot());
+        const bubblePlot = new BubblePlot();
 
         // Set all bubble plot parameter the chosen by the administrator
 

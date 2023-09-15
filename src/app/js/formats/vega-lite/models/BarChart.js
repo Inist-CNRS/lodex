@@ -14,9 +14,12 @@ import {
 } from '../../chartsUtils';
 import { VEGA_ACTIONS_WIDTH } from '../component/vega-lite-component/VegaLiteComponent';
 import BasicChart from './BasicChart';
+import barChartVL from './json/bar_chart.vl.json';
+import barChartLabelsVL from './json/bar_chart_labels.vl.json';
+import deepClone from 'lodash.clonedeep';
 
 /**
- * Class use for create bar chart spec
+ * Class used to create bar chart spec
  */
 class BarChart extends BasicChart {
     /**
@@ -30,8 +33,8 @@ class BarChart extends BasicChart {
             top: 10,
             bottom: 0,
         };
-        this.model = require('./json/bar_chart.vl.json');
-        this.labelsModel = require('./json/bar_chart_labels.vl.json');
+        this.model = deepClone(barChartVL);
+        this.labelsModel = deepClone(barChartLabelsVL);
         this.scale = 'linear';
         this.labelAngle = {
             x: 0,

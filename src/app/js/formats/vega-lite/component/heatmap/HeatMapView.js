@@ -7,7 +7,6 @@ import HeatMap from '../../models/HeatMap';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
 import ContainerDimensions from 'react-container-dimensions';
-import deepClone from 'lodash.clonedeep';
 import {
     lodexOrderToIdOrder,
     VEGA_LITE_DATA_INJECT_TYPE_A,
@@ -25,7 +24,7 @@ class HeatMapView extends Component {
 
         // Create a new heat map instance
 
-        const heatMap = deepClone(new HeatMap());
+        const heatMap = new HeatMap();
 
         // Set all heat map parameter the chosen by the administrator
 

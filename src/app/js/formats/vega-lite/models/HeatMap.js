@@ -1,8 +1,10 @@
 import BasicChart from './BasicChart';
 import { LABEL_ASC, LABEL_DESC } from '../../chartsUtils';
+import heatmapVL from './json/heatmap.vl.json';
+import deepClone from 'lodash.clonedeep';
 
 /**
- * Class use for create heatmap spec
+ * Class used to create heatmap spec
  */
 class HeatMap extends BasicChart {
     /**
@@ -10,7 +12,7 @@ class HeatMap extends BasicChart {
      */
     constructor() {
         super();
-        this.model = require('./json/heatmap.vl.json');
+        this.model = deepClone(heatmapVL);
         this.flip = false;
         this.padding = {
             left: 10,

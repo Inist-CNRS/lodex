@@ -8,7 +8,6 @@ import ContainerDimensions from 'react-container-dimensions';
 import PieChart from '../../models/PieChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
-import deepClone from 'lodash.clonedeep';
 
 const styles = {
     container: {
@@ -22,7 +21,7 @@ class PieChartView extends Component {
 
         // Create a new pie chart instance
 
-        const pieChart = deepClone(new PieChart());
+        const pieChart = new PieChart();
 
         // enable the orderBy in vega-lite
 

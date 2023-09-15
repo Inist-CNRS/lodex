@@ -1,7 +1,10 @@
 import BasicChart from './BasicChart';
+import pieChartVL from './json/pie_chart.vl.json';
+import pieChartLabelsVL from './json/pie_chart_labels.vl.json';
+import deepClone from 'lodash.clonedeep';
 
 /**
- * Class use for create pie chart spec
+ * Class used to create pie chart spec
  */
 class PieChart extends BasicChart {
     /**
@@ -9,8 +12,8 @@ class PieChart extends BasicChart {
      */
     constructor() {
         super();
-        this.model = require('./json/pie_chart.vl.json');
-        this.modelLabels = require('./json/pie_chart_labels.vl.json');
+        this.model = deepClone(pieChartVL);
+        this.modelLabels = deepClone(pieChartLabelsVL);
         this.labels = false;
     }
 
