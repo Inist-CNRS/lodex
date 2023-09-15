@@ -135,18 +135,14 @@ if (!module.parent) {
     const io = new Server(httpServer);
 
     io.on('connection', socket => {
-        progress.addProgressListener(payload => {
+        const emitPayload = payload => {
             socket.emit(payload.room, payload.data);
-        });
-        addPublisherListener(payload => {
-            socket.emit(payload.room, payload.data);
-        });
-        addEnrichmentJobListener(payload => {
-            socket.emit(payload.room, payload.data);
-        });
-        addImportListener(payload => {
-            socket.emit(payload.room, payload.data);
-        });
+        };
+
+        progress.addProgressListener(emitPayload);
+        addPublisherListener(emitPayload);
+        addEnrichmentJobListener(emitPayload);
+        addImportListener(emitPayload);
     });
 }
 

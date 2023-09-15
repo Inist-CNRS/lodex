@@ -26,7 +26,7 @@ export const teardown = (withoutLogin = false) => {
         logout();
         return;
     }
-    // set sessionStorage as tenant: 'lodex_test'
+
     cy.window().then(win => {
         win.sessionStorage.setItem('tenant', 'lodex_test');
     });

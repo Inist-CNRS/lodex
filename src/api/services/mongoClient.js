@@ -9,7 +9,7 @@ export const mongoConnectionString = tenant =>
 export const mongoClientFactory = MongoClientImpl => async tenant => {
     if (!tenant) {
         throw new Error(
-            `Le tenant n'est pas renseigné, impossible de se connecter à la base de données.`,
+            `L'instance n'est pas renseigné, impossible de se connecter à la base de données.`,
         );
     }
 
