@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useMemo } from 'react';
 import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import { Box, Checkbox, FormControlLabel } from '@mui/material';
@@ -23,139 +23,128 @@ export const defaultArgs = {
     tooltipWeight: 'Weight',
 };
 
-class BubblePlotAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            params: PropTypes.shape({
-                maxSize: PropTypes.number,
-                maxValue: PropTypes.number,
-                minValue: PropTypes.number,
-                orderBy: PropTypes.string,
-            }),
-            colors: PropTypes.string,
-            flipAxis: PropTypes.bool,
-            tooltip: PropTypes.bool,
-            tooltipSource: PropTypes.string,
-            tooltipTarget: PropTypes.string,
-            tooltipWeight: PropTypes.string,
+const BubblePlotAdmin = props => {
+    const {
+        p: polyglot,
+        args,
+        showMaxSize,
+        showMaxValue,
+        showMinValue,
+        showOrderBy,
+    } = props;
+    const {
+        params,
+        flipAxis,
+        tooltip,
+        tooltipSource,
+        tooltipTarget,
+        tooltipWeight,
+    } = args;
+
+    const colors = useMemo(() => {
+        return args.colors || defaultArgs.colors;
+    }, [args.colors]);
+
+    const handleColors = colors => {
+        updateAdminArgs('colors', colors || defaultArgs.colors, props);
+    };
+
+    const handleParams = params => {
+        updateAdminArgs('params', params, props);
+    };
+
+    const toggleFlipAxis = () => {
+        updateAdminArgs('flipAxis', !flipAxis, props);
+    };
+
+    const toggleTooltip = () => {
+        updateAdminArgs('tooltip', !tooltip, props);
+    };
+
+    const handleTooltipSource = tooltipSource => {
+        updateAdminArgs('tooltipSource', tooltipSource, props);
+    };
+
+    const handleTooltipTarget = tooltipTarget => {
+        updateAdminArgs('tooltipTarget', tooltipTarget, props);
+    };
+
+    const handleTooltipWeight = tooltipWeight => {
+        updateAdminArgs('tooltipWeight', tooltipWeight, props);
+    };
+
+    return (
+        <Box
+            display="flex"
+            flexWrap="wrap"
+            justifyContent="space-between"
+            gap={2}
+        >
+            <RoutineParamsAdmin
+                params={params || defaultArgs.params}
+                polyglot={polyglot}
+                onChange={handleParams}
+                showMaxSize={showMaxSize}
+                showMaxValue={showMaxValue}
+                showMinValue={showMinValue}
+                showOrderBy={showOrderBy}
+            />
+            <FormControlLabel
+                control={
+                    <Checkbox onChange={toggleFlipAxis} checked={flipAxis} />
+                }
+                label={polyglot.t('flip_axis')}
+            />
+            <ToolTips
+                checked={tooltip}
+                onChange={toggleTooltip}
+                onCategoryTitleChange={handleTooltipSource}
+                categoryTitle={tooltipSource}
+                onValueTitleChange={handleTooltipTarget}
+                valueTitle={tooltipTarget}
+                polyglot={polyglot}
+                thirdValue={true}
+                onThirdValueChange={handleTooltipWeight}
+                thirdValueTitle={tooltipWeight}
+            />
+            <ColorPickerParamsAdmin
+                colors={colors}
+                onChange={handleColors}
+                polyglot={polyglot}
+            />
+        </Box>
+    );
+};
+
+BubblePlotAdmin.propTypes = {
+    args: PropTypes.shape({
+        params: PropTypes.shape({
+            maxSize: PropTypes.number,
+            maxValue: PropTypes.number,
+            minValue: PropTypes.number,
+            orderBy: PropTypes.string,
         }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
-        showMaxSize: PropTypes.bool.isRequired,
-        showMaxValue: PropTypes.bool.isRequired,
-        showMinValue: PropTypes.bool.isRequired,
-        showOrderBy: PropTypes.bool.isRequired,
-    };
+        colors: PropTypes.string,
+        flipAxis: PropTypes.bool,
+        tooltip: PropTypes.bool,
+        tooltipSource: PropTypes.string,
+        tooltipTarget: PropTypes.string,
+        tooltipWeight: PropTypes.string,
+    }),
+    onChange: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
+    showMaxSize: PropTypes.bool.isRequired,
+    showMaxValue: PropTypes.bool.isRequired,
+    showMinValue: PropTypes.bool.isRequired,
+    showOrderBy: PropTypes.bool.isRequired,
+};
 
-    static defaultProps = {
-        args: defaultArgs,
-        showMaxSize: true,
-        showMaxValue: true,
-        showMinValue: true,
-        showOrderBy: true,
-    };
-
-    constructor(props) {
-        super(props);
-        this.setColors = this.setColors.bind(this);
-        this.setTooltipSource = this.setTooltipSource.bind(this);
-        this.setTooltipTarget = this.setTooltipTarget.bind(this);
-        this.setTooltipWeight = this.setTooltipWeight.bind(this);
-        this.state = {
-            colors: this.props.args.colors || defaultArgs.colors,
-        };
-    }
-
-    setColors(colors) {
-        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
-    }
-
-    setParams = params => {
-        updateAdminArgs('params', params, this.props);
-    };
-
-    toggleFlipAxis = () => {
-        updateAdminArgs('flipAxis', !this.props.args.flipAxis, this.props);
-    };
-
-    toggleTooltip = () => {
-        updateAdminArgs('tooltip', !this.props.args.tooltip, this.props);
-    };
-
-    setTooltipSource(tooltipSource) {
-        updateAdminArgs('tooltipSource', tooltipSource, this.props);
-    }
-
-    setTooltipTarget(tooltipTarget) {
-        updateAdminArgs('tooltipTarget', tooltipTarget, this.props);
-    }
-
-    setTooltipWeight(tooltipWeight) {
-        updateAdminArgs('tooltipWeight', tooltipWeight, this.props);
-    }
-
-    render() {
-        const {
-            p: polyglot,
-            args: {
-                params,
-                flipAxis,
-                tooltip,
-                tooltipSource,
-                tooltipTarget,
-                tooltipWeight,
-            },
-            showMaxSize,
-            showMaxValue,
-            showMinValue,
-            showOrderBy,
-        } = this.props;
-
-        return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                gap={2}
-            >
-                <RoutineParamsAdmin
-                    params={params || defaultArgs.params}
-                    polyglot={polyglot}
-                    onChange={this.setParams}
-                    showMaxSize={showMaxSize}
-                    showMaxValue={showMaxValue}
-                    showMinValue={showMinValue}
-                    showOrderBy={showOrderBy}
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            onChange={this.toggleFlipAxis}
-                            checked={flipAxis}
-                        />
-                    }
-                    label={polyglot.t('flip_axis')}
-                />
-                <ToolTips
-                    checked={tooltip}
-                    onChange={this.toggleTooltip}
-                    onCategoryTitleChange={this.setTooltipSource}
-                    categoryTitle={tooltipSource}
-                    onValueTitleChange={this.setTooltipTarget}
-                    valueTitle={tooltipTarget}
-                    polyglot={polyglot}
-                    thirdValue={true}
-                    onThirdValueChange={this.setTooltipWeight}
-                    thirdValueTitle={tooltipWeight}
-                />
-                <ColorPickerParamsAdmin
-                    colors={this.state.colors}
-                    onChange={this.setColors}
-                    polyglot={polyglot}
-                />
-            </Box>
-        );
-    }
-}
+BubblePlotAdmin.defaultProps = {
+    args: defaultArgs,
+    showMaxSize: true,
+    showMaxValue: true,
+    showMinValue: true,
+    showOrderBy: true,
+};
 
 export default translate(BubblePlotAdmin);
