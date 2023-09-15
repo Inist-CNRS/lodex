@@ -20,9 +20,9 @@ class PieChart extends BasicChart {
 
     /**
      * Function use for rebuild the edited spec
-     * @param widthIn
+     * @param widthIn{number | null}
      */
-    buildSpec(widthIn) {
+    buildSpec(widthIn = null) {
         this.model.encoding.color.scale.range = this.colors;
 
         if (this.labels) {
@@ -37,10 +37,12 @@ class PieChart extends BasicChart {
                 this.tooltip.value,
             ];
 
-        this.model.width = widthIn * (widthIn <= 920 ? 0.5 : 0.7);
+        if (!this.editMode) {
+            this.model.width = widthIn * (widthIn <= 920 ? 0.5 : 0.7);
 
-        this.model.encoding.color.legend.legendX =
-            widthIn * (widthIn <= 920 ? 0.5 : 0.7);
+            this.model.encoding.color.legend.legendX =
+                widthIn * (widthIn <= 920 ? 0.5 : 0.7);
+        }
 
         this.model.height = 300;
 

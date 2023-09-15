@@ -26,9 +26,9 @@ class Cartography extends BasicChart {
 
     /**
      * Function use for rebuild the edited spec
-     * @param widthIn
+     * @param widthIn{number | null}
      */
-    buildSpec(widthIn) {
+    buildSpec(widthIn = null) {
         this.model.encoding.color.scale.range = this.colors;
 
         if (this.tooltip.toggle) {
@@ -57,6 +57,10 @@ class Cartography extends BasicChart {
                     this.tooltip.value,
                 ];
             }
+        }
+
+        if (this.editMode) {
+            widthIn = 600;
         }
 
         switch (this.worldPosition) {
@@ -127,8 +131,10 @@ class Cartography extends BasicChart {
                 break;
         }
 
-        this.model.width = widthIn - VEGA_ACTIONS_WIDTH;
-        this.model.height = widthIn * 0.6;
+        if (!this.editMode) {
+            this.model.width = widthIn - VEGA_ACTIONS_WIDTH;
+            this.model.height = widthIn * 0.6;
+        }
         this.model.autosize = this.autosize;
 
         return this.model;
