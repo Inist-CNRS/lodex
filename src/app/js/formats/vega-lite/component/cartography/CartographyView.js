@@ -13,6 +13,8 @@ import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
 import Cartography from '../../models/Cartography';
 import { schemeOrRd } from 'd3-scale-chromatic';
+import InvalidFormat from '../../../InvalidFormat';
+import { VEGA_ACTIONS_WIDTH } from '../vega-lite-component/VegaLiteComponent';
 
 const styles = {
     container: {
@@ -22,7 +24,7 @@ const styles = {
 
 class CartographyView extends Component {
     render() {
-        const data = this.props.data;
+        const { advancedMode, advancedModeSpec, field, data } = this.props;
 
         // Create a new cartography instance
 
@@ -40,13 +42,27 @@ class CartographyView extends Component {
                 : schemeOrRd[9],
         );
 
+        let advanceSpec;
+
+        try {
+            advanceSpec = JSON.parse(advancedModeSpec);
+        } catch (e) {
+            return <InvalidFormat format={field.format} value={e.message} />;
+        }
+
         // return the finish chart
         return (
             <div style={styles.container}>
                 {/* Make the chart responsive */}
                 <ContainerDimensions>
                     {({ width }) => {
-                        const spec = cartography.buildSpec(width);
+                        const spec = advancedMode
+                            ? {
+                                  ...advanceSpec,
+                                  width: width - VEGA_ACTIONS_WIDTH,
+                                  height: (width - VEGA_ACTIONS_WIDTH) * 0.6,
+                              }
+                            : cartography.buildSpec(width);
                         return (
                             <CustomActionVegaLite
                                 spec={spec}

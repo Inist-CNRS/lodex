@@ -8,6 +8,8 @@ import ContainerDimensions from 'react-container-dimensions';
 import PieChart from '../../models/PieChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
+import InvalidFormat from '../../../InvalidFormat';
+import { VEGA_ACTIONS_WIDTH } from '../vega-lite-component/VegaLiteComponent';
 
 const styles = {
     container: {
@@ -17,7 +19,7 @@ const styles = {
 
 class PieChartView extends Component {
     render() {
-        const data = this.props.data;
+        const { advancedMode, advancedModeSpec, field, data } = this.props;
 
         // Create a new pie chart instance
 
@@ -38,13 +40,26 @@ class PieChartView extends Component {
         pieChart.setColor(this.props.colors);
         pieChart.setLabels(this.props.labels);
 
+        let advanceSpec;
+
+        try {
+            advanceSpec = JSON.parse(advancedModeSpec);
+        } catch (e) {
+            return <InvalidFormat format={field.format} value={e.message} />;
+        }
+
         // return the finish chart
         return (
             <div style={styles.container}>
                 {/* Make the chart responsive */}
                 <ContainerDimensions>
                     {({ width }) => {
-                        const spec = pieChart.buildSpec(width);
+                        const spec = advancedMode
+                            ? {
+                                  ...advanceSpec,
+                                  width: width - VEGA_ACTIONS_WIDTH,
+                              }
+                            : pieChart.buildSpec(width);
                         return (
                             <CustomActionVegaLite
                                 spec={spec}

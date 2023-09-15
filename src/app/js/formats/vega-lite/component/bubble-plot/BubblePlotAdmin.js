@@ -1,7 +1,15 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
-import { Box, Checkbox, FormControlLabel } from '@mui/material';
+import {
+    Box,
+    Button,
+    Checkbox,
+    FormControlLabel,
+    FormGroup,
+    Switch,
+    TextField,
+} from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
@@ -9,6 +17,8 @@ import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ToolTips from '../../../shared/ToolTips';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
+import BubblePlot from '../../models/BubblePlot';
+import { lodexOrderToIdOrder } from '../../../chartsUtils';
 
 export const defaultArgs = {
     params: {
@@ -35,6 +45,8 @@ const BubblePlotAdmin = props => {
         showOrderBy,
     } = props;
     const {
+        advancedMode,
+        advancedModeSpec,
         params,
         flipAxis,
         tooltip,
@@ -46,6 +58,47 @@ const BubblePlotAdmin = props => {
     const colors = useMemo(() => {
         return args.colors || defaultArgs.colors;
     }, [args.colors]);
+
+    const spec = useMemo(() => {
+        if (!advancedMode) {
+            return null;
+        }
+
+        if (advancedModeSpec !== null) {
+            return advancedModeSpec;
+        }
+
+        const specBuilder = new BubblePlot();
+
+        specBuilder.setColor(colors);
+        specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
+        specBuilder.flipAxis(flipAxis);
+        specBuilder.setTooltip(tooltip);
+        specBuilder.setTooltipCategory(tooltipSource);
+        specBuilder.setTooltipTarget(tooltipTarget);
+        specBuilder.setTooltipValue(tooltipWeight);
+
+        return JSON.stringify(specBuilder.buildSpec(), null, 2);
+    }, [advancedMode, advancedModeSpec]);
+
+    useEffect(() => {
+        if (!advancedMode) {
+            return;
+        }
+        updateAdminArgs('advancedModeSpec', spec, props);
+    }, [advancedMode, advancedModeSpec]);
+
+    const toggleAdvancedMode = () => {
+        updateAdminArgs('advancedMode', !args.advancedMode, props);
+    };
+
+    const handleAdvancedModeSpec = event => {
+        updateAdminArgs('advancedModeSpec', event.target.value, props);
+    };
+
+    const clearAdvancedModeSpec = () => {
+        updateAdminArgs('advancedModeSpec', null, props);
+    };
 
     const handleColors = colors => {
         updateAdminArgs('colors', colors || defaultArgs.colors, props);
@@ -82,6 +135,17 @@ const BubblePlotAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
+            <FormGroup>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={advancedMode}
+                            onChange={toggleAdvancedMode}
+                        />
+                    }
+                    label={polyglot.t('advancedMode')}
+                />
+            </FormGroup>
             <RoutineParamsAdmin
                 params={params || defaultArgs.params}
                 polyglot={polyglot}
@@ -91,29 +155,48 @@ const BubblePlotAdmin = props => {
                 showMinValue={showMinValue}
                 showOrderBy={showOrderBy}
             />
-            <FormControlLabel
-                control={
-                    <Checkbox onChange={toggleFlipAxis} checked={flipAxis} />
-                }
-                label={polyglot.t('flip_axis')}
-            />
-            <ToolTips
-                checked={tooltip}
-                onChange={toggleTooltip}
-                onCategoryTitleChange={handleTooltipSource}
-                categoryTitle={tooltipSource}
-                onValueTitleChange={handleTooltipTarget}
-                valueTitle={tooltipTarget}
-                polyglot={polyglot}
-                thirdValue={true}
-                onThirdValueChange={handleTooltipWeight}
-                thirdValueTitle={tooltipWeight}
-            />
-            <ColorPickerParamsAdmin
-                colors={colors}
-                onChange={handleColors}
-                polyglot={polyglot}
-            />
+            {!advancedMode ? (
+                <>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={toggleFlipAxis}
+                                checked={flipAxis}
+                            />
+                        }
+                        label={polyglot.t('flip_axis')}
+                    />
+                    <ToolTips
+                        checked={tooltip}
+                        onChange={toggleTooltip}
+                        onCategoryTitleChange={handleTooltipSource}
+                        categoryTitle={tooltipSource}
+                        onValueTitleChange={handleTooltipTarget}
+                        valueTitle={tooltipTarget}
+                        polyglot={polyglot}
+                        thirdValue={true}
+                        onThirdValueChange={handleTooltipWeight}
+                        thirdValueTitle={tooltipWeight}
+                    />
+                    <ColorPickerParamsAdmin
+                        colors={colors}
+                        onChange={handleColors}
+                        polyglot={polyglot}
+                    />
+                </>
+            ) : (
+                <>
+                    <Button onClick={clearAdvancedModeSpec} color="primary">
+                        {polyglot.t('regenerate_spec')}
+                    </Button>
+                    <TextField
+                        onChange={handleAdvancedModeSpec}
+                        value={spec}
+                        fullWidth
+                        multiline
+                    />
+                </>
+            )}
         </Box>
     );
 };

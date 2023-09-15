@@ -1,7 +1,15 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { Box, Checkbox, FormControlLabel } from '@mui/material';
+import {
+    Box,
+    Button,
+    Checkbox,
+    FormControlLabel,
+    FormGroup,
+    Switch,
+    TextField,
+} from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
@@ -9,6 +17,8 @@ import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
 import ToolTips from '../../../shared/ToolTips';
+import BubblePlot from '../../models/BubblePlot';
+import PieChart from '../../models/PieChart';
 
 export const defaultArgs = {
     params: {
@@ -34,7 +44,54 @@ const PieChartAdmin = props => {
         showOrderBy,
     } = props;
 
-    const { params, tooltip, tooltipCategory, tooltipValue, labels } = args;
+    const {
+        advancedMode,
+        advancedModeSpec,
+        params,
+        tooltip,
+        tooltipCategory,
+        tooltipValue,
+        labels,
+    } = args;
+
+    const spec = useMemo(() => {
+        if (!advancedMode) {
+            return null;
+        }
+
+        if (advancedModeSpec !== null) {
+            return advancedModeSpec;
+        }
+
+        const specBuilder = new PieChart();
+
+        specBuilder.setTooltip(tooltip);
+        specBuilder.setTooltipCategory(tooltipCategory);
+        specBuilder.setTooltipValue(tooltipValue);
+        specBuilder.setColor(colors);
+        specBuilder.setLabels(labels);
+
+        return JSON.stringify(specBuilder.buildSpec(), null, 2);
+    }, [advancedMode, advancedModeSpec]);
+
+    useEffect(() => {
+        if (!advancedMode) {
+            return;
+        }
+        updateAdminArgs('advancedModeSpec', spec, props);
+    }, [advancedMode, advancedModeSpec]);
+
+    const toggleAdvancedMode = () => {
+        updateAdminArgs('advancedMode', !args.advancedMode, props);
+    };
+
+    const handleAdvancedModeSpec = event => {
+        updateAdminArgs('advancedModeSpec', event.target.value, props);
+    };
+
+    const clearAdvancedModeSpec = () => {
+        updateAdminArgs('advancedModeSpec', null, props);
+    };
 
     const colors = useMemo(() => {
         return args.colors || defaultArgs.colors;
@@ -69,6 +126,17 @@ const PieChartAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
+            <FormGroup>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={advancedMode}
+                            onChange={toggleAdvancedMode}
+                        />
+                    }
+                    label={polyglot.t('advancedMode')}
+                />
+            </FormGroup>
             <RoutineParamsAdmin
                 params={params || defaultArgs.params}
                 onChange={handleParams}
@@ -78,25 +146,46 @@ const PieChartAdmin = props => {
                 showMinValue={showMinValue}
                 showOrderBy={showOrderBy}
             />
-            <FormControlLabel
-                control={<Checkbox onChange={toggleLabels} checked={labels} />}
-                label={polyglot.t('toggle_labels')}
-            />
-            <ToolTips
-                checked={tooltip}
-                onChange={toggleTooltip}
-                onCategoryTitleChange={handleTooltipCategory}
-                categoryTitle={tooltipCategory}
-                onValueTitleChange={handleTooltipValue}
-                valueTitle={tooltipValue}
-                polyglot={polyglot}
-                thirdValue={false}
-            />
-            <ColorPickerParamsAdmin
-                colors={colors}
-                onChange={handleColors}
-                polyglot={polyglot}
-            />
+            {!advancedMode ? (
+                <>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={toggleLabels}
+                                checked={labels}
+                            />
+                        }
+                        label={polyglot.t('toggle_labels')}
+                    />
+                    <ToolTips
+                        checked={tooltip}
+                        onChange={toggleTooltip}
+                        onCategoryTitleChange={handleTooltipCategory}
+                        categoryTitle={tooltipCategory}
+                        onValueTitleChange={handleTooltipValue}
+                        valueTitle={tooltipValue}
+                        polyglot={polyglot}
+                        thirdValue={false}
+                    />
+                    <ColorPickerParamsAdmin
+                        colors={colors}
+                        onChange={handleColors}
+                        polyglot={polyglot}
+                    />
+                </>
+            ) : (
+                <>
+                    <Button onClick={clearAdvancedModeSpec} color="primary">
+                        {polyglot.t('regenerate_spec')}
+                    </Button>
+                    <TextField
+                        onChange={handleAdvancedModeSpec}
+                        value={spec}
+                        fullWidth
+                        multiline
+                    />
+                </>
+            )}
         </Box>
     );
 };

@@ -11,6 +11,8 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
 import BubblePlot from '../../models/BubblePlot';
+import InvalidFormat from '../../../InvalidFormat';
+import { VEGA_ACTIONS_WIDTH } from '../vega-lite-component/VegaLiteComponent';
 
 const styles = {
     container: {
@@ -20,7 +22,7 @@ const styles = {
 
 class BubblePlotView extends Component {
     render() {
-        const data = this.props.data;
+        const { advancedMode, advancedModeSpec, field, data } = this.props;
 
         // Create a new bubble plot instance
 
@@ -36,13 +38,26 @@ class BubblePlotView extends Component {
         bubblePlot.setTooltipTarget(this.props.tooltipTarget);
         bubblePlot.setTooltipValue(this.props.tooltipWeight);
 
+        let advanceSpec;
+
+        try {
+            advanceSpec = JSON.parse(advancedModeSpec);
+        } catch (e) {
+            return <InvalidFormat format={field.format} value={e.message} />;
+        }
+
         // return the finish chart
         return (
             <div style={styles.container}>
                 <ContainerDimensions>
                     {/* Make the chart responsive */}
                     {({ width }) => {
-                        const spec = bubblePlot.buildSpec(width);
+                        const spec = advancedMode
+                            ? {
+                                  ...advanceSpec,
+                                  width: width - VEGA_ACTIONS_WIDTH,
+                              }
+                            : bubblePlot.buildSpec(width);
                         return (
                             <CustomActionVegaLite
                                 spec={spec}

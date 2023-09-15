@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
-import { Box, MenuItem, TextField } from '@mui/material';
+import {
+    Box,
+    Button,
+    FormControlLabel,
+    FormGroup,
+    MenuItem,
+    Switch,
+    TextField,
+} from '@mui/material';
 
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
@@ -10,6 +18,8 @@ import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ToolTips from '../../../shared/ToolTips';
 import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../chartsUtils';
+import BubblePlot from '../../models/BubblePlot';
+import Cartography from '../../models/Cartography';
 
 export const defaultArgs = {
     params: {
@@ -35,6 +45,8 @@ const CartographyAdmin = props => {
         showOrderBy,
     } = props;
     const {
+        advancedMode,
+        advancedModeSpec,
         params,
         colorScheme,
         tooltip,
@@ -42,6 +54,47 @@ const CartographyAdmin = props => {
         tooltipValue,
         worldPosition,
     } = args;
+
+    const spec = useMemo(() => {
+        if (!advancedMode) {
+            return null;
+        }
+
+        if (advancedModeSpec !== null) {
+            return advancedModeSpec;
+        }
+
+        const specBuilder = new Cartography();
+
+        specBuilder.setTooltip(tooltip);
+        specBuilder.setTooltipCategory(tooltipCategory);
+        specBuilder.setTooltipValue(tooltipValue);
+        specBuilder.setWorldPosition(worldPosition);
+        specBuilder.setColor(
+            colorScheme !== undefined ? colorScheme.join(' ') : schemeOrRd[9],
+        );
+
+        return JSON.stringify(specBuilder.buildSpec(), null, 2);
+    }, [advancedMode, advancedModeSpec]);
+
+    useEffect(() => {
+        if (!advancedMode) {
+            return;
+        }
+        updateAdminArgs('advancedModeSpec', spec, props);
+    }, [advancedMode, advancedModeSpec]);
+
+    const toggleAdvancedMode = () => {
+        updateAdminArgs('advancedMode', !args.advancedMode, props);
+    };
+
+    const handleAdvancedModeSpec = event => {
+        updateAdminArgs('advancedModeSpec', event.target.value, props);
+    };
+
+    const clearAdvancedModeSpec = () => {
+        updateAdminArgs('advancedModeSpec', null, props);
+    };
 
     const handleParams = params => updateAdminArgs('params', params, props);
 
@@ -76,6 +129,17 @@ const CartographyAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
+            <FormGroup>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={advancedMode}
+                            onChange={toggleAdvancedMode}
+                        />
+                    }
+                    label={polyglot.t('advancedMode')}
+                />
+            </FormGroup>
             <RoutineParamsAdmin
                 params={params || defaultArgs.params}
                 onChange={handleParams}
@@ -85,38 +149,54 @@ const CartographyAdmin = props => {
                 showMinValue={showMinValue}
                 showOrderBy={showOrderBy}
             />
-            <TextField
-                fullWidth
-                select
-                label={polyglot.t('world_position')}
-                value={worldPosition}
-                onChange={handleWorldPosition}
-            >
-                <MenuItem value={MAP_WORLD}>
-                    {polyglot.t('world_position_world')}
-                </MenuItem>
-                <MenuItem value={MAP_EUROPE}>
-                    {polyglot.t('world_position_europe')}
-                </MenuItem>
-                <MenuItem value={MAP_FRANCE}>
-                    {polyglot.t('world_position_france')}
-                </MenuItem>
-            </TextField>
-            <GradientSchemeSelector
-                label={polyglot.t('color_scheme')}
-                onChange={handleColorScheme}
-                value={colorScheme}
-            />
-            <ToolTips
-                checked={tooltip}
-                onChange={toggleTooltip}
-                onCategoryTitleChange={handleTooltipCategory}
-                categoryTitle={tooltipCategory}
-                onValueTitleChange={handleTooltipValue}
-                valueTitle={tooltipValue}
-                polyglot={polyglot}
-                thirdValue={false}
-            />
+            {!advancedMode ? (
+                <>
+                    <TextField
+                        fullWidth
+                        select
+                        label={polyglot.t('world_position')}
+                        value={worldPosition}
+                        onChange={handleWorldPosition}
+                    >
+                        <MenuItem value={MAP_WORLD}>
+                            {polyglot.t('world_position_world')}
+                        </MenuItem>
+                        <MenuItem value={MAP_EUROPE}>
+                            {polyglot.t('world_position_europe')}
+                        </MenuItem>
+                        <MenuItem value={MAP_FRANCE}>
+                            {polyglot.t('world_position_france')}
+                        </MenuItem>
+                    </TextField>
+                    <GradientSchemeSelector
+                        label={polyglot.t('color_scheme')}
+                        onChange={handleColorScheme}
+                        value={colorScheme}
+                    />
+                    <ToolTips
+                        checked={tooltip}
+                        onChange={toggleTooltip}
+                        onCategoryTitleChange={handleTooltipCategory}
+                        categoryTitle={tooltipCategory}
+                        onValueTitleChange={handleTooltipValue}
+                        valueTitle={tooltipValue}
+                        polyglot={polyglot}
+                        thirdValue={false}
+                    />
+                </>
+            ) : (
+                <>
+                    <Button onClick={clearAdvancedModeSpec} color="primary">
+                        {polyglot.t('regenerate_spec')}
+                    </Button>
+                    <TextField
+                        onChange={handleAdvancedModeSpec}
+                        value={spec}
+                        fullWidth
+                        multiline
+                    />
+                </>
+            )}
         </Box>
     );
 };

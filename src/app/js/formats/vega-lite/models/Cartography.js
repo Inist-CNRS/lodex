@@ -61,13 +61,9 @@ class Cartography extends BasicChart {
             }
         }
 
-        if (this.editMode) {
-            widthIn = 600;
-        }
-
-        switch (this.worldPosition) {
-            case MAP_EUROPE:
-                {
+        if (!this.editMode) {
+            switch (this.worldPosition) {
+                case MAP_EUROPE:
                     if (widthIn >= 850) {
                         this.model.projection.scale =
                             300 - 225 * (450 / widthIn);
@@ -90,14 +86,8 @@ class Cartography extends BasicChart {
                             545 - 260 * (450 / widthIn),
                         ];
                     }
-                    this.model.data.url =
-                        'https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega-lite/models/topojson/europe.min.json';
-                    this.model.data.format.feature =
-                        'continent_Europe_subunits';
-                }
-                break;
-            case MAP_FRANCE:
-                {
+                    break;
+                case MAP_FRANCE:
                     if (widthIn >= 850) {
                         this.model.projection.scale =
                             1800 - 100 * (450 / widthIn);
@@ -120,16 +110,26 @@ class Cartography extends BasicChart {
                             1275 - 510 * (450 / widthIn),
                         ];
                     }
-                    this.model.data.url =
-                        'https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega-lite/models/topojson/fr-departments.min.json';
-                    this.model.data.format.feature = 'FRA_adm2';
+                    break;
+            }
+        }
 
-                    this.model.transform.forEach(e => {
-                        if (e.lookup === 'id') {
-                            e.lookup = 'properties.HASC_2';
-                        }
-                    });
-                }
+        switch (this.worldPosition) {
+            case MAP_EUROPE:
+                this.model.data.url =
+                    'https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega-lite/models/topojson/europe.min.json';
+                this.model.data.format.feature = 'continent_Europe_subunits';
+                break;
+            case MAP_FRANCE:
+                this.model.data.url =
+                    'https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega-lite/models/topojson/fr-departments.min.json';
+                this.model.data.format.feature = 'FRA_adm2';
+
+                this.model.transform.forEach(e => {
+                    if (e.lookup === 'id') {
+                        e.lookup = 'properties.HASC_2';
+                    }
+                });
                 break;
         }
 

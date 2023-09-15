@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
 import PropTypes from 'prop-types';
-import { Checkbox, FormControlLabel, Box } from '@mui/material';
+import {
+    Checkbox,
+    FormControlLabel,
+    Box,
+    Button,
+    TextField,
+    Switch,
+    FormGroup,
+} from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import ToolTips from '../../../shared/ToolTips';
+import BubblePlot from '../../models/BubblePlot';
+import HeatMap from '../../models/HeatMap';
+import { lodexOrderToIdOrder } from '../../../chartsUtils';
 
 export const defaultArgs = {
     params: {
@@ -36,6 +47,8 @@ const HeatMapAdmin = props => {
     } = props;
 
     const {
+        advancedMode,
+        advancedModeSpec,
         params,
         colorScheme,
         flipAxis,
@@ -44,6 +57,47 @@ const HeatMapAdmin = props => {
         tooltipTarget,
         tooltipWeight,
     } = args;
+
+    const spec = useMemo(() => {
+        if (!advancedMode) {
+            return null;
+        }
+
+        if (advancedModeSpec !== null) {
+            return advancedModeSpec;
+        }
+
+        const specBuilder = new HeatMap();
+
+        specBuilder.setColor(colorScheme.join(' '));
+        specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
+        specBuilder.flipAxis(flipAxis);
+        specBuilder.setTooltip(tooltip);
+        specBuilder.setTooltipCategory(tooltipSource);
+        specBuilder.setTooltipTarget(tooltipTarget);
+        specBuilder.setTooltipValue(tooltipWeight);
+
+        return JSON.stringify(specBuilder.buildSpec(), null, 2);
+    }, [advancedMode, advancedModeSpec]);
+
+    useEffect(() => {
+        if (!advancedMode) {
+            return;
+        }
+        updateAdminArgs('advancedModeSpec', spec, props);
+    }, [advancedMode, advancedModeSpec]);
+
+    const toggleAdvancedMode = () => {
+        updateAdminArgs('advancedMode', !args.advancedMode, props);
+    };
+
+    const handleAdvancedModeSpec = event => {
+        updateAdminArgs('advancedModeSpec', event.target.value, props);
+    };
+
+    const clearAdvancedModeSpec = () => {
+        updateAdminArgs('advancedModeSpec', null, props);
+    };
 
     const handleParams = params => {
         updateAdminArgs('params', params, props);
@@ -84,6 +138,17 @@ const HeatMapAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
+            <FormGroup>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={advancedMode}
+                            onChange={toggleAdvancedMode}
+                        />
+                    }
+                    label={polyglot.t('advancedMode')}
+                />
+            </FormGroup>
             <RoutineParamsAdmin
                 params={params || defaultArgs.params}
                 polyglot={polyglot}
@@ -93,29 +158,48 @@ const HeatMapAdmin = props => {
                 showMinValue={showMinValue}
                 showOrderBy={showOrderBy}
             />
-            <ToolTips
-                checked={tooltip}
-                onChange={toggleTooltip}
-                onCategoryTitleChange={handleTooltipSource}
-                categoryTitle={tooltipSource}
-                onValueTitleChange={handleTooltipTarget}
-                valueTitle={tooltipTarget}
-                polyglot={polyglot}
-                thirdValue={true}
-                onThirdValueChange={handleTooltipWeight}
-                thirdValueTitle={tooltipWeight}
-            />
-            <GradientSchemeSelector
-                label={polyglot.t('color_scheme')}
-                onChange={handleColorSchemeChange}
-                value={colorScheme}
-            />
-            <FormControlLabel
-                control={
-                    <Checkbox onChange={toggleFlipAxis} checked={flipAxis} />
-                }
-                label={polyglot.t('flip_axis')}
-            />
+            {!advancedMode ? (
+                <>
+                    <ToolTips
+                        checked={tooltip}
+                        onChange={toggleTooltip}
+                        onCategoryTitleChange={handleTooltipSource}
+                        categoryTitle={tooltipSource}
+                        onValueTitleChange={handleTooltipTarget}
+                        valueTitle={tooltipTarget}
+                        polyglot={polyglot}
+                        thirdValue={true}
+                        onThirdValueChange={handleTooltipWeight}
+                        thirdValueTitle={tooltipWeight}
+                    />
+                    <GradientSchemeSelector
+                        label={polyglot.t('color_scheme')}
+                        onChange={handleColorSchemeChange}
+                        value={colorScheme}
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={toggleFlipAxis}
+                                checked={flipAxis}
+                            />
+                        }
+                        label={polyglot.t('flip_axis')}
+                    />
+                </>
+            ) : (
+                <>
+                    <Button onClick={clearAdvancedModeSpec} color="primary">
+                        {polyglot.t('regenerate_spec')}
+                    </Button>
+                    <TextField
+                        onChange={handleAdvancedModeSpec}
+                        value={spec}
+                        fullWidth
+                        multiline
+                    />
+                </>
+            )}
         </Box>
     );
 };

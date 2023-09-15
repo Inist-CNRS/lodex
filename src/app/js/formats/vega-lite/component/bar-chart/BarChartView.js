@@ -27,8 +27,7 @@ const styles = {
 
 class BarChartView extends Component {
     render() {
-        const data = this.props.data;
-        const { advancedMode, advancedModeSpec, field } = this.props;
+        const { advancedMode, advancedModeSpec, field, data } = this.props;
 
         // Create a new bar chart instance
 
