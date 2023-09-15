@@ -174,9 +174,8 @@ class BarChart extends BasicChart {
      * Function use for rebuild the edited spec
      * @param widthIn{number | null}
      * @param dataNumber{number | null}
-     * @param editMode{boolean}
      */
-    buildSpec(widthIn, dataNumber, editMode = false) {
+    buildSpec(widthIn = null, dataNumber = null) {
         let model = this.model;
         let labelsModel = this.labelsModel;
         model.encoding.color.scale.range = this.colors;
@@ -218,7 +217,7 @@ class BarChart extends BasicChart {
             model.encoding.y.axis.tickMinStep = 1;
         }
 
-        if (!editMode && widthIn <= 300) {
+        if (!this.editMode && widthIn <= 300) {
             model.encoding.x.axis.labelLimit = 120;
         }
 
@@ -253,7 +252,7 @@ class BarChart extends BasicChart {
 
         let width, height;
 
-        if (!editMode) {
+        if (!this.editMode) {
             if (this.direction === AXIS_VERTICAL) {
                 width = widthIn - VEGA_ACTIONS_WIDTH;
                 height = 300;
@@ -280,7 +279,7 @@ class BarChart extends BasicChart {
                 autosize: this.autosize,
             };
 
-            if (editMode) {
+            if (this.editMode) {
                 return toReturn;
             }
             return {
@@ -319,7 +318,7 @@ class BarChart extends BasicChart {
                 autosize: this.autosize,
             };
 
-            if (editMode) {
+            if (this.editMode) {
                 return toReturn;
             }
 

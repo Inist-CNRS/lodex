@@ -29,7 +29,7 @@ const styles = {
 class BarChartView extends Component {
     render() {
         const data = this.props.data;
-        const { advanceMode, advanceModeSpec, field } = this.props;
+        const { advancedMode, advancedModeSpec, field } = this.props;
 
         // Create a new bar chart instance
 
@@ -62,7 +62,7 @@ class BarChartView extends Component {
         let advanceSpec;
 
         try {
-            advanceSpec = JSON.parse(advanceModeSpec);
+            advanceSpec = JSON.parse(advancedModeSpec);
         } catch (e) {
             return <InvalidFormat format={field.format} value={e.message} />;
         }
@@ -73,13 +73,12 @@ class BarChartView extends Component {
                 {/* Make the chart responsive */}
                 <ContainerDimensions>
                     {({ width }) => {
-                        const spec = advanceMode
+                        const spec = advancedMode
                             ? {
                                   ...advanceSpec,
                                   width: width - VEGA_ACTIONS_WIDTH,
                               }
                             : barChartSpec.buildSpec(width, data.values.length);
-                        console.log(spec, advanceSpec);
                         return (
                             <CustomActionVegaLite
                                 spec={spec}
@@ -112,8 +111,8 @@ BarChartView.propTypes = {
     labels: PropTypes.string.isRequired,
     labelOverlap: PropTypes.string.isRequired,
     barSize: PropTypes.number.isRequired,
-    advanceMode: PropTypes.bool,
-    advanceModeSpec: PropTypes.string,
+    advancedMode: PropTypes.bool,
+    advancedModeSpec: PropTypes.string,
 };
 
 BarChartView.defaultProps = {

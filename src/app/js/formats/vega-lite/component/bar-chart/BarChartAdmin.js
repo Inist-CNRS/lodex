@@ -32,8 +32,8 @@ export const defaultArgs = {
         maxSize: 200,
         orderBy: 'value/asc',
     },
-    advanceMode: false,
-    advanceModeSpec: null,
+    advancedMode: false,
+    advancedModeSpec: null,
     colors: MULTICHROMATIC_DEFAULT_COLORSET,
     axisRoundValue: true,
     diagonalCategoryAxis: false,
@@ -58,8 +58,8 @@ const BarChartAdmin = props => {
         showOrderBy,
     } = props;
     const {
-        advanceMode,
-        advanceModeSpec,
+        advancedMode,
+        advancedModeSpec,
         params,
         tooltip,
         tooltipCategory,
@@ -79,12 +79,12 @@ const BarChartAdmin = props => {
     }, [args.colors]);
 
     const spec = useMemo(() => {
-        if (!advanceMode) {
+        if (!advancedMode) {
             return null;
         }
 
-        if (advanceModeSpec !== null) {
-            return advanceModeSpec;
+        if (advancedModeSpec !== null) {
+            return advancedModeSpec;
         }
 
         const specBuilder = new BarChart();
@@ -105,27 +105,27 @@ const BarChartAdmin = props => {
         if (diagonalValueAxis) {
             specBuilder.setLabelAngle(AXIS_Y, -45);
         }
-
-        return JSON.stringify(specBuilder.buildSpec(null, null, true), null, 2);
-    }, [advanceMode, advanceModeSpec]);
+        specBuilder.setEditMode(true);
+        return JSON.stringify(specBuilder.buildSpec(), null, 2);
+    }, [advancedMode, advancedModeSpec]);
 
     useEffect(() => {
-        if (!advanceMode) {
+        if (!advancedMode) {
             return;
         }
-        updateAdminArgs('advanceModeSpec', spec, props);
-    }, [advanceMode, advanceModeSpec]);
+        updateAdminArgs('advancedModeSpec', spec, props);
+    }, [advancedMode, advancedModeSpec]);
 
-    const toggleAdvanceMode = () => {
-        updateAdminArgs('advanceMode', !args.advanceMode, props);
+    const toggleAdvancedMode = () => {
+        updateAdminArgs('advancedMode', !args.advancedMode, props);
     };
 
-    const handleAdvanceModeSpec = event => {
-        updateAdminArgs('advanceModeSpec', event.target.value, props);
+    const handleAdvancedModeSpec = event => {
+        updateAdminArgs('advancedModeSpec', event.target.value, props);
     };
 
-    const clearAdvanceModeSpec = () => {
-        updateAdminArgs('advanceModeSpec', null, props);
+    const clearAdvancedModeSpec = () => {
+        updateAdminArgs('advancedModeSpec', null, props);
     };
 
     const handleParams = params => {
@@ -195,8 +195,8 @@ const BarChartAdmin = props => {
                 <FormControlLabel
                     control={
                         <Switch
-                            checked={advanceMode}
-                            onChange={toggleAdvanceMode}
+                            checked={advancedMode}
+                            onChange={toggleAdvancedMode}
                         />
                     }
                     label={polyglot.t('advancedMode')}
@@ -211,7 +211,7 @@ const BarChartAdmin = props => {
                 showMinValue={showMinValue}
                 showOrderBy={showOrderBy}
             />
-            {!advanceMode ? (
+            {!advancedMode ? (
                 <>
                     <ToolTips
                         checked={tooltip}
@@ -307,11 +307,11 @@ const BarChartAdmin = props => {
                 </>
             ) : (
                 <>
-                    <Button onClick={clearAdvanceModeSpec} color="primary">
+                    <Button onClick={clearAdvancedModeSpec} color="primary">
                         {polyglot.t('regenerate_spec')}
                     </Button>
                     <TextField
-                        onChange={handleAdvanceModeSpec}
+                        onChange={handleAdvancedModeSpec}
                         value={spec}
                         fullWidth
                         multiline
@@ -338,8 +338,8 @@ BarChartAdmin.propTypes = {
             minValue: PropTypes.number,
             orderBy: PropTypes.string,
         }),
-        advanceMode: PropTypes.bool,
-        advanceModeSpec: PropTypes.string,
+        advancedMode: PropTypes.bool,
+        advancedModeSpec: PropTypes.string,
         colors: PropTypes.string,
         axisRoundValue: PropTypes.bool,
         diagonalCategoryAxis: PropTypes.bool,
