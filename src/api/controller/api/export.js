@@ -71,7 +71,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
         field: parseFieldsParams(fieldsParams),
         match: match,
         ...facetsWithoutId,
-        connectionStringURI: mongoConnectionString + ctx.tenant,
+        connectionStringURI: mongoConnectionString(ctx.tenant),
         host,
     };
 

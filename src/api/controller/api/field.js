@@ -50,7 +50,7 @@ export const restoreFields = (fileStream, ctx) => {
         dropJobs(ENRICHER);
         return new Promise((resolve, reject) =>
             restore({
-                uri: mongoConnectionString + ctx.tenant,
+                uri: mongoConnectionString(ctx.tenant),
                 stream: fileStream,
                 parser: 'json',
                 dropCollections: ['field', 'subresource', 'enrichment'],
