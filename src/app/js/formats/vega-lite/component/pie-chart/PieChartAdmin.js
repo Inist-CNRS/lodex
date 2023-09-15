@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { Box, Checkbox, FormControlLabel } from '@mui/material';
@@ -22,122 +22,111 @@ export const defaultArgs = {
     labels: false,
 };
 
-class PieChartAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            params: PropTypes.shape({
-                maxSize: PropTypes.number,
-                maxValue: PropTypes.number,
-                minValue: PropTypes.number,
-                orderBy: PropTypes.string,
-            }),
-            colors: PropTypes.string,
-            tooltip: PropTypes.bool,
-            tooltipCategory: PropTypes.string,
-            tooltipValue: PropTypes.string,
-            labels: PropTypes.bool,
+const PieChartAdmin = props => {
+    const {
+        p: polyglot,
+        args,
+        showMaxSize,
+        showMaxValue,
+        showMinValue,
+        showOrderBy,
+    } = props;
+
+    const { params, tooltip, tooltipCategory, tooltipValue, labels } = args;
+
+    const colors = useMemo(() => {
+        return args.colors || defaultArgs.colors;
+    }, [args.colors]);
+
+    const handleParams = params => updateAdminArgs('params', params, props);
+
+    const handleColors = colors => {
+        updateAdminArgs('colors', colors || defaultArgs.colors, props);
+    };
+
+    const toggleLabels = () => {
+        updateAdminArgs('labels', !args.labels, props);
+    };
+
+    const toggleTooltip = () => {
+        updateAdminArgs('tooltip', !args.tooltip, props);
+    };
+
+    const handleTooltipCategory = tooltipCategory => {
+        updateAdminArgs('tooltipCategory', tooltipCategory, props);
+    };
+
+    const handleTooltipValue = tooltipValue => {
+        updateAdminArgs('tooltipValue', tooltipValue, props);
+    };
+
+    return (
+        <Box
+            display="flex"
+            flexWrap="wrap"
+            justifyContent="space-between"
+            gap={2}
+        >
+            <RoutineParamsAdmin
+                params={params || defaultArgs.params}
+                onChange={handleParams}
+                polyglot={polyglot}
+                showMaxSize={showMaxSize}
+                showMaxValue={showMaxValue}
+                showMinValue={showMinValue}
+                showOrderBy={showOrderBy}
+            />
+            <FormControlLabel
+                control={<Checkbox onChange={toggleLabels} checked={labels} />}
+                label={polyglot.t('toggle_labels')}
+            />
+            <ToolTips
+                checked={tooltip}
+                onChange={toggleTooltip}
+                onCategoryTitleChange={handleTooltipCategory}
+                categoryTitle={tooltipCategory}
+                onValueTitleChange={handleTooltipValue}
+                valueTitle={tooltipValue}
+                polyglot={polyglot}
+                thirdValue={false}
+            />
+            <ColorPickerParamsAdmin
+                colors={colors}
+                onChange={handleColors}
+                polyglot={polyglot}
+            />
+        </Box>
+    );
+};
+
+PieChartAdmin.defaultProps = {
+    args: defaultArgs,
+    showMaxSize: true,
+    showMaxValue: true,
+    showMinValue: true,
+    showOrderBy: true,
+};
+
+PieChartAdmin.propTypes = {
+    args: PropTypes.shape({
+        params: PropTypes.shape({
+            maxSize: PropTypes.number,
+            maxValue: PropTypes.number,
+            minValue: PropTypes.number,
+            orderBy: PropTypes.string,
         }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
-        showMaxSize: PropTypes.bool.isRequired,
-        showMaxValue: PropTypes.bool.isRequired,
-        showMinValue: PropTypes.bool.isRequired,
-        showOrderBy: PropTypes.bool.isRequired,
-    };
-
-    static defaultProps = {
-        args: defaultArgs,
-        showMaxSize: true,
-        showMaxValue: true,
-        showMinValue: true,
-        showOrderBy: true,
-    };
-
-    constructor(props) {
-        super(props);
-        this.setColors = this.setColors.bind(this);
-        this.setTooltipValue = this.setTooltipValue.bind(this);
-        this.setTooltipCategory = this.setTooltipCategory.bind(this);
-        this.state = {
-            colors: this.props.args.colors || defaultArgs.colors,
-        };
-    }
-
-    setParams = params => updateAdminArgs('params', params, this.props);
-
-    setColors(colors) {
-        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
-    }
-
-    toggleLabels = () => {
-        updateAdminArgs('labels', !this.props.args.labels, this.props);
-    };
-
-    toggleTooltip = () => {
-        updateAdminArgs('tooltip', !this.props.args.tooltip, this.props);
-    };
-
-    setTooltipCategory(tooltipCategory) {
-        updateAdminArgs('tooltipCategory', tooltipCategory, this.props);
-    }
-
-    setTooltipValue(tooltipValue) {
-        updateAdminArgs('tooltipValue', tooltipValue, this.props);
-    }
-
-    render() {
-        const {
-            p: polyglot,
-            args: { params, tooltip, tooltipCategory, tooltipValue, labels },
-            showMaxSize,
-            showMaxValue,
-            showMinValue,
-            showOrderBy,
-        } = this.props;
-
-        return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                gap={2}
-            >
-                <RoutineParamsAdmin
-                    params={params || defaultArgs.params}
-                    onChange={this.setParams}
-                    polyglot={polyglot}
-                    showMaxSize={showMaxSize}
-                    showMaxValue={showMaxValue}
-                    showMinValue={showMinValue}
-                    showOrderBy={showOrderBy}
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            onChange={this.toggleLabels}
-                            checked={labels}
-                        />
-                    }
-                    label={polyglot.t('toggle_labels')}
-                />
-                <ToolTips
-                    checked={tooltip}
-                    onChange={this.toggleTooltip}
-                    onCategoryTitleChange={this.setTooltipCategory}
-                    categoryTitle={tooltipCategory}
-                    onValueTitleChange={this.setTooltipValue}
-                    valueTitle={tooltipValue}
-                    polyglot={polyglot}
-                    thirdValue={false}
-                />
-                <ColorPickerParamsAdmin
-                    colors={this.state.colors}
-                    onChange={this.setColors}
-                    polyglot={polyglot}
-                />
-            </Box>
-        );
-    }
-}
+        colors: PropTypes.string,
+        tooltip: PropTypes.bool,
+        tooltipCategory: PropTypes.string,
+        tooltipValue: PropTypes.string,
+        labels: PropTypes.bool,
+    }),
+    onChange: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
+    showMaxSize: PropTypes.bool.isRequired,
+    showMaxValue: PropTypes.bool.isRequired,
+    showMinValue: PropTypes.bool.isRequired,
+    showOrderBy: PropTypes.bool.isRequired,
+};
 
 export default translate(PieChartAdmin);
