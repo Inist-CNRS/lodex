@@ -27,12 +27,8 @@ const authentifiedHeader = {
 describe('ssr', () => {
     let server;
 
-    beforeAll(done => {
+    beforeAll(async () => {
         server = requestServer();
-        done();
-    });
-
-    beforeEach(async () => {
         await clear();
         await connect('lodex_test');
         await loadFixtures(fixtures);

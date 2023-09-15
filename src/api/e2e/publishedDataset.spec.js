@@ -49,8 +49,8 @@ describe('e2e publishedDataset Authentication', () => {
 
     beforeAll(async () => {
         server = requestServer();
-        // await clear();
-        await connect();
+        await clear();
+        await connect('lodex_test');
         await loadFixtures(fixtures);
     });
 
