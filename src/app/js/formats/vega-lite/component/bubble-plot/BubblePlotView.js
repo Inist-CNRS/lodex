@@ -69,6 +69,8 @@ BubblePlotView.propTypes = {
     tooltipSource: PropTypes.string.isRequired,
     tooltipTarget: PropTypes.string.isRequired,
     tooltipWeight: PropTypes.string.isRequired,
+    advancedMode: PropTypes.bool,
+    advancedModeSpec: PropTypes.string,
 };
 
 BubblePlotView.defaultProps = {

@@ -75,6 +75,8 @@ CartographyView.propTypes = {
     tooltipValue: PropTypes.string.isRequired,
     colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
     worldPosition: PropTypes.string.isRequired,
+    advancedMode: PropTypes.bool,
+    advancedModeSpec: PropTypes.string,
 };
 
 const mapStateToProps = (state, { formatData }) => {

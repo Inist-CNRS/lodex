@@ -69,6 +69,8 @@ PieChartView.propTypes = {
     tooltipCategory: PropTypes.string.isRequired,
     tooltipValue: PropTypes.string.isRequired,
     labels: PropTypes.bool.isRequired,
+    advancedMode: PropTypes.bool,
+    advancedModeSpec: PropTypes.string,
 };
 
 PieChartView.defaultProps = {
