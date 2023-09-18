@@ -1,15 +1,19 @@
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
 import { SCALE_LINEAR } from '../../chartsUtils';
+import radarChartVG from './json/radar_chart.vg.json';
+import deepClone from 'lodash.clonedeep';
+import BasicChartVG from './BasicChartVG';
 
 /**
  * Class use for create radar chart spec
  */
-class RadarChart {
+class RadarChart extends BasicChartVG {
     /**
      * Init all required parameters
      */
     constructor() {
-        this.model = require('./json/radar_chart.vg.json');
+        super();
+        this.model = deepClone(radarChartVG);
         this.colors = MONOCHROMATIC_DEFAULT_COLORSET.split(' ');
         this.tooltip = {
             toggle: false,
@@ -90,8 +94,10 @@ class RadarChart {
             }
         });
 
-        this.model.width = widthIn - widthIn * 0.06;
-        this.model.height = widthIn - widthIn * 0.24;
+        if (!this.editMode) {
+            this.model.width = widthIn - widthIn * 0.06;
+            this.model.height = widthIn - widthIn * 0.24;
+        }
 
         this.model.padding = {
             left: 120,
