@@ -27,24 +27,24 @@ export const cleanWaitingJobsOfType = jobType => {
     });
 };
 
-workerQueue.process('*', 1000, async (job, done) => {
+workerQueue.process('*', 1, async (job, done) => {
     // if workerqueue already has an active job with the same job.data.tenant.
     // Set the job to the waiting state. If job is already waiting, do nothing.
-    const activeJobs = await workerQueue.getActive();
-    const waitingJobs = await workerQueue.getWaiting();
-    const activeJob = activeJobs.find(
-        activeJob =>
-            activeJob.data.tenant === job.data.tenant &&
-            activeJob.id !== job.id,
-    );
-    const waitingJob = waitingJobs.find(waitingJob => waitingJob.id === job.id);
-    if (activeJob) {
-        if (waitingJob) {
-            return done();
-        }
-        await workerQueue.add(job.data.tenant, job.data, { delay: 5000 });
-        return done();
-    }
+    // const activeJobs = await workerQueue.getActive();
+    // const waitingJobs = await workerQueue.getWaiting();
+    // const activeJob = activeJobs.find(
+    //     activeJob =>
+    //         activeJob.data.tenant === job.data.tenant &&
+    //         activeJob.id !== job.id,
+    // );
+    // const waitingJob = waitingJobs.find(waitingJob => waitingJob.id === job.id);
+    // if (activeJob) {
+    //     if (waitingJob) {
+    //         return done();
+    //     }
+    //     await workerQueue.add(job.data.tenant, job.data, { delay: 5000 });
+    //     return done();
+    // }
 
     if (job.data.jobType === PUBLISHER) {
         processPublication(job, done);
