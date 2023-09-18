@@ -24,6 +24,21 @@ const styles = {
     message: {
         margin: 20,
     },
+    format: {
+        container: {
+            position: 'relative',
+        },
+        loading: {
+            zIndex: 99999,
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            pointerEvents: 'none',
+            transitionDuration: '150ms',
+        },
+    },
 };
 
 const getCreateUrl = url => {
@@ -55,6 +70,7 @@ export default (
             formatData: PropTypes.any,
             formatTotal: PropTypes.any,
             isLoaded: PropTypes.bool.isRequired,
+            isDataSetLoading: PropTypes.bool.isRequired,
             error: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
             location: PropTypes.shape({ pathname: PropTypes.string }),
             p: polyglotPropTypes.isRequired,
@@ -129,6 +145,7 @@ export default (
                 p: polyglot,
                 field,
                 isLoaded,
+                isDataSetLoading,
                 error,
                 resource,
                 ...props
@@ -159,15 +176,25 @@ export default (
             }
 
             return (
-                <FormatView
-                    {...props}
-                    p={polyglot}
-                    field={field}
-                    resource={resource}
-                    formatData={formatData}
-                    formatTotal={formatTotal}
-                    filterFormatData={this.filterFormatData}
-                />
+                <div style={styles.format.container}>
+                    <div
+                        style={{
+                            ...styles.format.loading,
+                            backgroundColor: isDataSetLoading
+                                ? 'rgba(0,0,0,0.15)'
+                                : 'rgba(0,0,0,0)',
+                        }}
+                    ></div>
+                    <FormatView
+                        {...props}
+                        p={polyglot}
+                        field={field}
+                        resource={resource}
+                        formatData={formatData}
+                        formatTotal={formatTotal}
+                        filterFormatData={this.filterFormatData}
+                    />
+                </div>
             );
         }
     }
@@ -184,6 +211,7 @@ export default (
             formatData: fromFormat.getFormatData(state, field.name),
             formatTotal: fromFormat.getFormatTotal(state, field.name),
             isLoaded,
+            isDataSetLoading: get(state, 'dataset.loading', false),
             error: fromFormat.getFormatError(state, field.name),
         };
     };
