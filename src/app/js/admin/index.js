@@ -49,6 +49,11 @@ export const store = configureStore(
     history,
 );
 
+window.addEventListener('load', () => {
+    const dbName = window.__DBNAME__;
+    sessionStorage.setItem('lodex-dbName', dbName);
+});
+
 render(
     <Provider store={store}>
         <ThemeProvider

@@ -90,9 +90,15 @@ const JobProgressComponent = props => {
 
     useEffect(() => {
         const socket = io();
-        const tenant = sessionStorage.getItem('lodex-tenant') || 'lodex';
+        const tenant = sessionStorage.getItem('lodex-tenant') || 'default';
+        const dbName = sessionStorage.getItem('lodex-dbName');
 
-        socket.on(`${tenant}-progress`, data => {
+        // display all events
+        socket.onAny((event, ...args) => {
+            console.log(event, args);
+        });
+
+        socket.on(`${dbName}_${tenant}-progress`, data => {
             data.isJobProgress =
                 data.status !== PENDING &&
                 (data.type === 'enricher' ||
@@ -104,7 +110,7 @@ const JobProgressComponent = props => {
             }
         });
 
-        socket.on(`${tenant}-publisher`, data => {
+        socket.on(`${dbName}_${tenant}-publisher`, data => {
             if (data.success) {
                 handlePublishSuccess();
                 setProgress();
@@ -123,7 +129,7 @@ const JobProgressComponent = props => {
             }
         });
 
-        socket.on(`${tenant}-import`, data => {
+        socket.on(`${dbName}_${tenant}-import`, data => {
             if (!data.isImporting && data.success) {
                 loadParsingResult();
                 setHasLoadedParsingResult(false);
@@ -145,7 +151,7 @@ const JobProgressComponent = props => {
             }
         });
 
-        socket.on(`${tenant}-enricher`, data => {
+        socket.on(`${dbName}_${tenant}-enricher`, data => {
             if (!data.isEnriching) {
                 loadEnrichments();
             }

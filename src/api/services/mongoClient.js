@@ -4,7 +4,8 @@ import config from 'config';
 let db = [];
 
 export const mongoConnectionString = tenant =>
-    `mongodb://${config.mongo.host}/${tenant || config.mongo.dbName}`;
+    `mongodb://${config.mongo.host}/${config.mongo.dbName}_${tenant ||
+        'default'}`;
 
 export const mongoClientFactory = MongoClientImpl => async tenant => {
     if (!tenant) {

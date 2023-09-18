@@ -44,7 +44,7 @@ const setTenant = async (ctx, next) => {
     } else if (ctx.get('X-Lodex-Tenant')) {
         ctx.tenant = ctx.get('X-Lodex-Tenant');
     } else {
-        ctx.tenant = mongo.dbName;
+        ctx.tenant = 'default';
     }
 
     progress.initialize(ctx.tenant);
@@ -136,7 +136,7 @@ if (!module.parent) {
 
     io.on('connection', socket => {
         const emitPayload = payload => {
-            socket.emit(payload.room, payload.data);
+            socket.emit(`${mongo.dbName}_${payload.room}`, payload.data);
         };
 
         progress.addProgressListener(emitPayload);

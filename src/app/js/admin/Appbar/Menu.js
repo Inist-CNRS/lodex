@@ -135,7 +135,11 @@ const MenuComponent = ({
     };
 
     function setTenant(tenant) {
-        sessionStorage.setItem('lodex-tenant', tenant);
+        if (tenant === 'default') {
+            sessionStorage.removeItem('lodex-tenant');
+        } else {
+            sessionStorage.setItem('lodex-tenant', tenant);
+        }
         window.location.reload();
     }
 
@@ -243,12 +247,12 @@ const MenuComponent = ({
 
     const instanceMenuItems = [
         <MenuItem
-            key="instance_lodex"
-            onClick={() => handleCloseMenu(() => setTenant('lodex'))}
+            key="instance_default"
+            onClick={() => handleCloseMenu(() => setTenant('default'))}
         >
             <StorageIcon />
             <Box component="span" ml={1}>
-                Instance Lodex
+                Default
             </Box>
         </MenuItem>,
         <MenuItem
@@ -267,6 +271,15 @@ const MenuComponent = ({
             <StorageIcon />
             <Box component="span" ml={1}>
                 Instance 2
+            </Box>
+        </MenuItem>,
+        <MenuItem
+            key="instance_three"
+            onClick={() => handleCloseMenu(() => setTenant('three'))}
+        >
+            <StorageIcon />
+            <Box component="span" ml={1}>
+                Instance 3
             </Box>
         </MenuItem>,
     ];
