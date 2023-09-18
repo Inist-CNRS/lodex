@@ -6,8 +6,6 @@ import {
     Checkbox,
     FormControlLabel,
     Box,
-    Button,
-    TextField,
     Switch,
     FormGroup,
 } from '@mui/material';
@@ -17,9 +15,9 @@ import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import ToolTips from '../../../shared/ToolTips';
-import BubblePlot from '../../models/BubblePlot';
 import HeatMap from '../../models/HeatMap';
 import { lodexOrderToIdOrder } from '../../../chartsUtils';
+import VegaAdvancedMode from '../../../shared/VegaAdvancedMode';
 
 export const defaultArgs = {
     params: {
@@ -91,8 +89,8 @@ const HeatMapAdmin = props => {
         updateAdminArgs('advancedMode', !args.advancedMode, props);
     };
 
-    const handleAdvancedModeSpec = event => {
-        updateAdminArgs('advancedModeSpec', event.target.value, props);
+    const handleAdvancedModeSpec = newSpec => {
+        updateAdminArgs('advancedModeSpec', newSpec, props);
     };
 
     const clearAdvancedModeSpec = () => {
@@ -188,17 +186,11 @@ const HeatMapAdmin = props => {
                     />
                 </>
             ) : (
-                <>
-                    <Button onClick={clearAdvancedModeSpec} color="primary">
-                        {polyglot.t('regenerate_spec')}
-                    </Button>
-                    <TextField
-                        onChange={handleAdvancedModeSpec}
-                        value={spec}
-                        fullWidth
-                        multiline
-                    />
-                </>
+                <VegaAdvancedMode
+                    value={spec}
+                    onClear={clearAdvancedModeSpec}
+                    onChange={handleAdvancedModeSpec}
+                />
             )}
         </Box>
     );

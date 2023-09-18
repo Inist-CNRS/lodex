@@ -8,7 +8,6 @@ import {
     Box,
     Switch,
     FormGroup,
-    Button,
 } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
@@ -26,6 +25,7 @@ import {
     lodexOrderToIdOrder,
     lodexScaleToIdScale,
 } from '../../../chartsUtils';
+import VegaAdvancedMode from '../../../shared/VegaAdvancedMode';
 
 export const defaultArgs = {
     params: {
@@ -120,8 +120,8 @@ const BarChartAdmin = props => {
         updateAdminArgs('advancedMode', !args.advancedMode, props);
     };
 
-    const handleAdvancedModeSpec = event => {
-        updateAdminArgs('advancedModeSpec', event.target.value, props);
+    const handleAdvancedModeSpec = newSpec => {
+        updateAdminArgs('advancedModeSpec', newSpec, props);
     };
 
     const clearAdvancedModeSpec = () => {
@@ -306,17 +306,11 @@ const BarChartAdmin = props => {
                     />
                 </>
             ) : (
-                <>
-                    <Button onClick={clearAdvancedModeSpec} color="primary">
-                        {polyglot.t('regenerate_spec')}
-                    </Button>
-                    <TextField
-                        onChange={handleAdvancedModeSpec}
-                        value={spec}
-                        fullWidth
-                        multiline
-                    />
-                </>
+                <VegaAdvancedMode
+                    value={spec}
+                    onClear={clearAdvancedModeSpec}
+                    onChange={handleAdvancedModeSpec}
+                />
             )}
         </Box>
     );

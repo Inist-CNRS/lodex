@@ -4,7 +4,6 @@ import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
 import {
     Box,
-    Button,
     FormControlLabel,
     FormGroup,
     MenuItem,
@@ -18,8 +17,8 @@ import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ToolTips from '../../../shared/ToolTips';
 import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../chartsUtils';
-import BubblePlot from '../../models/BubblePlot';
 import Cartography from '../../models/Cartography';
+import VegaAdvancedMode from '../../../shared/VegaAdvancedMode';
 
 export const defaultArgs = {
     params: {
@@ -88,8 +87,8 @@ const CartographyAdmin = props => {
         updateAdminArgs('advancedMode', !args.advancedMode, props);
     };
 
-    const handleAdvancedModeSpec = event => {
-        updateAdminArgs('advancedModeSpec', event.target.value, props);
+    const handleAdvancedModeSpec = newSpec => {
+        updateAdminArgs('advancedModeSpec', newSpec, props);
     };
 
     const clearAdvancedModeSpec = () => {
@@ -185,17 +184,11 @@ const CartographyAdmin = props => {
                     />
                 </>
             ) : (
-                <>
-                    <Button onClick={clearAdvancedModeSpec} color="primary">
-                        {polyglot.t('regenerate_spec')}
-                    </Button>
-                    <TextField
-                        onChange={handleAdvancedModeSpec}
-                        value={spec}
-                        fullWidth
-                        multiline
-                    />
-                </>
+                <VegaAdvancedMode
+                    value={spec}
+                    onClear={clearAdvancedModeSpec}
+                    onChange={handleAdvancedModeSpec}
+                />
             )}
         </Box>
     );

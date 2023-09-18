@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import {
     Box,
-    Button,
     Checkbox,
     FormControlLabel,
     FormGroup,
     Switch,
-    TextField,
 } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
@@ -17,8 +15,8 @@ import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
 import ToolTips from '../../../shared/ToolTips';
-import BubblePlot from '../../models/BubblePlot';
 import PieChart from '../../models/PieChart';
+import VegaAdvancedMode from '../../../shared/VegaAdvancedMode';
 
 export const defaultArgs = {
     params: {
@@ -85,8 +83,8 @@ const PieChartAdmin = props => {
         updateAdminArgs('advancedMode', !args.advancedMode, props);
     };
 
-    const handleAdvancedModeSpec = event => {
-        updateAdminArgs('advancedModeSpec', event.target.value, props);
+    const handleAdvancedModeSpec = newSpec => {
+        updateAdminArgs('advancedModeSpec', newSpec, props);
     };
 
     const clearAdvancedModeSpec = () => {
@@ -174,17 +172,11 @@ const PieChartAdmin = props => {
                     />
                 </>
             ) : (
-                <>
-                    <Button onClick={clearAdvancedModeSpec} color="primary">
-                        {polyglot.t('regenerate_spec')}
-                    </Button>
-                    <TextField
-                        onChange={handleAdvancedModeSpec}
-                        value={spec}
-                        fullWidth
-                        multiline
-                    />
-                </>
+                <VegaAdvancedMode
+                    value={spec}
+                    onClear={clearAdvancedModeSpec}
+                    onChange={handleAdvancedModeSpec}
+                />
             )}
         </Box>
     );

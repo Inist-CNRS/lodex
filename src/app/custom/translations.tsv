@@ -956,3 +956,5 @@
 "r-sub-resources-co-occurrences_description" 	"Identifies sub-resources that co-occur with a given sub-resource and calculates the number of these co-occurrences." 	"Identifie les sous-ressources co-occurrentes avec une sous-ressource donnée et calcule le nombre de ces co-occurrences."
 "r-close-by_title" 	"close-by" 	"close-by"
 "r-close-by_description" 	"Is used to create the graph aster plot." 	"Est utilisée pour créer le graphique aster plot."
+regenerate_vega_lite_spec	Regenerate Vega Lite specifications	Régénérer la spécifications Vega Lite
+regenerate_vega_spec	Regenerate Vega specifications	Régénérer la spécifications Vega
