@@ -2,15 +2,19 @@ import React, { Component } from 'react';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../../../propTypes';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../../../propTypes';
 import PropTypes from 'prop-types';
 import ContainerDimensions from 'react-container-dimensions';
 import { CustomActionVega } from '../vega-component';
-import deepClone from 'lodash.clonedeep';
 import FlowMap from '../../models/FlowMap';
 import { VEGA_DATA_INJECT_TYPE_B } from '../../../chartsUtils';
 import { schemeBlues } from 'd3-scale-chromatic';
 import MouseIcon from '../../../shared/MouseIcon';
+import InvalidFormat from '../../../InvalidFormat';
+import { VEGA_ACTIONS_WIDTH } from '../../../vega-lite/component/vega-lite-component/VegaLiteComponent';
 
 const styles = {
     container: {
@@ -21,11 +25,11 @@ const styles = {
 
 class FlowMapView extends Component {
     render() {
-        const data = this.props.data;
+        const { advancedMode, advancedModeSpec, field, data } = this.props;
 
         // Create a new flow map instance
 
-        const flowMap = deepClone(new FlowMap());
+        const flowMap = new FlowMap();
 
         // Set all flow map parameter the chosen by the administrator
 
@@ -39,13 +43,27 @@ class FlowMapView extends Component {
                 : schemeBlues[9].split(' '),
         );
 
+        let advanceSpec;
+
+        try {
+            advanceSpec = JSON.parse(advancedModeSpec);
+        } catch (e) {
+            return <InvalidFormat format={field.format} value={e.message} />;
+        }
+
         // return the finish chart
         return (
             <div style={styles.container}>
                 {/* Make the chart responsive */}
                 <ContainerDimensions>
                     {({ width }) => {
-                        const spec = flowMap.buildSpec(width);
+                        const spec = advancedMode
+                            ? {
+                                  ...advanceSpec,
+                                  width: width - VEGA_ACTIONS_WIDTH,
+                                  height: width * 0.6,
+                              }
+                            : flowMap.buildSpec(width, data.values.length);
                         return (
                             <CustomActionVega
                                 spec={spec}
@@ -71,6 +89,8 @@ FlowMapView.propTypes = {
     color: PropTypes.string.isRequired,
     colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
     p: polyglotPropTypes.isRequired,
+    advancedMode: PropTypes.bool,
+    advancedModeSpec: PropTypes.string,
 };
 
 FlowMapView.defaultProps = {

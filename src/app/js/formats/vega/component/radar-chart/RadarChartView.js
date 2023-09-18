@@ -4,11 +4,16 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
+import deepClone from 'lodash.clonedeep';
 import ContainerDimensions from 'react-container-dimensions';
 import { CustomActionVega } from '../vega-component';
 import RadarChart from '../../models/RadarChart';
-import { lodexScaleToIdScale, VEGA_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
-import deepClone from 'lodash.clonedeep';
+import {
+    lodexScaleToIdScale,
+    VEGA_DATA_INJECT_TYPE_A,
+} from '../../../chartsUtils';
+
+import InvalidFormat from '../../../InvalidFormat';
 
 const styles = {
     container: {
@@ -19,7 +24,7 @@ const styles = {
 
 class RadarChartView extends Component {
     render() {
-        const data = this.props.data;
+        const { advancedMode, advancedModeSpec, field, data } = this.props;
 
         // format the data for the vega template
 
@@ -41,13 +46,27 @@ class RadarChartView extends Component {
         radarChart.setTooltipValue(this.props.tooltipValue);
         radarChart.setScale(lodexScaleToIdScale(this.props.scale));
 
+        let advanceSpec;
+
+        try {
+            advanceSpec = JSON.parse(advancedModeSpec);
+        } catch (e) {
+            return <InvalidFormat format={field.format} value={e.message} />;
+        }
+
         // return the finish chart
         return (
             <div style={styles.container}>
                 {/* Make the chart responsive */}
                 <ContainerDimensions>
                     {({ width }) => {
-                        const spec = radarChart.buildSpec(width);
+                        const spec = advancedMode
+                            ? {
+                                  ...advanceSpec,
+                                  width: width - width * 0.06,
+                                  height: width - width * 0.24,
+                              }
+                            : radarChart.buildSpec(width, data.values.length);
                         return (
                             <CustomActionVega
                                 spec={spec}
@@ -71,6 +90,8 @@ RadarChartView.propTypes = {
     tooltipCategory: PropTypes.string.isRequired,
     tooltipValue: PropTypes.string.isRequired,
     scale: PropTypes.string.isRequired,
+    advancedMode: PropTypes.bool,
+    advancedModeSpec: PropTypes.string,
 };
 
 RadarChartView.defaultProps = {
