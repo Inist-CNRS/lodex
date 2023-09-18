@@ -25,21 +25,13 @@ export const ADD_FIELD_TO_RESOURCE_CANCEL = 'ADD_FIELD_TO_RESOURCE_CANCEL';
 export const ADD_FIELD_TO_RESOURCE_SUCCESS = 'ADD_FIELD_TO_RESOURCE_SUCCESS';
 export const ADD_FIELD_TO_RESOURCE_ERROR = 'ADD_FIELD_TO_RESOURCE_ERROR';
 
-export const RESOURCE_FORM_NAME = 'resource';
 export const HIDE_RESOURCE_FORM_NAME = 'hideResource';
 export const NEW_RESOURCE_FIELD_FORM_NAME = 'newResourceField';
-export const CREATE_RESOURCE_FORM_NAME = 'createResource';
 
 export const CHANGE_FIELD_STATUS = 'CHANGE_FIELD_STATUS';
 export const CHANGE_FIELD_STATUS_SUCCESS = 'CHANGE_FIELD_STATUS_SUCCESS';
 export const CHANGE_FIELD_STATUS_ERROR = 'CHANGE_FIELD_STATUS_ERROR';
 export const SELECT_VERSION = 'SELECT_VERSION';
-
-export const CREATE_RESOURCE = 'CREATE_RESOURCE';
-export const CREATE_RESOURCE_CANCEL = 'CREATE_RESOURCE_CANCEL';
-export const CREATE_RESOURCE_OPEN = 'CREATE_RESOURCE_OPEN';
-export const CREATE_RESOURCE_SUCCESS = 'CREATE_RESOURCE_SUCCESS';
-export const CREATE_RESOURCE_ERROR = 'CREATE_RESOURCE_ERROR';
 
 export const preLoadResource = createAction(PRE_LOAD_RESOURCE);
 export const loadResource = createAction(LOAD_RESOURCE);
@@ -74,12 +66,6 @@ export const changeFieldStatusSuccess = createAction(
 );
 export const changeFieldStatusError = createAction(CHANGE_FIELD_STATUS_ERROR);
 export const selectVersion = createAction(SELECT_VERSION);
-
-export const createResource = createAction(CREATE_RESOURCE);
-export const createResourceOpen = createAction(CREATE_RESOURCE_OPEN);
-export const createResourceCancel = createAction(CREATE_RESOURCE_CANCEL);
-export const createResourceSuccess = createAction(CREATE_RESOURCE_SUCCESS);
-export const createResourceError = createAction(CREATE_RESOURCE_ERROR);
 
 export const defaultState = {
     resource: null,
@@ -172,7 +158,6 @@ export default handleActions(
             SAVE_RESOURCE_ERROR,
             HIDE_RESOURCE_ERROR,
             ADD_FIELD_TO_RESOURCE_ERROR,
-            CREATE_RESOURCE_ERROR,
         )]: (state, { payload: error }) => ({
             ...state,
             error: error.message,
@@ -253,22 +238,6 @@ export default handleActions(
         HIDE_RESOURCE_CANCEL: state => ({
             ...state,
             hiding: false,
-            error: null,
-        }),
-        CREATE_RESOURCE_OPEN: state => ({
-            ...state,
-            isCreating: true,
-            error: null,
-        }),
-        CREATE_RESOURCE_CANCEL: state => ({
-            ...state,
-            isCreating: false,
-            error: null,
-        }),
-        CREATE_RESOURCE_SUCCESS: state => ({
-            ...state,
-            isCreating: false,
-            saving: false,
             error: null,
         }),
     },
@@ -448,5 +417,3 @@ export const getHideResourceFormData = state =>
     get(state, 'form.hideResource.values');
 export const getNewResourceFieldFormData = state =>
     get(state, 'form.newResourceField.values');
-export const getNewResourceFormData = state =>
-    get(state, ['form', CREATE_RESOURCE_FORM_NAME, 'values']);
