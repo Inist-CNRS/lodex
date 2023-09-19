@@ -49,6 +49,21 @@ export default async db => {
             ),
         );
 
+    collection.updateBatch = documents => {
+        console.warn(documents);
+        console.warn(
+            '-------------------- updateBatch ------------------------',
+        );
+        return Promise.all(
+            chunk(documents, 1000).map(data =>
+                /*collection.updateMany({ uri: data.uri }, data, {
+                    w: 1,
+                }),*/
+                console.warn(data),
+            ),
+        );
+    };
+
     collection.insertBatchIgnoreDuplicate = documents =>
         Promise.all(
             chunk(documents, 1000).map(data =>

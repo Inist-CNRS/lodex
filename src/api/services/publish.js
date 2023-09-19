@@ -29,9 +29,14 @@ export default async ctx => {
     const count = await ctx.dataset.count({});
     const fields = await ctx.field.findAll();
     const publishedCount = await ctx.publishedDataset.count();
-
+    console.warn(' ---------------   publish   ----------------');
     const collectionScopeFields = fields.filter(c =>
         [SCOPE_COLLECTION, SCOPE_DOCUMENT].includes(c.scope),
+    );
+    const webserviceFields = fields.filter(
+        c =>
+            [SCOPE_COLLECTION, SCOPE_DOCUMENT].includes(c.scope) &&
+            c.transformers[0]?.args[0]?.name === 'webservice',
     );
 
     await chainWhileJobIsActive(
@@ -43,6 +48,12 @@ export default async ctx => {
             },
             async () =>
                 await ctx.publishDocuments(ctx, count, collectionScopeFields),
+            async () =>
+                await ctx.computeExternalRoutineInDocuments(
+                    ctx,
+                    count,
+                    webserviceFields,
+                ),
             async () => {
                 const datasetScopeFields = fields.filter(c =>
                     [SCOPE_DATASET, SCOPE_GRAPHIC].includes(c.scope),

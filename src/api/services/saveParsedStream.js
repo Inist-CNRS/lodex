@@ -31,12 +31,22 @@ export const saveParsedStream = async (ctx, parsedStream) => {
         const collectionScopeFields = fields.filter(c =>
             [SCOPE_COLLECTION, SCOPE_DOCUMENT].includes(c.scope),
         );
+        const webserviceFields = fields.filter(
+            c =>
+                [SCOPE_COLLECTION, SCOPE_DOCUMENT].includes(c.scope) &&
+                c.transformers[0]?.args[0]?.name === 'webservice',
+        );
 
         const count = await ctx.dataset.count({
             lodex_published: { $exists: false },
         });
 
         await ctx.publishDocuments(ctx, count, collectionScopeFields);
+        await ctx.computeExternalRoutineInDocuments(
+            ctx,
+            count,
+            webserviceFields,
+        );
         await ctx.publishFacets(ctx, fields, false);
 
         return ctx.dataset.count();

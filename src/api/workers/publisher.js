@@ -2,6 +2,7 @@ import publish from '../services/publish';
 import publishFacets from '../controller/api/publishFacets';
 import publishCharacteristics from '../services/publishCharacteristics';
 import publishDocuments from '../services/publishDocuments';
+import computeExternalRoutineInDocuments from '../services/computeExternalRoutineInDocuments';
 import repositoryMiddleware from '../services/repositoryMiddleware';
 import { CancelWorkerError, cleanWaitingJobsOfType } from '.';
 import clearPublished from '../services/clearPublished';
@@ -53,6 +54,7 @@ const prepareContext = async ctx => {
     ctx.tenant = ctx.job.data.tenant;
     await repositoryMiddleware(ctx, () => Promise.resolve());
     ctx.publishDocuments = publishDocuments;
+    ctx.computeExternalRoutineInDocuments = computeExternalRoutineInDocuments;
     ctx.publishCharacteristics = publishCharacteristics;
     ctx.publishFacets = publishFacets;
     return ctx;

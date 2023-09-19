@@ -8,6 +8,7 @@ import {
 import { clearChunks, mergeChunks } from '../services/fsHelpers';
 import { saveParsedStream } from '../services/saveParsedStream';
 import publishDocuments from '../services/publishDocuments';
+import computeExternalRoutineInDocuments from '../services/computeExternalRoutineInDocuments';
 import publishFacets from '../controller/api/publishFacets';
 import saveStream from '../services/saveStream';
 import { CancelWorkerError, cleanWaitingJobsOfType } from '.';
@@ -78,6 +79,7 @@ const prepareContext = async ctx => {
     ctx.saveStream = saveStream;
     ctx.saveParsedStream = saveParsedStream;
     ctx.publishDocuments = publishDocuments;
+    ctx.computeExternalRoutineInDocuments = computeExternalRoutineInDocuments;
     ctx.publishFacets = publishFacets;
     return ctx;
 };
