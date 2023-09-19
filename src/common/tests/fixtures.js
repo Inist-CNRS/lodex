@@ -9,7 +9,7 @@ let db;
 
 export async function connect() {
     if (!db) {
-        db = await mongoClient('lodex_test');
+        db = await mongoClient('default');
         db.dataset = await datasetFactory(db);
         db.publishedDataset = await publishedDatasetFactory(db);
         db.publishedCharacteristic = await publishedCharacteristicFactory(db);

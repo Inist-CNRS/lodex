@@ -56,6 +56,10 @@ app.use(setTenant);
 if (process.env.EXPOSE_TEST_CONTROLLER) {
     app.use(mount('/tests', testController));
 }
+if (process.env.NODE_ENV === 'e2e') {
+    createWorkerQueue('default', 1);
+}
+
 if (process.env.NODE_ENV === 'development') {
     const serverAdapter = new KoaAdapter();
     serverAdapter.setBasePath('/bull');

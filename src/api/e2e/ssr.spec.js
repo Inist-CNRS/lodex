@@ -20,7 +20,7 @@ const authentifiedHeader = {
         auth.cookieSecret,
     )}`,
     headers: {
-        'X-Lodex-Tenant': 'lodex_test',
+        'X-Lodex-Tenant': 'default',
     },
 };
 
@@ -30,7 +30,7 @@ describe('ssr', () => {
     beforeAll(async () => {
         server = requestServer();
         await clear();
-        await connect('lodex_test');
+        await connect();
         await loadFixtures(fixtures);
     });
 

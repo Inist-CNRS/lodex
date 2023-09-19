@@ -93,11 +93,6 @@ const JobProgressComponent = props => {
         const tenant = sessionStorage.getItem('lodex-tenant') || 'default';
         const dbName = sessionStorage.getItem('lodex-dbName');
 
-        // display all events
-        socket.onAny((event, ...args) => {
-            console.log(event, args);
-        });
-
         socket.on(`${dbName}_${tenant}-progress`, data => {
             data.isJobProgress =
                 data.status !== PENDING &&

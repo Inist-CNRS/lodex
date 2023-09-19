@@ -59,9 +59,9 @@ const adminIndexHtml = fs
     .toString()
     .replace(
         '</body>',
-        ` <script src="{|__JS_HOST__|}/admin/index.js"></script><script>window.__DBNAME__ = ${JSON.stringify(
+        ` <script>window.__DBNAME__ = ${JSON.stringify(
             mongo.dbName,
-        )}</script>
+        )}</script><script src="{|__JS_HOST__|}/admin/index.js"></script>
         </body>`,
     )
     .replace(REGEX_JS_HOST, jsHost);
