@@ -12,13 +12,10 @@ import {
     polyglot as polyglotPropTypes,
 } from '../propTypes.js';
 import { fromFormat } from '../public/selectors';
-import {
-    preLoadFormatData,
-    loadFormatData,
-    unLoadFormatData,
-} from '../formats/reducer';
+import { preLoadFormatData, loadFormatData, unLoadFormatData } from './reducer';
 import Loading from '../lib/components/Loading';
 import InvalidFormat from './InvalidFormat';
+import { CircularProgress } from '@mui/material';
 
 const styles = {
     message: {
@@ -29,7 +26,7 @@ const styles = {
             position: 'relative',
         },
         loading: {
-            zIndex: 99999,
+            zIndex: 99998,
             position: 'absolute',
             top: 0,
             bottom: 0,
@@ -37,6 +34,14 @@ const styles = {
             right: 0,
             pointerEvents: 'none',
             transitionDuration: '150ms',
+            backgroundColor: 'rgba(0,0,0,0.15)',
+        },
+        progress: {
+            zIndex: 99999,
+            top: 'calc(50% - 20px)',
+            left: 'calc(50% - 20px)',
+            position: 'absolute',
+            pointerEvents: 'none',
         },
     },
 };
@@ -177,14 +182,16 @@ export default (
 
             return (
                 <div style={styles.format.container}>
-                    <div
-                        style={{
-                            ...styles.format.loading,
-                            backgroundColor: isDataSetLoading
-                                ? 'rgba(0,0,0,0.15)'
-                                : 'rgba(0,0,0,0)',
-                        }}
-                    ></div>
+                    {isDataSetLoading ? (
+                        <>
+                            <div style={styles.format.loading}></div>
+                            <CircularProgress
+                                sx={styles.format.progress}
+                                variant="indeterminate"
+                                size={40}
+                            />
+                        </>
+                    ) : null}
                     <FormatView
                         {...props}
                         p={polyglot}
