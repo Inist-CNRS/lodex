@@ -4,14 +4,14 @@ import { v1 as uuid } from 'uuid';
 
 import clearPublished from '../../services/clearPublished';
 import logger from '../../services/logger';
-import { workerQueue } from '../../workers';
+import { workerQueues } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
 
 const app = new Koa();
 
 export const doPublish = async ctx => {
-    await workerQueue.add(
-        ctx.tenant, // Name of the job
+    await workerQueues[ctx.tenant].add(
+        PUBLISHER, // Name of the job
         { jobType: PUBLISHER, tenant: ctx.tenant },
         { jobId: uuid() },
     );

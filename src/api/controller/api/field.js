@@ -47,7 +47,7 @@ export const restoreFields = (fileStream, ctx) => {
     }
 
     const restoreTask = () => {
-        dropJobs(ENRICHER);
+        dropJobs(ctx.tenant, ENRICHER);
         return new Promise((resolve, reject) =>
             restore({
                 uri: mongoConnectionString(ctx.tenant),

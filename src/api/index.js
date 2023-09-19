@@ -14,7 +14,7 @@ import controller from './controller';
 import testController from './controller/testController';
 import indexSearchableFields from './services/indexSearchableFields';
 
-import { workerQueue } from './workers';
+import { createWorkerQueue, workerQueues } from './workers';
 import { addPublisherListener } from './workers/publisher';
 
 import progress from './services/progress';
@@ -59,8 +59,18 @@ if (process.env.EXPOSE_TEST_CONTROLLER) {
 if (process.env.NODE_ENV === 'development') {
     const serverAdapter = new KoaAdapter();
     serverAdapter.setBasePath('/bull');
+    const workerQueueDefault = createWorkerQueue('default', 1);
+    const workerQueueOne = createWorkerQueue('instance_one', 1);
+    const workerQueueTwo = createWorkerQueue('instance_two', 1);
+    const workerQueueThree = createWorkerQueue('instance_three', 1);
+
     createBullBoard({
-        queues: [new BullAdapter(workerQueue)],
+        queues: [
+            new BullAdapter(workerQueueDefault),
+            new BullAdapter(workerQueueOne),
+            new BullAdapter(workerQueueTwo),
+            new BullAdapter(workerQueueThree),
+        ],
         serverAdapter,
     });
     app.use(serverAdapter.registerPlugin());
@@ -69,7 +79,7 @@ if (process.env.NODE_ENV === 'development') {
 // worker job
 app.use(async (ctx, next) => {
     try {
-        const activeJobs = await workerQueue.getActive();
+        const activeJobs = await workerQueues[ctx.tenant].getActive();
         const filteredActiveJobs = activeJobs.filter(
             job => job.data.tenant === ctx.tenant,
         );

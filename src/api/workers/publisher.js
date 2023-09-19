@@ -10,7 +10,7 @@ export const PUBLISHER = 'publisher';
 const listeners = [];
 
 export const processPublication = (job, done) => {
-    cleanWaitingJobsOfType(PUBLISHER);
+    cleanWaitingJobsOfType(job.data.tenant, PUBLISHER);
     startPublishing(job)
         .then(async () => {
             job.progress(100);

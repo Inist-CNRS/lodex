@@ -1,4 +1,4 @@
-import { cleanWaitingJobsOfType, workerQueue } from '.';
+import { cleanWaitingJobsOfType, workerQueues } from '.';
 import logger from '../services/logger';
 import progress from '../services/progress';
 
@@ -25,42 +25,36 @@ export const getActiveJob = async tenant => {
 };
 
 export const getActiveJobs = async tenant => {
-    const allActiveJobs = await workerQueue.getActive();
-    const filteredActiveJobs = allActiveJobs.filter(
-        job => job.data.tenant === tenant,
-    );
+    const activeJobs = await workerQueues[tenant].getActive();
 
-    if (filteredActiveJobs.length === 0) {
+    if (activeJobs.length === 0) {
         return undefined;
     }
-    return filteredActiveJobs;
+    return activeJobs;
 };
 
 export const getWaitingJobs = async tenant => {
-    const allWaitingJobs = await workerQueue.getWaiting();
-    const filteredWaitingJobs = allWaitingJobs.filter(
-        job => job.data.tenant === tenant,
-    );
+    const waitingJobs = await workerQueues[tenant].getWaiting();
 
-    if (filteredWaitingJobs.length === 0) {
+    if (waitingJobs.length === 0) {
         return undefined;
     }
-    return filteredWaitingJobs;
+    return waitingJobs;
 };
 
 export const cancelJob = async (ctx, jobType) => {
-    const activeJob = await getActiveJob();
+    const activeJob = await getActiveJob(ctx.tenant);
     if (activeJob?.data?.jobType === jobType) {
         if (jobType === 'publisher') {
-            await cleanWaitingJobsOfType(activeJob.data.jobType);
+            await cleanWaitingJobsOfType(ctx.tenant, activeJob.data.jobType);
         }
         activeJob.moveToFailed(new Error('cancelled'), true);
         progress.finish(ctx.tenant);
     }
 };
 
-export const dropJobs = async jobType => {
-    const jobs = await workerQueue.getJobs();
+export const dropJobs = async (tenant, jobType) => {
+    const jobs = await workerQueues[tenant].getJobs();
     jobs.forEach(job => {
         if (!jobType || job.data.jobType === jobType) job.remove();
     });

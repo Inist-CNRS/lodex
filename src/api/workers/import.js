@@ -26,7 +26,7 @@ function getEzsMessageError(string) {
 }
 
 export const processImport = (job, done) => {
-    cleanWaitingJobsOfType(IMPORT);
+    cleanWaitingJobsOfType(job.data.tenant, IMPORT);
     startJobImport(job)
         .then(async () => {
             job.progress(100);

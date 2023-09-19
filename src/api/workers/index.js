@@ -11,15 +11,46 @@ export class CancelWorkerError extends Error {
         this.name = 'CancelWorkerError';
     }
 }
-export const workerQueue = new Queue(QUEUE_NAME, process.env.REDIS_URL, {
-    defaultJobOptions: {
-        removeOnComplete: 10,
-        removeOnFail: 10,
-        lifo: true,
-    },
-});
 
-export const cleanWaitingJobsOfType = jobType => {
+export const workerQueues = [];
+
+export const createWorkerQueue = (queueName, concurrency) => {
+    const workerQueue = new Queue(queueName, process.env.REDIS_URL, {
+        defaultJobOptions: {
+            removeOnComplete: 10,
+            removeOnFail: 10,
+            lifo: true,
+        },
+    });
+
+    workerQueue.process('*', concurrency, async (job, done) => {
+        if (job.data.jobType === PUBLISHER) {
+            processPublication(job, done);
+        }
+        if (job.data.jobType === ENRICHER) {
+            processEnrichment(job, done);
+        }
+        if (job.data.jobType === IMPORT) {
+            processImport(job, done);
+        }
+    });
+
+    workerQueues[queueName] = workerQueue;
+
+    return workerQueue;
+};
+
+export const deleteWorkerQueue = async queueName => {
+    const workerQueue = workerQueues[queueName];
+    await workerQueue.close();
+    const index = workerQueues.indexOf(workerQueue);
+    if (index !== -1) {
+        workerQueues.splice(index, 1);
+    }
+};
+
+export const cleanWaitingJobsOfType = (queueName, jobType) => {
+    const workerQueue = workerQueues[queueName];
     workerQueue.getWaiting().then(jobs => {
         jobs.filter(job => job.data.jobType === jobType).forEach(waitingJob =>
             waitingJob.remove(),
@@ -27,32 +58,10 @@ export const cleanWaitingJobsOfType = jobType => {
     });
 };
 
-workerQueue.process('*', 1, async (job, done) => {
-    // if workerqueue already has an active job with the same job.data.tenant.
-    // Set the job to the waiting state. If job is already waiting, do nothing.
-    // const activeJobs = await workerQueue.getActive();
-    // const waitingJobs = await workerQueue.getWaiting();
-    // const activeJob = activeJobs.find(
-    //     activeJob =>
-    //         activeJob.data.tenant === job.data.tenant &&
-    //         activeJob.id !== job.id,
-    // );
-    // const waitingJob = waitingJobs.find(waitingJob => waitingJob.id === job.id);
-    // if (activeJob) {
-    //     if (waitingJob) {
-    //         return done();
-    //     }
-    //     await workerQueue.add(job.data.tenant, job.data, { delay: 5000 });
-    //     return done();
-    // }
-
-    if (job.data.jobType === PUBLISHER) {
-        processPublication(job, done);
-    }
-    if (job.data.jobType === ENRICHER) {
-        processEnrichment(job, done);
-    }
-    if (job.data.jobType === IMPORT) {
-        processImport(job, done);
-    }
-});
+export const closeAllWorkerQueues = async () => {
+    await Promise.all(
+        workerQueues.map(async workerQueue => {
+            await workerQueue.close();
+        }),
+    );
+};

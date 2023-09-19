@@ -275,7 +275,7 @@ const MenuComponent = ({
         </MenuItem>,
         <MenuItem
             key="instance_three"
-            onClick={() => handleCloseMenu(() => setTenant('three'))}
+            onClick={() => handleCloseMenu(() => setTenant('instance_three'))}
         >
             <StorageIcon />
             <Box component="span" ml={1}>

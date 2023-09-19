@@ -3,7 +3,7 @@ import config from 'config';
 import { getHost } from '../../../common/uris';
 
 import server from '../../';
-import { workerQueue } from '../../workers';
+import { closeAllWorkerQueues } from '../../workers';
 
 export default () => {
     const app = server.listen(config.port);
@@ -45,7 +45,7 @@ export default () => {
                 body: JSON.stringify(body),
             }),
         close: () => {
-            workerQueue.close();
+            closeAllWorkerQueues();
             app.close();
         },
     };

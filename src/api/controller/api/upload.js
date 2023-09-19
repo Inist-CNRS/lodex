@@ -14,7 +14,7 @@ import {
 } from '../../services/fsHelpers';
 
 import { v1 as uuid } from 'uuid';
-import { workerQueue } from '../../workers';
+import { workerQueues } from '../../workers';
 import { IMPORT } from '../../workers/import';
 
 export const requestToStream = asyncBusboyImpl => async req => {
@@ -116,8 +116,8 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
     }
 
     if (uploadedFileSize >= totalSize) {
-        await workerQueue.add(
-            ctx.tenant, // Name of the job
+        await workerQueues[ctx.tenant].add(
+            IMPORT, // Name of the job
             {
                 loaderName,
                 filename,
@@ -140,8 +140,8 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
 export const uploadUrl = async ctx => {
     const { url, loaderName, customLoader } = ctx.request.body;
     const [extension] = url.match(/[^.]*$/);
-    await workerQueue.add(
-        ctx.tenant, // Name of the job
+    await workerQueues[ctx.tenant].add(
+        IMPORT, // Name of the job
         {
             loaderName,
             url,
@@ -175,8 +175,8 @@ export const checkChunkMiddleware = async (ctx, loaderName) => {
     const exists = await checkFileExists(chunkname, currentChunkSize);
 
     if (exists && chunkNumber === totalChunks) {
-        await workerQueue.add(
-            ctx.tenant, // Name of the job
+        await workerQueues[ctx.tenant].add(
+            IMPORT, // Name of the job
             {
                 loaderName,
                 filename,
