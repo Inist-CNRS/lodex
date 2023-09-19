@@ -7,7 +7,7 @@ export default ({ url, ...config }, mode = 'json') => {
 
     // if session storage is available, we add the tenant in the header
     if (typeof sessionStorage !== 'undefined') {
-        const tenant = sessionStorage.getItem('lodex-tenant') || 'lodex';
+        const tenant = sessionStorage.getItem('lodex-tenant') || 'default';
         // Set Tenant in header if not already set
         if (!config.headers) {
             config.headers = {};

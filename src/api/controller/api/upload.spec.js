@@ -2,9 +2,15 @@ import config from 'config';
 
 import { parseRequest, uploadChunkMiddleware, uploadUrl } from './upload';
 import { IMPORT } from '../../workers/import';
-import { workerQueue } from '../../workers';
 import progress from '../../services/progress';
-jest.mock('../../workers');
+import { workerQueues } from '../../workers';
+jest.mock('../../workers', () => ({
+    workerQueues: {
+        lodex_test: {
+            add: jest.fn(),
+        },
+    },
+}));
 jest.mock('uuid', () => ({ v1: () => 'uuid' }));
 
 describe('upload', () => {
@@ -69,7 +75,7 @@ describe('upload', () => {
             const next = jest.fn();
 
             beforeAll(async () => {
-                workerQueue.add.mockClear();
+                workerQueues[ctx.tenant].add.mockClear();
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -100,7 +106,7 @@ describe('upload', () => {
             });
 
             it('should not add job to the queue', () => {
-                expect(workerQueue.add).not.toHaveBeenCalled();
+                expect(workerQueues[ctx.tenant].add).not.toHaveBeenCalled();
             });
         });
 
@@ -124,7 +130,7 @@ describe('upload', () => {
             const next = jest.fn();
 
             beforeAll(async () => {
-                workerQueue.add.mockClear();
+                workerQueues[ctx.tenant].add.mockClear();
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -147,8 +153,8 @@ describe('upload', () => {
             });
 
             it('should add job to the queue', () => {
-                expect(workerQueue.add).toHaveBeenCalledWith(
-                    'lodex_test',
+                expect(workerQueues[ctx.tenant].add).toHaveBeenCalledWith(
+                    IMPORT,
                     {
                         extension: 'extension',
                         filename: 'filename',
@@ -183,7 +189,7 @@ describe('upload', () => {
             const next = jest.fn();
 
             beforeAll(async () => {
-                workerQueue.add.mockClear();
+                workerQueues[ctx.tenant].add.mockClear();
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -209,8 +215,8 @@ describe('upload', () => {
             });
 
             it('should add job to the queue', () => {
-                expect(workerQueue.add).toHaveBeenCalledWith(
-                    'lodex_test',
+                expect(workerQueues[ctx.tenant].add).toHaveBeenCalledWith(
+                    IMPORT,
                     {
                         extension: 'extension',
                         filename: 'filename',
@@ -244,7 +250,7 @@ describe('upload', () => {
             const next = jest.fn();
 
             beforeAll(async () => {
-                workerQueue.add.mockClear();
+                workerQueues[ctx.tenant].add.mockClear();
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -278,7 +284,7 @@ describe('upload', () => {
             });
 
             it('should not add job to the queue', () => {
-                expect(workerQueue.add).not.toHaveBeenCalled();
+                expect(workerQueues[ctx.tenant].add).not.toHaveBeenCalled();
             });
         });
     });
@@ -295,13 +301,13 @@ describe('upload', () => {
         };
 
         beforeAll(async () => {
-            workerQueue.add.mockClear();
+            workerQueues[ctx.tenant].add.mockClear();
             await uploadUrl(ctx);
         });
 
         it('should add job to the queue', () => {
-            expect(workerQueue.add).toHaveBeenCalledWith(
-                'lodex_test',
+            expect(workerQueues[ctx.tenant].add).toHaveBeenCalledWith(
+                IMPORT,
                 {
                     extension: 'ext',
                     url: 'http://host/file.name.ext',
@@ -327,13 +333,13 @@ describe('upload', () => {
         };
 
         beforeAll(async () => {
-            workerQueue.add.mockClear();
+            workerQueues[ctx.tenant].add.mockClear();
             await uploadUrl(ctx);
         });
 
         it('should add job to the queue', () => {
-            expect(workerQueue.add).toHaveBeenCalledWith(
-                'lodex_test',
+            expect(workerQueues[ctx.tenant].add).toHaveBeenCalledWith(
+                IMPORT,
                 {
                     extension: 'ext',
                     url: 'http://host/file.name.ext',

@@ -17,7 +17,7 @@ import fs from 'fs';
 import { StyleSheetServer } from 'aphrodite/no-important';
 import jwt from 'koa-jwt';
 import jsonwebtoken from 'jsonwebtoken';
-import { auth, istexApiUrl, jsHost } from 'config';
+import { auth, istexApiUrl, jsHost, mongo } from 'config';
 import pick from 'lodash.pick';
 import { createMemoryHistory } from 'history';
 
@@ -57,6 +57,13 @@ const indexHtml = fs
 const adminIndexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/admin.html'))
     .toString()
+    .replace(
+        '</body>',
+        ` <script>window.__DBNAME__ = ${JSON.stringify(
+            mongo.dbName,
+        )}</script><script src="{|__JS_HOST__|}/admin/index.js"></script>
+        </body>`,
+    )
     .replace(REGEX_JS_HOST, jsHost);
 
 const getDefaultInitialState = (token, cookie, locale) => ({

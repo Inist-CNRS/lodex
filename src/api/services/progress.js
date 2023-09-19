@@ -14,9 +14,9 @@ export class Progress {
     listeners = [];
 
     initialize(tenant) {
-        // if (this[tenant]) {
-        //     return;
-        // }
+        if (this[tenant]) {
+            return;
+        }
         this[tenant] = {
             status: PENDING,
         };

@@ -49,6 +49,13 @@ export const store = configureStore(
     history,
 );
 
+if (process.env.NODE_ENV === 'e2e') {
+    sessionStorage.setItem('lodex-dbName', 'lodex_test');
+} else {
+    const dbName = window.__DBNAME__;
+    sessionStorage.setItem('lodex-dbName', dbName);
+}
+
 render(
     <Provider store={store}>
         <ThemeProvider

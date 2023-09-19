@@ -161,7 +161,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                     }}
                 >
                     Instance:{' '}
-                    {sessionStorage.getItem('lodex-tenant') || 'lodex'}
+                    {sessionStorage.getItem('lodex-tenant') || 'default'}
                 </Box>
             </Drawer>
         </>

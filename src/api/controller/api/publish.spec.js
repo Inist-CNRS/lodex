@@ -1,6 +1,6 @@
 import { doPublish } from './publish';
 import { PUBLISHER } from '../../workers/publisher';
-import { workerQueue } from '../../workers';
+import { workerQueues } from '../../workers';
 jest.mock('../../workers');
 
 describe.skip('publish', () => {
@@ -9,7 +9,7 @@ describe.skip('publish', () => {
             await doPublish({});
         });
         it('should add event to publisher queue', () => {
-            expect(workerQueue.add).toHaveBeenCalledWith({
+            expect(workerQueues['lodex_test'].add).toHaveBeenCalledWith({
                 jobType: PUBLISHER,
             });
         });

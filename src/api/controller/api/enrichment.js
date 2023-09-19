@@ -4,7 +4,7 @@ import koaBodyParser from 'koa-bodyparser';
 import { v1 as uuid } from 'uuid';
 
 import { ENRICHER } from '../../workers/enricher';
-import { workerQueue } from '../../workers';
+import { workerQueues } from '../../workers';
 import {
     createEnrichmentRule,
     getEnrichmentDataPreview,
@@ -95,9 +95,9 @@ export const enrichmentAction = async (ctx, action, id) => {
     }
 
     if (action === 'launch') {
-        await workerQueue
+        await workerQueues[ctx.tenant]
             .add(
-                ctx.tenant, // Name of the job
+                ENRICHER, // Name of the job
                 {
                     id,
                     jobType: ENRICHER,
@@ -116,9 +116,9 @@ export const enrichmentAction = async (ctx, action, id) => {
     if (action === 'relaunch') {
         const enrichment = await ctx.enrichment.findOneById(id);
         await ctx.dataset.removeAttribute(enrichment.name);
-        await workerQueue
+        await workerQueues[ctx.tenant]
             .add(
-                ctx.tenant, // Name of the job
+                ENRICHER, // Name of the job
                 {
                     id,
                     jobType: ENRICHER,

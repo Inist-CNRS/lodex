@@ -294,27 +294,34 @@ export const EnrichmentForm = ({
     useEffect(() => {
         handleGetLogs();
         const socket = io();
-        const tenant = sessionStorage.getItem('lodex-tenant') || 'lodex';
-        socket.on(`${tenant}-enrichment-job-${initialValues?.jobId}`, data => {
-            let lastLine;
-            let parsedData;
-            if (Array.isArray(data)) {
-                setEnrichmentLogs(currentState => [...data, ...currentState]);
-                lastLine = data[0];
-            } else {
-                setEnrichmentLogs(currentState => [data, ...currentState]);
-                lastLine = data;
-            }
-            try {
-                parsedData = JSON.parse(lastLine);
-            } catch {
-                console.error('Error parsing data', lastLine);
-            }
+        const tenant = sessionStorage.getItem('lodex-tenant') || 'default';
+        const dbName = sessionStorage.getItem('lodex-dbName');
+        socket.on(
+            `${dbName}_${tenant}-enrichment-job-${initialValues?.jobId}`,
+            data => {
+                let lastLine;
+                let parsedData;
+                if (Array.isArray(data)) {
+                    setEnrichmentLogs(currentState => [
+                        ...data,
+                        ...currentState,
+                    ]);
+                    lastLine = data[0];
+                } else {
+                    setEnrichmentLogs(currentState => [data, ...currentState]);
+                    lastLine = data;
+                }
+                try {
+                    parsedData = JSON.parse(lastLine);
+                } catch {
+                    console.error('Error parsing data', lastLine);
+                }
 
-            if (parsedData && parsedData.status) {
-                setEnrichmentStatus(parsedData.status);
-            }
-        });
+                if (parsedData && parsedData.status) {
+                    setEnrichmentStatus(parsedData.status);
+                }
+            },
+        );
         socket.on('${tenant}-connect_error', () => {
             handleGetLogs();
         });
