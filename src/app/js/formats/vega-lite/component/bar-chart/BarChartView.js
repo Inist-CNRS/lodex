@@ -84,7 +84,26 @@ const BarChartView = props => {
         if (diagonalValueAxis) specBuilder.setLabelAngle(AXIS_Y, -45);
 
         return specBuilder.buildSpec(width, data.values.length);
-    }, [width, advancedMode, advancedModeSpec, field, data.values]);
+    }, [
+        width,
+        advancedMode,
+        advancedModeSpec,
+        field,
+        data.values,
+        direction,
+        params,
+        scale,
+        colors,
+        axisRoundValue,
+        tooltip,
+        tooltipCategory,
+        tooltipValue,
+        labels,
+        labelOverlap,
+        barSize,
+        diagonalCategoryAxis,
+        diagonalValueAxis,
+    ]);
 
     useEffect(() => {
         if (!ref.current) {
