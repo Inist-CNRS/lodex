@@ -26,6 +26,7 @@ const FlowMapView = props => {
     const {
         advancedMode,
         advancedModeSpec,
+        p,
         field,
         data,
         tooltip,
@@ -99,7 +100,7 @@ const FlowMapView = props => {
                 data={data}
                 injectType={VEGA_DATA_INJECT_TYPE_B}
             />
-            <MouseIcon polyglot={this.props.p} />
+            <MouseIcon polyglot={p} />
         </div>
     );
 };
