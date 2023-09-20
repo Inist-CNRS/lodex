@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import injectData from '../../../injectData';
 import { field as fieldPropTypes } from '../../../../propTypes';
-import ContainerDimensions from 'react-container-dimensions';
 import {
     AXIS_HORIZONTAL,
     AXIS_VERTICAL,
@@ -25,71 +24,94 @@ const styles = {
     },
 };
 
-class BarChartView extends Component {
-    render() {
-        const { advancedMode, advancedModeSpec, field, data } = this.props;
+const BarChartView = props => {
+    const {
+        advancedMode,
+        advancedModeSpec,
+        field,
+        data,
+        direction,
+        params,
+        scale,
+        colors,
+        axisRoundValue,
+        tooltip,
+        tooltipCategory,
+        tooltipValue,
+        labels,
+        labelOverlap,
+        barSize,
+        diagonalCategoryAxis,
+        diagonalValueAxis,
+    } = props;
 
-        // Create a new bar chart instance
+    const ref = useRef(null);
+    const [width, setWidth] = useState(0);
+    const [error, setError] = useState('');
 
-        const barChartSpec = new BarChart();
-
-        // Set all bar chart parameter the chosen by the administrator
-
-        barChartSpec.setAxisDirection(
-            this.props.direction === 'vertical'
-                ? AXIS_VERTICAL
-                : AXIS_HORIZONTAL,
-        );
-
-        barChartSpec.setOrderBy(lodexOrderToIdOrder(this.props.params.orderBy));
-        barChartSpec.setScale(lodexScaleToIdScale(this.props.scale));
-        barChartSpec.setColor(this.props.colors);
-        barChartSpec.setRoundValue(this.props.axisRoundValue);
-        barChartSpec.setTooltip(this.props.tooltip);
-        barChartSpec.setTooltipCategory(this.props.tooltipCategory);
-        barChartSpec.setTooltipValue(this.props.tooltipValue);
-        barChartSpec.setLabels(this.props.labels);
-        barChartSpec.setLabelOverlap(this.props.labelOverlap);
-        barChartSpec.setSize(this.props.barSize);
-
-        if (this.props.diagonalCategoryAxis)
-            barChartSpec.setLabelAngle(AXIS_X, -45);
-        if (this.props.diagonalValueAxis)
-            barChartSpec.setLabelAngle(AXIS_Y, -45);
-
-        let advancedSpec;
-
-        try {
-            advancedSpec = JSON.parse(advancedModeSpec);
-        } catch (e) {
-            return <InvalidFormat format={field.format} value={e.message} />;
+    const spec = useMemo(() => {
+        if (advancedMode) {
+            try {
+                const advancedSpec = JSON.parse(advancedModeSpec);
+                return {
+                    ...advancedSpec,
+                    width: width - VEGA_ACTIONS_WIDTH,
+                };
+            } catch (e) {
+                setError(e.message);
+                return null;
+            }
         }
 
-        // return the finish chart
-        return (
-            <div style={styles.container}>
-                {/* Make the chart responsive */}
-                <ContainerDimensions>
-                    {({ width }) => {
-                        const spec = advancedMode
-                            ? {
-                                  ...advancedSpec,
-                                  width: width - VEGA_ACTIONS_WIDTH,
-                              }
-                            : barChartSpec.buildSpec(width, data.values.length);
-                        return (
-                            <CustomActionVegaLite
-                                spec={spec}
-                                data={data}
-                                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
-                            />
-                        );
-                    }}
-                </ContainerDimensions>
-            </div>
+        const specBuilder = new BarChart();
+
+        specBuilder.setAxisDirection(
+            direction === 'vertical' ? AXIS_VERTICAL : AXIS_HORIZONTAL,
         );
+
+        specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
+        specBuilder.setScale(lodexScaleToIdScale(scale));
+        specBuilder.setColor(colors);
+        specBuilder.setRoundValue(axisRoundValue);
+        specBuilder.setTooltip(tooltip);
+        specBuilder.setTooltipCategory(tooltipCategory);
+        specBuilder.setTooltipValue(tooltipValue);
+        specBuilder.setLabels(labels);
+        specBuilder.setLabelOverlap(labelOverlap);
+        specBuilder.setSize(barSize);
+
+        if (diagonalCategoryAxis) specBuilder.setLabelAngle(AXIS_X, -45);
+        if (diagonalValueAxis) specBuilder.setLabelAngle(AXIS_Y, -45);
+
+        return specBuilder.buildSpec(width, data.values.length);
+    }, [width, advancedMode, advancedModeSpec, field, data.values]);
+
+    useEffect(() => {
+        if (!ref.current) {
+            return;
+        }
+
+        const resizeObserver = new ResizeObserver(() => {
+            setWidth(ref.current.offsetWidth);
+        });
+
+        resizeObserver.observe(ref.current);
+    }, [ref.current]);
+
+    if (!spec) {
+        return <InvalidFormat format={field.format} value={error} />;
     }
-}
+
+    return (
+        <div style={styles.container} ref={ref}>
+            <CustomActionVegaLite
+                spec={spec}
+                data={data}
+                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+            />
+        </div>
+    );
+};
 
 BarChartView.propTypes = {
     field: fieldPropTypes.isRequired,
