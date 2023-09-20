@@ -22,19 +22,18 @@ const styles = {
     },
 };
 
-const FlowMapView = props => {
-    const {
-        advancedMode,
-        advancedModeSpec,
-        p,
-        field,
-        data,
-        tooltip,
-        tooltipCategory,
-        tooltipValue,
-        color,
-        colorScheme,
-    } = props;
+const FlowMapView = ({
+    advancedMode,
+    advancedModeSpec,
+    p,
+    field,
+    data,
+    tooltip,
+    tooltipCategory,
+    tooltipValue,
+    color,
+    colorScheme,
+}) => {
     const ref = useRef(null);
     const [width, setWidth] = useState(0);
     const [error, setError] = useState('');

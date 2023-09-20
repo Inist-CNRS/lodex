@@ -21,19 +21,17 @@ const styles = {
     },
 };
 
-const CartographyView = props => {
-    const {
-        advancedMode,
-        advancedModeSpec,
-        field,
-        data,
-        tooltip,
-        tooltipCategory,
-        tooltipValue,
-        worldPosition,
-        colorScheme,
-    } = props;
-
+const CartographyView = ({
+    advancedMode,
+    advancedModeSpec,
+    field,
+    data,
+    tooltip,
+    tooltipCategory,
+    tooltipValue,
+    worldPosition,
+    colorScheme,
+}) => {
     const ref = useRef(null);
     const [width, setWidth] = useState(0);
     const [error, setError] = useState('');

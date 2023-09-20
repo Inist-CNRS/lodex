@@ -24,27 +24,25 @@ const styles = {
     },
 };
 
-const BarChartView = props => {
-    const {
-        advancedMode,
-        advancedModeSpec,
-        field,
-        data,
-        direction,
-        params,
-        scale,
-        colors,
-        axisRoundValue,
-        tooltip,
-        tooltipCategory,
-        tooltipValue,
-        labels,
-        labelOverlap,
-        barSize,
-        diagonalCategoryAxis,
-        diagonalValueAxis,
-    } = props;
-
+const BarChartView = ({
+    advancedMode,
+    advancedModeSpec,
+    field,
+    data,
+    direction,
+    params,
+    scale,
+    colors,
+    axisRoundValue,
+    tooltip,
+    tooltipCategory,
+    tooltipValue,
+    labels,
+    labelOverlap,
+    barSize,
+    diagonalCategoryAxis,
+    diagonalValueAxis,
+}) => {
     const ref = useRef(null);
     const [width, setWidth] = useState(0);
     const [error, setError] = useState('');

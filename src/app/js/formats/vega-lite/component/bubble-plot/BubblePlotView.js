@@ -19,21 +19,19 @@ const styles = {
     },
 };
 
-const BubblePlotView = props => {
-    const {
-        advancedMode,
-        advancedModeSpec,
-        field,
-        data,
-        colors,
-        params,
-        flipAxis,
-        tooltip,
-        tooltipSource,
-        tooltipTarget,
-        tooltipWeight,
-    } = props;
-
+const BubblePlotView = ({
+    advancedMode,
+    advancedModeSpec,
+    field,
+    data,
+    colors,
+    params,
+    flipAxis,
+    tooltip,
+    tooltipSource,
+    tooltipTarget,
+    tooltipWeight,
+}) => {
     const ref = useRef(null);
     const [width, setWidth] = useState(0);
     const [error, setError] = useState('');

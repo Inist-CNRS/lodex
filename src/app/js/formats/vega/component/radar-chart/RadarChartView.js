@@ -20,33 +20,32 @@ const styles = {
     },
 };
 
-const RadarChartView = props => {
-    const {
-        advancedMode,
-        advancedModeSpec,
-        field,
-        colors,
-        tooltip,
-        tooltipCategory,
-        tooltipValue,
-        scale,
-    } = props;
-
-    const data = useMemo(() => {
-        if (!props.data) {
-            return props.data;
+const RadarChartView = ({
+    advancedMode,
+    advancedModeSpec,
+    field,
+    data,
+    colors,
+    tooltip,
+    tooltipCategory,
+    tooltipValue,
+    scale,
+}) => {
+    const formattedData = useMemo(() => {
+        if (!data) {
+            return data;
         }
 
-        const formattedData = {
-            ...props.data,
+        const tmpData = {
+            ...data,
         };
 
-        formattedData.values.forEach(value => {
+        tmpData.values.forEach(value => {
             value.category = 0;
         });
 
-        return formattedData;
-    }, [props.data]);
+        return tmpData;
+    }, [data]);
 
     const ref = useRef(null);
     const [width, setWidth] = useState(0);
@@ -75,10 +74,10 @@ const RadarChartView = props => {
         specBuilder.setTooltipValue(tooltipValue);
         specBuilder.setScale(lodexScaleToIdScale(scale));
 
-        return specBuilder.buildSpec(width, data.values.length);
+        return specBuilder.buildSpec(width, formattedData.values.length);
     }, [
         width,
-        data.values,
+        formattedData.values,
         advancedMode,
         advancedModeSpec,
         colors,
@@ -108,7 +107,7 @@ const RadarChartView = props => {
         <div style={styles.container} ref={ref}>
             <CustomActionVega
                 spec={spec}
-                data={data}
+                data={formattedData}
                 injectType={VEGA_DATA_INJECT_TYPE_A}
             />
         </div>
