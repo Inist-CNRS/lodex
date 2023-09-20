@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -7,7 +7,6 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../../../propTypes';
 import PropTypes from 'prop-types';
-import ContainerDimensions from 'react-container-dimensions';
 import { CustomActionVega } from '../vega-component';
 import FlowMap from '../../models/FlowMap';
 import { VEGA_DATA_INJECT_TYPE_B } from '../../../chartsUtils';
@@ -23,69 +22,87 @@ const styles = {
     },
 };
 
-// const FlowMapView = (props) => {
-//     const { advancedMode, advancedModeSpec, field, data } = props;
-//
-//     const spec = useMemo(() => {
-//
-//     }, []);
-// }
+const FlowMapView = props => {
+    const {
+        advancedMode,
+        advancedModeSpec,
+        field,
+        data,
+        tooltip,
+        tooltipCategory,
+        tooltipValue,
+        color,
+        colorScheme,
+    } = props;
+    const ref = useRef(null);
+    const [width, setWidth] = useState(0);
+    const [error, setError] = useState('');
 
-class FlowMapView extends Component {
-    render() {
-        const { advancedMode, advancedModeSpec, field, data } = this.props;
-
-        // Create a new flow map instance
-
-        const flowMap = new FlowMap();
-
-        // Set all flow map parameter the chosen by the administrator
-
-        flowMap.setTooltip(this.props.tooltip);
-        flowMap.setTooltipCategory(this.props.tooltipCategory);
-        flowMap.setTooltipValue(this.props.tooltipValue);
-        flowMap.setColor(this.props.color.split(' ')[0]);
-        flowMap.setColorScheme(
-            this.props.colorScheme !== undefined
-                ? this.props.colorScheme
-                : schemeBlues[9].split(' '),
-        );
-
-        let advancedSpec;
-
-        try {
-            advancedSpec = JSON.parse(advancedModeSpec);
-        } catch (e) {
-            return <InvalidFormat format={field.format} value={e.message} />;
+    const spec = useMemo(() => {
+        if (advancedMode) {
+            try {
+                const advancedSpec = JSON.parse(advancedModeSpec);
+                return {
+                    ...advancedSpec,
+                    width: width - VEGA_ACTIONS_WIDTH,
+                    height: width * 0.6,
+                };
+            } catch (e) {
+                setError(e.message);
+                return null;
+            }
         }
 
-        // return the finish chart
-        return (
-            <div style={styles.container}>
-                {/* Make the chart responsive */}
-                <ContainerDimensions>
-                    {({ width }) => {
-                        const spec = advancedMode
-                            ? {
-                                  ...advancedSpec,
-                                  width: width - VEGA_ACTIONS_WIDTH,
-                                  height: width * 0.6,
-                              }
-                            : flowMap.buildSpec(width, data.values.length);
-                        return (
-                            <CustomActionVega
-                                spec={spec}
-                                data={data}
-                                injectType={VEGA_DATA_INJECT_TYPE_B}
-                            />
-                        );
-                    }}
-                </ContainerDimensions>
-                <MouseIcon polyglot={this.props.p} />
-            </div>
+        const specBuilder = new FlowMap();
+
+        specBuilder.setTooltip(tooltip);
+        specBuilder.setTooltipCategory(tooltipCategory);
+        specBuilder.setTooltipValue(tooltipValue);
+        specBuilder.setColor(color.split(' ')[0]);
+        specBuilder.setColorScheme(
+            colorScheme !== undefined ? colorScheme : schemeBlues[9].split(' '),
         );
+
+        return specBuilder.buildSpec(width, data.values.length);
+    }, [
+        width,
+        data.values,
+        advancedMode,
+        advancedModeSpec,
+        tooltip,
+        tooltipCategory,
+        tooltipValue,
+        color,
+        colorScheme,
+    ]);
+
+    useEffect(() => {
+        if (!ref.current) {
+            return;
+        }
+
+        const resizeObserver = new ResizeObserver(() => {
+            setWidth(ref.current.offsetWidth);
+        });
+
+        resizeObserver.observe(ref.current);
+    }, [ref.current]);
+
+    if (spec === null) {
+        return <InvalidFormat format={field.format} value={error} />;
     }
-}
+
+    return (
+        <div style={styles.container} ref={ref}>
+            <CustomActionVega
+                spec={spec}
+                data={data}
+                injectType={VEGA_DATA_INJECT_TYPE_B}
+            />
+            <MouseIcon polyglot={this.props.p} />
+        </div>
+    );
+};
 
 FlowMapView.propTypes = {
     field: fieldPropTypes.isRequired,
