@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';
-import React, { Component } from 'react';
-import ContainerDimensions from 'react-container-dimensions';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import PieChart from '../../models/PieChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
@@ -17,62 +16,88 @@ const styles = {
     },
 };
 
-class PieChartView extends Component {
-    render() {
-        const { advancedMode, advancedModeSpec, field, data } = this.props;
+const PieChartView = ({
+    advancedMode,
+    advancedModeSpec,
+    field,
+    data,
+    tooltip,
+    tooltipCategory,
+    tooltipValue,
+    colors,
+    labels,
+}) => {
+    const ref = useRef(null);
+    const [width, setWidth] = useState(0);
+    const [error, setError] = useState('');
 
-        // Create a new pie chart instance
-
-        const pieChart = new PieChart();
-
-        // enable the orderBy in vega-lite
-
-        let count = 1;
-        data.values.forEach(e => {
-            e.order = count++;
-        });
-
-        // Set all pie chart parameter the chosen by the administrator
-
-        pieChart.setTooltip(this.props.tooltip);
-        pieChart.setTooltipCategory(this.props.tooltipCategory);
-        pieChart.setTooltipValue(this.props.tooltipValue);
-        pieChart.setColor(this.props.colors);
-        pieChart.setLabels(this.props.labels);
-
-        let advancedSpec;
-
-        try {
-            advancedSpec = JSON.parse(advancedModeSpec);
-        } catch (e) {
-            return <InvalidFormat format={field.format} value={e.message} />;
+    const spec = useMemo(() => {
+        if (advancedMode) {
+            try {
+                const advancedSpec = JSON.parse(advancedModeSpec);
+                return {
+                    ...advancedSpec,
+                    width: width - VEGA_ACTIONS_WIDTH,
+                };
+            } catch (e) {
+                setError(e.message);
+                return null;
+            }
         }
 
-        // return the finish chart
-        return (
-            <div style={styles.container}>
-                {/* Make the chart responsive */}
-                <ContainerDimensions>
-                    {({ width }) => {
-                        const spec = advancedMode
-                            ? {
-                                  ...advancedSpec,
-                                  width: width - VEGA_ACTIONS_WIDTH,
-                              }
-                            : pieChart.buildSpec(width);
-                        return (
-                            <CustomActionVegaLite
-                                spec={spec}
-                                data={data}
-                                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
-                            />
-                        );
-                    }}
-                </ContainerDimensions>
-            </div>
-        );
+        const specBuilder = new PieChart();
+
+        // enable the orderBy in vega-lite
+        let count = 1;
+        data.values.forEach(entry => {
+            entry.order = count++;
+        });
+
+        specBuilder.setTooltip(tooltip);
+        specBuilder.setTooltipCategory(tooltipCategory);
+        specBuilder.setTooltipValue(tooltipValue);
+        specBuilder.setColor(colors);
+        specBuilder.setLabels(labels);
+
+        return specBuilder.buildSpec(width);
+    }, [
+        width,
+        advancedMode,
+        advancedModeSpec,
+        field,
+        tooltip,
+        tooltipCategory,
+        tooltipValue,
+        colors,
+        labels,
+    ]);
+
+    useEffect(() => {
+        if (!ref.current) {
+            return;
+        }
+
+        const resizeObserver = new ResizeObserver(() => {
+            setWidth(ref.current.offsetWidth);
+        });
+
+        resizeObserver.observe(ref.current);
+    }, [ref.current]);
+
+    if (!spec) {
+        return <InvalidFormat format={field.format} value={error} />;
     }
-}
+
+    return (
+        <div style={styles.container} ref={ref}>
+            <CustomActionVegaLite
+                spec={spec}
+                data={data}
+                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+            />
+        </div>
+    );
+};
 
 PieChartView.propTypes = {
     field: fieldPropTypes.isRequired,
