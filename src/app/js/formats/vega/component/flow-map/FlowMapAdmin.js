@@ -60,10 +60,10 @@ const FlowMapAdmin = props => {
 
         const specBuilder = new FlowMap();
 
-        specBuilder.setTooltip(this.props.tooltip);
-        specBuilder.setTooltipCategory(this.props.tooltipCategory);
-        specBuilder.setTooltipValue(this.props.tooltipValue);
-        specBuilder.setColor(this.props.color.split(' ')[0]);
+        specBuilder.setTooltip(tooltip);
+        specBuilder.setTooltipCategory(tooltipCategory);
+        specBuilder.setTooltipValue(tooltipValue);
+        specBuilder.setColor(color.split(' ')[0]);
         specBuilder.setColorScheme(
             colorScheme !== undefined ? colorScheme : schemeBlues[9].split(' '),
         );
