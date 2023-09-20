@@ -56,18 +56,15 @@ app.use(setTenant);
 if (process.env.EXPOSE_TEST_CONTROLLER) {
     app.use(mount('/tests', testController));
 }
-if (process.env.NODE_ENV === 'e2e') {
-    createWorkerQueue('default', 1);
-}
+
+const workerQueueDefault = createWorkerQueue('default', 1);
+const workerQueueOne = createWorkerQueue('instance_one', 1);
+const workerQueueTwo = createWorkerQueue('instance_two', 1);
+const workerQueueThree = createWorkerQueue('instance_three', 1);
 
 if (process.env.NODE_ENV === 'development') {
     const serverAdapter = new KoaAdapter();
     serverAdapter.setBasePath('/bull');
-    const workerQueueDefault = createWorkerQueue('default', 1);
-    const workerQueueOne = createWorkerQueue('instance_one', 1);
-    const workerQueueTwo = createWorkerQueue('instance_two', 1);
-    const workerQueueThree = createWorkerQueue('instance_three', 1);
-
     createBullBoard({
         queues: [
             new BullAdapter(workerQueueDefault),
