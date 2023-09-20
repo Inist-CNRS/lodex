@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';
@@ -6,7 +6,6 @@ import compose from 'recompose/compose';
 import HeatMap from '../../models/HeatMap';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
-import ContainerDimensions from 'react-container-dimensions';
 import {
     lodexOrderToIdOrder,
     VEGA_LITE_DATA_INJECT_TYPE_A,
@@ -20,57 +19,88 @@ const styles = {
     },
 };
 
-class HeatMapView extends Component {
-    render() {
-        const { advancedMode, advancedModeSpec, field, data } = this.props;
+const HeatMapView = ({
+    advancedMode,
+    advancedModeSpec,
+    field,
+    data,
+    colorScheme,
+    params,
+    flipAxis,
+    tooltip,
+    tooltipSource,
+    tooltipTarget,
+    tooltipWeight,
+}) => {
+    const ref = useRef(null);
+    const [width, setWidth] = useState(0);
+    const [error, setError] = useState('');
 
-        // Create a new heat map instance
-
-        const heatMap = new HeatMap();
-
-        // Set all heat map parameter the chosen by the administrator
-
-        heatMap.setColor(this.props.colorScheme.join(' '));
-        heatMap.setOrderBy(lodexOrderToIdOrder(this.props.params.orderBy));
-        heatMap.flipAxis(this.props.flipAxis);
-        heatMap.setTooltip(this.props.tooltip);
-        heatMap.setTooltipCategory(this.props.tooltipSource);
-        heatMap.setTooltipTarget(this.props.tooltipTarget);
-        heatMap.setTooltipValue(this.props.tooltipWeight);
-
-        let advancedSpec;
-
-        try {
-            advancedSpec = JSON.parse(advancedModeSpec);
-        } catch (e) {
-            return <InvalidFormat format={field.format} value={e.message} />;
+    const spec = useMemo(() => {
+        if (advancedMode) {
+            try {
+                const advancedSpec = JSON.parse(advancedModeSpec);
+                return {
+                    ...advancedSpec,
+                    width: width - VEGA_ACTIONS_WIDTH,
+                };
+            } catch (e) {
+                setError(e.message);
+                return null;
+            }
         }
 
-        // return the finish chart
-        return (
-            <div style={styles.container}>
-                <ContainerDimensions>
-                    {/* Make the chart responsive */}
-                    {({ width }) => {
-                        const spec = advancedMode
-                            ? {
-                                  ...advancedSpec,
-                                  width: width - VEGA_ACTIONS_WIDTH,
-                              }
-                            : heatMap.buildSpec(width);
-                        return (
-                            <CustomActionVegaLite
-                                spec={spec}
-                                data={data}
-                                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
-                            />
-                        );
-                    }}
-                </ContainerDimensions>
-            </div>
-        );
+        const specBuilder = new HeatMap();
+
+        specBuilder.setColor(colorScheme.join(' '));
+        specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
+        specBuilder.flipAxis(flipAxis);
+        specBuilder.setTooltip(tooltip);
+        specBuilder.setTooltipCategory(tooltipSource);
+        specBuilder.setTooltipTarget(tooltipTarget);
+        specBuilder.setTooltipValue(tooltipWeight);
+
+        return specBuilder.buildSpec(width);
+    }, [
+        width,
+        advancedMode,
+        advancedModeSpec,
+        field,
+        colorScheme,
+        params,
+        flipAxis,
+        tooltip,
+        tooltipSource,
+        tooltipTarget,
+        tooltipWeight,
+    ]);
+
+    useEffect(() => {
+        if (!ref.current) {
+            return;
+        }
+
+        const resizeObserver = new ResizeObserver(() => {
+            setWidth(ref.current.offsetWidth);
+        });
+
+        resizeObserver.observe(ref.current);
+    }, [ref.current]);
+
+    if (!spec) {
+        return <InvalidFormat format={field.format} value={error} />;
     }
-}
+
+    return (
+        <div style={styles.container} ref={ref}>
+            <CustomActionVegaLite
+                spec={spec}
+                data={data}
+                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+            />
+        </div>
+    );
+};
 
 HeatMapView.propTypes = {
     field: fieldPropTypes.isRequired,
