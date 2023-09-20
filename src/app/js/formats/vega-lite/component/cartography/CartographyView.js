@@ -42,10 +42,10 @@ class CartographyView extends Component {
                 : schemeOrRd[9],
         );
 
-        let advanceSpec;
+        let advancedSpec;
 
         try {
-            advanceSpec = JSON.parse(advancedModeSpec);
+            advancedSpec = JSON.parse(advancedModeSpec);
         } catch (e) {
             return <InvalidFormat format={field.format} value={e.message} />;
         }
@@ -58,7 +58,7 @@ class CartographyView extends Component {
                     {({ width }) => {
                         const spec = advancedMode
                             ? {
-                                  ...advanceSpec,
+                                  ...advancedSpec,
                                   width: width - VEGA_ACTIONS_WIDTH,
                                   height: (width - VEGA_ACTIONS_WIDTH) * 0.6,
                               }

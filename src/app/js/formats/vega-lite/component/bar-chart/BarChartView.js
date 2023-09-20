@@ -57,10 +57,10 @@ class BarChartView extends Component {
         if (this.props.diagonalValueAxis)
             barChartSpec.setLabelAngle(AXIS_Y, -45);
 
-        let advanceSpec;
+        let advancedSpec;
 
         try {
-            advanceSpec = JSON.parse(advancedModeSpec);
+            advancedSpec = JSON.parse(advancedModeSpec);
         } catch (e) {
             return <InvalidFormat format={field.format} value={e.message} />;
         }
@@ -73,7 +73,7 @@ class BarChartView extends Component {
                     {({ width }) => {
                         const spec = advancedMode
                             ? {
-                                  ...advanceSpec,
+                                  ...advancedSpec,
                                   width: width - VEGA_ACTIONS_WIDTH,
                               }
                             : barChartSpec.buildSpec(width, data.values.length);

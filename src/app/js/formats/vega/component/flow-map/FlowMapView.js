@@ -23,6 +23,14 @@ const styles = {
     },
 };
 
+// const FlowMapView = (props) => {
+//     const { advancedMode, advancedModeSpec, field, data } = props;
+//
+//     const spec = useMemo(() => {
+//
+//     }, []);
+// }
+
 class FlowMapView extends Component {
     render() {
         const { advancedMode, advancedModeSpec, field, data } = this.props;
@@ -43,10 +51,10 @@ class FlowMapView extends Component {
                 : schemeBlues[9].split(' '),
         );
 
-        let advanceSpec;
+        let advancedSpec;
 
         try {
-            advanceSpec = JSON.parse(advancedModeSpec);
+            advancedSpec = JSON.parse(advancedModeSpec);
         } catch (e) {
             return <InvalidFormat format={field.format} value={e.message} />;
         }
@@ -59,7 +67,7 @@ class FlowMapView extends Component {
                     {({ width }) => {
                         const spec = advancedMode
                             ? {
-                                  ...advanceSpec,
+                                  ...advancedSpec,
                                   width: width - VEGA_ACTIONS_WIDTH,
                                   height: width * 0.6,
                               }

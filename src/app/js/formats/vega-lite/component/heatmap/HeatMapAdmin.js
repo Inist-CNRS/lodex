@@ -78,6 +78,8 @@ const HeatMapAdmin = props => {
         return JSON.stringify(specBuilder.buildSpec(), null, 2);
     }, [advancedMode, advancedModeSpec]);
 
+    // Save the new spec when we first use the advanced mode or when we reset the generated spec
+    // details: Update advancedModeSpec props arguments when spec is generated or regenerated
     useEffect(() => {
         if (!advancedMode) {
             return;
@@ -86,7 +88,7 @@ const HeatMapAdmin = props => {
     }, [advancedMode, advancedModeSpec]);
 
     const toggleAdvancedMode = () => {
-        updateAdminArgs('advancedMode', !args.advancedMode, props);
+        updateAdminArgs('advancedMode', !advancedMode, props);
     };
 
     const handleAdvancedModeSpec = newSpec => {
@@ -156,7 +158,13 @@ const HeatMapAdmin = props => {
                 showMinValue={showMinValue}
                 showOrderBy={showOrderBy}
             />
-            {!advancedMode ? (
+            {advancedMode ? (
+                <VegaAdvancedMode
+                    value={spec}
+                    onClear={clearAdvancedModeSpec}
+                    onChange={handleAdvancedModeSpec}
+                />
+            ) : (
                 <>
                     <ToolTips
                         checked={tooltip}
@@ -185,12 +193,6 @@ const HeatMapAdmin = props => {
                         label={polyglot.t('flip_axis')}
                     />
                 </>
-            ) : (
-                <VegaAdvancedMode
-                    value={spec}
-                    onClear={clearAdvancedModeSpec}
-                    onChange={handleAdvancedModeSpec}
-                />
             )}
         </Box>
     );

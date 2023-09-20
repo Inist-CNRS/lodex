@@ -52,6 +52,10 @@ const PieChartAdmin = props => {
         labels,
     } = args;
 
+    const colors = useMemo(() => {
+        return args.colors || defaultArgs.colors;
+    }, [args.colors]);
+
     const spec = useMemo(() => {
         if (!advancedMode) {
             return null;
@@ -72,6 +76,8 @@ const PieChartAdmin = props => {
         return JSON.stringify(specBuilder.buildSpec(), null, 2);
     }, [advancedMode, advancedModeSpec]);
 
+    // Save the new spec when we first use the advanced mode or when we reset the generated spec
+    // details: Update advancedModeSpec props arguments when spec is generated or regenerated
     useEffect(() => {
         if (!advancedMode) {
             return;
@@ -80,7 +86,7 @@ const PieChartAdmin = props => {
     }, [advancedMode, advancedModeSpec]);
 
     const toggleAdvancedMode = () => {
-        updateAdminArgs('advancedMode', !args.advancedMode, props);
+        updateAdminArgs('advancedMode', !advancedMode, props);
     };
 
     const handleAdvancedModeSpec = newSpec => {
@@ -91,10 +97,6 @@ const PieChartAdmin = props => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
-    const colors = useMemo(() => {
-        return args.colors || defaultArgs.colors;
-    }, [args.colors]);
-
     const handleParams = params => updateAdminArgs('params', params, props);
 
     const handleColors = colors => {
@@ -102,11 +104,11 @@ const PieChartAdmin = props => {
     };
 
     const toggleLabels = () => {
-        updateAdminArgs('labels', !args.labels, props);
+        updateAdminArgs('labels', !labels, props);
     };
 
     const toggleTooltip = () => {
-        updateAdminArgs('tooltip', !args.tooltip, props);
+        updateAdminArgs('tooltip', !tooltip, props);
     };
 
     const handleTooltipCategory = tooltipCategory => {
@@ -144,7 +146,13 @@ const PieChartAdmin = props => {
                 showMinValue={showMinValue}
                 showOrderBy={showOrderBy}
             />
-            {!advancedMode ? (
+            {advancedMode ? (
+                <VegaAdvancedMode
+                    value={spec}
+                    onClear={clearAdvancedModeSpec}
+                    onChange={handleAdvancedModeSpec}
+                />
+            ) : (
                 <>
                     <FormControlLabel
                         control={
@@ -171,12 +179,6 @@ const PieChartAdmin = props => {
                         polyglot={polyglot}
                     />
                 </>
-            ) : (
-                <VegaAdvancedMode
-                    value={spec}
-                    onClear={clearAdvancedModeSpec}
-                    onChange={handleAdvancedModeSpec}
-                />
             )}
         </Box>
     );

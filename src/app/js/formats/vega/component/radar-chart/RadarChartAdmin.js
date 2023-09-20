@@ -82,6 +82,8 @@ const RadarChartAdmin = props => {
         return JSON.stringify(specBuilder.buildSpec(), null, 2);
     }, [advancedMode, advancedModeSpec]);
 
+    // Save the new spec when we first use the advanced mode or when we reset the generated spec
+    // details: Update advancedModeSpec props arguments when spec is generated or regenerated
     useEffect(() => {
         if (!advancedMode) {
             return;

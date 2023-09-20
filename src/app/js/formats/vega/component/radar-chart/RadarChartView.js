@@ -36,7 +36,7 @@ class RadarChartView extends Component {
 
         // Create a new radar chart instance
 
-        const radarChart = deepClone(new RadarChart());
+        const radarChart = new RadarChart();
 
         // Set all radar chart parameter the chosen by the administrator
 
@@ -46,10 +46,10 @@ class RadarChartView extends Component {
         radarChart.setTooltipValue(this.props.tooltipValue);
         radarChart.setScale(lodexScaleToIdScale(this.props.scale));
 
-        let advanceSpec;
+        let advancedSpec;
 
         try {
-            advanceSpec = JSON.parse(advancedModeSpec);
+            advancedSpec = JSON.parse(advancedModeSpec);
         } catch (e) {
             return <InvalidFormat format={field.format} value={e.message} />;
         }
@@ -62,7 +62,7 @@ class RadarChartView extends Component {
                     {({ width }) => {
                         const spec = advancedMode
                             ? {
-                                  ...advanceSpec,
+                                  ...advancedSpec,
                                   width: width - width * 0.06,
                                   height: width - width * 0.24,
                               }

@@ -109,6 +109,8 @@ const BarChartAdmin = props => {
         return JSON.stringify(specBuilder.buildSpec(), null, 2);
     }, [advancedMode, advancedModeSpec]);
 
+    // Save the new spec when we first use the advanced mode or when we reset the generated spec
+    // details: Update advancedModeSpec props arguments when spec is generated or regenerated
     useEffect(() => {
         if (!advancedMode) {
             return;
@@ -117,7 +119,7 @@ const BarChartAdmin = props => {
     }, [advancedMode, advancedModeSpec]);
 
     const toggleAdvancedMode = () => {
-        updateAdminArgs('advancedMode', !args.advancedMode, props);
+        updateAdminArgs('advancedMode', !advancedMode, props);
     };
 
     const handleAdvancedModeSpec = newSpec => {
@@ -133,11 +135,11 @@ const BarChartAdmin = props => {
     };
 
     const handleColors = colors => {
-        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
+        updateAdminArgs('colors', colors || defaultArgs.colors, props);
     };
 
     const handleAxisRoundValue = () => {
-        updateAdminArgs('axisRoundValue', !args.axisRoundValue, props);
+        updateAdminArgs('axisRoundValue', !axisRoundValue, props);
     };
 
     const handleScale = event => {
@@ -149,15 +151,11 @@ const BarChartAdmin = props => {
     };
 
     const toggleDiagonalValueAxis = () => {
-        updateAdminArgs('diagonalValueAxis', !args.diagonalValueAxis, props);
+        updateAdminArgs('diagonalValueAxis', !diagonalValueAxis, props);
     };
 
     const toggleDiagonalCategoryAxis = () => {
-        updateAdminArgs(
-            'diagonalCategoryAxis',
-            !args.diagonalCategoryAxis,
-            props,
-        );
+        updateAdminArgs('diagonalCategoryAxis', !diagonalCategoryAxis, props);
     };
 
     const handleBarSize = event => {
@@ -211,7 +209,13 @@ const BarChartAdmin = props => {
                 showMinValue={showMinValue}
                 showOrderBy={showOrderBy}
             />
-            {!advancedMode ? (
+            {advancedMode ? (
+                <VegaAdvancedMode
+                    value={spec}
+                    onClear={clearAdvancedModeSpec}
+                    onChange={handleAdvancedModeSpec}
+                />
+            ) : (
                 <>
                     <ToolTips
                         checked={tooltip}
@@ -305,12 +309,6 @@ const BarChartAdmin = props => {
                         value={barSize}
                     />
                 </>
-            ) : (
-                <VegaAdvancedMode
-                    value={spec}
-                    onClear={clearAdvancedModeSpec}
-                    onChange={handleAdvancedModeSpec}
-                />
             )}
         </Box>
     );

@@ -38,10 +38,10 @@ class HeatMapView extends Component {
         heatMap.setTooltipTarget(this.props.tooltipTarget);
         heatMap.setTooltipValue(this.props.tooltipWeight);
 
-        let advanceSpec;
+        let advancedSpec;
 
         try {
-            advanceSpec = JSON.parse(advancedModeSpec);
+            advancedSpec = JSON.parse(advancedModeSpec);
         } catch (e) {
             return <InvalidFormat format={field.format} value={e.message} />;
         }
@@ -54,7 +54,7 @@ class HeatMapView extends Component {
                     {({ width }) => {
                         const spec = advancedMode
                             ? {
-                                  ...advanceSpec,
+                                  ...advancedSpec,
                                   width: width - VEGA_ACTIONS_WIDTH,
                               }
                             : heatMap.buildSpec(width);

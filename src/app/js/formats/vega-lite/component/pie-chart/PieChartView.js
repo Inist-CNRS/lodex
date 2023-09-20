@@ -40,10 +40,10 @@ class PieChartView extends Component {
         pieChart.setColor(this.props.colors);
         pieChart.setLabels(this.props.labels);
 
-        let advanceSpec;
+        let advancedSpec;
 
         try {
-            advanceSpec = JSON.parse(advancedModeSpec);
+            advancedSpec = JSON.parse(advancedModeSpec);
         } catch (e) {
             return <InvalidFormat format={field.format} value={e.message} />;
         }
@@ -56,7 +56,7 @@ class PieChartView extends Component {
                     {({ width }) => {
                         const spec = advancedMode
                             ? {
-                                  ...advanceSpec,
+                                  ...advancedSpec,
                                   width: width - VEGA_ACTIONS_WIDTH,
                               }
                             : pieChart.buildSpec(width);
