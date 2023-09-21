@@ -23,9 +23,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - run: make install
-
-      - run: make test-unit
+      # Those three lines do the same things as "make install" and "make test-unit" but without a docker container
+      # - run: make install
+      # - run: make test-unit
+      - run: make copy-conf
+      - run: npm ci
+      - run: npm run test:unit
 
   test-api-e2e:
     runs-on: ubuntu-latest
@@ -43,8 +46,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - run: make install
-
+      # Those two lines do the same things as "make install" but without a docker container
+      # - run: make install
+      - run: make copy-conf
+      - run: npm ci
       - run: make test-api-e2e
 
   test-e2e:
@@ -63,7 +68,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - run: make install
+      # Those two lines do the same things as "make install" but without a docker container
+      # - run: make install
+      - run: make copy-conf
+      - run: npm ci
 
       - run: make test-e2e
 
