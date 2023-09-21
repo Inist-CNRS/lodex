@@ -9,6 +9,7 @@ import {
     loadFixtures,
     close,
 } from '../../common/tests/fixtures';
+import { closeAllWorkerQueues } from '../workers';
 
 const adminHeader = {
     cookie: `lodex_token=${jwt.sign(
@@ -390,6 +391,7 @@ describe('e2e publishedDataset Authentication', () => {
     });
 
     afterAll(async () => {
+        await closeAllWorkerQueues();
         server.close();
         await clear();
         await close();
