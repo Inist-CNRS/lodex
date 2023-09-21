@@ -76,12 +76,15 @@ const BubblePlotView = ({
     ]);
 
     useEffect(() => {
-        if (!ref.current) {
+        if (!ref || !ref.current) {
             return;
         }
 
         const resizeObserver = new ResizeObserver(() => {
-            setWidth(ref.current.offsetWidth);
+            try {
+                setWidth(ref.current.offsetWidth);
+                // eslint-disable-next-line no-empty
+            } catch (e) {}
         });
 
         resizeObserver.observe(ref.current);

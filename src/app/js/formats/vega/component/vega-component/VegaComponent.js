@@ -1,5 +1,5 @@
 import { Vega } from 'react-vega';
-import React, { useMemo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isAdmin } from '../../../../user';
@@ -8,16 +8,26 @@ import {
     VEGA_DATA_INJECT_TYPE_A,
     VEGA_DATA_INJECT_TYPE_B,
 } from '../../../chartsUtils';
-import set from 'lodash.set';
 
 /**
  * small component use to handle vega lite display
  * @param props args taken by the component
  * @returns {*} React-Vega component
  */
-const CustomActionVega = ({ user, data, spec, injectType }) => {
-    const actions = useMemo(() => {
-        const defaultActions = {
+function CustomActionVega(props) {
+    let actions;
+    if (isAdmin(props.user)) {
+        actions = {
+            export: {
+                svg: true,
+                png: true,
+            },
+            source: true,
+            compiled: true,
+            editor: true,
+        };
+    } else {
+        actions = {
             export: {
                 svg: true,
                 png: true,
@@ -26,48 +36,43 @@ const CustomActionVega = ({ user, data, spec, injectType }) => {
             compiled: false,
             editor: false,
         };
-        if (isAdmin(user)) {
-            return {
-                ...defaultActions,
-                source: true,
-                compiled: true,
-                editor: true,
-            };
-        }
-        return defaultActions;
-    }, [user]);
+    }
 
-    const specWithData = useMemo(() => {
-        const tmpSpec = deepClone(spec);
+    const spec = props.spec;
 
-        if (injectType === VEGA_DATA_INJECT_TYPE_A) {
-            tmpSpec.data.forEach(entry => {
-                if (entry.name === 'table') {
-                    set(entry, 'values', data.values);
+    switch (props.injectType) {
+        case VEGA_DATA_INJECT_TYPE_A:
+            spec.data.forEach(e => {
+                if (e.name === 'table') {
+                    e.values = props.data.values;
                 }
             });
-            return tmpSpec;
-        }
+            break;
+        case VEGA_DATA_INJECT_TYPE_B:
+            {
+                let data = {
+                    values: [],
+                };
+                props.data.values.forEach(e => {
+                    data.values.push({
+                        origin: e.source,
+                        destination: e.target,
+                        count: e.weight,
+                    });
+                });
+                spec.data.forEach(e => {
+                    if (e.name === 'routes' || e.name === 'link_data') {
+                        e.values = data.values;
+                    }
+                });
+            }
+            break;
+        default:
+            throw new Error('Invalid data injection type');
+    }
 
-        if (injectType === VEGA_DATA_INJECT_TYPE_B) {
-            const mappedData = data.values.map(entry => ({
-                origin: entry.source,
-                destination: entry.target,
-                count: entry.weight,
-            }));
-            tmpSpec.data.forEach(entry => {
-                if (entry.name === 'routes' || entry.name === 'link_data') {
-                    set(entry, 'values', mappedData);
-                }
-            });
-            return tmpSpec;
-        }
-
-        return tmpSpec;
-    }, [injectType, spec, data]);
-
-    return <Vega spec={specWithData} actions={actions} mode="vega" />;
-};
+    return <Vega spec={deepClone(props.spec)} actions={actions} mode="vega" />;
+}
 
 /**
  * Element required in the props

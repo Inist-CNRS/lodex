@@ -1,29 +1,36 @@
 import { Vega } from 'react-vega';
-import React, { useMemo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isAdmin } from '../../../../user';
-import deepClone from 'lodash.clonedeep';
 import {
     VEGA_LITE_DATA_INJECT_TYPE_A,
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../../chartsUtils';
-import set from 'lodash.set';
+import deepClone from 'lodash.clonedeep';
 
 export const VEGA_ACTIONS_WIDTH = 40;
 
 /**
  * small component use to handle vega lite display
- * @param user
- * @param injectType
- * @param data
- * @param spec
+ * @param props args taken by the component
  * @returns {*} React-Vega component
  */
-const CustomActionVegaLite = ({ user, injectType, data, spec }) => {
-    const actions = useMemo(() => {
-        const defaultActions = {
+function CustomActionVegaLite(props) {
+    let actions;
+    if (isAdmin(props.user)) {
+        actions = {
+            export: {
+                svg: true,
+                png: true,
+            },
+            source: true,
+            compiled: true,
+            editor: true,
+        };
+    } else {
+        actions = {
             export: {
                 svg: true,
                 png: true,
@@ -32,48 +39,34 @@ const CustomActionVegaLite = ({ user, injectType, data, spec }) => {
             compiled: false,
             editor: false,
         };
-        if (isAdmin(user)) {
-            return {
-                ...defaultActions,
-                source: true,
-                compiled: true,
-                editor: true,
-            };
-        }
-        return defaultActions;
-    }, [user]);
+    }
 
-    const specWithData = useMemo(() => {
-        const tmpSpec = deepClone(spec);
+    const spec = props.spec;
 
-        if (injectType === VEGA_LITE_DATA_INJECT_TYPE_A) {
-            set(tmpSpec, 'data', data);
-            return tmpSpec;
-        }
-
-        if (injectType === VEGA_LITE_DATA_INJECT_TYPE_B) {
-            tmpSpec.transform.forEach(entry => {
-                if (entry.lookup === 'id') {
-                    set(entry, 'from.data.values', data.values);
+    switch (props.injectType) {
+        case VEGA_LITE_DATA_INJECT_TYPE_A:
+            spec.data = props.data;
+            break;
+        case VEGA_LITE_DATA_INJECT_TYPE_B:
+            spec.transform.forEach(e => {
+                if (e.lookup === 'id') {
+                    e.from.data.values = props.data.values;
                 }
             });
-            return tmpSpec;
-        }
-
-        if (injectType === VEGA_LITE_DATA_INJECT_TYPE_C) {
-            tmpSpec.transform.forEach(entry => {
-                if (entry.lookup === 'properties.HASC_2') {
-                    set(entry, 'from.data.values', data.values);
+            break;
+        case VEGA_LITE_DATA_INJECT_TYPE_C:
+            spec.transform.forEach(e => {
+                if (e.lookup === 'properties.HASC_2') {
+                    e.from.data.values = props.data.values;
                 }
             });
-            return tmpSpec;
-        }
+            break;
+        default:
+            throw new Error('Invalid data injection type');
+    }
 
-        return tmpSpec;
-    }, [injectType, spec, data]);
-
-    return <Vega spec={specWithData} actions={actions} mode="vega-lite" />;
-};
+    return <Vega spec={deepClone(spec)} actions={actions} mode="vega-lite" />;
+}
 
 /**
  * Element required in the props
