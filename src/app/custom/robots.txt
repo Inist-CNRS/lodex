@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /admin
+Disallow: /instance/*/admin
 Disallow: /login
 Sitemap: /api/export/sitemap
 

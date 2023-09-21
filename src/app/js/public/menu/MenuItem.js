@@ -78,6 +78,11 @@ const getIcon = icon => {
     );
 };
 
+function extractTenantFromUrl(url) {
+    const match = url.match(/\/instance\/([^/]+)/);
+    return match ? match[1] : null;
+}
+
 const MenuItem = ({
     config,
     polyglot,
@@ -193,12 +198,31 @@ const MenuItem = ({
             return (
                 role === 'admin' && (
                     <a
-                        href="/admin"
+                        href={`/instance/${extractTenantFromUrl(
+                            window.location.href,
+                        ) || 'default'}/admin`}
                         className={classnames(
                             'nav-item',
                             styles.menuItem,
                             styles.link,
                         )}
+                    >
+                        {icon}
+                        {label}
+                    </a>
+                )
+            );
+        case 'root':
+            return (
+                role === 'root' && (
+                    <a
+                        href={`/admin`}
+                        className={classnames(
+                            'nav-item',
+                            styles.menuItem,
+                            styles.link,
+                        )}
+                        style={{ maxWidth: 'none' }} // TODO: Quick Fix, check why maxWidth is set to 90px
                     >
                         {icon}
                         {label}
