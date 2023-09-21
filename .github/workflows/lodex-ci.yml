@@ -7,52 +7,71 @@ on:
      
 jobs:
   test-unit:
-    timeout-minutes: 10
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        # See https://github.com/nodejs/Release
+        node-version: [ 12.x ]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
+      - uses: actions/checkout@v4
 
-    - name: Install LODEX
-      run: make install
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-    - name: Start Unit Tests
-      run: make test-unit
+      - name: Run Tests Unit
+        run: make install
+
+      - run: make test-unit
 
   test-api-e2e:
-    timeout-minutes: 10
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
+      - uses: actions/checkout@v4
 
-    - name: Install LODEX
-      run: make install
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-    - name: Start API E2E Tests
-      run: make test-api-e2e
+      - name: Run API E2E Tests
+        run: make install
+
+      - run: make test-api-e2e
 
   test-e2e:
-    timeout-minutes: 30
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
+      - uses: actions/checkout@v4
 
-    - name: Install LODEX
-      run: make install
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: make install
 
-    - name: Start E2E Tests
-      run: make test-e2e
+      - name: Run E2E Tests
+        run: make test-e2e
 
-    - name: Upload screenshots
-      uses: actions/upload-artifact@v2
-      if: failure()
-      with:
-        name: cypress-screenshots
-        path: cypress/screenshots
-       
-
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
