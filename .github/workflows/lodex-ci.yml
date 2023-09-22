@@ -72,9 +72,12 @@ jobs:
       - run: make copy-conf
       - run: npm ci
 
-      - run: make test-e2e-phase
-        env:
-          E2E_PHASE: ${{ matrix.test-phase }}
+      - run: make test-e2e-start-dockers
+
+      - run: ./bin/wait-for -t 60 localhost:3000
+      - run: npm run test:e2e:${{ matrix.test-phase }}
+
+      - run: make test-e2e-stop-dockers
 
       - name: Upload screenshots
         uses: actions/upload-artifact@v2
