@@ -57,7 +57,7 @@ jobs:
     strategy:
       matrix:
         node-version: [ 12.x ]
-        test-phase: [ phase:one, phase:two, phase:three, phase:four ]
+        test-phase: [ 'phase:one', 'phase:two', 'phase:three', 'phase:four' ]
 
     steps:
       - uses: actions/checkout@v4
