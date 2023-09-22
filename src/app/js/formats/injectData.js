@@ -34,7 +34,6 @@ const styles = {
             right: 0,
             pointerEvents: 'none',
             transitionDuration: '150ms',
-            backgroundColor: 'rgba(0,0,0,0.15)',
         },
         progress: {
             zIndex: 99999,
@@ -182,15 +181,20 @@ export default (
 
             return (
                 <div style={styles.format.container}>
+                    <div
+                        style={{
+                            ...styles.format.loading,
+                            backgroundColor: isDataSetLoading
+                                ? 'rgba(0,0,0,0.15)'
+                                : 'rgba(0,0,0,0)',
+                        }}
+                    ></div>
                     {isDataSetLoading ? (
-                        <>
-                            <div style={styles.format.loading}></div>
-                            <CircularProgress
-                                sx={styles.format.progress}
-                                variant="indeterminate"
-                                size={40}
-                            />
-                        </>
+                        <CircularProgress
+                            sx={styles.format.progress}
+                            variant="indeterminate"
+                            size={40}
+                        />
                     ) : null}
                     <FormatView
                         {...props}
