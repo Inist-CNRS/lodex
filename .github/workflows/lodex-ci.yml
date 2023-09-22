@@ -73,12 +73,12 @@ jobs:
 
       - run: docker compose -f docker-compose.spec.yml build
 
-      - run: docker save --output lodex.tar lodex
+      - run: docker save --output lodex-api.tar lodex-api
 
       - uses: actions/upload-artifact@v3
         with:
-          name: lodex
-          path: /tmp/lodex.tar
+          name: lodex-api
+          path: /tmp/lodex-api.tar
 
   test-e2e:
     runs-on: ubuntu-latest
@@ -104,10 +104,10 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: lodex
+          name: lodex-api
           path: /tmp
 
-      - run: docker load --input /tmp/lodex.tar
+      - run: docker load --input /tmp/lodex-api.tar
 
       - run: make test-e2e-start-dockers
 
