@@ -51,8 +51,38 @@ jobs:
 
       - run: make test-api-e2e
 
+  build-e2e-image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      # Those two lines do the same things as "make install" but without a docker container
+      - run: make copy-conf
+      - run: npm ci
+
+      - run: docker compose -f docker-compose.spec.yml build
+
+      - run: docker save --output lodex.tar lodex
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: lodex
+          path: /tmp/lodex.tar
+
   test-e2e:
     runs-on: ubuntu-latest
+    needs: build-e2e-image
     timeout-minutes: 30
     strategy:
       matrix:
@@ -71,6 +101,13 @@ jobs:
       # Those two lines do the same things as "make install" but without a docker container
       - run: make copy-conf
       - run: npm ci
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: lodex
+          path: /tmp
+
+      - run: docker load --input /tmp/lodex.tar
 
       - run: make test-e2e-start-dockers
 
