@@ -1,4 +1,4 @@
-import { cleanWaitingJobsOfType, workerQueue } from '.';
+import { cleanWaitingJobsOfType, workerQueues } from '.';
 import logger from '../services/logger';
 import progress from '../services/progress';
 
@@ -19,51 +19,54 @@ export const jobLogger = {
     },
 };
 
-export const getActiveJob = async () => {
-    const activeJobs = await getActiveJobs();
+export const getActiveJob = async tenant => {
+    const activeJobs = await getActiveJobs(tenant);
     return activeJobs?.[0] || undefined;
 };
 
-export const getActiveJobs = async () => {
-    const activeJobs = await workerQueue.getActive();
+export const getActiveJobs = async tenant => {
+    const activeJobs = await workerQueues[tenant].getActive();
+
     if (activeJobs.length === 0) {
         return undefined;
     }
     return activeJobs;
 };
 
-export const getWaitingJobs = async () => {
-    const waitingJobs = await workerQueue.getWaiting();
+export const getWaitingJobs = async tenant => {
+    const waitingJobs = await workerQueues[tenant].getWaiting();
+
     if (waitingJobs.length === 0) {
         return undefined;
     }
     return waitingJobs;
 };
 
-export const cancelJob = async jobType => {
-    const activeJob = await getActiveJob();
+export const cancelJob = async (ctx, jobType) => {
+    const activeJob = await getActiveJob(ctx.tenant);
     if (activeJob?.data?.jobType === jobType) {
         if (jobType === 'publisher') {
-            await cleanWaitingJobsOfType(activeJob.data.jobType);
+            await cleanWaitingJobsOfType(ctx.tenant, activeJob.data.jobType);
         }
         activeJob.moveToFailed(new Error('cancelled'), true);
-        progress.finish();
+        progress.finish(ctx.tenant);
     }
 };
 
-export const dropJobs = async jobType => {
-    const jobs = await workerQueue.getJobs();
+export const dropJobs = async (tenant, jobType) => {
+    const jobs = await workerQueues[tenant].getJobs();
     jobs.forEach(job => {
         if (!jobType || job.data.jobType === jobType) job.remove();
     });
 };
 
-export const clearJobs = async () => {
-    const waitingJobs = await getWaitingJobs();
-    const activeJobs = await getActiveJobs();
+export const clearJobs = async ctx => {
+    const waitingJobs = await getWaitingJobs(ctx.tenant);
+    const activeJobs = await getActiveJobs(ctx.tenant);
+
     waitingJobs?.forEach(waitingJob => waitingJob.remove());
     activeJobs?.forEach(activeJob =>
         activeJob.moveToFailed(new Error('cancelled'), true),
     );
-    progress.finish();
+    progress.finish(ctx.tenant);
 };

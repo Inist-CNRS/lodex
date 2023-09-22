@@ -2,13 +2,25 @@ import config from 'config';
 
 import { parseRequest, uploadChunkMiddleware, uploadUrl } from './upload';
 import { IMPORT } from '../../workers/import';
-import { workerQueue } from '../../workers';
-jest.mock('../../workers');
+import progress from '../../services/progress';
+import { workerQueues } from '../../workers';
+jest.mock('../../workers', () => ({
+    workerQueues: {
+        lodex_test: {
+            add: jest.fn(),
+        },
+    },
+}));
 jest.mock('uuid', () => ({ v1: () => 'uuid' }));
 
 describe('upload', () => {
+    beforeAll(async () => {
+        progress.initialize('lodex_test');
+    });
+
     describe('parseRequest', () => {
         const ctx = {
+            tenant: 'lodex_test',
             req: 'req',
             requestToStream: jest.fn().mockImplementation(() => ({
                 stream: 'stream',
@@ -46,6 +58,7 @@ describe('upload', () => {
     describe('uploadChunkMiddleware', () => {
         describe('when chunk already exists but not all chunk are present', () => {
             const ctx = {
+                tenant: 'lodex_test',
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => true),
                 saveStreamInFile: jest.fn(),
@@ -62,7 +75,7 @@ describe('upload', () => {
             const next = jest.fn();
 
             beforeAll(async () => {
-                workerQueue.add.mockClear();
+                workerQueues[ctx.tenant].add.mockClear();
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -93,12 +106,13 @@ describe('upload', () => {
             });
 
             it('should not add job to the queue', () => {
-                expect(workerQueue.add).not.toHaveBeenCalled();
+                expect(workerQueues[ctx.tenant].add).not.toHaveBeenCalled();
             });
         });
 
         describe('when chunk already exists and all chunk are present', () => {
             const ctx = {
+                tenant: 'lodex_test',
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => true),
                 saveStreamInFile: jest.fn(),
@@ -116,7 +130,7 @@ describe('upload', () => {
             const next = jest.fn();
 
             beforeAll(async () => {
-                workerQueue.add.mockClear();
+                workerQueues[ctx.tenant].add.mockClear();
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -139,13 +153,16 @@ describe('upload', () => {
             });
 
             it('should add job to the queue', () => {
-                expect(workerQueue.add).toHaveBeenCalledWith(
+                expect(workerQueues[ctx.tenant].add).toHaveBeenCalledWith(
+                    IMPORT,
                     {
                         extension: 'extension',
                         filename: 'filename',
                         jobType: IMPORT,
                         loaderName: 'type',
                         totalChunks: 'totalChunks',
+                        customLoader: undefined,
+                        tenant: 'lodex_test',
                     },
                     { jobId: 'uuid' },
                 );
@@ -154,6 +171,7 @@ describe('upload', () => {
 
         describe('when chunk do not already exists and all chunk become present', () => {
             const ctx = {
+                tenant: 'lodex_test',
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => false),
                 saveStreamInFile: jest.fn(),
@@ -171,7 +189,7 @@ describe('upload', () => {
             const next = jest.fn();
 
             beforeAll(async () => {
-                workerQueue.add.mockClear();
+                workerQueues[ctx.tenant].add.mockClear();
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -197,13 +215,16 @@ describe('upload', () => {
             });
 
             it('should add job to the queue', () => {
-                expect(workerQueue.add).toHaveBeenCalledWith(
+                expect(workerQueues[ctx.tenant].add).toHaveBeenCalledWith(
+                    IMPORT,
                     {
                         extension: 'extension',
                         filename: 'filename',
                         jobType: IMPORT,
                         loaderName: 'type',
                         totalChunks: 'totalChunks',
+                        customLoader: undefined,
+                        tenant: 'lodex_test',
                     },
                     { jobId: 'uuid' },
                 );
@@ -212,6 +233,7 @@ describe('upload', () => {
 
         describe('when chunk do not already exists and all chunk are not present', () => {
             const ctx = {
+                tenant: 'lodex_test',
                 getUploadedFileSize: jest.fn(() => false),
                 checkFileExists: jest.fn().mockImplementation(() => false),
                 saveStreamInFile: jest.fn(),
@@ -228,7 +250,7 @@ describe('upload', () => {
             const next = jest.fn();
 
             beforeAll(async () => {
-                workerQueue.add.mockClear();
+                workerQueues[ctx.tenant].add.mockClear();
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -262,13 +284,14 @@ describe('upload', () => {
             });
 
             it('should not add job to the queue', () => {
-                expect(workerQueue.add).not.toHaveBeenCalled();
+                expect(workerQueues[ctx.tenant].add).not.toHaveBeenCalled();
             });
         });
     });
 
     describe('uploadUrl', () => {
         const ctx = {
+            tenant: 'lodex_test',
             request: {
                 body: {
                     url: 'http://host/file.name.ext',
@@ -278,17 +301,20 @@ describe('upload', () => {
         };
 
         beforeAll(async () => {
-            workerQueue.add.mockClear();
+            workerQueues[ctx.tenant].add.mockClear();
             await uploadUrl(ctx);
         });
 
         it('should add job to the queue', () => {
-            expect(workerQueue.add).toHaveBeenCalledWith(
+            expect(workerQueues[ctx.tenant].add).toHaveBeenCalledWith(
+                IMPORT,
                 {
                     extension: 'ext',
                     url: 'http://host/file.name.ext',
                     jobType: IMPORT,
                     loaderName: 'type',
+                    customLoader: undefined,
+                    tenant: 'lodex_test',
                 },
                 { jobId: 'uuid' },
             );
@@ -297,6 +323,7 @@ describe('upload', () => {
 
     describe('uploadUrl with customLoader', () => {
         const ctx = {
+            tenant: 'lodex_test',
             request: {
                 body: {
                     url: 'http://host/file.name.ext',
@@ -306,17 +333,20 @@ describe('upload', () => {
         };
 
         beforeAll(async () => {
-            workerQueue.add.mockClear();
+            workerQueues[ctx.tenant].add.mockClear();
             await uploadUrl(ctx);
         });
 
         it('should add job to the queue', () => {
-            expect(workerQueue.add).toHaveBeenCalledWith(
+            expect(workerQueues[ctx.tenant].add).toHaveBeenCalledWith(
+                IMPORT,
                 {
                     extension: 'ext',
                     url: 'http://host/file.name.ext',
                     jobType: IMPORT,
                     customLoader: 'customLoader',
+                    loaderName: undefined,
+                    tenant: 'lodex_test',
                 },
                 { jobId: 'uuid' },
             );

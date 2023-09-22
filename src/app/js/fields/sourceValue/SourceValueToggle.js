@@ -3,9 +3,11 @@ import ArbitraryIcon from '@mui/icons-material/FormatQuote';
 import compose from 'recompose/compose';
 import FromColumnsIcon from '@mui/icons-material/ViewColumn';
 import FromSubRessourceIcon from '@mui/icons-material/DocumentScanner';
+import ProcessingIcon from '@mui/icons-material/Settings';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import SourceValueArbitrary from './SourceValueArbitrary';
+import SourceValueExternal from './SourceValueExternal';
 import SourceValueFromColumns from './SourceValueFromColumns';
 import SourceValueFromColumnsForSubResource from './SourceValueFromColumnsForSubResource';
 
@@ -33,6 +35,20 @@ const TRANSFORMERS_FORM_STATUS = new Map([
                 args: [
                     {
                         name: 'value',
+                        type: 'string',
+                    },
+                ],
+            },
+        ],
+    ],
+    [
+        'external',
+        [
+            {
+                operation: 'WEBSERVICE',
+                args: [
+                    {
+                        name: 'webservice',
                         type: 'string',
                     },
                 ],
@@ -128,6 +144,10 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
             source: 'arbitrary',
             value: transformers[0]?.args && transformers[0].args[0]?.value,
         },
+        WEBSERVICE: {
+            source: 'external',
+            value: transformers[0]?.args && transformers[0].args[0]?.value,
+        },
         COLUMN: {
             source: 'fromColumns',
             // if value undefined, it will be set to empty array
@@ -196,7 +216,11 @@ export const SourceValueToggle = ({
         newTransformers,
     ) => {
         let defaultTransformersLength = 0;
-        if (currentSource === 'arbitrary' || currentSource === 'fromColumns') {
+        if (
+            currentSource === 'arbitrary' ||
+            currentSource === 'external' ||
+            currentSource === 'fromColumns'
+        ) {
             defaultTransformersLength = 1;
         }
         if (currentSource === 'fromColumnsForSubRessource') {
@@ -309,6 +333,13 @@ export const SourceValueToggle = ({
                     </Typography>
                 </ToggleButton>
 
+                <ToggleButton disabled={arbitraryMode} value="external">
+                    <ProcessingIcon style={{ fontSize: 50 }} />
+                    <Typography variant="caption">
+                        {polyglot.t('external_processing')}
+                    </Typography>
+                </ToggleButton>
+
                 <ToggleButton
                     disabled={arbitraryMode}
                     value={
@@ -337,6 +368,19 @@ export const SourceValueToggle = ({
 
             {source === 'arbitrary' && (
                 <SourceValueArbitrary
+                    updateDefaultValueTransformers={newTransformers =>
+                        updateDefaultValueTransformers(
+                            source,
+                            currentTransformers,
+                            newTransformers,
+                        )
+                    }
+                    value={value}
+                />
+            )}
+
+            {source === 'external' && (
+                <SourceValueExternal
                     updateDefaultValueTransformers={newTransformers =>
                         updateDefaultValueTransformers(
                             source,

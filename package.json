@@ -3,7 +3,7 @@
         "node": ">= 12"
     },
     "name": "lodex",
-    "version": "14.0.4",
+    "version": "14.0.7-alpha",
     "description": "",
     "main": "src/api/index.js",
     "browser": {
@@ -31,7 +31,7 @@
         "insertversion:makefile": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" Makefile",
         "insertversion:docker": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose*.yml",
         "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && git add README.md Makefile",
-        "postinstall": "cd ./packages/ezsLodex/ && npm install  --production --install-strategy=nested"
+        "postinstall": "cd ./packages/ezsLodex/ && npm install  --production --install-strategy=nested && cd ../transformers/ && npm install  --production --install-strategy=nested"
     },
     "nodemonConfig": {
         "ignore": [
@@ -75,7 +75,7 @@
         "@ezs/lodex": "file:./packages/ezsLodex",
         "@ezs/loterre": "^2.0.3",
         "@ezs/sparql": "^1.2.2",
-        "@ezs/transformers": "1.4.3",
+        "@ezs/transformers": "file:./packages/transformers",
         "@ezs/xslt": "1.3.30",
         "@fortawesome/fontawesome-svg-core": "^1.2.36",
         "@fortawesome/free-solid-svg-icons": "^5.11.2",

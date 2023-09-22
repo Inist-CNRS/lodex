@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
-import { workerQueue } from '../../workers';
+import { workerQueues } from '../../workers';
 import { cancelJob, clearJobs } from '../../workers/tools';
 
 export const setup = async (ctx, next) => {
@@ -14,16 +14,16 @@ export const setup = async (ctx, next) => {
 };
 
 export const getJobLogs = async (ctx, id) => {
-    ctx.body = await workerQueue.getJobLogs(id);
+    ctx.body = await workerQueues[ctx.tenant].getJobLogs(id);
 };
 
 export const postCancelJob = async (ctx, type) => {
-    cancelJob(type);
+    cancelJob(ctx, type);
     ctx.status = 200;
 };
 
 export const postClearJobs = async ctx => {
-    clearJobs();
+    clearJobs(ctx);
     ctx.body = { status: 'success' };
     ctx.status = 200;
 };

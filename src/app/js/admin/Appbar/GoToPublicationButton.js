@@ -4,10 +4,12 @@ import compose from 'recompose/compose';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import c from 'config';
 
 const GoToPublicationButtonComponent = ({ p: polyglot }) => {
     const handleGoToPublication = () => {
-        window.location.replace(window.location.origin);
+        const tenant = sessionStorage.getItem('lodex-tenant') || 'default';
+        window.location.replace(window.location.origin + '/instance/' + tenant);
     };
 
     return (

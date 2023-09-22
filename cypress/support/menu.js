@@ -72,5 +72,5 @@ export const signOut = () => {
     cy.get('.advanced-page a')
         .contains('Sign out')
         .click();
-    cy.location('pathname').should('equal', '/login');
+    cy.location('pathname').should('equal', '/instance/default/login');
 };

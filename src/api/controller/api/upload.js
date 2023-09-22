@@ -14,7 +14,7 @@ import {
 } from '../../services/fsHelpers';
 
 import { v1 as uuid } from 'uuid';
-import { workerQueue } from '../../workers';
+import { workerQueues } from '../../workers';
 import { IMPORT } from '../../workers/import';
 
 export const requestToStream = asyncBusboyImpl => async req => {
@@ -44,7 +44,7 @@ export const prepareUpload = async (ctx, next) => {
     try {
         await next();
     } catch (error) {
-        progress.throw(error);
+        progress.throw(ctx.tenant, error);
         ctx.status = 500;
         ctx.body = error.message;
     }
@@ -90,9 +90,8 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
         extension,
         customLoader,
     } = ctx.resumable;
-
-    if (progress.getProgress().status === PENDING) {
-        progress.start({
+    if (progress.getProgress(ctx.tenant).status === PENDING) {
+        progress.start(ctx.tenant, {
             status: UPLOADING_DATASET,
             target: 100,
             symbol: '%',
@@ -109,18 +108,23 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
     );
 
     const progression = Math.round((uploadedFileSize * 100) / totalSize);
-    if (progress.getProgress().status === UPLOADING_DATASET) {
-        progress.setProgress(progression === 100 ? 99 : progression);
+    if (progress.getProgress(ctx.tenant).status === UPLOADING_DATASET) {
+        progress.setProgress(
+            ctx.tenant,
+            progression === 100 ? 99 : progression,
+        );
     }
 
     if (uploadedFileSize >= totalSize) {
-        await workerQueue.add(
+        await workerQueues[ctx.tenant].add(
+            IMPORT, // Name of the job
             {
                 loaderName,
                 filename,
                 totalChunks,
                 extension,
                 customLoader,
+                tenant: ctx.tenant,
                 jobType: IMPORT,
             },
             { jobId: uuid() },
@@ -136,8 +140,16 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
 export const uploadUrl = async ctx => {
     const { url, loaderName, customLoader } = ctx.request.body;
     const [extension] = url.match(/[^.]*$/);
-    await workerQueue.add(
-        { loaderName, url, extension, customLoader, jobType: IMPORT },
+    await workerQueues[ctx.tenant].add(
+        IMPORT, // Name of the job
+        {
+            loaderName,
+            url,
+            extension,
+            customLoader,
+            tenant: ctx.tenant,
+            jobType: IMPORT,
+        },
         { jobId: uuid() },
     );
     ctx.body = {
@@ -163,8 +175,16 @@ export const checkChunkMiddleware = async (ctx, loaderName) => {
     const exists = await checkFileExists(chunkname, currentChunkSize);
 
     if (exists && chunkNumber === totalChunks) {
-        await workerQueue.add(
-            { loaderName, filename, totalChunks, extension, jobType: IMPORT },
+        await workerQueues[ctx.tenant].add(
+            IMPORT, // Name of the job
+            {
+                loaderName,
+                filename,
+                totalChunks,
+                extension,
+                tenant: ctx.tenant,
+                jobType: IMPORT,
+            },
             { jobId: uuid() },
         );
     }

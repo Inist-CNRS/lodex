@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { auth } from 'config';
 
-import mongoClient from '../services/mongoClient';
 import requestServer from './utils/requestServer';
 import fixtures from './ssr.json';
 import {
@@ -392,10 +391,7 @@ describe('e2e publishedDataset Authentication', () => {
 
     afterAll(async () => {
         server.close();
-
         await clear();
         await close();
-        const db = await mongoClient();
-        db.close();
     });
 });
