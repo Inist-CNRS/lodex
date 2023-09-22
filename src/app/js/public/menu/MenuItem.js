@@ -6,6 +6,7 @@ import get from 'lodash.get';
 import classnames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
 
+import { extractTenantFromUrl } from '../tenantTools';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
 import customTheme from '../../../custom/customTheme';
@@ -77,11 +78,6 @@ const getIcon = icon => {
         />
     );
 };
-
-function extractTenantFromUrl(url) {
-    const match = url.match(/\/instance\/([^/]+)/);
-    return match ? match[1] : null;
-}
 
 const MenuItem = ({
     config,
@@ -200,7 +196,7 @@ const MenuItem = ({
                     <a
                         href={`/instance/${extractTenantFromUrl(
                             window.location.href,
-                        ) || 'default'}/admin`}
+                        )}/admin`}
                         className={classnames(
                             'nav-item',
                             styles.menuItem,
