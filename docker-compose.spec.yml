@@ -58,7 +58,6 @@ services:
         environment:
             NODE_ENV: development
             DEBUG: ${DEBUG}
-            NODE_ENV: ${NODE_ENV}
             NODE_OPTIONS: ${NODE_OPTIONS}
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
