@@ -109,7 +109,7 @@ jobs:
 
       - run: docker load --input /tmp/lodex-api.tar
 
-      - run: make test-e2e-start-dockers
+      - run: docker compose -f docker-compose.spec.yml up -d
 
       - run: ./bin/wait-for -t 60 localhost:3000
       - run: npm run test:e2e:${{ matrix.test-phase }}
