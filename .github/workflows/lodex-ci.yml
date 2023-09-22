@@ -73,7 +73,7 @@ jobs:
 
       - run: docker compose -f docker-compose.spec.yml build
 
-      - run: docker save --output lodex-api.tar lodex-api
+      - run: docker save --output /tmp/lodex-api.tar lodex-api
 
       - uses: actions/upload-artifact@v3
         with:
