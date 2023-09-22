@@ -109,9 +109,10 @@ jobs:
 #          name: lodex-api
 #          path: /tmp
 
-      - run: docker load --input /tmp/lodex-api.tar
+#      - run: docker load --input /tmp/lodex-api.tar
 
-      - run: docker compose -f docker-compose.spec.yml up -d
+#      - run: docker compose -f docker-compose.spec.yml up -d
+      - run: make test-e2e-start-dockers
 
       - run: ./bin/wait-for -t 60 localhost:3000
       - run: npm run test:e2e:${{ matrix.test-phase }}
