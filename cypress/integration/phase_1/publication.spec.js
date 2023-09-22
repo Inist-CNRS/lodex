@@ -1,7 +1,7 @@
-import { teardown } from '../support/authentication';
-import * as menu from '../support/menu';
-import * as datasetImportPage from '../support/datasetImportPage';
-import * as adminNavigation from '../support/adminNavigation';
+import { teardown } from '../../support/authentication';
+import * as menu from '../../support/menu';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as adminNavigation from '../../support/adminNavigation';
 
 describe('Dataset Publication', () => {
     beforeEach(teardown);

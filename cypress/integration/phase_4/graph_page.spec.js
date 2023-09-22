@@ -1,8 +1,8 @@
-import { teardown } from '../support/authentication';
-import * as datasetImportPage from '../support/datasetImportPage';
-import * as menu from '../support/menu';
-import * as graphPage from '../support/graphPage';
-import * as searchDrawer from '../support/searchDrawer';
+import { teardown } from '../../support/authentication';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as menu from '../../support/menu';
+import * as graphPage from '../../support/graphPage';
+import * as searchDrawer from '../../support/searchDrawer';
 
 describe('Graph Page', () => {
     beforeEach(() => {

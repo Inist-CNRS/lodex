@@ -1,6 +1,6 @@
-import { teardown } from '../support/authentication';
-import * as datasetImportPage from '../support/datasetImportPage';
-import * as menu from '../support/menu';
+import { teardown } from '../../support/authentication';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as menu from '../../support/menu';
 
 describe('Chart Menu', () => {
     beforeEach(() => {

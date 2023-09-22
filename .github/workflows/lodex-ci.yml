@@ -24,10 +24,9 @@ jobs:
           cache: 'npm'
 
       # Those three lines do the same things as "make install" and "make test-unit" but without a docker container
-      # - run: make install
-      # - run: make test-unit
       - run: make copy-conf
       - run: npm ci
+
       - run: npm run test:unit
 
   test-api-e2e:
@@ -47,9 +46,9 @@ jobs:
           cache: 'npm'
 
       # Those two lines do the same things as "make install" but without a docker container
-      # - run: make install
       - run: make copy-conf
       - run: npm ci
+
       - run: make test-api-e2e
 
   test-e2e:
@@ -58,6 +57,7 @@ jobs:
     strategy:
       matrix:
         node-version: [ 12.x ]
+        test-phase: [ phase:one, phase:two, phase:three, phase:four ]
 
     steps:
       - uses: actions/checkout@v4
@@ -69,11 +69,12 @@ jobs:
           cache: 'npm'
 
       # Those two lines do the same things as "make install" but without a docker container
-      # - run: make install
       - run: make copy-conf
       - run: npm ci
 
-      - run: make test-e2e
+      - run: make test-e2e-phase
+        env:
+          E2E_PHASE: ${{ matrix.test-phase }}
 
       - name: Upload screenshots
         uses: actions/upload-artifact@v2

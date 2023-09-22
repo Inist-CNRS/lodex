@@ -1,9 +1,9 @@
-import { teardown } from '../support/authentication';
-import * as menu from '../support/menu';
-import * as navigationPage from '../support/adminNavigation';
-import * as datasetImportPage from '../support/datasetImportPage';
-import * as subresourcePage from '../support/subresource';
-import * as searchDrawer from '../support/searchDrawer';
+import { teardown } from '../../support/authentication';
+import * as menu from '../../support/menu';
+import * as navigationPage from '../../support/adminNavigation';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as subresourcePage from '../../support/subresource';
+import * as searchDrawer from '../../support/searchDrawer';
 
 describe('Subresource Page', () => {
     beforeEach(() => {

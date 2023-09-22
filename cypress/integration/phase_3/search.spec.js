@@ -1,7 +1,7 @@
-import { teardown } from '../support/authentication';
-import * as menu from '../support/menu';
-import * as datasetImportPage from '../support/datasetImportPage';
-import * as searchDrawer from '../support/searchDrawer';
+import { teardown } from '../../support/authentication';
+import * as menu from '../../support/menu';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as searchDrawer from '../../support/searchDrawer';
 
 const initSearchDataset = (
     dataset = 'dataset/book_summary.csv',
