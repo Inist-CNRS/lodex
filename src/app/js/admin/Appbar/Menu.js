@@ -135,12 +135,7 @@ const MenuComponent = ({
     };
 
     function setTenant(tenant) {
-        if (tenant === 'default') {
-            sessionStorage.removeItem('lodex-tenant');
-        } else {
-            sessionStorage.setItem('lodex-tenant', tenant);
-        }
-        window.location.reload();
+        window.location.href = `/instance/${tenant}/admin`;
     }
 
     const modelMenuItems = [

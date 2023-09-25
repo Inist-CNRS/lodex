@@ -21,6 +21,7 @@ export const postLogin = date => ctx => {
 
     const { username, password } = ctx.request.body;
     const userAuth = get(ctx, 'ezMasterConfig.userAuth', {});
+    const rootAuth = get(ctx, 'ezMasterConfig.rootAuth', {});
 
     let role;
     if (
@@ -36,6 +37,14 @@ export const postLogin = date => ctx => {
         password === userAuth.password
     ) {
         role = 'user';
+    }
+
+    if (
+        rootAuth &&
+        username === rootAuth.username &&
+        password === rootAuth.password
+    ) {
+        role = 'root';
     }
 
     if (!role) {

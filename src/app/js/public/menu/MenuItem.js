@@ -6,6 +6,7 @@ import get from 'lodash.get';
 import classnames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
 
+import { extractTenantFromUrl } from '../tenantTools';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
 import customTheme from '../../../custom/customTheme';
@@ -193,12 +194,31 @@ const MenuItem = ({
             return (
                 role === 'admin' && (
                     <a
-                        href="/admin"
+                        href={`/instance/${extractTenantFromUrl(
+                            window.location.href,
+                        )}/admin`}
                         className={classnames(
                             'nav-item',
                             styles.menuItem,
                             styles.link,
                         )}
+                    >
+                        {icon}
+                        {label}
+                    </a>
+                )
+            );
+        case 'root':
+            return (
+                role === 'root' && (
+                    <a
+                        href={`/admin`}
+                        className={classnames(
+                            'nav-item',
+                            styles.menuItem,
+                            styles.link,
+                        )}
+                        style={{ maxWidth: 'none' }} // TODO: Quick Fix, check why maxWidth is set to 90px
                     >
                         {icon}
                         {label}
