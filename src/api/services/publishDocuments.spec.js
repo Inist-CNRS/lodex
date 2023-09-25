@@ -23,6 +23,9 @@ const fields = [
 const job = {
     log: jest.fn(),
     isActive: () => true,
+    data: {
+        tenant: 'lodex_test',
+    },
 };
 const getCtx = ({ subresources } = {}) => ({
     tenant: 'lodex_test',
