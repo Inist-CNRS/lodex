@@ -70,9 +70,9 @@ export const parseRequest = async (ctx, loaderName, next) => {
         totalChunks: parseInt(resumableTotalChunks, 10),
         totalSize: parseInt(resumableTotalSize, 10),
         currentChunkSize: parseInt(resumableCurrentChunkSize, 10),
-        filename: `${config.uploadDir}/${resumableIdentifier}`,
+        filename: `${config.uploadDir}/${ctx.tenant}_${resumableIdentifier}`,
         extension,
-        chunkname: `${config.uploadDir}/${resumableIdentifier}.${chunkNumber}`,
+        chunkname: `${config.uploadDir}/${ctx.tenant}_${resumableIdentifier}.${chunkNumber}`,
         stream,
         customLoader: loaderName === 'custom-loader' ? customLoader : null,
     };
@@ -168,8 +168,8 @@ export const checkChunkMiddleware = async (ctx, loaderName) => {
     const chunkNumber = parseInt(resumableChunkNumber, 10);
     const totalChunks = parseInt(resumableTotalChunks, 10);
     const currentChunkSize = parseInt(resumableCurrentChunkSize, 10);
-    const filename = `${config.uploadDir}/${resumableIdentifier}`;
-    const chunkname = `${config.uploadDir}/${resumableIdentifier}.${resumableChunkNumber}`;
+    const filename = `${config.uploadDir}/${ctx.tenant}_${resumableIdentifier}`;
+    const chunkname = `${config.uploadDir}/${ctx.tenant}_${resumableIdentifier}.${resumableChunkNumber}`;
     const [extension] = resumableFilename.match(/[^.]*$/);
 
     const exists = await checkFileExists(chunkname, currentChunkSize);
