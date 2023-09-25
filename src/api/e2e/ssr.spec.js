@@ -10,6 +10,7 @@ import {
     loadFixtures,
     close,
 } from '../../common/tests/fixtures';
+import { closeAllWorkerQueues } from '../workers';
 
 const authentifiedHeader = {
     cookie: `lodex_token=${jwt.sign(
@@ -253,6 +254,7 @@ describe('ssr', () => {
     });
 
     afterAll(async () => {
+        await closeAllWorkerQueues();
         server.close();
         await clear();
         await close();

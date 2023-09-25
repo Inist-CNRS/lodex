@@ -13,7 +13,7 @@ export const goToAdminDashboard = () => {
     cy.get('.advanced-page a')
         .contains('Admin')
         .click();
-    cy.location('pathname').should('equal', '/admin');
+    cy.location('pathname').should('equal', '/instance/default/admin');
 };
 
 export const goToHomePage = () => {
