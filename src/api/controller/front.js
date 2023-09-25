@@ -54,18 +54,6 @@ const indexHtml = fs
     .toString()
     .replace(REGEX_JS_HOST, jsHost);
 
-const adminIndexHtml = fs
-    .readFileSync(path.resolve(__dirname, '../../app/admin.html'))
-    .toString()
-    .replace(
-        '</body>',
-        ` <script>window.__DBNAME__ = ${JSON.stringify(
-            mongo.dbName,
-        )}</script><script src="{|__JS_HOST__|}/admin/index.js"></script>
-        </body>`,
-    )
-    .replace(REGEX_JS_HOST, jsHost);
-
 const getDefaultInitialState = (token, cookie, locale) => ({
     fields: {
         loading: false,
@@ -265,6 +253,22 @@ const handleRender = async (ctx, next) => {
     ctx.body = renderFullPage(html, css, preloadedState, helmet, ctx.tenant);
 };
 
+const renderAdminIndexHtml = ctx => {
+    ctx.body = fs
+        .readFileSync(path.resolve(__dirname, '../../app/admin.html'))
+        .toString()
+        .replace(
+            '</body>',
+            ` <script>window.__DBNAME__ = ${JSON.stringify(
+                mongo.dbName,
+            )}</script><script>window.__TENANT__ = ${JSON.stringify(
+                ctx.tenant,
+            )}</script><script src="{|__JS_HOST__|}/admin/index.js"></script>
+        </body>`,
+        )
+        .replace(REGEX_JS_HOST, jsHost);
+};
+
 const app = new Koa();
 
 if (config.userAuth) {
@@ -299,8 +303,14 @@ if (config.userAuth) {
 app.use(handleRender);
 
 app.use(
+    route.get('/instance/:slug/admin', async ctx => {
+        renderAdminIndexHtml(ctx);
+    }),
+);
+
+app.use(
     route.get('/admin', async ctx => {
-        ctx.body = adminIndexHtml;
+        ctx.body = `<div>Super Root Admin</div>`;
     }),
 );
 

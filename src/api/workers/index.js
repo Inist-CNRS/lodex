@@ -60,8 +60,8 @@ export const cleanWaitingJobsOfType = (queueName, jobType) => {
 
 export const closeAllWorkerQueues = async () => {
     await Promise.all(
-        workerQueues.map(async workerQueue => {
-            await workerQueue.close();
+        Object.keys(workerQueues).map(queueName => {
+            workerQueues[queueName].close();
         }),
     );
 };

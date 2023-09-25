@@ -10,6 +10,7 @@ import memoize from 'lodash.memoize';
 import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
 
+import { extractTenantFromUrl } from '../tenantTools';
 import { fromDisplayConfig, fromResource } from '../selectors';
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from '../resource';
@@ -98,14 +99,16 @@ const styles = {
 };
 
 export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
+    const tenant = extractTenantFromUrl(window.location.href);
+
     if (scope === SCOPE_DOCUMENT) {
         if (subresourceId) {
-            return `/admin#/display/${SCOPE_DOCUMENT}/subresource/${subresourceId}/edit/${fieldName}`;
+            return `/instance/${tenant}/admin#/display/${SCOPE_DOCUMENT}/subresource/${subresourceId}/edit/${fieldName}`;
         } else {
-            return `/admin#/display/${SCOPE_DOCUMENT}/main/edit/${fieldName}`;
+            return `/instance/${tenant}/admin#/display/${SCOPE_DOCUMENT}/main/edit/${fieldName}`;
         }
     } else {
-        return `/admin#/display/${scope}/edit/${fieldName}`;
+        return `/instance/${tenant}/admin#/display/${scope}/edit/${fieldName}`;
     }
 };
 
