@@ -27,7 +27,7 @@ class Cartography extends BasicChart {
     }
 
     /**
-     * Function use for rebuild the edited spec
+     * Rebuild the edited spec
      * @param widthIn{number | null}
      */
     buildSpec(widthIn = null) {
