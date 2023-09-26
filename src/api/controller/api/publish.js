@@ -3,9 +3,9 @@ import route from 'koa-route';
 import { v1 as uuid } from 'uuid';
 
 import clearPublished from '../../services/clearPublished';
-import logger from '../../services/logger';
 import { workerQueues } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
+import getLogger from '../../services/logger';
 
 const app = new Koa();
 
@@ -28,7 +28,8 @@ export const handleClearPublished = async ctx => {
             status: 'success',
         };
     } catch (error) {
-        logger.error(`handle clear published error - ${ctx.tenant}`, {
+        const logger = getLogger(ctx.tenant);
+        logger.error(`Handle clear published error`, {
             error,
         });
         ctx.body = {

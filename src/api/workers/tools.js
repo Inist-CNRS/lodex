@@ -1,5 +1,5 @@
 import { cleanWaitingJobsOfType, workerQueues } from '.';
-import logger from '../services/logger';
+import getLogger from '../services/logger';
 import progress from '../services/progress';
 
 export const jobLogger = {
@@ -7,6 +7,7 @@ export const jobLogger = {
         if (!job) {
             return;
         }
+        const logger = getLogger(job.data.tenant);
         logger.info(message);
         job.log(message);
     },
@@ -14,6 +15,7 @@ export const jobLogger = {
         if (!job) {
             return;
         }
+        const logger = getLogger(job.data.tenant);
         logger.error(message);
         job.log(message);
     },

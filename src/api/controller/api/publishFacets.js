@@ -15,7 +15,8 @@ export default async (ctx, fields, withProgress = false) => {
             label: 'publishing',
             type: 'publisher',
         });
-    jobLogger.info(ctx.job, `Publishing facets - ${ctx.tenant}`);
+
+    jobLogger.info(ctx.job, 'Publishing facets');
 
     const names = fields.map(({ name }) => name);
     await ctx.publishedFacet.remove({ field: { $in: names } });
@@ -42,5 +43,6 @@ export default async (ctx, fields, withProgress = false) => {
             progress.throw(ctx.tenant, error);
         });
     withProgress && progress.finish(ctx.tenant);
-    jobLogger.info(ctx.job, `Facets published - ${ctx.tenant}`);
+
+    jobLogger.info(ctx.job, 'Facets published');
 };
