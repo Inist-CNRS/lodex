@@ -7,6 +7,7 @@ import {
 import * as fs from 'fs';
 import path from 'path';
 import { ObjectId } from 'mongodb';
+import progress from '../../services/progress';
 
 describe('enrichment', () => {
     describe('getEnrichmentRuleModel', () => {
@@ -139,7 +140,11 @@ describe('enrichment', () => {
 
             // THEN
             expect(results).toEqual(
-                expect.arrayContaining([{subPath: 'plop'}, {subPath: 'plip'}, {subPath: 'ploup'}]),
+                expect.arrayContaining([
+                    { subPath: 'plop' },
+                    { subPath: 'plip' },
+                    { subPath: 'ploup' },
+                ]),
             );
         });
         it('with direct path, single value stringified and subpath', async () => {
@@ -285,7 +290,14 @@ describe('enrichment', () => {
 
             // THEN
             expect(results).toEqual(
-                expect.arrayContaining([[{"subPath": "plop"}, {"subPath": "plup"}], [{"subPath": "plop"}, {"subPath": "plup"}], [{"subPath": "plip"}], [{"subPath": "plip"}], [{"subPath": "ploup"}], [{"subPath": "ploup"}]]),
+                expect.arrayContaining([
+                    [{ subPath: 'plop' }, { subPath: 'plup' }],
+                    [{ subPath: 'plop' }, { subPath: 'plup' }],
+                    [{ subPath: 'plip' }],
+                    [{ subPath: 'plip' }],
+                    [{ subPath: 'ploup' }],
+                    [{ subPath: 'ploup' }],
+                ]),
             );
         });
         // We skip that test because it's a very specific case where we want to get a subpath in an array that is stringified, that may not happen. If the dataset import a string, then, it's a string.
@@ -337,6 +349,8 @@ describe('enrichment', () => {
 
     describe('processEnrichment', () => {
         it('should log error when ws is out', async () => {
+            progress.initialize('lodex_test');
+
             // GIVEN
             const ezsRule = fs
                 .readFileSync(
@@ -353,6 +367,7 @@ describe('enrichment', () => {
                 rule: ezsRule,
             };
             const ctx = {
+                tenant: 'lodex_test',
                 job: {
                     id: 1,
                     log: jest.fn(),

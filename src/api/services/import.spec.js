@@ -9,6 +9,7 @@ describe('import', () => {
     describe('startImport with file and automatic loader', () => {
         const loader = jest.fn().mockImplementation(() => 'parsedStream');
         const ctx = {
+            tenant: 'lodex',
             job: {
                 data: {
                     loaderName: 'automatic',
@@ -31,7 +32,7 @@ describe('import', () => {
         });
 
         it('should have started progress', async () => {
-            expect(progress.start).toHaveBeenCalledWith({
+            expect(progress.start).toHaveBeenCalledWith('lodex', {
                 status: 'SAVING_DATASET',
                 subLabel: 'imported_lines',
                 type: 'import',
@@ -64,7 +65,7 @@ describe('import', () => {
         });
 
         it('should have started indexation progress', () => {
-            expect(progress.start).toHaveBeenCalledWith({
+            expect(progress.start).toHaveBeenCalledWith('lodex', {
                 status: 'INDEXATION',
                 type: 'import',
             });
@@ -111,7 +112,7 @@ describe('import', () => {
         });
 
         it('should have started progress', async () => {
-            expect(progress.start).toHaveBeenCalledWith({
+            expect(progress.start).toHaveBeenCalledWith('lodex', {
                 status: 'SAVING_DATASET',
                 subLabel: 'imported_lines',
                 type: 'import',
@@ -121,7 +122,7 @@ describe('import', () => {
         it('should have called getCustomLoader with custom', async () => {
             expect(ctx.getCustomLoader).toHaveBeenCalledWith('custom', {
                 parser: 'csv/custom',
-                source: 'upload/filename.csv'
+                source: 'upload/filename.csv',
             });
         });
 
@@ -144,7 +145,7 @@ describe('import', () => {
         });
 
         it('should have started indexation progress', () => {
-            expect(progress.start).toHaveBeenCalledWith({
+            expect(progress.start).toHaveBeenCalledWith('lodex', {
                 status: 'INDEXATION',
                 type: 'import',
             });
@@ -190,7 +191,7 @@ describe('import', () => {
         });
 
         it('should have started progress', async () => {
-            expect(progress.start).toHaveBeenCalledWith({
+            expect(progress.start).toHaveBeenCalledWith('lodex', {
                 status: 'SAVING_DATASET',
                 subLabel: 'imported_lines',
                 type: 'import',
@@ -200,7 +201,7 @@ describe('import', () => {
         it('should have called getLoader with extension', async () => {
             expect(ctx.getLoader).toHaveBeenCalledWith('csv', {
                 parser: 'csv',
-                source: 'http://host/file.name.csv'
+                source: 'http://host/file.name.csv',
             });
         });
 
@@ -222,7 +223,7 @@ describe('import', () => {
         });
 
         it('should have started indexation progress', () => {
-            expect(progress.start).toHaveBeenCalledWith({
+            expect(progress.start).toHaveBeenCalledWith('lodex', {
                 status: 'INDEXATION',
                 type: 'import',
             });

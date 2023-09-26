@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { auth } from 'config';
 
-import mongoClient from '../services/mongoClient';
 import requestServer from './utils/requestServer';
 import fixtures from './ssr.json';
 import {
@@ -10,6 +9,7 @@ import {
     loadFixtures,
     close,
 } from '../../common/tests/fixtures';
+import { closeAllWorkerQueues } from '../workers';
 
 const adminHeader = {
     cookie: `lodex_token=${jwt.sign(
@@ -391,11 +391,9 @@ describe('e2e publishedDataset Authentication', () => {
     });
 
     afterAll(async () => {
+        await closeAllWorkerQueues();
         server.close();
-
         await clear();
         await close();
-        const db = await mongoClient();
-        db.close();
     });
 });

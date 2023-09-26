@@ -2,7 +2,6 @@ import omit from 'lodash.omit';
 import jwt from 'jsonwebtoken';
 import { auth } from 'config';
 
-import mongoClient from '../services/mongoClient';
 import requestServer from './utils/requestServer';
 import fixtures from './ssr.json';
 import {
@@ -11,6 +10,7 @@ import {
     loadFixtures,
     close,
 } from '../../common/tests/fixtures';
+import { closeAllWorkerQueues } from '../workers';
 
 const authentifiedHeader = {
     cookie: `lodex_token=${jwt.sign(
@@ -20,17 +20,16 @@ const authentifiedHeader = {
         },
         auth.cookieSecret,
     )}`,
+    headers: {
+        'X-Lodex-Tenant': 'default',
+    },
 };
 
 describe('ssr', () => {
     let server;
 
-    beforeAll((done) => {
+    beforeAll(async () => {
         server = requestServer();
-        done();
-    });
-
-    beforeEach(async () => {
         await clear();
         await connect();
         await loadFixtures(fixtures);
@@ -234,7 +233,7 @@ describe('ssr', () => {
                 expect(Object.keys(state.fields.byName)).toEqual([]);
             });
 
-            it('should not preload characteristics',  () => {
+            it('should not preload characteristics', () => {
                 expect(
                     state.characteristic.characteristics.map(d =>
                         omit(d, '_id'),
@@ -242,7 +241,7 @@ describe('ssr', () => {
                 ).toEqual([]);
             });
 
-            it('should not preload resource',  () => {
+            it('should not preload resource', () => {
                 expect(omit(state.resource.resource, '_id')).toEqual({});
             });
 
@@ -254,14 +253,10 @@ describe('ssr', () => {
         });
     });
 
-    afterEach(async () => {
+    afterAll(async () => {
+        await closeAllWorkerQueues();
+        server.close();
         await clear();
         await close();
-    });
-
-    afterAll(async () => {
-        server.close();
-        const db = await mongoClient();
-        db.close();
     });
 });

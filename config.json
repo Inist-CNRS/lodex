@@ -5,6 +5,10 @@
         "username": "user",
         "password": "secret"
     },
+    "rootAuth": {
+        "username": "root",
+        "password": "secret"
+    },
     "enrichmentBatchSize": 10,
     "routinesCache": false,
     "routines": [
@@ -144,6 +148,15 @@
                 "icon": "faCogs",
                 "position": "advanced",
                 "role": "admin"
+            },
+            {
+                "label": {
+                    "en": "Instances settings",
+                    "fr": "Gestion instances"
+                },
+                "icon": "faCogs",
+                "position": "advanced",
+                "role": "root"
             },
             {
                 "label": {

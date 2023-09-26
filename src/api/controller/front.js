@@ -17,7 +17,7 @@ import fs from 'fs';
 import { StyleSheetServer } from 'aphrodite/no-important';
 import jwt from 'koa-jwt';
 import jsonwebtoken from 'jsonwebtoken';
-import { auth, istexApiUrl, jsHost } from 'config';
+import { auth, istexApiUrl, jsHost, mongo } from 'config';
 import pick from 'lodash.pick';
 import { createMemoryHistory } from 'history';
 
@@ -51,11 +51,6 @@ const REGEX_JS_HOST = /\{\|__JS_HOST__\|\}/g;
 
 const indexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
-    .toString()
-    .replace(REGEX_JS_HOST, jsHost);
-
-const adminIndexHtml = fs
-    .readFileSync(path.resolve(__dirname, '../../app/admin.html'))
     .toString()
     .replace(REGEX_JS_HOST, jsHost);
 
@@ -133,7 +128,7 @@ const getInitialState = async (token, cookie, locale, ctx) => {
     };
 };
 
-const renderFullPage = (html, css, preloadedState, helmet) =>
+const renderFullPage = (html, css, preloadedState, helmet, tenant) =>
     indexHtml
         .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
         .replace(/<title>.*?<\/title>/, helmet.title.toString())
@@ -151,6 +146,7 @@ const renderFullPage = (html, css, preloadedState, helmet) =>
             ).replace(/</g, '\\u003c')};window.ISTEX_API_URL=${JSON.stringify(
                 istexApiUrl,
             )}</script>
+            <script>window.__TENANT__ = ${JSON.stringify(tenant)}</script>
             <script src="${jsHost}/index.js"></script>
             </body>`,
         );
@@ -254,7 +250,23 @@ const handleRender = async (ctx, next) => {
         return ctx.redirect(redirect);
     }
 
-    ctx.body = renderFullPage(html, css, preloadedState, helmet);
+    ctx.body = renderFullPage(html, css, preloadedState, helmet, ctx.tenant);
+};
+
+const renderAdminIndexHtml = ctx => {
+    ctx.body = fs
+        .readFileSync(path.resolve(__dirname, '../../app/admin.html'))
+        .toString()
+        .replace(
+            '</body>',
+            ` <script>window.__DBNAME__ = ${JSON.stringify(
+                mongo.dbName,
+            )}</script><script>window.__TENANT__ = ${JSON.stringify(
+                ctx.tenant,
+            )}</script><script src="{|__JS_HOST__|}/admin/index.js"></script>
+        </body>`,
+        )
+        .replace(REGEX_JS_HOST, jsHost);
 };
 
 const app = new Koa();
@@ -289,9 +301,16 @@ if (config.userAuth) {
 }
 
 app.use(handleRender);
+
+app.use(
+    route.get('/instance/:slug/admin', async ctx => {
+        renderAdminIndexHtml(ctx);
+    }),
+);
+
 app.use(
     route.get('/admin', async ctx => {
-        ctx.body = adminIndexHtml;
+        ctx.body = `<div>Super Root Admin</div>`;
     }),
 );
 

@@ -199,7 +199,7 @@ describe('MenuItem', () => {
 
             const link = wrapper.find('a');
 
-            expect(link.prop('href')).toBe('/admin');
+            expect(link.prop('href')).toBe('/instance/default/admin');
         });
 
         it('should not render MenuItem when role is not admin', () => {

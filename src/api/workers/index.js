@@ -11,15 +11,46 @@ export class CancelWorkerError extends Error {
         this.name = 'CancelWorkerError';
     }
 }
-export const workerQueue = new Queue(QUEUE_NAME, process.env.REDIS_URL, {
-    defaultJobOptions: {
-        removeOnComplete: 10,
-        removeOnFail: 10,
-        lifo: true,
-    },
-});
 
-export const cleanWaitingJobsOfType = jobType => {
+export const workerQueues = [];
+
+export const createWorkerQueue = (queueName, concurrency) => {
+    const workerQueue = new Queue(queueName, process.env.REDIS_URL, {
+        defaultJobOptions: {
+            removeOnComplete: 10,
+            removeOnFail: 10,
+            lifo: true,
+        },
+    });
+
+    workerQueue.process('*', concurrency, async (job, done) => {
+        if (job.data.jobType === PUBLISHER) {
+            processPublication(job, done);
+        }
+        if (job.data.jobType === ENRICHER) {
+            processEnrichment(job, done);
+        }
+        if (job.data.jobType === IMPORT) {
+            processImport(job, done);
+        }
+    });
+
+    workerQueues[queueName] = workerQueue;
+
+    return workerQueue;
+};
+
+export const deleteWorkerQueue = async queueName => {
+    const workerQueue = workerQueues[queueName];
+    await workerQueue.close();
+    const index = workerQueues.indexOf(workerQueue);
+    if (index !== -1) {
+        workerQueues.splice(index, 1);
+    }
+};
+
+export const cleanWaitingJobsOfType = (queueName, jobType) => {
+    const workerQueue = workerQueues[queueName];
     workerQueue.getWaiting().then(jobs => {
         jobs.filter(job => job.data.jobType === jobType).forEach(waitingJob =>
             waitingJob.remove(),
@@ -27,14 +58,10 @@ export const cleanWaitingJobsOfType = jobType => {
     });
 };
 
-workerQueue.process(1, (job, done) => {
-    if (job.data.jobType === PUBLISHER) {
-        processPublication(job, done);
-    }
-    if (job.data.jobType === ENRICHER) {
-        processEnrichment(job, done);
-    }
-    if (job.data.jobType === IMPORT) {
-        processImport(job, done);
-    }
-});
+export const closeAllWorkerQueues = async () => {
+    await Promise.all(
+        Object.keys(workerQueues).map(queueName => {
+            workerQueues[queueName].close();
+        }),
+    );
+};

@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import { Server } from 'socket.io';
-import config from 'config';
+import config, { mongo } from 'config';
 import mount from 'koa-mount';
 import route from 'koa-route';
 import cors from 'kcors';
@@ -14,7 +14,7 @@ import controller from './controller';
 import testController from './controller/testController';
 import indexSearchableFields from './services/indexSearchableFields';
 
-import { workerQueue } from './workers';
+import { createWorkerQueue, workerQueues } from './workers';
 import { addPublisherListener } from './workers/publisher';
 
 import progress from './services/progress';
@@ -33,14 +33,45 @@ const app = koaQs(new Koa(), 'extended', { arrayLimit: 1000 });
 
 app.use(cors({ credentials: true }));
 
+function extractTenantFromUrl(url) {
+    const match = url.match(/\/instance\/([^/]+)/);
+    return match ? match[1] : null;
+}
+
+const setTenant = async (ctx, next) => {
+    if (extractTenantFromUrl(ctx.request.url)) {
+        ctx.tenant = extractTenantFromUrl(ctx.request.url);
+    } else if (ctx.get('X-Lodex-Tenant')) {
+        ctx.tenant = ctx.get('X-Lodex-Tenant');
+    } else {
+        ctx.tenant = 'default';
+    }
+
+    progress.initialize(ctx.tenant);
+    await next();
+};
+
+app.use(setTenant);
+
 if (process.env.EXPOSE_TEST_CONTROLLER) {
     app.use(mount('/tests', testController));
 }
+
+const workerQueueDefault = createWorkerQueue('default', 1);
+const workerQueueOne = createWorkerQueue('instance_one', 1);
+const workerQueueTwo = createWorkerQueue('instance_two', 1);
+const workerQueueThree = createWorkerQueue('instance_three', 1);
+
 if (process.env.NODE_ENV === 'development') {
     const serverAdapter = new KoaAdapter();
     serverAdapter.setBasePath('/bull');
     createBullBoard({
-        queues: [new BullAdapter(workerQueue)],
+        queues: [
+            new BullAdapter(workerQueueDefault),
+            new BullAdapter(workerQueueOne),
+            new BullAdapter(workerQueueTwo),
+            new BullAdapter(workerQueueThree),
+        ],
         serverAdapter,
     });
     app.use(serverAdapter.registerPlugin());
@@ -49,8 +80,11 @@ if (process.env.NODE_ENV === 'development') {
 // worker job
 app.use(async (ctx, next) => {
     try {
-        const activeJobs = await workerQueue.getActive();
-        ctx.job = activeJobs[0];
+        const activeJobs = await workerQueues[ctx.tenant].getActive();
+        const filteredActiveJobs = activeJobs.filter(
+            job => job.data.tenant === ctx.tenant,
+        );
+        ctx.job = filteredActiveJobs[0];
     } catch (e) {
         logger.error('An error occured on loading running job', e);
     }
@@ -98,26 +132,28 @@ app.use(function*(next) {
 
 app.use(mount('/', controller));
 
+app.use(async (ctx, next) => {
+    if (!module.parent) {
+        indexSearchableFields(ctx);
+    }
+    await next();
+});
+
 if (!module.parent) {
-    indexSearchableFields();
     global.console.log(`Server listening on port ${config.port}`);
     global.console.log('Press CTRL+C to stop server');
     const httpServer = app.listen(config.port);
     const io = new Server(httpServer);
 
     io.on('connection', socket => {
-        progress.addProgressListener(progress => {
-            socket.emit('progress', progress);
-        });
-        addPublisherListener(payload => {
-            socket.emit('publisher', payload);
-        });
-        addEnrichmentJobListener(payload => {
-            socket.emit(payload.room, payload.data);
-        });
-        addImportListener(payload => {
-            socket.emit('import', payload);
-        });
+        const emitPayload = payload => {
+            socket.emit(`${mongo.dbName}_${payload.room}`, payload.data);
+        };
+
+        progress.addProgressListener(emitPayload);
+        addPublisherListener(emitPayload);
+        addEnrichmentJobListener(emitPayload);
+        addImportListener(emitPayload);
     });
 }
 

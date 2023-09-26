@@ -54,10 +54,10 @@ export default async ctx => {
                 );
             },
             async () => await ctx.publishFacets(ctx, fields, true),
-            async () => await indexSearchableFields(),
+            async () => await indexSearchableFields(ctx),
         ],
         ctx,
     );
 
-    progress.finish();
+    progress.finish(ctx.tenant);
 };

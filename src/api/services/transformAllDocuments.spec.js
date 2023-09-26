@@ -52,18 +52,19 @@ describe('tranformAllDocuments', () => {
     });
 
     it('should have called progress.incrementProgress with transformedDataset.length', () => {
+        const tenant = 'lodex_test';
         expect(progress.incrementProgress.mock.calls).toEqual([
-            [1],
-            [2],
-            [3],
-            [4],
-            [5],
-            [6],
-            [7],
-            [8],
-            [9],
-            [10],
-            [11],
+            [tenant, 1],
+            [tenant, 2],
+            [tenant, 3],
+            [tenant, 4],
+            [tenant, 5],
+            [tenant, 6],
+            [tenant, 7],
+            [tenant, 8],
+            [tenant, 9],
+            [tenant, 10],
+            [tenant, 11],
         ]);
     });
 });

@@ -1,16 +1,27 @@
 import { MongoClient } from 'mongodb';
 import config from 'config';
 
-let db = null;
+let db = [];
 
-export const mongoConnectionString = `mongodb://${config.mongo.host}/${config.mongo.dbName}`;
+export const mongoConnectionString = tenant =>
+    `mongodb://${config.mongo.host}/${config.mongo.dbName}_${tenant ||
+        'default'}`;
 
-export const mongoClientFactory = MongoClientImpl => async () => {
-    if (!db) {
+export const mongoClientFactory = MongoClientImpl => async tenant => {
+    if (!tenant) {
+        throw new Error(
+            `L'instance n'est pas renseigné, impossible de se connecter à la base de données.`,
+        );
+    }
+
+    if (!db[tenant]) {
         try {
-            db = await MongoClientImpl.connect(mongoConnectionString, {
-                poolSize: 10,
-            });
+            db[tenant] = await MongoClientImpl.connect(
+                mongoConnectionString(tenant),
+                {
+                    poolSize: 10,
+                },
+            );
         } catch (error) {
             console.error(error);
             throw new Error(
@@ -19,7 +30,7 @@ export const mongoClientFactory = MongoClientImpl => async () => {
         }
     }
 
-    return db;
+    return db[tenant];
 };
 
 export default mongoClientFactory(MongoClient);
