@@ -20,15 +20,13 @@ import {
 } from '../clear';
 
 import { fromClear, fromPublication } from '../selectors';
-import { getHost } from '../../../../common/uris';
 import fieldApi from '../api/field';
 import { toast } from '../../../../common/tools/toast';
 import { loadField } from '../../fields';
 import { loadPublication } from '../publication';
 import CancelButton from '../../lib/components/CancelButton';
 import { loadSubresources } from '../subresource';
-
-const baseUrl = getHost();
+import { extractTenantFromUrl } from '../../public/tenantTools';
 
 const TRANSLATION_KEY = new Map([
     ['dataset', 'clear_dataset'],
@@ -50,6 +48,8 @@ const ClearDialogComponent = props => {
         hasPublishedDataset,
     } = props;
 
+    const instanceName = extractTenantFromUrl(window.location.href);
+
     useEffect(() => {
         if (succeeded) {
             if (type === 'dataset') {
@@ -61,10 +61,7 @@ const ClearDialogComponent = props => {
         }
     }, [succeeded]);
 
-    const getInstanceName = () => /\/\/([a-z0-9-]+)./.exec(baseUrl)[1];
-
     const handleChangeField = e => {
-        const instanceName = getInstanceName();
         setValidName(e.target.value === instanceName);
     };
 
@@ -147,7 +144,7 @@ const ClearDialogComponent = props => {
                 <br />
                 <br />
                 <div>
-                    {polyglot.t('enter_name')} :<b> {getInstanceName()}</b>
+                    {polyglot.t('enter_name')} :<b> {instanceName}</b>
                     <TextField
                         name="field-name-instance"
                         placeholder={polyglot.t('instance_name')}
