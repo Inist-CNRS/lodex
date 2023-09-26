@@ -2,7 +2,7 @@ version: '3'
 
 services:
     node:
-        image: node:12
+        image: node:14
         volumes:
             - .:/app
         working_dir: /app
@@ -27,12 +27,12 @@ services:
             - redis
             - workers
         ports:
-            - 3000:3000
-            - 9229:9229 # Enable Nodemon inspect to attach to Docker Node
+            - "3000:3000"
+            - "9229:9229" # Enable Nodemon inspect to attach to Docker Node
         command: npm run development:api
 
     dev-server: ## Enable hot-reload in development
-        image: node:12
+        image: node:14
         volumes:
             - .:/app
         working_dir: /app
@@ -40,27 +40,26 @@ services:
         environment:
             NODE_ENV: development
         ports:
-            - 8080:8080
+            - "8080:8080"
         command: npm run development:app
 
     mongo:
         image: mongo:4.4.4-bionic
         ports:
-            - 27017:27017
+            - "27017:27017"
 
     redis:
         image: redis:6
         ports:
-            - 6379:6379
+            - "6379:6379"
 
     workers:
-        image: node:12
+        image: node:14
         volumes:
             - .:/app
         working_dir: /app
         user: '${UID}:${GID}'
         environment:
-            NODE_ENV: development
             DEBUG: ${DEBUG}
             NODE_ENV: ${NODE_ENV}
             NODE_OPTIONS: ${NODE_OPTIONS}
@@ -75,7 +74,7 @@ services:
             EZS_NSHARDS: '31'
             EZS_CACHE: 'false'
         ports:
-            - 31976:31976
+            - "31976:31976"
         command: npm run production:workers
         links:
             - mongo
