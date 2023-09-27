@@ -9,7 +9,6 @@ import { KoaAdapter } from '@bull-board/koa';
 import { createBullBoard } from '@bull-board/api';
 import { BullAdapter } from '@bull-board/api/bullAdapter';
 
-import logger from './services/logger';
 import controller from './controller';
 import testController from './controller/testController';
 import indexSearchableFields from './services/indexSearchableFields';
@@ -25,6 +24,7 @@ import Meter from '@uswitch/koa-prometheus';
 import MeterConfig from '@uswitch/koa-prometheus/build/koa-prometheus.defaults.json';
 import tracer, { eventTrace, eventError } from '@uswitch/koa-tracer';
 import access, { eventAccess } from '@uswitch/koa-access';
+import getLogger from './services/logger';
 
 // KoaQs use qs to parse query string. There is an default limit of 20 items in an array. Above this limit, qs will transform the array into an key/value object.
 // We need to increase this limit to 1000 to be able to handle the facets array in the query string.
@@ -86,7 +86,8 @@ app.use(async (ctx, next) => {
         );
         ctx.job = filteredActiveJobs[0];
     } catch (e) {
-        logger.error('An error occured on loading running job', e);
+        const logger = getLogger(ctx.tenant);
+        logger.error(`An error occured on loading running job`, e);
     }
     await next();
 });
@@ -104,6 +105,7 @@ app.use(async (ctx, next) => {
     }
     await next();
     ctx.httpLog.status = ctx.status;
+    const logger = getLogger(ctx.tenant);
     logger.info(ctx.request.url, ctx.httpLog);
 });
 

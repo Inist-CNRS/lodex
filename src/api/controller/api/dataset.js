@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
-import logger from '../../services/logger';
 import koaBodyParser from 'koa-bodyparser';
+import getLogger from '../../services/logger';
 
 const app = new Koa();
 
@@ -17,7 +17,8 @@ export const clearDataset = async ctx => {
         }
         ctx.body = { status: 'success' };
     } catch (error) {
-        logger.error('clear dataset error', {
+        const logger = getLogger(ctx.tenant);
+        logger.error(`Clear dataset error`, {
             error,
         });
         ctx.body = { status: 'error', error };
@@ -94,7 +95,8 @@ export const deleteDatasetRow = async (ctx, id) => {
         await ctx.dataset.deleteOne(id);
         ctx.body = { status: 'deleted' };
     } catch (error) {
-        logger.error('delete dataset row error', {
+        const logger = getLogger(ctx.tenant);
+        logger.error(`Delete dataset row error`, {
             error,
         });
         ctx.body = { status: 'error', error };
