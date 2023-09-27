@@ -5,7 +5,7 @@ COPY ./package.json /app
 COPY ./package-lock.json /app
 COPY ./packages /app/packages
 
-RUN npm install
+RUN npm install --legacy-peer-deps
 # see .dockerignore to know all copied files
 COPY . /app/
 
