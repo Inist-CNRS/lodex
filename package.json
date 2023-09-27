@@ -152,7 +152,7 @@
         "mime-types": "2.1.35",
         "modclean": "3.0.0-beta.1",
         "moment": "2.29.4",
-        "mongodb": "^4.17.1",
+        "mongodb": "^2.2.36",
         "mongodb-restore": "^1.6.2",
         "mui-file-dropzone": "4.0.2",
         "multistream": "^2.1.1",
