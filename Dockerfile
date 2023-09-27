@@ -1,15 +1,17 @@
-FROM node:14-alpine AS build
+FROM node:16.20-alpine AS build
 RUN apk add --no-cache make gcc g++ python3 bash git openssh jq
 WORKDIR /app
 COPY ./package.json /app
 COPY ./package-lock.json /app
 COPY ./packages /app/packages
 
-RUN npm install
+RUN npm install --legacy-peer-deps
 # see .dockerignore to know all copied files
 COPY . /app/
 
 ENV NODE_ENV="production"
+ENV CYPRESS_CACHE_FOLDER=/app/.cache
+ENV npm_config_cache=/app/.npm
 
 RUN mkdir /app/upload && \
     cp -n ./config/production-dist.js ./config/production.js && \
@@ -18,7 +20,7 @@ RUN mkdir /app/upload && \
     npm prune --production && \
     npm run clean
 
-FROM node:14-alpine AS release
+FROM node:16.20-alpine AS release
 RUN apk add --no-cache su-exec redis
 COPY --from=build /app /app
 

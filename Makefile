@@ -35,9 +35,9 @@ endif
 install-npm-dependencies:
 	echo "Installing Node dependencies"
 ifeq "$(CI)" "true"
-	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm ci
+	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm ci --legacy-peer-deps
 else
-	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm install
+	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm install --legacy-peer-deps
 endif
 
 install: copy-conf install-npm-dependencies ## Install npm dependencies for the node, admin, and frontend apps
