@@ -50,17 +50,27 @@ export default async db => {
         );
 
     collection.updateBatch = documents => {
-        console.warn(documents);
-        console.warn(
-            '-------------------- updateBatch ------------------------',
-        );
         return Promise.all(
-            chunk(documents, 1000).map(data =>
-                /*collection.updateMany({ uri: data.uri }, data, {
-                    w: 1,
-                }),*/
-                console.warn(data),
-            ),
+            chunk(documents, 1).map(data => {
+                const updateQuery = Object.keys(data[0].versions[0]).reduce(
+                    (result, key) => {
+                        return {
+                            ...result,
+                            [`versions.0.${key}`]: data[0].versions[0][key],
+                        };
+                    },
+                    {},
+                );
+                collection.updateOne(
+                    { uri: data[0].uri },
+                    {
+                        $set: updateQuery,
+                    },
+                    {
+                        w: 1,
+                    },
+                );
+            }),
         );
     };
 

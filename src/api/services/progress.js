@@ -2,6 +2,7 @@ import {
     PENDING,
     ERROR,
     PUBLISH_DOCUMENT,
+    PRECOMPUTE_ROUTINES,
     ENRICHING,
     PUBLISH_FACET,
     CREATE_INDEX,
@@ -83,6 +84,7 @@ export class Progress {
             type: this[tenant].type,
             isBackground: [
                 PUBLISH_DOCUMENT,
+                PRECOMPUTE_ROUTINES,
                 UNPUBLISH_DOCUMENT,
                 ENRICHING,
                 PUBLISH_FACET,

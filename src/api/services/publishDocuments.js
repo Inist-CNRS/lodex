@@ -15,10 +15,7 @@ export const versionTransformerDecorator = (
     transformDocument,
     subresourceId = null,
 ) => async (document, _, __, publicationDate = new Date()) => {
-    console.warn(' ** versionTransformerDecorator ** publishDocument ** ');
-    console.warn(document.uri, document.Title);
     const doc = await transformDocument(document);
-    console.warn(doc.uri, doc.YGKH);
 
     return {
         uri: doc.uri,

@@ -3,30 +3,25 @@ import omit from 'lodash.omit';
 import getDocumentTransformer from './getDocumentTransformer';
 import transformAllDocuments from './transformAllDocuments';
 import progress from './progress';
-import { PUBLISH_DOCUMENT } from '../../common/progressStatus';
+import { PRECOMPUTE_ROUTINES } from '../../common/progressStatus';
 import logger from './logger';
 import { jobLogger } from '../workers/tools';
 
-export const versionTransformerDecorator = transformDocument => async (
-    document,
-    _,
-    __,
-    publicationDate = new Date(),
-) => {
+export const versionTransformerDecorator = transformDocument => async document => {
     console.warn(
         '*************** versionTransformerDecorator *******************',
     );
-    console.warn(document.uri, document.Title);
+    console.warn('--vTD--', document.uri, document.Title);
     const doc = await transformDocument(document);
     console.warn(doc);
+    console.warn('--end doc--');
 
     return {
-        uri: doc.uri,
-        subresourceId: null,
+        uri: document.uri,
         versions: [
             {
-                ...omit(doc, ['uri']),
-                publicationDate,
+                ...doc,
+                BPRp: `test-${doc['BPRp']}`,
             },
         ],
     };
@@ -48,8 +43,8 @@ export const computeExternalRoutineInDocumentsFactory = ({
         fields,
     );
 
-    progress.start({
-        status: PUBLISH_DOCUMENT,
+    progress.start(ctx.tenant, {
+        status: PRECOMPUTE_ROUTINES,
         target: count,
         label: 'publishing',
         type: 'publisher',
