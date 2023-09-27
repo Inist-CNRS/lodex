@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:16.20-alpine
 
 WORKDIR /app
 COPY ./package.json /app
@@ -11,6 +11,8 @@ COPY . /app/
 
 ARG node_env="production"
 ENV NODE_ENV=$node_env
+ENV CYPRESS_CACHE_FOLDER=/app/.cache
+ENV npm_config_cache=/app/.npm
 
 RUN mkdir /app/upload && \
     cp -n ./config/production-dist.js ./config/production.js && \

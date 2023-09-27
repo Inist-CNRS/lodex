@@ -30,9 +30,10 @@ services:
             - ./cypress/mocks/external:/app/external
 
     istex-api:
-        image: node:16.20-bookworm
+        image: node:16.20-bullseye
         volumes:
             - .:/app
+            - ./.cache:/root/.cache
         working_dir: /app
         user: '${UID}:${GID}'
         environment:
@@ -42,7 +43,7 @@ services:
         command: node --require @babel/register ./cypress/mocks/istexApi.js
 
     mongo:
-        image: mongo:4.4.4-bionic
+        image: mongo:4.4.24-focal
         ports:
             - "27017:27017"
 
@@ -52,9 +53,10 @@ services:
             - "6379:6379"
 
     workers:
-        image: node:16.20-bookworm
+        image: node:16.20-bullseye
         volumes:
             - .:/app
+            - ./.cache:/root/.cache
         working_dir: /app
         user: '${UID}:${GID}'
         environment:
