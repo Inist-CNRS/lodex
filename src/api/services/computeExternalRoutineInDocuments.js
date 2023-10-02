@@ -1,30 +1,67 @@
-import omit from 'lodash.omit';
-
+import fetch from 'fetch-with-proxy';
 import getDocumentTransformer from './getDocumentTransformer';
 import transformAllDocuments from './transformAllDocuments';
 import progress from './progress';
 import { PRECOMPUTE_ROUTINES } from '../../common/progressStatus';
 import logger from './logger';
+import { getHost } from '../../common/uris';
+import { mongoConnectionString } from './mongoClient';
 import { jobLogger } from '../workers/tools';
 
-export const versionTransformerDecorator = transformDocument => async document => {
-    console.warn(
-        '*************** versionTransformerDecorator *******************',
-    );
-    console.warn('--vTD--', document.uri, document.Title);
+export const versionTransformerDecorator = (
+    tenant,
+    transformDocument,
+) => async document => {
     const doc = await transformDocument(document);
-    console.warn(doc);
-    console.warn('--end doc--');
+    const precomputedDoc = {};
+    for (const field of Object.keys(doc)) {
+        const webServiceURL = doc[field];
+        const routineFields = getRoutineFields(webServiceURL);
+        const tarToCompute = await getTarFromUrl(tenant, routineFields);
 
+        precomputedDoc[field] = webServiceURL;
+    }
     return {
         uri: document.uri,
         versions: [
             {
-                ...doc,
-                BPRp: `test-${doc['BPRp']}`,
+                ...precomputedDoc,
             },
         ],
     };
+};
+
+const baseUrl = getHost();
+
+export const getRoutineFields = path => {
+    const url = new URL(path);
+    return url.pathname.split('/').filter(field => !!field);
+};
+
+export const getTarFromUrl = async (
+    tenant,
+    fields,
+    url = `${process.env.WORKERS_URL ||
+        'http://localhost:31976'}/exporters/bundle`,
+) => {
+    try {
+        const body = JSON.stringify({
+            field: fields,
+            connectionStringURI: mongoConnectionString(tenant),
+            host: baseUrl,
+        });
+
+        const response = await fetch(url, {
+            method: 'POST',
+            body,
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        return response.body;
+    } catch (err) {
+        console.error('**** Building tar archive error *****');
+        console.error(err);
+    }
 };
 
 export const computeExternalRoutineInDocumentsFactory = ({
@@ -54,7 +91,7 @@ export const computeExternalRoutineInDocumentsFactory = ({
         count,
         ctx.dataset.findLimitFromSkip,
         ctx.publishedDataset.updateBatch,
-        versionTransformerDecorator(transformMainResourceDocument),
+        versionTransformerDecorator(ctx.tenant, transformMainResourceDocument),
         undefined,
         ctx.job,
     );
