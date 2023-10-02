@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
-import { Button, TextField, Typography } from '@mui/material';
+import { Button, TextField, Tooltip } from '@mui/material';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import CachedIcon from '@mui/icons-material/Cached';
 import isEqual from 'lodash.isequal';
@@ -12,7 +12,8 @@ const styles = {
     error: {
         container: {
             marginLeft: 'auto',
-            marginRight: 'auto',
+            marginRight: '24px',
+            color: 'red',
         },
         message: {
             container: {
@@ -30,6 +31,32 @@ const styles = {
             },
         },
     },
+};
+
+const VegaAdvancedModeError = ({ message, p, isTooltip }) => {
+    return (
+        <div style={styles.error.message.container}>
+            {!isTooltip ? (
+                <div style={styles.error.message.icon}>
+                    <ReportProblemIcon fontSize="large" />
+                </div>
+            ) : null}
+            <div style={!isTooltip ? styles.error.message.message : undefined}>
+                <p>{p.t('vega_json_error')}</p>
+                <p>{message}</p>
+            </div>
+        </div>
+    );
+};
+
+VegaAdvancedModeError.defaultProps = {
+    isTooltip: false,
+};
+
+VegaAdvancedModeError.propTypes = {
+    p: polyglotPropTypes.isRequired,
+    message: PropTypes.string.isRequired,
+    isTooltip: PropTypes.bool,
 };
 
 const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
@@ -68,35 +95,64 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
 
     return (
         <>
-            <Button onClick={onClear} color="primary" variant="contained">
-                <CachedIcon
-                    sx={{
-                        marginRight: '10px',
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flex: 1,
+                }}
+            >
+                <div>
+                    <Button
+                        onClick={onClear}
+                        color="primary"
+                        variant="contained"
+                    >
+                        <CachedIcon
+                            sx={{
+                                marginRight: '10px',
+                            }}
+                        />
+                        {p.t('regenerate_vega_lite_spec')}
+                    </Button>
+                </div>
+                <div
+                    style={{
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
                     }}
-                />
-                {p.t('regenerate_vega_lite_spec')}
-            </Button>
-            {error ? (
-                <Typography color="red" sx={styles.error.container}>
-                    <div style={styles.error.message.container}>
-                        <div style={styles.error.message.icon}>
-                            <ReportProblemIcon fontSize="large" />
-                        </div>
-                        <div style={styles.error.message.message}>
-                            <p>{p.t('vega_json_error')}</p>
-                            <p>
-                                {p.t('vega_json_error_raw')} {error.message}
-                            </p>
-                        </div>
-                    </div>
-                </Typography>
-            ) : null}
+                >
+                    {error ? (
+                        <Tooltip
+                            title={
+                                <VegaAdvancedModeError
+                                    message={error.message}
+                                    p={p}
+                                    isTooltip
+                                />
+                            }
+                        >
+                            <ReportProblemIcon
+                                fontSize="large"
+                                sx={{
+                                    color: 'red',
+                                }}
+                            />
+                        </Tooltip>
+                    ) : null}
+                </div>
+            </div>
             <TextField
                 onChange={handleChange}
                 value={currentValue}
                 fullWidth
                 multiline
             />
+            {error ? (
+                <div style={styles.error.container}>
+                    <VegaAdvancedModeError message={error.message} p={p} />
+                </div>
+            ) : null}
         </>
     );
 };
