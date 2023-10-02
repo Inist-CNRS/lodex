@@ -960,3 +960,5 @@
 "r-close-by_description" 	"Is used to create the graph aster plot." 	"Est utilisée pour créer le graphique aster plot."
 regenerate_vega_lite_spec	Regenerate Vega Lite specifications	Régénérer la spécification Vega Lite
 regenerate_vega_spec	Regenerate Vega specifications	Régénérer la spécification Vega
+vega_json_error	The json syntax of Vega Lite specification is wrong!	La syntaxe json de la spécification Vega Lite est erroné !
+vega_json_error_raw	Raw json error:	Erreur json brute :

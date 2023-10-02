@@ -8,6 +8,30 @@ import isEqual from 'lodash.isequal';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
+const styles = {
+    error: {
+        container: {
+            marginLeft: 'auto',
+            marginRight: 'auto',
+        },
+        message: {
+            container: {
+                display: 'flex',
+                flexDirection: 'row',
+            },
+            icon: {
+                marginTop: 'auto',
+                marginBottom: 'auto',
+                marginRight: '10px',
+            },
+            message: {
+                borderLeft: 'solid 1px red',
+                paddingLeft: '10px',
+            },
+        },
+    },
+};
+
 const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
     const [currentValue, setCurrentValue] = useState(value || '{}');
     const [error, setError] = useState(null);
@@ -53,17 +77,18 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                 {p.t('regenerate_vega_lite_spec')}
             </Button>
             {error ? (
-                <Typography color="red">
-                    <ReportProblemIcon
-                        sx={{
-                            marginRight: '10px',
-                            marginLeft: '10px',
-                            verticalAlign: 'text-bottom',
-                        }}
-                    />
-                    {/* TODO: Do a clean ux to display error message */}
-                    {p('vega_json_error')}
-                    {error.message}
+                <Typography color="red" sx={styles.error.container}>
+                    <div style={styles.error.message.container}>
+                        <div style={styles.error.message.icon}>
+                            <ReportProblemIcon fontSize="large" />
+                        </div>
+                        <div style={styles.error.message.message}>
+                            <p>{p.t('vega_json_error')}</p>
+                            <p>
+                                {p.t('vega_json_error_raw')} {error.message}
+                            </p>
+                        </div>
+                    </div>
                 </Typography>
             ) : null}
             <TextField
