@@ -5,10 +5,9 @@ import compose from 'recompose/compose';
 import injectData from '../../../injectData';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import {
-    AXIS_HORIZONTAL,
-    AXIS_VERTICAL,
     AXIS_X,
     AXIS_Y,
+    lodexDirectionToIdDirection,
     lodexOrderToIdOrder,
     lodexScaleToIdScale,
     VEGA_LITE_DATA_INJECT_TYPE_A,
@@ -63,9 +62,7 @@ const BarChartView = ({
 
         const specBuilder = new BarChart();
 
-        specBuilder.setAxisDirection(
-            direction === 'vertical' ? AXIS_VERTICAL : AXIS_HORIZONTAL,
-        );
+        specBuilder.setAxisDirection(lodexDirectionToIdDirection(direction));
 
         specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
         specBuilder.setScale(lodexScaleToIdScale(scale));

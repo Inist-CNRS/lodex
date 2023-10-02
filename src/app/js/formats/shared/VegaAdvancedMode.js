@@ -61,6 +61,8 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                             verticalAlign: 'text-bottom',
                         }}
                     />
+                    {/* TODO: Do a clean ux to display error message */}
+                    {p('vega_json_error')}
                     {error.message}
                 </Typography>
             ) : null}

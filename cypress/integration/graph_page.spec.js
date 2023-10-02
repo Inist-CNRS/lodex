@@ -6,8 +6,8 @@ import * as searchDrawer from '../support/searchDrawer';
 
 describe('Graph Page', () => {
     beforeEach(() => {
-        // ResizeObserver don't like when the app has to many renders / re-renders
-        // and throw an exception to say I wait for the next paint
+        // ResizeObserver doesn't like when the app has to many renders / re-renders
+        // and throws an exception to say, "I wait for the next paint"
         // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
         cy.on('uncaught:exception', error => {
             return !error.message.includes('ResizeObserver');

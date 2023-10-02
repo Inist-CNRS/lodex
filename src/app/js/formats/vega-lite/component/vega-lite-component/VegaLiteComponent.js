@@ -2,13 +2,13 @@ import { Vega } from 'react-vega';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import deepClone from 'lodash.clonedeep';
 import { isAdmin } from '../../../../user';
 import {
     VEGA_LITE_DATA_INJECT_TYPE_A,
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../../chartsUtils';
-import deepClone from 'lodash.clonedeep';
 
 export const VEGA_ACTIONS_WIDTH = 40;
 
