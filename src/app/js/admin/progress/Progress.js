@@ -50,10 +50,12 @@ export const ProgressComponent = props => {
 
     useEffect(() => {
         const socket = io();
-        socket.on('progress', data => {
+        const tenant = sessionStorage.getItem('lodex-tenant') || 'default';
+        // log all messages
+        socket.on(`${tenant}-progress`, data => {
             setUpdatedProgress(data);
         });
-        socket.on('connect_error', () => {
+        socket.on(`${tenant}-connect_error`, () => {
             loadProgress();
         });
         return () => socket.disconnect();

@@ -107,7 +107,7 @@ const fixtures = {
 describe('e2e upload saveparsedStream', () => {
     let db;
     beforeAll(async () => {
-        db = await connect();
+        db = await connect('lodex_test');
     });
 
     describe('optimal', () => {
@@ -211,7 +211,7 @@ describe('e2e upload saveparsedStream', () => {
         });
 
         afterAll(async () => {
-            await clear();
+            await clear('lodex_test');
         });
     });
 
@@ -311,7 +311,7 @@ describe('e2e upload saveparsedStream', () => {
         });
 
         afterAll(async () => {
-            await clear();
+            await clear('lodex_test');
         });
     });
 

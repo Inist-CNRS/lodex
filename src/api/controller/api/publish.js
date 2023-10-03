@@ -3,14 +3,18 @@ import route from 'koa-route';
 import { v1 as uuid } from 'uuid';
 
 import clearPublished from '../../services/clearPublished';
-import logger from '../../services/logger';
-import { workerQueue } from '../../workers';
+import { workerQueues } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
+import getLogger from '../../services/logger';
 
 const app = new Koa();
 
 export const doPublish = async ctx => {
-    await workerQueue.add({ jobType: PUBLISHER }, { jobId: uuid() });
+    await workerQueues[ctx.tenant].add(
+        PUBLISHER, // Name of the job
+        { jobType: PUBLISHER, tenant: ctx.tenant },
+        { jobId: uuid() },
+    );
     ctx.status = 200;
     ctx.body = {
         status: 'publishing',
@@ -24,7 +28,8 @@ export const handleClearPublished = async ctx => {
             status: 'success',
         };
     } catch (error) {
-        logger.error('handle clear published error', {
+        const logger = getLogger(ctx.tenant);
+        logger.error(`Handle clear published error`, {
             error,
         });
         ctx.body = {

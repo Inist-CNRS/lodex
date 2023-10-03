@@ -1,3 +1,4 @@
+import progress from './progress';
 import {
     versionTransformerDecorator,
     publishDocumentsFactory,
@@ -22,8 +23,12 @@ const fields = [
 const job = {
     log: jest.fn(),
     isActive: () => true,
+    data: {
+        tenant: 'lodex_test',
+    },
 };
 const getCtx = ({ subresources } = {}) => ({
+    tenant: 'lodex_test',
     dataset: {
         findLimitFromSkip: 'dataset.findLimitFromSkip()',
         findBy: 'dataset.findBy()',
@@ -64,6 +69,7 @@ describe('publishDocuments', () => {
         } = getMocks();
 
         beforeAll(async () => {
+            progress.initialize('lodex_test');
             await publishDocumentsFactory({
                 versionTransformerDecorator,
                 getDocumentTransformer,

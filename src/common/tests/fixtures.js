@@ -9,7 +9,7 @@ let db;
 
 export async function connect() {
     if (!db) {
-        db = await mongoClient();
+        db = await mongoClient('default');
         db.dataset = await datasetFactory(db);
         db.publishedDataset = await publishedDatasetFactory(db);
         db.publishedCharacteristic = await publishedCharacteristicFactory(db);
@@ -49,7 +49,11 @@ export function loadFixtures(fixtures) {
 }
 
 export async function clear() {
-    await connect();
+    // await connect();
+
+    if (!db) {
+        return;
+    }
 
     await Promise.all([
         db.dataset.remove({}),
@@ -63,5 +67,6 @@ export async function clear() {
 }
 
 export const close = () => {
+    db.close();
     db = undefined;
 };

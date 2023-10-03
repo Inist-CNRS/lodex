@@ -26,12 +26,15 @@ function getEzsMessageError(string) {
 }
 
 export const processImport = (job, done) => {
-    cleanWaitingJobsOfType(IMPORT);
+    cleanWaitingJobsOfType(job.data.tenant, IMPORT);
     startJobImport(job)
         .then(async () => {
             job.progress(100);
             const isFailed = await job.isFailed();
-            notifyListeners({ isImporting: false, success: !isFailed });
+            notifyListeners(`${job.data.tenant}-import`, {
+                isImporting: false,
+                success: !isFailed,
+            });
             done();
         })
         .catch(err => {
@@ -41,7 +44,10 @@ export const processImport = (job, done) => {
 };
 
 const startJobImport = async job => {
-    notifyListeners({ isImporting: true, success: false });
+    notifyListeners(`${job.data.tenant}-import`, {
+        isImporting: true,
+        success: false,
+    });
     const ctx = await prepareContext({ job });
     await startImport(ctx);
 };
@@ -51,7 +57,7 @@ const handleImportError = async (job, err) => {
     if (err instanceof CancelWorkerError) {
         await ctx.dataset.drop();
     }
-    notifyListeners({
+    notifyListeners(`${job.data.tenant}-import`, {
         isImporting: false,
         success: false,
         message:
@@ -62,6 +68,7 @@ const handleImportError = async (job, err) => {
 };
 
 const prepareContext = async ctx => {
+    ctx.tenant = ctx.job.data.tenant;
     await repositoryMiddleware(ctx, () => Promise.resolve());
     ctx.getLoader = getLoader;
     ctx.getCustomLoader = getCustomLoader;
@@ -76,5 +83,7 @@ const prepareContext = async ctx => {
 };
 
 export const addImportListener = listener => listeners.push(listener);
-const notifyListeners = payload =>
-    listeners.forEach(listener => listener(payload));
+
+export const notifyListeners = (room, payload) => {
+    listeners.forEach(listener => listener({ room, data: payload }));
+};

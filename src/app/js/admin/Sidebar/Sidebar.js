@@ -24,6 +24,7 @@ import {
 } from '../../../../common/scope';
 import { MenuItemLink } from './MenuItemLink';
 import customTheme from '../../../custom/customTheme';
+import { Box } from '@mui/material';
 
 const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;
@@ -150,6 +151,18 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                 }}
             >
                 <MenuList>{menuItems}</MenuList>
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        bottom: '0',
+                        width: '100%',
+                        textAlign: 'center',
+                        opacity: '0.5',
+                    }}
+                >
+                    Instance:{' '}
+                    {sessionStorage.getItem('lodex-tenant') || 'default'}
+                </Box>
             </Drawer>
         </>
     );

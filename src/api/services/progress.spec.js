@@ -2,10 +2,13 @@ import { Progress } from './progress';
 import { PENDING, PUBLISH_DOCUMENT } from '../../common/progressStatus';
 
 describe('Progress', () => {
-    it('should get default Progress', () => {
-        const progress = new Progress();
+    const progress = new Progress();
+    beforeAll(async () => {
+        progress.initialize('lodex_test');
+    });
 
-        expect(progress.getProgress()).toEqual({
+    it('should get default Progress', () => {
+        expect(progress.getProgress('lodex_test')).toEqual({
             target: undefined,
             progress: undefined,
             symbol: undefined,
@@ -16,11 +19,9 @@ describe('Progress', () => {
     });
 
     it('should change status on start if target is 0', () => {
-        const progress = new Progress();
+        progress.start('lodex_test', { status: PUBLISH_DOCUMENT, target: 0 });
 
-        progress.start({ status: PUBLISH_DOCUMENT, target: 0 });
-
-        expect(progress.getProgress()).toEqual({
+        expect(progress.getProgress('lodex_test')).toEqual({
             target: 0,
             progress: 0,
             status: PUBLISH_DOCUMENT,
@@ -32,11 +33,9 @@ describe('Progress', () => {
     });
 
     it('should allow to follow Progress', () => {
-        const progress = new Progress();
+        progress.start('lodex_test', { status: PUBLISH_DOCUMENT, target: 30 });
 
-        progress.start({ status: PUBLISH_DOCUMENT, target: 30 });
-
-        expect(progress.getProgress()).toEqual({
+        expect(progress.getProgress('lodex_test')).toEqual({
             target: 30,
             progress: 0,
             status: PUBLISH_DOCUMENT,
@@ -46,9 +45,9 @@ describe('Progress', () => {
             label: undefined,
         });
 
-        progress.incrementProgress(10);
+        progress.incrementProgress('lodex_test', 10);
 
-        expect(progress.getProgress()).toEqual({
+        expect(progress.getProgress('lodex_test')).toEqual({
             target: 30,
             progress: 10,
             status: PUBLISH_DOCUMENT,
@@ -58,9 +57,9 @@ describe('Progress', () => {
             label: undefined,
         });
 
-        progress.setProgress(20);
+        progress.setProgress('lodex_test', 20);
 
-        expect(progress.getProgress()).toEqual({
+        expect(progress.getProgress('lodex_test')).toEqual({
             target: 30,
             progress: 20,
             status: PUBLISH_DOCUMENT,
@@ -70,9 +69,9 @@ describe('Progress', () => {
             label: undefined,
         });
 
-        progress.incrementProgress(10);
+        progress.incrementProgress('lodex_test', 10);
 
-        expect(progress.getProgress()).toEqual({
+        expect(progress.getProgress('lodex_test')).toEqual({
             target: 30,
             progress: 30,
             status: PUBLISH_DOCUMENT,
@@ -84,30 +83,33 @@ describe('Progress', () => {
     });
 
     it('should return the symbol if specified one', () => {
-        const progress = new Progress();
+        progress.start('lodex_test', {
+            status: 'percent',
+            target: 100,
+            symbol: '%',
+        });
 
-        progress.start({ status: 'percent', target: 100, symbol: '%' });
+        expect(progress.getProgress('lodex_test').symbol).toBe('%');
 
-        expect(progress.getProgress().symbol).toBe('%');
+        progress.incrementProgress('lodex_test');
 
-        progress.incrementProgress();
-
-        expect(progress.getProgress().symbol).toBe('%');
+        expect(progress.getProgress('lodex_test').symbol).toBe('%');
     });
 
     describe('.throw', () => {
         it('should cancel progress ignoring all further operation until getProgress is called that will throw the error', () => {
-            const progress = new Progress();
-
-            progress.start({ status: PUBLISH_DOCUMENT, target: 30 });
+            progress.start('lodex_test', {
+                status: PUBLISH_DOCUMENT,
+                target: 30,
+            });
             const error = new Error('Boom');
-            progress.throw(error);
-            progress.incrementProgress();
-            progress.finish();
+            progress.throw('lodex_test', error);
+            progress.incrementProgress('lodex_test');
+            progress.finish('lodex_test');
 
-            expect(() => progress.getProgress()).toThrow(error);
+            expect(() => progress.getProgress('lodex_test')).toThrow(error);
 
-            expect(progress.getProgress()).toEqual({
+            expect(progress.getProgress('lodex_test')).toEqual({
                 error: null,
                 progress: 0,
                 status: 'PENDING',

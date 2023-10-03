@@ -49,7 +49,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             orderBy,
             field,
             ...ctx.query,
-            connectionStringURI: mongoConnectionString,
+            connectionStringURI: mongoConnectionString(ctx.tenant),
             host,
         };
         const input = new PassThrough({ objectMode: true });
@@ -76,7 +76,10 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
                 );
             }
         };
-        const workers_url = `${process.env.WORKERS_URL || 'http://localhost:31976'}/routines/${routineName}?${ctx.querystring}`;
+        const workers_url = `${process.env.WORKERS_URL ||
+            'http://localhost:31976'}/routines/${routineName}?${
+            ctx.querystring
+        }`;
         console.error('Connecting to workers', workers_url, 'with', query);
         ctx.body = input
             .pipe(
@@ -115,6 +118,12 @@ app.use(
         maxAge: config.cache.maxAge,
     }),
 );
+
+app.use(async (ctx, next) => {
+    await next();
+    ctx.response.set('Vary', 'X-Lodex-Tenant');
+});
+
 app.use(route.get('/', getScripts));
 app.use(route.get('/:scriptNameCalled', middlewareScript));
 app.use(route.get('/:scriptNameCalled/*', middlewareScript));

@@ -15,7 +15,6 @@ import { loadMenu } from './menu/reducer';
 import { loadDisplayConfig } from './displayConfig/reducer';
 import { fromMenu } from './selectors';
 import scrollToTop from '../lib/scrollToTop';
-import CreateResource from './resource/CreateResource';
 import ScrollToTop from './ScrollToTop';
 import Breadcrumb from './breadcrumb/Breadcrumb';
 import { initializeLanguage } from '../i18n';
@@ -82,7 +81,6 @@ const Routes = props => {
                             component={CustomPage}
                         />
                     ))}
-                    <Route path={notLogin} component={CreateResource} />
                 </>
             </ConnectedRouter>
         </App>
