@@ -222,7 +222,7 @@ export default (
             formatData: fromFormat.getFormatData(state, field.name),
             formatTotal: fromFormat.getFormatTotal(state, field.name),
             isLoaded,
-            isDataSetLoading: get(state, 'dataset.loading', false),
+            isDataSetLoading: get(state, 'dataset.formatLoading', false),
             error: fromFormat.getFormatError(state, field.name),
         };
     };

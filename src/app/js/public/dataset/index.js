@@ -70,7 +70,12 @@ export default handleActions(
             ...state,
             error: null,
             loading: true,
+            formatLoading: true,
             perPage: (payload && payload.perPage) || state.perPage,
+        }),
+        LOAD_FORMAT_DATA_SUCCESS: state => ({
+            ...state,
+            formatLoading: false,
         }),
         LOAD_DATASET_PAGE_SUCCESS: (
             state,
