@@ -61,6 +61,7 @@ describe('dataset reducer', () => {
             currentPage: 0,
             error: null,
             loading: true,
+            formatLoading: true,
             match: 'foo',
             perPage: 20,
             sort: {},
@@ -77,6 +78,7 @@ describe('dataset reducer', () => {
             currentPage: 0,
             error: null,
             loading: true,
+            formatLoading: true,
             perPage: 20,
         });
     });
