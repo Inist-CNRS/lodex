@@ -16,6 +16,7 @@ import { preLoadFormatData, loadFormatData, unLoadFormatData } from './reducer';
 import Loading from '../lib/components/Loading';
 import InvalidFormat from './InvalidFormat';
 import { CircularProgress } from '@mui/material';
+import './injectData.css';
 
 const styles = {
     message: {
@@ -33,7 +34,10 @@ const styles = {
             left: 0,
             right: 0,
             pointerEvents: 'none',
-            transitionDuration: '150ms',
+            backgroundColor: 'rgba(0,0,0,0.15)',
+            opacity: 0,
+            animationDuration: '150ms',
+            animationFillMode: 'forwards',
         },
         progress: {
             zIndex: 99999,
@@ -74,11 +78,19 @@ export default (
             formatData: PropTypes.any,
             formatTotal: PropTypes.any,
             isLoaded: PropTypes.bool.isRequired,
-            isDataSetLoading: PropTypes.bool.isRequired,
+            isFormatLoading: PropTypes.bool.isRequired,
             error: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
             location: PropTypes.shape({ pathname: PropTypes.string }),
             p: polyglotPropTypes.isRequired,
         };
+
+        constructor(props) {
+            super(props);
+            this.state = {
+                isLoading: true,
+            };
+            this.handleAnimationEnd = this.handleAnimationEnd.bind(this);
+        }
 
         loadFormatData = ({ ...args }) => {
             const { loadFormatData, location } = this.props;
@@ -129,6 +141,13 @@ export default (
 
         componentDidUpdate(prevProps) {
             const { field, resource } = this.props;
+
+            if (!this.state.isLoading && this.props.isFormatLoading) {
+                this.setState({
+                    isLoading: true,
+                });
+            }
+
             if (
                 !field ||
                 (isEqual(field, prevProps.field) &&
@@ -141,6 +160,14 @@ export default (
             this.loadFormatData();
         }
 
+        handleAnimationEnd() {
+            if (this.state.isLoading && !this.props.isFormatLoading) {
+                this.setState({
+                    isLoading: false,
+                });
+            }
+        }
+
         render() {
             const {
                 loadFormatData,
@@ -149,7 +176,7 @@ export default (
                 p: polyglot,
                 field,
                 isLoaded,
-                isDataSetLoading,
+                isFormatLoading,
                 error,
                 resource,
                 ...props
@@ -182,14 +209,15 @@ export default (
             return (
                 <div style={styles.format.container}>
                     <div
+                        onAnimationEnd={this.handleAnimationEnd}
                         style={{
                             ...styles.format.loading,
-                            backgroundColor: isDataSetLoading
-                                ? 'rgba(0,0,0,0.15)'
-                                : 'rgba(0,0,0,0)',
+                            animationName: isFormatLoading
+                                ? 'injectDataLoadingStart'
+                                : 'injectDataLoadingEnd',
                         }}
                     ></div>
-                    {isDataSetLoading ? (
+                    {this.state.isLoading ? (
                         <CircularProgress
                             sx={styles.format.progress}
                             variant="indeterminate"
@@ -222,7 +250,7 @@ export default (
             formatData: fromFormat.getFormatData(state, field.name),
             formatTotal: fromFormat.getFormatTotal(state, field.name),
             isLoaded,
-            isDataSetLoading: get(state, 'dataset.formatLoading', false),
+            isFormatLoading: get(state, 'dataset.formatLoading', false),
             error: fromFormat.getFormatError(state, field.name),
         };
     };
