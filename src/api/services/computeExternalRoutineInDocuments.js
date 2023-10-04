@@ -7,6 +7,9 @@ import logger from './logger';
 import { getHost } from '../../common/uris';
 import { mongoConnectionString } from './mongoClient';
 import { jobLogger } from '../workers/tools';
+import fs from 'fs';
+import { pipeline } from 'stream';
+import { promisify } from 'util';
 
 export const versionTransformerDecorator = (
     tenant,
@@ -15,11 +18,19 @@ export const versionTransformerDecorator = (
     const doc = await transformDocument(document);
     const precomputedDoc = {};
     for (const field of Object.keys(doc)) {
-        const webServiceURL = doc[field];
-        const routineFields = getRoutineFields(webServiceURL);
-        const tarToCompute = await getTarFromUrl(tenant, routineFields);
-
-        precomputedDoc[field] = webServiceURL;
+        const webServiceField = doc[field];
+        const {
+            webServiceBaseURL,
+            webServiceName,
+            routineFields,
+        } = extractPartsOfWebservice(webServiceField);
+        const { fileName } = await getTarFromUrl(tenant, routineFields);
+        const computed = await getComputedFromWebservice(
+            webServiceBaseURL,
+            webServiceName,
+            fileName,
+        );
+        precomputedDoc[field] = webServiceName;
     }
     return {
         uri: document.uri,
@@ -33,9 +44,16 @@ export const versionTransformerDecorator = (
 
 const baseUrl = getHost();
 
-export const getRoutineFields = path => {
-    const url = new URL(path);
-    return url.pathname.split('/').filter(field => !!field);
+export const extractPartsOfWebservice = webServiceField => {
+    const url = new URL(webServiceField);
+    const [version, routineName, ...routineFields] = url.pathname
+        .split('/')
+        .filter(field => !!field);
+    return {
+        webServiceBaseURL: `${url.origin}/${version}/`,
+        webServiceName: routineName,
+        routineFields,
+    };
 };
 
 export const getTarFromUrl = async (
@@ -57,11 +75,70 @@ export const getTarFromUrl = async (
             headers: { 'Content-Type': 'application/json' },
         });
 
-        return response.body;
+        const tar = response.body;
+
+        const pipe = promisify(pipeline);
+        const fileName = `./webservice_temp/__entry_${tenant}_${Date.now().toString()}.tar.gz`;
+        await pipe(tar, fs.createWriteStream(fileName));
+
+        return { tar, fileName };
     } catch (err) {
         console.error('**** Building tar archive error *****');
         console.error(err);
     }
+};
+
+export const getComputedFromWebservice = async (
+    webServiceBaseURL,
+    webServiceName,
+    fileName,
+) => {
+    try {
+        const responseCall = await fetch(
+            `${webServiceBaseURL}${webServiceName}`,
+            {
+                method: 'POST',
+                body: fs.createReadStream(fileName),
+                headers: { 'Content-Type': 'application/gzip' },
+            },
+        );
+
+        fs.unlink(fileName, error => {
+            if (error) {
+                throw error;
+            }
+        });
+
+        if (responseCall.status !== 200) {
+            throw new Error(responseCall.message);
+        }
+        const callId = JSON.stringify(await responseCall.json());
+
+        await new Promise(resolve => setTimeout(resolve, 10000));
+
+        console.log('***** getComputedFromWebservice ******');
+        const responseResult = await fetch(`${webServiceBaseURL}retrieve`, {
+            method: 'POST',
+            body: callId,
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        const tar = responseResult.body;
+        console.log(responseResult.status);
+        //console.log(tar);
+
+        const pipeComputed = promisify(pipeline);
+        await pipeComputed(
+            tar,
+            fs.createWriteStream(
+                `./webservice_temp/__computed_${Date.now().toString()}.tar.gz`,
+            ),
+        );
+    } catch (err) {
+        console.error('**** Calling webservice error *****');
+        console.error(err);
+    }
+    return 'bill';
 };
 
 export const computeExternalRoutineInDocumentsFactory = ({

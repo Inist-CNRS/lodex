@@ -333,7 +333,7 @@ export const SourceValueToggle = ({
                     </Typography>
                 </ToggleButton>
 
-                <ToggleButton disabled={arbitraryMode} value="external">
+                <ToggleButton value="external">
                     <ProcessingIcon style={{ fontSize: 50 }} />
                     <Typography variant="caption">
                         {polyglot.t('external_processing')}

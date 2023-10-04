@@ -43,7 +43,8 @@ config/staging.js
 config/test.js
 build
 typings
-/upload/
+/upload/*
+!/upload/.gitkeep
 
 # Cypress
 cypress/videos
@@ -54,3 +55,7 @@ stats.json
 
 ## Webstorm
 .idea
+
+## Folder for webservices gzip files exchanges
+/webservice_temp/*
+!/webservice_temp/.gitkeep
