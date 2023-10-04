@@ -1,7 +1,7 @@
 import path from 'path';
 
 import { getFileStatsIfExists, readFile } from '../services/fsHelpers';
-import logger from '../services/logger';
+import getLogger from '../services/logger';
 
 const scriptRegEx = new RegExp('<script.*?( src=".*")?.*?>.*?</script>', 'gm');
 
@@ -46,7 +46,8 @@ export default async ctx => {
     try {
         html = (await readFile(pathname)).toString();
     } catch (error) {
-        logger.error('Unable to read custom page file', {
+        const logger = getLogger(ctx.tenant);
+        logger.error(`Unable to read custom page file`, {
             pathname,
             error,
         });

@@ -372,6 +372,9 @@ describe('enrichment', () => {
                     id: 1,
                     log: jest.fn(),
                     isActive: jest.fn().mockReturnValue(true),
+                    data: {
+                        tenant: 'lodex_test',
+                    },
                 },
                 enrichment: {
                     updateOne: jest.fn(),

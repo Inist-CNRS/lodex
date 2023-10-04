@@ -44,8 +44,8 @@ describe('upload', () => {
             expect(next).toHaveBeenCalled();
             expect(ctx.resumable).toEqual({
                 stream: 'stream',
-                filename: `${config.uploadDir}/identifier`,
-                chunkname: `${config.uploadDir}/identifier.10`,
+                filename: `${config.uploadDir}/lodex_test_identifier`,
+                chunkname: `${config.uploadDir}/lodex_test_identifier.10`,
                 totalChunks: 100,
                 totalSize: 500,
                 currentChunkSize: 5,
