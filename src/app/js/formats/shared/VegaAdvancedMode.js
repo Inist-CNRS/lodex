@@ -33,40 +33,17 @@ const styles = {
     },
 };
 
-const VegaAdvancedModeError = ({ message, p, isTooltip }) => {
-    return (
-        <div style={styles.error.message.container}>
-            {!isTooltip ? (
-                <div style={styles.error.message.icon}>
-                    <ReportProblemIcon fontSize="large" />
-                </div>
-            ) : null}
-            <div style={!isTooltip ? styles.error.message.message : undefined}>
-                <p>{p.t('vega_json_error')}</p>
-                <p>{message}</p>
-            </div>
-        </div>
-    );
-};
-
-VegaAdvancedModeError.defaultProps = {
-    isTooltip: false,
-};
-
-VegaAdvancedModeError.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    message: PropTypes.string.isRequired,
-    isTooltip: PropTypes.bool,
-};
-
 const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
     const [currentValue, setCurrentValue] = useState(value || '{}');
     const [error, setError] = useState(null);
 
     const valueObject = useMemo(() => {
         try {
-            return JSON.parse(value);
+            const json = JSON.parse(value);
+            setError(null);
+            return json;
         } catch (e) {
+            setError(e);
             return null;
         }
     }, [value]);
@@ -83,7 +60,6 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
     }, [currentValue]);
 
     useEffect(() => {
-        if (valueObject === null || currentValueObject === null) return;
         if (!isEqual(currentValueObject, valueObject)) {
             onChange(currentValue);
         }
@@ -125,11 +101,10 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                     {error ? (
                         <Tooltip
                             title={
-                                <VegaAdvancedModeError
-                                    message={error.message}
-                                    p={p}
-                                    isTooltip
-                                />
+                                <div>
+                                    <p>{p.t('vega_json_error')}</p>
+                                    <p>{error.message}</p>
+                                </div>
                             }
                         >
                             <ReportProblemIcon
@@ -150,7 +125,15 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
             />
             {error ? (
                 <div style={styles.error.container}>
-                    <VegaAdvancedModeError message={error.message} p={p} />
+                    <div style={styles.error.message.container}>
+                        <div style={styles.error.message.icon}>
+                            <ReportProblemIcon fontSize="large" />
+                        </div>
+                        <div style={styles.error.message.message}>
+                            <p>{p.t('vega_json_error')}</p>
+                            <p>{error.message}</p>
+                        </div>
+                    </div>
                 </div>
             ) : null}
         </>
