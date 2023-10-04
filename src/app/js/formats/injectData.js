@@ -16,7 +16,6 @@ import { preLoadFormatData, loadFormatData, unLoadFormatData } from './reducer';
 import Loading from '../lib/components/Loading';
 import InvalidFormat from './InvalidFormat';
 import { CircularProgress } from '@mui/material';
-import './injectData.css';
 
 const styles = {
     message: {
@@ -48,6 +47,25 @@ const styles = {
         },
     },
 };
+
+const animationKeyframes = `
+@keyframes injectDataLoadingStart {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes injectDataLoadingEnd {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}`;
 
 const getCreateUrl = url => {
     if (typeof url === 'function') {
@@ -208,6 +226,7 @@ export default (
 
             return (
                 <div style={styles.format.container}>
+                    <style>{animationKeyframes}</style>
                     <div
                         onAnimationEnd={this.handleAnimationEnd}
                         style={{
