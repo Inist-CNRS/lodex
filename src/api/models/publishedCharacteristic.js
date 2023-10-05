@@ -20,11 +20,13 @@ export default db => {
             publicationDate: new Date(),
         });
 
-        if (!queryResult.ops.length) {
+        if (!queryResult.acknowledged) {
             throw new Error('Error while creating new characteristic version');
         }
 
-        return queryResult.ops[0];
+        return await collection.findOne({
+            _id: queryResult.insertedId,
+        });
     };
 
     collection.findAllVersions = () =>

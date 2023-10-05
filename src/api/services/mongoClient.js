@@ -7,7 +7,7 @@ export const mongoConnectionString = tenant =>
     `mongodb://${config.mongo.host}/${config.mongo.dbName}_${tenant ||
         'default'}`;
 
-export const mongoClientFactory = MongoClientImpl => async tenant => {
+export const mongoClientFactory = async tenant => {
     if (!tenant) {
         throw new Error(
             `L'instance n'est pas renseigné, impossible de se connecter à la base de données.`,
@@ -16,12 +16,10 @@ export const mongoClientFactory = MongoClientImpl => async tenant => {
 
     if (!db[tenant]) {
         try {
-            db[tenant] = await MongoClientImpl.connect(
-                mongoConnectionString(tenant),
-                {
-                    poolSize: 10,
-                },
-            );
+            const client = new MongoClient(mongoConnectionString(tenant), {
+                maxPoolSize: 10,
+            });
+            db[tenant] = (await client.connect()).db();
         } catch (error) {
             console.error(error);
             throw new Error(
@@ -33,4 +31,4 @@ export const mongoClientFactory = MongoClientImpl => async tenant => {
     return db[tenant];
 };
 
-export default mongoClientFactory(MongoClient);
+export default mongoClientFactory;

@@ -22,6 +22,7 @@ export const processPublication = (job, done) => {
             done();
         })
         .catch(err => {
+            console.error(err);
             handlePublishError(job, err);
             done(err);
         });
