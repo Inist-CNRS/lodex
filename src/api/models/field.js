@@ -323,15 +323,22 @@ export default async db => {
     collection.initializeSubresourceModel = async subresource => {
         const newField = createSubresourceUriField(subresource);
 
-        await collection.updateOne(
-            {
-                name: `${subresource._id}_${URI_FIELD_NAME}`,
-            },
-            newField,
-            {
-                upsert: true,
-            },
-        );
+        try {
+            await collection.updateOne(
+                {
+                    name: `${subresource._id}_${URI_FIELD_NAME}`,
+                },
+                {
+                    $set: newField,
+                },
+                {
+                    upsert: true,
+                },
+            );
+        } catch (e) {
+            console.error(e);
+            throw e;
+        }
     };
 
     collection.updateSubresourcePaths = async subresource => {
