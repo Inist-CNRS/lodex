@@ -24,13 +24,18 @@ export const versionTransformerDecorator = (
             webServiceName,
             routineFields,
         } = extractPartsOfWebservice(webServiceField);
-        const { fileName } = await getTarFromUrl(tenant, routineFields);
-        const computed = await getComputedFromWebservice(
+        const { fileName } = await getFielsArchiveFromUrl(
+            tenant,
+            routineFields,
+        );
+        const callId = await getTokenFromWebservice(
             webServiceBaseURL,
             webServiceName,
             fileName,
+            tenant,
         );
-        precomputedDoc[field] = webServiceName;
+
+        precomputedDoc[field] = callId;
     }
     return {
         uri: document.uri,
@@ -43,6 +48,11 @@ export const versionTransformerDecorator = (
 };
 
 const baseUrl = getHost();
+//Warning : This have to be done better for dev env
+const webhookBaseUrl =
+    process.env.NODE_ENV === 'development'
+        ? 'https://6b5f-2a01-e0a-c74-5540-7c23-4d46-7137-c866.ngrok-free.app'
+        : baseUrl;
 
 export const extractPartsOfWebservice = webServiceField => {
     const url = new URL(webServiceField);
@@ -56,89 +66,90 @@ export const extractPartsOfWebservice = webServiceField => {
     };
 };
 
-export const getTarFromUrl = async (
+export const getFielsArchiveFromUrl = async (
     tenant,
     fields,
     url = `${process.env.WORKERS_URL ||
         'http://localhost:31976'}/exporters/bundle`,
 ) => {
-    try {
-        const body = JSON.stringify({
-            field: fields,
-            connectionStringURI: mongoConnectionString(tenant),
-            host: baseUrl,
-        });
+    const body = JSON.stringify({
+        field: fields,
+        connectionStringURI: mongoConnectionString(tenant),
+        host: baseUrl,
+    });
 
-        const response = await fetch(url, {
-            method: 'POST',
-            body,
-            headers: { 'Content-Type': 'application/json' },
-        });
+    const response = await fetch(url, {
+        method: 'POST',
+        body,
+        headers: { 'Content-Type': 'application/json' },
+    });
 
-        const tar = response.body;
+    const tar = response.body;
 
-        const pipe = promisify(pipeline);
-        const fileName = `./webservice_temp/__entry_${tenant}_${Date.now().toString()}.tar.gz`;
-        await pipe(tar, fs.createWriteStream(fileName));
+    const pipe = promisify(pipeline);
+    const fileName = `./webservice_temp/__entry_${tenant}_${Date.now().toString()}.tar.gz`;
+    await pipe(tar, fs.createWriteStream(fileName));
 
-        return { tar, fileName };
-    } catch (err) {
-        console.error('**** Building tar archive error *****');
-        console.error(err);
-    }
+    return { tar, fileName };
 };
 
-export const getComputedFromWebservice = async (
+export const getTokenFromWebservice = async (
     webServiceBaseURL,
     webServiceName,
     fileName,
+    tenant,
 ) => {
-    try {
-        const responseCall = await fetch(
-            `${webServiceBaseURL}${webServiceName}`,
-            {
-                method: 'POST',
-                body: fs.createReadStream(fileName),
-                headers: { 'Content-Type': 'application/gzip' },
-            },
-        );
+    const response = await fetch(`${webServiceBaseURL}${webServiceName}`, {
+        method: 'POST',
+        body: fs.createReadStream(fileName),
+        headers: {
+            'Content-Type': 'application/gzip',
+            'X-Hook': `${webhookBaseUrl}/webhook/compute_webservice/?webServiceBaseURL=${webServiceBaseURL}&tenant=${tenant}`,
+        },
+    });
 
-        fs.unlink(fileName, error => {
-            if (error) {
-                throw error;
-            }
-        });
-
-        if (responseCall.status !== 200) {
-            throw new Error(responseCall.message);
-        }
-        const callId = JSON.stringify(await responseCall.json());
-
-        await new Promise(resolve => setTimeout(resolve, 10000));
-
-        console.log('***** getComputedFromWebservice ******');
-        const responseResult = await fetch(`${webServiceBaseURL}retrieve`, {
-            method: 'POST',
-            body: callId,
-            headers: { 'Content-Type': 'application/json' },
-        });
-
-        const tar = responseResult.body;
-        console.log(responseResult.status);
-        //console.log(tar);
-
-        const pipeComputed = promisify(pipeline);
-        await pipeComputed(
-            tar,
-            fs.createWriteStream(
-                `./webservice_temp/__computed_${Date.now().toString()}.tar.gz`,
-            ),
-        );
-    } catch (err) {
-        console.error('**** Calling webservice error *****');
-        console.error(err);
+    if (response.status != 200) {
+        throw new Error('Calling token webservice error');
     }
-    return 'bill';
+
+    const callId = JSON.stringify(await response.json());
+
+    fs.unlink(fileName, error => {
+        if (error) {
+            throw error;
+        }
+    });
+
+    return callId;
+};
+
+export const getComputedFromWebservice = (
+    tenant,
+    webServiceBaseURL,
+    callId,
+) => {
+    fetch(`${webServiceBaseURL}retrieve`, {
+        method: 'POST',
+        body: callId,
+        headers: { 'Content-Type': 'application/json' },
+    })
+        .then(response => {
+            if (response.status === 200) {
+                const tar = response.body;
+
+                const pipeComputed = promisify(pipeline);
+                pipeComputed(
+                    tar,
+                    fs.createWriteStream(
+                        `./webservice_temp/__computed_${tenant}_${Date.now().toString()}.tar.gz`,
+                    ),
+                );
+            }
+        })
+        .catch(error => {
+            logger.error('Retrieve is not ready', callId);
+            logger.error(error);
+        });
 };
 
 export const computeExternalRoutineInDocumentsFactory = ({
