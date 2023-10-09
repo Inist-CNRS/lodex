@@ -4,6 +4,7 @@ import route from 'koa-route';
 import jwt from 'koa-jwt';
 import { auth } from 'config';
 import { ObjectId } from 'mongodb';
+import { deleteWorkerQueue } from '../workers';
 import { mongoRootAdminClient } from '../services/repositoryMiddleware';
 import { checkForbiddenNames } from '../../common/tools/forbiddenTenantNames';
 
@@ -66,6 +67,7 @@ const deleteTenant = async ctx => {
         ctx.status = 401;
         ctx.body = { error: `Invalid name: "${name}"` };
     } else {
+        deleteWorkerQueue(tenantExists.name);
         await ctx.tenant.deleteOne(tenantExists);
         ctx.body = await ctx.tenant.findAll();
     }

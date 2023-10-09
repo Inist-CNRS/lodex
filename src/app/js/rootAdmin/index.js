@@ -167,7 +167,10 @@ const App = () => {
                             Configuration des instances
                         </Typography>
                         <Button
-                            onClick={() => console.log('signout')}
+                            disabled
+                            onClick={() =>
+                                console.log('TODO Signout and enable')
+                            }
                             aria-label="signout"
                             color="inherit"
                         >
