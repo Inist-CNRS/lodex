@@ -66,7 +66,7 @@
     {
         "id": "post-v1-teeft-en",
         "url": "https://terms-extraction.services.istex.fr/v1/teeft/en",
-        "doc": "",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/terms-extraction#v1%2fteeft%2fwith-numbers%2fen",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-en",
         "objectifTDM": "https://services.istex.fr/2021/12/20/extraction-de-termes-teeft/",
         "type": "indexation"
@@ -74,7 +74,7 @@
     {
         "id": "post-v1-teeft-fr",
         "url": "https://terms-extraction.services.istex.fr/v1/teeft/fr",
-        "doc": "",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/terms-extraction#v1%2fteeft%2fwith-numbers%2fen",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-fr",
         "objectifTDM": "https://services.istex.fr/2021/12/20/extraction-de-termes-teeft/",
         "type": "indexation"
@@ -246,5 +246,13 @@
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=authors-tools%20-%20Outils%20sur%20les%20auteurs#/default/post_v1_corporate_private_public",
         "objectifTDM": "https://services.istex.fr/2023/09/06/detection-daffiliations-privees/",
         "type": "affiliation"
+    },
+    {
+        "id": "post-v1-teeft-with-numbers-en",
+        "url": "https://terms-extraction.services.inist.fr/v1/teeft/with-numbers/en",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/terms-extraction#v1%2fteeft%2fwith-numbers%2fen",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-with-numbers-en",
+        "objectifTDM": "https://services.istex.fr/2023/06/30/extraction-de-termes-via-teeft-nombres-compris/",
+        "type": "indexation"
     }
 ]

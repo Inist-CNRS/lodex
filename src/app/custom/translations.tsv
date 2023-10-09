@@ -722,6 +722,8 @@
 "ws_post-v1-teeft-en_description"	"Extract the 5 most relevant terms from an English text."	"Extrait les 5 termes les plus pertinents d’un texte en anglais."
 "ws_post-v1-teeft-fr_title"	"Extracting terms from a French text via Teeft"	"Extraction de termes d’un texte français via Teeft"
 "ws_post-v1-teeft-fr_description"	"Extract the 5 most relevant terms from a French text."	"Extrait les 5 termes les plus pertinents d’un texte en français."
+"ws_post-v1-teeft-with-numbers-en_title"	"Extracting terms from an English text via Teeft (with numbers)"	"Extraction de termes d’un texte anglais via Teeft (nombres compris)"
+"ws_post-v1-teeft-with-numbers-en_description"	"Extract the 5 most relevant terms from an English text. Can extract numbers"	"Extrait les 5 termes les plus pertinents d’un texte en anglais. Peut extraire des nombres."
 "ws_post-v1-addresses-parse_title"	"Splitting an address"	"Découpage d’une adresse"
 "ws_post-v1-addresses-parse_description"	"Splits an address into several semantically different pieces of information such as country, street or postal code."	"Découpe une adresse en plusieurs informations sémantiquement différentes comme le pays, la rue ou le code postal."
 "ws_post-v1-detect-lang_title"	"Text language detection"	"Détection de la langue d’un texte"
