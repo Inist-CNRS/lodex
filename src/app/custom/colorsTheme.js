@@ -32,4 +32,10 @@ export default {
     orange: {
         primary: '#f48022',
     },
+    blue: {
+        primary: '#539ce1',
+        secondary: 'rgba(83, 156, 225, .7)',
+        tertiary: 'rgba(83, 156, 225, .5)',
+        light: 'rgba(83, 156, 225, .1)',
+    },
 };

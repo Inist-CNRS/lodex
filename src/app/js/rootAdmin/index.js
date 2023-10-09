@@ -13,7 +13,7 @@ import {
     GridToolbarContainer,
 } from '@mui/x-data-grid';
 import { frFR, enUS } from '@mui/material/locale';
-import customTheme from '../../custom/customTheme';
+import rootTheme from '../../custom/rootTheme';
 import {
     AppBar,
     Box,
@@ -139,6 +139,7 @@ const App = () => {
             renderCell: params => {
                 return (
                     <Button
+                        color="error"
                         onClick={() => setOpenDeleteTenantDialog(params.row)}
                     >
                         <DeleteIcon />
@@ -150,7 +151,7 @@ const App = () => {
 
     return (
         <ThemeProvider
-            theme={createThemeMui(customTheme, localesMUI.get(locale))} // TODO: Replace theme to be blue
+            theme={createThemeMui(rootTheme, localesMUI.get(locale))} // TODO: Replace theme to be blue
         >
             <AppBar position="static">
                 <Toolbar>
