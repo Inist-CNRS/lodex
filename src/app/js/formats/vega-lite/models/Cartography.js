@@ -4,9 +4,6 @@ import { VEGA_ACTIONS_WIDTH } from '../component/vega-lite-component/VegaLiteCom
 import cartographyVL from './json/cartography.vl.json';
 import deepClone from 'lodash.clonedeep';
 
-/**
- * Class used to create cartography spec
- */
 class Cartography extends BasicChart {
     /**
      * Init all required parameters

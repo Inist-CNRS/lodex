@@ -3,9 +3,6 @@ import pieChartVL from './json/pie_chart.vl.json';
 import pieChartLabelsVL from './json/pie_chart_labels.vl.json';
 import deepClone from 'lodash.clonedeep';
 
-/**
- * Class used to create pie chart spec
- */
 class PieChart extends BasicChart {
     /**
      * Init all required parameters

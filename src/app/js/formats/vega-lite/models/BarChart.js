@@ -18,9 +18,6 @@ import barChartVL from './json/bar_chart.vl.json';
 import barChartLabelsVL from './json/bar_chart_labels.vl.json';
 import deepClone from 'lodash.clonedeep';
 
-/**
- * Class used to create bar chart spec
- */
 class BarChart extends BasicChart {
     /**
      * Init all required parameters

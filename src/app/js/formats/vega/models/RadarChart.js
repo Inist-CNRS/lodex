@@ -4,9 +4,6 @@ import radarChartVG from './json/radar_chart.vg.json';
 import deepClone from 'lodash.clonedeep';
 import BasicChartVG from './BasicChartVG';
 
-/**
- * Class use for create radar chart spec
- */
 class RadarChart extends BasicChartVG {
     /**
      * Init all required parameters

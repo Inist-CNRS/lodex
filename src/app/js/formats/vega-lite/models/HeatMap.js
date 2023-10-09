@@ -3,9 +3,6 @@ import { LABEL_ASC, LABEL_DESC } from '../../chartsUtils';
 import heatmapVL from './json/heatmap.vl.json';
 import deepClone from 'lodash.clonedeep';
 
-/**
- * Class used to create heatmap spec
- */
 class HeatMap extends BasicChart {
     /**
      * Init all required parameters

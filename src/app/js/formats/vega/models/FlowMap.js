@@ -4,9 +4,6 @@ import flowMapVG from './json/flow_map.vg.json';
 import deepClone from 'lodash.clonedeep';
 import BasicChartVG from './BasicChartVG';
 
-/**
- * Class use for create flow map chart spec
- */
 class FlowMap extends BasicChartVG {
     /**
      * Init all required parameters
