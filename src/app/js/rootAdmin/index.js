@@ -26,6 +26,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
+import { getHost } from '../../../common/uris';
 import CreateTenantDialog from './CreateTenantDialog';
 import DeleteTenantDialog from './DeleteTenantDialog';
 
@@ -35,6 +36,7 @@ const localesMUI = new Map([
 ]);
 
 const locale = getLocale();
+const baseUrl = getHost();
 
 const App = () => {
     const [tenants, setTenants] = useState([]);
@@ -43,12 +45,7 @@ const App = () => {
 
     const onChangeTenants = changedTenants => {
         if (changedTenants instanceof Array) {
-            const builtTenantsList = changedTenants.map(changedTenant => {
-                return {
-                    ...changedTenant,
-                };
-            });
-            setTenants(builtTenantsList);
+            setTenants(changedTenants);
         }
     };
 
@@ -122,6 +119,19 @@ const App = () => {
     const columns = [
         { field: '_id', headerName: 'ID', width: 200 },
         { field: 'name', headerName: 'Name', width: 150 },
+        {
+            field: 'open',
+            headerName: 'Open',
+            width: 150,
+            renderCell: params => {
+                const name = params.row.name;
+                return (
+                    <Button target={name} href={`${baseUrl}/instance/${name}`}>
+                        OPEN
+                    </Button>
+                );
+            },
+        },
         {
             field: 'delete',
             headerName: 'Delete',
