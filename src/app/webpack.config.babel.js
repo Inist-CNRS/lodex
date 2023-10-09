@@ -34,6 +34,9 @@ module.exports = {
                 include: [
                     resolve(__dirname, './js'),
                     resolve(__dirname, '../common'),
+                    resolve(__dirname, '../../node_modules/react-vega'),
+                    resolve(__dirname, '../../node_modules/vega'),
+                    resolve(__dirname, '../../node_modules/vega-*'),
                 ],
                 loader: 'babel-loader',
             },
