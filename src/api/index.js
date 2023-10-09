@@ -65,9 +65,10 @@ const setWorkerQueues = async (ctx, next) => {
     const tenantCollection = await tenant(adminDb);
     const tenants = await tenantCollection.findAll();
 
-    initialWorkerQueues = tenants.map(tenant =>
-        createWorkerQueue(tenant.name, 1),
-    );
+    initialWorkerQueues = [
+        createWorkerQueue('default', 1),
+        ...tenants.map(tenant => createWorkerQueue(tenant.name, 1)),
+    ];
     await next();
 };
 
