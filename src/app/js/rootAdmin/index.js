@@ -22,10 +22,12 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
-import CreateInstanceDialog from './CreateInstanceDialog';
+import CreateTenantDialog from './CreateTenantDialog';
+import DeleteTenantDialog from './DeleteTenantDialog';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],
@@ -35,10 +37,20 @@ const localesMUI = new Map([
 const locale = getLocale();
 
 const App = () => {
-    const [instances, setInstances] = useState([]);
-    const [openCreateInstanceDialog, setOpenCreateInstanceDialog] = useState(
-        false,
-    );
+    const [tenants, setTenants] = useState([]);
+    const [openCreateTenantDialog, setOpenCreateTenantDialog] = useState(false);
+    const [openDeleteTenantDialog, setOpenDeleteTenantDialog] = useState(false);
+
+    const onChangeTenants = changedTenants => {
+        if (changedTenants instanceof Array) {
+            const builtTenantsList = changedTenants.map(changedTenant => {
+                return {
+                    ...changedTenant,
+                };
+            });
+            setTenants(builtTenantsList);
+        }
+    };
 
     useEffect(() => {
         fetch('/rootAdmin/tenant', {
@@ -48,10 +60,10 @@ const App = () => {
             },
         })
             .then(response => response.json())
-            .then(setInstances);
+            .then(onChangeTenants);
     }, []);
 
-    const addInstance = name => {
+    const addTenant = name => {
         fetch('/rootAdmin/tenant', {
             credentials: 'include',
             headers: {
@@ -63,8 +75,25 @@ const App = () => {
         })
             .then(response => response.json())
             .then(data => {
-                setInstances(data);
-                setOpenCreateInstanceDialog(false);
+                onChangeTenants(data);
+                setOpenCreateTenantDialog(false);
+            });
+    };
+
+    const deleteTenant = (_id, name) => {
+        fetch('/rootAdmin/tenant', {
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Lodex-Tenant': 'admin',
+            },
+            method: 'DELETE',
+            body: JSON.stringify({ _id, name }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                onChangeTenants(data);
+                setOpenDeleteTenantDialog(false);
             });
     };
 
@@ -73,7 +102,7 @@ const App = () => {
             <GridToolbarContainer>
                 <Tooltip title="Ajoute une instance">
                     <Button
-                        onClick={() => setOpenCreateInstanceDialog(true)}
+                        onClick={() => setOpenCreateTenantDialog(true)}
                         startIcon={<AddBoxIcon />}
                         size="small"
                         sx={{
@@ -88,6 +117,26 @@ const App = () => {
             </GridToolbarContainer>
         );
     };
+
+    // Define the columns for the datagrid
+    const columns = [
+        { field: '_id', headerName: 'ID', width: 200 },
+        { field: 'name', headerName: 'Name', width: 150 },
+        {
+            field: 'delete',
+            headerName: 'Delete',
+            width: 150,
+            renderCell: params => {
+                return (
+                    <Button
+                        onClick={() => setOpenDeleteTenantDialog(params.row)}
+                    >
+                        <DeleteIcon />
+                    </Button>
+                );
+            },
+        },
+    ];
 
     return (
         <ThemeProvider
@@ -122,26 +171,25 @@ const App = () => {
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
                     getRowId={row => row._id}
-                    rows={instances}
+                    rows={tenants}
                     columns={columns}
                     components={{
                         Toolbar: CustomToolbar,
                     }}
                 />
             </div>
-            <CreateInstanceDialog
-                isOpen={openCreateInstanceDialog}
-                handleClose={() => setOpenCreateInstanceDialog(false)}
-                createAction={addInstance}
+            <CreateTenantDialog
+                isOpen={openCreateTenantDialog}
+                handleClose={() => setOpenCreateTenantDialog(false)}
+                createAction={addTenant}
+            />
+            <DeleteTenantDialog
+                tenant={openDeleteTenantDialog}
+                handleClose={() => setOpenDeleteTenantDialog(false)}
+                deleteAction={deleteTenant}
             />
         </ThemeProvider>
     );
 };
-
-// Define the columns for the datagrid
-const columns = [
-    { field: '_id', headerName: 'ID', width: 200 },
-    { field: 'name', headerName: 'Name', width: 150 },
-];
 
 render(<App />, document.getElementById('root'));

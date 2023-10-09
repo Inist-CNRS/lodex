@@ -17,19 +17,19 @@ import {
     forbiddenNamesMessage,
 } from '../../../common/tools/forbiddenTenantNames';
 
-const CreateInstanceDialog = ({ isOpen, handleClose, createAction }) => {
+const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
     const [name, setName] = useState('');
 
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="md">
-            <DialogTitle>Create a new instance</DialogTitle>
+            <DialogTitle>Create a new tenant</DialogTitle>
             <DialogContent>
                 <FormControl sx={{ marginTop: '1em' }}>
-                    <InputLabel htmlFor="instance-name-field">Name</InputLabel>
+                    <InputLabel htmlFor="tenant-name-field">Name</InputLabel>
                     <NameField
-                        id="instance-name-field"
+                        id="tenant-name-field"
                         fullWidth
-                        placeholder={'Enter an instance name'}
+                        placeholder={'Enter a tenant name'}
                         onChange={event => setName(event.target.value)}
                         error={checkForbiddenNames(name)}
                         value={name}
@@ -57,10 +57,10 @@ const CreateInstanceDialog = ({ isOpen, handleClose, createAction }) => {
     );
 };
 
-CreateInstanceDialog.propTypes = {
+CreateTenantDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     createAction: PropTypes.func.isRequired,
 };
 
-export default CreateInstanceDialog;
+export default CreateTenantDialog;

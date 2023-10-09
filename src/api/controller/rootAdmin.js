@@ -3,6 +3,7 @@ import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
 import jwt from 'koa-jwt';
 import { auth } from 'config';
+import { ObjectId } from 'mongodb';
 import { mongoRootAdminClient } from '../services/repositoryMiddleware';
 import { checkForbiddenNames } from '../../common/tools/forbiddenTenantNames';
 
@@ -48,15 +49,31 @@ const postTenant = async ctx => {
     const tenantExists = await ctx.tenant.count({ name });
     if (tenantExists || checkForbiddenNames(name)) {
         ctx.status = 401;
-        ctx.body = `Invalid name: "${name}"`;
+        ctx.body = { error: `Invalid name: "${name}"` };
     } else {
         await ctx.tenant.create({ name });
         ctx.body = await ctx.tenant.findAll();
     }
 };
 
+const deleteTenant = async ctx => {
+    const { _id, name } = ctx.request.body;
+    const tenantExists = await ctx.tenant.findOne({
+        _id: new ObjectId(_id),
+        name,
+    });
+    if (!tenantExists || name !== tenantExists.name) {
+        ctx.status = 401;
+        ctx.body = { error: `Invalid name: "${name}"` };
+    } else {
+        await ctx.tenant.deleteOne(tenantExists);
+        ctx.body = await ctx.tenant.findAll();
+    }
+};
+
 app.use(route.get('/tenant', getTenant));
 app.use(route.post('/tenant', postTenant));
+app.use(route.delete('/tenant', deleteTenant));
 
 app.use(async ctx => {
     ctx.status = 404;
