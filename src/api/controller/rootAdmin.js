@@ -1,8 +1,10 @@
 import Koa from 'koa';
+import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
 import jwt from 'koa-jwt';
 import { auth } from 'config';
 import { mongoRootAdminClient } from '../services/repositoryMiddleware';
+import { checkForbiddenNames } from '../../common/tools/forbiddenTenantNames';
 
 const app = new Koa();
 app.use(
@@ -35,13 +37,22 @@ app.use(async (ctx, next) => {
 });
 
 app.use(mongoRootAdminClient);
+app.use(koaBodyParser());
 
 const getTenant = async ctx => {
     ctx.body = await ctx.tenant.findAll();
 };
 
 const postTenant = async ctx => {
-    ctx.body = await ctx.tenant.create({ name: 'toto' });
+    const { name } = ctx.request.body;
+    const tenantExists = await ctx.tenant.count({ name });
+    if (tenantExists || checkForbiddenNames(name)) {
+        ctx.status = 401;
+        ctx.body = `Invalid name: "${name}"`;
+    } else {
+        await ctx.tenant.create({ name });
+        ctx.body = await ctx.tenant.findAll();
+    }
 };
 
 app.use(route.get('/tenant', getTenant));
