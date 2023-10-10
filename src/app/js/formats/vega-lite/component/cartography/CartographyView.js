@@ -1,9 +1,7 @@
-import React, { Component } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import deepClone from 'lodash.clonedeep';
-import ContainerDimensions from 'react-container-dimensions';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import {
     MAP_FRANCE,
@@ -14,6 +12,8 @@ import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
 import Cartography from '../../models/Cartography';
 import { schemeOrRd } from 'd3-scale-chromatic';
+import InvalidFormat from '../../../InvalidFormat';
+import { VEGA_ACTIONS_WIDTH } from '../vega-lite-component/VegaLiteComponent';
 
 const styles = {
     container: {
@@ -21,50 +21,92 @@ const styles = {
     },
 };
 
-class CartographyView extends Component {
-    render() {
-        const data = this.props.data;
+const CartographyView = ({
+    advancedMode,
+    advancedModeSpec,
+    field,
+    data,
+    tooltip,
+    tooltipCategory,
+    tooltipValue,
+    worldPosition,
+    colorScheme,
+}) => {
+    const ref = useRef(null);
+    const [width, setWidth] = useState(0);
+    const [error, setError] = useState('');
 
-        // Create a new cartography instance
+    const spec = useMemo(() => {
+        if (advancedMode) {
+            try {
+                const advancedSpec = JSON.parse(advancedModeSpec);
+                return {
+                    ...advancedSpec,
+                    width: width - VEGA_ACTIONS_WIDTH,
+                    height: (width - VEGA_ACTIONS_WIDTH) * 0.6,
+                };
+            } catch (e) {
+                setError(e.message);
+                return null;
+            }
+        }
 
-        const cartography = deepClone(new Cartography());
+        const specBuilder = new Cartography();
 
-        // Set all cartography parameter the chosen by the administrator
-
-        cartography.setTooltip(this.props.tooltip);
-        cartography.setTooltipCategory(this.props.tooltipCategory);
-        cartography.setTooltipValue(this.props.tooltipValue);
-        cartography.setWorldPosition(this.props.worldPosition);
-        cartography.setColor(
-            this.props.colorScheme !== undefined
-                ? this.props.colorScheme.join(' ')
-                : schemeOrRd[9],
+        specBuilder.setTooltip(tooltip);
+        specBuilder.setTooltipCategory(tooltipCategory);
+        specBuilder.setTooltipValue(tooltipValue);
+        specBuilder.setWorldPosition(worldPosition);
+        specBuilder.setColor(
+            colorScheme !== undefined ? colorScheme.join(' ') : schemeOrRd[9],
         );
 
-        // return the finish chart
-        return (
-            <div style={styles.container}>
-                {/* Make the chart responsive */}
-                <ContainerDimensions>
-                    {({ width }) => {
-                        const spec = cartography.buildSpec(width);
-                        return (
-                            <CustomActionVegaLite
-                                spec={spec}
-                                data={data}
-                                injectType={
-                                    this.props.worldPosition === MAP_FRANCE
-                                        ? VEGA_LITE_DATA_INJECT_TYPE_C
-                                        : VEGA_LITE_DATA_INJECT_TYPE_B
-                                }
-                            />
-                        );
-                    }}
-                </ContainerDimensions>
-            </div>
-        );
+        return specBuilder.buildSpec(width);
+    }, [
+        width,
+        advancedMode,
+        advancedModeSpec,
+        field,
+        tooltip,
+        tooltipCategory,
+        tooltipValue,
+        worldPosition,
+        colorScheme,
+    ]);
+
+    useEffect(() => {
+        if (!ref || !ref.current) {
+            return;
+        }
+
+        const resizeObserver = new ResizeObserver(() => {
+            try {
+                setWidth(ref.current.offsetWidth);
+                // eslint-disable-next-line no-empty
+            } catch (e) {}
+        });
+
+        resizeObserver.observe(ref.current);
+    }, [ref.current]);
+
+    if (!spec) {
+        return <InvalidFormat format={field.format} value={error} />;
     }
-}
+
+    return (
+        <div style={styles.container} ref={ref}>
+            <CustomActionVegaLite
+                spec={spec}
+                data={data}
+                injectType={
+                    worldPosition === MAP_FRANCE
+                        ? VEGA_LITE_DATA_INJECT_TYPE_C
+                        : VEGA_LITE_DATA_INJECT_TYPE_B
+                }
+            />
+        </div>
+    );
+};
 
 CartographyView.propTypes = {
     field: fieldPropTypes.isRequired,
@@ -75,6 +117,8 @@ CartographyView.propTypes = {
     tooltipValue: PropTypes.string.isRequired,
     colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
     worldPosition: PropTypes.string.isRequired,
+    advancedMode: PropTypes.bool,
+    advancedModeSpec: PropTypes.string,
 };
 
 const mapStateToProps = (state, { formatData }) => {
