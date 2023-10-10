@@ -1,4 +1,6 @@
 name: Lodex CI
+
+# Run this ci only on pull request who targets master and on master branch only
 on:
   push:
     branches: [ master ]
@@ -6,119 +8,106 @@ on:
     branches: [ master ]
 
 jobs:
+  # Job use to create the test environment and run unit test suite
   test-unit:
     runs-on: ubuntu-latest
+
+    # Set a timeout of 10 mins
     timeout-minutes: 10
+
+    # Create a strategy matrix uses to test multiple versions of node
     strategy:
       matrix:
         # See https://github.com/nodejs/Release
-        node-version: [ 12.x ]
+        node-version: [ 14.x ]
 
     steps:
+      # Pull repository content
       - uses: actions/checkout@v4
 
+      # Setup NodeJS
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      # Those three lines do the same things as "make install" and "make test-unit" but without a docker container
+      # Install project dependencies (equivalent to make install)
       - run: make copy-conf
       - run: npm ci
 
+      # Run unit test suite
       - run: npm run test:unit
 
+  # Job use to create the test environment and run api e2e test suite
   test-api-e2e:
     runs-on: ubuntu-latest
+
+    # Set a timeout of 10 mins
     timeout-minutes: 10
+
+    # Create a strategy matrix uses to test multiple versions of node
     strategy:
       matrix:
-        node-version: [ 12.x ]
+        node-version: [ 14.x ]
 
     steps:
+      # Pull repository content
       - uses: actions/checkout@v4
 
+      # Setup NodeJS
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      # Those two lines do the same things as "make install" but without a docker container
+      # Install project dependencies (equivalent to make install)
       - run: make copy-conf
       - run: npm ci
 
+      # Run api e2e test suite
       - run: make test-api-e2e
 
-#  build-e2e-image:
-#    runs-on: ubuntu-latest
-#    timeout-minutes: 30
-#    strategy:
-#      matrix:
-#        node-version: [ 12.x ]
-#
-#    steps:
-#      - uses: actions/checkout@v4
-#
-#      - name: Use Node.js ${{ matrix.node-version }}
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: ${{ matrix.node-version }}
-#          cache: 'npm'
-#
-#      # Those two lines do the same things as "make install" but without a docker container
-#      - run: make copy-conf
-#      - run: npm ci
-#
-#      - run: docker compose -f docker-compose.spec.yml build
-#
-#      - run: docker save --output /tmp/lodex-api.tar lodex-api
-#
-#      - uses: actions/upload-artifact@v3
-#        with:
-#          name: lodex-api
-#          path: /tmp/lodex-api.tar
-#          retention-days: 1
-
-
+  # Job use to create the test environment and run e2e test suite
   test-e2e:
     runs-on: ubuntu-latest
-#    needs: build-e2e-image
+
+    # Set a timeout of 30 mins
     timeout-minutes: 30
+
+    # Create a strategy matrix uses to test multiple versions of node and multiple subset tests
     strategy:
       matrix:
-        node-version: [ 12.x ]
+        node-version: [ 14.x ]
         test-phase: [ 'phase:one', 'phase:two', 'phase:three', 'phase:four' ]
 
     steps:
+      # Pull repository content
       - uses: actions/checkout@v4
 
+      # Setup NodeJS
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      # Those two lines do the same things as "make install" but without a docker container
+      # Install project dependencies (equivalent to make install)
       - run: make copy-conf
       - run: npm ci
 
-#      - uses: actions/download-artifact@v3
-#        with:
-#          name: lodex-api
-#          path: /tmp
-
-#      - run: docker load --input /tmp/lodex-api.tar
-
-#      - run: docker compose -f docker-compose.spec.yml up -d
+      # Start e2e environment
       - run: make test-e2e-start-dockers
 
+      # Wait for the e2e environment to start and then run e2e subset tests suite
       - run: ./bin/wait-for -t 60 localhost:3000
       - run: npm run test:e2e:${{ matrix.test-phase }}
 
+      # Stop e2e environment
       - run: make test-e2e-stop-dockers
 
+      # Upload debug screenshots on failure
       - name: Upload screenshots
         uses: actions/upload-artifact@v2
         if: failure()
