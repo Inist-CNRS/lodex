@@ -1,0 +1,55 @@
+{
+  "name": "@recuperateur/async-busboy",
+  "version": "1.2.1",
+  "description": "Promise based multipart form parser",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Recuperateur/async-busboy"
+  },
+  "scripts": {
+    "test": "NODE_ENV=test mocha specs.js --harmony --reporter spec --bail",
+    "cover": "NODE_ENV=test istanbul cover -x specs.js _mocha specs.js -- --reporter spec --bail",
+    "lint:test": "prettier --check .",
+    "lint": "prettier --write ."
+  },
+  "keywords": [
+    "koa",
+    "multipart",
+    "form",
+    "file-upload"
+  ],
+  "author": "Currently maintain by Inist-CRNS",
+  "contributors": [
+    {
+      "name": "Current Maintainer: AlasDiablo",
+      "url": "https://github.com/AlasDiablo"
+    },
+    {
+      "name": "Creator of the fork for busboy 1.4.0: alqu",
+      "url": "https://github.com/alqu"
+    },
+    {
+      "name": "Original Author: Emanuel Chappat",
+      "email": "emmanuel.chappat@gmail.com",
+      "url": "https://github.com/m4nuC/async-busboy"
+    }
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "busboy": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/busboy": "^1.5.0",
+    "expect": "^27.5.1",
+    "formstream": "*",
+    "istanbul": "*",
+    "mocha": "*",
+    "prettier": "^2.6.2"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true
+  }
+}

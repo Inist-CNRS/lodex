@@ -35,9 +35,9 @@ endif
 install-npm-dependencies:
 	echo "Installing Node dependencies"
 ifeq "$(CI)" "true"
-	docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm ci
+	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm ci
 else
-	docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm install
+	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm install
 endif
 
 install: copy-conf install-npm-dependencies ## Install npm dependencies for the node, admin, and frontend apps
@@ -45,66 +45,66 @@ install: copy-conf install-npm-dependencies ## Install npm dependencies for the 
 ## Production =================================================================
 
 run: ## Run the project in production mode
-	docker-compose up --force-recreate
+	docker compose up --force-recreate
 start: run ## Start the project (alias of make run)
 
 ## Development =================================================================
 
 run-dev: ## Run the project in dev mode
-	docker-compose -f docker-compose.dev.yml up --force-recreate
+	NODE_ENV=development docker compose -f docker-compose.dev.yml up --force-recreate
 start-dev: run-dev ## Start the project (alias of make run-dev)
 
 build-app:
-	docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run build
+	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run build
 
 build: ## Build the docker image localy
-	docker build -t inistcnrs/lodex:14.0.8-alpha --build-arg http_proxy --build-arg https_proxy .
+	docker build -t inistcnrs/lodex:14.0.9-alpha --build-arg http_proxy --build-arg https_proxy .
 publish: build  ## publish version to docker hub
-	docker push inistcnrs/lodex:14.0.8-alpha
+	docker push inistcnrs/lodex:14.0.9-alpha
 
 analyze-code: ## Generate statistics about the bundle. Usage: make analyze-code.
-	docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run analyze
+	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run analyze
 
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
-	docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm $(COMMAND_ARGS)
+	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm $(COMMAND_ARGS)
 
 ## Tests =======================================================================
 
 test-api-e2e: ## Run the API E2E tests
 	NODE_ENV=test \
 	EZMASTER_PUBLIC_URL="http://localhost:3010" \
-	docker-compose -f docker-compose.dev.yml run --rm -p "3010:3010" node \
+	docker compose -f docker-compose.dev.yml run --rm -p "3010:3010" node \
 		npm run test:api:e2e
 
 test-api-e2e-watch: ## Run the API E2E tests in watch mode
 	NODE_ENV=test \
 	EZMASTER_PUBLIC_URL="http://localhost:3010" \
-	docker-compose -f docker-compose.dev.yml run --rm -p "3010:3010" node \
+	docker compose -f docker-compose.dev.yml run --rm -p "3010:3010" node \
 		npm run test:api:e2e:watch
 
 test-unit: ## Run the unit tests, usage : JEST_OPTIONS=myfile.to.test.spec.js make test-unit
 ## You can use other Jest options (https://jestjs.io/fr/docs/cli)
-	NODE_ENV=test docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run test:unit -- $(JEST_OPTIONS)
+	NODE_ENV=test docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run test:unit -- $(JEST_OPTIONS)
 
 test-unit-watch: ## Run the unit tests, usage : JEST_OPTIONS=myfile.to.test.spec.js make test-unit-watch
 ## You can use other Jest options (https://jestjs.io/fr/docs/cli)
-	NODE_ENV=test docker-compose -f docker-compose.dev.yml run --no-deps --rm node npm run test:unit:watch -- $(JEST_OPTIONS)
+	NODE_ENV=test docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run test:unit:watch -- $(JEST_OPTIONS)
 
 test-e2e-start-dockers:
 ifeq "$(CI)" "true"
-	docker-compose -f docker-compose.spec.yml up -d --build
+	docker compose -f docker-compose.spec.yml up -d --build
 else
-	docker-compose -f docker-compose.spec.yml up --build
+	docker compose -f docker-compose.spec.yml up --build
 endif
 
 test-e2e-logs:
-	docker-compose -f docker-compose.spec.yml logs
+	docker compose -f docker-compose.spec.yml logs
 
 test-e2e-logs-watch:
-	docker-compose -f docker-compose.spec.yml logs -f
+	docker compose -f docker-compose.spec.yml logs -f
 
 test-e2e-stop-dockers:
-	docker-compose -f docker-compose.spec.yml down
+	docker compose -f docker-compose.spec.yml down
 
 test-e2e-open-cypress:
 	NODE_ENV=e2e npx cypress open
@@ -139,16 +139,16 @@ test: ## Run all tests
 ## Data ========================================================================
 
 mongo: ## Start the mongo database
-	docker-compose up -d mongo
+	docker compose up -d mongo
 
 mongo-shell: ## Start the mongo shell
-	docker-compose exec mongo mongo lodex
+	docker compose exec mongo mongo lodex
 
 mongo-shell-test: ## Start the mongo shell for the test database
-	docker-compose exec mongo mongo lodex_test
+	docker compose exec mongo mongo lodex_test
 
 clear-database: ## Clear the whole database
-	docker-compose exec mongo mongo lodex --eval " \
+	docker compose exec mongo mongo lodex --eval " \
 		db.publishedDataset.remove({}); \
 		db.publishedCharacteristic.remove({}); \
 		db.field.remove({}); \
@@ -158,7 +158,7 @@ clear-database: ## Clear the whole database
 		db.enrichment.remove({}); \
 	"
 clear-publication: ## Clear the published data, keep uploaded dataset and model
-	docker-compose exec mongo mongo lodex --eval " \
+	docker compose exec mongo mongo lodex --eval " \
 		db.publishedDataset.remove({}); \
 		db.publishedCharacteristic.remove({}); \
 		db.publishedFacet.remove({}); \

@@ -16,7 +16,7 @@ import {
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError } from '../../workers';
-import logger from '../logger';
+import getLogger from '../logger';
 
 const { enrichmentBatchSize: BATCH_SIZE = 10 } = localConfig;
 
@@ -96,7 +96,8 @@ export const getEnrichmentDataPreview = async ctx => {
             result.push(...values.map(v => v.value));
         }
     } catch (error) {
-        logger.error('Error while processing enrichment preview', error);
+        const logger = getLogger(ctx.tenant);
+        logger.error(`Error while processing enrichment preview`, error);
         return [];
     }
     return result;
@@ -193,7 +194,8 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
                         try {
                             sourceChunk = JSON.parse(error.sourceChunk);
                         } catch (e) {
-                            logger.error('Error while parsing sourceChunk', e);
+                            const logger = getLogger(ctx.tenant);
+                            logger.error(`Error while parsing sourceChunk`, e);
                         }
                     }
                     return values.push({
@@ -220,7 +222,7 @@ export const processEnrichment = async (enrichment, ctx) => {
         { $set: { ['status']: IN_PROGRESS } },
     );
     let errorCount = 0;
-    
+
     const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
     const commands = createEzsRuleCommands(enrichment.rule);
     const dataSetSize = await ctx.dataset.count();
@@ -239,7 +241,7 @@ export const processEnrichment = async (enrichment, ctx) => {
             if (!entry.uri) {
                 const logData = JSON.stringify({
                     level: 'error',
-                    message: `Unable to enrich row with no URI, see object _id#${entry._id}`,
+                    message: `[Instance: ${ctx.tenant}] Unable to enrich row with no URI, see object _id#${entry._id}`,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });
@@ -247,7 +249,7 @@ export const processEnrichment = async (enrichment, ctx) => {
             } else {
                 const logData = JSON.stringify({
                     level: 'info',
-                    message: `Started enriching #${entry.uri}`,
+                    message: `[Instance: ${ctx.tenant}] Started enriching #${entry.uri}`,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });
@@ -281,8 +283,8 @@ export const processEnrichment = async (enrichment, ctx) => {
                     const logData = JSON.stringify({
                         level: enrichedValue.error ? 'error' : 'info',
                         message: enrichedValue.error
-                            ? `Error enriching #${id}: ${value}`
-                            : `Finished enriching #${id} (output: ${value})`,
+                            ? `[Instance: ${ctx.tenant}] Error enriching #${id}: ${value}`
+                            : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${value})`,
                         timestamp: new Date(),
                         status: IN_PROGRESS,
                     });
@@ -312,7 +314,7 @@ export const processEnrichment = async (enrichment, ctx) => {
 
                 const logData = JSON.stringify({
                     level: 'error',
-                    message: e.message,
+                    message: `[Instance: ${ctx.tenant}] ${e.message}`,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });
@@ -335,7 +337,7 @@ export const processEnrichment = async (enrichment, ctx) => {
     progress.finish(ctx.tenant);
     const logData = JSON.stringify({
         level: 'ok',
-        message: `Enrichement finished - ${ctx.tenant}`,
+        message: `[Instance: ${ctx.tenant}] Enrichement finished`,
         timestamp: new Date(),
         status: FINISHED,
     });
@@ -369,7 +371,7 @@ export const startEnrichment = async ctx => {
     const room = `enrichment-job-${ctx.job.id}`;
     const logData = JSON.stringify({
         level: 'ok',
-        message: `Enrichement started`,
+        message: `[Instance: ${ctx.tenant}] Enrichement started`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
@@ -397,8 +399,8 @@ export const setEnrichmentError = async (ctx, err) => {
         level: 'error',
         message:
             err instanceof CancelWorkerError
-                ? `${err?.message}`
-                : `Enrichement errored : ${err?.message}`,
+                ? `[Instance: ${ctx.tenant}] ${err?.message}`
+                : `[Instance: ${ctx.tenant}] Enrichement errored : ${err?.message}`,
         timestamp: new Date(),
         status: err instanceof CancelWorkerError ? CANCELED : ERROR,
     });

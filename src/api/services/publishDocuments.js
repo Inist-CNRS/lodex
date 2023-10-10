@@ -8,8 +8,8 @@ import { PUBLISH_DOCUMENT } from '../../common/progressStatus';
 import { URI_FIELD_NAME } from '../../common/uris';
 import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
 import parseValue from '../../common/tools/parseValue';
-import logger from './logger';
 import { jobLogger } from '../workers/tools';
+import getLogger from './logger';
 
 export const versionTransformerDecorator = (
     transformDocument,
@@ -88,7 +88,8 @@ export const publishDocumentsFactory = ({
     transformAllDocuments,
 }) => async (ctx, count, fields) => {
     if (!ctx.job) {
-        logger.error('Job is not defined');
+        const logger = getLogger(ctx.tenant);
+        logger.error(`Job is not defined`);
         return;
     }
     jobLogger.info(ctx.job, 'Publishing documents');
