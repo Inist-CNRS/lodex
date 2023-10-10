@@ -81,6 +81,8 @@ jobs:
       matrix:
         node-version: [ 14.x ]
         test-phase: [ 'phase:one', 'phase:two', 'phase:three', 'phase:four' ]
+        # Use this line to ignore the phase system
+        # test-phase: [ 'all' ]
 
     steps:
       # Pull repository content
