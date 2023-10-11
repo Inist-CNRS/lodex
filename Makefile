@@ -152,3 +152,8 @@ clear-publication: ## Clear the published data, keep uploaded dataset and model
 		db.publishedCharacteristic.remove({}); \
 		db.publishedFacet.remove({}); \
 	"
+
+clear-docker: 
+	docker stop lodex-lodex-1 || true
+	docker rm lodex-lodex-1 || true
+	docker image rm lodex-lodex

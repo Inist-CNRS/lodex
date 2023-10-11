@@ -279,7 +279,7 @@ const renderRootAdminIndexHtml = ctx => {
                 mongo.dbName,
             )}</script><script>window.__TENANT__ = ${JSON.stringify(
                 ctx.tenant,
-            )}</script><script src="{|__JS_HOST__|}/rootAdmin/index.js"></script>
+            )}</script><script src="{|__JS_HOST__|}/root-admin/index.js"></script>
         </body>`,
         )
         .replace(REGEX_JS_HOST, jsHost);
@@ -334,7 +334,16 @@ app.use(
     }),
 );
 
+console.log('*-****** GUIOM IS GREAT ******-*');
+console.log(path.resolve(__dirname, '../../build'));
+
 app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
+app.use(
+    mount(
+        '/root-admin',
+        serve(path.resolve(__dirname, '../../build/root-admin')),
+    ),
+);
 app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));
 
 export default app;
