@@ -25,6 +25,8 @@ import MeterConfig from '@uswitch/koa-prometheus/build/koa-prometheus.defaults.j
 import tracer, { eventTrace, eventError } from '@uswitch/koa-tracer';
 import access, { eventAccess } from '@uswitch/koa-access';
 import getLogger from './services/logger';
+import tenant from './models/tenant';
+import mongoClient from './services/mongoClient';
 
 // KoaQs use qs to parse query string. There is an default limit of 20 items in an array. Above this limit, qs will transform the array into an key/value object.
 // We need to increase this limit to 1000 to be able to handle the facets array in the query string.
@@ -57,21 +59,28 @@ if (process.env.EXPOSE_TEST_CONTROLLER) {
     app.use(mount('/tests', testController));
 }
 
-const workerQueueDefault = createWorkerQueue('default', 1);
-const workerQueueOne = createWorkerQueue('instance_one', 1);
-const workerQueueTwo = createWorkerQueue('instance_two', 1);
-const workerQueueThree = createWorkerQueue('instance_three', 1);
+let initialWorkerQueues = [];
+const setWorkerQueues = async (ctx, next) => {
+    const adminDb = await mongoClient('admin');
+    const tenantCollection = await tenant(adminDb);
+    const tenants = await tenantCollection.findAll();
+
+    initialWorkerQueues = [
+        createWorkerQueue('default', 1),
+        ...tenants.map(tenant => createWorkerQueue(tenant.name, 1)),
+    ];
+    await next();
+};
+
+app.use(setWorkerQueues);
 
 if (process.env.NODE_ENV === 'development') {
     const serverAdapter = new KoaAdapter();
     serverAdapter.setBasePath('/bull');
     createBullBoard({
-        queues: [
-            new BullAdapter(workerQueueDefault),
-            new BullAdapter(workerQueueOne),
-            new BullAdapter(workerQueueTwo),
-            new BullAdapter(workerQueueThree),
-        ],
+        queues: initialWorkerQueues.map(
+            workerQueue => new BullAdapter(workerQueue),
+        ),
         serverAdapter,
     });
     app.use(serverAdapter.registerPlugin());

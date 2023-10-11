@@ -1,15 +1,16 @@
 import { schemeBlues } from 'd3-scale-chromatic';
 import { VEGA_ACTIONS_WIDTH } from '../../vega-lite/component/vega-lite-component/VegaLiteComponent';
+import flowMapVG from './json/flow_map.vg.json';
+import deepClone from 'lodash.clonedeep';
+import BasicChartVG from './BasicChartVG';
 
-/**
- * Class use for create radar chart spec
- */
-class FlowMap {
+class FlowMap extends BasicChartVG {
     /**
      * Init all required parameters
      */
     constructor() {
-        this.model = require('./json/flow_map.vg.json');
+        super();
+        this.model = deepClone(flowMapVG);
         this.color = '#000000';
         this.colors = schemeBlues[9];
         this.tooltip = {
@@ -64,11 +65,13 @@ class FlowMap {
      * @param widthIn
      */
     buildSpec(widthIn) {
-        this.model.width = widthIn - VEGA_ACTIONS_WIDTH;
-        this.model.height = widthIn * 0.6;
+        if (!this.editMode) {
+            this.model.width = widthIn - VEGA_ACTIONS_WIDTH;
+            this.model.height = widthIn * 0.6;
+        }
 
         this.model.marks.forEach(e => {
-            if (e.type === 'text') {
+            if (e.type === 'text' && !this.editMode) {
                 e.encode.encode.x.value = this.model.width - 5;
             }
             if (e.name === 'route') {

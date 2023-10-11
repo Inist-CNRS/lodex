@@ -1,13 +1,11 @@
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
 
-/**
- * Very basic impl of the vega lite charts (common class for all chart)
- */
 class BasicChart {
     /**
      * Init all required parameters
      */
     constructor() {
+        this.editMode = false;
         this.colors = MULTICHROMATIC_DEFAULT_COLORSET.split(' ');
         this.padding = {
             left: 0,
@@ -28,6 +26,10 @@ class BasicChart {
                 title: 'Value',
             },
         };
+    }
+
+    setEditMode(bool) {
+        this.editMode = bool;
     }
 
     /**

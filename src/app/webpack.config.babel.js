@@ -22,6 +22,7 @@ module.exports = {
     entry: {
         index: resolve(__dirname, './js/public/index.js'),
         'admin/index': resolve(__dirname, './js/admin/index.js'),
+        'rootAdmin/index': resolve(__dirname, './js/rootAdmin/index.js'),
         embeddedIstexSummary: resolve(
             __dirname,
             './js/embeddedIstexSummary/index.js',
@@ -34,6 +35,9 @@ module.exports = {
                 include: [
                     resolve(__dirname, './js'),
                     resolve(__dirname, '../common'),
+                    resolve(__dirname, '../../node_modules/react-vega'),
+                    resolve(__dirname, '../../node_modules/vega'),
+                    resolve(__dirname, '../../node_modules/vega-*'),
                 ],
                 loader: 'babel-loader',
             },
@@ -69,6 +73,7 @@ module.exports = {
                 ignore: [
                     '/index.html',
                     '/admin/index.js',
+                    '/rootAdmin/index.js',
                     '/index.js',
                     '/0.js',
                 ],

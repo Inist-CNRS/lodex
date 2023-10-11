@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
-import ContainerDimensions from 'react-container-dimensions';
-import deepClone from 'lodash.clonedeep';
 import {
     lodexOrderToIdOrder,
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
 import BubblePlot from '../../models/BubblePlot';
+import InvalidFormat from '../../../InvalidFormat';
+import { VEGA_ACTIONS_WIDTH } from '../vega-lite-component/VegaLiteComponent';
 
 const styles = {
     container: {
@@ -19,44 +19,91 @@ const styles = {
     },
 };
 
-class BubblePlotView extends Component {
-    render() {
-        const data = this.props.data;
+const BubblePlotView = ({
+    advancedMode,
+    advancedModeSpec,
+    field,
+    data,
+    colors,
+    params,
+    flipAxis,
+    tooltip,
+    tooltipSource,
+    tooltipTarget,
+    tooltipWeight,
+}) => {
+    const ref = useRef(null);
+    const [width, setWidth] = useState(0);
+    const [error, setError] = useState('');
 
-        // Create a new bubble plot instance
+    const spec = useMemo(() => {
+        if (advancedMode) {
+            try {
+                const advancedSpec = JSON.parse(advancedModeSpec);
+                return {
+                    ...advancedSpec,
+                    width: width - VEGA_ACTIONS_WIDTH,
+                };
+            } catch (e) {
+                setError(e.message);
+                return null;
+            }
+        }
 
-        const bubblePlot = deepClone(new BubblePlot());
+        const specBuilder = new BubblePlot();
 
-        // Set all bubble plot parameter the chosen by the administrator
+        specBuilder.setColor(colors);
+        specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
+        specBuilder.flipAxis(flipAxis);
+        specBuilder.setTooltip(tooltip);
+        specBuilder.setTooltipCategory(tooltipSource);
+        specBuilder.setTooltipTarget(tooltipTarget);
+        specBuilder.setTooltipValue(tooltipWeight);
 
-        bubblePlot.setColor(this.props.colors);
-        bubblePlot.setOrderBy(lodexOrderToIdOrder(this.props.params.orderBy));
-        bubblePlot.flipAxis(this.props.flipAxis);
-        bubblePlot.setTooltip(this.props.tooltip);
-        bubblePlot.setTooltipCategory(this.props.tooltipSource);
-        bubblePlot.setTooltipTarget(this.props.tooltipTarget);
-        bubblePlot.setTooltipValue(this.props.tooltipWeight);
+        return specBuilder.buildSpec(width);
+    }, [
+        width,
+        advancedMode,
+        advancedModeSpec,
+        field,
+        colors,
+        params,
+        flipAxis,
+        tooltip,
+        tooltipSource,
+        tooltipTarget,
+        tooltipWeight,
+    ]);
 
-        // return the finish chart
-        return (
-            <div style={styles.container}>
-                <ContainerDimensions>
-                    {/* Make the chart responsive */}
-                    {({ width }) => {
-                        const spec = bubblePlot.buildSpec(width);
-                        return (
-                            <CustomActionVegaLite
-                                spec={spec}
-                                data={data}
-                                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
-                            />
-                        );
-                    }}
-                </ContainerDimensions>
-            </div>
-        );
+    useEffect(() => {
+        if (!ref || !ref.current) {
+            return;
+        }
+
+        const resizeObserver = new ResizeObserver(() => {
+            try {
+                setWidth(ref.current.offsetWidth);
+                // eslint-disable-next-line no-empty
+            } catch (e) {}
+        });
+
+        resizeObserver.observe(ref.current);
+    }, [ref.current]);
+
+    if (!spec) {
+        return <InvalidFormat format={field.format} value={error} />;
     }
-}
+
+    return (
+        <div style={styles.container} ref={ref}>
+            <CustomActionVegaLite
+                spec={spec}
+                data={data}
+                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+            />
+        </div>
+    );
+};
 
 BubblePlotView.propTypes = {
     field: fieldPropTypes.isRequired,
@@ -69,6 +116,8 @@ BubblePlotView.propTypes = {
     tooltipSource: PropTypes.string.isRequired,
     tooltipTarget: PropTypes.string.isRequired,
     tooltipWeight: PropTypes.string.isRequired,
+    advancedMode: PropTypes.bool,
+    advancedModeSpec: PropTypes.string,
 };
 
 BubblePlotView.defaultProps = {

@@ -1,14 +1,17 @@
-import React, { Component } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
-import ContainerDimensions from 'react-container-dimensions';
 import { CustomActionVega } from '../vega-component';
 import RadarChart from '../../models/RadarChart';
-import { lodexScaleToIdScale, VEGA_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
-import deepClone from 'lodash.clonedeep';
+import {
+    lodexScaleToIdScale,
+    VEGA_DATA_INJECT_TYPE_A,
+} from '../../../chartsUtils';
+
+import InvalidFormat from '../../../InvalidFormat';
 
 const styles = {
     container: {
@@ -17,50 +20,102 @@ const styles = {
     },
 };
 
-class RadarChartView extends Component {
-    render() {
-        const data = this.props.data;
-
-        // format the data for the vega template
-
-        if (data !== undefined) {
-            data.values.forEach(e => {
-                e.category = 0;
-            });
+const RadarChartView = ({
+    advancedMode,
+    advancedModeSpec,
+    field,
+    data,
+    colors,
+    tooltip,
+    tooltipCategory,
+    tooltipValue,
+    scale,
+}) => {
+    const formattedData = useMemo(() => {
+        if (!data) {
+            return data;
         }
 
-        // Create a new radar chart instance
+        const tmpData = {
+            ...data,
+        };
 
-        const radarChart = deepClone(new RadarChart());
+        tmpData.values.forEach(value => {
+            value.category = 0;
+        });
 
-        // Set all radar chart parameter the chosen by the administrator
+        return tmpData;
+    }, [data]);
 
-        radarChart.setColors(this.props.colors.split(' '));
-        radarChart.setTooltip(this.props.tooltip);
-        radarChart.setTooltipCategory(this.props.tooltipCategory);
-        radarChart.setTooltipValue(this.props.tooltipValue);
-        radarChart.setScale(lodexScaleToIdScale(this.props.scale));
+    const ref = useRef(null);
+    const [width, setWidth] = useState(0);
+    const [error, setError] = useState('');
 
-        // return the finish chart
-        return (
-            <div style={styles.container}>
-                {/* Make the chart responsive */}
-                <ContainerDimensions>
-                    {({ width }) => {
-                        const spec = radarChart.buildSpec(width);
-                        return (
-                            <CustomActionVega
-                                spec={spec}
-                                data={data}
-                                injectType={VEGA_DATA_INJECT_TYPE_A}
-                            />
-                        );
-                    }}
-                </ContainerDimensions>
-            </div>
-        );
+    const spec = useMemo(() => {
+        if (advancedMode) {
+            try {
+                const advancedSpec = JSON.parse(advancedModeSpec);
+                return {
+                    ...advancedSpec,
+                    width: width - width * 0.06,
+                    height: width - width * 0.24,
+                };
+            } catch (e) {
+                setError(e.message);
+                return null;
+            }
+        }
+
+        const specBuilder = new RadarChart();
+
+        specBuilder.setColors(colors.split(' '));
+        specBuilder.setTooltip(tooltip);
+        specBuilder.setTooltipCategory(tooltipCategory);
+        specBuilder.setTooltipValue(tooltipValue);
+        specBuilder.setScale(lodexScaleToIdScale(scale));
+
+        return specBuilder.buildSpec(width, formattedData.values.length);
+    }, [
+        width,
+        formattedData.values,
+        advancedMode,
+        advancedModeSpec,
+        colors,
+        tooltip,
+        tooltipCategory,
+        tooltipValue,
+        scale,
+    ]);
+
+    useEffect(() => {
+        if (!ref || !ref.current) {
+            return;
+        }
+
+        const resizeObserver = new ResizeObserver(() => {
+            try {
+                setWidth(ref.current.offsetWidth);
+                // eslint-disable-next-line no-empty
+            } catch (e) {}
+        });
+
+        resizeObserver.observe(ref.current);
+    }, [ref.current]);
+
+    if (spec === null) {
+        return <InvalidFormat format={field.format} value={error} />;
     }
-}
+
+    return (
+        <div style={styles.container} ref={ref}>
+            <CustomActionVega
+                spec={spec}
+                data={formattedData}
+                injectType={VEGA_DATA_INJECT_TYPE_A}
+            />
+        </div>
+    );
+};
 
 RadarChartView.propTypes = {
     field: fieldPropTypes.isRequired,
@@ -71,6 +126,8 @@ RadarChartView.propTypes = {
     tooltipCategory: PropTypes.string.isRequired,
     tooltipValue: PropTypes.string.isRequired,
     scale: PropTypes.string.isRequired,
+    advancedMode: PropTypes.bool,
+    advancedModeSpec: PropTypes.string,
 };
 
 RadarChartView.defaultProps = {
