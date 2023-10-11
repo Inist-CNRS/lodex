@@ -169,7 +169,7 @@ const App = () => {
                         <Button
                             disabled
                             onClick={() =>
-                                console.log('TODO Signout and enable')
+                                console.warn('TODO Signout and enable')
                             }
                             aria-label="signout"
                             color="inherit"
