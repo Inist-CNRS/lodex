@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import config from 'config';
 
-let clients = [];
+let clients = new Map();
 
 export const mongoConnectionString = tenant =>
     `mongodb://${config.mongo.host}/${config.mongo.dbName}_${tenant ||
@@ -14,21 +14,22 @@ export const mongoClientConnectionFactory = async tenant => {
         );
     }
 
-    if (!clients[tenant]) {
-        try {
-            const client = new MongoClient(mongoConnectionString(tenant), {
-                maxPoolSize: 10,
-            });
-            clients[tenant] = await client.connect();
-        } catch (error) {
-            console.error(error);
-            throw new Error(
-                `L'url de la base mongoDB n'est pas bonne, ou non renseignée.`,
-            );
-        }
+    if (clients.has(tenant)) {
+        return clients.get(tenant);
     }
 
-    return clients[tenant];
+    try {
+        const client = new MongoClient(mongoConnectionString(tenant), {
+            maxPoolSize: 10,
+        });
+        clients.set(tenant, await client.connect());
+        return client;
+    } catch (error) {
+        console.error(error);
+        throw new Error(
+            `L'url de la base mongoDB n'est pas bonne, ou non renseignée.`,
+        );
+    }
 };
 
 export const mongoClientFactory = async tenant => {
