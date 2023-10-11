@@ -334,16 +334,7 @@ app.use(
     }),
 );
 
-console.log('*-****** GUIOM IS GREAT ******-*');
-console.log(path.resolve(__dirname, '../../build'));
-
 app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
-app.use(
-    mount(
-        '/root-admin',
-        serve(path.resolve(__dirname, '../../build/root-admin')),
-    ),
-);
 app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));
 
 export default app;
