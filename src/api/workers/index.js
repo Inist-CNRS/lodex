@@ -15,6 +15,10 @@ export class CancelWorkerError extends Error {
 export const workerQueues = [];
 
 export const createWorkerQueue = (queueName, concurrency) => {
+    if (workerQueues[queueName]) {
+        return workerQueues[queueName];
+    }
+
     const workerQueue = new Queue(queueName, process.env.REDIS_URL, {
         defaultJobOptions: {
             removeOnComplete: 10,
