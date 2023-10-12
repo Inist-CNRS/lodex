@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
-import { Button, TextField, Tooltip } from '@mui/material';
+import { Button, Tooltip, Box } from '@mui/material';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import CachedIcon from '@mui/icons-material/Cached';
 import isEqual from 'lodash.isequal';
@@ -34,6 +34,9 @@ const styles = {
 };
 
 const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
+    const FormSourceCodeField = require('../../lib/components/FormSourceCodeField')
+        .default;
+
     const [currentValue, setCurrentValue] = useState(value || '{}');
     const [error, setError] = useState(null);
 
@@ -65,8 +68,8 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
         }
     }, [currentValueObject, valueObject]);
 
-    const handleChange = event => {
-        setCurrentValue(event.target.value);
+    const handleChange = newValue => {
+        setCurrentValue(newValue);
     };
 
     return (
@@ -79,18 +82,20 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                 }}
             >
                 <div>
-                    <Button
-                        onClick={onClear}
-                        color="primary"
-                        variant="contained"
-                    >
-                        <CachedIcon
-                            sx={{
-                                marginRight: '10px',
-                            }}
-                        />
-                        {p.t('regenerate_vega_lite_spec')}
-                    </Button>
+                    {onClear ? (
+                        <Button
+                            onClick={onClear}
+                            color="primary"
+                            variant="contained"
+                        >
+                            <CachedIcon
+                                sx={{
+                                    marginRight: '10px',
+                                }}
+                            />
+                            {p.t('regenerate_vega_lite_spec')}
+                        </Button>
+                    ) : null}
                 </div>
                 <div
                     style={{
@@ -117,12 +122,26 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                     ) : null}
                 </div>
             </div>
-            <TextField
-                onChange={handleChange}
-                value={currentValue}
-                fullWidth
-                multiline
-            />
+            <Box width="100%">
+                <a
+                    href="https://vega.github.io/editor/#/edited"
+                    target="_blank"
+                    rel="nofollow noopener noreferrer"
+                >
+                    {p.t('vega_validator')}
+                </a>
+                <FormSourceCodeField
+                    style={{
+                        width: '100%',
+                        height: '70vh',
+                    }}
+                    mode="json"
+                    input={{
+                        value: currentValue,
+                        onChange: handleChange,
+                    }}
+                />
+            </Box>
             {error ? (
                 <div style={styles.error.container}>
                     <div style={styles.error.message.container}>
@@ -144,7 +163,7 @@ VegaAdvancedMode.propTypes = {
     p: polyglotPropTypes.isRequired,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    onClear: PropTypes.func.isRequired,
+    onClear: PropTypes.func,
 };
 
 export default translate(VegaAdvancedMode);
