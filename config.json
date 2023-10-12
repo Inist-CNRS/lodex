@@ -79,7 +79,8 @@
         "xml",
         "corpus",
         "zip",
-        "doi-list"
+        "doi-list",
+        "tar-gz"
     ],
     "exporters": [
         "csv",
