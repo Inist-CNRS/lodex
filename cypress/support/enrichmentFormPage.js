@@ -9,21 +9,21 @@ export const openEnrichment = () => {
 
 export const fillAdvancedEnrichment = () => {
     const rule = `
-    [use]
-    plugin = basics
+[use]
+plugin = basics
 
-    [validate]
-    path = id
-    rule = required
+[validate]
+path = id
+rule = required
 
-    path = value
-    rule = required
+path = value
+rule = required
 
-    [assign]
-    path = value
-    value = get("value.Column 1")
+[assign]
+path = value
+value = get("value.Column 1")
 
-    [debug]`;
+[debug]`;
     cy.contains('Add more', { timeout: 500 }).click();
     cy.get('input[name="name"]', { timeout: 12000 }).type('Enrichment');
     cy.contains('Advanced mode').click({ force: true });
@@ -35,7 +35,7 @@ export const fillAdvancedEnrichment = () => {
 };
 
 export const runEnrichment = () => {
-    cy.contains('Run', { timeout: 1500 }).click({
+    cy.contains('Run', { timeout: 2500 }).click({
         force: true,
     });
     cy.get('.progress-container', { timeout: 4000 }).should('be.visible');
