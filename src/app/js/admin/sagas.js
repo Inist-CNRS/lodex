@@ -18,6 +18,7 @@ import characteristicSaga from '../characteristic/sagas';
 import loaderSaga from './loader/sagas';
 import subresourceSaga from './subresource/sagas';
 import enrichmentSaga from './enrichment/sagas';
+import precomputedSaga from './precomputed/sagas';
 import dumpSaga from './dump/sagas';
 import navigationSaga from './navigation/sagas';
 
@@ -40,6 +41,7 @@ export default function*() {
     yield fork(loaderSaga);
     yield fork(subresourceSaga);
     yield fork(enrichmentSaga);
+    yield fork(precomputedSaga);
     yield fork(dumpSaga);
     yield fork(navigationSaga);
 }

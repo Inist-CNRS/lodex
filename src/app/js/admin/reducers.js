@@ -20,6 +20,7 @@ import progress from './progress/reducer';
 import loaders from './loader';
 import subresource from './subresource';
 import enrichment from './enrichment';
+import precomputed from './precomputed';
 
 const reducer = combineReducers({
     fetch: fetchReducer,
@@ -41,7 +42,8 @@ const reducer = combineReducers({
     progress,
     loaders,
     subresource,
-    enrichment
+    enrichment,
+    precomputed,
 });
 
 export default reducer;

@@ -4,6 +4,7 @@ import MenuList from '@mui/material/MenuList';
 import Drawer from '@mui/material/Drawer';
 import GridOnIcon from '@mui/icons-material/GridOn';
 import PostAddIcon from '@mui/icons-material/PostAdd';
+import MediationIcon from '@mui/icons-material/Mediation';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import HomeIcon from '@mui/icons-material/Home';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
@@ -55,6 +56,14 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                 primaryText={polyglot.t('enrichment')}
                 leftIcon={<PostAddIcon />}
                 key="data-enrichment"
+            />
+        ),
+        matchDataRoute && (
+            <MenuItemLink
+                to="/data/precomputed"
+                primaryText={polyglot.t('precomputed')}
+                leftIcon={<MediationIcon />}
+                key="data-precomputed"
             />
         ),
         matchDataRoute && hasPublishedDataset && (

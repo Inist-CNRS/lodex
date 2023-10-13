@@ -1,0 +1,34 @@
+# load some plugins to activate some statements (URL Connect)
+[use]
+plugin = basics
+
+# Toggle ezs traces (see server stderr log)
+[debug]
+ezs = false
+
+# We sometime have a stringified value (like "{id:1, name: 'Bob'}"), and we want to parse it, if possible
+# This assign command aim is to do that, it update the [[SOURCE COLUMN]] to JSON.parse it if possible.
+# Can be simplified with the following statement : value = get('value.[[SOURCE COLUMN]]')
+[assign]
+path = value
+value = update("value.[[SOURCE COLUMN]]", (item) => { try { return JSON.parse(item); } catch { return item; } }).get("value.[[SOURCE COLUMN]]")
+
+# Group values to build a request for the webservice
+[expand]
+size = [[BATCH SIZE]]
+path = value
+
+# Uncomment to see each data sent to the webservice
+#[expand/debug]
+
+# Send the request to the webservice
+[expand/URLConnect]
+url = [[WEB SERVICE URL]]
+timeout = 5000
+noerror = false
+retries = 5
+
+#
+#  file: directPathSingleValue.txt
+#  example: https://inist-cnrs.github.io/ezs/#/example-enrichments?id=chemin-direct-et-valeur-unique
+#

@@ -1,0 +1,17 @@
+[
+    {
+        "id": "post-v1-tree-segment",
+        "url": "https://data-computer.services.istex.fr/v1/tree-segment",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252ftree-segment"
+    },
+    {
+        "id": "post-v1-graph-segment",
+        "url": "https://data-computer.services.istex.fr/v1/graph-segment",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252fgraph-segment"
+    },
+    {
+        "id": "post-v1-lda",
+        "url": "https://data-computer.services.istex.fr/v1/lda",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252flda"
+    }
+]
