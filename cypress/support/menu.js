@@ -38,7 +38,7 @@ export const clickOnChart = name => {
 
 export const goToChart = name => {
     clickOnChart(name);
-    cy.get('.loading').should('not.be.visible');
+    cy.get('.loading').should('not.exist');
     cy.get('.graph .title')
         .contains(name)
         .should('be.visible');
@@ -48,7 +48,8 @@ export const openSearchDrawer = () => {
     cy.get('.drawer').should('exist');
 
     cy.get('nav div')
-        .contains('Search')
+    // cy.get('.nav-bar-first')
+        .contains('Search', { timeout: 1500 })
         .click();
 
     cy.wait(800);

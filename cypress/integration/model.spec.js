@@ -34,7 +34,7 @@ describe('Model Page', () => {
 
             cy.get('.property_label')
                 .contains('rating')
-                .should('not.be.visible');
+                .should('not.exist');
         });
 
         it('should display list of fields in resources', () => {
@@ -62,11 +62,11 @@ describe('Model Page', () => {
 
             cy.get('.property_label')
                 .contains('Répartition par créateurs')
-                .should('not.be.visible');
+                .should('not.exist');
 
             cy.get('.property_label')
                 .contains('Répartition par réalisateurs uniques')
-                .should('not.be.visible');
+                .should('not.exist');
         });
 
         it('should display list of fields in graphics', () => {
