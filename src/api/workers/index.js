@@ -43,7 +43,7 @@ export const createWorkerQueue = (queueName, concurrency) => {
 export const deleteWorkerQueue = async queueName => {
     const workerQueue = workerQueues[queueName];
     await workerQueue.close();
-    delete workerQueues[workerQueue];
+    delete workerQueues[queueName];
 };
 
 export const cleanWaitingJobsOfType = (queueName, jobType) => {
