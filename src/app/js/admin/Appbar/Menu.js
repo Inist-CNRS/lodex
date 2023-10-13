@@ -326,24 +326,6 @@ const MenuComponent = ({
                             </Paper>
                         </Fade>
                     </Box>
-                    <Box
-                        onMouseEnter={handleOpenTenantMenu}
-                        onMouseLeave={handleCloseSubMenu}
-                        sx={{
-                            position: 'relative',
-                        }}
-                    >
-                        <MenuItem
-                            sx={{
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <Box component="span" mr={1}>
-                                Instances
-                            </Box>
-                            <ChevronRightIcon />
-                        </MenuItem>
-                    </Box>
                     <Divider />
                     <MenuItem
                         onClick={() => handleCloseMenu(onSignOut)}
