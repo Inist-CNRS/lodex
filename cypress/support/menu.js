@@ -48,7 +48,6 @@ export const openSearchDrawer = () => {
     cy.get('.drawer').should('exist');
 
     cy.get('nav div')
-    // cy.get('.nav-bar-first')
         .contains('Search', { timeout: 1500 })
         .click();
 

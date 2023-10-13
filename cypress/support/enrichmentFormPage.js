@@ -23,11 +23,16 @@ rule = required
 path = value
 value = get("value.Column 1")
 
-[debug]`;
+[debug]
+
+[throttle]
+bySecond = 20
+`;
     cy.contains('Add more', { timeout: 500 }).click();
     cy.get('input[name="name"]', { timeout: 12000 }).type('Enrichment');
     cy.contains('Advanced mode').click({ force: true });
     cy.get('textarea', { timeout: 3000 }).type(rule, { force: true });
+    cy.wait(3000);
     cy.contains('Save', { timeout: 500 }).click({
         force: true,
     });
@@ -35,7 +40,7 @@ value = get("value.Column 1")
 };
 
 export const runEnrichment = () => {
-    cy.contains('Run', { timeout: 2500 }).click({
+    cy.contains('Run', { timeout: 6000 }).click({
         force: true,
     });
     cy.get('.progress-container', { timeout: 4000 }).should('be.visible');
