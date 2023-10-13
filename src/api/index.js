@@ -59,14 +59,14 @@ if (process.env.EXPOSE_TEST_CONTROLLER) {
     app.use(mount('/tests', testController));
 }
 
+const workerQueueDefault = createWorkerQueue('default', 1);
 let initialWorkerQueues = [];
 const setWorkerQueues = async (ctx, next) => {
     const adminDb = await mongoClient('admin');
     const tenantCollection = await tenant(adminDb);
     const tenants = await tenantCollection.findAll();
-
     initialWorkerQueues = [
-        createWorkerQueue('default', 1),
+        workerQueueDefault,
         ...tenants.map(tenant => createWorkerQueue(tenant.name, 1)),
     ];
     await next();
