@@ -7,6 +7,7 @@ import api from './api';
 import front from './front';
 import embedded from './embedded';
 import customPage from './customPage';
+import rootAdmin from './rootAdmin';
 
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
@@ -20,6 +21,8 @@ const simulateLatency = ms => async (ctx, next) => {
 if (simulatedLatency) {
     app.use(simulateLatency(simulatedLatency));
 }
+
+app.use(mount('/rootAdmin', rootAdmin));
 
 app.use(repositoryMiddleware);
 

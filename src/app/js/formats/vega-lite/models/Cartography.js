@@ -1,17 +1,16 @@
 import BasicChart from './BasicChart';
 import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../chartsUtils';
 import { VEGA_ACTIONS_WIDTH } from '../component/vega-lite-component/VegaLiteComponent';
+import cartographyVL from './json/cartography.vl.json';
+import deepClone from 'lodash.clonedeep';
 
-/**
- * Class use for create cartography spec
- */
 class Cartography extends BasicChart {
     /**
      * Init all required parameters
      */
     constructor() {
         super();
-        this.model = require('./json/cartography.vl.json');
+        this.model = deepClone(cartographyVL);
         this.tooltip.category.field = 'properties.name';
         this.worldPosition = 'world';
         this.autosize = {
@@ -25,10 +24,10 @@ class Cartography extends BasicChart {
     }
 
     /**
-     * Function use for rebuild the edited spec
-     * @param widthIn
+     * Rebuild the edited spec
+     * @param widthIn{number | null}
      */
-    buildSpec(widthIn) {
+    buildSpec(widthIn = null) {
         this.model.encoding.color.scale.range = this.colors;
 
         if (this.tooltip.toggle) {
@@ -59,9 +58,9 @@ class Cartography extends BasicChart {
             }
         }
 
-        switch (this.worldPosition) {
-            case MAP_EUROPE:
-                {
+        if (!this.editMode) {
+            switch (this.worldPosition) {
+                case MAP_EUROPE:
                     if (widthIn >= 850) {
                         this.model.projection.scale =
                             300 - 225 * (450 / widthIn);
@@ -84,14 +83,8 @@ class Cartography extends BasicChart {
                             545 - 260 * (450 / widthIn),
                         ];
                     }
-                    this.model.data.url =
-                        'https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega-lite/models/topojson/europe.min.json';
-                    this.model.data.format.feature =
-                        'continent_Europe_subunits';
-                }
-                break;
-            case MAP_FRANCE:
-                {
+                    break;
+                case MAP_FRANCE:
                     if (widthIn >= 850) {
                         this.model.projection.scale =
                             1800 - 100 * (450 / widthIn);
@@ -114,21 +107,33 @@ class Cartography extends BasicChart {
                             1275 - 510 * (450 / widthIn),
                         ];
                     }
-                    this.model.data.url =
-                        'https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega-lite/models/topojson/fr-departments.min.json';
-                    this.model.data.format.feature = 'FRA_adm2';
+                    break;
+            }
+        }
 
-                    this.model.transform.forEach(e => {
-                        if (e.lookup === 'id') {
-                            e.lookup = 'properties.HASC_2';
-                        }
-                    });
-                }
+        switch (this.worldPosition) {
+            case MAP_EUROPE:
+                this.model.data.url =
+                    'https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega-lite/models/topojson/europe.min.json';
+                this.model.data.format.feature = 'continent_Europe_subunits';
+                break;
+            case MAP_FRANCE:
+                this.model.data.url =
+                    'https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega-lite/models/topojson/fr-departments.min.json';
+                this.model.data.format.feature = 'FRA_adm2';
+
+                this.model.transform.forEach(e => {
+                    if (e.lookup === 'id') {
+                        e.lookup = 'properties.HASC_2';
+                    }
+                });
                 break;
         }
 
-        this.model.width = widthIn - VEGA_ACTIONS_WIDTH;
-        this.model.height = widthIn * 0.6;
+        if (!this.editMode) {
+            this.model.width = widthIn - VEGA_ACTIONS_WIDTH;
+            this.model.height = widthIn * 0.6;
+        }
         this.model.autosize = this.autosize;
 
         return this.model;

@@ -14,10 +14,10 @@ import {
 } from '../../chartsUtils';
 import { VEGA_ACTIONS_WIDTH } from '../component/vega-lite-component/VegaLiteComponent';
 import BasicChart from './BasicChart';
+import barChartVL from './json/bar_chart.vl.json';
+import barChartLabelsVL from './json/bar_chart_labels.vl.json';
+import deepClone from 'lodash.clonedeep';
 
-/**
- * Class use for create bar chart spec
- */
 class BarChart extends BasicChart {
     /**
      * Init all required parameters
@@ -30,8 +30,8 @@ class BarChart extends BasicChart {
             top: 10,
             bottom: 0,
         };
-        this.model = require('./json/bar_chart.vl.json');
-        this.labelsModel = require('./json/bar_chart_labels.vl.json');
+        this.model = deepClone(barChartVL);
+        this.labelsModel = deepClone(barChartLabelsVL);
         this.scale = 'linear';
         this.labelAngle = {
             x: 0,
@@ -171,10 +171,11 @@ class BarChart extends BasicChart {
     }
 
     /**
-     * Function use for rebuild the edited spec
-     * @param widthIn
+     * Rebuild the edited spec
+     * @param widthIn{number | null}
+     * @param dataNumber{number | null}
      */
-    buildSpec(widthIn, dataNumber) {
+    buildSpec(widthIn = null, dataNumber = null) {
         let model = this.model;
         let labelsModel = this.labelsModel;
         model.encoding.color.scale.range = this.colors;
@@ -216,7 +217,7 @@ class BarChart extends BasicChart {
             model.encoding.y.axis.tickMinStep = 1;
         }
 
-        if (widthIn <= 300) {
+        if (!this.editMode && widthIn <= 300) {
             model.encoding.x.axis.labelLimit = 120;
         }
 
@@ -251,31 +252,40 @@ class BarChart extends BasicChart {
 
         let width, height;
 
-        if (this.direction === AXIS_VERTICAL) {
-            width = widthIn - VEGA_ACTIONS_WIDTH;
-            height = 300;
-            if (dataNumber * (parseInt(this.size) + 4) >= width) {
-                encoding.size = {
-                    value: width / (dataNumber + 1),
-                };
+        if (!this.editMode) {
+            if (this.direction === AXIS_VERTICAL) {
+                width = widthIn - VEGA_ACTIONS_WIDTH;
+                height = 300;
+                if (dataNumber * (parseInt(this.size) + 4) >= width) {
+                    encoding.size = {
+                        value: width / (dataNumber + 1),
+                    };
+                } else {
+                    encoding.size = {
+                        value: parseInt(this.size),
+                    };
+                }
             } else {
-                encoding.size = {
-                    value: parseInt(this.size),
-                };
+                width = widthIn - VEGA_ACTIONS_WIDTH;
+                height = { step: parseInt(this.size) };
             }
-        } else {
-            width = widthIn - VEGA_ACTIONS_WIDTH;
-            height = { step: parseInt(this.size) };
         }
 
         if (!this.labels) {
-            return {
+            const toReturn = {
                 mark: model.mark,
                 encoding: encoding,
                 padding: this.padding,
-                width: width,
-                height: height,
                 autosize: this.autosize,
+            };
+
+            if (this.editMode) {
+                return toReturn;
+            }
+            return {
+                ...toReturn,
+                width,
+                height,
             };
         } else {
             const mark = labelsModel.mark;
@@ -290,7 +300,7 @@ class BarChart extends BasicChart {
                 mark.align = 'center';
             }
 
-            return {
+            const toReturn = {
                 layer: [
                     {
                         mark: model.mark,
@@ -305,9 +315,17 @@ class BarChart extends BasicChart {
                 config: {
                     view: { strokeWidth: 0 },
                 },
-                width: width,
-                height: height,
                 autosize: this.autosize,
+            };
+
+            if (this.editMode) {
+                return toReturn;
+            }
+
+            return {
+                ...toReturn,
+                width,
+                height,
             };
         }
     }

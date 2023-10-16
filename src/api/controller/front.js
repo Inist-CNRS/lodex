@@ -269,6 +269,22 @@ const renderAdminIndexHtml = ctx => {
         .replace(REGEX_JS_HOST, jsHost);
 };
 
+const renderRootAdminIndexHtml = ctx => {
+    ctx.body = fs
+        .readFileSync(path.resolve(__dirname, '../../app/root-admin.html'))
+        .toString()
+        .replace(
+            '</body>',
+            ` <script>window.__DBNAME__ = ${JSON.stringify(
+                mongo.dbName,
+            )}</script><script>window.__TENANT__ = ${JSON.stringify(
+                ctx.tenant,
+            )}</script><script src="{|__JS_HOST__|}/root-admin/index.js"></script>
+        </body>`,
+        )
+        .replace(REGEX_JS_HOST, jsHost);
+};
+
 const app = new Koa();
 
 if (config.userAuth) {
@@ -310,7 +326,11 @@ app.use(
 
 app.use(
     route.get('/admin', async ctx => {
-        ctx.body = `<div>Super Root Admin</div>`;
+        if (ctx.state.cookie.role !== 'root') {
+            ctx.redirect('/');
+            return;
+        }
+        renderRootAdminIndexHtml(ctx);
     }),
 );
 

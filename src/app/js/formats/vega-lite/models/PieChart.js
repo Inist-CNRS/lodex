@@ -1,16 +1,16 @@
 import BasicChart from './BasicChart';
+import pieChartVL from './json/pie_chart.vl.json';
+import pieChartLabelsVL from './json/pie_chart_labels.vl.json';
+import deepClone from 'lodash.clonedeep';
 
-/**
- * Class use for create pie chart spec
- */
 class PieChart extends BasicChart {
     /**
      * Init all required parameters
      */
     constructor() {
         super();
-        this.model = require('./json/pie_chart.vl.json');
-        this.modelLabels = require('./json/pie_chart_labels.vl.json');
+        this.model = deepClone(pieChartVL);
+        this.modelLabels = deepClone(pieChartLabelsVL);
         this.labels = false;
     }
 
@@ -19,10 +19,10 @@ class PieChart extends BasicChart {
     }
 
     /**
-     * Function use for rebuild the edited spec
-     * @param widthIn
+     * Rebuild the edited spec
+     * @param widthIn{number | null}
      */
-    buildSpec(widthIn) {
+    buildSpec(widthIn = null) {
         this.model.encoding.color.scale.range = this.colors;
 
         if (this.labels) {
@@ -37,10 +37,12 @@ class PieChart extends BasicChart {
                 this.tooltip.value,
             ];
 
-        this.model.width = widthIn * (widthIn <= 920 ? 0.5 : 0.7);
+        if (!this.editMode) {
+            this.model.width = widthIn * (widthIn <= 920 ? 0.5 : 0.7);
 
-        this.model.encoding.color.legend.legendX =
-            widthIn * (widthIn <= 920 ? 0.5 : 0.7);
+            this.model.encoding.color.legend.legendX =
+                widthIn * (widthIn <= 920 ? 0.5 : 0.7);
+        }
 
         this.model.height = 300;
 

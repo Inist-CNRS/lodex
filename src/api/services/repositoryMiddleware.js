@@ -6,6 +6,7 @@ import publishedFacet from '../models/publishedFacet';
 import subresource from '../models/subresource';
 import enrichment from '../models/enrichment';
 import mongoClient from './mongoClient';
+import tenant from '../models/tenant';
 
 export const mongoClientFactory = mongoClientImpl => async (ctx, next) => {
     ctx.db = await mongoClientImpl(ctx.tenant);
@@ -17,6 +18,12 @@ export const mongoClientFactory = mongoClientImpl => async (ctx, next) => {
     ctx.publishedDataset = await publishedDataset(ctx.db);
     ctx.publishedFacet = await publishedFacet(ctx.db);
 
+    await next();
+};
+
+export const mongoRootAdminClient = async (ctx, next) => {
+    ctx.db = await mongoClient('admin');
+    ctx.tenant = await tenant(ctx.db);
     await next();
 };
 
