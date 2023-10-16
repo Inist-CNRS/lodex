@@ -71,7 +71,7 @@ export async function clear() {
 }
 
 export const close = async () => {
-    db.client.close();
+    await db.client.close();
     db = undefined;
     await closeDb('admin');
 };

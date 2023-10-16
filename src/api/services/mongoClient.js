@@ -1,4 +1,5 @@
-import { MongoClient } from 'mongodb';
+// eslint-disable-next-line no-unused-vars
+import { MongoClient, Db } from 'mongodb';
 import config from 'config';
 
 /**
