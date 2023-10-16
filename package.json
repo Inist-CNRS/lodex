@@ -151,7 +151,7 @@
         "lodash.set": "^4.3.2",
         "lodash.topairs": "^4.3.0",
         "lodash.uniq": "^4.5.0",
-        "markdown-it": "^8.4.2",
+        "markdown-it": "^12.3.2",
         "md5": "2.3.0",
         "memorystream": "0.3.1",
         "mime": "1.6.0",
