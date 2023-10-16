@@ -33,4 +33,10 @@ export const mongoClientFactory = MongoClientImpl => async tenant => {
     return db[tenant];
 };
 
+export const closeDb = async tenant => {
+    if (db && db[tenant]) {
+        await db[tenant].close();
+    }
+};
+
 export default mongoClientFactory(MongoClient);
