@@ -2,12 +2,20 @@ import React from 'react';
 import AceEditor from 'react-ace';
 import { formField as formFieldPropTypes } from '../../propTypes';
 import 'ace-builds/src-noconflict/mode-ini';
+import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
 
-const FormSourceCodeField = ({ input, label, p, dispatch, ...custom }) => {
+const FormSourceCodeField = ({
+    input,
+    label,
+    p,
+    dispatch,
+    mode = 'ini',
+    ...custom
+}) => {
     return (
         <AceEditor
-            mode="ini"
+            mode={mode}
             theme="monokai"
             wrapEnabled={true}
             fontSize={14}
