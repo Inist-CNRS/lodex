@@ -26,7 +26,7 @@ value = get("value.Column 1")
 [debug]
 
 [throttle]
-bySecond = 20
+bySecond = 1
 `;
     cy.contains('Add more', { timeout: 500 }).click();
     cy.get('input[name="name"]', { timeout: 12000 }).type('Enrichment');
