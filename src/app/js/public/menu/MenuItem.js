@@ -208,23 +208,6 @@ const MenuItem = ({
                     </a>
                 )
             );
-        case 'root':
-            return (
-                role === 'root' && (
-                    <a
-                        href={`/admin`}
-                        className={classnames(
-                            'nav-item',
-                            styles.menuItem,
-                            styles.link,
-                        )}
-                        style={{ maxWidth: 'none' }} // TODO: Quick Fix, check why maxWidth is set to 90px
-                    >
-                        {icon}
-                        {label}
-                    </a>
-                )
-            );
         case 'sign-in':
             return (
                 role === 'not logged' && (

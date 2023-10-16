@@ -62,6 +62,7 @@ if (process.env.EXPOSE_TEST_CONTROLLER) {
 const workerQueueDefault = createWorkerQueue('default', 1);
 let initialWorkerQueues = [];
 const setWorkerQueues = async (ctx, next) => {
+    console.log('Set worker queues');
     const adminDb = await mongoClient('admin');
     const tenantCollection = await tenant(adminDb);
     const tenants = await tenantCollection.findAll();
@@ -77,6 +78,8 @@ app.use(setWorkerQueues);
 if (process.env.NODE_ENV === 'development') {
     const serverAdapter = new KoaAdapter();
     serverAdapter.setBasePath('/bull');
+    console.log('createBullBoard');
+    console.log('initialWorkerQueues', initialWorkerQueues);
     createBullBoard({
         queues: initialWorkerQueues.map(
             workerQueue => new BullAdapter(workerQueue),
@@ -89,7 +92,13 @@ if (process.env.NODE_ENV === 'development') {
 // worker job
 app.use(async (ctx, next) => {
     try {
-        const activeJobs = await workerQueues[ctx.tenant].getActive();
+        const activeJobs =
+            (await workerQueues[ctx.tenant]?.getActive()) || null;
+
+        if (!activeJobs) {
+            return await next();
+        }
+
         const filteredActiveJobs = activeJobs.filter(
             job => job.data.tenant === ctx.tenant,
         );

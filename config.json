@@ -151,15 +151,6 @@
             },
             {
                 "label": {
-                    "en": "Instances settings",
-                    "fr": "Gestion instances"
-                },
-                "icon": "faCogs",
-                "position": "advanced",
-                "role": "root"
-            },
-            {
-                "label": {
                     "en": "Sign in",
                     "fr": "Connexion"
                 },

@@ -27,7 +27,7 @@ export const getActiveJob = async tenant => {
 };
 
 export const getActiveJobs = async tenant => {
-    const activeJobs = await workerQueues[tenant].getActive();
+    const activeJobs = (await workerQueues[tenant]?.getActive()) || null;
 
     if (activeJobs.length === 0) {
         return undefined;
