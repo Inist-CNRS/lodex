@@ -58,9 +58,9 @@ build-app:
 	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run build
 
 build: ## Build the docker image localy
-	docker build -t inistcnrs/lodex:14.0.10-alpha-alpha --build-arg http_proxy --build-arg https_proxy .
+	docker build -t inistcnrs/lodex:14.0.11-alpha-alpha-alpha --build-arg http_proxy --build-arg https_proxy .
 publish: build  ## publish version to docker hub
-	docker push inistcnrs/lodex:14.0.10-alpha-alpha
+	docker push inistcnrs/lodex:14.0.11-alpha-alpha-alpha
 
 analyze-code: ## Generate statistics about the bundle. Usage: make analyze-code.
 	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run analyze
@@ -152,3 +152,8 @@ clear-publication: ## Clear the published data, keep uploaded dataset and model
 		db.publishedCharacteristic.remove({}); \
 		db.publishedFacet.remove({}); \
 	"
+
+clear-docker: 
+	docker stop lodex-lodex-1 || true
+	docker rm lodex-lodex-1 || true
+	docker image rm lodex-lodex

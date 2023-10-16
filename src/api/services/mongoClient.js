@@ -49,4 +49,10 @@ export const mongoClientFactory = async tenant => {
     return (await mongoClientConnectionFactory(tenant)).db();
 };
 
+export const closeDb = async tenant => {
+    if (clients && clients.has(tenant)) {
+        await clients.get(tenant).close();
+    }
+};
+
 export default mongoClientFactory;

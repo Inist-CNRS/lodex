@@ -5,6 +5,7 @@ import publishedFacetFactory from '../../api/models/publishedFacet';
 import fieldFactory from '../../api/models/field';
 import mongoClient, {
     mongoClientConnectionFactory,
+    closeDb,
 } from '../../api/services/mongoClient';
 
 let db;
@@ -69,7 +70,8 @@ export async function clear() {
     return db;
 }
 
-export const close = () => {
+export const close = async () => {
     db.client.close();
     db = undefined;
+    await closeDb('admin');
 };
