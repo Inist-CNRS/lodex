@@ -50,7 +50,7 @@ export const loginSuccess = createAction(LOGIN_SUCCESS);
 export const logout = createAction(LOGOUT);
 export const signOut = createAction(SIGNOUT);
 
-export const isAdmin = state => state.role === 'admin' || state.role === 'root';
+export const isAdmin = state => state.role === 'admin';
 export const getRole = state => state.role || 'not logged';
 export const getToken = state => state.token;
 export const getCookie = state => state.cookie;
