@@ -120,6 +120,17 @@ else
 		exit 1)
 endif
 
+test-e2e-phase:
+ifeq "$(DISABLE_E2E_TESTS)" "true"
+	echo "E2E tests were disable because of the flag 'DISABLE_E2E_TESTS=true'"
+else
+	$(MAKE) test-e2e-start-dockers
+	npx cypress install
+	./bin/wait-for -t 30 localhost:3000 -- npm run test:e2e:${E2E_PHASE} || (\
+		$(MAKE) test-e2e-stop-dockers && \
+		exit 1)
+endif
+
 test: ## Run all tests
 	$(MAKE) test-unit
 	$(MAKE) test-api-e2e
