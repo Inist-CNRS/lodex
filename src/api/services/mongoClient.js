@@ -16,7 +16,7 @@ export const mongoConnectionString = tenant =>
  * @param tenant Name of the Lodex instance
  * @returns {Promise<MongoClient>}
  */
-export const mongoClientConnectionFactory = async tenant => {
+const mongoClientConnectionFactory = async tenant => {
     if (!tenant) {
         throw new Error(
             `L'instance n'est pas renseigné, impossible de se connecter à la base de données.`,

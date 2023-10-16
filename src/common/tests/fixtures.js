@@ -3,17 +3,13 @@ import publishedCharacteristicFactory from '../../api/models/publishedCharacteri
 import publishedDatasetFactory from '../../api/models/publishedDataset';
 import publishedFacetFactory from '../../api/models/publishedFacet';
 import fieldFactory from '../../api/models/field';
-import mongoClient, {
-    mongoClientConnectionFactory,
-    closeDb,
-} from '../../api/services/mongoClient';
+import mongoClient, { closeDb } from '../../api/services/mongoClient';
 
 let db;
 
 export async function connect() {
     if (!db) {
         db = await mongoClient('default');
-        db.client = await mongoClientConnectionFactory('default');
         db.dataset = await datasetFactory(db);
         db.publishedDataset = await publishedDatasetFactory(db);
         db.publishedCharacteristic = await publishedCharacteristicFactory(db);
@@ -71,7 +67,7 @@ export async function clear() {
 }
 
 export const close = async () => {
-    await db.client.close();
+    await closeDb('default');
     db = undefined;
     await closeDb('admin');
 };
