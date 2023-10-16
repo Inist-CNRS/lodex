@@ -6,8 +6,6 @@ import route from 'koa-route';
 import cors from 'kcors';
 import koaQs from 'koa-qs';
 import { KoaAdapter } from '@bull-board/koa';
-import { createBullBoard } from '@bull-board/api';
-import { BullAdapter } from '@bull-board/api/bullAdapter';
 
 import controller from './controller';
 import testController from './controller/testController';
@@ -27,6 +25,7 @@ import access, { eventAccess } from '@uswitch/koa-access';
 import getLogger from './services/logger';
 import tenant from './models/tenant';
 import mongoClient from './services/mongoClient';
+import bullBoard from './bullBoard';
 
 // KoaQs use qs to parse query string. There is an default limit of 20 items in an array. Above this limit, qs will transform the array into an key/value object.
 // We need to increase this limit to 1000 to be able to handle the facets array in the query string.
@@ -59,35 +58,39 @@ if (process.env.EXPOSE_TEST_CONTROLLER) {
     app.use(mount('/tests', testController));
 }
 
-const workerQueueDefault = createWorkerQueue('default', 1);
-let initialWorkerQueues = [];
-const setWorkerQueues = async (ctx, next) => {
-    console.log('Set worker queues');
+// ############################
+// # START QUEUE AND BULL BOARD
+// ############################
+
+// Create an bull board instance
+const serverAdapter = new KoaAdapter();
+serverAdapter.setBasePath('/bull');
+const initQueueAndBullDashboard = async () => {
+    bullBoard.initBullBoard(serverAdapter);
+
+    const defaultQueue = createWorkerQueue('default', 1);
+    bullBoard.addDashboardQueue('default', defaultQueue);
+
+    // Get current tenants
     const adminDb = await mongoClient('admin');
     const tenantCollection = await tenant(adminDb);
     const tenants = await tenantCollection.findAll();
-    initialWorkerQueues = [
-        workerQueueDefault,
-        ...tenants.map(tenant => createWorkerQueue(tenant.name, 1)),
-    ];
-    await next();
+    tenants.forEach(tenant => {
+        const queue = createWorkerQueue(tenant.name, 1);
+        bullBoard.addDashboardQueue(tenant.name, queue);
+    });
 };
 
-app.use(setWorkerQueues);
+initQueueAndBullDashboard();
 
+// Display It only in development mode
 if (process.env.NODE_ENV === 'development') {
-    const serverAdapter = new KoaAdapter();
-    serverAdapter.setBasePath('/bull');
-    console.log('createBullBoard');
-    console.log('initialWorkerQueues', initialWorkerQueues);
-    createBullBoard({
-        queues: initialWorkerQueues.map(
-            workerQueue => new BullAdapter(workerQueue),
-        ),
-        serverAdapter,
-    });
     app.use(serverAdapter.registerPlugin());
 }
+
+// ############################
+// # END QUEUE AND BULL BOARD
+// ############################
 
 // worker job
 app.use(async (ctx, next) => {
