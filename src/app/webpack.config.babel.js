@@ -22,7 +22,7 @@ module.exports = {
     entry: {
         index: resolve(__dirname, './js/public/index.js'),
         'admin/index': resolve(__dirname, './js/admin/index.js'),
-        'rootAdmin/index': resolve(__dirname, './js/rootAdmin/index.js'),
+        'root-admin/index': resolve(__dirname, './js/root-admin/index.js'),
         embeddedIstexSummary: resolve(
             __dirname,
             './js/embeddedIstexSummary/index.js',
@@ -73,7 +73,7 @@ module.exports = {
                 ignore: [
                     '/index.html',
                     '/admin/index.js',
-                    '/rootAdmin/index.js',
+                    '/root-admin/index.js',
                     '/index.js',
                     '/0.js',
                 ],
