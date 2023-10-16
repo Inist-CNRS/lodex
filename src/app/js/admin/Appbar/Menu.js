@@ -109,10 +109,6 @@ const MenuComponent = ({
         setSubMenuToShow('advanced');
     };
 
-    const handleOpenTenantMenu = () => {
-        setSubMenuToShow('tenant');
-    };
-
     const handleCloseSubMenu = () => {
         setSubMenuToShow(null);
     };
@@ -133,10 +129,6 @@ const MenuComponent = ({
             handleCloseMenu();
         }
     };
-
-    function setTenant(tenant) {
-        window.location.href = `/instance/${tenant}/admin`;
-    }
 
     const modelMenuItems = [
         <div
@@ -240,45 +232,6 @@ const MenuComponent = ({
         </MenuItem>,
     ];
 
-    const instanceMenuItems = [
-        <MenuItem
-            key="instance_default"
-            onClick={() => handleCloseMenu(() => setTenant('default'))}
-        >
-            <StorageIcon />
-            <Box component="span" ml={1}>
-                Default
-            </Box>
-        </MenuItem>,
-        <MenuItem
-            key="instance_one"
-            onClick={() => handleCloseMenu(() => setTenant('instance_one'))}
-        >
-            <StorageIcon />
-            <Box component="span" ml={1}>
-                Instance 1
-            </Box>
-        </MenuItem>,
-        <MenuItem
-            key="instance_two"
-            onClick={() => handleCloseMenu(() => setTenant('instance_two'))}
-        >
-            <StorageIcon />
-            <Box component="span" ml={1}>
-                Instance 2
-            </Box>
-        </MenuItem>,
-        <MenuItem
-            key="instance_three"
-            onClick={() => handleCloseMenu(() => setTenant('instance_three'))}
-        >
-            <StorageIcon />
-            <Box component="span" ml={1}>
-                Instance 3
-            </Box>
-        </MenuItem>,
-    ];
-
     return (
         <>
             <Box
@@ -370,36 +323,6 @@ const MenuComponent = ({
                                 }}
                             >
                                 <MenuList>{advancedMenuItems}</MenuList>
-                            </Paper>
-                        </Fade>
-                    </Box>
-                    <Box
-                        onMouseEnter={handleOpenTenantMenu}
-                        onMouseLeave={handleCloseSubMenu}
-                        sx={{
-                            position: 'relative',
-                        }}
-                    >
-                        <MenuItem
-                            sx={{
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <Box component="span" mr={1}>
-                                Instances
-                            </Box>
-                            <ChevronRightIcon />
-                        </MenuItem>
-                        <Fade in={subMenuToShow === 'tenant'}>
-                            <Paper
-                                elevation={8}
-                                sx={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    transform: 'translateX(-100%)',
-                                }}
-                            >
-                                <MenuList>{instanceMenuItems}</MenuList>
                             </Paper>
                         </Fade>
                     </Box>
