@@ -27,10 +27,10 @@
         "test:api:e2e:watch": "./node_modules/jest/bin/jest.js --colors --runInBand --detectOpenHandles -c src/api/e2e/jest.config.js src/api/e2e --watch",
         "test:unit": "./node_modules/jest/bin/jest.js --force-exit --detectOpenHandles --colors",
         "test:unit:watch": "./node_modules/jest/bin/jest.js --watch --colors",
-        "test:e2e:phase:one": "cypress run --browser chrome --spec \"cypress/integration/phase_1/*.spec.js\"",
-        "test:e2e:phase:two": "cypress run --browser chrome --spec \"cypress/integration/phase_2/*.spec.js\"",
-        "test:e2e:phase:three": "cypress run --browser chrome --spec \"cypress/integration/phase_3/*.spec.js\"",
-        "test:e2e:phase:four": "cypress run --browser chrome --spec \"cypress/integration/phase_4/*.spec.js\"",
+        "test:e2e:phase:one": "cypress run --browser chrome --spec \"cypress/e2e/phase_1/*.cy.js\"",
+        "test:e2e:phase:two": "cypress run --browser chrome --spec \"cypress/e2e/phase_2/*.cy.js\"",
+        "test:e2e:phase:three": "cypress run --browser chrome --spec \"cypress/e2e/phase_3/*.cy.js\"",
+        "test:e2e:phase:four": "cypress run --browser chrome --spec \"cypress/e2e/phase_4/*.cy.js\"",
         "test:e2e:all": "cypress run --browser chrome",
         "insertversion:readme": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" README.md",
         "insertversion:makefile": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" Makefile",
@@ -279,5 +279,10 @@
         "prettier": "^1.19.1",
         "sleepjs": "3.0.1",
         "webpack-dev-server": "^3.11.3"
+    },
+    "config": {
+        "mongodbMemoryServer": {
+            "version": "4.4.4"
+        }
     }
 }

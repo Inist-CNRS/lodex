@@ -10,7 +10,7 @@ on:
 jobs:
   # Job use to create the test environment and run unit test suite
   test-unit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     # Set a timeout of 10 mins
     timeout-minutes: 10
@@ -41,7 +41,7 @@ jobs:
 
   # Job use to create the test environment and run api e2e test suite
   test-api-e2e:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     # Set a timeout of 10 mins
     timeout-minutes: 10
@@ -71,7 +71,7 @@ jobs:
 
   # Job use to create the test environment and run e2e test suite
   test-e2e:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     # Set a timeout of 30 mins
     timeout-minutes: 30

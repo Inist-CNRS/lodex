@@ -1,8 +1,8 @@
-import { teardown } from '../support/authentication';
-import * as datasetImportPage from '../support/datasetImportPage';
-import * as menu from '../support/menu';
-import * as homePage from '../support/homePage';
-import * as searchDrawer from '../support/searchDrawer';
+import { teardown } from '../../support/authentication';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as menu from '../../support/menu';
+import * as homePage from '../../support/homePage';
+import * as searchDrawer from '../../support/searchDrawer';
 
 describe('Model Page', () => {
     describe('handling old models', () => {
