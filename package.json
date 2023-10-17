@@ -279,12 +279,5 @@
         "prettier": "^1.19.1",
         "sleepjs": "3.0.1",
         "webpack-dev-server": "^3.11.3"
-    },
-    "config": {
-        "mongodbMemoryServer": {
-            "version": "4.4.4",
-            "debug": "1",
-            "arch": "x64"
-        }
     }
 }
