@@ -17,6 +17,7 @@ jobs:
 
     # Create a strategy matrix uses to test multiple versions of node
     strategy:
+      fail-fast: false
       matrix:
         # See https://github.com/nodejs/Release
         node-version: [ 14.x ]
@@ -48,6 +49,7 @@ jobs:
 
     # Create a strategy matrix uses to test multiple versions of node
     strategy:
+      fail-fast: false
       matrix:
         node-version: [ 14.x ]
 
@@ -79,6 +81,7 @@ jobs:
     # Create a strategy matrix uses to test multiple versions of node and multiple subset tests
     strategy:
       matrix:
+        fail-fast: false
         node-version: [ 14.x ]
         test-phase: [ 'phase:one', 'phase:two', 'phase:three', 'phase:four' ]
         # Use this line to ignore the phase system
