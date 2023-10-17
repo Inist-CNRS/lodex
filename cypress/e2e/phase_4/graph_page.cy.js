@@ -79,7 +79,7 @@ describe('Graph Page', () => {
         searchDrawer
             .getFacetItem('Publication Year', '2011')
             .find('input[type=checkbox]')
-            .should('checked');
+            .should('be.checked');
 
         menu.closeSearchDrawer();
         graphPage.setFacetExclude('Publication Year');
@@ -89,6 +89,6 @@ describe('Graph Page', () => {
         searchDrawer
             .getFacetExcludeItem('Publication Year')
             .find('input[type=checkbox]')
-            .should('checked');
+            .should('be.checked');
     });
 });
