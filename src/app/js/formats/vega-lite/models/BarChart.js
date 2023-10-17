@@ -174,6 +174,9 @@ class BarChart extends BasicChart {
         model.encoding.x.axis.labelAngle = this.labelAngle.x;
         model.encoding.y.axis.labelAngle = this.labelAngle.y;
 
+        // Disable sort because the data
+        // send by the routines are already sorted
+        // and enabling this can cause unexpected behaviours
         labelsModel.encoding.x.sort = null;
         labelsModel.encoding.y.sort = null;
         model.encoding.x.sort = null;
