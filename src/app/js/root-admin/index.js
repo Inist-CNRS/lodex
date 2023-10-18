@@ -46,6 +46,13 @@ export default function RootAdmin() {
         setIsLoggedIn(false);
         setRole('');
         localStorage.removeItem('root-admin-user');
+        fetch('/api/logout', {
+            credentials: 'include',
+            method: 'POST',
+            headers: {
+                'X-Lodex-Tenant': 'admin',
+            },
+        }).then(response => response.json());
     };
 
     return (

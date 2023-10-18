@@ -12,6 +12,7 @@ import exportPDFPublishedDataset from './exportPDF';
 import facet from './facet';
 import fieldRoutes from './field';
 import login from './login';
+import logout from './logout';
 import parsing from './parsing';
 import publication from './publication';
 import publish from './publish';
@@ -35,6 +36,7 @@ const app = new Koa();
 app.use(ezMasterConfig);
 
 app.use(mount('/login', login));
+app.use(mount('/logout', logout));
 app.use(route.get('/breadcrumb', breadcrumbs));
 app.use(route.get('/menu', menu));
 app.use(route.get('/displayConfig', displayConfig));

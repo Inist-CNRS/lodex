@@ -1,9 +1,9 @@
 import qs from 'qs';
-import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { call, put, select, takeEvery, fork } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
 import { push } from 'connected-react-router';
 
-import { LOGIN, LOGIN_FORM_NAME, loginSuccess } from './';
+import { LOGIN, LOGOUT, SIGNOUT, LOGIN_FORM_NAME, loginSuccess } from './';
 import { fromUser, getCurrentSearch } from '../sharedSelectors';
 import fetchSaga from '../lib/sagas/fetchSaga';
 
@@ -29,6 +29,20 @@ export function* handleLoginRequest({ payload: credentials }) {
     return yield put(stopSubmit(LOGIN_FORM_NAME));
 }
 
-export default function* watchLoginRequest() {
+export function* handleLogoutRequest() {
+    const request = yield select(fromUser.getLogoutRequest);
+    yield call(fetchSaga, request);
+}
+
+export function* watchLoginRequest() {
     yield takeEvery(LOGIN, handleLoginRequest);
+}
+
+export function* watchLogoutRequest() {
+    yield takeEvery([LOGOUT, SIGNOUT], handleLogoutRequest);
+}
+
+export default function*() {
+    yield fork(watchLoginRequest);
+    yield fork(watchLogoutRequest);
 }
