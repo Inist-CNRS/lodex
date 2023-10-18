@@ -70,7 +70,7 @@ export const postLogin = date => ctx => {
     const headerToken = jwt.sign(tokenData, auth.headerSecret);
 
     ctx.cookies.set(
-        role === 'root' ? 'lodex_token_root' : 'lodex_token',
+        role === 'root' ? 'lodex_token_root' : `lodex_token_${ctx.tenant}`,
         cookieToken,
         { httpOnly: true },
     );

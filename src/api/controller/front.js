@@ -289,16 +289,18 @@ const renderRootAdminIndexHtml = ctx => {
 const app = new Koa();
 
 if (config.userAuth) {
-    app.use(
-        jwt({
+    app.use(async (ctx, next) => {
+        const jwtMid = await jwt({
             secret: auth.cookieSecret,
-            cookie: 'lodex_token',
+            cookie: `lodex_token_${ctx.tenant}`,
             key: 'cookie',
             passthrough: true,
-        }),
-    );
+        });
+        return jwtMid(ctx, next);
+    });
 
     app.use(async (ctx, next) => {
+        console.log('ctx.state.cookie', ctx.state.cookie);
         if (
             !ctx.state.cookie &&
             !ctx.request.url.match(/instance\/([^\/]*)\/login/) &&
@@ -314,7 +316,7 @@ if (config.userAuth) {
             // redirect to `instance/:slug/login` and if otherPart is not empty, add it to the url
             ctx.redirect(
                 `/instance/${instanceSlug}/login${
-                    otherPart ? 'page=' + encodeURIComponent(otherPart) : ''
+                    otherPart ? '?page=' + encodeURIComponent(otherPart) : ''
                 }`,
             );
             return;
