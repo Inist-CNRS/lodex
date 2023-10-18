@@ -1,9 +1,9 @@
 import fetch from '../../lib/fetch';
 const { getPublishRequest } = require('../../user');
-const { getUserLocalStorageInfo } = require('./tools');
+const { getUserSessionStorageInfo } = require('./tools');
 
 const publish = async () => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
 
     const request = getPublishRequest({ token });
     return fetch(request).then(({ response, error }) => {

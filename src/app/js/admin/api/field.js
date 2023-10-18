@@ -6,13 +6,13 @@ const {
     getPatchOverviewRequest,
 } = require('../../user');
 
-import { getUserLocalStorageInfo } from './tools';
+import { getUserSessionStorageInfo } from './tools';
 import fetch from '../../lib/fetch';
 import { saveFieldSuccess } from '../../fields';
 import { store } from '..';
 
 const duplicateField = async ({ fieldId }) => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
     const request = postDuplicateField({ token }, { fieldId });
     return fetch(request).then(({ response, error }) => {
         if (error) {
@@ -23,7 +23,7 @@ const duplicateField = async ({ fieldId }) => {
 };
 
 const clearModel = async () => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
     const request = clearModelRequest({ token });
     return fetch(request).then(({ response, error }) => {
         if (error) {
@@ -34,7 +34,7 @@ const clearModel = async () => {
 };
 
 const patchField = async field => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
     const request = getUpdateFieldRequest({ token }, field);
     return fetch(request).then(({ response, error }) => {
         if (error) {
@@ -45,7 +45,7 @@ const patchField = async field => {
 };
 
 const patchOverview = async field => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
     const request = getPatchOverviewRequest({ token }, field);
     return fetch(request).then(({ response, error }) => {
         if (error) {
@@ -57,7 +57,7 @@ const patchOverview = async field => {
 };
 
 const patchSearchableFields = async fields => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
     const request = getPatchSearchableFieldsRequest({ token }, fields);
     return fetch(request).then(({ response, error }) => {
         if (error) {
