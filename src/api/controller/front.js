@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import path from 'path';
 import { renderToString } from 'react-dom/server';
 import React from 'react';
@@ -300,12 +301,22 @@ if (config.userAuth) {
     app.use(async (ctx, next) => {
         if (
             !ctx.state.cookie &&
-            !ctx.request.url.startsWith('/login') &&
+            !ctx.request.url.match(/instance\/([^\/]*)\/login/) &&
             !ctx.request.url.startsWith('/instances') &&
             !ctx.request.url.match(/[^\\]*\.(\w+)$/) &&
             !ctx.request.url.match('__webpack_hmr')
         ) {
-            ctx.redirect(`/login?page=${encodeURIComponent(ctx.request.url)}`);
+            // an url call looks like /instance/:slug/:otherpart
+            // We want to explode the url to get the slug and the other part in two different variables
+            const [, instanceSlug, otherPart] = ctx.request.url.match(
+                /instance\/([^\/]*)(.*)/,
+            );
+            // redirect to `instance/:slug/login` and if otherPart is not empty, add it to the url
+            ctx.redirect(
+                `/instance/${instanceSlug}/login${
+                    otherPart ? 'page=' + encodeURIComponent(otherPart) : ''
+                }`,
+            );
             return;
         }
         ctx.state.headerToken = jsonwebtoken.sign(
