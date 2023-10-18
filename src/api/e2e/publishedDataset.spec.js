@@ -12,7 +12,7 @@ import {
 import { closeAllWorkerQueues } from '../workers';
 
 const adminHeader = {
-    cookie: `lodex_token=${jwt.sign(
+    cookie: `lodex_token_default=${jwt.sign(
         {
             username: 'admin',
             role: 'admin',
@@ -26,10 +26,13 @@ const adminHeader = {
         },
         auth.headerSecret,
     )}`,
+    headers: {
+        'X-Lodex-Tenant': 'default',
+    },
 };
 
 const userHeader = {
-    cookie: `lodex_token=${jwt.sign(
+    cookie: `lodex_token_default=${jwt.sign(
         {
             username: 'user',
             role: 'user',
@@ -43,6 +46,9 @@ const userHeader = {
         },
         auth.headerSecret,
     )}`,
+    headers: {
+        'X-Lodex-Tenant': 'default',
+    },
 };
 
 describe('e2e publishedDataset Authentication', () => {

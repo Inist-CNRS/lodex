@@ -296,11 +296,11 @@ if (config.userAuth) {
             key: 'cookie',
             passthrough: true,
         });
+
         return jwtMid(ctx, next);
     });
 
     app.use(async (ctx, next) => {
-        console.log('ctx.state.cookie', ctx.state.cookie);
         if (
             !ctx.state.cookie &&
             !ctx.request.url.match(/instance\/([^\/]*)\/login/) &&
@@ -308,17 +308,19 @@ if (config.userAuth) {
             !ctx.request.url.match(/[^\\]*\.(\w+)$/) &&
             !ctx.request.url.match('__webpack_hmr')
         ) {
-            // an url call looks like /instance/:slug/:otherpart
-            // We want to explode the url to get the slug and the other part in two different variables
-            const [, instanceSlug, otherPart] = ctx.request.url.match(
-                /instance\/([^\/]*)(.*)/,
-            );
-            // redirect to `instance/:slug/login` and if otherPart is not empty, add it to the url
-            ctx.redirect(
-                `/instance/${instanceSlug}/login${
-                    otherPart ? '?page=' + encodeURIComponent(otherPart) : ''
-                }`,
-            );
+            const defaultTenant = 'default'; // TODO: Replace by default tenant in BDD
+            const matchResult = ctx.request.url.match(/instance\/([^\/]*)(.*)/);
+
+            if (matchResult) {
+                const [, tenantSlug, queryUrl] = matchResult;
+                ctx.redirect(
+                    `/instance/${tenantSlug}/login${
+                        queryUrl ? '?page=' + encodeURIComponent(queryUrl) : ''
+                    }`,
+                );
+            } else {
+                ctx.redirect(`/instance/${defaultTenant}/login`);
+            }
             return;
         }
         ctx.state.headerToken = jsonwebtoken.sign(
