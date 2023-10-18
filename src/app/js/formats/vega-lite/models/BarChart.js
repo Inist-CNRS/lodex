@@ -5,12 +5,8 @@ import {
     AXIS_VERTICAL,
     AXIS_X,
     AXIS_Y,
-    LABEL_ASC,
-    LABEL_DESC,
     SCALE_LINEAR,
     SCALE_LOG,
-    VALUES_ASC,
-    VALUES_DESC,
 } from '../../chartsUtils';
 import { VEGA_ACTIONS_WIDTH } from '../component/vega-lite-component/VegaLiteComponent';
 import BasicChart from './BasicChart';
@@ -45,7 +41,6 @@ class BarChart extends BasicChart {
             x: AXIS_NOMINAL,
             y: AXIS_QUANTITATIVE,
         };
-        this.orderBy = VALUES_ASC;
         this.direction = AXIS_HORIZONTAL;
         this.size = 20;
         this.round = false;
@@ -155,14 +150,6 @@ class BarChart extends BasicChart {
     }
 
     /**
-     * Change the value order
-     * @param orderBy order wanted (use factoryUtils const) [default value: VALUES_ASC]
-     */
-    setOrderBy(orderBy) {
-        this.orderBy = orderBy;
-    }
-
-    /**
      * Change axis direction (swap x and y values)
      * @param axisDirection direction wanted (use factoryUtils const) [default value: AXIS_VERTICAL]
      */
@@ -187,26 +174,13 @@ class BarChart extends BasicChart {
         model.encoding.x.axis.labelAngle = this.labelAngle.x;
         model.encoding.y.axis.labelAngle = this.labelAngle.y;
 
-        switch (this.orderBy) {
-            case VALUES_ASC:
-                labelsModel.encoding.y.sort = model.encoding.x.sort =
-                    this.direction === AXIS_VERTICAL ? 'y' : 'x';
-                break;
-            case VALUES_DESC:
-                labelsModel.encoding.y.sort = model.encoding.x.sort =
-                    this.direction === AXIS_VERTICAL ? '-y' : '-x';
-                break;
-            case LABEL_ASC:
-                labelsModel.encoding.y.sort = model.encoding.x.sort =
-                    this.direction === AXIS_VERTICAL ? 'x' : 'y';
-                break;
-            case LABEL_DESC:
-                labelsModel.encoding.y.sort = model.encoding.x.sort =
-                    this.direction === AXIS_VERTICAL ? '-x' : '-y';
-                break;
-            default:
-                break;
-        }
+        // Disable sort because the data
+        // send by the routines are already sorted
+        // and enabling this can cause unexpected behaviours
+        labelsModel.encoding.x.sort = null;
+        labelsModel.encoding.y.sort = null;
+        model.encoding.x.sort = null;
+        model.encoding.y.sort = null;
 
         if (this.labelOverlap) {
             model.encoding.x.axis.labelOverlap = true;
