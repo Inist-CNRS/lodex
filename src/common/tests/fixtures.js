@@ -67,7 +67,7 @@ export async function clear() {
 }
 
 export const close = async () => {
-    db.close();
+    await closeDb('default');
     db = undefined;
     await closeDb('admin');
 };

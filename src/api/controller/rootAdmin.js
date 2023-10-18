@@ -4,9 +4,11 @@ import route from 'koa-route';
 import jwt from 'koa-jwt';
 import { auth } from 'config';
 import { ObjectId } from 'mongodb';
-import { deleteWorkerQueue } from '../workers';
+import { createWorkerQueue, deleteWorkerQueue } from '../workers';
 import { mongoRootAdminClient } from '../services/repositoryMiddleware';
 import { checkForbiddenNames } from '../../common/tools/forbiddenTenantNames';
+
+import bullBoard from '../bullBoard';
 
 const app = new Koa();
 app.use(
@@ -53,6 +55,8 @@ const postTenant = async ctx => {
         ctx.body = { error: `Invalid name: "${name}"` };
     } else {
         await ctx.tenant.create({ name });
+        const queue = createWorkerQueue(name, 1);
+        bullBoard.addDashboardQueue(name, queue);
         ctx.body = await ctx.tenant.findAll();
     }
 };
@@ -68,6 +72,7 @@ const deleteTenant = async ctx => {
         ctx.body = { error: `Invalid name: "${name}"` };
     } else {
         deleteWorkerQueue(tenantExists.name);
+        bullBoard.removeDashboardQueue(tenantExists.name);
         await ctx.tenant.deleteOne(tenantExists);
         ctx.body = await ctx.tenant.findAll();
     }

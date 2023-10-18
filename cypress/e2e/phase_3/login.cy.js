@@ -1,7 +1,7 @@
-import { teardown, login } from '../support/authentication';
-import * as datasetImportPage from '../support/datasetImportPage';
-import * as loginPage from '../support/loginPage';
-import * as menu from '../support/menu';
+import { teardown, login } from '../../support/authentication';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as loginPage from '../../support/loginPage';
+import * as menu from '../../support/menu';
 
 describe('Login', () => {
     beforeEach(() => {

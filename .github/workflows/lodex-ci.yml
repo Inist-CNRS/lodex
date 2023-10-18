@@ -1,58 +1,118 @@
 name: Lodex CI
+
+# Run this ci only on pull request who targets master and on master branch only
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-     
+
 jobs:
+  # Job use to create the test environment and run unit test suite
   test-unit:
+    runs-on: ubuntu-20.04
+
+    # Set a timeout of 10 mins
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+
+    # Create a strategy matrix uses to test multiple versions of node
+    strategy:
+      matrix:
+        # See https://github.com/nodejs/Release
+        node-version: [ 14.x ]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
+      # Pull repository content
+      - uses: actions/checkout@v4
 
-    - name: Install LODEX
-      run: make install
+      # Setup NodeJS
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-    - name: Start Unit Tests
-      run: make test-unit
+      # Install project dependencies (equivalent to make install)
+      - run: make copy-conf
+      - run: npm ci
 
+      # Run unit test suite
+      - run: npm run test:unit
+
+  # Job use to create the test environment and run api e2e test suite
   test-api-e2e:
+    runs-on: ubuntu-20.04
+
+    # Set a timeout of 10 mins
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+
+    # Create a strategy matrix uses to test multiple versions of node
+    strategy:
+      matrix:
+        node-version: [ 14.x ]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
+      # Pull repository content
+      - uses: actions/checkout@v4
 
-    - name: Install LODEX
-      run: make install
+      # Setup NodeJS
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-    - name: Start API E2E Tests
-      run: make test-api-e2e
+      # Install project dependencies (equivalent to make install)
+      - run: make copy-conf
+      - run: npm ci
 
+      # Run api e2e test suite
+      - run: make test-api-e2e
+
+  # Job use to create the test environment and run e2e test suite
   test-e2e:
+    runs-on: ubuntu-20.04
+
+    # Set a timeout of 30 mins
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+
+    # Create a strategy matrix uses to test multiple versions of node and multiple subset tests
+    strategy:
+      matrix:
+        node-version: [ 14.x ]
+        test-phase: [ 'phase:one', 'phase:two', 'phase:three', 'phase:four' ]
+        # Use this line to ignore the phase system
+        # test-phase: [ 'all' ]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
+      # Pull repository content
+      - uses: actions/checkout@v4
 
-    - name: Install LODEX
-      run: make install
+      # Setup NodeJS
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-    - name: Start E2E Tests
-      run: make test-e2e
+      # Install project dependencies (equivalent to make install)
+      - run: make copy-conf
+      - run: npm ci
 
-    - name: Upload screenshots
-      uses: actions/upload-artifact@v2
-      if: failure()
-      with:
-        name: cypress-screenshots
-        path: cypress/screenshots
-       
+      # Start e2e environment
+      - run: make test-e2e-start-dockers
 
+      # Wait for the e2e environment to start and then run e2e subset tests suite
+      - run: ./bin/wait-for -t 60 localhost:3000
+      - run: npm run test:e2e:${{ matrix.test-phase }}
+
+      # Stop e2e environment
+      - run: make test-e2e-stop-dockers
+
+      # Upload debug screenshots on failure
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots

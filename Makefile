@@ -58,9 +58,9 @@ build-app:
 	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run build
 
 build: ## Build the docker image localy
-	docker build -t inistcnrs/lodex:14.0.11-alpha-alpha-alpha --build-arg http_proxy --build-arg https_proxy .
+	docker build -t inistcnrs/lodex:14.0.12-alpha --build-arg http_proxy --build-arg https_proxy .
 publish: build  ## publish version to docker hub
-	docker push inistcnrs/lodex:14.0.11-alpha-alpha-alpha
+	docker push inistcnrs/lodex:14.0.12-alpha
 
 analyze-code: ## Generate statistics about the bundle. Usage: make analyze-code.
 	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run analyze
@@ -116,6 +116,17 @@ else
 	$(MAKE) test-e2e-start-dockers
 	npx cypress install
 	./bin/wait-for -t 30 localhost:3000 -- npx cypress run --browser chrome || (\
+		$(MAKE) test-e2e-stop-dockers && \
+		exit 1)
+endif
+
+test-e2e-phase:
+ifeq "$(DISABLE_E2E_TESTS)" "true"
+	echo "E2E tests were disable because of the flag 'DISABLE_E2E_TESTS=true'"
+else
+	$(MAKE) test-e2e-start-dockers
+	npx cypress install
+	./bin/wait-for -t 30 localhost:3000 -- npm run test:e2e:${E2E_PHASE} || (\
 		$(MAKE) test-e2e-stop-dockers && \
 		exit 1)
 endif

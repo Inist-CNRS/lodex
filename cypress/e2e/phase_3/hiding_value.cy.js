@@ -1,8 +1,8 @@
-import { teardown, logoutAndLoginAs } from '../support/authentication';
-import * as menu from '../support/menu';
-import * as datasetImportPage from '../support/datasetImportPage';
-import * as searchDrawer from '../support/searchDrawer';
-import * as adminNavigation from '../support/adminNavigation';
+import { teardown, logoutAndLoginAs } from '../../support/authentication';
+import * as menu from '../../support/menu';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as searchDrawer from '../../support/searchDrawer';
+import * as adminNavigation from '../../support/adminNavigation';
 
 describe('hiding null value to user', () => {
     const dataset = 'dataset/simple.csv';

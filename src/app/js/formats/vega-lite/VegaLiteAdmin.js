@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { Box, TextField } from '@mui/material';
@@ -6,6 +6,7 @@ import { Box, TextField } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
+import VegaAdvancedMode from '../shared/VegaAdvancedMode';
 
 export const defaultArgs = {
     params: {
@@ -18,61 +19,39 @@ export const defaultArgs = {
     height: '',
 };
 
-const VegaLiteAdmin = ({
-    args,
-    onChange,
-    p: polyglot,
-    showMaxSize,
-    showMaxValue,
-    showMinValue,
-    showOrderBy,
-}) => {
+const VegaLiteAdmin = props => {
+    const {
+        args,
+        p,
+        showMaxSize,
+        showMaxValue,
+        showMinValue,
+        showOrderBy,
+    } = props;
     const { specTemplate, width, height, params } = args;
 
-    const [displayedSpecTemplate, setDisplayedSpecTemplate] = React.useState(
-        specTemplate,
-    );
-
-    React.useEffect(() => {
-        // we parse and stringify to have a formatted JSON in the editor
-        // https://github.com/securingsincity/react-ace/issues/180
+    const formattedSpecTemplate = useMemo(() => {
         try {
-            const formattedSpecTemplate = JSON.stringify(
-                JSON.parse(specTemplate),
-                null,
-                2,
-            );
-            setDisplayedSpecTemplate(formattedSpecTemplate);
+            return JSON.stringify(JSON.parse(specTemplate), null, 2);
         } catch (e) {
-            console.error(e);
+            return specTemplate;
         }
-    }, []);
+    }, [specTemplate]);
 
-    const setParams = params => {
-        updateAdminArgs('params', params, { args, onChange });
+    const handleParams = params => {
+        updateAdminArgs('params', params, props);
     };
 
-    const setSpecTemplate = e => {
-        setDisplayedSpecTemplate(e.target.value);
-        updateAdminArgs('specTemplate', e.target.value, { args, onChange });
+    const handleSpecTemplate = value => {
+        updateAdminArgs('specTemplate', value, props);
     };
 
-    const setWidth = e => {
-        updateAdminArgs('width', e.target.value, { args, onChange });
+    const handleWidth = e => {
+        updateAdminArgs('width', e.target.value, props);
     };
 
-    const setHeight = e => {
-        updateAdminArgs('height', e.target.value, { args, onChange });
-    };
-
-    const validator = () => {
-        window.open('https://vega.github.io/editor/#/edited');
-    };
-
-    const sizeStep = () => {
-        window.open(
-            'https://vega.github.io/vega-lite/docs/size.html#specifying-width-and-height-per-discrete-step',
-        );
+    const handleHeight = e => {
+        updateAdminArgs('height', e.target.value, props);
     };
 
     return (
@@ -84,36 +63,33 @@ const VegaLiteAdmin = ({
         >
             <RoutineParamsAdmin
                 params={params || defaultArgs.params}
-                polyglot={polyglot}
-                onChange={setParams}
+                polyglot={p}
+                onChange={handleParams}
                 showMaxSize={showMaxSize}
                 showMaxValue={showMaxValue}
                 showMinValue={showMinValue}
                 showOrderBy={showOrderBy}
             />
             <Box width="100%">
-                <a
-                    onClick={() => {
-                        validator();
-                    }}
-                >
-                    {polyglot.t('vega_validator')}
-                </a>
-                <TextField
-                    onChange={setSpecTemplate}
-                    value={displayedSpecTemplate}
-                    fullWidth
-                    multiline
+                <VegaAdvancedMode
+                    value={formattedSpecTemplate}
+                    onChange={handleSpecTemplate}
                 />
-                <a onClick={() => sizeStep()}>{polyglot.t('vega_size_step')}</a>
+                <a
+                    href="https://vega.github.io/vega-lite/docs/size.html#specifying-width-and-height-per-discrete-step"
+                    target="_blank"
+                    rel="noopener nofollow noreferrer"
+                >
+                    {p.t('vega_size_step')}
+                </a>
             </Box>
             <TextField
                 type="number"
                 min={10}
                 max={200}
                 step={10}
-                label={polyglot.t('vegalite_width')}
-                onChange={setWidth}
+                label={p.t('vegalite_width')}
+                onChange={handleWidth}
                 value={width}
                 fullWidth
                 InputProps={{
@@ -125,8 +101,8 @@ const VegaLiteAdmin = ({
                 min={10}
                 max={800}
                 step={10}
-                label={polyglot.t('vegalite_height')}
-                onChange={setHeight}
+                label={p.t('vegalite_height')}
+                onChange={handleHeight}
                 value={height}
                 fullWidth
                 InputProps={{

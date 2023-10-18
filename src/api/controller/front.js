@@ -301,6 +301,7 @@ if (config.userAuth) {
         if (
             !ctx.state.cookie &&
             !ctx.request.url.startsWith('/login') &&
+            !ctx.request.url.startsWith('/instances') &&
             !ctx.request.url.match(/[^\\]*\.(\w+)$/) &&
             !ctx.request.url.match('__webpack_hmr')
         ) {
@@ -316,21 +317,17 @@ if (config.userAuth) {
     });
 }
 
+app.use(
+    route.get('/instances(.*)', async ctx => {
+        renderRootAdminIndexHtml(ctx);
+    }),
+);
+
 app.use(handleRender);
 
 app.use(
     route.get('/instance/:slug/admin', async ctx => {
         renderAdminIndexHtml(ctx);
-    }),
-);
-
-app.use(
-    route.get('/admin', async ctx => {
-        if (ctx.state.cookie.role !== 'root') {
-            ctx.redirect('/');
-            return;
-        }
-        renderRootAdminIndexHtml(ctx);
     }),
 );
 

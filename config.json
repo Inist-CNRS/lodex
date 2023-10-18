@@ -79,7 +79,8 @@
         "xml",
         "corpus",
         "zip",
-        "doi-list"
+        "doi-list",
+        "tar-gz"
     ],
     "exporters": [
         "csv",
@@ -148,15 +149,6 @@
                 "icon": "faCogs",
                 "position": "advanced",
                 "role": "admin"
-            },
-            {
-                "label": {
-                    "en": "Instances settings",
-                    "fr": "Gestion instances"
-                },
-                "icon": "faCogs",
-                "position": "advanced",
-                "role": "root"
             },
             {
                 "label": {

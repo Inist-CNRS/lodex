@@ -63,7 +63,6 @@ services:
             npm_config_cache: /app/.npm
             CYPRESS_CACHE_FOLDER: /app/.cache
             DEBUG: ${DEBUG}
-            NODE_ENV: ${NODE_ENV}
             NODE_OPTIONS: ${NODE_OPTIONS}
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}

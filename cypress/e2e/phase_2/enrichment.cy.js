@@ -1,8 +1,8 @@
-import { teardown } from '../support/authentication';
-import * as menu from '../support/menu';
-import * as adminNavigation from '../support/adminNavigation';
-import * as datasetImportPage from '../support/datasetImportPage';
-import * as enrichmentFormPage from '../support/enrichmentFormPage';
+import { teardown } from '../../support/authentication';
+import * as menu from '../../support/menu';
+import * as adminNavigation from '../../support/adminNavigation';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as enrichmentFormPage from '../../support/enrichmentFormPage';
 
 describe('Enrichment', () => {
     beforeEach(teardown);
