@@ -327,7 +327,9 @@ export default async db => {
             {
                 name: `${subresource._id}_${URI_FIELD_NAME}`,
             },
-            newField,
+            {
+                $set: newField,
+            },
             {
                 upsert: true,
             },

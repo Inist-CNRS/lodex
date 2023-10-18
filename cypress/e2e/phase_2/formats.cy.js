@@ -1,7 +1,7 @@
-import { teardown, logoutAndLoginAs } from '../support/authentication';
-import * as menu from '../support/menu';
-import * as datasetImportPage from '../support/datasetImportPage';
-import * as adminNavigation from '../support/adminNavigation';
+import { teardown, logoutAndLoginAs } from '../../support/authentication';
+import * as menu from '../../support/menu';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as adminNavigation from '../../support/adminNavigation';
 
 describe('Transformers & Formats', () => {
     beforeEach(teardown);
