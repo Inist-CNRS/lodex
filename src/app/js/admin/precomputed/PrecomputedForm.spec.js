@@ -10,6 +10,7 @@ describe('<PrecomputedFormComponent />', () => {
         const wrapper = shallow(
             <PrecomputedForm
                 p={{ t: () => {} }}
+                handleSubmit={() => {}}
                 excerptColumns={[]}
                 excerptLines={EXCERPT_LINES}
             />,
@@ -21,6 +22,7 @@ describe('<PrecomputedFormComponent />', () => {
         const wrapper = shallow(
             <PrecomputedForm
                 p={{ t: () => {} }}
+                handleSubmit={() => {}}
                 excerptColumns={[]}
                 excerptLines={EXCERPT_LINES}
             />,
@@ -30,32 +32,33 @@ describe('<PrecomputedFormComponent />', () => {
         expect(textField.prop('name')).toEqual('name');
     });
 
-    it('should render 2 Fields for precomputed rule', () => {
+    it('should render 2 Fields for precomputed info', () => {
         const wrapper = shallow(
             <PrecomputedForm
                 p={{ t: () => {} }}
+                handleSubmit={() => {}}
                 excerptColumns={[]}
                 excerptLines={EXCERPT_LINES}
             />,
         );
-        const webServiceUrl = wrapper.find(Field).at(2);
+        const webServiceUrl = wrapper.find(Field).at(1);
         expect(webServiceUrl).toHaveLength(1);
         expect(webServiceUrl.prop('name')).toEqual('webServiceUrl');
 
-        const sourceColumns = wrapper.find(Field).at(3);
+        const sourceColumns = wrapper.find(Field).at(2);
         expect(sourceColumns).toHaveLength(1);
         expect(sourceColumns.prop('name')).toEqual('sourceColumns');
     });
 
     it('should render a  precomputed logs dialog', () => {
         const initialValues = {
-            advancedMode: false,
             _id: '123',
             status: 'IN_PROGRESS',
         };
         const wrapper = shallow(
             <PrecomputedForm
                 p={{ t: () => {} }}
+                handleSubmit={() => {}}
                 excerptColumns={[]}
                 initialValues={initialValues}
                 isEdit={true}

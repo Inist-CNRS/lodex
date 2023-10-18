@@ -53,7 +53,11 @@ export const getPrecomputedDataPreview = async ctx => {
     );
     let result = [];
     try {
-        for (let index = 0; index < excerptLines.length; index += BATCH_SIZE) {
+        for (
+            let index = 0;
+            index < Math.min(excerptLines.length, BATCH_SIZE);
+            index += 1
+        ) {
             const entry = {};
             sourceColumns.map(column => {
                 entry[column] = excerptLines[index][column];
