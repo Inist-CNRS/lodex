@@ -36,13 +36,13 @@ describe('ssr', () => {
         await loadFixtures(fixtures);
     });
 
-    describe('/', () => {
+    describe('/instance/default', () => {
         let state;
 
         describe('authentified', () => {
             beforeEach(async () => {
                 const response = await server
-                    .get('/', authentifiedHeader)
+                    .get('/instance/default', authentifiedHeader)
                     .then(response => response.text());
                 state = JSON.parse(
                     response.match(
@@ -218,7 +218,7 @@ describe('ssr', () => {
         describe('not authentified', () => {
             beforeEach(async () => {
                 const response = await server
-                    .get('/resource?uri=1')
+                    .get('/instance/default/resource?uri=1')
                     .then(response => response.text());
                 state = JSON.parse(
                     response.match(

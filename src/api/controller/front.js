@@ -289,6 +289,12 @@ const renderRootAdminIndexHtml = ctx => {
         .replace(REGEX_JS_HOST, jsHost);
 };
 
+const render404IndexHtml = ctx => {
+    ctx.body = fs
+        .readFileSync(path.resolve(__dirname, '../../app/404.html'))
+        .toString();
+};
+
 const app = new Koa();
 
 // #######################
@@ -302,6 +308,7 @@ app.use(async (ctx, next) => {
 
     // If url is 404 we skip all middlewares
     if (url.match(/404/)) {
+        render404IndexHtml(ctx);
         return;
     }
 
@@ -316,10 +323,11 @@ app.use(async (ctx, next) => {
     const adminDb = await mongoClient('admin');
     const tenantCollection = await tenant(adminDb);
     const tenantInfo = await tenantCollection.findOneByName(tenantSlug);
-    if (!tenantInfo || tenantSlug === DEFAULT_TENANT) {
+    if (!tenantInfo && tenantSlug !== DEFAULT_TENANT) {
         ctx.redirect('/404');
         return;
     }
+
     await next();
 });
 
