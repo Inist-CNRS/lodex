@@ -4,12 +4,13 @@ import publishedDatasetFactory from '../../api/models/publishedDataset';
 import publishedFacetFactory from '../../api/models/publishedFacet';
 import fieldFactory from '../../api/models/field';
 import mongoClient, { closeDb } from '../../api/services/mongoClient';
+import { DEFAULT_TENANT } from '../tools/tenantTools';
 
 let db;
 
 export async function connect() {
     if (!db) {
-        db = await mongoClient('default');
+        db = await mongoClient(DEFAULT_TENANT);
         db.dataset = await datasetFactory(db);
         db.publishedDataset = await publishedDatasetFactory(db);
         db.publishedCharacteristic = await publishedCharacteristicFactory(db);

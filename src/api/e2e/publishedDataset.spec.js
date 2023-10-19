@@ -10,9 +10,10 @@ import {
     close,
 } from '../../common/tests/fixtures';
 import { closeAllWorkerQueues } from '../workers';
+import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 
 const adminHeader = {
-    cookie: `lodex_token_default=${jwt.sign(
+    cookie: `lodex_token_${DEFAULT_TENANT}=${jwt.sign(
         {
             username: 'admin',
             role: 'admin',
@@ -27,12 +28,12 @@ const adminHeader = {
         auth.headerSecret,
     )}`,
     headers: {
-        'X-Lodex-Tenant': 'default',
+        'X-Lodex-Tenant': DEFAULT_TENANT,
     },
 };
 
 const userHeader = {
-    cookie: `lodex_token_default=${jwt.sign(
+    cookie: `lodex_token_${DEFAULT_TENANT}=${jwt.sign(
         {
             username: 'user',
             role: 'user',
@@ -47,7 +48,7 @@ const userHeader = {
         auth.headerSecret,
     )}`,
     headers: {
-        'X-Lodex-Tenant': 'default',
+        'X-Lodex-Tenant': DEFAULT_TENANT,
     },
 };
 

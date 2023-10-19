@@ -6,7 +6,7 @@ import { auth } from 'config';
 import { ObjectId } from 'mongodb';
 import { createWorkerQueue, deleteWorkerQueue } from '../workers';
 import { mongoRootAdminClient } from '../services/repositoryMiddleware';
-import { checkForbiddenNames } from '../../common/tools/forbiddenTenantNames';
+import { checkForbiddenNames } from '../../common/tools/tenantTools';
 
 import bullBoard from '../bullBoard';
 

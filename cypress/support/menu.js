@@ -1,3 +1,5 @@
+import { DEFAULT_TENANT } from '../../src/common/tools/tenantTools';
+
 export const openAdvancedDrawer = () => {
     cy.get('.drawer').should('exist');
 
@@ -13,7 +15,10 @@ export const goToAdminDashboard = () => {
     cy.get('.advanced-page a')
         .contains('Admin')
         .click();
-    cy.location('pathname').should('equal', '/instance/default/admin');
+    cy.location('pathname').should(
+        'equal',
+        `/instance/${DEFAULT_TENANT}/admin`,
+    );
 };
 
 export const goToHomePage = () => {
@@ -72,5 +77,8 @@ export const signOut = () => {
     cy.get('.advanced-page a')
         .contains('Sign out')
         .click();
-    cy.location('pathname').should('equal', '/instance/default/login');
+    cy.location('pathname').should(
+        'equal',
+        `/instance/${DEFAULT_TENANT}/login`,
+    );
 };

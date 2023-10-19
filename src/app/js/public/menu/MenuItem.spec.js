@@ -4,6 +4,7 @@ import { StyleSheetTestUtils } from 'aphrodite';
 import { Link, NavLink } from 'react-router-dom';
 
 import MenuItem from './MenuItem';
+import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 
 describe('MenuItem', () => {
     const onClick = jest.fn();
@@ -199,7 +200,7 @@ describe('MenuItem', () => {
 
             const link = wrapper.find('a');
 
-            expect(link.prop('href')).toBe('/instance/default/admin');
+            expect(link.prop('href')).toBe(`/instance/${DEFAULT_TENANT}/admin`);
         });
 
         it('should not render MenuItem when role is not admin', () => {

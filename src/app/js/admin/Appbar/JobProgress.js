@@ -31,6 +31,7 @@ import { toast } from '../../../../common/tools/toast';
 import { finishProgress } from '../progress/reducer';
 import { loadEnrichments } from '../enrichment';
 import customTheme from '../../../custom/customTheme';
+import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 
 const styles = {
     progress: {
@@ -90,7 +91,7 @@ const JobProgressComponent = props => {
 
     useEffect(() => {
         const socket = io();
-        const tenant = sessionStorage.getItem('lodex-tenant') || 'default';
+        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         const dbName = sessionStorage.getItem('lodex-dbName');
 
         socket.on(`${dbName}_${tenant}-progress`, data => {

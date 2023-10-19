@@ -6,10 +6,10 @@ import get from 'lodash.get';
 import classnames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
 
-import { extractTenantFromUrl } from '../tenantTools';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
 import customTheme from '../../../custom/customTheme';
+import { extractTenantFromUrl } from '../../../../common/tools/tenantTools';
 
 const styles = stylesToClassname(
     {

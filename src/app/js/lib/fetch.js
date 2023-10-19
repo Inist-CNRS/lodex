@@ -1,13 +1,14 @@
 import fetch from 'fetch-with-proxy';
 
 import { getHost } from '../../../common/uris';
+import { DEFAULT_TENANT } from '../../../common/tools/tenantTools';
 
 export default ({ url, ...config }, mode = 'json') => {
     const fullUrl = url.startsWith('http') ? url : getHost() + url;
 
     // if session storage is available, we add the tenant in the header
     if (typeof sessionStorage !== 'undefined') {
-        const tenant = sessionStorage.getItem('lodex-tenant') || 'default';
+        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         // Set Tenant in header if not already set
         if (!config.headers) {
             config.headers = {};
