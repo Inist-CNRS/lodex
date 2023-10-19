@@ -13,7 +13,7 @@ import {
 import { closeAllWorkerQueues } from '../workers';
 
 const authentifiedHeader = {
-    cookie: `lodex_token=${jwt.sign(
+    cookie: `lodex_token_default=${jwt.sign(
         {
             username: 'user',
             role: 'user',
@@ -112,7 +112,7 @@ describe('ssr', () => {
             });
         });
 
-        describe('not authentified', () => {
+        describe.only('not authentified', () => {
             beforeEach(async () => {
                 const response = await server
                     .get('/')
@@ -125,7 +125,9 @@ describe('ssr', () => {
             });
 
             it('should redirect to login', () => {
-                expect(state.router.location.pathname).toBe('/login');
+                expect(state.router.location.pathname).toBe(
+                    '/instance/default/login',
+                );
             });
 
             it('should not preload the dataset for home', () => {

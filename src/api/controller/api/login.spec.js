@@ -47,6 +47,7 @@ describe('login', () => {
                 username: 'user',
                 password: 'secret',
             },
+            tenant: 'test',
             request: {
                 body: {
                     username: 'user',
@@ -73,7 +74,7 @@ describe('login', () => {
             role: 'admin',
         });
         expect(setCall).toEqual([
-            'lodex_token',
+            'lodex_token_test',
             jwt.sign(
                 {
                     username: 'user',
@@ -140,6 +141,7 @@ describe('login', () => {
                         password: 'secret',
                     },
                 },
+                tenant: 'test',
                 request: {
                     body: {
                         username: 'user',
@@ -166,7 +168,7 @@ describe('login', () => {
                 role: 'user',
             });
             expect(setCall).toEqual([
-                'lodex_token',
+                'lodex_token_test',
                 jwt.sign(
                     {
                         username: 'user',

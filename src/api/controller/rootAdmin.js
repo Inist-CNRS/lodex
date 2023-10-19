@@ -14,7 +14,7 @@ const app = new Koa();
 app.use(
     jwt({
         secret: auth.cookieSecret,
-        cookie: 'lodex_token',
+        cookie: 'lodex_token_root',
         key: 'cookie',
         passthrough: true,
     }),
@@ -25,14 +25,14 @@ app.use(async (ctx, next) => {
     // if cookie is not root redirect
     if (ctx.state.cookie.role !== 'root') {
         ctx.status = 401;
-        ctx.cookies.set('lodex_token', '', { expires: new Date() });
+        ctx.cookies.set('lodex_token_root', '', { expires: new Date() });
         ctx.body = 'No root token found';
         return;
     }
 
     if (!ctx.state.cookie) {
         ctx.status = 401;
-        ctx.cookies.set('lodex_token', '', { expires: new Date() });
+        ctx.cookies.set('lodex_token_root', '', { expires: new Date() });
         ctx.body = 'No authentication token found';
         return;
     }

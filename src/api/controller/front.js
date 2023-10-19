@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import path from 'path';
 import { renderToString } from 'react-dom/server';
 import React from 'react';
@@ -288,24 +289,38 @@ const renderRootAdminIndexHtml = ctx => {
 const app = new Koa();
 
 if (config.userAuth) {
-    app.use(
-        jwt({
+    app.use(async (ctx, next) => {
+        const jwtMid = await jwt({
             secret: auth.cookieSecret,
-            cookie: 'lodex_token',
+            cookie: `lodex_token_${ctx.tenant}`,
             key: 'cookie',
             passthrough: true,
-        }),
-    );
+        });
+
+        return jwtMid(ctx, next);
+    });
 
     app.use(async (ctx, next) => {
         if (
             !ctx.state.cookie &&
-            !ctx.request.url.startsWith('/login') &&
+            !ctx.request.url.match(/instance\/([^\/]*)\/login/) &&
             !ctx.request.url.startsWith('/instances') &&
             !ctx.request.url.match(/[^\\]*\.(\w+)$/) &&
             !ctx.request.url.match('__webpack_hmr')
         ) {
-            ctx.redirect(`/login?page=${encodeURIComponent(ctx.request.url)}`);
+            const defaultTenant = 'default'; // TODO: Replace by default tenant in BDD
+            const matchResult = ctx.request.url.match(/instance\/([^\/]*)(.*)/);
+
+            if (matchResult) {
+                const [, tenantSlug, queryUrl] = matchResult;
+                ctx.redirect(
+                    `/instance/${tenantSlug}/login${
+                        queryUrl ? '?page=' + encodeURIComponent(queryUrl) : ''
+                    }`,
+                );
+            } else {
+                ctx.redirect(`/instance/${defaultTenant}/login`);
+            }
             return;
         }
         ctx.state.headerToken = jsonwebtoken.sign(

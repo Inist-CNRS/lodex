@@ -12,6 +12,7 @@ import exportPDFPublishedDataset from './exportPDF';
 import facet from './facet';
 import fieldRoutes from './field';
 import login from './login';
+import logout from './logout';
 import parsing from './parsing';
 import publication from './publication';
 import publish from './publish';
@@ -35,19 +36,22 @@ const app = new Koa();
 app.use(ezMasterConfig);
 
 app.use(mount('/login', login));
+app.use(mount('/logout', logout));
 app.use(route.get('/breadcrumb', breadcrumbs));
 app.use(route.get('/menu', menu));
 app.use(route.get('/displayConfig', displayConfig));
 app.use(mount('/translations', translate));
 
-app.use(
-    jwt({
+app.use(async (ctx, next) => {
+    const jwtMid = await jwt({
         secret: auth.cookieSecret,
-        cookie: 'lodex_token',
+        cookie: `lodex_token_${ctx.tenant}`,
         key: 'cookie',
         passthrough: true,
-    }),
-);
+    });
+    return jwtMid(ctx, next);
+});
+
 app.use(jwt({ secret: auth.headerSecret, key: 'header', passthrough: true }));
 
 app.use(async (ctx, next) => {
@@ -62,7 +66,9 @@ app.use(async (ctx, next) => {
     }
     if (!ctx.state.cookie || !ctx.state.header) {
         ctx.status = 401;
-        ctx.cookies.set('lodex_token', '', { expires: new Date() });
+        ctx.cookies.set(`lodex_token_${ctx.tenant}`, '', {
+            expires: new Date(),
+        });
         ctx.body = 'No authentication token found';
         return;
     }
@@ -80,7 +86,9 @@ app.use(mount('/publishedDataset', publishedDataset));
 app.use(async (ctx, next) => {
     if (!ctx.state.cookie || !ctx.state.header) {
         ctx.status = 401;
-        ctx.cookies.set('lodex_token', '', { expires: new Date() });
+        ctx.cookies.set(`lodex_token_${ctx.tenant}`, '', {
+            expires: new Date(),
+        });
         ctx.body = 'No authentication token found';
         return;
     }

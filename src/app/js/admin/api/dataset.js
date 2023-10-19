@@ -5,10 +5,10 @@ const {
     putUpdateDataset,
     getDeleteDatasetRowRequest,
 } = require('../../user');
-const { getUserLocalStorageInfo } = require('./tools');
+const { getUserSessionStorageInfo } = require('./tools');
 
 const getDataset = async ({ filter, skip, limit, sort }) => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
 
     const request = getGetDatasetRequest(
         { token },
@@ -23,7 +23,7 @@ const getDataset = async ({ filter, skip, limit, sort }) => {
 };
 
 const getDatasetColumns = async () => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
     const request = getGetDatasetColumnsRequest({ token });
     return fetch(request).then(({ response, error }) => {
         if (error) {
@@ -34,7 +34,7 @@ const getDatasetColumns = async () => {
 };
 
 const updateDataset = async ({ uri, field, value }) => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
 
     const request = putUpdateDataset({ token }, { uri, field, value });
     return fetch(request).then(({ response, error }) => {
@@ -46,7 +46,7 @@ const updateDataset = async ({ uri, field, value }) => {
 };
 
 const deleteDatasetRow = async id => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
 
     const request = getDeleteDatasetRowRequest({ token }, id);
     return fetch(request).then(({ response, error }) => {

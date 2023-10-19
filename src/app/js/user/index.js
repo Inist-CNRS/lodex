@@ -103,6 +103,12 @@ export const getLoginRequest = (state, credentials) =>
         method: 'POST',
     });
 
+export const getLogoutRequest = state =>
+    getRequest(state, {
+        url: '/api/logout',
+        method: 'POST',
+    });
+
 export const getLoadSubresourcesRequest = state =>
     getRequest(state, {
         url: '/api/subresource',
@@ -540,6 +546,7 @@ export const selectors = {
     getRequest,
     isUserModalShown,
     getLoginRequest,
+    getLogoutRequest,
     getClearUploadRequest,
     getClearDatasetRequest,
     getClearPublishedRequest,

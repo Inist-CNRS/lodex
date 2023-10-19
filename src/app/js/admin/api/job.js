@@ -4,24 +4,24 @@ import {
     getClearJobsRequest,
     getJobLogsRequest,
 } from '../../user';
-import { getUserLocalStorageInfo } from './tools';
+import { getUserSessionStorageInfo } from './tools';
 
 export const getJobLogs = jobId => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
 
     const request = getJobLogsRequest({ token }, jobId);
     return fetch(request);
 };
 
 const cancelJob = type => {
-    const state = getUserLocalStorageInfo();
+    const state = getUserSessionStorageInfo();
 
     const request = getCancelJobRequest(state, type);
     return fetch(request);
 };
 
 const clearJobs = () => {
-    const state = getUserLocalStorageInfo();
+    const state = getUserSessionStorageInfo();
 
     const request = getClearJobsRequest(state);
     return fetch(request);

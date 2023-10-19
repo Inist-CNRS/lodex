@@ -1,9 +1,9 @@
 import fetch from '../../lib/fetch';
 import { getLoaderWithScriptRequest } from '../../user';
-import { getUserLocalStorageInfo } from './tools';
+import { getUserSessionStorageInfo } from './tools';
 
 const getLoaderWithScript = async ({ name }) => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
 
     const request = getLoaderWithScriptRequest({ token }, { name });
     return fetch(request).then(({ response, error }) => {
