@@ -9,17 +9,12 @@ import {
     AXIS_VERTICAL,
     AXIS_X,
     AXIS_Y,
-    LABEL_ASC,
-    LABEL_DESC,
-    VALUES_ASC,
-    VALUES_DESC,
 } from '../../chartsUtils';
 
 describe('BasicChart', () => {
     it('Default values should filled with all default values', function() {
         let barChart = new BarChart();
         expect(barChart.direction).toBe(AXIS_HORIZONTAL);
-        expect(barChart.orderBy).toBe(VALUES_ASC);
         expect(barChart.model).toStrictEqual(
             require('./json/bar_chart.vl.json'),
         );
@@ -62,6 +57,7 @@ describe('BasicChart', () => {
                     scale: {
                         type: 'linear',
                     },
+                    sort: null,
                     title: '',
                     type: 'quantitative',
                 },
@@ -71,7 +67,7 @@ describe('BasicChart', () => {
                         labelLimit: 120,
                     },
                     field: '_id',
-                    sort: 'x',
+                    sort: null,
                     title: '',
                     type: 'nominal',
                 },
@@ -91,23 +87,6 @@ describe('BasicChart', () => {
             width: 160,
         };
         expect(barChart.buildSpec(200)).toStrictEqual(defaultBuild);
-    });
-
-    it('Testing default and updated order', function() {
-        let barChart = new BarChart();
-        expect(barChart.orderBy).toBe(VALUES_ASC);
-
-        barChart.setOrderBy(VALUES_DESC);
-        expect(barChart.orderBy).toBe(VALUES_DESC);
-
-        barChart.setOrderBy(LABEL_ASC);
-        expect(barChart.orderBy).toBe(LABEL_ASC);
-
-        barChart.setOrderBy(LABEL_DESC);
-        expect(barChart.orderBy).toBe(LABEL_DESC);
-
-        barChart.setOrderBy(VALUES_ASC);
-        expect(barChart.orderBy).toBe(VALUES_ASC);
     });
 
     it('Testing default and updated axis direction', function() {

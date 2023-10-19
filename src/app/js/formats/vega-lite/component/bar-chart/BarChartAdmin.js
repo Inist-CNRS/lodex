@@ -22,7 +22,6 @@ import {
     AXIS_X,
     AXIS_Y,
     lodexDirectionToIdDirection,
-    lodexOrderToIdOrder,
     lodexScaleToIdScale,
 } from '../../../chartsUtils';
 import VegaAdvancedMode from '../../../shared/VegaAdvancedMode';
@@ -89,7 +88,6 @@ const BarChartAdmin = props => {
 
         const specBuilder = new BarChart();
         specBuilder.setAxisDirection(lodexDirectionToIdDirection(direction));
-        specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
         specBuilder.setScale(lodexScaleToIdScale(scale));
         specBuilder.setColor(colors);
         specBuilder.setRoundValue(axisRoundValue);
