@@ -54,4 +54,5 @@ export const formField = {
         touched: PropTypes.bool.isRequired,
         error: PropTypes.string,
     }).isRequired,
+    multiple: PropTypes.bool,
 };

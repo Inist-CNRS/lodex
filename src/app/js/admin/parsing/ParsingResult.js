@@ -14,7 +14,7 @@ import {
     GridToolbarFilterButton,
     GridToolbarDensitySelector,
 } from '@mui/x-data-grid';
-import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
+import { IN_PROGRESS } from '../../../../common/taskStatus';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import RefreshIcon from '@mui/icons-material/Refresh';

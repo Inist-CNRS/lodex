@@ -8,7 +8,7 @@ import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import customTheme from '../../../custom/customTheme';
 
-const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
+const PrecomputedPreview = ({ lines, sourceColumns, p: polyglot }) => {
     return (
         <Box
             id="value-preview"
@@ -31,7 +31,9 @@ const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
             </Box>
 
             <Box textAlign={'center'} mb={2}>
-                <Typography variant="body1">{sourceColumn}</Typography>
+                <Typography variant="body1">
+                    {sourceColumns && sourceColumns.join(' | ')}
+                </Typography>
             </Box>
             <Box mb={4}>
                 {lines.length > 0 &&
@@ -47,7 +49,7 @@ const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
                                 }}
                                 title={JSON.stringify(line)}
                             >
-                                {JSON.stringify(line)}
+                                {Object.values(line).join(' | ')}
                             </Typography>
                         </Box>
                     ))}
@@ -61,17 +63,17 @@ const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
             </Box>
             <Box mb={1}>
                 <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
-                    {polyglot.t('enrichment_preview_description')}
+                    {polyglot.t('precomputed_preview_description')}
                 </Typography>
             </Box>
         </Box>
     );
 };
 
-EnrichmentPreview.propTypes = {
+PrecomputedPreview.propTypes = {
     lines: PropTypes.array.isRequired,
-    sourceColumn: PropTypes.string,
+    sourceColumns: PropTypes.arrayOf(PropTypes.string),
     p: polyglotPropTypes.isRequired,
 };
 
-export default compose(translate)(EnrichmentPreview);
+export default compose(translate)(PrecomputedPreview);

@@ -159,6 +159,44 @@ export const getDeleteEnrichmentRequest = (state, id) =>
         method: 'DELETE',
     });
 
+export const getLoadPrecomputedRequest = state =>
+    getRequest(state, {
+        url: '/api/precomputed',
+    });
+
+export const getPrecomputedActionRequest = (state, { action, id }) =>
+    getRequest(state, {
+        url: `/api/precomputed/${action}/${id}`,
+        method: 'POST',
+    });
+
+export const getCreatePrecomputedRequest = (state, body) =>
+    getRequest(state, {
+        url: '/api/precomputed',
+        method: 'POST',
+        body,
+    });
+
+export const getPreviewDataPrecomputedRequest = (state, body) =>
+    getRequest(state, {
+        url: '/api/precomputed/preview',
+        method: 'POST',
+        body,
+    });
+
+export const getUpdatePrecomputedRequest = (state, precomputed) =>
+    getRequest(state, {
+        url: `/api/precomputed/${precomputed._id}`,
+        method: 'PUT',
+        body: precomputed,
+    });
+
+export const getDeletePrecomputedRequest = (state, id) =>
+    getRequest(state, {
+        url: `/api/precomputed/${id}`,
+        method: 'DELETE',
+    });
+
 export const getUpdateSubresourceRequest = (state, { _id, ...body }) =>
     getRequest(state, {
         url: `/api/subresource/${_id}`,
@@ -581,6 +619,11 @@ export const selectors = {
     getUpdateEnrichmentRequest,
     getDeleteEnrichmentRequest,
     getEnrichmentActionRequest,
+    getLoadPrecomputedRequest,
+    getCreatePrecomputedRequest,
+    getUpdatePrecomputedRequest,
+    getDeletePrecomputedRequest,
+    getPrecomputedActionRequest,
     getLoadFieldRequest,
     getUploadUrlRequest,
     getUrlRequest,
@@ -594,6 +637,7 @@ export const selectors = {
     getBreadcrumbRequest,
     getLoadLoadersRequest,
     getPreviewDataEnrichmentRequest,
+    getPreviewDataPrecomputedRequest,
     getCancelJobRequest,
     getLoaderWithScriptRequest,
     postDuplicateField,

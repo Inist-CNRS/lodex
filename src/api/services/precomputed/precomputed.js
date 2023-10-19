@@ -1,30 +1,30 @@
-import * as fs from 'fs';
-import path from 'path';
+//TODO - Precomputing Task will be coded in next card
+
 import ezs from '@ezs/core';
-import progress from '../../services/progress';
+import progress from '../progress';
 import localConfig from '../../../../config.json';
 
 import { ObjectId } from 'mongodb';
 import from from 'from';
 import {
-    PENDING as ENRICHMENT_PENDING,
+    PENDING as PRECOMPUTED_PENDING,
     IN_PROGRESS,
     FINISHED,
     ERROR,
     CANCELED,
 } from '../../../common/taskStatus';
-import { ENRICHING, PENDING } from '../../../common/progressStatus';
+import { PRECOMPUTING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError } from '../../workers';
 import getLogger from '../logger';
 
-const { enrichmentBatchSize: BATCH_SIZE = 10 } = localConfig;
+const { precomputedBatchSize: BATCH_SIZE = 10 } = localConfig;
 
-const getSourceData = async (ctx, sourceColumn) => {
+const getSourceData = async (ctx, sourceColumns) => {
     const excerptLines = await ctx.dataset.getExcerpt(
-        sourceColumn
+        sourceColumns
             ? {
-                  [sourceColumn]: { $ne: null },
+                  [sourceColumns]: { $ne: null },
               }
             : {},
     );
@@ -32,7 +32,7 @@ const getSourceData = async (ctx, sourceColumn) => {
         return null;
     }
 
-    const sourceData = excerptLines[0][sourceColumn];
+    const sourceData = excerptLines[0][sourceColumns];
     try {
         return JSON.parse(sourceData);
     } catch {
@@ -40,114 +40,36 @@ const getSourceData = async (ctx, sourceColumn) => {
     }
 };
 
-export const createEnrichmentRule = async (ctx, enrichment) => {
-    if (enrichment.advancedMode) {
-        return enrichment;
-    }
-
-    if (!enrichment.webServiceUrl || !enrichment.sourceColumn) {
+export const getPrecomputedDataPreview = async ctx => {
+    const { sourceColumns } = ctx.request.body;
+    if (!sourceColumns) {
         throw new Error(`Missing parameters`);
     }
 
-    const data = await getSourceData(ctx, enrichment.sourceColumn);
-
-    let rule = getEnrichmentRuleModel(data, enrichment);
-
-    return {
-        ...enrichment,
-        rule: rule,
-    };
-};
-
-const cleanWebServiceRule = rule => {
-    rule = rule.replace('URLConnect', 'transit');
-    return rule;
-};
-
-export const getEnrichmentDataPreview = async ctx => {
-    const { sourceColumn, subPath, rule } = ctx.request.body;
-    let previewRule = rule;
-    if (!sourceColumn && !rule) {
-        throw new Error(`Missing parameters`);
-    }
-
-    if (!previewRule) {
-        const data = await getSourceData(ctx, sourceColumn);
-        previewRule = getEnrichmentRuleModel(data, {
-            sourceColumn,
-            subPath,
-        });
-    } else {
-        previewRule = cleanWebServiceRule(previewRule);
-    }
-    const commands = createEzsRuleCommands(previewRule);
     const excerptLines = await ctx.dataset.getExcerpt(
-        sourceColumn ? { [sourceColumn]: { $ne: null } } : {},
+        sourceColumns && sourceColumns.length
+            ? { [sourceColumns[0]]: { $ne: null } }
+            : {},
     );
     let result = [];
     try {
-        for (let index = 0; index < excerptLines.length; index += BATCH_SIZE) {
-            let values = await processEzsEnrichment(
-                excerptLines.slice(index, index + BATCH_SIZE),
-                commands,
-                ctx,
-                true,
-            );
-            result.push(...values.map(v => v.value));
+        for (
+            let index = 0;
+            index < Math.min(excerptLines.length, BATCH_SIZE);
+            index += 1
+        ) {
+            const entry = {};
+            sourceColumns.map(column => {
+                entry[column] = excerptLines[index][column];
+            });
+            result.push(entry);
         }
     } catch (error) {
         const logger = getLogger(ctx.tenant);
-        logger.error(`Error while processing enrichment preview`, error);
+        logger.error(`Error while processing precomputed preview`, error);
         return [];
     }
     return result;
-};
-
-export const getEnrichmentRuleModel = (sourceData, enrichment) => {
-    try {
-        let rule;
-        if (!enrichment.sourceColumn) {
-            throw new Error(`Missing source column parameter`);
-        }
-        let file;
-        if (!enrichment.subPath) {
-            file = Array.isArray(sourceData)
-                ? './directPathMultipleValues.txt'
-                : './directPathSingleValue.txt';
-        } else {
-            file = Array.isArray(sourceData)
-                ? './subPathMultipleValues.txt'
-                : './subPathSingleValue.txt';
-        }
-
-        rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
-        rule = rule.replace(/\[\[SOURCE COLUMN\]\]/g, enrichment.sourceColumn);
-        rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
-        rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
-        if (enrichment.webServiceUrl) {
-            rule = rule.replace(
-                '[[WEB SERVICE URL]]',
-                enrichment.webServiceUrl,
-            );
-        } else {
-            rule = cleanWebServiceRule(rule);
-        }
-
-        return rule;
-    } catch (e) {
-        console.error('Error:', e.stack);
-        throw e;
-    }
-};
-
-export const getEnrichmentDatasetCandidate = async (id, ctx) => {
-    const enrichment = await ctx.enrichment.findOneById(id);
-    const [entry] = await ctx.dataset
-        .find({ [enrichment.name]: { $exists: false } })
-        .limit(1)
-        .toArray();
-
-    return entry;
 };
 
 const createEzsRuleCommands = rule => ezs.compileScript(rule).get();
@@ -211,20 +133,20 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
     });
 };
 
-export const processEnrichment = async (enrichment, ctx) => {
-    await ctx.enrichment.updateOne(
+export const processPrecomputed = async (precomputed, ctx) => {
+    await ctx.precomputed.updateOne(
         {
             $or: [
-                { _id: new ObjectId(enrichment._id) },
-                { _id: enrichment._id },
+                { _id: new ObjectId(precomputed._id) },
+                { _id: precomputed._id },
             ],
         },
         { $set: { ['status']: IN_PROGRESS } },
     );
     let errorCount = 0;
 
-    const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
-    const commands = createEzsRuleCommands(enrichment.rule);
+    const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
+    const commands = createEzsRuleCommands(precomputed.rule);
     const dataSetSize = await ctx.dataset.count();
     for (let index = 0; index < dataSetSize; index += BATCH_SIZE) {
         if (!(await ctx.job?.isActive())) {
@@ -295,7 +217,7 @@ export const processEnrichment = async (enrichment, ctx) => {
                         {
                             uri: id,
                         },
-                        { $set: { [enrichment.name]: value } },
+                        { $set: { [precomputed.name]: value } },
                     );
                 }
             }
@@ -307,7 +229,7 @@ export const processEnrichment = async (enrichment, ctx) => {
                     { _id: new ObjectId(entry._id) },
                     {
                         $set: {
-                            [enrichment.name]: `[Error]: ${e.message}`,
+                            [precomputed.name]: `[Error]: ${e.message}`,
                         },
                     },
                 );
@@ -325,11 +247,11 @@ export const processEnrichment = async (enrichment, ctx) => {
             }
         }
     }
-    await ctx.enrichment.updateOne(
+    await ctx.precomputed.updateOne(
         {
             $or: [
-                { _id: new ObjectId(enrichment._id) },
-                { _id: enrichment._id },
+                { _id: new ObjectId(precomputed._id) },
+                { _id: precomputed._id },
             ],
         },
         { $set: { ['status']: FINISHED, ['errorCount']: errorCount } },
@@ -345,44 +267,44 @@ export const processEnrichment = async (enrichment, ctx) => {
     notifyListeners(room, logData);
 };
 
-export const setEnrichmentJobId = async (ctx, enrichmentID, job) => {
-    await ctx.enrichment.updateOne(
+export const setPrecomputedJobId = async (ctx, precomputedID, job) => {
+    await ctx.precomputed.updateOne(
         {
-            $or: [{ _id: new ObjectId(enrichmentID) }, { _id: enrichmentID }],
+            $or: [{ _id: new ObjectId(precomputedID) }, { _id: precomputedID }],
         },
-        { $set: { ['jobId']: job.id, ['status']: ENRICHMENT_PENDING } },
+        { $set: { ['jobId']: job.id, ['status']: PRECOMPUTED_PENDING } },
     );
 };
 
-export const startEnrichment = async ctx => {
+export const startPrecomputed = async ctx => {
     const id = ctx.job?.data?.id;
-    const enrichment = await ctx.enrichment.findOneById(id);
+    const precomputed = await ctx.precomputed.findOneById(id);
     const dataSetSize = await ctx.dataset.count();
 
     if (progress.getProgress(ctx.tenant).status === PENDING) {
         progress.start(ctx.tenant, {
-            status: ENRICHING,
+            status: PRECOMPUTING,
             target: dataSetSize,
-            label: 'ENRICHING',
-            subLabel: enrichment.name,
-            type: 'enricher',
+            label: 'PRECOMPUTING',
+            subLabel: precomputed.name,
+            type: 'precomputer',
         });
     }
-    const room = `enrichment-job-${ctx.job.id}`;
+    const room = `precomputed-job-${ctx.job.id}`;
     const logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Enrichement started`,
+        message: `[Instance: ${ctx.tenant}] Precomputing started`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-    await processEnrichment(enrichment, ctx);
+    await processPrecomputed(precomputed, ctx);
 };
 
-export const setEnrichmentError = async (ctx, err) => {
+export const setPrecomputedError = async (ctx, err) => {
     const id = ctx.job?.data?.id;
-    await ctx.enrichment.updateOne(
+    await ctx.precomputed.updateOne(
         {
             $or: [{ _id: new ObjectId(id) }, { _id: id }],
         },
@@ -394,45 +316,30 @@ export const setEnrichmentError = async (ctx, err) => {
         },
     );
 
-    const room = `enrichment-job-${ctx.job.id}`;
+    const room = `precomputed-job-${ctx.job.id}`;
     const logData = JSON.stringify({
         level: 'error',
         message:
             err instanceof CancelWorkerError
                 ? `[Instance: ${ctx.tenant}] ${err?.message}`
-                : `[Instance: ${ctx.tenant}] Enrichement errored : ${err?.message}`,
+                : `[Instance: ${ctx.tenant}] Precomputing errored : ${err?.message}`,
         timestamp: new Date(),
         status: err instanceof CancelWorkerError ? CANCELED : ERROR,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-    notifyListeners(`${ctx.tenant}-enricher`, {
-        isEnriching: false,
+    notifyListeners(`${ctx.tenant}-precomputer`, {
+        isPrecomputing: false,
         success: false,
         message:
             err instanceof CancelWorkerError
-                ? 'cancelled_enricher'
+                ? 'cancelled_precomputer'
                 : err?.message,
     });
 };
 
-export const restoreEnrichments = async ctx => {
-    ctx.enrichment.updateMany({}, { $unset: { status: '' } });
-    // some enrichments are exported without a rule, we need to recreate the rule if it is the case
-    const enrichments = await ctx.enrichment.find({}).toArray();
-    for (const enrichment of enrichments) {
-        if (!enrichment.rule) {
-            const enrichmentWithRule = await createEnrichmentRule(
-                ctx,
-                enrichment,
-            );
-            await ctx.enrichment.update(enrichment._id, enrichmentWithRule);
-        }
-    }
-};
-
 const LISTENERS = [];
-export const addEnrichmentJobListener = listener => {
+export const addPrecomputedJobListener = listener => {
     LISTENERS.push(listener);
 };
 
