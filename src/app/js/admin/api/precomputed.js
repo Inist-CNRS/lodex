@@ -5,10 +5,10 @@ import {
     getPreviewDataPrecomputedRequest,
     getUpdatePrecomputedRequest,
 } from '../../user';
-import { getUserLocalStorageInfo } from './tools';
+import { getUserSessionStorageInfo } from './tools';
 
 export const getPreviewPrecomputed = previewPrecomputed => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
     const request = getPreviewDataPrecomputedRequest(
         { token },
         previewPrecomputed,
@@ -17,19 +17,19 @@ export const getPreviewPrecomputed = previewPrecomputed => {
 };
 
 export const createPrecomputed = precomputed => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
     const request = getCreatePrecomputedRequest({ token }, precomputed);
     return fetch(request);
 };
 
 export const updatePrecomputed = precomputed => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
     const request = getUpdatePrecomputedRequest({ token }, precomputed);
     return fetch(request);
 };
 
 export const deletePrecomputed = id => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
     const request = getDeletePrecomputedRequest({ token }, id);
     return fetch(request);
 };
