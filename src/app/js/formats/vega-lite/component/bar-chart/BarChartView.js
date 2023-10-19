@@ -8,7 +8,6 @@ import {
     AXIS_X,
     AXIS_Y,
     lodexDirectionToIdDirection,
-    lodexOrderToIdOrder,
     lodexScaleToIdScale,
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
@@ -64,7 +63,6 @@ const BarChartView = ({
 
         specBuilder.setAxisDirection(lodexDirectionToIdDirection(direction));
 
-        specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
         specBuilder.setScale(lodexScaleToIdScale(scale));
         specBuilder.setColor(colors);
         specBuilder.setRoundValue(axisRoundValue);
