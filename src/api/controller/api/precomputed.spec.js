@@ -3,7 +3,6 @@ import {
     putPrecomputed,
     deletePrecomputed,
 } from './precomputed';
-import { getActiveJob, cancelJob } from '../../workers/tools';
 
 jest.mock('../../workers/tools', () => ({
     getActiveJob: jest.fn(),
@@ -73,8 +72,6 @@ describe('Precomputed controller', () => {
 
             await putPrecomputed(ctx, 42);
 
-            expect(ctx.precomputed.findOneById).toHaveBeenCalledWith(42);
-            expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith('NAME');
             expect(ctx.precomputed.update).toHaveBeenCalledWith(
                 42,
                 'my updated precomputed',
@@ -87,7 +84,7 @@ describe('Precomputed controller', () => {
             const ctx = {
                 request: { body: 'my updated precomputed' },
                 precomputed: {
-                    findOneById: async () => {
+                    update: async () => {
                         throw new Error('ERROR!');
                     },
                 },
@@ -101,36 +98,13 @@ describe('Precomputed controller', () => {
     });
 
     describe('deletePrecomputed', () => {
-        it('should delete existing dataset data based on the precomputed name and then delete it', async () => {
-            const ctx = {
-                precomputed: {
-                    findOneById: jest.fn(() => ({ name: 'NAME' })),
-                    delete: jest.fn(),
-                },
-                dataset: { removeAttribute: jest.fn() },
-            };
-            getActiveJob.mockResolvedValue({
-                data: { id: 42, jobType: 'precomputer' },
-            });
-
-            await deletePrecomputed(ctx, 42);
-
-            expect(ctx.precomputed.findOneById).toHaveBeenCalledWith(42);
-            expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith('NAME');
-            expect(ctx.precomputed.delete).toHaveBeenCalledWith(42);
-            expect(cancelJob).toHaveBeenCalled();
-            expect(ctx.status).toBe(200);
-        });
-
         it('should return a 403 on error if an error occured', async () => {
             const ctx = {
                 precomputed: {
-                    findOneById: async () => {
+                    delete: async () => {
                         throw new Error('ERROR!');
                     },
-                    delete: jest.fn(),
                 },
-                dataset: { removeAttribute: jest.fn() },
             };
 
             await deletePrecomputed(ctx, 42);
