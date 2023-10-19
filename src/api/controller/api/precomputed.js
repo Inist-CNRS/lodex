@@ -39,15 +39,10 @@ export const postPrecomputed = async ctx => {
 };
 
 export const putPrecomputed = async (ctx, id) => {
-    const newResource = ctx.request.body;
+    const newPrecomputed = ctx.request.body;
 
     try {
-        // Delete existing data from dataset
-        // If we change the name or the rule, existing data is obsolete
-        const precomputed = await ctx.precomputed.findOneById(id);
-        await ctx.dataset.removeAttribute(precomputed.name);
-
-        ctx.body = await ctx.precomputed.update(id, newResource);
+        ctx.body = await ctx.precomputed.update(id, newPrecomputed);
     } catch (error) {
         ctx.status = 403;
         ctx.body = { error: error.message };
@@ -57,7 +52,6 @@ export const putPrecomputed = async (ctx, id) => {
 
 export const deletePrecomputed = async (ctx, id) => {
     try {
-        const precomputed = await ctx.precomputed.findOneById(id);
         const activeJob = await getActiveJob(ctx.tenant);
         if (
             activeJob?.data?.jobType === PRECOMPUTER &&
@@ -66,7 +60,6 @@ export const deletePrecomputed = async (ctx, id) => {
             cancelJob(ctx, PRECOMPUTER);
         }
         await ctx.precomputed.delete(id);
-        await ctx.dataset.removeAttribute(precomputed.name);
         ctx.status = 200;
         ctx.body = { message: 'ok' };
     } catch (error) {
