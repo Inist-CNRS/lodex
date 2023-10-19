@@ -3,7 +3,7 @@ import publishedCharacteristicFactory from '../../api/models/publishedCharacteri
 import publishedDatasetFactory from '../../api/models/publishedDataset';
 import publishedFacetFactory from '../../api/models/publishedFacet';
 import fieldFactory from '../../api/models/field';
-import mongoClient from '../../api/services/mongoClient';
+import mongoClient, { closeDb } from '../../api/services/mongoClient';
 
 let db;
 
@@ -66,7 +66,8 @@ export async function clear() {
     return db;
 }
 
-export const close = () => {
-    db.close();
+export const close = async () => {
+    await closeDb('default');
     db = undefined;
+    await closeDb('admin');
 };

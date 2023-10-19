@@ -34,7 +34,7 @@ export const publishAndGoToPublishedData = () => {
     cy.wait(500);
     cy.get('div[role="dialog"] div[role="progressbar"]', {
         timeout: 10000,
-    }).should('not.be.visible');
+    }).should('not.exist');
 
     goToData();
     cy.get('[aria-label="unpublish"').should('be.visible');

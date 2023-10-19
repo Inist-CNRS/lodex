@@ -269,6 +269,22 @@ const renderAdminIndexHtml = ctx => {
         .replace(REGEX_JS_HOST, jsHost);
 };
 
+const renderRootAdminIndexHtml = ctx => {
+    ctx.body = fs
+        .readFileSync(path.resolve(__dirname, '../../app/root-admin.html'))
+        .toString()
+        .replace(
+            '</body>',
+            ` <script>window.__DBNAME__ = ${JSON.stringify(
+                mongo.dbName,
+            )}</script><script>window.__TENANT__ = ${JSON.stringify(
+                ctx.tenant,
+            )}</script><script src="{|__JS_HOST__|}/root-admin/index.js"></script>
+        </body>`,
+        )
+        .replace(REGEX_JS_HOST, jsHost);
+};
+
 const app = new Koa();
 
 if (config.userAuth) {
@@ -285,6 +301,7 @@ if (config.userAuth) {
         if (
             !ctx.state.cookie &&
             !ctx.request.url.startsWith('/login') &&
+            !ctx.request.url.startsWith('/instances') &&
             !ctx.request.url.match(/[^\\]*\.(\w+)$/) &&
             !ctx.request.url.match('__webpack_hmr')
         ) {
@@ -300,17 +317,17 @@ if (config.userAuth) {
     });
 }
 
+app.use(
+    route.get('/instances(.*)', async ctx => {
+        renderRootAdminIndexHtml(ctx);
+    }),
+);
+
 app.use(handleRender);
 
 app.use(
     route.get('/instance/:slug/admin', async ctx => {
         renderAdminIndexHtml(ctx);
-    }),
-);
-
-app.use(
-    route.get('/admin', async ctx => {
-        ctx.body = `<div>Super Root Admin</div>`;
     }),
 );
 

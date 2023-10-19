@@ -6,8 +6,6 @@ import route from 'koa-route';
 import cors from 'kcors';
 import koaQs from 'koa-qs';
 import { KoaAdapter } from '@bull-board/koa';
-import { createBullBoard } from '@bull-board/api';
-import { BullAdapter } from '@bull-board/api/bullAdapter';
 
 import controller from './controller';
 import testController from './controller/testController';
@@ -25,6 +23,9 @@ import MeterConfig from '@uswitch/koa-prometheus/build/koa-prometheus.defaults.j
 import tracer, { eventTrace, eventError } from '@uswitch/koa-tracer';
 import access, { eventAccess } from '@uswitch/koa-access';
 import getLogger from './services/logger';
+import tenant from './models/tenant';
+import mongoClient from './services/mongoClient';
+import bullBoard from './bullBoard';
 
 // KoaQs use qs to parse query string. There is an default limit of 20 items in an array. Above this limit, qs will transform the array into an key/value object.
 // We need to increase this limit to 1000 to be able to handle the facets array in the query string.
@@ -57,30 +58,50 @@ if (process.env.EXPOSE_TEST_CONTROLLER) {
     app.use(mount('/tests', testController));
 }
 
-const workerQueueDefault = createWorkerQueue('default', 1);
-const workerQueueOne = createWorkerQueue('instance_one', 1);
-const workerQueueTwo = createWorkerQueue('instance_two', 1);
-const workerQueueThree = createWorkerQueue('instance_three', 1);
+// ############################
+// # START QUEUE AND BULL BOARD
+// ############################
 
-if (process.env.NODE_ENV === 'development') {
-    const serverAdapter = new KoaAdapter();
-    serverAdapter.setBasePath('/bull');
-    createBullBoard({
-        queues: [
-            new BullAdapter(workerQueueDefault),
-            new BullAdapter(workerQueueOne),
-            new BullAdapter(workerQueueTwo),
-            new BullAdapter(workerQueueThree),
-        ],
-        serverAdapter,
+// Create an bull board instance
+const serverAdapter = new KoaAdapter();
+serverAdapter.setBasePath('/bull');
+const initQueueAndBullDashboard = async () => {
+    bullBoard.initBullBoard(serverAdapter);
+
+    const defaultQueue = createWorkerQueue('default', 1);
+    bullBoard.addDashboardQueue('default', defaultQueue);
+
+    // Get current tenants
+    const adminDb = await mongoClient('admin');
+    const tenantCollection = await tenant(adminDb);
+    const tenants = await tenantCollection.findAll();
+    tenants.forEach(tenant => {
+        const queue = createWorkerQueue(tenant.name, 1);
+        bullBoard.addDashboardQueue(tenant.name, queue);
     });
+};
+
+initQueueAndBullDashboard();
+
+// Display It only in development mode
+if (process.env.NODE_ENV === 'development') {
     app.use(serverAdapter.registerPlugin());
 }
+
+// ############################
+// # END QUEUE AND BULL BOARD
+// ############################
 
 // worker job
 app.use(async (ctx, next) => {
     try {
-        const activeJobs = await workerQueues[ctx.tenant].getActive();
+        const activeJobs =
+            (await workerQueues[ctx.tenant]?.getActive()) || null;
+
+        if (!activeJobs) {
+            return await next();
+        }
+
         const filteredActiveJobs = activeJobs.filter(
             job => job.data.tenant === ctx.tenant,
         );

@@ -1,7 +1,7 @@
-import { teardown } from '../support/authentication';
-import * as menu from '../support/menu';
-import * as datasetImportPage from '../support/datasetImportPage';
-import * as searchDrawer from '../support/searchDrawer';
+import { teardown } from '../../support/authentication';
+import * as menu from '../../support/menu';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as searchDrawer from '../../support/searchDrawer';
 
 const initSearchDataset = (
     dataset = 'dataset/book_summary.csv',
@@ -47,7 +47,7 @@ describe('Search', () => {
                 .click();
 
             cy.url().should('contain', '/uid');
-            cy.get('.loading').should('not.be.visible');
+            cy.get('.loading').should('not.exist');
             cy.get('.property_value')
                 .contains('Annals of the rheumatic diseases')
                 .should('be.visible');
@@ -86,7 +86,8 @@ describe('Search', () => {
                 .click();
 
             cy.url().should('contain', '/uid');
-            cy.get('.loading').should('not.be.visible');
+            cy.get('.loading').should('not.exist');
+            cy.wait(100);
             menu.openSearchDrawer();
 
             cy.get('.search-result-link[class*=activeLink_]').should('exist');
@@ -103,7 +104,8 @@ describe('Search', () => {
                 .click();
 
             cy.url().should('contain', '/uid');
-            cy.get('.loading').should('not.be.visible');
+            cy.get('.loading').should('not.exist');
+            cy.wait(100);
             menu.openSearchDrawer();
 
             searchDrawer.checkResultsCount(1);

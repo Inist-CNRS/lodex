@@ -86,11 +86,11 @@ export default async db => {
         });
 
         return {
+            total: await cursor.count(),
             data: await cursor
                 .skip(skip)
                 .limit(limit)
                 .toArray(),
-            total: await cursor.count(),
         };
     };
 

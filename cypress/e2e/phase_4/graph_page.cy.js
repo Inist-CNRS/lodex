@@ -1,11 +1,18 @@
-import { teardown } from '../support/authentication';
-import * as datasetImportPage from '../support/datasetImportPage';
-import * as menu from '../support/menu';
-import * as graphPage from '../support/graphPage';
-import * as searchDrawer from '../support/searchDrawer';
+import { teardown } from '../../support/authentication';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as menu from '../../support/menu';
+import * as graphPage from '../../support/graphPage';
+import * as searchDrawer from '../../support/searchDrawer';
 
 describe('Graph Page', () => {
     beforeEach(() => {
+        // ResizeObserver doesn't like when the app has to many renders / re-renders
+        // and throws an exception to say, "I wait for the next paint"
+        // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+        cy.on('uncaught:exception', error => {
+            return !error.message.includes('ResizeObserver');
+        });
+
         teardown();
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
@@ -72,7 +79,7 @@ describe('Graph Page', () => {
         searchDrawer
             .getFacetItem('Publication Year', '2011')
             .find('input[type=checkbox]')
-            .should('checked');
+            .should('be.checked');
 
         menu.closeSearchDrawer();
         graphPage.setFacetExclude('Publication Year');
@@ -82,6 +89,6 @@ describe('Graph Page', () => {
         searchDrawer
             .getFacetExcludeItem('Publication Year')
             .find('input[type=checkbox]')
-            .should('checked');
+            .should('be.checked');
     });
 });

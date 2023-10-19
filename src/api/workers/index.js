@@ -12,9 +12,13 @@ export class CancelWorkerError extends Error {
     }
 }
 
-export const workerQueues = [];
+export const workerQueues = {};
 
 export const createWorkerQueue = (queueName, concurrency) => {
+    if (workerQueues[queueName]) {
+        return;
+    }
+
     const workerQueue = new Queue(queueName, process.env.REDIS_URL, {
         defaultJobOptions: {
             removeOnComplete: 10,
@@ -43,10 +47,7 @@ export const createWorkerQueue = (queueName, concurrency) => {
 export const deleteWorkerQueue = async queueName => {
     const workerQueue = workerQueues[queueName];
     await workerQueue.close();
-    const index = workerQueues.indexOf(workerQueue);
-    if (index !== -1) {
-        workerQueues.splice(index, 1);
-    }
+    delete workerQueues[queueName];
 };
 
 export const cleanWaitingJobsOfType = (queueName, jobType) => {
@@ -60,8 +61,8 @@ export const cleanWaitingJobsOfType = (queueName, jobType) => {
 
 export const closeAllWorkerQueues = async () => {
     await Promise.all(
-        Object.keys(workerQueues).map(queueName => {
-            workerQueues[queueName].close();
-        }),
+        Object.keys(workerQueues).map(queueName =>
+            workerQueues[queueName].close(),
+        ),
     );
 };

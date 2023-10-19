@@ -5,19 +5,15 @@ import {
     AXIS_VERTICAL,
     AXIS_X,
     AXIS_Y,
-    LABEL_ASC,
-    LABEL_DESC,
     SCALE_LINEAR,
     SCALE_LOG,
-    VALUES_ASC,
-    VALUES_DESC,
 } from '../../chartsUtils';
 import { VEGA_ACTIONS_WIDTH } from '../component/vega-lite-component/VegaLiteComponent';
 import BasicChart from './BasicChart';
+import barChartVL from './json/bar_chart.vl.json';
+import barChartLabelsVL from './json/bar_chart_labels.vl.json';
+import deepClone from 'lodash.clonedeep';
 
-/**
- * Class use for create bar chart spec
- */
 class BarChart extends BasicChart {
     /**
      * Init all required parameters
@@ -30,8 +26,8 @@ class BarChart extends BasicChart {
             top: 10,
             bottom: 0,
         };
-        this.model = require('./json/bar_chart.vl.json');
-        this.labelsModel = require('./json/bar_chart_labels.vl.json');
+        this.model = deepClone(barChartVL);
+        this.labelsModel = deepClone(barChartLabelsVL);
         this.scale = 'linear';
         this.labelAngle = {
             x: 0,
@@ -45,7 +41,6 @@ class BarChart extends BasicChart {
             x: AXIS_NOMINAL,
             y: AXIS_QUANTITATIVE,
         };
-        this.orderBy = VALUES_ASC;
         this.direction = AXIS_HORIZONTAL;
         this.size = 20;
         this.round = false;
@@ -155,14 +150,6 @@ class BarChart extends BasicChart {
     }
 
     /**
-     * Change the value order
-     * @param orderBy order wanted (use factoryUtils const) [default value: VALUES_ASC]
-     */
-    setOrderBy(orderBy) {
-        this.orderBy = orderBy;
-    }
-
-    /**
      * Change axis direction (swap x and y values)
      * @param axisDirection direction wanted (use factoryUtils const) [default value: AXIS_VERTICAL]
      */
@@ -171,10 +158,11 @@ class BarChart extends BasicChart {
     }
 
     /**
-     * Function use for rebuild the edited spec
-     * @param widthIn
+     * Rebuild the edited spec
+     * @param widthIn{number | null}
+     * @param dataNumber{number | null}
      */
-    buildSpec(widthIn, dataNumber) {
+    buildSpec(widthIn = null, dataNumber = null) {
         let model = this.model;
         let labelsModel = this.labelsModel;
         model.encoding.color.scale.range = this.colors;
@@ -186,26 +174,13 @@ class BarChart extends BasicChart {
         model.encoding.x.axis.labelAngle = this.labelAngle.x;
         model.encoding.y.axis.labelAngle = this.labelAngle.y;
 
-        switch (this.orderBy) {
-            case VALUES_ASC:
-                labelsModel.encoding.y.sort = model.encoding.x.sort =
-                    this.direction === AXIS_VERTICAL ? 'y' : 'x';
-                break;
-            case VALUES_DESC:
-                labelsModel.encoding.y.sort = model.encoding.x.sort =
-                    this.direction === AXIS_VERTICAL ? '-y' : '-x';
-                break;
-            case LABEL_ASC:
-                labelsModel.encoding.y.sort = model.encoding.x.sort =
-                    this.direction === AXIS_VERTICAL ? 'x' : 'y';
-                break;
-            case LABEL_DESC:
-                labelsModel.encoding.y.sort = model.encoding.x.sort =
-                    this.direction === AXIS_VERTICAL ? '-x' : '-y';
-                break;
-            default:
-                break;
-        }
+        // Disable sort because the data
+        // send by the routines are already sorted
+        // and enabling this can cause unexpected behaviours
+        labelsModel.encoding.x.sort = null;
+        labelsModel.encoding.y.sort = null;
+        model.encoding.x.sort = null;
+        model.encoding.y.sort = null;
 
         if (this.labelOverlap) {
             model.encoding.x.axis.labelOverlap = true;
@@ -216,7 +191,7 @@ class BarChart extends BasicChart {
             model.encoding.y.axis.tickMinStep = 1;
         }
 
-        if (widthIn <= 300) {
+        if (!this.editMode && widthIn <= 300) {
             model.encoding.x.axis.labelLimit = 120;
         }
 
@@ -251,31 +226,40 @@ class BarChart extends BasicChart {
 
         let width, height;
 
-        if (this.direction === AXIS_VERTICAL) {
-            width = widthIn - VEGA_ACTIONS_WIDTH;
-            height = 300;
-            if (dataNumber * (parseInt(this.size) + 4) >= width) {
-                encoding.size = {
-                    value: width / (dataNumber + 1),
-                };
+        if (!this.editMode) {
+            if (this.direction === AXIS_VERTICAL) {
+                width = widthIn - VEGA_ACTIONS_WIDTH;
+                height = 300;
+                if (dataNumber * (parseInt(this.size) + 4) >= width) {
+                    encoding.size = {
+                        value: width / (dataNumber + 1),
+                    };
+                } else {
+                    encoding.size = {
+                        value: parseInt(this.size),
+                    };
+                }
             } else {
-                encoding.size = {
-                    value: parseInt(this.size),
-                };
+                width = widthIn - VEGA_ACTIONS_WIDTH;
+                height = { step: parseInt(this.size) };
             }
-        } else {
-            width = widthIn - VEGA_ACTIONS_WIDTH;
-            height = { step: parseInt(this.size) };
         }
 
         if (!this.labels) {
-            return {
+            const toReturn = {
                 mark: model.mark,
                 encoding: encoding,
                 padding: this.padding,
-                width: width,
-                height: height,
                 autosize: this.autosize,
+            };
+
+            if (this.editMode) {
+                return toReturn;
+            }
+            return {
+                ...toReturn,
+                width,
+                height,
             };
         } else {
             const mark = labelsModel.mark;
@@ -290,7 +274,7 @@ class BarChart extends BasicChart {
                 mark.align = 'center';
             }
 
-            return {
+            const toReturn = {
                 layer: [
                     {
                         mark: model.mark,
@@ -305,9 +289,17 @@ class BarChart extends BasicChart {
                 config: {
                     view: { strokeWidth: 0 },
                 },
-                width: width,
-                height: height,
                 autosize: this.autosize,
+            };
+
+            if (this.editMode) {
+                return toReturn;
+            }
+
+            return {
+                ...toReturn,
+                width,
+                height,
             };
         }
     }

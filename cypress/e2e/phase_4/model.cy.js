@@ -1,12 +1,19 @@
-import { teardown } from '../support/authentication';
-import * as datasetImportPage from '../support/datasetImportPage';
-import * as menu from '../support/menu';
-import * as homePage from '../support/homePage';
-import * as searchDrawer from '../support/searchDrawer';
+import { teardown } from '../../support/authentication';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as menu from '../../support/menu';
+import * as homePage from '../../support/homePage';
+import * as searchDrawer from '../../support/searchDrawer';
 
 describe('Model Page', () => {
     describe('handling old models', () => {
         beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', error => {
+                return !error.message.includes('ResizeObserver');
+            });
+
             teardown();
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
@@ -27,7 +34,7 @@ describe('Model Page', () => {
 
             cy.get('.property_label')
                 .contains('rating')
-                .should('not.be.visible');
+                .should('not.exist');
         });
 
         it('should display list of fields in resources', () => {
@@ -55,11 +62,11 @@ describe('Model Page', () => {
 
             cy.get('.property_label')
                 .contains('Répartition par créateurs')
-                .should('not.be.visible');
+                .should('not.exist');
 
             cy.get('.property_label')
                 .contains('Répartition par réalisateurs uniques')
-                .should('not.be.visible');
+                .should('not.exist');
         });
 
         it('should display list of fields in graphics', () => {
