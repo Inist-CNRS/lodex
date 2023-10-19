@@ -17,7 +17,7 @@ RUN mkdir /app/upload && \
     cp -n ./config/production-dist.js ./config/production.js && \
     npm run build && \
     npm cache clean --force  && \
-    npm prune --production && \
+    npm prune --production --legacy-peer-deps && \
     npm run clean
 
 FROM node:16.20-alpine AS release
