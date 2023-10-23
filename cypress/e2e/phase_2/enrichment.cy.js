@@ -17,6 +17,7 @@ describe('Enrichment', () => {
             enrichmentFormPage.openEnrichment();
             cy.wait(300);
             enrichmentFormPage.fillAdvancedEnrichment();
+            enrichmentFormPage.updateNameEnrichment();
             enrichmentFormPage.runEnrichment();
             adminNavigation.goToData();
             cy.wait(300);

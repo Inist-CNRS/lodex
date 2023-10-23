@@ -28,7 +28,9 @@ export default async db => {
                 {
                     $or: [{ _id: objectId }, { _id: id }],
                 },
-                omit(data, ['_id']),
+                {
+                    $set: omit(data, ['_id']),
+                },
                 {
                     returnOriginal: false,
                 },
