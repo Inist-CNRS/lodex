@@ -15,7 +15,7 @@ import NameField from './NameField';
 import {
     checkForbiddenNames,
     forbiddenNamesMessage,
-} from '../../../common/tools/forbiddenTenantNames';
+} from '../../../common/tools/tenantTools';
 
 const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
     const [name, setName] = useState('');

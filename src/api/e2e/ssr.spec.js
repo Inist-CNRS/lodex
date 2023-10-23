@@ -11,9 +11,10 @@ import {
     close,
 } from '../../common/tests/fixtures';
 import { closeAllWorkerQueues } from '../workers';
+import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 
 const authentifiedHeader = {
-    cookie: `lodex_token_default=${jwt.sign(
+    cookie: `lodex_token_${DEFAULT_TENANT}=${jwt.sign(
         {
             username: 'user',
             role: 'user',
@@ -21,7 +22,7 @@ const authentifiedHeader = {
         auth.cookieSecret,
     )}`,
     headers: {
-        'X-Lodex-Tenant': 'default',
+        'X-Lodex-Tenant': DEFAULT_TENANT,
     },
 };
 
@@ -35,13 +36,13 @@ describe('ssr', () => {
         await loadFixtures(fixtures);
     });
 
-    describe('/', () => {
+    describe('/instance/default', () => {
         let state;
 
         describe('authentified', () => {
             beforeEach(async () => {
                 const response = await server
-                    .get('/', authentifiedHeader)
+                    .get('/instance/default', authentifiedHeader)
                     .then(response => response.text());
                 state = JSON.parse(
                     response.match(
@@ -126,7 +127,7 @@ describe('ssr', () => {
 
             it('should redirect to login', () => {
                 expect(state.router.location.pathname).toBe(
-                    '/instance/default/login',
+                    `/instance/${DEFAULT_TENANT}/login`,
                 );
             });
 
@@ -217,7 +218,7 @@ describe('ssr', () => {
         describe('not authentified', () => {
             beforeEach(async () => {
                 const response = await server
-                    .get('/resource?uri=1')
+                    .get('/instance/default/resource?uri=1')
                     .then(response => response.text());
                 state = JSON.parse(
                     response.match(

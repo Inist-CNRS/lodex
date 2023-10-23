@@ -15,6 +15,7 @@ import { loadProgress, clearProgress } from './reducer';
 import { PENDING } from '../../../../common/progressStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { io } from 'socket.io-client';
+import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 
 const formatProgress = (progress, target, symbol, label) => {
     const formatedTarget = target ? ` / ${target}` : ``;
@@ -50,7 +51,7 @@ export const ProgressComponent = props => {
 
     useEffect(() => {
         const socket = io();
-        const tenant = sessionStorage.getItem('lodex-tenant') || 'default';
+        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         // log all messages
         socket.on(`${tenant}-progress`, data => {
             setUpdatedProgress(data);

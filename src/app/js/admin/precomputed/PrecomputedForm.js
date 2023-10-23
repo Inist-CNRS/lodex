@@ -48,6 +48,7 @@ import {
 } from '../../../../common/taskStatus';
 import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
+import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 
 // UTILITARY PART
 const PRECOMPUTED_FORM = 'PRECOMPUTED_FORM';
@@ -289,7 +290,7 @@ export const PrecomputedForm = ({
     useEffect(() => {
         handleGetLogs();
         const socket = io();
-        const tenant = sessionStorage.getItem('lodex-tenant') || 'default';
+        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         const dbName = sessionStorage.getItem('lodex-dbName');
         socket.on(
             `${dbName}_${tenant}-precomputed-job-${initialValues?.jobId}`,

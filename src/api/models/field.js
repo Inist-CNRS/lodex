@@ -367,7 +367,7 @@ export default async db => {
                     {
                         _id: new ObjectId(uf._id),
                     },
-                    uf,
+                    { $set: uf },
                 ),
             ),
         );

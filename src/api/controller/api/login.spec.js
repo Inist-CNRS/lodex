@@ -2,6 +2,7 @@ import { auth } from 'config';
 import jwt from 'jsonwebtoken';
 
 import { postLogin as login } from './login';
+import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
 
 const expDate = Date.now();
 
@@ -66,19 +67,19 @@ describe('login', () => {
             token: jwt.sign(
                 {
                     username: 'user',
-                    role: 'admin',
+                    role: ADMIN_ROLE,
                     exp: Math.ceil(expDate / 1000) + auth.expiresIn,
                 },
                 auth.headerSecret,
             ),
-            role: 'admin',
+            role: ADMIN_ROLE,
         });
         expect(setCall).toEqual([
             'lodex_token_test',
             jwt.sign(
                 {
                     username: 'user',
-                    role: 'admin',
+                    role: ADMIN_ROLE,
                     exp: Math.ceil(expDate / 1000) + auth.expiresIn,
                 },
                 auth.cookieSecret,

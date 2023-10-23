@@ -3,10 +3,11 @@ import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 import jwt from 'koa-jwt';
 import { auth } from 'config';
+import { ROOT_ROLE } from '../../../common/tools/tenantTools';
 
 export const logout = ctx => {
     // if cookie role is root, delete corresponding cookie else delete tenant cookie
-    if (ctx.state.cookie.role === 'root') {
+    if (ctx.state.cookie.role === ROOT_ROLE) {
         ctx.cookies.set(`lodex_token_root`, '', { expires: new Date() });
     } else {
         ctx.cookies.set(`lodex_token_${ctx.tenant}`, '', {

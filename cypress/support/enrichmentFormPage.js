@@ -39,6 +39,19 @@ bySecond = 1
     cy.wait(6000);
 };
 
+export const updateNameEnrichment = () => {
+    cy.get('input[name="name"]', { timeout: 500 }).clear();
+    cy.get('input[name="name"]', { timeout: 500 }).type('Enrichment');
+    cy.contains('Save', { timeout: 500 }).click({
+        force: true,
+    });
+    cy.reload();
+    cy.get('input[name="name"]', { timeout: 3500 }).should(
+        'have.value',
+        'Enrichment',
+    );
+};
+
 export const runEnrichment = () => {
     cy.contains('Run', { timeout: 6000 }).click({
         force: true,
