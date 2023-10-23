@@ -47,8 +47,6 @@ import customTheme from '../../app/custom/customTheme';
 
 import { getPublication } from './api/publication';
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
-import mongoClient from '../services/mongoClient';
-import tenant from '../models/tenant';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 
 const REGEX_JS_HOST = /\{\|__JS_HOST__\|\}/g;
@@ -289,47 +287,7 @@ const renderRootAdminIndexHtml = ctx => {
         .replace(REGEX_JS_HOST, jsHost);
 };
 
-const render404IndexHtml = ctx => {
-    ctx.body = fs
-        .readFileSync(path.resolve(__dirname, '../../app/404.html'))
-        .toString();
-};
-
 const app = new Koa();
-
-// #######################
-// # 404 error middleware
-// #######################
-
-// Create a middleware that will check if the current url contains a tenant exisiting in the database
-// If not, it will redirect to the an 404 error page
-app.use(async (ctx, next) => {
-    const { url } = ctx.request;
-
-    // If url is 404 we skip all middlewares
-    if (url.match(/404/)) {
-        render404IndexHtml(ctx);
-        return;
-    }
-
-    const matchInstance = url.match(/instance\/([^\/]*)(.*)/);
-    // If url is /instances or /__webpack_hmr we pass to the next middleware
-    if (!matchInstance) {
-        await next();
-        return;
-    }
-
-    const [, tenantSlug] = matchInstance;
-    const adminDb = await mongoClient('admin');
-    const tenantCollection = await tenant(adminDb);
-    const tenantInfo = await tenantCollection.findOneByName(tenantSlug);
-    if (!tenantInfo && tenantSlug !== DEFAULT_TENANT) {
-        ctx.redirect('/404');
-        return;
-    }
-
-    await next();
-});
 
 // ############################
 // # Authentication middleware
