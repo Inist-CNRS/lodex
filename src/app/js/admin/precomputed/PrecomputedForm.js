@@ -260,7 +260,7 @@ export const PrecomputedForm = ({
         history.push('/data/precomputed');
     };
 
-    const handleLaunchEnrichment = () => {
+    const handleLaunchPrecomputed = () => {
         if (isPrecomputedRunning) {
             toast(polyglot.t('pending_precomputed'), {
                 type: toast.TYPE.INFO,
@@ -352,7 +352,7 @@ export const PrecomputedForm = ({
                                     variant="contained"
                                     sx={{ height: '100%' }}
                                     startIcon={<PlayArrowIcon />}
-                                    onClick={handleLaunchEnrichment}
+                                    onClick={handleLaunchPrecomputed}
                                     disabled={
                                         precomputedStatus === IN_PROGRESS ||
                                         precomputedStatus === PENDING

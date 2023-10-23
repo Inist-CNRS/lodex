@@ -146,7 +146,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
     let errorCount = 0;
 
     const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
-    const commands = createEzsRuleCommands(precomputed.rule);
+    /*const commands = createEzsRuleCommands(precomputed.rule);
     const dataSetSize = await ctx.dataset.count();
     for (let index = 0; index < dataSetSize; index += BATCH_SIZE) {
         if (!(await ctx.job?.isActive())) {
@@ -246,7 +246,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
                 progress.incrementProgress(ctx.tenant, 1);
             }
         }
-    }
+    }*/
     await ctx.precomputed.updateOne(
         {
             $or: [
@@ -259,7 +259,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
     progress.finish(ctx.tenant);
     const logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Enrichement finished`,
+        message: `[Instance: ${ctx.tenant}] Precomputing data finished`,
         timestamp: new Date(),
         status: FINISHED,
     });

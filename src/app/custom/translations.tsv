@@ -857,6 +857,7 @@
 "cancelled_import" 	"Import has been successfully cancelled" 	"L'import a été annulé avec succès"
 "cancelled_publish" 	"Publish has been successfully cancelled" 	"La publication a été annulée avec succès"
 "cancelled_enricher" 	"Enrichment has been successfully cancelled" 	"L'enrichissement a été annulé avec succès"
+"cancelled_precompputer" 	"Precomputing has been successfully cancelled" 	"Le précalcul a été annulé avec succès"
 "no_field" 	"Field %{fieldName} does not exist" 	"Le champ %{fieldName} n'existe pas"
 "no_field_in_scope" 	"Field %{fieldName} is not in scope %{filter}" 	"Le champ %{fieldName} n'est pas dans le scope %{filter}"
 "open_menu" 	"Open menu" 	"Ouvrir le menu"
