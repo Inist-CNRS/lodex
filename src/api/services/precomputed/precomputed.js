@@ -139,29 +139,37 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
 const processZippedData = async (precomputed, ctx) => {
     const initDate = new Date();
     const pack = tar.pack();
-
     const dataSetSize = await ctx.dataset.count();
     for (
         let indexDataset = 0;
         indexDataset < dataSetSize;
         indexDataset += BATCH_SIZE
     ) {
-        if (!(await ctx.job?.isActive())) {
+        /* if (!(await ctx.job?.isActive())) {
             throw new CancelWorkerError('Job has been canceled');
-        }
+        }*/
         const entries = await ctx.dataset
             .find()
             .skip(indexDataset)
             .limit(BATCH_SIZE)
             .toArray();
 
-        for (const entry of entries) {
+        for (const [indexBatch, entry] of entries.entries()) {
+            const colums = [];
+            precomputed.sourceColumns.map(column => {
+                colums.push(entry[column]);
+            });
             await pack.entry(
                 {
                     name: `data/${'f' +
-                        indexDataset.toString().padStart(10, 0)}.json`,
+                        (indexDataset + indexBatch + 1)
+                            .toString()
+                            .padStart(10, 0)}.json`,
                 },
-                JSON.stringify(entry),
+                JSON.stringify({
+                    id: entry.uri,
+                    value: colums.length > 1 ? colums : colums[0],
+                }),
             );
         }
     }
