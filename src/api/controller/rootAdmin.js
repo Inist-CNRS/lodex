@@ -6,7 +6,7 @@ import { auth } from 'config';
 import { ObjectId } from 'mongodb';
 import { createWorkerQueue, deleteWorkerQueue } from '../workers';
 import { mongoRootAdminClient } from '../services/repositoryMiddleware';
-import { checkForbiddenNames } from '../../common/tools/tenantTools';
+import { ROOT_ROLE, checkForbiddenNames } from '../../common/tools/tenantTools';
 
 import bullBoard from '../bullBoard';
 
@@ -23,7 +23,7 @@ app.use(jwt({ secret: auth.headerSecret, key: 'header', passthrough: true }));
 
 app.use(async (ctx, next) => {
     // if cookie is not root redirect
-    if (ctx.state.cookie.role !== 'root') {
+    if (ctx.state.cookie.role !== ROOT_ROLE) {
         ctx.status = 401;
         ctx.cookies.set('lodex_token_root', '', { expires: new Date() });
         ctx.body = 'No root token found';

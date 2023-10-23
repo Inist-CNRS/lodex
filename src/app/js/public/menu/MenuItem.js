@@ -9,7 +9,10 @@ import { Link, NavLink } from 'react-router-dom';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
 import customTheme from '../../../custom/customTheme';
-import { extractTenantFromUrl } from '../../../../common/tools/tenantTools';
+import {
+    ADMIN_ROLE,
+    extractTenantFromUrl,
+} from '../../../../common/tools/tenantTools';
 
 const styles = stylesToClassname(
     {
@@ -192,7 +195,7 @@ const MenuItem = ({
             );
         case 'admin':
             return (
-                role === 'admin' && (
+                role === ADMIN_ROLE && (
                     <a
                         href={`/instance/${extractTenantFromUrl(
                             window.location.href,

@@ -60,7 +60,9 @@ app.use(async (ctx, next) => {
     const [, tenantSlug] = matchInstance;
     const adminDb = await mongoClient('admin');
     const tenantCollection = await tenant(adminDb);
-    const tenantInfo = await tenantCollection.findOneByName(tenantSlug);
+    const tenantInfo = await tenantCollection.findOneByName(
+        tenantSlug.toLowerCase(),
+    );
     if (!tenantInfo && tenantSlug !== DEFAULT_TENANT) {
         ctx.redirect('/404');
         return;

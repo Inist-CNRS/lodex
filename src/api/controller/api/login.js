@@ -5,6 +5,7 @@ import get from 'lodash.get';
 
 import { auth } from 'config';
 import jwt from 'jsonwebtoken';
+import { ADMIN_ROLE, ROOT_ROLE } from '../../../common/tools/tenantTools';
 
 export const postLogin = date => ctx => {
     if (!ctx.ezMasterConfig) {
@@ -28,7 +29,7 @@ export const postLogin = date => ctx => {
         username === ctx.ezMasterConfig.username &&
         password === ctx.ezMasterConfig.password
     ) {
-        role = 'admin';
+        role = ADMIN_ROLE;
     }
 
     if (
@@ -44,7 +45,7 @@ export const postLogin = date => ctx => {
         username === rootAuth.username &&
         password === rootAuth.password
     ) {
-        role = 'root';
+        role = ROOT_ROLE;
     }
 
     if (!role) {
@@ -70,7 +71,7 @@ export const postLogin = date => ctx => {
     const headerToken = jwt.sign(tokenData, auth.headerSecret);
 
     ctx.cookies.set(
-        role === 'root' ? 'lodex_token_root' : `lodex_token_${ctx.tenant}`,
+        role === ROOT_ROLE ? 'lodex_token_root' : `lodex_token_${ctx.tenant}`,
         cookieToken,
         { httpOnly: true },
     );

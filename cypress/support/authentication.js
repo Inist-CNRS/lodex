@@ -1,4 +1,4 @@
-import { DEFAULT_TENANT } from '../../src/common/tools/tenantTools';
+import { ADMIN_ROLE, DEFAULT_TENANT } from '../../src/common/tools/tenantTools';
 
 export const login = (username = 'admin', password = 'secret') => {
     cy.visit('http://localhost:3000');
@@ -33,5 +33,5 @@ export const teardown = (withoutLogin = false) => {
         win.sessionStorage.setItem('tenant', DEFAULT_TENANT);
     });
 
-    logoutAndLoginAs('admin');
+    logoutAndLoginAs(ADMIN_ROLE);
 };

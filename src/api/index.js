@@ -37,7 +37,7 @@ app.use(cors({ credentials: true }));
 
 function extractTenantFromUrl(url) {
     const match = url.match(/\/instance\/([^/]+)/);
-    return match ? match[1] : null;
+    return match ? match[1].toLowerCase() : null;
 }
 
 const setTenant = async (ctx, next) => {

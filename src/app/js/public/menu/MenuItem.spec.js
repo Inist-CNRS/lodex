@@ -4,7 +4,10 @@ import { StyleSheetTestUtils } from 'aphrodite';
 import { Link, NavLink } from 'react-router-dom';
 
 import MenuItem from './MenuItem';
-import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
+import {
+    ADMIN_ROLE,
+    DEFAULT_TENANT,
+} from '../../../../common/tools/tenantTools';
 
 describe('MenuItem', () => {
     const onClick = jest.fn();
@@ -190,7 +193,7 @@ describe('MenuItem', () => {
                 <MenuItem
                     {...defaultProps}
                     config={{
-                        role: 'admin',
+                        role: ADMIN_ROLE,
                         label: { fr: 'admin fr', en: 'admin en' },
                         icon: 'faCogs',
                     }}
@@ -208,7 +211,7 @@ describe('MenuItem', () => {
                 <MenuItem
                     {...defaultProps}
                     config={{
-                        role: 'admin',
+                        role: ADMIN_ROLE,
                         label: { fr: 'admin fr', en: 'admin en' },
                         icon: 'faCogs',
                     }}

@@ -10,20 +10,20 @@ import {
     close,
 } from '../../common/tests/fixtures';
 import { closeAllWorkerQueues } from '../workers';
-import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
+import { ADMIN_ROLE, DEFAULT_TENANT } from '../../common/tools/tenantTools';
 
 const adminHeader = {
     cookie: `lodex_token_${DEFAULT_TENANT}=${jwt.sign(
         {
             username: 'admin',
-            role: 'admin',
+            role: ADMIN_ROLE,
         },
         auth.cookieSecret,
     )}`,
     Authorization: `Bearer ${jwt.sign(
         {
             username: 'admin',
-            role: 'admin',
+            role: ADMIN_ROLE,
         },
         auth.headerSecret,
     )}`,

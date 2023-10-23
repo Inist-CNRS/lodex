@@ -1,3 +1,4 @@
+import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
 import reducer, {
     defaultState,
     getToken,
@@ -25,12 +26,12 @@ describe('user reducer', () => {
     it('should handle the LOGIN_SUCCESS action', () => {
         const state = reducer(
             { showModal: true },
-            loginSuccess({ token: 'foo', role: 'admin' }),
+            loginSuccess({ token: 'foo', role: ADMIN_ROLE }),
         );
         expect(state).toEqual({
             showModal: false,
             token: 'foo',
-            role: 'admin',
+            role: ADMIN_ROLE,
         });
     });
 
@@ -58,7 +59,7 @@ describe('user reducer', () => {
         });
 
         it('should return true if state role is admin', () => {
-            const result = isAdmin({ role: 'admin' });
+            const result = isAdmin({ role: ADMIN_ROLE });
             expect(result).toEqual(true);
         });
     });

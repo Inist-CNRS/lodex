@@ -319,7 +319,7 @@ if (config.userAuth) {
             if (matchResult) {
                 const [, tenantSlug, queryUrl] = matchResult;
                 ctx.redirect(
-                    `/instance/${tenantSlug}/login${
+                    `/instance/${tenantSlug.toLowerCase()}/login${
                         queryUrl ? '?page=' + encodeURIComponent(queryUrl) : ''
                     }`,
                 );
