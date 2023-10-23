@@ -212,15 +212,7 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
 };
 
 export const processEnrichment = async (enrichment, ctx) => {
-    await ctx.enrichment.updateOne(
-        {
-            $or: [
-                { _id: new ObjectId(enrichment._id) },
-                { _id: enrichment._id },
-            ],
-        },
-        { $set: { ['status']: IN_PROGRESS } },
-    );
+    await ctx.enrichment.updateStatus(enrichment._id, IN_PROGRESS);
     let errorCount = 0;
 
     const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
@@ -325,15 +317,7 @@ export const processEnrichment = async (enrichment, ctx) => {
             }
         }
     }
-    await ctx.enrichment.updateOne(
-        {
-            $or: [
-                { _id: new ObjectId(enrichment._id) },
-                { _id: enrichment._id },
-            ],
-        },
-        { $set: { ['status']: FINISHED, ['errorCount']: errorCount } },
-    );
+    await ctx.enrichment.updateStatus(enrichment._id, FINISHED, { errorCount });
     progress.finish(ctx.tenant);
     const logData = JSON.stringify({
         level: 'ok',
@@ -346,12 +330,9 @@ export const processEnrichment = async (enrichment, ctx) => {
 };
 
 export const setEnrichmentJobId = async (ctx, enrichmentID, job) => {
-    await ctx.enrichment.updateOne(
-        {
-            $or: [{ _id: new ObjectId(enrichmentID) }, { _id: enrichmentID }],
-        },
-        { $set: { ['jobId']: job.id, ['status']: ENRICHMENT_PENDING } },
-    );
+    await ctx.enrichment.updateStatus(enrichmentID, ENRICHMENT_PENDING, {
+        jobId: job.id,
+    });
 };
 
 export const startEnrichment = async ctx => {
@@ -382,15 +363,11 @@ export const startEnrichment = async ctx => {
 
 export const setEnrichmentError = async (ctx, err) => {
     const id = ctx.job?.data?.id;
-    await ctx.enrichment.updateOne(
+    await ctx.enrichment.updateStatus(
+        id,
+        err instanceof CancelWorkerError ? CANCELED : ERROR,
         {
-            $or: [{ _id: new ObjectId(id) }, { _id: id }],
-        },
-        {
-            $set: {
-                ['status']: err instanceof CancelWorkerError ? CANCELED : ERROR,
-                ['message']: err?.message,
-            },
+            message: err?.message,
         },
     );
 

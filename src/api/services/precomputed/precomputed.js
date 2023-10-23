@@ -4,7 +4,6 @@ import ezs from '@ezs/core';
 import progress from '../progress';
 import localConfig from '../../../../config.json';
 
-import { ObjectId } from 'mongodb';
 import from from 'from';
 import {
     PENDING as PRECOMPUTED_PENDING,
@@ -134,15 +133,8 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
 };
 
 export const processPrecomputed = async (precomputed, ctx) => {
-    await ctx.precomputed.updateOne(
-        {
-            $or: [
-                { _id: new ObjectId(precomputed._id) },
-                { _id: precomputed._id },
-            ],
-        },
-        { $set: { ['status']: IN_PROGRESS } },
-    );
+    await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS);
+
     let errorCount = 0;
 
     const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
@@ -247,15 +239,9 @@ export const processPrecomputed = async (precomputed, ctx) => {
             }
         }
     }*/
-    await ctx.precomputed.updateOne(
-        {
-            $or: [
-                { _id: new ObjectId(precomputed._id) },
-                { _id: precomputed._id },
-            ],
-        },
-        { $set: { ['status']: FINISHED, ['errorCount']: errorCount } },
-    );
+    await ctx.precomputed.updateStatus(precomputed._id, FINISHED, {
+        errorCount,
+    });
     progress.finish(ctx.tenant);
     const logData = JSON.stringify({
         level: 'ok',
@@ -268,12 +254,9 @@ export const processPrecomputed = async (precomputed, ctx) => {
 };
 
 export const setPrecomputedJobId = async (ctx, precomputedID, job) => {
-    await ctx.precomputed.updateOne(
-        {
-            $or: [{ _id: new ObjectId(precomputedID) }, { _id: precomputedID }],
-        },
-        { $set: { ['jobId']: job.id, ['status']: PRECOMPUTED_PENDING } },
-    );
+    await ctx.precomputed.updateStatus(precomputedID, PRECOMPUTED_PENDING, {
+        jobId: job.id,
+    });
 };
 
 export const startPrecomputed = async ctx => {
@@ -304,15 +287,11 @@ export const startPrecomputed = async ctx => {
 
 export const setPrecomputedError = async (ctx, err) => {
     const id = ctx.job?.data?.id;
-    await ctx.precomputed.updateOne(
+    await ctx.precomputed.updateStatus(
+        id,
+        err instanceof CancelWorkerError ? CANCELED : ERROR,
         {
-            $or: [{ _id: new ObjectId(id) }, { _id: id }],
-        },
-        {
-            $set: {
-                ['status']: err instanceof CancelWorkerError ? CANCELED : ERROR,
-                ['message']: err?.message,
-            },
+            message: err?.message,
         },
     );
 
