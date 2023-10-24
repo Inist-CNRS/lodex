@@ -10,16 +10,40 @@ import {
     DataGrid,
     GridToolbarColumnsButton,
     GridToolbarContainer,
+    GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { renderStatus, renderRunButton } from './PrecomputedForm';
+import { fromPrecomputed } from '../selectors';
+import { launchPrecomputed } from '.';
+import { IN_PROGRESS, FINISHED } from '../../../../common/taskStatus';
+import { toast } from '../../../../common/tools/toast';
 
-export const PrecomputedList = ({ precomputedList, p: polyglot }) => {
+export const PrecomputedList = ({
+    precomputedList,
+    p: polyglot,
+    isPrecomputedRunning,
+    onLaunchPrecomputed,
+}) => {
     const history = useHistory();
     const handleRowClick = params => {
         history.push(`/data/precomputed/${params.row._id}`);
+    };
+
+    const handleLaunchPrecomputed = params => event => {
+        event.stopPropagation();
+        if (isPrecomputedRunning) {
+            toast(polyglot.t('pending_precomputed'), {
+                type: toast.TYPE.INFO,
+            });
+        }
+        onLaunchPrecomputed({
+            id: params._id,
+            action: params.status === FINISHED ? 'relaunch' : 'launch',
+        });
     };
 
     const CustomToolbar = () => {
@@ -29,6 +53,9 @@ export const PrecomputedList = ({ precomputedList, p: polyglot }) => {
                     <GridToolbarColumnsButton />
                 </Tooltip>
                 <GridToolbarFilterButton />
+                <Tooltip title={polyglot.t(`density_tooltip`)}>
+                    <GridToolbarDensitySelector />
+                </Tooltip>
                 <Tooltip title={polyglot.t(`add_more_precomputed`)}>
                     <Button
                         component={Link}
@@ -67,6 +94,26 @@ export const PrecomputedList = ({ precomputedList, p: polyglot }) => {
                         headerName: polyglot.t('sourceColumns'),
                         flex: 1,
                     },
+                    {
+                        field: 'status',
+                        headerName: polyglot.t('precomputed_status'),
+                        flex: 1,
+                        renderCell: params =>
+                            renderStatus(params.value, polyglot),
+                    },
+                    {
+                        field: 'run',
+                        headerName: polyglot.t('run'),
+                        flex: 1,
+                        renderCell: params => {
+                            return renderRunButton(
+                                handleLaunchPrecomputed(params.row),
+                                params.row.status,
+                                polyglot,
+                                'text',
+                            );
+                        },
+                    },
                 ]}
                 rows={precomputedList}
                 getRowId={row => row._id}
@@ -89,13 +136,20 @@ export const PrecomputedList = ({ precomputedList, p: polyglot }) => {
 PrecomputedList.propTypes = {
     precomputedList: PropTypes.array.isRequired,
     p: polyglotPropTypes.isRequired,
+    onLaunchPrecomputed: PropTypes.func.isRequired,
+    isPrecomputedRunning: PropTypes.bool,
 };
 
 const mapStateToProps = state => ({
     precomputedList: state.precomputed.precomputed,
+    isPrecomputedRunning: !!fromPrecomputed
+        .precomputed(state)
+        .find(precomputedData => precomputedData.status === IN_PROGRESS),
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+    onLaunchPrecomputed: launchPrecomputed,
+};
 
 export default compose(
     translate,

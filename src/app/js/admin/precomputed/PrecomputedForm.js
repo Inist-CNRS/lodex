@@ -139,6 +139,26 @@ export const renderStatus = (status, polyglot) => {
     );
 };
 
+export const renderRunButton = (
+    handleLaunchPrecomputed,
+    precomputedStatus,
+    polyglot,
+    variant,
+) => (
+    <Button
+        color="primary"
+        variant={variant || 'contained'}
+        sx={{ height: '100%' }}
+        startIcon={<PlayArrowIcon />}
+        onClick={handleLaunchPrecomputed}
+        disabled={
+            precomputedStatus === IN_PROGRESS || precomputedStatus === PENDING
+        }
+    >
+        {polyglot.t('run')}
+    </Button>
+);
+
 // COMPONENT PART
 export const PrecomputedForm = ({
     datasetFields,
@@ -260,7 +280,8 @@ export const PrecomputedForm = ({
         history.push('/data/precomputed');
     };
 
-    const handleLaunchPrecomputed = () => {
+    const handleLaunchPrecomputed = event => {
+        event.preventDefault();
         if (isPrecomputedRunning) {
             toast(polyglot.t('pending_precomputed'), {
                 type: toast.TYPE.INFO,
@@ -346,21 +367,12 @@ export const PrecomputedForm = ({
                                 component={renderTextField}
                                 label={polyglot.t('fieldName')}
                             />
-                            {isEditMode && (
-                                <Button
-                                    color="primary"
-                                    variant="contained"
-                                    sx={{ height: '100%' }}
-                                    startIcon={<PlayArrowIcon />}
-                                    onClick={handleLaunchPrecomputed}
-                                    disabled={
-                                        precomputedStatus === IN_PROGRESS ||
-                                        precomputedStatus === PENDING
-                                    }
-                                >
-                                    {polyglot.t('run')}
-                                </Button>
-                            )}
+                            {isEditMode &&
+                                renderRunButton(
+                                    handleLaunchPrecomputed,
+                                    precomputedStatus,
+                                    polyglot,
+                                )}
                         </Box>
                         {isEditMode && (
                             <Box

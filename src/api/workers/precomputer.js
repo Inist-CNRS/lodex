@@ -1,5 +1,3 @@
-//TODO - Precomputing Task will be coded in next card
-
 import { CancelWorkerError } from '.';
 import {
     startPrecomputed,
