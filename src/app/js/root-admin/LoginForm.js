@@ -64,7 +64,8 @@ const LoginForm = () => {
                 }}
             >
                 <TextField
-                    label="Username"
+                    label="username"
+                    name="username"
                     variant="outlined"
                     margin="normal"
                     required
@@ -76,6 +77,7 @@ const LoginForm = () => {
                 />
                 <TextField
                     label="Password"
+                    name="password"
                     variant="outlined"
                     margin="normal"
                     required
