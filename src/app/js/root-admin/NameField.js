@@ -29,6 +29,7 @@ const NameField = inputProps => {
     return (
         <OutlinedInput
             type="text"
+            fullWidth
             {...inputProps}
             label="Name"
             defaultValue={defaultValue}

@@ -9,9 +9,9 @@ import embedded from './embedded';
 import customPage from './customPage';
 import rootAdmin from './rootAdmin';
 
-import repositoryMiddleware from '../services/repositoryMiddleware';
-import tenant from '../models/tenant';
-import mongoClient from '../services/mongoClient';
+import repositoryMiddleware, {
+    mongoRootAdminClient,
+} from '../services/repositoryMiddleware';
 import fs from 'fs';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 
@@ -26,6 +26,7 @@ if (simulatedLatency) {
     app.use(simulateLatency(simulatedLatency));
 }
 
+app.use(mongoRootAdminClient);
 app.use(mount('/rootAdmin', rootAdmin));
 
 // #######################
@@ -58,9 +59,7 @@ app.use(async (ctx, next) => {
     }
 
     const [, tenantSlug] = matchInstance;
-    const adminDb = await mongoClient('admin');
-    const tenantCollection = await tenant(adminDb);
-    const tenantInfo = await tenantCollection.findOneByName(
+    const tenantInfo = await ctx.tenantCollection.findOneByName(
         tenantSlug.toLowerCase(),
     );
     if (!tenantInfo && tenantSlug !== DEFAULT_TENANT) {

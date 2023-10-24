@@ -6,7 +6,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { getHost } from '../../../common/uris';
 import CreateTenantDialog from './CreateTenantDialog';
 import DeleteTenantDialog from './DeleteTenantDialog';
-import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid';
+import {
+    DataGrid,
+    GridToolbarColumnsButton,
+    GridToolbarContainer,
+    GridToolbarDensitySelector,
+    GridToolbarFilterButton,
+} from '@mui/x-data-grid';
 import { Button, Tooltip } from '@mui/material';
 
 const baseUrl = getHost();
@@ -33,7 +39,7 @@ const Tenants = () => {
             .then(onChangeTenants);
     }, []);
 
-    const addTenant = name => {
+    const addTenant = ({ name, description, author }) => {
         fetch('/rootAdmin/tenant', {
             credentials: 'include',
             headers: {
@@ -41,7 +47,7 @@ const Tenants = () => {
                 'X-Lodex-Tenant': 'admin',
             },
             method: 'POST',
-            body: JSON.stringify({ name }),
+            body: JSON.stringify({ name, description, author }),
         })
             .then(response => response.json())
             .then(data => {
@@ -70,6 +76,13 @@ const Tenants = () => {
     const CustomToolbar = () => {
         return (
             <GridToolbarContainer>
+                <Tooltip title={'Colonnes'}>
+                    <GridToolbarColumnsButton />
+                </Tooltip>
+                <GridToolbarFilterButton />
+                <Tooltip title={'Densité'}>
+                    <GridToolbarDensitySelector />
+                </Tooltip>
                 <Tooltip title="Ajoute une instance">
                     <Button
                         onClick={() => setOpenCreateTenantDialog(true)}
@@ -88,26 +101,67 @@ const Tenants = () => {
         );
     };
 
+    const formatValue = value => {
+        if (value == null) {
+            return '-';
+        }
+        return value;
+    };
+
     // Define the columns for the datagrid
     const columns = [
         { field: '_id', headerName: 'ID', width: 200 },
-        { field: 'name', headerName: 'Name', width: 150 },
+        { field: 'name', headerName: 'Nom', width: 150 },
+        {
+            field: 'description',
+            headerName: 'Description',
+            flex: 1,
+            valueFormatter: params => {
+                return formatValue(params.value);
+            },
+        },
+        {
+            field: 'author',
+            headerName: 'Auteur',
+            width: 150,
+            valueFormatter: params => {
+                return formatValue(params.value);
+            },
+        },
+        {
+            field: 'createdAt',
+            headerName: 'Créé le',
+            width: 150,
+            valueFormatter: params => {
+                if (params.value == null) {
+                    return '-';
+                }
+
+                // Format the date
+                const date = new Date(params.value);
+                return date.toLocaleDateString('fr-FR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                });
+            },
+        },
         {
             field: 'open',
-            headerName: 'Open',
+            headerName: 'Ouvrir',
             width: 150,
             renderCell: params => {
                 const name = params.row.name;
                 return (
                     <Button target={name} href={`${baseUrl}/instance/${name}`}>
-                        OPEN
+                        Ouvrir
                     </Button>
                 );
             },
         },
         {
             field: 'delete',
-            headerName: 'Delete',
+            headerName: 'Supprimer',
             width: 150,
             renderCell: params => {
                 return (

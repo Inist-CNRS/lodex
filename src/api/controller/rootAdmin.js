@@ -5,7 +5,6 @@ import jwt from 'koa-jwt';
 import { auth } from 'config';
 import { ObjectId } from 'mongodb';
 import { createWorkerQueue, deleteWorkerQueue } from '../workers';
-import { mongoRootAdminClient } from '../services/repositoryMiddleware';
 import { ROOT_ROLE, checkForbiddenNames } from '../../common/tools/tenantTools';
 
 import bullBoard from '../bullBoard';
@@ -40,30 +39,34 @@ app.use(async (ctx, next) => {
     await next();
 });
 
-app.use(mongoRootAdminClient);
 app.use(koaBodyParser());
 
 const getTenant = async ctx => {
-    ctx.body = await ctx.tenant.findAll();
+    ctx.body = await ctx.tenantCollection.findAll();
 };
 
 const postTenant = async ctx => {
-    const { name } = ctx.request.body;
-    const tenantExists = await ctx.tenant.count({ name });
+    const { name, description, author } = ctx.request.body;
+    const tenantExists = await ctx.tenantCollection.count({ name });
     if (tenantExists || checkForbiddenNames(name)) {
         ctx.status = 401;
         ctx.body = { error: `Invalid name: "${name}"` };
     } else {
-        await ctx.tenant.create({ name });
+        await ctx.tenantCollection.create({
+            name,
+            description,
+            author,
+            createdAt: new Date(),
+        });
         const queue = createWorkerQueue(name, 1);
         bullBoard.addDashboardQueue(name, queue);
-        ctx.body = await ctx.tenant.findAll();
+        ctx.body = await ctx.tenantCollection.findAll();
     }
 };
 
 const deleteTenant = async ctx => {
     const { _id, name } = ctx.request.body;
-    const tenantExists = await ctx.tenant.findOne({
+    const tenantExists = await ctx.tenantCollection.findOne({
         _id: new ObjectId(_id),
         name,
     });
@@ -73,8 +76,8 @@ const deleteTenant = async ctx => {
     } else {
         deleteWorkerQueue(tenantExists.name);
         bullBoard.removeDashboardQueue(tenantExists.name);
-        await ctx.tenant.deleteOne(tenantExists);
-        ctx.body = await ctx.tenant.findAll();
+        await ctx.tenantCollection.deleteOne(tenantExists);
+        ctx.body = await ctx.tenantCollection.findAll();
     }
 };
 

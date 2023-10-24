@@ -24,8 +24,8 @@ export const mongoClientFactory = mongoClientImpl => async (ctx, next) => {
 };
 
 export const mongoRootAdminClient = async (ctx, next) => {
-    ctx.db = await mongoClient('admin');
-    ctx.tenant = await tenant(ctx.db);
+    ctx.rootAdminDb = await mongoClient('admin');
+    ctx.tenantCollection = await tenant(ctx.rootAdminDb);
     await next();
 };
 

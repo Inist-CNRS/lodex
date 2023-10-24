@@ -4,11 +4,14 @@ import route from 'koa-route';
 import serve from 'koa-static';
 import mount from 'koa-mount';
 
-import repositoryMiddleware from '../services/repositoryMiddleware';
+import repositoryMiddleware, {
+    mongoRootAdminClient,
+} from '../services/repositoryMiddleware';
 
 const app = new koa();
 
 app.use(repositoryMiddleware);
+app.use(mongoRootAdminClient);
 
 app.use(
     route.delete('/fixtures', async ctx => {
@@ -18,6 +21,7 @@ app.use(
         await ctx.db.collection('dataset').remove({});
         await ctx.db.collection('subresource').remove({});
         await ctx.db.collection('enrichment').remove({});
+        await ctx.rootAdminDb.collection('tenant').remove({});
 
         ctx.body = { status: 'ok' };
     }),
