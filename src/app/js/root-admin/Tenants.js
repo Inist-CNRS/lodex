@@ -178,7 +178,7 @@ const Tenants = () => {
 
     return (
         <>
-            <div style={{ height: 400, width: '100%' }}>
+            <div style={{ height: `calc(100vh - 110px)`, width: '100%' }}>
                 <DataGrid
                     getRowId={row => row._id}
                     rows={tenants}
