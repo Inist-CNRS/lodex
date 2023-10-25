@@ -12,7 +12,7 @@ export const getComputedWebserviceData = async ctx => {
     logger.info(`Precompute webhook call for ${tenant}`);
     logger.info('Body', ctx.request.body);
 
-    if (!state === 'ready') {
+    if (!state == 'ready') {
         return;
     }
 

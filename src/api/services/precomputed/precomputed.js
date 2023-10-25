@@ -6,6 +6,8 @@ import fs from 'fs';
 import { pipeline } from 'stream';
 import { promisify } from 'util';
 
+const ISOLATED_MODE = true;
+
 import {
     PENDING as PRECOMPUTED_PENDING,
     IN_PROGRESS,
@@ -15,7 +17,8 @@ import {
 } from '../../../common/taskStatus';
 import { PRECOMPUTING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
-import { CancelWorkerError } from '../../workers';
+import { CancelWorkerError, workerQueues } from '../../workers';
+import { PRECOMPUTER } from '../../workers/precomputer';
 import getLogger from '../logger';
 
 const baseUrl = getHost();
@@ -68,9 +71,9 @@ const processZippedData = async (precomputed, ctx) => {
         indexDataset < dataSetSize;
         indexDataset += BATCH_SIZE
     ) {
-        /* if (!(await ctx.job?.isActive())) {
+        if (!(await ctx.job?.isActive())) {
             throw new CancelWorkerError('Job has been canceled');
-        }*/
+        }
         const entries = await ctx.dataset
             .find()
             .skip(indexDataset)
@@ -128,12 +131,10 @@ export const getTokenFromWebservice = async (
     tenant,
     jobId,
 ) => {
-    //TODO
-    console.log('*********** Call token start *****************');
-    console.log('precomputedId:', precomputedId.toString());
-    console.log('fileName:', fileName);
-    console.log('tenant:', tenant);
-    console.log('jobId:', jobId);
+    if (ISOLATED_MODE) {
+        return { id: 'treeSegment', value: '12345' };
+    }
+
     const response = await fetch(webServiceUrl, {
         method: 'POST',
         body: fs.createReadStream(fileName),
@@ -142,20 +143,17 @@ export const getTokenFromWebservice = async (
             'X-Hook': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${tenant}&jobId=${jobId}`,
         },
     });
-    console.log('*********** Call token done *****************');
     if (response.status != 200) {
-        console.log('*********** Call token error *****************');
-        console.log(response);
         throw new Error('Calling token webservice error');
     }
 
     const callId = JSON.stringify(await response.json());
-    //TODO
-    /*fs.unlink(fileName, error => {
+
+    fs.unlink(fileName, error => {
         if (error) {
             throw error;
         }
-    });*/
+    });
 
     return callId;
 };
@@ -167,6 +165,7 @@ export const getComputedFromWebservice = async (
     callId,
     jobId,
 ) => {
+    progress.incrementProgress(tenant, 60);
     if (!tenant || !precomputedId || !callId) {
         throw new Error(
             `Precompute webhook error: missing data ${JSON.stringify({
@@ -177,49 +176,66 @@ export const getComputedFromWebservice = async (
         );
     }
 
+    const workerQueue = workerQueues[tenant];
+    const activeJobs = await workerQueue.getActive();
+    const job = activeJobs.filter(job => {
+        const { id, jobType, tenant: jobTenant } = job.data;
+        return (
+            id == precomputedId &&
+            jobType == PRECOMPUTER &&
+            jobTenant == tenant &&
+            (ISOLATED_MODE || job.opts.jobId == jobId)
+        );
+    })?.[0];
+
+    if (!job) {
+        throw new CancelWorkerError('Job has been canceled');
+    }
+    progress.incrementProgress(tenant, 70);
+
     const webServiceBaseURL = 'https://data-computer.services.istex.fr/v1/';
+    //openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20coprus%20compress%C3%A9#/data-computer/post-v1-collect
     const room = `${tenant}-precomputed-job-${jobId}`;
 
     try {
-        const response = await fetch(`${webServiceBaseURL}retrieve`, {
+        const response = await fetch(`${webServiceBaseURL}collect`, {
             method: 'POST',
             body: callId,
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            compress: false,
         });
-        console.log('---- then ----');
-        if (response.status === 200) {
-            console.log('---- 200 ----');
-            const tar = response.body;
+        if (response.status === 200 || ISOLATED_MODE) {
+            const data = ISOLATED_MODE ? { what: 'it worked' } : response.body;
 
-            const pipeComputed = promisify(pipeline);
-            await pipeComputed(
-                tar,
-                fs.createWriteStream(
-                    `./webservice_temp/__computed_${tenant}_${Date.now().toString()}.tar.gz`,
-                ),
-            );
+            await ctx.precomputed.updateStatus(precomputedId, FINISHED, {
+                data,
+            });
+            progress.finish(tenant);
+            const logData = JSON.stringify({
+                level: 'ok',
+                message: `[Instance: ${tenant}] Precomputing data finished`,
+                timestamp: new Date(),
+                status: FINISHED,
+            });
+            jobLogger.info(job, logData);
+            notifyListeners(room, logData);
         } else {
-            console.log(response);
+            throw new Error(
+                `Precompute webhook error: retrieve has failed ${response.status} ${response.statusText}`,
+            );
         }
-        console.log('---- end ----');
     } catch (error) {
-        console.log('---- error ----');
-        const logData = JSON.stringify({
-            level: 'error',
-            message: `[Instance: ${tenant}] Retrieve is not ready  ${error?.message}`,
-            timestamp: new Date(),
-            status: IN_PROGRESS,
-        });
-        jobLogger.info(jobId, logData);
-        notifyListeners(room, logData);
+        throw new Error(
+            `Precompute webhook error: retrieve has failed ${error?.message}`,
+        );
     }
 };
 
 export const processPrecomputed = async (precomputed, ctx) => {
     let logData = {};
     await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS);
-
-    let errorCount = 0;
 
     const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
 
@@ -276,18 +292,6 @@ export const processPrecomputed = async (precomputed, ctx) => {
         message: `[Instance: ${ctx.tenant}] Waiting for response data`,
         timestamp: new Date(),
         status: IN_PROGRESS,
-    });
-    jobLogger.info(ctx.job, logData);
-    notifyListeners(room, logData);
-    await ctx.precomputed.updateStatus(precomputed._id, FINISHED, {
-        errorCount,
-    });
-    progress.finish(ctx.tenant);
-    logData = JSON.stringify({
-        level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Precomputing data finished`,
-        timestamp: new Date(),
-        status: FINISHED,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
