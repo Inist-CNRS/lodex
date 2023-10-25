@@ -132,6 +132,7 @@ export const getTokenFromWebservice = async (
     jobId,
 ) => {
     if (ISOLATED_MODE) {
+        await new Promise(resolve => setTimeout(resolve, 20000));
         return { id: 'treeSegment', value: '12345' };
     }
 
@@ -178,8 +179,13 @@ export const getComputedFromWebservice = async (
 
     const workerQueue = workerQueues[tenant];
     const activeJobs = await workerQueue.getActive();
+    console.log('job');
     const job = activeJobs.filter(job => {
         const { id, jobType, tenant: jobTenant } = job.data;
+        console.log(job.data);
+        console.log(job.opts);
+        console.log(job.opts.jobId);
+        console.log(precomputedId, PRECOMPUTER, tenant, jobId);
         return (
             id == precomputedId &&
             jobType == PRECOMPUTER &&
@@ -188,6 +194,7 @@ export const getComputedFromWebservice = async (
         );
     })?.[0];
 
+    console.log(job);
     if (!job) {
         throw new CancelWorkerError('Job has been canceled');
     }
