@@ -1,11 +1,10 @@
-//TODO - Precomputing Task will be coded in next card
-
-import ezs from '@ezs/core';
 import progress from '../progress';
 import localConfig from '../../../../config.json';
-
-import { ObjectId } from 'mongodb';
-import from from 'from';
+import { getHost } from '../../../common/uris';
+import tar from 'tar-stream';
+import fs from 'fs';
+import { pipeline } from 'stream';
+import { promisify } from 'util';
 import {
     PENDING as PRECOMPUTED_PENDING,
     IN_PROGRESS,
@@ -15,30 +14,19 @@ import {
 } from '../../../common/taskStatus';
 import { PRECOMPUTING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
-import { CancelWorkerError } from '../../workers';
+import { CancelWorkerError, workerQueues } from '../../workers';
+import { PRECOMPUTER } from '../../workers/precomputer';
 import getLogger from '../logger';
 
+const baseUrl = getHost();
+//Warning : This have to be done better for dev env
+const webhookBaseUrl =
+    process.env.NODE_ENV === 'development'
+        ? ' https://1d97-81-250-164-94.ngrok-free.app'
+        : baseUrl;
+
 const { precomputedBatchSize: BATCH_SIZE = 10 } = localConfig;
-
-const getSourceData = async (ctx, sourceColumns) => {
-    const excerptLines = await ctx.dataset.getExcerpt(
-        sourceColumns
-            ? {
-                  [sourceColumns]: { $ne: null },
-              }
-            : {},
-    );
-    if (excerptLines.length === 0) {
-        return null;
-    }
-
-    const sourceData = excerptLines[0][sourceColumns];
-    try {
-        return JSON.parse(sourceData);
-    } catch {
-        return sourceData;
-    }
-};
+const { ISOLATED_MODE = true } = localConfig;
 
 export const getPrecomputedDataPreview = async ctx => {
     const { sourceColumns } = ctx.request.body;
@@ -72,219 +60,263 @@ export const getPrecomputedDataPreview = async ctx => {
     return result;
 };
 
-const createEzsRuleCommands = rule => ezs.compileScript(rule).get();
-
-export const getSourceError = error => {
-    const sourceError = error?.sourceError;
-    if (sourceError?.sourceError) {
-        return getSourceError(sourceError);
-    }
-    return error;
-};
-
-function preformat(data, feed) {
-    if (this.isLast()) {
-        return feed.close();
-    }
-    feed.send({ id: data.uri, value: data });
-}
-
-async function postcheck(data, feed) {
-    const preview = this.getParam('preview');
-    const ctx = this.getEnv();
-    if (this.isLast()) {
-        return feed.close();
-    }
-    if (!preview && !(await ctx.job?.isActive())) {
-        return feed.stop(new CancelWorkerError('Job has been canceled'));
-    }
-    feed.send(data);
-}
-
-const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
-    return new Promise((resolve, reject) => {
-        const values = [];
-        from(entries)
-            .pipe(ezs(preformat))
-            .pipe(ezs('delegate', { commands }, {}))
-            .pipe(ezs(postcheck, { preview }, ctx))
-            .on('data', data => {
-                if (data instanceof Error) {
-                    const error = getSourceError(data);
-                    let sourceChunk = null;
-                    if (error?.sourceChunk) {
-                        try {
-                            sourceChunk = JSON.parse(error.sourceChunk);
-                        } catch (e) {
-                            const logger = getLogger(ctx.tenant);
-                            logger.error(`Error while parsing sourceChunk`, e);
-                        }
-                    }
-                    return values.push({
-                        id: sourceChunk?.id,
-                        error: error?.sourceError?.message,
-                    });
-                } else {
-                    return values.push(data);
-                }
-            })
-            .on('end', () => resolve(values))
-            .on('error', error => reject(error));
-    });
-};
-
-export const processPrecomputed = async (precomputed, ctx) => {
-    await ctx.precomputed.updateOne(
-        {
-            $or: [
-                { _id: new ObjectId(precomputed._id) },
-                { _id: precomputed._id },
-            ],
-        },
-        { $set: { ['status']: IN_PROGRESS } },
-    );
-    let errorCount = 0;
-
-    const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
-    const commands = createEzsRuleCommands(precomputed.rule);
+const processZippedData = async (precomputed, ctx) => {
+    const initDate = new Date();
+    const pack = tar.pack();
     const dataSetSize = await ctx.dataset.count();
-    for (let index = 0; index < dataSetSize; index += BATCH_SIZE) {
+    for (
+        let indexDataset = 0;
+        indexDataset < dataSetSize;
+        indexDataset += BATCH_SIZE
+    ) {
         if (!(await ctx.job?.isActive())) {
             throw new CancelWorkerError('Job has been canceled');
         }
         const entries = await ctx.dataset
             .find()
-            .skip(index)
+            .skip(indexDataset)
             .limit(BATCH_SIZE)
             .toArray();
 
-        const logsStartedEnriching = [];
-        for (const entry of entries) {
-            if (!entry.uri) {
-                const logData = JSON.stringify({
-                    level: 'error',
-                    message: `[Instance: ${ctx.tenant}] Unable to enrich row with no URI, see object _id#${entry._id}`,
-                    timestamp: new Date(),
-                    status: IN_PROGRESS,
-                });
-                jobLogger.info(ctx.job, logData);
-            } else {
-                const logData = JSON.stringify({
-                    level: 'info',
-                    message: `[Instance: ${ctx.tenant}] Started enriching #${entry.uri}`,
-                    timestamp: new Date(),
-                    status: IN_PROGRESS,
-                });
-                jobLogger.info(ctx.job, logData);
-                logsStartedEnriching.push(logData);
-            }
-        }
-        notifyListeners(room, logsStartedEnriching.reverse());
-        try {
-            const enrichedValues = await processEzsEnrichment(
-                entries,
-                commands,
-                ctx,
+        for (const [indexBatch, entry] of entries.entries()) {
+            const colums = [];
+            precomputed.sourceColumns.map(column => {
+                colums.push(entry[column]);
+            });
+            await pack.entry(
+                {
+                    name: `data/${'f' +
+                        (indexDataset + indexBatch + 1)
+                            .toString()
+                            .padStart(10, 0)}.json`,
+                },
+                JSON.stringify({
+                    id: entry.uri,
+                    value: colums.length > 1 ? colums : colums[0],
+                }),
             );
-
-            const logsEnrichedValue = [];
-            for (const enrichedValue of enrichedValues) {
-                let value;
-                if (enrichedValue.error) {
-                    value = `[Error] ${enrichedValue.error}`;
-                } else if (
-                    enrichedValue.value !== undefined &&
-                    enrichedValue.value !== null
-                ) {
-                    value = enrichedValue.value;
-                } else {
-                    value = 'n/a';
-                }
-                const id = enrichedValue.id;
-                if (id) {
-                    const logData = JSON.stringify({
-                        level: enrichedValue.error ? 'error' : 'info',
-                        message: enrichedValue.error
-                            ? `[Instance: ${ctx.tenant}] Error enriching #${id}: ${value}`
-                            : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${value})`,
-                        timestamp: new Date(),
-                        status: IN_PROGRESS,
-                    });
-                    errorCount += enrichedValue.error ? 1 : 0;
-                    jobLogger.info(ctx.job, logData);
-                    logsEnrichedValue.push(logData);
-                    await ctx.dataset.updateOne(
-                        {
-                            uri: id,
-                        },
-                        { $set: { [precomputed.name]: value } },
-                    );
-                }
-            }
-            progress.incrementProgress(ctx.tenant, BATCH_SIZE);
-            notifyListeners(room, logsEnrichedValue.reverse());
-        } catch (e) {
-            for (const entry of entries) {
-                await ctx.dataset.updateOne(
-                    { _id: new ObjectId(entry._id) },
-                    {
-                        $set: {
-                            [precomputed.name]: `[Error]: ${e.message}`,
-                        },
-                    },
-                );
-
-                const logData = JSON.stringify({
-                    level: 'error',
-                    message: `[Instance: ${ctx.tenant}] ${e.message}`,
-                    timestamp: new Date(),
-                    status: IN_PROGRESS,
-                });
-                jobLogger.info(ctx.job, logData);
-                notifyListeners(room, logData);
-                errorCount++;
-                progress.incrementProgress(ctx.tenant, 1);
-            }
         }
     }
-    await ctx.precomputed.updateOne(
-        {
-            $or: [
-                { _id: new ObjectId(precomputed._id) },
-                { _id: precomputed._id },
-            ],
-        },
-        { $set: { ['status']: FINISHED, ['errorCount']: errorCount } },
+
+    const endDate = new Date();
+    await pack.entry(
+        { name: `manifest.json` },
+        JSON.stringify({
+            creationDate: endDate.toGMTString(),
+            updateDate: endDate.toGMTString(),
+            itemsCounter: dataSetSize,
+            processingMSTime: endDate - initDate,
+            version: '1',
+            generator: 'lodex',
+        }),
     );
-    progress.finish(ctx.tenant);
-    const logData = JSON.stringify({
+
+    await pack.finalize();
+
+    const pipe = promisify(pipeline);
+    const fileName = `./webservice_temp/__entry_${
+        ctx.tenant
+    }_${Date.now().toString()}.tar.gz`;
+    await pipe(pack, fs.createWriteStream(fileName));
+
+    return fileName;
+};
+
+export const getTokenFromWebservice = async (
+    webServiceUrl,
+    precomputedId,
+    fileName,
+    tenant,
+    jobId,
+) => {
+    if (ISOLATED_MODE) {
+        console.warn('*** ISOLATED_MODE activated ***');
+        return { id: 'treeSegment', value: '12345' };
+    } else {
+        console.warn('--- ISOLATED_MODE disabled ---');
+    }
+
+    const response = await fetch(webServiceUrl, {
+        method: 'POST',
+        body: fs.createReadStream(fileName),
+        headers: {
+            'Content-Type': 'application/gzip',
+            'X-Hook': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${tenant}&jobId=${jobId}`,
+        },
+    });
+    if (response.status != 200) {
+        throw new Error('Calling token webservice error');
+    }
+
+    const callId = JSON.stringify(await response.json());
+
+    fs.unlink(fileName, error => {
+        if (error) {
+            throw error;
+        }
+    });
+
+    return callId;
+};
+
+export const getComputedFromWebservice = async (
+    ctx,
+    tenant,
+    precomputedId,
+    callId,
+    jobId,
+) => {
+    progress.incrementProgress(tenant, 60);
+    if (!tenant || !precomputedId || !callId) {
+        throw new Error(
+            `Precompute webhook error: missing data ${JSON.stringify({
+                tenant: !tenant ? 'missing' : tenant,
+                precomputedId: !precomputedId ? 'missing' : precomputedId,
+                callId: !callId ? 'missing' : callId,
+            })}`,
+        );
+    }
+
+    const workerQueue = workerQueues[tenant];
+    const activeJobs = await workerQueue.getActive();
+    const job = activeJobs.filter(job => {
+        const { id, jobType, tenant: jobTenant } = job.data;
+        return (
+            id == precomputedId &&
+            jobType == PRECOMPUTER &&
+            jobTenant == tenant &&
+            (ISOLATED_MODE || job.opts.jobId == jobId)
+        );
+    })?.[0];
+
+    if (!job) {
+        throw new CancelWorkerError('Job has been canceled');
+    }
+    progress.incrementProgress(tenant, 70);
+
+    //openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20coprus%20compress%C3%A9#/data-computer/post-v1-collect
+    const room = `${tenant}-precomputed-job-${jobId}`;
+
+    try {
+        const response = await fetch(
+            `${localConfig.webServiceBaseURL}collect`,
+            {
+                method: 'POST',
+                body: callId,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                compress: false,
+            },
+        );
+        if (response.status === 200 || ISOLATED_MODE) {
+            const data = ISOLATED_MODE ? { what: 'it worked' } : response.body;
+
+            await ctx.precomputed.updateStatus(precomputedId, FINISHED, {
+                data,
+            });
+            progress.finish(tenant);
+            const logData = JSON.stringify({
+                level: 'ok',
+                message: `[Instance: ${tenant}] Precomputing data finished`,
+                timestamp: new Date(),
+                status: FINISHED,
+            });
+            jobLogger.info(job, logData);
+            notifyListeners(room, logData);
+        } else {
+            throw new Error(
+                `Precompute webhook error: retrieve has failed ${response.status} ${response.statusText}`,
+            );
+        }
+    } catch (error) {
+        throw new Error(
+            `Precompute webhook error: retrieve has failed ${error?.message}`,
+        );
+    }
+};
+
+export const processPrecomputed = async (precomputed, ctx) => {
+    let logData = {};
+    await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS);
+
+    const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
+
+    logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Enrichement finished`,
+        message: `[Instance: ${ctx.tenant}] Building entry data`,
         timestamp: new Date(),
-        status: FINISHED,
+        status: IN_PROGRESS,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
+    const entryFileName = await processZippedData(precomputed, ctx);
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${ctx.tenant}] Entry data built`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    progress.incrementProgress(ctx.tenant, 20);
+
+    jobLogger.info(ctx.job, logData);
+    notifyListeners(room, logData);
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${ctx.tenant}] Calling webservice [${precomputed.webServiceUrl}]`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(ctx.job, logData);
+    notifyListeners(room, logData);
+    const token = await getTokenFromWebservice(
+        precomputed.webServiceUrl,
+        precomputed._id.toString(),
+        entryFileName,
+        ctx.tenant,
+        room,
+        ctx.job.id,
+    );
+    await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS, {
+        callId: token,
+    });
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${ctx.tenant}] Webservice response token obtained`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(ctx.job, logData);
+    notifyListeners(room, logData);
+    progress.incrementProgress(ctx.tenant, 50);
+
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${ctx.tenant}] Waiting for response data`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(ctx.job, logData);
+    notifyListeners(room, logData);
+    if (ISOLATED_MODE) {
+        await new Promise(resolve => setTimeout(resolve, 20000));
+    }
 };
 
 export const setPrecomputedJobId = async (ctx, precomputedID, job) => {
-    await ctx.precomputed.updateOne(
-        {
-            $or: [{ _id: new ObjectId(precomputedID) }, { _id: precomputedID }],
-        },
-        { $set: { ['jobId']: job.id, ['status']: PRECOMPUTED_PENDING } },
-    );
+    await ctx.precomputed.updateStatus(precomputedID, PRECOMPUTED_PENDING, {
+        jobId: job.id,
+    });
 };
 
 export const startPrecomputed = async ctx => {
     const id = ctx.job?.data?.id;
     const precomputed = await ctx.precomputed.findOneById(id);
-    const dataSetSize = await ctx.dataset.count();
 
     if (progress.getProgress(ctx.tenant).status === PENDING) {
         progress.start(ctx.tenant, {
             status: PRECOMPUTING,
-            target: dataSetSize,
+            target: 100,
             label: 'PRECOMPUTING',
             subLabel: precomputed.name,
             type: 'precomputer',
@@ -304,15 +336,11 @@ export const startPrecomputed = async ctx => {
 
 export const setPrecomputedError = async (ctx, err) => {
     const id = ctx.job?.data?.id;
-    await ctx.precomputed.updateOne(
+    await ctx.precomputed.updateStatus(
+        id,
+        err instanceof CancelWorkerError ? CANCELED : ERROR,
         {
-            $or: [{ _id: new ObjectId(id) }, { _id: id }],
-        },
-        {
-            $set: {
-                ['status']: err instanceof CancelWorkerError ? CANCELED : ERROR,
-                ['message']: err?.message,
-            },
+            message: err?.message,
         },
     );
 

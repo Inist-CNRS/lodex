@@ -1,48 +1,46 @@
-//TODO - Precomputing Task will be coded in next card
-
 import { CancelWorkerError } from '.';
 import {
-    startEnrichment,
-    setEnrichmentError,
+    startPrecomputed,
+    setPrecomputedError,
     notifyListeners,
-} from '../services/enrichment/enrichment';
+} from '../services/precomputed/precomputed';
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
 export const PRECOMPUTER = 'precomputer';
 
-export const processEnrichment = (job, done) => {
-    startJobEnrichment(job)
+export const processPrecomputed = (job, done) => {
+    startJobPrecomputed(job)
         .then(async () => {
             job.progress(100);
             const isFailed = await job.isFailed();
-            notifyListeners(`${job.data.tenant}-enricher`, {
-                isEnriching: false,
+            notifyListeners(`${job.data.tenant}-precomputer`, {
+                isPrecomputing: false,
                 success: !isFailed,
             });
             done();
         })
         .catch(err => {
-            handleEnrichmentError(job, err);
+            handlePrecomputedError(job, err);
             done(err);
         });
 };
 
-const startJobEnrichment = async job => {
-    notifyListeners(`${job.data.tenant}-enricher`, {
-        isEnriching: true,
+const startJobPrecomputed = async job => {
+    notifyListeners(`${job.data.tenant}-precomputer`, {
+        isPrecomputing: true,
         success: false,
     });
     const ctx = await prepareContext({ job });
-    await startEnrichment(ctx);
+    await startPrecomputed(ctx);
 };
 
-const handleEnrichmentError = async (job, err) => {
+const handlePrecomputedError = async (job, err) => {
     const ctx = await prepareContext({ job });
     if (err instanceof CancelWorkerError) {
-        const enrichment = await ctx.enrichment.findOneById(ctx.job.data.id);
-        ctx.dataset.removeAttribute(enrichment.name);
+        const precomputed = await ctx.precomputed.findOneById(ctx.job.data.id);
+        ctx.dataset.removeAttribute(precomputed.name);
     }
-    await setEnrichmentError(ctx, err);
+    await setPrecomputedError(ctx, err);
 };
 
 const prepareContext = async ctx => {

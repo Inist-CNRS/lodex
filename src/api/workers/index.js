@@ -1,6 +1,7 @@
 import Queue from 'bull';
 import { processPublication, PUBLISHER } from './publisher';
 import { processEnrichment, ENRICHER } from './enricher';
+import { processPrecomputed, PRECOMPUTER } from './precomputer';
 import { processImport, IMPORT } from './import';
 
 export const QUEUE_NAME = 'worker';
@@ -36,6 +37,9 @@ export const createWorkerQueue = (queueName, concurrency) => {
         }
         if (job.data.jobType === IMPORT) {
             processImport(job, done);
+        }
+        if (job.data.jobType === PRECOMPUTER) {
+            processPrecomputed(job, done);
         }
     });
 

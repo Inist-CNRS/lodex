@@ -3,6 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import PrecomputedCatalogConnected from './PrecomputedCatalog';
 import PrecomputedPreview from './PrecomputedPreview';
 import PrecomputedFormLogsDialogComponent from './PrecomputedLogsDialog';
+import PrecomputedFormDataDialogComponent from './PrecomputedDataDialog';
 import translate from 'redux-polyglot/translate';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PropTypes from 'prop-types';
@@ -139,6 +140,26 @@ export const renderStatus = (status, polyglot) => {
     );
 };
 
+export const renderRunButton = (
+    handleLaunchPrecomputed,
+    precomputedStatus,
+    polyglot,
+    variant,
+) => (
+    <Button
+        color="primary"
+        variant={variant || 'contained'}
+        sx={{ height: '100%' }}
+        startIcon={<PlayArrowIcon />}
+        onClick={handleLaunchPrecomputed}
+        disabled={
+            precomputedStatus === IN_PROGRESS || precomputedStatus === PENDING
+        }
+    >
+        {polyglot.t('run')}
+    </Button>
+);
+
 // COMPONENT PART
 export const PrecomputedForm = ({
     datasetFields,
@@ -155,6 +176,7 @@ export const PrecomputedForm = ({
 }) => {
     const [openCatalog, setOpenCatalog] = React.useState(false);
     const [openPrecomputedLogs, setOpenPrecomputedLogs] = React.useState(false);
+    const [openPrecomputedData, setOpenPrecomputedData] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
     const [dataPreviewPrecomputed, setDataPreviewPrecomputed] = React.useState(
         [],
@@ -260,7 +282,8 @@ export const PrecomputedForm = ({
         history.push('/data/precomputed');
     };
 
-    const handleLaunchEnrichment = () => {
+    const handleLaunchPrecomputed = event => {
+        event.preventDefault();
         if (isPrecomputedRunning) {
             toast(polyglot.t('pending_precomputed'), {
                 type: toast.TYPE.INFO,
@@ -346,21 +369,12 @@ export const PrecomputedForm = ({
                                 component={renderTextField}
                                 label={polyglot.t('fieldName')}
                             />
-                            {isEditMode && (
-                                <Button
-                                    color="primary"
-                                    variant="contained"
-                                    sx={{ height: '100%' }}
-                                    startIcon={<PlayArrowIcon />}
-                                    onClick={handleLaunchEnrichment}
-                                    disabled={
-                                        precomputedStatus === IN_PROGRESS ||
-                                        precomputedStatus === PENDING
-                                    }
-                                >
-                                    {polyglot.t('run')}
-                                </Button>
-                            )}
+                            {isEditMode &&
+                                renderRunButton(
+                                    handleLaunchPrecomputed,
+                                    precomputedStatus,
+                                    polyglot,
+                                )}
                         </Box>
                         {isEditMode && (
                             <Box
@@ -374,23 +388,56 @@ export const PrecomputedForm = ({
                                     {polyglot.t('precomputed_status')} : &nbsp;
                                     {renderStatus(precomputedStatus, polyglot)}
                                 </Typography>
-                                <Button
-                                    variant="link"
-                                    sx={{
-                                        paddingRight: 0,
-                                        textDecoration: 'underline',
-                                    }}
-                                    onClick={() => setOpenPrecomputedLogs(true)}
-                                >
-                                    {polyglot.t('see_logs')}
-                                </Button>
-                                <PrecomputedFormLogsDialogComponent
-                                    isOpen={openPrecomputedLogs}
-                                    logs={precomputedLogs}
-                                    handleClose={() =>
-                                        setOpenPrecomputedLogs(false)
-                                    }
-                                />
+                                <Box>
+                                    <Button
+                                        variant="link"
+                                        sx={{
+                                            paddingRight: 0,
+                                            textDecoration: 'underline',
+                                        }}
+                                        onClick={() =>
+                                            setOpenPrecomputedLogs(true)
+                                        }
+                                    >
+                                        {polyglot.t('see_logs')}
+                                    </Button>
+                                    <PrecomputedFormLogsDialogComponent
+                                        isOpen={openPrecomputedLogs}
+                                        logs={precomputedLogs}
+                                        handleClose={() =>
+                                            setOpenPrecomputedLogs(false)
+                                        }
+                                    />
+                                    {isEditMode &&
+                                        precomputedStatus === FINISHED && (
+                                            <>
+                                                <Button
+                                                    variant="link"
+                                                    sx={{
+                                                        paddingRight: 0,
+                                                        textDecoration:
+                                                            'underline',
+                                                    }}
+                                                    onClick={() =>
+                                                        setOpenPrecomputedData(
+                                                            true,
+                                                        )
+                                                    }
+                                                >
+                                                    {polyglot.t('see_data')}
+                                                </Button>
+                                                <PrecomputedFormDataDialogComponent
+                                                    isOpen={openPrecomputedData}
+                                                    data={initialValues.data}
+                                                    handleClose={() =>
+                                                        setOpenPrecomputedData(
+                                                            false,
+                                                        )
+                                                    }
+                                                />
+                                            </>
+                                        )}
+                                </Box>
                             </Box>
                         )}
                     </Box>

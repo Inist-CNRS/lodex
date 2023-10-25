@@ -30,6 +30,7 @@ import { fromPublication } from '../selectors';
 import { toast } from '../../../../common/tools/toast';
 import { finishProgress } from '../progress/reducer';
 import { loadEnrichments } from '../enrichment';
+import { loadPrecomputed } from '../precomputed';
 import customTheme from '../../../custom/customTheme';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 
@@ -84,6 +85,7 @@ const JobProgressComponent = props => {
         handleRepublish,
         finishProgress,
         loadEnrichments,
+        loadPrecomputed,
     } = props;
     const [progress, setProgress] = useState();
     const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
@@ -98,6 +100,7 @@ const JobProgressComponent = props => {
             data.isJobProgress =
                 data.status !== PENDING &&
                 (data.type === 'enricher' ||
+                    data.type === 'precomputer' ||
                     data.type === 'publisher' ||
                     data.type === 'import');
             setProgress(data);
@@ -158,6 +161,22 @@ const JobProgressComponent = props => {
             }
             if (data.message === 'cancelled_enricher') {
                 toast(polyglot.t('cancelled_enricher'), {
+                    type: toast.TYPE.SUCCESS,
+                });
+            }
+        });
+
+        socket.on(`${dbName}_${tenant}-precomputer`, data => {
+            if (!data.isPrecomputing) {
+                loadPrecomputed();
+            }
+            if (data.message && data.message !== 'cancelled_precomputer') {
+                toast(`${polyglot.t('error')} : ${data.message}`, {
+                    type: toast.TYPE.ERROR,
+                });
+            }
+            if (data.message === 'cancelled_precomputer') {
+                toast(polyglot.t('cancelled_precomputer'), {
                     type: toast.TYPE.SUCCESS,
                 });
             }
@@ -310,6 +329,7 @@ JobProgressComponent.propTypes = {
     handleRepublish: PropTypes.func.isRequired,
     finishProgress: PropTypes.func.isRequired,
     loadEnrichments: PropTypes.func.isRequired,
+    loadPrecomputed: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
@@ -325,6 +345,7 @@ const mapDispatchToProps = {
     },
     finishProgress,
     loadEnrichments,
+    loadPrecomputed,
 };
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),

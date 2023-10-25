@@ -7,6 +7,7 @@ import api from './api';
 import front from './front';
 import embedded from './embedded';
 import customPage from './customPage';
+import webhook from './webhook';
 import rootAdmin from './rootAdmin';
 
 import repositoryMiddleware, {
@@ -72,6 +73,7 @@ app.use(async (ctx, next) => {
 
 app.use(repositoryMiddleware);
 
+app.use(mount('/webhook', webhook));
 app.use(mount('/embedded', embedded));
 app.use(mount('/api', api));
 
