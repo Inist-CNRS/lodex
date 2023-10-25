@@ -6,7 +6,7 @@ import fs from 'fs';
 import { pipeline } from 'stream';
 import { promisify } from 'util';
 
-const ISOLATED_MODE = true;
+const ISOLATED_MODE = localConfig.ISOLATED_MODE;
 
 import {
     PENDING as PRECOMPUTED_PENDING,
@@ -132,7 +132,6 @@ export const getTokenFromWebservice = async (
     jobId,
 ) => {
     if (ISOLATED_MODE) {
-        await new Promise(resolve => setTimeout(resolve, 20000));
         return { id: 'treeSegment', value: '12345' };
     }
 
@@ -179,13 +178,8 @@ export const getComputedFromWebservice = async (
 
     const workerQueue = workerQueues[tenant];
     const activeJobs = await workerQueue.getActive();
-    console.log('job');
     const job = activeJobs.filter(job => {
         const { id, jobType, tenant: jobTenant } = job.data;
-        console.log(job.data);
-        console.log(job.opts);
-        console.log(job.opts.jobId);
-        console.log(precomputedId, PRECOMPUTER, tenant, jobId);
         return (
             id == precomputedId &&
             jobType == PRECOMPUTER &&
@@ -194,25 +188,26 @@ export const getComputedFromWebservice = async (
         );
     })?.[0];
 
-    console.log(job);
     if (!job) {
         throw new CancelWorkerError('Job has been canceled');
     }
     progress.incrementProgress(tenant, 70);
 
-    const webServiceBaseURL = 'https://data-computer.services.istex.fr/v1/';
     //openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20coprus%20compress%C3%A9#/data-computer/post-v1-collect
     const room = `${tenant}-precomputed-job-${jobId}`;
 
     try {
-        const response = await fetch(`${webServiceBaseURL}collect`, {
-            method: 'POST',
-            body: callId,
-            headers: {
-                'Content-Type': 'application/json',
+        const response = await fetch(
+            `${localConfig.webServiceBaseURL}collect`,
+            {
+                method: 'POST',
+                body: callId,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                compress: false,
             },
-            compress: false,
-        });
+        );
         if (response.status === 200 || ISOLATED_MODE) {
             const data = ISOLATED_MODE ? { what: 'it worked' } : response.body;
 
@@ -302,6 +297,9 @@ export const processPrecomputed = async (precomputed, ctx) => {
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
+    if (ISOLATED_MODE) {
+        await new Promise(resolve => setTimeout(resolve, 20000));
+    }
 };
 
 export const setPrecomputedJobId = async (ctx, precomputedID, job) => {
