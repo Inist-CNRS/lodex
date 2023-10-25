@@ -2,15 +2,15 @@ import Koa from 'koa';
 import route from 'koa-route';
 import bodyParser from 'koa-bodyparser';
 
-import logger from '../services/logger';
+import getLogger from '../services/logger';
 import { getComputedFromWebservice } from '../services/precomputed/precomputed';
 
 export const getComputedWebserviceData = async ctx => {
-    logger.info('Webservice webhook call');
-    logger.info('query', ctx.request.query);
-    logger.info('body', ctx.request.body);
     const { precomputedId, tenant, jobId } = ctx.request.query;
     const { identifier, generator, state } = ctx.request.body;
+    const logger = getLogger(ctx.tenant);
+    logger.info(`Precompute webhook call for ${tenant}`);
+    logger.info('Body', ctx.request.body);
 
     if (!state === 'ready') {
         return;
@@ -18,12 +18,7 @@ export const getComputedWebserviceData = async ctx => {
 
     const callId = JSON.stringify([{ id: generator, value: identifier }]);
 
-    if (!!tenant && !!precomputedId && !!callId) {
-        getComputedFromWebservice(ctx, tenant, precomputedId, callId, jobId);
-    } else {
-        logger.error('Webservice webhook error');
-        logger.error(ctx.request);
-    }
+    await getComputedFromWebservice(ctx, tenant, precomputedId, callId, jobId);
 
     ctx.body = 'webhook ok';
     ctx.status = 200;

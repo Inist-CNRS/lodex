@@ -22,7 +22,7 @@ const baseUrl = getHost();
 //Warning : This have to be done better for dev env
 const webhookBaseUrl =
     process.env.NODE_ENV === 'development'
-        ? 'https://57db-81-250-164-94.ngrok-free.app'
+        ? ' https://1d97-81-250-164-94.ngrok-free.app'
         : baseUrl;
 
 const { precomputedBatchSize: BATCH_SIZE = 10 } = localConfig;
@@ -160,44 +160,59 @@ export const getTokenFromWebservice = async (
     return callId;
 };
 
-export const getComputedFromWebservice = (
+export const getComputedFromWebservice = async (
     ctx,
     tenant,
     precomputedId,
     callId,
     jobId,
 ) => {
+    if (!tenant || !precomputedId || !callId) {
+        throw new Error(
+            `Precompute webhook error: missing data ${JSON.stringify({
+                tenant: !tenant ? 'missing' : tenant,
+                precomputedId: !precomputedId ? 'missing' : precomputedId,
+                callId: !callId ? 'missing' : callId,
+            })}`,
+        );
+    }
+
     const webServiceBaseURL = 'https://data-computer.services.istex.fr/v1/';
     const room = `${tenant}-precomputed-job-${jobId}`;
 
-    fetch(`${webServiceBaseURL}retrieve`, {
-        method: 'POST',
-        body: callId,
-        headers: { 'Content-Type': 'application/json' },
-    })
-        .then(response => {
-            if (response.status === 200) {
-                const tar = response.body;
-
-                const pipeComputed = promisify(pipeline);
-                pipeComputed(
-                    tar,
-                    fs.createWriteStream(
-                        `./webservice_temp/__computed_${tenant}_${Date.now().toString()}.tar.gz`,
-                    ),
-                );
-            }
-        })
-        .catch(error => {
-            const logData = JSON.stringify({
-                level: 'error',
-                message: `[Instance: ${tenant}] Retrieve is not ready  ${error?.message}`,
-                timestamp: new Date(),
-                status: IN_PROGRESS,
-            });
-            jobLogger.info(jobId, logData);
-            notifyListeners(room, logData);
+    try {
+        const response = await fetch(`${webServiceBaseURL}retrieve`, {
+            method: 'POST',
+            body: callId,
+            headers: { 'Content-Type': 'application/json' },
         });
+        console.log('---- then ----');
+        if (response.status === 200) {
+            console.log('---- 200 ----');
+            const tar = response.body;
+
+            const pipeComputed = promisify(pipeline);
+            await pipeComputed(
+                tar,
+                fs.createWriteStream(
+                    `./webservice_temp/__computed_${tenant}_${Date.now().toString()}.tar.gz`,
+                ),
+            );
+        } else {
+            console.log(response);
+        }
+        console.log('---- end ----');
+    } catch (error) {
+        console.log('---- error ----');
+        const logData = JSON.stringify({
+            level: 'error',
+            message: `[Instance: ${tenant}] Retrieve is not ready  ${error?.message}`,
+            timestamp: new Date(),
+            status: IN_PROGRESS,
+        });
+        jobLogger.info(jobId, logData);
+        notifyListeners(room, logData);
+    }
 };
 
 export const processPrecomputed = async (precomputed, ctx) => {
