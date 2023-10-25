@@ -100,6 +100,7 @@ const JobProgressComponent = props => {
             data.isJobProgress =
                 data.status !== PENDING &&
                 (data.type === 'enricher' ||
+                    data.type === 'precomputer' ||
                     data.type === 'publisher' ||
                     data.type === 'import');
             setProgress(data);

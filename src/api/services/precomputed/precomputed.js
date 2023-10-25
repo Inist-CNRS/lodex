@@ -223,6 +223,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
+    progress.incrementProgress(ctx.tenant, 20);
 
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
@@ -253,6 +254,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
+    progress.incrementProgress(ctx.tenant, 50);
 
     logData = JSON.stringify({
         level: 'ok',
@@ -285,12 +287,11 @@ export const setPrecomputedJobId = async (ctx, precomputedID, job) => {
 export const startPrecomputed = async ctx => {
     const id = ctx.job?.data?.id;
     const precomputed = await ctx.precomputed.findOneById(id);
-    const dataSetSize = await ctx.dataset.count();
 
     if (progress.getProgress(ctx.tenant).status === PENDING) {
         progress.start(ctx.tenant, {
             status: PRECOMPUTING,
-            target: dataSetSize,
+            target: 100,
             label: 'PRECOMPUTING',
             subLabel: precomputed.name,
             type: 'precomputer',
