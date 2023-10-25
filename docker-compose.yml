@@ -18,6 +18,7 @@ services:
             WORKERS_URL: 'http://localhost:31976'
         volumes:
             - ./upload:/app/upload
+            - ./webservice_temp:/app/webservice_temp
         links:
             - mongo
         ports:
