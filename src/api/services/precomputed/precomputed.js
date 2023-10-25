@@ -5,9 +5,6 @@ import tar from 'tar-stream';
 import fs from 'fs';
 import { pipeline } from 'stream';
 import { promisify } from 'util';
-
-const ISOLATED_MODE = localConfig.ISOLATED_MODE;
-
 import {
     PENDING as PRECOMPUTED_PENDING,
     IN_PROGRESS,
@@ -29,6 +26,7 @@ const webhookBaseUrl =
         : baseUrl;
 
 const { precomputedBatchSize: BATCH_SIZE = 10 } = localConfig;
+const { ISOLATED_MODE = true } = localConfig;
 
 export const getPrecomputedDataPreview = async ctx => {
     const { sourceColumns } = ctx.request.body;
@@ -132,7 +130,10 @@ export const getTokenFromWebservice = async (
     jobId,
 ) => {
     if (ISOLATED_MODE) {
+        console.warn('*** ISOLATED_MODE activated ***');
         return { id: 'treeSegment', value: '12345' };
+    } else {
+        console.warn('--- ISOLATED_MODE disabled ---');
     }
 
     const response = await fetch(webServiceUrl, {

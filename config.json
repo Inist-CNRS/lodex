@@ -188,8 +188,8 @@
             "dataset": 60,
             "search": 200
         },
-        "multilingual": false,
-        "webServiceBaseURL": "https://data-computer.services.istex.fr/v1/",
-        "ISOLATED_MODE": false
-    }
+        "multilingual": false
+    },
+    "webServiceBaseURL": "https://data-computer.services.istex.fr/v1/",
+    "ISOLATED_MODE": true
 }
