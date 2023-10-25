@@ -26,7 +26,7 @@ const webhookBaseUrl =
         : baseUrl;
 
 const { precomputedBatchSize: BATCH_SIZE = 10 } = localConfig;
-const { ISOLATED_MODE = true } = localConfig;
+const { isolatedMode: ISOLATED_MODE = true } = localConfig;
 
 export const getPrecomputedDataPreview = async ctx => {
     const { sourceColumns } = ctx.request.body;
@@ -64,6 +64,9 @@ const processZippedData = async (precomputed, ctx) => {
     const initDate = new Date();
     const pack = tar.pack();
     const dataSetSize = await ctx.dataset.count();
+    const fileNameSize = dataSetSize.toString().length
+        ? 10
+        : dataSetSize.toString().length;
     for (
         let indexDataset = 0;
         indexDataset < dataSetSize;
@@ -88,11 +91,11 @@ const processZippedData = async (precomputed, ctx) => {
                     name: `data/${'f' +
                         (indexDataset + indexBatch + 1)
                             .toString()
-                            .padStart(10, 0)}.json`,
+                            .padStart(fileNameSize, 0)}.json`,
                 },
                 JSON.stringify({
                     id: entry.uri,
-                    value: colums.length > 1 ? colums : colums[0],
+                    value: JSON.parse(colums.length > 1 ? colums : colums[0]),
                 }),
             );
         }
@@ -141,7 +144,8 @@ export const getTokenFromWebservice = async (
         body: fs.createReadStream(fileName),
         headers: {
             'Content-Type': 'application/gzip',
-            'X-Hook': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${tenant}&jobId=${jobId}`,
+            'X-Webhook-Success': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${tenant}&jobId=${jobId}`,
+            'X-Webhook-Failure': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${tenant}&jobId=${jobId}&failure`,
         },
     });
     if (response.status != 200) {
