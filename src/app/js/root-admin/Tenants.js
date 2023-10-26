@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -61,9 +63,32 @@ const Tenants = ({ handleLogout }) => {
                     handleLogout();
                     return;
                 }
-                return response;
+
+                if (response.status === 403) {
+                    toast.error('Action non autorisée', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        theme: 'light',
+                    });
+                    return;
+                }
+
+                if (response.status === 200) {
+                    toast.success('Instance créée', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        theme: 'light',
+                    });
+                }
+
+                return response.json();
             })
-            .then(response => response.json())
             .then(data => {
                 onChangeTenants(data);
                 setOpenCreateTenantDialog(false);
@@ -85,9 +110,34 @@ const Tenants = ({ handleLogout }) => {
                     handleLogout();
                     return;
                 }
-                return response;
+
+                if (response.status === 403) {
+                    toast.error('Action non autorisée', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        theme: 'light',
+                    });
+                    return;
+                }
+
+                if (response.status === 200) {
+                    if (response.status === 200) {
+                        toast.success('Instance supprimée', {
+                            position: 'top-right',
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            theme: 'light',
+                        });
+                    }
+                }
+
+                return response.json();
             })
-            .then(response => response.json())
             .then(data => {
                 onChangeTenants(data);
                 setOpenDeleteTenantDialog(false);
@@ -219,6 +269,7 @@ const Tenants = ({ handleLogout }) => {
                 handleClose={() => setOpenDeleteTenantDialog(false)}
                 deleteAction={deleteTenant}
             />
+            <ToastContainer />
         </>
     );
 };

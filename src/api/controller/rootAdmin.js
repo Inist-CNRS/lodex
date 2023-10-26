@@ -48,7 +48,7 @@ const postTenant = async ctx => {
     const { name, description, author } = ctx.request.body;
     const tenantExists = await ctx.tenantCollection.count({ name });
     if (tenantExists || checkForbiddenNames(name)) {
-        ctx.status = 401;
+        ctx.status = 403;
         ctx.body = { error: `Invalid name: "${name}"` };
     } else {
         await ctx.tenantCollection.create({
