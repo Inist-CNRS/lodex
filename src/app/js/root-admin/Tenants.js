@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -17,7 +17,7 @@ import { Button, Tooltip } from '@mui/material';
 
 const baseUrl = getHost();
 
-const Tenants = () => {
+const Tenants = ({ handleLogout }) => {
     const [tenants, setTenants] = useState([]);
     const [openCreateTenantDialog, setOpenCreateTenantDialog] = useState(false);
     const [openDeleteTenantDialog, setOpenDeleteTenantDialog] = useState(false);
@@ -35,6 +35,13 @@ const Tenants = () => {
                 'X-Lodex-Tenant': 'admin',
             },
         })
+            .then(response => {
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
+                }
+                return response;
+            })
             .then(response => response.json())
             .then(onChangeTenants);
     }, []);
@@ -49,6 +56,13 @@ const Tenants = () => {
             method: 'POST',
             body: JSON.stringify({ name, description, author }),
         })
+            .then(response => {
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
+                }
+                return response;
+            })
             .then(response => response.json())
             .then(data => {
                 onChangeTenants(data);
@@ -66,6 +80,13 @@ const Tenants = () => {
             method: 'DELETE',
             body: JSON.stringify({ _id, name }),
         })
+            .then(response => {
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
+                }
+                return response;
+            })
             .then(response => response.json())
             .then(data => {
                 onChangeTenants(data);
@@ -200,6 +221,10 @@ const Tenants = () => {
             />
         </>
     );
+};
+
+Tenants.propTypes = {
+    handleLogout: PropTypes.func.isRequired,
 };
 
 export default Tenants;
