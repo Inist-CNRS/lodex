@@ -36,6 +36,7 @@ export default function RootAdmin() {
     const [role, setRole] = useState('');
 
     useEffect(() => {
+        // if no cookie found, remove the user from localStorage
         const user = JSON.parse(localStorage.getItem('root-admin-user'));
         if (user && user.role === ROOT_ROLE) {
             setIsLoggedIn(true);
@@ -107,7 +108,7 @@ export default function RootAdmin() {
                         </Route>
                         <Route path="/admin">
                             {isLoggedIn && role === ROOT_ROLE ? (
-                                <Tenants />
+                                <Tenants handleLogout={handleLogout} />
                             ) : (
                                 <Redirect to="/login" />
                             )}

@@ -20,13 +20,13 @@ import scrollToTop from '../lib/scrollToTop';
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import App from './App';
-import Login from '../user/Login';
 import PrivateRoute from './PrivateRoute';
 import { Display } from './Display';
 import { Data } from './Data';
 import { frFR as frFRDatagrid, enUS as enUSDatagrid } from '@mui/x-data-grid';
 import { frFR, enUS } from '@mui/material/locale';
 import customTheme from '../../custom/customTheme';
+import LoginAdmin from './LoginAdmin';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],
@@ -72,7 +72,7 @@ render(
                     />
                     <PrivateRoute path="/data" component={Data} />
                     <PrivateRoute path="/display" component={Display} />
-                    <Route path="/login" exact component={Login} />
+                    <Route path="/login" exact component={LoginAdmin} />
                 </App>
             </ConnectedRouter>
         </ThemeProvider>

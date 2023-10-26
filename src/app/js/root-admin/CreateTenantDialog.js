@@ -43,7 +43,7 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
                     >
                         Le nom ne peut pas être {forbiddenNamesMessage}. Les
                         majuscules ne sont pas autorisées. Seules les lettres,
-                        les chiffres, - et _ sont autorisés.
+                        les chiffres et - sont autorisés.
                     </FormHelperText>
                 </FormControl>
 

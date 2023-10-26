@@ -309,6 +309,7 @@ if (config.userAuth) {
         if (
             !ctx.state.cookie &&
             !ctx.request.url.match(/instance\/([^\/]*)\/login/) &&
+            !ctx.request.url.match(/instance\/([^\/]*)\/admin/) &&
             !ctx.request.url.startsWith('/instances') &&
             !ctx.request.url.match(/[^\\]*\.(\w+)$/) &&
             !ctx.request.url.match('__webpack_hmr')

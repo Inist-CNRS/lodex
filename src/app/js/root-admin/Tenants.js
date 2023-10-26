@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -17,7 +19,7 @@ import { Button, Tooltip } from '@mui/material';
 
 const baseUrl = getHost();
 
-const Tenants = () => {
+const Tenants = ({ handleLogout }) => {
     const [tenants, setTenants] = useState([]);
     const [openCreateTenantDialog, setOpenCreateTenantDialog] = useState(false);
     const [openDeleteTenantDialog, setOpenDeleteTenantDialog] = useState(false);
@@ -35,6 +37,13 @@ const Tenants = () => {
                 'X-Lodex-Tenant': 'admin',
             },
         })
+            .then(response => {
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
+                }
+                return response;
+            })
             .then(response => response.json())
             .then(onChangeTenants);
     }, []);
@@ -49,7 +58,37 @@ const Tenants = () => {
             method: 'POST',
             body: JSON.stringify({ name, description, author }),
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
+                }
+
+                if (response.status === 403) {
+                    toast.error('Action non autorisée', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        theme: 'light',
+                    });
+                    return;
+                }
+
+                if (response.status === 200) {
+                    toast.success('Instance créée', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        theme: 'light',
+                    });
+                }
+
+                return response.json();
+            })
             .then(data => {
                 onChangeTenants(data);
                 setOpenCreateTenantDialog(false);
@@ -66,7 +105,39 @@ const Tenants = () => {
             method: 'DELETE',
             body: JSON.stringify({ _id, name }),
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
+                }
+
+                if (response.status === 403) {
+                    toast.error('Action non autorisée', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        theme: 'light',
+                    });
+                    return;
+                }
+
+                if (response.status === 200) {
+                    if (response.status === 200) {
+                        toast.success('Instance supprimée', {
+                            position: 'top-right',
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            theme: 'light',
+                        });
+                    }
+                }
+
+                return response.json();
+            })
             .then(data => {
                 onChangeTenants(data);
                 setOpenDeleteTenantDialog(false);
@@ -198,8 +269,13 @@ const Tenants = () => {
                 handleClose={() => setOpenDeleteTenantDialog(false)}
                 deleteAction={deleteTenant}
             />
+            <ToastContainer />
         </>
     );
+};
+
+Tenants.propTypes = {
+    handleLogout: PropTypes.func.isRequired,
 };
 
 export default Tenants;

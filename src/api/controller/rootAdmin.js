@@ -21,18 +21,17 @@ app.use(
 app.use(jwt({ secret: auth.headerSecret, key: 'header', passthrough: true }));
 
 app.use(async (ctx, next) => {
-    // if cookie is not root redirect
-    if (ctx.state.cookie.role !== ROOT_ROLE) {
-        ctx.status = 401;
-        ctx.cookies.set('lodex_token_root', '', { expires: new Date() });
-        ctx.body = 'No root token found';
-        return;
-    }
-
     if (!ctx.state.cookie) {
         ctx.status = 401;
         ctx.cookies.set('lodex_token_root', '', { expires: new Date() });
         ctx.body = 'No authentication token found';
+        return;
+    }
+
+    if (ctx.state.cookie.role !== ROOT_ROLE) {
+        ctx.status = 401;
+        ctx.cookies.set('lodex_token_root', '', { expires: new Date() });
+        ctx.body = 'No root token found';
         return;
     }
 
@@ -49,7 +48,7 @@ const postTenant = async ctx => {
     const { name, description, author } = ctx.request.body;
     const tenantExists = await ctx.tenantCollection.count({ name });
     if (tenantExists || checkForbiddenNames(name)) {
-        ctx.status = 401;
+        ctx.status = 403;
         ctx.body = { error: `Invalid name: "${name}"` };
     } else {
         await ctx.tenantCollection.create({
@@ -71,7 +70,7 @@ const deleteTenant = async ctx => {
         name,
     });
     if (!tenantExists || name !== tenantExists.name) {
-        ctx.status = 401;
+        ctx.status = 403;
         ctx.body = { error: `Invalid name: "${name}"` };
     } else {
         deleteWorkerQueue(tenantExists.name);
