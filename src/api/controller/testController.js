@@ -7,6 +7,7 @@ import mount from 'koa-mount';
 import repositoryMiddleware, {
     mongoRootAdminClient,
 } from '../services/repositoryMiddleware';
+import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 
 const app = new koa();
 
@@ -21,8 +22,9 @@ app.use(
         await ctx.db.collection('dataset').remove({});
         await ctx.db.collection('subresource').remove({});
         await ctx.db.collection('enrichment').remove({});
-        await ctx.rootAdminDb.collection('tenant').remove({});
-
+        await ctx.rootAdminDb
+            .collection('tenant')
+            .remove({ name: { $ne: DEFAULT_TENANT } });
         ctx.body = { status: 'ok' };
     }),
 );

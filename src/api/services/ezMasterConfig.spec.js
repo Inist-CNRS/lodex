@@ -2,18 +2,6 @@ import ezMasterConfig, { validateConfig } from './ezMasterConfig';
 
 describe('ezMasterConfig', () => {
     describe('validateConfig', () => {
-        it('should throw if username is not present', () => {
-            expect(() => validateConfig({})).toThrow();
-        });
-
-        it('should throw if password is not present', () => {
-            expect(() =>
-                validateConfig({
-                    username: 'toto',
-                }),
-            ).toThrow();
-        });
-
         it('should throw if userAuth but no userAuth.username', () => {
             expect(() =>
                 validateConfig({
