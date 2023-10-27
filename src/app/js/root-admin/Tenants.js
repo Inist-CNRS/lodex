@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 import { getHost } from '../../../common/uris';
 import CreateTenantDialog from './CreateTenantDialog';
@@ -16,6 +17,7 @@ import {
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 import { Button, Tooltip } from '@mui/material';
+import UpdateTenantDialog from './UpdateTenantDialog';
 
 const baseUrl = getHost();
 
@@ -23,6 +25,7 @@ const Tenants = ({ handleLogout }) => {
     const [tenants, setTenants] = useState([]);
     const [openCreateTenantDialog, setOpenCreateTenantDialog] = useState(false);
     const [openDeleteTenantDialog, setOpenDeleteTenantDialog] = useState(false);
+    const [tenantToUpdate, setTenantToUpdate] = useState(null);
 
     const onChangeTenants = changedTenants => {
         if (changedTenants instanceof Array) {
@@ -92,6 +95,55 @@ const Tenants = ({ handleLogout }) => {
             .then(data => {
                 onChangeTenants(data);
                 setOpenCreateTenantDialog(false);
+            });
+    };
+
+    const updateTenant = (id, updatedTenant) => {
+        fetch(`/rootAdmin/tenant/${id}`, {
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Lodex-Tenant': 'admin',
+            },
+            method: 'PUT',
+            body: JSON.stringify(updatedTenant),
+        })
+            .then(response => {
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
+                }
+
+                if (response.status === 403) {
+                    toast.error('Action non autorisée', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        theme: 'light',
+                    });
+                    return;
+                }
+
+                if (response.status === 200) {
+                    if (response.status === 200) {
+                        toast.success('Instance modifiée', {
+                            position: 'top-right',
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            theme: 'light',
+                        });
+                    }
+                }
+
+                return response.json();
+            })
+            .then(data => {
+                onChangeTenants(data);
+                setTenantToUpdate(null);
             });
     };
 
@@ -231,6 +283,21 @@ const Tenants = ({ handleLogout }) => {
             },
         },
         {
+            field: 'update',
+            headerName: 'Modifier',
+            width: 150,
+            renderCell: params => {
+                return (
+                    <Button
+                        color="warning"
+                        onClick={() => setTenantToUpdate(params.row)}
+                    >
+                        <EditIcon />
+                    </Button>
+                );
+            },
+        },
+        {
             field: 'delete',
             headerName: 'Supprimer',
             width: 150,
@@ -264,6 +331,12 @@ const Tenants = ({ handleLogout }) => {
                 handleClose={() => setOpenCreateTenantDialog(false)}
                 createAction={addTenant}
             />
+            <UpdateTenantDialog
+                tenant={tenantToUpdate}
+                handleClose={() => setTenantToUpdate(null)}
+                updateAction={updateTenant}
+            />
+
             <DeleteTenantDialog
                 tenant={openDeleteTenantDialog}
                 handleClose={() => setOpenDeleteTenantDialog(false)}
