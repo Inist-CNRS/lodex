@@ -21,7 +21,7 @@ import {
 } from '../../../../common/progressStatus';
 import { Cancel } from '@mui/icons-material';
 import jobsApi from '../api/job';
-import CancelPublicationDialog from './CancelPublicationDialog';
+import CancelProcessDialog from './CancelProcessDialog';
 import { publicationCleared } from '../publication';
 import Warning from '@mui/icons-material/Warning';
 import { loadParsingResult } from '../parsing';
@@ -285,22 +285,10 @@ const JobProgressComponent = props => {
                     )}
                 </Box>
             </Fade>
-            <CancelPublicationDialog
+            <CancelProcessDialog
                 isOpen={isCancelDialogOpen}
-                title={
-                    progress?.type === 'publisher'
-                        ? 'cancelPublicationTitle'
-                        : progress?.type === 'enricher'
-                        ? 'cancelEnrichmentTitle'
-                        : 'cancelImportTitle'
-                }
-                content={
-                    progress?.type === 'publisher'
-                        ? 'cancelPublicationContent'
-                        : progress?.type === 'enricher'
-                        ? 'cancelEnrichmentContent'
-                        : 'cancelImportContent'
-                }
+                title={getTitle(progress?.type)}
+                content={getContent(progress?.type)}
                 onCancel={() => {
                     setIsCancelDialogOpen(false);
                 }}
@@ -331,6 +319,33 @@ JobProgressComponent.propTypes = {
     loadEnrichments: PropTypes.func.isRequired,
     loadPrecomputed: PropTypes.func.isRequired,
 };
+
+const getTitle = type => {
+    switch (type) {
+        case 'publisher':
+            return 'cancelPublicationTitle';
+        case 'precomputer':
+            return 'cancelPrecomputerTitle';
+        case 'enricher':
+            return 'cancelEnrichmentTitle';
+        default:
+            return 'cancelImportTitle';
+    }
+};
+
+const getContent = type => {
+    switch (type) {
+        case 'publisher':
+            return 'cancelPublicationContent';
+        case 'precomputer':
+            return 'cancelPrecomputerContent';
+        case 'enricher':
+            return 'cancelEnrichmentContent';
+        default:
+            return 'cancelImportContent';
+    }
+};
+
 const mapStateToProps = state => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });

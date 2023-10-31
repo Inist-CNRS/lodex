@@ -2,6 +2,8 @@ import progress from '../progress';
 import localConfig from '../../../../config.json';
 import { getHost } from '../../../common/uris';
 import tar from 'tar-stream';
+import { createGzip, createGunzip } from 'zlib';
+import tarFS from 'tar-fs';
 import fs from 'fs';
 import { pipeline } from 'stream';
 import { promisify } from 'util';
@@ -22,11 +24,15 @@ const baseUrl = getHost();
 //Warning : This have to be done better for dev env
 const webhookBaseUrl =
     process.env.NODE_ENV === 'development'
-        ? ' https://1d97-81-250-164-94.ngrok-free.app'
+        ? ' https://5863-81-250-164-94.ngrok-free.app'
         : baseUrl;
 
 const { precomputedBatchSize: BATCH_SIZE = 10 } = localConfig;
 const { isolatedMode: ISOLATED_MODE = true } = localConfig;
+const ANSWER_ROUTES = { RETRIEVE: 'retrieve', COLLECT: 'collect' };
+const {
+    webserviceAnswerMode: ANSWER_ROUTE = ANSWER_ROUTES.RETRIEVE,
+} = localConfig;
 
 export const getPrecomputedDataPreview = async ctx => {
     const { sourceColumns } = ctx.request.body;
@@ -120,7 +126,7 @@ const processZippedData = async (precomputed, ctx) => {
     const fileName = `./webservice_temp/__entry_${
         ctx.tenant
     }_${Date.now().toString()}.tar.gz`;
-    await pipe(pack, fs.createWriteStream(fileName));
+    await pipe(pack, createGzip(), fs.createWriteStream(fileName));
 
     return fileName;
 };
@@ -147,6 +153,7 @@ export const getTokenFromWebservice = async (
             'X-Webhook-Success': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${tenant}&jobId=${jobId}`,
             'X-Webhook-Failure': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${tenant}&jobId=${jobId}&failure`,
         },
+        compress: false,
     });
     if (response.status != 200) {
         throw new Error('Calling token webservice error');
@@ -161,6 +168,122 @@ export const getTokenFromWebservice = async (
     });
 
     return callId;
+};
+
+const extractResultFromZip = async (tenant, job, room, data) => {
+    let logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${tenant}] Saving result zip file`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(job, logData);
+    notifyListeners(room, logData);
+
+    const pipe = promisify(pipeline);
+    const fileName = `./webservice_temp/__result_${tenant}_${Date.now().toString()}.tar.gz`;
+
+    await pipe(data, fs.createWriteStream(fileName));
+
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${tenant}] Extract result zip file OK`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(job, logData);
+    notifyListeners(room, logData);
+
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${tenant}] Extracting result zip file`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(job, logData);
+    notifyListeners(room, logData);
+
+    const folderName = fileName.replace('.tar.gz', '');
+    await pipe(
+        fs.createReadStream(fileName),
+        createGunzip(),
+        tarFS.extract(folderName),
+    );
+
+    fs.unlink(fileName, error => {
+        if (error) {
+            throw error;
+        }
+    });
+
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${tenant}] Compile result zip file OK`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(job, logData);
+    notifyListeners(room, logData);
+
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${tenant}] Compiling json result`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(job, logData);
+    notifyListeners(room, logData);
+
+    const files = await fs.promises.readdir(`${folderName}/data`);
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${tenant}] ${files.length} files found`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(job, logData);
+    notifyListeners(room, logData);
+    let result = [];
+    for (const file of files) {
+        const JsonName = `${folderName}/data/${file}`;
+        const json = await fs.promises.readFile(JsonName, { encoding: 'utf8' });
+        result.push(JSON.parse(json));
+
+        fs.unlink(JsonName, error => {
+            if (error) {
+                throw error;
+            }
+        });
+    }
+
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${tenant}] Compile json result OK`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(job, logData);
+    notifyListeners(room, logData);
+
+    fs.unlink(`${folderName}/manifest.json`, error => {
+        if (error) {
+            throw error;
+        }
+    });
+
+    fs.rmdir(`${folderName}/data`, error => {
+        if (error) {
+            throw error;
+        }
+    });
+
+    fs.rmdir(folderName, error => {
+        if (error) {
+            throw error;
+        }
+    });
+
+    return result;
 };
 
 export const getComputedFromWebservice = async (
@@ -185,11 +308,13 @@ export const getComputedFromWebservice = async (
     const activeJobs = await workerQueue.getActive();
     const job = activeJobs.filter(job => {
         const { id, jobType, tenant: jobTenant } = job.data;
+
         return (
-            id == precomputedId &&
-            jobType == PRECOMPUTER &&
-            jobTenant == tenant &&
-            (ISOLATED_MODE || job.opts.jobId == jobId)
+            id === precomputedId &&
+            jobType === PRECOMPUTER &&
+            jobTenant === tenant &&
+            (ISOLATED_MODE ||
+                `${tenant}-precomputed-job-${job.opts.jobId}` === jobId)
         );
     })?.[0];
 
@@ -197,13 +322,25 @@ export const getComputedFromWebservice = async (
         throw new CancelWorkerError('Job has been canceled');
     }
     progress.incrementProgress(tenant, 70);
-
-    //openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20coprus%20compress%C3%A9#/data-computer/post-v1-collect
     const room = `${tenant}-precomputed-job-${jobId}`;
 
+    const logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${tenant}] Webservice response ok`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(job, logData);
+    notifyListeners(room, logData);
+
+    //WS doc here:
+    //openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20coprus%20compress%C3%A9#/data-computer/post-v1-collect
+
     try {
+        const ROUTE = { RETRIEVE: 'retrieve', COLLECT: 'collect' };
+        const callRoute = ANSWER_ROUTE;
         const response = await fetch(
-            `${localConfig.webServiceBaseURL}collect`,
+            `${localConfig.webServiceBaseURL}${callRoute}`,
             {
                 method: 'POST',
                 body: callId,
@@ -214,10 +351,29 @@ export const getComputedFromWebservice = async (
             },
         );
         if (response.status === 200 || ISOLATED_MODE) {
-            const data = ISOLATED_MODE ? { what: 'it worked' } : response.body;
+            let data = ISOLATED_MODE ? { what: 'it worked' } : response.body;
+            if (callRoute === ROUTE.RETRIEVE) {
+                const logData = JSON.stringify({
+                    level: 'ok',
+                    message: `[Instance: ${tenant}] Using tar.gz mode webservice`,
+                    timestamp: new Date(),
+                    status: IN_PROGRESS,
+                });
+                jobLogger.info(job, logData);
+                notifyListeners(room, logData);
+                data = await extractResultFromZip(tenant, job, room, data);
+            }
 
             await ctx.precomputed.updateStatus(precomputedId, FINISHED, {
                 data,
+            });
+
+            job.progress(100);
+            job.moveToCompleted();
+            const isFailed = await job.isFailed();
+            notifyListeners(`${job.data.tenant}-precomputer`, {
+                isPrecomputing: false,
+                success: !isFailed,
             });
             progress.finish(tenant);
             const logData = JSON.stringify({
@@ -238,6 +394,61 @@ export const getComputedFromWebservice = async (
             `Precompute webhook error: retrieve has failed ${error?.message}`,
         );
     }
+};
+
+export const getFailureFromWebservice = async (
+    ctx,
+    tenant,
+    precomputedId,
+    callId,
+    jobId,
+    errorType,
+    errorMessage,
+) => {
+    if (!tenant || !precomputedId || !callId) {
+        throw new Error(
+            `Precompute webhook failure error: missing data ${JSON.stringify({
+                tenant: !tenant ? 'missing' : tenant,
+                precomputedId: !precomputedId ? 'missing' : precomputedId,
+                callId: !callId ? 'missing' : callId,
+            })}`,
+        );
+    }
+    const workerQueue = workerQueues[tenant];
+    const activeJobs = await workerQueue.getActive();
+    const job = activeJobs.filter(job => {
+        const { id, jobType, tenant: jobTenant } = job.data;
+
+        return (
+            id === precomputedId &&
+            jobType === PRECOMPUTER &&
+            jobTenant === tenant &&
+            (ISOLATED_MODE ||
+                `${tenant}-precomputed-job-${job.opts.jobId}` === jobId)
+        );
+    })?.[0];
+
+    if (!job) {
+        return;
+    }
+
+    const room = `${tenant}-precomputed-job-${jobId}`;
+
+    await ctx.precomputed.updateStatus(precomputedId, ERROR, {
+        message: errorMessage,
+    });
+
+    job.progress(100);
+    job.moveToFailed(new Error(errorMessage));
+    progress.finish(tenant);
+    const logData = JSON.stringify({
+        level: 'error',
+        message: `[Instance: ${tenant}] Precomputing data failed ${errorType} ${errorMessage}`,
+        timestamp: new Date(),
+        status: ERROR,
+    });
+    jobLogger.info(job, logData);
+    notifyListeners(room, logData);
 };
 
 export const processPrecomputed = async (precomputed, ctx) => {
@@ -302,9 +513,6 @@ export const processPrecomputed = async (precomputed, ctx) => {
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-    if (ISOLATED_MODE) {
-        await new Promise(resolve => setTimeout(resolve, 20000));
-    }
 };
 
 export const setPrecomputedJobId = async (ctx, precomputedID, job) => {

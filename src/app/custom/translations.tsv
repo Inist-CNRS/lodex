@@ -692,6 +692,8 @@
 "rows_per_page"	"Rows per page"	"Lignes par page"
 "cancelEnrichmentTitle"	"Cancel running enrichment ?"	"Annuler l'enrichissement en cours ?"
 "cancelEnrichmentContent"	"By cancelling running enrichment, you also clear already enriched data."	"En annulant l'enrichissement en cours, vous supprimerez également les données déjà enrichies."
+"cancelPrecomputerTitle"	"Cancel running precomputing ?"	"Annuler le précalcul en cours ?"
+"cancelPrecomputerContent"	"Confirm cancelling of running precomputing."	"Confirmer l'annulation du précalcul en cours."
 "advancedModePreviewInfo"	"Source preview replaces [URLConnect] with [transit] and runs your ini file, as if all instructions were executed, except the call to web services."	"L'aperçu de la source remplace [URLConnect] par [transit] et exécute votre fichier ini, comme si toutes les instructions étaient exécutées, sauf l'appel aux services web."
 "enrichment_logs"	"Enrichment logs"	"Logs de l'enrichissement"
 "precomputed_logs"	"Precomputed data logs"	"Logs des données précalculées"

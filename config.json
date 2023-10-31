@@ -191,5 +191,6 @@
         "multilingual": false
     },
     "webServiceBaseURL": "https://data-computer.services.istex.fr/v1/",
-    "isolatedMode": false
+    "isolatedMode": false,
+    "webserviceAnswerMode": "retrieve"
 }
