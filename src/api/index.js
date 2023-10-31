@@ -69,17 +69,30 @@ serverAdapter.setBasePath('/bull');
 const initQueueAndBullDashboard = async () => {
     bullBoard.initBullBoard(serverAdapter);
 
-    const defaultQueue = createWorkerQueue(DEFAULT_TENANT, 1);
-    bullBoard.addDashboardQueue(DEFAULT_TENANT, defaultQueue);
-
     // Get current tenants
     const adminDb = await mongoClient('admin');
     const tenantCollection = await tenant(adminDb);
+
     const tenants = await tenantCollection.findAll();
     tenants.forEach(tenant => {
         const queue = createWorkerQueue(tenant.name, 1);
         bullBoard.addDashboardQueue(tenant.name, queue);
     });
+
+    // if tenant `default` is not in the database, we add it
+    if (!tenants.find(tenant => tenant.name === DEFAULT_TENANT)) {
+        await tenantCollection.create({
+            name: DEFAULT_TENANT,
+            description: 'Instance par défaut',
+            author: 'Root',
+            username: 'admin',
+            password: 'secret',
+            createdAt: new Date(),
+        });
+        const defaultQueue = createWorkerQueue(DEFAULT_TENANT, 1);
+        bullBoard.addDashboardQueue(DEFAULT_TENANT, defaultQueue);
+        // TODO: create default instance config.
+    }
 };
 
 initQueueAndBullDashboard();

@@ -7,17 +7,22 @@ import { auth } from 'config';
 import jwt from 'jsonwebtoken';
 import { ADMIN_ROLE, ROOT_ROLE } from '../../../common/tools/tenantTools';
 
-export const postLogin = date => ctx => {
+export const postLogin = date => async ctx => {
     if (!ctx.ezMasterConfig) {
         throw new Error('Invalid EzMaster configuration.');
     }
 
-    if (!ctx.ezMasterConfig.username) {
-        throw new Error('Invalid EzMaster configuration: missing username');
+    const {
+        username: usernameAdmin,
+        password: passwordAdmin,
+    } = await ctx.tenantCollection.findOneByName(ctx.tenant.toLowerCase());
+
+    if (!usernameAdmin) {
+        throw new Error('Invalid instance configuration: missing username');
     }
 
-    if (!ctx.ezMasterConfig.password) {
-        throw new Error('Invalid EzMaster configuration: missing password.');
+    if (!passwordAdmin) {
+        throw new Error('Invalid instance configuration: missing password.');
     }
 
     const { username, password } = ctx.request.body;
@@ -25,10 +30,7 @@ export const postLogin = date => ctx => {
     const rootAuth = get(ctx, 'ezMasterConfig.rootAuth', {});
 
     let role;
-    if (
-        username === ctx.ezMasterConfig.username &&
-        password === ctx.ezMasterConfig.password
-    ) {
+    if (username === usernameAdmin && password === passwordAdmin) {
         role = ADMIN_ROLE;
     }
 

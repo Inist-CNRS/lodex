@@ -24,14 +24,14 @@ app.use(async (ctx, next) => {
     if (!ctx.state.cookie) {
         ctx.status = 401;
         ctx.cookies.set('lodex_token_root', '', { expires: new Date() });
-        ctx.body = 'No authentication token found';
+        ctx.body = { message: 'No authentication token found' };
         return;
     }
 
     if (ctx.state.cookie.role !== ROOT_ROLE) {
         ctx.status = 401;
         ctx.cookies.set('lodex_token_root', '', { expires: new Date() });
-        ctx.body = 'No root token found';
+        ctx.body = { message: 'No root token found' };
         return;
     }
 
@@ -55,12 +55,27 @@ const postTenant = async ctx => {
             name,
             description,
             author,
+            username: 'admin',
+            password: 'secret',
             createdAt: new Date(),
         });
         const queue = createWorkerQueue(name, 1);
         bullBoard.addDashboardQueue(name, queue);
         ctx.body = await ctx.tenantCollection.findAll();
     }
+};
+
+const putTenant = async (ctx, id) => {
+    const { description, author, username, password } = ctx.request.body;
+    const tenantExists = await ctx.tenantCollection.findOneById(id);
+
+    if (!tenantExists) {
+        ctx.throw(403, `Invalid id: "${id}"`);
+    }
+
+    const update = { description, author, username, password };
+    await ctx.tenantCollection.update(id, update);
+    ctx.body = await ctx.tenantCollection.findAll();
 };
 
 const deleteTenant = async ctx => {
@@ -82,6 +97,7 @@ const deleteTenant = async ctx => {
 
 app.use(route.get('/tenant', getTenant));
 app.use(route.post('/tenant', postTenant));
+app.use(route.put('/tenant/:id', putTenant));
 app.use(route.delete('/tenant', deleteTenant));
 
 app.use(async ctx => {
