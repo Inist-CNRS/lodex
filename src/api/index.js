@@ -27,6 +27,7 @@ import tenant from './models/tenant';
 import mongoClient from './services/mongoClient';
 import bullBoard from './bullBoard';
 import { DEFAULT_TENANT } from '../common/tools/tenantTools';
+import { insertConfigTenant } from './services/configTenant';
 
 // KoaQs use qs to parse query string. There is an default limit of 20 items in an array. Above this limit, qs will transform the array into an key/value object.
 // We need to increase this limit to 1000 to be able to handle the facets array in the query string.
@@ -91,7 +92,8 @@ const initQueueAndBullDashboard = async () => {
         });
         const defaultQueue = createWorkerQueue(DEFAULT_TENANT, 1);
         bullBoard.addDashboardQueue(DEFAULT_TENANT, defaultQueue);
-        // TODO: create default instance config.
+
+        insertConfigTenant(DEFAULT_TENANT);
     }
 };
 

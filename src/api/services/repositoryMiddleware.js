@@ -8,6 +8,7 @@ import enrichment from '../models/enrichment';
 import precomputed from '../models/precomputed';
 import mongoClient from './mongoClient';
 import tenant from '../models/tenant';
+import configTenant from '../models/configTenant';
 
 export const mongoClientFactory = mongoClientImpl => async (ctx, next) => {
     ctx.db = await mongoClientImpl(ctx.tenant);
@@ -19,6 +20,7 @@ export const mongoClientFactory = mongoClientImpl => async (ctx, next) => {
     ctx.publishedCharacteristic = await publishedCharacteristic(ctx.db);
     ctx.publishedDataset = await publishedDataset(ctx.db);
     ctx.publishedFacet = await publishedFacet(ctx.db);
+    ctx.configTenant = await configTenant(ctx.db);
 
     await next();
 };

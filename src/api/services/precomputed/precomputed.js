@@ -25,10 +25,10 @@ const webhookBaseUrl =
         ? ' https://1d97-81-250-164-94.ngrok-free.app'
         : baseUrl;
 
-const { precomputedBatchSize: BATCH_SIZE = 10 } = localConfig;
 const { ISOLATED_MODE = true } = localConfig;
 
 export const getPrecomputedDataPreview = async ctx => {
+    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.currentConfig;
     const { sourceColumns } = ctx.request.body;
     if (!sourceColumns) {
         throw new Error(`Missing parameters`);
@@ -61,6 +61,7 @@ export const getPrecomputedDataPreview = async ctx => {
 };
 
 const processZippedData = async (precomputed, ctx) => {
+    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.currentConfig;
     const initDate = new Date();
     const pack = tar.pack();
     const dataSetSize = await ctx.dataset.count();
