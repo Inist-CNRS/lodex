@@ -21,10 +21,9 @@ import { PRECOMPUTER } from '../../workers/precomputer';
 import getLogger from '../logger';
 
 const baseUrl = getHost();
-//Warning : This have to be done better for dev env
 const webhookBaseUrl =
     process.env.NODE_ENV === 'development'
-        ? ' https://5863-81-250-164-94.ngrok-free.app'
+        ? localConfig.webhookBaseUrlForDevelopment
         : baseUrl;
 
 const { precomputedBatchSize: BATCH_SIZE = 10 } = localConfig;
