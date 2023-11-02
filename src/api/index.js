@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import { Server } from 'socket.io';
 import config, { mongo } from 'config';
+import { activateBullDashboard } from '../../config.json';
 import mount from 'koa-mount';
 import route from 'koa-route';
 import cors from 'kcors';
@@ -92,8 +93,8 @@ const initQueueAndBullDashboard = async () => {
 
 initQueueAndBullDashboard();
 
-// Display It only in development mode
-if (process.env.NODE_ENV === 'development') {
+// Display It only in development mode or if activateBullDashboard is true
+if (process.env.NODE_ENV === 'development' || activateBullDashboard) {
     app.use(serverAdapter.registerPlugin());
 }
 
