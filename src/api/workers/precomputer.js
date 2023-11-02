@@ -16,7 +16,6 @@ export const processPrecomputed = (job, done) => {
                 isPrecomputing: isFailed ? false : true,
                 success: !isFailed,
             });
-            //done();
         })
         .catch(err => {
             handlePrecomputedError(job, err);
@@ -34,7 +33,6 @@ const startJobPrecomputed = async job => {
 };
 
 const handlePrecomputedError = async (job, err) => {
-    console.log(' ------ handlePrecomputedError ------- ');
     const ctx = await prepareContext({ job });
     await setPrecomputedError(ctx, err);
 };
