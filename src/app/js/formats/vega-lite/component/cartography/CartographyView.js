@@ -79,11 +79,17 @@ const CartographyView = ({
             return;
         }
 
-        const resizeObserver = new ResizeObserver(() => {
-            try {
-                setWidth(ref.current.offsetWidth);
-                // eslint-disable-next-line no-empty
-            } catch (e) {}
+        const resizeObserver = new ResizeObserver(entries => {
+            window.requestAnimationFrame(() => {
+                if (
+                    !Array.isArray(entries) ||
+                    !entries.length ||
+                    entries.length < 1
+                ) {
+                    return;
+                }
+                setWidth(entries[0].contentRect.width);
+            });
         });
 
         resizeObserver.observe(ref.current);
