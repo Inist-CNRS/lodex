@@ -56,10 +56,6 @@ const setTenant = async (ctx, next) => {
 
 app.use(setTenant);
 
-if (process.env.EXPOSE_TEST_CONTROLLER) {
-    app.use(mount('/tests', testController));
-}
-
 // ############################
 // # START QUEUE AND BULL BOARD
 // ############################
@@ -69,7 +65,6 @@ const serverAdapter = new KoaAdapter();
 serverAdapter.setBasePath('/bull');
 const initQueueAndBullDashboard = async () => {
     bullBoard.initBullBoard(serverAdapter);
-
     // Get current tenants
     const adminDb = await mongoClient('admin');
     const tenantCollection = await tenant(adminDb);
@@ -79,7 +74,6 @@ const initQueueAndBullDashboard = async () => {
         const queue = createWorkerQueue(tenant.name, 1);
         bullBoard.addDashboardQueue(tenant.name, queue);
     });
-
     // if tenant `default` is not in the database, we add it
     if (!tenants.find(tenant => tenant.name === DEFAULT_TENANT)) {
         await tenantCollection.create({
@@ -92,9 +86,8 @@ const initQueueAndBullDashboard = async () => {
         });
         const defaultQueue = createWorkerQueue(DEFAULT_TENANT, 1);
         bullBoard.addDashboardQueue(DEFAULT_TENANT, defaultQueue);
-
-        insertConfigTenant(DEFAULT_TENANT);
     }
+    insertConfigTenant(DEFAULT_TENANT);
 };
 
 initQueueAndBullDashboard();
@@ -107,6 +100,10 @@ if (process.env.NODE_ENV === 'development') {
 // ############################
 // # END QUEUE AND BULL BOARD
 // ############################
+
+if (process.env.EXPOSE_TEST_CONTROLLER) {
+    app.use(mount('/tests', testController));
+}
 
 // worker job
 app.use(async (ctx, next) => {
