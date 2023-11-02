@@ -30,7 +30,7 @@ services:
             - ./cypress/mocks/external:/app/external
 
     istex-api:
-        image: node:16.20-bullseye
+        image: node:18.18-bookworm
         volumes:
             - .:/app
             - ./.cache:/root/.cache
@@ -53,7 +53,7 @@ services:
             - "6379:6379"
 
     workers:
-        image: node:16.20-bullseye
+        image: node:18.18-bookworm
         volumes:
             - .:/app
             - ./.cache:/root/.cache

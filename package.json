@@ -98,6 +98,7 @@
         "babel-loader": "^8.2.4",
         "bull": "4.1.4",
         "busboy": "1.6.0",
+        "caniuse-lite": "1.0.30001559",
         "classnames": "^2.2.6",
         "cli-truncate": "^1.1.0",
         "comma-number": "^2.0.2",

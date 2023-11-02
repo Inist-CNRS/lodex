@@ -1,4 +1,4 @@
-FROM node:16.20-alpine AS build
+FROM node:18.18-alpine AS build
 RUN apk add --no-cache make gcc g++ python3 bash git openssh jq
 WORKDIR /app
 COPY ./package.json /app
@@ -21,7 +21,7 @@ RUN mkdir /app/upload && \
     npm prune --production --legacy-peer-deps && \
     npm run clean
 
-FROM node:16.20-alpine AS release
+FROM node:18.18-alpine AS release
 RUN apk add --no-cache su-exec redis
 COPY --from=build /app /app
 
