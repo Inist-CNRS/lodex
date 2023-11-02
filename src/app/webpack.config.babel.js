@@ -62,29 +62,31 @@ module.exports = {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV),
             },
         }),
-        new CopyWebpackPlugin(
-            [
+        new CopyWebpackPlugin({
+            patterns: [
                 {
                     from: resolve(__dirname, './custom'),
                     to: resolve(__dirname, '../build'),
+                    globOptions: {
+                        ignore: [
+                            '/index.html',
+                            '/admin/index.js',
+                            '/root-admin/index.js',
+                            '/index.js',
+                            '/0.js',
+                        ],
+                    },
                 },
             ],
-            {
-                ignore: [
-                    '/index.html',
-                    '/admin/index.js',
-                    '/root-admin/index.js',
-                    '/index.js',
-                    '/0.js',
-                ],
-            },
-        ),
-        new CopyWebpackPlugin([
-            {
-                from: resolve(__dirname, './lodex.png'),
-                to: resolve(__dirname, '../build'),
-            },
-        ]),
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: resolve(__dirname, './lodex.png'),
+                    to: resolve(__dirname, '../build'),
+                },
+            ],
+        }),
 
         // prints more readable module names in the browser console on HMR updates
         isDevelopment && new HotModuleReplacementPlugin(),
