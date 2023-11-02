@@ -378,6 +378,7 @@ describe('enrichment', () => {
                 },
                 enrichment: {
                     updateOne: jest.fn(),
+                    updateStatus: jest.fn(),
                 },
                 dataset: {
                     updateOne: jest.fn(),

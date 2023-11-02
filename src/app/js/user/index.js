@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 import omit from 'lodash.omit';
 
 import getQueryString from '../lib/getQueryString';
+import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
 
 export const LOGIN_FORM_NAME = 'login';
 export const TOGGLE_LOGIN = 'TOGGLE_LOGIN';
@@ -50,7 +51,7 @@ export const loginSuccess = createAction(LOGIN_SUCCESS);
 export const logout = createAction(LOGOUT);
 export const signOut = createAction(SIGNOUT);
 
-export const isAdmin = state => state.role === 'admin';
+export const isAdmin = state => state.role === ADMIN_ROLE;
 export const getRole = state => state.role || 'not logged';
 export const getToken = state => state.token;
 export const getCookie = state => state.cookie;

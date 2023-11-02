@@ -10,7 +10,6 @@ import memoize from 'lodash.memoize';
 import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
 
-import { extractTenantFromUrl } from '../tenantTools';
 import { fromDisplayConfig, fromResource } from '../selectors';
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from '../resource';
@@ -41,6 +40,7 @@ import {
 } from '../../propTypes';
 import { Box, IconButton } from '@mui/material';
 import { Settings } from '@mui/icons-material';
+import { extractTenantFromUrl } from '../../../../common/tools/tenantTools';
 
 const styles = {
     container: memoize(

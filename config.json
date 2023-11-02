@@ -1,6 +1,4 @@
 {
-    "username": "admin",
-    "password": "secret",
     "userAuth": {
         "username": "user",
         "password": "secret"
@@ -82,19 +80,13 @@
         "doi-list",
         "tar-gz"
     ],
-    "exporters": [
-        "csv",
-        "tsv",
-        "jsonallvalue"
-    ],
+    "exporters": ["csv", "tsv", "jsonallvalue"],
     "datasetClass": "http://test.fr/datasetClass",
     "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
     "exportDataset": "true",
     "collectionClass": "",
     "istexQuery": {
-        "labels": [
-            "Cette ressource dans ISTEX"
-        ],
+        "labels": ["Cette ressource dans ISTEX"],
         "linked": "categories.inist",
         "context": {
             "categories.inist": "istex:subjectInist",
@@ -195,5 +187,9 @@
             "search": 200
         },
         "multilingual": false
-    }
+    },
+    "webServiceBaseURL": "https://data-computer.services.istex.fr/v1/",
+    "webhookBaseUrlForDevelopment": "https://5863-81-250-164-94.ngrok-free.app",
+    "isolatedMode": false,
+    "webserviceAnswerMode": "retrieve"
 }

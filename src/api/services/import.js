@@ -70,7 +70,11 @@ export const startImport = async ctx => {
             stream = await ctx.getStreamFromUrl(url);
         }
         if (filename && totalChunks) {
-            stream = ctx.mergeChunks(filename, totalChunks);
+            try {
+                stream = ctx.mergeChunks(filename, totalChunks);
+            } catch (error) {
+                throw new Error(`Error while merging chunks: ${error}`);
+            }
         }
         const parsedStream = await parseStream(stream);
         await ctx.saveParsedStream(ctx, parsedStream);

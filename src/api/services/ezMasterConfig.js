@@ -1,11 +1,6 @@
 import expect from 'expect';
 
 export const validateConfig = config => {
-    expect(config).toMatchObject({
-        username: /.+/,
-        password: /.+/,
-    });
-
     if (config.userAuth) {
         expect(config.userAuth).toMatchObject({
             username: /.+/,

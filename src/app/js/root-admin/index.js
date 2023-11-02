@@ -22,6 +22,7 @@ import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Tenants from './Tenants';
 import LoginForm from './LoginForm';
+import { ROOT_ROLE } from '../../../common/tools/tenantTools';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],
@@ -35,8 +36,9 @@ export default function RootAdmin() {
     const [role, setRole] = useState('');
 
     useEffect(() => {
+        // if no cookie found, remove the user from localStorage
         const user = JSON.parse(localStorage.getItem('root-admin-user'));
-        if (user && user.role === 'root') {
+        if (user && user.role === ROOT_ROLE) {
             setIsLoggedIn(true);
             setRole(user.role);
         }
@@ -105,8 +107,8 @@ export default function RootAdmin() {
                             )}
                         </Route>
                         <Route path="/admin">
-                            {isLoggedIn && role === 'root' ? (
-                                <Tenants />
+                            {isLoggedIn && role === ROOT_ROLE ? (
+                                <Tenants handleLogout={handleLogout} />
                             ) : (
                                 <Redirect to="/login" />
                             )}

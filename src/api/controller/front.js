@@ -47,6 +47,7 @@ import customTheme from '../../app/custom/customTheme';
 
 import { getPublication } from './api/publication';
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
+import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 
 const REGEX_JS_HOST = /\{\|__JS_HOST__\|\}/g;
 
@@ -288,6 +289,10 @@ const renderRootAdminIndexHtml = ctx => {
 
 const app = new Koa();
 
+// ############################
+// # Authentication middleware
+// ############################
+
 if (config.userAuth) {
     app.use(async (ctx, next) => {
         const jwtMid = await jwt({
@@ -304,17 +309,18 @@ if (config.userAuth) {
         if (
             !ctx.state.cookie &&
             !ctx.request.url.match(/instance\/([^\/]*)\/login/) &&
+            !ctx.request.url.match(/instance\/([^\/]*)\/admin/) &&
             !ctx.request.url.startsWith('/instances') &&
             !ctx.request.url.match(/[^\\]*\.(\w+)$/) &&
             !ctx.request.url.match('__webpack_hmr')
         ) {
-            const defaultTenant = 'default'; // TODO: Replace by default tenant in BDD
+            const defaultTenant = DEFAULT_TENANT; // TODO: Replace by default tenant in BDD
             const matchResult = ctx.request.url.match(/instance\/([^\/]*)(.*)/);
 
             if (matchResult) {
                 const [, tenantSlug, queryUrl] = matchResult;
                 ctx.redirect(
-                    `/instance/${tenantSlug}/login${
+                    `/instance/${tenantSlug.toLowerCase()}/login${
                         queryUrl ? '?page=' + encodeURIComponent(queryUrl) : ''
                     }`,
                 );

@@ -14,6 +14,7 @@ ENV CYPRESS_CACHE_FOLDER=/app/.cache
 ENV npm_config_cache=/app/.npm
 
 RUN mkdir /app/upload && \
+    mkdir /app/webservice_temp && \
     cp -n ./config/production-dist.js ./config/production.js && \
     npm run build && \
     npm cache clean --force  && \
@@ -43,6 +44,7 @@ RUN echo '{ \
 
 WORKDIR /app
 ENV NODE_ENV="production"
+ENV npm_config_cache=/app/.npm
 EXPOSE 3000
 ENTRYPOINT [ "/app/docker-entrypoint.sh" ]
 CMD ["npm", "start"]

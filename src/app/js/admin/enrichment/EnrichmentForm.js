@@ -47,6 +47,7 @@ import {
 } from '../../../../common/taskStatus';
 import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
+import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 
 // UTILITARY PART
 const ENRICHMENT_FORM = 'ENRICHMENT_FORM';
@@ -294,7 +295,7 @@ export const EnrichmentForm = ({
     useEffect(() => {
         handleGetLogs();
         const socket = io();
-        const tenant = sessionStorage.getItem('lodex-tenant') || 'default';
+        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         const dbName = sessionStorage.getItem('lodex-dbName');
         socket.on(
             `${dbName}_${tenant}-enrichment-job-${initialValues?.jobId}`,

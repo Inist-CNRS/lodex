@@ -21,7 +21,7 @@ import {
 } from '../../../../common/progressStatus';
 import { Cancel } from '@mui/icons-material';
 import jobsApi from '../api/job';
-import CancelPublicationDialog from './CancelPublicationDialog';
+import CancelProcessDialog from './CancelProcessDialog';
 import { publicationCleared } from '../publication';
 import Warning from '@mui/icons-material/Warning';
 import { loadParsingResult } from '../parsing';
@@ -30,7 +30,9 @@ import { fromPublication } from '../selectors';
 import { toast } from '../../../../common/tools/toast';
 import { finishProgress } from '../progress/reducer';
 import { loadEnrichments } from '../enrichment';
+import { loadPrecomputed } from '../precomputed';
 import customTheme from '../../../custom/customTheme';
+import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 
 const styles = {
     progress: {
@@ -83,6 +85,7 @@ const JobProgressComponent = props => {
         handleRepublish,
         finishProgress,
         loadEnrichments,
+        loadPrecomputed,
     } = props;
     const [progress, setProgress] = useState();
     const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
@@ -90,13 +93,14 @@ const JobProgressComponent = props => {
 
     useEffect(() => {
         const socket = io();
-        const tenant = sessionStorage.getItem('lodex-tenant') || 'default';
+        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         const dbName = sessionStorage.getItem('lodex-dbName');
 
         socket.on(`${dbName}_${tenant}-progress`, data => {
             data.isJobProgress =
                 data.status !== PENDING &&
                 (data.type === 'enricher' ||
+                    data.type === 'precomputer' ||
                     data.type === 'publisher' ||
                     data.type === 'import');
             setProgress(data);
@@ -157,6 +161,22 @@ const JobProgressComponent = props => {
             }
             if (data.message === 'cancelled_enricher') {
                 toast(polyglot.t('cancelled_enricher'), {
+                    type: toast.TYPE.SUCCESS,
+                });
+            }
+        });
+
+        socket.on(`${dbName}_${tenant}-precomputer`, data => {
+            if (!data.isPrecomputing) {
+                loadPrecomputed();
+            }
+            if (data.message && data.message !== 'cancelled_precomputer') {
+                toast(`${polyglot.t('error')} : ${data.message}`, {
+                    type: toast.TYPE.ERROR,
+                });
+            }
+            if (data.message === 'cancelled_precomputer') {
+                toast(polyglot.t('cancelled_precomputer'), {
                     type: toast.TYPE.SUCCESS,
                 });
             }
@@ -265,22 +285,10 @@ const JobProgressComponent = props => {
                     )}
                 </Box>
             </Fade>
-            <CancelPublicationDialog
+            <CancelProcessDialog
                 isOpen={isCancelDialogOpen}
-                title={
-                    progress?.type === 'publisher'
-                        ? 'cancelPublicationTitle'
-                        : progress?.type === 'enricher'
-                        ? 'cancelEnrichmentTitle'
-                        : 'cancelImportTitle'
-                }
-                content={
-                    progress?.type === 'publisher'
-                        ? 'cancelPublicationContent'
-                        : progress?.type === 'enricher'
-                        ? 'cancelEnrichmentContent'
-                        : 'cancelImportContent'
-                }
+                title={getTitle(progress?.type)}
+                content={getContent(progress?.type)}
                 onCancel={() => {
                     setIsCancelDialogOpen(false);
                 }}
@@ -309,7 +317,35 @@ JobProgressComponent.propTypes = {
     handleRepublish: PropTypes.func.isRequired,
     finishProgress: PropTypes.func.isRequired,
     loadEnrichments: PropTypes.func.isRequired,
+    loadPrecomputed: PropTypes.func.isRequired,
 };
+
+const getTitle = type => {
+    switch (type) {
+        case 'publisher':
+            return 'cancelPublicationTitle';
+        case 'precomputer':
+            return 'cancelPrecomputerTitle';
+        case 'enricher':
+            return 'cancelEnrichmentTitle';
+        default:
+            return 'cancelImportTitle';
+    }
+};
+
+const getContent = type => {
+    switch (type) {
+        case 'publisher':
+            return 'cancelPublicationContent';
+        case 'precomputer':
+            return 'cancelPrecomputerContent';
+        case 'enricher':
+            return 'cancelEnrichmentContent';
+        default:
+            return 'cancelImportContent';
+    }
+};
+
 const mapStateToProps = state => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
@@ -324,6 +360,7 @@ const mapDispatchToProps = {
     },
     finishProgress,
     loadEnrichments,
+    loadPrecomputed,
 };
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),

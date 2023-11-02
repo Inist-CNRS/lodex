@@ -26,6 +26,7 @@ import {
 import { MenuItemLink } from './MenuItemLink';
 import customTheme from '../../../custom/customTheme';
 import { Box } from '@mui/material';
+import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 
 const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;
@@ -170,7 +171,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                     }}
                 >
                     Instance:{' '}
-                    {sessionStorage.getItem('lodex-tenant') || 'default'}
+                    {sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT}
                 </Box>
             </Drawer>
         </>

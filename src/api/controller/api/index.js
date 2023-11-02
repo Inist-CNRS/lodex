@@ -31,6 +31,7 @@ import precomputed from './precomputed';
 import job from './job';
 import dump from './dump';
 import displayConfig from './displayConfig';
+import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
 
 const app = new Koa();
 
@@ -57,8 +58,8 @@ app.use(jwt({ secret: auth.headerSecret, key: 'header', passthrough: true }));
 
 app.use(async (ctx, next) => {
     if (
-        get(ctx, 'state.cookie.role') === 'admin' &&
-        get(ctx, 'state.header.role') === 'admin'
+        get(ctx, 'state.cookie.role') === ADMIN_ROLE &&
+        get(ctx, 'state.header.role') === ADMIN_ROLE
     ) {
         ctx.state.isAdmin = true;
     }
@@ -103,8 +104,8 @@ app.use(async (ctx, next) => {
     }
 
     if (
-        get(ctx, 'state.cookie.role') !== 'admin' ||
-        get(ctx, 'state.header.role') !== 'admin'
+        get(ctx, 'state.cookie.role') !== ADMIN_ROLE ||
+        get(ctx, 'state.header.role') !== ADMIN_ROLE
     ) {
         ctx.status = 403;
         ctx.body = 'Forbidden';

@@ -4,11 +4,11 @@ import compose from 'recompose/compose';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import c from 'config';
+import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 
 const GoToPublicationButtonComponent = ({ p: polyglot }) => {
     const handleGoToPublication = () => {
-        const tenant = sessionStorage.getItem('lodex-tenant') || 'default';
+        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         window.location.replace(window.location.origin + '/instance/' + tenant);
     };
 
