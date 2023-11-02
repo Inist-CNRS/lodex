@@ -1,13 +1,6 @@
 import expect from 'expect';
 
 export const validateConfig = config => {
-    if (config.userAuth) {
-        expect(config.userAuth).toMatchObject({
-            username: /.+/,
-            password: /.+/,
-        });
-    }
-
     if (config.naan) {
         expect(config.naan).toMatch(/(\d{5,})/);
     }

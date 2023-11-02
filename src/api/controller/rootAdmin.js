@@ -8,6 +8,7 @@ import { createWorkerQueue, deleteWorkerQueue } from '../workers';
 import { ROOT_ROLE, checkForbiddenNames } from '../../common/tools/tenantTools';
 
 import bullBoard from '../bullBoard';
+import { insertConfigTenant } from '../services/configTenant';
 
 const app = new Koa();
 app.use(
@@ -59,6 +60,10 @@ const postTenant = async ctx => {
             password: 'secret',
             createdAt: new Date(),
         });
+
+        // Open configTenant files as json and save it in mongo
+        insertConfigTenant(name);
+
         const queue = createWorkerQueue(name, 1);
         bullBoard.addDashboardQueue(name, queue);
         ctx.body = await ctx.tenantCollection.findAll();

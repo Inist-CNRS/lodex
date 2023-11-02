@@ -90,6 +90,7 @@ describe('enrichment', () => {
         it('with direct path, single value', async () => {
             // GIVEN
             const ctx = {
+                currentConfig: {},
                 request: {
                     body: {
                         sourceColumn: 'simpleValue',
@@ -118,6 +119,7 @@ describe('enrichment', () => {
         it('with direct path, single value and subpath', async () => {
             // GIVEN
             const ctx = {
+                currentConfig: {},
                 request: {
                     body: {
                         sourceColumn: 'objectValue',
@@ -150,6 +152,7 @@ describe('enrichment', () => {
         it('with direct path, single value stringified and subpath', async () => {
             // GIVEN
             const ctx = {
+                currentConfig: {},
                 request: {
                     body: {
                         sourceColumn: 'objectValue',
@@ -197,6 +200,7 @@ describe('enrichment', () => {
         it('with direct path, multiple values', async () => {
             // GIVEN
             const ctx = {
+                currentConfig: {},
                 request: {
                     body: {
                         sourceColumn: 'arrayValue',
@@ -225,6 +229,7 @@ describe('enrichment', () => {
         it('with direct path, multiple values stringified', async () => {
             // GIVEN
             const ctx = {
+                currentConfig: {},
                 request: {
                     body: {
                         sourceColumn: 'arrayValue',
@@ -256,6 +261,7 @@ describe('enrichment', () => {
         it('with direct path, multiple values and subpath', async () => {
             // GIVEN
             const ctx = {
+                currentConfig: {},
                 request: {
                     body: {
                         sourceColumn: 'arrayValue',
@@ -304,6 +310,7 @@ describe('enrichment', () => {
         it.skip('with direct path, multiple values and subpath stringified', async () => {
             // GIVEN
             const ctx = {
+                currentConfig: {},
                 request: {
                     body: {
                         sourceColumn: 'arrayValue',
@@ -367,6 +374,7 @@ describe('enrichment', () => {
                 rule: ezsRule,
             };
             const ctx = {
+                currentConfig: {},
                 tenant: 'lodex_test',
                 job: {
                     id: 1,
@@ -445,6 +453,7 @@ describe('enrichment', () => {
                 rule: ezsRule,
             };
             const ctx = {
+                currentConfig: {},
                 job: {
                     id: 1,
                     log: jest.fn(),

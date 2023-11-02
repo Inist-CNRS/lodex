@@ -27,6 +27,7 @@ import tenant from './models/tenant';
 import mongoClient from './services/mongoClient';
 import bullBoard from './bullBoard';
 import { DEFAULT_TENANT } from '../common/tools/tenantTools';
+import { insertConfigTenant } from './services/configTenant';
 
 // KoaQs use qs to parse query string. There is an default limit of 20 items in an array. Above this limit, qs will transform the array into an key/value object.
 // We need to increase this limit to 1000 to be able to handle the facets array in the query string.
@@ -55,10 +56,6 @@ const setTenant = async (ctx, next) => {
 
 app.use(setTenant);
 
-if (process.env.EXPOSE_TEST_CONTROLLER) {
-    app.use(mount('/tests', testController));
-}
-
 // ############################
 // # START QUEUE AND BULL BOARD
 // ############################
@@ -68,7 +65,6 @@ const serverAdapter = new KoaAdapter();
 serverAdapter.setBasePath('/bull');
 const initQueueAndBullDashboard = async () => {
     bullBoard.initBullBoard(serverAdapter);
-
     // Get current tenants
     const adminDb = await mongoClient('admin');
     const tenantCollection = await tenant(adminDb);
@@ -78,7 +74,6 @@ const initQueueAndBullDashboard = async () => {
         const queue = createWorkerQueue(tenant.name, 1);
         bullBoard.addDashboardQueue(tenant.name, queue);
     });
-
     // if tenant `default` is not in the database, we add it
     if (!tenants.find(tenant => tenant.name === DEFAULT_TENANT)) {
         await tenantCollection.create({
@@ -91,8 +86,8 @@ const initQueueAndBullDashboard = async () => {
         });
         const defaultQueue = createWorkerQueue(DEFAULT_TENANT, 1);
         bullBoard.addDashboardQueue(DEFAULT_TENANT, defaultQueue);
-        // TODO: create default instance config.
     }
+    insertConfigTenant(DEFAULT_TENANT);
 };
 
 initQueueAndBullDashboard();
@@ -105,6 +100,10 @@ if (process.env.NODE_ENV === 'development') {
 // ############################
 // # END QUEUE AND BULL BOARD
 // ############################
+
+if (process.env.EXPOSE_TEST_CONTROLLER) {
+    app.use(mount('/tests', testController));
+}
 
 // worker job
 app.use(async (ctx, next) => {

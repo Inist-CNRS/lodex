@@ -12,6 +12,7 @@ describe('Enrichment controller', () => {
             const ctx = {
                 request: { body: { advancedMode: true, name: 'test' } },
                 enrichment: { create: jest.fn() },
+                currentConfig: {},
             };
 
             await postEnrichment(ctx);
@@ -30,6 +31,7 @@ describe('Enrichment controller', () => {
                         return { advancedMode: true, name: 'test' };
                     }),
                 },
+                currentConfig: {},
             };
 
             await postEnrichment(ctx);
@@ -46,6 +48,7 @@ describe('Enrichment controller', () => {
                 enrichment: {
                     create: jest.fn(() => null),
                 },
+                currentConfig: {},
             };
 
             await postEnrichment(ctx);
@@ -67,6 +70,7 @@ describe('Enrichment controller', () => {
                     ),
                 },
                 dataset: { removeAttribute: jest.fn() },
+                currentConfig: {},
             };
 
             await putEnrichment(ctx, 42);
@@ -89,6 +93,7 @@ describe('Enrichment controller', () => {
                         throw new Error('ERROR!');
                     },
                 },
+                currentConfig: {},
             };
 
             await putEnrichment(ctx, 42);
@@ -106,6 +111,7 @@ describe('Enrichment controller', () => {
                     delete: jest.fn(),
                 },
                 dataset: { removeAttribute: jest.fn() },
+                currentConfig: {},
             };
             getActiveJob.mockResolvedValue({
                 data: { id: 42, jobType: 'enricher' },
@@ -129,6 +135,7 @@ describe('Enrichment controller', () => {
                     delete: jest.fn(),
                 },
                 dataset: { removeAttribute: jest.fn() },
+                currentConfig: {},
             };
 
             await deleteEnrichment(ctx, 42);

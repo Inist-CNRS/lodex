@@ -26,7 +26,6 @@ const webhookBaseUrl =
         ? localConfig.webhookBaseUrlForDevelopment
         : baseUrl;
 
-const { precomputedBatchSize: BATCH_SIZE = 10 } = localConfig;
 const { isolatedMode: ISOLATED_MODE = true } = localConfig;
 const ANSWER_ROUTES = { RETRIEVE: 'retrieve', COLLECT: 'collect' };
 const {
@@ -34,6 +33,7 @@ const {
 } = localConfig;
 
 export const getPrecomputedDataPreview = async ctx => {
+    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.currentConfig;
     const { sourceColumns } = ctx.request.body;
     if (!sourceColumns) {
         throw new Error(`Missing parameters`);
@@ -66,6 +66,7 @@ export const getPrecomputedDataPreview = async ctx => {
 };
 
 const processZippedData = async (precomputed, ctx) => {
+    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.currentConfig;
     const initDate = new Date();
     const pack = tar.pack();
     const dataSetSize = await ctx.dataset.count();

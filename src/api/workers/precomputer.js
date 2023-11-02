@@ -1,4 +1,3 @@
-import { CancelWorkerError } from '.';
 import {
     startPrecomputed,
     setPrecomputedError,
@@ -40,5 +39,6 @@ const handlePrecomputedError = async (job, err) => {
 const prepareContext = async ctx => {
     ctx.tenant = ctx.job.data.tenant;
     await repositoryMiddleware(ctx, () => Promise.resolve());
+    ctx.currentConfig = await ctx.configTenant.findLast();
     return ctx;
 };

@@ -14,7 +14,6 @@ import {
     RESOURCE_DETAIL_3,
     RESOURCE_TITLE,
 } from '../../../common/overview';
-import { PDFExportOptions } from './displayConfig';
 
 const PDF_MARGIN_LEFT = 70;
 const PDF_IMAGE_TOP_POSITION = 50;
@@ -199,7 +198,8 @@ async function getExportedData(ctx) {
 
 async function getPDFTitle(ctx, locale) {
     let configTitle =
-        PDFExportOptions?.title?.[locale] || PDFExportOptions?.title?.['en'];
+        ctx.currentConfig.front.PDFExportOptions?.title?.[locale] ||
+        ctx.currentConfig.front.PDFExportOptions?.title?.['en'];
 
     if (configTitle) {
         return configTitle;
@@ -224,12 +224,12 @@ async function getPDFTitle(ctx, locale) {
     return locale === 'fr' ? 'Données publiées' : 'Published data';
 }
 
-function renderHeader(doc, PDFTitle) {
-    if (PDFExportOptions.logo) {
+function renderHeader(doc, PDFTitle, ctx) {
+    if (ctx.currentConfig.front.PDFExportOptions.logo) {
         try {
             // Set logo and title in the same line
             doc.image(
-                `src/app/custom/${PDFExportOptions.logo}`,
+                `src/app/custom/${ctx.currentConfig.front.PDFExportOptions.logo}`,
                 PDF_MARGIN_LEFT,
                 PDF_IMAGE_TOP_POSITION,
                 {
@@ -268,7 +268,7 @@ function renderHeader(doc, PDFTitle) {
     doc.moveDown();
 }
 
-function renderDate(doc, locale) {
+function renderDate(doc, locale, ctx) {
     // Add date of publication at right
     doc.font('Helvetica')
         .fontSize(12)
@@ -282,8 +282,8 @@ function renderDate(doc, locale) {
         .lineWidth(2)
         .fillOpacity(0.8)
         .fillAndStroke(
-            PDFExportOptions?.highlightColor || 'black',
-            PDFExportOptions?.highlightColor || 'black',
+            ctx.currentConfig.front.PDFExportOptions?.highlightColor || 'black',
+            ctx.currentConfig.front.PDFExportOptions?.highlightColor || 'black',
         );
     doc.moveDown();
 }
@@ -313,8 +313,8 @@ function renderData(doc, publishedDataset, syndicatedFields) {
     });
 }
 
-function renderFooter(doc, locale) {
-    if (!PDFExportOptions?.footer) {
+function renderFooter(doc, locale, ctx) {
+    if (!ctx.currentConfig.front.PDFExportOptions?.footer) {
         return;
     }
 
@@ -322,11 +322,14 @@ function renderFooter(doc, locale) {
     for (let i = range.start; i < range.start + range.count; i++) {
         doc.switchToPage(i);
         doc.fontSize(6)
-            .fillColor(PDFExportOptions?.highlightColor || 'black')
+            .fillColor(
+                ctx.currentConfig.front.PDFExportOptions?.highlightColor ||
+                    'black',
+            )
             .text(
                 locale === 'fr'
-                    ? PDFExportOptions?.footer['fr']
-                    : PDFExportOptions?.footer['en'],
+                    ? ctx.currentConfig.front.PDFExportOptions?.footer['fr']
+                    : ctx.currentConfig.front.PDFExportOptions?.footer['en'],
                 PDF_MARGIN_LEFT,
                 doc.page.height - 40,
 
@@ -352,9 +355,9 @@ async function exportPDF(ctx) {
         doc.pipe(fs.createWriteStream('/tmp/publication.pdf'));
 
         renderHeader(doc, PDFTitle);
-        renderDate(doc, locale);
+        renderDate(doc, locale, ctx);
         renderData(doc, publishedDataset, syndicatedFields);
-        renderFooter(doc, locale);
+        renderFooter(doc, locale, ctx);
         // Finalize PDF file
         doc.end();
 
