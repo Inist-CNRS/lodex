@@ -9,15 +9,13 @@ import repositoryMiddleware from '../services/repositoryMiddleware';
 export const PRECOMPUTER = 'precomputer';
 
 export const processPrecomputed = (job, done) => {
-    startJobPrecomputed(job)
+    startJobPrecomputed(job, done)
         .then(async () => {
-            job.progress(100);
             const isFailed = await job.isFailed();
             notifyListeners(`${job.data.tenant}-precomputer`, {
-                isPrecomputing: false,
+                isPrecomputing: isFailed ? false : true,
                 success: !isFailed,
             });
-            done();
         })
         .catch(err => {
             handlePrecomputedError(job, err);
@@ -36,10 +34,6 @@ const startJobPrecomputed = async job => {
 
 const handlePrecomputedError = async (job, err) => {
     const ctx = await prepareContext({ job });
-    if (err instanceof CancelWorkerError) {
-        const precomputed = await ctx.precomputed.findOneById(ctx.job.data.id);
-        ctx.dataset.removeAttribute(precomputed.name);
-    }
     await setPrecomputedError(ctx, err);
 };
 

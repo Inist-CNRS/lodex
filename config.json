@@ -189,5 +189,7 @@
         "multilingual": false
     },
     "webServiceBaseURL": "https://data-computer.services.istex.fr/v1/",
-    "ISOLATED_MODE": true
+    "webhookBaseUrlForDevelopment": "https://5863-81-250-164-94.ngrok-free.app",
+    "isolatedMode": false,
+    "webserviceAnswerMode": "retrieve"
 }
