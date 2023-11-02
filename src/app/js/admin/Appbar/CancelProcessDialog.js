@@ -12,7 +12,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import translate from 'redux-polyglot/translate';
 import CancelButton from '../../lib/components/CancelButton';
 
-const CancelPublicationDialog = props => {
+const CancelProcessDialog = props => {
     const { p: polyglot, isOpen, title, content, onConfirm, onCancel } = props;
     return (
         <Dialog open={isOpen}>
@@ -30,7 +30,7 @@ const CancelPublicationDialog = props => {
     );
 };
 
-CancelPublicationDialog.propTypes = {
+CancelProcessDialog.propTypes = {
     p: polyglotPropTypes.isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
@@ -38,4 +38,4 @@ CancelPublicationDialog.propTypes = {
     onCancel: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,
 };
-export default translate(CancelPublicationDialog);
+export default translate(CancelProcessDialog);

@@ -15,7 +15,6 @@ export const getJobLogs = jobId => {
 
 const cancelJob = type => {
     const state = getUserSessionStorageInfo();
-
     const request = getCancelJobRequest(state, type);
     return fetch(request);
 };

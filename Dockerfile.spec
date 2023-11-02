@@ -15,6 +15,7 @@ ENV CYPRESS_CACHE_FOLDER=/app/.cache
 ENV npm_config_cache=/app/.npm
 
 RUN mkdir /app/upload && \
+    mkdir /app/webservice_temp && \
     cp -n ./config/production-dist.js ./config/production.js && \
     npm run build
 
