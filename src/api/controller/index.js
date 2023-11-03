@@ -45,8 +45,8 @@ const render404IndexHtml = ctx => {
 app.use(async (ctx, next) => {
     const { url } = ctx.request;
 
-    // If url is 404 we skip all middlewares
-    if (url.match(/404/)) {
+    // If url is 404 and doesnt contains api/ we skip all middlewares
+    if (url.match(/404/) && !url.match(/api/)) {
         render404IndexHtml(ctx);
         return;
     }
