@@ -2,6 +2,7 @@
 .DEFAULT_GOAL := help
 
 export NODE_ENV ?= development
+export DB_TENANT ?= default
 
 ifneq "$(CI)" "true"
 	USER_ID = $(shell id -u)
@@ -142,13 +143,13 @@ mongo: ## Start the mongo database
 	docker compose up -d mongo
 
 mongo-shell: ## Start the mongo shell
-	docker compose exec mongo mongo lodex
+	docker compose exec mongo mongo lodex_${DB_TENANT}
 
 mongo-shell-test: ## Start the mongo shell for the test database
-	docker compose exec mongo mongo lodex_test
+	docker compose exec mongo mongo lodex_test_${DB_TENANT}
 
-clear-database: ## Clear the whole database
-	docker compose exec mongo mongo lodex --eval " \
+clear-database: ## Clear the whole database named by DB_TENANT (use "default" if missing)
+	docker compose exec mongo mongo lodex_${DB_TENANT} --eval " \
 		db.publishedDataset.remove({}); \
 		db.publishedCharacteristic.remove({}); \
 		db.field.remove({}); \
@@ -158,12 +159,16 @@ clear-database: ## Clear the whole database
 		db.enrichment.remove({}); \
 		db.precomputed.remove({}); \
 	"
-clear-publication: ## Clear the published data, keep uploaded dataset and model
-	docker compose exec mongo mongo lodex --eval " \
+clear-publication: ## Clear the published data, keep uploaded dataset and model in DB_TENANT (use "default" if missing)
+	docker compose exec mongo mongo lodex_${DB_TENANT} --eval " \
 		db.publishedDataset.remove({}); \
 		db.publishedCharacteristic.remove({}); \
 		db.publishedFacet.remove({}); \
 	"
+
+clear-tenants: ## Clear all tenants databases in mongo
+	docker compose exec mongo mongo lodex_admin --eval "db.tenant.remove({});"
+	docker compose exec mongo mongo --quiet --eval 'db.getMongo().getDBNames().forEach(function(i){ if (i !== "lodex_admin") {db.getSiblingDB(i).dropDatabase()}})'
 
 clear-docker: 
 	docker stop lodex-lodex-1 || true
