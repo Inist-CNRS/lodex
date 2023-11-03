@@ -998,3 +998,4 @@ regenerate_vega_lite_spec	Regenerate Vega Lite specifications	Régénérer la sp
 regenerate_vega_spec	Regenerate Vega specifications	Régénérer la spécification Vega
 vega_json_error	The json syntax of Vega Lite specification is wrong!	La syntaxe json de la spécification Vega Lite est erronée !
 "tar-gz"	"TAR.GZ - file from dl.istex.fr"	"TAR.GZ - résultat de dl.istex.fr"
+"config_tenant"	"Settings"	"Configuration"	

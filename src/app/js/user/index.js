@@ -160,6 +160,19 @@ export const getDeleteEnrichmentRequest = (state, id) =>
         method: 'DELETE',
     });
 
+export const getConfigTenantRequest = state =>
+    getRequest(state, {
+        url: `/api/config-tenant`,
+        method: 'GET',
+    });
+
+export const getUpdateConfigTenantRequest = (state, configTenant) =>
+    getRequest(state, {
+        url: `/api/config-tenant/${configTenant._id}`,
+        method: 'PUT',
+        body: configTenant,
+    });
+
 export const getLoadPrecomputedRequest = state =>
     getRequest(state, {
         url: '/api/precomputed',
@@ -647,4 +660,6 @@ export const selectors = {
     getDeleteDatasetRowRequest,
     getExportPDFRequest,
     getDisplayConfigRequest,
+    getConfigTenantRequest,
+    getUpdateConfigTenantRequest,
 };

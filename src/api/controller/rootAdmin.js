@@ -42,7 +42,7 @@ app.use(async (ctx, next) => {
 app.use(koaBodyParser());
 
 const getTenant = async ctx => {
-    ctx.body = await ctx.tenantCollection.findAll();
+    ctx.body = await ctx.tenantCollection.findAll({ createdAt: -1 });
 };
 
 const postTenant = async ctx => {
@@ -66,7 +66,7 @@ const postTenant = async ctx => {
 
         const queue = createWorkerQueue(name, 1);
         bullBoard.addDashboardQueue(name, queue);
-        ctx.body = await ctx.tenantCollection.findAll();
+        ctx.body = await ctx.tenantCollection.findAll({ createdAt: -1 });
     }
 };
 
@@ -80,7 +80,7 @@ const putTenant = async (ctx, id) => {
 
     const update = { description, author, username, password };
     await ctx.tenantCollection.update(id, update);
-    ctx.body = await ctx.tenantCollection.findAll();
+    ctx.body = await ctx.tenantCollection.findAll({ createdAt: -1 });
 };
 
 const deleteTenant = async ctx => {
