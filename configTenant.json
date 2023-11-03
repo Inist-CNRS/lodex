@@ -1,7 +1,8 @@
 {
     "userAuth": {
         "username": "user",
-        "password": "secret"
+        "password": "secret",
+        "active": true
     },
     "enrichmentBatchSize": 10,
     "front": {
