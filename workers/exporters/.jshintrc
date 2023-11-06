@@ -1,7 +1,0 @@
-{
-  "extends": "../../.jshintrc",
-  "globals": {
-    "test": true,
-    "expect" : true
-  }
-}
