@@ -5,10 +5,10 @@ import {
     getPreviewDataEnrichmentRequest,
     getUpdateEnrichmentRequest,
 } from '../../user';
-import { getUserLocalStorageInfo } from './tools';
+import { getUserSessionStorageInfo } from './tools';
 
 export const getPreviewEnrichment = previewEnrichment => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
     const request = getPreviewDataEnrichmentRequest(
         { token },
         previewEnrichment,
@@ -17,19 +17,19 @@ export const getPreviewEnrichment = previewEnrichment => {
 };
 
 export const createEnrichment = enrichment => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
     const request = getCreateEnrichmentRequest({ token }, enrichment);
     return fetch(request);
 };
 
 export const updateEnrichment = enrichment => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
     const request = getUpdateEnrichmentRequest({ token }, enrichment);
     return fetch(request);
 };
 
 export const deleteEnrichment = id => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
     const request = getDeleteEnrichmentRequest({ token }, id);
     return fetch(request);
 };

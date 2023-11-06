@@ -54,7 +54,7 @@ const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
                 {lines.length === 0 && (
                     <Box textAlign={'center'} mb={2}>
                         <Typography variant="body1">
-                            {polyglot.t('enrichment_preview_no_data')}
+                            {polyglot.t('preview_no_data')}
                         </Typography>
                     </Box>
                 )}

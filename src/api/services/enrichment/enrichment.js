@@ -2,7 +2,6 @@ import * as fs from 'fs';
 import path from 'path';
 import ezs from '@ezs/core';
 import progress from '../../services/progress';
-import localConfig from '../../../../config.json';
 
 import { ObjectId } from 'mongodb';
 import from from 'from';
@@ -12,13 +11,11 @@ import {
     FINISHED,
     ERROR,
     CANCELED,
-} from '../../../common/enrichmentStatus';
+} from '../../../common/taskStatus';
 import { ENRICHING, PENDING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError } from '../../workers';
 import getLogger from '../logger';
-
-const { enrichmentBatchSize: BATCH_SIZE = 10 } = localConfig;
 
 const getSourceData = async (ctx, sourceColumn) => {
     const excerptLines = await ctx.dataset.getExcerpt(
@@ -41,6 +38,7 @@ const getSourceData = async (ctx, sourceColumn) => {
 };
 
 export const createEnrichmentRule = async (ctx, enrichment) => {
+    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.currentConfig;
     if (enrichment.advancedMode) {
         return enrichment;
     }
@@ -51,7 +49,7 @@ export const createEnrichmentRule = async (ctx, enrichment) => {
 
     const data = await getSourceData(ctx, enrichment.sourceColumn);
 
-    let rule = getEnrichmentRuleModel(data, enrichment);
+    let rule = getEnrichmentRuleModel(data, enrichment, BATCH_SIZE);
 
     return {
         ...enrichment,
@@ -65,6 +63,7 @@ const cleanWebServiceRule = rule => {
 };
 
 export const getEnrichmentDataPreview = async ctx => {
+    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.currentConfig;
     const { sourceColumn, subPath, rule } = ctx.request.body;
     let previewRule = rule;
     if (!sourceColumn && !rule) {
@@ -73,10 +72,14 @@ export const getEnrichmentDataPreview = async ctx => {
 
     if (!previewRule) {
         const data = await getSourceData(ctx, sourceColumn);
-        previewRule = getEnrichmentRuleModel(data, {
-            sourceColumn,
-            subPath,
-        });
+        previewRule = getEnrichmentRuleModel(
+            data,
+            {
+                sourceColumn,
+                subPath,
+            },
+            BATCH_SIZE,
+        );
     } else {
         previewRule = cleanWebServiceRule(previewRule);
     }
@@ -103,7 +106,7 @@ export const getEnrichmentDataPreview = async ctx => {
     return result;
 };
 
-export const getEnrichmentRuleModel = (sourceData, enrichment) => {
+export const getEnrichmentRuleModel = (sourceData, enrichment, BATCH_SIZE) => {
     try {
         let rule;
         if (!enrichment.sourceColumn) {
@@ -212,15 +215,8 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
 };
 
 export const processEnrichment = async (enrichment, ctx) => {
-    await ctx.enrichment.updateOne(
-        {
-            $or: [
-                { _id: new ObjectId(enrichment._id) },
-                { _id: enrichment._id },
-            ],
-        },
-        { $set: { ['status']: IN_PROGRESS } },
-    );
+    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.currentConfig;
+    await ctx.enrichment.updateStatus(enrichment._id, IN_PROGRESS);
     let errorCount = 0;
 
     const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
@@ -325,15 +321,7 @@ export const processEnrichment = async (enrichment, ctx) => {
             }
         }
     }
-    await ctx.enrichment.updateOne(
-        {
-            $or: [
-                { _id: new ObjectId(enrichment._id) },
-                { _id: enrichment._id },
-            ],
-        },
-        { $set: { ['status']: FINISHED, ['errorCount']: errorCount } },
-    );
+    await ctx.enrichment.updateStatus(enrichment._id, FINISHED, { errorCount });
     progress.finish(ctx.tenant);
     const logData = JSON.stringify({
         level: 'ok',
@@ -346,12 +334,9 @@ export const processEnrichment = async (enrichment, ctx) => {
 };
 
 export const setEnrichmentJobId = async (ctx, enrichmentID, job) => {
-    await ctx.enrichment.updateOne(
-        {
-            $or: [{ _id: new ObjectId(enrichmentID) }, { _id: enrichmentID }],
-        },
-        { $set: { ['jobId']: job.id, ['status']: ENRICHMENT_PENDING } },
-    );
+    await ctx.enrichment.updateStatus(enrichmentID, ENRICHMENT_PENDING, {
+        jobId: job.id,
+    });
 };
 
 export const startEnrichment = async ctx => {
@@ -382,15 +367,11 @@ export const startEnrichment = async ctx => {
 
 export const setEnrichmentError = async (ctx, err) => {
     const id = ctx.job?.data?.id;
-    await ctx.enrichment.updateOne(
+    await ctx.enrichment.updateStatus(
+        id,
+        err instanceof CancelWorkerError ? CANCELED : ERROR,
         {
-            $or: [{ _id: new ObjectId(id) }, { _id: id }],
-        },
-        {
-            $set: {
-                ['status']: err instanceof CancelWorkerError ? CANCELED : ERROR,
-                ['message']: err?.message,
-            },
+            message: err?.message,
         },
     );
 

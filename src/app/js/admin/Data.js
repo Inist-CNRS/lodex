@@ -7,6 +7,7 @@ import { DataRoute } from './DataRoute';
 import { DataAddRoute } from './DataAddRoute';
 import RemovedResourcePage from './removedResources/RemovedResourcePage';
 import { EnrichmentRoute } from './EnrichmentRoute';
+import { PrecomputedRoute } from './PrecomputedRoute';
 
 const DataComponent = () => {
     let { path } = useRouteMatch();
@@ -27,9 +28,13 @@ const DataComponent = () => {
                 exact
                 component={() => <RemovedResourcePage />}
             />
-              <Route
+            <Route
                 path={`${path}/enrichment`}
                 component={() => <EnrichmentRoute />}
+            />
+            <Route
+                path={`${path}/precomputed`}
+                component={() => <PrecomputedRoute />}
             />
             <Route
                 path={path}
@@ -40,7 +45,7 @@ const DataComponent = () => {
     );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = () => ({
     withInitialData,
 });
 export const Data = connect(mapStateToProps)(DataComponent);

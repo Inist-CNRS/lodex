@@ -1,20 +1,32 @@
 import React, { useEffect, useState } from 'react';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import LaunchIcon from '@mui/icons-material/Launch';
 
 import { getHost } from '../../../common/uris';
 import CreateTenantDialog from './CreateTenantDialog';
 import DeleteTenantDialog from './DeleteTenantDialog';
-import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid';
+import UpdateTenantDialog from './UpdateTenantDialog';
+import {
+    DataGrid,
+    GridToolbarColumnsButton,
+    GridToolbarContainer,
+    GridToolbarDensitySelector,
+    GridToolbarFilterButton,
+} from '@mui/x-data-grid';
 import { Button, Tooltip } from '@mui/material';
 
 const baseUrl = getHost();
 
-const Tenants = () => {
+const Tenants = ({ handleLogout }) => {
     const [tenants, setTenants] = useState([]);
     const [openCreateTenantDialog, setOpenCreateTenantDialog] = useState(false);
     const [openDeleteTenantDialog, setOpenDeleteTenantDialog] = useState(false);
+    const [tenantToUpdate, setTenantToUpdate] = useState(null);
 
     const onChangeTenants = changedTenants => {
         if (changedTenants instanceof Array) {
@@ -29,11 +41,18 @@ const Tenants = () => {
                 'X-Lodex-Tenant': 'admin',
             },
         })
+            .then(response => {
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
+                }
+                return response;
+            })
             .then(response => response.json())
             .then(onChangeTenants);
     }, []);
 
-    const addTenant = name => {
+    const addTenant = ({ name, description, author }) => {
         fetch('/rootAdmin/tenant', {
             credentials: 'include',
             headers: {
@@ -41,12 +60,91 @@ const Tenants = () => {
                 'X-Lodex-Tenant': 'admin',
             },
             method: 'POST',
-            body: JSON.stringify({ name }),
+            body: JSON.stringify({ name, description, author }),
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
+                }
+
+                if (response.status === 403) {
+                    toast.error('Action non autorisée', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        theme: 'light',
+                    });
+                    return;
+                }
+
+                if (response.status === 200) {
+                    toast.success('Instance créée', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        theme: 'light',
+                    });
+                }
+
+                return response.json();
+            })
             .then(data => {
                 onChangeTenants(data);
                 setOpenCreateTenantDialog(false);
+            });
+    };
+
+    const updateTenant = (id, updatedTenant) => {
+        fetch(`/rootAdmin/tenant/${id}`, {
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Lodex-Tenant': 'admin',
+            },
+            method: 'PUT',
+            body: JSON.stringify(updatedTenant),
+        })
+            .then(response => {
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
+                }
+
+                if (response.status === 403) {
+                    toast.error('Action non autorisée', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        theme: 'light',
+                    });
+                    return;
+                }
+
+                if (response.status === 200) {
+                    if (response.status === 200) {
+                        toast.success('Instance modifiée', {
+                            position: 'top-right',
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            theme: 'light',
+                        });
+                    }
+                }
+
+                return response.json();
+            })
+            .then(data => {
+                onChangeTenants(data);
+                setTenantToUpdate(null);
             });
     };
 
@@ -60,7 +158,39 @@ const Tenants = () => {
             method: 'DELETE',
             body: JSON.stringify({ _id, name }),
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
+                }
+
+                if (response.status === 403) {
+                    toast.error('Action non autorisée', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        theme: 'light',
+                    });
+                    return;
+                }
+
+                if (response.status === 200) {
+                    if (response.status === 200) {
+                        toast.success('Instance supprimée', {
+                            position: 'top-right',
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            theme: 'light',
+                        });
+                    }
+                }
+
+                return response.json();
+            })
             .then(data => {
                 onChangeTenants(data);
                 setOpenDeleteTenantDialog(false);
@@ -70,6 +200,13 @@ const Tenants = () => {
     const CustomToolbar = () => {
         return (
             <GridToolbarContainer>
+                <Tooltip title={'Colonnes'}>
+                    <GridToolbarColumnsButton />
+                </Tooltip>
+                <GridToolbarFilterButton />
+                <Tooltip title={'Densité'}>
+                    <GridToolbarDensitySelector />
+                </Tooltip>
                 <Tooltip title="Ajoute une instance">
                     <Button
                         onClick={() => setOpenCreateTenantDialog(true)}
@@ -88,27 +225,83 @@ const Tenants = () => {
         );
     };
 
+    const formatValue = value => {
+        if (value == null) {
+            return '-';
+        }
+        return value;
+    };
+
     // Define the columns for the datagrid
     const columns = [
         { field: '_id', headerName: 'ID', width: 200 },
-        { field: 'name', headerName: 'Name', width: 150 },
+        { field: 'name', headerName: 'Nom', flex: 1 },
+        {
+            field: 'description',
+            headerName: 'Description',
+            flex: 1,
+            valueFormatter: params => {
+                return formatValue(params.value);
+            },
+        },
+        {
+            field: 'author',
+            headerName: 'Auteur',
+            flex: 1,
+            valueFormatter: params => {
+                return formatValue(params.value);
+            },
+        },
+        {
+            field: 'createdAt',
+            headerName: 'Créée le',
+            flex: 1,
+            valueFormatter: params => {
+                if (params.value == null) {
+                    return '-';
+                }
+
+                // Format the date
+                const date = new Date(params.value);
+                return date.toLocaleDateString('fr-FR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                });
+            },
+        },
         {
             field: 'open',
-            headerName: 'Open',
-            width: 150,
+            headerName: 'Ouvrir',
+            flex: 1,
             renderCell: params => {
                 const name = params.row.name;
                 return (
                     <Button target={name} href={`${baseUrl}/instance/${name}`}>
-                        OPEN
+                        <LaunchIcon />
+                    </Button>
+                );
+            },
+        },
+        {
+            field: 'update',
+            headerName: 'Modifier',
+            flex: 1,
+            renderCell: params => {
+                return (
+                    <Button
+                        color="warning"
+                        onClick={() => setTenantToUpdate(params.row)}
+                    >
+                        <EditIcon />
                     </Button>
                 );
             },
         },
         {
             field: 'delete',
-            headerName: 'Delete',
-            width: 150,
+            headerName: 'Supprimer',
+            flex: 1,
             renderCell: params => {
                 return (
                     <Button
@@ -124,7 +317,7 @@ const Tenants = () => {
 
     return (
         <>
-            <div style={{ height: 400, width: '100%' }}>
+            <div style={{ height: `calc(100vh - 110px)`, width: '100%' }}>
                 <DataGrid
                     getRowId={row => row._id}
                     rows={tenants}
@@ -139,13 +332,24 @@ const Tenants = () => {
                 handleClose={() => setOpenCreateTenantDialog(false)}
                 createAction={addTenant}
             />
+            <UpdateTenantDialog
+                tenant={tenantToUpdate}
+                handleClose={() => setTenantToUpdate(null)}
+                updateAction={updateTenant}
+            />
+
             <DeleteTenantDialog
                 tenant={openDeleteTenantDialog}
                 handleClose={() => setOpenDeleteTenantDialog(false)}
                 deleteAction={deleteTenant}
             />
+            <ToastContainer />
         </>
     );
+};
+
+Tenants.propTypes = {
+    handleLogout: PropTypes.func.isRequired,
 };
 
 export default Tenants;

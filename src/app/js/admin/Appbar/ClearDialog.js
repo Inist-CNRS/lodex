@@ -26,7 +26,7 @@ import { loadField } from '../../fields';
 import { loadPublication } from '../publication';
 import CancelButton from '../../lib/components/CancelButton';
 import { loadSubresources } from '../subresource';
-import { extractTenantFromUrl } from '../../public/tenantTools';
+import { extractTenantFromUrl } from '../../../../common/tools/tenantTools';
 
 const TRANSLATION_KEY = new Map([
     ['dataset', 'clear_dataset'],

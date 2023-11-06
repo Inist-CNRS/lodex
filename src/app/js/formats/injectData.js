@@ -12,19 +12,60 @@ import {
     polyglot as polyglotPropTypes,
 } from '../propTypes.js';
 import { fromFormat } from '../public/selectors';
-import {
-    preLoadFormatData,
-    loadFormatData,
-    unLoadFormatData,
-} from '../formats/reducer';
+import { preLoadFormatData, loadFormatData, unLoadFormatData } from './reducer';
 import Loading from '../lib/components/Loading';
 import InvalidFormat from './InvalidFormat';
+import { CircularProgress } from '@mui/material';
 
 const styles = {
     message: {
         margin: 20,
     },
+    format: {
+        container: {
+            position: 'relative',
+        },
+        loading: {
+            zIndex: 99998,
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            pointerEvents: 'none',
+            backgroundColor: 'rgba(0,0,0,0.15)',
+            opacity: 0,
+            animationDuration: '150ms',
+            animationFillMode: 'forwards',
+        },
+        progress: {
+            zIndex: 99999,
+            top: 'calc(50% - 20px)',
+            left: 'calc(50% - 20px)',
+            position: 'absolute',
+            pointerEvents: 'none',
+        },
+    },
 };
+
+const animationKeyframes = `
+@keyframes injectDataLoadingStart {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes injectDataLoadingEnd {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}`;
 
 const getCreateUrl = url => {
     if (typeof url === 'function') {
@@ -55,10 +96,19 @@ export default (
             formatData: PropTypes.any,
             formatTotal: PropTypes.any,
             isLoaded: PropTypes.bool.isRequired,
+            isFormatLoading: PropTypes.bool.isRequired,
             error: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
             location: PropTypes.shape({ pathname: PropTypes.string }),
             p: polyglotPropTypes.isRequired,
         };
+
+        constructor(props) {
+            super(props);
+            this.state = {
+                isLoading: true,
+            };
+            this.handleAnimationEnd = this.handleAnimationEnd.bind(this);
+        }
 
         loadFormatData = ({ ...args }) => {
             const { loadFormatData, location } = this.props;
@@ -109,6 +159,13 @@ export default (
 
         componentDidUpdate(prevProps) {
             const { field, resource } = this.props;
+
+            if (!this.state.isLoading && this.props.isFormatLoading) {
+                this.setState({
+                    isLoading: true,
+                });
+            }
+
             if (
                 !field ||
                 (isEqual(field, prevProps.field) &&
@@ -121,6 +178,14 @@ export default (
             this.loadFormatData();
         }
 
+        handleAnimationEnd() {
+            if (this.state.isLoading && !this.props.isFormatLoading) {
+                this.setState({
+                    isLoading: false,
+                });
+            }
+        }
+
         render() {
             const {
                 loadFormatData,
@@ -129,6 +194,7 @@ export default (
                 p: polyglot,
                 field,
                 isLoaded,
+                isFormatLoading,
                 error,
                 resource,
                 ...props
@@ -159,15 +225,34 @@ export default (
             }
 
             return (
-                <FormatView
-                    {...props}
-                    p={polyglot}
-                    field={field}
-                    resource={resource}
-                    formatData={formatData}
-                    formatTotal={formatTotal}
-                    filterFormatData={this.filterFormatData}
-                />
+                <div style={styles.format.container}>
+                    <style>{animationKeyframes}</style>
+                    <div
+                        onAnimationEnd={this.handleAnimationEnd}
+                        style={{
+                            ...styles.format.loading,
+                            animationName: isFormatLoading
+                                ? 'injectDataLoadingStart'
+                                : 'injectDataLoadingEnd',
+                        }}
+                    ></div>
+                    {this.state.isLoading ? (
+                        <CircularProgress
+                            sx={styles.format.progress}
+                            variant="indeterminate"
+                            size={40}
+                        />
+                    ) : null}
+                    <FormatView
+                        {...props}
+                        p={polyglot}
+                        field={field}
+                        resource={resource}
+                        formatData={formatData}
+                        formatTotal={formatTotal}
+                        filterFormatData={this.filterFormatData}
+                    />
+                </div>
             );
         }
     }
@@ -184,6 +269,7 @@ export default (
             formatData: fromFormat.getFormatData(state, field.name),
             formatTotal: fromFormat.getFormatTotal(state, field.name),
             isLoaded,
+            isFormatLoading: get(state, 'dataset.formatLoading', false),
             error: fromFormat.getFormatError(state, field.name),
         };
     };

@@ -35,7 +35,6 @@ services:
             - .:/app
             - ./.cache:/root/.cache
         working_dir: /app
-        user: '${UID}:${GID}'
         environment:
             NODE_ENV: 'test'
         ports:
@@ -58,7 +57,6 @@ services:
             - .:/app
             - ./.cache:/root/.cache
         working_dir: /app
-        user: '${UID}:${GID}'
         environment:
             npm_config_cache: /app/.npm
             CYPRESS_CACHE_FOLDER: /app/.cache

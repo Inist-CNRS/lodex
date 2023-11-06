@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Container, TextField, Typography } from '@mui/material';
+import { ROOT_ROLE } from '../../../common/tools/tenantTools';
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
@@ -23,7 +24,7 @@ const LoginForm = () => {
             }
 
             const data = await response.json();
-            if (data.role === 'root') {
+            if (data.role === ROOT_ROLE) {
                 localStorage.setItem('root-admin-user', JSON.stringify(data));
                 window.location.href = '/instances';
             } else {
@@ -63,7 +64,8 @@ const LoginForm = () => {
                 }}
             >
                 <TextField
-                    label="Username"
+                    label="username"
+                    name="username"
                     variant="outlined"
                     margin="normal"
                     required
@@ -75,6 +77,7 @@ const LoginForm = () => {
                 />
                 <TextField
                     label="Password"
+                    name="password"
                     variant="outlined"
                     margin="normal"
                     required

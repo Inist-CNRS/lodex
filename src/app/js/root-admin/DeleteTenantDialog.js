@@ -18,17 +18,18 @@ const DeleteTenantDialog = ({ tenant, handleClose, deleteAction }) => {
             onClose={handleClose}
             scroll="body"
             maxWidth="md"
+            fullWidth
         >
             <DialogTitle>
-                Confirm delete of tenant:
-                <br />
-                <b>{tenant.name}</b>
+                Confirmer la suppression de : <b>{tenant.name}</b>
             </DialogTitle>
             <DialogContent>
                 <TextField
                     id="tenant-name-field"
                     fullWidth
-                    placeholder={'Type tenant name to delete'}
+                    placeholder={
+                        "Taper le nom de l'instance pour confirmer la suppression"
+                    }
                     onChange={event => setName(event.target.value)}
                     error={name !== tenant.name}
                     value={name}
@@ -45,7 +46,7 @@ const DeleteTenantDialog = ({ tenant, handleClose, deleteAction }) => {
                     disabled={name !== tenant.name}
                     sx={{ height: '100%' }}
                 >
-                    Delete
+                    Supprimer
                 </Button>
             </DialogActions>
         </Dialog>

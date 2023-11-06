@@ -9,11 +9,13 @@ import { loadParsingResult as loadParsingResultAction } from './parsing';
 import { loadPublication as loadPublicationAction } from './publication';
 import { loadSubresources as loadSubresourcesAction } from './subresource';
 import { loadEnrichments as loadEnrichmentsAction } from './enrichment';
+import { loadPrecomputed as loadPrecomputedAction } from './precomputed';
 import {
     fromParsing,
     fromPublication,
     fromSubresources,
     fromEnrichments,
+    fromPrecomputed,
 } from './selectors';
 
 export const withInitialDataHoc = BaseComponent =>
@@ -23,6 +25,7 @@ export const withInitialDataHoc = BaseComponent =>
             loadPublication: PropTypes.func.isRequired,
             loadSubresources: PropTypes.func.isRequired,
             loadEnrichments: PropTypes.func.isRequired,
+            loadPrecomputed: PropTypes.func.isRequired,
             isLoading: PropTypes.bool.isRequired,
         };
 
@@ -31,6 +34,7 @@ export const withInitialDataHoc = BaseComponent =>
             this.props.loadParsingResult();
             this.props.loadSubresources();
             this.props.loadEnrichments();
+            this.props.loadPrecomputed();
         }
 
         render() {
@@ -55,6 +59,7 @@ export default BaseComponent => {
         loadPublication: loadPublicationAction,
         loadSubresources: loadSubresourcesAction,
         loadEnrichments: loadEnrichmentsAction,
+        loadPrecomputed: loadPrecomputedAction,
     };
 
     const mapStateToProps = state => ({
@@ -62,7 +67,8 @@ export default BaseComponent => {
             fromParsing.isParsingLoading(state) ||
             fromPublication.isPublicationLoading(state) ||
             fromSubresources.isLoading(state) ||
-            fromEnrichments.isLoading(state),
+            fromEnrichments.isLoading(state) ||
+            fromPrecomputed.isLoading(state),
     });
 
     return compose(

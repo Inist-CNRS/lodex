@@ -6,6 +6,7 @@ import fetchSaga from '../lib/sagas/fetchSaga';
 import { LOGIN_FORM_NAME, loginSuccess } from './';
 import { fromUser, getCurrentSearch } from '../sharedSelectors';
 import { handleLoginRequest } from './sagas';
+import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
 
 describe('user saga', () => {
     describe('handleLoginRequest', () => {
@@ -36,8 +37,9 @@ describe('user saga', () => {
 
         it('should put loginSuccess action with the token from fetchLogin', () => {
             expect(
-                saga.next({ response: { token: 'foo', role: 'admin' } }).value,
-            ).toEqual(put(loginSuccess({ token: 'foo', role: 'admin' })));
+                saga.next({ response: { token: 'foo', role: ADMIN_ROLE } })
+                    .value,
+            ).toEqual(put(loginSuccess({ token: 'foo', role: ADMIN_ROLE })));
         });
 
         it('should redirect to the right page', () => {

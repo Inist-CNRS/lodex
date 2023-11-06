@@ -2,16 +2,21 @@ import { auth } from 'config';
 import jwt from 'jsonwebtoken';
 
 import { postLogin as login } from './login';
+import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
 
 const expDate = Date.now();
 
 describe('login', () => {
-    it('should set ctx.status to 401, if ctx.body.username do not match with config', () => {
+    it('should set ctx.status to 401, if ctx.body.username do not match with config', async () => {
         const ctx = {
-            ezMasterConfig: {
-                username: 'admin',
-                password: 'secret',
+            ezMasterConfig: {},
+            tenantCollection: {
+                findOneByName: () => ({
+                    username: 'admin',
+                    password: 'secret',
+                }),
             },
+            tenant: 'default',
             request: {
                 body: {
                     username: 'not admin',
@@ -19,16 +24,20 @@ describe('login', () => {
                 },
             },
         };
-        login(expDate)(ctx);
+        await login(expDate)(ctx);
         expect(ctx.status).toBe(401);
     });
 
-    it('should set ctx.status to 401, if ctx.body.password do not match with config', () => {
+    it('should set ctx.status to 401, if ctx.body.password do not match with config', async () => {
         const ctx = {
-            ezMasterConfig: {
-                username: 'admin',
-                password: 'secret',
+            ezMasterConfig: {},
+            tenantCollection: {
+                findOneByName: () => ({
+                    username: 'admin',
+                    password: 'secret',
+                }),
             },
+            tenant: 'default',
             request: {
                 body: {
                     username: 'user',
@@ -36,20 +45,24 @@ describe('login', () => {
                 },
             },
         };
-        login(expDate)(ctx);
+        await login(expDate)(ctx);
         expect(ctx.status).toBe(401);
     });
 
-    it('should return header token and set cookie with cookie token for admin when password and user name match config', () => {
+    it('should return header token and set cookie with cookie token for admin when password and user name match config', async () => {
         let setCall;
         const ctx = {
-            ezMasterConfig: {
-                username: 'user',
-                password: 'secret',
+            ezMasterConfig: {},
+            tenantCollection: {
+                findOneByName: () => ({
+                    username: 'admin',
+                    password: 'secret',
+                }),
             },
+            tenant: 'default',
             request: {
                 body: {
-                    username: 'user',
+                    username: 'admin',
                     password: 'secret',
                 },
             },
@@ -60,24 +73,24 @@ describe('login', () => {
             },
         };
 
-        login(expDate)(ctx);
+        await login(expDate)(ctx);
         expect(ctx.body).toEqual({
             token: jwt.sign(
                 {
-                    username: 'user',
-                    role: 'admin',
+                    username: 'admin',
+                    role: ADMIN_ROLE,
                     exp: Math.ceil(expDate / 1000) + auth.expiresIn,
                 },
                 auth.headerSecret,
             ),
-            role: 'admin',
+            role: ADMIN_ROLE,
         });
         expect(setCall).toEqual([
-            'lodex_token',
+            'lodex_token_default',
             jwt.sign(
                 {
-                    username: 'user',
-                    role: 'admin',
+                    username: 'admin',
+                    role: ADMIN_ROLE,
                     exp: Math.ceil(expDate / 1000) + auth.expiresIn,
                 },
                 auth.cookieSecret,
@@ -87,16 +100,22 @@ describe('login', () => {
     });
 
     describe('user authentication', () => {
-        it('should set ctx.status to 401, if ctx.body.username do not match with userAuth config', () => {
+        it('should set ctx.status to 401, if ctx.body.username do not match with userAuth config', async () => {
             const ctx = {
                 ezMasterConfig: {
-                    username: 'admin',
-                    password: 'secret',
                     userAuth: {
                         username: 'user',
                         password: 'secret',
+                        active: true,
                     },
                 },
+                tenantCollection: {
+                    findOneByName: () => ({
+                        username: 'admin',
+                        password: 'secret',
+                    }),
+                },
+                tenant: 'default',
                 request: {
                     body: {
                         username: 'not user',
@@ -104,20 +123,26 @@ describe('login', () => {
                     },
                 },
             };
-            login(expDate)(ctx);
+            await login(expDate)(ctx);
             expect(ctx.status).toBe(401);
         });
 
-        it('should set ctx.status to 401, if ctx.body.password do not match with config', () => {
+        it('should set ctx.status to 401, if ctx.body.password do not match with config', async () => {
             const ctx = {
                 ezMasterConfig: {
-                    username: 'admin',
-                    password: 'secret',
                     userAuth: {
                         username: 'user',
                         password: 'secret',
+                        active: true,
                     },
                 },
+                tenantCollection: {
+                    findOneByName: () => ({
+                        username: 'admin',
+                        password: 'secret',
+                    }),
+                },
+                tenant: 'default',
                 request: {
                     body: {
                         username: 'user',
@@ -125,21 +150,28 @@ describe('login', () => {
                     },
                 },
             };
-            login(expDate)(ctx);
+            await login(expDate)(ctx);
             expect(ctx.status).toBe(401);
         });
 
-        it('should return header token and set cookie with cookie token for user when password and user name match userAuth config', () => {
+        it('should return header token and set cookie with cookie token for user when password and user name match userAuth config', async () => {
             let setCall;
             const ctx = {
-                ezMasterConfig: {
-                    username: 'admin',
-                    password: 'secret',
+                currentConfig: {
                     userAuth: {
                         username: 'user',
                         password: 'secret',
+                        active: true,
                     },
                 },
+                ezMasterConfig: {},
+                tenantCollection: {
+                    findOneByName: () => ({
+                        username: 'admin',
+                        password: 'secret',
+                    }),
+                },
+                tenant: 'default',
                 request: {
                     body: {
                         username: 'user',
@@ -153,7 +185,7 @@ describe('login', () => {
                 },
             };
 
-            login(expDate)(ctx);
+            await login(expDate)(ctx);
             expect(ctx.body).toEqual({
                 token: jwt.sign(
                     {
@@ -166,7 +198,7 @@ describe('login', () => {
                 role: 'user',
             });
             expect(setCall).toEqual([
-                'lodex_token',
+                'lodex_token_default',
                 jwt.sign(
                     {
                         username: 'user',

@@ -5,8 +5,10 @@ import publishedDataset from '../models/publishedDataset';
 import publishedFacet from '../models/publishedFacet';
 import subresource from '../models/subresource';
 import enrichment from '../models/enrichment';
+import precomputed from '../models/precomputed';
 import mongoClient from './mongoClient';
 import tenant from '../models/tenant';
+import configTenant from '../models/configTenant';
 
 export const mongoClientFactory = mongoClientImpl => async (ctx, next) => {
     ctx.db = await mongoClientImpl(ctx.tenant);
@@ -14,16 +16,18 @@ export const mongoClientFactory = mongoClientImpl => async (ctx, next) => {
     ctx.field = await field(ctx.db);
     ctx.subresource = await subresource(ctx.db);
     ctx.enrichment = await enrichment(ctx.db);
+    ctx.precomputed = await precomputed(ctx.db);
     ctx.publishedCharacteristic = await publishedCharacteristic(ctx.db);
     ctx.publishedDataset = await publishedDataset(ctx.db);
     ctx.publishedFacet = await publishedFacet(ctx.db);
+    ctx.configTenant = await configTenant(ctx.db);
 
     await next();
 };
 
 export const mongoRootAdminClient = async (ctx, next) => {
-    ctx.db = await mongoClient('admin');
-    ctx.tenant = await tenant(ctx.db);
+    ctx.rootAdminDb = await mongoClient('admin');
+    ctx.tenantCollection = await tenant(ctx.rootAdminDb);
     await next();
 };
 

@@ -12,6 +12,7 @@ import exportPDFPublishedDataset from './exportPDF';
 import facet from './facet';
 import fieldRoutes from './field';
 import login from './login';
+import logoutController from './logout';
 import parsing from './parsing';
 import publication from './publication';
 import publish from './publish';
@@ -26,43 +27,51 @@ import loader from './loader';
 import translate from './translate';
 import subresource from './subresource';
 import enrichment from './enrichment';
+import configTenant from './configTenant';
+import precomputed from './precomputed';
 import job from './job';
 import dump from './dump';
 import displayConfig from './displayConfig';
+import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
 
 const app = new Koa();
 
 app.use(ezMasterConfig);
 
 app.use(mount('/login', login));
+app.use(mount('/logout', logoutController));
 app.use(route.get('/breadcrumb', breadcrumbs));
 app.use(route.get('/menu', menu));
 app.use(route.get('/displayConfig', displayConfig));
 app.use(mount('/translations', translate));
 
-app.use(
-    jwt({
+app.use(async (ctx, next) => {
+    const jwtMid = await jwt({
         secret: auth.cookieSecret,
-        cookie: 'lodex_token',
+        cookie: `lodex_token_${ctx.tenant}`,
         key: 'cookie',
         passthrough: true,
-    }),
-);
+    });
+    return jwtMid(ctx, next);
+});
+
 app.use(jwt({ secret: auth.headerSecret, key: 'header', passthrough: true }));
 
 app.use(async (ctx, next) => {
     if (
-        get(ctx, 'state.cookie.role') === 'admin' &&
-        get(ctx, 'state.header.role') === 'admin'
+        get(ctx, 'state.cookie.role') === ADMIN_ROLE &&
+        get(ctx, 'state.header.role') === ADMIN_ROLE
     ) {
         ctx.state.isAdmin = true;
     }
-    if (!ctx.ezMasterConfig.userAuth) {
+    if (!ctx.currentConfig?.userAuth?.active) {
         return next();
     }
     if (!ctx.state.cookie || !ctx.state.header) {
         ctx.status = 401;
-        ctx.cookies.set('lodex_token', '', { expires: new Date() });
+        ctx.cookies.set(`lodex_token_${ctx.tenant}`, '', {
+            expires: new Date(),
+        });
         ctx.body = 'No authentication token found';
         return;
     }
@@ -80,7 +89,9 @@ app.use(mount('/publishedDataset', publishedDataset));
 app.use(async (ctx, next) => {
     if (!ctx.state.cookie || !ctx.state.header) {
         ctx.status = 401;
-        ctx.cookies.set('lodex_token', '', { expires: new Date() });
+        ctx.cookies.set(`lodex_token_${ctx.tenant}`, '', {
+            expires: new Date(),
+        });
         ctx.body = 'No authentication token found';
         return;
     }
@@ -94,8 +105,8 @@ app.use(async (ctx, next) => {
     }
 
     if (
-        get(ctx, 'state.cookie.role') !== 'admin' ||
-        get(ctx, 'state.header.role') !== 'admin'
+        get(ctx, 'state.cookie.role') !== ADMIN_ROLE ||
+        get(ctx, 'state.header.role') !== ADMIN_ROLE
     ) {
         ctx.status = 403;
         ctx.body = 'Forbidden';
@@ -108,6 +119,8 @@ app.use(mount('/characteristic', characteristic));
 app.use(mount('/field', fieldRoutes));
 app.use(mount('/subresource', subresource));
 app.use(mount('/enrichment', enrichment));
+app.use(mount('/config-tenant', configTenant));
+app.use(mount('/precomputed', precomputed));
 app.use(mount('/job', job));
 app.use(mount('/parsing', parsing));
 app.use(mount('/publish', publish));

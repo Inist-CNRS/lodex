@@ -1,9 +1,9 @@
-import { getUserLocalStorageInfo } from '../../admin/api/tools';
+import { getUserSessionStorageInfo } from '../../admin/api/tools';
 import fetch from '../../lib/fetch';
 import { getExportPDFRequest } from '../../user';
 
 const exportPDF = async options => {
-    const { token } = getUserLocalStorageInfo();
+    const { token } = getUserSessionStorageInfo();
 
     // set facets for url query
     options.facets = encodeURIComponent(JSON.stringify(options.facets));

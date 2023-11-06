@@ -1,15 +1,15 @@
-export const getUserLocalStorageInfo = () => {
-    const localStorageItem = JSON.parse(
-        window.localStorage.getItem('redux-localstorage'),
+export const getUserSessionStorageInfo = () => {
+    const sessionStorageItem = JSON.parse(
+        window.sessionStorage.getItem('redux-localstorage'),
     );
-    if (typeof localStorageItem === 'string') {
+    if (typeof sessionStorageItem === 'string') {
         try {
-            const localStorage = JSON.parse(localStorageItem);
-            return localStorage.user;
+            const sessionStorage = JSON.parse(sessionStorageItem);
+            return sessionStorage.user;
         } catch (e) {
-            console.error('Error parsing localStorageItem', e);
+            console.error('Error parsing sessionStorageItem', e);
             return null;
         }
     }
-    return localStorageItem.user;
+    return sessionStorageItem.user;
 };

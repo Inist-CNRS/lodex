@@ -44,9 +44,10 @@ import {
     ERROR,
     CANCELED,
     PAUSED,
-} from '../../../../common/enrichmentStatus';
+} from '../../../../common/taskStatus';
 import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
+import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 
 // UTILITARY PART
 const ENRICHMENT_FORM = 'ENRICHMENT_FORM';
@@ -283,7 +284,7 @@ export const EnrichmentForm = ({
                     setEnrichmentLogs(result.response.logs.reverse());
                 },
                 () => {
-                    toast(polyglot.t('enrichment_logs_error'), {
+                    toast(polyglot.t('logs_error'), {
                         type: toast.TYPE.ERROR,
                     });
                 },
@@ -294,7 +295,7 @@ export const EnrichmentForm = ({
     useEffect(() => {
         handleGetLogs();
         const socket = io();
-        const tenant = sessionStorage.getItem('lodex-tenant') || 'default';
+        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         const dbName = sessionStorage.getItem('lodex-dbName');
         socket.on(
             `${dbName}_${tenant}-enrichment-job-${initialValues?.jobId}`,
@@ -383,7 +384,7 @@ export const EnrichmentForm = ({
                                 }}
                                 onClick={() => setOpenEnrichmentLogs(true)}
                             >
-                                {polyglot.t('enrichment_see_logs')}
+                                {polyglot.t('see_logs')}
                             </Button>
                             <EnrichmentLogsDialogComponent
                                 isOpen={openEnrichmentLogs}
@@ -549,7 +550,7 @@ export const EnrichmentForm = ({
 };
 
 // REDUX PART
-const formSelector = formValueSelector('ENRICHMENT_FORM');
+const formSelector = formValueSelector(ENRICHMENT_FORM);
 
 const mapStateToProps = (state, { match }) => ({
     formValues: formSelector(
@@ -572,7 +573,7 @@ const mapStateToProps = (state, { match }) => ({
 });
 const mapDispatchToProps = {
     onChangeWebServiceUrl: value =>
-        change('ENRICHMENT_FORM', 'webServiceUrl', value),
+        change(ENRICHMENT_FORM, 'webServiceUrl', value),
     onLaunchEnrichment: launchEnrichment,
     onLoadEnrichments: loadEnrichments,
 };

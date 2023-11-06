@@ -20,9 +20,11 @@ describe('mongoClient middleware', () => {
             'field',
             'subresource',
             'enrichment',
+            'precomputed',
             'publishedCharacteristic',
             'publishedDataset',
             'publishedFacet',
+            'configTenant',
         ]);
     });
 });

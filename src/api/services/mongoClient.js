@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import { MongoClient, Db } from 'mongodb';
 import config from 'config';
+import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 
 /**
  * @type {Map<string, MongoClient>}
@@ -9,7 +10,7 @@ let clients = new Map();
 
 export const mongoConnectionString = tenant =>
     `mongodb://${config.mongo.host}/${config.mongo.dbName}_${tenant ||
-        'default'}`;
+        DEFAULT_TENANT}`;
 
 /**
  * Get the DBMS client

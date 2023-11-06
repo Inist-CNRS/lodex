@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 import omit from 'lodash.omit';
 
 import getQueryString from '../lib/getQueryString';
+import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
 
 export const LOGIN_FORM_NAME = 'login';
 export const TOGGLE_LOGIN = 'TOGGLE_LOGIN';
@@ -50,7 +51,7 @@ export const loginSuccess = createAction(LOGIN_SUCCESS);
 export const logout = createAction(LOGOUT);
 export const signOut = createAction(SIGNOUT);
 
-export const isAdmin = state => state.role === 'admin';
+export const isAdmin = state => state.role === ADMIN_ROLE;
 export const getRole = state => state.role || 'not logged';
 export const getToken = state => state.token;
 export const getCookie = state => state.cookie;
@@ -103,6 +104,12 @@ export const getLoginRequest = (state, credentials) =>
         method: 'POST',
     });
 
+export const getLogoutRequest = state =>
+    getRequest(state, {
+        url: '/api/logout',
+        method: 'POST',
+    });
+
 export const getLoadSubresourcesRequest = state =>
     getRequest(state, {
         url: '/api/subresource',
@@ -150,6 +157,57 @@ export const getUpdateEnrichmentRequest = (state, enrichment) =>
 export const getDeleteEnrichmentRequest = (state, id) =>
     getRequest(state, {
         url: `/api/enrichment/${id}`,
+        method: 'DELETE',
+    });
+
+export const getConfigTenantRequest = state =>
+    getRequest(state, {
+        url: `/api/config-tenant`,
+        method: 'GET',
+    });
+
+export const getUpdateConfigTenantRequest = (state, configTenant) =>
+    getRequest(state, {
+        url: `/api/config-tenant/${configTenant._id}`,
+        method: 'PUT',
+        body: configTenant,
+    });
+
+export const getLoadPrecomputedRequest = state =>
+    getRequest(state, {
+        url: '/api/precomputed',
+    });
+
+export const getPrecomputedActionRequest = (state, { action, id }) =>
+    getRequest(state, {
+        url: `/api/precomputed/${action}/${id}`,
+        method: 'POST',
+    });
+
+export const getCreatePrecomputedRequest = (state, body) =>
+    getRequest(state, {
+        url: '/api/precomputed',
+        method: 'POST',
+        body,
+    });
+
+export const getPreviewDataPrecomputedRequest = (state, body) =>
+    getRequest(state, {
+        url: '/api/precomputed/preview',
+        method: 'POST',
+        body,
+    });
+
+export const getUpdatePrecomputedRequest = (state, precomputed) =>
+    getRequest(state, {
+        url: `/api/precomputed/${precomputed._id}`,
+        method: 'PUT',
+        body: precomputed,
+    });
+
+export const getDeletePrecomputedRequest = (state, id) =>
+    getRequest(state, {
+        url: `/api/precomputed/${id}`,
         method: 'DELETE',
     });
 
@@ -540,6 +598,7 @@ export const selectors = {
     getRequest,
     isUserModalShown,
     getLoginRequest,
+    getLogoutRequest,
     getClearUploadRequest,
     getClearDatasetRequest,
     getClearPublishedRequest,
@@ -574,6 +633,11 @@ export const selectors = {
     getUpdateEnrichmentRequest,
     getDeleteEnrichmentRequest,
     getEnrichmentActionRequest,
+    getLoadPrecomputedRequest,
+    getCreatePrecomputedRequest,
+    getUpdatePrecomputedRequest,
+    getDeletePrecomputedRequest,
+    getPrecomputedActionRequest,
     getLoadFieldRequest,
     getUploadUrlRequest,
     getUrlRequest,
@@ -587,6 +651,7 @@ export const selectors = {
     getBreadcrumbRequest,
     getLoadLoadersRequest,
     getPreviewDataEnrichmentRequest,
+    getPreviewDataPrecomputedRequest,
     getCancelJobRequest,
     getLoaderWithScriptRequest,
     postDuplicateField,
@@ -595,4 +660,6 @@ export const selectors = {
     getDeleteDatasetRowRequest,
     getExportPDFRequest,
     getDisplayConfigRequest,
+    getConfigTenantRequest,
+    getUpdateConfigTenantRequest,
 };

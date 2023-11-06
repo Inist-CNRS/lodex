@@ -8,7 +8,14 @@ export default async db => {
     collection.findOneById = async id =>
         collection.findOne({ $or: [{ _id: new ObjectID(id) }, { _id: id }] });
 
-    collection.findAll = async () => collection.find({}).toArray();
+    collection.findOneByName = async name => collection.findOne({ name });
+
+    // sort by createdAt desc if sort is provided. No sort by default
+    collection.findAll = async (sort = {}) =>
+        collection
+            .find({})
+            .sort(sort)
+            .toArray();
 
     collection.create = async data => {
         const { insertedId } = await collection.insertOne(data);
@@ -26,7 +33,9 @@ export default async db => {
                 {
                     $or: [{ _id: objectId }, { _id: id }],
                 },
-                omit(data, ['_id']),
+                {
+                    $set: omit(data, ['_id']),
+                },
                 {
                     returnOriginal: false,
                 },

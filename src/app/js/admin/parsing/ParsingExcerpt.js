@@ -9,7 +9,7 @@ import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 import { fromEnrichments, fromParsing, fromSubresources } from '../selectors';
-import { IN_PROGRESS } from '../../../../common/enrichmentStatus';
+import { IN_PROGRESS } from '../../../../common/taskStatus';
 import { addField } from '../../fields';
 import { useParams } from 'react-router';
 import parseValue from '../../../../common/tools/parseValue';

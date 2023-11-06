@@ -175,10 +175,12 @@ export const EnrichmentCatalog = ({
                             }
                         >
                             <ListItemText
-                                primary={polyglot.t(`ws_${enricher.id}_title`)}
-                                primaryTypographyProps={{
-                                    style: { fontWeight: 'bold' },
-                                }}
+                                disableTypography
+                                primary={
+                                    <Typography sx={{ fontWeight: 'bold' }}>
+                                        {polyglot.t(`ws_${enricher.id}_title`)}
+                                    </Typography>
+                                }
                                 secondary={
                                     <EnricherDescription
                                         enricher={enricher}

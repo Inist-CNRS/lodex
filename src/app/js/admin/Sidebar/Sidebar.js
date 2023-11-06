@@ -4,6 +4,7 @@ import MenuList from '@mui/material/MenuList';
 import Drawer from '@mui/material/Drawer';
 import GridOnIcon from '@mui/icons-material/GridOn';
 import PostAddIcon from '@mui/icons-material/PostAdd';
+import MediationIcon from '@mui/icons-material/Mediation';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import HomeIcon from '@mui/icons-material/Home';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
@@ -24,7 +25,6 @@ import {
 } from '../../../../common/scope';
 import { MenuItemLink } from './MenuItemLink';
 import customTheme from '../../../custom/customTheme';
-import { Box } from '@mui/material';
 
 const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;
@@ -32,7 +32,7 @@ const ACTIVE_BORDER_WIDTH = 3;
 
 const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
     const matchDisplayRoute = useRouteMatch('/display');
-    const matchDataRoute = useRouteMatch('/data');
+    const matchDataRoute = useRouteMatch('/data') || useRouteMatch('/config');
 
     const { open } = useContext(SidebarContext);
 
@@ -55,6 +55,14 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                 primaryText={polyglot.t('enrichment')}
                 leftIcon={<PostAddIcon />}
                 key="data-enrichment"
+            />
+        ),
+        matchDataRoute && (
+            <MenuItemLink
+                to="/data/precomputed"
+                primaryText={polyglot.t('precomputed')}
+                leftIcon={<MediationIcon />}
+                key="data-precomputed"
             />
         ),
         matchDataRoute && hasPublishedDataset && (
@@ -151,18 +159,6 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                 }}
             >
                 <MenuList>{menuItems}</MenuList>
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        bottom: '0',
-                        width: '100%',
-                        textAlign: 'center',
-                        opacity: '0.5',
-                    }}
-                >
-                    Instance:{' '}
-                    {sessionStorage.getItem('lodex-tenant') || 'default'}
-                </Box>
             </Drawer>
         </>
     );

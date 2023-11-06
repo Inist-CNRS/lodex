@@ -148,10 +148,12 @@ export const FormatCatalog = ({
                             data-value={format.componentName}
                         >
                             <ListItemText
-                                primary={polyglot.t(format.name)}
-                                primaryTypographyProps={{
-                                    style: { fontWeight: 'bold' },
-                                }}
+                                disableTypography
+                                primary={
+                                    <Typography sx={{ fontWeight: 'bold' }}>
+                                        {polyglot.t(format.name)}
+                                    </Typography>
+                                }
                                 secondary={
                                     <FormatCatalogDescription
                                         format={format}

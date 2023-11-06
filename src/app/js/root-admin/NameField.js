@@ -14,7 +14,7 @@ const TextMaskCustom = forwardRef(function TextMaskCustom(props, ref) {
             {...other}
             mask={[
                 {
-                    mask: /^[a-zA-Z0-9-_]+$/,
+                    mask: /^[a-z0-9-]+$/,
                     definitions,
                 },
             ]}
@@ -29,6 +29,7 @@ const NameField = inputProps => {
     return (
         <OutlinedInput
             type="text"
+            fullWidth
             {...inputProps}
             label="Name"
             defaultValue={defaultValue}

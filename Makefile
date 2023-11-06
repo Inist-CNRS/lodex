@@ -2,6 +2,7 @@
 .DEFAULT_GOAL := help
 
 export NODE_ENV ?= development
+export DB_TENANT ?= default
 
 ifneq "$(CI)" "true"
 	USER_ID = $(shell id -u)
@@ -58,9 +59,9 @@ build-app:
 	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run build
 
 build: ## Build the docker image localy
-	docker build -t inistcnrs/lodex:14.0.12-alpha --build-arg http_proxy --build-arg https_proxy .
+	docker build -t inistcnrs/lodex:14.0.19-alpha --build-arg http_proxy --build-arg https_proxy .
 publish: build  ## publish version to docker hub
-	docker push inistcnrs/lodex:14.0.12-alpha
+	docker push inistcnrs/lodex:14.0.19-alpha
 
 analyze-code: ## Generate statistics about the bundle. Usage: make analyze-code.
 	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run analyze
@@ -115,7 +116,7 @@ ifeq "$(DISABLE_E2E_TESTS)" "true"
 else
 	$(MAKE) test-e2e-start-dockers
 	npx cypress install
-	./bin/wait-for -t 30 localhost:3000 -- npx cypress run --browser chrome || (\
+	./bin/wait-for -t 30 localhost:3000 -- npx cypress open --browser chrome || (\
 		$(MAKE) test-e2e-stop-dockers && \
 		exit 1)
 endif
@@ -142,13 +143,13 @@ mongo: ## Start the mongo database
 	docker compose up -d mongo
 
 mongo-shell: ## Start the mongo shell
-	docker compose exec mongo mongo lodex
+	docker compose exec mongo mongo lodex_${DB_TENANT}
 
 mongo-shell-test: ## Start the mongo shell for the test database
-	docker compose exec mongo mongo lodex_test
+	docker compose exec mongo mongo lodex_test_${DB_TENANT}
 
-clear-database: ## Clear the whole database
-	docker compose exec mongo mongo lodex --eval " \
+clear-database: ## Clear the whole database named by DB_TENANT (use "default" if missing)
+	docker compose exec mongo mongo lodex_${DB_TENANT} --eval " \
 		db.publishedDataset.remove({}); \
 		db.publishedCharacteristic.remove({}); \
 		db.field.remove({}); \
@@ -156,13 +157,18 @@ clear-database: ## Clear the whole database
 		db.publishedFacet.remove({}); \
 		db.subresource.remove({}); \
 		db.enrichment.remove({}); \
+		db.precomputed.remove({}); \
 	"
-clear-publication: ## Clear the published data, keep uploaded dataset and model
-	docker compose exec mongo mongo lodex --eval " \
+clear-publication: ## Clear the published data, keep uploaded dataset and model in DB_TENANT (use "default" if missing)
+	docker compose exec mongo mongo lodex_${DB_TENANT} --eval " \
 		db.publishedDataset.remove({}); \
 		db.publishedCharacteristic.remove({}); \
 		db.publishedFacet.remove({}); \
 	"
+
+clear-tenants: ## Clear all tenants databases in mongo
+	docker compose exec mongo mongo lodex_admin --eval "db.tenant.remove({});"
+	docker compose exec mongo mongo --quiet --eval 'db.getMongo().getDBNames().forEach(function(i){ if (i !== "lodex_admin") {db.getSiblingDB(i).dropDatabase()}})'
 
 clear-docker: 
 	docker stop lodex-lodex-1 || true

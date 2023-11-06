@@ -27,11 +27,6 @@ describe('Login', () => {
         menu.signOut();
 
         cy.visit('http://localhost:3000');
-        cy.wait(300);
-        menu.openAdvancedDrawer();
-        menu.openChartDrawer();
-        menu.clickOnChart('Pie Chart');
-
         loginPage.checkLoginPage();
     });
 });

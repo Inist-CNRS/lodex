@@ -1,4 +1,5 @@
 import Resumable from '../../../common/tools/resumable';
+import { DEFAULT_TENANT } from '../../../common/tools/tenantTools';
 
 export const loadFile = (url, file, token, customLoader = null) =>
     new Promise((resolve, reject) => {
@@ -7,7 +8,7 @@ export const loadFile = (url, file, token, customLoader = null) =>
             headers: {
                 Authorization: `Bearer ${token}`,
                 'X-Lodex-Tenant':
-                    sessionStorage.getItem('lodex-tenant') || 'default',
+                    sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT,
             },
             multipart: true,
         };
