@@ -27,6 +27,7 @@ import { frFR as frFRDatagrid, enUS as enUSDatagrid } from '@mui/x-data-grid';
 import { frFR, enUS } from '@mui/material/locale';
 import customTheme from '../../custom/customTheme';
 import LoginAdmin from './LoginAdmin';
+import { ConfigTenantRoute } from './ConfigTenantRoute';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],
@@ -72,6 +73,10 @@ render(
                     />
                     <PrivateRoute path="/data" component={Data} />
                     <PrivateRoute path="/display" component={Display} />
+                    <PrivateRoute
+                        path="/config"
+                        component={ConfigTenantRoute}
+                    />
                     <Route path="/login" exact component={LoginAdmin} />
                 </App>
             </ConnectedRouter>

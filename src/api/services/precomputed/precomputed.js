@@ -26,7 +26,6 @@ const webhookBaseUrl =
         ? localConfig.webhookBaseUrlForDevelopment
         : baseUrl;
 
-const { precomputedBatchSize: BATCH_SIZE = 10 } = localConfig;
 const { isolatedMode: ISOLATED_MODE = true } = localConfig;
 const ANSWER_ROUTES = { RETRIEVE: 'retrieve', COLLECT: 'collect' };
 const {
@@ -34,6 +33,7 @@ const {
 } = localConfig;
 
 export const getPrecomputedDataPreview = async ctx => {
+    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.currentConfig;
     const { sourceColumns } = ctx.request.body;
     if (!sourceColumns) {
         throw new Error(`Missing parameters`);
@@ -66,6 +66,7 @@ export const getPrecomputedDataPreview = async ctx => {
 };
 
 const processZippedData = async (precomputed, ctx) => {
+    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.currentConfig;
     const initDate = new Date();
     const pack = tar.pack();
     const dataSetSize = await ctx.dataset.count();
@@ -142,6 +143,8 @@ export const getTokenFromWebservice = async (
         return { id: 'treeSegment', value: '12345' };
     } else {
         console.warn('--- ISOLATED_MODE disabled ---');
+        console.warn('Webhook Base Url:');
+        console.warn(webhookBaseUrl);
     }
 
     const response = await fetch(webServiceUrl, {
@@ -304,8 +307,8 @@ export const getComputedFromWebservice = async (
     }
 
     const workerQueue = workerQueues[tenant];
-    const activeJobs = await workerQueue.getActive();
-    const job = activeJobs.filter(job => {
+    const jobs = await workerQueue.getCompleted();
+    const job = jobs.filter(job => {
         const { id, jobType, tenant: jobTenant } = job.data;
 
         return (
@@ -368,7 +371,6 @@ export const getComputedFromWebservice = async (
             });
 
             job.progress(100);
-            job.moveToCompleted();
             const isFailed = await job.isFailed();
             notifyListeners(`${job.data.tenant}-precomputer`, {
                 isPrecomputing: false,

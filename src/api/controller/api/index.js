@@ -12,7 +12,7 @@ import exportPDFPublishedDataset from './exportPDF';
 import facet from './facet';
 import fieldRoutes from './field';
 import login from './login';
-import logout from './logout';
+import logoutController from './logout';
 import parsing from './parsing';
 import publication from './publication';
 import publish from './publish';
@@ -27,6 +27,7 @@ import loader from './loader';
 import translate from './translate';
 import subresource from './subresource';
 import enrichment from './enrichment';
+import configTenant from './configTenant';
 import precomputed from './precomputed';
 import job from './job';
 import dump from './dump';
@@ -38,7 +39,7 @@ const app = new Koa();
 app.use(ezMasterConfig);
 
 app.use(mount('/login', login));
-app.use(mount('/logout', logout));
+app.use(mount('/logout', logoutController));
 app.use(route.get('/breadcrumb', breadcrumbs));
 app.use(route.get('/menu', menu));
 app.use(route.get('/displayConfig', displayConfig));
@@ -63,7 +64,7 @@ app.use(async (ctx, next) => {
     ) {
         ctx.state.isAdmin = true;
     }
-    if (!ctx.ezMasterConfig.userAuth) {
+    if (!ctx.currentConfig?.userAuth?.active) {
         return next();
     }
     if (!ctx.state.cookie || !ctx.state.header) {
@@ -118,6 +119,7 @@ app.use(mount('/characteristic', characteristic));
 app.use(mount('/field', fieldRoutes));
 app.use(mount('/subresource', subresource));
 app.use(mount('/enrichment', enrichment));
+app.use(mount('/config-tenant', configTenant));
 app.use(mount('/precomputed', precomputed));
 app.use(mount('/job', job));
 app.use(mount('/parsing', parsing));

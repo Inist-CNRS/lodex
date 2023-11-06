@@ -34,6 +34,9 @@ import jobsApi from '../api/job';
 import { toast } from '../../../../common/tools/toast';
 import ImportModelDialog from '../ImportModelDialog';
 import ImportHasEnrichmentsDialog from './ImportHasEnrichmentsDialog';
+import { withRouter } from 'react-router';
+import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const MenuComponent = ({
     dumpDataset,
@@ -47,6 +50,7 @@ const MenuComponent = ({
     importHasEnrichment,
     importFailed,
     p: polyglot,
+    history,
 }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [subMenuToShow, setSubMenuToShow] = useState(null);
@@ -128,6 +132,10 @@ const MenuComponent = ({
             setShowImportFieldsConfirmation(true);
             handleCloseMenu();
         }
+    };
+
+    const onConfig = () => {
+        history.push('/config');
     };
 
     const modelMenuItems = [
@@ -267,6 +275,17 @@ const MenuComponent = ({
                     onClose={handleCloseMenu}
                 >
                     <Box
+                        sx={{
+                            textAlign: 'center',
+                            fontWeight: 'bold',
+                            mb: 1,
+                        }}
+                    >
+                        {sessionStorage.getItem('lodex-tenant') ||
+                            DEFAULT_TENANT}
+                    </Box>
+                    <Divider />
+                    <Box
                         onMouseEnter={handleOpenModelMenu}
                         onMouseLeave={handleCloseSubMenu}
                         sx={{
@@ -328,6 +347,15 @@ const MenuComponent = ({
                     </Box>
                     <Divider />
                     <MenuItem
+                        onClick={() => handleCloseMenu(onConfig)}
+                        aria-label="config"
+                    >
+                        <SettingsIcon />
+                        <Box component="span" ml={1}>
+                            {polyglot.t('config_tenant')}
+                        </Box>
+                    </MenuItem>
+                    <MenuItem
                         onClick={() => handleCloseMenu(onSignOut)}
                         aria-label="signout"
                     >
@@ -372,6 +400,7 @@ MenuComponent.propTypes = {
     importHasEnrichment: PropTypes.bool.isRequired,
     importFailed: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
+    history: PropTypes.object.isRequired,
 };
 const mapDispatchToProps = dispatch =>
     bindActionCreators(
@@ -395,4 +424,5 @@ const mapStateToProps = state => ({
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
+    withRouter,
 )(MenuComponent);

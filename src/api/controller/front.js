@@ -27,22 +27,7 @@ import sagas from '../../app/js/public/sagas';
 import configureStoreServer from '../../app/js/configureStoreServer';
 import Routes from '../../app/js/public/Routes';
 import translations from '../services/translations';
-import config from '../../../config.json';
 import getLocale from '../../common/getLocale';
-import {
-    leftMenu,
-    rightMenu,
-    advancedMenu,
-    advancedMenuButton,
-    customRoutes,
-} from './api/menu';
-import { breadcrumb } from './api/breadcrumb';
-import {
-    displayDensity,
-    PDFExportOptions,
-    maxCheckAllFacetsValue,
-    multilingual,
-} from './api/displayConfig';
 import customTheme from '../../app/custom/customTheme';
 
 import { getPublication } from './api/publication';
@@ -56,7 +41,7 @@ const indexHtml = fs
     .toString()
     .replace(REGEX_JS_HOST, jsHost);
 
-const getDefaultInitialState = (token, cookie, locale) => ({
+const getDefaultInitialState = (ctx, token, cookie, locale) => ({
     fields: {
         loading: false,
         isSaving: false,
@@ -76,26 +61,26 @@ const getDefaultInitialState = (token, cookie, locale) => ({
         token,
         cookie,
     },
-    breadcrumb,
+    breadcrumb: ctx.currentConfig.front.breadcrumb,
     menu: {
-        leftMenu,
-        rightMenu,
-        advancedMenu,
-        advancedMenuButton,
-        customRoutes,
+        leftMenu: ctx.currentConfig.leftMenu,
+        rightMenu: ctx.currentConfig.rightMenu,
+        advancedMenu: ctx.currentConfig.advancedMenu,
+        advancedMenuButton: ctx.currentConfig.advancedMenuButton,
+        customRoutes: ctx.currentConfig.customRoutes,
         error: null,
     },
     displayConfig: {
-        displayDensity,
-        PDFExportOptions,
-        maxCheckAllFacetsValue,
-        multilingual,
+        displayDensity: ctx.currentConfig.front.displayDensity,
+        PDFExportOptions: ctx.currentConfig.front.PDFExportOptions,
+        maxCheckAllFacetsValue: ctx.currentConfig.front.maxCheckAllFacetsValue,
+        multilingual: ctx.currentConfig.front.multilingual,
         error: null,
     },
 });
 
 const getInitialState = async (token, cookie, locale, ctx) => {
-    const initialState = getDefaultInitialState(token, cookie, locale);
+    const initialState = getDefaultInitialState(ctx, token, cookie, locale);
 
     if (!cookie) {
         return initialState;
@@ -293,50 +278,55 @@ const app = new Koa();
 // # Authentication middleware
 // ############################
 
-if (config.userAuth) {
-    app.use(async (ctx, next) => {
-        const jwtMid = await jwt({
-            secret: auth.cookieSecret,
-            cookie: `lodex_token_${ctx.tenant}`,
-            key: 'cookie',
-            passthrough: true,
-        });
-
-        return jwtMid(ctx, next);
+app.use(async (ctx, next) => {
+    if (!ctx.currentConfig?.userAuth?.active) {
+        return await next();
+    }
+    const jwtMid = await jwt({
+        secret: auth.cookieSecret,
+        cookie: `lodex_token_${ctx.tenant}`,
+        key: 'cookie',
+        passthrough: true,
     });
 
-    app.use(async (ctx, next) => {
-        if (
-            !ctx.state.cookie &&
-            !ctx.request.url.match(/instance\/([^\/]*)\/login/) &&
-            !ctx.request.url.match(/instance\/([^\/]*)\/admin/) &&
-            !ctx.request.url.startsWith('/instances') &&
-            !ctx.request.url.match(/[^\\]*\.(\w+)$/) &&
-            !ctx.request.url.match('__webpack_hmr')
-        ) {
-            const defaultTenant = DEFAULT_TENANT; // TODO: Replace by default tenant in BDD
-            const matchResult = ctx.request.url.match(/instance\/([^\/]*)(.*)/);
+    return jwtMid(ctx, next);
+});
 
-            if (matchResult) {
-                const [, tenantSlug, queryUrl] = matchResult;
-                ctx.redirect(
-                    `/instance/${tenantSlug.toLowerCase()}/login${
-                        queryUrl ? '?page=' + encodeURIComponent(queryUrl) : ''
-                    }`,
-                );
-            } else {
-                ctx.redirect(`/instance/${defaultTenant}/login`);
-            }
-            return;
+app.use(async (ctx, next) => {
+    if (!ctx.currentConfig?.userAuth?.active) {
+        return await next();
+    }
+
+    if (
+        !ctx.state.cookie &&
+        !ctx.request.url.match(/instance\/([^\/]*)\/login/) &&
+        !ctx.request.url.match(/instance\/([^\/]*)\/admin/) &&
+        !ctx.request.url.startsWith('/instances') &&
+        !ctx.request.url.match(/[^\\]*\.(\w+)$/) &&
+        !ctx.request.url.match('__webpack_hmr')
+    ) {
+        const defaultTenant = DEFAULT_TENANT; // TODO: Replace by default tenant in BDD
+        const matchResult = ctx.request.url.match(/instance\/([^\/]*)(.*)/);
+
+        if (matchResult) {
+            const [, tenantSlug, queryUrl] = matchResult;
+            ctx.redirect(
+                `/instance/${tenantSlug.toLowerCase()}/login${
+                    queryUrl ? '?page=' + encodeURIComponent(queryUrl) : ''
+                }`,
+            );
+        } else {
+            ctx.redirect(`/instance/${defaultTenant}/login`);
         }
-        ctx.state.headerToken = jsonwebtoken.sign(
-            pick(ctx.state.cookie, ['username', 'role', 'exp']),
-            auth.headerSecret,
-        );
+        return;
+    }
+    ctx.state.headerToken = jsonwebtoken.sign(
+        pick(ctx.state.cookie, ['username', 'role', 'exp']),
+        auth.headerSecret,
+    );
 
-        await next();
-    });
-}
+    await next();
+});
 
 app.use(
     route.get('/instances(.*)', async ctx => {

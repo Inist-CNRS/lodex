@@ -17,7 +17,8 @@ const DeleteTenantDialog = ({ tenant, handleClose, deleteAction }) => {
             open={!!tenant}
             onClose={handleClose}
             scroll="body"
-            maxWidth="lg"
+            maxWidth="md"
+            fullWidth
         >
             <DialogTitle>
                 Confirmer la suppression de : <b>{tenant.name}</b>

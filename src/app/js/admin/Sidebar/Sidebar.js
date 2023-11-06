@@ -25,8 +25,6 @@ import {
 } from '../../../../common/scope';
 import { MenuItemLink } from './MenuItemLink';
 import customTheme from '../../../custom/customTheme';
-import { Box } from '@mui/material';
-import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 
 const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;
@@ -34,7 +32,7 @@ const ACTIVE_BORDER_WIDTH = 3;
 
 const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
     const matchDisplayRoute = useRouteMatch('/display');
-    const matchDataRoute = useRouteMatch('/data');
+    const matchDataRoute = useRouteMatch('/data') || useRouteMatch('/config');
 
     const { open } = useContext(SidebarContext);
 
@@ -161,18 +159,6 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                 }}
             >
                 <MenuList>{menuItems}</MenuList>
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        bottom: '0',
-                        width: '100%',
-                        textAlign: 'center',
-                        opacity: '0.5',
-                    }}
-                >
-                    Instance:{' '}
-                    {sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT}
-                </Box>
             </Drawer>
         </>
     );

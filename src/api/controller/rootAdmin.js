@@ -8,6 +8,7 @@ import { createWorkerQueue, deleteWorkerQueue } from '../workers';
 import { ROOT_ROLE, checkForbiddenNames } from '../../common/tools/tenantTools';
 
 import bullBoard from '../bullBoard';
+import { insertConfigTenant } from '../services/configTenant';
 
 const app = new Koa();
 app.use(
@@ -41,7 +42,7 @@ app.use(async (ctx, next) => {
 app.use(koaBodyParser());
 
 const getTenant = async ctx => {
-    ctx.body = await ctx.tenantCollection.findAll();
+    ctx.body = await ctx.tenantCollection.findAll({ createdAt: -1 });
 };
 
 const postTenant = async ctx => {
@@ -59,9 +60,13 @@ const postTenant = async ctx => {
             password: 'secret',
             createdAt: new Date(),
         });
+
+        // Open configTenant files as json and save it in mongo
+        insertConfigTenant(name);
+
         const queue = createWorkerQueue(name, 1);
         bullBoard.addDashboardQueue(name, queue);
-        ctx.body = await ctx.tenantCollection.findAll();
+        ctx.body = await ctx.tenantCollection.findAll({ createdAt: -1 });
     }
 };
 
@@ -75,7 +80,7 @@ const putTenant = async (ctx, id) => {
 
     const update = { description, author, username, password };
     await ctx.tenantCollection.update(id, update);
-    ctx.body = await ctx.tenantCollection.findAll();
+    ctx.body = await ctx.tenantCollection.findAll({ createdAt: -1 });
 };
 
 const deleteTenant = async ctx => {

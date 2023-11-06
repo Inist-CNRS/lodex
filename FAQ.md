@@ -4,7 +4,7 @@
 
 When a custom layout is used, it can have several static pages (say `/triplestore/sparql/index.html`).
 
-It is required to point to that page from the menu (that is to say you have to declare it in `config.json`, in the `front.menu` table):
+It is required to point to that page from the menu (that is to say you have to declare it in admin config interface, in the `front.menu` table):
 
 ```json
       {

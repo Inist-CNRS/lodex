@@ -5,10 +5,12 @@ import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import LaunchIcon from '@mui/icons-material/Launch';
 
 import { getHost } from '../../../common/uris';
 import CreateTenantDialog from './CreateTenantDialog';
 import DeleteTenantDialog from './DeleteTenantDialog';
+import UpdateTenantDialog from './UpdateTenantDialog';
 import {
     DataGrid,
     GridToolbarColumnsButton,
@@ -17,7 +19,6 @@ import {
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 import { Button, Tooltip } from '@mui/material';
-import UpdateTenantDialog from './UpdateTenantDialog';
 
 const baseUrl = getHost();
 
@@ -234,7 +235,7 @@ const Tenants = ({ handleLogout }) => {
     // Define the columns for the datagrid
     const columns = [
         { field: '_id', headerName: 'ID', width: 200 },
-        { field: 'name', headerName: 'Nom', width: 150 },
+        { field: 'name', headerName: 'Nom', flex: 1 },
         {
             field: 'description',
             headerName: 'Description',
@@ -246,15 +247,15 @@ const Tenants = ({ handleLogout }) => {
         {
             field: 'author',
             headerName: 'Auteur',
-            width: 150,
+            flex: 1,
             valueFormatter: params => {
                 return formatValue(params.value);
             },
         },
         {
             field: 'createdAt',
-            headerName: 'Créé le',
-            width: 150,
+            headerName: 'Créée le',
+            flex: 1,
             valueFormatter: params => {
                 if (params.value == null) {
                     return '-';
@@ -272,12 +273,12 @@ const Tenants = ({ handleLogout }) => {
         {
             field: 'open',
             headerName: 'Ouvrir',
-            width: 150,
+            flex: 1,
             renderCell: params => {
                 const name = params.row.name;
                 return (
                     <Button target={name} href={`${baseUrl}/instance/${name}`}>
-                        Ouvrir
+                        <LaunchIcon />
                     </Button>
                 );
             },
@@ -285,7 +286,7 @@ const Tenants = ({ handleLogout }) => {
         {
             field: 'update',
             headerName: 'Modifier',
-            width: 150,
+            flex: 1,
             renderCell: params => {
                 return (
                     <Button
@@ -300,7 +301,7 @@ const Tenants = ({ handleLogout }) => {
         {
             field: 'delete',
             headerName: 'Supprimer',
-            width: 150,
+            flex: 1,
             renderCell: params => {
                 return (
                     <Button

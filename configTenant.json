@@ -1,0 +1,93 @@
+{
+    "userAuth": {
+        "username": "user",
+        "password": "secret",
+        "active": true
+    },
+    "enrichmentBatchSize": 10,
+    "front": {
+        "breadcrumb": [],
+        "menu": [
+            {
+                "label": {
+                    "en": "Home",
+                    "fr": "Accueil"
+                },
+                "icon": "faHome",
+                "position": "left",
+                "role": "home"
+            },
+            {
+                "label": {
+                    "en": "Graphs",
+                    "fr": "Graphiques"
+                },
+                "icon": "faChartArea",
+                "position": "left",
+                "role": "graphs"
+            },
+            {
+                "label": {
+                    "en": "Search",
+                    "fr": "Recherche"
+                },
+                "icon": "faSearch",
+                "position": "left",
+                "role": "search"
+            },
+            {
+                "label": {
+                    "en": "Admin",
+                    "fr": "Admin"
+                },
+                "icon": "faCogs",
+                "position": "advanced",
+                "role": "admin"
+            },
+            {
+                "label": {
+                    "en": "Sign in",
+                    "fr": "Connexion"
+                },
+                "icon": "faSignInAlt",
+                "position": "advanced",
+                "role": "sign-in"
+            },
+            {
+                "label": {
+                    "en": "Sign out",
+                    "fr": "Déconnexion"
+                },
+                "icon": "faSignOutAlt",
+                "position": "advanced",
+                "role": "sign-out"
+            }
+        ],
+        "advancedMenuButton": {
+            "label": {
+                "en": "More",
+                "fr": "Voir Plus"
+            },
+            "icon": "faBars"
+        },
+        "PDFExportOptions": {
+            "display": false,
+            "maxSize": 100,
+            "logo": "",
+            "title": {
+                "en": "Published dataset",
+                "fr": "Données publiées"
+            },
+            "footer": {
+                "en": "Footer",
+                "fr": "Pied de page"
+            },
+            "highlightColor": "#00ade9"
+        },
+        "maxCheckAllFacetsValue": {
+            "dataset": 60,
+            "search": 200
+        },
+        "multilingual": false
+    }
+}
