@@ -1,7 +1,7 @@
 [![Lodex CI](https://github.com/Inist-CNRS/lodex/actions/workflows/lodex-ci.yml/badge.svg)](https://github.com/Inist-CNRS/lodex/actions/workflows/lodex-ci.yml)
 [![Licence](https://img.shields.io/badge/licence-CeCILL%202.1-yellow.svg)](http://www.cecill.info)
 [![Documentation](https://img.shields.io/badge/Documentation-f48022)](https://lodex.inist.fr/docs/)
-![Docker Image Version (latest semver)](https://img.shields.io/docker/v/inistcnrs/lodex)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/inistcnrs/lodex)](https://hub.docker.com/r/inistcnrs/lodex/)
 
 # [Lodex](http://lodex.inist.fr)
 
@@ -10,8 +10,8 @@
 Lodex is a tool facilitating the publication of a dataset in various formats, including `csv`, `tsv`, `xml`, `json`, among others.
 The platform also offers features to manipulate the data in a back-office environment.
 
-To see what Lodex can do, please refer to the website at https://data.istex.fr/ or 
-consult the user documentation available at https://lodex.inist.fr/docs/.
+To see what Lodex can do, please refer to the website at <https://data.istex.fr/> or 
+consult the user documentation available at <https://lodex.inist.fr/docs/>.
 
 ![preview](https://docs.google.com/drawings/d/e/2PACX-1vQA8ze2ktkRLXZB9sNWkft0cUpf_jOJbTfQA7AtzvwsRfswBCuiWwEsI3kvHzAzmZNhz4CxcePQ02cA/pub?w=904&h=581)
 
@@ -36,7 +36,7 @@ make install
 make run-dev
 ```
 
-Go to http://localhost:3000/instances and log in using the credentials `root`/`secret`.
+Go to <http://localhost:3000/instances> and log in using the credentials `root`/`secret`.
 From there, you can create a new instance (tenant) on the instances page in order to publish new datasets and models.
 
 Note: Upon instance creation, the default user/password combination is set to `admin`/`secret`.
@@ -85,7 +85,7 @@ docker pull inistcnrs/lodex
 docker run -it inistcnrs/lodex
 ```
 
-## Use full links
+## Useful links
 
 - Data and Model ready to use: <https://github.com/Inist-CNRS/lodex-use-cases>
 - Lodex in production:
