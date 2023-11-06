@@ -5,9 +5,9 @@
 
 # [Lodex](http://lodex.inist.fr)
 
-<img src="https://user-images.githubusercontent.com/7420853/30152932-1794db3c-93b5-11e7-98ab-a7f28d0061cb.png" width=150 align=right>
+<img src="https://user-images.githubusercontent.com/7420853/30152932-1794db3c-93b5-11e7-98ab-a7f28d0061cb.png" width=150 align=right alt="Lodex Logo">
 
-Lodex is a tool facilitating the publication of a dataset in various formats, including 'csv', 'tsv', 'xml', 'json', among others.
+Lodex is a tool facilitating the publication of a dataset in various formats, including `csv`, `tsv`, `xml`, `json`, among others.
 The platform also offers features to manipulate the data in a back-office environment.
 
 To see what Lodex can do, please refer to the website at https://data.istex.fr/ or 
