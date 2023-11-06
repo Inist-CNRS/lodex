@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         # See https://github.com/nodejs/Release
-        node-version: [ 16.x, 18.x ]
+        node-version: [ 18.x ]
 
     steps:
       # Pull repository content
@@ -51,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [ 16.x, 18.x ]
+        node-version: [ 18.x ]
 
     steps:
       # Pull repository content
@@ -82,7 +82,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [ 16.x, 18.x ]
+        node-version: [ 18.x ]
         test-phase: [ 'phase:one', 'phase:two', 'phase:three', 'phase:four' ]
         # Use this line to ignore the phase system
         # test-phase: [ 'all' ]
