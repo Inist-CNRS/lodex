@@ -143,6 +143,8 @@ export const getTokenFromWebservice = async (
         return { id: 'treeSegment', value: '12345' };
     } else {
         console.warn('--- ISOLATED_MODE disabled ---');
+        console.warn('Webhook Base Url:');
+        console.warn(webhookBaseUrl);
     }
 
     const response = await fetch(webServiceUrl, {
@@ -305,8 +307,8 @@ export const getComputedFromWebservice = async (
     }
 
     const workerQueue = workerQueues[tenant];
-    const activeJobs = await workerQueue.getActive();
-    const job = activeJobs.filter(job => {
+    const jobs = await workerQueue.getCompleted();
+    const job = jobs.filter(job => {
         const { id, jobType, tenant: jobTenant } = job.data;
 
         return (
@@ -369,7 +371,6 @@ export const getComputedFromWebservice = async (
             });
 
             job.progress(100);
-            job.moveToCompleted();
             const isFailed = await job.isFailed();
             notifyListeners(`${job.data.tenant}-precomputer`, {
                 isPrecomputing: false,

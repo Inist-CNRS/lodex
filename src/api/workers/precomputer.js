@@ -15,6 +15,7 @@ export const processPrecomputed = (job, done) => {
                 isPrecomputing: isFailed ? false : true,
                 success: !isFailed,
             });
+            done();
         })
         .catch(err => {
             handlePrecomputedError(job, err);
