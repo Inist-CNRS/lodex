@@ -146,7 +146,7 @@ export default (
             if (!field) {
                 return;
             }
-            this.loadFormatData();
+            this.loadFormatData({});
         }
 
         componentWillUnmount() {
@@ -175,7 +175,7 @@ export default (
                 return;
             }
 
-            this.loadFormatData();
+            this.loadFormatData({});
         }
 
         handleAnimationEnd() {
