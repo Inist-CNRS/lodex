@@ -27,6 +27,7 @@ import loader from './loader';
 import translate from './translate';
 import subresource from './subresource';
 import enrichment from './enrichment';
+import configTenant from './configTenant';
 import precomputed from './precomputed';
 import job from './job';
 import dump from './dump';
@@ -63,7 +64,7 @@ app.use(async (ctx, next) => {
     ) {
         ctx.state.isAdmin = true;
     }
-    if (!ctx.currentConfig?.userAuth) {
+    if (!ctx.currentConfig?.userAuth?.active) {
         return next();
     }
     if (!ctx.state.cookie || !ctx.state.header) {
@@ -118,6 +119,7 @@ app.use(mount('/characteristic', characteristic));
 app.use(mount('/field', fieldRoutes));
 app.use(mount('/subresource', subresource));
 app.use(mount('/enrichment', enrichment));
+app.use(mount('/config-tenant', configTenant));
 app.use(mount('/precomputed', precomputed));
 app.use(mount('/job', job));
 app.use(mount('/parsing', parsing));

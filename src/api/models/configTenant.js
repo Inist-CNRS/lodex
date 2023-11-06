@@ -32,15 +32,12 @@ export default async db => {
 
     collection.update = async (id, data) => {
         const objectId = new ObjectId(id);
-
         return collection
-            .findOneAndUpdate(
+            .findOneAndReplace(
                 {
                     $or: [{ _id: objectId }, { _id: id }],
                 },
-                {
-                    $set: omit(data, ['_id']),
-                },
+                omit(data, ['_id']),
                 {
                     returnOriginal: false,
                 },

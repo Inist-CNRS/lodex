@@ -106,6 +106,7 @@ describe('login', () => {
                     userAuth: {
                         username: 'user',
                         password: 'secret',
+                        active: true,
                     },
                 },
                 tenantCollection: {
@@ -132,6 +133,7 @@ describe('login', () => {
                     userAuth: {
                         username: 'user',
                         password: 'secret',
+                        active: true,
                     },
                 },
                 tenantCollection: {
@@ -159,6 +161,7 @@ describe('login', () => {
                     userAuth: {
                         username: 'user',
                         password: 'secret',
+                        active: true,
                     },
                 },
                 ezMasterConfig: {},

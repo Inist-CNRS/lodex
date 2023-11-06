@@ -45,7 +45,7 @@ const DataComponent = () => {
     );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = () => ({
     withInitialData,
 });
 export const Data = connect(mapStateToProps)(DataComponent);

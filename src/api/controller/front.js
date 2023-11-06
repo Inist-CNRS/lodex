@@ -279,7 +279,7 @@ const app = new Koa();
 // ############################
 
 app.use(async (ctx, next) => {
-    if (!ctx.currentConfig?.userAuth) {
+    if (!ctx.currentConfig?.userAuth?.active) {
         return await next();
     }
     const jwtMid = await jwt({
@@ -293,7 +293,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx, next) => {
-    if (!ctx.currentConfig?.userAuth) {
+    if (!ctx.currentConfig?.userAuth?.active) {
         return await next();
     }
 

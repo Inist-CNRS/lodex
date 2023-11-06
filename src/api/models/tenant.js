@@ -10,7 +10,12 @@ export default async db => {
 
     collection.findOneByName = async name => collection.findOne({ name });
 
-    collection.findAll = async () => collection.find({}).toArray();
+    // sort by createdAt desc if sort is provided. No sort by default
+    collection.findAll = async (sort = {}) =>
+        collection
+            .find({})
+            .sort(sort)
+            .toArray();
 
     collection.create = async data => {
         const { insertedId } = await collection.insertOne(data);
