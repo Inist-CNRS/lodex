@@ -6,7 +6,6 @@ services:
         volumes:
             - .:/app
         working_dir: /app
-        user: '${UID}:${GID}'
         environment:
             npm_config_cache: /app/.npm
             CYPRESS_CACHE_FOLDER: /app/.cache
@@ -40,7 +39,6 @@ services:
             - .:/app
             - ./.cache:/root/.cache
         working_dir: /app
-        user: '${UID}:${GID}'
         environment:
             npm_config_cache: /app/.npm
             CYPRESS_CACHE_FOLDER: /app/.cache
@@ -65,7 +63,6 @@ services:
             - .:/app
             - ./.cache:/root/.cache
         working_dir: /app
-        user: '${UID}:${GID}'
         environment:
             npm_config_cache: /app/.npm
             CYPRESS_CACHE_FOLDER: /app/.cache
