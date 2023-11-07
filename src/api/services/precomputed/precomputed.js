@@ -139,12 +139,7 @@ export const getTokenFromWebservice = async (
     jobId,
 ) => {
     if (ISOLATED_MODE) {
-        console.warn('*** ISOLATED_MODE activated ***');
         return { id: 'treeSegment', value: '12345' };
-    } else {
-        console.warn('--- ISOLATED_MODE disabled ---');
-        console.warn('Webhook Base Url:');
-        console.warn(webhookBaseUrl);
     }
 
     const response = await fetch(webServiceUrl, {
