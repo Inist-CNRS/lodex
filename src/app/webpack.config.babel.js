@@ -19,6 +19,11 @@ const translations = require('../api/services/translations');
 
 module.exports = {
     mode: isDevelopment ? 'development' : 'production',
+    ignoreWarnings: [
+        {
+            module: /d3/,
+        },
+    ],
     entry: {
         index: resolve(__dirname, './js/public/index.js'),
         'admin/index': resolve(__dirname, './js/admin/index.js'),
