@@ -64,7 +64,7 @@ app.use(async (ctx, next) => {
     ) {
         ctx.state.isAdmin = true;
     }
-    if (!ctx.currentConfig?.userAuth?.active) {
+    if (!ctx.configTenant?.userAuth?.active) {
         return next();
     }
     if (!ctx.state.cookie || !ctx.state.header) {

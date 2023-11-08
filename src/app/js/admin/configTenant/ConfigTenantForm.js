@@ -12,14 +12,20 @@ import 'ace-builds/src-noconflict/theme-monokai';
 
 import translate from 'redux-polyglot/translate';
 import { compose } from 'recompose';
+import { connect } from 'react-redux';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { withRouter } from 'react-router';
 import { getConfigTenant, updateConfigTenant } from '../api/configTenant';
 import PropTypes from 'prop-types';
 import CancelButton from '../../lib/components/CancelButton';
 import { toast } from '../../../../common/tools/toast';
+import { loadConfigTenant } from '.';
 
-export const ConfigTenantForm = ({ p: polyglot, history }) => {
+export const ConfigTenantForm = ({
+    p: polyglot,
+    history,
+    onLoadConfigTenant,
+}) => {
     const [configTenant, setConfigTenant] = useState('');
     const [userAuth, setUserAuth] = useState({});
     const [enrichmentBatchSize, setEnrichmentBatchSize] = useState(0);
@@ -55,6 +61,7 @@ export const ConfigTenantForm = ({ p: polyglot, history }) => {
             toast(polyglot.t('configTenantUpdated'), {
                 type: toast.TYPE.SUCCESS,
             });
+            onLoadConfigTenant();
         }
     };
 
@@ -163,9 +170,19 @@ export const ConfigTenantForm = ({ p: polyglot, history }) => {
     );
 };
 
+const mapStateToProps = () => ({});
+const mapDispatchToProps = {
+    onLoadConfigTenant: loadConfigTenant,
+};
+
 ConfigTenantForm.propTypes = {
     p: polyglotPropTypes.isRequired,
     history: PropTypes.object.isRequired,
+    onLoadConfigTenant: PropTypes.func.isRequired,
 };
 
-export default compose(translate, withRouter)(ConfigTenantForm);
+export default compose(
+    translate,
+    withRouter,
+    connect(mapStateToProps, mapDispatchToProps),
+)(ConfigTenantForm);

@@ -157,7 +157,7 @@ describe('login', () => {
         it('should return header token and set cookie with cookie token for user when password and user name match userAuth config', async () => {
             let setCall;
             const ctx = {
-                currentConfig: {
+                configTenant: {
                     userAuth: {
                         username: 'user',
                         password: 'secret',

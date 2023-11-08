@@ -42,6 +42,7 @@ const indexHtml = fs
     .replace(REGEX_JS_HOST, jsHost);
 
 const getDefaultInitialState = (ctx, token, cookie, locale) => ({
+    enableAutoPublication: ctx.configTenant.enableAutoPublication,
     fields: {
         loading: false,
         isSaving: false,
@@ -61,20 +62,20 @@ const getDefaultInitialState = (ctx, token, cookie, locale) => ({
         token,
         cookie,
     },
-    breadcrumb: ctx.currentConfig.front.breadcrumb,
+    breadcrumb: ctx.configTenant.front.breadcrumb,
     menu: {
-        leftMenu: ctx.currentConfig.leftMenu,
-        rightMenu: ctx.currentConfig.rightMenu,
-        advancedMenu: ctx.currentConfig.advancedMenu,
-        advancedMenuButton: ctx.currentConfig.advancedMenuButton,
-        customRoutes: ctx.currentConfig.customRoutes,
+        leftMenu: ctx.configTenant.leftMenu,
+        rightMenu: ctx.configTenant.rightMenu,
+        advancedMenu: ctx.configTenant.advancedMenu,
+        advancedMenuButton: ctx.configTenant.advancedMenuButton,
+        customRoutes: ctx.configTenant.customRoutes,
         error: null,
     },
     displayConfig: {
-        displayDensity: ctx.currentConfig.front.displayDensity,
-        PDFExportOptions: ctx.currentConfig.front.PDFExportOptions,
-        maxCheckAllFacetsValue: ctx.currentConfig.front.maxCheckAllFacetsValue,
-        multilingual: ctx.currentConfig.front.multilingual,
+        displayDensity: ctx.configTenant.front.displayDensity,
+        PDFExportOptions: ctx.configTenant.front.PDFExportOptions,
+        maxCheckAllFacetsValue: ctx.configTenant.front.maxCheckAllFacetsValue,
+        multilingual: ctx.configTenant.front.multilingual,
         error: null,
     },
 });
@@ -279,7 +280,7 @@ const app = new Koa();
 // ############################
 
 app.use(async (ctx, next) => {
-    if (!ctx.currentConfig?.userAuth?.active) {
+    if (!ctx.configTenant?.userAuth?.active) {
         return await next();
     }
     const jwtMid = await jwt({
@@ -293,7 +294,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx, next) => {
-    if (!ctx.currentConfig?.userAuth?.active) {
+    if (!ctx.configTenant?.userAuth?.active) {
         return await next();
     }
 

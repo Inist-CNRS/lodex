@@ -12,7 +12,7 @@ describe('Enrichment controller', () => {
             const ctx = {
                 request: { body: { advancedMode: true, name: 'test' } },
                 enrichment: { create: jest.fn() },
-                currentConfig: {},
+                configTenant: {},
             };
 
             await postEnrichment(ctx);
@@ -31,7 +31,7 @@ describe('Enrichment controller', () => {
                         return { advancedMode: true, name: 'test' };
                     }),
                 },
-                currentConfig: {},
+                configTenant: {},
             };
 
             await postEnrichment(ctx);
@@ -48,7 +48,7 @@ describe('Enrichment controller', () => {
                 enrichment: {
                     create: jest.fn(() => null),
                 },
-                currentConfig: {},
+                configTenant: {},
             };
 
             await postEnrichment(ctx);
@@ -70,7 +70,7 @@ describe('Enrichment controller', () => {
                     ),
                 },
                 dataset: { removeAttribute: jest.fn() },
-                currentConfig: {},
+                configTenant: {},
             };
 
             await putEnrichment(ctx, 42);
@@ -93,7 +93,7 @@ describe('Enrichment controller', () => {
                         throw new Error('ERROR!');
                     },
                 },
-                currentConfig: {},
+                configTenant: {},
             };
 
             await putEnrichment(ctx, 42);
@@ -111,7 +111,7 @@ describe('Enrichment controller', () => {
                     delete: jest.fn(),
                 },
                 dataset: { removeAttribute: jest.fn() },
-                currentConfig: {},
+                configTenant: {},
             };
             getActiveJob.mockResolvedValue({
                 data: { id: 42, jobType: 'enricher' },
@@ -135,7 +135,7 @@ describe('Enrichment controller', () => {
                     delete: jest.fn(),
                 },
                 dataset: { removeAttribute: jest.fn() },
-                currentConfig: {},
+                configTenant: {},
             };
 
             await deleteEnrichment(ctx, 42);

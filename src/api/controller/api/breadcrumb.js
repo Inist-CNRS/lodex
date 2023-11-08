@@ -1,5 +1,5 @@
 export default async ctx => {
     ctx.body = {
-        breadcrumb: ctx.currentConfig.front.breadcrumb,
+        breadcrumb: ctx.configTenant.front.breadcrumb,
     };
 };

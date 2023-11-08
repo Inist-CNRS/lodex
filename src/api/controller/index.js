@@ -75,39 +75,39 @@ app.use(async (ctx, next) => {
 // # CURRENT CONFIG MIDDLEWARE
 // ###########################
 app.use(repositoryMiddleware);
-const currentConfigInstanceMiddleware = async (ctx, next) => {
-    const currentConfig = await ctx.configTenant.findLast();
-    if (!currentConfig || !currentConfig.front) {
+const configTenantInstanceMiddleware = async (ctx, next) => {
+    const configTenant = await ctx.configTenantCollection.findLast();
+    if (!configTenant || !configTenant.front) {
         await next();
         return;
     }
 
-    ctx.currentConfig = currentConfig;
+    ctx.configTenant = configTenant;
 
-    ctx.currentConfig.leftMenu = currentConfig?.front.menu.filter(
+    ctx.configTenant.leftMenu = configTenant?.front.menu.filter(
         ({ position }) => position === 'left',
     );
-    ctx.currentConfig.rightMenu = currentConfig?.front.menu.filter(
+    ctx.configTenant.rightMenu = configTenant?.front.menu.filter(
         ({ position }) => position === 'right',
     );
-    ctx.currentConfig.advancedMenu = currentConfig?.front.menu.filter(
+    ctx.configTenant.advancedMenu = configTenant?.front.menu.filter(
         ({ position }) =>
             position === 'advanced' ||
             position === 'top' ||
             position === 'bottom',
     );
 
-    ctx.currentConfig.customRoutes = currentConfig?.front.menu
+    ctx.configTenant.customRoutes = configTenant?.front.menu
         .filter(({ role }) => role === 'custom')
         .map(({ link }) => link);
 
-    ctx.currentConfig.advancedMenuButton =
-        currentConfig?.front.advancedMenuButton;
+    ctx.configTenant.advancedMenuButton =
+        configTenant?.front.advancedMenuButton;
 
     await next();
 };
 
-app.use(currentConfigInstanceMiddleware);
+app.use(configTenantInstanceMiddleware);
 
 app.use(mount('/webhook', webhook));
 app.use(mount('/embedded', embedded));

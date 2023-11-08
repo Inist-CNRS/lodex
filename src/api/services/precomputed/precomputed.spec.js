@@ -5,7 +5,7 @@ describe('precomputed', () => {
         it('single value', async () => {
             // GIVEN
             const ctx = {
-                currentConfig: {},
+                configTenant: {},
                 request: {
                     body: {
                         sourceColumns: ['simpleValue'],
@@ -38,7 +38,7 @@ describe('precomputed', () => {
         it('complex values', async () => {
             // GIVEN
             const ctx = {
-                currentConfig: {},
+                configTenant: {},
                 request: {
                     body: {
                         sourceColumns: ['arrayValue'],
@@ -71,7 +71,7 @@ describe('precomputed', () => {
         it('multiple values', async () => {
             // GIVEN
             const ctx = {
-                currentConfig: {},
+                configTenant: {},
                 request: {
                     body: {
                         sourceColumns: ['lol', 'simpleValue'],

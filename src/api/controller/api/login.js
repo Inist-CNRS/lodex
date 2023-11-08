@@ -26,7 +26,7 @@ export const postLogin = date => async ctx => {
     }
 
     const { username, password } = ctx.request.body;
-    const userAuth = get(ctx, 'currentConfig.userAuth', {});
+    const userAuth = get(ctx, 'configTenant.userAuth', {});
     const rootAuth = get(ctx, 'ezMasterConfig.rootAuth', {});
 
     let role;

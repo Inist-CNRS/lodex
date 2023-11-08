@@ -14,13 +14,13 @@ export const putConfigTenant = async (ctx, id) => {
     const newConfigTenant = ctx.request.body;
 
     try {
-        const configTenant = await ctx.configTenant.findOneById(id);
+        const configTenant = await ctx.configTenantCollection.findOneById(id);
         if (!configTenant) {
             ctx.status = 404;
             ctx.body = { error: 'Not found' };
             return;
         }
-        ctx.body = await ctx.configTenant.update(id, newConfigTenant);
+        ctx.body = await ctx.configTenantCollection.update(id, newConfigTenant);
     } catch (error) {
         ctx.status = 403;
         ctx.body = { error: error.message };
@@ -29,7 +29,7 @@ export const putConfigTenant = async (ctx, id) => {
 };
 
 export const getConfigTenant = async ctx => {
-    ctx.body = await ctx.configTenant.findLast();
+    ctx.body = await ctx.configTenantCollection.findLast();
 };
 
 const app = new Koa();
