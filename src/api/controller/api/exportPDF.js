@@ -354,7 +354,7 @@ async function exportPDF(ctx) {
         // Pipe its output somewhere, like to a file or HTTP response
         doc.pipe(fs.createWriteStream('/tmp/publication.pdf'));
 
-        renderHeader(doc, PDFTitle);
+        renderHeader(doc, PDFTitle, ctx);
         renderDate(doc, locale, ctx);
         renderData(doc, publishedDataset, syndicatedFields);
         renderFooter(doc, locale, ctx);
