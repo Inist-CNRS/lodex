@@ -1,4 +1,5 @@
 {
+    "enableAutoPublication": true,
     "userAuth": {
         "username": "user",
         "password": "secret",

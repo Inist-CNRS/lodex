@@ -15,6 +15,7 @@ describe('withInitialData HOC', () => {
         loadSubresources: jest.fn(),
         loadEnrichments: jest.fn(),
         loadPrecomputed: jest.fn(),
+        loadConfigTenant: jest.fn(),
         p: { t: () => {} },
         isLoading: false,
     };
@@ -27,6 +28,7 @@ describe('withInitialData HOC', () => {
         expect(defaultProps.loadSubresources).toHaveBeenCalled();
         expect(defaultProps.loadEnrichments).toHaveBeenCalled();
         expect(defaultProps.loadPrecomputed).toHaveBeenCalled();
+        expect(defaultProps.loadConfigTenant).toHaveBeenCalled();
     });
 
     it('should render AdminComponent when isLoading is false', () => {

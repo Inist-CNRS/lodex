@@ -50,6 +50,7 @@ const styles = {
         marginLeft: 'auto',
         marginRight: '20px',
         width: '250px',
+        textAlign: 'center',
     },
     progressLabelContainer: {
         width: '100%',

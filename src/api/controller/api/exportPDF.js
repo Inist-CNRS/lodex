@@ -198,8 +198,8 @@ async function getExportedData(ctx) {
 
 async function getPDFTitle(ctx, locale) {
     let configTitle =
-        ctx.currentConfig.front.PDFExportOptions?.title?.[locale] ||
-        ctx.currentConfig.front.PDFExportOptions?.title?.['en'];
+        ctx.configTenant.front.PDFExportOptions?.title?.[locale] ||
+        ctx.configTenant.front.PDFExportOptions?.title?.['en'];
 
     if (configTitle) {
         return configTitle;
@@ -225,11 +225,11 @@ async function getPDFTitle(ctx, locale) {
 }
 
 function renderHeader(doc, PDFTitle, ctx) {
-    if (ctx.currentConfig.front.PDFExportOptions.logo) {
+    if (ctx.configTenant.front.PDFExportOptions.logo) {
         try {
             // Set logo and title in the same line
             doc.image(
-                `src/app/custom/${ctx.currentConfig.front.PDFExportOptions.logo}`,
+                `src/app/custom/${ctx.configTenant.front.PDFExportOptions.logo}`,
                 PDF_MARGIN_LEFT,
                 PDF_IMAGE_TOP_POSITION,
                 {
@@ -282,8 +282,8 @@ function renderDate(doc, locale, ctx) {
         .lineWidth(2)
         .fillOpacity(0.8)
         .fillAndStroke(
-            ctx.currentConfig.front.PDFExportOptions?.highlightColor || 'black',
-            ctx.currentConfig.front.PDFExportOptions?.highlightColor || 'black',
+            ctx.configTenant.front.PDFExportOptions?.highlightColor || 'black',
+            ctx.configTenant.front.PDFExportOptions?.highlightColor || 'black',
         );
     doc.moveDown();
 }
@@ -314,7 +314,7 @@ function renderData(doc, publishedDataset, syndicatedFields) {
 }
 
 function renderFooter(doc, locale, ctx) {
-    if (!ctx.currentConfig.front.PDFExportOptions?.footer) {
+    if (!ctx.configTenant.front.PDFExportOptions?.footer) {
         return;
     }
 
@@ -323,13 +323,13 @@ function renderFooter(doc, locale, ctx) {
         doc.switchToPage(i);
         doc.fontSize(6)
             .fillColor(
-                ctx.currentConfig.front.PDFExportOptions?.highlightColor ||
+                ctx.configTenant.front.PDFExportOptions?.highlightColor ||
                     'black',
             )
             .text(
                 locale === 'fr'
-                    ? ctx.currentConfig.front.PDFExportOptions?.footer['fr']
-                    : ctx.currentConfig.front.PDFExportOptions?.footer['en'],
+                    ? ctx.configTenant.front.PDFExportOptions?.footer['fr']
+                    : ctx.configTenant.front.PDFExportOptions?.footer['en'],
                 PDF_MARGIN_LEFT,
                 doc.page.height - 40,
 

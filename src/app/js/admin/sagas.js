@@ -21,6 +21,7 @@ import enrichmentSaga from './enrichment/sagas';
 import precomputedSaga from './precomputed/sagas';
 import dumpSaga from './dump/sagas';
 import navigationSaga from './navigation/sagas';
+import configTenantSaga from './configTenant/sagas';
 
 export default function*() {
     yield fork(exportSaga);
@@ -44,4 +45,5 @@ export default function*() {
     yield fork(precomputedSaga);
     yield fork(dumpSaga);
     yield fork(navigationSaga);
+    yield fork(configTenantSaga);
 }

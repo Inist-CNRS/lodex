@@ -20,7 +20,7 @@ export const mongoClientFactory = mongoClientImpl => async (ctx, next) => {
     ctx.publishedCharacteristic = await publishedCharacteristic(ctx.db);
     ctx.publishedDataset = await publishedDataset(ctx.db);
     ctx.publishedFacet = await publishedFacet(ctx.db);
-    ctx.configTenant = await configTenant(ctx.db);
+    ctx.configTenantCollection = await configTenant(ctx.db);
 
     await next();
 };
