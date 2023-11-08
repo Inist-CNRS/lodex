@@ -9,7 +9,7 @@ import {
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
-export function* handleLoadEnrichmentsRequest() {
+export function* handleLoadConfigTenantRequest() {
     const request = yield select(fromUser.getConfigTenantRequest);
     const { error, response } = yield call(fetchSaga, request);
 
@@ -21,7 +21,7 @@ export function* handleLoadEnrichmentsRequest() {
 }
 
 export function* watchLoadConfigTenantRequest() {
-    yield takeLatest([LOAD_CONFIG_TENANT], handleLoadEnrichmentsRequest);
+    yield takeLatest([LOAD_CONFIG_TENANT], handleLoadConfigTenantRequest);
 }
 
 export default function*() {

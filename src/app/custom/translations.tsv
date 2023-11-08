@@ -1000,3 +1000,6 @@ vega_json_error	The json syntax of Vega Lite specification is wrong!	La syntaxe 
 "tar-gz"	"TAR.GZ - file from dl.istex.fr"	"TAR.GZ - résultat de dl.istex.fr"
 "config_tenant"	"Settings"	"Configuration"	
 "configTenantUpdated"	"Settings updated"	"Configuration mise à jour"
+"republish"	"Republish"	"Republier"
+"user_auth" 	"User authentication"	"Authentification utilisateur"
+"enableAutoPublication"	"Auto Publishing"	"Publication automatique"

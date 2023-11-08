@@ -2,7 +2,11 @@ import { call, put, select } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 import { fromFields, fromUser } from '../../../sharedSelectors';
-import { fromParsing, fromPublication } from '../../selectors';
+import {
+    fromParsing,
+    fromPublication,
+    fromConfigTenant,
+} from '../../selectors';
 import { publish } from '../../publish';
 
 import {
@@ -19,19 +23,21 @@ describe('publication saga', () => {
     describe('handleRecomputePublication', () => {
         it('should return if not published', () => {
             const saga = handleRecomputePublication();
-
             expect(saga.next().value).toEqual(
                 select(fromPublication.hasPublishedDataset),
+            );
+            expect(saga.next().value).toEqual(
+                select(fromConfigTenant.isEnableAutoPublication),
             );
 
             expect(saga.next(false).done).toBe(true);
         });
 
         describe('if published', () => {
-            const saga = handleRecomputePublication();
-            saga.next();
-
             it('should put publish', () => {
+                const saga = handleRecomputePublication();
+                saga.next(true);
+                saga.next(true);
                 expect(saga.next(true).value).toEqual(put(publish()));
             });
         });

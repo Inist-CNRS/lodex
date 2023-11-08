@@ -7,7 +7,11 @@ const app = new Koa();
 
 export const clearDataset = async ctx => {
     try {
-        const collectionNames = await ctx.db.listCollections().toArray();
+        // get all collection names except `configTenant`
+        const collectionNames = (
+            await ctx.db.listCollections().toArray()
+        ).filter(collection => collection.name !== 'configTenant');
+
         if (collectionNames.length > 0) {
             await Promise.all(
                 collectionNames.map(collection =>
