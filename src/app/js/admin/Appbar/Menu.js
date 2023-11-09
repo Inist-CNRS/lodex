@@ -358,6 +358,7 @@ const MenuComponent = ({
                     <MenuItem
                         onClick={() => handleCloseMenu(onSignOut)}
                         aria-label="signout"
+                        sx={{ color: 'danger.main' }}
                     >
                         <ExitToAppIcon />
                         <Box component="span" ml={1}>
