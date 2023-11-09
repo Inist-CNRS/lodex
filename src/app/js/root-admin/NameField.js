@@ -14,7 +14,7 @@ const TextMaskCustom = forwardRef(function TextMaskCustom(props, ref) {
             {...other}
             mask={[
                 {
-                    mask: /^[a-z0-9-]+$/,
+                    mask: /^[a-z0-9-]{1,50}$/,
                     definitions,
                 },
             ]}
