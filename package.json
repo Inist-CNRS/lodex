@@ -252,7 +252,7 @@
         "@testing-library/jest-dom": "5.16.5",
         "@testing-library/react": "11.2.7",
         "@types/jest": "26.0.22",
-        "@types/node": "16.18.58",
+        "@types/node": "18.18.9",
         "@types/ramda": "0.27.40",
         "ajv": "8.12.0",
         "array-parallel": "0.1.3",
