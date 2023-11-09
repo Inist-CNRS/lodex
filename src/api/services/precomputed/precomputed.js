@@ -65,6 +65,15 @@ export const getPrecomputedDataPreview = async ctx => {
     return result;
 };
 
+const tryParseJsonString = str => {
+    try {
+        const parsed = JSON.parse(str);
+        return parsed;
+    } catch (e) {
+        return str;
+    }
+};
+
 const processZippedData = async (precomputed, ctx) => {
     const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
     const initDate = new Date();
@@ -92,6 +101,9 @@ const processZippedData = async (precomputed, ctx) => {
             precomputed.sourceColumns.map(column => {
                 colums.push(entry[column]);
             });
+            const parsedValue = tryParseJsonString(
+                colums.length > 1 ? colums : colums[0],
+            );
             await pack.entry(
                 {
                     name: `data/${'f' +
@@ -101,7 +113,7 @@ const processZippedData = async (precomputed, ctx) => {
                 },
                 JSON.stringify({
                     id: entry.uri,
-                    value: JSON.parse(colums.length > 1 ? colums : colums[0]),
+                    value: parsedValue,
                 }),
             );
         }
@@ -152,17 +164,20 @@ export const getTokenFromWebservice = async (
         },
         compress: false,
     });
-    if (response.status != 200) {
-        throw new Error('Calling token webservice error');
-    }
-
-    const callId = JSON.stringify(await response.json());
 
     fs.unlink(fileName, error => {
         if (error) {
             throw error;
         }
     });
+
+    if (response.status != 200) {
+        throw new Error(
+            `Calling token webservice error (${response.status}|${response.statusText})`,
+        );
+    }
+
+    const callId = JSON.stringify(await response.json());
 
     return callId;
 };
@@ -562,6 +577,8 @@ export const setPrecomputedError = async (ctx, err) => {
         timestamp: new Date(),
         status: err instanceof CancelWorkerError ? CANCELED : ERROR,
     });
+    ctx.job.progress(100);
+    progress.finish(ctx.tenant);
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
     notifyListeners(`${ctx.tenant}-precomputer`, {
