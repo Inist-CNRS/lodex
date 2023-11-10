@@ -10,14 +10,13 @@ import { fromFieldPreview } from '../../admin/selectors';
 import { getFieldFormData } from '../selectors';
 import { SCOPE_DATASET } from '../../../../common/scope';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import customTheme from '../../../custom/customTheme';
 
 const ValuePreview = ({ lines, editedField, p: polyglot }) => {
     return (
         <Box
             id="value-preview"
             sx={{
-                background: customTheme.palette.neutralDark.veryLight,
+                background: 'var(--neutral-dark-very-light)',
                 padding: 2,
                 borderRadius: 2,
             }}

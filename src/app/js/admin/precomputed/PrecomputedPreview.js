@@ -6,14 +6,13 @@ import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
 import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import customTheme from '../../../custom/customTheme';
 
 const PrecomputedPreview = ({ lines, sourceColumns, p: polyglot }) => {
     return (
         <Box
             id="value-preview"
             sx={{
-                background: customTheme.palette.neutralDark.veryLight,
+                background: 'var(--neutral-dark-very-light)',
                 padding: 2,
                 borderRadius: 2,
             }}

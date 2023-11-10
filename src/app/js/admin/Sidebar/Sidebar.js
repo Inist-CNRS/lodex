@@ -24,7 +24,6 @@ import {
     SCOPE_GRAPHIC,
 } from '../../../../common/scope';
 import { MenuItemLink } from './MenuItemLink';
-import customTheme from '../../../custom/customTheme';
 
 const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;
@@ -129,9 +128,8 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                     '& .MuiDrawer-paper': {
                         overflowX: 'hidden',
                         paddingTop: '64px',
-                        backgroundColor:
-                            customTheme.palette.neutralDark.veryDark,
-                        color: customTheme.palette.contrast.main,
+                        backgroundColor: 'var(--neutral-dark-very-dark)',
+                        color: 'var(--contrast-main)',
                         width: open ? DRAWER_OPEN_WIDTH : DRAWER_CLOSED_WIDTH,
                         transition:
                             'width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
@@ -140,20 +138,18 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                         fontSize: 'inherit',
                         borderLeft: `${ACTIVE_BORDER_WIDTH}px solid transparent`,
                         '&.active': {
-                            borderLeft: `${ACTIVE_BORDER_WIDTH}px solid ${customTheme.palette.primary.main}`,
-                            backgroundColor:
-                                customTheme.palette.neutralDark.dark,
+                            borderLeft: `${ACTIVE_BORDER_WIDTH}px solid var(--primary-main)`,
+                            backgroundColor: 'var(--neutral-dark-dark)',
                         },
                         '&:hover': {
                             transition: 'background-color ease-in-out 400ms',
-                            color: customTheme.palette.contrast.main,
-                            backgroundColor:
-                                customTheme.palette.neutralDark.light,
+                            color: 'var(--contrast-main)',
+                            backgroundColor: 'var(--neutral-dark-light)',
                         },
                         '& .MuiListItemIcon-root': {
                             minWidth: DRAWER_CLOSED_WIDTH - ACTIVE_BORDER_WIDTH,
                             justifyContent: 'center',
-                            color: customTheme.palette.contrast.main,
+                            color: 'var(--contrast-main)',
                         },
                     },
                 }}

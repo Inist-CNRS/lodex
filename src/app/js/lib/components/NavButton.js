@@ -9,7 +9,6 @@ import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
-import customTheme from '../../../custom/customTheme';
 
 const styles = stylesToClassname(
     {
@@ -19,12 +18,12 @@ const styles = stylesToClassname(
             padding: '0px !important',
         },
         icon: {
-            color: customTheme.palette.primary.main,
+            color: 'var(--primary-main)',
             ':hover': {
-                color: customTheme.palette.info.main,
+                color: 'var(--info-main)',
             },
             ':active': {
-                color: customTheme.palette.secondary.main,
+                color: 'var(--secondary-main)',
             },
         },
     },

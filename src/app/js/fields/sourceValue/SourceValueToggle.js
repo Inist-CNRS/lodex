@@ -24,7 +24,6 @@ import {
     Typography,
 } from '@mui/material';
 import SourceValueFromSubResource from './SourceValueFromSubResource';
-import customTheme from '../../../custom/customTheme';
 
 const TRANSFORMERS_FORM_STATUS = new Map([
     [
@@ -180,10 +179,10 @@ const ToggleButton = styled(MuiToggleButton)(() => ({
         gap: '5px',
         '&.Mui-selected, &.Mui-selected:hover': {
             color: 'white',
-            backgroundColor: customTheme.palette.primary.secondary,
+            backgroundColor: 'var(--primary-secondary)',
         },
         '&.Mui-disabled': {
-            backgroundColor: customTheme.palette.neutralDark.veryLight,
+            backgroundColor: 'var(--neutral-dark-very-light)',
         },
     },
 }));

@@ -16,20 +16,19 @@ import {
 import FilterIcon from '@mui/icons-material/FilterList';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import customTheme from '../../../custom/customTheme';
 
 const styles = {
     item: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: customTheme.palette.neutralDark.veryLight,
+            backgroundColor: 'var(--neutral-dark-very-light)',
         },
-        borderBottom: `1px solid ${customTheme.palette.neutralDark.light}`,
+        borderBottom: `1px solid var(--neutral-dark-light)`,
     },
     selectedItem: {
-        backgroundColor: customTheme.palette.primary.secondary,
+        backgroundColor: 'var(--primary-secondary)',
         '&:hover': {
-            backgroundColor: customTheme.palette.primary.main,
+            backgroundColor: 'var(--primary-main)',
         },
     },
 };
