@@ -18,7 +18,7 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
-import { Button, Tooltip } from '@mui/material';
+import { Button, Tooltip, Typography } from '@mui/material';
 
 const baseUrl = getHost();
 
@@ -242,6 +242,20 @@ const Tenants = ({ handleLogout }) => {
             flex: 1,
             valueFormatter: params => {
                 return formatValue(params.value);
+            },
+            renderCell: params => {
+                return (
+                    <Typography
+                        sx={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                        }}
+                        title={params.value}
+                    >
+                        {params.value}
+                    </Typography>
+                );
             },
         },
         {
