@@ -98,7 +98,7 @@
         "https://query.wikidata.org/sparql",
         "http://www.lotico.com:3030/lotico/sparql"
     ],
-    "precomputedBaseUrlForDevelopment": "https://f612-81-250-164-94.ngrok-free.app",
+    "precomputedBaseUrlForDevelopment": "{public url of the server accessible from webhooks (ie ngrok)}",
     "precomputedAnswerMode": "retrieve",
     "activateBullDashboard": false
 }
