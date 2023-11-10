@@ -1003,3 +1003,4 @@ vega_json_error	The json syntax of Vega Lite specification is wrong!	La syntaxe 
 "republish"	"Republish"	"Republier"
 "user_auth" 	"User authentication"	"Authentification utilisateur"
 "enableAutoPublication"	"Auto Publishing"	"Publication automatique"
+theme	Application theme	Thème de l'application
