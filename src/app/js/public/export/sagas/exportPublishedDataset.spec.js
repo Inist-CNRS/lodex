@@ -19,6 +19,12 @@ describe('export saga', () => {
             );
         });
 
+        it('should select fromSearch.getInvertedFacetKeys', () => {
+            expect(saga.next().value).toEqual(
+                select(fromSearch.getInvertedFacetKeys),
+            );
+        });
+
         it('should select fromSearch.getQuery', () => {
             expect(
                 saga.next([
@@ -44,7 +50,8 @@ describe('export saga', () => {
             ).toEqual(
                 call(getQueryString, {
                     match: 'aFilter',
-                    facets: [
+                    facets: undefined,
+                    invertedFacets: [
                         {
                             field: {
                                 name: 'aFacet',

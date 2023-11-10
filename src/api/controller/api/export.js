@@ -42,8 +42,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     }
 
     const [, metaData, exporterName] = currentScript;
-    const { sortDir, sortBy, match, ...facets } = ctx.query;
-
+    const { sortDir, sortBy, match, invertedFacets, ...facets } = ctx.query;
     ctx.type = metaData.mimeType;
     ctx.status = 200;
     if (metaData.fileName) {
@@ -69,6 +68,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     const query = {
         orderBy,
         field: parseFieldsParams(fieldsParams),
+        invertedFacets,
         match: match,
         ...facetsWithoutId,
         connectionStringURI: mongoConnectionString(ctx.tenant),

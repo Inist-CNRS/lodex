@@ -507,14 +507,16 @@ export const getExportPublishedDatasetRequest = (
     });
 
 // download pdf file
-export const getExportPDFRequest = (state, options) =>
-    getRequest(state, {
+export const getExportPDFRequest = (state, options) => {
+    const paramString = getQueryString(options);
+    return getRequest(state, {
         method: 'GET',
-        url: `/api/pdf?locale=${options.locale}&maxExportPDFSize=${options.maxExportPDFSize}&match=${options.match}&facets=${options.facets}`,
+        url: `/api/pdf?${paramString}`,
         head: {
             Accept: 'application/pdf',
         },
     });
+};
 
 export const getReorderFieldRequest = (state, fields) =>
     getRequest(state, {

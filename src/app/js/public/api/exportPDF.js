@@ -5,9 +5,6 @@ import { getExportPDFRequest } from '../../user';
 const exportPDF = async options => {
     const { token } = getUserSessionStorageInfo();
 
-    // set facets for url query
-    options.facets = encodeURIComponent(JSON.stringify(options.facets));
-
     const request = getExportPDFRequest({ token }, options);
     return fetch(request, 'blob').then(({ response, error }) => {
         if (error) {
