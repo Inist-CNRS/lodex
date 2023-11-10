@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Checkbox, TextField } from '@mui/material';
+import {
+    Box,
+    Button,
+    Checkbox,
+    MenuItem,
+    Select,
+    TextField,
+} from '@mui/material';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
@@ -9,7 +16,11 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { withRouter } from 'react-router';
-import { getConfigTenant, updateConfigTenant } from '../api/configTenant';
+import {
+    getConfigTenant,
+    getConfigTenantAvailableTheme,
+    updateConfigTenant,
+} from '../api/configTenant';
 import PropTypes from 'prop-types';
 import CancelButton from '../../lib/components/CancelButton';
 import { toast } from '../../../../common/tools/toast';
@@ -25,6 +36,21 @@ export const ConfigTenantForm = ({
     const [userAuth, setUserAuth] = useState({});
     const [enrichmentBatchSize, setEnrichmentBatchSize] = useState(0);
     const [id, setId] = useState('');
+    const [theme, setTheme] = useState('default');
+    const [themes, setThemes] = useState([
+        {
+            name: {
+                fr: 'Classique',
+                en: 'Classic',
+            },
+            description: {
+                fr: 'Thème Lodex Classique',
+                en: 'Lodex Classic theme',
+            },
+            value: 'default',
+        },
+    ]);
+
     useEffect(() => {
         async function fetchData() {
             const { response } = await getConfigTenant();
@@ -32,13 +58,18 @@ export const ConfigTenantForm = ({
             setEnrichmentBatchSize(response.enrichmentBatchSize);
             setId(response._id);
             setEnableAutoPublication(response.enableAutoPublication);
+            setTheme(response.theme ?? 'default');
             delete response.userAuth;
             delete response.enrichmentBatchSize;
             delete response._id;
             delete response.enableAutoPublication;
+            delete response.theme;
 
             const stringified = JSON.stringify(response, null, 2);
             setConfigTenant(stringified);
+
+            const themesResponse = await getConfigTenantAvailableTheme();
+            setThemes(themesResponse.response);
         }
         fetchData();
     }, []);
@@ -50,6 +81,7 @@ export const ConfigTenantForm = ({
             configTenantToSave.enrichmentBatchSize = enrichmentBatchSize;
             configTenantToSave._id = id;
             configTenantToSave.enableAutoPublication = enableAutoPublication;
+            configTenantToSave.theme = theme;
 
             const res = await updateConfigTenant(configTenantToSave);
             if (res.error) {
@@ -146,6 +178,21 @@ export const ConfigTenantForm = ({
                     }}
                 />
             </Box>
+
+            <h2>{polyglot.t('theme')}</h2>
+            <Select
+                value={theme}
+                onChange={event => {
+                    setTheme(event.target.value);
+                }}
+            >
+                {themes.map(t => (
+                    <MenuItem key={t.value} value={t.value}>
+                        {t.name[polyglot.currentLocale]} -{' '}
+                        {t.description[polyglot.currentLocale]}
+                    </MenuItem>
+                ))}
+            </Select>
 
             <h2>{polyglot.t('other')}</h2>
             <TextField

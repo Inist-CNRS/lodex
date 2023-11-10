@@ -32,7 +32,7 @@ import getLocale from '../../common/getLocale';
 import { getPublication } from './api/publication';
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
-import getTheme, { getAvailableTheme } from '../models/themes';
+import getTheme, { getAvailableThemeKeys } from '../models/themes';
 
 const REGEX_JS_HOST = /\{\|__JS_HOST__\|\}/g;
 
@@ -209,8 +209,8 @@ const handleRender = async (ctx, next) => {
         initialEntries: [url],
     });
 
-    // TODO: Get the theme from the tenant configuration
-    const lodexTheme = getTheme('default');
+    const configTenant = await ctx.configTenantCollection.findLast();
+    const lodexTheme = getTheme(configTenant.theme);
 
     const theme = createTheme(lodexTheme.customTheme, {
         userAgent: headers['user-agent'],
@@ -348,7 +348,7 @@ app.use(
     }),
 );
 
-for (let theme of getAvailableTheme()) {
+for (let theme of getAvailableThemeKeys()) {
     app.use(
         mount(
             `/themes/${theme}/`,

@@ -27,9 +27,24 @@ export const getTheme = (theme = 'default') => {
 };
 
 /**
- * @returns {IterableIterator<string>}
+ * @returns {*[]}
  */
 export const getAvailableTheme = () => {
+    const toReturn = [];
+    loadedThemes.forEach((theme, value) => {
+        toReturn.push({
+            value,
+            name: theme.name,
+            description: theme.description,
+        });
+    });
+    return toReturn;
+};
+
+/**
+ * @returns {IterableIterator<string>}
+ */
+export const getAvailableThemeKeys = () => {
     return availableTheme.keys();
 };
 
@@ -67,7 +82,8 @@ const init = async () => {
                 .toString()
                 .replace(REGEX_JS_HOST, jsHost)
                 .replace(REGEX_THEMES_HOST, themesHost),
-            customTheme: await import('../../app/custom/customTheme').default,
+            customTheme: (await import('../../app/custom/customTheme.js'))
+                .default,
         });
         availableTheme.set('default', true);
     } catch (e) {
@@ -95,7 +111,7 @@ const init = async () => {
                 indexLocation = `../../${uri}/${themeConfig?.files?.theme?.index}`;
             }
 
-            let customThemeLocation = '../../app/custom/customTheme';
+            let customThemeLocation = '../../app/custom/customTheme.js';
             if (themeConfig?.files?.theme?.main) {
                 customThemeLocation = `../../${uri}/${themeConfig?.files?.theme?.main}`;
             }
@@ -106,8 +122,7 @@ const init = async () => {
                 .replace(REGEX_JS_HOST, jsHost)
                 .replace(REGEX_THEMES_HOST, themesHost);
 
-            // TODO: Fix this, currently it return only undefined
-            const customTheme = await import(customThemeLocation).default;
+            const customTheme = (await import(customThemeLocation)).default;
 
             loadedThemes.set(theme, {
                 name: themeConfig.name,

@@ -160,6 +160,12 @@ export const getDeleteEnrichmentRequest = (state, id) =>
         method: 'DELETE',
     });
 
+export const getConfigTenantAvailableThemeRequest = state =>
+    getRequest(state, {
+        url: '/api/themes',
+        method: 'GET',
+    });
+
 export const getConfigTenantRequest = state =>
     getRequest(state, {
         url: `/api/config-tenant`,
