@@ -13,14 +13,15 @@ export function* handleExportPublishedDatasetSuccess({
     payload: { exportID, uri },
 }) {
     const facets = yield select(fromSearch.getAppliedFacets);
+    const invertedFacets = yield select(fromSearch.getInvertedFacetKeys);
     const match = yield select(fromSearch.getQuery);
     const sort = yield select(fromSearch.getSort);
-
     const queryString = yield call(getQueryString, {
         match,
         facets,
         sort,
         uri,
+        invertedFacets,
     });
 
     const request = yield select(fromUser.getExportPublishedDatasetRequest, {

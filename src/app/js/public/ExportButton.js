@@ -52,6 +52,8 @@ const ExportButton = ({
     match,
     facets,
     locale,
+    invertedFacets,
+    sort,
 }) => {
     if (!exporters || !exporters.length) {
         return null;
@@ -82,13 +84,18 @@ const ExportButton = ({
 
     const handleExportPDF = async () => {
         handleClose();
+        const options = {
+            match,
+            facets,
+            sort,
+            uri,
+            invertedFacets,
+            locale,
+            perPage: maxExportPDFSize,
+        };
+
         try {
-            const response = await PDFApi.exportPDF({
-                maxExportPDFSize,
-                match,
-                facets,
-                locale,
-            });
+            const response = await PDFApi.exportPDF(options);
 
             // Detect if the user is on a mobile device and redirect to the PDF
             if (
@@ -157,6 +164,8 @@ ExportButton.propTypes = {
     match: PropTypes.string,
     facets: PropTypes.arrayOf(PropTypes.object),
     locale: PropTypes.string.isRequired,
+    sort: PropTypes.any,
+    invertedFacets: PropTypes.arrayOf(PropTypes.string),
 };
 
 ExportButton.defaultProps = {
@@ -169,6 +178,8 @@ const mapStateToProps = state => ({
     maxExportPDFSize: fromDisplayConfig.getMaxExportPDFSize(state),
     facets: fromSearch.getAppliedFacets(state),
     match: fromSearch.getQuery(state),
+    invertedFacets: fromSearch.getInvertedFacetKeys(state),
+    sort: fromSearch.getSort(state),
     locale: fromI18n.getLocale(state),
 });
 
