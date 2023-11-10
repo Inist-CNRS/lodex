@@ -102,5 +102,9 @@
     "webhookBaseUrlForDevelopment": "https://6952-81-250-164-94.ngrok-free.app",
     "isolatedMode": false,
     "webserviceAnswerMode": "retrieve",
-    "activateBullDashboard": false
+    "activateBullDashboard": false,
+    "themes": [
+        "inist",
+        "istex"
+    ]
 }

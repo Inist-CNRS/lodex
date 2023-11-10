@@ -1,0 +1,16 @@
+{
+  "version": "1",
+  "name": {
+    "fr": "ISTEX",
+    "en": "ISTEX"
+  },
+  "description": {
+    "fr": "Thème ISTEX",
+    "en": "ISTEX theme"
+  },
+  "files": {
+    "theme": {
+      "index": "index.html"
+    }
+  }
+}

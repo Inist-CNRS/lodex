@@ -28,18 +28,13 @@ import configureStoreServer from '../../app/js/configureStoreServer';
 import Routes from '../../app/js/public/Routes';
 import translations from '../services/translations';
 import getLocale from '../../common/getLocale';
-import customTheme from '../../app/custom/customTheme';
 
 import { getPublication } from './api/publication';
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
+import getTheme, { getAvailableTheme } from '../models/themes';
 
 const REGEX_JS_HOST = /\{\|__JS_HOST__\|\}/g;
-
-const indexHtml = fs
-    .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
-    .toString()
-    .replace(REGEX_JS_HOST, jsHost);
 
 const getDefaultInitialState = (ctx, token, cookie, locale) => ({
     enableAutoPublication: ctx.configTenant.enableAutoPublication,
@@ -116,7 +111,7 @@ const getInitialState = async (token, cookie, locale, ctx) => {
     };
 };
 
-const renderFullPage = (html, css, preloadedState, helmet, tenant) =>
+const renderFullPage = (html, css, preloadedState, helmet, tenant, indexHtml) =>
     indexHtml
         .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
         .replace(/<title>.*?<\/title>/, helmet.title.toString())
@@ -214,7 +209,10 @@ const handleRender = async (ctx, next) => {
         initialEntries: [url],
     });
 
-    const theme = createTheme(customTheme, {
+    // TODO: Get the theme from the tenant configuration
+    const lodexTheme = getTheme('inist');
+
+    const theme = createTheme(lodexTheme.customTheme, {
         userAgent: headers['user-agent'],
     });
 
@@ -238,7 +236,14 @@ const handleRender = async (ctx, next) => {
         return ctx.redirect(redirect);
     }
 
-    ctx.body = renderFullPage(html, css, preloadedState, helmet, ctx.tenant);
+    ctx.body = renderFullPage(
+        html,
+        css,
+        preloadedState,
+        helmet,
+        ctx.tenant,
+        lodexTheme.index,
+    );
 };
 
 const renderAdminIndexHtml = ctx => {
@@ -342,6 +347,15 @@ app.use(
         renderAdminIndexHtml(ctx);
     }),
 );
+
+for (let theme of getAvailableTheme()) {
+    app.use(
+        mount(
+            `/themes/${theme}/`,
+            serve(path.resolve(__dirname, `../../themes/${theme}`)),
+        ),
+    );
+}
 
 app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
 app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));

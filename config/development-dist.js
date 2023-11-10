@@ -16,4 +16,5 @@ module.exports = {
     },
     host: process.env.EZMASTER_PUBLIC_URL || 'http://localhost:3000',
     jsHost: 'http://localhost:8080',
+    themesHost: process.env.EZMASTER_PUBLIC_URL || 'http://localhost:3000',
 };
