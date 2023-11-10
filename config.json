@@ -99,7 +99,7 @@
         "http://www.lotico.com:3030/lotico/sparql"
     ],
     "webServiceBaseURL": "https://data-computer.services.istex.fr/v1/",
-    "webhookBaseUrlForDevelopment": "https://6952-81-250-164-94.ngrok-free.app",
+    "webhookBaseUrlForDevelopment": "https://f612-81-250-164-94.ngrok-free.app",
     "isolatedMode": false,
     "webserviceAnswerMode": "retrieve",
     "activateBullDashboard": false
