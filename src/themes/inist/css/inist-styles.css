@@ -236,38 +236,46 @@ div.breadcrumb-root a:hover, div.breadcrumb-root a:focus, div.breadcrumb-root a:
   body {
     background: url("../images/bg_projets_petit.jpg") repeat-x;
   }
+
   /*fonts hierarchie */
   h1,
   header h1 {
     font-size: 1.5rem;
   }
+
   h2 {
     font-size: 1.25rem;
   }
+
   /*header en colonne*/
   header > div {
     flex-flow: column nowrap;
     height: auto;
     align-items: start;
   }
+
   header h1 {
     font-size: 1.25rem;
   }
+
   footer ul {
     display: block;
   }
+
   footer ul > * {
     width: 100%;
   }
-div.breadcrumb-root {
-  float: none;
-  margin-top: 0;
-  background-color: #14134f;
-  box-shadow: none;
-  border-radius: 0;
-  position: absolute;
-  width: 100%;
-  left: 0;
+
+  div.breadcrumb-root {
+    float: none;
+    margin-top: 0;
+    background-color: #14134f;
+    box-shadow: none;
+    border-radius: 0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+  }
 }
 /* adaptative charte : header et footer idem container (cf custom/styles.css)*/
 @media (min-width: 576px) {

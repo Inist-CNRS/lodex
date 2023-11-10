@@ -111,7 +111,15 @@ const getInitialState = async (token, cookie, locale, ctx) => {
     };
 };
 
-const renderFullPage = (html, css, preloadedState, helmet, tenant, indexHtml) =>
+const renderFullPage = (
+    html,
+    css,
+    preloadedState,
+    helmet,
+    tenant,
+    indexHtml,
+    cssVariable,
+) =>
     indexHtml
         .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
         .replace(/<title>.*?<\/title>/, helmet.title.toString())
@@ -120,6 +128,7 @@ const renderFullPage = (html, css, preloadedState, helmet, tenant, indexHtml) =>
             `${helmet.meta.toString()}
             ${helmet.link.toString()}
             <style data-aphrodite>${css.content}</style>
+            <style>${cssVariable}</style>
             </head>`,
         )
         .replace(
@@ -192,6 +201,58 @@ export const getRenderingData = async (
     };
 };
 
+/**
+ * Create all css variable linked to the customTheme,
+ * this is done to avoid importing the customTheme file into the front and source code
+ * @param theme
+ * @returns {string}
+ */
+const getCssVariable = theme => {
+    const palette = theme.palette;
+    return `
+:root {
+    --primary-main: ${palette.primary.main};
+    --primary-secondary: ${palette.primary.secondary};
+    --primary-light: ${palette.primary.light};
+    --primary-contrast-text: ${palette.primary.contrastText};
+
+    --secondary-main: ${palette.secondary.main};
+    --secondary-contrast-text: ${palette.secondary.contrastText};
+
+    --info-main: ${palette.info.main};
+    --info-contrast-text: ${palette.info.contrastText};
+
+    --warning-main: ${palette.warning.main};
+    --warning-contrast-text: ${palette.warning.contrastText};
+
+    --danger-main: ${palette.danger.main};
+    --danger-contrast-text: ${palette.danger.contrastText};
+
+    --success-main: ${palette.success.main};
+    --success-contrast-text: ${palette.success.contrastText};
+    
+    --neutral-main: ${palette.neutral.main};
+    
+    --neutral-dark-main: ${palette.neutralDark.main};
+    --neutral-dark-secondary: ${palette.neutralDark.secondary};
+    --neutral-dark-very-dark: ${palette.neutralDark.veryDark};
+    --neutral-dark-dark: ${palette.neutralDark.dark};
+    --neutral-dark-light: ${palette.neutralDark.light};
+    --neutral-dark-lighter: ${palette.neutralDark.lighter};
+    --neutral-dark-very-light: ${palette.neutralDark.veryLight};
+    --neutral-dark-transparent: ${palette.neutralDark.transparent};
+    
+    --text-main: ${palette.text.main};
+    --text-primary: ${palette.text.primary};
+    
+    --contrast-main: ${palette.contrast.main};
+    --contrast-light: ${palette.contrast.light};
+    
+    --contrast-threshold: ${palette.contrastThreshold};
+}
+    `;
+};
+
 const handleRender = async (ctx, next) => {
     const { url, headers } = ctx.request;
     if (
@@ -215,6 +276,8 @@ const handleRender = async (ctx, next) => {
     const theme = createTheme(lodexTheme.customTheme, {
         userAgent: headers['user-agent'],
     });
+
+    const cssVariable = getCssVariable(lodexTheme.customTheme);
 
     const {
         html,
@@ -243,6 +306,7 @@ const handleRender = async (ctx, next) => {
         helmet,
         ctx.tenant,
         lodexTheme.index,
+        cssVariable,
     );
 };
 
