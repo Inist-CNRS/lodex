@@ -210,7 +210,7 @@ const handleRender = async (ctx, next) => {
     });
 
     // TODO: Get the theme from the tenant configuration
-    const lodexTheme = getTheme('inist');
+    const lodexTheme = getTheme('default');
 
     const theme = createTheme(lodexTheme.customTheme, {
         userAgent: headers['user-agent'],

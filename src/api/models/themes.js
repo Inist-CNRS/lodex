@@ -22,7 +22,7 @@ const availableTheme = new Map();
  * @param theme
  * @returns {{name: {fr: string, en: string}, description: {fr: string, en: string}, index: string, customTheme: *}}
  */
-export const getTheme = theme => {
+export const getTheme = (theme = 'default') => {
     return loadedThemes.get(theme);
 };
 
