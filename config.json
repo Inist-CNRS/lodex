@@ -98,9 +98,7 @@
         "https://query.wikidata.org/sparql",
         "http://www.lotico.com:3030/lotico/sparql"
     ],
-    "webServiceBaseURL": "https://data-computer.services.istex.fr/v1/",
-    "webhookBaseUrlForDevelopment": "https://f612-81-250-164-94.ngrok-free.app",
-    "isolatedMode": false,
-    "webserviceAnswerMode": "retrieve",
+    "precomputedBaseUrlForDevelopment": "https://f612-81-250-164-94.ngrok-free.app",
+    "precomputedAnswerMode": "retrieve",
     "activateBullDashboard": false
 }
