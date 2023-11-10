@@ -16,7 +16,7 @@ const loadedThemes = new Map();
 /**
  * @type {Map<string, boolean>}
  */
-const availableTheme = new Map();
+const availableThemes = new Map();
 
 /**
  * @param theme
@@ -29,7 +29,7 @@ export const getTheme = (theme = 'default') => {
 /**
  * @returns {*[]}
  */
-export const getAvailableTheme = () => {
+export const getAvailableThemes = () => {
     const toReturn = [];
     loadedThemes.forEach((theme, value) => {
         toReturn.push({
@@ -44,8 +44,8 @@ export const getAvailableTheme = () => {
 /**
  * @returns {IterableIterator<string>}
  */
-export const getAvailableThemeKeys = () => {
-    return availableTheme.keys();
+export const getAvailableThemesKeys = () => {
+    return availableThemes.keys();
 };
 
 /**
@@ -53,13 +53,13 @@ export const getAvailableThemeKeys = () => {
  * @returns {boolean}
  */
 export const isLoaded = theme => {
-    return availableTheme.get(theme);
+    return availableThemes.get(theme);
 };
 
-const initAvailableTheme = () => {
-    availableTheme.set('default', false);
+const initAvailableThemes = () => {
+    availableThemes.set('default', false);
     for (const theme of config.themes) {
-        availableTheme.set(theme, false);
+        availableThemes.set(theme, false);
     }
 };
 
@@ -85,7 +85,7 @@ const init = async () => {
             customTheme: (await import('../../app/custom/customTheme.js'))
                 .default,
         });
-        availableTheme.set('default', true);
+        availableThemes.set('default', true);
     } catch (e) {
         logger.error("Can't load default Lodex theme!");
         throw e;
@@ -130,7 +130,7 @@ const init = async () => {
                 index,
                 customTheme,
             });
-            availableTheme.set(theme, true);
+            availableThemes.set(theme, true);
         } catch (e) {
             logger.error(`unable to load ${theme} theme!`);
             logger.error(e);
@@ -138,7 +138,7 @@ const init = async () => {
     }
 };
 
-initAvailableTheme();
+initAvailableThemes();
 init().then(() => {
     logger.info('Theme initialization finished');
 });
