@@ -596,6 +596,12 @@ export const clearModelRequest = state =>
         method: 'DELETE',
     });
 
+export const getThemeRequest = state =>
+    getRequest(state, {
+        url: '/api/themes/current',
+        method: 'GET',
+    });
+
 export const selectors = {
     isAdmin,
     getRole,
@@ -668,4 +674,5 @@ export const selectors = {
     getDisplayConfigRequest,
     getConfigTenantRequest,
     getUpdateConfigTenantRequest,
+    getThemeRequest,
 };

@@ -6,8 +6,8 @@ import getLogger from '../services/logger';
 
 const logger = getLogger('system');
 
-const REGEX_JS_HOST = /\{\|__JS_HOST__\|\}/g;
-const REGEX_THEMES_HOST = /\{\|__THEMES_HOST__\|\}/g;
+const REGEX_JS_HOST = /\{\|__JS_HOST__\|}/g;
+const REGEX_THEMES_HOST = /\{\|__THEMES_HOST__\|}/g;
 
 /**
  * @type {Map<string, {name: {fr: string, en: string}, description: {fr: string, en: string}, index: string, customTheme: *}>}

@@ -17,6 +17,7 @@ import configureStore from '../configureStore';
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import customTheme from '../../custom/customTheme';
+import { themeLoader } from './api/themeLoader';
 
 const locale = getLocale();
 const initialState = {
@@ -41,11 +42,24 @@ const store = configureStore(
     history,
 );
 
-hydrate(
-    <Provider {...{ store }}>
-        <ThemeProvider theme={createThemeMui(customTheme)}>
-            <Routes history={history} />
-        </ThemeProvider>
-    </Provider>,
-    document.getElementById('root'),
-);
+themeLoader()
+    .then(lodexTheme => {
+        hydrate(
+            <Provider {...{ store }}>
+                <ThemeProvider theme={createThemeMui(lodexTheme)}>
+                    <Routes history={history} />
+                </ThemeProvider>
+            </Provider>,
+            document.getElementById('root'),
+        );
+    })
+    .catch(() => {
+        hydrate(
+            <Provider {...{ store }}>
+                <ThemeProvider theme={createThemeMui(customTheme)}>
+                    <Routes history={history} />
+                </ThemeProvider>
+            </Provider>,
+            document.getElementById('root'),
+        );
+    });

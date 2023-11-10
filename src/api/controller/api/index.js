@@ -45,6 +45,7 @@ app.use(route.get('/breadcrumb', breadcrumbs));
 app.use(route.get('/menu', menu));
 app.use(route.get('/displayConfig', displayConfig));
 app.use(mount('/translations', translate));
+app.use(mount('/themes', themes));
 
 app.use(async (ctx, next) => {
     const jwtMid = await jwt({
@@ -121,7 +122,6 @@ app.use(mount('/field', fieldRoutes));
 app.use(mount('/subresource', subresource));
 app.use(mount('/enrichment', enrichment));
 app.use(mount('/config-tenant', configTenant));
-app.use(mount('/themes', themes));
 app.use(mount('/precomputed', precomputed));
 app.use(mount('/job', job));
 app.use(mount('/parsing', parsing));
