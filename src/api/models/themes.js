@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+import fs from 'fs';
 import { jsHost, themesHost } from 'config';
 import config from '../../../config.json';
 import path from 'path';
