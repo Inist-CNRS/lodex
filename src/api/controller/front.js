@@ -201,7 +201,7 @@ const handleRender = async (ctx, next) => {
     const { url, headers } = ctx.request;
     if (
         (url.match(/[^\\]*\.(\w+)$/) &&
-            !url.match(/[^\\]*\.html$/) &&
+            !url.match(/^(?!.*\/instance\/).*\.html$/) &&
             !url.match(/\/uid:\//)) ||
         url.match('/admin') ||
         url.match('__webpack_hmr')
