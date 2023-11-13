@@ -23,13 +23,12 @@ import getLogger from '../logger';
 const baseUrl = getHost();
 const webhookBaseUrl =
     process.env.NODE_ENV === 'development'
-        ? localConfig.webhookBaseUrlForDevelopment
+        ? localConfig.precomputedBaseUrlForDevelopment
         : baseUrl;
 
-const { isolatedMode: ISOLATED_MODE = true } = localConfig;
 const ANSWER_ROUTES = { RETRIEVE: 'retrieve', COLLECT: 'collect' };
 const {
-    webserviceAnswerMode: ANSWER_ROUTE = ANSWER_ROUTES.RETRIEVE,
+    precomputedAnswerMode: ANSWER_ROUTE = ANSWER_ROUTES.RETRIEVE,
 } = localConfig;
 
 export const getPrecomputedDataPreview = async ctx => {
@@ -65,6 +64,15 @@ export const getPrecomputedDataPreview = async ctx => {
     return result;
 };
 
+const tryParseJsonString = str => {
+    try {
+        const parsed = JSON.parse(str);
+        return parsed;
+    } catch (e) {
+        return str;
+    }
+};
+
 const processZippedData = async (precomputed, ctx) => {
     const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
     const initDate = new Date();
@@ -92,6 +100,9 @@ const processZippedData = async (precomputed, ctx) => {
             precomputed.sourceColumns.map(column => {
                 colums.push(entry[column]);
             });
+            const parsedValue = tryParseJsonString(
+                colums.length > 1 ? colums : colums[0],
+            );
             await pack.entry(
                 {
                     name: `data/${'f' +
@@ -101,7 +112,7 @@ const processZippedData = async (precomputed, ctx) => {
                 },
                 JSON.stringify({
                     id: entry.uri,
-                    value: JSON.parse(colums.length > 1 ? colums : colums[0]),
+                    value: parsedValue,
                 }),
             );
         }
@@ -138,10 +149,6 @@ export const getTokenFromWebservice = async (
     tenant,
     jobId,
 ) => {
-    if (ISOLATED_MODE) {
-        return { id: 'treeSegment', value: '12345' };
-    }
-
     const response = await fetch(webServiceUrl, {
         method: 'POST',
         body: fs.createReadStream(fileName),
@@ -152,17 +159,20 @@ export const getTokenFromWebservice = async (
         },
         compress: false,
     });
-    if (response.status != 200) {
-        throw new Error('Calling token webservice error');
-    }
-
-    const callId = JSON.stringify(await response.json());
 
     fs.unlink(fileName, error => {
         if (error) {
             throw error;
         }
     });
+
+    if (response.status != 200) {
+        throw new Error(
+            `Calling token webservice error (${response.status}|${response.statusText})`,
+        );
+    }
+
+    const callId = JSON.stringify(await response.json());
 
     return callId;
 };
@@ -310,8 +320,7 @@ export const getComputedFromWebservice = async (
             id === precomputedId &&
             jobType === PRECOMPUTER &&
             jobTenant === tenant &&
-            (ISOLATED_MODE ||
-                `${tenant}-precomputed-job-${job.opts.jobId}` === jobId)
+            `${tenant}-precomputed-job-${job.opts.jobId}` === jobId
         );
     })?.[0];
 
@@ -333,23 +342,22 @@ export const getComputedFromWebservice = async (
     //WS doc here:
     //openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20coprus%20compress%C3%A9#/data-computer/post-v1-collect
 
+    const { webServiceUrl } = await ctx.precomputed.findOneById(precomputedId);
+    const webServiceBaseURL = new RegExp('.*\\/').exec(webServiceUrl)[0];
+
     try {
         const ROUTE = { RETRIEVE: 'retrieve', COLLECT: 'collect' };
-        const callRoute = ANSWER_ROUTE;
-        const response = await fetch(
-            `${localConfig.webServiceBaseURL}${callRoute}`,
-            {
-                method: 'POST',
-                body: callId,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                compress: false,
+        const response = await fetch(`${webServiceBaseURL}${ANSWER_ROUTE}`, {
+            method: 'POST',
+            body: callId,
+            headers: {
+                'Content-Type': 'application/json',
             },
-        );
-        if (response.status === 200 || ISOLATED_MODE) {
-            let data = ISOLATED_MODE ? { what: 'it worked' } : response.body;
-            if (callRoute === ROUTE.RETRIEVE) {
+            compress: false,
+        });
+        if (response.status === 200) {
+            let data = response.body;
+            if (ANSWER_ROUTE === ROUTE.RETRIEVE) {
                 const logData = JSON.stringify({
                     level: 'ok',
                     message: `[Instance: ${tenant}] Using tar.gz mode webservice`,
@@ -419,8 +427,7 @@ export const getFailureFromWebservice = async (
             id === precomputedId &&
             jobType === PRECOMPUTER &&
             jobTenant === tenant &&
-            (ISOLATED_MODE ||
-                `${tenant}-precomputed-job-${job.opts.jobId}` === jobId)
+            `${tenant}-precomputed-job-${job.opts.jobId}` === jobId
         );
     })?.[0];
 
@@ -562,6 +569,8 @@ export const setPrecomputedError = async (ctx, err) => {
         timestamp: new Date(),
         status: err instanceof CancelWorkerError ? CANCELED : ERROR,
     });
+    ctx.job.progress(100);
+    progress.finish(ctx.tenant);
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
     notifyListeners(`${ctx.tenant}-precomputer`, {
