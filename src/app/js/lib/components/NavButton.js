@@ -39,14 +39,14 @@ const renderIcon = direction =>
         <FontAwesomeIcon
             className={styles.icon}
             icon={faAngleRight}
-            color={customTheme.palette.primary.main}
+            color="var(--primary-main)"
             height={36}
         />
     ) : (
         <FontAwesomeIcon
             className={styles.icon}
             icon={faAngleLeft}
-            color={customTheme.palette.primary.main}
+            color="var(--primary-main)"
             height={36}
         />
     );
