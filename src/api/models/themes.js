@@ -1,9 +1,10 @@
-import fs from 'fs';
+import fs from 'fs/promises';
 import { jsHost, themesHost } from 'config';
 import config from '../../../config.json';
 import path from 'path';
 import getLogger from '../services/logger';
 import defaultCustomTheme from '../../app/custom/customTheme';
+import deepClone from 'lodash.clonedeep';
 
 const logger = getLogger('system');
 
@@ -64,6 +65,12 @@ const initAvailableThemes = () => {
     }
 };
 
+const loadFile = async path =>
+    (await fs.readFile(path))
+        .toString('utf8')
+        .replace(REGEX_JS_HOST, jsHost)
+        .replace(REGEX_THEMES_HOST, themesHost);
+
 const init = async () => {
     // Default theme
     try {
@@ -76,13 +83,9 @@ const init = async () => {
                 fr: 'Thème Lodex Classique',
                 en: 'Classic Lodex theme',
             },
-            index: fs
-                .readFileSync(
-                    path.resolve(__dirname, '../../app/custom/index.html'),
-                )
-                .toString()
-                .replace(REGEX_JS_HOST, jsHost)
-                .replace(REGEX_THEMES_HOST, themesHost),
+            index: await loadFile(
+                path.resolve(__dirname, '../../app/custom/index.html'),
+            ),
             customTheme: defaultCustomTheme,
         });
         availableThemes.set('default', true);
@@ -108,22 +111,23 @@ const init = async () => {
 
             let indexLocation = '../../app/custom/index.html';
             if (themeConfig?.files?.theme?.index) {
-                indexLocation = `../../${uri}/${themeConfig?.files?.theme?.index}`;
+                indexLocation = `../../${uri}/${themeConfig.files.theme.index}`;
             }
 
-            const index = fs
-                .readFileSync(path.resolve(__dirname, indexLocation))
-                .toString()
-                .replace(REGEX_JS_HOST, jsHost)
-                .replace(REGEX_THEMES_HOST, themesHost);
+            const index = await loadFile(
+                path.resolve(__dirname, indexLocation),
+            );
 
-            let customTheme = defaultCustomTheme;
+            let customTheme = deepClone(defaultCustomTheme);
             if (themeConfig?.files?.theme?.main) {
-                customTheme = (
-                    await import(
-                        `../../${uri}/${themeConfig?.files?.theme?.main}`
-                    )
-                ).default;
+                Object.assign(
+                    customTheme,
+                    (
+                        await import(
+                            `../../${uri}/${themeConfig.files.theme.main}`
+                        )
+                    ).default,
+                );
             }
 
             loadedThemes.set(theme, {
