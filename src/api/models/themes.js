@@ -3,6 +3,7 @@ import { jsHost, themesHost } from 'config';
 import config from '../../../config.json';
 import path from 'path';
 import getLogger from '../services/logger';
+import defaultCustomTheme from '../../app/custom/customTheme';
 
 const logger = getLogger('system');
 
@@ -82,8 +83,7 @@ const init = async () => {
                 .toString()
                 .replace(REGEX_JS_HOST, jsHost)
                 .replace(REGEX_THEMES_HOST, themesHost),
-            customTheme: (await import('../../app/custom/customTheme.js'))
-                .default,
+            customTheme: defaultCustomTheme,
         });
         availableThemes.set('default', true);
     } catch (e) {
@@ -111,18 +111,20 @@ const init = async () => {
                 indexLocation = `../../${uri}/${themeConfig?.files?.theme?.index}`;
             }
 
-            let customThemeLocation = '../../app/custom/customTheme.js';
-            if (themeConfig?.files?.theme?.main) {
-                customThemeLocation = `../../${uri}/${themeConfig?.files?.theme?.main}`;
-            }
-
             const index = fs
                 .readFileSync(path.resolve(__dirname, indexLocation))
                 .toString()
                 .replace(REGEX_JS_HOST, jsHost)
                 .replace(REGEX_THEMES_HOST, themesHost);
 
-            const customTheme = (await import(customThemeLocation)).default;
+            let customTheme = defaultCustomTheme;
+            if (themeConfig?.files?.theme?.main) {
+                customTheme = (
+                    await import(
+                        `../../${uri}/${themeConfig?.files?.theme?.main}`
+                    )
+                ).default;
+            }
 
             loadedThemes.set(theme, {
                 name: themeConfig.name,
