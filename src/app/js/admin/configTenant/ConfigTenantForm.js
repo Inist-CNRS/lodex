@@ -78,7 +78,7 @@ export const ConfigTenantForm = ({
     };
 
     return (
-        <>
+        <Box className="container">
             <h1>{polyglot.t('config_tenant')}</h1>
             <Box
                 sx={{
@@ -205,7 +205,7 @@ export const ConfigTenantForm = ({
                     </Button>
                 </Box>
             </Box>
-        </>
+        </Box>
     );
 };
 
