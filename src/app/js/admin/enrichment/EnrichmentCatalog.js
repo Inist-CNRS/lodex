@@ -22,22 +22,23 @@ import FilterIcon from '@mui/icons-material/FilterList';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import CancelButton from '../../lib/components/CancelButton';
+import adminTheme from '../../../custom/adminTheme';
 
 const styles = {
     item: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: 'var(--neutral-dark-very-light)',
+            backgroundColor: adminTheme.palette.neutralDark.veryLight,
         },
-        borderBottom: `1px solid var(--neutral-dark-light)`,
+        borderBottom: `1px solid ${adminTheme.palette.neutralDark.light}`,
     },
     selectedItem: {
-        backgroundColor: 'var(--primary-secondary)',
+        backgroundColor: adminTheme.palette.primary.secondary,
         '&:hover': {
-            backgroundColor: 'var(--primary-main)',
+            backgroundColor: adminTheme.palette.primary.main,
         },
         '& a': {
-            color: 'var(--contrast-main)',
+            color: adminTheme.palette.contrast.main,
         },
     },
 };

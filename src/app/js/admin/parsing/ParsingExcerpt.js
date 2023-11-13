@@ -13,6 +13,7 @@ import { IN_PROGRESS } from '../../../../common/taskStatus';
 import { addField } from '../../fields';
 import { useParams } from 'react-router';
 import parseValue from '../../../../common/tools/parseValue';
+import adminTheme from '../../../custom/adminTheme';
 
 export const getRowStyle = (index, total) => {
     let opacity = 1;
@@ -35,7 +36,7 @@ export const getEnrichmentsNames = enrichments => {
 export const getColumnStyle = (enrichmentsNames, column) => {
     return enrichmentsNames?.includes(column)
         ? {
-              backgroundColor: 'var(--primary-light)',
+              backgroundColor: adminTheme.palette.primary.light,
           }
         : {};
 };

@@ -6,13 +6,14 @@ import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
 import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import adminTheme from '../../../custom/adminTheme';
 
 const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
     return (
         <Box
             id="value-preview"
             sx={{
-                background: 'var(--neutral-dark-very-light)',
+                background: adminTheme.palette.neutralDark.veryLight,
                 padding: 2,
                 borderRadius: 2,
             }}

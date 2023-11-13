@@ -25,10 +25,9 @@ import { Display } from './Display';
 import { Data } from './Data';
 import { frFR as frFRDatagrid, enUS as enUSDatagrid } from '@mui/x-data-grid';
 import { frFR, enUS } from '@mui/material/locale';
-import customTheme from '../../custom/customTheme';
+import adminTheme from '../../custom/adminTheme';
 import LoginAdmin from './LoginAdmin';
 import { ConfigTenantRoute } from './ConfigTenantRoute';
-import { themeLoader } from '../public/api/themeLoader';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],
@@ -60,58 +59,28 @@ if (process.env.NODE_ENV === 'e2e') {
     sessionStorage.setItem('lodex-tenant', tenant);
 }
 
-themeLoader()
-    .then(lodexTheme => {
-        render(
-            <Provider store={store}>
-                <ThemeProvider
-                    theme={createThemeMui(lodexTheme, localesMUI.get(locale))}
-                >
-                    <ConnectedRouter history={history} onUpdate={scrollToTop}>
-                        <App>
-                            <Route
-                                path="/"
-                                exact
-                                render={() => <Redirect to="/data" />}
-                            />
-                            <PrivateRoute path="/data" component={Data} />
-                            <PrivateRoute path="/display" component={Display} />
-                            <PrivateRoute
-                                path="/config"
-                                component={ConfigTenantRoute}
-                            />
-                            <Route path="/login" exact component={LoginAdmin} />
-                        </App>
-                    </ConnectedRouter>
-                </ThemeProvider>
-            </Provider>,
-            document.getElementById('root'),
-        );
-    })
-    .catch(() => {
-        render(
-            <Provider store={store}>
-                <ThemeProvider
-                    theme={createThemeMui(customTheme, localesMUI.get(locale))}
-                >
-                    <ConnectedRouter history={history} onUpdate={scrollToTop}>
-                        <App>
-                            <Route
-                                path="/"
-                                exact
-                                render={() => <Redirect to="/data" />}
-                            />
-                            <PrivateRoute path="/data" component={Data} />
-                            <PrivateRoute path="/display" component={Display} />
-                            <PrivateRoute
-                                path="/config"
-                                component={ConfigTenantRoute}
-                            />
-                            <Route path="/login" exact component={LoginAdmin} />
-                        </App>
-                    </ConnectedRouter>
-                </ThemeProvider>
-            </Provider>,
-            document.getElementById('root'),
-        );
-    });
+render(
+    <Provider store={store}>
+        <ThemeProvider
+            theme={createThemeMui(adminTheme, localesMUI.get(locale))}
+        >
+            <ConnectedRouter history={history} onUpdate={scrollToTop}>
+                <App>
+                    <Route
+                        path="/"
+                        exact
+                        render={() => <Redirect to="/data" />}
+                    />
+                    <PrivateRoute path="/data" component={Data} />
+                    <PrivateRoute path="/display" component={Display} />
+                    <PrivateRoute
+                        path="/config"
+                        component={ConfigTenantRoute}
+                    />
+                    <Route path="/login" exact component={LoginAdmin} />
+                </App>
+            </ConnectedRouter>
+        </ThemeProvider>
+    </Provider>,
+    document.getElementById('root'),
+);
