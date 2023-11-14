@@ -102,7 +102,9 @@
     "precomputedAnswerMode": "retrieve",
     "activateBullDashboard": false,
     "themes": [
-      "inist",
-      "istex"
+        "void",
+        "nougat",
+        "inist",
+        "istex"
     ]
 }

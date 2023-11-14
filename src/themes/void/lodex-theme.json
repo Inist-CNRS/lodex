@@ -1,0 +1,16 @@
+{
+  "version": "1",
+  "name": {
+    "fr": "Void",
+    "en": "Void"
+  },
+  "description": {
+    "fr": "Thème Classique en violet",
+    "en": "Classic theme in purple"
+  },
+  "files": {
+    "theme": {
+      "main": "customTheme.js"
+    }
+  }
+}
