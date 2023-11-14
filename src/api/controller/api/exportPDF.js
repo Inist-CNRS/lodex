@@ -212,6 +212,7 @@ async function getPublishedFacet(ctx) {
     } = ctx.request.query;
 
     let facets = {};
+
     for (const [facetName, facetValueIds] of Object.entries(
         facetsWithValueIds,
     )) {
