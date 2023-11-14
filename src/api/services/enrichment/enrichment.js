@@ -25,7 +25,7 @@ const getSourceData = async (ctx, sourceColumn) => {
               }
             : {},
     );
-    if (excerptLines.length === 0) {
+    if (!excerptLines || excerptLines.length === 0) {
         return null;
     }
 

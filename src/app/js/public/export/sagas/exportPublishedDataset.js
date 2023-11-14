@@ -13,10 +13,13 @@ export function* handleExportPublishedDatasetSuccess({
     payload: { exportID, uri },
 }) {
     let facets = yield select(fromSearch.getAppliedFacets);
-    facets = Object.keys(facets).reduce((acc, facetName) => {
-        acc[facetName] = facets[facetName].map(facetValue => facetValue.id);
-        return acc;
-    }, {});
+
+    if (facets) {
+        facets = Object.keys(facets).reduce((acc, facetName) => {
+            acc[facetName] = facets[facetName].map(facetValue => facetValue.id);
+            return acc;
+        }, {});
+    }
     const invertedFacets = yield select(fromSearch.getInvertedFacetKeys);
     const match = yield select(fromSearch.getQuery);
     const sort = yield select(fromSearch.getSort);

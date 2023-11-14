@@ -119,6 +119,9 @@ export default async db => {
 
         const sort = getSort(sortBy, sortDir, match, searchableFieldNames);
 
+        // add _id to sort to avoid random results
+        sort._id = sortDir === 'ASC' ? 1 : -1;
+
         const results = await collection.findLimitFromSkip({
             limit: perPage,
             skip: page * perPage,
