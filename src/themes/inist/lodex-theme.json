@@ -1,12 +1,13 @@
 {
-  "version": "1",
+  "version": "2",
+  "restricted": true,
   "name": {
     "fr": "INIST",
     "en": "INIST"
   },
   "description": {
-    "fr": "Thème INIST",
-    "en": "INIST theme"
+    "fr": "Thème INIST (restreint)",
+    "en": "INIST theme (restricted)"
   },
   "files": {
     "theme": {

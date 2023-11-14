@@ -1,5 +1,6 @@
 {
-  "version": "1",
+  "version": "2",
+  "restricted": true,
   "name": {
     "fr": "ISTEX",
     "en": "ISTEX"

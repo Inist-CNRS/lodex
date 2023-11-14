@@ -1,5 +1,6 @@
 {
-  "version": "1",
+  "version": "2",
+  "restricted": false,
   "name": {
     "fr": "Void",
     "en": "Void"

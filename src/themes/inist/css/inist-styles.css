@@ -11,10 +11,8 @@ light: "rgba(37, 128, 154, .1)",
 }*/
 /*orange #f48022 devient fushia #da1d64 (active et focus)*/
 /* hover violet reste violet #b22f90*/
-@import url("styles_aphrodite.css");
 /*bouton vert ‘plus de résultats' et bouton vert 'parcourir les résultats'*/
 /* (deviennent bleu et bleu foncé) uniquement par class css-xxxxx rgb(31, 106, 129)*/
-@import url("css-loader.css");
 
 /* text : font, size, color*/
 body {
