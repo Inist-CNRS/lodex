@@ -110,7 +110,7 @@ export const ConfigTenantForm = ({
     };
 
     return (
-        <>
+        <Box className="container">
             <h1>{polyglot.t('config_tenant')}</h1>
             <Box
                 sx={{
@@ -203,43 +203,56 @@ export const ConfigTenantForm = ({
                     setEnrichmentBatchSize(event.target.value);
                 }}
             />
-            <AceEditor
-                placeholder="Placeholder Text"
-                mode={'json'}
-                fontSize={16}
-                theme="monokai"
-                showPrintMargin={false}
-                wrapEnabled={true}
-                showGutter={true}
-                value={configTenant}
-                onChange={handleConfigTenantChange}
-                width="100%"
-                setOptions={{
-                    showLineNumbers: true,
-                    tabSize: 2,
-                }}
-            />
+            <Box sx={{ mb: 10 }}>
+                <AceEditor
+                    placeholder="Placeholder Text"
+                    mode="json"
+                    fontSize={16}
+                    theme="monokai"
+                    showPrintMargin={false}
+                    wrapEnabled={true}
+                    showGutter={true}
+                    value={configTenant}
+                    onChange={handleConfigTenantChange}
+                    width="100%"
+                    setOptions={{
+                        showLineNumbers: true,
+                        tabSize: 2,
+                    }}
+                />
+            </Box>
             <Box
                 sx={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    mt: 1,
-                    mb: 2,
+                    position: 'fixed',
+                    textAlign: 'right',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    background: 'white',
+                    boxShadow: '-3px -12px 15px -3px rgba(0,0,0,0.1)',
+                    padding: '1rem',
+                    maxHeight: 70,
+                    zIndex: 999,
                 }}
+                className="mui-fixed"
             >
-                <CancelButton sx={{ height: '100%' }} onClick={handleCancel}>
-                    {polyglot.t('cancel')}
-                </CancelButton>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSave}
-                >
-                    {polyglot.t('save')}
-                </Button>
+                <Box className="container">
+                    <CancelButton
+                        sx={{ height: '100%' }}
+                        onClick={handleCancel}
+                    >
+                        {polyglot.t('cancel')}
+                    </CancelButton>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSave}
+                    >
+                        {polyglot.t('save')}
+                    </Button>
+                </Box>
             </Box>
-        </>
+        </Box>
     );
 };
 

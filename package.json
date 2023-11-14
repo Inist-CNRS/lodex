@@ -3,7 +3,7 @@
         "node": ">= 16"
     },
     "name": "lodex",
-    "version": "14.0.22",
+    "version": "14.0.23",
     "description": "",
     "main": "src/api/index.js",
     "browser": {
@@ -36,7 +36,7 @@
         "insertversion:makefile": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" Makefile",
         "insertversion:docker": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose*.yml",
         "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && git add README.md Makefile",
-        "postinstall": "cd ./packages/ezsLodex/ && npm install  --production --install-strategy=nested && cd ../transformers/ && npm install  --production --install-strategy=nested"
+        "postinstall": "cd ./packages/ezsLodex/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../transformers/ && npm install --production --install-strategy=nested --legacy-peer-deps"
     },
     "nodemonConfig": {
         "ignore": [
@@ -66,8 +66,8 @@
         "@babel/preset-react": "7.22.15",
         "@babel/register": "7.22.15",
         "@babel/runtime": "7.23.2",
-        "@bull-board/api": "^3.7.2",
-        "@bull-board/koa": "^3.7.2",
+        "@bull-board/api": "^5.9.1",
+        "@bull-board/koa": "^5.9.1",
         "@dnd-kit/core": "6.0.6",
         "@dnd-kit/sortable": "7.0.1",
         "@emotion/react": "11.7.1",
@@ -150,7 +150,7 @@
         "lodash.set": "^4.3.2",
         "lodash.topairs": "^4.3.0",
         "lodash.uniq": "^4.5.0",
-        "markdown-it": "^8.4.2",
+        "markdown-it": "13.0.2",
         "md5": "2.3.0",
         "memorystream": "0.3.1",
         "mime": "1.6.0",

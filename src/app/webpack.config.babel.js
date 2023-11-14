@@ -24,6 +24,11 @@ module.exports = {
             module: /d3/,
         },
     ],
+    devServer: {
+        client: {
+            overlay: false,
+        },
+    },
     entry: {
         index: resolve(__dirname, './js/public/index.js'),
         'admin/index': resolve(__dirname, './js/admin/index.js'),

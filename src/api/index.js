@@ -17,6 +17,7 @@ import { addPublisherListener } from './workers/publisher';
 
 import progress from './services/progress';
 import { addEnrichmentJobListener } from './services/enrichment/enrichment';
+import { addPrecomputedJobListener } from './services/precomputed/precomputed';
 import { addImportListener } from './workers/import';
 
 import Meter from '@uswitch/koa-prometheus';
@@ -190,6 +191,7 @@ if (!module.parent) {
         progress.addProgressListener(emitPayload);
         addPublisherListener(emitPayload);
         addEnrichmentJobListener(emitPayload);
+        addPrecomputedJobListener(emitPayload);
         addImportListener(emitPayload);
     });
 }

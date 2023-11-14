@@ -4,6 +4,7 @@ import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
+import Link from '../../lib/components/Link';
 
 const styles = stylesToClassname(
     {
@@ -34,9 +35,9 @@ const BreadcrumbItem = ({ value, p: polyglot }) => {
     const label = value.label[polyglot.currentLocale];
 
     return (
-        <a href={value.url} className={styles.link}>
+        <Link to={value.url} className={styles.link}>
             {label}
-        </a>
+        </Link>
     );
 };
 
