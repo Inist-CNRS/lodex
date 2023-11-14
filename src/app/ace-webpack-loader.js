@@ -9,7 +9,6 @@ ace.config.setModuleUrl(
 ace.config.setModuleUrl(
     'ace/ext/code_lens',
     window.lazyLoader +
-        window.lazyLoader +
         require('file-loader?esModule=false!../../node_modules/ace-builds/src-noconflict/ext-code_lens.js'),
 );
 ace.config.setModuleUrl(
