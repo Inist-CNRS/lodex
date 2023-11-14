@@ -207,6 +207,7 @@ async function getPublishedFacet(ctx) {
         sortBy,
         sortDir,
         invertedFacets = [],
+        locale,
         ...facetsWithValueIds
     } = ctx.request.query;
 
