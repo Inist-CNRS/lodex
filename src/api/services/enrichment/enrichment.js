@@ -398,9 +398,12 @@ export const setEnrichmentError = async (ctx, err) => {
 };
 
 export const restoreEnrichments = async ctx => {
-    ctx.enrichment.updateMany({}, { $unset: { status: '' } });
+    // mongo update all enrichment to set status to empty
+    await ctx.enrichment.updateMany({}, { $set: { status: '' } });
+
     // some enrichments are exported without a rule, we need to recreate the rule if it is the case
     const enrichments = await ctx.enrichment.find({}).toArray();
+
     for (const enrichment of enrichments) {
         if (!enrichment.rule) {
             const enrichmentWithRule = await createEnrichmentRule(
