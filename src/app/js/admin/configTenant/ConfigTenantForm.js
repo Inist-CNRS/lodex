@@ -182,6 +182,10 @@ export const ConfigTenantForm = ({
             <h2>{polyglot.t('theme')}</h2>
             <Select
                 value={theme}
+                style={{
+                    width: 'min(505px, 100%)',
+                }}
+                sx={{ mb: 2 }}
                 onChange={event => {
                     setTheme(event.target.value);
                 }}
