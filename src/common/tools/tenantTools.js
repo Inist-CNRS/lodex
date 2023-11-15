@@ -15,7 +15,7 @@ export const checkNameTooLong = value => value.length > getTenantMaxSize();
 
 export const forbiddenNamesMessage = INVALID_NAMES.filter(name => !!name)
     .map((name, index, list) =>
-        index === list.length - 1 ? `or "${name}"` : `"${name}"`,
+        index === list.length - 1 ? `ou "${name}"` : `"${name}"`,
     )
     .join(', ');
 
