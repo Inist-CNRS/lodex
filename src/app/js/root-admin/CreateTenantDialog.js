@@ -44,7 +44,7 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
                         sx={{ margin: 0 }}
                     >
                         Le nom ne peut pas être {forbiddenNamesMessage}. Les
-                        majuscules ne sont pas autorisées. Seules les lettres,
+                        majuscules ne sont pas autorisées. Seuls les lettres,
                         chiffres et le tiret “-” sont autorisés.{' '}
                         {getTenantMaxSize(window.__DBNAME__)} caractères maximum
                         sont autorisés. (Le terme{' '}
