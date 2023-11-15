@@ -235,11 +235,29 @@ const Tenants = ({ handleLogout }) => {
     // Define the columns for the datagrid
     const columns = [
         { field: '_id', headerName: 'ID', width: 200 },
-        { field: 'name', headerName: 'Nom', flex: 1 },
+        {
+            field: 'name',
+            headerName: 'Nom',
+            flex: 4,
+            renderCell: params => {
+                return (
+                    <Typography
+                        sx={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                        }}
+                        title={params.value}
+                    >
+                        {params.value}
+                    </Typography>
+                );
+            },
+        },
         {
             field: 'description',
             headerName: 'Description',
-            flex: 1,
+            flex: 4,
             valueFormatter: params => {
                 return formatValue(params.value);
             },
@@ -261,7 +279,7 @@ const Tenants = ({ handleLogout }) => {
         {
             field: 'author',
             headerName: 'Auteur',
-            flex: 1,
+            flex: 2,
             valueFormatter: params => {
                 return formatValue(params.value);
             },
@@ -269,7 +287,7 @@ const Tenants = ({ handleLogout }) => {
         {
             field: 'createdAt',
             headerName: 'Créée le',
-            flex: 1,
+            flex: 2,
             valueFormatter: params => {
                 if (params.value == null) {
                     return '-';
