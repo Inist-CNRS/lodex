@@ -44,7 +44,7 @@ export const postEnrichment = async ctx => {
 };
 
 export const putEnrichment = async (ctx, id) => {
-    const newResource = ctx.request.body;
+    const newEnrichment = ctx.request.body;
 
     try {
         // Delete existing data from dataset
@@ -52,7 +52,12 @@ export const putEnrichment = async (ctx, id) => {
         const enrichment = await ctx.enrichment.findOneById(id);
         await ctx.dataset.removeAttribute(enrichment.name);
 
-        ctx.body = await ctx.enrichment.update(id, newResource);
+        const newEnrichmentWithRule = await createEnrichmentRule(
+            ctx,
+            newEnrichment,
+        );
+
+        ctx.body = await ctx.enrichment.update(id, newEnrichmentWithRule);
     } catch (error) {
         ctx.status = 403;
         ctx.body = { error: error.message };

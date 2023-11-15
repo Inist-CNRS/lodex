@@ -84,9 +84,15 @@ const ExportButton = ({
 
     const handleExportPDF = async () => {
         handleClose();
+
+        const facetsIds = Object.keys(facets).reduce((acc, facetName) => {
+            acc[facetName] = facets[facetName].map(facetValue => facetValue.id);
+            return acc;
+        }, {});
+
         const options = {
             match,
-            facets,
+            facets: facetsIds,
             sort,
             uri,
             invertedFacets,

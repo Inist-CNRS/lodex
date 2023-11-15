@@ -60,7 +60,12 @@ describe('Enrichment controller', () => {
     describe('putEnrichment', () => {
         it('should delete existing dataset data based on the enrichment name and update it', async () => {
             const ctx = {
-                request: { body: 'my updated enrichment' },
+                request: {
+                    body: {
+                        webServiceUrl: 'dummy.url',
+                        sourceColumn: 'dummyColumn',
+                    },
+                },
                 enrichment: {
                     findOneById: jest.fn(() =>
                         Promise.resolve({ name: 'NAME' }),
@@ -69,7 +74,7 @@ describe('Enrichment controller', () => {
                         Promise.resolve('updated enrichment'),
                     ),
                 },
-                dataset: { removeAttribute: jest.fn() },
+                dataset: { removeAttribute: jest.fn(), getExcerpt: jest.fn() },
                 configTenant: {},
             };
 
@@ -77,10 +82,7 @@ describe('Enrichment controller', () => {
 
             expect(ctx.enrichment.findOneById).toHaveBeenCalledWith(42);
             expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith('NAME');
-            expect(ctx.enrichment.update).toHaveBeenCalledWith(
-                42,
-                'my updated enrichment',
-            );
+            expect(ctx.enrichment.update.mock.calls[0][0]).toBe(42);
             expect(ctx.body).toEqual('updated enrichment');
             return;
         });

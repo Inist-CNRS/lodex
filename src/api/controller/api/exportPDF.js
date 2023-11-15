@@ -207,10 +207,12 @@ async function getPublishedFacet(ctx) {
         sortBy,
         sortDir,
         invertedFacets = [],
+        locale,
         ...facetsWithValueIds
     } = ctx.request.query;
 
     let facets = {};
+
     for (const [facetName, facetValueIds] of Object.entries(
         facetsWithValueIds,
     )) {
