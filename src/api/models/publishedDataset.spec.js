@@ -365,7 +365,7 @@ describe('publishedDataset', () => {
                 sortBy: 'field',
                 sortDir: 'ASC',
             });
-            expect(sort).toHaveBeenCalledWith({ 'versions.field': 1 });
+            expect(sort).toHaveBeenCalledWith({ _id: 1, 'versions.field': 1 });
         });
 
         it('should call sort with sortBy: -1 if sortDir is DESC', async () => {
@@ -375,7 +375,10 @@ describe('publishedDataset', () => {
                 sortBy: 'field',
                 sortDir: 'DESC',
             });
-            expect(sort).toHaveBeenCalledWith({ 'versions.field': -1 });
+            expect(sort).toHaveBeenCalledWith({
+                _id: -1,
+                'versions.field': -1,
+            });
         });
 
         it('should call skip with page * perPage', async () => {

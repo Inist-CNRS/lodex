@@ -10,6 +10,7 @@ import Script from '../../services/script';
 import localConfig from '../../../../config.json';
 import { getCleanHost } from '../../../common/uris';
 import { mongoConnectionString } from '../../services/mongoClient';
+import { ObjectId } from 'mongodb';
 
 ezs.use(Basics);
 const scripts = new Script('exporters');
@@ -42,7 +43,13 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     }
 
     const [, metaData, exporterName] = currentScript;
-    const { sortDir, sortBy, match, invertedFacets, ...facets } = ctx.query;
+    const {
+        sortDir,
+        sortBy,
+        match,
+        invertedFacets,
+        ...facetsWithValueIds
+    } = ctx.query;
     ctx.type = metaData.mimeType;
     ctx.status = 200;
     if (metaData.fileName) {
@@ -63,14 +70,28 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
     };
     const host = getCleanHost();
 
-    const facetsWithoutId = getFacetsWithoutId(facets);
+    let facets = {};
+
+    for (const [facetName, facetValueIds] of Object.entries(
+        facetsWithValueIds,
+    )) {
+        const facetValues = await Promise.all(
+            facetValueIds.map(async facetValueId => {
+                const facetValue = await ctx.publishedFacet.findOne({
+                    _id: new ObjectId(facetValueId),
+                });
+                return facetValue.value;
+            }),
+        );
+        facets[facetName] = facetValues;
+    }
 
     const query = {
         orderBy,
         field: parseFieldsParams(fieldsParams),
         invertedFacets,
         match: match,
-        ...facetsWithoutId,
+        ...facets,
         connectionStringURI: mongoConnectionString(ctx.tenant),
         host,
     };

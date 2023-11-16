@@ -82,17 +82,17 @@ export const PrecomputedList = ({
                     {
                         field: 'name',
                         headerName: polyglot.t('name'),
-                        flex: 1,
+                        flex: 3,
                     },
                     {
                         field: 'webServiceUrl',
                         headerName: polyglot.t('webServiceUrl'),
-                        flex: 1,
+                        flex: 4,
                     },
                     {
                         field: 'sourceColumns',
                         headerName: polyglot.t('sourceColumns'),
-                        flex: 1,
+                        flex: 3,
                     },
                     {
                         field: 'status',

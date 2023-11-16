@@ -243,7 +243,8 @@ const JobProgressComponent = props => {
                                     </Typography>
                                 )}
 
-                            {progress?.type === 'enricher' && (
+                            {(progress?.type === 'enricher' ||
+                                progress?.type === 'precomputer') && (
                                 <Typography variant="caption">
                                     {progress.subLabel}
                                 </Typography>

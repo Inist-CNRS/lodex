@@ -12,7 +12,7 @@ const LoginAdmin = () => {
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
                 href="/instances"
             >
-                Root adminstration
+                Root administration
             </Link>
         </>
     );
