@@ -15,6 +15,8 @@ export const getComputedWebserviceData = async ctx => {
     logger.info(`Precompute webhook call for ${tenant}`);
     logger.info('Query', ctx.request.query);
 
+    const callId = JSON.stringify([{ id: generator, value: identifier }]);
+
     if (failure !== undefined) {
         const { type, message } = ctx.request.body.error;
         logger.info('Precompute webservice call with failure');
@@ -35,8 +37,6 @@ export const getComputedWebserviceData = async ctx => {
     if (state !== 'ready') {
         return;
     }
-
-    const callId = JSON.stringify([{ id: generator, value: identifier }]);
 
     await getComputedFromWebservice(ctx, tenant, precomputedId, callId, jobId);
 

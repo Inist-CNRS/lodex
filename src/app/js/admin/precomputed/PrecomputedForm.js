@@ -223,7 +223,7 @@ export const PrecomputedForm = ({
     };
 
     const handleUpdatePrecomputed = async () => {
-        const precomputedDataToUpdate = {
+        const { data, ...precomputedDataToUpdate } = {
             ...initialValues,
             ...formValues,
         };
