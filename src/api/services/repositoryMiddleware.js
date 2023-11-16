@@ -25,6 +25,11 @@ export const mongoClientFactory = mongoClientImpl => async (ctx, next) => {
     await next();
 };
 
+export const getPrecomputedCollectionForWebHook = async tenant => {
+    const db = await mongoClient(tenant);
+    return await precomputed(db);
+};
+
 export const mongoRootAdminClient = async (ctx, next) => {
     ctx.rootAdminDb = await mongoClient('admin');
     ctx.tenantCollection = await tenant(ctx.rootAdminDb);
