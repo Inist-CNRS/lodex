@@ -270,8 +270,7 @@ const handleRender = async (ctx, next) => {
         initialEntries: [url],
     });
 
-    const configTenant = await ctx.configTenantCollection.findLast();
-    const lodexTheme = getTheme(configTenant.theme);
+    const lodexTheme = getTheme(ctx.configTenant.theme);
 
     const theme = createTheme(lodexTheme.customTheme, {
         userAgent: headers['user-agent'],
