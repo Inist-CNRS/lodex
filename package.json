@@ -89,6 +89,7 @@
         "@mui/material": "5.3.1",
         "@mui/x-data-grid": "5.2.2",
         "@recuperateur/async-busboy": "file:./packages/@recuperateur/async-busboy",
+        "@recuperateur/resumablejs": "file:./packages/@recuperateur/resumablejs",
         "@uswitch/koa-access": "2.9.2",
         "@uswitch/koa-prometheus": "0.7.0",
         "@uswitch/koa-tracer": "1.7.2",
