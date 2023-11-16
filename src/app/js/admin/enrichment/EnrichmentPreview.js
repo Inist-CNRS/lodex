@@ -47,7 +47,10 @@ const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
                                 }}
                                 title={JSON.stringify(line)}
                             >
-                                {JSON.stringify(line)}
+                                {/* Return undefined as string, only used for preview*/}
+                                {line === 'undefined'
+                                    ? line
+                                    : JSON.stringify(line)}
                             </Typography>
                         </Box>
                     ))}

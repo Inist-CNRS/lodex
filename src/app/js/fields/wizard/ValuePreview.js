@@ -53,7 +53,15 @@ const ValuePreview = ({ lines, editedField, p: polyglot }) => {
                                 }}
                                 title={JSON.stringify(line[editedField.name])}
                             >
-                                {JSON.stringify(line[editedField.name])}
+                                {line[editedField.name] === undefined
+                                    ? 'undefined'
+                                    : JSON.stringify(
+                                          line[editedField.name],
+                                          (k, v) =>
+                                              v === undefined
+                                                  ? '__undefined'
+                                                  : v,
+                                      ).replace(/"__undefined"/g, 'undefined')}
                             </Typography>
                         </Box>
                     ))}
