@@ -393,6 +393,7 @@ export const PrecomputedForm = ({
                                         variant="link"
                                         sx={{
                                             paddingRight: 0,
+                                            paddingLeft: 0,
                                             textDecoration: 'underline',
                                         }}
                                         onClick={() =>
@@ -414,7 +415,9 @@ export const PrecomputedForm = ({
                                                 <Button
                                                     variant="link"
                                                     sx={{
+                                                        marginLeft: 2,
                                                         paddingRight: 0,
+                                                        paddingLeft: 0,
                                                         textDecoration:
                                                             'underline',
                                                     }}
