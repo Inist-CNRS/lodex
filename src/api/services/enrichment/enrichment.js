@@ -25,7 +25,12 @@ const getSourceData = async (ctx, sourceColumn) => {
               }
             : {},
     );
-    if (!excerptLines || excerptLines.length === 0) {
+
+    if (!excerptLines) {
+        return null;
+    }
+
+    if (excerptLines.length === 0) {
         return null;
     }
 
@@ -48,7 +53,6 @@ export const createEnrichmentRule = async (ctx, enrichment) => {
     }
 
     const data = await getSourceData(ctx, enrichment.sourceColumn);
-
     let rule = getEnrichmentRuleModel(data, enrichment, BATCH_SIZE);
 
     return {
@@ -84,9 +88,7 @@ export const getEnrichmentDataPreview = async ctx => {
         previewRule = cleanWebServiceRule(previewRule);
     }
     const commands = createEzsRuleCommands(previewRule);
-    const excerptLines = await ctx.dataset.getExcerpt(
-        sourceColumn ? { [sourceColumn]: { $ne: null } } : {},
-    );
+    const excerptLines = await ctx.dataset.getExcerpt();
     let result = [];
     try {
         for (let index = 0; index < excerptLines.length; index += BATCH_SIZE) {
@@ -96,7 +98,13 @@ export const getEnrichmentDataPreview = async ctx => {
                 ctx,
                 true,
             );
-            result.push(...values.map(v => v.value));
+
+            // Display null or undefined by string only for preview. Use for show informations to user.
+            result.push(
+                ...values.map(v =>
+                    v.value !== undefined ? v.value : 'undefined',
+                ),
+            );
         }
     } catch (error) {
         const logger = getLogger(ctx.tenant);
