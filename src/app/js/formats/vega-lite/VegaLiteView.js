@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -6,8 +6,13 @@ import InvalidFormat from '../InvalidFormat';
 import injectData from '../injectData';
 import { field as fieldPropTypes } from '../../propTypes';
 import { CustomActionVegaLite } from './component/vega-lite-component';
-import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../chartsUtils';
+import {
+    convertSpecTemplate,
+    VEGA_ACTIONS_WIDTH,
+    VEGA_LITE_DATA_INJECT_TYPE_A,
+} from '../chartsUtils';
 import ContainerDimensions from 'react-container-dimensions';
+import { useSizeObserver } from '../chartsHooks';
 
 const styles = {
     container: {
@@ -15,41 +20,39 @@ const styles = {
     },
 };
 
-class VegaLiteView extends Component {
-    render() {
-        const { field, data, specTemplate } = this.props;
-        let spec;
+const VegaLiteView = ({ field, data, specTemplate }) => {
+    const { ref, width, height } = useSizeObserver();
+    const [error, setError] = useState('');
 
+    const spec = useMemo(() => {
         try {
-            spec = JSON.parse(specTemplate);
+            return convertSpecTemplate(
+                specTemplate,
+                width - VEGA_ACTIONS_WIDTH,
+                height,
+            );
         } catch (e) {
-            return <InvalidFormat format={field.format} value={e.message} />;
+            setError(e.message);
+            return null;
         }
+    }, [specTemplate, width, height]);
 
-        return (
-            <div style={styles.container}>
-                <ContainerDimensions>
-                    {({ width }) => {
-                        if (spec !== undefined) {
-                            if (this.props.width !== '')
-                                spec.width = width * (this.props.width / 100);
-
-                            if (this.props.height !== '')
-                                spec.height = 300 * (this.props.height / 100);
-                        }
-                        return (
-                            <CustomActionVegaLite
-                                spec={spec || {}}
-                                data={data}
-                                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
-                            />
-                        );
-                    }}
-                </ContainerDimensions>
-            </div>
-        );
+    if (!spec) {
+        return <InvalidFormat format={field.format} value={error} />;
     }
-}
+
+    return (
+        <div style={styles.container} ref={ref}>
+            <ContainerDimensions>
+                <CustomActionVegaLite
+                    spec={spec || {}}
+                    data={data}
+                    injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                />
+            </ContainerDimensions>
+        </div>
+    );
+};
 
 VegaLiteView.propTypes = {
     field: fieldPropTypes.isRequired,

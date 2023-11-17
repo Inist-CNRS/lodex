@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -7,11 +7,13 @@ import PropTypes from 'prop-types';
 import { CustomActionVega } from '../vega-component';
 import RadarChart from '../../models/RadarChart';
 import {
+    convertSpecTemplate,
     lodexScaleToIdScale,
     VEGA_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
 
 import InvalidFormat from '../../../InvalidFormat';
+import { useSizeObserver } from '../../../chartsHooks';
 
 const styles = {
     container: {
@@ -47,19 +49,17 @@ const RadarChartView = ({
         return tmpData;
     }, [data]);
 
-    const ref = useRef(null);
-    const [width, setWidth] = useState(0);
+    const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
     const spec = useMemo(() => {
         if (advancedMode) {
             try {
-                const advancedSpec = JSON.parse(advancedModeSpec);
-                return {
-                    ...advancedSpec,
-                    width: width - width * 0.06,
-                    height: width - width * 0.24,
-                };
+                return convertSpecTemplate(
+                    advancedModeSpec,
+                    width - width * 0.06,
+                    width - width * 0.24,
+                );
             } catch (e) {
                 setError(e.message);
                 return null;
@@ -86,21 +86,6 @@ const RadarChartView = ({
         tooltipValue,
         scale,
     ]);
-
-    useEffect(() => {
-        if (!ref || !ref.current) {
-            return;
-        }
-
-        const resizeObserver = new ResizeObserver(() => {
-            try {
-                setWidth(ref.current.offsetWidth);
-                // eslint-disable-next-line no-empty
-            } catch (e) {}
-        });
-
-        resizeObserver.observe(ref.current);
-    }, [ref.current]);
 
     if (spec === null) {
         return <InvalidFormat format={field.format} value={error} />;

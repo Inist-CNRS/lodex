@@ -1,6 +1,10 @@
 import BasicChart from './BasicChart';
-import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../chartsUtils';
-import { VEGA_ACTIONS_WIDTH } from '../component/vega-lite-component/VegaLiteComponent';
+import {
+    MAP_EUROPE,
+    MAP_FRANCE,
+    MAP_WORLD,
+    VEGA_ACTIONS_WIDTH,
+} from '../../chartsUtils';
 import cartographyVL from './json/cartography.vl.json';
 import deepClone from 'lodash.clonedeep';
 
