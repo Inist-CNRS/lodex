@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import deepClone from 'lodash.clonedeep';
 import { isAdmin } from '../../../../user';
 import {
+    VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
@@ -63,7 +64,16 @@ function CustomActionVegaLite(props) {
             throw new Error('Invalid data injection type');
     }
 
-    return <Vega spec={deepClone(spec)} actions={actions} mode="vega-lite" />;
+    return (
+        <Vega
+            style={{
+                width: `calc(100% - ${VEGA_ACTIONS_WIDTH})`,
+            }}
+            spec={deepClone(spec)}
+            actions={actions}
+            mode="vega-lite"
+        />
+    );
 }
 
 /**
