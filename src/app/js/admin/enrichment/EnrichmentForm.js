@@ -380,6 +380,7 @@ export const EnrichmentForm = ({
                                 variant="link"
                                 sx={{
                                     paddingRight: 0,
+                                    paddingLeft: 0,
                                     textDecoration: 'underline',
                                 }}
                                 onClick={() => setOpenEnrichmentLogs(true)}
