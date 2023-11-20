@@ -13,6 +13,8 @@ const SourceValueFromColumns = ({
     updateDefaultValueTransformers,
     value,
 }) => {
+    console.log('-------- SourceValueFromColumns ---------');
+    console.log(value);
     const [autocompleteValue, setAutocompleteValue] = React.useState(value);
     useEffect(() => {
         setAutocompleteValue(value);

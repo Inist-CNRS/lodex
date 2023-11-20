@@ -51,6 +51,10 @@ const TRANSFORMERS_FORM_STATUS = new Map([
                         name: 'precomputed',
                         type: 'string',
                     },
+                    {
+                        name: 'routine',
+                        type: 'string',
+                    },
                 ],
             },
         ],
@@ -147,6 +151,7 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
         PRECOMPUTED: {
             source: 'precomputed',
             value: transformers[0]?.args && transformers[0].args[0]?.value,
+            routine: transformers[0]?.args && transformers[0].args[1]?.value,
         },
         COLUMN: {
             source: 'fromColumns',
@@ -198,16 +203,25 @@ export const SourceValueToggle = ({
 }) => {
     const [source, setSource] = React.useState(null);
     const [value, setValue] = React.useState(null);
+    const [routine, setRoutine] = React.useState(undefined);
     React.useEffect(() => {
         const {
             source: currentSource,
             value: currentValue,
+            routine: currentRoutine,
         } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(
             currentTransformers,
             selectedSubresourceUri && true,
         );
+        console.log('currentTransformers', currentTransformers);
+        console.log('currentSource', currentSource);
+        console.log('source', source);
+        console.log('routine', routine);
         setSource(currentSource);
         setValue(currentValue);
+        if (currentRoutine) {
+            setRoutine(currentRoutine);
+        }
     }, [currentTransformers]);
 
     const updateDefaultValueTransformers = (
@@ -389,6 +403,7 @@ export const SourceValueToggle = ({
                         )
                     }
                     value={value}
+                    routine={routine}
                 />
             )}
 

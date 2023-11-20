@@ -871,6 +871,8 @@
 "enter_an_arbitrary_value" 	"Enter an arbitrary value" 	"Saisir une valeur arbitraire"
 "routine_value" 	"Choice of the routine" 	"Choix de la routine"
 "enter_a_routine_value" 	"Choose a routine" 	"Choisir une routine"
+"from_precomputed"	"Existing precomputed data"	"Précalcul existant"
+"enter_from_precomputed"	"Enter existing precomputed data"	"Saisir précalcul existant"
 "from_columns" 	"Existing Column(s)" 	"Colonne(s) existante(s)"
 "enter_from_columns" 	"Enter existing Column(s)" 	"Saisir colonne(s) existante(s)"
 "from_subresource" 	"From Subresource" 	"Depuis une sous-ressource"
