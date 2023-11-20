@@ -251,6 +251,7 @@ const DraggableItemGrid = compose(
         };
 
         const handleDuplicateField = async (event, field) => {
+
             event.stopPropagation();
             event.preventDefault();
 
