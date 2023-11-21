@@ -43,13 +43,13 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
                         id="component-helper-text"
                         sx={{ margin: 0 }}
                     >
-                        Le nom ne peut pas être {forbiddenNamesMessage}. Les
-                        majuscules ne sont pas autorisées. Seuls les lettres,
-                        chiffres et le tiret “-” sont autorisés.{' '}
-                        {getTenantMaxSize(window.__DBNAME__)} caractères maximum
-                        sont autorisés. (Le terme{' '}
-                        {'"{non du container}_{nom de l\'instance}"'} ne doit
-                        pas dépasser {MAX_DB_NAME_SIZE} caractères).
+                        Une instance ne peut pas être nommée{' '}
+                        {forbiddenNamesMessage}. Pour composer le nom, seules
+                        les lettres en minuscules, les chiffres et le tiret "-"
+                        sont autorisés. Une limitation en nombre de caractères
+                        est automatiquement appliquée en fonction du nom du
+                        container de l’instance (
+                        {getTenantMaxSize(window.__DBNAME__)} caractères).
                     </FormHelperText>
                 </FormControl>
 

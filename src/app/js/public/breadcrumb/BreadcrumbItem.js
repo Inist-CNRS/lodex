@@ -34,9 +34,20 @@ const styles = stylesToClassname(
 
 const BreadcrumbItem = ({ value, p: polyglot }) => {
     const label = value.label[polyglot.currentLocale];
+    let props = {
+        to: value.url,
+    };
+
+    if (value.isExternal === true) {
+        props = {
+            href: value.url,
+            target: '_blank',
+            rel: 'noopener noreferrer',
+        };
+    }
 
     return (
-        <Link to={value.url} className={styles.link}>
+        <Link className={styles.link} {...props}>
             {label}
         </Link>
     );
@@ -49,6 +60,7 @@ BreadcrumbItem.propTypes = {
             fr: PropTypes.string.isRequired,
         }).isRequired,
         url: PropTypes.string.isRequired,
+        isExternal: PropTypes.bool,
     }),
     p: polyglotPropTypes.isRequired,
 };
