@@ -12,8 +12,6 @@ const SourceValueArbitrary = ({
     value,
     p: polyglot,
 }) => {
-    console.log('-------- SourceValueArbitrary ---------');
-    console.log(value);
     const [openRoutineCatalog, setOpenRoutineCatalog] = React.useState(false);
     const [valueInput, setValueInput] = React.useState(value || '');
     const handleChange = event => {
