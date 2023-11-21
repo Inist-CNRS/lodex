@@ -26,7 +26,6 @@ export const getComputedWebserviceData = async ctx => {
             ctx,
             tenant,
             precomputedId,
-            callId,
             jobId,
             type,
             message,
