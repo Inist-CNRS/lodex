@@ -19,10 +19,12 @@ const transformation = (_, args) => () =>
             );
         }
 
-        return resolve({
-            precomputed: precomputedArg.value,
-            routine: routineArg.value,
-        });
+        return resolve(
+            `${JSON.stringify({
+                precomputed: precomputedArg.value,
+                routine: routineArg.value,
+            })}`,
+        );
     });
 
 transformation.getMetas = () => ({
