@@ -213,10 +213,6 @@ export const SourceValueToggle = ({
             currentTransformers,
             selectedSubresourceUri && true,
         );
-        console.log('currentTransformers', currentTransformers);
-        console.log('currentSource', currentSource);
-        console.log('source', source);
-        console.log('routine', routine);
         setSource(currentSource);
         setValue(currentValue);
         if (currentRoutine) {

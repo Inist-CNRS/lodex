@@ -16,16 +16,15 @@ const SourceValuePrecomputed = ({
     routine,
     p: polyglot,
 }) => {
-    console.log('-------- SourceValuePrecomputed ---------');
-    console.log(value);
     const [autocompleteValue, setAutocompleteValue] = React.useState(value);
     useEffect(() => {
         setAutocompleteValue(value);
     }, [value]);
     const [openRoutineCatalog, setOpenRoutineCatalog] = React.useState(false);
     const [valueInput, setValueInput] = React.useState(routine);
-    const handleChangePrecomputed = event => {
-        setAutocompleteValue(event.target.value);
+
+    const handleChangePrecomputed = (event, value) => {
+        setAutocompleteValue(value);
         const transformers = [
             {
                 operation: 'PRECOMPUTED',
@@ -33,7 +32,7 @@ const SourceValuePrecomputed = ({
                     {
                         name: 'precomputed',
                         type: 'string',
-                        value: event.target.value,
+                        value: value,
                     },
                     {
                         name: 'routine',
