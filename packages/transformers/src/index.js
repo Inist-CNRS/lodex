@@ -30,7 +30,7 @@ import ARRAY from './operations/ARRAY';
 import MASK from './operations/MASK';
 import URLENCODE from './operations/URLENCODE';
 import MAPPING from './operations/MAPPING';
-import WEBSERVICE from './operations/WEBSERVICE';
+import PRECOMPUTED from './operations/PRECOMPUTED';
 
 // EZS statements
 import $ARRAY from './dollar-array';
@@ -64,7 +64,7 @@ import $UPPERCASE from './dollar-uppercase';
 import $URLENCODE from './dollar-urlencode';
 import $MAPPING from './dollar-mapping';
 import $VALUE from './dollar-value';
-import $WEBSERVICE from './dollar-webservice';
+import $PRECOMPUTED from './dollar-precomputed';
 
 export default {
     $ARRAY,
@@ -98,7 +98,7 @@ export default {
     $VALUE,
     $MAPPING,
     $TRUNCATE_WORDS,
-    $WEBSERVICE,
+    $PRECOMPUTED,
 };
 
 export const transformers = {
@@ -133,7 +133,7 @@ export const transformers = {
     MASK,
     URLENCODE,
     MAPPING,
-    WEBSERVICE,
+    PRECOMPUTED,
 };
 
 export const transformersMetas = [
@@ -168,7 +168,7 @@ export const transformersMetas = [
     MASK,
     URLENCODE,
     MAPPING,
-    WEBSERVICE,
+    PRECOMPUTED,
 ]
     .map(transformation => transformation.getMetas())
     .sort((x, y) => x.name.localeCompare(y.name));
