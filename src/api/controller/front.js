@@ -251,7 +251,9 @@ const renderAdminIndexHtml = ctx => {
                 mongo.dbName,
             )}</script><script>window.__TENANT__ = ${JSON.stringify(
                 ctx.tenant,
-            )}</script><script src="{|__JS_HOST__|}/admin/index.js"></script>
+            )}</script>
+              <script>window.__JS_HOST__ = "${jsHost}"</script>
+              <script src="{|__JS_HOST__|}/admin/index.js"></script>
         </body>`,
         )
         .replace(REGEX_JS_HOST, jsHost);

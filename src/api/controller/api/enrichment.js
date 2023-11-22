@@ -51,12 +51,10 @@ export const putEnrichment = async (ctx, id) => {
         // If we change the name or the rule, existing data is obsolete
         const enrichment = await ctx.enrichment.findOneById(id);
         await ctx.dataset.removeAttribute(enrichment.name);
-
         const newEnrichmentWithRule = await createEnrichmentRule(
             ctx,
             newEnrichment,
         );
-
         ctx.body = await ctx.enrichment.update(id, newEnrichmentWithRule);
     } catch (error) {
         ctx.status = 403;

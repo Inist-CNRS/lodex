@@ -38,11 +38,7 @@ export const getPrecomputedDataPreview = async ctx => {
         throw new Error(`Missing parameters`);
     }
 
-    const excerptLines = await ctx.dataset.getExcerpt(
-        sourceColumns && sourceColumns.length
-            ? { [sourceColumns[0]]: { $ne: null } }
-            : {},
-    );
+    const excerptLines = await ctx.dataset.getExcerpt();
     let result = [];
     try {
         for (
@@ -51,8 +47,16 @@ export const getPrecomputedDataPreview = async ctx => {
             index += 1
         ) {
             const entry = {};
+
+            // Display null or undefined by string only for preview. Use for show informations to user.
             sourceColumns.map(column => {
-                entry[column] = excerptLines[index][column];
+                if (excerptLines[index][column] === undefined) {
+                    entry[column] = 'undefined';
+                } else if (excerptLines[index][column] === null) {
+                    entry[column] = 'null';
+                } else {
+                    entry[column] = excerptLines[index][column];
+                }
             });
             result.push(entry);
         }
@@ -61,6 +65,11 @@ export const getPrecomputedDataPreview = async ctx => {
         logger.error(`Error while processing precomputed preview`, error);
         return [];
     }
+    // if all object are empty, we return an empty array
+    if (result.every(entry => Object.keys(entry).length === 0)) {
+        return [];
+    }
+
     return result;
 };
 
@@ -404,23 +413,21 @@ export const getFailureFromWebservice = async (
     ctx,
     tenant,
     precomputedId,
-    callId,
     jobId,
     errorType,
     errorMessage,
 ) => {
-    if (!tenant || !precomputedId || !callId) {
+    if (!tenant || !precomputedId) {
         throw new Error(
             `Precompute webhook failure error: missing data ${JSON.stringify({
                 tenant: !tenant ? 'missing' : tenant,
                 precomputedId: !precomputedId ? 'missing' : precomputedId,
-                callId: !callId ? 'missing' : callId,
             })}`,
         );
     }
     const workerQueue = workerQueues[tenant];
-    const activeJobs = await workerQueue.getActive();
-    const job = activeJobs.filter(job => {
+    const jobs = await workerQueue.getCompleted();
+    const job = jobs.filter(job => {
         const { id, jobType, tenant: jobTenant } = job.data;
 
         return (
@@ -442,7 +449,6 @@ export const getFailureFromWebservice = async (
     });
 
     job.progress(100);
-    job.moveToFailed(new Error(errorMessage));
     progress.finish(tenant);
     const logData = JSON.stringify({
         level: 'error',
@@ -452,6 +458,10 @@ export const getFailureFromWebservice = async (
     });
     jobLogger.info(job, logData);
     notifyListeners(room, logData);
+    notifyListeners(`${job.data.tenant}-precomputer`, {
+        isPrecomputing: false,
+        success: false,
+    });
 };
 
 export const processPrecomputed = async (precomputed, ctx) => {

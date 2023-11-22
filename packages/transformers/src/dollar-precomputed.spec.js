@@ -4,15 +4,16 @@ import statements from '.';
 
 ezs.use(statements);
 
-describe('$WEBSERVICE', () => {
+describe('$PRECOMPUTED', () => {
     test('with valid parameter', done => {
         const script = `
-            [$WEBSERVICE]
+            [$PRECOMPUTED]
             field = aaa
-            webservice = toto
+            precomputed = toto
+            routine = titi
 
             [exchange]
-            webservice = omit('$origin')
+            precomputed = omit('$origin')
         `;
         const res = [];
         from([
