@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Checkbox, TextField } from '@mui/material';
+import {
+    Box,
+    Button,
+    Checkbox,
+    TextField,
+    Tooltip,
+    keyframes,
+} from '@mui/material';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
@@ -14,6 +21,25 @@ import PropTypes from 'prop-types';
 import CancelButton from '../../lib/components/CancelButton';
 import { toast } from '../../../../common/tools/toast';
 import { loadConfigTenant } from '.';
+import { SaveAs } from '@mui/icons-material';
+
+const shake = keyframes`
+10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(4px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-6px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(6px, 0, 0);
+  }
+`;
 
 export const ConfigTenantForm = ({
     p: polyglot,
@@ -25,6 +51,8 @@ export const ConfigTenantForm = ({
     const [userAuth, setUserAuth] = useState({});
     const [enrichmentBatchSize, setEnrichmentBatchSize] = useState(0);
     const [id, setId] = useState('');
+    const [isFormModified, setIsFormModified] = useState(false);
+
     useEffect(() => {
         async function fetchData() {
             const { response } = await getConfigTenant();
@@ -74,6 +102,7 @@ export const ConfigTenantForm = ({
     };
 
     const handleConfigTenantChange = newConfigTenant => {
+        setIsFormModified(true);
         setConfigTenant(newConfigTenant);
     };
 
@@ -91,6 +120,7 @@ export const ConfigTenantForm = ({
                 <Checkbox
                     checked={enableAutoPublication}
                     onChange={event => {
+                        setIsFormModified(true);
                         setEnableAutoPublication(event.target.checked);
                     }}
                 />
@@ -106,6 +136,7 @@ export const ConfigTenantForm = ({
                 <Checkbox
                     checked={userAuth?.active || false}
                     onChange={event => {
+                        setIsFormModified(true);
                         setUserAuth({
                             ...userAuth,
                             active: event.target.checked,
@@ -198,8 +229,19 @@ export const ConfigTenantForm = ({
                     </CancelButton>
                     <Button
                         variant="contained"
+                        className="btn-save"
                         color="primary"
                         onClick={handleSave}
+                        startIcon={
+                            isFormModified && (
+                                <Tooltip title={polyglot.t('form_is_modified')}>
+                                    <SaveAs />
+                                </Tooltip>
+                            )
+                        }
+                        sx={{
+                            animation: isFormModified ? `${shake} 1s ease` : '',
+                        }}
                     >
                         {polyglot.t('save')}
                     </Button>
