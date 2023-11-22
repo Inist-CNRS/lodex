@@ -49,7 +49,13 @@ const PrecomputedPreview = ({ lines, sourceColumns, p: polyglot }) => {
                                 }}
                                 title={JSON.stringify(line)}
                             >
-                                {Object.values(line).join(' | ')}
+                                {Object.values(line)
+                                    .map(value =>
+                                        value !== undefined
+                                            ? JSON.stringify(value)
+                                            : 'undefined',
+                                    )
+                                    .join(' | ')}
                             </Typography>
                         </Box>
                     ))}
