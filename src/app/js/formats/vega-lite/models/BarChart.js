@@ -7,8 +7,8 @@ import {
     AXIS_Y,
     SCALE_LINEAR,
     SCALE_LOG,
+    VEGA_ACTIONS_WIDTH,
 } from '../../chartsUtils';
-import { VEGA_ACTIONS_WIDTH } from '../component/vega-lite-component/VegaLiteComponent';
 import BasicChart from './BasicChart';
 import barChartVL from './json/bar_chart.vl.json';
 import barChartLabelsVL from './json/bar_chart_labels.vl.json';

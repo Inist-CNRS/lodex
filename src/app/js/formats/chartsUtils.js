@@ -1,3 +1,5 @@
+import deepClone from 'lodash.clonedeep';
+
 // Values given when an error are encounter
 export const INVALID_VALUE = -1;
 
@@ -44,9 +46,13 @@ export const VEGA_LITE_DATA_INJECT_TYPE_C = 19;
 export const VEGA_DATA_INJECT_TYPE_A = 18;
 export const VEGA_DATA_INJECT_TYPE_B = 20;
 
+// Map type
 export const MAP_EUROPE = 'europe';
 export const MAP_WORLD = 'world';
 export const MAP_FRANCE = 'france';
+
+// Vega Chart constant
+export const VEGA_ACTIONS_WIDTH = 40;
 
 // function use to convert scale give by lodex to an normalized id
 export const lodexScaleToIdScale = scale => {
@@ -88,4 +94,21 @@ export const lodexDirectionToIdDirection = direction => {
         default:
             return INVALID_VALUE;
     }
+};
+
+const WIDTH_REGEX = /\{\|__LODEX_WIDTH__\|}/g;
+const HEIGHT_REGEX = /\{\|__LODEX_HEIGHT__\|}/g;
+
+/**
+ * Convert the spec string into a json and at the same time replace template variable
+ * @param spec {string} Spec to convert in json
+ * @param width {number} Width of the chart container
+ * @param height {number} Height of the chart container
+ * @returns {any} The Vega Lite spec as a json object
+ */
+export const convertSpecTemplate = (spec, width, height) => {
+    const specWithoutTemplate = deepClone(spec)
+        .replace(WIDTH_REGEX, width)
+        .replace(HEIGHT_REGEX, height);
+    return JSON.parse(specWithoutTemplate);
 };

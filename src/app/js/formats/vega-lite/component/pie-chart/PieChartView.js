@@ -3,12 +3,16 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import PieChart from '../../models/PieChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
-import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
+import {
+    convertSpecTemplate,
+    VEGA_ACTIONS_WIDTH,
+    VEGA_LITE_DATA_INJECT_TYPE_A,
+} from '../../../chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
-import { VEGA_ACTIONS_WIDTH } from '../vega-lite-component/VegaLiteComponent';
+import { useSizeObserver } from '../../../chartsHooks';
 
 const styles = {
     container: {
@@ -27,18 +31,17 @@ const PieChartView = ({
     colors,
     labels,
 }) => {
-    const ref = useRef(null);
-    const [width, setWidth] = useState(0);
+    const { ref, width, height } = useSizeObserver();
     const [error, setError] = useState('');
 
     const spec = useMemo(() => {
         if (advancedMode) {
             try {
-                const advancedSpec = JSON.parse(advancedModeSpec);
-                return {
-                    ...advancedSpec,
-                    width: width - VEGA_ACTIONS_WIDTH,
-                };
+                return convertSpecTemplate(
+                    advancedModeSpec,
+                    width - VEGA_ACTIONS_WIDTH,
+                    height,
+                );
             } catch (e) {
                 setError(e.message);
                 return null;
@@ -71,27 +74,6 @@ const PieChartView = ({
         colors,
         labels,
     ]);
-
-    useEffect(() => {
-        if (!ref || !ref.current) {
-            return;
-        }
-
-        const resizeObserver = new ResizeObserver(entries => {
-            window.requestAnimationFrame(() => {
-                if (
-                    !Array.isArray(entries) ||
-                    !entries.length ||
-                    entries.length < 1
-                ) {
-                    return;
-                }
-                setWidth(entries[0].contentRect.width);
-            });
-        });
-
-        resizeObserver.observe(ref.current);
-    }, [ref.current]);
 
     if (!spec) {
         return <InvalidFormat format={field.format} value={error} />;
