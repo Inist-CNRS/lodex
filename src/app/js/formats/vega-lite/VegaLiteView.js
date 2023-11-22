@@ -11,7 +11,6 @@ import {
     VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../chartsUtils';
-import ContainerDimensions from 'react-container-dimensions';
 import { useSizeObserver } from '../chartsHooks';
 
 const styles = {
@@ -43,13 +42,11 @@ const VegaLiteView = ({ field, data, specTemplate }) => {
 
     return (
         <div style={styles.container} ref={ref}>
-            <ContainerDimensions>
-                <CustomActionVegaLite
-                    spec={spec || {}}
-                    data={data}
-                    injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
-                />
-            </ContainerDimensions>
+            <CustomActionVegaLite
+                spec={spec || {}}
+                data={data}
+                injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+            />
         </div>
     );
 };
