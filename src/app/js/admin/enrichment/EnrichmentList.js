@@ -18,12 +18,35 @@ import {
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { renderStatus } from './EnrichmentForm';
+import { renderRunButton, renderStatus } from './EnrichmentForm';
+import { FINISHED, IN_PROGRESS } from '../../../../common/taskStatus';
+import { launchEnrichment } from '.';
+import { toast } from '../../../../common/tools/toast';
 
-export const EnrichmentList = ({ enrichments, p: polyglot }) => {
+export const EnrichmentList = ({
+    enrichments,
+    p: polyglot,
+    onLaunchEnrichment,
+}) => {
     const history = useHistory();
+    const isEnrichingRunning = enrichments.some(
+        enrichment => enrichment.status === IN_PROGRESS,
+    );
     const handleRowClick = params => {
         history.push(`/data/enrichment/${params.row._id}`);
+    };
+
+    const handleLaunchPrecomputed = params => event => {
+        event.stopPropagation();
+        if (isEnrichingRunning) {
+            toast(polyglot.t('pending_enrichment'), {
+                type: toast.TYPE.INFO,
+            });
+        }
+        onLaunchEnrichment({
+            id: params._id,
+            action: params.status === FINISHED ? 'relaunch' : 'launch',
+        });
     };
 
     const CustomToolbar = () => {
@@ -95,6 +118,19 @@ export const EnrichmentList = ({ enrichments, p: polyglot }) => {
                         renderCell: params =>
                             renderStatus(params.value, polyglot),
                     },
+                    {
+                        field: 'run',
+                        headerName: polyglot.t('run'),
+                        flex: 1,
+                        renderCell: params => {
+                            return renderRunButton(
+                                handleLaunchPrecomputed(params.row),
+                                params.row.status,
+                                polyglot,
+                                'text',
+                            );
+                        },
+                    },
                 ]}
                 rows={enrichments}
                 getRowId={row => row._id}
@@ -117,13 +153,16 @@ export const EnrichmentList = ({ enrichments, p: polyglot }) => {
 EnrichmentList.propTypes = {
     enrichments: PropTypes.array.isRequired,
     p: polyglotPropTypes.isRequired,
+    onLaunchEnrichment: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
     enrichments: state.enrichment.enrichments,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+    onLaunchEnrichment: launchEnrichment,
+};
 
 export default compose(
     translate,
