@@ -58,6 +58,15 @@ export default async db => {
         );
     };
 
+    collection.updateStartedAt = async (id, startedAt) => {
+        collection.updateOne(
+            {
+                $or: [{ _id: new ObjectId(id) }, { _id: id }],
+            },
+            { $set: { startedAt } },
+        );
+    };
+
     collection.castIds = castIdsFactory(collection);
 
     return collection;
