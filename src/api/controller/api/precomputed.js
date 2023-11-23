@@ -82,6 +82,7 @@ export const precomputedAction = async (ctx, action, id) => {
         throw new Error(`Invalid action "${action}"`);
     }
 
+    const precomputed = await ctx.precomputed.findOneById(id);
     if (action === 'launch') {
         await workerQueues[ctx.tenant]
             .add(
@@ -90,6 +91,7 @@ export const precomputedAction = async (ctx, action, id) => {
                     id,
                     jobType: PRECOMPUTER,
                     tenant: ctx.tenant,
+                    subLabel: precomputed.name,
                 },
                 { jobId: uuid() },
             )
@@ -102,7 +104,6 @@ export const precomputedAction = async (ctx, action, id) => {
     }
 
     if (action === 'relaunch') {
-        const precomputed = await ctx.precomputed.findOneById(id);
         await ctx.dataset.removeAttribute(precomputed.name);
         await workerQueues[ctx.tenant]
             .add(
@@ -111,6 +112,7 @@ export const precomputedAction = async (ctx, action, id) => {
                     id,
                     jobType: PRECOMPUTER,
                     tenant: ctx.tenant,
+                    subLabel: precomputed.name,
                 },
                 { jobId: uuid() },
             )

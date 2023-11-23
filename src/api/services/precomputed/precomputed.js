@@ -98,6 +98,13 @@ const processZippedData = async (precomputed, ctx) => {
         if (!(await ctx.job?.isActive())) {
             throw new CancelWorkerError('Job has been canceled');
         }
+
+        // Set 0 as 10. 100 as 45. Increment from indexDataset to dataSetSize
+        const progressValue = Math.floor(
+            ((indexDataset + 1) / dataSetSize) * 35 + 10,
+        );
+        progress.setProgress(ctx.tenant, progressValue);
+
         const entries = await ctx.dataset
             .find()
             .skip(indexDataset)
@@ -142,13 +149,16 @@ const processZippedData = async (precomputed, ctx) => {
 
     await pack.finalize();
 
-    const pipe = promisify(pipeline);
-    const fileName = `./webservice_temp/__entry_${
-        ctx.tenant
-    }_${Date.now().toString()}.tar.gz`;
-    await pipe(pack, createGzip(), fs.createWriteStream(fileName));
-
-    return fileName;
+    try {
+        const pipe = promisify(pipeline);
+        const fileName = `./webservice_temp/__entry_${
+            ctx.tenant
+        }_${Date.now().toString()}.tar.gz`;
+        await pipe(pack, createGzip(), fs.createWriteStream(fileName));
+        return fileName;
+    } catch (error) {
+        throw new Error(`Error while processing precomputed data`, error);
+    }
 };
 
 export const getTokenFromWebservice = async (
@@ -281,23 +291,27 @@ const extractResultFromZip = async (tenant, job, room, data) => {
     jobLogger.info(job, logData);
     notifyListeners(room, logData);
 
-    fs.unlink(`${folderName}/manifest.json`, error => {
-        if (error) {
-            throw error;
-        }
-    });
+    try {
+        fs.unlink(`${folderName}/manifest.json`, error => {
+            if (error) {
+                throw error;
+            }
+        });
 
-    fs.rmdir(`${folderName}/data`, error => {
-        if (error) {
-            throw error;
-        }
-    });
+        fs.rmdir(`${folderName}/data`, error => {
+            if (error) {
+                throw error;
+            }
+        });
 
-    fs.rmdir(folderName, error => {
-        if (error) {
-            throw error;
-        }
-    });
+        fs.rmdir(folderName, error => {
+            if (error) {
+                throw error;
+            }
+        });
+    } catch (error) {
+        throw new Error(`Error while clear folder data`, error);
+    }
 
     return result;
 };
@@ -469,7 +483,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
     await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS);
 
     const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
-
+    progress.setProgress(ctx.tenant, 10);
     logData = JSON.stringify({
         level: 'ok',
         message: `[Instance: ${ctx.tenant}] Building entry data`,
@@ -485,7 +499,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
-    progress.incrementProgress(ctx.tenant, 20);
+    progress.setProgress(ctx.tenant, 45);
 
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
@@ -516,7 +530,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-    progress.incrementProgress(ctx.tenant, 50);
+    progress.setProgress(ctx.tenant, 50);
 
     logData = JSON.stringify({
         level: 'ok',
