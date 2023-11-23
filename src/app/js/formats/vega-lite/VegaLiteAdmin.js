@@ -6,7 +6,7 @@ import { Box, TextField } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
-import VegaAdvancedMode from '../shared/VegaAdvancedMode';
+import VegaAdvancedMode from '../vega-utils/components/VegaAdvancedMode';
 
 export const defaultArgs = {
     params: {

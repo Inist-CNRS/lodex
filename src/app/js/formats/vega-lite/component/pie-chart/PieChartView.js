@@ -12,7 +12,7 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../chartsHooks';
+import { useSizeObserver } from '../../../vega-utils/chartsHooks';
 
 const styles = {
     container: {
@@ -91,14 +91,16 @@ const PieChartView = ({
 };
 
 PieChartView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    colors: PropTypes.string.isRequired,
-    tooltip: PropTypes.bool.isRequired,
-    tooltipCategory: PropTypes.string.isRequired,
-    tooltipValue: PropTypes.string.isRequired,
-    labels: PropTypes.bool.isRequired,
+    field: fieldPropTypes,
+    resource: PropTypes.object,
+    data: PropTypes.shape({
+        values: PropTypes.any.isRequired,
+    }),
+    colors: PropTypes.string,
+    tooltip: PropTypes.bool,
+    tooltipCategory: PropTypes.string,
+    tooltipValue: PropTypes.string,
+    labels: PropTypes.bool,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
 };
@@ -121,5 +123,21 @@ const mapStateToProps = (state, { formatData }) => {
         },
     };
 };
+
+export const PieChartAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: [
+                { _id: 'A', value: 28 },
+                { _id: 'B', value: 55 },
+                { _id: 'C', value: 43 },
+            ],
+        },
+    };
+})(PieChartView);
 
 export default compose(injectData(), connect(mapStateToProps))(PieChartView);

@@ -14,10 +14,13 @@ import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
-import ToolTips from '../../../shared/ToolTips';
+import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
 import HeatMap from '../../models/HeatMap';
 import { lodexOrderToIdOrder } from '../../../chartsUtils';
-import VegaAdvancedMode from '../../../shared/VegaAdvancedMode';
+import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
+import { HeatMapAdminView } from './HeatMapView';
+import VegaFieldSet from '../../../vega-utils/components/VegaFieldSet';
+import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
 
 export const defaultArgs = {
     params: {
@@ -138,62 +141,67 @@ const HeatMapAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <FormGroup>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={advancedMode}
-                            onChange={toggleAdvancedMode}
-                        />
-                    }
-                    label={polyglot.t('advancedMode')}
+            <VegaFieldSet title={polyglot.t('vega_chart_data_params')}>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    polyglot={polyglot}
+                    onChange={handleParams}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
                 />
-            </FormGroup>
-            <RoutineParamsAdmin
-                params={params || defaultArgs.params}
-                polyglot={polyglot}
-                onChange={handleParams}
-                showMaxSize={showMaxSize}
-                showMaxValue={showMaxValue}
-                showMinValue={showMinValue}
-                showOrderBy={showOrderBy}
-            />
-            {advancedMode ? (
-                <VegaAdvancedMode
-                    value={spec}
-                    onClear={clearAdvancedModeSpec}
-                    onChange={handleAdvancedModeSpec}
-                />
-            ) : (
-                <>
-                    <ToolTips
-                        checked={tooltip}
-                        onChange={toggleTooltip}
-                        onCategoryTitleChange={handleTooltipSource}
-                        categoryTitle={tooltipSource}
-                        onValueTitleChange={handleTooltipTarget}
-                        valueTitle={tooltipTarget}
-                        polyglot={polyglot}
-                        thirdValue={true}
-                        onThirdValueChange={handleTooltipWeight}
-                        thirdValueTitle={tooltipWeight}
-                    />
-                    <GradientSchemeSelector
-                        label={polyglot.t('color_scheme')}
-                        onChange={handleColorSchemeChange}
-                        value={colorScheme}
-                    />
+            </VegaFieldSet>
+            <VegaFieldSet title={polyglot.t('vega_chart_params')}>
+                <FormGroup>
                     <FormControlLabel
                         control={
-                            <Checkbox
-                                onChange={toggleFlipAxis}
-                                checked={flipAxis}
+                            <Switch
+                                checked={advancedMode}
+                                onChange={toggleAdvancedMode}
                             />
                         }
-                        label={polyglot.t('flip_axis')}
+                        label={polyglot.t('advancedMode')}
                     />
-                </>
-            )}
+                </FormGroup>
+                {advancedMode ? (
+                    <VegaAdvancedMode
+                        value={spec}
+                        onClear={clearAdvancedModeSpec}
+                        onChange={handleAdvancedModeSpec}
+                    />
+                ) : (
+                    <>
+                        <VegaToolTips
+                            checked={tooltip}
+                            onChange={toggleTooltip}
+                            onCategoryTitleChange={handleTooltipSource}
+                            categoryTitle={tooltipSource}
+                            onValueTitleChange={handleTooltipTarget}
+                            valueTitle={tooltipTarget}
+                            polyglot={polyglot}
+                            thirdValue={true}
+                            onThirdValueChange={handleTooltipWeight}
+                            thirdValueTitle={tooltipWeight}
+                        />
+                        <GradientSchemeSelector
+                            label={polyglot.t('color_scheme')}
+                            onChange={handleColorSchemeChange}
+                            value={colorScheme}
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    onChange={toggleFlipAxis}
+                                    checked={flipAxis}
+                                />
+                            }
+                            label={polyglot.t('flip_axis')}
+                        />
+                    </>
+                )}
+            </VegaFieldSet>
+            <VegaFieldPreview args={args} PreviewComponent={HeatMapAdminView} />
         </Box>
     );
 };

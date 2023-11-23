@@ -11,7 +11,7 @@ import {
     VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../chartsUtils';
-import { useSizeObserver } from '../chartsHooks';
+import { useSizeObserver } from '../vega-utils/chartsHooks';
 
 const styles = {
     container: {

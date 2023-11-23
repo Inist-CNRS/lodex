@@ -13,7 +13,7 @@ import {
 } from '../../../chartsUtils';
 import BubblePlot from '../../models/BubblePlot';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../chartsHooks';
+import { useSizeObserver } from '../../../vega-utils/chartsHooks';
 
 const styles = {
     container: {
@@ -92,16 +92,18 @@ const BubblePlotView = ({
 };
 
 BubblePlotView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    params: PropTypes.any.isRequired,
-    colors: PropTypes.string.isRequired,
-    flipAxis: PropTypes.bool.isRequired,
-    tooltip: PropTypes.bool.isRequired,
-    tooltipSource: PropTypes.string.isRequired,
-    tooltipTarget: PropTypes.string.isRequired,
-    tooltipWeight: PropTypes.string.isRequired,
+    field: fieldPropTypes,
+    resource: PropTypes.object,
+    data: PropTypes.shape({
+        values: PropTypes.any.isRequired,
+    }),
+    params: PropTypes.any,
+    colors: PropTypes.string,
+    flipAxis: PropTypes.bool,
+    tooltip: PropTypes.bool,
+    tooltipSource: PropTypes.string,
+    tooltipTarget: PropTypes.string,
+    tooltipWeight: PropTypes.string,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
 };
@@ -120,5 +122,27 @@ const mapStateToProps = (state, { formatData }) => {
         },
     };
 };
+
+export const BubblePlotAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: [
+                { source: 'A', target: 'A', weight: 28 },
+                { source: 'A', target: 'B', weight: 55 },
+                { source: 'A', target: 'C', weight: 43 },
+                { source: 'B', target: 'A', weight: 15 },
+                { source: 'B', target: 'B', weight: 68 },
+                { source: 'B', target: 'C', weight: 45 },
+                { source: 'C', target: 'A', weight: 85 },
+                { source: 'C', target: 'B', weight: 32 },
+                { source: 'C', target: 'C', weight: 17 },
+            ],
+        },
+    };
+})(BubblePlotView);
 
 export default compose(injectData(), connect(mapStateToProps))(BubblePlotView);

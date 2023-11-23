@@ -6,7 +6,7 @@ import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import CachedIcon from '@mui/icons-material/Cached';
 import isEqual from 'lodash.isequal';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 const styles = {
     error: {
@@ -34,7 +34,7 @@ const styles = {
 };
 
 const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
-    const FormSourceCodeField = require('../../lib/components/FormSourceCodeField')
+    const FormSourceCodeField = require('../../../lib/components/FormSourceCodeField')
         .default;
 
     const [currentValue, setCurrentValue] = useState(value || '{}');
@@ -149,6 +149,7 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                     style={{
                         width: '100%',
                         height: '70vh',
+                        borderRadius: '5px',
                     }}
                     mode="json"
                     input={{

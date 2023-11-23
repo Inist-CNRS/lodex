@@ -14,9 +14,12 @@ import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
-import ToolTips from '../../../shared/ToolTips';
+import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
 import PieChart from '../../models/PieChart';
-import VegaAdvancedMode from '../../../shared/VegaAdvancedMode';
+import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
+import VegaFieldSet from '../../../vega-utils/components/VegaFieldSet';
+import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
+import { PieChartAdminView } from './PieChartView';
 
 export const defaultArgs = {
     params: {
@@ -126,60 +129,68 @@ const PieChartAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <FormGroup>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={advancedMode}
-                            onChange={toggleAdvancedMode}
-                        />
-                    }
-                    label={polyglot.t('advancedMode')}
+            <VegaFieldSet title={polyglot.t('vega_chart_data_params')}>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    onChange={handleParams}
+                    polyglot={polyglot}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
                 />
-            </FormGroup>
-            <RoutineParamsAdmin
-                params={params || defaultArgs.params}
-                onChange={handleParams}
-                polyglot={polyglot}
-                showMaxSize={showMaxSize}
-                showMaxValue={showMaxValue}
-                showMinValue={showMinValue}
-                showOrderBy={showOrderBy}
-            />
-            {advancedMode ? (
-                <VegaAdvancedMode
-                    value={spec}
-                    onClear={clearAdvancedModeSpec}
-                    onChange={handleAdvancedModeSpec}
-                />
-            ) : (
-                <>
+            </VegaFieldSet>
+            <VegaFieldSet title={polyglot.t('vega_chart_params')}>
+                <FormGroup>
                     <FormControlLabel
                         control={
-                            <Checkbox
-                                onChange={toggleLabels}
-                                checked={labels}
+                            <Switch
+                                checked={advancedMode}
+                                onChange={toggleAdvancedMode}
                             />
                         }
-                        label={polyglot.t('toggle_labels')}
+                        label={polyglot.t('advancedMode')}
                     />
-                    <ToolTips
-                        checked={tooltip}
-                        onChange={toggleTooltip}
-                        onCategoryTitleChange={handleTooltipCategory}
-                        categoryTitle={tooltipCategory}
-                        onValueTitleChange={handleTooltipValue}
-                        valueTitle={tooltipValue}
-                        polyglot={polyglot}
-                        thirdValue={false}
+                </FormGroup>
+                {advancedMode ? (
+                    <VegaAdvancedMode
+                        value={spec}
+                        onClear={clearAdvancedModeSpec}
+                        onChange={handleAdvancedModeSpec}
                     />
-                    <ColorPickerParamsAdmin
-                        colors={colors}
-                        onChange={handleColors}
-                        polyglot={polyglot}
-                    />
-                </>
-            )}
+                ) : (
+                    <>
+                        <VegaToolTips
+                            checked={tooltip}
+                            onChange={toggleTooltip}
+                            onCategoryTitleChange={handleTooltipCategory}
+                            categoryTitle={tooltipCategory}
+                            onValueTitleChange={handleTooltipValue}
+                            valueTitle={tooltipValue}
+                            polyglot={polyglot}
+                            thirdValue={false}
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    onChange={toggleLabels}
+                                    checked={labels}
+                                />
+                            }
+                            label={polyglot.t('toggle_labels')}
+                        />
+                        <ColorPickerParamsAdmin
+                            colors={colors}
+                            onChange={handleColors}
+                            polyglot={polyglot}
+                        />
+                    </>
+                )}
+            </VegaFieldSet>
+            <VegaFieldPreview
+                args={args}
+                PreviewComponent={PieChartAdminView}
+            />
         </Box>
     );
 };

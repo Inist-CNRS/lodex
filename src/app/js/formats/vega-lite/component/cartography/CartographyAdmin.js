@@ -15,10 +15,11 @@ import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSe
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import ToolTips from '../../../shared/ToolTips';
+import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
 import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../chartsUtils';
 import Cartography from '../../models/Cartography';
-import VegaAdvancedMode from '../../../shared/VegaAdvancedMode';
+import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
+import VegaFieldSet from '../../../vega-utils/components/VegaFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -130,68 +131,72 @@ const CartographyAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <FormGroup>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={advancedMode}
-                            onChange={toggleAdvancedMode}
+            <VegaFieldSet title={polyglot.t('vega_chart_data_params')}>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    onChange={handleParams}
+                    polyglot={polyglot}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
+                />
+            </VegaFieldSet>
+            <VegaFieldSet title={polyglot.t('vega_chart_params')}>
+                <FormGroup>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={advancedMode}
+                                onChange={toggleAdvancedMode}
+                            />
+                        }
+                        label={polyglot.t('advancedMode')}
+                    />
+                </FormGroup>
+                {advancedMode ? (
+                    <VegaAdvancedMode
+                        value={spec}
+                        onClear={clearAdvancedModeSpec}
+                        onChange={handleAdvancedModeSpec}
+                    />
+                ) : (
+                    <>
+                        <TextField
+                            fullWidth
+                            select
+                            label={polyglot.t('world_position')}
+                            value={worldPosition}
+                            onChange={handleWorldPosition}
+                        >
+                            <MenuItem value={MAP_WORLD}>
+                                {polyglot.t('world_position_world')}
+                            </MenuItem>
+                            <MenuItem value={MAP_EUROPE}>
+                                {polyglot.t('world_position_europe')}
+                            </MenuItem>
+                            <MenuItem value={MAP_FRANCE}>
+                                {polyglot.t('world_position_france')}
+                            </MenuItem>
+                        </TextField>
+                        <GradientSchemeSelector
+                            label={polyglot.t('color_scheme')}
+                            onChange={handleColorScheme}
+                            value={colorScheme}
                         />
-                    }
-                    label={polyglot.t('advancedMode')}
-                />
-            </FormGroup>
-            <RoutineParamsAdmin
-                params={params || defaultArgs.params}
-                onChange={handleParams}
-                polyglot={polyglot}
-                showMaxSize={showMaxSize}
-                showMaxValue={showMaxValue}
-                showMinValue={showMinValue}
-                showOrderBy={showOrderBy}
-            />
-            {advancedMode ? (
-                <VegaAdvancedMode
-                    value={spec}
-                    onClear={clearAdvancedModeSpec}
-                    onChange={handleAdvancedModeSpec}
-                />
-            ) : (
-                <>
-                    <TextField
-                        fullWidth
-                        select
-                        label={polyglot.t('world_position')}
-                        value={worldPosition}
-                        onChange={handleWorldPosition}
-                    >
-                        <MenuItem value={MAP_WORLD}>
-                            {polyglot.t('world_position_world')}
-                        </MenuItem>
-                        <MenuItem value={MAP_EUROPE}>
-                            {polyglot.t('world_position_europe')}
-                        </MenuItem>
-                        <MenuItem value={MAP_FRANCE}>
-                            {polyglot.t('world_position_france')}
-                        </MenuItem>
-                    </TextField>
-                    <GradientSchemeSelector
-                        label={polyglot.t('color_scheme')}
-                        onChange={handleColorScheme}
-                        value={colorScheme}
-                    />
-                    <ToolTips
-                        checked={tooltip}
-                        onChange={toggleTooltip}
-                        onCategoryTitleChange={handleTooltipCategory}
-                        categoryTitle={tooltipCategory}
-                        onValueTitleChange={handleTooltipValue}
-                        valueTitle={tooltipValue}
-                        polyglot={polyglot}
-                        thirdValue={false}
-                    />
-                </>
-            )}
+                        <VegaToolTips
+                            checked={tooltip}
+                            onChange={toggleTooltip}
+                            onCategoryTitleChange={handleTooltipCategory}
+                            categoryTitle={tooltipCategory}
+                            onValueTitleChange={handleTooltipValue}
+                            valueTitle={tooltipValue}
+                            polyglot={polyglot}
+                            thirdValue={false}
+                        />
+                    </>
+                )}
+            </VegaFieldSet>
         </Box>
     );
 };

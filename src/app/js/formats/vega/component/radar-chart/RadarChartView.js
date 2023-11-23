@@ -13,7 +13,7 @@ import {
 } from '../../../chartsUtils';
 
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../chartsHooks';
+import { useSizeObserver } from '../../../vega-utils/chartsHooks';
 
 const styles = {
     container: {

@@ -16,7 +16,7 @@ import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
-import ToolTips from '../../../shared/ToolTips';
+import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
 import BarChart from '../../models/BarChart';
 import {
     AXIS_X,
@@ -24,7 +24,10 @@ import {
     lodexDirectionToIdDirection,
     lodexScaleToIdScale,
 } from '../../../chartsUtils';
-import VegaAdvancedMode from '../../../shared/VegaAdvancedMode';
+import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
+import { BarChartAdminView } from './BarChartView';
+import VegaFieldSet from '../../../vega-utils/components/VegaFieldSet';
+import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
 
 export const defaultArgs = {
     params: {
@@ -161,11 +164,11 @@ const BarChartAdmin = props => {
     };
 
     const toggleTooltip = () => {
-        updateAdminArgs('tooltip', args.tooltip, props);
+        updateAdminArgs('tooltip', !args.tooltip, props);
     };
 
     const toggleLabels = () => {
-        updateAdminArgs('labels', args.labels, props);
+        updateAdminArgs('labels', !args.labels, props);
     };
 
     const toggleLabelOverlap = () => {
@@ -187,127 +190,135 @@ const BarChartAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <FormGroup>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={advancedMode}
-                            onChange={toggleAdvancedMode}
+            <VegaFieldSet title={polyglot.t('vega_chart_data_params')}>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    onChange={handleParams}
+                    polyglot={polyglot}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
+                />
+            </VegaFieldSet>
+            <VegaFieldSet title={polyglot.t('vega_chart_params')}>
+                <FormGroup>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={advancedMode}
+                                onChange={toggleAdvancedMode}
+                            />
+                        }
+                        label={polyglot.t('advancedMode')}
+                    />
+                </FormGroup>
+                {advancedMode ? (
+                    <VegaAdvancedMode
+                        value={spec}
+                        onClear={clearAdvancedModeSpec}
+                        onChange={handleAdvancedModeSpec}
+                    />
+                ) : (
+                    <>
+                        <VegaToolTips
+                            checked={tooltip}
+                            onChange={toggleTooltip}
+                            onCategoryTitleChange={handleTooltipCategory}
+                            categoryTitle={tooltipCategory}
+                            onValueTitleChange={handleTooltipValue}
+                            valueTitle={tooltipValue}
+                            polyglot={polyglot}
+                            thirdValue={false}
                         />
-                    }
-                    label={polyglot.t('advancedMode')}
-                />
-            </FormGroup>
-            <RoutineParamsAdmin
-                params={params || defaultArgs.params}
-                onChange={handleParams}
-                polyglot={polyglot}
-                showMaxSize={showMaxSize}
-                showMaxValue={showMaxValue}
-                showMinValue={showMinValue}
-                showOrderBy={showOrderBy}
+                        <ColorPickerParamsAdmin
+                            colors={colors}
+                            onChange={handleColors}
+                            polyglot={polyglot}
+                        />
+                        <TextField
+                            fullWidth
+                            select
+                            label={polyglot.t('direction')}
+                            onChange={handleDirection}
+                            value={direction}
+                        >
+                            <MenuItem value="horizontal">
+                                {polyglot.t('horizontal')}
+                            </MenuItem>
+                            <MenuItem value="vertical">
+                                {polyglot.t('vertical')}
+                            </MenuItem>
+                        </TextField>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    onChange={toggleDiagonalCategoryAxis}
+                                    checked={diagonalCategoryAxis}
+                                />
+                            }
+                            label={polyglot.t('diagonal_category_axis')}
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    onChange={toggleDiagonalValueAxis}
+                                    checked={diagonalValueAxis}
+                                />
+                            }
+                            label={polyglot.t('diagonal_value_axis')}
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    onChange={handleAxisRoundValue}
+                                    checked={axisRoundValue}
+                                />
+                            }
+                            label={polyglot.t('axis_round_value')}
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    onChange={toggleLabels}
+                                    checked={labels}
+                                />
+                            }
+                            label={polyglot.t('toggle_labels')}
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    onChange={toggleLabelOverlap}
+                                    checked={labelOverlap}
+                                />
+                            }
+                            label={polyglot.t('toggle_label_overlap')}
+                        />
+                        <TextField
+                            fullWidth
+                            select
+                            label={polyglot.t('scale')}
+                            onChange={handleScale}
+                            value={scale}
+                        >
+                            <MenuItem value="linear">
+                                {polyglot.t('linear')}
+                            </MenuItem>
+                            <MenuItem value="log">{polyglot.t('log')}</MenuItem>
+                        </TextField>
+                        <TextField
+                            label={polyglot.t('bar_size')}
+                            onChange={handleBarSize}
+                            value={barSize}
+                        />
+                    </>
+                )}
+            </VegaFieldSet>
+            <VegaFieldPreview
+                args={args}
+                PreviewComponent={BarChartAdminView}
             />
-            {advancedMode ? (
-                <VegaAdvancedMode
-                    value={spec}
-                    onClear={clearAdvancedModeSpec}
-                    onChange={handleAdvancedModeSpec}
-                />
-            ) : (
-                <>
-                    <ToolTips
-                        checked={tooltip}
-                        onChange={toggleTooltip}
-                        onCategoryTitleChange={handleTooltipCategory}
-                        categoryTitle={tooltipCategory}
-                        onValueTitleChange={handleTooltipValue}
-                        valueTitle={tooltipValue}
-                        polyglot={polyglot}
-                        thirdValue={false}
-                    />
-                    <ColorPickerParamsAdmin
-                        colors={colors}
-                        onChange={handleColors}
-                        polyglot={polyglot}
-                    />
-                    <TextField
-                        fullWidth
-                        select
-                        label={polyglot.t('direction')}
-                        onChange={handleDirection}
-                        value={direction}
-                    >
-                        <MenuItem value="horizontal">
-                            {polyglot.t('horizontal')}
-                        </MenuItem>
-                        <MenuItem value="vertical">
-                            {polyglot.t('vertical')}
-                        </MenuItem>
-                    </TextField>
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                onChange={toggleDiagonalCategoryAxis}
-                                checked={diagonalCategoryAxis}
-                            />
-                        }
-                        label={polyglot.t('diagonal_category_axis')}
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                onChange={toggleDiagonalValueAxis}
-                                checked={diagonalValueAxis}
-                            />
-                        }
-                        label={polyglot.t('diagonal_value_axis')}
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                onChange={handleAxisRoundValue}
-                                checked={axisRoundValue}
-                            />
-                        }
-                        label={polyglot.t('axis_round_value')}
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                onChange={toggleLabels}
-                                checked={labels}
-                            />
-                        }
-                        label={polyglot.t('toggle_labels')}
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                onChange={toggleLabelOverlap}
-                                checked={labelOverlap}
-                            />
-                        }
-                        label={polyglot.t('toggle_label_overlap')}
-                    />
-                    <TextField
-                        fullWidth
-                        select
-                        label={polyglot.t('scale')}
-                        onChange={handleScale}
-                        value={scale}
-                    >
-                        <MenuItem value="linear">
-                            {polyglot.t('linear')}
-                        </MenuItem>
-                        <MenuItem value="log">{polyglot.t('log')}</MenuItem>
-                    </TextField>
-                    <TextField
-                        label={polyglot.t('bar_size')}
-                        onChange={handleBarSize}
-                        value={barSize}
-                    />
-                </>
-            )}
         </Box>
     );
 };

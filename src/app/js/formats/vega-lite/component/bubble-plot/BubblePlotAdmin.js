@@ -12,12 +12,15 @@ import {
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import ToolTips from '../../../shared/ToolTips';
+import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
 import BubblePlot from '../../models/BubblePlot';
 import { lodexOrderToIdOrder } from '../../../chartsUtils';
-import VegaAdvancedMode from '../../../shared/VegaAdvancedMode';
+import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
+import VegaFieldSet from '../../../vega-utils/components/VegaFieldSet';
+import { BubblePlotAdminView } from './BubblePlotView';
+import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
 
 export const defaultArgs = {
     params: {
@@ -136,62 +139,70 @@ const BubblePlotAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <FormGroup>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={advancedMode}
-                            onChange={toggleAdvancedMode}
-                        />
-                    }
-                    label={polyglot.t('advancedMode')}
+            <VegaFieldSet title={polyglot.t('vega_chart_data_params')}>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    polyglot={polyglot}
+                    onChange={handleParams}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
                 />
-            </FormGroup>
-            <RoutineParamsAdmin
-                params={params || defaultArgs.params}
-                polyglot={polyglot}
-                onChange={handleParams}
-                showMaxSize={showMaxSize}
-                showMaxValue={showMaxValue}
-                showMinValue={showMinValue}
-                showOrderBy={showOrderBy}
-            />
-            {advancedMode ? (
-                <VegaAdvancedMode
-                    value={spec}
-                    onClear={clearAdvancedModeSpec}
-                    onChange={handleAdvancedModeSpec}
-                />
-            ) : (
-                <>
+            </VegaFieldSet>
+            <VegaFieldSet title={polyglot.t('vega_chart_params')}>
+                <FormGroup>
                     <FormControlLabel
                         control={
-                            <Checkbox
-                                onChange={toggleFlipAxis}
-                                checked={flipAxis}
+                            <Switch
+                                checked={advancedMode}
+                                onChange={toggleAdvancedMode}
                             />
                         }
-                        label={polyglot.t('flip_axis')}
+                        label={polyglot.t('advancedMode')}
                     />
-                    <ToolTips
-                        checked={tooltip}
-                        onChange={toggleTooltip}
-                        onCategoryTitleChange={handleTooltipSource}
-                        categoryTitle={tooltipSource}
-                        onValueTitleChange={handleTooltipTarget}
-                        valueTitle={tooltipTarget}
-                        polyglot={polyglot}
-                        thirdValue={true}
-                        onThirdValueChange={handleTooltipWeight}
-                        thirdValueTitle={tooltipWeight}
+                </FormGroup>
+                {advancedMode ? (
+                    <VegaAdvancedMode
+                        value={spec}
+                        onClear={clearAdvancedModeSpec}
+                        onChange={handleAdvancedModeSpec}
                     />
-                    <ColorPickerParamsAdmin
-                        colors={colors}
-                        onChange={handleColors}
-                        polyglot={polyglot}
-                    />
-                </>
-            )}
+                ) : (
+                    <>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    onChange={toggleFlipAxis}
+                                    checked={flipAxis}
+                                />
+                            }
+                            label={polyglot.t('flip_axis')}
+                        />
+                        <VegaToolTips
+                            checked={tooltip}
+                            onChange={toggleTooltip}
+                            onCategoryTitleChange={handleTooltipSource}
+                            categoryTitle={tooltipSource}
+                            onValueTitleChange={handleTooltipTarget}
+                            valueTitle={tooltipTarget}
+                            polyglot={polyglot}
+                            thirdValue={true}
+                            onThirdValueChange={handleTooltipWeight}
+                            thirdValueTitle={tooltipWeight}
+                        />
+                        <ColorPickerParamsAdmin
+                            colors={colors}
+                            onChange={handleColors}
+                            polyglot={polyglot}
+                        />
+                    </>
+                )}
+            </VegaFieldSet>
+            <VegaFieldPreview
+                args={args}
+                PreviewComponent={BubblePlotAdminView}
+            />
         </Box>
     );
 };

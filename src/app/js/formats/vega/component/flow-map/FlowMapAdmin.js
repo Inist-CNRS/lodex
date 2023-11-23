@@ -4,13 +4,13 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import ToolTips from '../../../shared/ToolTips';
+import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { schemeBlues } from 'd3-scale-chromatic';
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import { Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import FlowMap from '../../models/FlowMap';
-import VegaAdvancedMode from '../../../shared/VegaAdvancedMode';
+import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
 
 export const defaultArgs = {
     params: {
@@ -170,7 +170,7 @@ const FlowMapAdmin = props => {
                         polyglot={polyglot}
                         monochromatic={true}
                     />
-                    <ToolTips
+                    <VegaToolTips
                         checked={tooltip}
                         onChange={toggleTooltip}
                         onCategoryTitleChange={handleTooltipCategory}

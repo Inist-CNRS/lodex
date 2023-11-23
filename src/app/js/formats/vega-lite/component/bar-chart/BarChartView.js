@@ -16,7 +16,7 @@ import {
 import BarChart from '../../models/BarChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../chartsHooks';
+import { useSizeObserver } from '../../../vega-utils/chartsHooks';
 
 const styles = {
     container: {
@@ -115,23 +115,25 @@ const BarChartView = ({
 };
 
 BarChartView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    colors: PropTypes.string.isRequired,
-    direction: PropTypes.string.isRequired,
-    orderBy: PropTypes.string.isRequired,
-    diagonalCategoryAxis: PropTypes.bool.isRequired,
-    diagonalValueAxis: PropTypes.bool.isRequired,
-    scale: PropTypes.string.isRequired,
-    params: PropTypes.any.isRequired,
-    axisRoundValue: PropTypes.bool.isRequired,
-    tooltip: PropTypes.bool.isRequired,
-    tooltipCategory: PropTypes.string.isRequired,
-    tooltipValue: PropTypes.string.isRequired,
-    labels: PropTypes.string.isRequired,
-    labelOverlap: PropTypes.string.isRequired,
-    barSize: PropTypes.number.isRequired,
+    field: fieldPropTypes,
+    resource: PropTypes.object,
+    data: PropTypes.shape({
+        values: PropTypes.any.isRequired,
+    }),
+    colors: PropTypes.string,
+    direction: PropTypes.string,
+    orderBy: PropTypes.string,
+    diagonalCategoryAxis: PropTypes.bool,
+    diagonalValueAxis: PropTypes.bool,
+    scale: PropTypes.string,
+    params: PropTypes.any,
+    axisRoundValue: PropTypes.bool,
+    tooltip: PropTypes.bool,
+    tooltipCategory: PropTypes.string,
+    tooltipValue: PropTypes.string,
+    labels: PropTypes.string,
+    labelOverlap: PropTypes.string,
+    barSize: PropTypes.number,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
 };
@@ -154,5 +156,21 @@ const mapStateToProps = (state, { formatData }) => {
         },
     };
 };
+
+export const BarChartAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: [
+                { _id: 'A', value: 28 },
+                { _id: 'B', value: 55 },
+                { _id: 'C', value: 43 },
+            ],
+        },
+    };
+})(BarChartView);
 
 export default compose(injectData(), connect(mapStateToProps))(BarChartView);

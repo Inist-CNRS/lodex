@@ -15,7 +15,7 @@ import injectData from '../../../injectData';
 import Cartography from '../../models/Cartography';
 import { schemeOrRd } from 'd3-scale-chromatic';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../chartsHooks';
+import { useSizeObserver } from '../../../vega-utils/chartsHooks';
 
 const styles = {
     container: {
@@ -94,14 +94,16 @@ const CartographyView = ({
 };
 
 CartographyView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    tooltip: PropTypes.bool.isRequired,
-    tooltipCategory: PropTypes.string.isRequired,
-    tooltipValue: PropTypes.string.isRequired,
-    colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
-    worldPosition: PropTypes.string.isRequired,
+    field: fieldPropTypes,
+    resource: PropTypes.object,
+    data: PropTypes.shape({
+        values: PropTypes.any.isRequired,
+    }),
+    tooltip: PropTypes.bool,
+    tooltipCategory: PropTypes.string,
+    tooltipValue: PropTypes.string,
+    colorScheme: PropTypes.arrayOf(PropTypes.string),
+    worldPosition: PropTypes.string,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
 };

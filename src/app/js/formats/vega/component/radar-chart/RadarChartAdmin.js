@@ -16,8 +16,8 @@ import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
-import ToolTips from '../../../shared/ToolTips';
-import VegaAdvancedMode from '../../../shared/VegaAdvancedMode';
+import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
+import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
 import RadarChart from '../../models/RadarChart';
 import { lodexScaleToIdScale } from '../../../chartsUtils';
 
@@ -170,7 +170,7 @@ const RadarChartAdmin = props => {
                 />
             ) : (
                 <>
-                    <ToolTips
+                    <VegaToolTips
                         checked={tooltip}
                         onChange={toggleTooltip}
                         onCategoryTitleChange={handleTooltipCategory}
