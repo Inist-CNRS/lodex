@@ -381,6 +381,7 @@ export const getComputedFromWebservice = async (
             await ctx.precomputed.updateStatus(precomputedId, FINISHED, {
                 data,
             });
+            await ctx.precomputed.updateStartedAt(precomputedId, null);
 
             job.progress(100);
             const isFailed = await job.isFailed();
@@ -447,6 +448,7 @@ export const getFailureFromWebservice = async (
     await ctx.precomputed.updateStatus(precomputedId, ERROR, {
         message: errorMessage,
     });
+    await ctx.precomputed.updateStartedAt(precomputedId, null);
 
     job.progress(100);
     progress.finish(tenant);
@@ -467,6 +469,7 @@ export const getFailureFromWebservice = async (
 export const processPrecomputed = async (precomputed, ctx) => {
     let logData = {};
     await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS);
+    await ctx.precomputed.updateStartedAt(precomputed._id, new Date());
 
     const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
 
@@ -568,6 +571,7 @@ export const setPrecomputedError = async (ctx, err) => {
             message: err?.message,
         },
     );
+    await ctx.precomputed.updateStartedAt(id, null);
 
     const room = `precomputed-job-${ctx.job.id}`;
     const logData = JSON.stringify({
