@@ -90,6 +90,7 @@ export const precomputedAction = async (ctx, action, id) => {
                 {
                     id,
                     jobType: PRECOMPUTER,
+                    action: 'askForPrecomputed',
                     tenant: ctx.tenant,
                     subLabel: precomputed.name,
                 },
@@ -111,6 +112,7 @@ export const precomputedAction = async (ctx, action, id) => {
                 {
                     id,
                     jobType: PRECOMPUTER,
+                    action: 'askForPrecomputed',
                     tenant: ctx.tenant,
                     subLabel: precomputed.name,
                 },
