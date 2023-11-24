@@ -134,4 +134,20 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
+export const RadarChartAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: [
+                { _id: 'A', value: 28 },
+                { _id: 'B', value: 55 },
+                { _id: 'C', value: 43 },
+            ],
+        },
+    };
+})(RadarChartView);
+
 export default compose(injectData(), connect(mapStateToProps))(RadarChartView);

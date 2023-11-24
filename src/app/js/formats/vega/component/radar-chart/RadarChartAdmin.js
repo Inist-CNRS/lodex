@@ -20,6 +20,9 @@ import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
 import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
 import RadarChart from '../../models/RadarChart';
 import { lodexScaleToIdScale } from '../../../chartsUtils';
+import VegaFieldSet from '../../../vega-utils/components/VegaFieldSet';
+import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
+import { RadarChartAdminView } from './RadarChartView';
 
 export const defaultArgs = {
     params: {
@@ -153,62 +156,70 @@ const RadarChartAdmin = props => {
                     label={polyglot.t('advancedMode')}
                 />
             </FormGroup>
-            <RoutineParamsAdmin
-                params={params || defaultArgs.params}
-                onChange={handleParams}
-                polyglot={polyglot}
-                showMaxSize={showMaxSize}
-                showMaxValue={showMaxValue}
-                showMinValue={showMinValue}
-                showOrderBy={showOrderBy}
-            />
-            {advancedMode ? (
-                <VegaAdvancedMode
-                    value={spec}
-                    onClear={clearAdvancedModeSpec}
-                    onChange={handleAdvancedModeSpec}
+            <VegaFieldSet title={polyglot.t('vega_chart_data_params')}>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    onChange={handleParams}
+                    polyglot={polyglot}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
                 />
-            ) : (
-                <>
-                    <VegaToolTips
-                        checked={tooltip}
-                        onChange={toggleTooltip}
-                        onCategoryTitleChange={handleTooltipCategory}
-                        categoryTitle={tooltipCategory}
-                        onValueTitleChange={handleTooltipValue}
-                        valueTitle={tooltipValue}
-                        polyglot={polyglot}
-                        thirdValue={false}
+            </VegaFieldSet>
+            <VegaFieldSet title={polyglot.t('vega_chart_params')}>
+                {advancedMode ? (
+                    <VegaAdvancedMode
+                        value={spec}
+                        onClear={clearAdvancedModeSpec}
+                        onChange={handleAdvancedModeSpec}
                     />
-                    <ColorPickerParamsAdmin
-                        colors={colors}
-                        onChange={handleColors}
-                        polyglot={polyglot}
-                        monochromatic={true}
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                onChange={handleAxisRoundValue}
-                                checked={axisRoundValue}
-                            />
-                        }
-                        label={polyglot.t('axis_round_value')}
-                    />
-                    <TextField
-                        fullWidth
-                        select
-                        label={polyglot.t('scale')}
-                        onChange={handleScale}
-                        value={scale}
-                    >
-                        <MenuItem value="linear">
-                            {polyglot.t('linear')}
-                        </MenuItem>
-                        <MenuItem value="log">{polyglot.t('log')}</MenuItem>
-                    </TextField>
-                </>
-            )}
+                ) : (
+                    <>
+                        <VegaToolTips
+                            checked={tooltip}
+                            onChange={toggleTooltip}
+                            onCategoryTitleChange={handleTooltipCategory}
+                            categoryTitle={tooltipCategory}
+                            onValueTitleChange={handleTooltipValue}
+                            valueTitle={tooltipValue}
+                            polyglot={polyglot}
+                            thirdValue={false}
+                        />
+                        <ColorPickerParamsAdmin
+                            colors={colors}
+                            onChange={handleColors}
+                            polyglot={polyglot}
+                            monochromatic={true}
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    onChange={handleAxisRoundValue}
+                                    checked={axisRoundValue}
+                                />
+                            }
+                            label={polyglot.t('axis_round_value')}
+                        />
+                        <TextField
+                            fullWidth
+                            select
+                            label={polyglot.t('scale')}
+                            onChange={handleScale}
+                            value={scale}
+                        >
+                            <MenuItem value="linear">
+                                {polyglot.t('linear')}
+                            </MenuItem>
+                            <MenuItem value="log">{polyglot.t('log')}</MenuItem>
+                        </TextField>
+                    </>
+                )}
+            </VegaFieldSet>
+            <VegaFieldPreview
+                args={args}
+                PreviewComponent={RadarChartAdminView}
+            />
         </Box>
     );
 };

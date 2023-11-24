@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -126,5 +126,22 @@ const mapStateToProps = (state, { formatData }) => {
         },
     };
 };
+
+export const FlowMapAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: [
+                { source: 'FRA', target: 'JPN', weight: 28 },
+                { source: 'FRA', target: 'GBR', weight: 55 },
+                { source: 'FRA', target: 'CAN', weight: 43 },
+                { source: 'FRA', target: 'TUN', weight: 15 },
+            ],
+        },
+    };
+})(FlowMapView);
 
 export default compose(injectData(), connect(mapStateToProps))(FlowMapView);

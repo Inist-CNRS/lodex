@@ -7,6 +7,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 import VegaAdvancedMode from '../vega-utils/components/VegaAdvancedMode';
+import VegaFieldSet from '../vega-utils/components/VegaFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -61,54 +62,58 @@ const VegaLiteAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <RoutineParamsAdmin
-                params={params || defaultArgs.params}
-                polyglot={p}
-                onChange={handleParams}
-                showMaxSize={showMaxSize}
-                showMaxValue={showMaxValue}
-                showMinValue={showMinValue}
-                showOrderBy={showOrderBy}
-            />
-            <Box width="100%">
-                <VegaAdvancedMode
-                    value={formattedSpecTemplate}
-                    onChange={handleSpecTemplate}
+            <VegaFieldSet title={p.t('vega_chart_data_params')}>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    polyglot={p}
+                    onChange={handleParams}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
                 />
-                <a
-                    href="https://vega.github.io/vega-lite/docs/size.html#specifying-width-and-height-per-discrete-step"
-                    target="_blank"
-                    rel="noopener nofollow noreferrer"
-                >
-                    {p.t('vega_size_step')}
-                </a>
-            </Box>
-            <TextField
-                type="number"
-                min={10}
-                max={200}
-                step={10}
-                label={p.t('vegalite_width')}
-                onChange={handleWidth}
-                value={width}
-                fullWidth
-                InputProps={{
-                    endAdornment: '%',
-                }}
-            />
-            <TextField
-                type="number"
-                min={10}
-                max={800}
-                step={10}
-                label={p.t('vegalite_height')}
-                onChange={handleHeight}
-                value={height}
-                fullWidth
-                InputProps={{
-                    endAdornment: '%',
-                }}
-            />
+            </VegaFieldSet>
+            <VegaFieldSet title={p.t('vega_chart_params')}>
+                <Box width="100%">
+                    <VegaAdvancedMode
+                        value={formattedSpecTemplate}
+                        onChange={handleSpecTemplate}
+                    />
+                    <a
+                        href="https://vega.github.io/vega-lite/docs/size.html#specifying-width-and-height-per-discrete-step"
+                        target="_blank"
+                        rel="noopener nofollow noreferrer"
+                    >
+                        {p.t('vega_size_step')}
+                    </a>
+                </Box>
+                <TextField
+                    type="number"
+                    min={10}
+                    max={200}
+                    step={10}
+                    label={p.t('vegalite_width')}
+                    onChange={handleWidth}
+                    value={width}
+                    fullWidth
+                    InputProps={{
+                        endAdornment: '%',
+                    }}
+                />
+                <TextField
+                    type="number"
+                    min={10}
+                    max={800}
+                    step={10}
+                    label={p.t('vegalite_height')}
+                    onChange={handleHeight}
+                    value={height}
+                    fullWidth
+                    InputProps={{
+                        endAdornment: '%',
+                    }}
+                />
+            </VegaFieldSet>
         </Box>
     );
 };
