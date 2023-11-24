@@ -179,11 +179,14 @@ export const getTokenFromWebservice = async (
         compress: false,
     });
 
-    fs.unlink(fileName, error => {
-        if (error) {
-            throw error;
-        }
-    });
+    try {
+        fs.unlinkSync(fileName);
+    } catch (error) {
+        throw new Error(
+            `Error while unlink file - getTokenFromWebservice`,
+            error,
+        );
+    }
 
     if (response.status != 200) {
         throw new Error(
@@ -236,11 +239,11 @@ const extractResultFromZip = async (tenant, job, room, data) => {
         tarFS.extract(folderName),
     );
 
-    fs.unlink(fileName, error => {
-        if (error) {
-            throw error;
-        }
-    });
+    try {
+        fs.unlinkSync(fileName);
+    } catch (error) {
+        throw new Error(`Error while unlink file - extract result`, error);
+    }
 
     logData = JSON.stringify({
         level: 'ok',
@@ -275,11 +278,11 @@ const extractResultFromZip = async (tenant, job, room, data) => {
         const json = await fs.promises.readFile(JsonName, { encoding: 'utf8' });
         result.push(JSON.parse(json));
 
-        fs.unlink(JsonName, error => {
-            if (error) {
-                throw error;
-            }
-        });
+        try {
+            fs.unlinkSync(JsonName);
+        } catch (error) {
+            throw new Error(`Error while unlink file - extract result`, error);
+        }
     }
 
     logData = JSON.stringify({
@@ -292,23 +295,9 @@ const extractResultFromZip = async (tenant, job, room, data) => {
     notifyListeners(room, logData);
 
     try {
-        fs.unlink(`${folderName}/manifest.json`, error => {
-            if (error) {
-                throw error;
-            }
-        });
-
-        fs.rmdir(`${folderName}/data`, error => {
-            if (error) {
-                throw error;
-            }
-        });
-
-        fs.rmdir(folderName, error => {
-            if (error) {
-                throw error;
-            }
-        });
+        fs.unlinkSync(`${folderName}/manifest.json`);
+        fs.rmdirSync(`${folderName}/data`);
+        fs.rmdirSync(folderName);
     } catch (error) {
         throw new Error(`Error while clear folder data`, error);
     }
