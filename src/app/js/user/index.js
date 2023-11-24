@@ -561,10 +561,11 @@ export const getJobLogsRequest = (state, jobId) =>
         url: `/api/job/${jobId}/logs`,
     });
 
-export const getCancelJobRequest = (state, queue) =>
+export const getCancelJobRequest = (state, queue, subLabel) =>
     getRequest(state, {
         url: `/api/job/${queue}/cancel`,
         method: 'POST',
+        body: { subLabel },
     });
 
 export const getClearJobsRequest = state =>
