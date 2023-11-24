@@ -43,7 +43,8 @@ const getSourceData = async (ctx, sourceColumn) => {
 };
 
 export const createEnrichmentRule = async (ctx, enrichment) => {
-    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
+    const { enrichmentBatchSize } = ctx.configTenant;
+    const BATCH_SIZE = Number(enrichmentBatchSize || 10);
     if (enrichment.advancedMode) {
         return enrichment;
     }
@@ -67,7 +68,8 @@ const cleanWebServiceRule = rule => {
 };
 
 export const getEnrichmentDataPreview = async ctx => {
-    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
+    const { enrichmentBatchSize } = ctx.configTenant;
+    const BATCH_SIZE = Number(enrichmentBatchSize || 10);
     const { sourceColumn, subPath, rule } = ctx.request.body;
     let previewRule = rule;
     if (!sourceColumn && !rule) {
@@ -223,7 +225,8 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
 };
 
 export const processEnrichment = async (enrichment, ctx) => {
-    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
+    const { enrichmentBatchSize } = ctx.configTenant;
+    const BATCH_SIZE = Number(enrichmentBatchSize || 10);
     await ctx.enrichment.updateStatus(enrichment._id, IN_PROGRESS);
     let errorCount = 0;
 
