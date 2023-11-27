@@ -10,6 +10,7 @@ const checkMissingFields = data =>
 
 export default async db => {
     const collection = db.collection('precomputed');
+    await collection.createIndex({ name: 1 }, { unique: true });
 
     collection.findOneById = async id =>
         collection.findOne({ $or: [{ _id: new ObjectId(id) }, { _id: id }] });
