@@ -182,9 +182,10 @@ export const ConfigTenantForm = ({
             <TextField
                 label="Enrichment Batch Size"
                 value={enrichmentBatchSize || ''}
+                type="number"
                 sx={{ mb: 2 }}
                 onChange={event => {
-                    setEnrichmentBatchSize(event.target.value);
+                    setEnrichmentBatchSize(Number(event.target.value));
                 }}
             />
             <Box sx={{ mb: 10 }}>
