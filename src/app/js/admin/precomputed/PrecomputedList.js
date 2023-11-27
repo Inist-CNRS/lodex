@@ -97,9 +97,13 @@ export const PrecomputedList = ({
                     {
                         field: 'status',
                         headerName: polyglot.t('precomputed_status'),
-                        flex: 1,
+                        flex: 2,
                         renderCell: params =>
-                            renderStatus(params.value, polyglot),
+                            renderStatus(
+                                params.row.status,
+                                polyglot,
+                                params.row.startedAt,
+                            ),
                     },
                     {
                         field: 'run',

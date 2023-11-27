@@ -3,6 +3,7 @@ import route from 'koa-route';
 import bodyParser from 'koa-bodyparser';
 
 import getLogger from '../services/logger';
+import { getPrecomputedCollectionForWebHook } from '../services/repositoryMiddleware';
 import {
     getComputedFromWebservice,
     getFailureFromWebservice,
@@ -15,6 +16,9 @@ export const getComputedWebserviceData = async ctx => {
     logger.info(`Precompute webhook call for ${tenant}`);
     logger.info('Query', ctx.request.query);
 
+    ctx.precomputed = await getPrecomputedCollectionForWebHook(tenant);
+    const callId = JSON.stringify([{ id: generator, value: identifier }]);
+
     if (failure !== undefined) {
         const { type, message } = ctx.request.body.error;
         logger.info('Precompute webservice call with failure');
@@ -22,7 +26,6 @@ export const getComputedWebserviceData = async ctx => {
             ctx,
             tenant,
             precomputedId,
-            callId,
             jobId,
             type,
             message,
@@ -35,8 +38,6 @@ export const getComputedWebserviceData = async ctx => {
     if (state !== 'ready') {
         return;
     }
-
-    const callId = JSON.stringify([{ id: generator, value: identifier }]);
 
     await getComputedFromWebservice(ctx, tenant, precomputedId, callId, jobId);
 

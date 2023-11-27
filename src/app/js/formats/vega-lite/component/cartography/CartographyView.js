@@ -1,10 +1,12 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import {
+    convertSpecTemplate,
     MAP_FRANCE,
+    VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../../chartsUtils';
@@ -13,7 +15,7 @@ import injectData from '../../../injectData';
 import Cartography from '../../models/Cartography';
 import { schemeOrRd } from 'd3-scale-chromatic';
 import InvalidFormat from '../../../InvalidFormat';
-import { VEGA_ACTIONS_WIDTH } from '../vega-lite-component/VegaLiteComponent';
+import { useSizeObserver } from '../../../chartsHooks';
 
 const styles = {
     container: {
@@ -32,19 +34,17 @@ const CartographyView = ({
     worldPosition,
     colorScheme,
 }) => {
-    const ref = useRef(null);
-    const [width, setWidth] = useState(0);
+    const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
     const spec = useMemo(() => {
         if (advancedMode) {
             try {
-                const advancedSpec = JSON.parse(advancedModeSpec);
-                return {
-                    ...advancedSpec,
-                    width: width - VEGA_ACTIONS_WIDTH,
-                    height: (width - VEGA_ACTIONS_WIDTH) * 0.6,
-                };
+                return convertSpecTemplate(
+                    advancedModeSpec,
+                    width - VEGA_ACTIONS_WIDTH,
+                    (width - VEGA_ACTIONS_WIDTH) * 0.6,
+                );
             } catch (e) {
                 setError(e.message);
                 return null;
@@ -73,27 +73,6 @@ const CartographyView = ({
         worldPosition,
         colorScheme,
     ]);
-
-    useEffect(() => {
-        if (!ref || !ref.current) {
-            return;
-        }
-
-        const resizeObserver = new ResizeObserver(entries => {
-            window.requestAnimationFrame(() => {
-                if (
-                    !Array.isArray(entries) ||
-                    !entries.length ||
-                    entries.length < 1
-                ) {
-                    return;
-                }
-                setWidth(entries[0].contentRect.width);
-            });
-        });
-
-        resizeObserver.observe(ref.current);
-    }, [ref.current]);
 
     if (!spec) {
         return <InvalidFormat format={field.format} value={error} />;

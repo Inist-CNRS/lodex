@@ -9,11 +9,15 @@ import {
 import PropTypes from 'prop-types';
 import { CustomActionVega } from '../vega-component';
 import FlowMap from '../../models/FlowMap';
-import { VEGA_DATA_INJECT_TYPE_B } from '../../../chartsUtils';
+import {
+    convertSpecTemplate,
+    VEGA_ACTIONS_WIDTH,
+    VEGA_DATA_INJECT_TYPE_B,
+} from '../../../chartsUtils';
 import { schemeBlues } from 'd3-scale-chromatic';
 import MouseIcon from '../../../shared/MouseIcon';
 import InvalidFormat from '../../../InvalidFormat';
-import { VEGA_ACTIONS_WIDTH } from '../../../vega-lite/component/vega-lite-component/VegaLiteComponent';
+import { useSizeObserver } from '../../../chartsHooks';
 
 const styles = {
     container: {
@@ -34,19 +38,17 @@ const FlowMapView = ({
     color,
     colorScheme,
 }) => {
-    const ref = useRef(null);
-    const [width, setWidth] = useState(0);
+    const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
     const spec = useMemo(() => {
         if (advancedMode) {
             try {
-                const advancedSpec = JSON.parse(advancedModeSpec);
-                return {
-                    ...advancedSpec,
-                    width: width - VEGA_ACTIONS_WIDTH,
-                    height: width * 0.6,
-                };
+                return convertSpecTemplate(
+                    advancedModeSpec,
+                    width - VEGA_ACTIONS_WIDTH,
+                    width * 0.6,
+                );
             } catch (e) {
                 setError(e.message);
                 return null;
@@ -75,21 +77,6 @@ const FlowMapView = ({
         color,
         colorScheme,
     ]);
-
-    useEffect(() => {
-        if (!ref || !ref.current) {
-            return;
-        }
-
-        const resizeObserver = new ResizeObserver(() => {
-            try {
-                setWidth(ref.current.offsetWidth);
-                // eslint-disable-next-line no-empty
-            } catch (e) {}
-        });
-
-        resizeObserver.observe(ref.current);
-    }, [ref.current]);
 
     if (spec === null) {
         return <InvalidFormat format={field.format} value={error} />;

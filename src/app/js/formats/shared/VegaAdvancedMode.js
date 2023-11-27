@@ -123,13 +123,28 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                 </div>
             </div>
             <Box width="100%">
-                <a
-                    href="https://vega.github.io/editor/#/edited"
-                    target="_blank"
-                    rel="nofollow noopener noreferrer"
-                >
-                    {p.t('vega_validator')}
-                </a>
+                <div>
+                    <a
+                        href="https://vega.github.io/editor/#/edited"
+                        target="_blank"
+                        rel="nofollow noopener noreferrer"
+                    >
+                        {p.t('vega_validator')}
+                    </a>
+                    <p>
+                        {p.t('vega_variable_list')}
+                        <div>
+                            <i>
+                                <code>
+                                    {'{|__LODEX_WIDTH__|}'} (
+                                    {p.t('vega_variable_width')}),{' '}
+                                    {'{|__LODEX_HEIGHT__|}'} (
+                                    {p.t('vega_variable_height')})
+                                </code>
+                            </i>
+                        </div>
+                    </p>
+                </div>
                 <FormSourceCodeField
                     style={{
                         width: '100%',

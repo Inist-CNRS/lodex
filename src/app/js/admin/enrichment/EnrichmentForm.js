@@ -147,6 +147,26 @@ export const renderStatus = (status, polyglot) => {
     );
 };
 
+export const renderRunButton = (
+    handleLaunchEnrichment,
+    enrichmentStatus,
+    polyglot,
+    variant,
+) => (
+    <Button
+        color="primary"
+        variant={variant || 'contained'}
+        sx={{ height: '100%' }}
+        startIcon={<PlayArrowIcon />}
+        onClick={handleLaunchEnrichment}
+        disabled={
+            enrichmentStatus === IN_PROGRESS || enrichmentStatus === PENDING
+        }
+    >
+        {polyglot.t('run')}
+    </Button>
+);
+
 // COMPONENT PART
 export const EnrichmentForm = ({
     datasetFields,
@@ -349,21 +369,12 @@ export const EnrichmentForm = ({
                             component={renderTextField}
                             label={polyglot.t('fieldName')}
                         />
-                        {isEditMode && (
-                            <Button
-                                color="primary"
-                                variant="contained"
-                                sx={{ height: '100%' }}
-                                startIcon={<PlayArrowIcon />}
-                                onClick={handleLaunchEnrichment}
-                                disabled={
-                                    enrichmentStatus === IN_PROGRESS ||
-                                    enrichmentStatus === PENDING
-                                }
-                            >
-                                {polyglot.t('run')}
-                            </Button>
-                        )}
+                        {isEditMode &&
+                            renderRunButton(
+                                handleLaunchEnrichment,
+                                enrichmentStatus,
+                                polyglot,
+                            )}
                     </Box>
                     {isEditMode && (
                         <Box
@@ -380,6 +391,7 @@ export const EnrichmentForm = ({
                                 variant="link"
                                 sx={{
                                     paddingRight: 0,
+                                    paddingLeft: 0,
                                     textDecoration: 'underline',
                                 }}
                                 onClick={() => setOpenEnrichmentLogs(true)}

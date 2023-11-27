@@ -1,8 +1,8 @@
 import { schemeBlues } from 'd3-scale-chromatic';
-import { VEGA_ACTIONS_WIDTH } from '../../vega-lite/component/vega-lite-component/VegaLiteComponent';
 import flowMapVG from './json/flow_map.vg.json';
 import deepClone from 'lodash.clonedeep';
 import BasicChartVG from './BasicChartVG';
+import { VEGA_ACTIONS_WIDTH } from '../../chartsUtils';
 
 class FlowMap extends BasicChartVG {
     /**

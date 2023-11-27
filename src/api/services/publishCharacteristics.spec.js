@@ -20,6 +20,9 @@ describe('publishCharacteristics', () => {
             publishedCharacteristic: {
                 addNewVersion: jest.fn(),
             },
+            precomputed: {
+                findAll: jest.fn(() => 'ctx.precomputed.findAll'),
+            },
         };
         getDocumentTransformer = jest.fn(() => transformDocument);
         datasetFields = [
@@ -39,6 +42,7 @@ describe('publishCharacteristics', () => {
         expect(getDocumentTransformer).toHaveBeenCalledWith(
             'ctx.dataset.findBy',
             datasetFields,
+            'ctx.precomputed.findAll',
         );
     });
 

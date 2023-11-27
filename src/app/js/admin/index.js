@@ -28,6 +28,7 @@ import { frFR, enUS } from '@mui/material/locale';
 import adminTheme from '../../custom/adminTheme';
 import LoginAdmin from './LoginAdmin';
 import { ConfigTenantRoute } from './ConfigTenantRoute';
+import '../../ace-webpack-loader';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],

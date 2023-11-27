@@ -298,7 +298,7 @@ const JobProgressComponent = props => {
                     if (!progress) {
                         return;
                     }
-                    jobsApi.cancelJob(progress.type);
+                    jobsApi.cancelJob(progress.type, progress.subLabel);
                     if (progress.type === 'publisher') {
                         handleCancelPublication();
                         setProgress();

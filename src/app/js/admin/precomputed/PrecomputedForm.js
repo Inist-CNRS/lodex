@@ -50,6 +50,7 @@ import {
 import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
+import getLocale from '../../../../common/getLocale';
 
 // UTILITARY PART
 const PRECOMPUTED_FORM = 'PRECOMPUTED_FORM';
@@ -71,7 +72,31 @@ const renderTextField = ({ input, label, meta: { touched, error } }) => {
     );
 };
 
-export const renderStatus = (status, polyglot) => {
+function getDisplayTimeStartedAt(startedAt) {
+    const now = new Date();
+    const startedAtDate = new Date(startedAt);
+    const diff = now - startedAtDate;
+
+    const diffInMinutes = Math.floor(diff / 60000);
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    const relativeTime = new Intl.RelativeTimeFormat(getLocale(), {
+        numeric: 'auto',
+    });
+    let timeSinceStarted = '';
+
+    if (diffInHours < 1) {
+        timeSinceStarted = relativeTime.format(-diffInMinutes, 'minute');
+    } else if (diffInDays < 1) {
+        timeSinceStarted = relativeTime.format(-diffInHours, 'hour');
+    } else {
+        timeSinceStarted = relativeTime.format(-diffInDays, 'day');
+    }
+    return timeSinceStarted;
+}
+
+export const renderStatus = (status, polyglot, startedAt = null) => {
     if (status === PENDING) {
         return (
             <Chip
@@ -85,7 +110,9 @@ export const renderStatus = (status, polyglot) => {
         return (
             <Chip
                 component="span"
-                label={polyglot.t('precomputed_status_running')}
+                label={`${polyglot.t(
+                    'precomputed_status_running',
+                )} (${getDisplayTimeStartedAt(startedAt)})`}
                 color="info"
             />
         );
@@ -223,7 +250,7 @@ export const PrecomputedForm = ({
     };
 
     const handleUpdatePrecomputed = async () => {
-        const precomputedDataToUpdate = {
+        const { data, ...precomputedDataToUpdate } = {
             ...initialValues,
             ...formValues,
         };
@@ -386,13 +413,18 @@ export const PrecomputedForm = ({
                             >
                                 <Typography>
                                     {polyglot.t('precomputed_status')} : &nbsp;
-                                    {renderStatus(precomputedStatus, polyglot)}
+                                    {renderStatus(
+                                        precomputedStatus,
+                                        polyglot,
+                                        initialValues?.startedAt,
+                                    )}
                                 </Typography>
                                 <Box>
                                     <Button
                                         variant="link"
                                         sx={{
                                             paddingRight: 0,
+                                            paddingLeft: 0,
                                             textDecoration: 'underline',
                                         }}
                                         onClick={() =>
@@ -414,7 +446,9 @@ export const PrecomputedForm = ({
                                                 <Button
                                                     variant="link"
                                                     sx={{
+                                                        marginLeft: 2,
                                                         paddingRight: 0,
+                                                        paddingLeft: 0,
                                                         textDecoration:
                                                             'underline',
                                                     }}

@@ -4,6 +4,14 @@ import translate from 'redux-polyglot/translate';
 
 import InvalidFormat from './InvalidFormat';
 
+export const isPrecomputed = field =>
+    !!field?.transformers?.find(t => t.operation === 'PRECOMPUTED');
+
+export const getPrecomputedRoutineValue = field =>
+    field.transformers
+        .find(t => t.operation === 'PRECOMPUTED')
+        .args?.find(a => a.name === 'routine')?.value;
+
 export default (predicate, Component, format, type) => {
     const CheckedComponent = ({
         meta,
@@ -16,6 +24,8 @@ export default (predicate, Component, format, type) => {
         const value =
             type === 'edition'
                 ? get(meta, 'initial')
+                : isPrecomputed(field)
+                ? getPrecomputedRoutineValue(field)
                 : get(resource, field.name);
 
         if (typeof value === 'undefined') {
