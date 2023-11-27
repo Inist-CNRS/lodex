@@ -18,7 +18,8 @@ export const getJobLogs = async (ctx, id) => {
 };
 
 export const postCancelJob = async (ctx, type) => {
-    cancelJob(ctx, type);
+    const { subLabel } = ctx.request.body;
+    cancelJob(ctx, type, subLabel);
     ctx.status = 200;
 };
 
@@ -31,8 +32,8 @@ export const postClearJobs = async ctx => {
 const app = new Koa();
 app.use(setup);
 app.use(route.get('/:id/logs', getJobLogs));
+app.use(koaBodyParser());
 app.use(route.post('/:type/cancel', postCancelJob));
 app.use(route.post('/clear', postClearJobs));
-app.use(koaBodyParser());
 
 export default app;

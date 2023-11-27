@@ -1,6 +1,8 @@
 import { cleanWaitingJobsOfType, workerQueues } from '.';
+import { ERROR } from '../../common/progressStatus';
 import getLogger from '../services/logger';
 import progress from '../services/progress';
+import { notifyListeners } from './import';
 
 export const jobLogger = {
     info: (job, message) => {
@@ -35,6 +37,15 @@ export const getActiveJobs = async tenant => {
     return activeJobs;
 };
 
+export const getcompletedJobs = async tenant => {
+    const completedJobs = (await workerQueues[tenant]?.getCompleted()) || null;
+
+    if (completedJobs.length === 0) {
+        return undefined;
+    }
+    return completedJobs;
+};
+
 export const getWaitingJobs = async tenant => {
     const waitingJobs = await workerQueues[tenant].getWaiting();
 
@@ -44,14 +55,32 @@ export const getWaitingJobs = async tenant => {
     return waitingJobs;
 };
 
-export const cancelJob = async (ctx, jobType) => {
+export const cancelJob = async (ctx, jobType, subLabel = null) => {
     const activeJob = await getActiveJob(ctx.tenant);
     if (activeJob?.data?.jobType === jobType) {
         if (jobType === 'publisher') {
             await cleanWaitingJobsOfType(ctx.tenant, activeJob.data.jobType);
         }
+
         activeJob.moveToFailed(new Error('cancelled'), true);
         progress.finish(ctx.tenant);
+        return;
+    }
+
+    if (subLabel) {
+        const completedJobs = await getcompletedJobs(ctx.tenant);
+        const jobToFail = completedJobs?.find(
+            job => job.data.subLabel === subLabel,
+        );
+        // get precomputed job
+        const precomputedID = jobToFail?.data?.id;
+        await ctx.precomputed.updateStatus(precomputedID, ERROR);
+        progress.finish(ctx.tenant);
+        notifyListeners(`${jobToFail.data.tenant}-precomputer`, {
+            isPrecomputing: false,
+            success: false,
+        });
+        return;
     }
 };
 

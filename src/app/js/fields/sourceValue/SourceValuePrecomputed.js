@@ -21,7 +21,7 @@ const SourceValuePrecomputed = ({
         setAutocompleteValue(value);
     }, [value]);
     const [openRoutineCatalog, setOpenRoutineCatalog] = React.useState(false);
-    const [valueInput, setValueInput] = React.useState(routine);
+    const [valueInput, setValueInput] = React.useState(routine || '');
 
     const handleChangePrecomputed = (event, value) => {
         setAutocompleteValue(value);
@@ -107,8 +107,8 @@ const SourceValuePrecomputed = ({
                     isOpen={openRoutineCatalog}
                     handleClose={() => setOpenRoutineCatalog(false)}
                     onChange={handleChangeRoutine}
-                    currentValue={value}
-                />{' '}
+                    currentValue={routine}
+                />
             </Box>
         </Box>
     );

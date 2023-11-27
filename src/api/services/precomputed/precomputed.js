@@ -98,6 +98,13 @@ const processZippedData = async (precomputed, ctx) => {
         if (!(await ctx.job?.isActive())) {
             throw new CancelWorkerError('Job has been canceled');
         }
+
+        // Set 0 as 10. 100 as 45. Increment from indexDataset to dataSetSize
+        const progressValue = Math.floor(
+            ((indexDataset + 1) / dataSetSize) * 35 + 10,
+        );
+        progress.setProgress(ctx.tenant, progressValue);
+
         const entries = await ctx.dataset
             .find()
             .skip(indexDataset)
@@ -142,13 +149,16 @@ const processZippedData = async (precomputed, ctx) => {
 
     await pack.finalize();
 
-    const pipe = promisify(pipeline);
-    const fileName = `./webservice_temp/__entry_${
-        ctx.tenant
-    }_${Date.now().toString()}.tar.gz`;
-    await pipe(pack, createGzip(), fs.createWriteStream(fileName));
-
-    return fileName;
+    try {
+        const pipe = promisify(pipeline);
+        const fileName = `./webservice_temp/__entry_${
+            ctx.tenant
+        }_${Date.now().toString()}.tar.gz`;
+        await pipe(pack, createGzip(), fs.createWriteStream(fileName));
+        return fileName;
+    } catch (error) {
+        throw new Error(`Error while processing precomputed data`, error);
+    }
 };
 
 export const getTokenFromWebservice = async (
@@ -169,11 +179,14 @@ export const getTokenFromWebservice = async (
         compress: false,
     });
 
-    fs.unlink(fileName, error => {
-        if (error) {
-            throw error;
-        }
-    });
+    try {
+        fs.unlinkSync(fileName);
+    } catch (error) {
+        throw new Error(
+            `Error while unlink file - getTokenFromWebservice`,
+            error,
+        );
+    }
 
     if (response.status != 200) {
         throw new Error(
@@ -226,11 +239,11 @@ const extractResultFromZip = async (tenant, job, room, data) => {
         tarFS.extract(folderName),
     );
 
-    fs.unlink(fileName, error => {
-        if (error) {
-            throw error;
-        }
-    });
+    try {
+        fs.unlinkSync(fileName);
+    } catch (error) {
+        throw new Error(`Error while unlink file - extract result`, error);
+    }
 
     logData = JSON.stringify({
         level: 'ok',
@@ -265,11 +278,11 @@ const extractResultFromZip = async (tenant, job, room, data) => {
         const json = await fs.promises.readFile(JsonName, { encoding: 'utf8' });
         result.push(JSON.parse(json));
 
-        fs.unlink(JsonName, error => {
-            if (error) {
-                throw error;
-            }
-        });
+        try {
+            fs.unlinkSync(JsonName);
+        } catch (error) {
+            throw new Error(`Error while unlink file - extract result`, error);
+        }
     }
 
     logData = JSON.stringify({
@@ -281,23 +294,13 @@ const extractResultFromZip = async (tenant, job, room, data) => {
     jobLogger.info(job, logData);
     notifyListeners(room, logData);
 
-    fs.unlink(`${folderName}/manifest.json`, error => {
-        if (error) {
-            throw error;
-        }
-    });
-
-    fs.rmdir(`${folderName}/data`, error => {
-        if (error) {
-            throw error;
-        }
-    });
-
-    fs.rmdir(folderName, error => {
-        if (error) {
-            throw error;
-        }
-    });
+    try {
+        fs.unlinkSync(`${folderName}/manifest.json`);
+        fs.rmdirSync(`${folderName}/data`);
+        fs.rmdirSync(folderName);
+    } catch (error) {
+        throw new Error(`Error while clear folder data`, error);
+    }
 
     return result;
 };
@@ -381,6 +384,7 @@ export const getComputedFromWebservice = async (
             await ctx.precomputed.updateStatus(precomputedId, FINISHED, {
                 data,
             });
+            await ctx.precomputed.updateStartedAt(precomputedId, null);
 
             job.progress(100);
             const isFailed = await job.isFailed();
@@ -447,6 +451,7 @@ export const getFailureFromWebservice = async (
     await ctx.precomputed.updateStatus(precomputedId, ERROR, {
         message: errorMessage,
     });
+    await ctx.precomputed.updateStartedAt(precomputedId, null);
 
     job.progress(100);
     progress.finish(tenant);
@@ -467,9 +472,10 @@ export const getFailureFromWebservice = async (
 export const processPrecomputed = async (precomputed, ctx) => {
     let logData = {};
     await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS);
+    await ctx.precomputed.updateStartedAt(precomputed._id, new Date());
 
     const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
-
+    progress.setProgress(ctx.tenant, 10);
     logData = JSON.stringify({
         level: 'ok',
         message: `[Instance: ${ctx.tenant}] Building entry data`,
@@ -485,7 +491,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
-    progress.incrementProgress(ctx.tenant, 20);
+    progress.setProgress(ctx.tenant, 45);
 
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
@@ -516,7 +522,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-    progress.incrementProgress(ctx.tenant, 50);
+    progress.setProgress(ctx.tenant, 50);
 
     logData = JSON.stringify({
         level: 'ok',
@@ -568,6 +574,7 @@ export const setPrecomputedError = async (ctx, err) => {
             message: err?.message,
         },
     );
+    await ctx.precomputed.updateStartedAt(id, null);
 
     const room = `precomputed-job-${ctx.job.id}`;
     const logData = JSON.stringify({
