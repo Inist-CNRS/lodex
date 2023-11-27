@@ -3,9 +3,9 @@
 "Sign in"	"Sign in"	"Connexion"
 "parsing"	"Imported"	"Importé"
 "parsing_summary_lines"	"%{smart_count} line loaded |||| %{smart_count} lines loaded"	"%{smart_count} ligne chargée |||| %{smart_count} lignes chargées"
-"parsing_summary_columns"	"%{smart_count} column loaded |||| %{smart_count} columns loaded"	"%{smart_count} colonne chargée |||| %{smart_count} colonnes chargées"
+parsing_summary_columns	"%{smart_count} column loaded |||| %{smart_count} columns loaded"	"%{smart_count} colonne chargée |||| %{smart_count} colonnes chargées"
 "parsing_enriched_columns"	"%{smart_count} column enriched |||| %{smart_count} columns enriched"	"%{smart_count} colonne enrichie |||| %{smart_count} colonnes enrichies"
-"publication_summary_fields"	"%{smart_count} field added |||| %{smart_count} fields added"	"%{smart_count} champ ajouté |||| %{smart_count} champs ajoutés"
+"publication_summary_fields"	%{smart_count} field added |||| %{smart_count} fields added	"%{smart_count} champ ajouté |||| %{smart_count} champs ajoutés"
 "total lines"	"total lines"	"nombre total des lignes"
 "successfully parsed"	"successfully parsed"	"analyse réussie"
 "with errors"	"with errors"	"avec erreurs"
@@ -1011,3 +1011,6 @@ vega_json_error	The json syntax of Vega Lite specification is wrong!	La syntaxe 
 vega_variable_list	You can use these variables to set the size dynamically:	Vous pouvez utiliser ces variables pour définir la taille de manière dynamique :
 vega_variable_width	Replace with the width of the chart container	Remplacée par la largeur du conteneur du graphique
 vega_variable_height	Replace with the height of the chart container	Remplacée par la hauteur du conteneur du graphique
+"formatJsonDebug"	"Other - Json and Debug Format"	"Autre - Format Json et Débugage"
+"formatJsonDebugDescription"	"This format allow to display simple json value or debug values as json"	"Ce format permet d'afficher des valeurs json simples ou des valeurs de débogage sous forme de json."
+"debugMode"	"Enable debugging"	"Activé le débogage"
