@@ -5,12 +5,11 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import stylesToClassname from '../../../lib/stylesToClassName';
-import customTheme from '../../../../custom/customTheme';
 
 const styles = stylesToClassname(
     {
         icon: {
-            color: customTheme.palette.primary.main,
+            color: 'var(--primary-main)',
         },
     },
     'searchbar-facets-toggler',

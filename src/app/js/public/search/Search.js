@@ -27,7 +27,6 @@ import FacetList from '../facet/FacetList';
 import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
 import SearchSearchBar from './SearchSearchBar';
-import customTheme from '../../../custom/customTheme';
 import SearchResultHeader from './SearchResultHeader';
 
 const styles = stylesToClassname(
@@ -46,7 +45,7 @@ const styles = stylesToClassname(
             flexDirection: 'column',
         },
         content: {
-            backgroundColor: customTheme.palette.neutralDark.veryLight,
+            backgroundColor: 'var(--neutral-dark-very-light)',
             '@media (min-width: 992px)': {
                 display: 'flex',
             },

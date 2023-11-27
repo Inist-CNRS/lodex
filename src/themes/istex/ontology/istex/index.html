@@ -1,0 +1,1198 @@
+<html>
+   <head>
+      <link rel="stylesheet" href="doremus.css">
+   </head>
+   <body>
+      <section class="cover">
+         <div class="inside">
+            <div class="description">
+               <h1>Ontologie ISTEX</h1>
+               <p>Ontologie du projet ISTEX.</p>
+              <p>Cette ontologie définit 14 Classes, 11 Object Properties et 13 Data Properties.</p><a class="btn" href="https://github.com/istex/ontology/blob/master/istexXML.owl"><span>Disponible sur GitHub</span></a>
+            </div>
+      </section>
+      <h1 style="padding-bottom:10px">Sommaire</h1>
+      <section class="summary" style="padding-bottom:10px">
+         <h2>Ontologies importées</h2>
+         <ul>
+            <li><a href="#bibo"><span>BIBO</span></a></li>
+            <li><a href="#skos"><span>SKOS</span></a></li>
+            <li><a href="#dcat"><span>DCAT</span></a></li>
+            <li><a href="#dcterms"><span>DCTERMS</span></a></li>
+            <li><a href="#prov"><span>PROV</span></a></li>
+            <li><a href="#schema"><span>SCHEMA</span></a></li>
+            <li><a href="#foaf"><span>FOAF</span></a></li>
+            <li><a href="#lom"><span>IEEE LOM</span></a></li>
+            <li><a href="#geonames"><span>GEONAMES</span></a></li>
+         </ul>
+         <h2>Classes</h2>
+         <ul>
+            <li><a href="#ContentTypeConcept"><span>ContentTypeConcept</span></a></li>
+            <li><a href="#EnrichmentProcessConcept"><span>EnrichmentProcessConcept</span></a></li>
+            <li><a href="#GeographicConcept"><span>GeographicConcept</span></a></li>
+            <li><a href="#InistConcept"><span>InistConcept</span></a></li>
+            <li><a href="#NamedEntityConcept"><span>NamedEntityConcept</span></a></li>
+            <li><a href="#OrganizationConcept"><span>OrganizationConcept</span></a></li>
+            <li><a href="#PlaceConcept"><span>PlaceConcept</span></a></li>
+            <li><a href="#PublicationTypeConcept"><span>PublicationTypeConcept</span></a></li>
+            <li><a href="#PublisherConcept"><span>PublisherConcept</span></a></li>
+            <li><a href="#ScienceMetrixConcept"><span>ScienceMetrixConcept</span></a></li>
+            <li><a href="#ScientificDomain"><span>ScientificDomain</span></a></li>
+            <li><a href="#ScopusConcept"><span>ScopusConcept</span></a></li>
+            <li><a href="#Vocabulary"><span>Vocabulary</span></a></li>
+            <li><a href="#WosConcept"><span>WosConcept</span></a></li>
+         </ul>
+         <h2>Object Properties</h2>
+         <ul>
+            <li><a href="#contentType"><span>contentType</span></a></li>
+            <li><a href="#enrichmentProcess"><span>enrichmentProcess</span></a></li>
+            <li><a href="#extractedEntity"><span>extractedEntity</span></a></li>
+            <li><a href="#extractedGeog"><span>extractedGeog</span></a></li>
+            <li><a href="#extractedOrganization"><span>extractedOrganization</span></a></li>
+            <li><a href="#extractedPlace"><span>extractedPlace</span></a></li>
+            <li><a href="#publicationType"><span>publicationType</span></a></li>
+            <li><a href="#subjectInist"><span>subjectInist</span></a></li>
+            <li><a href="#subjectScienceMetrix"><span>subjectScienceMetrix</span></a></li>
+            <li><a href="#subjectWos"><span>subjectWos</span></a></li>
+            <li><a href="#subjectScopus"><span>subjectScopus</span></a></li>
+         </ul>
+         <h2>Data Properties</h2>
+         <ul>
+            <li><a href="#accessURL"><span>accessURL</span></a></li>
+            <li><a href="#addresseeWork"><span>addresseeWork</span></a></li>
+            <li><a href="#affiliation"><span>affiliation</span></a></li>
+            <li><a href="#analysisType"><span>analysisType</span></a></li>
+            <li><a href="#constraint"><span>constraint</span></a></li>
+            <li><a href="#eISBN"><span>eISBN</span></a></li>
+            <li><a href="#enrichmentType"><span>enrichmentType</span></a></li>
+            <li><a href="#identityProvider"><span>identityProvider</span></a></li>
+            <li><a href="#idIstex"><span>idIstex</span></a></li>
+            <li><a href="#publicationTitle"><span>publicationTitle</span></a></li>
+            <li><a href="#quantityOfItems"><span>quantityOfItems</span></a></li>
+            <li><a href="#query"><span>query</span></a></li>
+            <li><a href="#tool"><span>tool</span></a></li>
+         </ul>
+      </section>
+     <p style="text-align:center"><img src="https://docs.google.com/drawings/d/e/2PACX-1vRduIKz3kT4Ax2RTnFpp88nCEFzlNhyzpsdXMyLTL5-bVTzaTCWUrqbAA1LWMAzGCMwWFqxaecsEnzo/pub?w=960&h=720"></p>
+      <h2>Ontologies importées</h2>
+      <section class="ontologyImports card">
+         <ul class="list">
+            <li>
+               <h3 id="bibo"><a href="http://purl.org/ontology/bibo/">BIBO</a><small><i><a href="http://purl.org/ontology/bibo/">http://purl.org/ontology/bibo/</a></i></small></h3>
+               <div><span>fournit les principaux concepts et propriétés pour décrire des références bibliographiques
+                     (livres, articles, etc.)</span></div>
+            </li>
+            <li>
+               <h3 id="skos"><a href="http://www.w3.org/2004/02/skos/core">SKOS</a><small><i><a href="http://www.w3.org/2004/02/skos/core">http://www.w3.org/2004/02/skos/core</a></i></small></h3>
+               <div><span>est un modèle de données commun pour le partage et la liaison de systèmes d'organisation</span></div>
+            </li>
+            <li>
+               <h3 id="dcat"><a href="http://www.w3.org/ns/dcat">DCAT</a><small><i><a href="http://www.w3.org/ns/dcat">http://www.w3.org/ns/dcat</a></i></small></h3>
+               <div><span>conçu pour faciliter l'interopérabilité entre les catalogues de données publiés sur
+                     le Web</span></div>
+            </li>
+            <li>
+               <h3 id="dcterms"><a href="http://purl.org/dc/terms/">DCTERMS</a><small><i><a href="http://purl.org/dc/terms/">http://purl.org/dc/terms/</a></i></small></h3>
+               <div><span>ensemble de termes de vocabulaire utilisés pour décrire des ressources à des fins
+                     de découverte</span></div>
+            </li>
+            <li>
+               <h3 id="prov"><a href="http://www.w3.org/ns/prov">PROV</a><small><i><a href="http://www.w3.org/ns/prov">http://www.w3.org/ns/prov</a></i></small></h3>
+               <div><span>décrit les informations de provenance sur le web</span></div>
+            </li>
+            <li>
+               <h3 id="schema"><a href="http://schema.org">SCHEMA</a><small><i><a href="http://schema.org">http://schema.org</a></i></small></h3>
+               <div><span>a pour mission de créer, maintenir et promouvoir des schémas pour des données structurées
+                     sur le Web</span></div>
+            </li>
+            <li>
+               <h3 id="foaf"><a href="http://xmlns.com/foaf/0.1/">FOAF</a><small><i><a href="http://xmlns.com/foaf/0.1/">http://xmlns.com/foaf/0.1/</a></i></small></h3>
+               <div><span>décrit des personnes et les relations qu'elles entretiennent entre elles</span></div>
+            </li>
+            <li>
+               <h3 id="lom"><a href="http://www.lom-fr.fr/ontologies/lomfr-1/">IEEE LOM</a><small><i><a href="http://www.lom-fr.fr/ontologies/lomfr-1/">http://data.opendiscoveryspace.eu/lom_ontology_ods.owl</a></i></small></h3>
+               <div><span>décrit des ressources pédagogiques</span></div>
+            </li>
+            <li>
+               <h3 id="geonames"><a href="http://www.geonames.org/ontology/documentation.html">GEONAMES</a><small><i><a href="http://www.geonames.org/ontology/documentation.html">http://www.geonames.org/ontology/documentation.html</a></i></small></h3>
+               <div><span>ajoute des informations sémantiques géospatiales au W3C</span></div>
+            </li>
+         </ul>
+      </section>
+      <h2>Classes</h2>
+      <section class="classes card">
+         <ul class="list">
+            <li>
+               <h3 id="ContentTypeConcept"><span>ContentTypeConcept</span><a href="#ContentTypeConcept"><small>https://data.istex.fr/ontology/istex#ContentTypeConcept</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Content Type Concept</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Concept de type de contenu</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit la structure conceptuelle des types de contenus représentés dans les documents
+                           ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describes the conceptual structure of the types of content represented in ISTEX documents<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="EnrichmentProcessConcept"><span>EnrichmentProcessConcept</span><a href="#EnrichmentProcessConcept"><small>https://data.istex.fr/ontology/istex#EnrichmentProcessConcept</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Enrichment Process Concept</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Concept de processus d'enrichissement</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit la structure conceptuelle des processus d'enrichissements des documents ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describe the conceptual structure of enrichment processes of ISTEX documents<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="GeographicConcept"><span>GeographicConcept</span><a href="#GeographicConcept"><small>https://data.istex.fr/ontology/istex#GeographicConcept</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Geographic Concept</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Concept géographique</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit la structure conceptuelle des entités nommées de nature géographique référencées
+                           dans les documents ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describe the conceptual structure of the geographical entities referenced in the ISTEX
+                           documents<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="InistConcept"><span>InistConcept</span><a href="#InistConcept"><small>https://data.istex.fr/ontology/istex#InistConcept</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Inist Concept</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Concept Inist</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit la structure conceptuelle des codes de classement Inist (Bases de données Pascal
+                           et Francis)<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describes the conceptual structure of Inist classification codes (database Pascal
+                           and Francis)<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="NamedEntityConcept"><span>NamedEntityConcept</span><a href="#NamedEntityConcept"><small>https://data.istex.fr/ontology/istex#NamedEntityConcept</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Named Entity Concept</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Concept d'entité nommée</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit la structure conceptuelle des entités nommées en général répertoriées dans
+                           les documents ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describes the conceptual structure of named entities usually listed in ISTEX documents<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="OrganizationConcept"><span>OrganizationConcept</span><a href="#OrganizationConcept"><small>https://data.istex.fr/ontology/istex#OrganizationConcept</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Organization Concept</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Concept d'organisation</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit la structure conceptuelle des types d'organisations<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describe the conceptual structure of types of organizations<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="PlaceConcept"><span>PlaceConcept</span><a href="#PlaceConcept"><small>https://data.istex.fr/ontology/istex#PlaceConcept</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Place Concept</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Concept de lieu</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit la structure conceptuelle des entités nommées de type lieux référencées dans
+                           les documents ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describes the conceptual structure of place-named entities referenced in ISTEX documents<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="PublicationTypeConcept"><span>PublicationTypeConcept</span><a href="#PublicationTypeConcept"><small>https://data.istex.fr/ontology/istex#PublicationTypeConcept</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Publication Type Concept</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Concept type de publication</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit la structure conceptuelle des types de publication représentés dans les documents
+                           ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describes the conceptual structure of the publication types represented in the ISTEX
+                           documents<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="PublisherConcept"><span>PublisherConcept</span><a href="#PublisherConcept"><small>https://data.istex.fr/ontology/istex#PublisherConcept</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Publisher Concept</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Concept Editeur</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit la structure conceptuelle des éditeurs (publishers) en lien avec les documents
+                           ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describes the publishers' conceptual structure in relation to ISTEX documents<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="ScienceMetrixConcept"><span>ScienceMetrixConcept</span><a href="#ScienceMetrixConcept"><small>https://data.istex.fr/ontology/istex#ScienceMetrixConcept</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Science Metrix Concept</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Concept Science Metrix</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit la structure conceptuelle des catégories Science Metrix<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describes the conceptual structure of the Science Metrix categories<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="ScientificDomain"><span>ScientificDomain</span><a href="#ScientificDomain"><small>https://data.istex.fr/ontology/istex#ScientificDomain</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Scientific Domain</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Domaine scientifique</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit les domaines scientifiques présents sur le site licence nationale.<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describes the scientific fields present on the national license site.<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="ScopusConcept"><span>ScopusConcept</span><a href="#ScopusConcept"><small>https://data.istex.fr/ontology/istex#ScopusConcept</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Scopus Concept</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Concept Scopus</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit la structure conceptuelle des catégories Scopus<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describes the conceptual structure of the Scopus categories<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="Vocabulary"><span>Vocabulary</span><a href="#Vocabulary"><small>https://data.istex.fr/ontology/istex#Vocabulary</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Vocabulary</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Vocabulaire</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit les vocabulaires utilisés dans l'ontologie ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describes ISTEX' vocabularies<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://rdfs.org/ns/void#Dataset">void:Dataset</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://purl.org/vocab/frbr/core#Work">frbr:Work</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="WosConcept"><span>WosConcept</span><a href="#WosConcept"><small>https://data.istex.fr/ontology/istex#WosConcept</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Web Of Science Concept</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Concept Web Of Science</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit la structure conceptuelle des catégories Web of Science<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describes the conceptual structure of the Web of Science categories<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:subClassOf</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+         </ul>
+      </section>
+      <h2>Object Properties</h2>
+      <section class="properties card">
+         <ul class="list">
+            <li>
+               <h3 id="contentType"><span>contentType</span><a href="#contentType"><small>https://data.istex.fr/ontology/istex#contentType</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>content type</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>type de contenu</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Type de contenus répertoriés dans les documents ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Type of content listed in ISTEX documents<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#ContentTypeConcept">istex:ContentTypeConcept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="enrichmentProcess"><span>enrichmentProcess</span><a href="#enrichmentProcess"><small>https://data.istex.fr/ontology/istex#enrichmentProcess</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Enrichment process</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Processus d'enrichissement</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Processus de fabrication des enrichissements<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Process of making enrichments<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#EnrichmentProcessConcept">istex:EnrichmentProcessConcept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="extractedEntity"><span>extractedEntity</span><a href="#extractedEntity"><small>https://data.istex.fr/ontology/istex#extractedEntity</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Extracted entity</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Entité nommée extraite</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Entité nommée extraite du plein texte des document ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Named entity extracted from full text of ISTEX documents<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2004/02/skos/core#Concept">skos:Concept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="extractedGeog"><span>extractedGeog</span><a href="#extractedGeog"><small>https://data.istex.fr/ontology/istex#extractedGeog</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>extracted geographic entity</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Entité nommée geographique extraite</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Entité géographique physique extraite du plein texte des documents ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Physical geographic entity extracted from the full text of ISTEX documents<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#GeographicConcept">istex:GeographicConcept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="extractedOrganization"><span>extractedOrganization</span><a href="#extractedOrganization"><small>https://data.istex.fr/ontology/istex#extractedOrganization</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>extracted organization entity</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Entité nommée d' organisation extraite</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Entité organisationnelle extraite du plein texte des documents ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Additional organizational entity of the full text of ISTEX documents<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#OrganizationConcept">istex:OrganizationConcept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="extractedPlace"><span>extractedPlace</span><a href="#extractedPlace"><small>https://data.istex.fr/ontology/istex#extractedPlace</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>extracted place entity</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Entité nommée de lieu extraite</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Entité géographique administrative extraite du plein texte des documents ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Geographic administrative entity extracted from the full text of ISTEX documents<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#PlaceConcept">istex:PlaceConcept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="publicationType"><span>publicationType</span><a href="#publicationType"><small>https://data.istex.fr/ontology/istex#publicationType</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>publication type</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>type de publication</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Type de publication catégorisé dans les documents ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Categorized publication type in ISTEX documents<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#PublicationTypeConcept">istex:PublicationTypeConcept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="subjectInist"><span>subjectInist</span><a href="#subjectInist"><small>https://data.istex.fr/ontology/istex#subjectInist</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Inist category</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>catégorie Inist</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indique la ou les catégorie(s) Inist du document<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indicates the category(es) inist of the document<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#InistConcept">istex:InistConcept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="subjectScienceMetrix"><span>subjectScienceMetrix</span><a href="#subjectScienceMetrix"><small>https://data.istex.fr/ontology/istex#subjectScienceMetrix</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Science Metrix category</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>catégorie Science Metrix</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indique la ou les catégorie(s) Science Metrix du document<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indicates the Science Metrix category(es) of the document<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#ScienceMetrixConcept">istex:ScienceMetrixConcept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="subjectWos"><span>subjectWos</span><a href="#subjectWos"><small>https://data.istex.fr/ontology/istex#subjectWos</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Web of Science category</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>catégorie Web of Science</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indique la ou les catégorie(s) Web of Science du document<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indicates the category(es) Web of Science of the document<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#WosConcept">istex:WosConcept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="subjectScopus"><span>subjectScopus</span><a href="#subjectScopus"><small>https://data.istex.fr/ontology/istex#subjectScopus</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Scopus category</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>catégorie Scopus</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indique la ou les catégorie(s) Scopus du document<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indicates the Scopus category(es) of the document<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#ScopusConcept">istex:ScopusConcept</a></span></div>
+                  </li>
+               </ul>
+            </li>
+         </ul>
+      </section>
+      <h2>Data Properties</h2>
+      <section class="properties card">
+         <ul class="list">
+            <li>
+               <h3 id="accessURL"><span>accessURL</span><a href="#accessURL"><small>https://data.istex.fr/ontology/istex#accessURL</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>access URL</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>access URL</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Lien direct vers le document en format PDF<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Direct link to the document in PDF format<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2001/XMLSchema#anyURI">xsd:anyURI</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+              <h3 id="addresseeWork"><span>addressee Work</span><a href="#addresseeWork"><small>https://data.istex.fr/ontology/istex#addresseeWork</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>addressee Work</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Organisme pour lequel est constitué le corpus<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Organization for which the corpus is made up<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://xmlns.com/foaf/0.1/Agent">foaf:agent</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2000/01/rdf-schema#Literal">rdfs:Literal</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="affiliation"><span>affiliation</span><a href="#affiliation"><small>https://data.istex.fr/ontology/istex#affiliation</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>affiliation</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>affiliation</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Décrit une affiliation d'un ou de plusieurs auteurs (physique ou moral) du document.<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Describes one or more authors (physical or moral) of the document.<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://xmlns.com/foaf/0.1/Agent">foaf:agent</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2000/01/rdf-schema#Literal">rdfs:Literal</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="analysisType"><span>analysisType</span><a href="#analysisType"><small>https://data.istex.fr/ontology/istex#analysisType</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>analysis type</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>type d'analyse</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Type d’analyse réalisée sur le corpus par le destinataire<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Type of analysis performed on the corpus by the recipient<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/ns/prov#Activity">prov:Activity</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2000/01/rdf-schema#Literal">rdfs:Literal</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="constraint"><span>constraint</span><a href="#constraint"><small>https://data.istex.fr/ontology/istex#constraint</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>constraint</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>contrainte</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Les contraintes d'utilisation du processus d'enrichissement<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>The constraints of using the enrichment process<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#EnrichmentProcessConcept">istex:EnrichmentProcessConcept</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2000/01/rdf-schema#Literal">rdfs:Literal</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="eISBN"><span>eISBN</span><a href="#eISBN"><small>https://data.istex.fr/ontology/istex#eISBN</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>eISBN</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>eISBN</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Identifiant électronique ISBN de l'objet documentaire.<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>The eISBN (electronic identifier) of the document.<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2000/01/rdf-schema#Literal">rdfs:Literal</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="enrichmentType"><span>enrichmentType</span><a href="#enrichmentType"><small>https://data.istex.fr/ontology/istex#enrichmentType</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>enrichment type</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>type d'enrichissement</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indique le type d'enrichissement créé.<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indicates the type of enrichment created.<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#EnrichmentProcessConcept">istex:EnrichmentProcessConcept</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2000/01/rdf-schema#Literal">rdfs:Literal</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="identityProvider"><span>identityProvider</span><a href="#identityProvider"><small>https://data.istex.fr/ontology/istex#identityProvider</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>identity provider</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>fournisseur d'identité</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indique le nom du fournisseur d'identité pour le vocabulaire "organization-list"<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Specifies the name of the identity provider for the "organization-list" vocabulary<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#Vocabulary">istex:Vocabulary</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2000/01/rdf-schema#Literal">rdfs:Literal</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="idIstex"><span>idIstex</span><a href="#idIstex"><small>https://data.istex.fr/ontology/istex#idIstex</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Istex ident</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>Identifiant Istex</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Identifiant Istex de l'objet documentaire.<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Istex identifier of the document object.<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2001/XMLSchema#anyURI">xsd:anyURI</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="publicationTitle"><span>publicationTitle</span><a href="#publicationTitle"><small>https://data.istex.fr/ontology/istex#publicationTitle</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>publication title</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>titre de la publication</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indique le titre du périodique hébergeant le document<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indicate the title of the periodical hosted the document<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://purl.org/ontology/bibo/Document">bibo:Document</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2000/01/rdf-schema#Literal">rdfs:Literal</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="quantityOfItems"><span>quantityOfItems</span><a href="#quantityOfItems"><small>https://data.istex.fr/ontology/istex#quantityOfItems</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>nombre de titres</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>number of titles</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indique le nombre de titres bibliographiques par corpus ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indicates the number of bibliographic titles per ISTEX corpus<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/ns/dcat#Dataset">dcat:Dataset</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2000/01/rdf-schema#Literal">rdfs:Literal</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="query"><span>query</span><a href="#query"><small>https://data.istex.fr/ontology/istex#query</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>query</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>requête</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indique la requête (API) à réaliser pour accéder aux documents indexés par le concept
+                           décrit. Cette API permet de récupérer les documents et le nombre de documents. Préfixer
+                           la requête avec "https://api.istex.fr/document/?q="" pour activer l'API.<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indicates the request (API) to make to access the documents indexed by the described
+                           concept. This API allows you to retrieve the documents and the number of documents.
+                           Prefix the query with "https: //api.istex.fr/document/?q=" to enable the API.<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#Vocabulary">istex:Vocabulary</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2000/01/rdf-schema#Literal">rdfs:Literal</a></span></div>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <h3 id="tool"><span>tool</span><a href="#tool"><small>https://data.istex.fr/ontology/istex#tool</small></a></h3>
+               <ul class="features">
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>software tool</span><small>@en</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:label</small></div>
+                     <div class="obj"><span>outil logiciel</span><small>@fr</small></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Indique le nom de l'outil utilisé dans les processus d'enrichissement d'ISTEX<small>@fr</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:comment</small></div>
+                     <div class="obj"><span>Specifies the name of the tool used in ISTEX enrichment processes<small>@en</small></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:domain</small></div>
+                     <div class="obj"><span><a href="https://data.istex.fr/ontology/istex#Vocabulary">istex:Vocabulary</a></span></div>
+                  </li>
+                  <li>
+                     <div class="prop"><small>rdfs:range</small></div>
+                     <div class="obj"><span><a href="http://www.w3.org/2000/01/rdf-schema#Literal">rdfs:Literal</a></span></div>
+                  </li>
+               </ul>
+            </li>
+         </ul>
+      </section>
+   </body>
+</html>

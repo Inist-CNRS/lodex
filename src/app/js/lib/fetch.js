@@ -18,6 +18,10 @@ export default ({ url, ...config }, mode = 'json') => {
             config.headers['X-Lodex-Tenant'] = tenant;
         }
     }
+    // when fetch is use to call external API, like api.istex.fr
+    if (url.startsWith('http') && fullUrl.indexOf(getHost()) == -1) {
+        delete config.headers['X-Lodex-Tenant'];
+    }
 
     return fetch(fullUrl, config).then(
         response => {

@@ -160,6 +160,12 @@ export const getDeleteEnrichmentRequest = (state, id) =>
         method: 'DELETE',
     });
 
+export const getConfigTenantAvailableThemeRequest = state =>
+    getRequest(state, {
+        url: '/api/themes',
+        method: 'GET',
+    });
+
 export const getConfigTenantRequest = state =>
     getRequest(state, {
         url: `/api/config-tenant`,
@@ -561,10 +567,11 @@ export const getJobLogsRequest = (state, jobId) =>
         url: `/api/job/${jobId}/logs`,
     });
 
-export const getCancelJobRequest = (state, queue) =>
+export const getCancelJobRequest = (state, queue, subLabel) =>
     getRequest(state, {
         url: `/api/job/${queue}/cancel`,
         method: 'POST',
+        body: { subLabel },
     });
 
 export const getClearJobsRequest = state =>
@@ -590,6 +597,12 @@ export const clearModelRequest = state =>
     getRequest(state, {
         url: '/api/field',
         method: 'DELETE',
+    });
+
+export const getThemeRequest = state =>
+    getRequest(state, {
+        url: '/api/themes/current',
+        method: 'GET',
     });
 
 export const selectors = {
@@ -664,4 +677,5 @@ export const selectors = {
     getDisplayConfigRequest,
     getConfigTenantRequest,
     getUpdateConfigTenantRequest,
+    getThemeRequest,
 };

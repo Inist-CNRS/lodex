@@ -22,6 +22,7 @@ import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../common/scope';
 import { ISTEX_API_URL } from '../../../common/externals';
+import { isPrecomputed } from './checkPredicate';
 
 const isSparqlQuery = url =>
     url.toLowerCase().includes('select') &&
@@ -104,6 +105,17 @@ export function* handleLoadFormatDataRequest({
 }) {
     const name = field && field.name;
     if (!name) {
+        return;
+    }
+
+    if (isPrecomputed(field)) {
+        yield put(
+            loadFormatDataSuccess({
+                name,
+                data: value,
+                total: value?.length,
+            }),
+        );
         return;
     }
 

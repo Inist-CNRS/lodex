@@ -13,12 +13,11 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithDialog from './ButtonWithDialog';
 import stylesToClassname from '../../lib/stylesToClassName';
 import CancelButton from './CancelButton';
-import customTheme from '../../../custom/customTheme';
 
 const styles = stylesToClassname(
     {
         icon: {
-            color: customTheme.palette.primary.main,
+            color: 'var(--primary-main)',
         },
     },
     'dialog-button',

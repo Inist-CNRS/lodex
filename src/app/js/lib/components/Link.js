@@ -3,24 +3,23 @@ import { Link as RouterLink, NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import stylesToClassname from '../../lib/stylesToClassName';
-import customTheme from '../../../custom/customTheme';
 
 const styles = stylesToClassname(
     {
         link: {
-            color: customTheme.palette.primary.main,
+            color: 'var(--primary-main)',
             textDecoration: 'none',
             ':hover': {
-                color: customTheme.palette.primary.main,
+                color: 'var(--primary-main)',
                 textDecoration: 'underline',
             },
             ':active': {
                 textDecoration: 'underline',
-                color: customTheme.palette.secondary.main,
+                color: 'var(--secondary-main)',
             },
             ':focus': {
                 textDecoration: 'underline',
-                color: customTheme.palette.secondary.main,
+                color: 'var(--secondary-main)',
             },
         },
     },

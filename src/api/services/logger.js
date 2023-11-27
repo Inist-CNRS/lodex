@@ -4,6 +4,10 @@ import { MESSAGE } from 'triple-beam';
 
 const loggers = new Map();
 
+/**
+ * @param tenant
+ * @returns {winston.Logger}
+ */
 const getLogger = tenant => {
     if (loggers.has(tenant)) {
         return loggers.get(tenant);
