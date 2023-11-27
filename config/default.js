@@ -17,6 +17,7 @@ module.exports = {
     uploadDir: 'upload',
     istexApiUrl: 'https://api.istex.fr',
     jsHost: '',
+    themesHost: '',
     logger: {
         disabled: false,
     },

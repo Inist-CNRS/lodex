@@ -160,6 +160,12 @@ export const getDeleteEnrichmentRequest = (state, id) =>
         method: 'DELETE',
     });
 
+export const getConfigTenantAvailableThemeRequest = state =>
+    getRequest(state, {
+        url: '/api/themes',
+        method: 'GET',
+    });
+
 export const getConfigTenantRequest = state =>
     getRequest(state, {
         url: `/api/config-tenant`,
@@ -593,6 +599,12 @@ export const clearModelRequest = state =>
         method: 'DELETE',
     });
 
+export const getThemeRequest = state =>
+    getRequest(state, {
+        url: '/api/themes/current',
+        method: 'GET',
+    });
+
 export const selectors = {
     isAdmin,
     getRole,
@@ -665,4 +677,5 @@ export const selectors = {
     getDisplayConfigRequest,
     getConfigTenantRequest,
     getUpdateConfigTenantRequest,
+    getThemeRequest,
 };

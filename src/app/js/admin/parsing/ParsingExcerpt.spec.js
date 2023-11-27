@@ -10,7 +10,7 @@ import {
     getColumnStyle,
 } from './ParsingExcerpt';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
-import customTheme from '../../../custom/customTheme';
+import adminTheme from '../../../custom/adminTheme';
 
 let mockedParams = {
     filter: undefined,
@@ -57,7 +57,7 @@ describe('<ParsingExcerpt />', () => {
         const enrichmentsName = getEnrichmentsNames(enrichments);
         const style = getColumnStyle(enrichmentsName, column);
         expect(style).toEqual({
-            backgroundColor: customTheme.palette.primary.light,
+            backgroundColor: adminTheme.palette.primary.light,
         });
     });
 

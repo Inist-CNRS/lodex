@@ -24,7 +24,7 @@ import {
     Toolbar,
     Link as MuiLink,
 } from '@mui/material';
-import customTheme from '../../../custom/customTheme';
+import adminTheme from '../../../custom/adminTheme';
 
 const styles = {
     linksContainer: {
@@ -35,7 +35,7 @@ const styles = {
         height: 64,
     },
     linkToHome: {
-        color: `${customTheme.palette.contrast.main} !important`,
+        color: `${adminTheme.palette.contrast.main} !important`,
         textDecoration: 'none',
         marginRight: '1rem',
         textTransform: 'uppercase',
@@ -44,19 +44,19 @@ const styles = {
         fontSize: 26,
     },
     button: {
-        color: customTheme.palette.contrast.main,
+        color: adminTheme.palette.contrast.main,
         borderRadius: 0,
         padding: '0 20px',
         boxSizing: 'border-box',
-        borderBottom: `3px solid ${customTheme.palette.primary.main}`,
+        borderBottom: `3px solid ${adminTheme.palette.primary.main}`,
         '&:hover': {
             transition: 'all ease-in-out 400ms',
-            borderBottom: `3px solid ${customTheme.palette.contrast.main}`,
-            color: customTheme.palette.contrast.main,
+            borderBottom: `3px solid ${adminTheme.palette.contrast.main}`,
+            color: adminTheme.palette.contrast.main,
         },
         '&.active': {
-            borderBottom: `3px solid ${customTheme.palette.contrast.main}`,
-            backgroundColor: customTheme.palette.neutralDark.transparent,
+            borderBottom: `3px solid ${adminTheme.palette.contrast.main}`,
+            backgroundColor: adminTheme.palette.neutralDark.transparent,
         },
     },
 };

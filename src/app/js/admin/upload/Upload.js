@@ -22,7 +22,7 @@ import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
 import PopupConfirmUpload from './PopupConfirmUpload';
 import { toast } from '../../../../common/tools/toast';
-import customTheme from '../../../custom/customTheme';
+import adminTheme from '../../../custom/adminTheme';
 
 const styles = {
     button: {
@@ -54,8 +54,8 @@ const styles = {
     },
     loader: {
         minHeight: '220px',
-        backgroundColor: customTheme.palette.contrast.main,
-        color: customTheme.palette.primary.secondary,
+        backgroundColor: adminTheme.palette.contrast.main,
+        color: adminTheme.palette.primary.secondary,
     },
     divider: {
         textTransform: 'uppercase',
@@ -67,7 +67,7 @@ const styles = {
             width: '100%',
             height: '2px',
             content: '""',
-            backgroundColor: customTheme.palette.primary.secondary,
+            backgroundColor: adminTheme.palette.primary.secondary,
             position: 'absolute',
             top: '50%',
             left: 0,
@@ -90,7 +90,7 @@ const styles = {
     },
     dividerLabel: {
         padding: '1rem',
-        backgroundColor: customTheme.palette.contrast.main,
+        backgroundColor: adminTheme.palette.contrast.main,
         position: 'relative',
         display: 'inline-block',
         '@media (min-width: 992px)': {

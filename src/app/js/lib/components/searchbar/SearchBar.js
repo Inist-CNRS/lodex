@@ -7,7 +7,6 @@ import { Icon, IconButton, TextField } from '@mui/material';
 
 import stylesToClassname from '../../stylesToClassName';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import customTheme from '../../../../custom/customTheme';
 import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
 
 const styles = stylesToClassname(
@@ -22,10 +21,10 @@ const styles = stylesToClassname(
             margin: '0px 8px',
         },
         searchIcon: {
-            color: customTheme.palette.neutralDark.secondary,
+            color: 'var(--neutral-dark-secondary)',
         },
         clearIcon: {
-            color: customTheme.palette.secondary.main,
+            color: 'var(--secondary-main)',
         },
         actions: {
             display: 'flex',

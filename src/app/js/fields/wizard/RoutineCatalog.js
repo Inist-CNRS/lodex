@@ -21,23 +21,22 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 import routines from '../../../custom/routines/routines-catalog.json';
 import CancelButton from '../../lib/components/CancelButton';
-import customTheme from '../../../custom/customTheme';
 
 const styles = {
     item: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: customTheme.palette.neutralDark.veryLight,
+            backgroundColor: 'var(--neutral-dark-very-light)',
         },
-        borderBottom: `1px solid ${customTheme.palette.neutralDark.light}`,
+        borderBottom: `1px solid var(--neutral-dark-light)`,
     },
     selectedItem: {
-        backgroundColor: customTheme.palette.primary.secondary,
+        backgroundColor: 'var(--primary-secondary)',
         '&:hover': {
-            backgroundColor: customTheme.palette.primary.main,
+            backgroundColor: 'var(--primary-main)',
         },
         '& a': {
-            color: customTheme.palette.contrast.main,
+            color: 'var(--contrast-main)',
         },
     },
 };

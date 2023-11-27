@@ -100,5 +100,11 @@
     ],
     "precomputedBaseUrlForDevelopment": "{public url of the server accessible from webhooks (ie ngrok)}",
     "precomputedAnswerMode": "retrieve",
-    "activateBullDashboard": false
+    "activateBullDashboard": false,
+    "themes": [
+        "void",
+        "nougat",
+        "inist",
+        "istex"
+    ]
 }

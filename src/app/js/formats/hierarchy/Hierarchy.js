@@ -13,7 +13,6 @@ import MouseIcon from '../shared/MouseIcon';
 
 import CenterIcon from '../shared/CenterIcon';
 import stylesToClassname from '../../lib/stylesToClassName';
-import customTheme from '../../../custom/customTheme';
 
 const styles = StyleSheet.create({
     divContainer: {
@@ -64,9 +63,9 @@ const styles = StyleSheet.create({
 
 const stylesWithClassnames = stylesToClassname({
     icon: {
-        color: customTheme.palette.primary.main,
+        color: 'var(--primary-main)',
         ':hover': {
-            color: customTheme.palette.info.main,
+            color: 'var(--info-main)',
             cursor: 'pointer',
         },
     },

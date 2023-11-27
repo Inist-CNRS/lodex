@@ -8,7 +8,6 @@ import { Link, NavLink } from 'react-router-dom';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
-import customTheme from '../../../custom/customTheme';
 import {
     ADMIN_ROLE,
     extractTenantFromUrl,
@@ -28,13 +27,13 @@ const styles = stylesToClassname(
                 textDecoration: 'none',
             },
             ':active': {
-                color: customTheme.palette.secondary.main,
+                color: 'var(--secondary-main)',
             },
         },
         active: {
-            color: customTheme.palette.secondary.main,
+            color: 'var(--secondary-main)',
             ':hover': {
-                color: customTheme.palette.secondary.main,
+                color: 'var(--secondary-main)',
             },
         },
         menuItem: {
@@ -46,15 +45,15 @@ const styles = stylesToClassname(
             alignItems: 'center',
             justifyContent: 'center',
             textAlign: 'center',
-            color: customTheme.palette.primary.main,
+            color: 'var(--primary-main)',
             cursor: 'pointer',
             userSelect: 'none',
             textTransform: 'capitalize',
             ':hover': {
-                color: customTheme.palette.info.main,
+                color: 'var(--info-main)',
             },
             ':active': {
-                color: customTheme.palette.secondary.main,
+                color: 'var(--secondary-main)',
             },
         },
         menuItemIcon: {

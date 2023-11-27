@@ -1,0 +1,18 @@
+{
+  "version": "2",
+  "restricted": true,
+  "name": {
+    "fr": "INIST",
+    "en": "INIST"
+  },
+  "description": {
+    "fr": "Thème INIST (restreint)",
+    "en": "INIST theme (restricted)"
+  },
+  "files": {
+    "theme": {
+      "main": "customTheme.js",
+      "index": "index.html"
+    }
+  }
+}
