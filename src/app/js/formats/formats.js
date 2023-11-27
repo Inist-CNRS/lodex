@@ -41,6 +41,7 @@ import istexCitation from './istexCitation';
 import istexRefbibs from './istexRefbibs';
 import bubblePlot from './vega-lite/component/bubble-plot';
 import flowMap from './vega/component/flow-map';
+import ldaChart from './vega-lite/component/lda-chart';
 
 export const FORMATS_CATALOG = [
     {
@@ -344,6 +345,13 @@ export const FORMATS_CATALOG = [
         description: 'formatFlowMapDescription',
         componentName: 'flowMap',
         component: flowMap,
+        type: 'chart',
+    },
+    {
+        name: 'formatLdaChart',
+        description: 'formatLdaChartDescription',
+        componentName: 'ldaChart',
+        component: ldaChart,
         type: 'chart',
     },
 ];
