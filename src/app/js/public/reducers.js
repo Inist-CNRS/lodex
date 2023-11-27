@@ -15,6 +15,7 @@ import searchReducer from './search/reducer';
 import breadcrumb from './breadcrumb/reducer';
 import menu from './menu/reducer';
 import displayConfig from './displayConfig/reducer';
+import configTenant from '../admin/configTenant';
 
 const rootReducer = combineReducers({
     characteristic,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
     menu,
     breadcrumb,
     displayConfig,
+    configTenant,
 });
 
 export default rootReducer;
