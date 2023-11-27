@@ -14,7 +14,7 @@ import {
     ERROR,
     CANCELED,
 } from '../../../common/taskStatus';
-import { PRECOMPUTING, PENDING } from '../../../common/progressStatus';
+import { PRECOMPUTING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError, workerQueues } from '../../workers';
 import { PRECOMPUTER } from '../../workers/precomputer';
@@ -309,7 +309,21 @@ export const getComputedFromWebservice = async ctx => {
     const tenant = ctx.tenant;
     const { id: precomputedId, callId, askForPrecomputedJobId } = ctx.job.data;
 
-    progress.setProgress(tenant, 60);
+    const {
+        webServiceUrl,
+        name: precomputedName,
+    } = await ctx.precomputed.findOneById(precomputedId);
+    const webServiceBaseURL = new RegExp('.*\\/').exec(webServiceUrl)[0];
+
+    progress.start(ctx.tenant, {
+        status: PRECOMPUTING,
+        target: 100,
+        label: 'PRECOMPUTING',
+        subLabel: precomputedName,
+        type: 'precomputer',
+    });
+
+    progress.setProgress(tenant, 55);
     if (!tenant || !precomputedId || !callId) {
         throw new Error(
             `Precompute webhook error: missing data ${JSON.stringify({
@@ -319,7 +333,7 @@ export const getComputedFromWebservice = async ctx => {
             })}`,
         );
     }
-
+    progress.setProgress(tenant, 65);
     const workerQueue = workerQueues[tenant];
     const completedJobs = await workerQueue.getCompleted();
     const askForPrecomputedJob = completedJobs.filter(completedJob => {
@@ -337,7 +351,7 @@ export const getComputedFromWebservice = async ctx => {
     if (!askForPrecomputedJob) {
         throw new CancelWorkerError('Job has been canceled');
     }
-    progress.setProgress(tenant, 80);
+    progress.setProgress(tenant, 75);
     const room = `${tenant}-precomputed-job-${askForPrecomputedJobId}`;
 
     const logData = JSON.stringify({
@@ -352,9 +366,6 @@ export const getComputedFromWebservice = async ctx => {
     //WS doc here:
     //openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20coprus%20compress%C3%A9#/data-computer/post-v1-collect
 
-    const { webServiceUrl } = await ctx.precomputed.findOneById(precomputedId);
-    const webServiceBaseURL = new RegExp('.*\\/').exec(webServiceUrl)[0];
-
     try {
         const ROUTE = { RETRIEVE: 'retrieve', COLLECT: 'collect' };
         const response = await fetch(`${webServiceBaseURL}${ANSWER_ROUTE}`, {
@@ -365,6 +376,7 @@ export const getComputedFromWebservice = async ctx => {
             },
             compress: false,
         });
+        progress.setProgress(tenant, 85);
         if (response.status === 200) {
             let data = response.body;
             if (ANSWER_ROUTE === ROUTE.RETRIEVE) {
@@ -545,15 +557,14 @@ export const startAskForPrecomputed = async ctx => {
     const id = ctx.job?.data?.id;
     const precomputed = await ctx.precomputed.findOneById(id);
 
-    if (progress.getProgress(ctx.tenant).status === PENDING) {
-        progress.start(ctx.tenant, {
-            status: PRECOMPUTING,
-            target: 100,
-            label: 'PRECOMPUTING',
-            subLabel: precomputed.name,
-            type: 'precomputer',
-        });
-    }
+    progress.start(ctx.tenant, {
+        status: PRECOMPUTING,
+        target: 100,
+        label: 'PRECOMPUTING',
+        subLabel: precomputed.name,
+        type: 'precomputer',
+    });
+
     const room = `precomputed-job-${ctx.job.id}`;
     const logData = JSON.stringify({
         level: 'ok',
