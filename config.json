@@ -42,6 +42,7 @@
         "syndication-from",
         "syndication",
         "total-of",
+        "tree-by-precomputed",
         "tree-by",
         "unwind-by"
     ],
@@ -101,10 +102,5 @@
     "precomputedBaseUrlForDevelopment": "{public url of the server accessible from webhooks (ie ngrok)}",
     "precomputedAnswerMode": "retrieve",
     "activateBullDashboard": false,
-    "themes": [
-        "void",
-        "nougat",
-        "inist",
-        "istex"
-    ]
+    "themes": ["void", "nougat", "inist", "istex"]
 }

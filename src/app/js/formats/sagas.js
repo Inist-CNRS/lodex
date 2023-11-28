@@ -100,6 +100,15 @@ export function* loadFormatData(name, url, queryString) {
     );
 }
 
+const splitPrecomputedNameAndRoutine = value => {
+    const url = new URL(`http://${value}`);
+
+    return {
+        precomputedName: url.searchParams.get('precomputedName'),
+        routine: `/${url.host}${url.pathname}`,
+    };
+};
+
 export function* handleLoadFormatDataRequest({
     payload: { field, filter, value, resource, withUri, withFacets } = {},
 }) {
@@ -108,18 +117,10 @@ export function* handleLoadFormatDataRequest({
         return;
     }
 
-    if (isPrecomputed(field)) {
-        yield put(
-            loadFormatDataSuccess({
-                name,
-                data: value,
-                total: value?.length,
-            }),
-        );
-        return;
-    }
+    const { precomputedName, routine } = splitPrecomputedNameAndRoutine(value);
+    const precomputed = isPrecomputed(field) ? { precomputedName } : {};
 
-    if (typeof value !== 'string') {
+    if (typeof routine !== 'string') {
         yield put(
             loadFormatDataError({
                 name,
@@ -139,13 +140,14 @@ export function* handleLoadFormatDataRequest({
 
     const queryString = yield call(getQueryString, {
         params: {
+            ...precomputed,
             ...params,
             ...(filter || {}),
             ...(withUri && { uri }),
         },
     });
 
-    yield call(loadFormatData, name, value, queryString);
+    yield call(loadFormatData, name, routine, queryString);
 }
 
 export function* loadFormatDataForName(name, filter) {
@@ -154,6 +156,8 @@ export function* loadFormatDataForName(name, filter) {
         return;
     }
     const url = yield select(fromCharacteristic.getCharacteristicByName, name);
+    const { precomputedName, routine } = splitPrecomputedNameAndRoutine(url);
+    const precomputed = isPrecomputed(field) ? { precomputedName } : {};
 
     const params = yield select(fromFields.getGraphFieldParamsByName, name);
 
@@ -170,12 +174,13 @@ export function* loadFormatDataForName(name, filter) {
         invertedFacets,
         match,
         params: {
+            ...precomputed,
             ...params,
             ...(filter || {}),
         },
     });
 
-    yield call(loadFormatData, name, url, queryString);
+    yield call(loadFormatData, name, routine, queryString);
 }
 
 export function* handleFilterFormatDataRequest({ payload: { filter } = {} }) {
