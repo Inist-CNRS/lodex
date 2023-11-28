@@ -37,24 +37,26 @@ const LdaChartView = props => {
              */
             const topicsValues = rawValue.value.topics;
             Object.entries(topicsValues).forEach(entry => {
-                const key = entry[0];
+                const topic = entry[0];
                 /**
                  * @type {{word: string, word_weight: string}[]}
                  */
-                let current = entry[1].words;
-                const previous = values.get(key);
+                let currentWords = entry[1].words;
+                const previousWords = values.get(topic);
 
-                if (previous) {
-                    current = current.map(v => {
-                        const pre = previous.find(preV => preV.word === v.word);
+                if (previousWords) {
+                    currentWords = currentWords.map(word => {
+                        const preWord = previousWords.find(
+                            preV => preV.word === word.word,
+                        );
                         return {
-                            word: v.word,
+                            word: word.word,
                             word_weight:
-                                parseFloat(v.word_weight) +
-                                parseFloat(pre.word_weight),
+                                parseFloat(word.word_weight) +
+                                parseFloat(preWord.word_weight),
                         };
                     });
-                    current.sort((a, b) => {
+                    currentWords.sort((a, b) => {
                         if (a.word_weight > b.word_weight) {
                             return -1;
                         }
@@ -65,7 +67,7 @@ const LdaChartView = props => {
                     });
                 }
 
-                values.set(key, current);
+                values.set(topic, currentWords);
             });
         }
 
@@ -73,7 +75,7 @@ const LdaChartView = props => {
             values: Object.fromEntries(values),
             topics,
         };
-    }, [props]);
+    }, [props.data]);
 
     return (
         <div style={{ margin: '12px' }}>
