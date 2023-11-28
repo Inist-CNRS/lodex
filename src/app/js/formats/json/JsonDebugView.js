@@ -20,7 +20,7 @@ const JsonDebugView = props => {
 
     return (
         <ReactJson
-            style={{ margin: '12px', borderRadius: '4px' }}
+            style={{ margin: '12px', padding: '8px', borderRadius: '4px' }}
             src={json}
             theme="monokai"
             collapsed={1}

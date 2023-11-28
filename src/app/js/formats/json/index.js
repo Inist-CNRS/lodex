@@ -9,7 +9,5 @@ export default {
     Component,
     AdminComponent,
     defaultArgs,
-    Icon: () => {
-        return <DataObjectIcon sx={{ fontSize: '48px' }} />;
-    },
+    Icon: () => <DataObjectIcon sx={{ fontSize: '48px' }} />,
 };

@@ -1013,4 +1013,4 @@ vega_variable_width	Replace with the width of the chart container	Remplacée par
 vega_variable_height	Replace with the height of the chart container	Remplacée par la hauteur du conteneur du graphique
 "formatJsonDebug"	"Other - Json and Debug Format"	"Autre - Format Json et Débugage"
 "formatJsonDebugDescription"	"This format allow to display simple json value or debug values as json"	"Ce format permet d'afficher des valeurs json simples ou des valeurs de débogage sous forme de json."
-"debugMode"	"Enable debugging"	"Activé le débogage"
+"debugMode"	"Enable debugging"	"Activer le débogage"
