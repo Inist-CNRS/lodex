@@ -66,9 +66,7 @@ function CustomActionVegaLite(props) {
 
     return (
         <Vega
-            style={{
-                width: `calc(100% - ${VEGA_ACTIONS_WIDTH})`,
-            }}
+            style={{ width: '100%' }}
             spec={deepClone(spec)}
             actions={actions}
             mode="vega-lite"
