@@ -86,7 +86,11 @@ const LdaChartView = props => {
                 {topics.map(topic => (
                     <Grid key={topic} item xs={6}>
                         <Paper style={{ padding: '6px' }}>
-                            <LdaChart data={values[topic]} title={topic} />
+                            <LdaChart
+                                data={values[topic]}
+                                title={topic}
+                                colors={props.colors}
+                            />
                         </Paper>
                     </Grid>
                 ))}
@@ -114,6 +118,7 @@ LdaChartView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
     data: PropTypes.any,
+    colors: PropTypes.string.isRequired,
 };
 
 export default compose(injectData(), connect(mapStateToProps))(LdaChartView);

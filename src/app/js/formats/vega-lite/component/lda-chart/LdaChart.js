@@ -3,11 +3,10 @@ import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const LdaChart = ({ data, title }) => {
+const LdaChart = ({ data, title, colors }) => {
     const spec = {
         $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-        width: 'container',
-        height: { step: 20 },
+        config: { legend: { disable: true } },
         title: title,
         encoding: {
             y: { field: 'word', type: 'nominal', sort: null },
@@ -16,6 +15,12 @@ const LdaChart = ({ data, title }) => {
         layer: [
             {
                 mark: 'bar',
+                encoding: {
+                    color: {
+                        field: 'word_weight',
+                        scale: { range: colors.split(' ') },
+                    },
+                },
             },
             {
                 mark: {
@@ -33,6 +38,8 @@ const LdaChart = ({ data, title }) => {
                 },
             },
         ],
+        width: 'container',
+        height: { step: 20 },
     };
     return (
         <CustomActionVegaLite
@@ -48,6 +55,7 @@ const LdaChart = ({ data, title }) => {
 LdaChart.propTypes = {
     data: PropTypes.any.isRequired,
     title: PropTypes.string.isRequired,
+    colors: PropTypes.string.isRequired,
 };
 
 export default LdaChart;
