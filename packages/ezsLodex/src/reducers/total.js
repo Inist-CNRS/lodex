@@ -35,3 +35,10 @@ module.exports.reduce = function (key, values) {
 module.exports.finalize = function finalize(key, value) {
     return value;
 };
+
+module.exports.fieldname = function (name) {
+    if (name === 'value') {
+        return 'value';
+    }
+    return '_id';
+};

@@ -63,6 +63,10 @@ module.exports.finalize = function finalize(key, value) {
     return value;
 };
 
-module.exports.finalize = function finalize(key, value) {
-    return value;
+
+module.exports.fieldname = function (name) {
+    if (name === 'value') {
+        return 'value.count';
+    }
+    return '_id';
 };
