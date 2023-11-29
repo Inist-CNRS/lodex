@@ -72,14 +72,6 @@ export const getParsedExcerptColumns = createSelector(getExcerptLines, lines =>
     Object.keys(lines[0] || {}).filter(key => key !== '_id'),
 );
 
-export const getPrecomputedList = ({ precomputed }) =>
-    !precomputed || !precomputed.length ? [] : precomputed;
-
-export const getParsedPrecomputedList = createSelector(
-    getPrecomputedList,
-    lines => lines.map(line => line.name),
-);
-
 export const hasUploadedFile = ({ totalLoadedLines }) => !!totalLoadedLines;
 
 export const canUpload = ({ allowUpload }) => !!allowUpload;
@@ -93,8 +85,6 @@ export const getshowAddFromColumn = state => state.showAddFromColumn;
 export const selectors = {
     getExcerptLines,
     getParsedExcerptColumns,
-    getPrecomputedList,
-    getParsedPrecomputedList,
     hasUploadedFile,
     canUpload,
     isParsingLoading,
