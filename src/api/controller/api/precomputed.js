@@ -10,6 +10,7 @@ import {
     setPrecomputedJobId,
 } from '../../services/precomputed/precomputed';
 import { cancelJob, getActiveJob } from '../../workers/tools';
+import getLocale from '../../../common/getLocale';
 
 export const setup = async (ctx, next) => {
     try {
@@ -33,6 +34,18 @@ export const postPrecomputed = async ctx => {
         ctx.status = 403;
     } catch (error) {
         ctx.status = 403;
+        // if code error is 11000, it's a duplicate key error
+        if (error.code === 11000) {
+            // send message due to browser locale
+            const locale = getLocale(ctx);
+            const errorMessage =
+                locale === 'fr'
+                    ? 'Un précalcul avec ce nom existe déjà'
+                    : 'A precomputed with this name already exists';
+            ctx.body = { error: errorMessage };
+            return;
+        }
+
         ctx.body = { error: error.message };
         return;
     }
