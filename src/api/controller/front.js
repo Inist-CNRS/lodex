@@ -310,9 +310,17 @@ const handleRender = async (ctx, next) => {
 };
 
 const renderAdminIndexHtml = ctx => {
+    const lodexTheme = getTheme('default');
+    const cssVariable = getCssVariable(lodexTheme.customTheme);
+
     ctx.body = fs
         .readFileSync(path.resolve(__dirname, '../../app/admin.html'))
         .toString()
+        .replace(
+            '</head>',
+            `<style>${cssVariable}</style>
+            </head>`,
+        )
         .replace(
             '</body>',
             ` <script>window.__DBNAME__ = ${JSON.stringify(

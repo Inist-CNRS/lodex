@@ -43,6 +43,10 @@ export const PrecomputedDataDialog = ({
                 }}
             >
                 <Typography>{JSON.stringify(data)}</Typography>
+                <br />
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    {polyglot.t('precomputed_data_limit')}
+                </Typography>
             </DialogContent>
             <DialogActions>
                 <Box display="flex" justifyContent="flex-end">

@@ -74,7 +74,9 @@ export const getPrecomputed = async (ctx, id) => {
 };
 
 export const getAllPrecomputed = async ctx => {
-    ctx.body = await ctx.precomputed.findAll();
+    ctx.body = await ctx.precomputed
+        .find({}, { projection: { data: { $slice: 10 } } })
+        .toArray();
 };
 
 export const precomputedAction = async (ctx, action, id) => {
