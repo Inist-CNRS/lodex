@@ -20,6 +20,7 @@ import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 import routines from '../../../custom/routines/routines-catalog.json';
+import routinesPrecomputed from '../../../custom/routines/routines-precomputed-catalog.json';
 import CancelButton from '../../lib/components/CancelButton';
 
 const styles = {
@@ -79,6 +80,7 @@ const RoutineCatalog = ({
     handleClose,
     onChange,
     currentValue,
+    precomputed = false,
 }) => {
     const handleValueChange = newValue => {
         const event = { target: { value: newValue } };
@@ -100,38 +102,40 @@ const RoutineCatalog = ({
                     aria-label="format list"
                     sx={{ height: '70vh' }}
                 >
-                    {routines.map(routine => (
-                        <ListItem
-                            key={routine.id}
-                            onClick={() => handleValueChange(routine.url)}
-                            sx={{
-                                ...styles.item,
-                                ...(currentValue?.includes(routine.url)
-                                    ? styles.selectedItem
-                                    : {}),
-                            }}
-                            ref={
-                                currentValue?.includes(routine.url)
-                                    ? scrollTo
-                                    : null
-                            }
-                        >
-                            <ListItemText
-                                disableTypography
-                                primary={
-                                    <Typography sx={{ fontWeight: 'bold' }}>
-                                        {polyglot.t(`${routine.id}_title`)}
-                                    </Typography>
+                    {(precomputed ? routinesPrecomputed : routines).map(
+                        routine => (
+                            <ListItem
+                                key={routine.id}
+                                onClick={() => handleValueChange(routine.url)}
+                                sx={{
+                                    ...styles.item,
+                                    ...(currentValue?.includes(routine.url)
+                                        ? styles.selectedItem
+                                        : {}),
+                                }}
+                                ref={
+                                    currentValue?.includes(routine.url)
+                                        ? scrollTo
+                                        : null
                                 }
-                                secondary={
-                                    <RoutineCatalogDescription
-                                        routine={routine}
-                                        polyglot={polyglot}
-                                    />
-                                }
-                            />
-                        </ListItem>
-                    ))}
+                            >
+                                <ListItemText
+                                    disableTypography
+                                    primary={
+                                        <Typography sx={{ fontWeight: 'bold' }}>
+                                            {polyglot.t(`${routine.id}_title`)}
+                                        </Typography>
+                                    }
+                                    secondary={
+                                        <RoutineCatalogDescription
+                                            routine={routine}
+                                            polyglot={polyglot}
+                                        />
+                                    }
+                                />
+                            </ListItem>
+                        ),
+                    )}
                 </List>
             </DialogContent>
             <DialogActions>
@@ -149,6 +153,7 @@ RoutineCatalog.propTypes = {
     p: polyglotPropTypes.isRequired,
     onChange: PropTypes.func.isRequired,
     currentValue: PropTypes.string,
+    precomputed: PropTypes.bool,
 };
 
 RoutineCatalogDescription.propTypes = {
