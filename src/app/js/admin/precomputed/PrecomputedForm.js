@@ -73,6 +73,10 @@ const renderTextField = ({ input, label, meta: { touched, error } }) => {
 };
 
 function getDisplayTimeStartedAt(startedAt) {
+    if (!startedAt) {
+        return;
+    }
+
     const now = new Date();
     const startedAtDate = new Date(startedAt);
     const diff = now - startedAtDate;
