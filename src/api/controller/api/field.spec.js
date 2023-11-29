@@ -122,11 +122,15 @@ describe('field routes', () => {
             enrichment: {
                 findAll: jest.fn(),
             },
+            precomputed: {
+                findAll: jest.fn(),
+            },
         };
         beforeEach(() => {
             ctx.restoreFields.mockClear();
             ctx.set.mockClear();
             ctx.enrichment.findAll.mockClear();
+            ctx.precomputed.findAll.mockClear();
         });
 
         it('should import fields without enrichments', async () => {
@@ -135,6 +139,9 @@ describe('field routes', () => {
             }));
 
             ctx.enrichment.findAll.mockImplementation(() =>
+                Promise.resolve([]),
+            );
+            ctx.precomputed.findAll.mockImplementation(() =>
                 Promise.resolve([]),
             );
 
@@ -158,6 +165,43 @@ describe('field routes', () => {
             expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
             expect(ctx.restoreFields).toHaveBeenCalledWith('file0', ctx);
             expect(ctx.status).toEqual(200);
+            expect(ctx.body.hasEnrichments).toEqual(true);
+        });
+
+        it('should import fields with precomputed', async () => {
+            const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
+                files: ['file0'],
+            }));
+
+            ctx.precomputed.findAll.mockImplementation(() =>
+                Promise.resolve(['id: 1']),
+            );
+
+            await importFields(asyncBusboyImpl)(ctx);
+            expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
+            expect(ctx.restoreFields).toHaveBeenCalledWith('file0', ctx);
+            expect(ctx.status).toEqual(200);
+            expect(ctx.body.hasPrecomputed).toEqual(true);
+        });
+
+        it('should import fields with precomputed and enrichment', async () => {
+            const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
+                files: ['file0'],
+            }));
+
+            ctx.precomputed.findAll.mockImplementation(() =>
+                Promise.resolve(['id: 1']),
+            );
+
+            ctx.enrichment.findAll.mockImplementation(() =>
+                Promise.resolve(['id: 1']),
+            );
+
+            await importFields(asyncBusboyImpl)(ctx);
+            expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
+            expect(ctx.restoreFields).toHaveBeenCalledWith('file0', ctx);
+            expect(ctx.status).toEqual(200);
+            expect(ctx.body.hasPrecomputed).toEqual(true);
             expect(ctx.body.hasEnrichments).toEqual(true);
         });
 

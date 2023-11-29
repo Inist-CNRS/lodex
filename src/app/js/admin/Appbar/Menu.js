@@ -33,7 +33,7 @@ import ClearDialog from './ClearDialog';
 import jobsApi from '../api/job';
 import { toast } from '../../../../common/tools/toast';
 import ImportModelDialog from '../ImportModelDialog';
-import ImportHasEnrichmentsDialog from './ImportHasEnrichmentsDialog';
+import ImportHasRelaunchDialog from './ImportHasRelaunchDialog';
 import { withRouter } from 'react-router';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -47,7 +47,8 @@ const MenuComponent = ({
     importFields,
     nbFields,
     importSucceeded,
-    importHasEnrichment,
+    importHasEnrichments,
+    importHasPrecomputed,
     importFailed,
     p: polyglot,
     history,
@@ -61,10 +62,8 @@ const MenuComponent = ({
         showImportFieldsConfirmation,
         setShowImportFieldsConfirmation,
     ] = useState(false);
-    const [
-        showImportedFieldsHasEnrichmentsDialog,
-        setShowImportedFieldsHasEnrichmentsDialog,
-    ] = useState(false);
+    const [showRelaunchDialog, setShowRelaunchDialog] = useState(false);
+    const [dataRelaunchDialog, setDataRelaunchDialog] = useState(null);
 
     const [applyUploadInput, setApplyUploadInput] = useState(false);
 
@@ -89,10 +88,14 @@ const MenuComponent = ({
     }, [nbFields]);
 
     useEffect(() => {
-        if (importHasEnrichment) {
-            setShowImportedFieldsHasEnrichmentsDialog(true);
+        if (importHasEnrichments || importHasPrecomputed) {
+            setShowRelaunchDialog(true);
+            setDataRelaunchDialog({
+                hasEnrichments: importHasEnrichments,
+                hasPrecomputed: importHasPrecomputed,
+            });
         }
-    }, [importHasEnrichment]);
+    }, [importHasEnrichments, importHasPrecomputed]);
 
     const open = !!anchorEl;
 
@@ -378,11 +381,10 @@ const MenuComponent = ({
                     onClose={() => setShowImportFieldsConfirmation(false)}
                 />
             )}
-            {showImportedFieldsHasEnrichmentsDialog && (
-                <ImportHasEnrichmentsDialog
-                    onClose={() =>
-                        setShowImportedFieldsHasEnrichmentsDialog(false)
-                    }
+            {showRelaunchDialog && (
+                <ImportHasRelaunchDialog
+                    onClose={() => setShowRelaunchDialog(false)}
+                    data={dataRelaunchDialog}
                 />
             )}
         </>
@@ -398,7 +400,8 @@ MenuComponent.propTypes = {
     importFields: PropTypes.func.isRequired,
     nbFields: PropTypes.number.isRequired,
     importSucceeded: PropTypes.bool.isRequired,
-    importHasEnrichment: PropTypes.bool.isRequired,
+    importHasEnrichments: PropTypes.bool.isRequired,
+    importHasPrecomputed: PropTypes.bool.isRequired,
     importFailed: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     history: PropTypes.object.isRequired,
@@ -419,7 +422,8 @@ const mapStateToProps = state => ({
     nbFields: fromFields.getAllListFields(state).filter(f => f.name !== 'uri')
         .length,
     importSucceeded: fromImport.hasImportSucceeded(state),
-    importHasEnrichment: fromImport.hasEnrichment(state),
+    importHasEnrichments: fromImport.hasEnrichments(state),
+    importHasPrecomputed: fromImport.hasPrecomputed(state),
     importFailed: fromImport.hasImportFailed(state),
 });
 export default compose(
