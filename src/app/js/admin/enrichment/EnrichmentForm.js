@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import EnrichmentCatalogConnected from './EnrichmentCatalog';
 import EnrichmentPreview from './EnrichmentPreview';
@@ -152,20 +152,30 @@ export const renderRunButton = (
     enrichmentStatus,
     polyglot,
     variant,
-) => (
-    <Button
-        color="primary"
-        variant={variant || 'contained'}
-        sx={{ height: '100%' }}
-        startIcon={<PlayArrowIcon />}
-        onClick={handleLaunchEnrichment}
-        disabled={
-            enrichmentStatus === IN_PROGRESS || enrichmentStatus === PENDING
-        }
-    >
-        {polyglot.t('run')}
-    </Button>
-);
+) => {
+    const [isClicked, setIsClicked] = useState(false);
+    const handleClick = event => {
+        handleLaunchEnrichment(event);
+        setIsClicked(true);
+    };
+
+    return (
+        <Button
+            color="primary"
+            variant={variant || 'contained'}
+            sx={{ height: '100%' }}
+            startIcon={<PlayArrowIcon />}
+            onClick={handleClick}
+            disabled={
+                isClicked ||
+                enrichmentStatus === IN_PROGRESS ||
+                enrichmentStatus === PENDING
+            }
+        >
+            {polyglot.t('run')}
+        </Button>
+    );
+};
 
 // COMPONENT PART
 export const EnrichmentForm = ({
