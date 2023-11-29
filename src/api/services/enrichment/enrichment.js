@@ -12,7 +12,7 @@ import {
     ERROR,
     CANCELED,
 } from '../../../common/taskStatus';
-import { ENRICHING, PENDING } from '../../../common/progressStatus';
+import { ENRICHING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError } from '../../workers';
 import getLogger from '../logger';
@@ -355,15 +355,14 @@ export const startEnrichment = async ctx => {
     const enrichment = await ctx.enrichment.findOneById(id);
     const dataSetSize = await ctx.dataset.count();
 
-    if (progress.getProgress(ctx.tenant).status === PENDING) {
-        progress.start(ctx.tenant, {
-            status: ENRICHING,
-            target: dataSetSize,
-            label: 'ENRICHING',
-            subLabel: enrichment.name,
-            type: 'enricher',
-        });
-    }
+    progress.start(ctx.tenant, {
+        status: ENRICHING,
+        target: dataSetSize,
+        label: 'ENRICHING',
+        subLabel: enrichment.name,
+        type: 'enricher',
+    });
+
     const room = `enrichment-job-${ctx.job.id}`;
     const logData = JSON.stringify({
         level: 'ok',
