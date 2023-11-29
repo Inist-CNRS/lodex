@@ -285,7 +285,7 @@ describe('format sagas', () => {
                 payload: {
                     field: { name: 'fieldName' },
                     filter: { filterKey: 'filterValue' },
-                    value: 'https://api.lodex.fr',
+                    value: 'https://api.lodex.fr/',
                     withUri: false,
                 },
             });
@@ -330,7 +330,7 @@ describe('format sagas', () => {
                     field: { name: 'fieldName' },
                     filter: { filterKey: 'filterValue' },
                     resource: { uri: 'thisIsAnUri' },
-                    value: 'https://api.lodex.fr',
+                    value: 'https://api.lodex.fr/',
                     withUri: true,
                 },
             });
