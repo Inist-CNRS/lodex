@@ -698,6 +698,7 @@
 "enrichment_logs"	"Enrichment logs"	"Logs de l'enrichissement"
 "precomputed_logs"	"Precomputed data logs"	"Logs des données précalculées"
 "precomputed_data"	"Precomputed data"	"Données précalculées"
+"precomputed_data_limit"	"We limit the sample to ten elements"	"Nous limitons l'échantillon à dix éléments"
 "published_data"	"Published data"	"Données publiées"
 "toggle_loaded"	"Show/hide loaded columns"	"Afficher/cacher les colonnes chargées"
 "toggle_enriched"	"Show/hide enriched columns"	"Afficher/cacher les colonnes enrichies"
@@ -1016,3 +1017,4 @@ vega_variable_list	You can use these variables to set the size dynamically:	Vous
 vega_variable_width	Replace with the width of the chart container	Remplacée par la largeur du conteneur du graphique
 vega_variable_height	Replace with the height of the chart container	Remplacée par la hauteur du conteneur du graphique
 theme	Application theme	Thème de l'application
+"error_precomputed_data_empty"	"Precomputed data is empty or unfinished. You might want to relaunch the action"	"Les données précalculées sont vides ou non terminées. Vous pouvez relancer l'action"

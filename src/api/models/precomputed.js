@@ -13,7 +13,10 @@ export default async db => {
     await collection.createIndex({ name: 1 }, { unique: true });
 
     collection.findOneById = async id =>
-        collection.findOne({ $or: [{ _id: new ObjectId(id) }, { _id: id }] });
+        collection.findOne(
+            { $or: [{ _id: new ObjectId(id) }, { _id: id }] },
+            { projection: { data: { $slice: 10 } } }, // Limit the size of the data field to 10 elements
+        );
 
     collection.findAll = async () => collection.find({}).toArray();
 
