@@ -1,11 +1,10 @@
 import getDocumentTransformer from '../../common/getDocumentTransformer';
 
-export default (fetchLineBy, fields, precomputed) =>
+export default (fetchLineBy, fields) =>
     getDocumentTransformer(
         {
             env: 'node',
             fetchLineBy,
-            precomputed,
         },
         fields,
     );

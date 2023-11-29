@@ -120,6 +120,7 @@ const SourceValuePrecomputed = ({
                     handleClose={() => setOpenRoutineCatalog(false)}
                     onChange={handleChangeRoutine}
                     currentValue={routine}
+                    precomputed
                 />
             </Box>
         </Box>

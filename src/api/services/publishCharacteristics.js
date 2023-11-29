@@ -11,7 +11,6 @@ export const publishCharacteristicsFactory = ({ getDocumentTransformer }) =>
         const getPublishedCharacteristics = getDocumentTransformer(
             ctx.dataset.findBy,
             datasetScopeFields,
-            await ctx.precomputed.findAll(),
         );
 
         const [lastResource] = await ctx.dataset.findLimitFromSkip(

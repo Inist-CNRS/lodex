@@ -18,57 +18,80 @@ import mongoDatabase from './mongoDatabase';
  * @param {Object}  [skip]         limit the result
  * @returns {Object}
  */
-export const createFunction = () => async function LodexRunQuery(data, feed) {
-    if (this.isLast()) {
-        return feed.close();
-    }
-    const { ezs } = this;
-    const referer = this.getParam('referer', data.referer);
-    const filter = this.getParam('filter', data.filter || {});
-    filter.removedAt = { $exists: false }; // Ignore removed resources
-    const sortOn = this.getParam('sortOn', data.sortOn);
-    const sortOrder = this.getParam('sortOrder', data.sortOrder);
-    const field = this.getParam(
-        'field',
-        data.field || data.$field || 'uri',
-    );
-    const collectionName = String(this.getParam('collection', data.collection || 'publishedDataset'));
-    const fds = Array.isArray(field) ? field : [field];
-    const fields = fds.filter(Boolean);
-    const limit = Number(this.getParam('limit', data.limit || 1000000));
-    const skip = Number(this.getParam('skip', data.skip || 0));
-    const projection = zipObject(fields, Array(fields.length).fill(true));
-    const connectionStringURI = this.getParam(
-        'connectionStringURI',
-        data.connectionStringURI || '',
-    );
-    const db = await mongoDatabase(connectionStringURI);
-    const collection = db.collection(collectionName);
-    let cursor = collection.find(filter, fields.length > 0 ? projection : null);
+export const createFunction = () =>
+    async function LodexRunQuery(data, feed) {
+        const { filter: rawFilter, precomputedName } = this.getEnv();
 
-    if (sortOn) {
-        cursor = cursor.sort(`versions.${sortOn}`, sortOrder === 'desc' ? -1 : 1).allowDiskUse();
-    }
+        const isUnfilteredPrecomputed =
+            precomputedName &&
+            (!rawFilter ||
+                Object.keys(rawFilter).filter(
+                    key => key != 'removedAt' && rawFilter[key] != null,
+                ).length === 0);
 
-    const total = await cursor.count();
-    if (total === 0) {
-        return feed.send({ total: 0 });
-    }
-    const path = ['total'];
-    const value = [total];
-    if (referer) {
-        path.push('referer');
-        value.push(referer);
-    }
+        if (this.isLast()) {
+            return feed.close();
+        }
+        const { ezs } = this;
+        const referer = this.getParam('referer', data.referer);
+        const filter = this.getParam('filter', data.filter || {});
 
-    const stream = cursor
-        .skip(skip)
-        .limit(limit)
-        .stream()
-        .on('error', (e) => feed.stop(e))
-        .pipe(ezs('assign', { path, value }));
-    await feed.flow(stream);
-};
+        if (isUnfilteredPrecomputed) {
+            //With unfiltered precomputed data, no need to fetch the publishedDataset
+            return feed.write(0);
+        }
+
+        filter.removedAt = { $exists: false }; // Ignore removed resources
+        const sortOn = this.getParam('sortOn', data.sortOn);
+        const sortOrder = this.getParam('sortOrder', data.sortOrder);
+        const field = this.getParam(
+            'field',
+            data.field || data.$field || 'uri',
+        );
+        const collectionName = String(
+            this.getParam('collection', data.collection || 'publishedDataset'),
+        );
+        const fds = Array.isArray(field) ? field : [field];
+        const fields = fds.filter(Boolean);
+        const limit = Number(this.getParam('limit', data.limit || 1000000));
+        const skip = Number(this.getParam('skip', data.skip || 0));
+        const projection = zipObject(fields, Array(fields.length).fill(true));
+        const connectionStringURI = this.getParam(
+            'connectionStringURI',
+            data.connectionStringURI || '',
+        );
+        const db = await mongoDatabase(connectionStringURI);
+        const collection = db.collection(collectionName);
+        let cursor = collection.find(
+            filter,
+            fields.length > 0 ? projection : null,
+        );
+
+        if (sortOn) {
+            cursor = cursor
+                .sort(`versions.${sortOn}`, sortOrder === 'desc' ? -1 : 1)
+                .allowDiskUse();
+        }
+
+        const total = await cursor.count();
+        if (total === 0) {
+            return feed.send({ total: 0 });
+        }
+        const path = ['total'];
+        const value = [total];
+        if (referer) {
+            path.push('referer');
+            value.push(referer);
+        }
+
+        const stream = cursor
+            .skip(skip)
+            .limit(limit)
+            .stream()
+            .on('error', e => feed.stop(e))
+            .pipe(ezs('assign', { path, value }));
+        await feed.flow(stream);
+    };
 
 export default {
     runQuery: createFunction(),
