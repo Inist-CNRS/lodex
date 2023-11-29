@@ -127,17 +127,31 @@ export const splitPrecomputedNameAndRoutine = value => {
 };
 
 export function* handleLoadFormatDataRequest({
-    payload: { field, filter, value, resource, withUri, withFacets } = {},
+    payload: {
+        field,
+        filter,
+        value: rawValue,
+        resource,
+        withUri,
+        withFacets,
+    } = {},
 }) {
     const name = field && field.name;
     if (!name) {
         return;
     }
 
-    const { precomputedName, routine } = splitPrecomputedNameAndRoutine(value);
-    const precomputed = isPrecomputed(field) ? { precomputedName } : {};
+    let value = rawValue;
+    let precomputed = {};
+    if (isPrecomputed(field)) {
+        const precomputedFieldValue = splitPrecomputedNameAndRoutine(rawValue);
+        precomputed = {
+            precomputedName: precomputedFieldValue.precomputedName,
+        };
+        value = precomputedFieldValue.routine;
+    }
 
-    if (typeof routine !== 'string') {
+    if (typeof value !== 'string') {
         yield put(
             loadFormatDataError({
                 name,
@@ -164,7 +178,7 @@ export function* handleLoadFormatDataRequest({
         },
     });
 
-    yield call(loadFormatData, name, routine, queryString);
+    yield call(loadFormatData, name, value, queryString);
 }
 
 export function* loadFormatDataForName(name, filter) {
