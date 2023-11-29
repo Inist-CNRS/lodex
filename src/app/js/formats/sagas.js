@@ -100,8 +100,25 @@ export function* loadFormatData(name, url, queryString) {
     );
 }
 
-const splitPrecomputedNameAndRoutine = value => {
-    const url = new URL(`http://${value}`);
+export const splitPrecomputedNameAndRoutine = value => {
+    if (!value || typeof value !== 'string') {
+        return {
+            precomputedName: null,
+            routine: null,
+        };
+    }
+
+    let url = null;
+    try {
+        url = new URL(value);
+
+        return {
+            precomputedName: url.searchParams.get('precomputedName'),
+            routine: `${url.protocol}//${url.host}${url.pathname}`,
+        };
+    } catch (_) {
+        url = new URL(`http://${value}`);
+    }
 
     return {
         precomputedName: url.searchParams.get('precomputedName'),
