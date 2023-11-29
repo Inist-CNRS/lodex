@@ -184,6 +184,7 @@ export const ConfigTenantForm = ({
                     value={userAuth?.username || ''}
                     disabled={!userAuth?.active}
                     onChange={event => {
+                        setIsFormModified(true);
                         setUserAuth({
                             ...userAuth,
                             username: event.target.value,
@@ -196,6 +197,7 @@ export const ConfigTenantForm = ({
                     value={userAuth?.password || ''}
                     disabled={!userAuth?.active}
                     onChange={event => {
+                        setIsFormModified(true);
                         setUserAuth({
                             ...userAuth,
                             password: event.target.value,
@@ -212,6 +214,7 @@ export const ConfigTenantForm = ({
                 }}
                 sx={{ mb: 2 }}
                 onChange={event => {
+                    setIsFormModified(true);
                     setTheme(event.target.value);
                 }}
             >
@@ -230,6 +233,7 @@ export const ConfigTenantForm = ({
                 type="number"
                 sx={{ mb: 2 }}
                 onChange={event => {
+                    setIsFormModified(true);
                     setEnrichmentBatchSize(Number(event.target.value));
                 }}
             />
