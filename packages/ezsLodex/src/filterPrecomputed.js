@@ -1,4 +1,3 @@
-//import zipObject from 'lodash.zipobject';
 import mongoDatabase from './mongoDatabase';
 import { Readable } from 'stream';
 
@@ -14,8 +13,17 @@ import { Readable } from 'stream';
  */
 export const createFunction = () =>
     async function LodexFilterPrecomputed(data, feed) {
-        const { connectionStringURI, precomputedName } = this.getEnv();
+        const {
+            connectionStringURI,
+            filter: rawFilter,
+            precomputedName,
+        } = this.getEnv();
         const collectionName = 'precomputed';
+        const isFilter =
+            rawFilter &&
+            Object.keys(rawFilter).filter(
+                key => key != 'removedAt' && rawFilter[key] != null,
+            ).length > 0;
 
         const db = await mongoDatabase(connectionStringURI);
         const collection = db.collection(collectionName);
@@ -24,6 +32,13 @@ export const createFunction = () =>
                 name: precomputedName,
             })
         ).data;
+
+        if (!isFilter) {
+            //With unfiltered precomputed data, we can send the whole precomputed Data directly
+            precomputedData.map(item => feed.write(item));
+            feed.end();
+            return feed.close();
+        }
 
         const filteredItems = precomputedData.filter(
             item => item.origin[0] === (data || {}).uri,
