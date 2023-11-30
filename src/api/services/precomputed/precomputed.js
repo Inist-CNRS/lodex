@@ -1,8 +1,8 @@
 import progress from '../progress';
 import localConfig from '../../../../config.json';
 import { getHost } from '../../../common/uris';
-import tar from 'tar-stream';
-import { createGzip, createGunzip } from 'zlib';
+import { createGunzip } from 'zlib';
+import ezs from '@ezs/core';
 import tarFS from 'tar-fs';
 import fs from 'fs';
 import { pipeline } from 'stream';
@@ -71,132 +71,6 @@ export const getPrecomputedDataPreview = async ctx => {
     }
 
     return result;
-};
-
-const tryParseJsonString = str => {
-    try {
-        const parsed = JSON.parse(str);
-        return parsed;
-    } catch (e) {
-        return str;
-    }
-};
-
-const processZippedData = async (precomputed, ctx) => {
-    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
-    const initDate = new Date();
-    const pack = tar.pack();
-    const dataSetSize = await ctx.dataset.count();
-    const fileNameSize = dataSetSize.toString().length
-        ? 10
-        : dataSetSize.toString().length;
-    for (
-        let indexDataset = 0;
-        indexDataset < dataSetSize;
-        indexDataset += BATCH_SIZE
-    ) {
-        if (!(await ctx.job?.isActive())) {
-            throw new CancelWorkerError('Job has been canceled');
-        }
-
-        // Set 0 as 10. 100 as 45. Increment from indexDataset to dataSetSize
-        const progressValue = Math.floor(
-            ((indexDataset + 1) / dataSetSize) * 35 + 10,
-        );
-        progress.setProgress(ctx.tenant, progressValue);
-
-        const entries = await ctx.dataset
-            .find()
-            .skip(indexDataset)
-            .limit(BATCH_SIZE)
-            .toArray();
-
-        for (const [indexBatch, entry] of entries.entries()) {
-            const colums = [];
-            precomputed.sourceColumns.map(column => {
-                colums.push(entry[column]);
-            });
-            const parsedValue = tryParseJsonString(
-                colums.length > 1 ? colums : colums[0],
-            );
-            await pack.entry(
-                {
-                    name: `data/${'f' +
-                        (indexDataset + indexBatch + 1)
-                            .toString()
-                            .padStart(fileNameSize, 0)}.json`,
-                },
-                JSON.stringify({
-                    id: entry.uri,
-                    value: parsedValue,
-                }),
-            );
-        }
-    }
-
-    const endDate = new Date();
-    await pack.entry(
-        { name: `manifest.json` },
-        JSON.stringify({
-            creationDate: endDate.toGMTString(),
-            updateDate: endDate.toGMTString(),
-            itemsCounter: dataSetSize,
-            processingMSTime: endDate - initDate,
-            version: '1',
-            generator: 'lodex',
-        }),
-    );
-
-    await pack.finalize();
-
-    try {
-        const pipe = promisify(pipeline);
-        const fileName = `./webservice_temp/__entry_${
-            ctx.tenant
-        }_${Date.now().toString()}.tar.gz`;
-        await pipe(pack, createGzip(), fs.createWriteStream(fileName));
-        return fileName;
-    } catch (error) {
-        throw new Error(`Error while processing precomputed data`, error);
-    }
-};
-
-export const getTokenFromWebservice = async (
-    webServiceUrl,
-    precomputedId,
-    fileName,
-    tenant,
-    jobId,
-) => {
-    const response = await fetch(webServiceUrl, {
-        method: 'POST',
-        body: fs.createReadStream(fileName),
-        headers: {
-            'Content-Type': 'application/gzip',
-            'X-Webhook-Success': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${tenant}&jobId=${jobId}`,
-            'X-Webhook-Failure': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${tenant}&jobId=${jobId}&failure`,
-        },
-        compress: false,
-    });
-
-    try {
-        fs.unlinkSync(fileName);
-    } catch (error) {
-        throw new Error(
-            `Error while unlink file - getTokenFromWebservice`,
-            error,
-        );
-    }
-
-    if (response.status != 200) {
-        throw new Error(
-            `Calling token webservice error (${response.status}|${response.statusText})`,
-        );
-    }
-
-    const callId = JSON.stringify(await response.json());
-
-    return callId;
 };
 
 const extractResultFromZip = async (tenant, job, room, data) => {
@@ -493,6 +367,15 @@ export const getFailureFromWebservice = async ctx => {
     });
 };
 
+const tryParseJsonString = str => {
+    try {
+        const parsed = JSON.parse(str);
+        return parsed;
+    } catch (e) {
+        return str;
+    }
+};
+
 export const processPrecomputed = async (precomputed, ctx) => {
     let logData = {};
     await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS);
@@ -508,34 +391,63 @@ export const processPrecomputed = async (precomputed, ctx) => {
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-    const entryFileName = await processZippedData(precomputed, ctx);
-    logData = JSON.stringify({
-        level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Entry data built`,
-        timestamp: new Date(),
-        status: IN_PROGRESS,
-    });
-    progress.setProgress(ctx.tenant, 45);
 
-    jobLogger.info(ctx.job, logData);
-    notifyListeners(room, logData);
-    logData = JSON.stringify({
-        level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Calling webservice [${precomputed.webServiceUrl}]`,
-        timestamp: new Date(),
-        status: IN_PROGRESS,
-    });
-    jobLogger.info(ctx.job, logData);
-    notifyListeners(room, logData);
+    // recupere les données
+    const precomputedId = precomputed._id.toString();
+    const dataSetSize = await ctx.dataset.count();
+    const databaseOutput = await ctx.dataset.find().stream();
 
-    const token = await getTokenFromWebservice(
-        precomputed.webServiceUrl,
-        precomputed._id.toString(),
-        entryFileName,
-        ctx.tenant,
-        room,
-        ctx.job.id,
-    );
+    const tarfileInput = databaseOutput
+        .pipe(
+            ezs((entry, feed, self) => {
+                if (self.isLast()) {
+                    return feed.close();
+                }
+                const colums = [];
+                precomputed.sourceColumns.map(column => {
+                    colums.push(entry[column]);
+                });
+                feed.send({
+                    id: entry.uri,
+                    value: tryParseJsonString(
+                        colums.length > 1 ? colums : colums[0],
+                    ),
+                });
+            }),
+        )
+        .pipe(
+            ezs((entry, feed, self) => {
+                if (self.isLast()) {
+                    return feed.close();
+                }
+                // Set 0 as 10. 100 as 45. Increment from indexDataset to dataSetSize
+                const progressValue = Math.floor(
+                    (self.getIndex() / dataSetSize) * 35 + 10,
+                );
+                progress.setProgress(ctx.tenant, progressValue);
+                feed.send(entry);
+            }),
+        )
+        .pipe(ezs('TARDump', { compress: true }))
+        .pipe(ezs('debug', { text: "apres tar" }))
+    const response = await fetch(precomputed.webServiceUrl, {
+        method: 'POST',
+        body: tarfileInput,
+        headers: {
+            'Content-Type': 'application/gzip',
+            'X-Webhook-Success': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${ctx.job.id}`,
+            'X-Webhook-Failure': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${ctx.job.id}&failure`,
+        },
+        compress: false,
+    });
+    if (response.status != 200) {
+        throw new Error(
+            `Calling token webservice error (${response.status}|${response.statusText})`,
+        );
+    }
+
+    const token = JSON.stringify(await response.json());
+
     await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS, {
         callId: token,
     });
@@ -621,9 +533,9 @@ export const setPrecomputedError = async (ctx, err) => {
     const logData = JSON.stringify({
         level: 'error',
         message:
-            err instanceof CancelWorkerError
-                ? `[Instance: ${ctx.tenant}] ${err?.message}`
-                : `[Instance: ${ctx.tenant}] Precomputing errored : ${err?.message}`,
+        err instanceof CancelWorkerError
+        ? `[Instance: ${ctx.tenant}] ${err?.message}`
+        : `[Instance: ${ctx.tenant}] Precomputing errored : ${err?.message}`,
         timestamp: new Date(),
         status: err instanceof CancelWorkerError ? CANCELED : ERROR,
     });
@@ -635,9 +547,9 @@ export const setPrecomputedError = async (ctx, err) => {
         isPrecomputing: false,
         success: false,
         message:
-            err instanceof CancelWorkerError
-                ? 'cancelled_precomputer'
-                : err?.message,
+        err instanceof CancelWorkerError
+        ? 'cancelled_precomputer'
+        : err?.message,
     });
 };
 
