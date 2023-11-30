@@ -194,7 +194,7 @@ const FlowMapAdmin = props => {
                 )}
             </VegaChartParamsFieldSet>
             <VegaFieldPreview
-                args={args}
+                args={{ ...args, p: polyglot }}
                 PreviewComponent={FlowMapAdminView}
                 datasets={[MapSourceTargetWeight]}
                 showDatasetsSelector={false}

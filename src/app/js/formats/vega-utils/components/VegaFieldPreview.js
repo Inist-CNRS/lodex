@@ -17,8 +17,7 @@ const VegaFieldPreview = ({
     datasets,
     PreviewComponent,
 }) => {
-    // See note in JSX
-    // const ReactJson = require('react-json-view').default;
+    const ReactJson = require('react-json-view').default;
 
     const [datasetName, setDatasetName] = useState(datasets[0].name);
     const [dataset, setDataset] = useState({});
@@ -34,10 +33,9 @@ const VegaFieldPreview = ({
         setDatasetName(event.target.value);
     };
 
-    // See note in JSX
-    // const handleDataSetEditor = event => {
-    //     setDataset(event.updated_src);
-    // };
+    const handleDataSetEditor = event => {
+        setDataset(event.updated_src);
+    };
 
     return (
         <fieldset style={vegaAdminStyle.fieldset}>
@@ -63,20 +61,19 @@ const VegaFieldPreview = ({
             <fieldset style={{ borderRadius: '5px' }}>
                 <PreviewComponent {...args} dataset={dataset} />
             </fieldset>
-            {/* TODO: Make the chart updated when data is change (this event is handled correctly but the chart is not updated) */}
-            {/*<ReactJson*/}
-            {/*    style={{*/}
-            {/*        borderRadius: '5px',*/}
-            {/*        padding: '8px',*/}
-            {/*        marginTop: '12px',*/}
-            {/*    }}*/}
-            {/*    src={dataset}*/}
-            {/*    theme="monokai"*/}
-            {/*    enableClipboard={false}*/}
-            {/*    onEdit={handleDataSetEditor}*/}
-            {/*    onAdd={handleDataSetEditor}*/}
-            {/*    onDelete={handleDataSetEditor}*/}
-            {/*/>*/}
+            <ReactJson
+                style={{
+                    borderRadius: '5px',
+                    padding: '8px',
+                    marginTop: '12px',
+                }}
+                src={dataset}
+                theme="monokai"
+                enableClipboard={false}
+                onEdit={handleDataSetEditor}
+                onAdd={handleDataSetEditor}
+                onDelete={handleDataSetEditor}
+            />
         </fieldset>
     );
 };

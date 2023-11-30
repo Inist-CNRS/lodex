@@ -134,12 +134,7 @@ export const FlowMapAdminView = connect((state, props) => {
             format: 'Preview Format',
         },
         data: {
-            values: [
-                { source: 'FRA', target: 'JPN', weight: 28 },
-                { source: 'FRA', target: 'GBR', weight: 55 },
-                { source: 'FRA', target: 'CAN', weight: 43 },
-                { source: 'FRA', target: 'TUN', weight: 15 },
-            ],
+            values: props.dataset.values ?? [],
         },
     };
 })(FlowMapView);
