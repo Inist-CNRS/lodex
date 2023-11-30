@@ -87,7 +87,7 @@ export const cancelJob = async (ctx, jobType, subLabel = null) => {
 export const dropJobs = async (tenant, jobType) => {
     const jobs = await workerQueues[tenant].getJobs();
     jobs.forEach(job => {
-        if (!jobType || job.data.jobType === jobType) job.remove();
+        if (!jobType || job?.data?.jobType === jobType) job.remove();
     });
 };
 

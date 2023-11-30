@@ -24,7 +24,7 @@ import {
     SCOPE_GRAPHIC,
 } from '../../../../common/scope';
 import { MenuItemLink } from './MenuItemLink';
-import customTheme from '../../../custom/customTheme';
+import adminTheme from '../../../custom/adminTheme';
 
 const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;
@@ -130,8 +130,8 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                         overflowX: 'hidden',
                         paddingTop: '64px',
                         backgroundColor:
-                            customTheme.palette.neutralDark.veryDark,
-                        color: customTheme.palette.contrast.main,
+                            adminTheme.palette.neutralDark.veryDark,
+                        color: adminTheme.palette.contrast.main,
                         width: open ? DRAWER_OPEN_WIDTH : DRAWER_CLOSED_WIDTH,
                         transition:
                             'width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
@@ -140,20 +140,20 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
                         fontSize: 'inherit',
                         borderLeft: `${ACTIVE_BORDER_WIDTH}px solid transparent`,
                         '&.active': {
-                            borderLeft: `${ACTIVE_BORDER_WIDTH}px solid ${customTheme.palette.primary.main}`,
+                            borderLeft: `${ACTIVE_BORDER_WIDTH}px solid ${adminTheme.palette.primary.main}`,
                             backgroundColor:
-                                customTheme.palette.neutralDark.dark,
+                                adminTheme.palette.neutralDark.dark,
                         },
                         '&:hover': {
                             transition: 'background-color ease-in-out 400ms',
-                            color: customTheme.palette.contrast.main,
+                            color: adminTheme.palette.contrast.main,
                             backgroundColor:
-                                customTheme.palette.neutralDark.light,
+                                adminTheme.palette.neutralDark.light,
                         },
                         '& .MuiListItemIcon-root': {
                             minWidth: DRAWER_CLOSED_WIDTH - ACTIVE_BORDER_WIDTH,
                             justifyContent: 'center',
-                            color: customTheme.palette.contrast.main,
+                            color: adminTheme.palette.contrast.main,
                         },
                     },
                 }}

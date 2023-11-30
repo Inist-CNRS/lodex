@@ -28,6 +28,7 @@ import translate from './translate';
 import subresource from './subresource';
 import enrichment from './enrichment';
 import configTenant from './configTenant';
+import themes from './themes';
 import precomputed from './precomputed';
 import job from './job';
 import dump from './dump';
@@ -44,6 +45,7 @@ app.use(route.get('/breadcrumb', breadcrumbs));
 app.use(route.get('/menu', menu));
 app.use(route.get('/displayConfig', displayConfig));
 app.use(mount('/translations', translate));
+app.use(mount('/themes', themes));
 
 app.use(async (ctx, next) => {
     const jwtMid = await jwt({

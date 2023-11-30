@@ -7,6 +7,7 @@ import {
     loadFormatData,
     getQuery,
     getQueryType,
+    splitPrecomputedNameAndRoutine,
 } from './sagas';
 import { loadFormatDataSuccess, loadFormatDataError } from './reducer';
 import getQueryString from '../lib/getQueryString';
@@ -96,7 +97,7 @@ describe('format sagas', () => {
                 done: false,
             });
             expect(it.next('queryString')).toEqual({
-                value: call(loadFormatData, 'name', 'url', 'queryString'),
+                value: call(loadFormatData, 'name', '/url/', 'queryString'),
                 done: false,
             });
             expect(it.next()).toEqual({
@@ -284,7 +285,7 @@ describe('format sagas', () => {
                 payload: {
                     field: { name: 'fieldName' },
                     filter: { filterKey: 'filterValue' },
-                    value: 'https://api.lodex.fr',
+                    value: 'https://api.lodex.fr/',
                     withUri: false,
                 },
             });
@@ -312,7 +313,7 @@ describe('format sagas', () => {
                 value: call(
                     loadFormatData,
                     'fieldName',
-                    'https://api.lodex.fr',
+                    'https://api.lodex.fr/',
                     'queryString',
                 ),
             });
@@ -329,7 +330,7 @@ describe('format sagas', () => {
                     field: { name: 'fieldName' },
                     filter: { filterKey: 'filterValue' },
                     resource: { uri: 'thisIsAnUri' },
-                    value: 'https://api.lodex.fr',
+                    value: 'https://api.lodex.fr/',
                     withUri: true,
                 },
             });
@@ -358,7 +359,7 @@ describe('format sagas', () => {
                 value: call(
                     loadFormatData,
                     'fieldName',
-                    'https://api.lodex.fr',
+                    'https://api.lodex.fr/',
                     'queryString',
                 ),
             });
@@ -425,6 +426,70 @@ describe('format sagas', () => {
                 done: true,
                 value: undefined,
             });
+        });
+    });
+
+    describe('splitPrecomputedNameAndRoutine', () => {
+        it('should return routine and precomputeName for correct local precompted url', () => {
+            const it = splitPrecomputedNameAndRoutine(
+                '/api/run/routine?precomputedName=name',
+            );
+
+            expect(it.routine).toEqual('/api/run/routine');
+            expect(it.precomputedName).toEqual('name');
+        });
+
+        it('should return routine and precomputeName for correct distant precompted url', () => {
+            const it = splitPrecomputedNameAndRoutine(
+                'https://someserver/routine?precomputedName=name',
+            );
+
+            expect(it.routine).toEqual('https://someserver/routine');
+            expect(it.precomputedName).toEqual('name');
+        });
+
+        it('should return routine and precomputeName for correct local routine url', () => {
+            const it = splitPrecomputedNameAndRoutine('/api/run/routine');
+
+            expect(it.routine).toEqual('/api/run/routine');
+            expect(it.precomputedName).toBeNull();
+        });
+
+        it('should return routine and precomputeName for correct distant routine url', () => {
+            const it = splitPrecomputedNameAndRoutine(
+                'https://someserver/routine',
+            );
+
+            expect(it.routine).toEqual('https://someserver/routine');
+            expect(it.precomputedName).toBeNull();
+        });
+
+        it('should return raw text for incorrect url', () => {
+            const it = splitPrecomputedNameAndRoutine('something');
+
+            expect(it.routine).toEqual('/something/');
+            expect(it.precomputedName).toBeNull();
+        });
+
+        it('should return null for empty url', () => {
+            const it = splitPrecomputedNameAndRoutine('');
+
+            expect(it.routine).toBeNull();
+            expect(it.precomputedName).toBeNull();
+        });
+
+        it('should return null for missing url', () => {
+            const it = splitPrecomputedNameAndRoutine();
+
+            expect(it.routine).toBeNull();
+            expect(it.precomputedName).toBeNull();
+        });
+
+        it('should return null for not a string url', () => {
+            const it = splitPrecomputedNameAndRoutine(['an', 'array']);
+
+            expect(it.routine).toBeNull();
+            expect(it.precomputedName).toBeNull();
         });
     });
 });

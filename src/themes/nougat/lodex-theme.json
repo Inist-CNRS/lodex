@@ -1,0 +1,17 @@
+{
+  "version": "2",
+  "restricted": false,
+  "name": {
+    "fr": "Nougat",
+    "en": "Nougat"
+  },
+  "description": {
+    "fr": "Thème classique qui ressemble au Nougat",
+    "en": "Classic theme that looks like Nougat"
+  },
+  "files": {
+    "theme": {
+      "main": "customTheme.js"
+    }
+  }
+}

@@ -18,23 +18,23 @@ import {
 import precomputers from '../../../custom/precomputers/precomputers-catalog.json';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CancelButton from '../../lib/components/CancelButton';
-import customTheme from '../../../custom/customTheme';
+import adminTheme from '../../../custom/adminTheme';
 
 const styles = {
     item: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: customTheme.palette.neutralDark.veryLight,
+            backgroundColor: adminTheme.palette.neutralDark.veryLight,
         },
-        borderBottom: `1px solid ${customTheme.palette.neutralDark.light}`,
+        borderBottom: `1px solid ${adminTheme.palette.neutralDark.light}`,
     },
     selectedItem: {
-        backgroundColor: customTheme.palette.primary.secondary,
+        backgroundColor: adminTheme.palette.primary.secondary,
         '&:hover': {
-            backgroundColor: customTheme.palette.primary.main,
+            backgroundColor: adminTheme.palette.primary.main,
         },
         '& a': {
-            color: customTheme.palette.contrast.main,
+            color: adminTheme.palette.contrast.main,
         },
     },
 };

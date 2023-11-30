@@ -2,45 +2,38 @@ import Koa from 'koa';
 import route from 'koa-route';
 import bodyParser from 'koa-bodyparser';
 
-import getLogger from '../services/logger';
-import { getPrecomputedCollectionForWebHook } from '../services/repositoryMiddleware';
-import {
-    getComputedFromWebservice,
-    getFailureFromWebservice,
-} from '../services/precomputed/precomputed';
+import { v1 as uuid } from 'uuid';
+
+import { workerQueues } from '../workers';
+import { PRECOMPUTER } from '../workers/precomputer';
 
 export const getComputedWebserviceData = async ctx => {
     const { precomputedId, tenant, jobId, failure } = ctx.request.query;
     const { identifier, generator, state } = ctx.request.body;
-    const logger = getLogger(ctx.tenant);
-    logger.info(`Precompute webhook call for ${tenant}`);
-    logger.info('Query', ctx.request.query);
-
-    ctx.precomputed = await getPrecomputedCollectionForWebHook(tenant);
     const callId = JSON.stringify([{ id: generator, value: identifier }]);
 
+    const data = {
+        id: precomputedId,
+        jobType: PRECOMPUTER,
+        action: 'getPrecomputed',
+        tenant: tenant,
+        callId,
+        failure,
+        state,
+        askForPrecomputedJobId: jobId,
+    };
+
+    // if error message, pass it to the worker
     if (failure !== undefined) {
         const { type, message } = ctx.request.body.error;
-        logger.info('Precompute webservice call with failure');
-        await getFailureFromWebservice(
-            ctx,
-            tenant,
-            precomputedId,
-            jobId,
-            type,
-            message,
-        );
-        ctx.body = 'webhook failure';
-        ctx.status = 200;
-        return;
+        data.error = { type, message };
     }
 
-    if (state !== 'ready') {
-        return;
-    }
-
-    await getComputedFromWebservice(ctx, tenant, precomputedId, callId, jobId);
-
+    await workerQueues[tenant].add(
+        PRECOMPUTER, // Name of the job
+        data,
+        { jobId: uuid() },
+    );
     ctx.body = 'webhook ok';
     ctx.status = 200;
 };

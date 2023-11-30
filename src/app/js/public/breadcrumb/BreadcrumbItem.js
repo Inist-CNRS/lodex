@@ -4,28 +4,27 @@ import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
-import customTheme from '../../../custom/customTheme';
 import Link from '../../lib/components/Link';
 
 const styles = stylesToClassname(
     {
         link: {
             padding: '5px',
-            color: customTheme.palette.primary.main,
+            color: 'var(--primary-main)',
             textDecoration: 'none',
             ':hover': {
-                color: customTheme.palette.secondary.main,
+                color: 'var(--secondary-main)',
                 textDecoration: 'none',
             },
             ':focus': {
                 textDecoration: 'none',
-                color: customTheme.palette.secondary.main,
+                color: 'var(--secondary-main)',
             },
             ':visited': {
                 textDecoration: 'none',
             },
             ':active': {
-                color: customTheme.palette.secondary.main,
+                color: 'var(--secondary-main)',
             },
         },
     },
@@ -42,6 +41,18 @@ const BreadcrumbItem = ({ value, p: polyglot }) => {
         props = {
             href: value.url,
             target: '_blank',
+            rel: 'noopener noreferrer',
+        };
+    }
+
+    // if value.url contain .html, it's a static page. Use href instead of to with react-router default route
+    if (
+        value.url.indexOf('.html') !== -1 &&
+        typeof sessionStorage !== 'undefined'
+    ) {
+        const tenant = sessionStorage?.getItem('lodex-tenant');
+        props = {
+            href: `/instance/${tenant}/${value.url}`,
             rel: 'noopener noreferrer',
         };
     }

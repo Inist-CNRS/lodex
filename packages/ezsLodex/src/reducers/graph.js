@@ -69,3 +69,13 @@ module.exports.finalize = function finalize(key, value) {
     }
     return obj;
 };
+
+module.exports.fieldname = function (name) {
+    if (name === 'value') {
+        return 'value.weight';
+    }
+    if (name === 'label') {
+        return 'value.source';
+    }
+    return '_id';
+};

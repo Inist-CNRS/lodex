@@ -49,7 +49,7 @@ export const createFunction = () => async function LodexReduceQuery(data, feed) 
         throw new Error(`Unknown reducer '${reducer}'`);
     }
 
-    const { map, reduce, finalize } = reducers[reducer];
+    const { map, reduce, finalize, fieldname } = reducers[reducer];
     const fds = Array.isArray(field) ? field : [field];
     const fields = fds.filter(Boolean);
     const collName = String('mp_').concat(
@@ -79,21 +79,24 @@ export const createFunction = () => async function LodexReduceQuery(data, feed) 
     const findFilter = {};
 
     if (minValue) {
-        findFilter.value = {
+        const minFilter = {
             $gte: Number(minValue),
         };
-    }
-
-    if (maxValue) {
-        findFilter.value = {
-            ...(findFilter.value || {}),
-            $lte: Number(maxValue),
+        findFilter[fieldname('value')] = {
+            ...minFilter,
         };
     }
-
+    if (maxValue) {
+        const maxFilter = {
+            $lte: Number(maxValue),
+        };
+        findFilter[fieldname('value')] = {
+            ...maxFilter,
+        };
+    }
     const [order, dir] = String(orderBy).split('/');
     const sort = order && dir ? ({
-        [order]: dir === 'asc' ? 1 : -1,
+        [fieldname(order)]: dir === 'asc' ? 1 : -1,
     }) : ({});
     const cursor = result.find(findFilter);
     const count = await cursor.count();

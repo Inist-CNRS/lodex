@@ -1,0 +1,19 @@
+/* les titres */
+@font-face { font-family: 'Barlow Regular'; font-style: normal; font-weight: normal;
+    src: local('Barlow Regular'), url('fonts/Barlow-Regular.woff') format('woff');}
+
+@font-face { font-family: 'Barlow Italic'; font-style: normal; font-weight: normal;
+    src: local('Barlow Italic'), url('fonts/Barlow-Italic.woff') format('woff');}
+
+@font-face { font-family: 'Barlow Light'; font-style: normal; font-weight: normal;
+    src: local('Barlow Light'), url('fonts/Barlow-Light.woff') format('woff');}
+
+@font-face { font-family: 'Barlow Medium'; font-style: normal; font-weight: normal;
+    src: local('Barlow Medium'), url('fonts/Barlow-Medium.woff') format('woff');}
+
+@font-face { font-family: 'Barlow Bold'; font-style: normal; font-weight: normal;
+    src: local('Barlow Bold'), url('fonts/Barlow-Bold.woff') format('woff');}
+
+
+
+

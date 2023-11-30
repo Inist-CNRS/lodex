@@ -14,6 +14,7 @@ import JSONLDCompacter from './JSONLDCompacter';
 import JSONLDString from './JSONLDString';
 import JSONLDObject from './JSONLDObject';
 import disabled from './disabled';
+import filterPrecomputed from './filterPrecomputed';
 import runQuery from './runQuery';
 import reduceQuery from './reduceQuery';
 import formatOutput from './formatOutput';
@@ -56,6 +57,7 @@ const funcs = {
     injectSyndicationFrom,
     injectCountFrom,
     labelizeFieldID,
+    filterPrecomputed,
     runQuery,
     reduceQuery,
     formatOutput,
@@ -74,6 +76,7 @@ const funcs = {
     LodexGetFields: getFields.getFields,
     LodexGetCharacteristics: getCharacteristics.getCharacteristics,
     LodexDocuments: runQuery.runQuery,
+    LodexFilterPrecomputed: filterPrecomputed.filterPrecomputed,
     LodexRunQuery: runQuery.runQuery,
     LodexReduceQuery: reduceQuery.reduceQuery,
     LodexOutput: formatOutput.formatOutput,
