@@ -19,8 +19,12 @@ import HeatMap from '../../models/HeatMap';
 import { lodexOrderToIdOrder } from '../../../chartsUtils';
 import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
 import { HeatMapAdminView } from './HeatMapView';
-import VegaFieldSet from '../../../vega-utils/components/VegaFieldSet';
+import {
+    VegaChartParamsFieldSet,
+    VegaDataParamsFieldSet,
+} from '../../../vega-utils/components/VegaFieldSet';
 import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
+import { StandardSourceTargetWeight } from '../../../vega-utils/dataSet';
 
 export const defaultArgs = {
     params: {
@@ -141,7 +145,7 @@ const HeatMapAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaFieldSet title={polyglot.t('vega_chart_data_params')}>
+            <VegaDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
@@ -151,8 +155,8 @@ const HeatMapAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaFieldSet>
-            <VegaFieldSet title={polyglot.t('vega_chart_params')}>
+            </VegaDataParamsFieldSet>
+            <VegaChartParamsFieldSet>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -200,8 +204,13 @@ const HeatMapAdmin = props => {
                         />
                     </>
                 )}
-            </VegaFieldSet>
-            <VegaFieldPreview args={args} PreviewComponent={HeatMapAdminView} />
+            </VegaChartParamsFieldSet>
+            <VegaFieldPreview
+                args={args}
+                PreviewComponent={HeatMapAdminView}
+                datasets={StandardSourceTargetWeight}
+                showDatasetsSelector={false}
+            />
         </Box>
     );
 };

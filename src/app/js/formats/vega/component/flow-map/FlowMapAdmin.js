@@ -13,7 +13,11 @@ import FlowMap from '../../models/FlowMap';
 import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
 import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
 import { FlowMapAdminView } from './FlowMapView';
-import VegaFieldSet from '../../../vega-utils/components/VegaFieldSet';
+import VegaFieldSet, {
+    VegaChartParamsFieldSet,
+    VegaDataParamsFieldSet,
+} from '../../../vega-utils/components/VegaFieldSet';
+import { MapSourceTargetWeight } from '../../../vega-utils/dataSet';
 
 export const defaultArgs = {
     params: {
@@ -134,7 +138,7 @@ const FlowMapAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaFieldSet title={polyglot.t('vega_chart_data_params')}>
+            <VegaDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -144,8 +148,8 @@ const FlowMapAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaFieldSet>
-            <VegaFieldSet title={polyglot.t('vega_chart_params')}>
+            </VegaDataParamsFieldSet>
+            <VegaChartParamsFieldSet>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -188,10 +192,12 @@ const FlowMapAdmin = props => {
                         />
                     </>
                 )}
-            </VegaFieldSet>
+            </VegaChartParamsFieldSet>
             <VegaFieldPreview
-                args={{ ...args, p: polyglot }}
+                args={args}
                 PreviewComponent={FlowMapAdminView}
+                datasets={[MapSourceTargetWeight]}
+                showDatasetsSelector={false}
             />
         </Box>
     );

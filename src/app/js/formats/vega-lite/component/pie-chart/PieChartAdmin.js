@@ -17,9 +17,13 @@ import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
 import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
 import PieChart from '../../models/PieChart';
 import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
-import VegaFieldSet from '../../../vega-utils/components/VegaFieldSet';
+import {
+    VegaChartParamsFieldSet,
+    VegaDataParamsFieldSet,
+} from '../../../vega-utils/components/VegaFieldSet';
 import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
 import { PieChartAdminView } from './PieChartView';
+import { StandardIdValue } from '../../../vega-utils/dataSet';
 
 export const defaultArgs = {
     params: {
@@ -129,7 +133,7 @@ const PieChartAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaFieldSet title={polyglot.t('vega_chart_data_params')}>
+            <VegaDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -139,8 +143,8 @@ const PieChartAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaFieldSet>
-            <VegaFieldSet title={polyglot.t('vega_chart_params')}>
+            </VegaDataParamsFieldSet>
+            <VegaChartParamsFieldSet>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -186,10 +190,12 @@ const PieChartAdmin = props => {
                         />
                     </>
                 )}
-            </VegaFieldSet>
+            </VegaChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={PieChartAdminView}
+                datasets={[StandardIdValue]}
+                showDatasetsSelector={false}
             />
         </Box>
     );

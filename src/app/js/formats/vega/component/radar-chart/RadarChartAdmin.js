@@ -20,9 +20,13 @@ import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
 import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
 import RadarChart from '../../models/RadarChart';
 import { lodexScaleToIdScale } from '../../../chartsUtils';
-import VegaFieldSet from '../../../vega-utils/components/VegaFieldSet';
+import VegaFieldSet, {
+    VegaChartParamsFieldSet,
+    VegaDataParamsFieldSet,
+} from '../../../vega-utils/components/VegaFieldSet';
 import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
 import { RadarChartAdminView } from './RadarChartView';
+import { StandardIdValue } from '../../../vega-utils/dataSet';
 
 export const defaultArgs = {
     params: {
@@ -145,18 +149,7 @@ const RadarChartAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <FormGroup>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={advancedMode}
-                            onChange={toggleAdvancedMode}
-                        />
-                    }
-                    label={polyglot.t('advancedMode')}
-                />
-            </FormGroup>
-            <VegaFieldSet title={polyglot.t('vega_chart_data_params')}>
+            <VegaDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -166,8 +159,19 @@ const RadarChartAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaFieldSet>
-            <VegaFieldSet title={polyglot.t('vega_chart_params')}>
+            </VegaDataParamsFieldSet>
+            <VegaChartParamsFieldSet>
+                <FormGroup>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={advancedMode}
+                                onChange={toggleAdvancedMode}
+                            />
+                        }
+                        label={polyglot.t('advancedMode')}
+                    />
+                </FormGroup>
                 {advancedMode ? (
                     <VegaAdvancedMode
                         value={spec}
@@ -215,10 +219,12 @@ const RadarChartAdmin = props => {
                         </TextField>
                     </>
                 )}
-            </VegaFieldSet>
+            </VegaChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={RadarChartAdminView}
+                datasets={[StandardIdValue]}
+                showDatasetsSelector={false}
             />
         </Box>
     );

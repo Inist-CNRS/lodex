@@ -19,7 +19,10 @@ import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
 import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../chartsUtils';
 import Cartography from '../../models/Cartography';
 import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
-import VegaFieldSet from '../../../vega-utils/components/VegaFieldSet';
+import {
+    VegaChartParamsFieldSet,
+    VegaDataParamsFieldSet,
+} from '../../../vega-utils/components/VegaFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -131,7 +134,7 @@ const CartographyAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaFieldSet title={polyglot.t('vega_chart_data_params')}>
+            <VegaDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -141,8 +144,8 @@ const CartographyAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaFieldSet>
-            <VegaFieldSet title={polyglot.t('vega_chart_params')}>
+            </VegaDataParamsFieldSet>
+            <VegaChartParamsFieldSet>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -196,7 +199,7 @@ const CartographyAdmin = props => {
                         />
                     </>
                 )}
-            </VegaFieldSet>
+            </VegaChartParamsFieldSet>
         </Box>
     );
 };

@@ -18,9 +18,13 @@ import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
 import BubblePlot from '../../models/BubblePlot';
 import { lodexOrderToIdOrder } from '../../../chartsUtils';
 import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
-import VegaFieldSet from '../../../vega-utils/components/VegaFieldSet';
+import {
+    VegaChartParamsFieldSet,
+    VegaDataParamsFieldSet,
+} from '../../../vega-utils/components/VegaFieldSet';
 import { BubblePlotAdminView } from './BubblePlotView';
 import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
+import { StandardSourceTargetWeight } from '../../../vega-utils/dataSet';
 
 export const defaultArgs = {
     params: {
@@ -139,7 +143,7 @@ const BubblePlotAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaFieldSet title={polyglot.t('vega_chart_data_params')}>
+            <VegaDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
@@ -149,8 +153,8 @@ const BubblePlotAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaFieldSet>
-            <VegaFieldSet title={polyglot.t('vega_chart_params')}>
+            </VegaDataParamsFieldSet>
+            <VegaChartParamsFieldSet>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -198,10 +202,12 @@ const BubblePlotAdmin = props => {
                         />
                     </>
                 )}
-            </VegaFieldSet>
+            </VegaChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={BubblePlotAdminView}
+                datasets={StandardSourceTargetWeight}
+                showDatasetsSelector={false}
             />
         </Box>
     );

@@ -26,8 +26,12 @@ import {
 } from '../../../chartsUtils';
 import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
 import { BarChartAdminView } from './BarChartView';
-import VegaFieldSet from '../../../vega-utils/components/VegaFieldSet';
+import {
+    VegaChartParamsFieldSet,
+    VegaDataParamsFieldSet,
+} from '../../../vega-utils/components/VegaFieldSet';
 import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
+import { StandardIdValue } from '../../../vega-utils/dataSet';
 
 export const defaultArgs = {
     params: {
@@ -190,7 +194,7 @@ const BarChartAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaFieldSet title={polyglot.t('vega_chart_data_params')}>
+            <VegaDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -200,8 +204,8 @@ const BarChartAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaFieldSet>
-            <VegaFieldSet title={polyglot.t('vega_chart_params')}>
+            </VegaDataParamsFieldSet>
+            <VegaChartParamsFieldSet>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -308,16 +312,19 @@ const BarChartAdmin = props => {
                             <MenuItem value="log">{polyglot.t('log')}</MenuItem>
                         </TextField>
                         <TextField
+                            fullWidth
                             label={polyglot.t('bar_size')}
                             onChange={handleBarSize}
                             value={barSize}
                         />
                     </>
                 )}
-            </VegaFieldSet>
+            </VegaChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={BarChartAdminView}
+                datasets={[StandardIdValue]}
+                showDatasetsSelector={false}
             />
         </Box>
     );

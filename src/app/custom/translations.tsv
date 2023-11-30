@@ -1018,3 +1018,6 @@ vega_variable_width	Replace with the width of the chart container	Remplacée par
 vega_variable_height	Replace with the height of the chart container	Remplacée par la hauteur du conteneur du graphique
 theme	Application theme	Thème de l'application
 "error_precomputed_data_empty"	"Precomputed data is empty or unfinished. You might want to relaunch the action"	"Les données précalculées sont vides ou non terminées. Vous pouvez relancer l'action"
+format_data_params	Data Parameters	Paramètres de Données
+format_chart_params	Chart Parameters	Paramètres du Graphique
+format_preview	Format Preview	Aperçu du Format
