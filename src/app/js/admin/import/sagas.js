@@ -27,6 +27,7 @@ export function* handleLoadModel(action) {
         yield put(
             importFieldsSuccess({
                 hasEnrichments: JSON.parse(loadModelFileStatus).hasEnrichments,
+                hasPrecomputed: JSON.parse(loadModelFileStatus).hasPrecomputed,
             }),
         );
         yield put(importFieldsClosed());

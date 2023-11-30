@@ -16,22 +16,7 @@ export const getFieldTransformation = (context, field) => {
 };
 
 export const getDocumentTransformations = (context, fields) =>
-    fields.map(field => {
-        const precomputedArg = field.transformers
-            .find(t => t.operation === 'PRECOMPUTED')
-            ?.args.find(a => a.name === 'precomputed');
-
-        const fieldContext = {
-            ...context,
-            precomputed:
-                precomputedArg && context.precomputed
-                    ? context.precomputed.find(
-                          p => p.name === precomputedArg.value,
-                      )
-                    : undefined,
-        };
-        return getFieldTransformation(fieldContext, field);
-    });
+    fields.map(field => getFieldTransformation(context, field));
 
 export const sanitizeUris = doc => {
     if (!doc.uri) {

@@ -8,13 +8,11 @@ const app = new Koa();
 
 export const getExcerpt = async ctx => {
     const excerptLines = await ctx.dataset.getExcerpt();
-    const precomputed = await ctx.precomputed.findAll();
     const totalLoadedLines = await ctx.dataset.count();
 
     ctx.body = {
         totalLoadedLines,
         excerptLines,
-        precomputed,
     };
 };
 

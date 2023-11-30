@@ -45,6 +45,18 @@ const BreadcrumbItem = ({ value, p: polyglot }) => {
         };
     }
 
+    // if value.url contain .html, it's a static page. Use href instead of to with react-router default route
+    if (
+        value.url.indexOf('.html') !== -1 &&
+        typeof sessionStorage !== 'undefined'
+    ) {
+        const tenant = sessionStorage?.getItem('lodex-tenant');
+        props = {
+            href: `/instance/${tenant}/${value.url}`,
+            rel: 'noopener noreferrer',
+        };
+    }
+
     return (
         <Link className={styles.link} {...props}>
             {label}

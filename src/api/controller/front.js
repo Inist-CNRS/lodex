@@ -256,9 +256,8 @@ const getCssVariable = theme => {
 const handleRender = async (ctx, next) => {
     const { url, headers } = ctx.request;
     if (
-        (url.match(/[^\\]*\.(\w+)$/) &&
-            !url.match(/^(?!.*\/instance\/).*\.html$/) &&
-            !url.match(/\/uid:\//)) ||
+        (url.match(/[^\\]*\.(\w+)$/) && !url.match(/\/uid:\//)) ||
+        url.match(/[^\\]*\.html$/) ||
         url.match('/admin') ||
         url.match('__webpack_hmr')
     ) {
@@ -310,9 +309,17 @@ const handleRender = async (ctx, next) => {
 };
 
 const renderAdminIndexHtml = ctx => {
+    const lodexTheme = getTheme('default');
+    const cssVariable = getCssVariable(lodexTheme.customTheme);
+
     ctx.body = fs
         .readFileSync(path.resolve(__dirname, '../../app/admin.html'))
         .toString()
+        .replace(
+            '</head>',
+            `<style>${cssVariable}</style>
+            </head>`,
+        )
         .replace(
             '</body>',
             ` <script>window.__DBNAME__ = ${JSON.stringify(

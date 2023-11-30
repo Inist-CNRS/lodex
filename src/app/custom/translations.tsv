@@ -182,7 +182,7 @@
 "columns"	"Columns"	"Colonnes"
 "column"	"Column"	"Colonne"
 "for_row"	"for row"	"pour la ligne"
-"enrichment"	"Enrichment"	"Enrichissement"
+"enrichment"	"Enrichment"	"Enrichissements"
 "precomputed"	"Precomputed"	"Précalculs"
 "resource_share_export"	"Share/Export"	"Partager/Exporter"
 "resource_ontology"	"Ontology"	"Ontologie"
@@ -698,6 +698,7 @@
 "enrichment_logs"	"Enrichment logs"	"Logs de l'enrichissement"
 "precomputed_logs"	"Precomputed data logs"	"Logs des données précalculées"
 "precomputed_data"	"Precomputed data"	"Données précalculées"
+"precomputed_data_limit"	"We limit the sample to ten elements"	"Nous limitons l'échantillon à dix éléments"
 "published_data"	"Published data"	"Données publiées"
 "toggle_loaded"	"Show/hide loaded columns"	"Afficher/cacher les colonnes chargées"
 "toggle_enriched"	"Show/hide enriched columns"	"Afficher/cacher les colonnes enrichies"
@@ -896,6 +897,10 @@
 "resource_detail_third"	"Resource detail third"	"Troisième detail de la ressource"
 "dialog_import_has_enrichments"	"Import has enrichments"	"L'import a des enrichissements"
 "dialog_import_has_enrichments_description"     	"Enrichments are present in the model. Do not forget to run them again if they apply to a new dataset."	"Des enrichissements sont présents dans le modèle. Ne pas oublier de les relancer s'ils s'appliquent à un nouveau jeu de données."
+"dialog_import_has_precomputed"	"Import has precomputed"	"L'import a des précalculs"
+"dialog_import_has_precomputed_description"     	"Precomputed are present in the model. Do not forget to run them again if they apply to a new dataset."	"Des précalculs sont présents dans le modèle. Ne pas oublier de les relancer s'ils s'appliquent à un nouveau jeu de données."
+"dialog_import_has_enrichments_and_precomputed"	"Import has enrichments"	"L'import a des enrichissements et des précalculs"
+"dialog_import_has_enrichments_and_precomputed_description"     	"Enrichments and Precomputed are present in the model. Do not forget to run them again if they apply to a new dataset."	"Des enrichissements et des précalculs sont présents dans le modèle. Ne pas oublier de les relancer s'ils s'appliquent à un nouveau jeu de données."
 "see_logs"	"See logs"	"Voir les logs"
 "see_data"	"See precomputed data"	"Voir les données précalculées"
 "download_logs"	"Download logs"	"Télécharger logs"
@@ -1012,3 +1017,4 @@ vega_variable_list	You can use these variables to set the size dynamically:	Vous
 vega_variable_width	Replace with the width of the chart container	Remplacée par la largeur du conteneur du graphique
 vega_variable_height	Replace with the height of the chart container	Remplacée par la hauteur du conteneur du graphique
 theme	Application theme	Thème de l'application
+"error_precomputed_data_empty"	"Precomputed data is empty or unfinished. You might want to relaunch the action"	"Les données précalculées sont vides ou non terminées. Vous pouvez relancer l'action"

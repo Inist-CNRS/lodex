@@ -71,7 +71,14 @@ function CustomActionVega(props) {
             throw new Error('Invalid data injection type');
     }
 
-    return <Vega spec={deepClone(props.spec)} actions={actions} mode="vega" />;
+    return (
+        <Vega
+            style={{ width: '100%' }}
+            spec={deepClone(props.spec)}
+            actions={actions}
+            mode="vega"
+        />
+    );
 }
 
 /**

@@ -12,7 +12,7 @@ import {
     ERROR,
     CANCELED,
 } from '../../../common/taskStatus';
-import { ENRICHING, PENDING } from '../../../common/progressStatus';
+import { ENRICHING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError } from '../../workers';
 import getLogger from '../logger';
@@ -43,7 +43,8 @@ const getSourceData = async (ctx, sourceColumn) => {
 };
 
 export const createEnrichmentRule = async (ctx, enrichment) => {
-    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
+    const { enrichmentBatchSize } = ctx.configTenant;
+    const BATCH_SIZE = Number(enrichmentBatchSize || 10);
     if (enrichment.advancedMode) {
         return enrichment;
     }
@@ -67,7 +68,8 @@ const cleanWebServiceRule = rule => {
 };
 
 export const getEnrichmentDataPreview = async ctx => {
-    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
+    const { enrichmentBatchSize } = ctx.configTenant;
+    const BATCH_SIZE = Number(enrichmentBatchSize || 10);
     const { sourceColumn, subPath, rule } = ctx.request.body;
     let previewRule = rule;
     if (!sourceColumn && !rule) {
@@ -223,7 +225,8 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
 };
 
 export const processEnrichment = async (enrichment, ctx) => {
-    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
+    const { enrichmentBatchSize } = ctx.configTenant;
+    const BATCH_SIZE = Number(enrichmentBatchSize || 10);
     await ctx.enrichment.updateStatus(enrichment._id, IN_PROGRESS);
     let errorCount = 0;
 
@@ -352,15 +355,14 @@ export const startEnrichment = async ctx => {
     const enrichment = await ctx.enrichment.findOneById(id);
     const dataSetSize = await ctx.dataset.count();
 
-    if (progress.getProgress(ctx.tenant).status === PENDING) {
-        progress.start(ctx.tenant, {
-            status: ENRICHING,
-            target: dataSetSize,
-            label: 'ENRICHING',
-            subLabel: enrichment.name,
-            type: 'enricher',
-        });
-    }
+    progress.start(ctx.tenant, {
+        status: ENRICHING,
+        target: dataSetSize,
+        label: 'ENRICHING',
+        subLabel: enrichment.name,
+        type: 'enricher',
+    });
+
     const room = `enrichment-job-${ctx.job.id}`;
     const logData = JSON.stringify({
         level: 'ok',
