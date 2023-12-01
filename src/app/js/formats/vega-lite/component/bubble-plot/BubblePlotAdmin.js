@@ -206,7 +206,7 @@ const BubblePlotAdmin = props => {
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={BubblePlotAdminView}
-                datasets={StandardSourceTargetWeight}
+                datasets={[StandardSourceTargetWeight]}
                 showDatasetsSelector={false}
             />
         </Box>

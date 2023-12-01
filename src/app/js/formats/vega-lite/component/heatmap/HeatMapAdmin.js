@@ -208,7 +208,7 @@ const HeatMapAdmin = props => {
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={HeatMapAdminView}
-                datasets={StandardSourceTargetWeight}
+                datasets={[StandardSourceTargetWeight]}
                 showDatasetsSelector={false}
             />
         </Box>
