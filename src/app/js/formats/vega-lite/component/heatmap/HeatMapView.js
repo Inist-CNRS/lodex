@@ -14,6 +14,7 @@ import {
 } from '../../../chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { ASPECT_RATIO_1_1 } from '../../../aspectRatio';
 
 const styles = {
     container: {
@@ -86,6 +87,7 @@ const HeatMapView = ({
                 spec={spec}
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                aspectRatio={ASPECT_RATIO_1_1}
             />
         </div>
     );

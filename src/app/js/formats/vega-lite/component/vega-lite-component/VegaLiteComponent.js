@@ -5,20 +5,28 @@ import { connect } from 'react-redux';
 import deepClone from 'lodash.clonedeep';
 import { isAdmin } from '../../../../user';
 import {
-    VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../../chartsUtils';
+import {
+    ASPECT_RATIO_16_6,
+    ASPECT_RATIO_16_9,
+    ASPECT_RATIO_1_1,
+    ASPECT_RATIO_3_1,
+    ASPECT_RATIO_3_2,
+    ASPECT_RATIO_4_3,
+    ASPECT_RATIO_8_5,
+} from '../../../aspectRatio';
 
 /**
  * small component use to handle vega lite display
  * @param props args taken by the component
  * @returns {*} React-Vega component
  */
-function CustomActionVegaLite(props) {
+function CustomActionVegaLite({ aspectRatio, user, spec, data, injectType }) {
     let actions;
-    if (isAdmin(props.user)) {
+    if (isAdmin(user)) {
         actions = {
             export: {
                 svg: true,
@@ -40,23 +48,23 @@ function CustomActionVegaLite(props) {
         };
     }
 
-    const spec = props.spec;
+    const specWithData = spec;
 
-    switch (props.injectType) {
+    switch (injectType) {
         case VEGA_LITE_DATA_INJECT_TYPE_A:
-            spec.data = props.data;
+            specWithData.data = data;
             break;
         case VEGA_LITE_DATA_INJECT_TYPE_B:
-            spec.transform.forEach(e => {
+            specWithData.transform.forEach(e => {
                 if (e.lookup === 'id') {
-                    e.from.data.values = props.data.values;
+                    e.from.data.values = data.values;
                 }
             });
             break;
         case VEGA_LITE_DATA_INJECT_TYPE_C:
-            spec.transform.forEach(e => {
+            specWithData.transform.forEach(e => {
                 if (e.lookup === 'properties.HASC_2') {
-                    e.from.data.values = props.data.values;
+                    e.from.data.values = data.values;
                 }
             });
             break;
@@ -66,13 +74,17 @@ function CustomActionVegaLite(props) {
 
     return (
         <Vega
-            style={{ width: '100%' }}
-            spec={deepClone(spec)}
+            style={{ width: '100%', aspectRatio }}
+            spec={deepClone(specWithData)}
             actions={actions}
             mode="vega-lite"
         />
     );
 }
+
+CustomActionVegaLite.defaultProps = {
+    aspectRatio: ASPECT_RATIO_16_9,
+};
 
 /**
  * Element required in the props
@@ -83,6 +95,14 @@ CustomActionVegaLite.propTypes = {
     spec: PropTypes.any.isRequired,
     data: PropTypes.any,
     injectType: PropTypes.number.isRequired,
+    aspectRatio: PropTypes.oneOf([
+        ASPECT_RATIO_1_1,
+        ASPECT_RATIO_3_2,
+        ASPECT_RATIO_4_3,
+        ASPECT_RATIO_8_5,
+        ASPECT_RATIO_16_6,
+        ASPECT_RATIO_16_9,
+    ]),
 };
 
 /**

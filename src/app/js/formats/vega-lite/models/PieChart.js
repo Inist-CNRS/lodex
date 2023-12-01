@@ -37,14 +37,13 @@ class PieChart extends BasicChart {
                 this.tooltip.value,
             ];
 
-        if (!this.editMode) {
-            this.model.width = widthIn * (widthIn <= 920 ? 0.5 : 0.7);
-
+        if (!this.editMode && widthIn) {
             this.model.encoding.color.legend.legendX =
                 widthIn * (widthIn <= 920 ? 0.5 : 0.7);
         }
 
-        this.model.height = 300;
+        this.model.width = 'container';
+        this.model.height = 'container';
 
         return this.model;
     }

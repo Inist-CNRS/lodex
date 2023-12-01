@@ -13,6 +13,7 @@ import {
 } from '../../../chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { ASPECT_RATIO_8_5 } from '../../../aspectRatio';
 
 const styles = {
     container: {
@@ -85,6 +86,7 @@ const PieChartView = ({
                 spec={spec}
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                aspectRatio={ASPECT_RATIO_8_5}
             />
         </div>
     );
