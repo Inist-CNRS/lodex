@@ -1,12 +1,9 @@
 import progress from '../progress';
 import localConfig from '../../../../config.json';
 import { getHost } from '../../../common/uris';
-import { createGunzip } from 'zlib';
+import streamToPromise from 'stream-to-promise';
 import ezs from '@ezs/core';
-import tarFS from 'tar-fs';
-import fs from 'fs';
-import { pipeline } from 'stream';
-import { promisify } from 'util';
+import { Readable } from 'stream';
 import {
     PENDING as PRECOMPUTED_PENDING,
     IN_PROGRESS,
@@ -25,11 +22,6 @@ const webhookBaseUrl =
     process.env.NODE_ENV === 'development'
         ? localConfig.precomputedBaseUrlForDevelopment
         : baseUrl;
-
-const ANSWER_ROUTES = { RETRIEVE: 'retrieve', COLLECT: 'collect' };
-const {
-    precomputedAnswerMode: ANSWER_ROUTE = ANSWER_ROUTES.RETRIEVE,
-} = localConfig;
 
 export const getPrecomputedDataPreview = async ctx => {
     const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
@@ -73,116 +65,11 @@ export const getPrecomputedDataPreview = async ctx => {
     return result;
 };
 
-const extractResultFromZip = async (tenant, job, room, data) => {
-    let logData = JSON.stringify({
-        level: 'ok',
-        message: `[Instance: ${tenant}] Saving result zip file`,
-        timestamp: new Date(),
-        status: IN_PROGRESS,
-    });
-    jobLogger.info(job, logData);
-    notifyListeners(room, logData);
-
-    const pipe = promisify(pipeline);
-    const fileName = `./webservice_temp/__result_${tenant}_${Date.now().toString()}.tar.gz`;
-
-    await pipe(data, fs.createWriteStream(fileName));
-
-    logData = JSON.stringify({
-        level: 'ok',
-        message: `[Instance: ${tenant}] Extract result zip file OK`,
-        timestamp: new Date(),
-        status: IN_PROGRESS,
-    });
-    jobLogger.info(job, logData);
-    notifyListeners(room, logData);
-
-    logData = JSON.stringify({
-        level: 'ok',
-        message: `[Instance: ${tenant}] Extracting result zip file`,
-        timestamp: new Date(),
-        status: IN_PROGRESS,
-    });
-    jobLogger.info(job, logData);
-    notifyListeners(room, logData);
-
-    const folderName = fileName.replace('.tar.gz', '');
-    await pipe(
-        fs.createReadStream(fileName),
-        createGunzip(),
-        tarFS.extract(folderName),
-    );
-
-    try {
-        fs.unlinkSync(fileName);
-    } catch (error) {
-        throw new Error(`Error while unlink file - extract result`, error);
-    }
-
-    logData = JSON.stringify({
-        level: 'ok',
-        message: `[Instance: ${tenant}] Compile result zip file OK`,
-        timestamp: new Date(),
-        status: IN_PROGRESS,
-    });
-    jobLogger.info(job, logData);
-    notifyListeners(room, logData);
-
-    logData = JSON.stringify({
-        level: 'ok',
-        message: `[Instance: ${tenant}] Compiling json result`,
-        timestamp: new Date(),
-        status: IN_PROGRESS,
-    });
-    jobLogger.info(job, logData);
-    notifyListeners(room, logData);
-
-    const files = await fs.promises.readdir(`${folderName}/data`);
-    logData = JSON.stringify({
-        level: 'ok',
-        message: `[Instance: ${tenant}] ${files.length} files found`,
-        timestamp: new Date(),
-        status: IN_PROGRESS,
-    });
-    jobLogger.info(job, logData);
-    notifyListeners(room, logData);
-    let result = [];
-    for (const file of files) {
-        const JsonName = `${folderName}/data/${file}`;
-        const json = await fs.promises.readFile(JsonName, { encoding: 'utf8' });
-        result.push(JSON.parse(json));
-
-        try {
-            fs.unlinkSync(JsonName);
-        } catch (error) {
-            throw new Error(`Error while unlink file - extract result`, error);
-        }
-    }
-
-    logData = JSON.stringify({
-        level: 'ok',
-        message: `[Instance: ${tenant}] Compile json result OK`,
-        timestamp: new Date(),
-        status: IN_PROGRESS,
-    });
-    jobLogger.info(job, logData);
-    notifyListeners(room, logData);
-
-    try {
-        fs.unlinkSync(`${folderName}/manifest.json`);
-        fs.rmdirSync(`${folderName}/data`);
-        fs.rmdirSync(folderName);
-    } catch (error) {
-        throw new Error(`Error while clear folder data`, error);
-    }
-
-    return result;
-};
-
 export const getComputedFromWebservice = async ctx => {
     console.log('---------------------');
     console.log('getComputedFromWebservice');
     console.log('---------------------');
+    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
     const tenant = ctx.tenant;
     const { id: precomputedId, callId, askForPrecomputedJobId } = ctx.job.data;
 
@@ -203,7 +90,6 @@ export const getComputedFromWebservice = async ctx => {
     console.log('---------------------');
     console.log('progress.start');
     console.log('---------------------');
-
 
     progress.setProgress(tenant, 55);
     if (!tenant || !precomputedId || !callId) {
@@ -236,7 +122,8 @@ export const getComputedFromWebservice = async ctx => {
     progress.setProgress(tenant, 75);
     const room = `${tenant}-precomputed-job-${askForPrecomputedJobId}`;
 
-    const logData = JSON.stringify({
+    let logData = {};
+    logData = JSON.stringify({
         level: 'ok',
         message: `[Instance: ${tenant}] Webservice response ok`,
         timestamp: new Date(),
@@ -250,68 +137,67 @@ export const getComputedFromWebservice = async ctx => {
     console.log('---------------------');
     console.log('FETCH ANSWER_ROUTE');
     console.log('---------------------');
-    try {
-        const ROUTE = { RETRIEVE: 'retrieve', COLLECT: 'collect' };
-        const response = await fetch(`${webServiceBaseURL}${ANSWER_ROUTE}`, {
-            method: 'POST',
-            body: callId,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            compress: false,
-        });
-        progress.setProgress(tenant, 85);
-        if (response.status === 200) {
-            let data = response.body;
-            if (ANSWER_ROUTE === ROUTE.RETRIEVE) {
-                const logData = JSON.stringify({
-                    level: 'ok',
-                    message: `[Instance: ${tenant}] Using tar.gz mode webservice`,
-                    timestamp: new Date(),
-                    status: IN_PROGRESS,
-                });
-                jobLogger.info(askForPrecomputedJob, logData);
-                notifyListeners(room, logData);
-                data = await extractResultFromZip(
-                    tenant,
-                    askForPrecomputedJob,
-                    room,
-                    data,
-                );
-            }
-
-            await ctx.precomputed.updateStatus(precomputedId, FINISHED, {
-                data,
-            });
-            await ctx.precomputed.updateStartedAt(precomputedId, null);
-
-            askForPrecomputedJob.progress(100);
-            const isFailed = await askForPrecomputedJob.isFailed();
-            notifyListeners(`${askForPrecomputedJob.data.tenant}-precomputer`, {
-                isPrecomputing: false,
-                success: !isFailed,
-            });
-            console.log('ASK FOR FINISH');
-            progress.finish(tenant);
-            console.log('FINISH');
-            const logData = JSON.stringify({
-                level: 'ok',
-                message: `[Instance: ${tenant}] Precomputing data finished`,
-                timestamp: new Date(),
-                status: FINISHED,
-            });
-            jobLogger.info(askForPrecomputedJob, logData);
-            notifyListeners(room, logData);
-        } else {
-            throw new Error(
-                `Precompute webhook error: retrieve has failed ${response.status} ${response.statusText}`,
-            );
-        }
-    } catch (error) {
-        throw new Error(
-            `Precompute webhook error: retrieve has failed ${error?.message}`,
+    const streamRetrieveInput = new Readable({
+        objectMode: true,
+        read() {
+            this.push(callId);
+            this.push(null);
+        },
+    });
+    const streamRetreiveWorflow = streamRetrieveInput
+        .pipe(
+            ezs('URLConnect', {
+                url: `${webServiceBaseURL}/collect`,
+                json: true,
+                encoder: 'transit',
+            }),
+        )
+        .pipe(ezs('group', { length: BATCH_SIZE }))
+        .pipe(
+            ezs(async (data, feed, self) => {
+                if (!self.size) {
+                    self.size = 0;
+                }
+                if (self.isLast()) {
+                    progress.setProgress(tenant, 95);
+                    await ctx.precomputed.fixStatus(precomputedId, FINISHED);
+                    feed.write(self.size);
+                    return feed.close();
+                }
+                self.size += data.length;
+                if (self.isFirst()) {
+                    progress.setProgress(tenant, 85);
+                    await ctx.precomputed.updateStatus(
+                        precomputedId,
+                        IN_PROGRESS,
+                        {
+                            data,
+                        },
+                    );
+                    return feed.end();
+                }
+                await ctx.precomputed.pushNewData(precomputedId, data);
+                feed.end();
+            }),
         );
-    }
+    const insertedItems = await streamToPromise(streamRetreiveWorflow);
+    await ctx.precomputed.updateStartedAt(precomputedId, null);
+
+    askForPrecomputedJob.progress(100);
+    const isFailed = await askForPrecomputedJob.isFailed();
+    notifyListeners(`${askForPrecomputedJob.data.tenant}-precomputer`, {
+        isPdwdwrecomputing: false,
+        success: !isFailed,
+    });
+    progress.finish(tenant);
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${tenant}] Precomputing data finished. ${insertedItems} items have been calculated`,
+        timestamp: new Date(),
+        status: FINISHED,
+    });
+    jobLogger.info(askForPrecomputedJob, logData);
+    notifyListeners(room, logData);
 };
 
 export const getFailureFromWebservice = async ctx => {
@@ -392,12 +278,11 @@ export const processPrecomputed = async (precomputed, ctx) => {
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
 
-    // recupere les données
     const precomputedId = precomputed._id.toString();
     const dataSetSize = await ctx.dataset.count();
     const databaseOutput = await ctx.dataset.find().stream();
 
-    const tarfileInput = databaseOutput
+    const streamWorflow = databaseOutput
         .pipe(
             ezs((entry, feed, self) => {
                 if (self.isLast()) {
@@ -429,31 +314,30 @@ export const processPrecomputed = async (precomputed, ctx) => {
             }),
         )
         .pipe(ezs('TARDump', { compress: true }))
-        .pipe(ezs('debug', { text: "apres tar" }))
-    const response = await fetch(precomputed.webServiceUrl, {
-        method: 'POST',
-        body: tarfileInput,
-        headers: {
-            'Content-Type': 'application/gzip',
-            'X-Webhook-Success': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${ctx.job.id}`,
-            'X-Webhook-Failure': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${ctx.job.id}&failure`,
-        },
-        compress: false,
-    });
-    if (response.status != 200) {
-        throw new Error(
-            `Calling token webservice error (${response.status}|${response.statusText})`,
-        );
-    }
+        .pipe(
+            ezs('URLConnect', {
+                url: precomputed.webServiceUrl,
+                retries: 1,
+                json: true,
+                encoder: 'transit',
+                header: [
+                    'Content-Type: application/gzip',
+                    `X-Webhook-Success: ${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}`,
+                    `X-Webhook-Failure: ${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}&failure`,
+                ],
+            }),
+        )
+        .pipe(ezs('dump'));
 
-    const token = JSON.stringify(await response.json());
+    const response = await streamToPromise(streamWorflow);
+    const token = response.join('');
 
     await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS, {
         callId: token,
     });
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Webservice response token obtained`,
+        message: `[Instance: ${ctx.tenant}] Webservice response token obtained : ${token}`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
@@ -533,9 +417,9 @@ export const setPrecomputedError = async (ctx, err) => {
     const logData = JSON.stringify({
         level: 'error',
         message:
-        err instanceof CancelWorkerError
-        ? `[Instance: ${ctx.tenant}] ${err?.message}`
-        : `[Instance: ${ctx.tenant}] Precomputing errored : ${err?.message}`,
+            err instanceof CancelWorkerError
+                ? `[Instance: ${ctx.tenant}] ${err?.message}`
+                : `[Instance: ${ctx.tenant}] Precomputing errored : ${err?.message}`,
         timestamp: new Date(),
         status: err instanceof CancelWorkerError ? CANCELED : ERROR,
     });
@@ -547,9 +431,9 @@ export const setPrecomputedError = async (ctx, err) => {
         isPrecomputing: false,
         success: false,
         message:
-        err instanceof CancelWorkerError
-        ? 'cancelled_precomputer'
-        : err?.message,
+            err instanceof CancelWorkerError
+                ? 'cancelled_precomputer'
+                : err?.message,
     });
 };
 

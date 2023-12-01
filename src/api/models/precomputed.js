@@ -52,13 +52,31 @@ export default async db => {
             .then(result => result.value);
     };
 
-    collection.updateStatus = async (id, status, data = {}) => {
+    collection.updateStatus = async (id, status, data = []) => {
         const newData = { status, ...data };
         collection.updateOne(
             {
                 $or: [{ _id: new ObjectId(id) }, { _id: id }],
             },
             { $set: newData },
+        );
+    };
+
+    collection.fixStatus = async (id, status) => {
+        collection.updateOne(
+            {
+                $or: [{ _id: new ObjectId(id) }, { _id: id }],
+            },
+            { $set: { status } },
+        );
+    };
+
+    collection.pushNewData = async (id, data = []) => {
+        collection.updateOne(
+            {
+                $or: [{ _id: new ObjectId(id) }, { _id: id }],
+            },
+            { $push: { data: { $each: data } } },
         );
     };
 
