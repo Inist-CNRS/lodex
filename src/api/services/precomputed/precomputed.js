@@ -69,7 +69,6 @@ export const getComputedFromWebservice = async ctx => {
     console.log('---------------------');
     console.log('getComputedFromWebservice');
     console.log('---------------------');
-    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
     const tenant = ctx.tenant;
     const { id: precomputedId, callId, askForPrecomputedJobId } = ctx.job.data;
 
@@ -152,7 +151,7 @@ export const getComputedFromWebservice = async ctx => {
                 encoder: 'transit',
             }),
         )
-        .pipe(ezs('group', { length: BATCH_SIZE }))
+        .pipe(ezs('group', { length: 100 })) // like import see. services/saveStream.js#L30
         .pipe(
             ezs(async (data, feed, self) => {
                 if (!self.size) {
