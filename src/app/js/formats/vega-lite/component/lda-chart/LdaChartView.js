@@ -9,12 +9,12 @@ import injectData from '../../../injectData';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import LdaChart from './LdaChart';
 
-const LdaChartView = props => {
-    const { values, topics } = useMemo(() => {
-        const rawValues = props.data.values ?? [];
+const LdaChartView = ({ data, colors }) => {
+    const { values } = data;
 
-        const topics = _.chain(rawValues)
-            .flatMap(o => Object.keys(o.value.topics))
+    const topics = useMemo(() => {
+        return _.chain(values)
+            .map(value => value.source)
             .uniq()
             .sort((a, b) =>
                 a.localeCompare(b, 'fr', {
@@ -25,57 +25,7 @@ const LdaChartView = props => {
                 }),
             )
             .value();
-
-        /**
-         * @type {Map<string, {word: string, word_weight: string}[]>}
-         */
-        const values = new Map();
-
-        for (const rawValue of rawValues) {
-            /**
-             * @type {any}
-             */
-            const topicsValues = rawValue.value.topics;
-            Object.entries(topicsValues).forEach(entry => {
-                const topic = entry[0];
-                /**
-                 * @type {{word: string, word_weight: string}[]}
-                 */
-                let currentWords = entry[1].words;
-                const previousWords = values.get(topic);
-
-                if (previousWords) {
-                    currentWords = currentWords.map(word => {
-                        const preWord = previousWords.find(
-                            preV => preV.word === word.word,
-                        );
-                        return {
-                            word: word.word,
-                            word_weight:
-                                parseFloat(word.word_weight) +
-                                parseFloat(preWord.word_weight),
-                        };
-                    });
-                    currentWords.sort((a, b) => {
-                        if (a.word_weight > b.word_weight) {
-                            return -1;
-                        }
-                        if (a.word_weight < b.word_weight) {
-                            return 1;
-                        }
-                        return 0;
-                    });
-                }
-
-                values.set(topic, currentWords);
-            });
-        }
-
-        return {
-            values: Object.fromEntries(values),
-            topics,
-        };
-    }, [props.data]);
+    }, [values]);
 
     return (
         <div style={{ margin: '12px' }}>
@@ -89,9 +39,9 @@ const LdaChartView = props => {
                     <Grid key={topic} item xs={6}>
                         <Paper style={{ padding: '6px' }}>
                             <LdaChart
-                                data={values[topic]}
-                                title={topic}
-                                colors={props.colors}
+                                data={values}
+                                topic={topic}
+                                colors={colors}
                             />
                         </Paper>
                     </Grid>

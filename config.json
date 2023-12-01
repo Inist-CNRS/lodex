@@ -32,7 +32,7 @@
         "hello-world",
         "istex-facet",
         "labeled-resources",
-        "lda",
+        "lda-precomputed",
         "pairing-with",
         "percentage-of",
         "refs",
@@ -101,7 +101,7 @@
         "https://query.wikidata.org/sparql",
         "http://www.lotico.com:3030/lotico/sparql"
     ],
-    "precomputedBaseUrlForDevelopment": "{public url of the server accessible from webhooks (ie ngrok)}",
+    "precomputedBaseUrlForDevelopment": "https://06d9-193-54-107-80.ngrok-free.app",
     "precomputedAnswerMode": "retrieve",
     "activateBullDashboard": false,
     "themes": ["void", "nougat", "inist", "istex"]

@@ -31,7 +31,6 @@ import labelizeFieldID from './labelizeFieldID';
 import buildContext from './buildContext';
 import aggregateQuery from './aggregateQuery';
 import LodexJoinQuery from './joinQuery';
-import LodexExtractOutput from './LodexExtractOutput';
 
 const funcs = {
     flattenPatch,
@@ -66,7 +65,6 @@ const funcs = {
     aggregateQuery,
     writeTurtle,
     LodexJoinQuery,
-    LodexExtractOutput,
     // aliases
     fixFlatten: flattenPatch.flattenPatch,
     LodexContext: disabled.disabled,

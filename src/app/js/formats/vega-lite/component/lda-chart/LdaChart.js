@@ -3,22 +3,26 @@ import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
-const LdaChart = ({ data, title, colors }) => {
+const LdaChart = ({ data, topic, colors }) => {
+    const values = useMemo(() => {
+        return data.filter(value => value.source === topic);
+    }, [data, topic]);
+
     const spec = useMemo(() => {
         return {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
             config: { legend: { disable: true } },
-            title: title,
+            title: topic,
             encoding: {
-                y: { field: 'word', type: 'nominal', sort: null },
-                x: { field: 'word_weight', type: 'quantitative' },
+                y: { field: 'target', type: 'nominal', sort: null },
+                x: { field: 'weight', type: 'quantitative', sort: null },
             },
             layer: [
                 {
                     mark: 'bar',
                     encoding: {
                         color: {
-                            field: 'word_weight',
+                            field: 'weight',
                             scale: { range: colors.split(' ') },
                         },
                     },
@@ -32,9 +36,9 @@ const LdaChart = ({ data, title, colors }) => {
                     },
                     encoding: {
                         text: {
-                            field: 'word_weight',
+                            field: 'weight',
                             type: 'quantitative',
-                            format: '.2f',
+                            format: '.4f',
                         },
                     },
                 },
@@ -42,12 +46,12 @@ const LdaChart = ({ data, title, colors }) => {
             width: 'container',
             height: { step: 20 },
         };
-    }, [data, title, colors]);
+    }, [values, topic, colors]);
     return (
         <CustomActionVegaLite
             spec={spec}
             data={{
-                values: data,
+                values,
             }}
             injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
         />
@@ -55,8 +59,8 @@ const LdaChart = ({ data, title, colors }) => {
 };
 
 LdaChart.propTypes = {
-    data: PropTypes.any.isRequired,
-    title: PropTypes.string.isRequired,
+    data: PropTypes.array.isRequired,
+    topic: PropTypes.string.isRequired,
     colors: PropTypes.string.isRequired,
 };
 
