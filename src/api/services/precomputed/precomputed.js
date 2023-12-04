@@ -591,6 +591,9 @@ export const startGetPrecomputed = async ctx => {
 };
 
 export const setPrecomputedError = async (ctx, err) => {
+    console.log('---------------------');
+    console.log('setPrecomputedError tenant', ctx.tenant);
+    console.log('---------------------');
     const id = ctx.job?.data?.id;
     await ctx.precomputed.updateStatus(
         id,
