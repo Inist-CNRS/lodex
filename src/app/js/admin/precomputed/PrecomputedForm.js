@@ -111,15 +111,7 @@ export const renderStatus = (status, polyglot, startedAt = null) => {
         );
     }
     if (status === IN_PROGRESS) {
-        return (
-            <Chip
-                component="span"
-                label={`${polyglot.t(
-                    'precomputed_status_running',
-                )} (${getDisplayTimeStartedAt(startedAt)})`}
-                color="info"
-            />
-        );
+        return <ProgressChip polyglot={polyglot} startedAt={startedAt} />;
     }
 
     if (status === PAUSED) {
@@ -169,6 +161,30 @@ export const renderStatus = (status, polyglot, startedAt = null) => {
             sx={{ backgroundColor: 'neutral' }}
         />
     );
+};
+
+export const ProgressChip = ({ polyglot, startedAt }) => {
+    const [spentTime, setSpentTime] = useState(
+        getDisplayTimeStartedAt(startedAt),
+    );
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setSpentTime(getDisplayTimeStartedAt(startedAt));
+        }, 59000);
+        return () => clearInterval(interval);
+    }, []);
+    return (
+        <Chip
+            component="span"
+            label={`${polyglot.t('precomputed_status_running')} (${spentTime})`}
+            color="info"
+        />
+    );
+};
+
+ProgressChip.propTypes = {
+    polyglot: polyglotPropTypes.isRequired,
+    startedAt: PropTypes.string,
 };
 
 export const renderRunButton = (
