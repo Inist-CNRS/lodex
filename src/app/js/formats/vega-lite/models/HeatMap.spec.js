@@ -118,7 +118,6 @@ describe('HeatMap', () => {
                     type: 'nominal',
                 },
             },
-            height: 200,
             layer: [
                 {
                     encoding: {
@@ -199,7 +198,8 @@ describe('HeatMap', () => {
                     ],
                 },
             ],
-            width: 200,
+            width: 'container',
+            height: 'container',
         });
     });
 });
