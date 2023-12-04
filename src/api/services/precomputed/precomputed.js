@@ -625,6 +625,14 @@ export const setPrecomputedError = async (ctx, err) => {
     });
 };
 
+export const restorePrecomputed = async ctx => {
+    // mongo update all precomputed to set status to empty and clean possible data
+    await ctx.precomputed.updateMany(
+        {},
+        { $set: { status: '' }, $unset: { data: '', jobId: '', callId: '' } },
+    );
+};
+
 const LISTENERS = [];
 export const addPrecomputedJobListener = listener => {
     LISTENERS.push(listener);

@@ -23,6 +23,7 @@ import { ENRICHER } from '../../workers/enricher';
 import { ObjectID } from 'mongodb';
 import generateUid from '../../services/generateUid';
 import { restoreEnrichments } from '../../services/enrichment/enrichment';
+import { restorePrecomputed } from '../../services/precomputed/precomputed';
 import { PRECOMPUTER } from '../../workers/precomputer';
 
 const sortByFieldUri = (a, b) =>
@@ -76,6 +77,7 @@ export const restoreFields = (fileStream, ctx) => {
                 ctx.field.castIds(),
                 ctx.subresource.castIds(),
                 restoreEnrichments(ctx),
+                restorePrecomputed(ctx),
             ]),
         );
 };
@@ -271,7 +273,7 @@ export const exportFields = async ctx => {
         for (const collection of collections) {
             let projection = {};
             if (collection === 'precomputed') {
-                projection = { data: 0 };
+                projection = { data: 0, status: 0, callId: 0, jobId: 0 };
             }
 
             const docs = await ctx.db
