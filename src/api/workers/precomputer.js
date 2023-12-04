@@ -19,6 +19,9 @@ export const processPrecomputed = (job, done) => {
             done();
         })
         .catch(err => {
+            console.log('---------------------')
+            console.log('Error while processing precomputed job', err);
+            console.log('---------------------')
             handlePrecomputedError(job, err);
             done(err);
         });
