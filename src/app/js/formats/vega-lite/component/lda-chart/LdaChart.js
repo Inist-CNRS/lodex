@@ -14,7 +14,12 @@ const LdaChart = ({ data, topic, colors }) => {
             config: { legend: { disable: true } },
             title: topic,
             encoding: {
-                y: { field: 'target', type: 'nominal', sort: null },
+                y: {
+                    title: 'word',
+                    field: 'target',
+                    type: 'nominal',
+                    sort: null,
+                },
                 x: { field: 'weight', type: 'quantitative', sort: null },
             },
             layer: [

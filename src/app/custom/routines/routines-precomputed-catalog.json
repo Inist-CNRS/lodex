@@ -6,7 +6,7 @@
         "recommendedWith": ["Network", "HeatMap"]
     },
     {
-        "id": "r-lda",
+        "id": "r-lda-precomputed",
         "url": "/api/run/lda-precomputed/",
         "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/lda",
         "recommendedWith": []
