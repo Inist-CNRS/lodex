@@ -75,4 +75,16 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
+export const VegaLiteAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: props.dataset.values ?? [],
+        },
+    };
+})(VegaLiteView);
+
 export default compose(injectData(), connect(mapStateToProps))(VegaLiteView);

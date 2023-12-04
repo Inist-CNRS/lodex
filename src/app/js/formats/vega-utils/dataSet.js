@@ -50,3 +50,11 @@ export const MapFranceIdValue = {
         { _id: 'FR.HM', value: 15 },
     ],
 };
+
+export const AllDataSets = [
+    StandardIdValue,
+    StandardSourceTargetWeight,
+    MapSourceTargetWeight,
+    MapIdValue,
+    MapFranceIdValue,
+];

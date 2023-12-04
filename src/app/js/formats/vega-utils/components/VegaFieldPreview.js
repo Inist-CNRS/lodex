@@ -4,11 +4,7 @@ import translate from 'redux-polyglot/translate';
 import { vegaAdminStyle } from '../adminStyles';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { MenuItem, Select } from '@mui/material';
-import {
-    MapSourceTargetWeight,
-    StandardIdValue,
-    StandardSourceTargetWeight,
-} from '../dataSet';
+import { AllDataSets } from '../dataSet';
 
 const VegaFieldPreview = ({
     p,
@@ -80,11 +76,7 @@ const VegaFieldPreview = ({
 
 VegaFieldPreview.defaultProps = {
     showDatasetsSelector: true,
-    datasets: [
-        StandardIdValue,
-        StandardSourceTargetWeight,
-        MapSourceTargetWeight,
-    ],
+    datasets: AllDataSets,
 };
 
 VegaFieldPreview.propTypes = {

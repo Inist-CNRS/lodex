@@ -7,7 +7,12 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 import VegaAdvancedMode from '../vega-utils/components/VegaAdvancedMode';
-import VegaFieldSet from '../vega-utils/components/VegaFieldSet';
+import {
+    VegaChartParamsFieldSet,
+    VegaDataParamsFieldSet,
+} from '../vega-utils/components/VegaFieldSet';
+import VegaFieldPreview from '../vega-utils/components/VegaFieldPreview';
+import { VegaLiteAdminView } from './VegaLiteView';
 
 export const defaultArgs = {
     params: {
@@ -62,7 +67,7 @@ const VegaLiteAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaFieldSet title={p.t('vega_chart_data_params')}>
+            <VegaDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={p}
@@ -72,8 +77,8 @@ const VegaLiteAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaFieldSet>
-            <VegaFieldSet title={p.t('vega_chart_params')}>
+            </VegaDataParamsFieldSet>
+            <VegaChartParamsFieldSet>
                 <Box width="100%">
                     <VegaAdvancedMode
                         value={formattedSpecTemplate}
@@ -113,7 +118,11 @@ const VegaLiteAdmin = props => {
                         endAdornment: '%',
                     }}
                 />
-            </VegaFieldSet>
+            </VegaChartParamsFieldSet>
+            <VegaFieldPreview
+                args={args}
+                PreviewComponent={VegaLiteAdminView}
+            />
         </Box>
     );
 };
