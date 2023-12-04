@@ -35,6 +35,9 @@ export class Progress {
     }
 
     finish(tenant) {
+        console.log('---------------------');
+        console.log('finish');
+        console.log('---------------------');
         if (this[tenant].status === ERROR) {
             return;
         }
