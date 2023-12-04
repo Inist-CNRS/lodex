@@ -30,6 +30,7 @@ const SourceValuePrecomputed = ({
         });
 
         if (
+            !precomputedSelected.data ||
             precomputedSelected.data.length === 0 ||
             precomputedSelected.status !== 'FINISHED'
         ) {
