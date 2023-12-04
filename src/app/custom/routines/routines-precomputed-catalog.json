@@ -6,10 +6,10 @@
         "recommendedWith": ["Network", "HeatMap"]
     },
     {
-        "id": "r-lda-precomputed",
-        "url": "/api/run/lda-precomputed/",
-        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/lda",
-        "recommendedWith": []
+        "id": "r-clustered-precomputed",
+        "url": "/api/run/clustered-precomputed/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/clustered-precomputed",
+        "recommendedWith": ["ClusteredChart"]
     },
     {
         "id": "r-tree-by",

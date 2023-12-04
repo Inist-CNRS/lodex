@@ -7,9 +7,9 @@ import { Grid, Paper } from '@mui/material';
 
 import injectData from '../../../injectData';
 import { field as fieldPropTypes } from '../../../../propTypes';
-import LdaChart from './LdaChart';
+import ClusteredChart from './ClusteredChart';
 
-const LdaChartView = ({ data, colors }) => {
+const ClusteredChartView = ({ data, colors, xTitle, yTitle }) => {
     const { values } = data;
 
     const topics = useMemo(() => {
@@ -38,10 +38,14 @@ const LdaChartView = ({ data, colors }) => {
                 {topics.map(topic => (
                     <Grid key={topic} item xs={6}>
                         <Paper style={{ padding: '6px' }}>
-                            <LdaChart
+                            <ClusteredChart
                                 data={values}
                                 topic={topic}
-                                colors={colors}
+                                params={{
+                                    colors,
+                                    xTitle,
+                                    yTitle,
+                                }}
                             />
                         </Paper>
                     </Grid>
@@ -66,11 +70,16 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-LdaChartView.propTypes = {
+ClusteredChartView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
     data: PropTypes.any,
     colors: PropTypes.string.isRequired,
+    xTitle: PropTypes.string,
+    yTitle: PropTypes.string,
 };
 
-export default compose(injectData(), connect(mapStateToProps))(LdaChartView);
+export default compose(
+    injectData(),
+    connect(mapStateToProps),
+)(ClusteredChartView);

@@ -3,23 +3,19 @@ import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
-const LdaChart = ({ data, topic, colors }) => {
+const ClusteredChart = ({ data, topic, params }) => {
     const values = useMemo(() => {
         return data.filter(value => value.source === topic);
     }, [data, topic]);
 
     const spec = useMemo(() => {
-        return {
+        const { colors, xTitle, yTitle } = params;
+        const specToReturn = {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
             config: { legend: { disable: true } },
             title: topic,
             encoding: {
-                y: {
-                    title: 'word',
-                    field: 'target',
-                    type: 'nominal',
-                    sort: null,
-                },
+                y: { field: 'target', type: 'nominal', sort: null },
                 x: { field: 'weight', type: 'quantitative', sort: null },
             },
             layer: [
@@ -51,7 +47,17 @@ const LdaChart = ({ data, topic, colors }) => {
             width: 'container',
             height: { step: 20 },
         };
-    }, [values, topic, colors]);
+
+        if (xTitle && xTitle !== '') {
+            specToReturn.encoding.x.title = xTitle;
+        }
+
+        if (yTitle && yTitle !== '') {
+            specToReturn.encoding.y.title = yTitle;
+        }
+
+        return specToReturn;
+    }, [values, topic, params]);
     return (
         <CustomActionVegaLite
             spec={spec}
@@ -63,10 +69,14 @@ const LdaChart = ({ data, topic, colors }) => {
     );
 };
 
-LdaChart.propTypes = {
+ClusteredChart.propTypes = {
     data: PropTypes.array.isRequired,
     topic: PropTypes.string.isRequired,
-    colors: PropTypes.string.isRequired,
+    params: PropTypes.shape({
+        colors: PropTypes.string.isRequired,
+        xTitle: PropTypes.string,
+        yTitle: PropTypes.string,
+    }),
 };
 
-export default LdaChart;
+export default ClusteredChart;

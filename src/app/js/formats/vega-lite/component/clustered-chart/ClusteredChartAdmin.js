@@ -1,7 +1,7 @@
 import React from 'react';
 import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
-import { Box } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
@@ -12,12 +12,20 @@ export const defaultArgs = {
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
 };
 
-const LdaChartAdmin = props => {
+const ClusteredChartAdmin = props => {
     const { args, p } = props;
-    const { colors } = args;
+    const { colors, xTitle, yTitle } = args;
 
     const handleColors = colors => {
         updateAdminArgs('colors', colors || defaultArgs.colors, props);
+    };
+
+    const handleXAxisTitle = event => {
+        updateAdminArgs('xTitle', event.target.value, props);
+    };
+
+    const handleYAxisTitle = event => {
+        updateAdminArgs('yTitle', event.target.value, props);
     };
 
     return (
@@ -32,20 +40,34 @@ const LdaChartAdmin = props => {
                 onChange={handleColors}
                 polyglot={p}
             />
+            <TextField
+                fullWidth
+                label={p.t('format_x_axis_title')}
+                onChange={handleXAxisTitle}
+                value={xTitle}
+            />
+            <TextField
+                fullWidth
+                label={p.t('format_y_axis_title')}
+                onChange={handleYAxisTitle}
+                value={yTitle}
+            />
         </Box>
     );
 };
 
-LdaChartAdmin.defaultProps = {
+ClusteredChartAdmin.defaultProps = {
     args: defaultArgs,
 };
 
-LdaChartAdmin.propTypes = {
+ClusteredChartAdmin.propTypes = {
     args: PropTypes.shape({
         colors: PropTypes.string,
+        xTitle: PropTypes.string,
+        yTitle: PropTypes.string,
     }),
     onChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-export default translate(LdaChartAdmin);
+export default translate(ClusteredChartAdmin);
