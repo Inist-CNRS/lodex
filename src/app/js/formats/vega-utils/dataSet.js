@@ -31,3 +31,22 @@ export const MapSourceTargetWeight = {
         { source: 'FRA', target: 'TUN', weight: 15 },
     ],
 };
+
+export const MapIdValue = {
+    name: 'Map - _id / value',
+    values: [
+        { _id: 'JPN', value: 28 },
+        { _id: 'GBR', value: 55 },
+        { _id: 'CAN', value: 43 },
+        { _id: 'TUN', value: 15 },
+    ],
+};
+
+export const MapFranceIdValue = {
+    name: 'Map France - _id / value',
+    values: [
+        { _id: 'FR.VG', value: 28 },
+        { _id: 'FR.MM', value: 55 },
+        { _id: 'FR.HM', value: 15 },
+    ],
+};

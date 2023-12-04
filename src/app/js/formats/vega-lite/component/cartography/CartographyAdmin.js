@@ -23,6 +23,9 @@ import {
     VegaChartParamsFieldSet,
     VegaDataParamsFieldSet,
 } from '../../../vega-utils/components/VegaFieldSet';
+import { MapFranceIdValue, MapIdValue } from '../../../vega-utils/dataSet';
+import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
+import { CartographyAdminView } from './CartographyView';
 
 export const defaultArgs = {
     params: {
@@ -200,6 +203,15 @@ const CartographyAdmin = props => {
                     </>
                 )}
             </VegaChartParamsFieldSet>
+            <VegaFieldPreview
+                args={args}
+                PreviewComponent={CartographyAdminView}
+                datasets={
+                    worldPosition === MAP_FRANCE
+                        ? [MapFranceIdValue, MapIdValue]
+                        : [MapIdValue, MapFranceIdValue]
+                }
+            />
         </Box>
     );
 };

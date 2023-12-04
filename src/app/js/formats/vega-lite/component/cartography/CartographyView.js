@@ -123,4 +123,16 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
+export const CartographyAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: props.dataset.values ?? [],
+        },
+    };
+})(CartographyView);
+
 export default compose(injectData(), connect(mapStateToProps))(CartographyView);
