@@ -13,8 +13,13 @@ import {
     Grid,
     CircularProgress,
     Typography,
+    Tabs,
+    Tab,
 } from '@mui/material';
 import PublishIcon from '@mui/icons-material/Publish';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import LinkIcon from '@mui/icons-material/Link';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
@@ -40,7 +45,15 @@ const styles = {
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
-        marginTop: '48px',
+        marginTop: '24px',
+    },
+    tabs: {
+        marginBottom: '12px',
+        borderBottom: 'solid 1px #00000018',
+    },
+    formDesc: {
+        textAlign: 'center',
+        marginBottom: '24px',
     },
     form: {
         display: 'flex',
@@ -48,9 +61,6 @@ const styles = {
         position: 'relative',
         alignItems: 'center',
         margin: '0 40px',
-        '@media (min-width: 992px)': {
-            flexDirection: 'row',
-        },
     },
     loader: {
         minHeight: '220px',
@@ -129,12 +139,17 @@ export const UploadComponent = ({
     loaders,
     isFirstFile,
 }) => {
+    const [tab, setTab] = useState(0);
     const [files, setFiles] = useState([]);
     const [dropping, setDropping] = useState(false);
     const [useUrlForUpload, setUseUrlForUpload] = useState(false);
     const [isOpenPopupConfirm, setIsOpenPopupConfirm] = useState(false);
     const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
+
+    const handleImportType = (_, newTab) => {
+        setTab(newTab);
+    };
 
     const handleAdding = () => {
         setDropping(true);
@@ -194,6 +209,32 @@ export const UploadComponent = ({
 
     return (
         <Box sx={styles.container}>
+            {/* Tabs selector use to select the import type */}
+            <Box sx={styles.tabs}>
+                <Tabs
+                    value={tab}
+                    onChange={handleImportType}
+                    variant="fullWidth"
+                >
+                    <Tab
+                        icon={<UploadFileIcon />}
+                        iconPosition="start"
+                        label="fichier"
+                    />
+                    <Tab
+                        icon={<LinkIcon />}
+                        iconPosition="start"
+                        label="lien web"
+                    />
+                    <Tab
+                        icon={<EditNoteIcon />}
+                        iconPosition="start"
+                        label="saisie libre"
+                    />
+                </Tabs>
+            </Box>
+
+            {/* Show error */}
             {error ? (
                 <Alert>
                     <p>Error uploading given file: </p>
@@ -202,6 +243,8 @@ export const UploadComponent = ({
             ) : (
                 <span />
             )}
+
+            {/* Display tabs content */}
             <Box
                 sx={{
                     ...styles.form,
@@ -210,59 +253,78 @@ export const UploadComponent = ({
                     '& .dropzonePreview': styles.dropzonePreview,
                 }}
             >
-                {dropping ? (
-                    <DroppingLoader text={polyglot.t('inspect_file')} />
-                ) : (
-                    <DropzoneAreaBase
-                        fileObjects={files}
-                        filesLimit={1}
-                        maxFileSize={1 * 1024 * 1024 * 1024}
-                        dropzoneText={
-                            <Typography variant="h6">
-                                {polyglot.t('import_file_text')}
-                            </Typography>
-                        }
-                        dropzoneProps={{
-                            disabled: !!url,
-                        }}
-                        dropzoneClass={`dropzone ${!!url &&
-                            'disabledDropzone'}`}
-                        showAlerts={['error']}
-                        showPreviewsInDropzone
-                        showFileNamesInPreview
-                        previewGridClasses={{
-                            container: 'dropzonePreview',
-                        }}
-                        useChipsForPreview
-                        alertSnackbarProps={{
-                            anchorOrigin: {
-                                vertical: 'bottom',
-                                horizontal: 'center',
-                            },
-                        }}
-                        onAdd={fileObjs => handleFileAdded(fileObjs)}
-                        onDrop={handleAdding}
-                        onDropRejected={handleAddRejected}
-                        onDelete={() => setFiles([])}
-                    />
-                )}
-                <Box sx={styles.divider}>
-                    <Typography variant="h6" sx={styles.dividerLabel}>
-                        {polyglot.t('or')}
-                    </Typography>
-                </Box>
-                <TextField
-                    fullWidth
-                    sx={styles.input}
-                    value={url}
-                    onChange={onChangeUrl}
-                    placeholder="URL"
-                    error={!!url && !isUrlValid}
-                    helperText={url && !isUrlValid && polyglot.t('invalid_url')}
-                    disabled={!!files.length}
-                    label={polyglot.t('use_url')}
-                    variant="standard"
-                />
+                {/* Display the content of the first tab */}
+                {tab === 0 ? (
+                    <>
+                        <p style={styles.formDesc}>
+                            {polyglot.t('upload_file')}
+                        </p>
+                        {dropping ? (
+                            <DroppingLoader text={polyglot.t('inspect_file')} />
+                        ) : (
+                            <DropzoneAreaBase
+                                fileObjects={files}
+                                filesLimit={1}
+                                maxFileSize={1 * 1024 * 1024 * 1024}
+                                dropzoneText={
+                                    <Typography variant="h6">
+                                        {polyglot.t('import_file_text')}
+                                    </Typography>
+                                }
+                                dropzoneProps={{
+                                    disabled: !!url,
+                                }}
+                                dropzoneClass={`dropzone ${!!url &&
+                                    'disabledDropzone'}`}
+                                showAlerts={['error']}
+                                showPreviewsInDropzone
+                                showFileNamesInPreview
+                                previewGridClasses={{
+                                    container: 'dropzonePreview',
+                                }}
+                                useChipsForPreview
+                                alertSnackbarProps={{
+                                    anchorOrigin: {
+                                        vertical: 'bottom',
+                                        horizontal: 'center',
+                                    },
+                                }}
+                                onAdd={fileObjs => handleFileAdded(fileObjs)}
+                                onDrop={handleAdding}
+                                onDropRejected={handleAddRejected}
+                                onDelete={() => setFiles([])}
+                            />
+                        )}
+                    </>
+                ) : null}
+
+                {/* Display the content of the second tab */}
+                {tab === 1 ? (
+                    <>
+                        <p>{polyglot.t('upload_via_url')}</p>
+                        <TextField
+                            fullWidth
+                            sx={styles.input}
+                            value={url}
+                            onChange={onChangeUrl}
+                            placeholder="URL"
+                            error={!!url && !isUrlValid}
+                            helperText={
+                                url && !isUrlValid && polyglot.t('invalid_url')
+                            }
+                            disabled={!!files.length}
+                            label={polyglot.t('use_url')}
+                            variant="standard"
+                        />
+                    </>
+                ) : null}
+
+                {/* Display the content of the third tab */}
+                {tab === 2 ? (
+                    <>
+                        <p>{polyglot.t('upload_via_text')}</p>
+                    </>
+                ) : null}
             </Box>
 
             <LoaderSelect
