@@ -319,6 +319,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
                 retries: 1,
                 json: true,
                 encoder: 'transit',
+                timeout: 60000,
                 header: [
                     'Content-Type: application/gzip',
                     `X-Webhook-Success: ${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}`,
