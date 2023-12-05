@@ -101,7 +101,6 @@
         "http://www.lotico.com:3030/lotico/sparql"
     ],
     "precomputedBaseUrlForDevelopment": "{public url of the server accessible from webhooks (ie ngrok)}",
-    "precomputedAnswerMode": "retrieve",
     "activateBullDashboard": false,
     "themes": ["void", "nougat", "inist", "istex"]
 }
