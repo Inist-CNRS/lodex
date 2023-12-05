@@ -19,9 +19,6 @@ export const processPrecomputed = (job, done) => {
             done();
         })
         .catch(err => {
-            console.log('---------------------');
-            console.log('Error while processing precomputed job', err);
-            console.log('---------------------');
             handlePrecomputedError(job, err);
             done(err);
         });
@@ -35,17 +32,11 @@ const startJobPrecomputed = async job => {
     const ctx = await prepareContext({ job });
 
     if (job.data.action === 'askForPrecomputed') {
-        console.log('---------------------');
-        console.log('startAskForPrecomputed');
-        console.log('---------------------');
         await startAskForPrecomputed(ctx);
         return;
     }
 
     if (job.data.action === 'getPrecomputed') {
-        console.log('---------------------');
-        console.log('startGetPrecomputed');
-        console.log('---------------------');
         await startGetPrecomputed(ctx);
         return;
     }
@@ -57,10 +48,6 @@ const handlePrecomputedError = async (job, err) => {
 };
 
 const prepareContext = async ctx => {
-    console.log('---------------------');
-    console.log('prepareContext', ctx.job.data);
-    console.log(ctx.job);
-    console.log('---------------------');
     ctx.tenant = ctx.job.data.tenant;
     await repositoryMiddleware(ctx, () => Promise.resolve());
     ctx.configTenant = await ctx.configTenantCollection.findLast();

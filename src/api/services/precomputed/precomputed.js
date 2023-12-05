@@ -306,9 +306,6 @@ const extractResultFromZip = async (tenant, job, room, data) => {
 };
 
 export const getComputedFromWebservice = async ctx => {
-    console.log('---------------------');
-    console.log('getComputedFromWebservice');
-    console.log('---------------------');
     const tenant = ctx.tenant;
     const { id: precomputedId, callId, askForPrecomputedJobId } = ctx.job.data;
 
@@ -318,6 +315,7 @@ export const getComputedFromWebservice = async ctx => {
     } = await ctx.precomputed.findOneById(precomputedId);
     const webServiceBaseURL = new RegExp('.*\\/').exec(webServiceUrl)[0];
 
+    progress.initialize(ctx.tenant);
     progress.start(ctx.tenant, {
         status: PRECOMPUTING,
         target: 100,
@@ -325,11 +323,6 @@ export const getComputedFromWebservice = async ctx => {
         subLabel: precomputedName,
         type: 'precomputer',
     });
-
-    console.log('---------------------');
-    console.log('progress.start');
-    console.log('---------------------');
-
 
     progress.setProgress(tenant, 55);
     if (!tenant || !precomputedId || !callId) {
@@ -373,9 +366,6 @@ export const getComputedFromWebservice = async ctx => {
 
     //WS doc here:
     //openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20coprus%20compress%C3%A9#/data-computer/post-v1-collect
-    console.log('---------------------');
-    console.log('FETCH ANSWER_ROUTE');
-    console.log('---------------------');
     try {
         const ROUTE = { RETRIEVE: 'retrieve', COLLECT: 'collect' };
         const response = await fetch(`${webServiceBaseURL}${ANSWER_ROUTE}`, {
@@ -406,9 +396,20 @@ export const getComputedFromWebservice = async ctx => {
                 );
             }
 
-            await ctx.precomputed.updateStatus(precomputedId, FINISHED, {
-                data,
-            });
+            const { error } = await ctx.precomputed.updateStatus(
+                precomputedId,
+                FINISHED,
+                {
+                    data,
+                },
+            );
+
+            if (error) {
+                throw new Error(
+                    `Precompute webhook error: retrieve has failed ${error.message}`,
+                );
+            }
+
             await ctx.precomputed.updateStartedAt(precomputedId, null);
 
             askForPrecomputedJob.progress(100);
@@ -417,9 +418,7 @@ export const getComputedFromWebservice = async ctx => {
                 isPrecomputing: false,
                 success: !isFailed,
             });
-            console.log('ASK FOR FINISH');
             progress.finish(tenant);
-            console.log('FINISH');
             const logData = JSON.stringify({
                 level: 'ok',
                 message: `[Instance: ${tenant}] Precomputing data finished`,
@@ -568,7 +567,7 @@ export const setPrecomputedJobId = async (ctx, precomputedID, job) => {
 export const startAskForPrecomputed = async ctx => {
     const id = ctx.job?.data?.id;
     const precomputed = await ctx.precomputed.findOneById(id);
-
+    progress.initialize(ctx.tenant);
     progress.start(ctx.tenant, {
         status: PRECOMPUTING,
         target: 100,
@@ -603,10 +602,6 @@ export const startGetPrecomputed = async ctx => {
 };
 
 export const setPrecomputedError = async (ctx, err) => {
-    console.log('---------------------');
-    console.log('setPrecomputedError tenant', ctx.tenant);
-    console.log('setPrecomputedError tenant', ctx.tenant);
-    console.log('---------------------');
     const id = ctx.job?.data?.id;
     await ctx.precomputed.updateStatus(
         id,

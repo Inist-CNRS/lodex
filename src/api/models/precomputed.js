@@ -54,12 +54,17 @@ export default async db => {
 
     collection.updateStatus = async (id, status, data = {}) => {
         const newData = { status, ...data };
-        collection.updateOne(
-            {
-                $or: [{ _id: new ObjectId(id) }, { _id: id }],
-            },
-            { $set: newData },
-        );
+        try {
+            const resUpdate = await collection.updateOne(
+                {
+                    $or: [{ _id: new ObjectId(id) }, { _id: id }],
+                },
+                { $set: newData },
+            );
+            return resUpdate;
+        } catch (err) {
+            return { error: err };
+        }
     };
 
     collection.updateStartedAt = async (id, startedAt) => {
