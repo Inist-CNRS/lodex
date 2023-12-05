@@ -147,7 +147,7 @@ export const UploadComponent = ({
     const [tab, setTab] = useState(0);
     const [files, setFiles] = useState([]);
     const [dropping, setDropping] = useState(false);
-    const [useUrlForUpload, setUseUrlForUpload] = useState(false);
+    const [textInput, setTextInput] = useState('');
     const [isOpenPopupConfirm, setIsOpenPopupConfirm] = useState(false);
     const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
@@ -174,43 +174,33 @@ export const UploadComponent = ({
         });
     };
 
-    const handleFileUploaded = () => {
-        if (files.length === 0) return;
-        if (!isFirstFile) {
-            setIsOpenPopupConfirm(true);
-        } else {
-            onConfirm();
+    const handleConfirm = (...params) => {
+        // 0 = File, 1 = URL and 2 = TEXT
+        switch (tab) {
+            case 0: {
+                if (files.length === 0) return;
+                onFileLoad(files[0].file);
+                break;
+            }
+            case 1: {
+                if (files.length !== 0 || !url || !isUrlValid) return;
+                onUrlUpload(...params);
+                break;
+            }
         }
-    };
 
-    const onConfirm = (...params) => {
-        if (useUrlForUpload) {
-            onUrlUpload(...params);
-        } else {
-            onFileLoad(files[0].file);
-        }
-
-        if (path != successRedirectPath) {
+        if (path.toString() !== successRedirectPath) {
             history.push(successRedirectPath);
         }
     };
 
-    const handleUrlAdded = (...params) => {
+    const handleSubmit = (...params) => {
         if (!isFirstFile) {
             setIsOpenPopupConfirm(true);
-        } else {
-            onConfirm(...params);
+            return;
         }
+        handleConfirm(...params);
     };
-
-    useEffect(() => {
-        if (files.length > 0) {
-            setUseUrlForUpload(false);
-        }
-        if (files.length === 0 && url && isUrlValid) {
-            setUseUrlForUpload(true);
-        }
-    }, [files, url, isUrlValid]);
 
     return (
         <Box sx={styles.container}>
@@ -338,8 +328,8 @@ export const UploadComponent = ({
                             p={polyglot}
                             mode="json"
                             input={{
-                                value: '',
-                                onChange: () => {},
+                                value: textInput,
+                                onChange: setTextInput,
                             }}
                         />
                     </>
@@ -362,7 +352,7 @@ export const UploadComponent = ({
                     (files.length === 0 && (!url || !isUrlValid)) ||
                     !loaderName
                 }
-                onClick={useUrlForUpload ? handleUrlAdded : handleFileUploaded}
+                onClick={handleSubmit}
                 startIcon={<PublishIcon />}
             >
                 {polyglot.t('upload_data')}
@@ -370,7 +360,7 @@ export const UploadComponent = ({
 
             <PopupConfirmUpload
                 history={history}
-                onConfirm={onConfirm}
+                onConfirm={handleConfirm}
                 isOpen={isOpenPopupConfirm}
                 setIsOpenPopupConfirm={setIsOpenPopupConfirm}
             />
