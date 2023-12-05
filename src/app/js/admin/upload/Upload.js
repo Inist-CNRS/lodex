@@ -28,6 +28,7 @@ import LoaderSelect from './LoaderSelect';
 import PopupConfirmUpload from './PopupConfirmUpload';
 import { toast } from '../../../../common/tools/toast';
 import adminTheme from '../../../custom/adminTheme';
+import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 
 const styles = {
     button: {
@@ -40,6 +41,10 @@ const styles = {
         '@media (min-width: 992px)': {
             marginBottom: '16px',
         },
+    },
+    textInput: {
+        width: '100%',
+        height: '50vh',
     },
     container: {
         width: '100%',
@@ -60,7 +65,7 @@ const styles = {
         flexDirection: 'column',
         position: 'relative',
         alignItems: 'center',
-        margin: '0 40px',
+        margin: '0 10%',
     },
     loader: {
         minHeight: '220px',
@@ -301,7 +306,9 @@ export const UploadComponent = ({
                 {/* Display the content of the second tab */}
                 {tab === 1 ? (
                     <>
-                        <p>{polyglot.t('upload_via_url')}</p>
+                        <p style={styles.formDesc}>
+                            {polyglot.t('upload_via_url')}
+                        </p>
                         <TextField
                             fullWidth
                             sx={styles.input}
@@ -322,7 +329,19 @@ export const UploadComponent = ({
                 {/* Display the content of the third tab */}
                 {tab === 2 ? (
                     <>
-                        <p>{polyglot.t('upload_via_text')}</p>
+                        <p style={styles.formDesc}>
+                            {polyglot.t('upload_via_text')}
+                        </p>
+                        <FormSourceCodeField
+                            style={styles.textInput}
+                            enableModeSelector
+                            p={polyglot}
+                            mode="json"
+                            input={{
+                                value: '',
+                                onChange: () => {},
+                            }}
+                        />
                     </>
                 ) : null}
             </Box>
