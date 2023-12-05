@@ -1011,6 +1011,6 @@ vega_json_error	The json syntax of Vega Lite specification is wrong!	La syntaxe 
 vega_variable_list	You can use these variables to set the size dynamically:	Vous pouvez utiliser ces variables pour définir la taille de manière dynamique :
 vega_variable_width	Replace with the width of the chart container	Remplacée par la largeur du conteneur du graphique
 vega_variable_height	Replace with the height of the chart container	Remplacée par la hauteur du conteneur du graphique
-"formatJsonDebug"	"Other - Json and Debug Format"	"Autre - Format Json et Débugage"
+"formatJsonDebug"	"Other - Json and Debug Format"	"Autre - Format Json et Débogage"
 "formatJsonDebugDescription"	"This format allow to display simple json value or debug values as json"	"Ce format permet d'afficher des valeurs json simples ou des valeurs de débogage sous forme de json."
 "debugMode"	"Enable debugging"	"Activer le débogage"
