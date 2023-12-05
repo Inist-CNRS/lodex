@@ -3,6 +3,7 @@ import localConfig from '../../../../config.json';
 import { getHost } from '../../../common/uris';
 import streamToPromise from 'stream-to-promise';
 import ezs from '@ezs/core';
+import fs from 'fs';
 import { Readable } from 'stream';
 import {
     PENDING as PRECOMPUTED_PENDING,
@@ -165,11 +166,31 @@ export const getComputedFromWebservice = async ctx => {
                     );
                     return feed.end();
                 }
-                await ctx.precomputed.pushNewData(precomputedId, data);
-                feed.end();
+                //await ctx.precomputed.pushNewData(precomputedId, data);
+                //feed.end();
+            }),
+        )
+        .pipe(
+            ezs('FILESave', {
+                location: './webservice_temp/',
+                identifier: `/${precomputedId}-_${Date.now().toString()}`,
             }),
         );
+
+    const bucket = new mongodb.GridFSBucket(db, {
+        bucketName: precomputedId,
+    });
+
     const insertedItems = await streamToPromise(streamRetreiveWorflow);
+
+    fs.createReadStream(
+        `./webservice_temp/${precomputedId}-_${Date.now().toString()}`,
+    ).pipe(
+        bucket.openUploadStream(`${precomputedId}-_${Date.now().toString()}`, {
+            chunkSizeBytes: 1048576,
+            //metadata: { field: 'myField', value: 'myValue' },
+        }),
+    );
     await ctx.precomputed.updateStartedAt(precomputedId, null);
 
     askForPrecomputedJob.progress(100);
