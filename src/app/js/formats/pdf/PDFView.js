@@ -20,17 +20,14 @@ const PDFView = ({ resource, field, PDFWidth }) => {
     const PDFURL = resource[field.name];
 
     return (
-        <object
+        <iframe
+            title="PDF Viewer"
             className={classnames('pdf-container', styles.container)}
-            data={PDFURL}
-            type="application/pdf"
-            typemustmatch
             width={PDFWidth}
-        >
-            <embed src={PDFURL} type="application/pdf" width={PDFWidth} />
-            Ce navigateur ne supporte pas les PDFs. Mais vous pouvez le
-            <a href={PDFURL}>Télécharger</a>.
-        </object>
+            src={PDFURL}
+            allowFullScreen=""
+            webkitallowfullscreen=""
+        ></iframe>
     );
 };
 
