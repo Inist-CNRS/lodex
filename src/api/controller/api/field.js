@@ -23,6 +23,8 @@ import { ENRICHER } from '../../workers/enricher';
 import { ObjectID } from 'mongodb';
 import generateUid from '../../services/generateUid';
 import { restoreEnrichments } from '../../services/enrichment/enrichment';
+import { restorePrecomputed } from '../../services/precomputed/precomputed';
+import { PRECOMPUTER } from '../../workers/precomputer';
 
 const sortByFieldUri = (a, b) =>
     (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
@@ -48,12 +50,18 @@ export const restoreFields = (fileStream, ctx) => {
 
     const restoreTask = () => {
         dropJobs(ctx.tenant, ENRICHER);
+        dropJobs(ctx.tenant, PRECOMPUTER);
         return new Promise((resolve, reject) =>
             restore({
                 uri: mongoConnectionString(ctx.tenant),
                 stream: fileStream,
                 parser: 'json',
-                dropCollections: ['field', 'subresource', 'enrichment'],
+                dropCollections: [
+                    'field',
+                    'subresource',
+                    'enrichment',
+                    'precomputed',
+                ],
                 callback: function(err) {
                     err ? reject(err) : resolve();
                 },
@@ -69,6 +77,7 @@ export const restoreFields = (fileStream, ctx) => {
                 ctx.field.castIds(),
                 ctx.subresource.castIds(),
                 restoreEnrichments(ctx),
+                restorePrecomputed(ctx),
             ]),
         );
 };
@@ -253,13 +262,23 @@ export const exportFields = async ctx => {
     ctx.set('Content-disposition', `attachment; filename=${filename}`);
     ctx.set('Content-type', 'application/x-tar');
     try {
-        const collections = ['field', 'subresource', 'enrichment'];
+        const collections = [
+            'field',
+            'subresource',
+            'enrichment',
+            'precomputed',
+        ];
         const pack = tar.pack();
 
         for (const collection of collections) {
+            let projection = {};
+            if (collection === 'precomputed') {
+                projection = { data: 0, status: 0, callId: 0, jobId: 0 };
+            }
+
             const docs = await ctx.db
                 .collection(collection)
-                .find()
+                .find({}, { projection })
                 .toArray();
 
             for (const doc of docs) {
@@ -285,19 +304,14 @@ export const importFields = asyncBusboyImpl => async ctx => {
 
     try {
         await ctx.restoreFields(fileStream, ctx);
-        // check if model contains an enrichment
         const enrichments = await ctx.enrichment.findAll();
-        if (enrichments.length > 0) {
-            ctx.body = {
-                message: 'Model imported successfully',
-                hasEnrichments: true,
-            };
-        } else {
-            ctx.body = {
-                message: 'Model imported successfully',
-                hasEnrichments: false,
-            };
-        }
+        const precomputed = await ctx.precomputed.findAll();
+
+        ctx.body = {
+            message: 'Model imported successfully',
+            hasEnrichments: enrichments?.length > 0,
+            hasPrecomputed: precomputed?.length > 0,
+        };
         ctx.status = 200;
     } catch (e) {
         ctx.status = 500;

@@ -10,9 +10,13 @@ const checkMissingFields = data =>
 
 export default async db => {
     const collection = db.collection('precomputed');
+    await collection.createIndex({ name: 1 }, { unique: true });
 
     collection.findOneById = async id =>
-        collection.findOne({ $or: [{ _id: new ObjectId(id) }, { _id: id }] });
+        collection.findOne(
+            { $or: [{ _id: new ObjectId(id) }, { _id: id }] },
+            { projection: { data: { $slice: 10 } } }, // Limit the size of the data field to 10 elements
+        );
 
     collection.findAll = async () => collection.find({}).toArray();
 
@@ -48,13 +52,31 @@ export default async db => {
             .then(result => result.value);
     };
 
-    collection.updateStatus = async (id, status, data = {}) => {
+    collection.updateStatus = async (id, status, data = []) => {
         const newData = { status, ...data };
         collection.updateOne(
             {
                 $or: [{ _id: new ObjectId(id) }, { _id: id }],
             },
             { $set: newData },
+        );
+    };
+
+    collection.fixStatus = async (id, status) => {
+        collection.updateOne(
+            {
+                $or: [{ _id: new ObjectId(id) }, { _id: id }],
+            },
+            { $set: { status } },
+        );
+    };
+
+    collection.pushNewData = async (id, data = []) => {
+        collection.updateOne(
+            {
+                $or: [{ _id: new ObjectId(id) }, { _id: id }],
+            },
+            { $push: { data: { $each: data } } },
         );
     };
 

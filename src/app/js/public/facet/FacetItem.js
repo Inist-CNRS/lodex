@@ -11,7 +11,6 @@ import { fromFacet } from '../selectors';
 import getFieldClassName from '../../lib/getFieldClassName';
 import FacetValueListComponent from './FacetValueList';
 import FacetActionsContext from './FacetActionsContext';
-import customTheme from '../../../custom/customTheme';
 
 const onClick = (openFacet, field) => () => openFacet({ name: field.name });
 
@@ -19,7 +18,7 @@ const styles = {
     facetTitle: {
         padding: '5px',
         '&:hover': {
-            backgroundColor: customTheme.palette.neutralDark.veryLight,
+            backgroundColor: 'var(--neutral-dark-very-light)',
             cursor: 'pointer',
         },
     },

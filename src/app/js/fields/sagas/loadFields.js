@@ -13,7 +13,6 @@ export function* handleLoadField() {
     if (error) {
         return yield put(loadFieldError(error));
     }
-
     return yield put(loadFieldSuccess(response));
 }
 

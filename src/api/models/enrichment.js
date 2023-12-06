@@ -4,6 +4,7 @@ import { castIdsFactory } from './utils';
 
 export default async db => {
     const collection = db.collection('enrichment');
+    await collection.createIndex({ name: 1 }, { unique: true });
 
     collection.findOneById = async id =>
         collection.findOne({ $or: [{ _id: new ObjectId(id) }, { _id: id }] });

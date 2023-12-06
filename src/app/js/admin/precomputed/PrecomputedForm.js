@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import PrecomputedCatalogConnected from './PrecomputedCatalog';
 import PrecomputedPreview from './PrecomputedPreview';
@@ -73,6 +73,10 @@ const renderTextField = ({ input, label, meta: { touched, error } }) => {
 };
 
 function getDisplayTimeStartedAt(startedAt) {
+    if (!startedAt) {
+        return;
+    }
+
     const now = new Date();
     const startedAtDate = new Date(startedAt);
     const diff = now - startedAtDate;
@@ -107,15 +111,7 @@ export const renderStatus = (status, polyglot, startedAt = null) => {
         );
     }
     if (status === IN_PROGRESS) {
-        return (
-            <Chip
-                component="span"
-                label={`${polyglot.t(
-                    'precomputed_status_running',
-                )} (${getDisplayTimeStartedAt(startedAt)})`}
-                color="info"
-            />
-        );
+        return <ProgressChip polyglot={polyglot} startedAt={startedAt} />;
     }
 
     if (status === PAUSED) {
@@ -167,25 +163,59 @@ export const renderStatus = (status, polyglot, startedAt = null) => {
     );
 };
 
+export const ProgressChip = ({ polyglot, startedAt }) => {
+    const [spentTime, setSpentTime] = useState(
+        getDisplayTimeStartedAt(startedAt),
+    );
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setSpentTime(getDisplayTimeStartedAt(startedAt));
+        }, 59000);
+        return () => clearInterval(interval);
+    }, []);
+    return (
+        <Chip
+            component="span"
+            label={`${polyglot.t('precomputed_status_running')} (${spentTime})`}
+            color="info"
+        />
+    );
+};
+
+ProgressChip.propTypes = {
+    polyglot: polyglotPropTypes.isRequired,
+    startedAt: PropTypes.string,
+};
+
 export const renderRunButton = (
     handleLaunchPrecomputed,
     precomputedStatus,
     polyglot,
     variant,
-) => (
-    <Button
-        color="primary"
-        variant={variant || 'contained'}
-        sx={{ height: '100%' }}
-        startIcon={<PlayArrowIcon />}
-        onClick={handleLaunchPrecomputed}
-        disabled={
-            precomputedStatus === IN_PROGRESS || precomputedStatus === PENDING
-        }
-    >
-        {polyglot.t('run')}
-    </Button>
-);
+) => {
+    const [isClicked, setIsClicked] = useState(false);
+    const handleClick = event => {
+        handleLaunchPrecomputed(event);
+        setIsClicked(true);
+    };
+
+    return (
+        <Button
+            color="primary"
+            variant={variant || 'contained'}
+            sx={{ height: '100%' }}
+            startIcon={<PlayArrowIcon />}
+            onClick={handleClick}
+            disabled={
+                isClicked ||
+                precomputedStatus === IN_PROGRESS ||
+                precomputedStatus === PENDING
+            }
+        >
+            {polyglot.t('run')}
+        </Button>
+    );
+};
 
 // COMPONENT PART
 export const PrecomputedForm = ({

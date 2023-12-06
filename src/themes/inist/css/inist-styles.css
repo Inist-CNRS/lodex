@@ -1,0 +1,302 @@
+/*lodex theme_inist 2*/
+/* fonts*/
+@import url("fonts-style.css");
+/*class css couleurs*/
+/* -> declaration dans colorsTheme.js, custom/css/ styles_aphrodite, css-loader.css*/
+/*initial vert #7dbd42 devient bleu #25809a ou rgb(37, 128, 154)*/ /*#06bad6 ko contrast*/
+/*green:{ primary: "#25809a",
+secondary: "rgba(37, 128, 154, 1.5)",
+tertiary: "rgba(37, 128, 154, .5)",
+light: "rgba(37, 128, 154, .1)",
+}*/
+/*orange #f48022 devient fushia #da1d64 (active et focus)*/
+/* hover violet reste violet #b22f90*/
+/*bouton vert ‘plus de résultats' et bouton vert 'parcourir les résultats'*/
+/* (deviennent bleu et bleu foncé) uniquement par class css-xxxxx rgb(31, 106, 129)*/
+
+/* text : font, size, color*/
+body {
+  font-size: 1rem;
+  color: #434148;
+}
+header a.logo,
+header a:hover.logo,
+header a:focus.logo,
+header a:active.logo {
+  text-decoration: none;
+  color: #fff;
+}
+header a.logoinist {
+  font-size: 0.8125rem;
+  line-height: normal;
+}
+header a.logoinist > span:first-child {
+  font-family: "Barlow Bold";
+  font-size: 1.875rem;
+}
+header a.logoinist span.inist {
+  font-family: "Barlow Regular";
+  font-weight: bold;
+}
+header a.logoinist > span:first-child::after {
+  content: "|";
+  font-family: "Barlow Regular";
+  font-weight: normal;
+  opacity: 0.8;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+footer ul li.bl3 a,
+footer ul li.bl3 a:hover {
+  color: #434148;
+  text-decoration: none;
+}
+/*hierarchie titres*/
+h1 {
+  font-family: "Barlow Bold";
+  font-size: 2rem;
+  color: #14134f;
+}
+header h1 {
+  font-family: "Barlow Bold";
+  font-size: 1.5rem;
+  color: #fff;
+}
+h2 {
+  font-family: "Barlow Medium";
+  font-size: 1.5rem;
+  color: #14134f;
+}
+h3 {
+  font-family: "Barlow Regular";
+  font-size: 1rem;
+  color: #14134f;}
+h4 {
+  font-family: "Barlow Light";
+  font-size: 1rem;
+  color: #14134f;}
+/*titre :home, graph,resource titre champs, graphs titre*/
+div .property_label,
+.graph-results span.MuiCardHeader-title,
+div.resource .property_label {
+  font-family: "Barlow Italic" !important;
+  font-weight: inherit !important;
+  color: #14134f !important;}
+/*resource titres champs*/
+div.resource .property_label {font-size: 1rem !important;}
+/*CHARTE inist*/
+/*fond header dans body*/
+body {
+  background: url("../images/bg_projets.jpg") repeat-x;
+  opacity: 1;}
+header {background-color: transparent;}
+/*text header bg fonce sur img bg body*/
+header > div > *, div.breadcrumb-root {
+  background-color: rgba(24, 20, 79, 0.6);
+  box-shadow: 0px 0px 20px rgba(24, 20, 79, 1);
+  border-radius: 10px;
+}
+header h1.bl3 {  border-radius: 0 10px 10px 0;}
+/*header footer idem .container et style inist */
+header, footer {padding: 0 30px;}
+header > div, footer ul {margin: auto auto;}
+.bl3 {
+  border-left: 3px solid #00acb2;
+  padding-left: 30px;}
+/*header positionnement, width et marges*/
+header > div {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  height: 8em;
+  justify-content: space-between;}
+header > div > * {margin: 1rem 0;}
+header div#logos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 315px;
+  min-width: 270px;}
+header a.logocnrs {
+  height: 50px;
+  -webkit-transform: translateX(-20px);
+  -ms-transform: translateX(-20px);
+  transform: translateX(-20px);}
+header a.logoinist {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;}
+header h1 {max-width: 750px;}/*titre optionnel*/
+/*footer inist charte grille*/
+footer.bt {
+width: 100vw;
+  margin-bottom: 90px;
+  border-top: 1px solid rgba(170, 170, 170, 0.2);
+  background-color: #fff;}
+footer ul li.bl3 a {border-bottom: 1px solid rgba(95, 177, 225, 0.5);}
+footer ul.grille {
+  background-image: linear-gradient(
+    90deg,
+    rgba(170, 170, 170, 0.1) 1px,
+    transparent 2px,
+    transparent 99.8%
+  );
+  background-size: 33% 1px;
+  padding: 0;}
+footer ul.grille > * {width: 33%;}
+/*footer positionnement*/
+footer ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+footer ul li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  padding: 7px 30px;
+  margin: 15px 0;
+}
+/* info lodex transfere dans footer (pages home & resource)*/
+footer a#lodex {
+  display: flex;
+  align-items: center;
+}
+footer a#lodex img {
+  height: 40px;
+}
+.header-dataset-section > div:last-child,
+div.main-resource-section > div > div:last-child {
+  display: none;
+}
+nav img._1m2up2 {
+  display: none;
+}
+/*ELEMENTS LODEX*/
+/* container */
+#root.container {
+  min-height: 55vh;/*full screen*/
+  padding: 0 2%;
+  background-color: #fbfbfb;
+  margin-bottom: 1em;
+}
+/*breadcrumb = menu haut inist*/
+/*div.breadcrumb-root{
+float: right;
+margin-top: -5rem;
+color: white;
+}
+div.breadcrumb-root svg{display:none}
+a._66fo0a,a._66fo0a:hover, a._66fo0a:focus, a._66fo0a:active {
+  color: white !important;
+  font-variant: all-petite-caps;
+  font-family: "Barlow Bold";
+}
+div.breadcrumb-root a:hover, div.breadcrumb-root a:focus, div.breadcrumb-root a:active {
+  border-bottom: 2px solid rgba(35,174,255,1);
+}*/
+/*barre nav lodex*/
+#root div.body nav {
+  box-shadow: 0px -5px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* adaptative charte : cf site inist/inist.css*/
+@media only screen and (max-width: 964px) {
+  footer ul.grille {
+    background-image: none;
+  }
+}
+@media only screen and (min-width: 481px) and (max-width: 964px) {
+  body {
+    background: url("../images/bg_projets_moyen.jpg") repeat-x;
+  }
+  /*header en colonne*/
+  header > div {
+    flex-flow: column nowrap;
+    height: auto;
+    align-items: start;
+  }
+  header h1 {
+    font-size: 1.25rem;
+  }
+  footer li.tabmw50 {
+    width: 50% !important;
+  }
+}
+@media only screen and (max-width: 480px) {
+  body {
+    background: url("../images/bg_projets_petit.jpg") repeat-x;
+  }
+
+  /*fonts hierarchie */
+  h1,
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  /*header en colonne*/
+  header > div {
+    flex-flow: column nowrap;
+    height: auto;
+    align-items: start;
+  }
+
+  header h1 {
+    font-size: 1.25rem;
+  }
+
+  footer ul {
+    display: block;
+  }
+
+  footer ul > * {
+    width: 100%;
+  }
+
+  div.breadcrumb-root {
+    float: none;
+    margin-top: 0;
+    background-color: #14134f;
+    box-shadow: none;
+    border-radius: 0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+  }
+}
+/* adaptative charte : header et footer idem container (cf custom/styles.css)*/
+@media (min-width: 576px) {
+  header > div,
+  footer ul.grille {
+    max-width: 540px;
+  }
+}
+@media (min-width: 768px) {
+  header > div,
+  footer ul.grille {
+    max-width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  header > div,
+  footer ul.grille {
+    max-width: 960px;
+  }
+}
+@media (min-width: 1200px) {
+  header > div,
+  footer ul.grille {
+    max-width: 1140px;
+  }
+}

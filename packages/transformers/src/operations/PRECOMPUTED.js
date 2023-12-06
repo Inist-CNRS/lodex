@@ -1,7 +1,7 @@
 const isUndefinedOrEmpty = value =>
     typeof value === 'undefined' || value === '';
 
-const transformation = (context, args) => () =>
+const transformation = (_, args) => () =>
     new Promise((resolve, reject) => {
         const precomputedArg = args.find(a => a.name === 'precomputed');
 
@@ -19,7 +19,9 @@ const transformation = (context, args) => () =>
             );
         }
 
-        return resolve(context.precomputed.data);
+        return resolve(
+            `${routineArg.value}?precomputedName=${precomputedArg.value}`,
+        );
     });
 
 transformation.getMetas = () => ({

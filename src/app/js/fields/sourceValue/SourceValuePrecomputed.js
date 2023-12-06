@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 import RoutineCatalog from '../wizard/RoutineCatalog';
 import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
-import { fromParsing } from '../../admin/selectors';
+import { fromPrecomputed } from '../../admin/selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { Autocomplete, Box, Button, TextField } from '@mui/material';
+import { toast } from 'react-toastify';
 
 const SourceValuePrecomputed = ({
     precomputedData,
@@ -24,6 +25,18 @@ const SourceValuePrecomputed = ({
     const [valueInput, setValueInput] = React.useState(routine || '');
 
     const handleChangePrecomputed = (event, value) => {
+        const precomputedSelected = precomputedData.find(precomputed => {
+            return precomputed.name === value;
+        });
+
+        if (
+            !precomputedSelected.data ||
+            precomputedSelected.data.length === 0 ||
+            precomputedSelected.status !== 'FINISHED'
+        ) {
+            toast.warning(polyglot.t('error_precomputed_data_empty'));
+        }
+
         setAutocompleteValue(value);
         const transformers = [
             {
@@ -74,7 +87,7 @@ const SourceValuePrecomputed = ({
             <Autocomplete
                 data-testid="source-value-from-precomputed"
                 fullWidth
-                options={precomputedData}
+                options={precomputedData.map(({ name }) => name)}
                 value={autocompleteValue ?? ''}
                 renderInput={params => (
                     <TextField
@@ -108,6 +121,7 @@ const SourceValuePrecomputed = ({
                     handleClose={() => setOpenRoutineCatalog(false)}
                     onChange={handleChangeRoutine}
                     currentValue={routine}
+                    precomputed
                 />
             </Box>
         </Box>
@@ -115,9 +129,11 @@ const SourceValuePrecomputed = ({
 };
 
 const mapStateToProps = state => ({
-    precomputedData: fromParsing
-        .getParsedPrecomputedList(state)
-        .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
+    precomputedData: fromPrecomputed
+        .precomputed(state)
+        .sort((a, b) =>
+            a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+        ),
 });
 
 SourceValuePrecomputed.propTypes = {
