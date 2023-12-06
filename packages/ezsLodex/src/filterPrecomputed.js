@@ -15,6 +15,7 @@ import fs from 'fs';
 export const createFunction = () =>
     async function LodexFilterPrecomputed(data, feed) {
         const {
+            tenant,
             connectionStringURI,
             filter: rawFilter,
             precomputedName,
@@ -34,7 +35,7 @@ export const createFunction = () =>
 
         const precomputedData = JSON.parse(
             fs.readFileSync(
-                `/app/webservice_temp/${'default'}_${precomputedId}.json`,
+                `/app/precomputedData/${tenant}/${precomputedId}.json`,
             ),
         );
 

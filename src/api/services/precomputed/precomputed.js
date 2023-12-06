@@ -135,7 +135,8 @@ export const getComputedFromWebservice = async ctx => {
             this.push(null);
         },
     });
-    const fileName = `${tenant}_${precomputedId}.json`;
+    const folderName = 'precomputedData';
+    const fileName = `${precomputedId}.json`;
     const streamRetreiveWorflow = streamRetrieveInput
         .pipe(
             ezs('URLConnect', {
@@ -174,27 +175,27 @@ export const getComputedFromWebservice = async ctx => {
         )
         .pipe(
             ezs('FILESave', {
-                location: '/app/webservice_temp',
+                location: `/app/${folderName}/${tenant}`,
                 identifier: fileName,
             }),
         );
 
     const insertedItems = await streamToPromise(streamRetreiveWorflow);
 
-    //TODO GridFS standby
+    //TODO (possibly) Use GridFS instead of direct file system storage
     /*
     const bucket = new GridFSBucket(ctx.db, {
         bucketName: precomputedId,
     });
     bucket.drop();
 
-    fs.createReadStream(`./webservice_temp/${fileName}`).pipe(
+    fs.createReadStream(`./${folderName}/${tenant}/${fileName}`).pipe(
         bucket.openUploadStream(fileName, {
             chunkSizeBytes: 1048576,
         }),
     );
 
-    fs.unlinkSync(`./webservice_temp/${fileName}`);*/
+    fs.unlinkSync(`./${folderName}/${tenant}/${fileName}`);*/
 
     await ctx.precomputed.updateStartedAt(precomputedId, null);
 
