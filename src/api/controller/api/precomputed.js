@@ -2,7 +2,7 @@ import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 import { v1 as uuid } from 'uuid';
-
+import fs from 'fs';
 import { PRECOMPUTER } from '../../workers/precomputer';
 import { workerQueues } from '../../workers';
 import {
@@ -73,6 +73,7 @@ export const deletePrecomputed = async (ctx, id) => {
             cancelJob(ctx, PRECOMPUTER);
         }
         await ctx.precomputed.delete(id);
+        fs.unlinkSync(`/app/precomputedData/${ctx.tenant}/${id}.json`);
         ctx.status = 200;
         ctx.body = { message: 'ok' };
     } catch (error) {
