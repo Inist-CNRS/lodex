@@ -50,6 +50,7 @@ const FormSourceCodeField = ({
                 fontSize={14}
                 value={input.value}
                 onChange={input.onChange}
+                showPrintMargin={false}
                 {...custom}
                 style={{
                     ...custom.style,

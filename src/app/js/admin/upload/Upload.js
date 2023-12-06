@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -22,7 +22,14 @@ import LinkIcon from '@mui/icons-material/Link';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { uploadFile, changeUploadUrl, changeLoaderName, uploadUrl } from './';
+import {
+    uploadFile,
+    changeUploadUrl,
+    changeLoaderName,
+    uploadUrl,
+    uploadText,
+    changeUploadText,
+} from './';
 import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
 import PopupConfirmUpload from './PopupConfirmUpload';
@@ -133,13 +140,16 @@ export const UploadComponent = ({
     history,
     error,
     url,
+    textContent,
     loaderName,
     isUrlValid,
     isUploading,
     onChangeUrl,
+    onChangeTextContent,
     onChangeLoaderName,
     onFileLoad,
     onUrlUpload,
+    onTextUpload,
     p: polyglot,
     loaders,
     isFirstFile,
@@ -147,7 +157,6 @@ export const UploadComponent = ({
     const [tab, setTab] = useState(0);
     const [files, setFiles] = useState([]);
     const [dropping, setDropping] = useState(false);
-    const [textInput, setTextInput] = useState('');
     const [isOpenPopupConfirm, setIsOpenPopupConfirm] = useState(false);
     const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
@@ -185,6 +194,11 @@ export const UploadComponent = ({
             case 1: {
                 if (files.length !== 0 || !url || !isUrlValid) return;
                 onUrlUpload(...params);
+                break;
+            }
+            case 2: {
+                if (!textContent || textContent === '') return;
+                onTextUpload(...params);
                 break;
             }
         }
@@ -328,8 +342,8 @@ export const UploadComponent = ({
                             p={polyglot}
                             mode="json"
                             input={{
-                                value: textInput,
-                                onChange: setTextInput,
+                                value: textContent,
+                                onChange: onChangeTextContent,
                             }}
                         />
                     </>
@@ -340,7 +354,11 @@ export const UploadComponent = ({
                 loaders={loaders}
                 setLoader={onChangeLoaderName}
                 value={loaderName}
-                disabled={files.length === 0 && (!url || !isUrlValid)}
+                disabled={
+                    files.length === 0 &&
+                    (!url || !isUrlValid) &&
+                    (!textContent || textContent === '')
+                }
             />
             <Button
                 variant="contained"
@@ -349,7 +367,9 @@ export const UploadComponent = ({
                 sx={styles.button}
                 disabled={
                     isUploading ||
-                    (files.length === 0 && (!url || !isUrlValid)) ||
+                    (files.length === 0 &&
+                        (!url || !isUrlValid) &&
+                        (!textContent || textContent === '')) ||
                     !loaderName
                 }
                 onClick={handleSubmit}
@@ -376,13 +396,16 @@ UploadComponent.propTypes = {
     className: PropTypes.string,
     error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     url: PropTypes.string.isRequired,
+    textContent: PropTypes.string.isRequired,
     loaderName: PropTypes.string.isRequired,
     loaders: PropTypes.array,
     isUrlValid: PropTypes.bool,
     isUploading: PropTypes.bool,
     onChangeUrl: PropTypes.func.isRequired,
+    onChangeTextContent: PropTypes.func.isRequired,
     onFileLoad: PropTypes.func.isRequired,
     onUrlUpload: PropTypes.func.isRequired,
+    onTextUpload: PropTypes.func.isRequired,
     onChangeLoaderName: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     isFirstFile: PropTypes.bool,
@@ -418,6 +441,7 @@ UploadComponent.propTypes = {
 
 const mapStateToProps = state => ({
     url: fromUpload.getUrl(state),
+    textContent: fromUpload.getTextContent(state),
     isUrlValid: fromUpload.isUrlValid(state),
     isUploading: fromUpload.isUploadPending(state),
     loaderName: fromUpload.getLoaderName(state),
@@ -427,7 +451,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     onUrlUpload: uploadUrl,
     onFileLoad: uploadFile,
+    onTextUpload: uploadText,
     onChangeUrl: e => changeUploadUrl(e.target.value),
+    onChangeTextContent: e => changeUploadText(e),
     onChangeLoaderName: val =>
         changeLoaderName(Array.isArray(val) ? val[0] : val),
 };
