@@ -1021,8 +1021,8 @@ theme	Application theme	Thème de l'application
 "pc_post-v1-lda-segment_title"	"Lda-Segment"	"Lda-Segment"
 "pc_post-v1-lda-segment_description"	"Create a «lda» field consisting of 5 topics from the set of documents. Each topic contains a «word» field, which is composed of a list of 10 words that are most characteristic of the topic, as well as a «weight» field that corresponds to the weight associated with the topic in the document. The text must be in English."	"Créer à partir de l'ensemble des documents un champ «lda» constitué de 5 topics. Chaque topic contient un champ «word», qui est composé d'une liste de 10 mots qui sont les plus caractéristiques du topic, ainsi que d'un champ «weight» qui correspond au poids associé au sujet dans le document. Le texte doit être en anglais."
 r-clustered-precomputed_title	clustered-precomputed	clustered-precomputed
-r-clustered-precomputed_description	Retrieve precomputed data from precomputes like 'Lda-Segment' and display it in the Clustered chart	Récupér les données précalculées des précalculs comme 'Lda-Segment' et les afficher dans un Diagramme à barres groupées
+r-clustered-precomputed_description	Retrieve precomputed data from precomputes like 'Lda-Segment' and display it in the Clustered chart	Récupère les données précalculées des précalculs comme 'Lda-Segment' et les affiche dans un Diagramme à barres groupées
 formatClusteredChart	Graph - Clustered chart	Graphique - Diagramme à barres groupées
-formatClusteredChartDescription	Displays several bar charts depending on the category of the element and its weight	Affiche plusieurs diagrammes à barres en fonction de la catégorie de l'élément et de sont poids
+formatClusteredChartDescription	Displays several bar charts depending on the category of the element and its weight	Affiche plusieurs diagrammes à barres en fonction de la catégorie de l'élément et de son poids
 format_x_axis_title	Title of x axis	Titre de l'axe x
 format_y_axis_title	Title of y axis	Titre de l'axe y
