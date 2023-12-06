@@ -8,6 +8,7 @@
         "all-documents",
         "classif-by",
         "close-by",
+        "clustered-precomputed",
         "count-all",
         "count-by-fields",
         "cross-by",
@@ -101,7 +102,6 @@
         "http://www.lotico.com:3030/lotico/sparql"
     ],
     "precomputedBaseUrlForDevelopment": "{public url of the server accessible from webhooks (ie ngrok)}",
-    "precomputedAnswerMode": "retrieve",
     "activateBullDashboard": false,
     "themes": ["void", "nougat", "inist", "istex"]
 }

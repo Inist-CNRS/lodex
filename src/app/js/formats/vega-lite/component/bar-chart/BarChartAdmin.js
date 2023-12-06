@@ -157,7 +157,7 @@ const BarChartAdmin = props => {
     };
 
     const handleBarSize = event => {
-        updateAdminArgs('barSize', event.target, props);
+        updateAdminArgs('barSize', parseInt(event.target.value, 10), props);
     };
 
     const toggleTooltip = () => {
