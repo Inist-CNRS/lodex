@@ -9,6 +9,7 @@ import RadarChart from '../../models/RadarChart';
 import {
     convertSpecTemplate,
     lodexScaleToIdScale,
+    VEGA_ACTIONS_WIDTH,
     VEGA_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
 
@@ -57,8 +58,14 @@ const RadarChartView = ({
             try {
                 return convertSpecTemplate(
                     advancedModeSpec,
-                    width - width * 0.06,
-                    width - width * 0.24,
+                    width - VEGA_ACTIONS_WIDTH,
+                    Math.max(
+                        Math.min(
+                            300,
+                            width - VEGA_ACTIONS_WIDTH - width * 0.24,
+                        ),
+                        1200,
+                    ),
                 );
             } catch (e) {
                 setError(e.message);

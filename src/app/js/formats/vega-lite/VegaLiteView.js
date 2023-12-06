@@ -20,7 +20,7 @@ const styles = {
 };
 
 const VegaLiteView = ({ field, data, specTemplate }) => {
-    const { ref, width, height } = useSizeObserver();
+    const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
     const spec = useMemo(() => {
@@ -28,13 +28,16 @@ const VegaLiteView = ({ field, data, specTemplate }) => {
             return convertSpecTemplate(
                 specTemplate,
                 width - VEGA_ACTIONS_WIDTH,
-                height,
+                Math.max(
+                    Math.min(300, (width - VEGA_ACTIONS_WIDTH) * 0.8),
+                    1200,
+                ),
             );
         } catch (e) {
             setError(e.message);
             return null;
         }
-    }, [specTemplate, width, height]);
+    }, [specTemplate, width]);
 
     if (!spec) {
         return <InvalidFormat format={field.format} value={error} />;

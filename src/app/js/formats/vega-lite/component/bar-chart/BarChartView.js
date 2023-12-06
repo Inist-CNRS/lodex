@@ -43,7 +43,7 @@ const BarChartView = ({
     diagonalCategoryAxis,
     diagonalValueAxis,
 }) => {
-    const { ref, width, height } = useSizeObserver();
+    const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
     const spec = useMemo(() => {
@@ -52,7 +52,10 @@ const BarChartView = ({
                 return convertSpecTemplate(
                     advancedModeSpec,
                     width - VEGA_ACTIONS_WIDTH,
-                    height,
+                    Math.max(
+                        Math.min(300, (width - VEGA_ACTIONS_WIDTH) * 0.6),
+                        1200,
+                    ),
                 );
             } catch (e) {
                 setError(e.message);
