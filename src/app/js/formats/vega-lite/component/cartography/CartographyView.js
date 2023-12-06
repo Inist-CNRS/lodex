@@ -2,6 +2,9 @@ import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
+import { clamp } from 'lodash';
+import { schemeOrRd } from 'd3-scale-chromatic';
+
 import { CustomActionVegaLite } from '../vega-lite-component';
 import {
     convertSpecTemplate,
@@ -13,7 +16,6 @@ import {
 import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
 import Cartography from '../../models/Cartography';
-import { schemeOrRd } from 'd3-scale-chromatic';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../chartsHooks';
 
@@ -43,10 +45,7 @@ const CartographyView = ({
                 return convertSpecTemplate(
                     advancedModeSpec,
                     width - VEGA_ACTIONS_WIDTH,
-                    Math.max(
-                        Math.min(300, (width - VEGA_ACTIONS_WIDTH) * 0.6),
-                        1200,
-                    ),
+                    clamp((width - VEGA_ACTIONS_WIDTH) * 0.6, 300, 1200),
                 );
             } catch (e) {
                 setError(e.message);

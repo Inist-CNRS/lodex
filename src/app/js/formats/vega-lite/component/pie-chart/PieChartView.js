@@ -1,9 +1,9 @@
-import { field as fieldPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import React, { useMemo, useState } from 'react';
+import { clamp } from 'lodash';
+
 import PieChart from '../../models/PieChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import {
@@ -13,6 +13,8 @@ import {
 } from '../../../chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../chartsHooks';
+import { field as fieldPropTypes } from '../../../../propTypes';
+import injectData from '../../../injectData';
 
 const styles = {
     container: {
@@ -40,10 +42,7 @@ const PieChartView = ({
                 return convertSpecTemplate(
                     advancedModeSpec,
                     width - VEGA_ACTIONS_WIDTH,
-                    Math.max(
-                        Math.min(300, (width - VEGA_ACTIONS_WIDTH) * 0.6),
-                        1200,
-                    ),
+                    clamp((width - VEGA_ACTIONS_WIDTH) * 0.6, 300, 1200),
                 );
             } catch (e) {
                 setError(e.message);

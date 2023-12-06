@@ -2,6 +2,8 @@ import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import { clamp } from 'lodash';
+
 import injectData from '../../../injectData';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import {
@@ -52,10 +54,7 @@ const BarChartView = ({
                 return convertSpecTemplate(
                     advancedModeSpec,
                     width - VEGA_ACTIONS_WIDTH,
-                    Math.max(
-                        Math.min(300, (width - VEGA_ACTIONS_WIDTH) * 0.6),
-                        1200,
-                    ),
+                    clamp((width - VEGA_ACTIONS_WIDTH) * 0.6, 300, 1200),
                 );
             } catch (e) {
                 setError(e.message);

@@ -2,6 +2,8 @@ import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import { clamp } from 'lodash';
+
 import InvalidFormat from '../InvalidFormat';
 import injectData from '../injectData';
 import { field as fieldPropTypes } from '../../propTypes';
@@ -28,10 +30,7 @@ const VegaLiteView = ({ field, data, specTemplate }) => {
             return convertSpecTemplate(
                 specTemplate,
                 width - VEGA_ACTIONS_WIDTH,
-                Math.max(
-                    Math.min(300, (width - VEGA_ACTIONS_WIDTH) * 0.8),
-                    1200,
-                ),
+                clamp((width - VEGA_ACTIONS_WIDTH) * 0.8, 300, 1200),
             );
         } catch (e) {
             setError(e.message);
