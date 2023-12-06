@@ -134,6 +134,7 @@ export const getComputedFromWebservice = async ctx => {
             this.push(null);
         },
     });
+    const fileName = `${precomputedId}_${Date.now().toString()}.json`;
     const streamRetreiveWorflow = streamRetrieveInput
         .pipe(
             ezs('URLConnect', {
@@ -151,42 +152,40 @@ export const getComputedFromWebservice = async ctx => {
                 if (self.isLast()) {
                     progress.setProgress(tenant, 95);
                     await ctx.precomputed.fixStatus(precomputedId, FINISHED);
-                    feed.write(self.size);
+                    if (data) {
+                        feed.write(JSON.stringify(data));
+                    }
                     return feed.close();
                 }
                 self.size += data.length;
                 if (self.isFirst()) {
                     progress.setProgress(tenant, 85);
-                    await ctx.precomputed.updateStatus(
-                        precomputedId,
-                        IN_PROGRESS,
-                        {
-                            data,
-                        },
-                    );
+                    if (data) {
+                        feed.write(JSON.stringify(data));
+                    }
                     return feed.end();
                 }
-                //await ctx.precomputed.pushNewData(precomputedId, data);
-                //feed.end();
+                if (data) {
+                    feed.write(JSON.stringify(data));
+                }
+                feed.end();
             }),
         )
         .pipe(
             ezs('FILESave', {
-                location: './webservice_temp/',
-                identifier: `/${precomputedId}-_${Date.now().toString()}`,
+                location: '/app/webservice_temp',
+                identifier: fileName,
             }),
         );
+
+    const insertedItems = await streamToPromise(streamRetreiveWorflow);
 
     const bucket = new mongodb.GridFSBucket(db, {
         bucketName: precomputedId,
     });
 
-    const insertedItems = await streamToPromise(streamRetreiveWorflow);
-
-    fs.createReadStream(
-        `./webservice_temp/${precomputedId}-_${Date.now().toString()}`,
-    ).pipe(
-        bucket.openUploadStream(`${precomputedId}-_${Date.now().toString()}`, {
+    fs.createReadStream(`./webservice_temp/${fileName}`).pipe(
+        bucket.openUploadStream(fileName, {
             chunkSizeBytes: 1048576,
             //metadata: { field: 'myField', value: 'myValue' },
         }),
