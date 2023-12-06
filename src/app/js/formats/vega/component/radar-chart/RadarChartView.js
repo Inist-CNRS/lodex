@@ -60,7 +60,7 @@ const RadarChartView = ({
                 return convertSpecTemplate(
                     advancedModeSpec,
                     width - VEGA_ACTIONS_WIDTH,
-                    clamp(width - VEGA_ACTIONS_WIDTH - width * 0.24, 300, 1200),
+                    clamp((width - VEGA_ACTIONS_WIDTH) * 0.76, 300, 1200),
                 );
             } catch (e) {
                 setError(e.message);
