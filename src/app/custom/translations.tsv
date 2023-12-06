@@ -1026,3 +1026,6 @@ formatClusteredChart	Graph - Clustered chart	Graphique - Diagramme à barres gro
 formatClusteredChartDescription	Displays several bar charts depending on the category of the element and its weight	Affiche plusieurs diagrammes à barres en fonction de la catégorie de l'élément et de son poids
 format_x_axis_title	Title of x axis	Titre de l'axe x
 format_y_axis_title	Title of y axis	Titre de l'axe y
+"formatJsonDebug"	"Other - Json and Debug Format"	"Autre - Format Json et Débogage"
+"formatJsonDebugDescription"	"This format allow to display simple json value or debug values as json"	"Ce format permet d'afficher des valeurs json simples ou des valeurs de débogage sous forme de json."
+"debugMode"	"Enable debugging"	"Activer le débogage"
