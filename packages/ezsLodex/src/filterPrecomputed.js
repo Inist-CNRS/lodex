@@ -1,5 +1,6 @@
 import mongoDatabase from './mongoDatabase';
 import { Readable } from 'stream';
+import fs from 'fs';
 
 /**
  * Take `Object` containing a MongoDB query and throw the result
@@ -27,11 +28,15 @@ export const createFunction = () =>
 
         const db = await mongoDatabase(connectionStringURI);
         const collection = db.collection(collectionName);
-        const precomputedData = (
-            await collection.findOne({
-                name: precomputedName,
-            })
-        ).data;
+        const { _id: precomputedId } = await collection.findOne({
+            name: precomputedName,
+        });
+
+        const precomputedData = JSON.parse(
+            fs.readFileSync(
+                `/app/webservice_temp/${'default'}_${precomputedId}.json`,
+            ),
+        );
 
         if (!isFilter) {
             //With unfiltered precomputed data, we can send the whole precomputed Data directly

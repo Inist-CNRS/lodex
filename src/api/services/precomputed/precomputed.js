@@ -4,6 +4,7 @@ import { getHost } from '../../../common/uris';
 import streamToPromise from 'stream-to-promise';
 import ezs from '@ezs/core';
 import fs from 'fs';
+//import { GridFSBucket } from 'mongodb';
 import { Readable } from 'stream';
 import {
     PENDING as PRECOMPUTED_PENDING,
@@ -134,7 +135,7 @@ export const getComputedFromWebservice = async ctx => {
             this.push(null);
         },
     });
-    const fileName = `${precomputedId}_${Date.now().toString()}.json`;
+    const fileName = `${tenant}_${precomputedId}.json`;
     const streamRetreiveWorflow = streamRetrieveInput
         .pipe(
             ezs('URLConnect', {
@@ -180,16 +181,21 @@ export const getComputedFromWebservice = async ctx => {
 
     const insertedItems = await streamToPromise(streamRetreiveWorflow);
 
-    const bucket = new mongodb.GridFSBucket(db, {
+    //TODO GridFS standby
+    /*
+    const bucket = new GridFSBucket(ctx.db, {
         bucketName: precomputedId,
     });
+    bucket.drop();
 
     fs.createReadStream(`./webservice_temp/${fileName}`).pipe(
         bucket.openUploadStream(fileName, {
             chunkSizeBytes: 1048576,
-            //metadata: { field: 'myField', value: 'myValue' },
         }),
     );
+
+    fs.unlinkSync(`./webservice_temp/${fileName}`);*/
+
     await ctx.precomputed.updateStartedAt(precomputedId, null);
 
     askForPrecomputedJob.progress(100);
