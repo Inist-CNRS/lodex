@@ -25,10 +25,22 @@ export const StandardSourceTargetWeight = {
 export const MapSourceTargetWeight = {
     name: 'Map - source / target / weight',
     values: [
+        // Points
+        { source: 'FRA', target: 'FRA', weight: 18 },
+        { source: 'JPN', target: 'JPN', weight: 28 },
+        { source: 'GBR', target: 'GBR', weight: 55 },
+        { source: 'CAN', target: 'CAN', weight: 43 },
+        { source: 'TUN', target: 'TUN', weight: 15 },
+        // Link right to left
         { source: 'FRA', target: 'JPN', weight: 28 },
         { source: 'FRA', target: 'GBR', weight: 55 },
         { source: 'FRA', target: 'CAN', weight: 43 },
         { source: 'FRA', target: 'TUN', weight: 15 },
+        // Link left to right
+        { source: 'JPN', target: 'FRA', weight: 28 },
+        { source: 'GBR', target: 'FRA', weight: 55 },
+        { source: 'CAN', target: 'FRA', weight: 43 },
+        { source: 'TUN', target: 'FRA', weight: 15 },
     ],
 };
 

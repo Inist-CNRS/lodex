@@ -13,7 +13,7 @@ import FlowMap from '../../models/FlowMap';
 import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
 import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
 import { FlowMapAdminView } from './FlowMapView';
-import VegaFieldSet, {
+import {
     VegaChartParamsFieldSet,
     VegaDataParamsFieldSet,
 } from '../../../vega-utils/components/VegaFieldSet';

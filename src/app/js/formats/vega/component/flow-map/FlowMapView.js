@@ -68,7 +68,7 @@ const FlowMapView = ({
         return specBuilder.buildSpec(width, data.values.length);
     }, [
         width,
-        data.values,
+        data.values.length,
         advancedMode,
         advancedModeSpec,
         tooltip,
@@ -96,7 +96,6 @@ const FlowMapView = ({
 
 FlowMapView.propTypes = {
     field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
     data: PropTypes.any,
     tooltip: PropTypes.bool.isRequired,
     tooltipCategory: PropTypes.string.isRequired,
