@@ -3,8 +3,6 @@ import localConfig from '../../../../config.json';
 import { getHost } from '../../../common/uris';
 import streamToPromise from 'stream-to-promise';
 import ezs from '@ezs/core';
-import fs from 'fs';
-//import { GridFSBucket } from 'mongodb';
 import { Readable } from 'stream';
 import {
     PENDING as PRECOMPUTED_PENDING,
@@ -181,21 +179,6 @@ export const getComputedFromWebservice = async ctx => {
         );
 
     const insertedItems = await streamToPromise(streamRetreiveWorflow);
-
-    //TODO (possibly) Use GridFS instead of direct file system storage
-    /*
-    const bucket = new GridFSBucket(ctx.db, {
-        bucketName: precomputedId,
-    });
-    bucket.drop();
-
-    fs.createReadStream(`./${folderName}/${tenant}/${fileName}`).pipe(
-        bucket.openUploadStream(fileName, {
-            chunkSizeBytes: 1048576,
-        }),
-    );
-
-    fs.unlinkSync(`./${folderName}/${tenant}/${fileName}`);*/
 
     await ctx.precomputed.updateStartedAt(precomputedId, null);
 
