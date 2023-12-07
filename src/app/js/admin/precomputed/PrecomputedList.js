@@ -19,7 +19,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { renderStatus, renderRunButton } from './PrecomputedForm';
 import { fromPrecomputed } from '../selectors';
 import { launchPrecomputed } from '.';
-import { IN_PROGRESS, FINISHED } from '../../../../common/taskStatus';
+import { IN_PROGRESS, FINISHED, ON_HOLD } from '../../../../common/taskStatus';
 import { toast } from '../../../../common/tools/toast';
 
 export const PrecomputedList = ({
@@ -148,7 +148,11 @@ const mapStateToProps = state => ({
     precomputedList: state.precomputed.precomputed,
     isPrecomputedRunning: !!fromPrecomputed
         .precomputed(state)
-        .find(precomputedData => precomputedData.status === IN_PROGRESS),
+        .find(
+            precomputedData =>
+                precomputedData.status === IN_PROGRESS ||
+                precomputedData.status === ON_HOLD,
+        ),
 });
 
 const mapDispatchToProps = {

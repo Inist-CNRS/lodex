@@ -49,6 +49,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             orderBy,
             field,
             ...ctx.query,
+            tenant: ctx.tenant,
             connectionStringURI: mongoConnectionString(ctx.tenant),
             host,
         };
