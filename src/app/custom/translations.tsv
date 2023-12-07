@@ -1026,6 +1026,9 @@ formatClusteredChart	Graph - Clustered chart	Graphique - Diagramme à barres gro
 formatClusteredChartDescription	Displays several bar charts depending on the category of the element and its weight	Affiche plusieurs diagrammes à barres en fonction de la catégorie de l'élément et de son poids
 format_x_axis_title	Title of x axis	Titre de l'axe x
 format_y_axis_title	Title of y axis	Titre de l'axe y
+"formatJsonDebug"	"Other - Json and Debug Format"	"Autre - Format Json et Débogage"
+"formatJsonDebugDescription"	"This format allow to display simple json value or debug values as json"	"Ce format permet d'afficher des valeurs json simples ou des valeurs de débogage sous forme de json."
+"debugMode"	"Enable debugging"	"Activer le débogage"
 upload_file	Add or complete your instance by uploading a file from your computer. The file is limited to 1GB. Choose the appropriate parser.	Ajouter ou compléter votre instance en téléversant un fichier présent sur votre ordinateur. La taille de fichier est limitée à 1Go. Choisissez en le parseur adapté.
 upload_via_url	Add or complete your instance by importing a file accessible via a URL. Choose the appropriate parser.	Ajouter ou compléter votre instance en important un fichier accessible via une URL. Choisissez en le parseur adapté.
 upload_via_text	Add or complete your instance by entering directly in the box below. field below. Choose the appropriate parser.	Ajouter ou compléter votre instance en saisissant directement les données à importer dans le zone ci-dessous. Choisissez en le parseur adapté.
