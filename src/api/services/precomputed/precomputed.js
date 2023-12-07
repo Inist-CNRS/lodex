@@ -151,7 +151,11 @@ export const getComputedFromWebservice = async ctx => {
                 }
                 if (self.isLast()) {
                     progress.setProgress(tenant, 95);
-                    await ctx.precomputed.fixStatus(precomputedId, FINISHED);
+                    await ctx.precomputed.updateStatus(
+                        precomputedId,
+                        FINISHED,
+                        { hasData: true },
+                    );
                     if (data) {
                         feed.write(JSON.stringify(data));
                     }
@@ -263,7 +267,9 @@ const tryParseJsonString = str => {
 
 export const processPrecomputed = async (precomputed, ctx) => {
     let logData = {};
-    await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS);
+    await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS, {
+        hasData: false,
+    });
     await ctx.precomputed.updateStartedAt(precomputed._id, new Date());
 
     const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
@@ -333,6 +339,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
     const token = response.join('');
 
     await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS, {
+        hasData: false,
         callId: token,
     });
     logData = JSON.stringify({
@@ -357,6 +364,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
 
 export const setPrecomputedJobId = async (ctx, precomputedID, job) => {
     await ctx.precomputed.updateStatus(precomputedID, PRECOMPUTED_PENDING, {
+        hasData: false,
         jobId: job.id,
     });
 };
@@ -437,7 +445,10 @@ export const restorePrecomputed = async ctx => {
     // mongo update all precomputed to set status to empty and clean possible data
     await ctx.precomputed.updateMany(
         {},
-        { $set: { status: '' }, $unset: { data: '', jobId: '', callId: '' } },
+        {
+            $set: { status: '' },
+            $unset: { hasData: false, jobId: '', callId: '' },
+        },
     );
 };
 
