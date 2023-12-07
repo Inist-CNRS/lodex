@@ -10,6 +10,7 @@ import {
     FINISHED,
     ERROR,
     CANCELED,
+    ON_HOLD,
 } from '../../../common/taskStatus';
 import { PRECOMPUTING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
@@ -113,11 +114,11 @@ export const getComputedFromWebservice = async ctx => {
     }
     progress.setProgress(tenant, 75);
     const room = `${tenant}-precomputed-job-${askForPrecomputedJobId}`;
-
+    await ctx.precomputed.updateStatus(precomputedId._id, IN_PROGRESS);
     let logData = {};
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${tenant}] Webservice response ok`,
+        message: `[Instance: ${tenant}] 7/10 - Response ok`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
@@ -133,6 +134,16 @@ export const getComputedFromWebservice = async ctx => {
             this.push(null);
         },
     });
+
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${tenant}] 8/10 - Start retrieving data from response`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(askForPrecomputedJob, logData);
+    notifyListeners(room, logData);
+
     const folderName = 'precomputedData';
     const fileName = `${precomputedId}.json`;
     const streamRetreiveWorflow = streamRetrieveInput
@@ -182,7 +193,16 @@ export const getComputedFromWebservice = async ctx => {
             }),
         );
 
-    const insertedItems = await streamToPromise(streamRetreiveWorflow);
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${tenant}] 9/10 - Data saved in ${folderName}/${tenant}/${fileName}`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(askForPrecomputedJob, logData);
+    notifyListeners(room, logData);
+
+    await streamToPromise(streamRetreiveWorflow);
 
     await ctx.precomputed.updateStartedAt(precomputedId, null);
 
@@ -192,15 +212,16 @@ export const getComputedFromWebservice = async ctx => {
         isPdwdwrecomputing: false,
         success: !isFailed,
     });
-    progress.finish(tenant);
+
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${tenant}] Precomputing data finished. ${insertedItems} items have been calculated`,
+        message: `[Instance: ${tenant}] 10/10 - Precomputing finished`,
         timestamp: new Date(),
-        status: FINISHED,
+        status: IN_PROGRESS,
     });
     jobLogger.info(askForPrecomputedJob, logData);
     notifyListeners(room, logData);
+    progress.finish(tenant);
 };
 
 export const getFailureFromWebservice = async ctx => {
@@ -244,7 +265,7 @@ export const getFailureFromWebservice = async ctx => {
     progress.finish(tenant);
     const logData = JSON.stringify({
         level: 'error',
-        message: `[Instance: ${tenant}] Precomputing data failed ${error.type} ${error.message}`,
+        message: `[Instance: ${tenant}] 7/10 - Response not ok ${error.type} ${error.message}`,
         timestamp: new Date(),
         status: ERROR,
     });
@@ -276,7 +297,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
     progress.setProgress(ctx.tenant, 10);
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Building entry data`,
+        message: `[Instance: ${ctx.tenant}] 2/10 -Start building compress data`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
@@ -291,6 +312,14 @@ export const processPrecomputed = async (precomputed, ctx) => {
         .pipe(
             ezs((entry, feed, self) => {
                 if (self.isLast()) {
+                    logData = JSON.stringify({
+                        level: 'ok',
+                        message: `[Instance: ${ctx.tenant}] 3/10 - End compress data`,
+                        timestamp: new Date(),
+                        status: IN_PROGRESS,
+                    });
+                    jobLogger.info(ctx.job, logData);
+                    notifyListeners(room, logData);
                     return feed.close();
                 }
                 const colums = [];
@@ -338,15 +367,24 @@ export const processPrecomputed = async (precomputed, ctx) => {
     const response = await streamToPromise(streamWorflow);
     const token = response.join('');
 
-    await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS, {
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${ctx.tenant}] 4/10 - Get Token`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(ctx.job, logData);
+    notifyListeners(room, logData);
+
+    await ctx.precomputed.updateStatus(precomputed._id, ON_HOLD, {
         hasData: false,
         callId: token,
     });
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Webservice response token obtained : ${token}`,
+        message: `[Instance: ${ctx.tenant}] 5/10 - Token obtained : ${token}`,
         timestamp: new Date(),
-        status: IN_PROGRESS,
+        status: ON_HOLD,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
@@ -354,9 +392,9 @@ export const processPrecomputed = async (precomputed, ctx) => {
 
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Waiting for response data`,
+        message: `[Instance: ${ctx.tenant}] 6/10 - Waiting for response data`,
         timestamp: new Date(),
-        status: IN_PROGRESS,
+        status: ON_HOLD,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
@@ -384,7 +422,7 @@ export const startAskForPrecomputed = async ctx => {
     const room = `precomputed-job-${ctx.job.id}`;
     const logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Precomputing started`,
+        message: `[Instance: ${ctx.tenant}] 1/10 - Precomputing started`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });

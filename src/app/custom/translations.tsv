@@ -930,6 +930,7 @@
 "precomputed_status_not_started"	"Not started"	"Non démarré"
 "precomputed_status_error"	"Failed"	"Échoué"
 "precomputed_status_canceled"	"Canceled"	"Annulé"
+"precomputed_status_hold"	"On hold"	"En attente"
 "metadata"	"Metadata"	"Métadonnées"
 "affiliation"	"Affiliation"	"Affiliation"
 "geography"	"Geography"	"Géographie"
