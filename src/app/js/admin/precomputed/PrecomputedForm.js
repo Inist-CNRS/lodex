@@ -492,7 +492,9 @@ export const PrecomputedForm = ({
                                                 </Button>
                                                 <PrecomputedFormDataDialogComponent
                                                     isOpen={openPrecomputedData}
-                                                    data={initialValues.data}
+                                                    precomputedID={
+                                                        initialValues._id
+                                                    }
                                                     handleClose={() =>
                                                         setOpenPrecomputedData(
                                                             false,

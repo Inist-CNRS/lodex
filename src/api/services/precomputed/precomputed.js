@@ -149,6 +149,17 @@ export const getComputedFromWebservice = async ctx => {
                 if (!self.size) {
                     self.size = 0;
                 }
+                if (!self.allData) {
+                    self.allData = [];
+                }
+                if (data) {
+                    self.allData = [...self.allData, ...data];
+                    self.size += data.length;
+                }
+                if (self.isFirst()) {
+                    progress.setProgress(tenant, 85);
+                    return feed.end();
+                }
                 if (self.isLast()) {
                     progress.setProgress(tenant, 95);
                     await ctx.precomputed.updateStatus(
@@ -156,21 +167,10 @@ export const getComputedFromWebservice = async ctx => {
                         FINISHED,
                         { hasData: true },
                     );
-                    if (data) {
-                        feed.write(JSON.stringify(data));
+                    if (self.allData) {
+                        feed.write(JSON.stringify(self.allData));
                     }
                     return feed.close();
-                }
-                self.size += data.length;
-                if (self.isFirst()) {
-                    progress.setProgress(tenant, 85);
-                    if (data) {
-                        feed.write(JSON.stringify(data));
-                    }
-                    return feed.end();
-                }
-                if (data) {
-                    feed.write(JSON.stringify(data));
                 }
                 feed.end();
             }),

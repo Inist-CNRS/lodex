@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -13,21 +13,37 @@ import {
     Typography,
 } from '@mui/material';
 import CancelButton from '../../lib/components/CancelButton';
+import {
+    exportPrecomputedData,
+    previewPrecomputedData,
+} from '../api/precomputed';
 
 export const PrecomputedDataDialog = ({
     isOpen,
-    data,
+    precomputedID,
     p: polyglot,
     handleClose,
 }) => {
+    const [previewData, setPreviewData] = useState(null);
+    useEffect(() => {
+        async function fetchData() {
+            const { response } = await previewPrecomputedData(precomputedID);
+            setPreviewData(response);
+        }
+
+        isOpen && fetchData();
+    }, [isOpen]);
+
     const handleDownloadData = () => {
-        const file = new Blob([JSON.stringify(data)], { type: 'text/plain' });
-        const element = document.createElement('a');
-        element.href = URL.createObjectURL(file);
-        element.download = 'precomputed-data-' + Date.now() + '.json';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
+        exportPrecomputedData(precomputedID).then(response => {
+            const file = new Blob([response], { type: 'text/plain' });
+            const element = document.createElement('a');
+            element.href = URL.createObjectURL(file);
+            element.download = 'precomputed-data-' + Date.now() + '.json';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        });
     };
 
     return (
@@ -42,7 +58,7 @@ export const PrecomputedDataDialog = ({
                     borderColor: 'info.main',
                 }}
             >
-                <Typography>{JSON.stringify(data)}</Typography>
+                <Typography>{JSON.stringify(previewData)}</Typography>
                 <br />
                 <Typography sx={{ fontWeight: 'bold' }}>
                     {polyglot.t('precomputed_data_limit')}
@@ -69,7 +85,7 @@ export const PrecomputedDataDialog = ({
 PrecomputedDataDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired,
+    precomputedID: PropTypes.object.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
