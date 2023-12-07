@@ -347,6 +347,9 @@ const Tenants = ({ handleLogout }) => {
             headerName: 'Supprimer',
             flex: 1,
             renderCell: params => {
+                if (params.row.name === 'default') {
+                    return null;
+                }
                 return (
                     <Button
                         color="error"
