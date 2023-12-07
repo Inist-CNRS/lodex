@@ -25,7 +25,7 @@ const PDFView = ({ resource, field, PDFWidth }) => {
             className={classnames('pdf-container', styles.container)}
             width={PDFWidth}
             src={PDFURL}
-            allowFullScreen=""
+            allow="fullscreen"
             webkitallowfullscreen=""
         ></iframe>
     );
