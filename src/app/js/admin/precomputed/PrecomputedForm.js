@@ -46,6 +46,7 @@ import {
     ERROR,
     CANCELED,
     PAUSED,
+    ON_HOLD,
 } from '../../../../common/taskStatus';
 import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
@@ -111,15 +112,7 @@ export const renderStatus = (status, polyglot, startedAt = null) => {
         );
     }
     if (status === IN_PROGRESS) {
-        return (
-            <Chip
-                component="span"
-                label={`${polyglot.t(
-                    'precomputed_status_running',
-                )} (${getDisplayTimeStartedAt(startedAt)})`}
-                color="info"
-            />
-        );
+        return <ProgressChip polyglot={polyglot} startedAt={startedAt} />;
     }
 
     if (status === PAUSED) {
@@ -162,6 +155,16 @@ export const renderStatus = (status, polyglot, startedAt = null) => {
         );
     }
 
+    if (status === ON_HOLD) {
+        return (
+            <Chip
+                component="span"
+                label={polyglot.t('precomputed_status_hold')}
+                sx={{ backgroundColor: '#539CE1', color: '#fff' }}
+            />
+        );
+    }
+
     return (
         <Chip
             component="span"
@@ -169,6 +172,30 @@ export const renderStatus = (status, polyglot, startedAt = null) => {
             sx={{ backgroundColor: 'neutral' }}
         />
     );
+};
+
+export const ProgressChip = ({ polyglot, startedAt }) => {
+    const [spentTime, setSpentTime] = useState(
+        getDisplayTimeStartedAt(startedAt),
+    );
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setSpentTime(getDisplayTimeStartedAt(startedAt));
+        }, 59000);
+        return () => clearInterval(interval);
+    }, []);
+    return (
+        <Chip
+            component="span"
+            label={`${polyglot.t('precomputed_status_running')} (${spentTime})`}
+            color="info"
+        />
+    );
+};
+
+ProgressChip.propTypes = {
+    polyglot: polyglotPropTypes.isRequired,
+    startedAt: PropTypes.string,
 };
 
 export const renderRunButton = (
@@ -476,7 +503,9 @@ export const PrecomputedForm = ({
                                                 </Button>
                                                 <PrecomputedFormDataDialogComponent
                                                     isOpen={openPrecomputedData}
-                                                    data={initialValues.data}
+                                                    precomputedID={
+                                                        initialValues._id
+                                                    }
                                                     handleClose={() =>
                                                         setOpenPrecomputedData(
                                                             false,

@@ -2,6 +2,7 @@ import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 import getLogger from '../../services/logger';
+import fs from 'fs';
 
 const app = new Koa();
 
@@ -19,6 +20,13 @@ export const clearDataset = async ctx => {
                 ),
             );
         }
+
+        // remove folder for precomputed data if exists
+        fs.rmSync(`/app/precomputedData/${ctx.tenant}`, {
+            recursive: true,
+            force: true,
+        });
+
         ctx.body = { status: 'success' };
     } catch (error) {
         const logger = getLogger(ctx.tenant);

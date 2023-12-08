@@ -57,6 +57,6 @@ stats.json
 ## Webstorm
 .idea
 
-## Folder for webservices gzip files exchanges
-/webservice_temp/*
-!/webservice_temp/.gitkeep
+## Folder for precomputed files
+/precomputedData/*
+!/precomputedData/.gitkeep

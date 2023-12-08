@@ -1,10 +1,12 @@
 import React, { useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { clamp } from 'lodash';
+import compose from 'recompose/compose';
+import PropTypes from 'prop-types';
+
+import { field as fieldPropTypes } from '../../../../propTypes';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import injectData from '../../../injectData';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import { field as fieldPropTypes } from '../../../../propTypes';
-import PropTypes from 'prop-types';
 import {
     convertSpecTemplate,
     lodexOrderToIdOrder,
@@ -35,7 +37,7 @@ const BubblePlotView = ({
     tooltipTarget,
     tooltipWeight,
 }) => {
-    const { ref, width, height } = useSizeObserver();
+    const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
     const spec = useMemo(() => {
@@ -44,7 +46,7 @@ const BubblePlotView = ({
                 return convertSpecTemplate(
                     advancedModeSpec,
                     width - VEGA_ACTIONS_WIDTH,
-                    height,
+                    clamp(width - VEGA_ACTIONS_WIDTH, 300, 1200),
                 );
             } catch (e) {
                 setError(e.message);

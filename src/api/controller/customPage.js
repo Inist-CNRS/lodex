@@ -13,10 +13,10 @@ export const getScriptsFromHtml = html =>
         })
         .filter(src => !!src);
 
-const getPathname = async file => {
+const getPathname = async (file, tenant) => {
     const absoluteFilename = path.resolve(
         __dirname,
-        `../../app/custom/${file}`,
+        `../../app/custom/instance/${tenant}/${file}`,
     );
 
     const stats = await getFileStatsIfExists(absoluteFilename);
@@ -34,12 +34,13 @@ const getPathname = async file => {
 
 export default async ctx => {
     const { page: file } = ctx.request.query;
+    const tenant = ctx.tenant;
     if (!file) {
         ctx.status = 404;
         return;
     }
 
-    const pathname = await getPathname(file);
+    const pathname = await getPathname(file, tenant);
 
     let html;
 

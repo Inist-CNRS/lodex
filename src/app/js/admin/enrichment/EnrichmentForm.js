@@ -44,6 +44,7 @@ import {
     ERROR,
     CANCELED,
     PAUSED,
+    ON_HOLD,
 } from '../../../../common/taskStatus';
 import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
@@ -591,7 +592,11 @@ const mapStateToProps = (state, { match }) => ({
     excerptLines: fromParsing.getExcerptLines(state),
     isEnrichmentRunning: !!fromEnrichments
         .enrichments(state)
-        .find(enrichment => enrichment.status === IN_PROGRESS),
+        .find(
+            enrichment =>
+                enrichment.status === IN_PROGRESS ||
+                enrichment.status === ON_HOLD,
+        ),
 });
 const mapDispatchToProps = {
     onChangeWebServiceUrl: value =>

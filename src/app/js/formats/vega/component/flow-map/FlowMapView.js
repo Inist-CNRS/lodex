@@ -1,12 +1,13 @@
 import React, { useMemo, useState } from 'react';
-import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import { clamp } from 'lodash';
+import PropTypes from 'prop-types';
+
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../../../propTypes';
-import PropTypes from 'prop-types';
 import { CustomActionVega } from '../vega-component';
 import FlowMap from '../../models/FlowMap';
 import {
@@ -18,6 +19,7 @@ import { schemeBlues } from 'd3-scale-chromatic';
 import MouseIcon from '../../../shared/MouseIcon';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import injectData from '../../../injectData';
 
 const styles = {
     container: {
@@ -47,7 +49,7 @@ const FlowMapView = ({
                 return convertSpecTemplate(
                     advancedModeSpec,
                     width - VEGA_ACTIONS_WIDTH,
-                    width * 0.6,
+                    clamp((width - VEGA_ACTIONS_WIDTH) * 0.6, 300, 1200),
                 );
             } catch (e) {
                 setError(e.message);

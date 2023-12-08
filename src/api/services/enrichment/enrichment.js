@@ -354,7 +354,7 @@ export const startEnrichment = async ctx => {
     const id = ctx.job?.data?.id;
     const enrichment = await ctx.enrichment.findOneById(id);
     const dataSetSize = await ctx.dataset.count();
-
+    progress.initialize(ctx.tenant);
     progress.start(ctx.tenant, {
         status: ENRICHING,
         target: dataSetSize,

@@ -1,19 +1,21 @@
 import React, { useMemo, useState } from 'react';
-import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { field as fieldPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
+import { clamp } from 'lodash';
+
 import { CustomActionVega } from '../vega-component';
 import RadarChart from '../../models/RadarChart';
 import {
     convertSpecTemplate,
     lodexScaleToIdScale,
+    VEGA_ACTIONS_WIDTH,
     VEGA_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
-
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { field as fieldPropTypes } from '../../../../propTypes';
+import injectData from '../../../injectData';
 
 const styles = {
     container: {
@@ -57,8 +59,8 @@ const RadarChartView = ({
             try {
                 return convertSpecTemplate(
                     advancedModeSpec,
-                    width - width * 0.06,
-                    width - width * 0.24,
+                    width - VEGA_ACTIONS_WIDTH,
+                    clamp((width - VEGA_ACTIONS_WIDTH) * 0.76, 300, 1200),
                 );
             } catch (e) {
                 setError(e.message);

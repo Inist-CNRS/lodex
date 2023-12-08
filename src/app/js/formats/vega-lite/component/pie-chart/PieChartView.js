@@ -1,9 +1,9 @@
-import { field as fieldPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import React, { useMemo, useState } from 'react';
+import { clamp } from 'lodash';
+
 import PieChart from '../../models/PieChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import {
@@ -13,6 +13,8 @@ import {
 } from '../../../chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { field as fieldPropTypes } from '../../../../propTypes';
+import injectData from '../../../injectData';
 import { ASPECT_RATIO_8_5 } from '../../../aspectRatio';
 
 const styles = {
@@ -32,7 +34,7 @@ const PieChartView = ({
     colors,
     labels,
 }) => {
-    const { ref, width, height } = useSizeObserver();
+    const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
     const spec = useMemo(() => {
@@ -41,7 +43,7 @@ const PieChartView = ({
                 return convertSpecTemplate(
                     advancedModeSpec,
                     width - VEGA_ACTIONS_WIDTH,
-                    height,
+                    clamp((width - VEGA_ACTIONS_WIDTH) * 0.6, 300, 1200),
                 );
             } catch (e) {
                 setError(e.message);

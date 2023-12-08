@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from 'react';
-import { CustomActionVegaLite } from '../vega-lite-component';
-import injectData from '../../../injectData';
+import { clamp } from 'lodash';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
+
 import HeatMap from '../../models/HeatMap';
 import { field as fieldPropTypes } from '../../../../propTypes';
-import PropTypes from 'prop-types';
 import {
     convertSpecTemplate,
     lodexOrderToIdOrder,
@@ -14,6 +14,8 @@ import {
 } from '../../../chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { CustomActionVegaLite } from '../vega-lite-component';
+import injectData from '../../../injectData';
 import { ASPECT_RATIO_1_1 } from '../../../aspectRatio';
 
 const styles = {
@@ -35,7 +37,7 @@ const HeatMapView = ({
     tooltipTarget,
     tooltipWeight,
 }) => {
-    const { ref, width, height } = useSizeObserver();
+    const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
     const spec = useMemo(() => {
@@ -44,7 +46,7 @@ const HeatMapView = ({
                 return convertSpecTemplate(
                     advancedModeSpec,
                     width - VEGA_ACTIONS_WIDTH,
-                    height,
+                    clamp(width - VEGA_ACTIONS_WIDTH, 300, 1200),
                 );
             } catch (e) {
                 setError(e.message);

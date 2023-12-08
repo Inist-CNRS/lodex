@@ -698,7 +698,7 @@
 "enrichment_logs"	"Enrichment logs"	"Logs de l'enrichissement"
 "precomputed_logs"	"Precomputed data logs"	"Logs des données précalculées"
 "precomputed_data"	"Precomputed data"	"Données précalculées"
-"precomputed_data_limit"	"We limit the sample to ten elements"	"Nous limitons l'échantillon à dix éléments"
+"precomputed_data_limit"	"We limit the sample to 600 chars"	"Nous limitons l'échantillon à 600 caractères"
 "published_data"	"Published data"	"Données publiées"
 "toggle_loaded"	"Show/hide loaded columns"	"Afficher/cacher les colonnes chargées"
 "toggle_enriched"	"Show/hide enriched columns"	"Afficher/cacher les colonnes enrichies"
@@ -930,6 +930,7 @@
 "precomputed_status_not_started"	"Not started"	"Non démarré"
 "precomputed_status_error"	"Failed"	"Échoué"
 "precomputed_status_canceled"	"Canceled"	"Annulé"
+"precomputed_status_hold"	"On hold"	"En attente"
 "metadata"	"Metadata"	"Métadonnées"
 "affiliation"	"Affiliation"	"Affiliation"
 "geography"	"Geography"	"Géographie"
@@ -1018,6 +1019,17 @@ vega_variable_width	Replace with the width of the chart container	Remplacée par
 vega_variable_height	Replace with the height of the chart container	Remplacée par la hauteur du conteneur du graphique
 theme	Application theme	Thème de l'application
 "error_precomputed_data_empty"	"Precomputed data is empty or unfinished. You might want to relaunch the action"	"Les données précalculées sont vides ou non terminées. Vous pouvez relancer l'action"
+"pc_post-v1-lda-segment_title"	"Lda-Segment"	"Lda-Segment"
+"pc_post-v1-lda-segment_description"	"Create a «lda» field consisting of 5 topics from the set of documents. Each topic contains a «word» field, which is composed of a list of 10 words that are most characteristic of the topic, as well as a «weight» field that corresponds to the weight associated with the topic in the document. The text must be in English."	"Créer à partir de l'ensemble des documents un champ «lda» constitué de 5 topics. Chaque topic contient un champ «word», qui est composé d'une liste de 10 mots qui sont les plus caractéristiques du topic, ainsi que d'un champ «weight» qui correspond au poids associé au sujet dans le document. Le texte doit être en anglais."
+r-clustered-precomputed_title	clustered-precomputed	clustered-precomputed
+r-clustered-precomputed_description	Retrieve precomputed data from precomputes like 'Lda-Segment' and display it in the Clustered chart	Récupère les données précalculées des précalculs comme 'Lda-Segment' et les affiche dans un Diagramme à barres groupées
+formatClusteredChart	Graph - Clustered chart	Graphique - Diagramme à barres groupées
+formatClusteredChartDescription	Displays several bar charts depending on the category of the element and its weight	Affiche plusieurs diagrammes à barres en fonction de la catégorie de l'élément et de son poids
+format_x_axis_title	Title of x axis	Titre de l'axe x
+format_y_axis_title	Title of y axis	Titre de l'axe y
+"formatJsonDebug"	"Other - Json and Debug Format"	"Autre - Format Json et Débogage"
+"formatJsonDebugDescription"	"This format allow to display simple json value or debug values as json"	"Ce format permet d'afficher des valeurs json simples ou des valeurs de débogage sous forme de json."
+"debugMode"	"Enable debugging"	"Activer le débogage"
 format_data_params	Data Parameters	Paramètres des Données
 format_chart_params	Chart Parameters	Paramètres du Graphique
 format_preview	Format Preview	Aperçu du Format

@@ -30,7 +30,7 @@ const SourceValuePrecomputed = ({
         });
 
         if (
-            precomputedSelected.data.length === 0 ||
+            !precomputedSelected.hasData ||
             precomputedSelected.status !== 'FINISHED'
         ) {
             toast.warning(polyglot.t('error_precomputed_data_empty'));

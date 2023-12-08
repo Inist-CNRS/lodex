@@ -605,6 +605,26 @@ export const getThemeRequest = state =>
         method: 'GET',
     });
 
+export const getExportPrecomputedDataRequest = (state, id) => {
+    return getRequest(state, {
+        method: 'GET',
+        url: `/api/precomputed/${id}/download`,
+        head: {
+            Accept: 'application/json',
+        },
+    });
+};
+
+export const getPreviewPrecomputedDataRequest = (state, id) => {
+    return getRequest(state, {
+        method: 'GET',
+        url: `/api/precomputed/${id}/previewData`,
+        head: {
+            Accept: 'application/json',
+        },
+    });
+};
+
 export const selectors = {
     isAdmin,
     getRole,
@@ -678,4 +698,6 @@ export const selectors = {
     getConfigTenantRequest,
     getUpdateConfigTenantRequest,
     getThemeRequest,
+    getExportPrecomputedDataRequest,
+    getPreviewPrecomputedDataRequest,
 };
