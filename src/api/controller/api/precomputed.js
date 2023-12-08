@@ -73,7 +73,10 @@ export const deletePrecomputed = async (ctx, id) => {
             cancelJob(ctx, PRECOMPUTER);
         }
         await ctx.precomputed.delete(id);
-        fs.unlinkSync(`/app/precomputedData/${ctx.tenant}/${id}.json`);
+        const path = `/app/precomputedData/${ctx.tenant}/${id}.json`;
+        if (fs.existsSync(path)) {
+            fs.unlinkSync(path);
+        }
         ctx.status = 200;
         ctx.body = { message: 'ok' };
     } catch (error) {
