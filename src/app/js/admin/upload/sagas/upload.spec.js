@@ -5,8 +5,10 @@ import { fromUpload, fromPublication } from '../../selectors';
 import { uploadSuccess, uploadError } from '../';
 import { loadDatasetFile } from '../../../lib/loadFile';
 import { handleFinishUpload, handleUploadFile } from './uploadFile';
+import { handleUploadUrl } from './uploadUrl';
+import { handleUploadText } from './uploadText';
 
-describe('uploadFile', () => {
+describe('upload', () => {
     describe('handleUploadFile saga', () => {
         let saga;
 
@@ -67,6 +69,111 @@ describe('uploadFile', () => {
             expect(value).toEqual(put(uploadError(error)));
         });
     });
+
+    describe('handleUploadUrl saga', () => {
+        let saga;
+
+        beforeEach(() => {
+            saga = handleUploadUrl();
+        });
+
+        it('should select getLoaderName', () => {
+            const { value } = saga.next();
+
+            expect(JSON.stringify(value)).toEqual(
+                JSON.stringify(select(fromUpload.getLoaderName)),
+            );
+        });
+
+        it('should select customLoader', () => {
+            saga.next();
+            const { value } = saga.next();
+
+            expect(JSON.stringify(value)).toEqual(
+                JSON.stringify(select(fromUpload.getCustomLoader)),
+            );
+        });
+
+        it('should select getToken', () => {
+            saga.next();
+            saga.next('customLoader');
+            const { value } = saga.next('loaderName');
+
+            expect(JSON.stringify(value)).toEqual(
+                JSON.stringify(select(fromUser.getToken)),
+            );
+        });
+
+        it('should race call(loadDatasetFile) and take(LOCATION_CHANGE)', () => {
+            saga.next();
+            saga.next('loaderName');
+            saga.next('customLoader');
+            const { value } = saga.next('token');
+
+            expect(JSON.stringify(value)).toEqual(
+                JSON.stringify(
+                    select(fromUser.getUploadUrlRequest, {
+                        url: 'loaderName',
+                        loaderName: 'customLoader',
+                        customLoader: 'token',
+                    }),
+                ),
+            );
+        });
+    });
+
+    describe('handleUploadText saga', () => {
+        let saga;
+
+        beforeEach(() => {
+            saga = handleUploadText({ payload: 'payload' });
+        });
+
+        it('should select getLoaderName', () => {
+            const { value } = saga.next();
+
+            expect(JSON.stringify(value)).toEqual(
+                JSON.stringify(select(fromUpload.getLoaderName)),
+            );
+        });
+
+        it('should select customLoader', () => {
+            saga.next();
+            const { value } = saga.next();
+
+            expect(JSON.stringify(value)).toEqual(
+                JSON.stringify(select(fromUpload.getCustomLoader)),
+            );
+        });
+
+        it('should select getToken', () => {
+            saga.next();
+            saga.next('customLoader');
+            const { value } = saga.next('loaderName');
+
+            expect(JSON.stringify(value)).toEqual(
+                JSON.stringify(select(fromUser.getToken)),
+            );
+        });
+
+        it('should race call(loadDatasetFile) and take(LOCATION_CHANGE)', () => {
+            saga.next();
+            saga.next('loaderName');
+            saga.next('customLoader');
+            const { value } = saga.next('token');
+
+            expect(JSON.stringify(value)).toEqual(
+                JSON.stringify(
+                    select(fromUser.getUploadTextRequest, {
+                        text: 'loaderName',
+                        loaderName: 'customLoader',
+                        customLoader: 'token',
+                    }),
+                ),
+            );
+        });
+    });
+
     describe('handleFinishUpload saga', () => {
         let saga;
 
