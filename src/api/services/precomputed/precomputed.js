@@ -312,14 +312,6 @@ export const processPrecomputed = async (precomputed, ctx) => {
         .pipe(
             ezs((entry, feed, self) => {
                 if (self.isLast()) {
-                    logData = JSON.stringify({
-                        level: 'ok',
-                        message: `[Instance: ${ctx.tenant}] 3/10 - End compress data`,
-                        timestamp: new Date(),
-                        status: IN_PROGRESS,
-                    });
-                    jobLogger.info(ctx.job, logData);
-                    notifyListeners(room, logData);
                     return feed.close();
                 }
                 const colums = [];
@@ -348,6 +340,23 @@ export const processPrecomputed = async (precomputed, ctx) => {
             }),
         )
         .pipe(ezs('TARDump', { compress: true }))
+        .pipe(
+            ezs((entry, feed, self) => {
+                if (self.isLast()) {
+                    logData = JSON.stringify({
+                        level: 'ok',
+                        message: `[Instance: ${ctx.tenant}] 3/10 - End compress data. Start sending to webservice`,
+                        timestamp: new Date(),
+                        status: IN_PROGRESS,
+                    });
+                    jobLogger.info(ctx.job, logData);
+                    notifyListeners(room, logData);
+                    return feed.close();
+                }
+
+                feed.send(entry);
+            }),
+        )
         .pipe(
             ezs('URLConnect', {
                 url: precomputed.webServiceUrl,
