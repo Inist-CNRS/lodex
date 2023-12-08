@@ -34,7 +34,7 @@ export const getStreamFromUrl = async url => {
     return response.body;
 };
 
-export const getStreamFormText = text => {
+export const getStreamFromText = text => {
     return Readable.from([text]);
 };
 
@@ -87,7 +87,7 @@ export const startImport = async ctx => {
             }
         }
         if (text) {
-            stream = ctx.getStreamFormText(text);
+            stream = ctx.getStreamFromText(text);
         }
         const parsedStream = await parseStream(stream);
         await ctx.saveParsedStream(ctx, parsedStream);

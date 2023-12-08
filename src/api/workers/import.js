@@ -4,7 +4,7 @@ import {
     getLoader,
     getStreamFromUrl,
     getCustomLoader,
-    getStreamFormText,
+    getStreamFromText,
 } from '../services/import';
 import { clearChunks, mergeChunks } from '../services/fsHelpers';
 import { saveParsedStream } from '../services/saveParsedStream';
@@ -74,7 +74,7 @@ const prepareContext = async ctx => {
     ctx.getLoader = getLoader;
     ctx.getCustomLoader = getCustomLoader;
     ctx.getStreamFromUrl = getStreamFromUrl;
-    ctx.getStreamFormText = getStreamFormText;
+    ctx.getStreamFromText = getStreamFromText;
     ctx.mergeChunks = mergeChunks;
     ctx.clearChunks = clearChunks;
     ctx.saveStream = saveStream;
