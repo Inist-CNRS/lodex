@@ -307,11 +307,11 @@ export const processPrecomputed = async (precomputed, ctx) => {
     const precomputedId = precomputed._id.toString();
     const dataSetSize = await ctx.dataset.count();
     const databaseOutput = await ctx.dataset.find().stream();
+    const databaseOutputBis = ezs('transit'); // trick: mongo stream does not propagate error in the pipeline
 
     const streamWorflow = databaseOutput
-        .on('error', e => {
-            throw e; // mongo stream does not propagate error in the pipeline
-        })
+        .on('error', e => databaseOutputBis.emit('error', e))
+        .pipe(databaseOutputBis)
         .pipe(
             ezs((entry, feed, self) => {
                 if (self.isLast()) {
