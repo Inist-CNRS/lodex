@@ -13,7 +13,7 @@ export const getLoader = (loaderName, loaderEnvironment) => stream => {
             ezs('URLConnect', {
                 url: `${process.env.WORKERS_URL ||
                     'http://localhost:31976'}/loaders/${loaderName}?${env2query}`,
-                retries: 1,
+                streaming: true,
                 json: false,
                 encoder: 'transit',
             }),

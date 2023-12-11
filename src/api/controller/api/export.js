@@ -125,7 +125,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
                 {
                     url: workers_url,
                     timeout: 120000,
-                    retries: 1,
+                    streaming: true,
                     json: false,
                     encoder: 'pack',
                 },

@@ -307,8 +307,11 @@ export const processPrecomputed = async (precomputed, ctx) => {
     const precomputedId = precomputed._id.toString();
     const dataSetSize = await ctx.dataset.count();
     const databaseOutput = await ctx.dataset.find().stream();
+    const databaseOutputBis = ezs('transit'); // trick: mongo stream does not propagate error in the pipeline
 
     const streamWorflow = databaseOutput
+        .on('error', e => databaseOutputBis.emit('error', e))
+        .pipe(databaseOutputBis)
         .pipe(
             ezs((entry, feed, self) => {
                 if (self.isLast()) {
@@ -360,7 +363,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
         .pipe(
             ezs('URLConnect', {
                 url: precomputed.webServiceUrl,
-                retries: 1,
+                streaming: true,
                 json: true,
                 encoder: 'transit',
                 timeout: 60000,
@@ -373,7 +376,18 @@ export const processPrecomputed = async (precomputed, ctx) => {
         )
         .pipe(ezs('dump'));
 
-    const response = await streamToPromise(streamWorflow);
+    let response;
+    try {
+        response = await streamToPromise(streamWorflow);
+    } catch (err) {
+        if (err.sourceError && err.sourceError.responseText) {
+            const { message } = tryParseJsonString(
+                err.sourceError.responseText,
+            );
+            throw new Error(message.replace(/(<Error: |\[\w+\]|>+)/g, ''));
+        }
+        throw err;
+    }
     const token = response.join('');
 
     logData = JSON.stringify({
