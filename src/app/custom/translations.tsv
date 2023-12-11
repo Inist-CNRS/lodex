@@ -1030,3 +1030,6 @@ format_y_axis_title	Title of y axis	Titre de l'axe y
 "formatJsonDebug"	"Other - Json and Debug Format"	"Autre - Format Json et Débogage"
 "formatJsonDebugDescription"	"This format allow to display simple json value or debug values as json"	"Ce format permet d'afficher des valeurs json simples ou des valeurs de débogage sous forme de json."
 "debugMode"	"Enable debugging"	"Activer le débogage"
+format_data_params	Data Parameters	Paramètres des Données
+format_chart_params	Chart Parameters	Paramètres du Graphique
+format_preview	Format Preview	Aperçu du Format

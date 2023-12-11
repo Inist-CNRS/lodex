@@ -8,19 +8,15 @@ class BubblePlot extends HeatMap {
         this.model = deepClone(bubblePlotVL);
     }
 
-    /**
-     * @param widthIn{number | null}
-     */
-    buildSpec(widthIn = null) {
+    buildSpec() {
         this.model.encoding.color.scale.range = this.colors;
 
         this.model.encoding.x.axis.labelAngle = -35;
 
         this.commonWithBubblePlot();
 
-        if (!this.editMode) {
-            this.model.width = widthIn * 0.6;
-        }
+        this.model.width = 'container';
+        this.model.height = 'container';
 
         return this.model;
     }

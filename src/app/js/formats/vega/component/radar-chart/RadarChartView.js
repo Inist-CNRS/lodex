@@ -13,7 +13,7 @@ import {
     VEGA_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../chartsHooks';
+import { useSizeObserver } from '../../../vega-utils/chartsHooks';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
 
@@ -135,5 +135,17 @@ const mapStateToProps = (state, { formatData }) => {
         },
     };
 };
+
+export const RadarChartAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: props.dataset.values ?? [],
+        },
+    };
+})(RadarChartView);
 
 export default compose(injectData(), connect(mapStateToProps))(RadarChartView);

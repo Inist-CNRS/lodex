@@ -4,13 +4,20 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import ToolTips from '../../../shared/ToolTips';
+import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { schemeBlues } from 'd3-scale-chromatic';
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import { Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import FlowMap from '../../models/FlowMap';
-import VegaAdvancedMode from '../../../shared/VegaAdvancedMode';
+import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
+import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
+import { FlowMapAdminView } from './FlowMapView';
+import {
+    VegaChartParamsFieldSet,
+    VegaDataParamsFieldSet,
+} from '../../../vega-utils/components/VegaFieldSet';
+import { MapSourceTargetWeight } from '../../../vega-utils/dataSet';
 
 export const defaultArgs = {
     params: {
@@ -131,57 +138,67 @@ const FlowMapAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <FormGroup>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={advancedMode}
-                            onChange={toggleAdvancedMode}
+            <VegaDataParamsFieldSet>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    onChange={handleParams}
+                    polyglot={polyglot}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
+                />
+            </VegaDataParamsFieldSet>
+            <VegaChartParamsFieldSet>
+                <FormGroup>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={advancedMode}
+                                onChange={toggleAdvancedMode}
+                            />
+                        }
+                        label={polyglot.t('advancedMode')}
+                    />
+                </FormGroup>
+                {advancedMode ? (
+                    <VegaAdvancedMode
+                        value={spec}
+                        onClear={clearAdvancedModeSpec}
+                        onChange={handleAdvancedModeSpec}
+                    />
+                ) : (
+                    <>
+                        <GradientSchemeSelector
+                            label={polyglot.t('color_scheme')}
+                            onChange={handleColorScheme}
+                            value={colorScheme}
                         />
-                    }
-                    label={polyglot.t('advancedMode')}
-                />
-            </FormGroup>
-            <RoutineParamsAdmin
-                params={params || defaultArgs.params}
-                onChange={handleParams}
-                polyglot={polyglot}
-                showMaxSize={showMaxSize}
-                showMaxValue={showMaxValue}
-                showMinValue={showMinValue}
-                showOrderBy={showOrderBy}
+                        <ColorPickerParamsAdmin
+                            colors={color}
+                            onChange={handleColor}
+                            polyglot={polyglot}
+                            monochromatic={true}
+                        />
+                        <VegaToolTips
+                            checked={tooltip}
+                            onChange={toggleTooltip}
+                            onCategoryTitleChange={handleTooltipCategory}
+                            categoryTitle={tooltipCategory}
+                            onValueTitleChange={handleTooltipValue}
+                            valueTitle={tooltipValue}
+                            polyglot={polyglot}
+                            thirdValue={false}
+                        />
+                    </>
+                )}
+            </VegaChartParamsFieldSet>
+            <VegaFieldPreview
+                args={{ ...args, p: polyglot }}
+                PreviewComponent={FlowMapAdminView}
+                datasets={[MapSourceTargetWeight]}
+                showDatasetsSelector={false}
             />
-            {advancedMode ? (
-                <VegaAdvancedMode
-                    value={spec}
-                    onClear={clearAdvancedModeSpec}
-                    onChange={handleAdvancedModeSpec}
-                />
-            ) : (
-                <>
-                    <GradientSchemeSelector
-                        label={polyglot.t('color_scheme')}
-                        onChange={handleColorScheme}
-                        value={colorScheme}
-                    />
-                    <ColorPickerParamsAdmin
-                        colors={color}
-                        onChange={handleColor}
-                        polyglot={polyglot}
-                        monochromatic={true}
-                    />
-                    <ToolTips
-                        checked={tooltip}
-                        onChange={toggleTooltip}
-                        onCategoryTitleChange={handleTooltipCategory}
-                        categoryTitle={tooltipCategory}
-                        onValueTitleChange={handleTooltipValue}
-                        valueTitle={tooltipValue}
-                        polyglot={polyglot}
-                        thirdValue={false}
-                    />
-                </>
-            )}
         </Box>
     );
 };
