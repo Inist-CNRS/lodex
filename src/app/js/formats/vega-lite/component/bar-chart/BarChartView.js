@@ -18,7 +18,7 @@ import {
 import BarChart from '../../models/BarChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { useSizeObserver } from '../../../utils/chartsHooks';
 import { ASPECT_RATIO_16_6 } from '../../../aspectRatio';
 
 const styles = {

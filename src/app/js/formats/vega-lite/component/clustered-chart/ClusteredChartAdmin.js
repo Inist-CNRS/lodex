@@ -7,7 +7,7 @@ import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
-import { VegaChartParamsFieldSet } from '../../../vega-utils/components/VegaFieldSet';
+import { FormatChartParamsFieldSet } from '../../../utils/components/FormatFieldSet';
 
 export const defaultArgs = {
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
@@ -36,7 +36,7 @@ const ClusteredChartAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaChartParamsFieldSet>
+            <FormatChartParamsFieldSet>
                 <ColorPickerParamsAdmin
                     colors={colors}
                     onChange={handleColors}
@@ -54,7 +54,7 @@ const ClusteredChartAdmin = props => {
                     onChange={handleYAxisTitle}
                     value={yTitle}
                 />
-            </VegaChartParamsFieldSet>
+            </FormatChartParamsFieldSet>
         </Box>
     );
 };

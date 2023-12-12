@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { MenuItem, TextField, Box } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../propTypes';
+import { FormatUrlParamsFieldSet } from './utils/components/FormatFieldSet';
 
 export const defaultArgs = {
     type: 'value',
@@ -42,14 +43,11 @@ class DefaultAdminComponentWithLabel extends Component {
         return (
             <Box
                 display="flex"
-                gap={1}
-                sx={{
-                    '& > *': {
-                        flexBasis: '50%',
-                    },
-                }}
+                flexWrap="wrap"
+                justifyContent="space-between"
+                gap={2}
             >
-                <Box>
+                <FormatUrlParamsFieldSet>
                     <TextField
                         select
                         label={polyglot.t('select_a_format')}
@@ -67,8 +65,6 @@ class DefaultAdminComponentWithLabel extends Component {
                             {polyglot.t('item_other_column_content')}
                         </MenuItem>
                     </TextField>
-                </Box>
-                <Box>
                     {type !== 'value' && (
                         <TextField
                             fullWidth
@@ -81,7 +77,7 @@ class DefaultAdminComponentWithLabel extends Component {
                             value={value}
                         />
                     )}
-                </Box>
+                </FormatUrlParamsFieldSet>
             </Box>
         );
     }

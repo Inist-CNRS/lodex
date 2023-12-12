@@ -14,16 +14,16 @@ import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
-import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
+import VegaToolTips from '../../../utils/components/VegaToolTips';
 import PieChart from '../../models/PieChart';
-import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
+import VegaAdvancedMode from '../../../utils/components/VegaAdvancedMode';
 import {
-    VegaChartParamsFieldSet,
-    VegaDataParamsFieldSet,
-} from '../../../vega-utils/components/VegaFieldSet';
-import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
+    FormatChartParamsFieldSet,
+    FormatDataParamsFieldSet,
+} from '../../../utils/components/FormatFieldSet';
+import VegaFieldPreview from '../../../utils/components/VegaFieldPreview';
 import { PieChartAdminView } from './PieChartView';
-import { StandardIdValue } from '../../../vega-utils/dataSet';
+import { StandardIdValue } from '../../../utils/dataSet';
 
 export const defaultArgs = {
     params: {
@@ -133,7 +133,7 @@ const PieChartAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaDataParamsFieldSet>
+            <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -143,8 +143,8 @@ const PieChartAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaDataParamsFieldSet>
-            <VegaChartParamsFieldSet>
+            </FormatDataParamsFieldSet>
+            <FormatChartParamsFieldSet>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -190,7 +190,7 @@ const PieChartAdmin = props => {
                         />
                     </>
                 )}
-            </VegaChartParamsFieldSet>
+            </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={PieChartAdminView}

@@ -13,7 +13,7 @@ import {
     VEGA_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { useSizeObserver } from '../../../utils/chartsHooks';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
 

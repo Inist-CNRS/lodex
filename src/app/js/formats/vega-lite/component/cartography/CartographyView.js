@@ -17,7 +17,7 @@ import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
 import Cartography from '../../models/Cartography';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { useSizeObserver } from '../../../utils/chartsHooks';
 
 const styles = {
     container: {

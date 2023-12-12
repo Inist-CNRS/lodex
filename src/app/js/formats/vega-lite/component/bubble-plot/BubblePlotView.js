@@ -15,7 +15,7 @@ import {
 } from '../../../chartsUtils';
 import BubblePlot from '../../models/BubblePlot';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { useSizeObserver } from '../../../utils/chartsHooks';
 import { ASPECT_RATIO_1_1 } from '../../../aspectRatio';
 
 const styles = {

@@ -18,7 +18,7 @@ import {
 import { schemeBlues } from 'd3-scale-chromatic';
 import MouseIcon from '../../../shared/MouseIcon';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { useSizeObserver } from '../../../utils/chartsHooks';
 import injectData from '../../../injectData';
 
 const styles = {

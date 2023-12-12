@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import fetch from '../lib/fetch';
-import { getYearUrl } from '../formats/istexSummary/getIstexData';
-import { CUSTOM_ISTEX_QUERY } from '../formats/istexSummary/constants';
+import { getYearUrl } from '../formats/other/istexSummary/getIstexData';
+import { CUSTOM_ISTEX_QUERY } from '../formats/other/istexSummary/constants';
 
 class FieldProvider extends Component {
     state = {

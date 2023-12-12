@@ -13,7 +13,7 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { useSizeObserver } from '../../../utils/chartsHooks';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import injectData from '../../../injectData';
 import { ASPECT_RATIO_1_1 } from '../../../aspectRatio';

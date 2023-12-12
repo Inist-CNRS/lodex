@@ -16,17 +16,17 @@ import updateAdminArgs from '../../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
-import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
-import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
+import VegaToolTips from '../../../utils/components/VegaToolTips';
+import VegaAdvancedMode from '../../../utils/components/VegaAdvancedMode';
 import RadarChart from '../../models/RadarChart';
 import { lodexScaleToIdScale } from '../../../chartsUtils';
 import VegaFieldSet, {
-    VegaChartParamsFieldSet,
-    VegaDataParamsFieldSet,
-} from '../../../vega-utils/components/VegaFieldSet';
-import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
+    FormatChartParamsFieldSet,
+    FormatDataParamsFieldSet,
+} from '../../../utils/components/FormatFieldSet';
+import VegaFieldPreview from '../../../utils/components/VegaFieldPreview';
 import { RadarChartAdminView } from './RadarChartView';
-import { StandardIdValue } from '../../../vega-utils/dataSet';
+import { StandardIdValue } from '../../../utils/dataSet';
 
 export const defaultArgs = {
     params: {
@@ -149,7 +149,7 @@ const RadarChartAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaDataParamsFieldSet>
+            <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -159,8 +159,8 @@ const RadarChartAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaDataParamsFieldSet>
-            <VegaChartParamsFieldSet>
+            </FormatDataParamsFieldSet>
+            <FormatChartParamsFieldSet>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -219,7 +219,7 @@ const RadarChartAdmin = props => {
                         </TextField>
                     </>
                 )}
-            </VegaChartParamsFieldSet>
+            </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={RadarChartAdminView}
