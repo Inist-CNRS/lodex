@@ -43,6 +43,8 @@ export const createFunction = () =>
             'mongodb://ezmaster_db:27017',
         );
 
+        const tenant = this.getParam('tenant', 'default');
+
         const db = await mongoDatabase(connectionStringURI);
         const collection = db.collection('field');
 
@@ -93,6 +95,7 @@ export const createFunction = () =>
             host,
             // to allow script to connect to MongoDB
             connectionStringURI,
+            tenant,
             precomputedName,
         };
         feed.send(context);

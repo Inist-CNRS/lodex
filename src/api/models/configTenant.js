@@ -45,16 +45,6 @@ export default async db => {
             .then(result => result.value);
     };
 
-    collection.updateStatus = async (id, status, data = {}) => {
-        const newData = { status, ...data };
-        collection.updateOne(
-            {
-                $or: [{ _id: new ObjectId(id) }, { _id: id }],
-            },
-            { $set: newData },
-        );
-    };
-
     collection.castIds = castIdsFactory(collection);
 
     return collection;

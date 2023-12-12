@@ -1,5 +1,6 @@
 import mongoDatabase from './mongoDatabase';
 import { Readable } from 'stream';
+import fs from 'fs';
 
 /**
  * Take `Object` containing a MongoDB query and throw the result
@@ -14,6 +15,7 @@ import { Readable } from 'stream';
 export const createFunction = () =>
     async function LodexFilterPrecomputed(data, feed) {
         const {
+            tenant,
             connectionStringURI,
             filter: rawFilter,
             precomputedName,
@@ -27,11 +29,15 @@ export const createFunction = () =>
 
         const db = await mongoDatabase(connectionStringURI);
         const collection = db.collection(collectionName);
-        const precomputedData = (
-            await collection.findOne({
-                name: precomputedName,
-            })
-        ).data;
+        const { _id: precomputedId } = await collection.findOne({
+            name: precomputedName,
+        });
+
+        const precomputedData = JSON.parse(
+            fs.readFileSync(
+                `/app/precomputedData/${tenant}/${precomputedId}.json`,
+            ),
+        );
 
         if (!isFilter) {
             //With unfiltered precomputed data, we can send the whole precomputed Data directly

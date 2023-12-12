@@ -1,8 +1,4 @@
 {
-  "data": {
-    "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/js/formats/vega-lite/models/topojson/world-countries-sans-antarctica.min.json",
-    "format": {"type": "topojson", "feature": "countries1"}
-  },
   "transform": [
     {
       "lookup": "id",

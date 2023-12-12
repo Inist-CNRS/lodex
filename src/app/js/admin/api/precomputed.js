@@ -2,7 +2,9 @@ import fetch from '../../lib/fetch';
 import {
     getCreatePrecomputedRequest,
     getDeletePrecomputedRequest,
+    getExportPrecomputedDataRequest,
     getPreviewDataPrecomputedRequest,
+    getPreviewPrecomputedDataRequest,
     getUpdatePrecomputedRequest,
 } from '../../user';
 import { getUserSessionStorageInfo } from './tools';
@@ -34,9 +36,30 @@ export const deletePrecomputed = id => {
     return fetch(request);
 };
 
+export const exportPrecomputedData = id => {
+    const { token } = getUserSessionStorageInfo();
+
+    const request = getExportPrecomputedDataRequest({ token }, id);
+    return fetch(request, 'blob').then(({ response, error }) => {
+        if (error) {
+            return error;
+        }
+        return response;
+    });
+};
+
+export const previewPrecomputedData = id => {
+    const { token } = getUserSessionStorageInfo();
+
+    const request = getPreviewPrecomputedDataRequest({ token }, id);
+    return fetch(request);
+};
+
 export default {
     getPreviewPrecomputed,
     createPrecomputed,
     updatePrecomputed,
     deletePrecomputed,
+    exportPrecomputedData,
+    getPreviewPrecomputedDataRequest,
 };

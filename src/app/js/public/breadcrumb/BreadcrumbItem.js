@@ -44,9 +44,8 @@ const BreadcrumbItem = ({ value, p: polyglot }) => {
             rel: 'noopener noreferrer',
         };
     }
-
     // if value.url contain .html, it's a static page. Use href instead of to with react-router default route
-    if (
+    else if (
         value.url.indexOf('.html') !== -1 &&
         typeof sessionStorage !== 'undefined'
     ) {

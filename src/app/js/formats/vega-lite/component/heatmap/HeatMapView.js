@@ -13,9 +13,10 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../chartsHooks';
+import { useSizeObserver } from '../../../vega-utils/chartsHooks';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import injectData from '../../../injectData';
+import { ASPECT_RATIO_1_1 } from '../../../aspectRatio';
 
 const styles = {
     container: {
@@ -88,22 +89,25 @@ const HeatMapView = ({
                 spec={spec}
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                aspectRatio={ASPECT_RATIO_1_1}
             />
         </div>
     );
 };
 
 HeatMapView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    params: PropTypes.any.isRequired,
-    colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
-    flipAxis: PropTypes.bool.isRequired,
-    tooltip: PropTypes.bool.isRequired,
-    tooltipSource: PropTypes.string.isRequired,
-    tooltipTarget: PropTypes.string.isRequired,
-    tooltipWeight: PropTypes.string.isRequired,
+    field: fieldPropTypes,
+    resource: PropTypes.object,
+    data: PropTypes.shape({
+        values: PropTypes.any.isRequired,
+    }),
+    params: PropTypes.any,
+    colorScheme: PropTypes.arrayOf(PropTypes.string),
+    flipAxis: PropTypes.bool,
+    tooltip: PropTypes.bool,
+    tooltipSource: PropTypes.string,
+    tooltipTarget: PropTypes.string,
+    tooltipWeight: PropTypes.string,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
 };
@@ -122,5 +126,17 @@ const mapStateToProps = (state, { formatData }) => {
         },
     };
 };
+
+export const HeatMapAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: props.dataset.values ?? [],
+        },
+    };
+})(HeatMapView);
 
 export default compose(injectData(), connect(mapStateToProps))(HeatMapView);

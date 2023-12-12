@@ -2,7 +2,7 @@ import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 import { v1 as uuid } from 'uuid';
-
+import fs from 'fs';
 import { PRECOMPUTER } from '../../workers/precomputer';
 import { workerQueues } from '../../workers';
 import {
@@ -73,6 +73,10 @@ export const deletePrecomputed = async (ctx, id) => {
             cancelJob(ctx, PRECOMPUTER);
         }
         await ctx.precomputed.delete(id);
+        const path = `/app/precomputedData/${ctx.tenant}/${id}.json`;
+        if (fs.existsSync(path)) {
+            fs.unlinkSync(path);
+        }
         ctx.status = 200;
         ctx.body = { message: 'ok' };
     } catch (error) {
@@ -156,12 +160,46 @@ export const precomputedDataPreview = async ctx => {
     }
 };
 
+export const downloadPrecomputed = async (ctx, id) => {
+    try {
+        const path = `/app/precomputedData/${ctx.tenant}/${id}.json`;
+        const file = fs.readFileSync(path);
+        ctx.body = file;
+        ctx.status = 200;
+    } catch (error) {
+        ctx.status = 403;
+        ctx.body = { error: error.message };
+        return;
+    }
+};
+
+export const previewDataPrecomputed = async (ctx, id) => {
+    try {
+        const path = `/app/precomputedData/${ctx.tenant}/${id}.json`;
+
+        const buffer = Buffer.alloc(600);
+        const fd = fs.openSync(path, 'r');
+        fs.readSync(fd, buffer, 0, 600, 0);
+        fs.closeSync(fd);
+
+        const data = buffer.toString();
+
+        ctx.body = JSON.stringify(data);
+        ctx.status = 200;
+    } catch (error) {
+        ctx.status = 403;
+        ctx.body = { error: error.message };
+    }
+};
+
 const app = new Koa();
 
 app.use(setup);
 
 app.use(route.get('/', getAllPrecomputed));
 app.use(route.get('/:id', getPrecomputed));
+app.use(route.get('/:id/download', downloadPrecomputed));
+app.use(route.get('/:id/previewData', previewDataPrecomputed));
 app.use(koaBodyParser());
 app.use(route.post('/', postPrecomputed));
 app.use(route.put('/:id', putPrecomputed));

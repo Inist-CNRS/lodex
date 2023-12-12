@@ -49,6 +49,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             orderBy,
             field,
             ...ctx.query,
+            tenant: ctx.tenant,
             connectionStringURI: mongoConnectionString(ctx.tenant),
             host,
         };
@@ -88,7 +89,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
                     {
                         url: workers_url,
                         timeout: 120000,
-                        retries: 1,
+                        streaming: true,
                         json: false,
                         encoder: 'pack',
                     },

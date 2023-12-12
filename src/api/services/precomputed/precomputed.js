@@ -10,6 +10,7 @@ import {
     FINISHED,
     ERROR,
     CANCELED,
+    ON_HOLD,
 } from '../../../common/taskStatus';
 import { PRECOMPUTING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
@@ -113,11 +114,11 @@ export const getComputedFromWebservice = async ctx => {
     }
     progress.setProgress(tenant, 75);
     const room = `${tenant}-precomputed-job-${askForPrecomputedJobId}`;
-
+    await ctx.precomputed.updateStatus(precomputedId._id, IN_PROGRESS);
     let logData = {};
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${tenant}] Webservice response ok`,
+        message: `[Instance: ${tenant}] 7/10 - Response ok`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
@@ -133,6 +134,18 @@ export const getComputedFromWebservice = async ctx => {
             this.push(null);
         },
     });
+
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${tenant}] 8/10 - Start retrieving data from response`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(askForPrecomputedJob, logData);
+    notifyListeners(room, logData);
+
+    const folderName = 'precomputedData';
+    const fileName = `${precomputedId}.json`;
     const streamRetreiveWorflow = streamRetrieveInput
         .pipe(
             ezs('URLConnect', {
@@ -147,29 +160,50 @@ export const getComputedFromWebservice = async ctx => {
                 if (!self.size) {
                     self.size = 0;
                 }
-                if (self.isLast()) {
-                    progress.setProgress(tenant, 95);
-                    await ctx.precomputed.fixStatus(precomputedId, FINISHED);
-                    feed.write(self.size);
-                    return feed.close();
+                if (!self.allData) {
+                    self.allData = [];
                 }
-                self.size += data.length;
+                if (data) {
+                    self.allData = [...self.allData, ...data];
+                    self.size += data.length;
+                }
                 if (self.isFirst()) {
                     progress.setProgress(tenant, 85);
-                    await ctx.precomputed.updateStatus(
-                        precomputedId,
-                        IN_PROGRESS,
-                        {
-                            data,
-                        },
-                    );
                     return feed.end();
                 }
-                await ctx.precomputed.pushNewData(precomputedId, data);
+                if (self.isLast()) {
+                    progress.setProgress(tenant, 95);
+                    await ctx.precomputed.updateStatus(
+                        precomputedId,
+                        FINISHED,
+                        { hasData: true },
+                    );
+                    if (self.allData) {
+                        feed.write(JSON.stringify(self.allData));
+                    }
+                    return feed.close();
+                }
                 feed.end();
             }),
+        )
+        .pipe(
+            ezs('FILESave', {
+                location: `/app/${folderName}/${tenant}`,
+                identifier: fileName,
+            }),
         );
-    const insertedItems = await streamToPromise(streamRetreiveWorflow);
+
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${tenant}] 9/10 - Data saved in ${folderName}/${tenant}/${fileName}`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(askForPrecomputedJob, logData);
+    notifyListeners(room, logData);
+
+    await streamToPromise(streamRetreiveWorflow);
+
     await ctx.precomputed.updateStartedAt(precomputedId, null);
 
     askForPrecomputedJob.progress(100);
@@ -178,15 +212,16 @@ export const getComputedFromWebservice = async ctx => {
         isPdwdwrecomputing: false,
         success: !isFailed,
     });
-    progress.finish(tenant);
+
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${tenant}] Precomputing data finished. ${insertedItems} items have been calculated`,
+        message: `[Instance: ${tenant}] 10/10 - Precomputing finished`,
         timestamp: new Date(),
-        status: FINISHED,
+        status: IN_PROGRESS,
     });
     jobLogger.info(askForPrecomputedJob, logData);
     notifyListeners(room, logData);
+    progress.finish(tenant);
 };
 
 export const getFailureFromWebservice = async ctx => {
@@ -230,7 +265,7 @@ export const getFailureFromWebservice = async ctx => {
     progress.finish(tenant);
     const logData = JSON.stringify({
         level: 'error',
-        message: `[Instance: ${tenant}] Precomputing data failed ${error.type} ${error.message}`,
+        message: `[Instance: ${tenant}] 7/10 - Response not ok ${error.type} ${error.message}`,
         timestamp: new Date(),
         status: ERROR,
     });
@@ -253,14 +288,16 @@ const tryParseJsonString = str => {
 
 export const processPrecomputed = async (precomputed, ctx) => {
     let logData = {};
-    await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS);
+    await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS, {
+        hasData: false,
+    });
     await ctx.precomputed.updateStartedAt(precomputed._id, new Date());
 
     const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
     progress.setProgress(ctx.tenant, 10);
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Building entry data`,
+        message: `[Instance: ${ctx.tenant}] 2/10 -Start building compress data`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
@@ -270,8 +307,11 @@ export const processPrecomputed = async (precomputed, ctx) => {
     const precomputedId = precomputed._id.toString();
     const dataSetSize = await ctx.dataset.count();
     const databaseOutput = await ctx.dataset.find().stream();
+    const databaseOutputBis = ezs('transit'); // trick: mongo stream does not propagate error in the pipeline
 
     const streamWorflow = databaseOutput
+        .on('error', e => databaseOutputBis.emit('error', e))
+        .pipe(databaseOutputBis)
         .pipe(
             ezs((entry, feed, self) => {
                 if (self.isLast()) {
@@ -304,9 +344,26 @@ export const processPrecomputed = async (precomputed, ctx) => {
         )
         .pipe(ezs('TARDump', { compress: true }))
         .pipe(
+            ezs((entry, feed, self) => {
+                if (self.isLast()) {
+                    logData = JSON.stringify({
+                        level: 'ok',
+                        message: `[Instance: ${ctx.tenant}] 3/10 - End compress data. Start sending to webservice`,
+                        timestamp: new Date(),
+                        status: IN_PROGRESS,
+                    });
+                    jobLogger.info(ctx.job, logData);
+                    notifyListeners(room, logData);
+                    return feed.close();
+                }
+
+                feed.send(entry);
+            }),
+        )
+        .pipe(
             ezs('URLConnect', {
                 url: precomputed.webServiceUrl,
-                retries: 1,
+                streaming: true,
                 json: true,
                 encoder: 'transit',
                 timeout: 60000,
@@ -319,17 +376,38 @@ export const processPrecomputed = async (precomputed, ctx) => {
         )
         .pipe(ezs('dump'));
 
-    const response = await streamToPromise(streamWorflow);
+    let response;
+    try {
+        response = await streamToPromise(streamWorflow);
+    } catch (err) {
+        if (err.sourceError && err.sourceError.responseText) {
+            const { message } = tryParseJsonString(
+                err.sourceError.responseText,
+            );
+            throw new Error(message.replace(/(<Error: |\[\w+\]|>+)/g, ''));
+        }
+        throw err;
+    }
     const token = response.join('');
 
-    await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS, {
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${ctx.tenant}] 4/10 - Get Token`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(ctx.job, logData);
+    notifyListeners(room, logData);
+
+    await ctx.precomputed.updateStatus(precomputed._id, ON_HOLD, {
+        hasData: false,
         callId: token,
     });
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Webservice response token obtained : ${token}`,
+        message: `[Instance: ${ctx.tenant}] 5/10 - Token obtained : ${token}`,
         timestamp: new Date(),
-        status: IN_PROGRESS,
+        status: ON_HOLD,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
@@ -337,9 +415,9 @@ export const processPrecomputed = async (precomputed, ctx) => {
 
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Waiting for response data`,
+        message: `[Instance: ${ctx.tenant}] 6/10 - Waiting for response data`,
         timestamp: new Date(),
-        status: IN_PROGRESS,
+        status: ON_HOLD,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
@@ -347,6 +425,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
 
 export const setPrecomputedJobId = async (ctx, precomputedID, job) => {
     await ctx.precomputed.updateStatus(precomputedID, PRECOMPUTED_PENDING, {
+        hasData: false,
         jobId: job.id,
     });
 };
@@ -366,7 +445,7 @@ export const startAskForPrecomputed = async ctx => {
     const room = `precomputed-job-${ctx.job.id}`;
     const logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Precomputing started`,
+        message: `[Instance: ${ctx.tenant}] 1/10 - Precomputing started`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
@@ -427,7 +506,10 @@ export const restorePrecomputed = async ctx => {
     // mongo update all precomputed to set status to empty and clean possible data
     await ctx.precomputed.updateMany(
         {},
-        { $set: { status: '' }, $unset: { data: '', jobId: '', callId: '' } },
+        {
+            $set: { status: '' },
+            $unset: { hasData: false, jobId: '', callId: '' },
+        },
     );
 };
 

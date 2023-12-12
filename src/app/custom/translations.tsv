@@ -698,7 +698,7 @@
 "enrichment_logs"	"Enrichment logs"	"Logs de l'enrichissement"
 "precomputed_logs"	"Precomputed data logs"	"Logs des données précalculées"
 "precomputed_data"	"Precomputed data"	"Données précalculées"
-"precomputed_data_limit"	"We limit the sample to ten elements"	"Nous limitons l'échantillon à dix éléments"
+"precomputed_data_limit"	"We limit the sample to 600 chars"	"Nous limitons l'échantillon à 600 caractères"
 "published_data"	"Published data"	"Données publiées"
 "toggle_loaded"	"Show/hide loaded columns"	"Afficher/cacher les colonnes chargées"
 "toggle_enriched"	"Show/hide enriched columns"	"Afficher/cacher les colonnes enrichies"
@@ -930,6 +930,7 @@
 "precomputed_status_not_started"	"Not started"	"Non démarré"
 "precomputed_status_error"	"Failed"	"Échoué"
 "precomputed_status_canceled"	"Canceled"	"Annulé"
+"precomputed_status_hold"	"On hold"	"En attente"
 "metadata"	"Metadata"	"Métadonnées"
 "affiliation"	"Affiliation"	"Affiliation"
 "geography"	"Geography"	"Géographie"
@@ -1029,6 +1030,9 @@ format_y_axis_title	Title of y axis	Titre de l'axe y
 "formatJsonDebug"	"Other - Json and Debug Format"	"Autre - Format Json et Débogage"
 "formatJsonDebugDescription"	"This format allow to display simple json value or debug values as json"	"Ce format permet d'afficher des valeurs json simples ou des valeurs de débogage sous forme de json."
 "debugMode"	"Enable debugging"	"Activer le débogage"
+format_data_params	Data Parameters	Paramètres des Données
+format_chart_params	Chart Parameters	Paramètres du Graphique
+format_preview	Format Preview	Aperçu du Format
 upload_file	Add or complete your instance by uploading a file from your computer. The file is limited to 1GB. Choose the appropriate parser.	Ajouter ou compléter votre instance en téléversant un fichier présent sur votre ordinateur. La taille de fichier est limitée à 1Go. Choisissez le parseur adapté.
 upload_via_url	Add or complete your instance by importing a file accessible via a URL. Choose the appropriate parser.	Ajouter ou compléter votre instance en important un fichier accessible via une URL. Choisissez le parseur adapté.
 upload_via_text	Add or complete your instance by entering directly in the box below. field below. Choose the appropriate parser.	Ajouter ou compléter votre instance en saisissant directement les données à importer dans le zone ci-dessous. Choisissez le parseur adapté.

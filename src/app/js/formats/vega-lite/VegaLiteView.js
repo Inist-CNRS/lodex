@@ -13,7 +13,7 @@ import {
     VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../chartsUtils';
-import { useSizeObserver } from '../chartsHooks';
+import { useSizeObserver } from '../vega-utils/chartsHooks';
 
 const styles = {
     container: {
@@ -76,5 +76,17 @@ const mapStateToProps = (state, { formatData }) => {
         },
     };
 };
+
+export const VegaLiteAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: props.dataset.values ?? [],
+        },
+    };
+})(VegaLiteView);
 
 export default compose(injectData(), connect(mapStateToProps))(VegaLiteView);

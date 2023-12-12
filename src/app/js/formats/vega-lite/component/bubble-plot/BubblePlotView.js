@@ -15,7 +15,8 @@ import {
 } from '../../../chartsUtils';
 import BubblePlot from '../../models/BubblePlot';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../chartsHooks';
+import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { ASPECT_RATIO_1_1 } from '../../../aspectRatio';
 
 const styles = {
     container: {
@@ -88,22 +89,25 @@ const BubblePlotView = ({
                 spec={spec}
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                aspectRatio={ASPECT_RATIO_1_1}
             />
         </div>
     );
 };
 
 BubblePlotView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    params: PropTypes.any.isRequired,
-    colors: PropTypes.string.isRequired,
-    flipAxis: PropTypes.bool.isRequired,
-    tooltip: PropTypes.bool.isRequired,
-    tooltipSource: PropTypes.string.isRequired,
-    tooltipTarget: PropTypes.string.isRequired,
-    tooltipWeight: PropTypes.string.isRequired,
+    field: fieldPropTypes,
+    resource: PropTypes.object,
+    data: PropTypes.shape({
+        values: PropTypes.any.isRequired,
+    }),
+    params: PropTypes.any,
+    colors: PropTypes.string,
+    flipAxis: PropTypes.bool,
+    tooltip: PropTypes.bool,
+    tooltipSource: PropTypes.string,
+    tooltipTarget: PropTypes.string,
+    tooltipWeight: PropTypes.string,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
 };
@@ -122,5 +126,17 @@ const mapStateToProps = (state, { formatData }) => {
         },
     };
 };
+
+export const BubblePlotAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: props.dataset.values ?? [],
+        },
+    };
+})(BubblePlotView);
 
 export default compose(injectData(), connect(mapStateToProps))(BubblePlotView);

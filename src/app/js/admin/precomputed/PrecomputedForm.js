@@ -46,6 +46,7 @@ import {
     ERROR,
     CANCELED,
     PAUSED,
+    ON_HOLD,
 } from '../../../../common/taskStatus';
 import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
@@ -150,6 +151,16 @@ export const renderStatus = (status, polyglot, startedAt = null) => {
                 component="span"
                 label={polyglot.t('precomputed_status_canceled')}
                 color="warning"
+            />
+        );
+    }
+
+    if (status === ON_HOLD) {
+        return (
+            <Chip
+                component="span"
+                label={polyglot.t('precomputed_status_hold')}
+                sx={{ backgroundColor: '#539CE1', color: '#fff' }}
             />
         );
     }
@@ -492,7 +503,9 @@ export const PrecomputedForm = ({
                                                 </Button>
                                                 <PrecomputedFormDataDialogComponent
                                                     isOpen={openPrecomputedData}
-                                                    data={initialValues.data}
+                                                    precomputedID={
+                                                        initialValues._id
+                                                    }
                                                     handleClose={() =>
                                                         setOpenPrecomputedData(
                                                             false,

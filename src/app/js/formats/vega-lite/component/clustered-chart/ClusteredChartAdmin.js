@@ -7,6 +7,7 @@ import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
+import { VegaChartParamsFieldSet } from '../../../vega-utils/components/VegaFieldSet';
 
 export const defaultArgs = {
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
@@ -35,23 +36,25 @@ const ClusteredChartAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <ColorPickerParamsAdmin
-                colors={colors}
-                onChange={handleColors}
-                polyglot={p}
-            />
-            <TextField
-                fullWidth
-                label={p.t('format_x_axis_title')}
-                onChange={handleXAxisTitle}
-                value={xTitle}
-            />
-            <TextField
-                fullWidth
-                label={p.t('format_y_axis_title')}
-                onChange={handleYAxisTitle}
-                value={yTitle}
-            />
+            <VegaChartParamsFieldSet>
+                <ColorPickerParamsAdmin
+                    colors={colors}
+                    onChange={handleColors}
+                    polyglot={p}
+                />
+                <TextField
+                    fullWidth
+                    label={p.t('format_x_axis_title')}
+                    onChange={handleXAxisTitle}
+                    value={xTitle}
+                />
+                <TextField
+                    fullWidth
+                    label={p.t('format_y_axis_title')}
+                    onChange={handleYAxisTitle}
+                    value={yTitle}
+                />
+            </VegaChartParamsFieldSet>
         </Box>
     );
 };

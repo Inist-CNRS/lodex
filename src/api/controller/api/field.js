@@ -273,7 +273,7 @@ export const exportFields = async ctx => {
         for (const collection of collections) {
             let projection = {};
             if (collection === 'precomputed') {
-                projection = { data: 0, status: 0, callId: 0, jobId: 0 };
+                projection = { hasData: 0, status: 0, callId: 0, jobId: 0 };
             }
 
             const docs = await ctx.db

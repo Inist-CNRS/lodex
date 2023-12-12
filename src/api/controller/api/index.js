@@ -34,10 +34,28 @@ import job from './job';
 import dump from './dump';
 import displayConfig from './displayConfig';
 import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
+import mongoClient from '../../services/mongoClient';
+import tenant from '../../models/tenant';
 
 const app = new Koa();
 
 app.use(ezMasterConfig);
+
+app.use(async (ctx, next) => {
+    if (ctx.tenant !== 'admin') {
+        // check if tenant exists
+        const adminDb = await mongoClient('admin');
+        const tenantCollection = await tenant(adminDb);
+        const tenantInDb = await tenantCollection.findOne({ name: ctx.tenant });
+
+        if (!tenantInDb) {
+            ctx.status = 404;
+            ctx.body = { message: `Tenant not found - ${ctx.tenant}` };
+            return;
+        }
+    }
+    return next();
+});
 
 app.use(mount('/login', login));
 app.use(mount('/logout', logoutController));

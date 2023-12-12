@@ -3,6 +3,8 @@ import flowMapVG from './json/flow_map.vg.json';
 import deepClone from 'lodash.clonedeep';
 import BasicChartVG from './BasicChartVG';
 import { VEGA_ACTIONS_WIDTH } from '../../chartsUtils';
+import worldCountriesSansAntarctica from '../../vega-lite/models/topojson/world-countries-sans-antarctica.json';
+import countriesCoordinate from './json/countriesCoordinate.json';
 
 class FlowMap extends BasicChartVG {
     /**
@@ -85,7 +87,7 @@ class FlowMap extends BasicChartVG {
             }
         });
 
-        if (this.tooltip.toggle)
+        if (this.tooltip.toggle) {
             this.model.marks.forEach(e => {
                 if (e.name === 'cell') {
                     e.encode.enter.tooltip = {
@@ -93,6 +95,16 @@ class FlowMap extends BasicChartVG {
                     };
                 }
             });
+        }
+
+        this.model.data.forEach(e => {
+            if (e.name === 'geo_data') {
+                e.values = worldCountriesSansAntarctica;
+            }
+            if (e.name === 'node_data') {
+                e.values = countriesCoordinate;
+            }
+        });
 
         return this.model;
     }

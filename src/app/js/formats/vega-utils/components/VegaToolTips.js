@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, TextField, FormControlLabel, Box } from '@mui/material';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 /**
  * React component use for edit the tooltip
  */
-class ToolTips extends Component {
+class VegaToolTips extends Component {
     /**
      * Default args taken by the component
      */
@@ -171,4 +171,4 @@ class ToolTips extends Component {
     }
 }
 
-export default ToolTips;
+export default VegaToolTips;

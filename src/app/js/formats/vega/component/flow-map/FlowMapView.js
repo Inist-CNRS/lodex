@@ -18,7 +18,7 @@ import {
 import { schemeBlues } from 'd3-scale-chromatic';
 import MouseIcon from '../../../shared/MouseIcon';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../chartsHooks';
+import { useSizeObserver } from '../../../vega-utils/chartsHooks';
 import injectData from '../../../injectData';
 
 const styles = {
@@ -70,7 +70,7 @@ const FlowMapView = ({
         return specBuilder.buildSpec(width, data.values.length);
     }, [
         width,
-        data.values,
+        data.values.length,
         advancedMode,
         advancedModeSpec,
         tooltip,
@@ -98,7 +98,6 @@ const FlowMapView = ({
 
 FlowMapView.propTypes = {
     field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
     data: PropTypes.any,
     tooltip: PropTypes.bool.isRequired,
     tooltipCategory: PropTypes.string.isRequired,
@@ -128,5 +127,17 @@ const mapStateToProps = (state, { formatData }) => {
         },
     };
 };
+
+export const FlowMapAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: props.dataset.values ?? [],
+        },
+    };
+})(FlowMapView);
 
 export default compose(injectData(), connect(mapStateToProps))(FlowMapView);

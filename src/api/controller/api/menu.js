@@ -4,6 +4,8 @@ export default async ctx => {
         rightMenu: ctx.configTenant.rightMenu,
         advancedMenu: ctx.configTenant.advancedMenu,
         advancedMenuButton: ctx.configTenant.advancedMenuButton,
-        customRoutes: ctx.configTenant.customRoutes,
+        customRoutes: ctx.configTenant.menu
+            .filter(({ role }) => role === 'custom')
+            .map(({ link }) => link),
     };
 };
