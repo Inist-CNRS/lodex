@@ -1,12 +1,8 @@
 import mongoDatabase from './mongoDatabase';
-import { Readable } from 'stream';
-import fs from 'fs';
-
 /**
- * Take `Object` containing a MongoDB query and throw the result
+ * Take `Object` form a result of query on published datatset
  *
- * The input object must contain a `connectionStringURI` property, containing
- * the connection string to MongoDB.
+ * and get precomputed from
  *
  * @name LodexFilterPrecomputed
  * @param {Object}  [referer]      data injected into every result object
@@ -14,64 +10,26 @@ import fs from 'fs';
  */
 export const createFunction = () =>
     async function LodexFilterPrecomputed(data, feed) {
-        const {
-            tenant,
-            connectionStringURI,
-            filter: rawFilter,
-            precomputedName,
-        } = this.getEnv();
+        const { connectionStringURI, precomputedName } = this.getEnv();
+        const fieldName = String(this.getParam('field', 'origin'));
         const collectionName = 'precomputed';
-        const isFilter =
-            rawFilter &&
-            Object.keys(rawFilter).filter(
-                key => key != 'removedAt' && rawFilter[key] != null,
-            ).length > 0;
-
         const db = await mongoDatabase(connectionStringURI);
         const collection = db.collection(collectionName);
         const { _id: precomputedId } = await collection.findOne({
             name: precomputedName,
         });
 
-        const precomputedData = JSON.parse(
-            fs.readFileSync(
-                `/app/precomputedData/${tenant}/${precomputedId}.json`,
-            ),
-        );
-
-        if (!isFilter) {
-            //With unfiltered precomputed data, we can send the whole precomputed Data directly
-            precomputedData.map(item => feed.write(item));
-            feed.end();
-            return feed.close();
-        }
-
-        const filteredItems = precomputedData.filter(
-            item => item.origin[0] === (data || {}).uri,
-        );
-
-        const { ezs } = this;
-        const total = await filteredItems.length;
-        if (total === 0) {
-            return feed.send({ total: 0 });
-        }
-        const path = ['total'];
-        const value = [total];
-
         if (this.isLast()) {
             return feed.close();
         }
+        const result = await db
+            .collection(`pc_${precomputedId}`)
+            .find({ [fieldName]: { $in: data } }, { projection: { _id: 0 } })
+            .limit(10)
+            .toArray();
 
-        const readableStream = new Readable({
-            read() {
-                filteredItems.map(item => this.push(item));
-                this.push(null);
-            },
-            objectMode: true,
-        });
-
-        readableStream.pipe(ezs('assign', { path, value }));
-        await feed.flow(readableStream);
+        result.filter(Boolean).forEach(item => feed.write(item));
+        feed.end();
     };
 
 export default {

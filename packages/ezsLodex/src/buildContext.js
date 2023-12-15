@@ -78,7 +78,16 @@ export const createFunction = () =>
         if (filter.$and && !filter.$and.length) {
             delete filter.$and;
         }
-        // context is the intput for LodexReduceQuery & LodexRunQuery & LodexDocuments
+        let precomputedId;
+        if (precomputedName) {
+            const db = await mongoDatabase(connectionStringURI);
+            const { _id } = await db.collection('precomputed').findOne({
+                name: precomputedName,
+            });
+            precomputedId = _id;
+        }
+
+        // context is the input for LodexReduceQuery & LodexRunQuery & LodexDocuments
         const context = {
             // /*
             // to build the MongoDB Query
@@ -97,6 +106,7 @@ export const createFunction = () =>
             connectionStringURI,
             tenant,
             precomputedName,
+            precomputedId,
         };
         feed.send(context);
     };
