@@ -469,6 +469,20 @@ export const getUploadUrlRequest = (
         },
     });
 
+export const getUploadTextRequest = (
+    state,
+    { text, loaderName, customLoader = null },
+) =>
+    getRequest(state, {
+        method: 'POST',
+        url: '/api/upload/text',
+        body: {
+            text,
+            loaderName,
+            customLoader,
+        },
+    });
+
 export const getUrlRequest = (state, { url, queryString }) =>
     getRequest(state, {
         method: 'GET',
@@ -675,6 +689,7 @@ export const selectors = {
     getPrecomputedActionRequest,
     getLoadFieldRequest,
     getUploadUrlRequest,
+    getUploadTextRequest,
     getUrlRequest,
     getExportPublishedDatasetRequest,
     getSparqlRequest,

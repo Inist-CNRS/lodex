@@ -157,6 +157,21 @@ export const uploadUrl = async ctx => {
     };
 };
 
+export const uploadText = async ctx => {
+    const { text, loaderName, customLoader } = ctx.request.body;
+    await workerQueues[ctx.tenant].add(
+        IMPORT, // Name of the job
+        {
+            loaderName,
+            text,
+            customLoader,
+            tenant: ctx.tenant,
+            jobType: IMPORT,
+        },
+        { jobId: uuid() },
+    );
+};
+
 export const checkChunkMiddleware = async (ctx, loaderName) => {
     const {
         resumableChunkNumber,
@@ -207,6 +222,7 @@ app.use(
     }),
 );
 app.use(route.post('/url', uploadUrl));
+app.use(route.post('/text', uploadText));
 
 app.use(route.post('/:loaderName', parseRequest));
 app.use(route.post('/:loaderName', uploadChunkMiddleware));
