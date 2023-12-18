@@ -28,7 +28,7 @@
         "filter",
         "get-fields",
         "graph-by",
-        "graph-by-precomputed",
+        "segments-precomputed",
         "group-and-sum-with",
         "hello-world",
         "istex-facet",
@@ -44,7 +44,6 @@
         "syndication-from",
         "syndication",
         "total-of",
-        "tree-by-precomputed",
         "tree-by",
         "unwind-by"
     ],

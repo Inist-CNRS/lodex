@@ -10,11 +10,6 @@
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252fgraph-segment"
     },
     {
-        "id": "post-v1-lda",
-        "url": "https://data-computer.services.istex.fr/v1/lda",
-        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252flda"
-    },
-    {
         "id": "post-v1-lda-segment",
         "url": "https://data-computer.services.istex.fr/v1/lda-segment",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252flda"

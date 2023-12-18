@@ -19,7 +19,7 @@ export const createFunction = () =>
         }
         const { ezs } = this;
         const {
-            filter,
+            filter: filterDocuments,
             referer,
             field,
             precomputedId,
@@ -38,6 +38,7 @@ export const createFunction = () =>
 
         const valueFieldName = this.getParam('valueFieldName', 'value');
         const labelFieldName = this.getParam('labelFieldName', 'id');
+        const filter = {};
 
         if (minValue) {
             const minFilter = {
@@ -62,17 +63,37 @@ export const createFunction = () =>
         const db = await mongoDatabase(connectionStringURI);
         const collection = db.collection(collectionName);
 
-        let cursor = collection.find(
-            filter,
+        const aggregatePipeline = [
+            {
+                $match: filter,
+            },
+            {
+                $lookup: {
+                    from: 'publishedDataset',
+                    localField: 'origin',
+                    foreignField: 'uri',
+                    as: 'documents',
+                },
+            },
+            {
+                $match: {
+                    documents: { $elemMatch: filterDocuments }, //{ "versions.0.abxD": "2033" }
+                },
+            },
+        ];
+        let cursor = collection.aggregate(
+            aggregatePipeline,
             fields.length > 0 ? projection : null,
         );
 
-        const total = await cursor.count();
-        if (total === 0) {
+        const count = await collection
+            .aggregate(aggregatePipeline.concat({ $count: 'value' }))
+            .toArray();
+        if (count.length === 0) {
             return feed.send({ total: 0 });
         }
         const path = ['total'];
-        const value = [total];
+        const value = [count[0] ? count[0].value : 0];
         if (referer) {
             path.push('referer');
             value.push(referer);
@@ -80,12 +101,10 @@ export const createFunction = () =>
 
         const stream = cursor
             .sort(sort)
-            .allowDiskUse()
             .skip(Number(skip || 0))
             .limit(Number(maxSize || 1000000))
             .stream()
             .on('error', e => feed.stop(e))
-            .pipe(ezs('debug'))
             .pipe(ezs('assign', { path, value }));
         await feed.flow(stream);
     };
