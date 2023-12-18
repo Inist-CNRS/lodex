@@ -13,7 +13,7 @@ import DecadeFold from './DecadeFold';
 import InvalidFormat from '../../InvalidFormat';
 import getDecadeFromData from './getDecadeFromData';
 
-jest.mock('../../lib/composeRenderProps');
+jest.mock('../../../lib/composeRenderProps');
 jest.mock('./getIstexData');
 jest.mock('./getDecadeFromData');
 

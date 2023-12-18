@@ -10,7 +10,7 @@ import JournalFold from './JournalFold';
 import InvalidFormat from '../../InvalidFormat';
 import { CUSTOM_ISTEX_QUERY } from '../istexSummary/constants';
 
-jest.mock('../../lib/composeRenderProps');
+jest.mock('../../../lib/composeRenderProps');
 jest.mock('./getIstexCitationData');
 
 describe('IstexCitationView', () => {
