@@ -8,6 +8,10 @@ import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
+import {
+    FormatChartParamsFieldSet,
+    FormatDataParamsFieldSet,
+} from '../../utils/components/FormatFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -114,39 +118,43 @@ class HierarchyAdmin extends Component {
                 justifyContent="space-between"
                 gap={2}
             >
-                <RoutineParamsAdmin
-                    params={params || defaultArgs.params}
-                    polyglot={polyglot}
-                    onChange={this.setParams}
-                    showMaxSize={showMaxSize}
-                    showMaxValue={showMaxValue}
-                    showMinValue={showMinValue}
-                    showOrderBy={showOrderBy}
-                />
-                <ColorPickerParamsAdmin
-                    colors={this.state.colors || defaultArgs.colors}
-                    onChange={this.setColors}
-                    polyglot={polyglot}
-                    monochromatic={true}
-                />
-                <TextField
-                    label={polyglot.t('max_char_number_in_labels')}
-                    onChange={this.setMaxLabelLength}
-                    value={this.props.args.params.maxLabelLength}
-                    fullWidth
-                />
-                <TextField
-                    label={polyglot.t('label_offset')}
-                    onChange={this.setLabelOffset}
-                    value={this.props.args.params.labelOffset}
-                    fullWidth
-                />
-                <TextField
-                    label={polyglot.t('minimum_scale_value')}
-                    onChange={this.setMinimumScaleValue}
-                    value={this.props.args.params.minimumScaleValue}
-                    fullWidth
-                />
+                <FormatDataParamsFieldSet>
+                    <RoutineParamsAdmin
+                        params={params || defaultArgs.params}
+                        polyglot={polyglot}
+                        onChange={this.setParams}
+                        showMaxSize={showMaxSize}
+                        showMaxValue={showMaxValue}
+                        showMinValue={showMinValue}
+                        showOrderBy={showOrderBy}
+                    />
+                </FormatDataParamsFieldSet>
+                <FormatChartParamsFieldSet>
+                    <ColorPickerParamsAdmin
+                        colors={this.state.colors || defaultArgs.colors}
+                        onChange={this.setColors}
+                        polyglot={polyglot}
+                        monochromatic={true}
+                    />
+                    <TextField
+                        label={polyglot.t('max_char_number_in_labels')}
+                        onChange={this.setMaxLabelLength}
+                        value={this.props.args.params.maxLabelLength}
+                        fullWidth
+                    />
+                    <TextField
+                        label={polyglot.t('label_offset')}
+                        onChange={this.setLabelOffset}
+                        value={this.props.args.params.labelOffset}
+                        fullWidth
+                    />
+                    <TextField
+                        label={polyglot.t('minimum_scale_value')}
+                        onChange={this.setMinimumScaleValue}
+                        value={this.props.args.params.minimumScaleValue}
+                        fullWidth
+                    />
+                </FormatChartParamsFieldSet>
             </Box>
         );
     }

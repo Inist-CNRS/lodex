@@ -8,6 +8,10 @@ import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
 import { Box } from '@mui/material';
+import {
+    FormatChartParamsFieldSet,
+    FormatDataParamsFieldSet,
+} from '../../utils/components/FormatFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -81,21 +85,25 @@ class NetworkAdmin extends Component {
                 justifyContent="space-between"
                 gap={2}
             >
-                <RoutineParamsAdmin
-                    params={params || defaultArgs.params}
-                    polyglot={polyglot}
-                    onChange={this.setParams}
-                    showMaxSize={showMaxSize}
-                    showMaxValue={showMaxValue}
-                    showMinValue={showMinValue}
-                    showOrderBy={showOrderBy}
-                />
-                <ColorPickerParamsAdmin
-                    colors={this.state.colors}
-                    onChange={this.setColors}
-                    polyglot={polyglot}
-                    monochromatic={true}
-                />
+                <FormatDataParamsFieldSet>
+                    <RoutineParamsAdmin
+                        params={params || defaultArgs.params}
+                        polyglot={polyglot}
+                        onChange={this.setParams}
+                        showMaxSize={showMaxSize}
+                        showMaxValue={showMaxValue}
+                        showMinValue={showMinValue}
+                        showOrderBy={showOrderBy}
+                    />
+                </FormatDataParamsFieldSet>
+                <FormatChartParamsFieldSet>
+                    <ColorPickerParamsAdmin
+                        colors={this.state.colors}
+                        onChange={this.setColors}
+                        polyglot={polyglot}
+                        monochromatic={true}
+                    />
+                </FormatChartParamsFieldSet>
             </Box>
         );
     }

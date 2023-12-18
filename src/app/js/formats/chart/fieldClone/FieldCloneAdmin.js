@@ -17,6 +17,7 @@ import {
     SCOPE_DOCUMENT,
     SCOPE_COLLECTION,
 } from '../../../../../common/scope';
+import { FormatDefaultParamsFieldSet } from '../../utils/components/FormatFieldSet';
 
 export const defaultArgs = {
     value: '',
@@ -32,21 +33,23 @@ const FieldCloneAdmin = ({ args, onChange, p: polyglot, fields }) => {
     const filteredFields = fields.filter(f => isValidClonableField(f, filter));
 
     return (
-        <TextField
-            fullWidth
-            select
-            onChange={setValue}
-            value={args.value}
-            label={polyglot.t('fieldclone_format_value')}
-        >
-            {filteredFields.map(field => {
-                return (
-                    <MenuItem value={field.name} key={field.name}>
-                        {field.name} - {field.label}
-                    </MenuItem>
-                );
-            })}
-        </TextField>
+        <FormatDefaultParamsFieldSet>
+            <TextField
+                fullWidth
+                select
+                onChange={setValue}
+                value={args.value}
+                label={polyglot.t('fieldclone_format_value')}
+            >
+                {filteredFields.map(field => {
+                    return (
+                        <MenuItem value={field.name} key={field.name}>
+                            {field.name} - {field.label}
+                        </MenuItem>
+                    );
+                })}
+            </TextField>
+        </FormatDefaultParamsFieldSet>
     );
 };
 

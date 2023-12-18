@@ -8,6 +8,10 @@ import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
+import {
+    FormatChartParamsFieldSet,
+    FormatDataParamsFieldSet,
+} from '../../utils/components/FormatFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -82,26 +86,30 @@ class BubbleAdmin extends Component {
                 justifyContent="space-between"
                 gap={2}
             >
-                <RoutineParamsAdmin
-                    params={params || defaultArgs.params}
-                    onChange={this.setParams}
-                    polyglot={polyglot}
-                    showMaxSize={showMaxSize}
-                    showMaxValue={showMaxValue}
-                    showMinValue={showMinValue}
-                    showOrderBy={showOrderBy}
-                />
-                <ColorPickerParamsAdmin
-                    colors={this.state.colors || defaultArgs.colors}
-                    onChange={this.setColors}
-                    polyglot={polyglot}
-                />
-                <TextField
-                    label={polyglot.t('diameter')}
-                    onChange={this.setDiameter}
-                    value={diameter}
-                    fullWidth
-                />
+                <FormatDataParamsFieldSet>
+                    <RoutineParamsAdmin
+                        params={params || defaultArgs.params}
+                        onChange={this.setParams}
+                        polyglot={polyglot}
+                        showMaxSize={showMaxSize}
+                        showMaxValue={showMaxValue}
+                        showMinValue={showMinValue}
+                        showOrderBy={showOrderBy}
+                    />
+                </FormatDataParamsFieldSet>
+                <FormatChartParamsFieldSet>
+                    <ColorPickerParamsAdmin
+                        colors={this.state.colors || defaultArgs.colors}
+                        onChange={this.setColors}
+                        polyglot={polyglot}
+                    />
+                    <TextField
+                        label={polyglot.t('diameter')}
+                        onChange={this.setDiameter}
+                        value={diameter}
+                        fullWidth
+                    />
+                </FormatChartParamsFieldSet>
             </Box>
         );
     }

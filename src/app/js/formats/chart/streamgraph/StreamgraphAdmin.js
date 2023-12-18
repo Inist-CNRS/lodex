@@ -8,6 +8,10 @@ import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../colorUtils';
+import {
+    FormatChartParamsFieldSet,
+    FormatDataParamsFieldSet,
+} from '../../utils/components/FormatFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -87,32 +91,36 @@ class StreamgraphAdmin extends Component {
                 justifyContent="space-between"
                 gap={2}
             >
-                <RoutineParamsAdmin
-                    params={params || defaultArgs.params}
-                    polyglot={polyglot}
-                    onChange={this.setParams}
-                    showMaxSize={showMaxSize}
-                    showMaxValue={showMaxValue}
-                    showMinValue={showMinValue}
-                    showOrderBy={showOrderBy}
-                />
-                <ColorPickerParamsAdmin
-                    colors={this.state.colors}
-                    onChange={this.setColors}
-                    polyglot={polyglot}
-                />
-                <TextField
-                    label={polyglot.t('max_char_number_in_legends')}
-                    onChange={this.setMaxLegendLength}
-                    value={maxLegendLength}
-                    fullWidth
-                />
-                <TextField
-                    label={polyglot.t('height_px')}
-                    onChange={this.setHeight}
-                    value={height}
-                    fullWidth
-                />
+                <FormatDataParamsFieldSet>
+                    <RoutineParamsAdmin
+                        params={params || defaultArgs.params}
+                        polyglot={polyglot}
+                        onChange={this.setParams}
+                        showMaxSize={showMaxSize}
+                        showMaxValue={showMaxValue}
+                        showMinValue={showMinValue}
+                        showOrderBy={showOrderBy}
+                    />
+                </FormatDataParamsFieldSet>
+                <FormatChartParamsFieldSet>
+                    <ColorPickerParamsAdmin
+                        colors={this.state.colors}
+                        onChange={this.setColors}
+                        polyglot={polyglot}
+                    />
+                    <TextField
+                        label={polyglot.t('max_char_number_in_legends')}
+                        onChange={this.setMaxLegendLength}
+                        value={maxLegendLength}
+                        fullWidth
+                    />
+                    <TextField
+                        label={polyglot.t('height_px')}
+                        onChange={this.setHeight}
+                        value={height}
+                        fullWidth
+                    />
+                </FormatChartParamsFieldSet>
             </Box>
         );
     }

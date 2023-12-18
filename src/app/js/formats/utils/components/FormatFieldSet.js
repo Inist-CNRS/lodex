@@ -30,15 +30,15 @@ FormatFieldSet.propTypes = {
 
 const TranslatedVegaFieldSet = translate(FormatFieldSet);
 
-export const FormatChartParamsFieldSet = ({ children }) => {
+export const FormatDefaultParamsFieldSet = ({ children }) => {
     return (
-        <TranslatedVegaFieldSet title="format_chart_params">
+        <TranslatedVegaFieldSet title="format_default_params">
             {children}
         </TranslatedVegaFieldSet>
     );
 };
 
-FormatChartParamsFieldSet.propTypes = {
+FormatDefaultParamsFieldSet.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
@@ -51,6 +51,18 @@ export const FormatDataParamsFieldSet = ({ children }) => {
 };
 
 FormatDataParamsFieldSet.propTypes = {
+    children: PropTypes.node.isRequired,
+};
+
+export const FormatChartParamsFieldSet = ({ children }) => {
+    return (
+        <TranslatedVegaFieldSet title="format_chart_params">
+            {children}
+        </TranslatedVegaFieldSet>
+    );
+};
+
+FormatChartParamsFieldSet.propTypes = {
     children: PropTypes.node.isRequired,
 };
 

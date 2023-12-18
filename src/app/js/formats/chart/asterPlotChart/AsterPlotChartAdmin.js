@@ -8,6 +8,10 @@ import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
 import { Box } from '@mui/material';
+import {
+    FormatChartParamsFieldSet,
+    FormatDataParamsFieldSet,
+} from '../../utils/components/FormatFieldSet';
 
 const AsterPlotChartAdmin = ({
     p: polyglot,
@@ -18,7 +22,7 @@ const AsterPlotChartAdmin = ({
     showMinValue,
     showOrderBy,
 }) => {
-    const setParams = params => {
+    const handleParams = params => {
         updateAdminArgs(
             'params',
             { ...args.params, ...params },
@@ -29,7 +33,7 @@ const AsterPlotChartAdmin = ({
         );
     };
 
-    const setColors = colors => {
+    const handleColors = colors => {
         updateAdminArgs('colors', colors, {
             args,
             onChange,
@@ -43,20 +47,24 @@ const AsterPlotChartAdmin = ({
             justifyContent="space-between"
             gap={2}
         >
-            <RoutineParamsAdmin
-                params={args.params}
-                onChange={setParams}
-                polyglot={polyglot}
-                showMaxSize={showMaxSize}
-                showMaxValue={showMaxValue}
-                showMinValue={showMinValue}
-                showOrderBy={showOrderBy}
-            />
-            <ColorPickerParamsAdmin
-                colors={args.colors}
-                onChange={setColors}
-                polyglot={polyglot}
-            />
+            <FormatDataParamsFieldSet>
+                <RoutineParamsAdmin
+                    params={args.params}
+                    onChange={handleParams}
+                    polyglot={polyglot}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
+                />
+            </FormatDataParamsFieldSet>
+            <FormatChartParamsFieldSet>
+                <ColorPickerParamsAdmin
+                    colors={args.colors}
+                    onChange={handleColors}
+                    polyglot={polyglot}
+                />
+            </FormatChartParamsFieldSet>
         </Box>
     );
 };
