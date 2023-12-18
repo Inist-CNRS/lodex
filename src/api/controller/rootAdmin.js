@@ -5,8 +5,11 @@ import jwt from 'koa-jwt';
 import { auth } from 'config';
 import { ObjectId } from 'mongodb';
 import { createWorkerQueue, deleteWorkerQueue } from '../workers';
-import { ROOT_ROLE, checkForbiddenNames } from '../../common/tools/tenantTools';
-
+import {
+    ROOT_ROLE,
+    checkForbiddenNames,
+    checkNameTooLong,
+} from '../../common/tools/tenantTools';
 import bullBoard from '../bullBoard';
 import { insertConfigTenant } from '../services/configTenant';
 
@@ -51,6 +54,9 @@ const postTenant = async ctx => {
     if (tenantExists || checkForbiddenNames(name)) {
         ctx.status = 403;
         ctx.body = { error: `Invalid name: "${name}"` };
+    } else if (checkNameTooLong(name)) {
+        ctx.status = 403;
+        ctx.body = { error: `Tenant name: "${name}" too long` };
     } else {
         await ctx.tenantCollection.create({
             name,

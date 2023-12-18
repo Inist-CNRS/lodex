@@ -24,7 +24,7 @@ describe('mongoClient middleware', () => {
             'publishedCharacteristic',
             'publishedDataset',
             'publishedFacet',
-            'configTenant',
+            'configTenantCollection',
         ]);
     });
 });

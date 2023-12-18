@@ -1,17 +1,22 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { clamp } from 'lodash';
+import compose from 'recompose/compose';
+import PropTypes from 'prop-types';
+
+import { field as fieldPropTypes } from '../../../../propTypes';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import injectData from '../../../injectData';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import { field as fieldPropTypes } from '../../../../propTypes';
-import PropTypes from 'prop-types';
 import {
+    convertSpecTemplate,
     lodexOrderToIdOrder,
+    VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
 import BubblePlot from '../../models/BubblePlot';
 import InvalidFormat from '../../../InvalidFormat';
-import { VEGA_ACTIONS_WIDTH } from '../vega-lite-component/VegaLiteComponent';
+import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { ASPECT_RATIO_1_1 } from '../../../aspectRatio';
 
 const styles = {
     container: {
@@ -32,18 +37,17 @@ const BubblePlotView = ({
     tooltipTarget,
     tooltipWeight,
 }) => {
-    const ref = useRef(null);
-    const [width, setWidth] = useState(0);
+    const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
     const spec = useMemo(() => {
         if (advancedMode) {
             try {
-                const advancedSpec = JSON.parse(advancedModeSpec);
-                return {
-                    ...advancedSpec,
-                    width: width - VEGA_ACTIONS_WIDTH,
-                };
+                return convertSpecTemplate(
+                    advancedModeSpec,
+                    width - VEGA_ACTIONS_WIDTH,
+                    clamp(width - VEGA_ACTIONS_WIDTH, 300, 1200),
+                );
             } catch (e) {
                 setError(e.message);
                 return null;
@@ -75,27 +79,6 @@ const BubblePlotView = ({
         tooltipWeight,
     ]);
 
-    useEffect(() => {
-        if (!ref || !ref.current) {
-            return;
-        }
-
-        const resizeObserver = new ResizeObserver(entries => {
-            window.requestAnimationFrame(() => {
-                if (
-                    !Array.isArray(entries) ||
-                    !entries.length ||
-                    entries.length < 1
-                ) {
-                    return;
-                }
-                setWidth(entries[0].contentRect.width);
-            });
-        });
-
-        resizeObserver.observe(ref.current);
-    }, [ref.current]);
-
     if (!spec) {
         return <InvalidFormat format={field.format} value={error} />;
     }
@@ -106,22 +89,25 @@ const BubblePlotView = ({
                 spec={spec}
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                aspectRatio={ASPECT_RATIO_1_1}
             />
         </div>
     );
 };
 
 BubblePlotView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    params: PropTypes.any.isRequired,
-    colors: PropTypes.string.isRequired,
-    flipAxis: PropTypes.bool.isRequired,
-    tooltip: PropTypes.bool.isRequired,
-    tooltipSource: PropTypes.string.isRequired,
-    tooltipTarget: PropTypes.string.isRequired,
-    tooltipWeight: PropTypes.string.isRequired,
+    field: fieldPropTypes,
+    resource: PropTypes.object,
+    data: PropTypes.shape({
+        values: PropTypes.any.isRequired,
+    }),
+    params: PropTypes.any,
+    colors: PropTypes.string,
+    flipAxis: PropTypes.bool,
+    tooltip: PropTypes.bool,
+    tooltipSource: PropTypes.string,
+    tooltipTarget: PropTypes.string,
+    tooltipWeight: PropTypes.string,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
 };
@@ -140,5 +126,17 @@ const mapStateToProps = (state, { formatData }) => {
         },
     };
 };
+
+export const BubblePlotAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: props.dataset.values ?? [],
+        },
+    };
+})(BubblePlotView);
 
 export default compose(injectData(), connect(mapStateToProps))(BubblePlotView);

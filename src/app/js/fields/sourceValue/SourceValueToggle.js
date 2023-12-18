@@ -7,7 +7,7 @@ import ProcessingIcon from '@mui/icons-material/Settings';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import SourceValueArbitrary from './SourceValueArbitrary';
-import SourceValueExternal from './SourceValueExternal';
+import SourceValuePrecomputed from './SourceValuePrecomputed';
 import SourceValueFromColumns from './SourceValueFromColumns';
 import SourceValueFromColumnsForSubResource from './SourceValueFromColumnsForSubResource';
 
@@ -24,7 +24,6 @@ import {
     Typography,
 } from '@mui/material';
 import SourceValueFromSubResource from './SourceValueFromSubResource';
-import customTheme from '../../../custom/customTheme';
 
 const TRANSFORMERS_FORM_STATUS = new Map([
     [
@@ -42,13 +41,17 @@ const TRANSFORMERS_FORM_STATUS = new Map([
         ],
     ],
     [
-        'external',
+        'precomputed',
         [
             {
-                operation: 'WEBSERVICE',
+                operation: 'PRECOMPUTED',
                 args: [
                     {
-                        name: 'webservice',
+                        name: 'precomputed',
+                        type: 'string',
+                    },
+                    {
+                        name: 'routine',
                         type: 'string',
                     },
                 ],
@@ -144,9 +147,10 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
             source: 'arbitrary',
             value: transformers[0]?.args && transformers[0].args[0]?.value,
         },
-        WEBSERVICE: {
-            source: 'external',
+        PRECOMPUTED: {
+            source: 'precomputed',
             value: transformers[0]?.args && transformers[0].args[0]?.value,
+            routine: transformers[0]?.args && transformers[0].args[1]?.value,
         },
         COLUMN: {
             source: 'fromColumns',
@@ -180,10 +184,10 @@ const ToggleButton = styled(MuiToggleButton)(() => ({
         gap: '5px',
         '&.Mui-selected, &.Mui-selected:hover': {
             color: 'white',
-            backgroundColor: customTheme.palette.primary.secondary,
+            backgroundColor: 'var(--primary-secondary)',
         },
         '&.Mui-disabled': {
-            backgroundColor: customTheme.palette.neutralDark.veryLight,
+            backgroundColor: 'var(--neutral-dark-very-light)',
         },
     },
 }));
@@ -198,16 +202,21 @@ export const SourceValueToggle = ({
 }) => {
     const [source, setSource] = React.useState(null);
     const [value, setValue] = React.useState(null);
+    const [routine, setRoutine] = React.useState(undefined);
     React.useEffect(() => {
         const {
             source: currentSource,
             value: currentValue,
+            routine: currentRoutine,
         } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(
             currentTransformers,
             selectedSubresourceUri && true,
         );
         setSource(currentSource);
         setValue(currentValue);
+        if (currentRoutine) {
+            setRoutine(currentRoutine);
+        }
     }, [currentTransformers]);
 
     const updateDefaultValueTransformers = (
@@ -218,7 +227,7 @@ export const SourceValueToggle = ({
         let defaultTransformersLength = 0;
         if (
             currentSource === 'arbitrary' ||
-            currentSource === 'external' ||
+            currentSource === 'precomputed' ||
             currentSource === 'fromColumns'
         ) {
             defaultTransformersLength = 1;
@@ -333,10 +342,10 @@ export const SourceValueToggle = ({
                     </Typography>
                 </ToggleButton>
 
-                <ToggleButton disabled={arbitraryMode} value="external">
+                <ToggleButton disabled={!arbitraryMode} value="precomputed">
                     <ProcessingIcon style={{ fontSize: 50 }} />
                     <Typography variant="caption">
-                        {polyglot.t('external_processing')}
+                        {polyglot.t('precomputed_processing')}
                     </Typography>
                 </ToggleButton>
 
@@ -379,8 +388,8 @@ export const SourceValueToggle = ({
                 />
             )}
 
-            {source === 'external' && (
-                <SourceValueExternal
+            {source === 'precomputed' && (
+                <SourceValuePrecomputed
                     updateDefaultValueTransformers={newTransformers =>
                         updateDefaultValueTransformers(
                             source,
@@ -389,6 +398,7 @@ export const SourceValueToggle = ({
                         )
                     }
                     value={value}
+                    routine={routine}
                 />
             )}
 

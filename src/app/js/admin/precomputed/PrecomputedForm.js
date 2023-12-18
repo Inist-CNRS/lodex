@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import PrecomputedCatalogConnected from './PrecomputedCatalog';
 import PrecomputedPreview from './PrecomputedPreview';
@@ -46,10 +46,12 @@ import {
     ERROR,
     CANCELED,
     PAUSED,
+    ON_HOLD,
 } from '../../../../common/taskStatus';
 import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
+import getLocale from '../../../../common/getLocale';
 
 // UTILITARY PART
 const PRECOMPUTED_FORM = 'PRECOMPUTED_FORM';
@@ -71,7 +73,35 @@ const renderTextField = ({ input, label, meta: { touched, error } }) => {
     );
 };
 
-export const renderStatus = (status, polyglot) => {
+function getDisplayTimeStartedAt(startedAt) {
+    if (!startedAt) {
+        return;
+    }
+
+    const now = new Date();
+    const startedAtDate = new Date(startedAt);
+    const diff = now - startedAtDate;
+
+    const diffInMinutes = Math.floor(diff / 60000);
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    const relativeTime = new Intl.RelativeTimeFormat(getLocale(), {
+        numeric: 'auto',
+    });
+    let timeSinceStarted = '';
+
+    if (diffInHours < 1) {
+        timeSinceStarted = relativeTime.format(-diffInMinutes, 'minute');
+    } else if (diffInDays < 1) {
+        timeSinceStarted = relativeTime.format(-diffInHours, 'hour');
+    } else {
+        timeSinceStarted = relativeTime.format(-diffInDays, 'day');
+    }
+    return timeSinceStarted;
+}
+
+export const renderStatus = (status, polyglot, startedAt = null) => {
     if (status === PENDING) {
         return (
             <Chip
@@ -82,13 +112,7 @@ export const renderStatus = (status, polyglot) => {
         );
     }
     if (status === IN_PROGRESS) {
-        return (
-            <Chip
-                component="span"
-                label={polyglot.t('precomputed_status_running')}
-                color="info"
-            />
-        );
+        return <ProgressChip polyglot={polyglot} startedAt={startedAt} />;
     }
 
     if (status === PAUSED) {
@@ -131,6 +155,16 @@ export const renderStatus = (status, polyglot) => {
         );
     }
 
+    if (status === ON_HOLD) {
+        return (
+            <Chip
+                component="span"
+                label={polyglot.t('precomputed_status_hold')}
+                sx={{ backgroundColor: '#539CE1', color: '#fff' }}
+            />
+        );
+    }
+
     return (
         <Chip
             component="span"
@@ -140,25 +174,59 @@ export const renderStatus = (status, polyglot) => {
     );
 };
 
+export const ProgressChip = ({ polyglot, startedAt }) => {
+    const [spentTime, setSpentTime] = useState(
+        getDisplayTimeStartedAt(startedAt),
+    );
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setSpentTime(getDisplayTimeStartedAt(startedAt));
+        }, 59000);
+        return () => clearInterval(interval);
+    }, []);
+    return (
+        <Chip
+            component="span"
+            label={`${polyglot.t('precomputed_status_running')} (${spentTime})`}
+            color="info"
+        />
+    );
+};
+
+ProgressChip.propTypes = {
+    polyglot: polyglotPropTypes.isRequired,
+    startedAt: PropTypes.string,
+};
+
 export const renderRunButton = (
     handleLaunchPrecomputed,
     precomputedStatus,
     polyglot,
     variant,
-) => (
-    <Button
-        color="primary"
-        variant={variant || 'contained'}
-        sx={{ height: '100%' }}
-        startIcon={<PlayArrowIcon />}
-        onClick={handleLaunchPrecomputed}
-        disabled={
-            precomputedStatus === IN_PROGRESS || precomputedStatus === PENDING
-        }
-    >
-        {polyglot.t('run')}
-    </Button>
-);
+) => {
+    const [isClicked, setIsClicked] = useState(false);
+    const handleClick = event => {
+        handleLaunchPrecomputed(event);
+        setIsClicked(true);
+    };
+
+    return (
+        <Button
+            color="primary"
+            variant={variant || 'contained'}
+            sx={{ height: '100%' }}
+            startIcon={<PlayArrowIcon />}
+            onClick={handleClick}
+            disabled={
+                isClicked ||
+                precomputedStatus === IN_PROGRESS ||
+                precomputedStatus === PENDING
+            }
+        >
+            {polyglot.t('run')}
+        </Button>
+    );
+};
 
 // COMPONENT PART
 export const PrecomputedForm = ({
@@ -223,7 +291,7 @@ export const PrecomputedForm = ({
     };
 
     const handleUpdatePrecomputed = async () => {
-        const precomputedDataToUpdate = {
+        const { data, ...precomputedDataToUpdate } = {
             ...initialValues,
             ...formValues,
         };
@@ -386,13 +454,18 @@ export const PrecomputedForm = ({
                             >
                                 <Typography>
                                     {polyglot.t('precomputed_status')} : &nbsp;
-                                    {renderStatus(precomputedStatus, polyglot)}
+                                    {renderStatus(
+                                        precomputedStatus,
+                                        polyglot,
+                                        initialValues?.startedAt,
+                                    )}
                                 </Typography>
                                 <Box>
                                     <Button
                                         variant="link"
                                         sx={{
                                             paddingRight: 0,
+                                            paddingLeft: 0,
                                             textDecoration: 'underline',
                                         }}
                                         onClick={() =>
@@ -414,7 +487,9 @@ export const PrecomputedForm = ({
                                                 <Button
                                                     variant="link"
                                                     sx={{
+                                                        marginLeft: 2,
                                                         paddingRight: 0,
+                                                        paddingLeft: 0,
                                                         textDecoration:
                                                             'underline',
                                                     }}
@@ -428,7 +503,9 @@ export const PrecomputedForm = ({
                                                 </Button>
                                                 <PrecomputedFormDataDialogComponent
                                                     isOpen={openPrecomputedData}
-                                                    data={initialValues.data}
+                                                    precomputedID={
+                                                        initialValues._id
+                                                    }
                                                     handleClose={() =>
                                                         setOpenPrecomputedData(
                                                             false,

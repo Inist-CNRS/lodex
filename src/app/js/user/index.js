@@ -160,6 +160,12 @@ export const getDeleteEnrichmentRequest = (state, id) =>
         method: 'DELETE',
     });
 
+export const getConfigTenantAvailableThemeRequest = state =>
+    getRequest(state, {
+        url: '/api/themes',
+        method: 'GET',
+    });
+
 export const getConfigTenantRequest = state =>
     getRequest(state, {
         url: `/api/config-tenant`,
@@ -463,6 +469,20 @@ export const getUploadUrlRequest = (
         },
     });
 
+export const getUploadTextRequest = (
+    state,
+    { text, loaderName, customLoader = null },
+) =>
+    getRequest(state, {
+        method: 'POST',
+        url: '/api/upload/text',
+        body: {
+            text,
+            loaderName,
+            customLoader,
+        },
+    });
+
 export const getUrlRequest = (state, { url, queryString }) =>
     getRequest(state, {
         method: 'GET',
@@ -507,14 +527,16 @@ export const getExportPublishedDatasetRequest = (
     });
 
 // download pdf file
-export const getExportPDFRequest = (state, options) =>
-    getRequest(state, {
+export const getExportPDFRequest = (state, options) => {
+    const paramString = getQueryString(options);
+    return getRequest(state, {
         method: 'GET',
-        url: `/api/pdf?locale=${options.locale}&maxExportPDFSize=${options.maxExportPDFSize}&match=${options.match}&facets=${options.facets}`,
+        url: `/api/pdf?${paramString}`,
         head: {
             Accept: 'application/pdf',
         },
     });
+};
 
 export const getReorderFieldRequest = (state, fields) =>
     getRequest(state, {
@@ -559,10 +581,11 @@ export const getJobLogsRequest = (state, jobId) =>
         url: `/api/job/${jobId}/logs`,
     });
 
-export const getCancelJobRequest = (state, queue) =>
+export const getCancelJobRequest = (state, queue, subLabel) =>
     getRequest(state, {
         url: `/api/job/${queue}/cancel`,
         method: 'POST',
+        body: { subLabel },
     });
 
 export const getClearJobsRequest = state =>
@@ -589,6 +612,32 @@ export const clearModelRequest = state =>
         url: '/api/field',
         method: 'DELETE',
     });
+
+export const getThemeRequest = state =>
+    getRequest(state, {
+        url: '/api/themes/current',
+        method: 'GET',
+    });
+
+export const getExportPrecomputedDataRequest = (state, id) => {
+    return getRequest(state, {
+        method: 'GET',
+        url: `/api/precomputed/${id}/download`,
+        head: {
+            Accept: 'application/json',
+        },
+    });
+};
+
+export const getPreviewPrecomputedDataRequest = (state, id) => {
+    return getRequest(state, {
+        method: 'GET',
+        url: `/api/precomputed/${id}/previewData`,
+        head: {
+            Accept: 'application/json',
+        },
+    });
+};
 
 export const selectors = {
     isAdmin,
@@ -640,6 +689,7 @@ export const selectors = {
     getPrecomputedActionRequest,
     getLoadFieldRequest,
     getUploadUrlRequest,
+    getUploadTextRequest,
     getUrlRequest,
     getExportPublishedDatasetRequest,
     getSparqlRequest,
@@ -662,4 +712,7 @@ export const selectors = {
     getDisplayConfigRequest,
     getConfigTenantRequest,
     getUpdateConfigTenantRequest,
+    getThemeRequest,
+    getExportPrecomputedDataRequest,
+    getPreviewPrecomputedDataRequest,
 };

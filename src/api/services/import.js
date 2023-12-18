@@ -3,25 +3,24 @@ import ezsBasics from '@ezs/basics';
 import fetch from 'fetch-with-proxy';
 import progress from './progress';
 import { INDEXATION, SAVING_DATASET } from '../../common/progressStatus';
+import { Readable } from 'stream';
 
 ezs.use(ezsBasics);
 
-export const getLoader = (loaderName, loaderEnvironment) => stream =>
-    stream
+export const getLoader = (loaderName, loaderEnvironment) => stream => {
+    const env2query = new URLSearchParams(loaderEnvironment);
+    return stream
         .pipe(
-            ezs(
-                'URLConnect',
-                {
-                    url: `${process.env.WORKERS_URL ||
-                        'http://localhost:31976'}/loaders/${loaderName}`,
-                    retries: 1,
-                    json: false,
-                    encoder: 'transit',
-                },
-                loaderEnvironment,
-            ),
+            ezs('URLConnect', {
+                url: `${process.env.WORKERS_URL ||
+                    'http://localhost:31976'}/loaders/${loaderName}?${env2query}`,
+                streaming: true,
+                json: false,
+                encoder: 'transit',
+            }),
         )
         .pipe(ezs('unpack'));
+};
 export const getCustomLoader = async (script, loaderEnvironment) => {
     return stream =>
         stream.pipe(ezs('delegate', { script }, loaderEnvironment));
@@ -35,9 +34,20 @@ export const getStreamFromUrl = async url => {
     return response.body;
 };
 
+export const getStreamFromText = text => {
+    return Readable.from([text]);
+};
+
 export const startImport = async ctx => {
-    const { loaderName, url, filename, totalChunks, extension, customLoader } =
-        ctx.job?.data || {};
+    const {
+        loaderName,
+        url,
+        text,
+        filename,
+        totalChunks,
+        extension,
+        customLoader,
+    } = ctx.job?.data || {};
     try {
         if (progress.status !== SAVING_DATASET) {
             progress.start(ctx.tenant, {
@@ -75,6 +85,9 @@ export const startImport = async ctx => {
             } catch (error) {
                 throw new Error(`Error while merging chunks: ${error}`);
             }
+        }
+        if (text) {
+            stream = ctx.getStreamFromText(text);
         }
         const parsedStream = await parseStream(stream);
         await ctx.saveParsedStream(ctx, parsedStream);

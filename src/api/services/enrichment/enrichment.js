@@ -12,7 +12,7 @@ import {
     ERROR,
     CANCELED,
 } from '../../../common/taskStatus';
-import { ENRICHING, PENDING } from '../../../common/progressStatus';
+import { ENRICHING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError } from '../../workers';
 import getLogger from '../logger';
@@ -25,6 +25,11 @@ const getSourceData = async (ctx, sourceColumn) => {
               }
             : {},
     );
+
+    if (!excerptLines) {
+        return null;
+    }
+
     if (excerptLines.length === 0) {
         return null;
     }
@@ -38,7 +43,8 @@ const getSourceData = async (ctx, sourceColumn) => {
 };
 
 export const createEnrichmentRule = async (ctx, enrichment) => {
-    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.currentConfig;
+    const { enrichmentBatchSize } = ctx.configTenant;
+    const BATCH_SIZE = Number(enrichmentBatchSize || 10);
     if (enrichment.advancedMode) {
         return enrichment;
     }
@@ -48,7 +54,6 @@ export const createEnrichmentRule = async (ctx, enrichment) => {
     }
 
     const data = await getSourceData(ctx, enrichment.sourceColumn);
-
     let rule = getEnrichmentRuleModel(data, enrichment, BATCH_SIZE);
 
     return {
@@ -63,7 +68,8 @@ const cleanWebServiceRule = rule => {
 };
 
 export const getEnrichmentDataPreview = async ctx => {
-    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.currentConfig;
+    const { enrichmentBatchSize } = ctx.configTenant;
+    const BATCH_SIZE = Number(enrichmentBatchSize || 10);
     const { sourceColumn, subPath, rule } = ctx.request.body;
     let previewRule = rule;
     if (!sourceColumn && !rule) {
@@ -84,9 +90,7 @@ export const getEnrichmentDataPreview = async ctx => {
         previewRule = cleanWebServiceRule(previewRule);
     }
     const commands = createEzsRuleCommands(previewRule);
-    const excerptLines = await ctx.dataset.getExcerpt(
-        sourceColumn ? { [sourceColumn]: { $ne: null } } : {},
-    );
+    const excerptLines = await ctx.dataset.getExcerpt();
     let result = [];
     try {
         for (let index = 0; index < excerptLines.length; index += BATCH_SIZE) {
@@ -96,7 +100,13 @@ export const getEnrichmentDataPreview = async ctx => {
                 ctx,
                 true,
             );
-            result.push(...values.map(v => v.value));
+
+            // Display null or undefined by string only for preview. Use for show informations to user.
+            result.push(
+                ...values.map(v =>
+                    v.value !== undefined ? v.value : 'undefined',
+                ),
+            );
         }
     } catch (error) {
         const logger = getLogger(ctx.tenant);
@@ -215,7 +225,8 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
 };
 
 export const processEnrichment = async (enrichment, ctx) => {
-    const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.currentConfig;
+    const { enrichmentBatchSize } = ctx.configTenant;
+    const BATCH_SIZE = Number(enrichmentBatchSize || 10);
     await ctx.enrichment.updateStatus(enrichment._id, IN_PROGRESS);
     let errorCount = 0;
 
@@ -343,16 +354,15 @@ export const startEnrichment = async ctx => {
     const id = ctx.job?.data?.id;
     const enrichment = await ctx.enrichment.findOneById(id);
     const dataSetSize = await ctx.dataset.count();
+    progress.initialize(ctx.tenant);
+    progress.start(ctx.tenant, {
+        status: ENRICHING,
+        target: dataSetSize,
+        label: 'ENRICHING',
+        subLabel: enrichment.name,
+        type: 'enricher',
+    });
 
-    if (progress.getProgress(ctx.tenant).status === PENDING) {
-        progress.start(ctx.tenant, {
-            status: ENRICHING,
-            target: dataSetSize,
-            label: 'ENRICHING',
-            subLabel: enrichment.name,
-            type: 'enricher',
-        });
-    }
     const room = `enrichment-job-${ctx.job.id}`;
     const logData = JSON.stringify({
         level: 'ok',
@@ -398,9 +408,12 @@ export const setEnrichmentError = async (ctx, err) => {
 };
 
 export const restoreEnrichments = async ctx => {
-    ctx.enrichment.updateMany({}, { $unset: { status: '' } });
+    // mongo update all enrichment to set status to empty
+    await ctx.enrichment.updateMany({}, { $set: { status: '' } });
+
     // some enrichments are exported without a rule, we need to recreate the rule if it is the case
     const enrichments = await ctx.enrichment.find({}).toArray();
+
     for (const enrichment of enrichments) {
         if (!enrichment.rule) {
             const enrichmentWithRule = await createEnrichmentRule(

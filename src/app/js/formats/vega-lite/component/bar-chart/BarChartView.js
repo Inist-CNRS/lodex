@@ -1,20 +1,25 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import { clamp } from 'lodash';
+
 import injectData from '../../../injectData';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import {
     AXIS_X,
     AXIS_Y,
+    convertSpecTemplate,
     lodexDirectionToIdDirection,
     lodexScaleToIdScale,
+    VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
 import BarChart from '../../models/BarChart';
 import { CustomActionVegaLite } from '../vega-lite-component';
 import InvalidFormat from '../../../InvalidFormat';
-import { VEGA_ACTIONS_WIDTH } from '../vega-lite-component/VegaLiteComponent';
+import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { ASPECT_RATIO_16_6 } from '../../../aspectRatio';
 
 const styles = {
     container: {
@@ -41,18 +46,17 @@ const BarChartView = ({
     diagonalCategoryAxis,
     diagonalValueAxis,
 }) => {
-    const ref = useRef(null);
-    const [width, setWidth] = useState(0);
+    const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
     const spec = useMemo(() => {
         if (advancedMode) {
             try {
-                const advancedSpec = JSON.parse(advancedModeSpec);
-                return {
-                    ...advancedSpec,
-                    width: width - VEGA_ACTIONS_WIDTH,
-                };
+                return convertSpecTemplate(
+                    advancedModeSpec,
+                    width - VEGA_ACTIONS_WIDTH,
+                    clamp((width - VEGA_ACTIONS_WIDTH) * 0.6, 300, 1200),
+                );
             } catch (e) {
                 setError(e.message);
                 return null;
@@ -98,27 +102,6 @@ const BarChartView = ({
         diagonalValueAxis,
     ]);
 
-    useEffect(() => {
-        if (!ref || !ref.current) {
-            return;
-        }
-
-        const resizeObserver = new ResizeObserver(entries => {
-            window.requestAnimationFrame(() => {
-                if (
-                    !Array.isArray(entries) ||
-                    !entries.length ||
-                    entries.length < 1
-                ) {
-                    return;
-                }
-                setWidth(entries[0].contentRect.width);
-            });
-        });
-
-        resizeObserver.observe(ref.current);
-    }, [ref.current]);
-
     if (!spec) {
         return <InvalidFormat format={field.format} value={error} />;
     }
@@ -129,29 +112,32 @@ const BarChartView = ({
                 spec={spec}
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                aspectRatio={ASPECT_RATIO_16_6}
             />
         </div>
     );
 };
 
 BarChartView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    colors: PropTypes.string.isRequired,
-    direction: PropTypes.string.isRequired,
-    orderBy: PropTypes.string.isRequired,
-    diagonalCategoryAxis: PropTypes.bool.isRequired,
-    diagonalValueAxis: PropTypes.bool.isRequired,
-    scale: PropTypes.string.isRequired,
-    params: PropTypes.any.isRequired,
-    axisRoundValue: PropTypes.bool.isRequired,
-    tooltip: PropTypes.bool.isRequired,
-    tooltipCategory: PropTypes.string.isRequired,
-    tooltipValue: PropTypes.string.isRequired,
-    labels: PropTypes.string.isRequired,
-    labelOverlap: PropTypes.string.isRequired,
-    barSize: PropTypes.number.isRequired,
+    field: fieldPropTypes,
+    resource: PropTypes.object,
+    data: PropTypes.shape({
+        values: PropTypes.any.isRequired,
+    }),
+    colors: PropTypes.string,
+    direction: PropTypes.string,
+    orderBy: PropTypes.string,
+    diagonalCategoryAxis: PropTypes.bool,
+    diagonalValueAxis: PropTypes.bool,
+    scale: PropTypes.string,
+    params: PropTypes.any,
+    axisRoundValue: PropTypes.bool,
+    tooltip: PropTypes.bool,
+    tooltipCategory: PropTypes.string,
+    tooltipValue: PropTypes.string,
+    labels: PropTypes.string,
+    labelOverlap: PropTypes.string,
+    barSize: PropTypes.number,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
 };
@@ -174,5 +160,17 @@ const mapStateToProps = (state, { formatData }) => {
         },
     };
 };
+
+export const BarChartAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: props.dataset.values ?? [],
+        },
+    };
+})(BarChartView);
 
 export default compose(injectData(), connect(mapStateToProps))(BarChartView);

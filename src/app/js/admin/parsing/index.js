@@ -15,6 +15,7 @@ export const hideAddColumns = createAction(HIDE_ADD_COLUMNS);
 export const defaultState = {
     error: false,
     excerptLines: [],
+    precomputed: [],
     loading: false,
     parsing: false,
     allowUpload: true,

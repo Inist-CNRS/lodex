@@ -5,6 +5,10 @@ export const toast = (message, options) => {
         options = {
             ...options,
             autoClose: false,
+            style: {
+                display: 'inline-flex',
+                minWidth: 'calc(var(--toastify-toast-width) - 8px)',
+            },
         };
     }
     reactToast(message, options);

@@ -16,6 +16,8 @@ import NameField from './NameField';
 import {
     checkForbiddenNames,
     forbiddenNamesMessage,
+    getTenantMaxSize,
+    MAX_DB_NAME_SIZE,
 } from '../../../common/tools/tenantTools';
 
 const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
@@ -41,9 +43,13 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
                         id="component-helper-text"
                         sx={{ margin: 0 }}
                     >
-                        Le nom ne peut pas être {forbiddenNamesMessage}. Les
-                        majuscules ne sont pas autorisées. Seules les lettres,
-                        les chiffres et - sont autorisés.
+                        Une instance ne peut pas être nommée{' '}
+                        {forbiddenNamesMessage}. Pour composer le nom, seules
+                        les lettres en minuscules, les chiffres et le tiret "-"
+                        sont autorisés. Une limitation en nombre de caractères
+                        est automatiquement appliquée en fonction du nom du
+                        container de l’instance (
+                        {getTenantMaxSize(window.__DBNAME__)} caractères).
                     </FormHelperText>
                 </FormControl>
 

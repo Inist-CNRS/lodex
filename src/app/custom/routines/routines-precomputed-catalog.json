@@ -1,0 +1,20 @@
+[
+    {
+        "id": "r-graph-by",
+        "url": "/api/run/graph-by-precomputed/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/graphby",
+        "recommendedWith": ["Network", "HeatMap"]
+    },
+    {
+        "id": "r-clustered-precomputed",
+        "url": "/api/run/clustered-precomputed/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/clustered-precomputed",
+        "recommendedWith": ["ClusteredChart"]
+    },
+    {
+        "id": "r-tree-by",
+        "url": "/api/run/tree-by-precomputed/",
+        "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/treeby",
+        "recommendedWith": ["HierarchicalGraph"]
+    }
+]

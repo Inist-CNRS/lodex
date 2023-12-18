@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import LaunchIcon from '@mui/icons-material/Launch';
 
 import { getHost } from '../../../common/uris';
 import CreateTenantDialog from './CreateTenantDialog';
@@ -18,7 +17,7 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
-import { Button, Tooltip } from '@mui/material';
+import { Button, Link, Tooltip, Typography } from '@mui/material';
 
 const baseUrl = getHost();
 
@@ -235,19 +234,77 @@ const Tenants = ({ handleLogout }) => {
     // Define the columns for the datagrid
     const columns = [
         { field: '_id', headerName: 'ID', width: 200 },
-        { field: 'name', headerName: 'Nom', flex: 1 },
+        {
+            field: 'name',
+            headerName: 'Nom',
+            flex: 4,
+            renderCell: params => {
+                const name = params.row.name;
+                return (
+                    <Link
+                        href={`${baseUrl}/instance/${name}`}
+                        target="_blank"
+                        sx={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            outline: 'none',
+                            textDecoration: 'none',
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '0 16px',
+                            '&:visited': {
+                                color: '#0069A9',
+                            },
+                            '&:focus': {
+                                borderBottom: '1px solid',
+                                background: '#D9F3FF',
+                            },
+                            '&:hover': {
+                                borderBottom: '1px solid',
+                                background: '#D9F3FF',
+                                textDecoration: 'none',
+                            },
+                            '&:active': {
+                                background: '#0069A9',
+                                color: '#D9F3FF',
+                            },
+                        }}
+                        title={params.value}
+                    >
+                        {params.value}
+                    </Link>
+                );
+            },
+        },
         {
             field: 'description',
             headerName: 'Description',
-            flex: 1,
+            flex: 4,
             valueFormatter: params => {
                 return formatValue(params.value);
+            },
+            renderCell: params => {
+                return (
+                    <Typography
+                        sx={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                        }}
+                        title={params.value}
+                    >
+                        {params.value}
+                    </Typography>
+                );
             },
         },
         {
             field: 'author',
             headerName: 'Auteur',
-            flex: 1,
+            flex: 2,
             valueFormatter: params => {
                 return formatValue(params.value);
             },
@@ -255,7 +312,7 @@ const Tenants = ({ handleLogout }) => {
         {
             field: 'createdAt',
             headerName: 'Créée le',
-            flex: 1,
+            flex: 2,
             valueFormatter: params => {
                 if (params.value == null) {
                     return '-';
@@ -268,19 +325,6 @@ const Tenants = ({ handleLogout }) => {
                     month: 'long',
                     day: 'numeric',
                 });
-            },
-        },
-        {
-            field: 'open',
-            headerName: 'Ouvrir',
-            flex: 1,
-            renderCell: params => {
-                const name = params.row.name;
-                return (
-                    <Button target={name} href={`${baseUrl}/instance/${name}`}>
-                        <LaunchIcon />
-                    </Button>
-                );
             },
         },
         {
@@ -303,6 +347,9 @@ const Tenants = ({ handleLogout }) => {
             headerName: 'Supprimer',
             flex: 1,
             renderCell: params => {
+                if (params.row.name === 'default') {
+                    return null;
+                }
                 return (
                     <Button
                         color="error"
@@ -324,6 +371,11 @@ const Tenants = ({ handleLogout }) => {
                     columns={columns}
                     components={{
                         Toolbar: CustomToolbar,
+                    }}
+                    sx={{
+                        "& .MuiDataGrid-cell[data-field='name']": {
+                            padding: 0,
+                        },
                     }}
                 />
             </div>

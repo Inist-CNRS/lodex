@@ -31,7 +31,7 @@ import { toast } from '../../../../common/tools/toast';
 import { finishProgress } from '../progress/reducer';
 import { loadEnrichments } from '../enrichment';
 import { loadPrecomputed } from '../precomputed';
-import customTheme from '../../../custom/customTheme';
+import adminTheme from '../../../custom/adminTheme';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 
 const styles = {
@@ -40,8 +40,8 @@ const styles = {
         display: 'flex',
         margin: '0 4px 0',
     },
-    colorPrimary: { backgroundColor: customTheme.palette.contrast.light },
-    barColorPrimary: { backgroundColor: customTheme.palette.contrast.main },
+    colorPrimary: { backgroundColor: adminTheme.palette.contrast.light },
+    barColorPrimary: { backgroundColor: adminTheme.palette.contrast.main },
     progressContainer: {
         display: 'flex',
         flexDirection: 'column',
@@ -50,6 +50,7 @@ const styles = {
         marginLeft: 'auto',
         marginRight: '20px',
         width: '250px',
+        textAlign: 'center',
     },
     progressLabelContainer: {
         width: '100%',
@@ -242,7 +243,8 @@ const JobProgressComponent = props => {
                                     </Typography>
                                 )}
 
-                            {progress?.type === 'enricher' && (
+                            {(progress?.type === 'enricher' ||
+                                progress?.type === 'precomputer') && (
                                 <Typography variant="caption">
                                     {progress.subLabel}
                                 </Typography>
@@ -296,7 +298,7 @@ const JobProgressComponent = props => {
                     if (!progress) {
                         return;
                     }
-                    jobsApi.cancelJob(progress.type);
+                    jobsApi.cancelJob(progress.type, progress.subLabel);
                     if (progress.type === 'publisher') {
                         handleCancelPublication();
                         setProgress();

@@ -44,7 +44,6 @@ describe('PieChart', () => {
                     type: 'quantitative',
                 },
             },
-            height: 300,
             layer: [
                 {
                     mark: {
@@ -71,7 +70,8 @@ describe('PieChart', () => {
             view: {
                 stroke: null,
             },
-            width: 200,
+            width: 'container',
+            height: 'container',
         });
     });
 });

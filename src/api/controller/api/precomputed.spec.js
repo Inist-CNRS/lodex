@@ -13,7 +13,7 @@ describe('Precomputed controller', () => {
     describe('postPrecomputed', () => {
         it('should call precomputed create repository method', async () => {
             const ctx = {
-                currentConfig: {},
+                configTenant: {},
                 request: { body: { name: 'test' } },
                 precomputed: { create: jest.fn() },
             };
@@ -27,7 +27,7 @@ describe('Precomputed controller', () => {
 
         it('should return result as body result', async () => {
             const ctx = {
-                currentConfig: {},
+                configTenant: {},
                 request: { body: { name: 'test' } },
                 precomputed: {
                     create: jest.fn(() => {
@@ -45,7 +45,7 @@ describe('Precomputed controller', () => {
 
         it("should set status 403 if there's not result", async () => {
             const ctx = {
-                currentConfig: {},
+                configTenant: {},
                 request: { body: 'my precomputed' },
                 precomputed: {
                     create: jest.fn(() => null),
@@ -61,7 +61,7 @@ describe('Precomputed controller', () => {
     describe('putPrecomputed', () => {
         it('should delete existing dataset data based on the precomputed name and update it', async () => {
             const ctx = {
-                currentConfig: {},
+                configTenant: {},
                 request: { body: 'my updated precomputed' },
                 precomputed: {
                     findOneById: jest.fn(() =>
@@ -86,7 +86,7 @@ describe('Precomputed controller', () => {
 
         it('should return a 403 on error if an error occured', async () => {
             const ctx = {
-                currentConfig: {},
+                configTenant: {},
                 request: { body: 'my updated precomputed' },
                 precomputed: {
                     update: async () => {
@@ -105,7 +105,7 @@ describe('Precomputed controller', () => {
     describe('deletePrecomputed', () => {
         it('should return a 403 on error if an error occured', async () => {
             const ctx = {
-                currentConfig: {},
+                configTenant: {},
                 precomputed: {
                     delete: async () => {
                         throw new Error('ERROR!');

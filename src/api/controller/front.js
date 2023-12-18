@@ -28,20 +28,16 @@ import configureStoreServer from '../../app/js/configureStoreServer';
 import Routes from '../../app/js/public/Routes';
 import translations from '../services/translations';
 import getLocale from '../../common/getLocale';
-import customTheme from '../../app/custom/customTheme';
 
 import { getPublication } from './api/publication';
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
+import getTheme, { getAvailableThemesKeys } from '../models/themes';
 
 const REGEX_JS_HOST = /\{\|__JS_HOST__\|\}/g;
 
-const indexHtml = fs
-    .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
-    .toString()
-    .replace(REGEX_JS_HOST, jsHost);
-
 const getDefaultInitialState = (ctx, token, cookie, locale) => ({
+    enableAutoPublication: ctx.configTenant.enableAutoPublication,
     fields: {
         loading: false,
         isSaving: false,
@@ -61,20 +57,20 @@ const getDefaultInitialState = (ctx, token, cookie, locale) => ({
         token,
         cookie,
     },
-    breadcrumb: ctx.currentConfig.front.breadcrumb,
+    breadcrumb: ctx.configTenant.front.breadcrumb,
     menu: {
-        leftMenu: ctx.currentConfig.leftMenu,
-        rightMenu: ctx.currentConfig.rightMenu,
-        advancedMenu: ctx.currentConfig.advancedMenu,
-        advancedMenuButton: ctx.currentConfig.advancedMenuButton,
-        customRoutes: ctx.currentConfig.customRoutes,
+        leftMenu: ctx.configTenant.leftMenu,
+        rightMenu: ctx.configTenant.rightMenu,
+        advancedMenu: ctx.configTenant.advancedMenu,
+        advancedMenuButton: ctx.configTenant.advancedMenuButton,
+        customRoutes: ctx.configTenant.customRoutes,
         error: null,
     },
     displayConfig: {
-        displayDensity: ctx.currentConfig.front.displayDensity,
-        PDFExportOptions: ctx.currentConfig.front.PDFExportOptions,
-        maxCheckAllFacetsValue: ctx.currentConfig.front.maxCheckAllFacetsValue,
-        multilingual: ctx.currentConfig.front.multilingual,
+        displayDensity: ctx.configTenant.front.displayDensity,
+        PDFExportOptions: ctx.configTenant.front.PDFExportOptions,
+        maxCheckAllFacetsValue: ctx.configTenant.front.maxCheckAllFacetsValue,
+        multilingual: ctx.configTenant.front.multilingual,
         error: null,
     },
 });
@@ -115,7 +111,15 @@ const getInitialState = async (token, cookie, locale, ctx) => {
     };
 };
 
-const renderFullPage = (html, css, preloadedState, helmet, tenant) =>
+const renderFullPage = (
+    html,
+    css,
+    preloadedState,
+    helmet,
+    tenant,
+    indexHtml,
+    cssVariable,
+) =>
     indexHtml
         .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
         .replace(/<title>.*?<\/title>/, helmet.title.toString())
@@ -124,6 +128,7 @@ const renderFullPage = (html, css, preloadedState, helmet, tenant) =>
             `${helmet.meta.toString()}
             ${helmet.link.toString()}
             <style data-aphrodite>${css.content}</style>
+            <style>${cssVariable}</style>
             </head>`,
         )
         .replace(
@@ -196,12 +201,63 @@ export const getRenderingData = async (
     };
 };
 
+/**
+ * Create all css variable linked to the customTheme,
+ * this is done to avoid importing the customTheme file into the front and source code
+ * @param theme
+ * @returns {string}
+ */
+const getCssVariable = theme => {
+    const palette = theme.palette;
+    return `
+:root {
+    --primary-main: ${palette.primary.main};
+    --primary-secondary: ${palette.primary.secondary};
+    --primary-light: ${palette.primary.light};
+    --primary-contrast-text: ${palette.primary.contrastText};
+
+    --secondary-main: ${palette.secondary.main};
+    --secondary-contrast-text: ${palette.secondary.contrastText};
+
+    --info-main: ${palette.info.main};
+    --info-contrast-text: ${palette.info.contrastText};
+
+    --warning-main: ${palette.warning.main};
+    --warning-contrast-text: ${palette.warning.contrastText};
+
+    --danger-main: ${palette.danger.main};
+    --danger-contrast-text: ${palette.danger.contrastText};
+
+    --success-main: ${palette.success.main};
+    --success-contrast-text: ${palette.success.contrastText};
+    
+    --neutral-main: ${palette.neutral.main};
+    
+    --neutral-dark-main: ${palette.neutralDark.main};
+    --neutral-dark-secondary: ${palette.neutralDark.secondary};
+    --neutral-dark-very-dark: ${palette.neutralDark.veryDark};
+    --neutral-dark-dark: ${palette.neutralDark.dark};
+    --neutral-dark-light: ${palette.neutralDark.light};
+    --neutral-dark-lighter: ${palette.neutralDark.lighter};
+    --neutral-dark-very-light: ${palette.neutralDark.veryLight};
+    --neutral-dark-transparent: ${palette.neutralDark.transparent};
+    
+    --text-main: ${palette.text.main};
+    --text-primary: ${palette.text.primary};
+    
+    --contrast-main: ${palette.contrast.main};
+    --contrast-light: ${palette.contrast.light};
+    
+    --contrast-threshold: ${palette.contrastThreshold};
+}
+    `;
+};
+
 const handleRender = async (ctx, next) => {
     const { url, headers } = ctx.request;
     if (
-        (url.match(/[^\\]*\.(\w+)$/) &&
-            !url.match(/[^\\]*\.html$/) &&
-            !url.match(/\/uid:\//)) ||
+        (url.match(/[^\\]*\.(\w+)$/) && !url.match(/\/uid:\//)) ||
+        url.match(/[^\\]*\.html$/) ||
         url.match('/admin') ||
         url.match('__webpack_hmr')
     ) {
@@ -213,9 +269,13 @@ const handleRender = async (ctx, next) => {
         initialEntries: [url],
     });
 
-    const theme = createTheme(customTheme, {
+    const lodexTheme = getTheme(ctx.configTenant.theme);
+
+    const theme = createTheme(lodexTheme.customTheme, {
         userAgent: headers['user-agent'],
     });
+
+    const cssVariable = getCssVariable(lodexTheme.customTheme);
 
     const {
         html,
@@ -237,20 +297,38 @@ const handleRender = async (ctx, next) => {
         return ctx.redirect(redirect);
     }
 
-    ctx.body = renderFullPage(html, css, preloadedState, helmet, ctx.tenant);
+    ctx.body = renderFullPage(
+        html,
+        css,
+        preloadedState,
+        helmet,
+        ctx.tenant,
+        lodexTheme.index,
+        cssVariable,
+    );
 };
 
 const renderAdminIndexHtml = ctx => {
+    const lodexTheme = getTheme('default');
+    const cssVariable = getCssVariable(lodexTheme.customTheme);
+
     ctx.body = fs
         .readFileSync(path.resolve(__dirname, '../../app/admin.html'))
         .toString()
+        .replace(
+            '</head>',
+            `<style>${cssVariable}</style>
+            </head>`,
+        )
         .replace(
             '</body>',
             ` <script>window.__DBNAME__ = ${JSON.stringify(
                 mongo.dbName,
             )}</script><script>window.__TENANT__ = ${JSON.stringify(
                 ctx.tenant,
-            )}</script><script src="{|__JS_HOST__|}/admin/index.js"></script>
+            )}</script>
+              <script>window.__JS_HOST__ = "${jsHost}"</script>
+              <script src="{|__JS_HOST__|}/admin/index.js"></script>
         </body>`,
         )
         .replace(REGEX_JS_HOST, jsHost);
@@ -279,7 +357,7 @@ const app = new Koa();
 // ############################
 
 app.use(async (ctx, next) => {
-    if (!ctx.currentConfig?.userAuth?.active) {
+    if (!ctx.configTenant?.userAuth?.active) {
         return await next();
     }
     const jwtMid = await jwt({
@@ -293,7 +371,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx, next) => {
-    if (!ctx.currentConfig?.userAuth?.active) {
+    if (!ctx.configTenant?.userAuth?.active) {
         return await next();
     }
 
@@ -341,6 +419,15 @@ app.use(
         renderAdminIndexHtml(ctx);
     }),
 );
+
+for (let theme of getAvailableThemesKeys()) {
+    app.use(
+        mount(
+            `/themes/${theme}/`,
+            serve(path.resolve(__dirname, `../../themes/${theme}`)),
+        ),
+    );
+}
 
 app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
 app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));

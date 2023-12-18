@@ -29,6 +29,7 @@ export default ({
     skip,
     uri,
     filter = {},
+    locale,
 } = {}) =>
     compose(
         qs.stringify,
@@ -47,4 +48,5 @@ export default ({
         addKeyToLiteral('filterBy', filter.columnField),
         addKeyToLiteral('filterOperator', filter.operatorValue),
         addKeyToLiteral('filterValue', filter.value),
+        addKeyToLiteral('locale', locale),
     )({});

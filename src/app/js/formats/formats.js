@@ -41,6 +41,8 @@ import istexCitation from './istexCitation';
 import istexRefbibs from './istexRefbibs';
 import bubblePlot from './vega-lite/component/bubble-plot';
 import flowMap from './vega/component/flow-map';
+import clusteredChart from './vega-lite/component/clustered-chart';
+import json from './json';
 
 export const FORMATS_CATALOG = [
     {
@@ -345,5 +347,19 @@ export const FORMATS_CATALOG = [
         componentName: 'flowMap',
         component: flowMap,
         type: 'chart',
+    },
+    {
+        name: 'formatClusteredChart',
+        description: 'formatClusteredChartDescription',
+        componentName: 'clusteredChart',
+        component: clusteredChart,
+        type: 'chart',
+    },
+    {
+        name: 'formatJsonDebug',
+        description: 'formatJsonDebugDescription',
+        componentName: 'json',
+        component: json,
+        type: 'other',
     },
 ];

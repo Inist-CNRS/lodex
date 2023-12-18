@@ -9,7 +9,6 @@ import { withRouter } from 'react-router';
 import { fromBreadcrumb } from '../selectors';
 import BreadcrumbItem from './BreadcrumbItem';
 import stylesToClassname from '../../lib/stylesToClassName';
-import customTheme from '../../../custom/customTheme';
 
 const styles = stylesToClassname(
     {
@@ -19,7 +18,7 @@ const styles = stylesToClassname(
             justifyContent: 'flex-start',
         },
         icon: {
-            color: customTheme.palette.primary.main,
+            color: 'var(--primary-main)',
             margin: '5px 0px',
         },
         trail: {

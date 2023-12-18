@@ -20,7 +20,6 @@ import {
 } from '@mui/material';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import CancelButton from '../lib/components/CancelButton';
-import customTheme from '../../custom/customTheme';
 
 const FormatCatalogDescription = ({ format, polyglot }) => {
     return (
@@ -127,17 +126,16 @@ export const FormatCatalog = ({
                             }
                             sx={{
                                 cursor: 'pointer',
-                                borderBottom: `1px solid ${customTheme.palette.neutralDark.light}`,
+                                borderBottom: `1px solid var(--neutral-dark-light)`,
                                 backgroundColor:
                                     currentValue === format.componentName
-                                        ? customTheme.palette.primary.secondary
+                                        ? 'var(--primary-secondary)'
                                         : 'transparent',
                                 '&:hover': {
                                     backgroundColor:
                                         currentValue === format.componentName
-                                            ? customTheme.palette.primary.main
-                                            : customTheme.palette.neutralDark
-                                                  .veryLight,
+                                            ? 'var(--primary-main)'
+                                            : 'var(--neutral-dark-very-light)',
                                 },
                             }}
                             ref={

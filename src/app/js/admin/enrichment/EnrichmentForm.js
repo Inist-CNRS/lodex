@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import EnrichmentCatalogConnected from './EnrichmentCatalog';
 import EnrichmentPreview from './EnrichmentPreview';
@@ -44,6 +44,7 @@ import {
     ERROR,
     CANCELED,
     PAUSED,
+    ON_HOLD,
 } from '../../../../common/taskStatus';
 import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
@@ -144,6 +145,36 @@ export const renderStatus = (status, polyglot) => {
             label={polyglot.t('enrichment_status_not_started')}
             sx={{ backgroundColor: 'neutral' }}
         />
+    );
+};
+
+export const renderRunButton = (
+    handleLaunchEnrichment,
+    enrichmentStatus,
+    polyglot,
+    variant,
+) => {
+    const [isClicked, setIsClicked] = useState(false);
+    const handleClick = event => {
+        handleLaunchEnrichment(event);
+        setIsClicked(true);
+    };
+
+    return (
+        <Button
+            color="primary"
+            variant={variant || 'contained'}
+            sx={{ height: '100%' }}
+            startIcon={<PlayArrowIcon />}
+            onClick={handleClick}
+            disabled={
+                isClicked ||
+                enrichmentStatus === IN_PROGRESS ||
+                enrichmentStatus === PENDING
+            }
+        >
+            {polyglot.t('run')}
+        </Button>
     );
 };
 
@@ -349,21 +380,12 @@ export const EnrichmentForm = ({
                             component={renderTextField}
                             label={polyglot.t('fieldName')}
                         />
-                        {isEditMode && (
-                            <Button
-                                color="primary"
-                                variant="contained"
-                                sx={{ height: '100%' }}
-                                startIcon={<PlayArrowIcon />}
-                                onClick={handleLaunchEnrichment}
-                                disabled={
-                                    enrichmentStatus === IN_PROGRESS ||
-                                    enrichmentStatus === PENDING
-                                }
-                            >
-                                {polyglot.t('run')}
-                            </Button>
-                        )}
+                        {isEditMode &&
+                            renderRunButton(
+                                handleLaunchEnrichment,
+                                enrichmentStatus,
+                                polyglot,
+                            )}
                     </Box>
                     {isEditMode && (
                         <Box
@@ -380,6 +402,7 @@ export const EnrichmentForm = ({
                                 variant="link"
                                 sx={{
                                     paddingRight: 0,
+                                    paddingLeft: 0,
                                     textDecoration: 'underline',
                                 }}
                                 onClick={() => setOpenEnrichmentLogs(true)}
@@ -569,7 +592,11 @@ const mapStateToProps = (state, { match }) => ({
     excerptLines: fromParsing.getExcerptLines(state),
     isEnrichmentRunning: !!fromEnrichments
         .enrichments(state)
-        .find(enrichment => enrichment.status === IN_PROGRESS),
+        .find(
+            enrichment =>
+                enrichment.status === IN_PROGRESS ||
+                enrichment.status === ON_HOLD,
+        ),
 });
 const mapDispatchToProps = {
     onChangeWebServiceUrl: value =>

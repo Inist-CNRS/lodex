@@ -22,7 +22,6 @@ import {
 import TransformerArg from './TransformerArg';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
-import customTheme from '../../../custom/customTheme';
 
 const TransformerUpsertDialog = ({
     availableTransformers,
@@ -91,23 +90,20 @@ const TransformerUpsertDialog = ({
                                         cursor: 'pointer',
                                         '&:hover': {
                                             backgroundColor:
-                                                customTheme.palette.neutralDark
-                                                    .veryLight,
+                                                'var(--neutral-dark-very-light)',
                                         },
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        borderBottom: `1px solid ${customTheme.palette.neutralDark.light}`,
+                                        borderBottom: `1px solid var(--neutral-dark-light)`,
                                         '&:last-child': {
                                             borderBottom: 'none',
                                         },
                                         '&.MuiAutocomplete-option[aria-selected="true"].Mui-selected': {
                                             backgroundColor:
-                                                customTheme.palette.primary
-                                                    .secondary,
+                                                'var(--primary-secondary)',
                                             '&:hover': {
                                                 backgroundColor:
-                                                    customTheme.palette.primary
-                                                        .main,
+                                                    'var(--primary-main)',
                                             },
                                         },
                                     }}

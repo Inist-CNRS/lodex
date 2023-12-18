@@ -12,15 +12,23 @@ export const open = url => window.open(url); // Warning: does not work with auth
 export function* handleExportPublishedDatasetSuccess({
     payload: { exportID, uri },
 }) {
-    const facets = yield select(fromSearch.getAppliedFacets);
+    let facets = yield select(fromSearch.getAppliedFacets);
+
+    if (facets) {
+        facets = Object.keys(facets).reduce((acc, facetName) => {
+            acc[facetName] = facets[facetName].map(facetValue => facetValue.id);
+            return acc;
+        }, {});
+    }
+    const invertedFacets = yield select(fromSearch.getInvertedFacetKeys);
     const match = yield select(fromSearch.getQuery);
     const sort = yield select(fromSearch.getSort);
-
     const queryString = yield call(getQueryString, {
         match,
         facets,
         sort,
         uri,
+        invertedFacets,
     });
 
     const request = yield select(fromUser.getExportPublishedDatasetRequest, {

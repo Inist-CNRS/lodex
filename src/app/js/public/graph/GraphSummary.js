@@ -9,7 +9,6 @@ import { getIconComponent } from '../../formats';
 import MixedChartIcon from './MixedChartIcon';
 import Link from '../../lib/components/Link';
 import stylesToClassname from '../../lib/stylesToClassName';
-import customTheme from '../../../custom/customTheme';
 import { fromDisplayConfig, fromI18n } from '../selectors';
 
 const styles = stylesToClassname(
@@ -25,25 +24,25 @@ const styles = stylesToClassname(
             margin: 20,
         },
         activeLink: {
-            color: customTheme.palette.secondary.main,
-            fill: customTheme.palette.secondary.main,
+            color: 'var(--secondary-main)',
+            fill: 'var(--secondary-main)',
             ':hover': {
-                fill: customTheme.palette.secondary.main,
-                color: customTheme.palette.secondary.main,
+                fill: 'var(--secondary-main)',
+                color: 'var(--secondary-main)',
             },
         },
         link: {
             textDecoration: 'none',
             backgroundColor: '#f8f8f8',
-            fill: customTheme.palette.primary.main,
-            color: customTheme.palette.primary.main,
+            fill: 'var(--primary-main)',
+            color: 'var(--primary-main)',
             cursor: 'pointer',
             userSelect: 'none',
             textTransform: 'capitalize',
             ':hover': {
                 textDecoration: 'none',
-                fill: customTheme.palette.info.main,
-                color: customTheme.palette.info.main,
+                fill: 'var(--info-main)',
+                color: 'var(--info-main)',
             },
             ':focus': {
                 textDecoration: 'none',

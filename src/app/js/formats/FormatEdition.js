@@ -13,7 +13,6 @@ import {
 import translate from 'redux-polyglot/translate';
 import FormatCatalogDialog from './FormatCatalog';
 import FormatEditionDialog from './FormatEditionDialog';
-import customTheme from '../../custom/customTheme';
 
 const FormatEdition = ({ p: polyglot, ...props }) => {
     const { input } = props;
@@ -64,11 +63,9 @@ const FormatEdition = ({ p: polyglot, ...props }) => {
                         flexGrow: 1,
                         padding: 1,
                         borderRadius: 1,
-                        backgroundColor:
-                            customTheme.palette.neutralDark.veryLight,
+                        backgroundColor: 'var(--neutral-dark-very-light)',
                         '&:hover': {
-                            backgroundColor:
-                                customTheme.palette.neutralDark.lighter,
+                            backgroundColor: 'var(--neutral-dark-lighter)',
                         },
                     }}
                 >

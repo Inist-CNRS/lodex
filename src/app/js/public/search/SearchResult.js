@@ -9,7 +9,6 @@ import {
 } from '../../propTypes';
 import { isURL, getResourceUri } from '../../../../common/uris';
 import stylesToClassname from '../../lib/stylesToClassName';
-import customTheme from '../../../custom/customTheme';
 import { Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -26,10 +25,10 @@ const styles = stylesToClassname(
             flexDirection: 'column',
             padding: '1rem',
             paddingRight: '2.5rem',
-            border: `1px solid ${customTheme.palette.neutralDark.light}`,
-            backgroundColor: customTheme.palette.contrast.main,
+            border: `1px solid var(--neutral-dark-light)`,
+            backgroundColor: 'var(--contrast-main)',
             ':hover': {
-                backgroundColor: customTheme.palette.neutralDark.veryLight,
+                backgroundColor: 'var(--neutral-dark-very-light)',
             },
             marginBottom: '1rem',
             position: 'relative',
@@ -46,7 +45,7 @@ const styles = stylesToClassname(
             },
         },
         activeLink: {
-            color: `${customTheme.palette.secondary.main} !important`,
+            color: `var(--secondary-main) !important`,
         },
         row: {
             flex: '0 0 auto',
@@ -223,8 +222,7 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                         padding: '5px',
                         borderRadius: '50%',
                         ':hover': {
-                            backgroundColor:
-                                customTheme.palette.neutralDark.veryLight,
+                            backgroundColor: 'var(--neutral-dark-very-light)',
                         },
                     }}
                     onClick={event => {

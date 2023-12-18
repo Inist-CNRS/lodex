@@ -22,6 +22,7 @@ import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../common/scope';
 import { ISTEX_API_URL } from '../../../common/externals';
+import { isPrecomputed } from './checkPredicate';
 
 const isSparqlQuery = url =>
     url.toLowerCase().includes('select') &&
@@ -99,12 +100,55 @@ export function* loadFormatData(name, url, queryString) {
     );
 }
 
+export const splitPrecomputedNameAndRoutine = value => {
+    if (!value || typeof value !== 'string') {
+        return {
+            precomputedName: null,
+            routine: null,
+        };
+    }
+
+    let url = null;
+    try {
+        url = new URL(value);
+
+        return {
+            precomputedName: url.searchParams.get('precomputedName'),
+            routine: `${url.protocol}//${url.host}${url.pathname}`,
+        };
+    } catch (_) {
+        url = new URL(`http://${value}`);
+    }
+
+    return {
+        precomputedName: url.searchParams.get('precomputedName'),
+        routine: `/${url.host}${url.pathname}`,
+    };
+};
+
 export function* handleLoadFormatDataRequest({
-    payload: { field, filter, value, resource, withUri, withFacets } = {},
+    payload: {
+        field,
+        filter,
+        value: rawValue,
+        resource,
+        withUri,
+        withFacets,
+    } = {},
 }) {
     const name = field && field.name;
     if (!name) {
         return;
+    }
+
+    let value = rawValue;
+    let precomputed = {};
+    if (isPrecomputed(field)) {
+        const precomputedFieldValue = splitPrecomputedNameAndRoutine(rawValue);
+        precomputed = {
+            precomputedName: precomputedFieldValue.precomputedName,
+        };
+        value = precomputedFieldValue.routine;
     }
 
     if (typeof value !== 'string') {
@@ -127,6 +171,7 @@ export function* handleLoadFormatDataRequest({
 
     const queryString = yield call(getQueryString, {
         params: {
+            ...precomputed,
             ...params,
             ...(filter || {}),
             ...(withUri && { uri }),
@@ -142,6 +187,8 @@ export function* loadFormatDataForName(name, filter) {
         return;
     }
     const url = yield select(fromCharacteristic.getCharacteristicByName, name);
+    const { precomputedName, routine } = splitPrecomputedNameAndRoutine(url);
+    const precomputed = isPrecomputed(field) ? { precomputedName } : {};
 
     const params = yield select(fromFields.getGraphFieldParamsByName, name);
 
@@ -158,12 +205,13 @@ export function* loadFormatDataForName(name, filter) {
         invertedFacets,
         match,
         params: {
+            ...precomputed,
             ...params,
             ...(filter || {}),
         },
     });
 
-    yield call(loadFormatData, name, url, queryString);
+    yield call(loadFormatData, name, routine, queryString);
 }
 
 export function* handleFilterFormatDataRequest({ payload: { filter } = {} }) {

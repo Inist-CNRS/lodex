@@ -1,5 +1,5 @@
 export default async ctx => {
     ctx.body = {
-        displayDensity: ctx.currentConfig.front.displayDensity,
+        displayDensity: ctx.configTenant.front.displayDensity,
     };
 };

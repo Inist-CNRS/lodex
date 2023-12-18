@@ -11,6 +11,7 @@ import {
     setEnrichmentJobId,
 } from '../../services/enrichment/enrichment';
 import { cancelJob, getActiveJob } from '../../workers/tools';
+import { getLocale } from 'redux-polyglot/dist/selectors';
 
 export const setup = async (ctx, next) => {
     try {
@@ -38,21 +39,36 @@ export const postEnrichment = async ctx => {
         ctx.status = 403;
     } catch (error) {
         ctx.status = 403;
+        // if code error is 11000, it's a duplicate key error
+        if (error.code === 11000) {
+            // send message due to browser locale
+            const locale = getLocale(ctx);
+            const errorMessage =
+                locale === 'fr'
+                    ? 'Un enrichissement avec ce nom existe déjà'
+                    : 'A enrichment with this name already exists';
+            ctx.body = { error: errorMessage };
+            return;
+        }
+
         ctx.body = { error: error.message };
         return;
     }
 };
 
 export const putEnrichment = async (ctx, id) => {
-    const newResource = ctx.request.body;
+    const newEnrichment = ctx.request.body;
 
     try {
         // Delete existing data from dataset
         // If we change the name or the rule, existing data is obsolete
         const enrichment = await ctx.enrichment.findOneById(id);
         await ctx.dataset.removeAttribute(enrichment.name);
-
-        ctx.body = await ctx.enrichment.update(id, newResource);
+        const newEnrichmentWithRule = await createEnrichmentRule(
+            ctx,
+            newEnrichment,
+        );
+        ctx.body = await ctx.enrichment.update(id, newEnrichmentWithRule);
     } catch (error) {
         ctx.status = 403;
         ctx.body = { error: error.message };

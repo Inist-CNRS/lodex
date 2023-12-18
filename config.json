@@ -8,6 +8,7 @@
         "all-documents",
         "classif-by",
         "close-by",
+        "clustered-precomputed",
         "count-all",
         "count-by-fields",
         "cross-by",
@@ -27,6 +28,7 @@
         "filter",
         "get-fields",
         "graph-by",
+        "graph-by-precomputed",
         "group-and-sum-with",
         "hello-world",
         "istex-facet",
@@ -42,6 +44,7 @@
         "syndication-from",
         "syndication",
         "total-of",
+        "tree-by-precomputed",
         "tree-by",
         "unwind-by"
     ],
@@ -98,9 +101,7 @@
         "https://query.wikidata.org/sparql",
         "http://www.lotico.com:3030/lotico/sparql"
     ],
-    "webServiceBaseURL": "https://data-computer.services.istex.fr/v1/",
-    "webhookBaseUrlForDevelopment": "https://6952-81-250-164-94.ngrok-free.app",
-    "isolatedMode": false,
-    "webserviceAnswerMode": "retrieve",
-    "activateBullDashboard": "false"
+    "precomputedBaseUrlForDevelopment": "{public url of the server accessible from webhooks (ie ngrok)}",
+    "activateBullDashboard": false,
+    "themes": ["void", "nougat", "inist", "istex"]
 }

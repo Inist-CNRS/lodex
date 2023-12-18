@@ -113,7 +113,7 @@ class HeatMap extends BasicChart {
      * Rebuild the edited spec
      * @param widthIn{number | null}
      */
-    buildSpec(widthIn = null) {
+    buildSpec() {
         this.model.layer.forEach(e => {
             if (e.mark.type === 'rect') {
                 e.encoding.color.scale.range = this.colors;
@@ -127,10 +127,8 @@ class HeatMap extends BasicChart {
 
         this.commonWithBubblePlot();
 
-        if (!this.editMode) {
-            this.model.width = this.model.height =
-                widthIn * (widthIn <= 920 ? 0.5 : 0.7);
-        }
+        this.model.width = 'container';
+        this.model.height = 'container';
 
         return this.model;
     }

@@ -1,19 +1,23 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
+import { clamp } from 'lodash';
+import { schemeOrRd } from 'd3-scale-chromatic';
+
 import { CustomActionVegaLite } from '../vega-lite-component';
 import {
+    convertSpecTemplate,
     MAP_FRANCE,
+    VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../../chartsUtils';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
 import Cartography from '../../models/Cartography';
-import { schemeOrRd } from 'd3-scale-chromatic';
 import InvalidFormat from '../../../InvalidFormat';
-import { VEGA_ACTIONS_WIDTH } from '../vega-lite-component/VegaLiteComponent';
+import { useSizeObserver } from '../../../vega-utils/chartsHooks';
 
 const styles = {
     container: {
@@ -32,19 +36,17 @@ const CartographyView = ({
     worldPosition,
     colorScheme,
 }) => {
-    const ref = useRef(null);
-    const [width, setWidth] = useState(0);
+    const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
     const spec = useMemo(() => {
         if (advancedMode) {
             try {
-                const advancedSpec = JSON.parse(advancedModeSpec);
-                return {
-                    ...advancedSpec,
-                    width: width - VEGA_ACTIONS_WIDTH,
-                    height: (width - VEGA_ACTIONS_WIDTH) * 0.6,
-                };
+                return convertSpecTemplate(
+                    advancedModeSpec,
+                    width - VEGA_ACTIONS_WIDTH,
+                    clamp((width - VEGA_ACTIONS_WIDTH) * 0.6, 300, 1200),
+                );
             } catch (e) {
                 setError(e.message);
                 return null;
@@ -74,27 +76,6 @@ const CartographyView = ({
         colorScheme,
     ]);
 
-    useEffect(() => {
-        if (!ref || !ref.current) {
-            return;
-        }
-
-        const resizeObserver = new ResizeObserver(entries => {
-            window.requestAnimationFrame(() => {
-                if (
-                    !Array.isArray(entries) ||
-                    !entries.length ||
-                    entries.length < 1
-                ) {
-                    return;
-                }
-                setWidth(entries[0].contentRect.width);
-            });
-        });
-
-        resizeObserver.observe(ref.current);
-    }, [ref.current]);
-
     if (!spec) {
         return <InvalidFormat format={field.format} value={error} />;
     }
@@ -115,14 +96,16 @@ const CartographyView = ({
 };
 
 CartographyView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    tooltip: PropTypes.bool.isRequired,
-    tooltipCategory: PropTypes.string.isRequired,
-    tooltipValue: PropTypes.string.isRequired,
-    colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
-    worldPosition: PropTypes.string.isRequired,
+    field: fieldPropTypes,
+    resource: PropTypes.object,
+    data: PropTypes.shape({
+        values: PropTypes.any.isRequired,
+    }),
+    tooltip: PropTypes.bool,
+    tooltipCategory: PropTypes.string,
+    tooltipValue: PropTypes.string,
+    colorScheme: PropTypes.arrayOf(PropTypes.string),
+    worldPosition: PropTypes.string,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
 };
@@ -141,5 +124,17 @@ const mapStateToProps = (state, { formatData }) => {
         },
     };
 };
+
+export const CartographyAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: props.dataset.values ?? [],
+        },
+    };
+})(CartographyView);
 
 export default compose(injectData(), connect(mapStateToProps))(CartographyView);

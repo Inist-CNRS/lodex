@@ -2,7 +2,11 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 import { fromUser, fromFields } from '../../../sharedSelectors';
-import { fromParsing, fromPublication } from '../../selectors';
+import {
+    fromConfigTenant,
+    fromParsing,
+    fromPublication,
+} from '../../selectors';
 import { LOAD_PARSING_RESULT_SUCCESS } from '../../parsing';
 import { COMPUTE_PUBLICATION } from '../../publication';
 import { publish } from '../../publish';
@@ -41,7 +45,11 @@ export function* handleComputePublicationPreview() {
 
 export function* handleRecomputePublication() {
     const isPublished = yield select(fromPublication.hasPublishedDataset);
-    if (!isPublished) {
+    const isEnableAutoPublication = yield select(
+        fromConfigTenant.isEnableAutoPublication,
+    );
+
+    if (!isPublished || !isEnableAutoPublication) {
         return;
     }
 

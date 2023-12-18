@@ -25,9 +25,10 @@ import { Display } from './Display';
 import { Data } from './Data';
 import { frFR as frFRDatagrid, enUS as enUSDatagrid } from '@mui/x-data-grid';
 import { frFR, enUS } from '@mui/material/locale';
-import customTheme from '../../custom/customTheme';
+import adminTheme from '../../custom/adminTheme';
 import LoginAdmin from './LoginAdmin';
 import { ConfigTenantRoute } from './ConfigTenantRoute';
+import '../../ace-webpack-loader';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],
@@ -62,7 +63,7 @@ if (process.env.NODE_ENV === 'e2e') {
 render(
     <Provider store={store}>
         <ThemeProvider
-            theme={createThemeMui(customTheme, localesMUI.get(locale))}
+            theme={createThemeMui(adminTheme, localesMUI.get(locale))}
         >
             <ConnectedRouter history={history} onUpdate={scrollToTop}>
                 <App>

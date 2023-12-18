@@ -6,7 +6,13 @@ import { Box, TextField } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
-import VegaAdvancedMode from '../shared/VegaAdvancedMode';
+import VegaAdvancedMode from '../vega-utils/components/VegaAdvancedMode';
+import {
+    VegaChartParamsFieldSet,
+    VegaDataParamsFieldSet,
+} from '../vega-utils/components/VegaFieldSet';
+import VegaFieldPreview from '../vega-utils/components/VegaFieldPreview';
+import { VegaLiteAdminView } from './VegaLiteView';
 
 export const defaultArgs = {
     params: {
@@ -61,53 +67,61 @@ const VegaLiteAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <RoutineParamsAdmin
-                params={params || defaultArgs.params}
-                polyglot={p}
-                onChange={handleParams}
-                showMaxSize={showMaxSize}
-                showMaxValue={showMaxValue}
-                showMinValue={showMinValue}
-                showOrderBy={showOrderBy}
-            />
-            <Box width="100%">
-                <VegaAdvancedMode
-                    value={formattedSpecTemplate}
-                    onChange={handleSpecTemplate}
+            <VegaDataParamsFieldSet>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    polyglot={p}
+                    onChange={handleParams}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
                 />
-                <a
-                    href="https://vega.github.io/vega-lite/docs/size.html#specifying-width-and-height-per-discrete-step"
-                    target="_blank"
-                    rel="noopener nofollow noreferrer"
-                >
-                    {p.t('vega_size_step')}
-                </a>
-            </Box>
-            <TextField
-                type="number"
-                min={10}
-                max={200}
-                step={10}
-                label={p.t('vegalite_width')}
-                onChange={handleWidth}
-                value={width}
-                fullWidth
-                InputProps={{
-                    endAdornment: '%',
-                }}
-            />
-            <TextField
-                type="number"
-                min={10}
-                max={800}
-                step={10}
-                label={p.t('vegalite_height')}
-                onChange={handleHeight}
-                value={height}
-                fullWidth
-                InputProps={{
-                    endAdornment: '%',
-                }}
+            </VegaDataParamsFieldSet>
+            <VegaChartParamsFieldSet>
+                <Box width="100%">
+                    <VegaAdvancedMode
+                        value={formattedSpecTemplate}
+                        onChange={handleSpecTemplate}
+                    />
+                    <a
+                        href="https://vega.github.io/vega-lite/docs/size.html#specifying-width-and-height-per-discrete-step"
+                        target="_blank"
+                        rel="noopener nofollow noreferrer"
+                    >
+                        {p.t('vega_size_step')}
+                    </a>
+                </Box>
+                <TextField
+                    type="number"
+                    min={10}
+                    max={200}
+                    step={10}
+                    label={p.t('vegalite_width')}
+                    onChange={handleWidth}
+                    value={width}
+                    fullWidth
+                    InputProps={{
+                        endAdornment: '%',
+                    }}
+                />
+                <TextField
+                    type="number"
+                    min={10}
+                    max={800}
+                    step={10}
+                    label={p.t('vegalite_height')}
+                    onChange={handleHeight}
+                    value={height}
+                    fullWidth
+                    InputProps={{
+                        endAdornment: '%',
+                    }}
+                />
+            </VegaChartParamsFieldSet>
+            <VegaFieldPreview
+                args={args}
+                PreviewComponent={VegaLiteAdminView}
             />
         </Box>
     );

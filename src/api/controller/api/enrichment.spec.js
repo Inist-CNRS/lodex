@@ -12,7 +12,7 @@ describe('Enrichment controller', () => {
             const ctx = {
                 request: { body: { advancedMode: true, name: 'test' } },
                 enrichment: { create: jest.fn() },
-                currentConfig: {},
+                configTenant: {},
             };
 
             await postEnrichment(ctx);
@@ -31,7 +31,7 @@ describe('Enrichment controller', () => {
                         return { advancedMode: true, name: 'test' };
                     }),
                 },
-                currentConfig: {},
+                configTenant: {},
             };
 
             await postEnrichment(ctx);
@@ -48,7 +48,7 @@ describe('Enrichment controller', () => {
                 enrichment: {
                     create: jest.fn(() => null),
                 },
-                currentConfig: {},
+                configTenant: {},
             };
 
             await postEnrichment(ctx);
@@ -60,7 +60,12 @@ describe('Enrichment controller', () => {
     describe('putEnrichment', () => {
         it('should delete existing dataset data based on the enrichment name and update it', async () => {
             const ctx = {
-                request: { body: 'my updated enrichment' },
+                request: {
+                    body: {
+                        webServiceUrl: 'dummy.url',
+                        sourceColumn: 'dummyColumn',
+                    },
+                },
                 enrichment: {
                     findOneById: jest.fn(() =>
                         Promise.resolve({ name: 'NAME' }),
@@ -69,18 +74,15 @@ describe('Enrichment controller', () => {
                         Promise.resolve('updated enrichment'),
                     ),
                 },
-                dataset: { removeAttribute: jest.fn() },
-                currentConfig: {},
+                dataset: { removeAttribute: jest.fn(), getExcerpt: jest.fn() },
+                configTenant: {},
             };
 
             await putEnrichment(ctx, 42);
 
             expect(ctx.enrichment.findOneById).toHaveBeenCalledWith(42);
             expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith('NAME');
-            expect(ctx.enrichment.update).toHaveBeenCalledWith(
-                42,
-                'my updated enrichment',
-            );
+            expect(ctx.enrichment.update.mock.calls[0][0]).toBe(42);
             expect(ctx.body).toEqual('updated enrichment');
             return;
         });
@@ -93,7 +95,7 @@ describe('Enrichment controller', () => {
                         throw new Error('ERROR!');
                     },
                 },
-                currentConfig: {},
+                configTenant: {},
             };
 
             await putEnrichment(ctx, 42);
@@ -111,7 +113,7 @@ describe('Enrichment controller', () => {
                     delete: jest.fn(),
                 },
                 dataset: { removeAttribute: jest.fn() },
-                currentConfig: {},
+                configTenant: {},
             };
             getActiveJob.mockResolvedValue({
                 data: { id: 42, jobType: 'enricher' },
@@ -135,7 +137,7 @@ describe('Enrichment controller', () => {
                     delete: jest.fn(),
                 },
                 dataset: { removeAttribute: jest.fn() },
-                currentConfig: {},
+                configTenant: {},
             };
 
             await deleteEnrichment(ctx, 42);

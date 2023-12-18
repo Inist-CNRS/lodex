@@ -19,7 +19,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { renderStatus, renderRunButton } from './PrecomputedForm';
 import { fromPrecomputed } from '../selectors';
 import { launchPrecomputed } from '.';
-import { IN_PROGRESS, FINISHED } from '../../../../common/taskStatus';
+import { IN_PROGRESS, FINISHED, ON_HOLD } from '../../../../common/taskStatus';
 import { toast } from '../../../../common/tools/toast';
 
 export const PrecomputedList = ({
@@ -82,24 +82,28 @@ export const PrecomputedList = ({
                     {
                         field: 'name',
                         headerName: polyglot.t('name'),
-                        flex: 1,
+                        flex: 3,
                     },
                     {
                         field: 'webServiceUrl',
                         headerName: polyglot.t('webServiceUrl'),
-                        flex: 1,
+                        flex: 4,
                     },
                     {
                         field: 'sourceColumns',
                         headerName: polyglot.t('sourceColumns'),
-                        flex: 1,
+                        flex: 3,
                     },
                     {
                         field: 'status',
                         headerName: polyglot.t('precomputed_status'),
-                        flex: 1,
+                        flex: 2,
                         renderCell: params =>
-                            renderStatus(params.value, polyglot),
+                            renderStatus(
+                                params.row.status,
+                                polyglot,
+                                params.row.startedAt,
+                            ),
                     },
                     {
                         field: 'run',
@@ -144,7 +148,11 @@ const mapStateToProps = state => ({
     precomputedList: state.precomputed.precomputed,
     isPrecomputedRunning: !!fromPrecomputed
         .precomputed(state)
-        .find(precomputedData => precomputedData.status === IN_PROGRESS),
+        .find(
+            precomputedData =>
+                precomputedData.status === IN_PROGRESS ||
+                precomputedData.status === ON_HOLD,
+        ),
 });
 
 const mapDispatchToProps = {

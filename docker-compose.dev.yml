@@ -3,6 +3,8 @@ version: '3'
 services:
     node:
         image: node:18.18-bookworm
+        extra_hosts: # for linux hosts since version 20.10
+            - host.docker.internal:host-gateway
         volumes:
             - .:/app
         working_dir: /app

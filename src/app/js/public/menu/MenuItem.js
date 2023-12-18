@@ -8,7 +8,6 @@ import { Link, NavLink } from 'react-router-dom';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
-import customTheme from '../../../custom/customTheme';
 import {
     ADMIN_ROLE,
     extractTenantFromUrl,
@@ -28,13 +27,13 @@ const styles = stylesToClassname(
                 textDecoration: 'none',
             },
             ':active': {
-                color: customTheme.palette.secondary.main,
+                color: 'var(--secondary-main)',
             },
         },
         active: {
-            color: customTheme.palette.secondary.main,
+            color: 'var(--secondary-main)',
             ':hover': {
-                color: customTheme.palette.secondary.main,
+                color: 'var(--secondary-main)',
             },
         },
         menuItem: {
@@ -46,15 +45,15 @@ const styles = stylesToClassname(
             alignItems: 'center',
             justifyContent: 'center',
             textAlign: 'center',
-            color: customTheme.palette.primary.main,
+            color: 'var(--primary-main)',
             cursor: 'pointer',
             userSelect: 'none',
             textTransform: 'capitalize',
             ':hover': {
-                color: customTheme.palette.info.main,
+                color: 'var(--info-main)',
             },
             ':active': {
-                color: customTheme.palette.secondary.main,
+                color: 'var(--secondary-main)',
             },
         },
         menuItemIcon: {
@@ -241,7 +240,7 @@ const MenuItem = ({
                 )
             );
         case 'custom': {
-            const { link } = config;
+            const { link, isExternal } = config;
             if (!link) {
                 console.error(
                     `Missing link for custom menuItem: ${JSON.stringify(
@@ -250,7 +249,7 @@ const MenuItem = ({
                 );
                 return null;
             }
-            if (link.startsWith('http')) {
+            if (link.startsWith('http') || isExternal) {
                 return (
                     <a
                         href={link}
@@ -261,6 +260,21 @@ const MenuItem = ({
                     </a>
                 );
             }
+
+            // if link contain .html, it's a static page. Use href instead of to with react-router default route
+            if (link.indexOf('.html') !== -1) {
+                const tenant = sessionStorage.getItem('lodex-tenant');
+                return (
+                    <a
+                        href={`/instance/${tenant}/${link}`}
+                        className={classnames('nav-item', styles.menuItem)}
+                    >
+                        {icon}
+                        {label}
+                    </a>
+                );
+            }
+
             return (
                 <NavLink
                     to={link}
@@ -308,7 +322,9 @@ MenuItem.propTypes = {
         icon: PropTypes.string.isRequired,
         link: PropTypes.shape({
             startsWith: PropTypes.func.isRequired,
+            indexOf: PropTypes.func.isRequired,
         }),
+        isExternal: PropTypes.bool,
     }).isRequired,
     onClick: PropTypes.func.isRequired,
     graphDrawer: PropTypes.oneOf(['open', 'closing', 'closed']),

@@ -18,6 +18,10 @@ export default ({ url, ...config }, mode = 'json') => {
             config.headers['X-Lodex-Tenant'] = tenant;
         }
     }
+    // when fetch is use to call external API, like api.istex.fr
+    if (url.startsWith('http') && fullUrl.indexOf(getHost()) == -1) {
+        delete config.headers['X-Lodex-Tenant'];
+    }
 
     return fetch(fullUrl, config).then(
         response => {
@@ -74,6 +78,18 @@ export default ({ url, ...config }, mode = 'json') => {
                     const error = new Error(json.error);
                     error.response = response;
                     error.code = response.status;
+
+                    // if error 404 and json.message contains 'Tenant not found', and windows is defined, we reload the page
+                    // It's use to prevent the case when the user is logged in a tenant, and the tenant is deleted
+                    if (
+                        response.status === 404 &&
+                        json.message &&
+                        json.message.indexOf('Tenant not found') !== -1 &&
+                        typeof window !== 'undefined'
+                    ) {
+                        window.location.reload();
+                    }
+
                     return { error };
                 },
                 () => {

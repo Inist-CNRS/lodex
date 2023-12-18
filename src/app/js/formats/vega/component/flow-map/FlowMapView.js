@@ -1,19 +1,25 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import injectData from '../../../injectData';
+import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import { clamp } from 'lodash';
+import PropTypes from 'prop-types';
+
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../../../propTypes';
-import PropTypes from 'prop-types';
 import { CustomActionVega } from '../vega-component';
 import FlowMap from '../../models/FlowMap';
-import { VEGA_DATA_INJECT_TYPE_B } from '../../../chartsUtils';
+import {
+    convertSpecTemplate,
+    VEGA_ACTIONS_WIDTH,
+    VEGA_DATA_INJECT_TYPE_B,
+} from '../../../chartsUtils';
 import { schemeBlues } from 'd3-scale-chromatic';
 import MouseIcon from '../../../shared/MouseIcon';
 import InvalidFormat from '../../../InvalidFormat';
-import { VEGA_ACTIONS_WIDTH } from '../../../vega-lite/component/vega-lite-component/VegaLiteComponent';
+import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import injectData from '../../../injectData';
 
 const styles = {
     container: {
@@ -34,19 +40,17 @@ const FlowMapView = ({
     color,
     colorScheme,
 }) => {
-    const ref = useRef(null);
-    const [width, setWidth] = useState(0);
+    const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
     const spec = useMemo(() => {
         if (advancedMode) {
             try {
-                const advancedSpec = JSON.parse(advancedModeSpec);
-                return {
-                    ...advancedSpec,
-                    width: width - VEGA_ACTIONS_WIDTH,
-                    height: width * 0.6,
-                };
+                return convertSpecTemplate(
+                    advancedModeSpec,
+                    width - VEGA_ACTIONS_WIDTH,
+                    clamp((width - VEGA_ACTIONS_WIDTH) * 0.6, 300, 1200),
+                );
             } catch (e) {
                 setError(e.message);
                 return null;
@@ -66,7 +70,7 @@ const FlowMapView = ({
         return specBuilder.buildSpec(width, data.values.length);
     }, [
         width,
-        data.values,
+        data.values.length,
         advancedMode,
         advancedModeSpec,
         tooltip,
@@ -75,21 +79,6 @@ const FlowMapView = ({
         color,
         colorScheme,
     ]);
-
-    useEffect(() => {
-        if (!ref || !ref.current) {
-            return;
-        }
-
-        const resizeObserver = new ResizeObserver(() => {
-            try {
-                setWidth(ref.current.offsetWidth);
-                // eslint-disable-next-line no-empty
-            } catch (e) {}
-        });
-
-        resizeObserver.observe(ref.current);
-    }, [ref.current]);
 
     if (spec === null) {
         return <InvalidFormat format={field.format} value={error} />;
@@ -109,7 +98,6 @@ const FlowMapView = ({
 
 FlowMapView.propTypes = {
     field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
     data: PropTypes.any,
     tooltip: PropTypes.bool.isRequired,
     tooltipCategory: PropTypes.string.isRequired,
@@ -139,5 +127,17 @@ const mapStateToProps = (state, { formatData }) => {
         },
     };
 };
+
+export const FlowMapAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: props.dataset.values ?? [],
+        },
+    };
+})(FlowMapView);
 
 export default compose(injectData(), connect(mapStateToProps))(FlowMapView);

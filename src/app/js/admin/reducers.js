@@ -21,6 +21,7 @@ import loaders from './loader';
 import subresource from './subresource';
 import enrichment from './enrichment';
 import precomputed from './precomputed';
+import configTenant from './configTenant';
 
 const reducer = combineReducers({
     fetch: fetchReducer,
@@ -44,6 +45,7 @@ const reducer = combineReducers({
     subresource,
     enrichment,
     precomputed,
+    configTenant,
 });
 
 export default reducer;

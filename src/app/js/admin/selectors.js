@@ -15,6 +15,7 @@ import { selectors as subresourcesSelectors } from './subresource';
 import { selectors as enrichmentsSelectors } from './enrichment';
 import { selectors as precomputedSelectors } from './precomputed';
 import { selectors as dumpSelectors } from './dump';
+import { selectors as configTenantSelectors } from './configTenant';
 
 export const fromParsing = createGlobalSelectors(
     s => s.parsing,
@@ -68,4 +69,9 @@ export const fromEnrichments = createGlobalSelectors(
 export const fromPrecomputed = createGlobalSelectors(
     s => s.precomputed,
     precomputedSelectors,
+);
+
+export const fromConfigTenant = createGlobalSelectors(
+    s => s.configTenant,
+    configTenantSelectors,
 );

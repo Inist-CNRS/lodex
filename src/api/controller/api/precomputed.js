@@ -2,7 +2,7 @@ import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 import { v1 as uuid } from 'uuid';
-
+import fs from 'fs';
 import { PRECOMPUTER } from '../../workers/precomputer';
 import { workerQueues } from '../../workers';
 import {
@@ -10,6 +10,7 @@ import {
     setPrecomputedJobId,
 } from '../../services/precomputed/precomputed';
 import { cancelJob, getActiveJob } from '../../workers/tools';
+import getLocale from '../../../common/getLocale';
 
 export const setup = async (ctx, next) => {
     try {
@@ -33,6 +34,18 @@ export const postPrecomputed = async ctx => {
         ctx.status = 403;
     } catch (error) {
         ctx.status = 403;
+        // if code error is 11000, it's a duplicate key error
+        if (error.code === 11000) {
+            // send message due to browser locale
+            const locale = getLocale(ctx);
+            const errorMessage =
+                locale === 'fr'
+                    ? 'Un précalcul avec ce nom existe déjà'
+                    : 'A precomputed with this name already exists';
+            ctx.body = { error: errorMessage };
+            return;
+        }
+
         ctx.body = { error: error.message };
         return;
     }
@@ -60,6 +73,10 @@ export const deletePrecomputed = async (ctx, id) => {
             cancelJob(ctx, PRECOMPUTER);
         }
         await ctx.precomputed.delete(id);
+        const path = `/app/precomputedData/${ctx.tenant}/${id}.json`;
+        if (fs.existsSync(path)) {
+            fs.unlinkSync(path);
+        }
         ctx.status = 200;
         ctx.body = { message: 'ok' };
     } catch (error) {
@@ -74,7 +91,9 @@ export const getPrecomputed = async (ctx, id) => {
 };
 
 export const getAllPrecomputed = async ctx => {
-    ctx.body = await ctx.precomputed.findAll();
+    ctx.body = await ctx.precomputed
+        .find({}, { projection: { data: { $slice: 10 } } })
+        .toArray();
 };
 
 export const precomputedAction = async (ctx, action, id) => {
@@ -82,6 +101,7 @@ export const precomputedAction = async (ctx, action, id) => {
         throw new Error(`Invalid action "${action}"`);
     }
 
+    const precomputed = await ctx.precomputed.findOneById(id);
     if (action === 'launch') {
         await workerQueues[ctx.tenant]
             .add(
@@ -89,7 +109,9 @@ export const precomputedAction = async (ctx, action, id) => {
                 {
                     id,
                     jobType: PRECOMPUTER,
+                    action: 'askForPrecomputed',
                     tenant: ctx.tenant,
+                    subLabel: precomputed.name,
                 },
                 { jobId: uuid() },
             )
@@ -102,7 +124,6 @@ export const precomputedAction = async (ctx, action, id) => {
     }
 
     if (action === 'relaunch') {
-        const precomputed = await ctx.precomputed.findOneById(id);
         await ctx.dataset.removeAttribute(precomputed.name);
         await workerQueues[ctx.tenant]
             .add(
@@ -110,7 +131,9 @@ export const precomputedAction = async (ctx, action, id) => {
                 {
                     id,
                     jobType: PRECOMPUTER,
+                    action: 'askForPrecomputed',
                     tenant: ctx.tenant,
+                    subLabel: precomputed.name,
                 },
                 { jobId: uuid() },
             )
@@ -137,12 +160,46 @@ export const precomputedDataPreview = async ctx => {
     }
 };
 
+export const downloadPrecomputed = async (ctx, id) => {
+    try {
+        const path = `/app/precomputedData/${ctx.tenant}/${id}.json`;
+        const file = fs.readFileSync(path);
+        ctx.body = file;
+        ctx.status = 200;
+    } catch (error) {
+        ctx.status = 403;
+        ctx.body = { error: error.message };
+        return;
+    }
+};
+
+export const previewDataPrecomputed = async (ctx, id) => {
+    try {
+        const path = `/app/precomputedData/${ctx.tenant}/${id}.json`;
+
+        const buffer = Buffer.alloc(600);
+        const fd = fs.openSync(path, 'r');
+        fs.readSync(fd, buffer, 0, 600, 0);
+        fs.closeSync(fd);
+
+        const data = buffer.toString();
+
+        ctx.body = JSON.stringify(data);
+        ctx.status = 200;
+    } catch (error) {
+        ctx.status = 403;
+        ctx.body = { error: error.message };
+    }
+};
+
 const app = new Koa();
 
 app.use(setup);
 
 app.use(route.get('/', getAllPrecomputed));
 app.use(route.get('/:id', getPrecomputed));
+app.use(route.get('/:id/download', downloadPrecomputed));
+app.use(route.get('/:id/previewData', previewDataPrecomputed));
 app.use(koaBodyParser());
 app.use(route.post('/', postPrecomputed));
 app.use(route.put('/:id', putPrecomputed));

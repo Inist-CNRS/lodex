@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import { OutlinedInput } from '@mui/material';
 import { IMaskInput } from 'react-imask';
+import { getTenantMaxSize } from '../../../common/tools/tenantTools';
 
 const definitions = {
     '#': /[0-9ux*]/i,
@@ -14,7 +15,9 @@ const TextMaskCustom = forwardRef(function TextMaskCustom(props, ref) {
             {...other}
             mask={[
                 {
-                    mask: /^[a-z0-9-]+$/,
+                    mask: new RegExp(
+                        `^[a-z0-9-]{1,${getTenantMaxSize(window.__DBNAME__)}}$`,
+                    ),
                     definitions,
                 },
             ]}

@@ -2,9 +2,6 @@ import Koa from 'koa';
 import route from 'koa-route';
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
-
-import _escapeRegExp from 'lodash.escaperegexp';
-
 import moment from 'moment';
 import {
     DATASET_TITLE,
@@ -14,6 +11,7 @@ import {
     RESOURCE_DETAIL_3,
     RESOURCE_TITLE,
 } from '../../../common/overview';
+import { ObjectId } from 'mongodb';
 
 const PDF_MARGIN_LEFT = 70;
 const PDF_IMAGE_TOP_POSITION = 50;
@@ -55,151 +53,10 @@ function getFontSize(index) {
     }
 }
 
-async function getExportedData(ctx) {
-    const maxExportPDFSize =
-        parseInt(ctx.request.query.maxExportPDFSize) || 1000;
-
-    const match = _escapeRegExp(ctx.request.query.match) || null;
-
-    // facets looks like  {"MwzR":["Multidisciplinary Sciences","Oncology"],"a2E3":["B"]}
-    const facets = ctx.request.query.facets || null;
-
-    // set facets to look like an array of key value pairs [{key: MwzR, value: "Multidisciplinary Sciences"}, {key: MwzR, value: "Oncology"}, {key:a2E3, value: "B"}]
-    const facetsArray = facets
-        ? Object.keys(JSON.parse(facets)).reduce((acc, key) => {
-              const values = JSON.parse(facets)[key];
-              return acc.concat(
-                  values.map(value => ({
-                      key,
-                      value,
-                  })),
-              );
-          }, [])
-        : null;
-
-    const fields = await ctx.field
-        .find({
-            overview: {
-                $in: [
-                    RESOURCE_TITLE,
-                    RESOURCE_DETAIL_3,
-                    RESOURCE_DESCRIPTION,
-                    RESOURCE_DETAIL_1,
-                    RESOURCE_DETAIL_2,
-                ],
-            },
-        })
-        .toArray();
-
-    let searchableFields = [];
-    if (match)
-        searchableFields = await ctx.field
-            .find({
-                searchable: true,
-            })
-            .toArray();
-
-    // sort by overview
-    const sortedFields = fields.sort((a, b) => a.overview - b.overview);
-
-    // place overview with value 6 at the second position
-    const overview6Index = sortedFields.findIndex(
-        field => field.overview === RESOURCE_DETAIL_3,
-    );
-    if (overview6Index !== -1) {
-        const overview6 = sortedFields.splice(overview6Index, 1);
-        sortedFields.splice(1, 0, overview6[0]);
-    }
-
-    // return field names to have a result like {name1:1, name2:1}
-    const syndicatedFields = sortedFields.reduce((acc, field) => {
-        acc[field.name] = 1;
-        return acc;
-    }, {});
-
-    // FIlter only on lastVersion not null or empty object
-    let publishedDataset = await ctx.publishedDataset
-        .aggregate([
-            {
-                $addFields: {
-                    lastVersion: { $last: '$versions' },
-                },
-            },
-            {
-                $match: {
-                    // if facets is not null, filter resuls
-                    ...(facetsArray && facetsArray.length
-                        ? {
-                              // Regroup same key facets in an $or (mongoDB query)
-                              $and: facetsArray
-                                  .reduce((acc, facet) => {
-                                      const index = acc.findIndex(
-                                          item => item.key === facet.key,
-                                      );
-                                      if (index === -1) {
-                                          acc.push({
-                                              key: facet.key,
-                                              value: [facet.value],
-                                          });
-                                      } else {
-                                          acc[index].value.push(facet.value);
-                                      }
-                                      return acc;
-                                  }, [])
-                                  .map(facet => ({
-                                      $or: facet.value.map(value => ({
-                                          [`lastVersion.${facet.key}`]: value,
-                                      })),
-                                  })),
-                          }
-                        : {}),
-                },
-            },
-            {
-                $project: {
-                    lastVersion: syndicatedFields,
-                    _id: 0,
-                },
-            },
-            {
-                $match: {
-                    lastVersion: {
-                        $ne: null,
-                        // eslint-disable-next-line no-dupe-keys
-                        $ne: {},
-                    },
-                    // if match is not null, search in searchable fields
-                    ...(match
-                        ? {
-                              $or: [
-                                  ...searchableFields.map(field => ({
-                                      [`lastVersion.${field.name}`]: {
-                                          // should match tot and be case insensitive
-                                          $regex: new RegExp(match, 'i'),
-                                      },
-                                  })),
-                              ],
-                          }
-                        : {}),
-                },
-            },
-            { $limit: maxExportPDFSize },
-        ])
-        .toArray();
-
-    // filter the dataset where lastVersion is not null or empty object
-    publishedDataset = publishedDataset.filter(
-        dataset =>
-            dataset.lastVersion && Object.keys(dataset.lastVersion).length,
-    );
-
-    return [publishedDataset, syndicatedFields];
-}
-
 async function getPDFTitle(ctx, locale) {
     let configTitle =
-        ctx.currentConfig.front.PDFExportOptions?.title?.[locale] ||
-        ctx.currentConfig.front.PDFExportOptions?.title?.['en'];
+        ctx.configTenant.front.PDFExportOptions?.title?.[locale] ||
+        ctx.configTenant.front.PDFExportOptions?.title?.['en'];
 
     if (configTitle) {
         return configTitle;
@@ -225,11 +82,11 @@ async function getPDFTitle(ctx, locale) {
 }
 
 function renderHeader(doc, PDFTitle, ctx) {
-    if (ctx.currentConfig.front.PDFExportOptions.logo) {
+    if (ctx.configTenant.front.PDFExportOptions.logo) {
         try {
             // Set logo and title in the same line
             doc.image(
-                `src/app/custom/${ctx.currentConfig.front.PDFExportOptions.logo}`,
+                `src/app/custom/${ctx.configTenant.front.PDFExportOptions.logo}`,
                 PDF_MARGIN_LEFT,
                 PDF_IMAGE_TOP_POSITION,
                 {
@@ -282,8 +139,8 @@ function renderDate(doc, locale, ctx) {
         .lineWidth(2)
         .fillOpacity(0.8)
         .fillAndStroke(
-            ctx.currentConfig.front.PDFExportOptions?.highlightColor || 'black',
-            ctx.currentConfig.front.PDFExportOptions?.highlightColor || 'black',
+            ctx.configTenant.front.PDFExportOptions?.highlightColor || 'black',
+            ctx.configTenant.front.PDFExportOptions?.highlightColor || 'black',
         );
     doc.moveDown();
 }
@@ -299,8 +156,8 @@ function renderData(doc, publishedDataset, syndicatedFields) {
                 .fillColor('black')
                 .text(
                     index === 0
-                        ? `${datasetIndex + 1} - ${dataset.lastVersion[key]}`
-                        : dataset.lastVersion[key],
+                        ? `${datasetIndex + 1} - ${dataset.versions[0][key]}`
+                        : dataset.versions[0][key],
                     PDF_MARGIN_LEFT,
                 );
             if (index === 1 || index === 2) {
@@ -314,7 +171,7 @@ function renderData(doc, publishedDataset, syndicatedFields) {
 }
 
 function renderFooter(doc, locale, ctx) {
-    if (!ctx.currentConfig.front.PDFExportOptions?.footer) {
+    if (!ctx.configTenant.front.PDFExportOptions?.footer) {
         return;
     }
 
@@ -323,13 +180,13 @@ function renderFooter(doc, locale, ctx) {
         doc.switchToPage(i);
         doc.fontSize(6)
             .fillColor(
-                ctx.currentConfig.front.PDFExportOptions?.highlightColor ||
+                ctx.configTenant.front.PDFExportOptions?.highlightColor ||
                     'black',
             )
             .text(
                 locale === 'fr'
-                    ? ctx.currentConfig.front.PDFExportOptions?.footer['fr']
-                    : ctx.currentConfig.front.PDFExportOptions?.footer['en'],
+                    ? ctx.configTenant.front.PDFExportOptions?.footer['fr']
+                    : ctx.configTenant.front.PDFExportOptions?.footer['en'],
                 PDF_MARGIN_LEFT,
                 doc.page.height - 40,
 
@@ -342,10 +199,98 @@ function renderFooter(doc, locale, ctx) {
     }
 }
 
+async function getPublishedFacet(ctx) {
+    const {
+        page = 0,
+        perPage = 10,
+        match,
+        sortBy,
+        sortDir,
+        invertedFacets = [],
+        locale,
+        ...facetsWithValueIds
+    } = ctx.request.query;
+
+    let facets = {};
+
+    for (const [facetName, facetValueIds] of Object.entries(
+        facetsWithValueIds,
+    )) {
+        const facetValues = await Promise.all(
+            facetValueIds.map(async facetValueId => {
+                const facetValue = await ctx.publishedFacet.findOne({
+                    _id: new ObjectId(facetValueId),
+                });
+                return facetValue.value;
+            }),
+        );
+        facets[facetName] = facetValues;
+    }
+
+    const intPage = parseInt(page, 10);
+    const intPerPage = parseInt(perPage, 10);
+
+    const searchableFieldNames = await ctx.field.findSearchableNames();
+    const facetFieldNames = await ctx.field.findFacetNames();
+
+    const { data } = await ctx.publishedDataset.findPage({
+        page: intPage,
+        perPage: intPerPage,
+        sortBy,
+        sortDir,
+        match,
+        facets,
+        invertedFacets,
+        searchableFieldNames,
+        facetFieldNames,
+        excludeSubresources: true,
+    });
+
+    return data;
+}
+
+async function getSyndicatedFields(ctx) {
+    const fields = await ctx.field
+        .find({
+            overview: {
+                $in: [
+                    RESOURCE_TITLE,
+                    RESOURCE_DETAIL_3,
+                    RESOURCE_DESCRIPTION,
+                    RESOURCE_DETAIL_1,
+                    RESOURCE_DETAIL_2,
+                ],
+            },
+        })
+        .toArray();
+
+    // sort by overview
+    const sortedFields = fields.sort((a, b) => a.overview - b.overview);
+
+    // place overview with value 6 at the second position
+    const overview6Index = sortedFields.findIndex(
+        field => field.overview === RESOURCE_DETAIL_3,
+    );
+    if (overview6Index !== -1) {
+        const overview6 = sortedFields.splice(overview6Index, 1);
+        sortedFields.splice(1, 0, overview6[0]);
+    }
+
+    // return field names to have a result like {name1:1, name2:1}
+    return sortedFields.reduce((acc, field) => {
+        acc[field.name] = 1;
+        return acc;
+    }, {});
+}
+
 async function exportPDF(ctx) {
     try {
         const locale = ctx.request.query.locale;
-        const [publishedDataset, syndicatedFields] = await getExportedData(ctx);
+
+        const publishedDataset = await getPublishedFacet(ctx);
+
+        const syndicatedFields = await getSyndicatedFields(ctx);
+
         const PDFTitle = await getPDFTitle(ctx, locale);
 
         // Create a document
@@ -354,7 +299,7 @@ async function exportPDF(ctx) {
         // Pipe its output somewhere, like to a file or HTTP response
         doc.pipe(fs.createWriteStream('/tmp/publication.pdf'));
 
-        renderHeader(doc, PDFTitle);
+        renderHeader(doc, PDFTitle, ctx);
         renderDate(doc, locale, ctx);
         renderData(doc, publishedDataset, syndicatedFields);
         renderFooter(doc, locale, ctx);

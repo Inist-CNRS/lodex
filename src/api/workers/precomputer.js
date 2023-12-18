@@ -1,7 +1,8 @@
 import {
-    startPrecomputed,
+    startAskForPrecomputed,
     setPrecomputedError,
     notifyListeners,
+    startGetPrecomputed,
 } from '../services/precomputed/precomputed';
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
@@ -29,7 +30,16 @@ const startJobPrecomputed = async job => {
         success: false,
     });
     const ctx = await prepareContext({ job });
-    await startPrecomputed(ctx);
+
+    if (job.data.action === 'askForPrecomputed') {
+        await startAskForPrecomputed(ctx);
+        return;
+    }
+
+    if (job.data.action === 'getPrecomputed') {
+        await startGetPrecomputed(ctx);
+        return;
+    }
 };
 
 const handlePrecomputedError = async (job, err) => {
@@ -40,6 +50,6 @@ const handlePrecomputedError = async (job, err) => {
 const prepareContext = async ctx => {
     ctx.tenant = ctx.job.data.tenant;
     await repositoryMiddleware(ctx, () => Promise.resolve());
-    ctx.currentConfig = await ctx.configTenant.findLast();
+    ctx.configTenant = await ctx.configTenantCollection.findLast();
     return ctx;
 };

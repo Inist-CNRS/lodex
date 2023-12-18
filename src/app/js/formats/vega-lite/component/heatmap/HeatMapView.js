@@ -1,17 +1,22 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { CustomActionVegaLite } from '../vega-lite-component';
-import injectData from '../../../injectData';
+import React, { useMemo, useState } from 'react';
+import { clamp } from 'lodash';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
+
 import HeatMap from '../../models/HeatMap';
 import { field as fieldPropTypes } from '../../../../propTypes';
-import PropTypes from 'prop-types';
 import {
+    convertSpecTemplate,
     lodexOrderToIdOrder,
+    VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../../../chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
-import { VEGA_ACTIONS_WIDTH } from '../vega-lite-component/VegaLiteComponent';
+import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { CustomActionVegaLite } from '../vega-lite-component';
+import injectData from '../../../injectData';
+import { ASPECT_RATIO_1_1 } from '../../../aspectRatio';
 
 const styles = {
     container: {
@@ -32,18 +37,17 @@ const HeatMapView = ({
     tooltipTarget,
     tooltipWeight,
 }) => {
-    const ref = useRef(null);
-    const [width, setWidth] = useState(0);
+    const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
     const spec = useMemo(() => {
         if (advancedMode) {
             try {
-                const advancedSpec = JSON.parse(advancedModeSpec);
-                return {
-                    ...advancedSpec,
-                    width: width - VEGA_ACTIONS_WIDTH,
-                };
+                return convertSpecTemplate(
+                    advancedModeSpec,
+                    width - VEGA_ACTIONS_WIDTH,
+                    clamp(width - VEGA_ACTIONS_WIDTH, 300, 1200),
+                );
             } catch (e) {
                 setError(e.message);
                 return null;
@@ -75,27 +79,6 @@ const HeatMapView = ({
         tooltipWeight,
     ]);
 
-    useEffect(() => {
-        if (!ref || !ref.current) {
-            return;
-        }
-
-        const resizeObserver = new ResizeObserver(entries => {
-            window.requestAnimationFrame(() => {
-                if (
-                    !Array.isArray(entries) ||
-                    !entries.length ||
-                    entries.length < 1
-                ) {
-                    return;
-                }
-                setWidth(entries[0].contentRect.width);
-            });
-        });
-
-        resizeObserver.observe(ref.current);
-    }, [ref.current]);
-
     if (!spec) {
         return <InvalidFormat format={field.format} value={error} />;
     }
@@ -106,22 +89,25 @@ const HeatMapView = ({
                 spec={spec}
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                aspectRatio={ASPECT_RATIO_1_1}
             />
         </div>
     );
 };
 
 HeatMapView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    params: PropTypes.any.isRequired,
-    colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
-    flipAxis: PropTypes.bool.isRequired,
-    tooltip: PropTypes.bool.isRequired,
-    tooltipSource: PropTypes.string.isRequired,
-    tooltipTarget: PropTypes.string.isRequired,
-    tooltipWeight: PropTypes.string.isRequired,
+    field: fieldPropTypes,
+    resource: PropTypes.object,
+    data: PropTypes.shape({
+        values: PropTypes.any.isRequired,
+    }),
+    params: PropTypes.any,
+    colorScheme: PropTypes.arrayOf(PropTypes.string),
+    flipAxis: PropTypes.bool,
+    tooltip: PropTypes.bool,
+    tooltipSource: PropTypes.string,
+    tooltipTarget: PropTypes.string,
+    tooltipWeight: PropTypes.string,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
 };
@@ -140,5 +126,17 @@ const mapStateToProps = (state, { formatData }) => {
         },
     };
 };
+
+export const HeatMapAdminView = connect((state, props) => {
+    return {
+        ...props,
+        field: {
+            format: 'Preview Format',
+        },
+        data: {
+            values: props.dataset.values ?? [],
+        },
+    };
+})(HeatMapView);
 
 export default compose(injectData(), connect(mapStateToProps))(HeatMapView);

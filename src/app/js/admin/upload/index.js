@@ -2,11 +2,13 @@ import { createAction, handleActions, combineActions } from 'redux-actions';
 
 export const UPLOAD_FILE = 'UPLOAD_FILE';
 export const UPLOAD_URL = 'UPLOAD_URL';
+export const UPLOAD_TEXT = 'UPLOAD_TEXT';
 export const UPLOAD_ERROR = 'UPLOAD_ERROR';
 export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
 export const OPEN_UPLOAD = 'OPEN_UPLOAD';
 export const CLOSE_UPLOAD = 'CLOSE_UPLOAD';
 export const CHANGE_UPLOAD_URL = 'CHANGE_UPLOAD_URL';
+export const CHANGE_UPLOAD_TEXT = 'CHANGE_UPLOAD_TEXT';
 export const CHANGE_LOADER_NAME = 'CHANGE_LOADER_NAME';
 
 export const UPSERT_CUSTOM_LOADER = 'UPSERT_CUSTOM_LOADER';
@@ -14,11 +16,13 @@ export const DELETE_CUSTOM_LOADER = 'DELETE_CUSTOM_LOADER';
 
 export const uploadFile = createAction(UPLOAD_FILE);
 export const uploadUrl = createAction(UPLOAD_URL);
+export const uploadText = createAction(UPLOAD_TEXT);
 export const uploadSuccess = createAction(UPLOAD_SUCCESS);
 export const uploadError = createAction(UPLOAD_ERROR);
 export const openUpload = createAction(OPEN_UPLOAD);
 export const closeUpload = createAction(CLOSE_UPLOAD);
 export const changeUploadUrl = createAction(CHANGE_UPLOAD_URL);
+export const changeUploadText = createAction(CHANGE_UPLOAD_TEXT);
 export const changeLoaderName = createAction(CHANGE_LOADER_NAME);
 
 export const upsertCustomLoader = createAction(UPSERT_CUSTOM_LOADER);
@@ -39,7 +43,10 @@ export const defaultState = {
 
 export default handleActions(
     {
-        [combineActions(UPLOAD_FILE, UPLOAD_URL)]: (state, { payload }) =>
+        [combineActions(UPLOAD_FILE, UPLOAD_URL, UPLOAD_TEXT)]: (
+            state,
+            { payload },
+        ) =>
             payload
                 ? {
                       ...state,
@@ -70,6 +77,10 @@ export default handleActions(
             url,
             validUrl: validateUrl(url),
         }),
+        CHANGE_UPLOAD_TEXT: (state, { payload: textContent }) => ({
+            ...state,
+            textContent,
+        }),
         CHANGE_LOADER_NAME: (state, { payload: loaderName }) => ({
             ...state,
             loaderName,
@@ -90,6 +101,7 @@ export const getUpload = state => state;
 export const isUploadPending = state => state.status === 'PENDING';
 export const isOpen = state => state.open;
 export const getUrl = ({ url }) => url;
+export const getTextContent = ({ textContent }) => textContent;
 export const getLoaderName = ({ loaderName }) => loaderName;
 export const isUrlValid = ({ validUrl }) => validUrl;
 export const getCustomLoader = ({ customLoader }) => customLoader;
@@ -99,6 +111,7 @@ export const selectors = {
     isUploadPending,
     isOpen,
     getUrl,
+    getTextContent,
     getLoaderName,
     isUrlValid,
     getCustomLoader,
