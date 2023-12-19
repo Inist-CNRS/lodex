@@ -698,7 +698,7 @@
 "enrichment_logs"	"Enrichment logs"	"Logs de l'enrichissement"
 "precomputed_logs"	"Precomputed data logs"	"Logs des données précalculées"
 "precomputed_data"	"Precomputed data"	"Données précalculées"
-"precomputed_data_limit"	"We limit the sample to the first 10 results"	"Nous limitons l'échantillon au 10 premiers résulats"
+"precomputed_data_limit"	"We limit the sample to the first 10 results"	"Nous limitons l'échantillon aux 10 premiers résultats"
 "published_data"	"Published data"	"Données publiées"
 "toggle_loaded"	"Show/hide loaded columns"	"Afficher/cacher les colonnes chargées"
 "toggle_enriched"	"Show/hide enriched columns"	"Afficher/cacher les colonnes enrichies"
