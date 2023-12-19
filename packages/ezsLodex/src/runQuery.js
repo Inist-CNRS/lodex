@@ -20,26 +20,12 @@ import mongoDatabase from './mongoDatabase';
  */
 export const createFunction = () =>
     async function LodexRunQuery(data, feed) {
-        const { filter: rawFilter, precomputedName } = this.getEnv();
-
-        const isUnfilteredPrecomputed =
-            precomputedName &&
-            (!rawFilter ||
-                Object.keys(rawFilter).filter(
-                    key => key != 'removedAt' && rawFilter[key] != null,
-                ).length === 0);
-
         if (this.isLast()) {
             return feed.close();
         }
         const { ezs } = this;
         const referer = this.getParam('referer', data.referer);
         const filter = this.getParam('filter', data.filter || {});
-
-        if (isUnfilteredPrecomputed) {
-            //With unfiltered precomputed data, no need to fetch the publishedDataset
-            return feed.write(0);
-        }
 
         filter.removedAt = { $exists: false }; // Ignore removed resources
         const sortOn = this.getParam('sortOn', data.sortOn);

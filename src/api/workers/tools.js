@@ -76,7 +76,7 @@ export const cancelJob = async (ctx, jobType, subLabel = null) => {
         const precomputedID = jobToFail?.data?.id;
         await ctx.precomputed.updateStatus(precomputedID, ERROR);
         progress.finish(ctx.tenant);
-        notifyListeners(`${jobToFail.data.tenant}-precomputer`, {
+        notifyListeners(`${jobToFail?.data?.tenant}-precomputer`, {
             isPrecomputing: false,
             success: false,
         });
