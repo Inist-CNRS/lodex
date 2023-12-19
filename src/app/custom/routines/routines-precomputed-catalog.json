@@ -4,11 +4,5 @@
         "url": "/api/run/segments-precomputed/",
         "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/",
         "recommendedWith": ["Network", "HeatMap", "HierarchicalGraph"]
-    },
-    {
-        "id": "r-clustered-precomputed",
-        "url": "/api/run/clustered-precomputed/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/",
-        "recommendedWith": ["ClusteredChart"]
     }
 ]

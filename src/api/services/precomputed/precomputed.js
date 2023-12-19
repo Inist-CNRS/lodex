@@ -285,7 +285,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
     progress.setProgress(ctx.tenant, 10);
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] 2/10 -Start building compress data`,
+        message: `[Instance: ${ctx.tenant}] 2/10 - Start building compress data`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
