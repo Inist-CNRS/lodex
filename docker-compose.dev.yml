@@ -81,7 +81,7 @@ services:
             EZS_CONTINUE_DELAY: '60'
             EZS_NSHARDS: '31'
             EZS_CACHE: 'false'
-            EZS_VERBOS: 'true'
+            EZS_VERBOSE: 'true'
         ports:
             - "31976:31976"
         command: npm run production:workers
