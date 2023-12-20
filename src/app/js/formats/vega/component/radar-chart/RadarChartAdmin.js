@@ -20,7 +20,7 @@ import VegaToolTips from '../../../utils/components/VegaToolTips';
 import VegaAdvancedMode from '../../../utils/components/VegaAdvancedMode';
 import RadarChart from '../../models/RadarChart';
 import { lodexScaleToIdScale } from '../../../chartsUtils';
-import VegaFieldSet, {
+import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
 } from '../../../utils/components/FormatFieldSets';

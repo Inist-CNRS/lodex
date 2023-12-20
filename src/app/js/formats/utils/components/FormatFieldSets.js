@@ -92,23 +92,6 @@ FormatChartParamsFieldSet.propTypes = {
 };
 
 /**
- * Format url parameters translation for the field set component
- * @param children {React.ReactNode} Field set content
- * @returns {JSX.Element}
- */
-export const FormatUrlParamsFieldSet = ({ children }) => {
-    return (
-        <TranslatedVegaFieldSet title="format_url_params">
-            {children}
-        </TranslatedVegaFieldSet>
-    );
-};
-
-FormatUrlParamsFieldSet.propTypes = {
-    children: PropTypes.node.isRequired,
-};
-
-/**
  * Format sub-format parameters translation for the field set component
  * @param children {React.ReactNode} Field set content
  * @returns {JSX.Element}

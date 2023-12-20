@@ -9,6 +9,11 @@ import config from '../../../../../../../config.json';
 import SelectFormat from '../../../SelectFormat';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { FORMATS, getAdminComponent } from '../../../index';
+import {
+    FormatDataParamsFieldSet,
+    FormatDefaultParamsFieldSet,
+} from '../../../utils/components/FormatFieldSets';
+import FormatGroupedFieldSet from '../../../utils/components/FormatGroupedFieldSet';
 
 const endpoints = config.sparqlEndpoints;
 
@@ -139,13 +144,11 @@ class SparqlTextFieldAdmin extends Component {
         return (
             <Box display="flex" flexDirection="column" flexGrow={1} gap={2}>
                 <TextField
+                    fullWidth
                     label={polyglot.t('sparql_attribute')}
                     type="string"
                     onChange={e => this.setAttribute(e.target.value, key)}
                     value={result.attribute}
-                    sx={{
-                        width: '40%',
-                    }}
                 />
                 <SelectFormat
                     onChange={e => this.setSubformat(e, key)}
@@ -171,68 +174,65 @@ class SparqlTextFieldAdmin extends Component {
             sparql || defaultArgs.sparql;
 
         return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                gap={2}
-            >
-                <TextField
-                    label={polyglot.t('sparql_endpoint')}
-                    value={endpoint}
-                    onChange={this.setEndpoint}
-                    type="text"
-                    name="valueEnpoint"
-                    list="listEnpoint"
-                    required="true"
-                    fullWidth
-                />
-                <datalist id="listEnpoint">
-                    {endpoints.map(source => (
-                        <option key={source} value={source} />
-                    ))}
-                </datalist>
-                <Box width="100%">
+            <FormatGroupedFieldSet>
+                <FormatDataParamsFieldSet>
                     <TextField
-                        label={polyglot.t('sparql_request')}
-                        multiline
-                        onChange={this.setRequest}
-                        value={request}
+                        label={polyglot.t('sparql_endpoint')}
+                        value={endpoint}
+                        onChange={this.setEndpoint}
+                        type="text"
+                        name="valueEnpoint"
+                        list="listEnpoint"
+                        required="true"
                         fullWidth
                     />
-                    <a
-                        onClick={() => {
-                            this.validator();
-                        }}
-                        className="link_validator"
-                    >
-                        {polyglot.t('sparql_validator')}
-                    </a>
-                </Box>
-                <TextField
-                    label={polyglot.t('max_value')}
-                    type="number"
-                    onChange={this.setMaxValue}
-                    value={maxValue}
-                    fullWidth
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            onChange={this.setHiddenInfo}
-                            checked={hiddenInfo}
+                    <datalist id="listEnpoint">
+                        {endpoints.map(source => (
+                            <option key={source} value={source} />
+                        ))}
+                    </datalist>
+                    <Box width="100%">
+                        <TextField
+                            label={polyglot.t('sparql_request')}
+                            multiline
+                            onChange={this.setRequest}
+                            value={request}
+                            fullWidth
                         />
-                    }
-                    label={polyglot.t('hidden_info')}
-                />
-                <TextField
-                    label={polyglot.t('sparql_list_separator')}
-                    type="string"
-                    onChange={this.setSeparator}
-                    value={separator}
-                    fullWidth
-                />
-                <Box width="100%" display="flex" flexDirection="column" gap={2}>
+                        <a
+                            onClick={() => {
+                                this.validator();
+                            }}
+                            className="link_validator"
+                        >
+                            {polyglot.t('sparql_validator')}
+                        </a>
+                    </Box>
+                    <TextField
+                        label={polyglot.t('max_value')}
+                        type="number"
+                        onChange={this.setMaxValue}
+                        value={maxValue}
+                        fullWidth
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={this.setHiddenInfo}
+                                checked={hiddenInfo}
+                            />
+                        }
+                        label={polyglot.t('hidden_info')}
+                    />
+                    <TextField
+                        label={polyglot.t('sparql_list_separator')}
+                        type="string"
+                        onChange={this.setSeparator}
+                        value={separator}
+                        fullWidth
+                    />
+                </FormatDataParamsFieldSet>
+                <FormatDefaultParamsFieldSet>
                     <Box
                         display="flex"
                         alignItems="center"
@@ -255,10 +255,13 @@ class SparqlTextFieldAdmin extends Component {
                                     borderStyle: 'solid',
                                     borderColor: 'darkGrey',
                                     borderWidth: '1px',
+                                    borderRadius: '5px',
                                     marginBottom: '2px',
                                     padding: 2,
                                     backgroundColor:
-                                        key % 2 == 1 ? '#e9e9e9' : '#d0d0d0',
+                                        key % 2 === 1
+                                            ? 'rgba(233,233,233,0.25)'
+                                            : 'rgba(208,208,208,0.25)',
                                 }}
                             >
                                 <ContentClear
@@ -275,8 +278,8 @@ class SparqlTextFieldAdmin extends Component {
                             </Box>
                         );
                     })}
-                </Box>
-            </Box>
+                </FormatDefaultParamsFieldSet>
+            </FormatGroupedFieldSet>
         );
     }
 }

@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { Box, TextField, MenuItem } from '@mui/material';
+import {
+    FormatDataParamsFieldSet,
+    FormatDefaultParamsFieldSet,
+} from '../../utils/components/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     type: 'value',
@@ -48,36 +53,24 @@ class LinkImageAdmin extends Component {
         } = this.props;
 
         return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                gap={2}
-            >
-                <TextField
-                    fullWidth
-                    select
-                    label={polyglot.t('select_a_format')}
-                    onChange={this.setType}
-                    value={type}
-                >
-                    <MenuItem value="text">
-                        {polyglot.t('item_other_column_content')}
-                    </MenuItem>
-                    <MenuItem value="column">
-                        {polyglot.t('item_custom_url')}
-                    </MenuItem>
-                </TextField>
-                <Box
-                    display="flex"
-                    gap={1}
-                    width="100%"
-                    sx={{
-                        '& > *': {
-                            flexBasis: '50%',
-                        },
-                    }}
-                >
+            <FormatGroupedFieldSet>
+                <FormatDataParamsFieldSet>
+                    <TextField
+                        fullWidth
+                        select
+                        label={polyglot.t('select_a_format')}
+                        onChange={this.setType}
+                        value={type}
+                    >
+                        <MenuItem value="text">
+                            {polyglot.t('item_other_column_content')}
+                        </MenuItem>
+                        <MenuItem value="column">
+                            {polyglot.t('item_custom_url')}
+                        </MenuItem>
+                    </TextField>
+                </FormatDataParamsFieldSet>
+                <FormatDefaultParamsFieldSet>
                     <TextField
                         label={
                             type !== 'text'
@@ -86,15 +79,17 @@ class LinkImageAdmin extends Component {
                         }
                         onChange={this.setValue}
                         value={value}
+                        sx={{ flexGrow: 1 }}
                     />
                     <TextField
                         label={polyglot.t('height_px')}
                         type="number"
                         onChange={this.setMaxHeight}
                         value={maxHeight}
+                        sx={{ flexGrow: 1 }}
                     />
-                </Box>
-            </Box>
+                </FormatDefaultParamsFieldSet>
+            </FormatGroupedFieldSet>
         );
     }
 }
