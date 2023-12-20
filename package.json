@@ -75,7 +75,7 @@
         "@ezs/analytics": "2.2.1",
         "@ezs/basics": "2.5.8",
         "@ezs/conditor": "2.10.7",
-        "@ezs/core": "3.4.3",
+        "@ezs/core": "3.4.4",
         "@ezs/istex": "1.5.9",
         "@ezs/lodex": "file:./packages/ezsLodex",
         "@ezs/loterre": "^2.0.4",

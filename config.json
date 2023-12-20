@@ -28,6 +28,8 @@
         "get-fields",
         "graph-by",
         "segments-precomputed",
+        "segments-precomputed-nofilter",
+        "values-precomputed-nofilter",
         "group-and-sum-with",
         "hello-world",
         "istex-facet",
