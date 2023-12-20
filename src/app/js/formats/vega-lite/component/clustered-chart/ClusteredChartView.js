@@ -8,13 +8,23 @@ import { Grid, Paper } from '@mui/material';
 import injectData from '../../../injectData';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import ClusteredChart from './ClusteredChart';
+import { flip } from '../../../chartsUtils';
 
-const ClusteredChartView = ({ data, colors, xTitle, yTitle }) => {
+/**
+ * Clustered chart view components use to render the chart with given parameters
+ * @param data {{values: Array<{_id: string, source: string, target: string, weight: string}>}}
+ * @param colors {string}
+ * @param xTitle {string}
+ * @param yTitle {string}
+ * @param flipAxis {boolean}
+ * @returns {JSX.Element}
+ */
+const ClusteredChartView = ({ data, colors, xTitle, yTitle, flipAxis }) => {
     const { values } = data;
 
     const topics = useMemo(() => {
         return _.chain(values)
-            .map(value => value.source)
+            .map(value => flip(flipAxis, value.target, value.source))
             .uniq()
             .sort((a, b) =>
                 a.localeCompare(b, 'fr', {
@@ -45,6 +55,7 @@ const ClusteredChartView = ({ data, colors, xTitle, yTitle }) => {
                                     colors,
                                     xTitle,
                                     yTitle,
+                                    flipAxis,
                                 }}
                             />
                         </Paper>
@@ -77,6 +88,7 @@ ClusteredChartView.propTypes = {
     colors: PropTypes.string.isRequired,
     xTitle: PropTypes.string,
     yTitle: PropTypes.string,
+    flipAxis: PropTypes.bool,
 };
 
 export default compose(

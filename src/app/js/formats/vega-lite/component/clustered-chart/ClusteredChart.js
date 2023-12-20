@@ -1,49 +1,46 @@
-import { CustomActionVegaLite } from '../vega-lite-component';
-import { VEGA_LITE_DATA_INJECT_TYPE_A } from '../../../chartsUtils';
-import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 
+import { CustomActionVegaLite } from '../vega-lite-component';
+import { VEGA_LITE_DATA_INJECT_TYPE_A, flip } from '../../../chartsUtils';
+
+/**
+ * @param data {{values: Array<{_id: string, source: string, target: string, weight: string}>}}
+ * @param topic {string}
+ * @param params {{colors: string, xTitle: string, yTitle: string, flipAxis: boolean}}
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const ClusteredChart = ({ data, topic, params }) => {
     const values = useMemo(() => {
-        return data.filter(value => value.source === topic);
+        return data.filter(value =>
+            flip(
+                params.flipAxis,
+                value.target === topic,
+                value.source === topic,
+            ),
+        );
     }, [data, topic]);
 
     const spec = useMemo(() => {
-        const { colors, xTitle, yTitle } = params;
+        const { colors, xTitle, yTitle, flipAxis } = params;
         const specToReturn = {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
             config: { legend: { disable: true } },
             title: topic,
+            mark: 'bar',
             encoding: {
-                y: { field: 'target', type: 'nominal', sort: null },
+                y: {
+                    field: flip(flipAxis, 'source', 'target'),
+                    type: 'nominal',
+                    sort: null,
+                },
                 x: { field: 'weight', type: 'quantitative', sort: null },
+                color: {
+                    field: 'weight',
+                    scale: { range: colors.split(' ') },
+                },
             },
-            layer: [
-                {
-                    mark: 'bar',
-                    encoding: {
-                        color: {
-                            field: 'weight',
-                            scale: { range: colors.split(' ') },
-                        },
-                    },
-                },
-                {
-                    mark: {
-                        type: 'text',
-                        align: 'left',
-                        baseline: 'middle',
-                        dx: 3,
-                    },
-                    encoding: {
-                        text: {
-                            field: 'weight',
-                            type: 'quantitative',
-                            format: '.4f',
-                        },
-                    },
-                },
-            ],
             width: 'container',
             height: { step: 20 },
         };
@@ -76,6 +73,7 @@ ClusteredChart.propTypes = {
         colors: PropTypes.string.isRequired,
         xTitle: PropTypes.string,
         yTitle: PropTypes.string,
+        flipAxis: PropTypes.bool,
     }),
 };
 
