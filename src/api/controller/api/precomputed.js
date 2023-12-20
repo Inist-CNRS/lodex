@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
+import ezs from '@ezs/core';
 import koaBodyParser from 'koa-bodyparser';
 import { v1 as uuid } from 'uuid';
 import fs from 'fs';
@@ -162,9 +163,8 @@ export const precomputedDataPreview = async ctx => {
 
 export const downloadPrecomputed = async (ctx, id) => {
     try {
-        const path = `/app/precomputedData/${ctx.tenant}/${id}.json`;
-        const file = fs.readFileSync(path);
-        ctx.body = file;
+        const strm = await ctx.precomputed.getStreamOfResult(id);
+        ctx.body = strm.pipe(ezs('dump')).pipe(ezs.toBuffer());
         ctx.status = 200;
     } catch (error) {
         ctx.status = 403;
@@ -175,15 +175,7 @@ export const downloadPrecomputed = async (ctx, id) => {
 
 export const previewDataPrecomputed = async (ctx, id) => {
     try {
-        const path = `/app/precomputedData/${ctx.tenant}/${id}.json`;
-
-        const buffer = Buffer.alloc(600);
-        const fd = fs.openSync(path, 'r');
-        fs.readSync(fd, buffer, 0, 600, 0);
-        fs.closeSync(fd);
-
-        const data = buffer.toString();
-
+        const data = await ctx.precomputed.getSample(id);
         ctx.body = JSON.stringify(data);
         ctx.status = 200;
     } catch (error) {
