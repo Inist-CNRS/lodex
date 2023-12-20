@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
+import { TextField, MenuItem } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
 import { resolvers } from './index';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
 import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
-import { Box, TextField, MenuItem } from '@mui/material';
+import { FormatDefaultParamsFieldSet } from '../../utils/components/FormatFieldSets';
 
 export const defaultArgs = {
     typid: 1,
@@ -57,12 +58,7 @@ class IdentifierBadgeAdmin extends Component {
             </MenuItem>
         ));
         return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                gap={2}
-            >
+            <FormatDefaultParamsFieldSet>
                 <TextField
                     select
                     label={polyglot.t('list_format_select_identifier')}
@@ -80,7 +76,7 @@ class IdentifierBadgeAdmin extends Component {
                     polyglot={polyglot}
                     monochromatic={true}
                 />
-            </Box>
+            </FormatDefaultParamsFieldSet>
         );
     }
 }

@@ -3,7 +3,7 @@ import get from 'lodash.get';
 import merge from '../lib/merge';
 import { FORMATS_CATALOG } from './formats';
 import checkPredicate from './checkPredicate';
-import DefaultFormat from './DefaultFormat';
+import DefaultFormat from './utils/components/DefaultFormat';
 
 export const FORMATS = FORMATS_CATALOG.sort((a, b) =>
     a.componentName.toLowerCase().localeCompare(b.componentName.toLowerCase()),

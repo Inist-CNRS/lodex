@@ -7,11 +7,11 @@ import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
-import { Box } from '@mui/material';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../utils/components/FormatFieldSet';
+} from '../../utils/components/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -79,12 +79,7 @@ class NetworkAdmin extends Component {
         } = this.props;
 
         return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                gap={2}
-            >
+            <FormatGroupedFieldSet>
                 <FormatDataParamsFieldSet>
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
@@ -104,7 +99,7 @@ class NetworkAdmin extends Component {
                         monochromatic={true}
                     />
                 </FormatChartParamsFieldSet>
-            </Box>
+            </FormatGroupedFieldSet>
         );
     }
 }

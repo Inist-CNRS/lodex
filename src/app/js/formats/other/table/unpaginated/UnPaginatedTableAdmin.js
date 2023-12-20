@@ -4,6 +4,11 @@ import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
 import TableColumnsParameters from '../core/TableColumnsParameters';
 import React from 'react';
 import { Box } from '@mui/material';
+import {
+    FormatDataParamsFieldSet,
+    FormatDefaultParamsFieldSet,
+} from '../../../utils/components/FormatFieldSets';
+import FormatGroupedFieldSet from '../../../utils/components/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -25,28 +30,27 @@ class UnPaginatedTableAdmin extends AbstractTableAdmin {
             args: { params, columnsCount, columnsParameters },
         } = this.props;
         return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                gap={2}
-            >
-                <RoutineParamsAdmin
-                    params={params || defaultArgs.params}
-                    onChange={this.setParams}
-                    polyglot={polyglot}
-                    showMaxSize={true}
-                    showMaxValue={true}
-                    showMinValue={true}
-                    showOrderBy={true}
-                />
-                <TableColumnsParameters
-                    onChange={this.setColumnParameter}
-                    polyglot={polyglot}
-                    parameterCount={columnsCount}
-                    parameters={columnsParameters}
-                />
-            </Box>
+            <FormatGroupedFieldSet>
+                <FormatDataParamsFieldSet>
+                    <RoutineParamsAdmin
+                        params={params || defaultArgs.params}
+                        onChange={this.setParams}
+                        polyglot={polyglot}
+                        showMaxSize={true}
+                        showMaxValue={true}
+                        showMinValue={true}
+                        showOrderBy={true}
+                    />
+                </FormatDataParamsFieldSet>
+                <FormatDefaultParamsFieldSet>
+                    <TableColumnsParameters
+                        onChange={this.setColumnParameter}
+                        polyglot={polyglot}
+                        parameterCount={columnsCount}
+                        parameters={columnsParameters}
+                    />
+                </FormatDefaultParamsFieldSet>
+            </FormatGroupedFieldSet>
         );
     }
 }

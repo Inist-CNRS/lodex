@@ -1,4 +1,4 @@
-import DefaultFormat from '../../DefaultFormat';
+import DefaultFormat from '../../utils/components/DefaultFormat';
 import Component from './ParallelCoordiantesChartView';
 import AdminComponent, { defaultArgs } from './ParallelCoordinatesChartAdmin';
 import Icon from './ParallelCoordinatesChartIcon';

@@ -1,6 +1,6 @@
 import Component from './BubbleView';
 import AdminComponent, { defaultArgs } from './BubbleAdmin';
-import DefaultFormat from '../../DefaultFormat';
+import DefaultFormat from '../../utils/components/DefaultFormat';
 import Icon from './BubbleChartIcon';
 
 export default {

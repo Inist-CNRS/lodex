@@ -1,7 +1,7 @@
 import Component from './LodexFieldView';
 import AdminComponent, { defaultArgs } from './LodexFieldAdmin';
 
-import DefaultFormat from '../../DefaultFormat';
+import DefaultFormat from '../../utils/components/DefaultFormat';
 
 export default {
     ...DefaultFormat,

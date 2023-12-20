@@ -1,5 +1,5 @@
 import Component from './Streamgraph';
-import DefaultFormat from '../../DefaultFormat';
+import DefaultFormat from '../../utils/components/DefaultFormat';
 import AdminComponent, { defaultArgs } from './StreamgraphAdmin';
 import Icon from './StreamgraphIcon';
 

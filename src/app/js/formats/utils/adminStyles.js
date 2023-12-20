@@ -1,4 +1,4 @@
-export const vegaAdminStyle = {
+export const formatAdminStyle = {
     fieldset: {
         width: '100%',
         borderRadius: '5px',

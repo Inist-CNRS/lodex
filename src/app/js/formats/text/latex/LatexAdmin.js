@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { FormatDefaultParamsFieldSet } from '../../utils/components/FormatFieldSets';
 
 export const defaultArgs = {
     delimiter: '',
@@ -34,13 +35,15 @@ class LatexAdmin extends Component {
         } = this.props;
 
         return (
-            <TextField
-                label={polyglot.t('choose_delimiter')}
-                type="string"
-                onChange={this.setDelimiter}
-                value={delimiter}
-                fullWidth
-            />
+            <FormatDefaultParamsFieldSet>
+                <TextField
+                    label={polyglot.t('choose_delimiter')}
+                    type="string"
+                    onChange={this.setDelimiter}
+                    value={delimiter}
+                    fullWidth
+                />
+            </FormatDefaultParamsFieldSet>
         );
     }
 }

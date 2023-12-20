@@ -1,5 +1,5 @@
 import Component from './PDFView';
-import DefaultFormat from '../../DefaultFormat';
+import DefaultFormat from '../../utils/components/DefaultFormat';
 import AdminComponent, { defaultArgs } from './PDFAdmin';
 
 export default {

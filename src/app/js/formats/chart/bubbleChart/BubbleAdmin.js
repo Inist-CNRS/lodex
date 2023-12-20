@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Box, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
@@ -11,7 +11,8 @@ import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../utils/components/FormatFieldSet';
+} from '../../utils/components/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -80,12 +81,7 @@ class BubbleAdmin extends Component {
         const { diameter } = this.props.args;
 
         return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                gap={2}
-            >
+            <FormatGroupedFieldSet>
                 <FormatDataParamsFieldSet>
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
@@ -110,7 +106,7 @@ class BubbleAdmin extends Component {
                         fullWidth
                     />
                 </FormatChartParamsFieldSet>
-            </Box>
+            </FormatGroupedFieldSet>
         );
     }
 }

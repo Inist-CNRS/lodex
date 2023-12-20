@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { MenuItem, Box, TextField } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
 import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
+import { FormatDefaultParamsFieldSet } from '../../utils/components/FormatFieldSets';
 
 export const defaultArgs = {
     level: 1,
@@ -50,12 +51,7 @@ class TitleAdmin extends Component {
         } = this.props;
 
         return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                gap={2}
-            >
+            <FormatDefaultParamsFieldSet>
                 <TextField
                     fullWidth
                     select
@@ -74,7 +70,7 @@ class TitleAdmin extends Component {
                     polyglot={polyglot}
                     monochromatic={true}
                 />
-            </Box>
+            </FormatDefaultParamsFieldSet>
         );
     }
 }

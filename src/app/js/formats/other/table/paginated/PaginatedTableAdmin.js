@@ -3,6 +3,10 @@ import translate from 'redux-polyglot/translate';
 import { Box, TextField } from '@mui/material';
 import TableColumnsParameters from '../core/TableColumnsParameters';
 import React from 'react';
+import {
+    FormatDataParamsFieldSet,
+    FormatDefaultParamsFieldSet,
+} from '../../../utils/components/FormatFieldSets';
 
 export const defaultArgs = {
     pageSize: 6,
@@ -36,12 +40,7 @@ class PaginatedTableAdmin extends AbstractTableAdmin {
             args: { pageSize, columnsCount, columnsParameters },
         } = this.props;
         return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                gap={2}
-            >
+            <FormatDefaultParamsFieldSet>
                 <TextField
                     label={polyglot.t('items_per_page')}
                     onChange={this.setPageSize}
@@ -55,7 +54,7 @@ class PaginatedTableAdmin extends AbstractTableAdmin {
                     parameterCount={columnsCount}
                     parameters={columnsParameters}
                 />
-            </Box>
+            </FormatDefaultParamsFieldSet>
         );
     }
 }

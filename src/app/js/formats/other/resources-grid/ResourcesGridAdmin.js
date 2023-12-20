@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-    MenuItem,
-    Checkbox,
-    TextField,
-    FormControlLabel,
-    Box,
-} from '@mui/material';
+import { MenuItem, Checkbox, TextField, FormControlLabel } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
+import { FormatDefaultParamsFieldSet } from '../../utils/components/FormatFieldSets';
 
 export const defaultArgs = {
     allowToLoadMore: true,
@@ -49,8 +43,6 @@ class RessourcesGridAdmin extends Component {
     static defaultProps = {
         args: defaultArgs,
     };
-
-    setParams = params => updateAdminArgs('params', params, this.props);
 
     setWidth = spaceWidth => {
         updateAdminArgs('spaceWidth', spaceWidth, this.props);
@@ -97,10 +89,7 @@ class RessourcesGridAdmin extends Component {
     };
 
     render() {
-        const {
-            p: polyglot,
-            args: { params },
-        } = this.props;
+        const { p: polyglot } = this.props;
         const {
             spaceWidth,
             allowToLoadMore,
@@ -111,21 +100,7 @@ class RessourcesGridAdmin extends Component {
         } = this.props.args;
 
         return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                gap={2}
-            >
-                <RoutineParamsAdmin
-                    params={params || defaultArgs.params}
-                    onChange={this.setParams}
-                    polyglot={polyglot}
-                    showMaxSize={false}
-                    showMaxValue={false}
-                    showMinValue={false}
-                    showOrderBy={false}
-                />
+            <FormatDefaultParamsFieldSet>
                 <TextField
                     fullWidth
                     select
@@ -189,7 +164,7 @@ class RessourcesGridAdmin extends Component {
                     type="number"
                     fullWidth
                 />
-            </Box>
+            </FormatDefaultParamsFieldSet>
         );
     }
 }

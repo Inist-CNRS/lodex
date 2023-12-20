@@ -1,5 +1,5 @@
 import React from 'react';
-import DefaultFormat from '../../DefaultFormat';
+import DefaultFormat from '../../utils/components/DefaultFormat';
 import Component from './JsonDebugView';
 import AdminComponent, { defaultArgs } from './JsonDebugAdmin';
 import DataObjectIcon from '@mui/icons-material/DataObject';

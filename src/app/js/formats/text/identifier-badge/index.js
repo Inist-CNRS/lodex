@@ -1,6 +1,6 @@
 import IdentifierBadgeView from './IdentifierBadgeView';
 import AdminComponent, { defaultArgs } from './IdentifierBadgeAdmin';
-import DefaultFormat from '../../DefaultFormat';
+import DefaultFormat from '../../utils/components/DefaultFormat';
 
 export default {
     ...DefaultFormat,

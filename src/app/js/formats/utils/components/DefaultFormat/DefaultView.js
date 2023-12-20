@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { field as fieldPropTypes } from '../../propTypes';
-import { isLongText, getShortText } from '../../lib/longTexts';
-import { isURL, isLocalURL, canonicalURL } from '../../../../common/uris.js';
+import { field as fieldPropTypes } from '../../../../propTypes';
+import { isLongText, getShortText } from '../../../../lib/longTexts';
+import {
+    isURL,
+    isLocalURL,
+    canonicalURL,
+} from '../../../../../../common/uris.js';
 import {
     REJECTED,
     PROPOSED,
     VALIDATED,
-} from '../../../../common/propositionStatus';
-import Link from '../../lib/components/Link';
+} from '../../../../../../common/propositionStatus';
+import Link from '../../../../lib/components/Link';
 
 const styles = {
     [REJECTED]: {
@@ -34,23 +38,23 @@ const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
                 {value}
             </Link>
         );
-    } else if (isLocalURL(value)) {
+    }
+    if (isLocalURL(value)) {
         return (
             <Link style={styles[fieldStatus]} href={`${canonicalURL(value)}`}>
                 {value}
             </Link>
         );
-    } else {
-        return (
-            <span style={styles[fieldStatus]}>
-                {shrink && isLongText(value) ? (
-                    <span className={className}>{getShortText(value)}</span>
-                ) : (
-                    <span className={className}>{value}</span>
-                )}
-            </span>
-        );
     }
+    return (
+        <span style={styles[fieldStatus]}>
+            {shrink && isLongText(value) ? (
+                <span className={className}>{getShortText(value)}</span>
+            ) : (
+                <span className={className}>{value}</span>
+            )}
+        </span>
+    );
 };
 
 DefaultView.propTypes = {

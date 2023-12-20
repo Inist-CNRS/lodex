@@ -1,7 +1,7 @@
 import Component from './ListView';
 import AdminComponent, { defaultArgs } from './ListAdmin';
 import EditionComponent from './EditionComponent';
-import defaultFormat from '../../DefaultFormat';
+import defaultFormat from '../../utils/components/DefaultFormat';
 
 export default {
     ...defaultFormat,

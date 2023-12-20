@@ -7,7 +7,7 @@ import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
 import updateAdminArgs from '../../../shared/updateAdminArgs';
-import { FormatChartParamsFieldSet } from '../../../utils/components/FormatFieldSet';
+import { FormatChartParamsFieldSet } from '../../../utils/components/FormatFieldSets';
 
 export const defaultArgs = {
     colors: MONOCHROMATIC_DEFAULT_COLORSET,

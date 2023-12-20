@@ -1,4 +1,4 @@
-import DefaultFormat from '../../../DefaultFormat';
+import DefaultFormat from '../../../utils/components/DefaultFormat';
 import Component from './PieChartView';
 import AdminComponent, { defaultArgs } from './PieChartAdmin';
 import Icon from './PieChartIcon';

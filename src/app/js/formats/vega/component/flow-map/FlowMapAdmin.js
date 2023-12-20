@@ -16,7 +16,7 @@ import { FlowMapAdminView } from './FlowMapView';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../../utils/components/FormatFieldSet';
+} from '../../../utils/components/FormatFieldSets';
 import { MapSourceTargetWeight } from '../../../utils/dataSet';
 
 export const defaultArgs = {

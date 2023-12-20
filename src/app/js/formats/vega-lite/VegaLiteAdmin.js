@@ -10,7 +10,7 @@ import VegaAdvancedMode from '../utils/components/VegaAdvancedMode';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../utils/components/FormatFieldSet';
+} from '../utils/components/FormatFieldSets';
 import VegaFieldPreview from '../utils/components/VegaFieldPreview';
 import { VegaLiteAdminView } from './VegaLiteView';
 

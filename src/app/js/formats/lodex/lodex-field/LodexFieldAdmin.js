@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import { Box, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import { Checkbox, FormControlLabel, TextField } from '@mui/material';
+import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     param: {
@@ -49,12 +50,7 @@ class LodexFieldAdmin extends Component {
         const label = labelArray.join(';');
 
         return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                gap={2}
-            >
+            <FormatGroupedFieldSet>
                 <TextField
                     label={polyglot.t('param_labels')}
                     multiline
@@ -71,7 +67,7 @@ class LodexFieldAdmin extends Component {
                     }
                     label={polyglot.t('hidden_info')}
                 />
-            </Box>
+            </FormatGroupedFieldSet>
         );
     }
 }

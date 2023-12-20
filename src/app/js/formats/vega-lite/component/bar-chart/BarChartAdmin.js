@@ -29,7 +29,7 @@ import { BarChartAdminView } from './BarChartView';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../../utils/components/FormatFieldSet';
+} from '../../../utils/components/FormatFieldSets';
 import VegaFieldPreview from '../../../utils/components/VegaFieldPreview';
 import { StandardIdValue } from '../../../utils/dataSet';
 

@@ -7,11 +7,11 @@ import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
-import { Box } from '@mui/material';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../utils/components/FormatFieldSet';
+} from '../../utils/components/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
 
 const AsterPlotChartAdmin = ({
     p: polyglot,
@@ -41,12 +41,7 @@ const AsterPlotChartAdmin = ({
     };
 
     return (
-        <Box
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            gap={2}
-        >
+        <FormatGroupedFieldSet>
             <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={args.params}
@@ -65,7 +60,7 @@ const AsterPlotChartAdmin = ({
                     polyglot={polyglot}
                 />
             </FormatChartParamsFieldSet>
-        </Box>
+        </FormatGroupedFieldSet>
     );
 };
 

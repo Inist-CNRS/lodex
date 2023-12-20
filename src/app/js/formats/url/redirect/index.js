@@ -1,5 +1,5 @@
 import Component from './RedirectView';
-import DefaultFormat from '../../DefaultFormat';
+import DefaultFormat from '../../utils/components/DefaultFormat';
 import { isURL } from '../../../../../common/uris.js';
 
 export default {

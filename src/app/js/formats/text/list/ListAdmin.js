@@ -6,6 +6,11 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import SelectFormat from '../../SelectFormat';
 import { getAdminComponent, FORMATS, getFormatInitialArgs } from '../../index';
+import {
+    FormatDefaultParamsFieldSet,
+    FormatSubFormatParamsFieldSet,
+} from '../../utils/components/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     type: 'unordered',
@@ -59,29 +64,10 @@ class ListAdmin extends Component {
         const SubAdminComponent = getAdminComponent(subFormat);
 
         return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                width="100%"
-                gap={2}
-            >
-                <Box
-                    display="flex"
-                    gap={1}
-                    width="100%"
-                    sx={{
-                        '& > *': {
-                            flexBasis: '50%',
-                        },
-                    }}
-                >
-                    <SelectFormat
-                        formats={FORMATS}
-                        value={subFormat}
-                        onChange={this.setSubFormat}
-                    />
+            <FormatGroupedFieldSet>
+                <FormatDefaultParamsFieldSet>
                     <TextField
+                        fullWidth
                         select
                         label={polyglot.t('list_format_select_type')}
                         onChange={e => this.setType(e.target.value)}
@@ -100,14 +86,27 @@ class ListAdmin extends Component {
                             {polyglot.t('list_format_unordered_flat')}
                         </MenuItem>
                     </TextField>
-                </Box>
-                {subFormat && (
-                    <SubAdminComponent
-                        onChange={this.setSubFormatOptions}
-                        args={subFormatOptions}
-                    />
-                )}
-            </Box>
+                    <div
+                        style={{
+                            width: '100%',
+                        }}
+                    >
+                        <SelectFormat
+                            formats={FORMATS}
+                            value={subFormat}
+                            onChange={this.setSubFormat}
+                        />
+                    </div>
+                </FormatDefaultParamsFieldSet>
+                <FormatSubFormatParamsFieldSet>
+                    {subFormat && (
+                        <SubAdminComponent
+                            onChange={this.setSubFormatOptions}
+                            args={subFormatOptions}
+                        />
+                    )}
+                </FormatSubFormatParamsFieldSet>
+            </FormatGroupedFieldSet>
         );
     }
 }

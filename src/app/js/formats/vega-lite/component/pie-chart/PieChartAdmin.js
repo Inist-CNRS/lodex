@@ -20,7 +20,7 @@ import VegaAdvancedMode from '../../../utils/components/VegaAdvancedMode';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../../utils/components/FormatFieldSet';
+} from '../../../utils/components/FormatFieldSets';
 import VegaFieldPreview from '../../../utils/components/VegaFieldPreview';
 import { PieChartAdminView } from './PieChartView';
 import { StandardIdValue } from '../../../utils/dataSet';

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { Box, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
@@ -11,7 +11,8 @@ import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../utils/components/FormatFieldSet';
+} from '../../utils/components/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -112,12 +113,7 @@ class HierarchyAdmin extends Component {
         } = this.props;
 
         return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                gap={2}
-            >
+            <FormatGroupedFieldSet>
                 <FormatDataParamsFieldSet>
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
@@ -155,7 +151,7 @@ class HierarchyAdmin extends Component {
                         fullWidth
                     />
                 </FormatChartParamsFieldSet>
-            </Box>
+            </FormatGroupedFieldSet>
         );
     }
 }

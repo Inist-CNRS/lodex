@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { MenuItem, TextField, Box } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
@@ -11,6 +11,8 @@ import {
     CUSTOM_ISTEX_QUERY,
     SORT_YEAR_DESC,
 } from './constants';
+import { FormatDataParamsFieldSet } from '../../utils/components/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     searchedField: CUSTOM_ISTEX_QUERY,
@@ -60,56 +62,53 @@ export class IstexSummaryAdmin extends Component {
         } = this.props;
 
         return (
-            <Box
-                display="flex"
-                flexWrap="wrap"
-                justifyContent="space-between"
-                gap={2}
-            >
-                <TextField
-                    fullWidth
-                    select
-                    label={polyglot.t('searched_field')}
-                    value={searchedField}
-                    onChange={this.setSearchedField}
-                    className="searched_field"
-                >
-                    {SEARCHED_FIELD_VALUES.map(value => (
-                        <MenuItem key={value} value={value}>
-                            {polyglot.t(value)}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField
-                    fullWidth
-                    select
-                    label={polyglot.t('year_sort_dir')}
-                    value={sortDir}
-                    onChange={this.setSortDir}
-                    className="year_sort_dir"
-                >
-                    {SORT_YEAR_VALUES.map(value => (
-                        <MenuItem key={value} value={value}>
-                            {polyglot.t(value)}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField
-                    className="year_threshold"
-                    type="number"
-                    label={polyglot.t('year_threshold')}
-                    onChange={this.setYearThreshold}
-                    value={yearThreshold}
-                    fullWidth
-                />
-                <TextField
-                    className="document_sort_by"
-                    label={polyglot.t('document_sort_by')}
-                    onChange={this.setDocumentSortBy}
-                    value={documentSortBy}
-                    fullWidth
-                />
-            </Box>
+            <FormatGroupedFieldSet>
+                <FormatDataParamsFieldSet>
+                    <TextField
+                        fullWidth
+                        select
+                        label={polyglot.t('searched_field')}
+                        value={searchedField}
+                        onChange={this.setSearchedField}
+                        className="searched_field"
+                    >
+                        {SEARCHED_FIELD_VALUES.map(value => (
+                            <MenuItem key={value} value={value}>
+                                {polyglot.t(value)}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        fullWidth
+                        select
+                        label={polyglot.t('year_sort_dir')}
+                        value={sortDir}
+                        onChange={this.setSortDir}
+                        className="year_sort_dir"
+                    >
+                        {SORT_YEAR_VALUES.map(value => (
+                            <MenuItem key={value} value={value}>
+                                {polyglot.t(value)}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        className="year_threshold"
+                        type="number"
+                        label={polyglot.t('year_threshold')}
+                        onChange={this.setYearThreshold}
+                        value={yearThreshold}
+                        fullWidth
+                    />
+                    <TextField
+                        className="document_sort_by"
+                        label={polyglot.t('document_sort_by')}
+                        onChange={this.setDocumentSortBy}
+                        value={documentSortBy}
+                        fullWidth
+                    />
+                </FormatDataParamsFieldSet>
+            </FormatGroupedFieldSet>
         );
     }
 }

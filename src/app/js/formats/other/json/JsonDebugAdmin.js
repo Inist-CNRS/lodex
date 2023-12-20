@@ -3,8 +3,13 @@ import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
-import { Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
+import { FormControlLabel, FormGroup, Switch } from '@mui/material';
 import updateAdminArgs from '../../shared/updateAdminArgs';
+import {
+    FormatDataParamsFieldSet,
+    FormatDefaultParamsFieldSet,
+} from '../../utils/components/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -34,33 +39,32 @@ const JsonDebugAdmin = props => {
     };
 
     return (
-        <Box
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            gap={2}
-        >
-            <RoutineParamsAdmin
-                params={params || defaultArgs.params}
-                onChange={handleParams}
-                polyglot={p}
-                showMaxSize={showMaxSize}
-                showMaxValue={showMaxValue}
-                showMinValue={showMinValue}
-                showOrderBy={showOrderBy}
-            />
-            <FormGroup>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={debugMode}
-                            onChange={toggleDebugMode}
-                        />
-                    }
-                    label={p.t('debugMode')}
+        <FormatGroupedFieldSet>
+            <FormatDataParamsFieldSet>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    onChange={handleParams}
+                    polyglot={p}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
                 />
-            </FormGroup>
-        </Box>
+            </FormatDataParamsFieldSet>
+            <FormatDefaultParamsFieldSet>
+                <FormGroup>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={debugMode}
+                                onChange={toggleDebugMode}
+                            />
+                        }
+                        label={p.t('debugMode')}
+                    />
+                </FormGroup>
+            </FormatDefaultParamsFieldSet>
+        </FormatGroupedFieldSet>
     );
 };
 

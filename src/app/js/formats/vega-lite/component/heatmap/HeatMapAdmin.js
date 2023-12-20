@@ -22,7 +22,7 @@ import { HeatMapAdminView } from './HeatMapView';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../../utils/components/FormatFieldSet';
+} from '../../../utils/components/FormatFieldSets';
 import VegaFieldPreview from '../../../utils/components/VegaFieldPreview';
 import { StandardSourceTargetWeight } from '../../../utils/dataSet';
 

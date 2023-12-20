@@ -1,6 +1,6 @@
 import Component from './MarkdownView';
 import EditionComponent from './EditionComponent';
-import DefaultFormat from '../../DefaultFormat';
+import DefaultFormat from '../../utils/components/DefaultFormat';
 
 export default {
     ...DefaultFormat,

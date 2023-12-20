@@ -1,6 +1,6 @@
 import React from 'react';
 import { formField as formFieldPropTypes } from '../../../propTypes';
-import DefaultEdition from '../../DefaultFormat/DefaultEdition';
+import DefaultEdition from '../../utils/components/DefaultFormat/DefaultEdition';
 
 const FormTextField = props => {
     const {

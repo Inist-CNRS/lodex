@@ -22,7 +22,7 @@ import VegaAdvancedMode from '../../../utils/components/VegaAdvancedMode';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../../utils/components/FormatFieldSet';
+} from '../../../utils/components/FormatFieldSets';
 import { MapFranceIdValue, MapIdValue } from '../../../utils/dataSet';
 import VegaFieldPreview from '../../../utils/components/VegaFieldPreview';
 import { CartographyAdminView } from './CartographyView';

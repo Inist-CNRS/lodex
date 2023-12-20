@@ -7,7 +7,7 @@ import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
-import { Box } from '@mui/material';
+import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
 
 const ParallelCoordinatesChartAdmin = ({
     p: polyglot,
@@ -36,12 +36,7 @@ const ParallelCoordinatesChartAdmin = ({
     };
 
     return (
-        <Box
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            gap={2}
-        >
+        <FormatGroupedFieldSet>
             <RoutineParamsAdmin
                 params={args.params}
                 onChange={setParams}
@@ -49,13 +44,14 @@ const ParallelCoordinatesChartAdmin = ({
                 showMaxSize={showMaxSize}
                 showMaxValue={showMaxValue}
                 showMinValue={showMinValue}
+                showOrderBy={false}
             />
             <ColorPickerParamsAdmin
                 colors={args.colors}
                 onChange={setColors}
                 polyglot={polyglot}
             />
-        </Box>
+        </FormatGroupedFieldSet>
     );
 };
 

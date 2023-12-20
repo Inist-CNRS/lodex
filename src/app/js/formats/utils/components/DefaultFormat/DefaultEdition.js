@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { Button } from '@mui/material';
 
-import { formField as formFieldPropTypes } from '../../propTypes';
-import FormTextField from '../../lib/components/FormTextField';
+import { formField as formFieldPropTypes } from '../../../../propTypes';
+import FormTextField from '../../../../lib/components/FormTextField';
 
-class DefaultEditon extends Component {
+class DefaultEdition extends Component {
     convertValue = () => {
         const {
             change,
@@ -50,7 +50,7 @@ class DefaultEditon extends Component {
     }
 }
 
-DefaultEditon.propTypes = formFieldPropTypes;
+DefaultEdition.propTypes = formFieldPropTypes;
 
 const mapDispatchToProps = {
     change,
@@ -59,4 +59,4 @@ const mapDispatchToProps = {
 export default compose(
     translate,
     connect(null, mapDispatchToProps),
-)(DefaultEditon);
+)(DefaultEdition);

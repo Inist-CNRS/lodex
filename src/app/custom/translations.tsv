@@ -1033,4 +1033,5 @@ format_y_axis_title	Title of y axis	Titre de l'axe y
 format_data_params	Data Parameters	Paramètres des Données
 format_chart_params	Chart Parameters	Paramètres du Graphique
 format_preview	Format Preview	Aperçu du Format
-format_default_params	Format Parameters	Paramètres du Format
+format_default_params	Display parameters	Paramètres d'affichage
+format_sub_format_params	Sub-format parameters	Paramètres du sous-format

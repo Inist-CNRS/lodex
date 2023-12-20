@@ -17,7 +17,7 @@ import {
     SCOPE_DOCUMENT,
     SCOPE_COLLECTION,
 } from '../../../../../common/scope';
-import { FormatDefaultParamsFieldSet } from '../../utils/components/FormatFieldSet';
+import { FormatDefaultParamsFieldSet } from '../../utils/components/FormatFieldSets';
 
 export const defaultArgs = {
     value: '',

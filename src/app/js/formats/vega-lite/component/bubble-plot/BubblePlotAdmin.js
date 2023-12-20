@@ -21,7 +21,7 @@ import VegaAdvancedMode from '../../../utils/components/VegaAdvancedMode';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../../utils/components/FormatFieldSet';
+} from '../../../utils/components/FormatFieldSets';
 import { BubblePlotAdminView } from './BubblePlotView';
 import VegaFieldPreview from '../../../utils/components/VegaFieldPreview';
 import { StandardSourceTargetWeight } from '../../../utils/dataSet';

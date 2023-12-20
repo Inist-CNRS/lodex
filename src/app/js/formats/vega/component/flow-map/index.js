@@ -1,4 +1,4 @@
-import DefaultFormat from '../../../DefaultFormat';
+import DefaultFormat from '../../../utils/components/DefaultFormat';
 import Component from './FlowMapView';
 import AdminComponent, { defaultArgs } from './FlowMapAdmin';
 import Icon from './FlowMapIcon';

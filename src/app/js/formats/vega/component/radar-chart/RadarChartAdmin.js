@@ -23,7 +23,7 @@ import { lodexScaleToIdScale } from '../../../chartsUtils';
 import VegaFieldSet, {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../../utils/components/FormatFieldSet';
+} from '../../../utils/components/FormatFieldSets';
 import VegaFieldPreview from '../../../utils/components/VegaFieldPreview';
 import { RadarChartAdminView } from './RadarChartView';
 import { StandardIdValue } from '../../../utils/dataSet';

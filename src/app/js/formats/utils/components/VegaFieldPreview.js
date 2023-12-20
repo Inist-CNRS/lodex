@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { vegaAdminStyle } from '../adminStyles';
+import { formatAdminStyle } from '../adminStyles';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { MenuItem, Select } from '@mui/material';
 import { AllDataSets } from '../dataSet';
@@ -34,8 +34,8 @@ const VegaFieldPreview = ({
     };
 
     return (
-        <fieldset style={vegaAdminStyle.fieldset}>
-            <legend style={vegaAdminStyle.legend}>
+        <fieldset style={formatAdminStyle.fieldset}>
+            <legend style={formatAdminStyle.legend}>
                 {p.t('format_preview')}
             </legend>
             {showDatasetsSelector ? (

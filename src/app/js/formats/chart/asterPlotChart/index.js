@@ -1,4 +1,4 @@
-import DefaultFormat from '../../DefaultFormat';
+import DefaultFormat from '../../utils/components/DefaultFormat';
 import Component from './AsterPlotChartView';
 import AdminComponent, { defaultArgs } from './AsterPlotChartAdmin';
 import Icon from './AsterPlotChartIcon';

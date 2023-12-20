@@ -2,7 +2,7 @@ import Component from './LinkView';
 import AdminComponent, {
     defaultArgs,
 } from '../../DefaultAdminComponentWithLabel';
-import DefaultFormat from '../../DefaultFormat';
+import DefaultFormat from '../../utils/components/DefaultFormat';
 
 export default {
     ...DefaultFormat,
