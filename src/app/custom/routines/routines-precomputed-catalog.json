@@ -4,5 +4,23 @@
         "url": "/api/run/segments-precomputed/",
         "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/",
         "recommendedWith": ["Network", "HeatMap", "HierarchicalGraph"]
+    },
+    {
+        "id": "r-segments-precomputed-nofilter",
+        "url": "/api/run/segments-precomputed-nofilter/",
+        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/",
+        "recommendedWith": ["Network", "HeatMap", "HierarchicalGraph"]
+    },
+    {
+        "id": "r-values-precomputed",
+        "url": "/api/run/values-precomputed/",
+        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/",
+        "recommendedWith": ["BarChart", "BubbleChart", "PieChart"]
+    },
+     {
+        "id": "r-values-precomputed-nofilter",
+        "url": "/api/run/values-precomputed-nofilter/",
+        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/",
+        "recommendedWith": ["BarChart", "BubbleChart", "PieChart"]
     }
 ]

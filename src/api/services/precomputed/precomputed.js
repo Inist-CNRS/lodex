@@ -152,6 +152,7 @@ export const getComputedFromWebservice = async ctx => {
         .pipe(
             ezs('URLConnect', {
                 url: `${webServiceBaseURL}/collect`,
+                streaming: true,
                 json: true,
                 encoder: 'transit',
             }),

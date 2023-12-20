@@ -857,6 +857,12 @@
 "r-labeled-ressources_description" 	"labeled-ressources description" 	"labeled-ressources description"
 "r-segments-precomputed_description" 	"Allows the use of pre-calculated segments (source; target; weight)." 	"Permet l'utilisation de segments pré-calculés (source ; target ; weigth)."
 "r-segments-precomputed_title" 	"segments-precomputed" 	"segments-precomputed"
+"r-values-precomputed_description" 	"Allows the use of pre-calculated values (id; value)." 	"Permet l'utilisation de valeurs pré-calculées (id; value)."
+"r-values-precomputed_title" 	"values-precomputed" 	"values-precomputed"
+"r-segments-precomputed-nofilter_description" 	"Allows the use of pre-calculated segments (source; target; weight). Use for data that cannot be filtered by document." 	"Permet l'utilisation de segments pré-calculés (source ; target ; weigth). A utiliser pour les données ne pouvants pas être filtrées par documents."
+"r-segments-precomputed-nofilter_title" 	"segments-precomputed-nofilter" 	"segments-precomputed-nofilter"
+"r-values-precomputed-nofilter_description" 	"Allows the use of pre-calculated values (id; value). Use for data that cannot be filtered by document." 	"Permet l'utilisation de valeurs pré-calculées (id; value). A utiliser pour les données ne pouvants pas être filtrées par documents."
+"r-values-precomputed-nofilter_title" 	"values-precomputed-nofilter" 	"values-precomputed-nofilter"
 "add_file_success"	"File %{name} successfully added"	"Fichier %{name} ajouté avec succès"
 "cancelled_import" 	"Import has been successfully cancelled" 	"L'import a été annulé avec succès"
 "cancelled_publish" 	"Publish has been successfully cancelled" 	"La publication a été annulée avec succès"
@@ -1020,6 +1026,10 @@ theme	Application theme	Thème de l'application
 "error_precomputed_data_empty"	"Precomputed data is empty or unfinished. You might want to relaunch the action"	"Les données précalculées sont vides ou non terminées. Vous pouvez relancer l'action"
 "pc_post-v1-lda-segment_title"	"Lda-Segment"	"Lda-Segment"
 "pc_post-v1-lda-segment_description"	"Create a «lda» field consisting of 5 topics from the set of documents. Each topic contains a «word» field, which is composed of a list of 10 words that are most characteristic of the topic, as well as a «weight» field that corresponds to the weight associated with the topic in the document. The text must be in English."	"Créer à partir de l'ensemble des documents un champ «lda» constitué de 5 topics. Chaque topic contient un champ «word», qui est composé d'une liste de 10 mots qui sont les plus caractéristiques du topic, ainsi que d'un champ «weight» qui correspond au poids associé au sujet dans le document. Le texte doit être en anglais."
+"pc_post-v1-tag-cloud-en_title"	"English terms extraction"	"Extraction de termes Anglais"
+"pc_post-v1-tag-cloud-en_description"	"Extracts the most frequent English terms from a corpus of documents "	"Propose une extraction des termes anglais les plus fréquents à l'échelle d'un corpus de documents"
+"pc_post-v1-tag-cloud-fr_title"	"French terms extraction"	"Extraction de termes Français"
+"pc_post-v1-tag-cloud-fr_description"	"Extracts the most frequent French terms from a corpus of documents "	"Propose une extraction des termes anglais les plus fréquents à l'échelle d'un corpus de documents "
 formatClusteredChart	Graph - Clustered chart	Graphique - Diagramme à barres groupées
 formatClusteredChartDescription	Displays several bar charts depending on the category of the element and its weight	Affiche plusieurs diagrammes à barres en fonction de la catégorie de l'élément et de son poids
 format_x_axis_title	Title of x axis	Titre de l'axe x

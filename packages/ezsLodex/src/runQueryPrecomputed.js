@@ -63,6 +63,12 @@ export const createFunction = () =>
         const db = await mongoDatabase(connectionStringURI);
         const collection = db.collection(collectionName);
 
+        const postFilter =
+            Object.keys(filterDocuments).length === 0
+                ? {}
+                : {
+                      documents: { $elemMatch: filterDocuments }, //{ "versions.0.abxD": "2033" }
+                  };
         const aggregatePipeline = [
             {
                 $match: filter,
@@ -76,9 +82,7 @@ export const createFunction = () =>
                 },
             },
             {
-                $match: {
-                    documents: { $elemMatch: filterDocuments }, //{ "versions.0.abxD": "2033" }
-                },
+                $match: postFilter,
             },
         ];
         let cursor = collection.aggregate(

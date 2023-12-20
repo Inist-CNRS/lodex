@@ -13,5 +13,15 @@
         "id": "post-v1-lda-segment",
         "url": "https://data-computer.services.istex.fr/v1/lda-segment",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252flda"
+    },
+    {
+        "id": "post-v1-tag-cloud-en",
+        "url": "https://data-workflow.services.istex.fr/v1/tag-cloud-en",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-workflow#v1%252ftag-cloud-en"
+    },
+    {
+        "id": "post-v1-tag-cloud-fr",
+        "url": "https://data-workflow.services.istex.fr/v1/tag-cloud-fr",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-workflow#v1%252ftag-cloud-fr"
     }
 ]
