@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
-import getTheme, { getAvailableThemes } from '../../models/themes';
+import { getTheme, getAvailableThemes } from '../../models/themes';
 
 const setup = async (ctx, next) => {
     try {

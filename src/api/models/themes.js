@@ -8,6 +8,8 @@ import deepClone from 'lodash.clonedeep';
 
 const logger = getLogger('system');
 
+const THEMES_VERSION = 2;
+
 const REGEX_JS_HOST = /\{\|__JS_HOST__\|}/g;
 const REGEX_THEMES_HOST = /\{\|__THEMES_HOST__\|}/g;
 
@@ -100,7 +102,7 @@ const init = async () => {
             const uri = `themes/${theme}`;
             const themeConfig = await import(`../../${uri}/lodex-theme.json`);
 
-            if (themeConfig.version !== '1') {
+            if (themeConfig.version !== THEMES_VERSION) {
                 logger.warn(
                     `The ${theme} theme version may not be compatible with the current Lodex version. Expected theme version: 1, current version: ${themeConfig.version}.`,
                 );
@@ -148,5 +150,3 @@ initAvailableThemes();
 init().then(() => {
     logger.info('Theme initialization finished');
 });
-
-export default getTheme;
