@@ -73,5 +73,20 @@ export default async db => {
 
     collection.castIds = castIdsFactory(collection);
 
+    collection.getSample = async id => {
+        return db
+            .collection(`pc_${id}`)
+            .find({}, { projection: { _id: 0 } })
+            .limit(10)
+            .toArray();
+    };
+
+    collection.getStreamOfResult = async id => {
+        return db
+            .collection(`pc_${id}`)
+            .find({}, { projection: { _id: 0, id: 1, value: 1 } })
+            .stream();
+    };
+
     return collection;
 };

@@ -21,8 +21,6 @@ const styles = stylesToClassname(
     'parallel-coordinates-chart-view',
 );
 
-const ROUTINE_NAME = 'distance-with/';
-
 const prepareData = (data = [], history, polyglot) =>
     data.map(d => {
         const title = getShortText(d['target-title']);
@@ -65,14 +63,15 @@ ParallelCoordinatesChartView.propTypes = {
 };
 
 const getFieldNames = (field, fields, resource) => {
+    /**
+     * @type {string}
+     */
     const characteristicPath = get(resource, field.name, '');
-    const pathIndex = characteristicPath.indexOf(ROUTINE_NAME);
-    if (pathIndex === -1) {
+    const characteristics = characteristicPath.split('/');
+    if (characteristics.length <= 3) {
         return [];
     }
-    const characteristics = characteristicPath
-        .substring(pathIndex + ROUTINE_NAME.length)
-        .split('/');
+    characteristics.splice(0, 4);
     return characteristics.map(characteristic => {
         const fieldName = fields.find(field => field.name === characteristic);
         return get(fieldName, 'label', '');

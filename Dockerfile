@@ -23,7 +23,6 @@ RUN mkdir /app/upload && \
 
 FROM node:16.20-alpine AS release
 RUN apk add --no-cache su-exec redis
-COPY --from=build /app /app
 
 # ezmasterizing of lodex
 # See https://github.com/Inist-CNRS/ezmaster#ezmasterizing-an-application
@@ -38,10 +37,9 @@ RUN echo '{ \
     sed -i -e "s/daemon:x:2:2/daemon:x:1:1/" /etc/passwd && \
     sed -i -e "s/daemon:x:2:/daemon:x:1:/" /etc/group && \
     sed -i -e "s/bin:x:1:1/bin:x:2:2/" /etc/passwd && \
-    sed -i -e "s/bin:x:1:/bin:x:2:/" /etc/group && \
-    chown -R daemon:daemon /app
+    sed -i -e "s/bin:x:1:/bin:x:2:/" /etc/group
 
-
+COPY --chown=daemon:daemon --from=build /app /app
 WORKDIR /app
 ENV NODE_ENV="production"
 ENV npm_config_cache=/app/.npm

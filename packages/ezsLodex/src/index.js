@@ -14,8 +14,8 @@ import JSONLDCompacter from './JSONLDCompacter';
 import JSONLDString from './JSONLDString';
 import JSONLDObject from './JSONLDObject';
 import disabled from './disabled';
-import filterPrecomputed from './filterPrecomputed';
 import runQuery from './runQuery';
+import runQueryPrecomputed from './runQueryPrecomputed';
 import reduceQuery from './reduceQuery';
 import formatOutput from './formatOutput';
 import getLastCharacteristic from './getLastCharacteristic';
@@ -31,6 +31,7 @@ import labelizeFieldID from './labelizeFieldID';
 import buildContext from './buildContext';
 import aggregateQuery from './aggregateQuery';
 import LodexJoinQuery from './joinQuery';
+import saveDocuments from './saveDocuments.js';
 
 const funcs = {
     flattenPatch,
@@ -56,8 +57,8 @@ const funcs = {
     injectSyndicationFrom,
     injectCountFrom,
     labelizeFieldID,
-    filterPrecomputed,
     runQuery,
+    runQueryPrecomputed,
     reduceQuery,
     formatOutput,
     parseNQuads,
@@ -65,6 +66,7 @@ const funcs = {
     aggregateQuery,
     writeTurtle,
     LodexJoinQuery,
+    saveDocuments,
     // aliases
     fixFlatten: flattenPatch.flattenPatch,
     LodexContext: disabled.disabled,
@@ -74,14 +76,15 @@ const funcs = {
     LodexGetFields: getFields.getFields,
     LodexGetCharacteristics: getCharacteristics.getCharacteristics,
     LodexDocuments: runQuery.runQuery,
-    LodexFilterPrecomputed: filterPrecomputed.filterPrecomputed,
     LodexRunQuery: runQuery.runQuery,
+    LodexRunQueryPrecomputed: runQueryPrecomputed.runQueryPrecomputed,
     LodexReduceQuery: reduceQuery.reduceQuery,
     LodexOutput: formatOutput.formatOutput,
     LodexBuildContext: buildContext.buildContext,
     LodexInjectSyndicationFrom: injectSyndicationFrom.injectSyndicationFrom,
     LodexInjectCountFrom: injectCountFrom.injectCountFrom,
     LodexAggregateQuery: aggregateQuery.aggregateQuery,
+    LodexSaveDocuments: saveDocuments.saveDocuments,
 };
 
 export default funcs;
