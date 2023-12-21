@@ -1,5 +1,5 @@
 import DefaultFormat from '../../utils/components/DefaultFormat';
-import Component from './ParallelCoordiantesChartView';
+import Component from './ParallelCoordinatesChartView';
 import AdminComponent, { defaultArgs } from './ParallelCoordinatesChartAdmin';
 import Icon from './ParallelCoordinatesChartIcon';
 
