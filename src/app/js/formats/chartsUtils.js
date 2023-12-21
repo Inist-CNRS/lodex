@@ -112,3 +112,7 @@ export const convertSpecTemplate = (spec, width, height) => {
         .replace(HEIGHT_REGEX, height);
     return JSON.parse(specWithoutTemplate);
 };
+
+export const flip = (condition, defaultValue, flipValue) => {
+    return condition ? flipValue : defaultValue;
+};
