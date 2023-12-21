@@ -165,7 +165,7 @@ describe('Subresource Page', () => {
         cy.get('#tab-display').click();
 
         datasetImportPage.fillTabDisplayFormat('link', false);
-        cy.contains('The column content').click();
+        cy.contains('Label is the column content').click();
         cy.get(`[role="listbox"] li[data-value="column"]`).click();
         cy.get(`[role="listbox"]`).should('not.exist');
         cy.contains('label', 'Custom text')
