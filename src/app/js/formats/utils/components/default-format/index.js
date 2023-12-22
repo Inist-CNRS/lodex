@@ -1,14 +1,11 @@
-import React from 'react';
-
 import DefaultView from './DefaultView';
 import DefaultEdition from './DefaultEdition';
-
-const Empty = () => <span />;
+import DefaultAdmin from './DefaultAdmin';
 
 export default {
     Component: DefaultView,
     ListComponent: DefaultView,
-    AdminComponent: Empty,
+    AdminComponent: DefaultAdmin,
     EditionComponent: DefaultEdition,
     predicate: value =>
         value == null ||

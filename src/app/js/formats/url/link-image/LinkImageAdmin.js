@@ -6,8 +6,8 @@ import { Box, TextField, MenuItem } from '@mui/material';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
-} from '../../utils/components/FormatFieldSets';
-import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
+} from '../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     type: 'value',

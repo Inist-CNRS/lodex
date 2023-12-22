@@ -4,14 +4,14 @@ import translate from 'redux-polyglot/translate';
 import { Box, TextField } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import updateAdminArgs from '../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
-import VegaAdvancedMode from '../utils/components/VegaAdvancedMode';
+import updateAdminArgs from '../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../utils/components/admin/RoutineParamsAdmin';
+import VegaAdvancedMode from '../utils/components/admin/VegaAdvancedMode';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../utils/components/FormatFieldSets';
-import VegaFieldPreview from '../utils/components/VegaFieldPreview';
+} from '../utils/components/field-set/FormatFieldSets';
+import VegaFieldPreview from '../utils/components/admin/VegaFieldPreview';
 import { VegaLiteAdminView } from './VegaLiteView';
 
 export const defaultArgs = {

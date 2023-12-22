@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import stylesToClassname from '../../../lib/stylesToClassName';
-import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
+import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 
 const sizes = ['7rem', '5rem', '2rem'];
 

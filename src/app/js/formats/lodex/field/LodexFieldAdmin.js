@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { Checkbox, FormControlLabel, TextField } from '@mui/material';
-import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
+import {
+    FormatDataParamsFieldSet,
+    FormatDefaultParamsFieldSet,
+} from '../../utils/components/field-set/FormatFieldSets';
 
 export const defaultArgs = {
     param: {
@@ -51,22 +55,26 @@ class LodexFieldAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
-                <TextField
-                    label={polyglot.t('param_labels')}
-                    multiline
-                    onChange={this.setRequest}
-                    value={label}
-                    fullWidth
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            onChange={this.setHiddenInfo}
-                            checked={hiddenInfo}
-                        />
-                    }
-                    label={polyglot.t('hidden_info')}
-                />
+                <FormatDataParamsFieldSet>
+                    <TextField
+                        label={polyglot.t('param_labels')}
+                        multiline
+                        onChange={this.setRequest}
+                        value={label}
+                        fullWidth
+                    />
+                </FormatDataParamsFieldSet>
+                <FormatDefaultParamsFieldSet>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={this.setHiddenInfo}
+                                checked={hiddenInfo}
+                            />
+                        }
+                        label={polyglot.t('hidden_info')}
+                    />
+                </FormatDefaultParamsFieldSet>
             </FormatGroupedFieldSet>
         );
     }

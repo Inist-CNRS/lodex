@@ -9,8 +9,8 @@ import { getAdminComponent, FORMATS, getFormatInitialArgs } from '../../index';
 import {
     FormatDefaultParamsFieldSet,
     FormatSubFormatParamsFieldSet,
-} from '../../utils/components/FormatFieldSets';
-import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
+} from '../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     type: 'unordered',
@@ -99,11 +99,13 @@ class ListAdmin extends Component {
                     </div>
                 </FormatDefaultParamsFieldSet>
                 <FormatSubFormatParamsFieldSet>
-                    {subFormat && (
+                    {subFormat && subFormat !== 'none' ? (
                         <SubAdminComponent
                             onChange={this.setSubFormatOptions}
                             args={subFormatOptions}
                         />
+                    ) : (
+                        polyglot.t('no_format')
                     )}
                 </FormatSubFormatParamsFieldSet>
             </FormatGroupedFieldSet>

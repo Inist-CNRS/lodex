@@ -1042,3 +1042,4 @@
 "form_source_code_mode"	"Code source syntax"	"Syntaxe du code source"
 "format_default_params"	"Display parameters"	"Paramètres d'affichage"
 "format_sub_format_params"	"Sub-format parameters"	"Paramètres du sous-format"
+"format_without_params"	"This format has no parameters"	"Ce format n'a pas de paramètres"

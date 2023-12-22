@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import { FormatDefaultParamsFieldSet } from '../../utils/components/FormatFieldSets';
+import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 
 export const defaultArgs = {
     delimiter: '',

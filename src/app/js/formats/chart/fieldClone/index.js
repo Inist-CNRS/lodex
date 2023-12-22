@@ -1,6 +1,6 @@
 import Component from './FieldCloneView';
 import AdminComponent, { defaultArgs } from './FieldCloneAdmin';
-import DefaultFormat from '../../utils/components/DefaultFormat';
+import DefaultFormat from '../../utils/components/default-format';
 
 export default {
     ...DefaultFormat,

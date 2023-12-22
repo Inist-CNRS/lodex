@@ -1,7 +1,7 @@
 import get from 'lodash.get';
 
 import composeAsync from '../../../../../common/lib/composeAsync';
-import { parseFetchResult, output } from '../../shared/fetchIstexData';
+import { parseFetchResult, output } from '../../utils/fetchIstexData';
 import fetch from '../../../lib/fetch';
 import { HOST_TITLE, HOST_TITLE_RAW } from '../istexSummary/constants';
 import { buildIstexQuery, getFilterQuery } from '../istexSummary/getIstexData';

@@ -1,5 +1,5 @@
 import BasicChart from './BasicChart';
-import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../chartsUtils';
+import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../utils/chartsUtils';
 import cartographyVL from './json/cartography.vl.json';
 import worldCountriesSansAntarctica from './topojson/world-countries-sans-antarctica.json';
 import europe from './topojson/europe.json';

@@ -4,11 +4,11 @@ import translate from 'redux-polyglot/translate';
 import { TextField, MenuItem } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../shared/updateAdminArgs';
+import updateAdminArgs from '../../utils/updateAdminArgs';
 import { resolvers } from './index';
-import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
-import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
-import { FormatDefaultParamsFieldSet } from '../../utils/components/FormatFieldSets';
+import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
+import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
+import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 
 export const defaultArgs = {
     typid: 1,
@@ -60,13 +60,11 @@ class IdentifierBadgeAdmin extends Component {
         return (
             <FormatDefaultParamsFieldSet>
                 <TextField
+                    fullWidth
                     select
                     label={polyglot.t('list_format_select_identifier')}
                     value={typid}
                     onChange={e => this.setTypid(e.target.value)}
-                    sx={{
-                        width: '50%',
-                    }}
                 >
                     {items}
                 </TextField>

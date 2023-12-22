@@ -1,4 +1,4 @@
-import DefaultFormat from '../../../utils/components/DefaultFormat';
+import DefaultFormat from '../../../utils/components/default-format';
 import Component from './HeatMapView';
 import AdminComponent, { defaultArgs } from './HeatMapAdmin';
 import Icon from './HeatmapIcon';

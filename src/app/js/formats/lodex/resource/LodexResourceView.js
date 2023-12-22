@@ -7,7 +7,7 @@ import get from 'lodash.get';
 import URL from 'url';
 
 import { isURL } from '../../../../../common/uris.js';
-import LodexResource from '../../shared/LodexResource';
+import LodexResource from '../../utils/components/LodexResource';
 import { field as fieldPropTypes } from '../../../propTypes';
 import injectData from '../../injectData';
 import stylesToClassname from '../../../lib/stylesToClassName';

@@ -2,8 +2,8 @@ import React from 'react';
 import { Box } from '@mui/material';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import { formatAdminStyle } from '../adminStyles';
+import { polyglot as polyglotPropTypes } from '../../../../propTypes';
+import { formatAdminStyle } from '../../adminStyles';
 
 /**
  * Default field set component to use for translating declination

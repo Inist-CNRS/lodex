@@ -1,14 +1,14 @@
 import AbstractTableAdmin from '../core/AbstractTableAdmin';
 import translate from 'redux-polyglot/translate';
-import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
+import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import TableColumnsParameters from '../core/TableColumnsParameters';
 import React from 'react';
 import { Box } from '@mui/material';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
-} from '../../../utils/components/FormatFieldSets';
-import FormatGroupedFieldSet from '../../../utils/components/FormatGroupedFieldSet';
+} from '../../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {

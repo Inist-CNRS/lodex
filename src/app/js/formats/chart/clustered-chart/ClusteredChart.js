@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import { CustomActionVegaLite } from '../vega-lite-component';
-import { VEGA_LITE_DATA_INJECT_TYPE_A, flip } from '../../../chartsUtils';
+import { CustomActionVegaLite } from '../../utils/components/vega-lite-component';
+import { VEGA_LITE_DATA_INJECT_TYPE_A, flip } from '../../utils/chartsUtils';
 
 /**
  * @param data {{values: Array<{_id: string, source: string, target: string, weight: string}>}}

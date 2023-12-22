@@ -1,5 +1,5 @@
 import React from 'react';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import ReactTooltip from 'react-tooltip';
 
 const MouseIcon = ({ polyglot }) => (

@@ -1,5 +1,5 @@
 import Component from './ImageView';
-import DefaultFormat from '../../utils/components/DefaultFormat';
+import DefaultFormat from '../../utils/components/default-format';
 import AdminComponent, { defaultArgs } from './ImageAdmin';
 
 export default {

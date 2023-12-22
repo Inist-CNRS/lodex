@@ -4,7 +4,7 @@ import { Field } from 'redux-form';
 
 import { FieldInputComponent as FieldInput } from './FieldInput';
 import CompositeFieldInput from './CompositeFieldInput';
-import DefaultEdition from '../../formats/utils/components/DefaultFormat/DefaultEdition';
+import DefaultEdition from '../../formats/utils/components/default-format/DefaultEdition';
 
 describe('EditFieldInput', () => {
     it('should render CompositeEditDetailsField if field.composedOf is set', () => {

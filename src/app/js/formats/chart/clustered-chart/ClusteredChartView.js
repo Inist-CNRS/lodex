@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Grid, Paper } from '@mui/material';
 
-import injectData from '../../../injectData';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import injectData from '../../injectData';
+import { field as fieldPropTypes } from '../../../propTypes';
 import ClusteredChart from './ClusteredChart';
-import { flip } from '../../../chartsUtils';
+import { flip } from '../../utils/chartsUtils';
 
 /**
  * Clustered chart view components use to render the chart with given parameters

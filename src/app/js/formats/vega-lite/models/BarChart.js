@@ -8,7 +8,7 @@ import {
     SCALE_LINEAR,
     SCALE_LOG,
     VEGA_ACTIONS_WIDTH,
-} from '../../chartsUtils';
+} from '../../utils/chartsUtils';
 import BasicChart from './BasicChart';
 import barChartVL from './json/bar_chart.vl.json';
 import barChartLabelsVL from './json/bar_chart_labels.vl.json';

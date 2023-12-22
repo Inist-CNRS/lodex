@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Box, TextField, Typography } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 
 const multichromatic_maxLength = 100 * 8 - 1; // "#RRGGBB " is 8 chars, minus the last space, so we can set 100 pickers
 

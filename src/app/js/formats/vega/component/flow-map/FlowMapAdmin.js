@@ -2,21 +2,21 @@ import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import VegaToolTips from '../../../utils/components/VegaToolTips';
-import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
+import updateAdminArgs from '../../../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
+import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
+import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import { schemeBlues } from 'd3-scale-chromatic';
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import { Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import FlowMap from '../../models/FlowMap';
-import VegaAdvancedMode from '../../../utils/components/VegaAdvancedMode';
-import VegaFieldPreview from '../../../utils/components/VegaFieldPreview';
+import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
+import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import { FlowMapAdminView } from './FlowMapView';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../../utils/components/FormatFieldSets';
+} from '../../../utils/components/field-set/FormatFieldSets';
 import { MapSourceTargetWeight } from '../../../utils/dataSet';
 
 export const defaultArgs = {

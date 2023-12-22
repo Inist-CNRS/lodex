@@ -6,7 +6,7 @@ import React from 'react';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
-} from '../../../utils/components/FormatFieldSets';
+} from '../../../utils/components/field-set/FormatFieldSets';
 
 export const defaultArgs = {
     pageSize: 6,

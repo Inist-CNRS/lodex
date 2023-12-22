@@ -1,6 +1,6 @@
 import Component from './CartographyView';
 import AdminComponent, { defaultArgs } from './CartographyAdmin';
-import DefaultFormat from '../../../utils/components/DefaultFormat';
+import DefaultFormat from '../../../utils/components/default-format';
 import Icon from './CartographyIcon';
 
 export default {

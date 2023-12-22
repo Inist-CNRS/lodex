@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { MenuItem, TextField } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { FormatDefaultParamsFieldSet } from '../utils/components/FormatFieldSets';
+import { FormatDefaultParamsFieldSet } from '../utils/components/field-set/FormatFieldSets';
 
 export const defaultArgs = {
     type: 'value',

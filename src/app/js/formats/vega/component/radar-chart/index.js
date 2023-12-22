@@ -1,4 +1,4 @@
-import DefaultFormat from '../../../utils/components/DefaultFormat';
+import DefaultFormat from '../../../utils/components/default-format';
 import Component from './RadarChartView';
 import AdminComponent, { defaultArgs } from './RadarChartAdmin';
 import Icon from './RadarChartIcon';

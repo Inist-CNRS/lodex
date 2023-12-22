@@ -14,7 +14,7 @@ import isEqual from 'lodash.isequal';
 import { scaleLinear } from 'd3-scale';
 
 import injectData from '../../injectData';
-import MouseIcon from '../../shared/MouseIcon';
+import MouseIcon from '../../utils/components/MouseIcon';
 
 const simulationOptions = {
     animate: true,

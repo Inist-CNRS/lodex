@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../shared/updateAdminArgs';
+import updateAdminArgs from '../../../utils/updateAdminArgs';
 
 class AbstractTableAdmin extends Component {
     static propTypes = {

@@ -12,8 +12,8 @@ import { FORMATS, getAdminComponent } from '../../../index';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
-} from '../../../utils/components/FormatFieldSets';
-import FormatGroupedFieldSet from '../../../utils/components/FormatGroupedFieldSet';
+} from '../../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 
 const endpoints = config.sparqlEndpoints;
 

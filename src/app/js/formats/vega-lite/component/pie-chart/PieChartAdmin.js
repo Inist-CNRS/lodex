@@ -10,18 +10,18 @@ import {
 } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
-import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
-import VegaToolTips from '../../../utils/components/VegaToolTips';
+import updateAdminArgs from '../../../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
+import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
+import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import PieChart from '../../models/PieChart';
-import VegaAdvancedMode from '../../../utils/components/VegaAdvancedMode';
+import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../../utils/components/FormatFieldSets';
-import VegaFieldPreview from '../../../utils/components/VegaFieldPreview';
+} from '../../../utils/components/field-set/FormatFieldSets';
+import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import { PieChartAdminView } from './PieChartView';
 import { StandardIdValue } from '../../../utils/dataSet';
 

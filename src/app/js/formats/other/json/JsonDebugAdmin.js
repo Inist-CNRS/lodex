@@ -2,14 +2,14 @@ import React from 'react';
 import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
+import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import { FormControlLabel, FormGroup, Switch } from '@mui/material';
-import updateAdminArgs from '../../shared/updateAdminArgs';
+import updateAdminArgs from '../../utils/updateAdminArgs';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
-} from '../../utils/components/FormatFieldSets';
-import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
+} from '../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {

@@ -1,4 +1,4 @@
-import DefaultFormat from '../../../utils/components/DefaultFormat';
+import DefaultFormat from '../../utils/components/default-format';
 import Icon from './ClusteredChartIcon';
 import Component from './ClusteredChartView';
 import AdminComponent, { defaultArgs } from './ClusteredChartAdmin';

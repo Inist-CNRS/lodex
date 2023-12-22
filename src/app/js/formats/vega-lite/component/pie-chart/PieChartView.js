@@ -5,17 +5,17 @@ import React, { useMemo, useState } from 'react';
 import { clamp } from 'lodash';
 
 import PieChart from '../../models/PieChart';
-import { CustomActionVegaLite } from '../vega-lite-component';
+import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
 import {
     convertSpecTemplate,
     VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
-} from '../../../chartsUtils';
+} from '../../../utils/chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
-import { ASPECT_RATIO_8_5 } from '../../../aspectRatio';
+import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
 
 const styles = {
     container: {

@@ -12,19 +12,19 @@ import {
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
-import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
-import VegaToolTips from '../../../utils/components/VegaToolTips';
-import VegaAdvancedMode from '../../../utils/components/VegaAdvancedMode';
+import updateAdminArgs from '../../../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
+import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
+import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
+import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import RadarChart from '../../models/RadarChart';
-import { lodexScaleToIdScale } from '../../../chartsUtils';
+import { lodexScaleToIdScale } from '../../../utils/chartsUtils';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../../utils/components/FormatFieldSets';
-import VegaFieldPreview from '../../../utils/components/VegaFieldPreview';
+} from '../../../utils/components/field-set/FormatFieldSets';
+import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import { RadarChartAdminView } from './RadarChartView';
 import { StandardIdValue } from '../../../utils/dataSet';
 

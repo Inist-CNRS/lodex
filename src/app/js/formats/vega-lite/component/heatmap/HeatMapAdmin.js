@@ -11,19 +11,19 @@ import {
 } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
+import updateAdminArgs from '../../../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
-import VegaToolTips from '../../../utils/components/VegaToolTips';
+import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import HeatMap from '../../models/HeatMap';
-import { lodexOrderToIdOrder } from '../../../chartsUtils';
-import VegaAdvancedMode from '../../../utils/components/VegaAdvancedMode';
+import { lodexOrderToIdOrder } from '../../../utils/chartsUtils';
+import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import { HeatMapAdminView } from './HeatMapView';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../../utils/components/FormatFieldSets';
-import VegaFieldPreview from '../../../utils/components/VegaFieldPreview';
+} from '../../../utils/components/field-set/FormatFieldSets';
+import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import { StandardSourceTargetWeight } from '../../../utils/dataSet';
 
 export const defaultArgs = {

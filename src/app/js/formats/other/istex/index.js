@@ -1,7 +1,7 @@
 import Component from './IstexView';
 import ListComponent from './ListComponent';
 
-import DefaultFormat from '../../utils/components/DefaultFormat';
+import DefaultFormat from '../../utils/components/default-format';
 
 export default {
     ...DefaultFormat,

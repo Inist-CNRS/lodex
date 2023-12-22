@@ -9,7 +9,7 @@ import {
     AXIS_VERTICAL,
     AXIS_X,
     AXIS_Y,
-} from '../../chartsUtils';
+} from '../../utils/chartsUtils';
 
 describe('BasicChart', () => {
     it('Default values should filled with all default values', function() {

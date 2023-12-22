@@ -8,10 +8,10 @@ import cliTruncate from 'cli-truncate';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
-import { isValidColor } from '../../colorUtils';
-import MouseIcon from '../../shared/MouseIcon';
+import { isValidColor } from '../../utils/colorUtils';
+import MouseIcon from '../../utils/components/MouseIcon';
 
-import CenterIcon from '../../shared/CenterIcon';
+import CenterIcon from '../../utils/components/CenterIcon';
 import stylesToClassname from '../../../lib/stylesToClassName';
 
 const styles = StyleSheet.create({

@@ -4,8 +4,8 @@ import { MenuItem, Checkbox, TextField, FormControlLabel } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../shared/updateAdminArgs';
-import { FormatDefaultParamsFieldSet } from '../../utils/components/FormatFieldSets';
+import updateAdminArgs from '../../utils/updateAdminArgs';
+import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 
 export const defaultArgs = {
     allowToLoadMore: true,

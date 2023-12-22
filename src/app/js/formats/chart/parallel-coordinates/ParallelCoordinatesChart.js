@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 import ReactTooltip from 'react-tooltip';
 
 import { isLongText, getShortText } from '../../../lib/longTexts';
-import { getColor } from '../../colorUtils';
+import { getColor } from '../../utils/colorUtils';
 
 const margin = {
     top: 30,

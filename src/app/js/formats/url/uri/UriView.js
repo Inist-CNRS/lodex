@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { field as fieldPropTypes } from '../../../propTypes';
 import { getResourceUri } from '../../../../../common/uris';
-import getLabel from '../../shared/getLabel';
+import getLabel from '../../utils/getLabel';
 import InvalidFormat from '../../InvalidFormat';
 import Link from '../../../lib/components/Link';
 

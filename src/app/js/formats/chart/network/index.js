@@ -1,4 +1,4 @@
-import DefaultFormat from '../../utils/components/DefaultFormat';
+import DefaultFormat from '../../utils/components/default-format';
 import Component from './NetworkView';
 import AdminComponent, { defaultArgs } from './NetworkAdmin';
 import Icon from './NetworkIcon';

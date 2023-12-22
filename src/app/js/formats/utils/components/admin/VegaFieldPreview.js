@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { formatAdminStyle } from '../adminStyles';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { formatAdminStyle } from '../../adminStyles';
+import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { MenuItem, Select } from '@mui/material';
-import { AllDataSets } from '../dataSet';
+import { AllDataSets } from '../../dataSet';
 
 const VegaFieldPreview = ({
     p,
@@ -69,6 +69,7 @@ const VegaFieldPreview = ({
                 onEdit={handleDataSetEditor}
                 onAdd={handleDataSetEditor}
                 onDelete={handleDataSetEditor}
+                collapsed={1}
             />
         </fieldset>
     );

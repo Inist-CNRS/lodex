@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
-import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
-import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
+import updateAdminArgs from '../../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
+import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../utils/components/FormatFieldSets';
-import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
+} from '../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
 const AsterPlotChartAdmin = ({
     p: polyglot,

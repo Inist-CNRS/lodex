@@ -11,12 +11,12 @@ import {
     lodexOrderToIdOrder,
     VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
-} from '../../../chartsUtils';
+} from '../../../utils/chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
-import { CustomActionVegaLite } from '../vega-lite-component';
+import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
 import injectData from '../../../injectData';
-import { ASPECT_RATIO_1_1 } from '../../../aspectRatio';
+import { ASPECT_RATIO_1_1 } from '../../../utils/aspectRatio';
 
 const styles = {
     container: {

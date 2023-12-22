@@ -4,10 +4,10 @@ import { MenuItem, TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../shared/updateAdminArgs';
-import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
-import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
-import { FormatDefaultParamsFieldSet } from '../../utils/components/FormatFieldSets';
+import updateAdminArgs from '../../utils/updateAdminArgs';
+import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
+import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
+import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 
 export const defaultArgs = {
     level: 1,

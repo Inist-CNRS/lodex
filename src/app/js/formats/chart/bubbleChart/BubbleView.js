@@ -7,7 +7,7 @@ import memoize from 'lodash.memoize';
 
 import injectData from '../../injectData';
 import Bubble from './Bubble';
-import { getColor } from '../../colorUtils';
+import { getColor } from '../../utils/colorUtils';
 
 const styles = {
     container: memoize(({ diameter }) => ({

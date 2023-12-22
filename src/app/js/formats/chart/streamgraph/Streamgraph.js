@@ -13,14 +13,14 @@ import {
 import injectData from '../../injectData';
 import moment from 'moment';
 
-import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../colorUtils';
+import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../utils/colorUtils';
 
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import LoadingGraph from '../../shared/LoadingGraph';
-import MouseIcon from '../../shared/MouseIcon';
+import LoadingGraph from '../../utils/components/LoadingGraph';
+import MouseIcon from '../../utils/components/MouseIcon';
 
-import CenterIcon from '../../shared/CenterIcon';
+import CenterIcon from '../../utils/components/CenterIcon';
 import stylesToClassname from '../../../lib/stylesToClassName';
 
 const styles = StyleSheet.create({

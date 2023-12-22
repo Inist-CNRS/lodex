@@ -13,7 +13,7 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../../propTypes';
-import { fetchForIstexFormat } from '../../shared/fetchIstexData';
+import { fetchForIstexFormat } from '../../utils/fetchIstexData';
 import IstexItem from './IstexItem';
 import { ISTEX_SITE_URL } from '../../../../../common/externals';
 

@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { isLocalURL, getResourceUri } from '../../../../common/uris';
-import Link from '../../lib/components/Link';
-import stylesToClassname from '../../lib/stylesToClassName';
-import { truncateByWords } from '../stringUtils';
+import { isLocalURL, getResourceUri } from '../../../../../common/uris';
+import Link from '../../../lib/components/Link';
+import stylesToClassname from '../../../lib/stylesToClassName';
+import { truncateByWords } from '../../stringUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 const styles = stylesToClassname(
     {

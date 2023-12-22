@@ -10,7 +10,7 @@ import {
     Box,
 } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 
 const RoutineParamsAdmin = ({
     polyglot,

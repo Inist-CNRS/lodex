@@ -10,20 +10,20 @@ import {
 } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import VegaToolTips from '../../../utils/components/VegaToolTips';
-import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
-import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
+import updateAdminArgs from '../../../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
+import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
+import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
+import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
 import BubblePlot from '../../models/BubblePlot';
-import { lodexOrderToIdOrder } from '../../../chartsUtils';
-import VegaAdvancedMode from '../../../utils/components/VegaAdvancedMode';
+import { lodexOrderToIdOrder } from '../../../utils/chartsUtils';
+import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../../utils/components/FormatFieldSets';
+} from '../../../utils/components/field-set/FormatFieldSets';
 import { BubblePlotAdminView } from './BubblePlotView';
-import VegaFieldPreview from '../../../utils/components/VegaFieldPreview';
+import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import { StandardSourceTargetWeight } from '../../../utils/dataSet';
 
 export const defaultArgs = {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, TextField, FormControlLabel, Box } from '@mui/material';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 
 /**
  * React component use for edit the tooltip

@@ -1,6 +1,6 @@
 import Component from './HtmlView';
 
-import DefaultFormat from '../../utils/components/DefaultFormat';
+import DefaultFormat from '../../utils/components/default-format';
 
 export default {
     ...DefaultFormat,

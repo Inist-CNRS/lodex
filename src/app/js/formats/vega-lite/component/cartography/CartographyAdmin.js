@@ -13,18 +13,18 @@ import {
 
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import VegaToolTips from '../../../utils/components/VegaToolTips';
-import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../chartsUtils';
+import updateAdminArgs from '../../../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
+import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
+import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../utils/chartsUtils';
 import Cartography from '../../models/Cartography';
-import VegaAdvancedMode from '../../../utils/components/VegaAdvancedMode';
+import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../../utils/components/FormatFieldSets';
+} from '../../../utils/components/field-set/FormatFieldSets';
 import { MapFranceIdValue, MapIdValue } from '../../../utils/dataSet';
-import VegaFieldPreview from '../../../utils/components/VegaFieldPreview';
+import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import { CartographyAdminView } from './CartographyView';
 
 export const defaultArgs = {

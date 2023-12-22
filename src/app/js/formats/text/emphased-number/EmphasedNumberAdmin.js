@@ -4,15 +4,15 @@ import { MenuItem, TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
-import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
-import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
+import updateAdminArgs from '../../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
+import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
-} from '../../utils/components/FormatFieldSets';
-import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
+} from '../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     size: 4,
@@ -85,11 +85,11 @@ class EmphasedNumberAdmin extends Component {
                 </FormatDataParamsFieldSet>
                 <FormatDefaultParamsFieldSet>
                     <TextField
+                        fullWidth
                         select
                         label={polyglot.t('list_format_select_size')}
                         onChange={e => this.setSize(e.target.value)}
                         value={size}
-                        sx={{ width: '50%' }}
                     >
                         <MenuItem value={1}>{polyglot.t('size1')}</MenuItem>
                         <MenuItem value={2}>{polyglot.t('size2')}</MenuItem>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { CircularProgress } from '@mui/material';
 
 class LoadingGraph extends Component {

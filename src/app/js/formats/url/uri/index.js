@@ -1,6 +1,6 @@
 import Component from './UriView';
 import AdminComponent, { defaultArgs } from '../DefaultUrlAdmin';
-import DefaultFormat from '../../utils/components/DefaultFormat';
+import DefaultFormat from '../../utils/components/default-format';
 import { isLink } from '../../../../../common/uris';
 
 export default {

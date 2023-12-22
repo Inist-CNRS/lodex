@@ -3,16 +3,16 @@ import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import { Checkbox, FormControlLabel, TextField } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
-import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
-import updateAdminArgs from '../../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
+import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
+import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
+import updateAdminArgs from '../../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
-} from '../../../utils/components/FormatFieldSets';
-import FormatGroupedFieldSet from '../../../utils/components/FormatGroupedFieldSet';
+} from '../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {

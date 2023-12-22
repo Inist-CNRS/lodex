@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
-import { FormatDataParamsFieldSet } from '../../utils/components/FormatFieldSets';
+import { FormatDataParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 
 export const defaultArgs = {
     trelloKey: '',

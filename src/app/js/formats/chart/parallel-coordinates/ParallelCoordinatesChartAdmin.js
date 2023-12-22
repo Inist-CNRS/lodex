@@ -3,11 +3,15 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
-import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
-import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
-import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
+import updateAdminArgs from '../../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
+import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
+import {
+    FormatChartParamsFieldSet,
+    FormatDataParamsFieldSet,
+} from '../../utils/components/field-set/FormatFieldSets';
 
 const ParallelCoordinatesChartAdmin = ({
     p: polyglot,
@@ -37,20 +41,24 @@ const ParallelCoordinatesChartAdmin = ({
 
     return (
         <FormatGroupedFieldSet>
-            <RoutineParamsAdmin
-                params={args.params}
-                onChange={setParams}
-                polyglot={polyglot}
-                showMaxSize={showMaxSize}
-                showMaxValue={showMaxValue}
-                showMinValue={showMinValue}
-                showOrderBy={false}
-            />
-            <ColorPickerParamsAdmin
-                colors={args.colors}
-                onChange={setColors}
-                polyglot={polyglot}
-            />
+            <FormatDataParamsFieldSet>
+                <RoutineParamsAdmin
+                    params={args.params}
+                    onChange={setParams}
+                    polyglot={polyglot}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={false}
+                />
+            </FormatDataParamsFieldSet>
+            <FormatChartParamsFieldSet>
+                <ColorPickerParamsAdmin
+                    colors={args.colors}
+                    onChange={setColors}
+                    polyglot={polyglot}
+                />
+            </FormatChartParamsFieldSet>
         </FormatGroupedFieldSet>
     );
 };

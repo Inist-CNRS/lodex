@@ -4,13 +4,12 @@ import translate from 'redux-polyglot/translate';
 import { MenuItem, TextField } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../shared/updateAdminArgs';
+import updateAdminArgs from '../../utils/updateAdminArgs';
 import {
     SEARCHED_FIELD_VALUES,
     CUSTOM_ISTEX_QUERY,
 } from '../istexSummary/constants';
-import { FormatDataParamsFieldSet } from '../../utils/components/FormatFieldSets';
-import FormatGroupedFieldSet from '../../utils/components/FormatGroupedFieldSet';
+import { FormatDataParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 
 export const defaultArgs = {
     searchedField: CUSTOM_ISTEX_QUERY,
@@ -45,30 +44,28 @@ export class IstexCitationAdmin extends Component {
         } = this.props;
 
         return (
-            <FormatGroupedFieldSet>
-                <FormatDataParamsFieldSet>
-                    <TextField
-                        fullWidth
-                        select
-                        label={polyglot.t('searched_field')}
-                        value={searchedField}
-                        onChange={this.setSearchedField}
-                    >
-                        {SEARCHED_FIELD_VALUES.map(value => (
-                            <MenuItem key={value} value={value}>
-                                {polyglot.t(value)}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                    <TextField
-                        className="document_sort_by"
-                        label={polyglot.t('document_sort_by')}
-                        onChange={this.setDocumentSortBy}
-                        value={documentSortBy}
-                        fullWidth
-                    />
-                </FormatDataParamsFieldSet>
-            </FormatGroupedFieldSet>
+            <FormatDataParamsFieldSet>
+                <TextField
+                    fullWidth
+                    select
+                    label={polyglot.t('searched_field')}
+                    value={searchedField}
+                    onChange={this.setSearchedField}
+                >
+                    {SEARCHED_FIELD_VALUES.map(value => (
+                        <MenuItem key={value} value={value}>
+                            {polyglot.t(value)}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    className="document_sort_by"
+                    label={polyglot.t('document_sort_by')}
+                    onChange={this.setDocumentSortBy}
+                    value={documentSortBy}
+                    fullWidth
+                />
+            </FormatDataParamsFieldSet>
         );
     }
 }

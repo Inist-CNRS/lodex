@@ -8,7 +8,7 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_A,
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
-} from '../../../chartsUtils';
+} from '../../chartsUtils';
 import {
     ASPECT_RATIO_16_6,
     ASPECT_RATIO_16_9,
@@ -17,7 +17,7 @@ import {
     ASPECT_RATIO_3_2,
     ASPECT_RATIO_4_3,
     ASPECT_RATIO_8_5,
-} from '../../../aspectRatio';
+} from '../../aspectRatio';
 
 /**
  * small component use to handle vega lite display

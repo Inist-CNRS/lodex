@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import ReactTooltip from 'react-tooltip';
 
-import { getColor } from '../../colorUtils';
+import { getColor } from '../../utils/colorUtils';
 import stylesToClassname from '../../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
