@@ -5,14 +5,16 @@ import Analytics from '@ezs/analytics';
 import Lodex from '@ezs/lodex';
 import Conditor from '@ezs/conditor';
 import Istex from '@ezs/istex';
-import Loterre from '@ezs/loterre';
+import Storage from '@ezs/storage';
+import localConfig from '../config.json';
 
+ezs.settings.feed.timeout = Number(localConfig.timeout) || 120000;
 debug.enable('ezs');
 ezs.use(Basics);
 ezs.use(Analytics);
 ezs.use(Lodex);
 ezs.use(Conditor);
 ezs.use(Istex);
-ezs.use(Loterre);
+ezs.use(Storage);
 
 ezs.createCluster(31976, __dirname);

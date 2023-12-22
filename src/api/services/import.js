@@ -4,6 +4,7 @@ import fetch from 'fetch-with-proxy';
 import progress from './progress';
 import { INDEXATION, SAVING_DATASET } from '../../common/progressStatus';
 import { Readable } from 'stream';
+import localConfig from '../../../config.json';
 
 ezs.use(ezsBasics);
 
@@ -15,6 +16,7 @@ export const getLoader = (loaderName, loaderEnvironment) => stream => {
                 url: `${process.env.WORKERS_URL ||
                     'http://localhost:31976'}/loaders/${loaderName}?${env2query}`,
                 streaming: true,
+                timeout: Number(localConfig.timeout) || 120000,
                 json: false,
                 encoder: 'transit',
             }),
