@@ -104,5 +104,5 @@
     "precomputedBaseUrlForDevelopment": "{public url of the server accessible from webhooks (ie ngrok)}",
     "activateBullDashboard": false,
     "themes": ["void", "nougat", "inist", "istex"],
-    "timeout": 120000
+    "timeout": 3600000
 }
