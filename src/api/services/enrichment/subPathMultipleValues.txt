@@ -31,7 +31,7 @@ size = [[BATCH SIZE]]
 # Send the request to the webservice
 [expand/expand/URLConnect]
 url = [[WEB SERVICE URL]]
-timeout = 5000
+timeout = [[WEB SERVICE TIMEOUT]]
 noerror = false
 retries = 5
 

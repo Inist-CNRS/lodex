@@ -155,6 +155,7 @@ export const getComputedFromWebservice = async ctx => {
                 streaming: true,
                 json: true,
                 encoder: 'transit',
+                timeout: Number(localConfig.timeout) || 120000,
             }),
         )
         .pipe(
@@ -355,7 +356,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
                 streaming: true,
                 json: true,
                 encoder: 'transit',
-                timeout: 60000,
+                timeout: Number(localConfig.timeout) || 120000,
                 header: [
                     'Content-Type: application/gzip',
                     `X-Webhook-Success: ${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}`,
