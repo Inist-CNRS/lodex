@@ -12,6 +12,7 @@ import {
 } from '../../common/tools/tenantTools';
 import bullBoard from '../bullBoard';
 import { insertConfigTenant } from '../services/configTenant';
+import mongoClient from '../services/mongoClient';
 
 const app = new Koa();
 app.use(
@@ -45,7 +46,14 @@ app.use(async (ctx, next) => {
 app.use(koaBodyParser());
 
 const getTenant = async ctx => {
-    ctx.body = await ctx.tenantCollection.findAll({ createdAt: -1 });
+    const tenants = await ctx.tenantCollection.findAll({ createdAt: -1 });
+
+    for (const tenant of tenants) {
+        const db = await mongoClient(tenant.name);
+        tenant.stats = await db.stats({ scale: 1024 });
+    }
+
+    ctx.body = tenants;
 };
 
 const postTenant = async ctx => {

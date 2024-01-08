@@ -328,6 +328,28 @@ const Tenants = ({ handleLogout }) => {
             },
         },
         {
+            field: 'stats',
+            headerName: 'Taille Base de donnée',
+            flex: 2,
+            valueFormatter: params => {
+                if (params.value == null || params.value.totalSize == null) {
+                    return '-';
+                }
+
+                const mbSize = (params.value.totalSize / 1024).toFixed(2);
+
+                if (mbSize > 1000) {
+                    return `${mbSize / 1024} Go`;
+                }
+
+                if (mbSize > 10) {
+                    return `${mbSize} Mo`;
+                }
+
+                return `${params.value.totalSize} Ko`;
+            },
+        },
+        {
             field: 'update',
             headerName: 'Modifier',
             flex: 1,
