@@ -1,12 +1,13 @@
 import Koa from 'koa';
 import { Server } from 'socket.io';
 import config, { mongo } from 'config';
-import { activateBullDashboard } from '../../config.json';
+import { activateBullDashboard, timeout } from '../../config.json';
 import mount from 'koa-mount';
 import route from 'koa-route';
 import cors from 'kcors';
 import koaQs from 'koa-qs';
 import { KoaAdapter } from '@bull-board/koa';
+import ezs from '@ezs/core';
 
 import controller from './controller';
 import testController from './controller/testController';
@@ -30,6 +31,9 @@ import mongoClient from './services/mongoClient';
 import bullBoard from './bullBoard';
 import { DEFAULT_TENANT } from '../common/tools/tenantTools';
 import { insertConfigTenant } from './services/configTenant';
+
+// set timeout as ezs server (see workers/index.js)
+ezs.settings.feed.timeout = Number(timeout) || 120000;
 
 // KoaQs use qs to parse query string. There is an default limit of 20 items in an array. Above this limit, qs will transform the array into an key/value object.
 // We need to increase this limit to 1000 to be able to handle the facets array in the query string.
