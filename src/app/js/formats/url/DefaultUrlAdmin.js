@@ -45,27 +45,29 @@ class DefaultUrlAdmin extends Component {
                 <TextField
                     fullWidth
                     select
-                    label={polyglot.t('uri_format_select_type')}
+                    label={polyglot.t('label_format_select_type')}
                     onChange={this.setType}
                     value={type}
                 >
                     <MenuItem value="value">
-                        {polyglot.t('uri_format_column')}
+                        {polyglot.t('label_format_column')}
                     </MenuItem>
                     <MenuItem value="text">
-                        {polyglot.t('uri_format_custom')}
+                        {polyglot.t('label_format_custom')}
                     </MenuItem>
                     <MenuItem value="column">
-                        {polyglot.t('uri_format_another_column')}
+                        {polyglot.t('label_format_another_column')}
                     </MenuItem>
                 </TextField>
                 {type !== 'value' && (
                     <TextField
                         fullWidth
                         label={
-                            type !== 'text'
-                                ? polyglot.t('uri_format_another_column_value')
-                                : polyglot.t('uri_format_custom_value')
+                            type === 'text'
+                                ? polyglot.t('label_format_custom_value')
+                                : polyglot.t(
+                                      'label_format_another_column_value',
+                                  )
                         }
                         onChange={this.setValue}
                         value={value}
