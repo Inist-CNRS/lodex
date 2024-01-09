@@ -64,8 +64,8 @@ class DefaultUrlAdmin extends Component {
                         fullWidth
                         label={
                             type !== 'text'
-                                ? polyglot.t('uri_format_custom_value')
-                                : polyglot.t('uri_format_another_column_value')
+                                ? polyglot.t('uri_format_another_column_value')
+                                : polyglot.t('uri_format_custom_value')
                         }
                         onChange={this.setValue}
                         value={value}
