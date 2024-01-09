@@ -1,20 +1,24 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import MarkdownIt from 'markdown-it';
 
-import { field as fieldPropTypes } from '../../../propTypes';
-import InvalidFormat from '../../InvalidFormat';
+import { field as fieldPropTypes } from '../../../../propTypes';
+import InvalidFormat from '../../../InvalidFormat';
 
 const markdown = new MarkdownIt();
 
 const MarkdownView = ({ className, resource, field }) => {
-    const value = resource[field.name];
+    const [value, content] = useMemo(() => {
+        const value = resource[field.name];
 
-    let html;
+        try {
+            return [value, markdown.render(value)];
+        } catch (e) {
+            return [value, null];
+        }
+    }, [resource, field.name]);
 
-    try {
-        html = markdown.render(value);
-    } catch (e) {
+    if (content == null) {
         return <InvalidFormat format={field.format} value={value} />;
     }
 
@@ -22,7 +26,7 @@ const MarkdownView = ({ className, resource, field }) => {
         <div
             className={className}
             dangerouslySetInnerHTML={{
-                __html: html,
+                __html: content,
             }}
         />
     );

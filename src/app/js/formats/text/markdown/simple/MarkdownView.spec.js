@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import MarkdownView from './MarkdownView';
-import InvalidFormat from '../../InvalidFormat';
+import InvalidFormat from '../../../InvalidFormat';
 
 describe('<MarkdownView />', () => {
     it('should render', () => {

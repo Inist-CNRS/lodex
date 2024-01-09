@@ -19,7 +19,8 @@ import link from './url/link';
 import linkImage from './url/link-image';
 import list from './text/list';
 import trelloTimeline from './other/trello-timeline';
-import markdown from './text/markdown';
+import markdown from './text/markdown/simple';
+import markdownModal from './text/markdown/modal';
 import uri from './url/uri';
 import title from './text/title';
 import paragraph from './text/paragraph';
@@ -176,6 +177,13 @@ export const FORMATS_CATALOG = [
         description: 'formatMarkdownDescription',
         componentName: 'markdown',
         component: markdown,
+        type: 'text',
+    },
+    {
+        name: 'formatMarkdownModal',
+        description: 'formatMarkdownModalDescription',
+        componentName: 'markdownModal',
+        component: markdownModal,
         type: 'text',
     },
     {
