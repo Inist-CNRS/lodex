@@ -338,11 +338,11 @@ const Tenants = ({ handleLogout }) => {
 
                 const mbSize = (params.value.totalSize / 1024).toFixed(2);
 
-                if (mbSize > 1000) {
-                    return `${mbSize / 1024} Go`;
+                if (mbSize > 1024) {
+                    return `${(mbSize / 1024).toFixed(2)} Go`;
                 }
 
-                if (mbSize > 10) {
+                if (mbSize > 1) {
                     return `${mbSize} Mo`;
                 }
 
