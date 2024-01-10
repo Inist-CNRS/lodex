@@ -32,18 +32,18 @@ class IdentifierBadgeAdmin extends Component {
 
     constructor(props) {
         super(props);
-        this.setColors = this.setColors.bind(this);
+        this.handleColors = this.handleColors.bind(this);
         this.state = {
             colors: this.props.args.colors || defaultArgs.colors,
         };
     }
 
-    setTypid = typid => {
+    handleTypid = typid => {
         const newArgs = { ...this.props.args, typid };
         this.props.onChange(newArgs);
     };
 
-    setColors(colors) {
+    handleColors(colors) {
         updateAdminArgs('colors', colors.split(' ')[0], this.props);
     }
 
@@ -64,13 +64,13 @@ class IdentifierBadgeAdmin extends Component {
                     select
                     label={polyglot.t('list_format_select_identifier')}
                     value={typid}
-                    onChange={e => this.setTypid(e.target.value)}
+                    onChange={e => this.handleTypid(e.target.value)}
                 >
                     {items}
                 </TextField>
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
-                    onChange={this.setColors}
+                    onChange={this.handleColors}
                     polyglot={polyglot}
                     monochromatic={true}
                 />

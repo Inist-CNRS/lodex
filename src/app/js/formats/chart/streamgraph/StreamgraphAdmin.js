@@ -55,23 +55,23 @@ class StreamgraphAdmin extends Component {
 
     constructor(props) {
         super(props);
-        this.setColors = this.setColors.bind(this);
+        this.handleColors = this.handleColors.bind(this);
         this.state = {
             colors: this.props.args.colors || defaultArgs.colors,
         };
     }
 
-    setParams = params => updateAdminArgs('params', params, this.props);
+    handleParams = params => updateAdminArgs('params', params, this.props);
 
-    setColors(colors) {
+    handleColors(colors) {
         updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
     }
 
-    setMaxLegendLength = e => {
+    handleMaxLegendLength = e => {
         updateAdminArgs('maxLegendLength', e.target.value, this.props);
     };
 
-    setHeight = e => {
+    handleHeight = e => {
         updateAdminArgs('height', e.target.value, this.props);
     };
 
@@ -91,7 +91,7 @@ class StreamgraphAdmin extends Component {
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
                         polyglot={polyglot}
-                        onChange={this.setParams}
+                        onChange={this.handleParams}
                         showMaxSize={showMaxSize}
                         showMaxValue={showMaxValue}
                         showMinValue={showMinValue}
@@ -101,18 +101,18 @@ class StreamgraphAdmin extends Component {
                 <FormatChartParamsFieldSet>
                     <ColorPickerParamsAdmin
                         colors={this.state.colors}
-                        onChange={this.setColors}
+                        onChange={this.handleColors}
                         polyglot={polyglot}
                     />
                     <TextField
                         label={polyglot.t('max_char_number_in_legends')}
-                        onChange={this.setMaxLegendLength}
+                        onChange={this.handleMaxLegendLength}
                         value={maxLegendLength}
                         fullWidth
                     />
                     <TextField
                         label={polyglot.t('height_px')}
-                        onChange={this.setHeight}
+                        onChange={this.handleHeight}
                         value={height}
                         fullWidth
                     />

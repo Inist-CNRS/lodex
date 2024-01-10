@@ -1,12 +1,9 @@
 import AbstractTableAdmin from '../core/AbstractTableAdmin';
 import translate from 'redux-polyglot/translate';
-import { Box, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import TableColumnsParameters from '../core/TableColumnsParameters';
 import React from 'react';
-import {
-    FormatDataParamsFieldSet,
-    FormatDefaultParamsFieldSet,
-} from '../../../utils/components/field-set/FormatFieldSets';
+import { FormatDefaultParamsFieldSet } from '../../../utils/components/field-set/FormatFieldSets';
 
 export const defaultArgs = {
     pageSize: 6,
@@ -19,11 +16,13 @@ export const defaultArgs = {
 };
 
 class PaginatedTableAdmin extends AbstractTableAdmin {
+    static propTypes = AbstractTableAdmin.propTypes;
+
     static defaultProps = {
         args: defaultArgs,
     };
 
-    setPageSize = e => {
+    handlePageSize = e => {
         const pageSize = parseInt(e.target.value, 10);
         this.props.onChange({
             ...this.props.args,
@@ -43,13 +42,13 @@ class PaginatedTableAdmin extends AbstractTableAdmin {
             <FormatDefaultParamsFieldSet>
                 <TextField
                     label={polyglot.t('items_per_page')}
-                    onChange={this.setPageSize}
+                    onChange={this.handlePageSize}
                     value={pageSize}
                     type="number"
                     fullWidth
                 />
                 <TableColumnsParameters
-                    onChange={this.setColumnParameter}
+                    onChange={this.handleColumnParameter}
                     polyglot={polyglot}
                     parameterCount={columnsCount}
                     parameters={columnsParameters}

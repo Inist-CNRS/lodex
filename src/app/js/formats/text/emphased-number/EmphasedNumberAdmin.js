@@ -44,13 +44,13 @@ class EmphasedNumberAdmin extends Component {
 
     constructor(props) {
         super(props);
-        this.setColors = this.setColors.bind(this);
+        this.handleColors = this.handleColors.bind(this);
         this.state = {
             colors: this.props.args.colors || defaultArgs.colors,
         };
     }
 
-    setSize = size => {
+    handleSize = size => {
         const newArgs = {
             ...this.props.args,
             size,
@@ -58,11 +58,11 @@ class EmphasedNumberAdmin extends Component {
         this.props.onChange(newArgs);
     };
 
-    setColors(colors) {
+    handleColors(colors) {
         updateAdminArgs('colors', colors.split(' ')[0], this.props);
     }
 
-    setParams = params => updateAdminArgs('params', params, this.props);
+    handleParams = params => updateAdminArgs('params', params, this.props);
 
     render() {
         const {
@@ -75,7 +75,7 @@ class EmphasedNumberAdmin extends Component {
                 <FormatDataParamsFieldSet>
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
-                        onChange={this.setParams}
+                        onChange={this.handleParams}
                         polyglot={polyglot}
                         showMaxSize={true}
                         showMaxValue={true}
@@ -88,7 +88,7 @@ class EmphasedNumberAdmin extends Component {
                         fullWidth
                         select
                         label={polyglot.t('list_format_select_size')}
-                        onChange={e => this.setSize(e.target.value)}
+                        onChange={e => this.handleSize(e.target.value)}
                         value={size}
                     >
                         <MenuItem value={1}>{polyglot.t('size1')}</MenuItem>
@@ -98,7 +98,7 @@ class EmphasedNumberAdmin extends Component {
                     </TextField>
                     <ColorPickerParamsAdmin
                         colors={this.state.colors || defaultArgs.colors}
-                        onChange={this.setColors}
+                        onChange={this.handleColors}
                         polyglot={polyglot}
                         monochromatic={true}
                     />

@@ -31,14 +31,14 @@ class LodexFieldAdmin extends Component {
         args: defaultArgs,
     };
 
-    setRequest = e => {
+    handleRequest = e => {
         const labelArray = (e.target.value || '').split(';');
         const { param, ...args } = this.props.args;
         const newArgs = { ...args, param: { ...param, labelArray } };
         this.props.onChange(newArgs);
     };
 
-    setHiddenInfo = event => {
+    handleHiddenInfo = event => {
         let hiddenInfo = event.target.checked;
         const { param, ...state } = this.props.args;
         const newState = { ...state, param: { ...param, hiddenInfo } };
@@ -59,7 +59,7 @@ class LodexFieldAdmin extends Component {
                     <TextField
                         label={polyglot.t('param_labels')}
                         multiline
-                        onChange={this.setRequest}
+                        onChange={this.handleRequest}
                         value={label}
                         fullWidth
                     />
@@ -68,7 +68,7 @@ class LodexFieldAdmin extends Component {
                     <FormControlLabel
                         control={
                             <Checkbox
-                                onChange={this.setHiddenInfo}
+                                onChange={this.handleHiddenInfo}
                                 checked={hiddenInfo}
                             />
                         }

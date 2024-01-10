@@ -57,12 +57,12 @@ class HierarchyAdmin extends Component {
 
     constructor(props) {
         super(props);
-        this.setColors = this.setColors.bind(this);
+        this.handleColors = this.handleColors.bind(this);
         this.state = {
             colors: this.props.args.colors || defaultArgs.colors,
         };
     }
-    setParams = params => {
+    handleParams = params => {
         const newParams = {
             ...this.props.args.params,
             ...params,
@@ -70,7 +70,7 @@ class HierarchyAdmin extends Component {
         updateAdminArgs('params', newParams, this.props);
     };
 
-    setColors(colors) {
+    handleColors(colors) {
         updateAdminArgs(
             'colors',
             colors.split(' ')[0] || defaultArgs.colors,
@@ -78,25 +78,25 @@ class HierarchyAdmin extends Component {
         );
     }
 
-    setMaxLabelLength = event => {
+    handleMaxLabelLength = event => {
         const maxLabelLength = event.target.value;
-        this.setParams({
+        this.handleParams({
             ...this.props.args.params,
             maxLabelLength: parseInt(maxLabelLength, 10),
         });
     };
 
-    setLabelOffset = event => {
+    handleLabelOffset = event => {
         const labelOffset = event.target.value;
-        this.setParams({
+        this.handleParams({
             ...this.props.args.params,
             labelOffset: parseInt(labelOffset, 10),
         });
     };
 
-    setMinimumScaleValue = event => {
+    handleMinimumScaleValue = event => {
         const minimumScaleValue = event.target.value;
-        this.setParams({
+        this.handleParams({
             ...this.props.args.params,
             minimumScaleValue: parseInt(minimumScaleValue, 10),
         });
@@ -118,7 +118,7 @@ class HierarchyAdmin extends Component {
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
                         polyglot={polyglot}
-                        onChange={this.setParams}
+                        onChange={this.handleParams}
                         showMaxSize={showMaxSize}
                         showMaxValue={showMaxValue}
                         showMinValue={showMinValue}
@@ -128,25 +128,25 @@ class HierarchyAdmin extends Component {
                 <FormatChartParamsFieldSet>
                     <ColorPickerParamsAdmin
                         colors={this.state.colors || defaultArgs.colors}
-                        onChange={this.setColors}
+                        onChange={this.handleColors}
                         polyglot={polyglot}
                         monochromatic={true}
                     />
                     <TextField
                         label={polyglot.t('max_char_number_in_labels')}
-                        onChange={this.setMaxLabelLength}
+                        onChange={this.handleMaxLabelLength}
                         value={this.props.args.params.maxLabelLength}
                         fullWidth
                     />
                     <TextField
                         label={polyglot.t('label_offset')}
-                        onChange={this.setLabelOffset}
+                        onChange={this.handleLabelOffset}
                         value={this.props.args.params.labelOffset}
                         fullWidth
                     />
                     <TextField
                         label={polyglot.t('minimum_scale_value')}
-                        onChange={this.setMinimumScaleValue}
+                        onChange={this.handleMinimumScaleValue}
                         value={this.props.args.params.minimumScaleValue}
                         fullWidth
                     />

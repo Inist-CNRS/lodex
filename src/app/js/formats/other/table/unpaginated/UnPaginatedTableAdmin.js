@@ -3,7 +3,6 @@ import translate from 'redux-polyglot/translate';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import TableColumnsParameters from '../core/TableColumnsParameters';
 import React from 'react';
-import { Box } from '@mui/material';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
@@ -34,7 +33,7 @@ class UnPaginatedTableAdmin extends AbstractTableAdmin {
                 <FormatDataParamsFieldSet>
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
-                        onChange={this.setParams}
+                        onChange={this.handleParams}
                         polyglot={polyglot}
                         showMaxSize={true}
                         showMaxValue={true}
@@ -44,7 +43,7 @@ class UnPaginatedTableAdmin extends AbstractTableAdmin {
                 </FormatDataParamsFieldSet>
                 <FormatDefaultParamsFieldSet>
                     <TableColumnsParameters
-                        onChange={this.setColumnParameter}
+                        onChange={this.handleColumnParameter}
                         polyglot={polyglot}
                         parameterCount={columnsCount}
                         parameters={columnsParameters}

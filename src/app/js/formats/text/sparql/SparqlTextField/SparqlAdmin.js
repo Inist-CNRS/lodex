@@ -56,21 +56,21 @@ class SparqlTextFieldAdmin extends Component {
         args: defaultArgs,
     };
 
-    setEndpoint = e => {
+    handleEndpoint = e => {
         const endpoint = e.target.value;
         const { sparql, ...args } = this.props.args;
         const newArgs = { ...args, sparql: { ...sparql, endpoint } };
         this.props.onChange(newArgs);
     };
 
-    setRequest = e => {
+    handleRequest = e => {
         const request = e.target.value;
         const { sparql, ...args } = this.props.args;
         const newArgs = { ...args, sparql: { ...sparql, request } };
         this.props.onChange(newArgs);
     };
 
-    setMaxValue = e => {
+    handleMaxValue = e => {
         let maxValue = e.target.value;
         if (maxValue < 1) {
             maxValue = 1;
@@ -79,21 +79,21 @@ class SparqlTextFieldAdmin extends Component {
         const newState = { ...state, sparql: { ...sparql, maxValue } };
         this.props.onChange(newState);
     };
-    setHiddenInfo = event => {
+    handleHiddenInfo = event => {
         let hiddenInfo = event.target.checked;
         const { sparql, ...state } = this.props.args;
         const newState = { ...state, sparql: { ...sparql, hiddenInfo } };
         this.props.onChange(newState);
     };
 
-    setSeparator = e => {
+    handleSeparator = e => {
         const separator = e.target.value;
         const { sparql, ...args } = this.props.args;
         const newArgs = { ...args, sparql: { ...sparql, separator } };
         this.props.onChange(newArgs);
     };
 
-    addSubformat = () => {
+    handleAddSubformat = () => {
         const { sparql, ...state } = this.props.args;
         let subformat = sparql.subformat;
         subformat.push({ attribute: '?example', sub: '', option: {} });
@@ -101,7 +101,7 @@ class SparqlTextFieldAdmin extends Component {
         this.props.onChange(newState);
     };
 
-    removeSubformat = key => {
+    handleRemoveSubformat = key => {
         const { sparql, ...state } = this.props.args;
         let subformat = sparql.subformat;
         subformat.splice(key.key, 1);
@@ -109,7 +109,7 @@ class SparqlTextFieldAdmin extends Component {
         this.props.onChange(newState);
     };
 
-    setAttribute = (attribute, key) => {
+    handleAttribute = (attribute, key) => {
         const { sparql, ...state } = this.props.args;
         let subformat = sparql.subformat;
         subformat[key].attribute = attribute;
@@ -117,7 +117,7 @@ class SparqlTextFieldAdmin extends Component {
         this.props.onChange(newState);
     };
 
-    setSubformat = (sub, key) => {
+    handleSubformat = (sub, key) => {
         const { sparql, ...state } = this.props.args;
         let subformat = sparql.subformat;
         subformat[key].sub = sub;
@@ -125,7 +125,7 @@ class SparqlTextFieldAdmin extends Component {
         this.props.onChange(newState);
     };
 
-    setSubformatOption = (option, key) => {
+    handleSubformatOption = (option, key) => {
         const { sparql, ...state } = this.props.args;
         let subformat = sparql.subformat;
         subformat[key].option = option;
@@ -147,17 +147,17 @@ class SparqlTextFieldAdmin extends Component {
                     fullWidth
                     label={polyglot.t('sparql_attribute')}
                     type="string"
-                    onChange={e => this.setAttribute(e.target.value, key)}
+                    onChange={e => this.handleAttribute(e.target.value, key)}
                     value={result.attribute}
                 />
                 <SelectFormat
-                    onChange={e => this.setSubformat(e, key)}
+                    onChange={e => this.handleSubformat(e, key)}
                     formats={FORMATS}
                     value={result.sub}
                 />
                 {result.sub && (
                     <SubAdminComponent
-                        onChange={e => this.setSubformatOption(e, key)}
+                        onChange={e => this.handleSubformatOption(e, key)}
                         args={result.option}
                     />
                 )}
@@ -179,7 +179,7 @@ class SparqlTextFieldAdmin extends Component {
                     <TextField
                         label={polyglot.t('sparql_endpoint')}
                         value={endpoint}
-                        onChange={this.setEndpoint}
+                        onChange={this.handleEndpoint}
                         type="text"
                         name="valueEnpoint"
                         list="listEnpoint"
@@ -195,7 +195,7 @@ class SparqlTextFieldAdmin extends Component {
                         <TextField
                             label={polyglot.t('sparql_request')}
                             multiline
-                            onChange={this.setRequest}
+                            onChange={this.handleRequest}
                             value={request}
                             fullWidth
                         />
@@ -211,14 +211,14 @@ class SparqlTextFieldAdmin extends Component {
                     <TextField
                         label={polyglot.t('max_value')}
                         type="number"
-                        onChange={this.setMaxValue}
+                        onChange={this.handleMaxValue}
                         value={maxValue}
                         fullWidth
                     />
                     <FormControlLabel
                         control={
                             <Checkbox
-                                onChange={this.setHiddenInfo}
+                                onChange={this.handleHiddenInfo}
                                 checked={hiddenInfo}
                             />
                         }
@@ -227,7 +227,7 @@ class SparqlTextFieldAdmin extends Component {
                     <TextField
                         label={polyglot.t('sparql_list_separator')}
                         type="string"
-                        onChange={this.setSeparator}
+                        onChange={this.handleSeparator}
                         value={separator}
                         fullWidth
                     />
@@ -236,7 +236,7 @@ class SparqlTextFieldAdmin extends Component {
                     <Box
                         display="flex"
                         alignItems="center"
-                        onClick={() => this.addSubformat()}
+                        onClick={() => this.handleAddSubformat()}
                         sx={{
                             cursor: 'pointer',
                         }}
@@ -266,7 +266,7 @@ class SparqlTextFieldAdmin extends Component {
                             >
                                 <ContentClear
                                     onClick={() =>
-                                        this.removeSubformat({ key })
+                                        this.handleRemoveSubformat({ key })
                                     }
                                     sx={{
                                         cursor: 'pointer',

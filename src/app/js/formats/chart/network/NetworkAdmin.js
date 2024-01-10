@@ -50,17 +50,17 @@ class NetworkAdmin extends Component {
 
     constructor(props) {
         super(props);
-        this.setColors = this.setColors.bind(this);
+        this.handleColors = this.handleColors.bind(this);
         this.state = {
             colors: this.props.args.colors || defaultArgs.colors,
         };
     }
 
-    setParams = params => {
+    handleParams = params => {
         updateAdminArgs('params', params, this.props);
     };
 
-    setColors(colors) {
+    handleColors(colors) {
         updateAdminArgs(
             'colors',
             colors.split(' ')[0] || defaultArgs.colors,
@@ -84,7 +84,7 @@ class NetworkAdmin extends Component {
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
                         polyglot={polyglot}
-                        onChange={this.setParams}
+                        onChange={this.handleParams}
                         showMaxSize={showMaxSize}
                         showMaxValue={showMaxValue}
                         showMinValue={showMinValue}
@@ -94,7 +94,7 @@ class NetworkAdmin extends Component {
                 <FormatChartParamsFieldSet>
                     <ColorPickerParamsAdmin
                         colors={this.state.colors}
-                        onChange={this.setColors}
+                        onChange={this.handleColors}
                         polyglot={polyglot}
                         monochromatic={true}
                     />

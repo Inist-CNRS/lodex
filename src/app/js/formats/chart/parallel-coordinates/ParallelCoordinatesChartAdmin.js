@@ -21,7 +21,7 @@ const ParallelCoordinatesChartAdmin = ({
     showMaxValue,
     showMinValue,
 }) => {
-    const setParams = params => {
+    const handleParams = params => {
         updateAdminArgs(
             'params',
             { ...args.params, ...params },
@@ -32,7 +32,7 @@ const ParallelCoordinatesChartAdmin = ({
         );
     };
 
-    const setColors = colors => {
+    const handleColors = colors => {
         updateAdminArgs('colors', colors, {
             args,
             onChange,
@@ -44,7 +44,7 @@ const ParallelCoordinatesChartAdmin = ({
             <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={args.params}
-                    onChange={setParams}
+                    onChange={handleParams}
                     polyglot={polyglot}
                     showMaxSize={showMaxSize}
                     showMaxValue={showMaxValue}
@@ -55,7 +55,7 @@ const ParallelCoordinatesChartAdmin = ({
             <FormatChartParamsFieldSet>
                 <ColorPickerParamsAdmin
                     colors={args.colors}
-                    onChange={setColors}
+                    onChange={handleColors}
                     polyglot={polyglot}
                 />
             </FormatChartParamsFieldSet>

@@ -22,7 +22,7 @@ class ImageAdmin extends Component {
         args: defaultArgs,
     };
 
-    setWidth = imageWidth => {
+    handleWidth = imageWidth => {
         const newArgs = {
             ...this.props.args,
             imageWidth,
@@ -42,7 +42,7 @@ class ImageAdmin extends Component {
                     fullWidth
                     select
                     label={polyglot.t('list_format_select_image_width')}
-                    onChange={e => this.setWidth(e.target.value)}
+                    onChange={e => this.handleWidth(e.target.value)}
                     value={imageWidth}
                 >
                     <MenuItem value="10%">{polyglot.t('ten_percent')}</MenuItem>

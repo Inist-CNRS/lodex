@@ -25,7 +25,7 @@ export const defaultArgs = {
 
 const FieldCloneAdmin = ({ args, onChange, p: polyglot, fields }) => {
     const { filter } = useParams();
-    const setValue = e => {
+    const handleValue = e => {
         const newArgs = { value: e.target.value };
         onChange(newArgs);
     };
@@ -37,7 +37,7 @@ const FieldCloneAdmin = ({ args, onChange, p: polyglot, fields }) => {
             <TextField
                 fullWidth
                 select
-                onChange={setValue}
+                onChange={handleValue}
                 value={args.value}
                 label={polyglot.t('fieldclone_format_value')}
             >

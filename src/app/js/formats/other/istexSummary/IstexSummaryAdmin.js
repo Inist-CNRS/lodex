@@ -37,22 +37,22 @@ export class IstexSummaryAdmin extends Component {
         args: defaultArgs,
     };
 
-    setSearchedField = e => {
+    handleSearchedField = e => {
         updateAdminArgs('searchedField', e.target.value, this.props);
     };
 
-    setSortDir = e => {
+    handleSortDir = e => {
         updateAdminArgs('sortDir', e.target.value, this.props);
     };
 
-    setYearThreshold = e =>
+    handleYearThreshold = e =>
         updateAdminArgs(
             'yearThreshold',
             parseInt(e.target.value, 10),
             this.props,
         );
 
-    setDocumentSortBy = e =>
+    handleDocumentSortBy = e =>
         updateAdminArgs('documentSortBy', e.target.value, this.props);
 
     render() {
@@ -68,7 +68,7 @@ export class IstexSummaryAdmin extends Component {
                     select
                     label={polyglot.t('searched_field')}
                     value={searchedField}
-                    onChange={this.setSearchedField}
+                    onChange={this.handleSearchedField}
                     className="searched_field"
                 >
                     {SEARCHED_FIELD_VALUES.map(value => (
@@ -82,7 +82,7 @@ export class IstexSummaryAdmin extends Component {
                     select
                     label={polyglot.t('year_sort_dir')}
                     value={sortDir}
-                    onChange={this.setSortDir}
+                    onChange={this.handleSortDir}
                     className="year_sort_dir"
                 >
                     {SORT_YEAR_VALUES.map(value => (
@@ -95,14 +95,14 @@ export class IstexSummaryAdmin extends Component {
                     className="year_threshold"
                     type="number"
                     label={polyglot.t('year_threshold')}
-                    onChange={this.setYearThreshold}
+                    onChange={this.handleYearThreshold}
                     value={yearThreshold}
                     fullWidth
                 />
                 <TextField
                     className="document_sort_by"
                     label={polyglot.t('document_sort_by')}
-                    onChange={this.setDocumentSortBy}
+                    onChange={this.handleDocumentSortBy}
                     value={documentSortBy}
                     fullWidth
                 />

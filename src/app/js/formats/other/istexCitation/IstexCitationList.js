@@ -140,6 +140,8 @@ IstexCitationList.propTypes = {
     children: PropTypes.func.isRequired,
     polyglot: polyglotPropTypes.isRequired,
     skip: PropTypes.bool.isRequired,
+    name: PropTypes.string,
+    value: PropTypes.string,
 };
 
 export default IstexCitationList;

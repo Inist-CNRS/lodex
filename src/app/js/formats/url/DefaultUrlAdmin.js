@@ -24,12 +24,12 @@ class DefaultUrlAdmin extends Component {
         args: defaultArgs,
     };
 
-    setType = e => {
+    handleType = e => {
         const newArgs = { ...this.props.args, type: e.target.value };
         this.props.onChange(newArgs);
     };
 
-    setValue = e => {
+    handleValue = e => {
         const newArgs = { ...this.props.args, value: e.target.value };
         this.props.onChange(newArgs);
     };
@@ -46,7 +46,7 @@ class DefaultUrlAdmin extends Component {
                     fullWidth
                     select
                     label={polyglot.t('label_format_select_type')}
-                    onChange={this.setType}
+                    onChange={this.handleType}
                     value={type}
                 >
                     <MenuItem value="value">
@@ -69,7 +69,7 @@ class DefaultUrlAdmin extends Component {
                                       'label_format_another_column_value',
                                   )
                         }
-                        onChange={this.setValue}
+                        onChange={this.handleValue}
                         value={value}
                     />
                 )}

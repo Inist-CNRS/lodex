@@ -44,7 +44,7 @@ class RessourcesGridAdmin extends Component {
         args: defaultArgs,
     };
 
-    setWidth = spaceWidth => {
+    handleWidth = spaceWidth => {
         updateAdminArgs('spaceWidth', spaceWidth, this.props);
     };
 
@@ -62,7 +62,7 @@ class RessourcesGridAdmin extends Component {
             this.props,
         );
 
-    setPageSize = e => {
+    handlePageSize = e => {
         const { args, onChange } = this.props;
         const pageSize = parseInt(e.target.value, 10);
         onChange({
@@ -74,14 +74,14 @@ class RessourcesGridAdmin extends Component {
         });
     };
 
-    setSummarySize = e => {
+    handleSummarySize = e => {
         this.props.onChange({
             ...this.props.args,
             summarySize: parseInt(e.target.value),
         });
     };
 
-    setTitleSize = e => {
+    handleTitleSize = e => {
         this.props.onChange({
             ...this.props.args,
             titleSize: parseInt(e.target.value),
@@ -105,7 +105,7 @@ class RessourcesGridAdmin extends Component {
                     fullWidth
                     select
                     label={polyglot.t('list_format_select_image_width')}
-                    onChange={e => this.setWidth(e.target.value)}
+                    onChange={e => this.handleWidth(e.target.value)}
                     value={spaceWidth}
                 >
                     <MenuItem value="10%">{polyglot.t('ten_percent')}</MenuItem>
@@ -145,21 +145,21 @@ class RessourcesGridAdmin extends Component {
                 />
                 <TextField
                     label={polyglot.t('number_of_char_title')}
-                    onChange={this.setTitleSize}
+                    onChange={this.handleTitleSize}
                     value={titleSize}
                     type="number"
                     fullWidth
                 />
                 <TextField
                     label={polyglot.t('number_of_char_summary')}
-                    onChange={this.setSummarySize}
+                    onChange={this.handleSummarySize}
                     value={summarySize}
                     type="number"
                     fullWidth
                 />
                 <TextField
                     label={polyglot.t('items_per_page')}
-                    onChange={this.setPageSize}
+                    onChange={this.handlePageSize}
                     value={pageSize}
                     type="number"
                     fullWidth

@@ -106,7 +106,10 @@ IstexCitationView.propTypes = {
     fieldStatus: PropTypes.string,
     resource: PropTypes.object.isRequired,
     field: fieldPropTypes.isRequired,
-    formatData: PropTypes.shape({ hits: PropTypes.Array }),
+    formatData: PropTypes.shape({
+        hits: PropTypes.array,
+        total: PropTypes.number,
+    }),
     error: PropTypes.string,
     searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
     documentSortBy: PropTypes.string.isRequired,

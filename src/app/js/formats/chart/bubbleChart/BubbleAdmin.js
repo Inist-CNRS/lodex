@@ -53,19 +53,19 @@ class BubbleAdmin extends Component {
 
     constructor(props) {
         super(props);
-        this.setColors = this.setColors.bind(this);
+        this.handleColors = this.handleColors.bind(this);
         this.state = {
             colors: this.props.args.colors || defaultArgs.colors,
         };
     }
 
-    setParams = params => updateAdminArgs('params', params, this.props);
+    handleParams = params => updateAdminArgs('params', params, this.props);
 
-    setColors(colors) {
+    handleColors(colors) {
         updateAdminArgs('colors', colors, this.props);
     }
 
-    setDiameter = e => {
+    handleDiameter = e => {
         updateAdminArgs('diameter', e.target.value, this.props);
     };
 
@@ -85,7 +85,7 @@ class BubbleAdmin extends Component {
                 <FormatDataParamsFieldSet>
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
-                        onChange={this.setParams}
+                        onChange={this.handleParams}
                         polyglot={polyglot}
                         showMaxSize={showMaxSize}
                         showMaxValue={showMaxValue}
@@ -96,12 +96,12 @@ class BubbleAdmin extends Component {
                 <FormatChartParamsFieldSet>
                     <ColorPickerParamsAdmin
                         colors={this.state.colors || defaultArgs.colors}
-                        onChange={this.setColors}
+                        onChange={this.handleColors}
                         polyglot={polyglot}
                     />
                     <TextField
                         label={polyglot.t('diameter')}
-                        onChange={this.setDiameter}
+                        onChange={this.handleDiameter}
                         value={diameter}
                         fullWidth
                     />

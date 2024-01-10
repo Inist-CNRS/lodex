@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const SVG = ({ width = '100%' }) => (
     <svg width={width} height={width} viewBox="0 0 197.896 197.896">
@@ -12,5 +13,9 @@ const SVG = ({ width = '100%' }) => (
         />
     </svg>
 );
+
+SVG.propTypes = {
+    width: PropTypes.number,
+};
 
 export default SVG;

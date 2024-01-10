@@ -24,12 +24,12 @@ class SentenceAdmin extends Component {
         args: defaultArgs,
     };
 
-    setPrefix = prefix => {
+    handlePrefix = prefix => {
         const newArgs = { ...this.props.args, prefix };
         this.props.onChange(newArgs);
     };
 
-    setSuffix = suffix => {
+    handleSuffix = suffix => {
         const newArgs = { ...this.props.args, suffix };
         this.props.onChange(newArgs);
     };
@@ -45,14 +45,14 @@ class SentenceAdmin extends Component {
                 <TextField
                     key="prefix"
                     label={polyglot.t('prefix')}
-                    onChange={e => this.setPrefix(e.target.value)}
+                    onChange={e => this.handlePrefix(e.target.value)}
                     value={prefix}
                     sx={{ flexGrow: 1 }}
                 />
                 <TextField
                     key="suffix"
                     label={polyglot.t('suffix')}
-                    onChange={e => this.setSuffix(e.target.value)}
+                    onChange={e => this.handleSuffix(e.target.value)}
                     value={suffix}
                     sx={{ flexGrow: 1 }}
                 />

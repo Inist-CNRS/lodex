@@ -22,7 +22,7 @@ const RoutineParamsAdmin = ({
     showMinValue,
     showOrderBy,
 }) => {
-    const setMaxSize = e => {
+    const handleMaxSize = e => {
         onChange({
             maxSize: e.target.value,
             maxValue,
@@ -32,7 +32,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const setMaxValue = e => {
+    const handleMaxValue = e => {
         onChange({
             maxSize,
             maxValue: e.target.value,
@@ -42,7 +42,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const setMinValue = e => {
+    const handleMinValue = e => {
         onChange({
             maxSize,
             maxValue,
@@ -52,7 +52,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const setSortField = e => {
+    const handleSortField = e => {
         onChange({
             maxSize,
             maxValue,
@@ -62,7 +62,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const setSortOrder = e => {
+    const handleSortOrder = e => {
         onChange({
             maxSize,
             maxValue,
@@ -72,7 +72,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const setUri = e => {
+    const handleUri = e => {
         onChange({
             maxSize,
             maxValue,
@@ -87,7 +87,7 @@ const RoutineParamsAdmin = ({
             {showMaxSize && (
                 <TextField
                     label={polyglot.t('max_fields')}
-                    onChange={setMaxSize}
+                    onChange={handleMaxSize}
                     value={maxSize}
                     sx={{ width: '50%' }}
                 />
@@ -97,7 +97,7 @@ const RoutineParamsAdmin = ({
                     {showMinValue && (
                         <TextField
                             label={polyglot.t('min_value')}
-                            onChange={setMinValue}
+                            onChange={handleMinValue}
                             value={minValue}
                             fullWidth
                         />
@@ -105,7 +105,7 @@ const RoutineParamsAdmin = ({
                     {showMaxValue && (
                         <TextField
                             label={polyglot.t('max_value')}
-                            onChange={setMaxValue}
+                            onChange={handleMaxValue}
                             value={maxValue}
                             fullWidth
                         />
@@ -118,7 +118,7 @@ const RoutineParamsAdmin = ({
                     <FormControl sx={{ display: 'flex', flexDirection: 'row' }}>
                         <RadioGroup
                             value={orderBy?.split('/')[0]}
-                            onChange={setSortField}
+                            onChange={handleSortField}
                             name="sort-field"
                         >
                             <FormControlLabel
@@ -134,7 +134,7 @@ const RoutineParamsAdmin = ({
                         </RadioGroup>
                         <RadioGroup
                             value={orderBy?.split('/')[1]}
-                            onChange={setSortOrder}
+                            onChange={handleSortOrder}
                             name="sort-order"
                         >
                             <FormControlLabel
@@ -154,7 +154,7 @@ const RoutineParamsAdmin = ({
             {showUri && (
                 <TextField
                     label={polyglot.t('uri')}
-                    onChange={setUri}
+                    onChange={handleUri}
                     value={uri}
                     sx={{ width: '50%' }}
                 />

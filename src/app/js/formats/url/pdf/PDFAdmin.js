@@ -22,7 +22,7 @@ class PDFAdmin extends Component {
         args: defaultArgs,
     };
 
-    setWidth = PDFWidth => {
+    handleWidth = PDFWidth => {
         const newArgs = {
             ...this.props.args,
             PDFWidth,
@@ -42,7 +42,7 @@ class PDFAdmin extends Component {
                     fullWidth
                     select
                     label={polyglot.t('list_format_select_image_width')}
-                    onChange={e => this.setWidth(e.target.value)}
+                    onChange={e => this.handleWidth(e.target.value)}
                     value={PDFWidth}
                 >
                     <MenuItem value="10%">{polyglot.t('ten_percent')}</MenuItem>

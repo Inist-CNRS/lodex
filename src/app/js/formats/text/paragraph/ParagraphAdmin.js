@@ -22,7 +22,7 @@ class ParagraphAdmin extends Component {
         args: defaultArgs,
     };
 
-    setWidth = paragraphWidth => {
+    handleWidth = paragraphWidth => {
         this.props.onChange({ paragraphWidth });
     };
 
@@ -38,7 +38,7 @@ class ParagraphAdmin extends Component {
                     fullWidth
                     select
                     label={polyglot.t('list_format_select_image_width')}
-                    onChange={e => this.setWidth(e.target.value)}
+                    onChange={e => this.handleWidth(e.target.value)}
                     value={paragraphWidth}
                 >
                     <MenuItem value="10%">{polyglot.t('ten_percent')}</MenuItem>

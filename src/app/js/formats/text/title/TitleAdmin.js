@@ -30,17 +30,17 @@ class TitleAdmin extends Component {
 
     constructor(props) {
         super(props);
-        this.setColors = this.setColors.bind(this);
+        this.handleColors = this.handleColors.bind(this);
         this.state = {
             colors: this.props.args.colors || defaultArgs.colors,
         };
     }
 
-    setLevel = level => {
+    handleLevel = level => {
         this.props.onChange({ level });
     };
 
-    setColors(colors) {
+    handleColors(colors) {
         updateAdminArgs('colors', colors.split(' ')[0], this.props);
     }
 
@@ -56,7 +56,7 @@ class TitleAdmin extends Component {
                     fullWidth
                     select
                     label={polyglot.t('list_format_select_level')}
-                    onChange={e => this.setLevel(e.target.value)}
+                    onChange={e => this.handleLevel(e.target.value)}
                     value={level}
                 >
                     <MenuItem value={1}>{polyglot.t('level1')}</MenuItem>
@@ -66,7 +66,7 @@ class TitleAdmin extends Component {
                 </TextField>
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
-                    onChange={this.setColors}
+                    onChange={this.handleColors}
                     polyglot={polyglot}
                     monochromatic={true}
                 />

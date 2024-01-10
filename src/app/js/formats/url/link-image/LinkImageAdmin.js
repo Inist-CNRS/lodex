@@ -30,17 +30,17 @@ class LinkImageAdmin extends Component {
         args: defaultArgs,
     };
 
-    setType = e => {
+    handleType = e => {
         const newArgs = { ...this.props.args, type: e.target.value };
         this.props.onChange(newArgs);
     };
 
-    setValue = e => {
+    handleValue = e => {
         const newArgs = { ...this.props.args, value: e.target.value };
         this.props.onChange(newArgs);
     };
 
-    setMaxHeight = e => {
+    handleMaxHeight = e => {
         const maxHeight = Math.max(e.target.value, 1);
         const newArgs = { ...this.props.args, maxHeight };
         this.props.onChange(newArgs);
@@ -59,7 +59,7 @@ class LinkImageAdmin extends Component {
                         fullWidth
                         select
                         label={polyglot.t('select_a_format')}
-                        onChange={this.setType}
+                        onChange={this.handleType}
                         value={type}
                     >
                         <MenuItem value="text">
@@ -77,14 +77,14 @@ class LinkImageAdmin extends Component {
                                 ? polyglot.t('Custom URL')
                                 : polyglot.t("Column's name")
                         }
-                        onChange={this.setValue}
+                        onChange={this.handleValue}
                         value={value}
                         sx={{ flexGrow: 1 }}
                     />
                     <TextField
                         label={polyglot.t('height_px')}
                         type="number"
-                        onChange={this.setMaxHeight}
+                        onChange={this.handleMaxHeight}
                         value={maxHeight}
                         sx={{ flexGrow: 1 }}
                     />

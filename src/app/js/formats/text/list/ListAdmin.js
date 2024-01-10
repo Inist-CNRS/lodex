@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { MenuItem, Box, TextField } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
@@ -33,12 +33,12 @@ class ListAdmin extends Component {
         args: defaultArgs,
     };
 
-    setType = type => {
+    handleType = type => {
         const newArgs = { ...this.props.args, type };
         this.props.onChange(newArgs);
     };
 
-    setSubFormat = subFormat => {
+    handleSubFormat = subFormat => {
         const newArgs = {
             ...this.props.args,
             subFormat,
@@ -47,7 +47,7 @@ class ListAdmin extends Component {
         this.props.onChange(newArgs);
     };
 
-    setSubFormatOptions = subFormatOptions => {
+    handleSubFormatOptions = subFormatOptions => {
         const newArgs = {
             ...this.props.args,
             subFormatOptions,
@@ -70,7 +70,7 @@ class ListAdmin extends Component {
                         fullWidth
                         select
                         label={polyglot.t('list_format_select_type')}
-                        onChange={e => this.setType(e.target.value)}
+                        onChange={e => this.handleType(e.target.value)}
                         value={type}
                     >
                         <MenuItem value="unordered">
@@ -94,14 +94,14 @@ class ListAdmin extends Component {
                         <SelectFormat
                             formats={FORMATS}
                             value={subFormat}
-                            onChange={this.setSubFormat}
+                            onChange={this.handleSubFormat}
                         />
                     </div>
                 </FormatDefaultParamsFieldSet>
                 <FormatSubFormatParamsFieldSet>
                     {subFormat && subFormat !== 'none' ? (
                         <SubAdminComponent
-                            onChange={this.setSubFormatOptions}
+                            onChange={this.handleSubFormatOptions}
                             args={subFormatOptions}
                         />
                     ) : (
