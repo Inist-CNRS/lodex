@@ -339,14 +339,14 @@ const Tenants = ({ handleLogout }) => {
                 const mbSize = (params.value.totalSize / 1024).toFixed(2);
 
                 if (mbSize > 1024) {
-                    return `${(mbSize / 1024).toFixed(2)} Go`;
+                    return `${(mbSize / 1024).toFixed(2)} Gio`;
                 }
 
                 if (mbSize > 1) {
-                    return `${mbSize} Mo`;
+                    return `${mbSize} Mio`;
                 }
 
-                return `${params.value.totalSize} Ko`;
+                return `${params.value.totalSize} Kio`;
             },
         },
         {
