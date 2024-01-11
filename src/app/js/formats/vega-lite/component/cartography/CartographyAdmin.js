@@ -13,18 +13,18 @@ import {
 
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
-import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../chartsUtils';
+import updateAdminArgs from '../../../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
+import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
+import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../utils/chartsUtils';
 import Cartography from '../../models/Cartography';
-import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
+import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import {
-    VegaChartParamsFieldSet,
-    VegaDataParamsFieldSet,
-} from '../../../vega-utils/components/VegaFieldSet';
-import { MapFranceIdValue, MapIdValue } from '../../../vega-utils/dataSet';
-import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
+    FormatChartParamsFieldSet,
+    FormatDataParamsFieldSet,
+} from '../../../utils/components/field-set/FormatFieldSets';
+import { MapFranceIdValue, MapIdValue } from '../../../utils/dataSet';
+import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import { CartographyAdminView } from './CartographyView';
 
 export const defaultArgs = {
@@ -137,7 +137,7 @@ const CartographyAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaDataParamsFieldSet>
+            <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -147,8 +147,8 @@ const CartographyAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaDataParamsFieldSet>
-            <VegaChartParamsFieldSet>
+            </FormatDataParamsFieldSet>
+            <FormatChartParamsFieldSet>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -202,7 +202,7 @@ const CartographyAdmin = props => {
                         />
                     </>
                 )}
-            </VegaChartParamsFieldSet>
+            </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={CartographyAdminView}

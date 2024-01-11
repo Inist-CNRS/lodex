@@ -12,26 +12,26 @@ import {
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
-import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
-import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
+import updateAdminArgs from '../../../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
+import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
+import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import BarChart from '../../models/BarChart';
 import {
     AXIS_X,
     AXIS_Y,
     lodexDirectionToIdDirection,
     lodexScaleToIdScale,
-} from '../../../chartsUtils';
-import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
+} from '../../../utils/chartsUtils';
+import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import { BarChartAdminView } from './BarChartView';
 import {
-    VegaChartParamsFieldSet,
-    VegaDataParamsFieldSet,
-} from '../../../vega-utils/components/VegaFieldSet';
-import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
-import { StandardIdValue } from '../../../vega-utils/dataSet';
+    FormatChartParamsFieldSet,
+    FormatDataParamsFieldSet,
+} from '../../../utils/components/field-set/FormatFieldSets';
+import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
+import { StandardIdValue } from '../../../utils/dataSet';
 
 export const defaultArgs = {
     params: {
@@ -194,7 +194,7 @@ const BarChartAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaDataParamsFieldSet>
+            <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -204,8 +204,8 @@ const BarChartAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaDataParamsFieldSet>
-            <VegaChartParamsFieldSet>
+            </FormatDataParamsFieldSet>
+            <FormatChartParamsFieldSet>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -319,7 +319,7 @@ const BarChartAdmin = props => {
                         />
                     </>
                 )}
-            </VegaChartParamsFieldSet>
+            </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={BarChartAdminView}

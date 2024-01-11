@@ -1,4 +1,4 @@
-import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
+import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 
 class BasicChart {
     /**

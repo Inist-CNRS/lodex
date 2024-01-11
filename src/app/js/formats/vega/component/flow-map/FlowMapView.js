@@ -8,17 +8,17 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../../../propTypes';
-import { CustomActionVega } from '../vega-component';
+import { CustomActionVega } from '../../../utils/components/vega-component';
 import FlowMap from '../../models/FlowMap';
 import {
     convertSpecTemplate,
     VEGA_ACTIONS_WIDTH,
     VEGA_DATA_INJECT_TYPE_B,
-} from '../../../chartsUtils';
+} from '../../../utils/chartsUtils';
 import { schemeBlues } from 'd3-scale-chromatic';
-import MouseIcon from '../../../shared/MouseIcon';
+import MouseIcon from '../../../utils/components/MouseIcon';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { useSizeObserver } from '../../../utils/chartsHooks';
 import injectData from '../../../injectData';
 
 const styles = {

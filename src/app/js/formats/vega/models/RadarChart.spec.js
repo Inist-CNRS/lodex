@@ -1,5 +1,5 @@
 import RadarChart from './RadarChart';
-import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
+import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 
 describe('RadarChart', () => {
     it('Test Color', function() {

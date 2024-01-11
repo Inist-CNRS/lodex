@@ -5,18 +5,18 @@ import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 
 import { field as fieldPropTypes } from '../../../../propTypes';
-import { CustomActionVegaLite } from '../vega-lite-component';
+import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
 import injectData from '../../../injectData';
 import {
     convertSpecTemplate,
     lodexOrderToIdOrder,
     VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
-} from '../../../chartsUtils';
+} from '../../../utils/chartsUtils';
 import BubblePlot from '../../models/BubblePlot';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../vega-utils/chartsHooks';
-import { ASPECT_RATIO_1_1 } from '../../../aspectRatio';
+import { useSizeObserver } from '../../../utils/chartsHooks';
+import { ASPECT_RATIO_1_1 } from '../../../utils/aspectRatio';
 
 const styles = {
     container: {
