@@ -29,10 +29,10 @@ import SourceValueRoutine from './SourceValueRoutine';
 
 const TRANSFORMERS_FORM_STATUS = new Map([
     [
-        'arbitrary',
+        'arbitrary_value',
         [
             {
-                operation: 'ROUTINE',
+                operation: 'VALUE',
                 args: [
                     {
                         name: 'value',
@@ -43,10 +43,10 @@ const TRANSFORMERS_FORM_STATUS = new Map([
         ],
     ],
     [
-        'arbitrary_value',
+        'arbitrary',
         [
             {
-                operation: 'VALUE',
+                operation: 'ROUTINE',
                 args: [
                     {
                         name: 'value',
@@ -159,12 +159,12 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
     }
 
     const sourceValues = {
-        ROUTINE: {
-            source: 'arbitrary',
-            value: transformers[0]?.args && transformers[0].args[0]?.value,
-        },
         VALUE: {
             source: 'arbitrary_value',
+            value: transformers[0]?.args && transformers[0].args[0]?.value,
+        },
+        ROUTINE: {
+            source: 'arbitrary',
             value: transformers[0]?.args && transformers[0].args[0]?.value,
         },
         PRECOMPUTED: {
@@ -356,19 +356,19 @@ export const SourceValueToggle = ({
                 onChange={handleChange}
                 aria-label="Choix de la valeur"
             >
-                {/* Routine */}
-                <ToggleButton value="arbitrary">
-                    <RoutineIcon style={{ fontSize: 50 }} />
-                    <Typography variant="caption">
-                        {polyglot.t('routine_value')}
-                    </Typography>
-                </ToggleButton>
-
                 {/* Raw value */}
                 <ToggleButton value="arbitrary_value">
                     <ArbitraryIcon style={{ fontSize: 50 }} />
                     <Typography variant="caption">
                         {polyglot.t('arbitrary_value')}
+                    </Typography>
+                </ToggleButton>
+
+                {/* Routine */}
+                <ToggleButton value="arbitrary">
+                    <RoutineIcon style={{ fontSize: 50 }} />
+                    <Typography variant="caption">
+                        {polyglot.t('routine_value')}
                     </Typography>
                 </ToggleButton>
 
@@ -405,8 +405,8 @@ export const SourceValueToggle = ({
                 )}
             </ToggleButtonGroup>
 
-            {source === 'arbitrary' && (
-                <SourceValueRoutine
+            {source === 'arbitrary_value' && (
+                <SourceValueArbitrary
                     updateDefaultValueTransformers={newTransformers =>
                         updateDefaultValueTransformers(
                             source,
@@ -418,8 +418,8 @@ export const SourceValueToggle = ({
                 />
             )}
 
-            {source === 'arbitrary_value' && (
-                <SourceValueArbitrary
+            {source === 'arbitrary' && (
+                <SourceValueRoutine
                     updateDefaultValueTransformers={newTransformers =>
                         updateDefaultValueTransformers(
                             source,
