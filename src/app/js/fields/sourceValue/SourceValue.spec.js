@@ -8,7 +8,7 @@ describe('SourceValueToggle', () => {
                 { operation: 'VALUE', args: [{ value: 'test' }] },
             ];
             expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
-                source: 'arbitrary',
+                source: 'arbitrary_value',
                 value: 'test',
             });
         });
