@@ -129,7 +129,7 @@ export const getComputedFromWebservice = async ctx => {
     notifyListeners(room, logData);
 
     //WS doc here:
-    //openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20coprus%20compress%C3%A9#/data-computer/post-v1-collect
+    //openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20coprus%20compress%C3%A9#/data-computer/post-v1-retrieve
     const streamRetrieveInput = new Readable({
         objectMode: true,
         read() {
@@ -151,7 +151,7 @@ export const getComputedFromWebservice = async ctx => {
     const streamRetreiveWorflow = streamRetrieveInput
         .pipe(
             ezs('URLConnect', {
-                url: `${webServiceBaseURL}/collect`,
+                url: `${webServiceBaseURL}/retrieve-json`,
                 streaming: true,
                 json: true,
                 encoder: 'transit',
