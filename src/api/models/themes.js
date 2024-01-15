@@ -4,6 +4,7 @@ import config from '../../../config.json';
 import path from 'path';
 import getLogger from '../services/logger';
 import defaultCustomTheme from '../../app/custom/customTheme';
+import { version } from '../../../package.json';
 import deepClone from 'lodash.clonedeep';
 
 const logger = getLogger('system');
@@ -12,6 +13,7 @@ const THEMES_VERSION = 2;
 
 const REGEX_JS_HOST = /\{\|__JS_HOST__\|}/g;
 const REGEX_THEMES_HOST = /\{\|__THEMES_HOST__\|}/g;
+const REGEX_LODEX_VERSION = /\{\|__LODEX_VERSION__\|}/g;
 
 /**
  * @type {Map<string, {name: {fr: string, en: string}, description: {fr: string, en: string}, index: string, customTheme: *}>}
@@ -71,7 +73,8 @@ const loadFile = async path =>
     (await fs.readFile(path))
         .toString('utf8')
         .replace(REGEX_JS_HOST, jsHost)
-        .replace(REGEX_THEMES_HOST, themesHost);
+        .replace(REGEX_THEMES_HOST, themesHost)
+        .replace(REGEX_LODEX_VERSION, version);
 
 const init = async () => {
     // Default theme
