@@ -3,6 +3,7 @@ import COLUMN from './operations/COLUMN';
 import UPPERCASE from './operations/UPPERCASE';
 import LOWERCASE from './operations/LOWERCASE';
 import VALUE from './operations/VALUE';
+import ROUTINE from './operations/ROUTINE';
 import CONCAT from './operations/CONCAT';
 import JOIN from './operations/JOIN';
 import CONCAT_URI from './operations/CONCAT_URI';
@@ -106,6 +107,7 @@ export const transformers = {
     UPPERCASE,
     LOWERCASE,
     VALUE,
+    ROUTINE,
     CONCAT,
     JOIN,
     CONCAT_URI,
@@ -141,6 +143,7 @@ export const transformersMetas = [
     UPPERCASE,
     LOWERCASE,
     VALUE,
+    ROUTINE,
     CONCAT,
     JOIN,
     CONCAT_URI,
