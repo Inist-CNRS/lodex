@@ -51,10 +51,10 @@ const getHiddenTransformers = source => {
     if (source === 'fromColumnsForSubRessource') {
         return 3;
     }
-    if (source === 'fromColumns' || source === 'arbitrary_value') {
+    if (source === 'fromColumns' || source === 'arbitrary') {
         return 1;
     }
-    if (source === 'arbitrary') {
+    if (source === 'routine') {
         return 2;
     }
     return 0;
