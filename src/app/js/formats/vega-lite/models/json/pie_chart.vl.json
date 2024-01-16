@@ -1,4 +1,5 @@
 {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "encoding": {
     "theta": {
       "field": "value",
@@ -9,11 +10,9 @@
       "field": "_id",
       "type": "nominal",
       "legend": {
-        "orient": "none",
+        "orient": "right",
         "title": null,
-        "columns": 1,
-        "legendX": 250,
-        "legendY": 80
+        "columns": 1
       },
       "scale": {
         "range": [
@@ -40,6 +39,9 @@
   },
   "layer": [
     {
+      "mark": {
+        "type": "arc"
+      },
       "selection": {
         "hover1": {
           "type": "single",
@@ -58,10 +60,6 @@
           ],
           "bind": "legend"
         }
-      },
-      "mark": {
-        "type": "arc",
-        "outerRadius": 80
       }
     }
   ],

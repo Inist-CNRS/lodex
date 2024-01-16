@@ -65,7 +65,7 @@ const PieChartView = ({
         specBuilder.setColor(colors);
         specBuilder.setLabels(labels);
 
-        return specBuilder.buildSpec(width);
+        return specBuilder.buildSpec();
     }, [
         width,
         advancedMode,
