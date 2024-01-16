@@ -27,14 +27,12 @@ class PieChart extends BasicChart {
             this.model.encoding.opacity.condition.selection.or.push('hover2');
         }
 
-        if (this.tooltip.toggle)
+        if (this.tooltip.toggle) {
             this.model.encoding.tooltip = [
                 this.tooltip.category,
                 this.tooltip.value,
             ];
-
-        this.model.width = 'container';
-        this.model.height = 'container';
+        }
 
         return this.model;
     }
