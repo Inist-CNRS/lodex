@@ -1,9 +1,13 @@
 import progress from '../progress';
 import localConfig from '../../../../config.json';
 import { getHost } from '../../../common/uris';
+import { unlinkFile } from '../fsHelpers.js';
 import streamToPromise from 'stream-to-promise';
+import path from 'path';
+import { tmpdir } from 'os';
 import ezs from '@ezs/core';
 import Lodex from '@ezs/lodex';
+import Basics from '@ezs/basics';
 import { Readable } from 'stream';
 import {
     PENDING as PRECOMPUTED_PENDING,
@@ -21,6 +25,8 @@ import { PRECOMPUTER } from '../../workers/precomputer';
 import getLogger from '../logger';
 
 ezs.use(Lodex);
+ezs.use(Basics);
+const tmpDirectory = path.resolve(tmpdir(), 'precomputed');
 const baseUrl = getHost();
 const webhookBaseUrl =
     process.env.NODE_ENV === 'development'
@@ -97,6 +103,7 @@ export const getComputedFromWebservice = async ctx => {
             })}`,
         );
     }
+    await unlinkFile(path.resolve(tmpDirectory, precomputedId)); // delete input file
     progress.setProgress(tenant, 65);
     const workerQueue = workerQueues[tenant];
     const completedJobs = await workerQueue.getCompleted();
@@ -341,20 +348,32 @@ export const processPrecomputed = async (precomputed, ctx) => {
         )
         .pipe(ezs('TARDump', { compress: true }))
         .pipe(
+            ezs('FILESave', {
+                identifier: precomputedId,
+                location: tmpDirectory,
+                compress: false,
+            }),
+        )
+        .pipe(
             ezs((entry, feed, self) => {
                 if (self.isLast()) {
-                    logData = JSON.stringify({
-                        level: 'ok',
-                        message: `[Instance: ${ctx.tenant}] 3/10 - End compress data. Start sending to webservice`,
-                        timestamp: new Date(),
-                        status: IN_PROGRESS,
-                    });
-                    jobLogger.info(ctx.job, logData);
-                    notifyListeners(room, logData);
                     return feed.close();
                 }
-
-                feed.send(entry);
+                logData = JSON.stringify({
+                    level: 'ok',
+                    message: `[Instance: ${ctx.tenant}] 3/10 - End compress data. Start sending file (${path.basename(entry.filename)}) to webservice`,
+                    timestamp: new Date(),
+                    status: IN_PROGRESS,
+                });
+                jobLogger.info(ctx.job, logData);
+                notifyListeners(room, logData);
+                feed.send(entry.filename);
+            }),
+        )
+        .pipe(
+            ezs('FILELoad', {
+                compress: false,
+                location: tmpDirectory,
             }),
         )
         .pipe(
