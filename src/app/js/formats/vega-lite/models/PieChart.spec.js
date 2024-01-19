@@ -3,15 +3,14 @@ import PieChart from './PieChart';
 describe('PieChart', () => {
     it('build', function() {
         let pieChart = new PieChart();
-        expect(pieChart.buildSpec(400)).toStrictEqual({
+        expect(pieChart.buildSpec()).toStrictEqual({
+            $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
             encoding: {
                 color: {
                     field: '_id',
                     legend: {
                         columns: 1,
-                        legendX: 200,
-                        legendY: 80,
-                        orient: 'none',
+                        orient: 'right',
                         title: null,
                     },
                     scale: {
@@ -47,7 +46,6 @@ describe('PieChart', () => {
             layer: [
                 {
                     mark: {
-                        outerRadius: 80,
                         type: 'arc',
                     },
                     selection: {
