@@ -61,17 +61,27 @@ const fields = [
 
 test.skip('export single resource', done => {
     let outputString = '';
-    from([{
-        uri: 'http://data.istex.fr',
-        Q98n: 'Terminator',
-        JDGh: 'Description',
-    }])
-        .pipe(ezs('delegate', { file: __dirname + '/jsonallvalue.ini' }, { localConfig: {}, fields }))
+    from([
+        {
+            uri: 'http://data.istex.fr',
+            Q98n: 'Terminator',
+            JDGh: 'Description',
+        },
+    ])
+        .pipe(
+            ezs(
+                'delegate',
+                { file: __dirname + '/jsonallvalue.ini' },
+                { localConfig: {}, fields },
+            ),
+        )
         .on('data', data => {
             if (data) outputString += data;
         })
         .on('end', () => {
-            expect(outputString).toEqual('[{"uri":"http://data.istex.fr","fields":[{"name":"Q98n","value":"Terminator","label":"title","language":"fr"},{"name":"JDGh","value":"Description","label":"Abstract"}]}]');
+            expect(outputString).toEqual(
+                '[{"uri":"http://data.istex.fr","fields":[{"name":"Q98n","value":"Terminator","label":"title","language":"fr"},{"name":"JDGh","value":"Description","label":"Abstract"}]}]',
+            );
             done();
         })
         .on('error', done);
