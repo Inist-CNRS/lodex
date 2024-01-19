@@ -16,6 +16,9 @@ import {
     GridToolbarContainer,
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
+    // Import type for jsdoc
+    // eslint-disable-next-line no-unused-vars,import/named
+    GridColumns,
 } from '@mui/x-data-grid';
 import { Button, Link, Tooltip, Typography } from '@mui/material';
 
@@ -232,6 +235,9 @@ const Tenants = ({ handleLogout }) => {
     };
 
     // Define the columns for the datagrid
+    /**
+     * @type {GridColumns}
+     */
     const columns = [
         { field: '_id', headerName: 'ID', width: 200 },
         {
@@ -331,6 +337,39 @@ const Tenants = ({ handleLogout }) => {
             field: 'stats',
             headerName: 'Taille Base de donnée',
             flex: 2,
+            sortable: true,
+            /**
+             *
+             * @param v1 {any}
+             * @param v2 {any}
+             * @returns {number}
+             */
+            sortComparator: (v1, v2) => {
+                if (
+                    (v1.value == null || v1.value.totalSize == null) &&
+                    (v2.value == null || v2.value.totalSize == null)
+                ) {
+                    return 0;
+                }
+
+                if (v1.value == null || v1.value.totalSize == null) {
+                    return -1;
+                }
+
+                if (v2.value == null || v2.value.totalSize == null) {
+                    return 1;
+                }
+
+                if (v1.value.totalSize > v2.value.totalSize) {
+                    return 1;
+                }
+
+                if (v1.value.totalSize < v2.value.totalSize) {
+                    return -1;
+                }
+
+                return 0;
+            },
             valueFormatter: params => {
                 if (params.value == null || params.value.totalSize == null) {
                     return '-';
