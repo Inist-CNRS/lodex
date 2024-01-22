@@ -45,15 +45,19 @@ app.use(async (ctx, next) => {
 
 app.use(koaBodyParser());
 
-const getTenant = async ctx => {
-    const tenants = await ctx.tenantCollection.findAll({ createdAt: -1 });
+const getTenants = async (ctx, filter) => {
+    const tenants = await ctx.tenantCollection.findAll(filter);
 
     for (const tenant of tenants) {
         const db = await mongoClient(tenant.name);
         tenant.stats = await db.stats({ scale: 1024 });
     }
 
-    ctx.body = tenants;
+    return tenants;
+};
+
+const getTenant = async ctx => {
+    ctx.body = await getTenants(ctx, { createdAt: -1 });
 };
 
 const postTenant = async ctx => {
@@ -80,7 +84,7 @@ const postTenant = async ctx => {
 
         const queue = createWorkerQueue(name, 1);
         bullBoard.addDashboardQueue(name, queue);
-        ctx.body = await ctx.tenantCollection.findAll({ createdAt: -1 });
+        ctx.body = await getTenants(ctx, { createdAt: -1 });
     }
 };
 
@@ -94,7 +98,7 @@ const putTenant = async (ctx, id) => {
 
     const update = { description, author, username, password };
     await ctx.tenantCollection.update(id, update);
-    ctx.body = await ctx.tenantCollection.findAll({ createdAt: -1 });
+    ctx.body = await getTenants(ctx, { createdAt: -1 });
 };
 
 const deleteTenant = async ctx => {
@@ -110,7 +114,7 @@ const deleteTenant = async ctx => {
         deleteWorkerQueue(tenantExists.name);
         bullBoard.removeDashboardQueue(tenantExists.name);
         await ctx.tenantCollection.deleteOne(tenantExists);
-        ctx.body = await ctx.tenantCollection.findAll();
+        ctx.body = await getTenants(ctx);
     }
 };
 
