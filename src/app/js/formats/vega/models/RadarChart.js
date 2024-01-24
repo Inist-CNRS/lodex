@@ -1,5 +1,5 @@
-import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../colorUtils';
-import { SCALE_LINEAR } from '../../chartsUtils';
+import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
+import { SCALE_LINEAR } from '../../utils/chartsUtils';
 import radarChartVG from './json/radar_chart.vg.json';
 import deepClone from 'lodash.clonedeep';
 import BasicChartVG from './BasicChartVG';

@@ -18,11 +18,7 @@ class PieChart extends BasicChart {
         this.labels = labels;
     }
 
-    /**
-     * Rebuild the edited spec
-     * @param widthIn{number | null}
-     */
-    buildSpec(widthIn = null) {
+    buildSpec() {
         this.model.encoding.color.scale.range = this.colors;
 
         if (this.labels) {
@@ -31,19 +27,12 @@ class PieChart extends BasicChart {
             this.model.encoding.opacity.condition.selection.or.push('hover2');
         }
 
-        if (this.tooltip.toggle)
+        if (this.tooltip.toggle) {
             this.model.encoding.tooltip = [
                 this.tooltip.category,
                 this.tooltip.value,
             ];
-
-        if (!this.editMode && widthIn) {
-            this.model.encoding.color.legend.legendX =
-                widthIn * (widthIn <= 920 ? 0.5 : 0.7);
         }
-
-        this.model.width = 'container';
-        this.model.height = 'container';
 
         return this.model;
     }

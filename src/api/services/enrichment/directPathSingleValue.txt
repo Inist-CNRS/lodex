@@ -24,7 +24,7 @@ path = value
 # Send the request to the webservice
 [expand/URLConnect]
 url = [[WEB SERVICE URL]]
-timeout = 5000
+timeout = [[WEB SERVICE TIMEOUT]]
 noerror = false
 retries = 5
 

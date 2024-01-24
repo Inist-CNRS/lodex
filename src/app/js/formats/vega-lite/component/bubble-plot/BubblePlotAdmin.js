@@ -10,21 +10,21 @@ import {
 } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
-import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
-import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../colorUtils';
+import updateAdminArgs from '../../../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
+import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
+import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
+import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
 import BubblePlot from '../../models/BubblePlot';
-import { lodexOrderToIdOrder } from '../../../chartsUtils';
-import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
+import { lodexOrderToIdOrder } from '../../../utils/chartsUtils';
+import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import {
-    VegaChartParamsFieldSet,
-    VegaDataParamsFieldSet,
-} from '../../../vega-utils/components/VegaFieldSet';
+    FormatChartParamsFieldSet,
+    FormatDataParamsFieldSet,
+} from '../../../utils/components/field-set/FormatFieldSets';
 import { BubblePlotAdminView } from './BubblePlotView';
-import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
-import { StandardSourceTargetWeight } from '../../../vega-utils/dataSet';
+import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
+import { StandardSourceTargetWeight } from '../../../utils/dataSet';
 
 export const defaultArgs = {
     params: {
@@ -143,7 +143,7 @@ const BubblePlotAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaDataParamsFieldSet>
+            <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
@@ -153,8 +153,8 @@ const BubblePlotAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaDataParamsFieldSet>
-            <VegaChartParamsFieldSet>
+            </FormatDataParamsFieldSet>
+            <FormatChartParamsFieldSet>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -202,7 +202,7 @@ const BubblePlotAdmin = props => {
                         />
                     </>
                 )}
-            </VegaChartParamsFieldSet>
+            </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={BubblePlotAdminView}

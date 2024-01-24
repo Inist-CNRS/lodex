@@ -32,7 +32,7 @@ import getLocale from '../../common/getLocale';
 import { getPublication } from './api/publication';
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
-import getTheme, { getAvailableThemesKeys } from '../models/themes';
+import { getTheme, getAvailableThemesKeys } from '../models/themes';
 
 const REGEX_JS_HOST = /\{\|__JS_HOST__\|\}/g;
 

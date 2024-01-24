@@ -8,7 +8,6 @@
         "all-documents",
         "classif-by",
         "close-by",
-        "clustered-precomputed",
         "count-all",
         "count-by-fields",
         "cross-by",
@@ -28,7 +27,9 @@
         "filter",
         "get-fields",
         "graph-by",
-        "graph-by-precomputed",
+        "segments-precomputed",
+        "segments-precomputed-nofilter",
+        "values-precomputed-nofilter",
         "group-and-sum-with",
         "hello-world",
         "istex-facet",
@@ -44,7 +45,6 @@
         "syndication-from",
         "syndication",
         "total-of",
-        "tree-by-precomputed",
         "tree-by",
         "unwind-by"
     ],
@@ -103,5 +103,6 @@
     ],
     "precomputedBaseUrlForDevelopment": "{public url of the server accessible from webhooks (ie ngrok)}",
     "activateBullDashboard": false,
-    "themes": ["void", "nougat", "inist", "istex"]
+    "themes": ["void", "nougat", "inist", "istex"],
+    "timeout": 3600000
 }

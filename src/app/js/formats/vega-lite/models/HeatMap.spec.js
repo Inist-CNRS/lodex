@@ -1,5 +1,5 @@
 import HeatMap from './HeatMap';
-import { LABEL_ASC, LABEL_DESC } from '../../chartsUtils';
+import { LABEL_ASC, LABEL_DESC } from '../../utils/chartsUtils';
 
 describe('HeatMap', () => {
     it('Test flipAxis', function() {

@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import path from 'path';
 import ezs from '@ezs/core';
 import progress from '../../services/progress';
+import localConfig from '../../../../config.json';
 
 import { ObjectId } from 'mongodb';
 import from from 'from';
@@ -138,10 +139,12 @@ export const getEnrichmentRuleModel = (sourceData, enrichment, BATCH_SIZE) => {
         rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
         rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
         if (enrichment.webServiceUrl) {
-            rule = rule.replace(
-                '[[WEB SERVICE URL]]',
-                enrichment.webServiceUrl,
-            );
+            rule = rule
+                .replace('[[WEB SERVICE URL]]', enrichment.webServiceUrl)
+                .replace(
+                    '[[WEB SERVICE TIMEOUT]]',
+                    Number(localConfig.timeout) || 120000,
+                );
         } else {
             rule = cleanWebServiceRule(rule);
         }

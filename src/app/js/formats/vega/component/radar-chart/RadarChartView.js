@@ -4,16 +4,16 @@ import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import { clamp } from 'lodash';
 
-import { CustomActionVega } from '../vega-component';
+import { CustomActionVega } from '../../../utils/components/vega-component';
 import RadarChart from '../../models/RadarChart';
 import {
     convertSpecTemplate,
     lodexScaleToIdScale,
     VEGA_ACTIONS_WIDTH,
     VEGA_DATA_INJECT_TYPE_A,
-} from '../../../chartsUtils';
+} from '../../../utils/chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { useSizeObserver } from '../../../utils/chartsHooks';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
 

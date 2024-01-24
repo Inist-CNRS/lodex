@@ -124,7 +124,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
                 'URLConnect',
                 {
                     url: workers_url,
-                    timeout: 120000,
+                    timeout: Number(localConfig.timeout) || 120000,
                     streaming: true,
                     json: false,
                     encoder: 'pack',

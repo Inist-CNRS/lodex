@@ -2,22 +2,22 @@ import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../../../shared/RoutineParamsAdmin';
-import VegaToolTips from '../../../vega-utils/components/VegaToolTips';
-import ColorPickerParamsAdmin from '../../../shared/ColorPickerParamsAdmin';
+import updateAdminArgs from '../../../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
+import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
+import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import { schemeBlues } from 'd3-scale-chromatic';
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import { Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import FlowMap from '../../models/FlowMap';
-import VegaAdvancedMode from '../../../vega-utils/components/VegaAdvancedMode';
-import VegaFieldPreview from '../../../vega-utils/components/VegaFieldPreview';
+import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
+import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import { FlowMapAdminView } from './FlowMapView';
 import {
-    VegaChartParamsFieldSet,
-    VegaDataParamsFieldSet,
-} from '../../../vega-utils/components/VegaFieldSet';
-import { MapSourceTargetWeight } from '../../../vega-utils/dataSet';
+    FormatChartParamsFieldSet,
+    FormatDataParamsFieldSet,
+} from '../../../utils/components/field-set/FormatFieldSets';
+import { MapSourceTargetWeight } from '../../../utils/dataSet';
 
 export const defaultArgs = {
     params: {
@@ -138,7 +138,7 @@ const FlowMapAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaDataParamsFieldSet>
+            <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -148,8 +148,8 @@ const FlowMapAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaDataParamsFieldSet>
-            <VegaChartParamsFieldSet>
+            </FormatDataParamsFieldSet>
+            <FormatChartParamsFieldSet>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -192,7 +192,7 @@ const FlowMapAdmin = props => {
                         />
                     </>
                 )}
-            </VegaChartParamsFieldSet>
+            </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={{ ...args, p: polyglot }}
                 PreviewComponent={FlowMapAdminView}

@@ -5,19 +5,19 @@ import compose from 'recompose/compose';
 import { clamp } from 'lodash';
 import { schemeOrRd } from 'd3-scale-chromatic';
 
-import { CustomActionVegaLite } from '../vega-lite-component';
+import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
 import {
     convertSpecTemplate,
     MAP_FRANCE,
     VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
-} from '../../../chartsUtils';
+} from '../../../utils/chartsUtils';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
 import Cartography from '../../models/Cartography';
 import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../vega-utils/chartsHooks';
+import { useSizeObserver } from '../../../utils/chartsHooks';
 
 const styles = {
     container: {

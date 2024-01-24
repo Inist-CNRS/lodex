@@ -1,8 +1,13 @@
 import progress from '../progress';
 import localConfig from '../../../../config.json';
 import { getHost } from '../../../common/uris';
+import { unlinkFile } from '../fsHelpers.js';
 import streamToPromise from 'stream-to-promise';
+import path from 'path';
+import { tmpdir } from 'os';
 import ezs from '@ezs/core';
+import Lodex from '@ezs/lodex';
+import Basics from '@ezs/basics';
 import { Readable } from 'stream';
 import {
     PENDING as PRECOMPUTED_PENDING,
@@ -12,12 +17,16 @@ import {
     CANCELED,
     ON_HOLD,
 } from '../../../common/taskStatus';
+import { mongoConnectionString } from '../mongoClient';
 import { PRECOMPUTING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError, workerQueues } from '../../workers';
 import { PRECOMPUTER } from '../../workers/precomputer';
 import getLogger from '../logger';
 
+ezs.use(Lodex);
+ezs.use(Basics);
+const tmpDirectory = path.resolve(tmpdir(), 'precomputed');
 const baseUrl = getHost();
 const webhookBaseUrl =
     process.env.NODE_ENV === 'development'
@@ -94,6 +103,7 @@ export const getComputedFromWebservice = async ctx => {
             })}`,
         );
     }
+    await unlinkFile(path.resolve(tmpDirectory, precomputedId)); // delete input file
     progress.setProgress(tenant, 65);
     const workerQueue = workerQueues[tenant];
     const completedJobs = await workerQueue.getCompleted();
@@ -126,7 +136,7 @@ export const getComputedFromWebservice = async ctx => {
     notifyListeners(room, logData);
 
     //WS doc here:
-    //openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20coprus%20compress%C3%A9#/data-computer/post-v1-collect
+    //openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20coprus%20compress%C3%A9#/data-computer/post-v1-retrieve
     const streamRetrieveInput = new Readable({
         objectMode: true,
         read() {
@@ -144,32 +154,21 @@ export const getComputedFromWebservice = async ctx => {
     jobLogger.info(askForPrecomputedJob, logData);
     notifyListeners(room, logData);
 
-    const folderName = 'precomputedData';
-    const fileName = `${precomputedId}.json`;
+    const connectionStringURI = mongoConnectionString(tenant);
     const streamRetreiveWorflow = streamRetrieveInput
         .pipe(
             ezs('URLConnect', {
-                url: `${webServiceBaseURL}/collect`,
+                url: `${webServiceBaseURL}/retrieve-json`,
+                streaming: true,
                 json: true,
                 encoder: 'transit',
+                timeout: Number(localConfig.timeout) || 120000,
             }),
         )
-        .pipe(ezs('group', { length: 100 })) // like import see. services/saveStream.js#L30
         .pipe(
             ezs(async (data, feed, self) => {
-                if (!self.size) {
-                    self.size = 0;
-                }
-                if (!self.allData) {
-                    self.allData = [];
-                }
-                if (data) {
-                    self.allData = [...self.allData, ...data];
-                    self.size += data.length;
-                }
                 if (self.isFirst()) {
                     progress.setProgress(tenant, 85);
-                    return feed.end();
                 }
                 if (self.isLast()) {
                     progress.setProgress(tenant, 95);
@@ -178,32 +177,30 @@ export const getComputedFromWebservice = async ctx => {
                         FINISHED,
                         { hasData: true },
                     );
-                    if (self.allData) {
-                        feed.write(JSON.stringify(self.allData));
-                    }
                     return feed.close();
                 }
-                feed.end();
+                feed.send(data);
             }),
         )
+        .pipe(ezs('group', { length: 100 })) // like import see. services/saveStream.js#L30
         .pipe(
-            ezs('FILESave', {
-                location: `/app/${folderName}/${tenant}`,
-                identifier: fileName,
+            ezs('LodexSaveDocuments', {
+                connectionStringURI,
+                collection: `pc_${precomputedId}`,
             }),
         );
 
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${tenant}] 9/10 - Data saved in ${folderName}/${tenant}/${fileName}`,
+        message: `[Instance: ${tenant}] 9/10 - Data saved in pc_${precomputedId}`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
     jobLogger.info(askForPrecomputedJob, logData);
     notifyListeners(room, logData);
 
-    await streamToPromise(streamRetreiveWorflow);
-
+    const insertReport = await streamToPromise(streamRetreiveWorflow);
+    const insertCount = insertReport.reduce((a, b) => a + b, 0);
     await ctx.precomputed.updateStartedAt(precomputedId, null);
 
     askForPrecomputedJob.progress(100);
@@ -215,7 +212,7 @@ export const getComputedFromWebservice = async ctx => {
 
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${tenant}] 10/10 - Precomputing finished`,
+        message: `[Instance: ${tenant}] 10/10 - Precomputing finished ${insertCount} items saved.`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
@@ -297,7 +294,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
     progress.setProgress(ctx.tenant, 10);
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] 2/10 -Start building compress data`,
+        message: `[Instance: ${ctx.tenant}] 2/10 - Start building compress data`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
@@ -321,8 +318,15 @@ export const processPrecomputed = async (precomputed, ctx) => {
                 precomputed.sourceColumns.map(column => {
                     colums.push(entry[column]);
                 });
+                // Please note, it is important to produce identifiers identical to those that will be used in the published data.
+                // Otherwise, the join will be impossible
+                // see src/common/transformers/AUTOGENERATE_URI.js#L26
+                const identifier =
+                    String(entry.uri).indexOf('uid:/') !== 0
+                        ? `uid:/${entry.uri}`
+                        : entry.uri;
                 feed.send({
-                    id: entry.uri,
+                    id: identifier,
                     value: tryParseJsonString(
                         colums.length > 1 ? colums : colums[0],
                     ),
@@ -344,20 +348,32 @@ export const processPrecomputed = async (precomputed, ctx) => {
         )
         .pipe(ezs('TARDump', { compress: true }))
         .pipe(
+            ezs('FILESave', {
+                identifier: precomputedId,
+                location: tmpDirectory,
+                compress: false,
+            }),
+        )
+        .pipe(
             ezs((entry, feed, self) => {
                 if (self.isLast()) {
-                    logData = JSON.stringify({
-                        level: 'ok',
-                        message: `[Instance: ${ctx.tenant}] 3/10 - End compress data. Start sending to webservice`,
-                        timestamp: new Date(),
-                        status: IN_PROGRESS,
-                    });
-                    jobLogger.info(ctx.job, logData);
-                    notifyListeners(room, logData);
                     return feed.close();
                 }
-
-                feed.send(entry);
+                logData = JSON.stringify({
+                    level: 'ok',
+                    message: `[Instance: ${ctx.tenant}] 3/10 - End compress data. Start sending file (${path.basename(entry.filename)}) to webservice`,
+                    timestamp: new Date(),
+                    status: IN_PROGRESS,
+                });
+                jobLogger.info(ctx.job, logData);
+                notifyListeners(room, logData);
+                feed.send(entry.filename);
+            }),
+        )
+        .pipe(
+            ezs('FILELoad', {
+                compress: false,
+                location: tmpDirectory,
             }),
         )
         .pipe(
@@ -366,7 +382,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
                 streaming: true,
                 json: true,
                 encoder: 'transit',
-                timeout: 60000,
+                timeout: Number(localConfig.timeout) || 120000,
                 header: [
                     'Content-Type: application/gzip',
                     `X-Webhook-Success: ${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}`,
@@ -380,13 +396,21 @@ export const processPrecomputed = async (precomputed, ctx) => {
     try {
         response = await streamToPromise(streamWorflow);
     } catch (err) {
+        let msg = err.message;
         if (err.sourceError && err.sourceError.responseText) {
             const { message } = tryParseJsonString(
                 err.sourceError.responseText,
             );
-            throw new Error(message.replace(/(<Error: |\[\w+\]|>+)/g, ''));
+            if (message) {
+                msg = message.replace(/(<Error: |\[\w+\]|>+)/g, '');
+            } else {
+                msg = err.sourceError.message.split('\n').shift();
+            }
         }
-        throw err;
+        await ctx.precomputed.updateStatus(precomputedId, ERROR, {
+            message: msg,
+        });
+        throw new Error(msg);
     }
     const token = response.join('');
 

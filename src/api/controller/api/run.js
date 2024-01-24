@@ -9,6 +9,7 @@ import config from 'config';
 import Script from '../../services/script';
 import { getCleanHost } from '../../../common/uris';
 import { mongoConnectionString } from '../../services/mongoClient';
+import localConfig from '../../../../config.json';
 
 ezs.use(Lodex);
 
@@ -88,7 +89,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
                     'URLConnect',
                     {
                         url: workers_url,
-                        timeout: 120000,
+                        timeout: Number(localConfig.timeout) || 120000,
                         streaming: true,
                         json: false,
                         encoder: 'pack',

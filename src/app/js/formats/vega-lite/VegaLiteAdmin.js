@@ -4,14 +4,14 @@ import translate from 'redux-polyglot/translate';
 import { Box, TextField } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import updateAdminArgs from '../shared/updateAdminArgs';
-import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
-import VegaAdvancedMode from '../vega-utils/components/VegaAdvancedMode';
+import updateAdminArgs from '../utils/updateAdminArgs';
+import RoutineParamsAdmin from '../utils/components/admin/RoutineParamsAdmin';
+import VegaAdvancedMode from '../utils/components/admin/VegaAdvancedMode';
 import {
-    VegaChartParamsFieldSet,
-    VegaDataParamsFieldSet,
-} from '../vega-utils/components/VegaFieldSet';
-import VegaFieldPreview from '../vega-utils/components/VegaFieldPreview';
+    FormatChartParamsFieldSet,
+    FormatDataParamsFieldSet,
+} from '../utils/components/field-set/FormatFieldSets';
+import VegaFieldPreview from '../utils/components/admin/VegaFieldPreview';
 import { VegaLiteAdminView } from './VegaLiteView';
 
 export const defaultArgs = {
@@ -67,7 +67,7 @@ const VegaLiteAdmin = props => {
             justifyContent="space-between"
             gap={2}
         >
-            <VegaDataParamsFieldSet>
+            <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={p}
@@ -77,8 +77,8 @@ const VegaLiteAdmin = props => {
                     showMinValue={showMinValue}
                     showOrderBy={showOrderBy}
                 />
-            </VegaDataParamsFieldSet>
-            <VegaChartParamsFieldSet>
+            </FormatDataParamsFieldSet>
+            <FormatChartParamsFieldSet>
                 <Box width="100%">
                     <VegaAdvancedMode
                         value={formattedSpecTemplate}
@@ -118,7 +118,7 @@ const VegaLiteAdmin = props => {
                         endAdornment: '%',
                     }}
                 />
-            </VegaChartParamsFieldSet>
+            </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={VegaLiteAdminView}

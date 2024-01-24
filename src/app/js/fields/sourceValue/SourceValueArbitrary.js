@@ -1,18 +1,15 @@
 import React from 'react';
 import compose from 'recompose/compose';
-import ListAltIcon from '@mui/icons-material/ListAlt';
 import PropTypes from 'prop-types';
-import RoutineCatalog from '../wizard/RoutineCatalog';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 
 const SourceValueArbitrary = ({
     updateDefaultValueTransformers,
     value,
     p: polyglot,
 }) => {
-    const [openRoutineCatalog, setOpenRoutineCatalog] = React.useState(false);
     const [valueInput, setValueInput] = React.useState(value || '');
     const handleChange = event => {
         setValueInput(event.target.value);
@@ -41,22 +38,6 @@ const SourceValueArbitrary = ({
                 onChange={handleChange}
                 value={valueInput}
                 multiline
-            />
-            <Box style={{ marginLeft: '10px', height: '56px' }}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => setOpenRoutineCatalog(true)}
-                    sx={{ height: '100%' }}
-                >
-                    <ListAltIcon fontSize="medium" />
-                </Button>
-            </Box>
-            <RoutineCatalog
-                isOpen={openRoutineCatalog}
-                handleClose={() => setOpenRoutineCatalog(false)}
-                onChange={handleChange}
-                currentValue={value}
             />
         </Box>
     );

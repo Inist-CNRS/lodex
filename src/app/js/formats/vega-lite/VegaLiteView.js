@@ -7,13 +7,13 @@ import { clamp } from 'lodash';
 import InvalidFormat from '../InvalidFormat';
 import injectData from '../injectData';
 import { field as fieldPropTypes } from '../../propTypes';
-import { CustomActionVegaLite } from './component/vega-lite-component';
+import { CustomActionVegaLite } from '../utils/components/vega-lite-component';
 import {
     convertSpecTemplate,
     VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
-} from '../chartsUtils';
-import { useSizeObserver } from '../vega-utils/chartsHooks';
+} from '../utils/chartsUtils';
+import { useSizeObserver } from '../utils/chartsHooks';
 
 const styles = {
     container: {

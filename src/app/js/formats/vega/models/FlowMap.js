@@ -2,7 +2,7 @@ import { schemeBlues } from 'd3-scale-chromatic';
 import flowMapVG from './json/flow_map.vg.json';
 import deepClone from 'lodash.clonedeep';
 import BasicChartVG from './BasicChartVG';
-import { VEGA_ACTIONS_WIDTH } from '../../chartsUtils';
+import { VEGA_ACTIONS_WIDTH } from '../../utils/chartsUtils';
 import worldCountriesSansAntarctica from '../../vega-lite/models/topojson/world-countries-sans-antarctica.json';
 import countriesCoordinate from './json/countriesCoordinate.json';
 

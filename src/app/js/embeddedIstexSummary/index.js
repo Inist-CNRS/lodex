@@ -14,7 +14,7 @@ import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import customTheme from '../../custom/customTheme';
 import FieldProvider from './FieldProvider';
-import { IstexSummaryView } from '../formats/istexSummary/IstexSummaryView';
+import { IstexSummaryView } from '../formats/other/istexSummary/IstexSummaryView';
 
 const locale = getLocale();
 const polyglot = new Polyglot({

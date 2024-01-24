@@ -104,7 +104,7 @@ export default async function LodexJoinQuery(data, feed) {
         .skip(skip)
         .limit(limit)
         .stream()
-        .on('error', (e) => feed.stop(e))    
+        .on('error', (e) => feed.stop(e))
         .pipe(ezs('assign',
             {
                 path,
