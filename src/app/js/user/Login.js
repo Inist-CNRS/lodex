@@ -5,7 +5,14 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { submit as submitAction, isSubmitting } from 'redux-form';
-import { Card, CardActions, CardHeader, CardContent } from '@mui/material';
+import {
+    Card,
+    CardActions,
+    CardHeader,
+    CardContent,
+    Button,
+} from '@mui/material';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import {
@@ -16,6 +23,7 @@ import {
 import { fromUser } from '../sharedSelectors';
 import LoginForm from './LoginForm';
 import ButtonWithStatus from '../lib/components/ButtonWithStatus';
+import Link from '@mui/material/Link';
 
 const styles = {
     container: {
@@ -25,7 +33,26 @@ const styles = {
 
 export const LoginComponent = ({ login, p: polyglot, submit, submitting }) => (
     <Card sx={styles.container}>
-        <CardHeader title={polyglot.t('Login')} />
+        <CardHeader
+            title={polyglot.t('Login')}
+            action={
+                <Button
+                    variant="contained"
+                    color="primary"
+                    disableElevation
+                    href="/instances"
+                    target="_blank"
+                    startIcon={<OpenInNewIcon />}
+                    sx={{
+                        '&:hover': {
+                            color: '#fff',
+                        },
+                    }}
+                >
+                    {polyglot.t('root_panel_link')}
+                </Button>
+            }
+        />
         <CardContent>
             <LoginForm onSubmit={login} />
         </CardContent>
