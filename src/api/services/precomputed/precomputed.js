@@ -224,7 +224,7 @@ export const getComputedFromWebservice = async ctx => {
 };
 
 export const getFailureFromWebservice = async ctx => {
-    const { tenant } = ctx.tenant;
+    const { tenant } = ctx;
     const { askForPrecomputedJobId, id: precomputedId, error } = ctx.job.data;
 
     if (!tenant || !precomputedId) {
@@ -287,140 +287,94 @@ const tryParseJsonString = str => {
 
 export const processPrecomputed = async (precomputed, ctx) => {
     const precomputedId = precomputed._id.toString();
+    let logData = {};
+    await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS, {
+        hasData: false,
+    });
+    await ctx.precomputed.updateStartedAt(precomputed._id, new Date());
+
+    const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
+    progress.setProgress(ctx.tenant, 10);
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${ctx.tenant}] 2/10 - Start building compress data`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(ctx.job, logData);
+    notifyListeners(room, logData);
+    const dataSetSize = await ctx.dataset.count();
+    const databaseOutput = await ctx.dataset.find().stream();
+    const databaseOutputBis = ezs('transit'); // trick: mongo stream does not propagate error in the pipeline
+
+    const streamDatabaseExport = databaseOutput
+        .on('error', e => databaseOutputBis.emit('error', e))
+        .pipe(databaseOutputBis)
+        .pipe(
+            ezs((entry, feed, self) => {
+                if (self.isLast()) {
+                    return feed.close();
+                }
+                const colums = [];
+                precomputed.sourceColumns.map(column => {
+                    colums.push(entry[column]);
+                });
+                // Please note, it is important to produce identifiers identical to those that will be used in the published data.
+                // Otherwise, the join will be impossible
+                // see src/common/transformers/AUTOGENERATE_URI.js#L26
+                const identifier =
+                    String(entry.uri).indexOf('uid:/') !== 0
+                        ? `uid:/${entry.uri}`
+                        : entry.uri;
+                feed.send({
+                    id: identifier,
+                    value: tryParseJsonString(
+                        colums.length > 1 ? colums : colums[0],
+                    ),
+                });
+            }),
+        )
+        .pipe(
+            ezs((entry, feed, self) => {
+                if (self.isLast()) {
+                    return feed.close();
+                }
+                // Set 0 as 10. 100 as 45. Increment from indexDataset to dataSetSize
+                const progressValue = Math.floor(
+                    (self.getIndex() / dataSetSize) * 35 + 10,
+                );
+                progress.setProgress(ctx.tenant, progressValue);
+                feed.send(entry);
+            }),
+        )
+        .pipe(ezs('TARDump', { compress: true }))
+        .pipe(
+            ezs('FILESave', {
+                identifier: precomputedId,
+                location: tmpDirectory,
+                compress: false,
+            }),
+        )
+        .pipe(
+            ezs((entry, feed, self) => {
+                if (self.isLast()) {
+                    return feed.close();
+                }
+                logData = JSON.stringify({
+                    level: 'ok',
+                    message: `[Instance: ${ctx.tenant}] 3/10 - End compress data. Start sending file (${path.basename(entry.filename)}) to webservice`,
+                    timestamp: new Date(),
+                    status: IN_PROGRESS,
+                });
+                jobLogger.info(ctx.job, logData);
+                notifyListeners(room, logData);
+                feed.send(entry);
+            }),
+        );
+    let fileDescription;
     try {
-        let logData = {};
-        await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS, {
-            hasData: false,
-        });
-        await ctx.precomputed.updateStartedAt(precomputed._id, new Date());
-
-        const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
-        progress.setProgress(ctx.tenant, 10);
-        logData = JSON.stringify({
-            level: 'ok',
-            message: `[Instance: ${ctx.tenant}] 2/10 - Start building compress data`,
-            timestamp: new Date(),
-            status: IN_PROGRESS,
-        });
-        jobLogger.info(ctx.job, logData);
-        notifyListeners(room, logData);
-        const dataSetSize = await ctx.dataset.count();
-        const databaseOutput = await ctx.dataset.find().stream();
-        const databaseOutputBis = ezs('transit'); // trick: mongo stream does not propagate error in the pipeline
-
-        const streamDatabaseExport = databaseOutput
-            .on('error', e => databaseOutputBis.emit('error', e))
-            .pipe(databaseOutputBis)
-            .pipe(
-                ezs((entry, feed, self) => {
-                    if (self.isLast()) {
-                        return feed.close();
-                    }
-                    const colums = [];
-                    precomputed.sourceColumns.map(column => {
-                        colums.push(entry[column]);
-                    });
-                    // Please note, it is important to produce identifiers identical to those that will be used in the published data.
-                    // Otherwise, the join will be impossible
-                    // see src/common/transformers/AUTOGENERATE_URI.js#L26
-                    const identifier =
-                        String(entry.uri).indexOf('uid:/') !== 0
-                            ? `uid:/${entry.uri}`
-                            : entry.uri;
-                    feed.send({
-                        id: identifier,
-                        value: tryParseJsonString(
-                            colums.length > 1 ? colums : colums[0],
-                        ),
-                    });
-                }),
-            )
-            .pipe(
-                ezs((entry, feed, self) => {
-                    if (self.isLast()) {
-                        return feed.close();
-                    }
-                    // Set 0 as 10. 100 as 45. Increment from indexDataset to dataSetSize
-                    const progressValue = Math.floor(
-                        (self.getIndex() / dataSetSize) * 35 + 10,
-                    );
-                    progress.setProgress(ctx.tenant, progressValue);
-                    feed.send(entry);
-                }),
-            )
-            .pipe(ezs('TARDump', { compress: true }))
-            .pipe(
-                ezs('FILESave', {
-                    identifier: precomputedId,
-                    location: tmpDirectory,
-                    compress: false,
-                }),
-            )
-            .pipe(
-                ezs((entry, feed, self) => {
-                    if (self.isLast()) {
-                        return feed.close();
-                    }
-                    logData = JSON.stringify({
-                        level: 'ok',
-                        message: `[Instance: ${ctx.tenant}] 3/10 - End compress data. Start sending file (${path.basename(entry.filename)}) to webservice`,
-                        timestamp: new Date(),
-                        status: IN_PROGRESS,
-                    });
-                    jobLogger.info(ctx.job, logData);
-                    notifyListeners(room, logData);
-                    feed.send(entry);
-                }),
-            );
         const [file] = await streamToPromise(streamDatabaseExport);
-        const { size: fileSize, filename: fileToUpload } = file;
-        const parameters = {
-            timeout: Number(localConfig.timeout) || 120000,
-            method: 'POST',
-            body: createReadStream(fileToUpload),
-            headers: {
-                'Content-Type': 'application/x-gzip',
-                'Content-Length': fileSize,
-                'X-Webhook-Success': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}`,
-                'X-Webhook-Failure': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}&failure`,
-            },
-        };
-        logData = JSON.stringify({
-            level: 'ok',
-            message: `[Instance: ${ctx.tenant}] 4/10 - Get Token from ${precomputed.webServiceUrl}`,
-            timestamp: new Date(),
-            status: IN_PROGRESS,
-        });
-        jobLogger.info(ctx.job, logData);
-        notifyListeners(room, logData);
-
-        const response = await fetch(precomputed.webServiceUrl, parameters);
-        const token = await response.text();
-        if (!response.ok) {
-            throw new Error(`Unexpected response ${response.statusText}`);
-        }
-        await ctx.precomputed.updateStatus(precomputed._id, ON_HOLD, {
-            hasData: false,
-            callId: token,
-        });
-        logData = JSON.stringify({
-            level: 'ok',
-            message: `[Instance: ${ctx.tenant}] 5/10 - Token obtained : ${token}`,
-            timestamp: new Date(),
-            status: ON_HOLD,
-        });
-        jobLogger.info(ctx.job, logData);
-        notifyListeners(room, logData);
-        progress.setProgress(ctx.tenant, 50);
-
-        logData = JSON.stringify({
-            level: 'ok',
-            message: `[Instance: ${ctx.tenant}] 6/10 - Waiting for response data`,
-            timestamp: new Date(),
-            status: ON_HOLD,
-        });
-        jobLogger.info(ctx.job, logData);
-        notifyListeners(room, logData);
+        fileDescription = file;
     } catch (err) {
         let msg = err.message;
         if (err.sourceError && err.sourceError.responseText) {
@@ -438,6 +392,73 @@ export const processPrecomputed = async (precomputed, ctx) => {
         });
         throw new Error(msg);
     }
+    const { size: fileSize, filename: fileToUpload } = fileDescription;
+    const parameters = {
+        timeout: Number(localConfig.timeout) || 120000,
+        method: 'POST',
+        body: createReadStream(fileToUpload),
+        headers: {
+            'Content-Type': 'application/x-gzip',
+            'Content-Length': fileSize,
+            'X-Webhook-Success': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}`,
+            'X-Webhook-Failure': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}&failure`,
+        },
+    };
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${ctx.tenant}] 4/10 - Get Token from ${precomputed.webServiceUrl}`,
+        timestamp: new Date(),
+        status: IN_PROGRESS,
+    });
+    jobLogger.info(ctx.job, logData);
+    notifyListeners(room, logData);
+
+    const response = await fetch(precomputed.webServiceUrl, parameters);
+    const token = await response.text();
+    if (!response.ok) {
+        const {
+            type: responseErrorTitle,
+            message: responseErrorMessage,
+        } = tryParseJsonString(token);
+        let responseErrorMessageFull;
+        if (responseErrorMessage) {
+            // for error 400 see /v1/mock-error-sync
+            const responseErrorMessageCleaned = responseErrorMessage.replace(
+                /(<Error: |\[\w+\]|>+)/g,
+                '',
+            );
+            responseErrorMessageFull = `${responseErrorTitle} (${responseErrorMessageCleaned})`;
+        } else {
+            // for error 404, 5XX, etc.
+            responseErrorMessageFull = `${response.status} ${response.statusText}`;
+        }
+        await ctx.precomputed.updateStatus(precomputedId, ERROR, {
+            message: responseErrorMessageFull,
+        });
+        throw new Error(responseErrorMessageFull);
+    }
+    await ctx.precomputed.updateStatus(precomputed._id, ON_HOLD, {
+        hasData: false,
+        callId: token,
+    });
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${ctx.tenant}] 5/10 - Token obtained : ${token}`,
+        timestamp: new Date(),
+        status: ON_HOLD,
+    });
+    jobLogger.info(ctx.job, logData);
+    notifyListeners(room, logData);
+    progress.setProgress(ctx.tenant, 50);
+
+    logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${ctx.tenant}] 6/10 - Waiting for response data`,
+        timestamp: new Date(),
+        status: ON_HOLD,
+    });
+    jobLogger.info(ctx.job, logData);
+    notifyListeners(room, logData);
 };
 
 export const setPrecomputedJobId = async (ctx, precomputedID, job) => {
