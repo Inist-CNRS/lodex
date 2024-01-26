@@ -49,6 +49,7 @@
         "unwind-by"
     ],
     "loaders": [
+        "bib",
         "csv",
         "csv-semicolon",
         "csv-comma",
