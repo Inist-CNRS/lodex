@@ -113,35 +113,35 @@
     },
     {
         "id": "post-v2-unpaywall-expand",
-        "url": "https://biblio-tools.services.istex.fr/v2/unpaywall/expand",
+        "url": "https://biblio-tools.services.istex.fr/v2/unpaywall/works/expand",
         "doc": "",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-tools%20-%20Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/biblio-tools/post-v2-unpaywall-expand",
         "objectifTDM": "https://services.istex.fr/2022/02/09/enrichissement-par-doi/",
-        "type": "other"
+        "type": "metadata"
     },
     {
         "id": "post-v2-openalex-expand",
-        "url": "https://biblio-tools.services.istex.fr/v2/openalex/expand",
+        "url": "https://biblio-tools.services.istex.fr/v2/openalex/works/expand",
         "doc": "",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-tools%20-%20Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/biblio-tools/post-v2-openalex-expand",
         "objectifTDM": "https://services.istex.fr/2022/02/09/enrichissement-par-doi/",
-        "type": "other"
+        "type": "metadata"
     },
     {
         "id": "post-v2-istex-expand",
-        "url": "https://biblio-tools.services.istex.fr/v2/istex/expand",
+        "url": "https://biblio-tools.services.istex.fr/v2/istex/works/expand",
         "doc": "",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-tools%20-%20Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/biblio-tools/post-v2-istex-expand",
         "objectifTDM": "https://services.istex.fr/2022/02/09/enrichissement-par-doi/",
-        "type": "other"
+        "type": "metadata"
     },
     {
         "id": "post-v2-hal-expand",
-        "url": "https://biblio-tools.services.istex.fr/v2/hal/expand",
+        "url": "https://biblio-tools.services.istex.fr/v2/hal/works/expand",
         "doc": "",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-tools%20-%20Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/biblio-tools/post-v2-hal-expand",
         "objectifTDM": "https://services.istex.fr/2022/02/09/enrichissement-par-doi/",
-        "type": "other"
+        "type": "metadata"
     },
     {
         "id": "post-v1-cnrsunit",
