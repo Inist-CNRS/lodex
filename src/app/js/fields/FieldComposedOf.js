@@ -6,6 +6,7 @@ import {
     Autocomplete,
     TextField,
     MenuItem,
+    Chip,
 } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -20,6 +21,123 @@ import {
 } from '../propTypes';
 import FieldRepresentation from './FieldRepresentation';
 import { getFieldForSpecificScope } from '../../../common/scope';
+import {
+    SortableContext,
+    arrayMove,
+    sortableKeyboardCoordinates,
+    useSortable,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import {
+    DndContext,
+    DragOverlay,
+    KeyboardSensor,
+    MouseSensor,
+    PointerSensor,
+    TouchSensor,
+    closestCenter,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core';
+
+const SortableChips = ({ onChange, onDelete, options }) => {
+    const [activeId, setActiveId] = React.useState(null);
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        }),
+        useSensor(MouseSensor, {
+            activationConstraint: {
+                distance: 8,
+            },
+        }),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                delay: 200,
+                tolerance: 6,
+            },
+        }),
+    );
+    const handleDragEnd = event => {
+        const { active, over } = event;
+
+        if (active && over && active.id !== over.id) {
+            const oldIndex = options.findIndex(
+                option => option.name === active.id,
+            );
+            const newIndex = options.findIndex(
+                option => option.name === over.id,
+            );
+            const newFields = arrayMove(options, oldIndex, newIndex);
+            onChange({
+                isComposedOf: newFields.length > 0,
+                fields: newFields.map(field => field.name),
+            });
+
+            setActiveId(null);
+        }
+    };
+
+    const handleDragStart = ({ active }) => {
+        setActiveId(active.id);
+    };
+
+    return (
+        <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+            onDragStart={handleDragStart}
+        >
+            <SortableContext
+                items={options}
+                strategy={verticalListSortingStrategy}
+            >
+                {options.map((option, i) => (
+                    <SortableItem key={i} option={option} onDelete={onDelete} />
+                ))}
+            </SortableContext>
+            <DragOverlay>
+                {activeId ? (
+                    <SortableItem
+                        option={options.find(
+                            option => option.name === activeId,
+                        )}
+                        onDelete={onDelete}
+                    />
+                ) : null}
+            </DragOverlay>
+        </DndContext>
+    );
+};
+
+const SortableItem = ({ option, onDelete }) => {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({ id: option.name });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        cursor: isDragging ? 'grabbing' : 'pointer',
+    };
+
+    return (
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+            <Chip
+                label={<FieldRepresentation field={option} />}
+                onDelete={() => onDelete(option.name)}
+            />
+        </div>
+    );
+};
 
 const FieldComposedOf = ({
     onChange,
@@ -32,6 +150,14 @@ const FieldComposedOf = ({
     const autocompleteValue = columns.map(column => {
         return fields.find(field => field.name === column);
     });
+
+    const onDelete = name => {
+        const newFields = columns.filter(column => column !== name);
+        onChange({
+            isComposedOf: newFields.length > 0,
+            fields: newFields,
+        });
+    };
 
     const handleChange = (event, value) => {
         onChange({
@@ -49,9 +175,6 @@ const FieldComposedOf = ({
                 multiple
                 fullWidth
                 options={getFieldForSpecificScope(fields, scope, subresourceId)}
-                getOptionLabel={option => (
-                    <FieldRepresentation field={option} shortMode />
-                )}
                 value={autocompleteValue ?? []}
                 renderInput={params => (
                     <TextField
@@ -74,6 +197,13 @@ const FieldComposedOf = ({
                     </MenuItem>
                 )}
                 onChange={handleChange}
+                renderTags={props => (
+                    <SortableChips
+                        onChange={onChange}
+                        onDelete={onDelete}
+                        options={props}
+                    />
+                )}
             />
         </Box>
     );
