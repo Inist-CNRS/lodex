@@ -59,22 +59,20 @@ const FieldComposedOf = ({
                         label={polyglot.t('fields_composed_of')}
                     />
                 )}
-                renderOption={(props, option) =>
-                    !!option.label && (
-                        <MenuItem
-                            sx={{
-                                '&.MuiAutocomplete-option': {
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                },
-                            }}
-                            {...props}
-                        >
-                            <FieldRepresentation field={option} />
-                        </MenuItem>
-                    )
-                }
+                renderOption={(props, option) => (
+                    <MenuItem
+                        sx={{
+                            '&.MuiAutocomplete-option': {
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                            },
+                        }}
+                        {...props}
+                    >
+                        <FieldRepresentation field={option} />
+                    </MenuItem>
+                )}
                 onChange={handleChange}
             />
         </Box>
