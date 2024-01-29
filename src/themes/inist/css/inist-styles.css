@@ -416,7 +416,7 @@ span.property_label:empty {
 }
 /*home label avec un tiret*/
 .dataset-characteristics div .property_label::before {
-    content: "—";
+    /* content: "—"; */
     padding-right: 20px;
     font-weight: bold;
 }
@@ -523,7 +523,7 @@ nav img._1m2up2 {
 }
 .tiret::before,
 .static-page h2::before {
-    content: "—";
+    /* content: "—"; */
     padding-right: 20px;
     font-weight: bold;
 }
