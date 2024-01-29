@@ -329,7 +329,7 @@ const Tenants = ({ handleLogout }) => {
         },
         {
             field: 'stats',
-            headerName: 'Taille Base de donnée',
+            headerName: 'Taille Base de données',
             flex: 2,
             sortable: true,
             valueGetter: params => {
