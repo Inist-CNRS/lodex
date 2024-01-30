@@ -9,6 +9,7 @@ import SubresourceForm from './SubresourceForm';
 
 const mapStateToProps = state => ({
     pathSelected: formValueSelector('SUBRESOURCE_ADD_FORM')(state, 'path'),
+    subresources: state.subresource.subresources,
 });
 
 export const AddSubresource = compose(

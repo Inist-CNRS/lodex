@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { propTypes as reduxFormPropTypes, Field } from 'redux-form';
@@ -64,6 +64,7 @@ const SubresourceFormComponent = ({
     excerptLines,
     pathSelected,
     change,
+    subresources,
 }) => {
     const optionsIdentifier = useMemo(() => {
         const firstExcerptLine = excerptLines[0]?.[pathSelected] || [];
@@ -74,6 +75,14 @@ const SubresourceFormComponent = ({
     const handleCancel = () => {
         history.push('/display/document/subresource');
     };
+
+    const validatePath = useCallback(
+        path =>
+            path && subresources.map(sr => sr.path).includes(path)
+                ? 'A subresource with this path already exists'
+                : undefined,
+        [subresources],
+    );
 
     return (
         <Box sx={{ background: 'primary', padding: '20px' }}>
@@ -113,6 +122,7 @@ const SubresourceFormComponent = ({
                         clearIdentifier={() => {
                             change('identifier', '');
                         }}
+                        validate={validatePath}
                     />
 
                     <Field
