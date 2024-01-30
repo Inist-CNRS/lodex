@@ -109,7 +109,6 @@ const SortableChips = ({ onChange, onDelete, options }) => {
 const SortableItem = ({ option, onDelete, animateLayoutChanges }) => {
     const {
         attributes,
-        isDragging,
         listeners,
         setNodeRef,
         transform,
@@ -121,7 +120,6 @@ const SortableItem = ({ option, onDelete, animateLayoutChanges }) => {
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
-        cursor: isDragging ? 'grabbing' : 'pointer',
     };
 
     return (
@@ -129,6 +127,7 @@ const SortableItem = ({ option, onDelete, animateLayoutChanges }) => {
             <Chip
                 label={<FieldRepresentation field={option} />}
                 onDelete={() => onDelete(option.name)}
+                sx={{ '&': { cursor: 'grab' } }}
             />
         </div>
     );
