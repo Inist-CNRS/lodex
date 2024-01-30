@@ -76,7 +76,7 @@ const SortableItem = ({ option, onDelete, isActive }) => {
 
 SortableItem.propTypes = {
     option: fieldPropTypes.isRequired,
-    onDelete: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
     isActive: PropTypes.bool,
 };
 
@@ -137,8 +137,12 @@ const SortableChips = ({ onChange, onDelete, options }) => {
                 items={options.map(option => option.name)}
                 strategy={horizontalListSortingStrategy}
             >
-                {options.map((option, i) => (
-                    <SortableItem key={i} option={option} onDelete={onDelete} />
+                {options.map(option => (
+                    <SortableItem
+                        key={option.name}
+                        option={option}
+                        onDelete={onDelete}
+                    />
                 ))}
             </SortableContext>
             <DragOverlay>
