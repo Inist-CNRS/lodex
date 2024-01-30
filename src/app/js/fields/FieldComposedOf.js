@@ -40,6 +40,46 @@ import {
     useSensors,
 } from '@dnd-kit/core';
 
+const SortableItem = ({ option, onDelete, isActive }) => {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        isDragging,
+    } = useSortable({
+        id: option.name,
+    });
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition: 'transform 0ms ease',
+    };
+
+    return (
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+            <Chip
+                label={<FieldRepresentation field={option} />}
+                onDelete={() => onDelete(option.name)}
+                sx={{
+                    '&': {
+                        cursor: 'grab',
+                        boxShadow: isActive
+                            ? 'rgba(0, 0, 0, 0.35) 0px 5px 15px'
+                            : 'none',
+                        opacity: isDragging ? 0 : 1,
+                    },
+                }}
+            />
+        </div>
+    );
+};
+
+SortableItem.propTypes = {
+    option: fieldPropTypes.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    isActive: PropTypes.bool,
+};
+
 const SortableChips = ({ onChange, onDelete, options }) => {
     const [activeId, setActiveId] = React.useState(null);
     const sensors = useSensors(
@@ -57,8 +97,8 @@ const SortableChips = ({ onChange, onDelete, options }) => {
             },
         }),
     );
+
     const handleDragEnd = event => {
-        setActiveId(null);
         const { active, over } = event;
         if (active && over && active.id !== over.id) {
             const oldIndex = options.findIndex(
@@ -73,6 +113,7 @@ const SortableChips = ({ onChange, onDelete, options }) => {
                 fields: newFields.map(field => field.name),
             });
         }
+        setActiveId(null);
     };
 
     const handleDragStart = ({ active }) => {
@@ -101,10 +142,10 @@ const SortableChips = ({ onChange, onDelete, options }) => {
             <DragOverlay>
                 {activeId ? (
                     <SortableItem
+                        isActive={true}
                         option={options.find(
                             option => option.name === activeId,
                         )}
-                        onDelete={onDelete}
                     />
                 ) : null}
             </DragOverlay>
@@ -112,32 +153,10 @@ const SortableChips = ({ onChange, onDelete, options }) => {
     );
 };
 
-const SortableItem = ({ option, onDelete, animateLayoutChanges }) => {
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-        isDragging,
-    } = useSortable({
-        id: option.name,
-        animateLayoutChanges,
-    });
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-    };
-
-    return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-            <Chip
-                label={<FieldRepresentation field={option} />}
-                onDelete={() => onDelete(option.name)}
-                sx={{ '&': { cursor: 'grab' } }}
-            />
-        </div>
-    );
+SortableChips.propTypes = {
+    options: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
 };
 
 const FieldComposedOf = ({
