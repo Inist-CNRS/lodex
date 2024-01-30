@@ -87,7 +87,7 @@
         "@fortawesome/react-fontawesome": "^0.1.18",
         "@mui/icons-material": "5.14.19",
         "@mui/material": "5.3.1",
-        "@mui/x-data-grid": "5.2.2",
+        "@mui/x-data-grid": "5.8.0",
         "@recuperateur/async-busboy": "file:./packages/@recuperateur/async-busboy",
         "@recuperateur/resumablejs": "file:./packages/@recuperateur/resumablejs",
         "@uswitch/koa-access": "2.9.2",
