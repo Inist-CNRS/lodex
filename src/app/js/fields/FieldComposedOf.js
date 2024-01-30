@@ -24,9 +24,9 @@ import { getFieldForSpecificScope } from '../../../common/scope';
 import {
     SortableContext,
     arrayMove,
+    horizontalListSortingStrategy,
     sortableKeyboardCoordinates,
     useSortable,
-    verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import {
@@ -48,21 +48,12 @@ const SortableChips = ({ onChange, onDelete, options }) => {
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         }),
-        useSensor(MouseSensor, {
-            activationConstraint: {
-                distance: 8,
-            },
-        }),
-        useSensor(TouchSensor, {
-            activationConstraint: {
-                delay: 200,
-                tolerance: 6,
-            },
-        }),
+        useSensor(MouseSensor),
+        useSensor(TouchSensor),
     );
     const handleDragEnd = event => {
+        setActiveId(null);
         const { active, over } = event;
-
         if (active && over && active.id !== over.id) {
             const oldIndex = options.findIndex(
                 option => option.name === active.id,
@@ -75,12 +66,13 @@ const SortableChips = ({ onChange, onDelete, options }) => {
                 isComposedOf: newFields.length > 0,
                 fields: newFields.map(field => field.name),
             });
-
-            setActiveId(null);
         }
     };
 
     const handleDragStart = ({ active }) => {
+        if (!active) {
+            return;
+        }
         setActiveId(active.id);
     };
 
@@ -90,10 +82,11 @@ const SortableChips = ({ onChange, onDelete, options }) => {
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}
             onDragStart={handleDragStart}
+            onDragCancel={() => setActiveId(null)}
         >
             <SortableContext
-                items={options}
-                strategy={verticalListSortingStrategy}
+                items={options.map(option => option.name)}
+                strategy={horizontalListSortingStrategy}
             >
                 {options.map((option, i) => (
                     <SortableItem key={i} option={option} onDelete={onDelete} />
@@ -113,16 +106,18 @@ const SortableChips = ({ onChange, onDelete, options }) => {
     );
 };
 
-const SortableItem = ({ option, onDelete }) => {
+const SortableItem = ({ option, onDelete, animateLayoutChanges }) => {
     const {
         attributes,
+        isDragging,
         listeners,
         setNodeRef,
         transform,
         transition,
-        isDragging,
-    } = useSortable({ id: option.name });
-
+    } = useSortable({
+        id: option.name,
+        animateLayoutChanges,
+    });
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
