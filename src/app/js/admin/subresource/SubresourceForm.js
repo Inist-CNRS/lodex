@@ -65,6 +65,7 @@ const SubresourceFormComponent = ({
     pathSelected,
     change,
     subresources,
+    invalid,
 }) => {
     const optionsIdentifier = useMemo(() => {
         const firstExcerptLine = excerptLines[0]?.[pathSelected] || [];
@@ -173,7 +174,7 @@ const SubresourceFormComponent = ({
                             variant="contained"
                             color="primary"
                             type="submit"
-                            disabled={pristine || submitting}
+                            disabled={pristine || submitting || invalid}
                         >
                             {polyglot.t('save')}
                         </Button>
