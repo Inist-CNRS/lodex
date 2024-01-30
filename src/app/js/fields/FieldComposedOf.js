@@ -123,13 +123,15 @@ const SortableChips = ({ onChange, onDelete, options }) => {
         setActiveId(active.id);
     };
 
+    const handleDragCancel = () => setActiveId(null);
+
     return (
         <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}
             onDragStart={handleDragStart}
-            onDragCancel={() => setActiveId(null)}
+            onDragCancel={handleDragCancel}
         >
             <SortableContext
                 items={options.map(option => option.name)}
