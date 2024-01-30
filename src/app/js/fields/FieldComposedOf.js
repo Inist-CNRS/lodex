@@ -33,7 +33,6 @@ import {
     DndContext,
     DragOverlay,
     KeyboardSensor,
-    MouseSensor,
     PointerSensor,
     TouchSensor,
     closestCenter,
@@ -44,12 +43,19 @@ import {
 const SortableChips = ({ onChange, onDelete, options }) => {
     const [activeId, setActiveId] = React.useState(null);
     const sensors = useSensors(
-        useSensor(PointerSensor),
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 2,
+            },
+        }),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         }),
-        useSensor(MouseSensor),
-        useSensor(TouchSensor),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                distance: 2,
+            },
+        }),
     );
     const handleDragEnd = event => {
         setActiveId(null);
@@ -113,6 +119,7 @@ const SortableItem = ({ option, onDelete, animateLayoutChanges }) => {
         setNodeRef,
         transform,
         transition,
+        isDragging,
     } = useSortable({
         id: option.name,
         animateLayoutChanges,
