@@ -79,7 +79,7 @@ const SubresourceFormComponent = ({
     const validatePath = useCallback(
         path =>
             path && subresources.map(sr => sr.path).includes(path)
-                ? 'A subresource with this path already exists'
+                ? polyglot.t('subresource_path_validation_error')
                 : undefined,
         [subresources],
     );
