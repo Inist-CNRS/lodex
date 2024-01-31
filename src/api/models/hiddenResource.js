@@ -9,8 +9,12 @@ export default async db => {
 
     collection.create = async data => {
         const { insertedId } = await collection.insertOne(data);
-        return collection.findOne({ _id: insertedId });
+        return collection.findOne({
+            _id: insertedId,
+        });
     };
+
+    collection.deleteByUri = async uri => collection.deleteOne({ uri });
 
     collection.delete = async id =>
         collection.remove({ _id: new ObjectID(id) });

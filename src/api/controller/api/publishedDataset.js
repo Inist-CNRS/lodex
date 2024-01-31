@@ -104,6 +104,7 @@ export const removeResource = async ctx => {
 
 export const restoreResource = async ctx => {
     const { uri } = ctx.request.body;
+    ctx.hiddenResource.deleteByUri(uri);
     ctx.body = await ctx.publishedDataset.restore(uri);
 };
 
