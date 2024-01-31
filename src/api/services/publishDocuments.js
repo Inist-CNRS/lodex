@@ -14,17 +14,13 @@ import getLogger from './logger';
 export const versionTransformerDecorator = (
     transformDocument,
     subresourceId = null,
-    ctx = null,
+    hiddenResources = null,
 ) => async (document, _, __, publicationDate = new Date()) => {
     const doc = await transformDocument(document);
-    const hiddenResource = await ctx.hiddenResource.findOneByUri(doc.uri);
-    let hidden = null;
-    if (hiddenResource) {
-        hidden = {
-            reason: hiddenResource.reason,
-            removedAt: hiddenResource.removedAt,
-        };
-    }
+    const hiddenResource = hiddenResources.find(
+        hidden => hidden.uri === doc.uri,
+    );
+
     return {
         uri: doc.uri,
         subresourceId,
@@ -34,7 +30,7 @@ export const versionTransformerDecorator = (
                 publicationDate,
             },
         ],
-        ...hidden,
+        ...hiddenResource,
     };
 };
 
@@ -140,6 +136,7 @@ export const publishDocumentsFactory = ({
 
     const subresources = groupSubresourcesById(await ctx.subresource.findAll());
     const groupedSubresourceFields = groupSubresourceFields(subresourceFields);
+    const hiddenResources = await ctx.hiddenResource.findAll();
 
     const transformMainResourceDocument = getDocumentTransformer(
         ctx.dataset.findBy,
@@ -184,7 +181,7 @@ export const publishDocumentsFactory = ({
                                         true,
                                     ),
                                     subresourceId,
-                                    ctx,
+                                    hiddenResources,
                                 )(JSON.stringify(d)),
                             ),
                         ];
@@ -199,7 +196,7 @@ export const publishDocumentsFactory = ({
                                 false,
                             ),
                             subresourceId,
-                            ctx,
+                            hiddenResources,
                         )(curr),
                     ];
                 }, []);
@@ -219,7 +216,11 @@ export const publishDocumentsFactory = ({
         count,
         ctx.dataset.findLimitFromSkip,
         ctx.publishedDataset.insertBatch,
-        versionTransformerDecorator(transformMainResourceDocument, null, ctx),
+        versionTransformerDecorator(
+            transformMainResourceDocument,
+            null,
+            hiddenResources,
+        ),
         undefined,
         ctx.job,
     );
