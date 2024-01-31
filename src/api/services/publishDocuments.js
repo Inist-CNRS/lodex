@@ -17,7 +17,7 @@ export const versionTransformerDecorator = (
     hiddenResources = null,
 ) => async (document, _, __, publicationDate = new Date()) => {
     const doc = await transformDocument(document);
-    const hiddenResource = hiddenResources.find(
+    const hiddenResource = hiddenResources?.find(
         hidden => hidden.uri === doc.uri,
     );
 

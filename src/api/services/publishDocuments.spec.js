@@ -45,6 +45,9 @@ const getCtx = ({ subresources } = {}) => ({
     publishedDataset: {
         insertBatch: 'publishedDataset.insertBatch()',
     },
+    hiddenResource: {
+        findAll: jest.fn().mockImplementation(() => null),
+    },
     job,
 });
 
@@ -97,6 +100,8 @@ describe('publishDocuments', () => {
         it('should call versionTransformerDecorator with transformDocument', () => {
             expect(versionTransformerDecorator).toHaveBeenCalledWith(
                 'transformDocument()',
+                null,
+                null,
             );
         });
 
