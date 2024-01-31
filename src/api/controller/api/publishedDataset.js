@@ -93,7 +93,7 @@ export const getRemovedPage = async ctx => {
 
 export const removeResource = async ctx => {
     const { uri, reason } = ctx.request.body;
-    const removedAt = new Date();
+    const removedAt = ctx.request.body.removedAt ?? new Date();
     ctx.hiddenResource.create({
         uri,
         reason,

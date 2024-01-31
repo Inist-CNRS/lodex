@@ -285,6 +285,7 @@ describe('publishedDataset', () => {
     });
 
     describe('removeResource', () => {
+        const date = new Date();
         const ctx = {
             publishedDataset: {
                 hide: jest
@@ -295,7 +296,16 @@ describe('publishedDataset', () => {
                 body: {
                     uri: 'the uri',
                     reason: 'the reason',
+                    removedAt: date,
                 },
+            },
+            hiddenResource: {
+                create: jest.fn().mockImplementation(() => ({
+                    _id: '65ba559de49f0fc00f4581ba',
+                    uri: 'uid:/0R4JCK4F',
+                    reason: 'Reason',
+                    removedAt: date,
+                })),
             },
         };
 
@@ -305,6 +315,7 @@ describe('publishedDataset', () => {
             expect(ctx.publishedDataset.hide).toHaveBeenCalledWith(
                 'the uri',
                 'the reason',
+                date,
             );
         });
 
@@ -326,6 +337,12 @@ describe('publishedDataset', () => {
                 body: {
                     uri: 'the uri',
                 },
+            },
+            hiddenResource: {
+                deleteByUri: jest.fn().mockImplementation(() => ({
+                    acknowledged: true,
+                    deletedCount: 1,
+                })),
             },
         };
 
