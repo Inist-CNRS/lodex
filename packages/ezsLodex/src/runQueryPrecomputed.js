@@ -105,6 +105,7 @@ export const createFunction = () =>
 
         const stream = cursor
             .sort(sort)
+            .allowDiskUse()
             .skip(Number(skip || 0))
             .limit(Number(maxSize || 1000000))
             .stream()
