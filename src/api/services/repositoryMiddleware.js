@@ -9,6 +9,7 @@ import precomputed from '../models/precomputed';
 import mongoClient from './mongoClient';
 import tenant from '../models/tenant';
 import configTenant from '../models/configTenant';
+import hiddenResource from '../models/hiddenResource';
 
 export const mongoClientFactory = mongoClientImpl => async (ctx, next) => {
     ctx.db = await mongoClientImpl(ctx.tenant);
@@ -21,6 +22,7 @@ export const mongoClientFactory = mongoClientImpl => async (ctx, next) => {
     ctx.publishedDataset = await publishedDataset(ctx.db);
     ctx.publishedFacet = await publishedFacet(ctx.db);
     ctx.configTenantCollection = await configTenant(ctx.db);
+    ctx.hiddenResource = await hiddenResource(ctx.db);
 
     await next();
 };
