@@ -14,9 +14,17 @@ import getLogger from './logger';
 export const versionTransformerDecorator = (
     transformDocument,
     subresourceId = null,
+    ctx = null,
 ) => async (document, _, __, publicationDate = new Date()) => {
     const doc = await transformDocument(document);
-
+    const hiddenResource = await ctx.hiddenResource.findOneByUri(doc.uri);
+    let hidden = null;
+    if (hiddenResource) {
+        hidden = {
+            reason: hiddenResource.reason,
+            removedAt: hiddenResource.removedAt,
+        };
+    }
     return {
         uri: doc.uri,
         subresourceId,
@@ -26,6 +34,7 @@ export const versionTransformerDecorator = (
                 publicationDate,
             },
         ],
+        ...hidden,
     };
 };
 
@@ -175,6 +184,7 @@ export const publishDocumentsFactory = ({
                                         true,
                                     ),
                                     subresourceId,
+                                    ctx,
                                 )(JSON.stringify(d)),
                             ),
                         ];
@@ -189,6 +199,7 @@ export const publishDocumentsFactory = ({
                                 false,
                             ),
                             subresourceId,
+                            ctx,
                         )(curr),
                     ];
                 }, []);
@@ -208,7 +219,7 @@ export const publishDocumentsFactory = ({
         count,
         ctx.dataset.findLimitFromSkip,
         ctx.publishedDataset.insertBatch,
-        versionTransformerDecorator(transformMainResourceDocument),
+        versionTransformerDecorator(transformMainResourceDocument, null, ctx),
         undefined,
         ctx.job,
     );
