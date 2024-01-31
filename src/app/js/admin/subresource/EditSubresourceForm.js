@@ -21,6 +21,7 @@ export const EditSubresourceForm = compose(
             initialValues: s.subresource.subresources.find(
                 sr => sr._id === match.params.subresourceId,
             ),
+            subresources: s.subresource.subresources,
         }),
         {
             updateSubresource: updateSubresourceAction,

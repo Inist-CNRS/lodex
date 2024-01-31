@@ -1,112 +1,169 @@
-# Lodex 12.55.2 theme INIST
+# Lodex 12.55.5 theme CNRS Inist
 
-  Ce répertoire contient les fichiers à installer dans le répertoire custom de [LODEX](https://github.com/Inist-CNRS/lodex).
+  L'**usage de ce theme est exclusivement réservé à l'institution CNRS Inist**.
+
+  Ce dépot contient les fichiers à installer dans le répertoire custom de  
+  [LODEX v12.55.x](https://github.com/Inist-CNRS/lodex/releases/tag/v12.55.5).
   
-  L'**usage de ce theme est exclusivement réservé à l'institution inist-cnrs** lorsqu'elle publie ou livre ses services via lodex.
+  Cette documentation est à l'usage de :
+  
+1. la maintenance de ce theme préparé pour la version 12.55.x de Lodex
+2. la réalisation d'instance lodex pour le compte de CNRS Inist
+
+
+#### répertoires et fichiers spécifiques theme CNRS Inist
 
 ```
 
 ├── inist
 │   └── css
 │       └── fonts
+│            └── Barlow
+│            └── Gentium_Basic
 │   └── img
-│ fichiers documentation
+│  methodologie.html
+│  
 │  settings_lodex_theme_Inist.json
 │  README.md
 
 ```
 
-## Documentation du theme Inist
+>    à noter : installation de l'ensemble des favicons nouveau logo lodex 2023
 
-    Cette documentation est à l'usage de :
+```
 
-    1. la maintenance de ce theme préparé pour la version 12.55.2 de Lodex
-    2. la réalisation par les créateurs d'instance lodex pour le compte de l'inist-cnrs
+│  android-chrome-192x192.png
+│  android-chrome-512x512.png
+│  apple-touch-icon.png
+│  browserconfig.xml
+│  favicon-16x16.png
+│  favicon-32x32.png
+│  favicon.ico
+│  mstile-150x150.png
+│  safari-pinned-tab.svg
+│  site.webmanifest
 
-## Optimisation de l'utilisation lodex theme inist
+```
 
-### 1. Elements créés depuis l'admin et utilisés par lodex et/ou stylés par css 
+## Optimisation de l'utilisation lodex theme CNRS Inist
+
+### 1. Elements créés depuis l'admin et utilisés par lodex et/ou stylés par css
 
 #### Titre de l'étude
 
-- renseigné via Admin/Affichage/Page d'accueil/page/
-- création d'un nouveau champ :
-  Onglet Général / valeur arbitraire / saisie du titre
-  Onglet Affichage / visible format texte/titre/h1
+doit être dans une balise html de titre niveau 1 -> h1  
+comment faire ?
 
-> **Attention** ne pas indiquer de largeur !
+    -   se rendre dans Admin/Affichage/Page d'accueil/page/
+    -   sélectionner 'création d'un nouveau champ' puis
+            Onglet Général / valeur arbitraire / saisie du titre
+            Onglet Affichage / visible format texte/titre/h1
 
-> **conseil pour page d'accueil**
+> **Attention**
+>     titre h1 = titre de l'étude sera bien visible en lui insérant une largeur maxi de 70% et minimun de 50% (à définir dans onglet affichage)
 >
-> - titre h1 = titre court de l'étude repris dans breadcrumb
-> - titre h2 = titre long de l'étude
+>     la css prévoit une mise en exergue du titre en page d'accueil sous la forme d'un décrochement
 
 #### Description du corpus
 
-- renseigné via Admin/Affichage/Page d'accueil/page/
-- création d'un nouveau champ :
+-   renseigné via Admin/Affichage/Page d'accueil/page/
+-   création d'un nouveau champ :
   Onglet Général / valeur arbitraire / saisie du titre
   Onglet Affichage / visible format texte/paragraphe
 
 #### meta balise head/title
 
-  - renseignée via Admin/Affichage/Page d'accueil/page/DATASET - Titre
-  - -> sélectionner champs titre créé pour Page d'accueil
+-   renseignée via Admin/Affichage/Page d'accueil/page/DATASET - Titre
+-   Idée ! -> sélectionner champs titre créé pour Page d'accueil
 
 #### meta balise head/description
 
-  - renseignée via Admin/Affichage/Page d'accueil/page/DATASET - Description
-  - -> sélectionner champ description crée pour page d'accueil
+-   renseignée via Admin/Affichage/Page d'accueil/page/DATASET - Description
+-   Idée ! -> sélectionner champ description crée pour page d'accueil
 
-### 2. settings (ezmaster) / les différents menu
+### 2. settings (ezmaster pour lodex v12.55.2) / les différents menu
 
-> ***remarque*** *je vous ai mis un fichier settings_lodex_theme_Inist.json en exemple dans theme inist/*
+> **_remarque_** _je vous ai mis un fichier settings_lodex_theme_Inist.json en exemple dans theme inist/_
 
-### breadcrumb
+#### [breadcrumb]
 
-  doit contenir au minimum le titre court de l'étude, texte identique au h1 indiqué ci-dessus
-  
-> **Important** cet élément est stylé à l'identique du h1 dans [inist-styles.css](https://github.com/Inist-CNRS/lodex-themes/blob/master/inist/css/inist-styles.css)
-  
+Comme son nom ne l'indique pas, le breadcrumb permet d'ajouter des liens internes ou externe dans l'instance courante.
 
-  > **conseil d'utilisation pour des accès rapides par liens externes**
-  >
-  > 1. ajouter contact : url du formulaire de l'équipe site inist.fr
-  > 2. ajouter mentions légales : url mentions légales site inist.fr
+##### titre (court) de l'étude
 
-  La css prévoit l'ajout d'une icône 'lien externe' pour les urls hors de l'instance lodex
+Le dernier lien dans les settings reprend le titre (court) de l'étude.
 
-#### menu advanced
-  
-  Des pages statiques sont à votre disposition dans le theme visible dans la demo du theme par le menu advanced :
+-   comme toujours, il permet un retour à la page d'accueil en haut de page
+-   il fait office de titre courant pour toutes les pages du site
 
-    1. ajout possible de l'url interne pour la page  : methodologie\.html
-    2. ajout possible de l'url interne pour la page  : contact\.html
-    3. ajout possible de l'url interne pour la page de documentation lodex : documentation\.html 
+##### autres liens du breadcrumb
 
-  > **remarque** je peux en préparer d'autres si nécessaire
+Pour le theme inist, ces liens sont designés comme un menu haut contenant des liens externes connexes au site courant
 
-## 3. Charte inist et Lodex
+La css prévoit l'ajout d'une icône 'lien externe' pour les urls pointant hors de l'instance lodex
 
-###  Des class css sont disponibles dans inist-style.css
-
-  > ***remarque*** *vous pouvez utiliser ces class lorsque vous créer des éléments html depuis l'admin*
+#### [menu] "position": "advanced"
 
 ```bash
-  .bl3 {
-  border-left: 3px solid #23aeff;
-  padding-left: 30px;
-}
+      "menu": [
+        {
+          "label": {
+            "en": "Methodo",
+            "fr": "Méthodologie"
+          },
+          "icon": "faBookReader",
+          "position": "advanced",
+          "role": "custom",
+          "link": "/methodologie.html"
+        }(...)
+      ]
+```
+
+### 3. Pages statiques
+
+Une page statique 'methodologie.html' est à votre disposition dans le theme.
+
+> **remarque** cette page est votre modèle pour les pages statiques
+
+Pour une bonne mise en oeuvre de la charte inist lodex, il faut conserver la structure :
+
+```
+
+<div class="static-page">
+    <h1 class="bl3">
+    <section>
+        (...)
+
+```       
+
+où
+
+-   section contient h2
+-   section peut être multiple
+-   section peut contenir div, h3, ...
+
+## Charte style css CNRS Inist et style css Lodex
+
+### 1. Des class css charte CNRS Inist sont disponibles dans css/inist-style.css
+
+> **_remarque_** _vous pouvez utiliser ces class lorsque vous créer des éléments html depuis l'admin_
+
+```
+
+.bl3 {
+    border-left: 3px solid #23aeff;
+      padding-left: 30px;
+    }
 .bb {
-  border-bottom: 1px solid rgba(170, 170, 170, 0.2);
-}
+    border-bottom: 1px solid rgba(170, 170, 170, 0.2);
+    }
 .bt {
-  border-top: 1px solid rgba(170, 170, 170, 0.2);
-}
+    border-top: 1px solid rgba(170, 170, 170, 0.2);
+    }
 /*fond rose*/
 .bg {
   background-color: rgba(229, 229, 229, 0.17);
-}
+    }
 /*a "voir plus" charte inist*/
 a.VoirPlus {
   color: #434148;
@@ -123,13 +180,15 @@ a.VoirPlus:hover,
 a.VoirPlus:focus {
   box-shadow: 0px 0px 0px 1px #23aeff;
 }
+
 ```
 
-###  Des éléments lodex sont stylés selon charte INIST :
+### 2. Des éléments lodex sont stylés selon charte INIST :
 
-  > ***remarque*** *ceci n'est qu'une proposition et peut-être modifié*
+> **_remarque_** _ceci n'est qu'une proposition et peut-être modifié_
 
-```bash
+```
+
 /*page accueil : label avec un tiret*/
 .header-dataset-section div .property_label::before {
   content: "—";
@@ -157,35 +216,35 @@ div.resource .property_label {
 .resources-grid-list {
   background-color: rgba(229, 229, 229, 0.17);
 }
+
 ```
 
 ## custom : description et usage des autres fichiers
 
-### custom/ colorTheme.js et customTheme.js
+### 1. custom/ colorTheme.js et customTheme.js
 
-  **Nouveauté lodex 12.55** : pour votre information, colorsTheme.js permet de déclarer les couleurs icônes et textes du lodex
-  
-  > https://github.com/Inist-CNRS/lodex-themes/blob/master/inist/colorsTheme.js
+**Nouveauté lodex 12.55** : colorsTheme.js permet de déclarer des couleurs spécifiques au thème pour les icônes, liens et textes
 
-  Mais le code de Lodex ne prend en compte ce fichier de déclaration couleur que pour certains de ses composants.
-  C'est pourquoi pour la version lodex 12.55.2, des feuilles de style spécifiques surchargent les composants non pris en compte et stylables par class css.
+Mais le code de Lodex v12.55 ne prend que partiellement en compte ce fichier.
 
-  > [css-loader.css](https://github.com/Inist-CNRS/lodex-themes/blob/master/inist/css/css-loader.css)
-  > [styles_aphrodite.css](https://github.com/Inist-CNRS/lodex-themes/blob/master/inist/css/styles_aphrodite.css)
+### 2. custom/css/
 
-  > ***remarque*** *ces fichiers ne doivent pas être modifier*
+Pour cette version lodex, des feuilles de style spécifiques surchargent les composants non pris en compte via colorTheme.js.
 
-### custom/img
+- custom/css/css-loader.css
+- custom/css/styles_aphrodite.css
 
-  Ce répertoire contient :
+> **_remarque_** _ces fichiers ne doivent pas être modifier_
 
-  1. le logo version blanche du [logo CNRS](https://github.com/Inist-CNRS/lodex-themes/blob/master/inist/img/logo_cnrs_2019_blanc.svg]
-  2. l'icone svg lien externe pour breacrumb (inséré via css) *** mettre à jour quand validation maquette ***
-  3. Deux images de fonds sont à votre disposition, repris du site inist\.fr ***mettre ur ?l***
-    - [projets](https://github.com/Inist-CNRS/lodex-themes/blob/master/inist/img/bg_projets.jpg)
-    - [qui](https://github.com/Inist-CNRS/lodex-themes/blob/master/inist/img/bg_qui.jpg)
+### 3. custom/css/fonts/
 
-l'image 'projets' est utilisées par défaut
+-   fonts utilisées par la charte CNRS Inist
 
-Si vous souhaitez utiliser l'image 'qui', voici comment faire :
-*** mettre à jour quand validation maquette *** 
+Ces fonts sont paramétrées dans custom/css/fonts-style.css
+
+### 4. custom/img
+
+1. logo version blanche du logo CNRS
+2. images de fonds pour header et nav, repris du site CNRS Inist
+3. icone lodex svg lien externe pour breacrumb
+4. icone lodex home.svg pour le titre courant

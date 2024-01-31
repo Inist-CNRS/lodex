@@ -3,7 +3,6 @@ import route from 'koa-route';
 import ezs from '@ezs/core';
 import koaBodyParser from 'koa-bodyparser';
 import { v1 as uuid } from 'uuid';
-import fs from 'fs';
 import { PRECOMPUTER } from '../../workers/precomputer';
 import { workerQueues } from '../../workers';
 import {
@@ -74,10 +73,6 @@ export const deletePrecomputed = async (ctx, id) => {
             cancelJob(ctx, PRECOMPUTER);
         }
         await ctx.precomputed.delete(id);
-        const path = `/app/precomputedData/${ctx.tenant}/${id}.json`;
-        if (fs.existsSync(path)) {
-            fs.unlinkSync(path);
-        }
         ctx.status = 200;
         ctx.body = { message: 'ok' };
     } catch (error) {

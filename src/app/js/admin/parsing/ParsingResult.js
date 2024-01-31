@@ -290,6 +290,11 @@ export const ParsingResultComponent = props => {
         setSkip(page * limit);
     };
 
+    const handleChangeRowsPerPage = e => {
+        setLimit(e.target.value);
+        setSkip(0);
+    };
+
     useEffect(() => {
         const fetchDataColumns = async () => {
             const { columns } = await datasetApi.getDatasetColumns();
@@ -403,9 +408,9 @@ export const ParsingResultComponent = props => {
                                         labelRowsPerPage={polyglot.t(
                                             'rows_per_page',
                                         )}
-                                        onRowsPerPageChange={rpp => {
-                                            setLimit(rpp.target.value);
-                                        }}
+                                        onRowsPerPageChange={
+                                            handleChangeRowsPerPage
+                                        }
                                     />
                                 </TableRow>
                             </TableBody>
