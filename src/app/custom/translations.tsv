@@ -453,6 +453,8 @@
 "resources_found"	"Found %{current} on %{total}"	"%{current} ressources trouvées sur un total de %{total}"
 "extended-nquads"	"N-Quads Extended"	"N-Quads étendus"
 "extended-nquads-compressed"	"N-Quads Extended (Compressed)"	"N-Quads étendus (Compressé)"
+"ris"	"RIS - Research Information Systems"	"RIS - Research Information Systems"
+"ris-comment"	"The RIS file is a tagged format for expressing bibliographic citations."	"RIS est un format informatique de balisage standardisé de données bibliographiques."
 "csv"	"CSV - auto-detected separator"	"CSV - détection automatique du séparateur"
 "csv-comment"	"Fichier au format CSV qui contient une liste de ressources et se caractérise par une représentation de données tabulaires sous forme de texte, les valeurs de chaque cellule étant séparées par des virgules ou des points-virgules"	"Fichier au format CSV qui contient une liste de ressources et se caractérise par une représentation de données tabulaires sous forme de texte, les valeurs de chaque cellule étant séparées par des virgules ou des points-virgules"
 "csv-semicolon"	"CSV - with semicolon"	"CSV - avec des points virgules"
