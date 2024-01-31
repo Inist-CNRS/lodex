@@ -93,8 +93,13 @@ export const getRemovedPage = async ctx => {
 
 export const removeResource = async ctx => {
     const { uri, reason } = ctx.request.body;
-
-    ctx.body = await ctx.publishedDataset.hide(uri, reason);
+    const date = new Date();
+    ctx.hiddenResource.create({
+        uri,
+        reason,
+        date,
+    });
+    ctx.body = await ctx.publishedDataset.hide(uri, reason, date);
 };
 
 export const restoreResource = async ctx => {
