@@ -227,6 +227,50 @@ describe('publishDocuments', () => {
 
             expect(transform).toHaveBeenCalledWith(doc);
         });
+
+        it('should add hiddenResource to document if it exists', async () => {
+            const transform = jest.fn().mockImplementation(() => ({
+                uri: 'uid:/09P2JFN2',
+                transformed: 'data',
+            }));
+            const doc = {
+                _id: 'id',
+                uri: 'uri',
+                data: 'value',
+            };
+            const date = new Date();
+            const hiddenResource = [
+                {
+                    uri: 'uid:/09P2JFN2',
+                    reason: 'reason',
+                    removedAt: date,
+                },
+                {
+                    uri: 'uid:/0R4JCK4F',
+                    reason: 'reason',
+                    removedAt: date,
+                },
+            ];
+
+            expect(
+                await versionTransformerDecorator(
+                    transform,
+                    null,
+                    hiddenResource,
+                )(doc, null, null, date),
+            ).toEqual({
+                uri: 'uid:/09P2JFN2',
+                subresourceId: null,
+                removedAt: date,
+                reason: 'reason',
+                versions: [
+                    {
+                        transformed: 'data',
+                        publicationDate: date,
+                    },
+                ],
+            });
+        });
     });
 
     describe('getFieldsFromSubresourceFields', () => {
