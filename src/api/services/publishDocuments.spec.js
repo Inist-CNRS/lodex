@@ -45,6 +45,9 @@ const getCtx = ({ subresources } = {}) => ({
     publishedDataset: {
         insertBatch: 'publishedDataset.insertBatch()',
     },
+    hiddenResource: {
+        findAll: jest.fn().mockImplementation(() => []),
+    },
     job,
 });
 
@@ -97,6 +100,8 @@ describe('publishDocuments', () => {
         it('should call versionTransformerDecorator with transformDocument', () => {
             expect(versionTransformerDecorator).toHaveBeenCalledWith(
                 'transformDocument()',
+                null,
+                [],
             );
         });
 
@@ -221,6 +226,50 @@ describe('publishDocuments', () => {
             });
 
             expect(transform).toHaveBeenCalledWith(doc);
+        });
+
+        it('should add hiddenResource to document if it exists', async () => {
+            const transform = jest.fn().mockImplementation(() => ({
+                uri: 'uid:/09P2JFN2',
+                transformed: 'data',
+            }));
+            const doc = {
+                _id: 'id',
+                uri: 'uri',
+                data: 'value',
+            };
+            const date = new Date();
+            const hiddenResource = [
+                {
+                    uri: 'uid:/09P2JFN2',
+                    reason: 'because',
+                    removedAt: date,
+                },
+                {
+                    uri: 'uid:/0R4JCK4F',
+                    reason: 'why not',
+                    removedAt: date,
+                },
+            ];
+
+            expect(
+                await versionTransformerDecorator(
+                    transform,
+                    null,
+                    hiddenResource,
+                )(doc, null, null, date),
+            ).toEqual({
+                uri: 'uid:/09P2JFN2',
+                subresourceId: null,
+                removedAt: date,
+                reason: 'because',
+                versions: [
+                    {
+                        transformed: 'data',
+                        publicationDate: date,
+                    },
+                ],
+            });
         });
     });
 
