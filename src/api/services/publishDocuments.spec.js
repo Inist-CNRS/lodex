@@ -242,12 +242,12 @@ describe('publishDocuments', () => {
             const hiddenResource = [
                 {
                     uri: 'uid:/09P2JFN2',
-                    reason: 'reason',
+                    reason: 'because',
                     removedAt: date,
                 },
                 {
                     uri: 'uid:/0R4JCK4F',
-                    reason: 'reason',
+                    reason: 'why not',
                     removedAt: date,
                 },
             ];
@@ -262,7 +262,7 @@ describe('publishDocuments', () => {
                 uri: 'uid:/09P2JFN2',
                 subresourceId: null,
                 removedAt: date,
-                reason: 'reason',
+                reason: 'because',
                 versions: [
                     {
                         transformed: 'data',
