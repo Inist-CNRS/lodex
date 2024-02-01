@@ -22,6 +22,7 @@ export const versionTransformerDecorator = (
     );
 
     return {
+        ...hiddenResource,
         uri: doc.uri,
         subresourceId,
         versions: [
@@ -30,7 +31,6 @@ export const versionTransformerDecorator = (
                 publicationDate,
             },
         ],
-        ...hiddenResource,
     };
 };
 
