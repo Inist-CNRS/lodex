@@ -358,6 +358,10 @@ describe('publishedDataset', () => {
             expect(ctx.publishedDataset.restore).toHaveBeenCalledWith(
                 'the uri',
             );
+
+            expect(ctx.hiddenResource.deleteByUri).toHaveBeenCalledWith(
+                'the uri',
+            );
         });
 
         it('should return the result', async () => {
