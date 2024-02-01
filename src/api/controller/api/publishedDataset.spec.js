@@ -317,6 +317,12 @@ describe('publishedDataset', () => {
                 'the reason',
                 date,
             );
+
+            expect(ctx.hiddenResource.create).toHaveBeenCalledWith({
+                uri: 'the uri',
+                reason: 'the reason',
+                removedAt: date,
+            });
         });
 
         it('should return the result', async () => {
