@@ -1061,5 +1061,6 @@
 "format_default_params"	"Display parameters"	"Paramètres d'affichage"
 "format_sub_format_params"	"Sub-format parameters"	"Paramètres du sous-format"
 "format_without_params"	"This format has no parameters"	"Ce format n'a pas de paramètres"
-"root_panel_link"	"Instance administration"	"Administration des instances"
+"root_panel_link"	"Instances administration"	"Administration des instances"
+"admin_panel_link"	"Instance administration"	"Administration de l'instances"
 "subresource_path_validation_error"	"A subresource with this path already exists"	"Une sous-ressource avec ce chemin existe déjà"
