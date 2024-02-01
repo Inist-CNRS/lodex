@@ -87,7 +87,11 @@ export const createFunction = () =>
         ];
         let cursor = collection.aggregate(
             aggregatePipeline,
-            fields.length > 0 ? projection : null,
+            fields.length > 0
+                ? { ...projection, allowDiskUse: true }
+                : {
+                      allowDiskUse: true,
+                  },
         );
 
         const count = await collection
@@ -105,7 +109,6 @@ export const createFunction = () =>
 
         const stream = cursor
             .sort(sort)
-            .allowDiskUse()
             .skip(Number(skip || 0))
             .limit(Number(maxSize || 1000000))
             .stream()
