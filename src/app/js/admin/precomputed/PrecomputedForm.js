@@ -219,7 +219,8 @@ export const renderRunButton = (
             disabled={
                 isClicked ||
                 precomputedStatus === IN_PROGRESS ||
-                precomputedStatus === PENDING
+                precomputedStatus === PENDING ||
+                precomputedStatus === ON_HOLD
             }
         >
             {polyglot.t('run')}
