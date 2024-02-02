@@ -24,7 +24,7 @@ const getLogger = tenant => {
                 info => ` [${tenant}] ${info.timestamp} ${info[MESSAGE]}`,
             ),
         ),
-        silent: true,
+        silent: config.logger.disabled,
     });
 
     loggers.set(tenant, logger);
