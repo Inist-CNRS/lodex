@@ -33,11 +33,7 @@ const postImportHiddenResources = async ctx => {
         const file = fs.readFileSync(files[0].path, 'utf8');
         const hiddenResources = JSON.parse(file);
         await ctx.hiddenResource.deleteMany({});
-        const toInsert = hiddenResources.map(hiddenResource => ({
-            ...hiddenResource,
-            _id: new ObjectId(hiddenResource.id),
-        }));
-        await ctx.hiddenResource.insertMany(toInsert);
+        await ctx.hiddenResource.insertMany(hiddenResources);
     } catch (error) {
         ctx.status = 400;
         ctx.body = { message: error.message };
