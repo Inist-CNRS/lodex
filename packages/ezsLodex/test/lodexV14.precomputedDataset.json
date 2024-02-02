@@ -1,0 +1,50 @@
+{
+  "pc_segments_precomputed": [
+    {
+      "source": "A",
+      "target": "B",
+      "weight": 10
+    },
+    {
+      "source": "B",
+      "target": "C",
+      "weight": 30
+    },
+    {
+      "source": "C",
+      "target": "D",
+      "weight": 42
+    },
+    {
+      "source": "D",
+      "target": "E",
+      "weight": 67
+    },
+    {
+      "source": "E",
+      "target": "F",
+      "weight": 88
+    }
+  ],
+  "pc_values_precomputed": [
+    {
+      "id": "A",
+      "value": 10
+    },
+    {
+      "id": "B",
+      "value": 30
+    },
+    {
+      "id": "C",
+      "value": 42
+    },
+    {
+      "id": "D",
+      "value": 67
+    },{
+      "id": "E",
+      "value": 88
+    }
+  ]
+}
