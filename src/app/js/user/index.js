@@ -649,6 +649,16 @@ export const getExportHiddenResources = state => {
     });
 };
 
+export const getImportHiddenResources = (state, formData) => {
+    const req = getRequest(state, {
+        url: '/api/hiddenResource/import',
+        method: 'POST',
+    });
+    delete req.headers['Content-Type'];
+    req.body = formData;
+    return req;
+};
+
 export const selectors = {
     isAdmin,
     getRole,
@@ -726,4 +736,5 @@ export const selectors = {
     getExportPrecomputedDataRequest,
     getPreviewPrecomputedDataRequest,
     getExportHiddenResources,
+    getImportHiddenResources,
 };
