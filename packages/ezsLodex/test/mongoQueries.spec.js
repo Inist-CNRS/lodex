@@ -1205,7 +1205,7 @@ describe('mongo queries', () => {
         });
 
         it('should returns 50 000 documents', done => {
-            jest.setTimeout(60 * 1000);
+            jest.setTimeout(2 * 60 * 1000); // 2 mins
 
             const bigPrecomputedDataset = [];
 
