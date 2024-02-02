@@ -1,7 +1,7 @@
 [
     {
-        "id": "post-v1-tree-segment",
-        "url": "https://data-computer.services.istex.fr/v1/tree-segment",
+        "id": "test-local",
+        "url": "http://json-server:3001/webhook",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252ftree-segment"
     },
     {
