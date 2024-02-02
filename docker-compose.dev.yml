@@ -26,25 +26,14 @@ services:
             - mongo
             - redis
             - workers
-            - json-server
         depends_on:
             - mongo
             - redis
             - workers
-            - json-server
         ports:
             - "3000:3000"
             - "9229:9229" # Enable Nodemon inspect to attach to Docker Node
         command: npm run development:api
-
-    json-server:
-        image: node:16.20-bullseye
-        volumes:
-            - .:/app
-        working_dir: /app
-        ports:
-            - "3001:3001"
-        command: node server-json.js
 
     dev-server: ## Enable hot-reload in development
         image: node:16.20-bullseye
