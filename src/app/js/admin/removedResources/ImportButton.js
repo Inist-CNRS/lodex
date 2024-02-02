@@ -39,7 +39,7 @@ const ImportButton = ({ p: polyglot }) => {
             });
         } else {
             setDone(true);
-            toast(polyglot.t('import_successfull'), {
+            toast(polyglot.t('import_successful'), {
                 type: toast.TYPE.SUCCESS,
             });
         }
