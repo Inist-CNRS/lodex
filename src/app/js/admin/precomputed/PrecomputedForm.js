@@ -104,21 +104,26 @@ function getDisplayTimeStartedAt(startedAt) {
 export const renderStatus = (status, polyglot, startedAt = null) => {
     if (status === PENDING) {
         return (
-            <Chip
-                component="span"
+            <StatusChip
                 label={polyglot.t('precomputed_status_pending')}
                 color="warning"
+                startedAt={startedAt}
             />
         );
     }
     if (status === IN_PROGRESS) {
-        return <ProgressChip polyglot={polyglot} startedAt={startedAt} />;
+        return (
+            <StatusChip
+                label={polyglot.t('precomputed_status_running')}
+                color="info"
+                startedAt={startedAt}
+            />
+        );
     }
 
     if (status === PAUSED) {
         return (
-            <Chip
-                component="span"
+            <StatusChip
                 label={polyglot.t('precomputed_status_paused')}
                 color="info"
             />
@@ -127,8 +132,7 @@ export const renderStatus = (status, polyglot, startedAt = null) => {
 
     if (status === FINISHED) {
         return (
-            <Chip
-                component="span"
+            <StatusChip
                 label={polyglot.t('precomputed_status_done')}
                 color="success"
             />
@@ -137,8 +141,7 @@ export const renderStatus = (status, polyglot, startedAt = null) => {
 
     if (status === ERROR) {
         return (
-            <Chip
-                component="span"
+            <StatusChip
                 label={polyglot.t('precomputed_status_error')}
                 color="error"
             />
@@ -147,8 +150,7 @@ export const renderStatus = (status, polyglot, startedAt = null) => {
 
     if (status === CANCELED) {
         return (
-            <Chip
-                component="span"
+            <StatusChip
                 label={polyglot.t('precomputed_status_canceled')}
                 color="warning"
             />
@@ -157,45 +159,42 @@ export const renderStatus = (status, polyglot, startedAt = null) => {
 
     if (status === ON_HOLD) {
         return (
-            <Chip
-                component="span"
+            <StatusChip
                 label={polyglot.t('precomputed_status_hold')}
                 sx={{ backgroundColor: '#539CE1', color: '#fff' }}
+                startedAt={startedAt}
             />
         );
     }
 
     return (
-        <Chip
-            component="span"
+        <StatusChip
             label={polyglot.t('precomputed_status_not_started')}
             sx={{ backgroundColor: 'neutral' }}
         />
     );
 };
 
-export const ProgressChip = ({ polyglot, startedAt }) => {
+export const StatusChip = ({ label, color, startedAt, sx }) => {
     const [spentTime, setSpentTime] = useState(
-        getDisplayTimeStartedAt(startedAt),
+        startedAt ? getDisplayTimeStartedAt(startedAt) : '',
     );
     useEffect(() => {
+        if (!startedAt) return;
         const interval = setInterval(() => {
             setSpentTime(getDisplayTimeStartedAt(startedAt));
         }, 59000);
         return () => clearInterval(interval);
     }, []);
-    return (
-        <Chip
-            component="span"
-            label={`${polyglot.t('precomputed_status_running')} (${spentTime})`}
-            color="info"
-        />
-    );
+    const finalLabel = `${label}${startedAt ? ` (${spentTime})` : ''}`;
+    return <Chip component="span" label={finalLabel} color={color} sx={sx} />;
 };
 
-ProgressChip.propTypes = {
-    polyglot: polyglotPropTypes.isRequired,
+StatusChip.propTypes = {
+    color: PropTypes.string,
+    label: PropTypes.string.isRequired,
     startedAt: PropTypes.string,
+    sx: PropTypes.object,
 };
 
 export const renderRunButton = (
@@ -220,7 +219,8 @@ export const renderRunButton = (
             disabled={
                 isClicked ||
                 precomputedStatus === IN_PROGRESS ||
-                precomputedStatus === PENDING
+                precomputedStatus === PENDING ||
+                precomputedStatus === ON_HOLD
             }
         >
             {polyglot.t('run')}
