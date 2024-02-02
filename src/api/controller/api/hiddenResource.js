@@ -34,6 +34,13 @@ const postImportHiddenResources = async ctx => {
         const hiddenResources = JSON.parse(file);
         await ctx.hiddenResource.deleteMany({});
         await ctx.hiddenResource.insertMany(hiddenResources);
+        for (const hiddenResource of hiddenResources) {
+            await ctx.publishedDataset.hide(
+                hiddenResource.uri,
+                hiddenResource.reason,
+                hiddenResource.date,
+            );
+        }
     } catch (error) {
         ctx.status = 400;
         ctx.body = { message: error.message };
