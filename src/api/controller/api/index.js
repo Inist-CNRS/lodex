@@ -32,6 +32,7 @@ import themes from './themes';
 import precomputed from './precomputed';
 import job from './job';
 import dump from './dump';
+import hiddenResource from './hiddenResource';
 import displayConfig from './displayConfig';
 import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
 import mongoClient from '../../services/mongoClient';
@@ -149,6 +150,7 @@ app.use(mount('/dataset', dataset));
 app.use(route.get('/progress', progress));
 app.use(mount('/loader', loader));
 app.use(route.get('/dump', dump));
+app.use(mount('/hiddenResource', hiddenResource));
 
 app.use(async ctx => {
     ctx.status = 404;

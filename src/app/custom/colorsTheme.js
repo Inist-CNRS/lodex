@@ -1,12 +1,12 @@
 export default {
     black: {
         primary: '#000',
-        secondary: 'rgb(95, 99, 104)',
+        secondary: 'rgb(98, 99, 104)',
         veryDark: '#333',
         dark: '#555',
-        light: 'rgb(95, 99, 104, 0.5)',
-        lighter: 'rgb(95, 99, 104, 0.15)',
-        veryLight: 'rgb(95, 99, 104, 0.1)',
+        light: 'rgb(98, 99, 104, 0.5)',
+        lighter: 'rgb(98, 99, 104, 0.15)',
+        veryLight: 'rgb(98, 99, 104, 0.1)',
         transparent: 'rgba(0, 0, 0, .1)',
     },
     white: {

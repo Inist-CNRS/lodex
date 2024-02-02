@@ -639,6 +639,16 @@ export const getPreviewPrecomputedDataRequest = (state, id) => {
     });
 };
 
+export const getExportHiddenResources = state => {
+    return getRequest(state, {
+        url: '/api/hiddenResource/export',
+        method: 'GET',
+        head: {
+            Accept: 'application/json',
+        },
+    });
+};
+
 export const selectors = {
     isAdmin,
     getRole,
@@ -715,4 +725,5 @@ export const selectors = {
     getThemeRequest,
     getExportPrecomputedDataRequest,
     getPreviewPrecomputedDataRequest,
+    getExportHiddenResources,
 };
