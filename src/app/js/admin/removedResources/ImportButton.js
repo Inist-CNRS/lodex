@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import translate from 'redux-polyglot/translate';
 import UploadIcon from '@mui/icons-material/Upload';
-import { Button, styled } from '@mui/material';
+import { Button, CircularProgress, styled } from '@mui/material';
 import { importHiddenResources } from '../api/hiddenResource';
 
 const VisuallyHiddenInput = styled('input')({
@@ -20,12 +20,14 @@ const VisuallyHiddenInput = styled('input')({
 
 const ImportButton = ({ p: polyglot }) => {
     const buttonLabel = polyglot.t('import');
+    const [uploading, setUploading] = useState(false);
     const handleFileChange = async event => {
+        setUploading(true);
         const file = event.target.files[0];
         const formData = new FormData();
         formData.append('file', file);
-        const res = await importHiddenResources(formData);
-        console.log(res);
+        await importHiddenResources(formData);
+        setUploading(false);
     };
 
     return (
@@ -34,7 +36,10 @@ const ImportButton = ({ p: polyglot }) => {
                 component="label"
                 variant="text"
                 className="export"
-                startIcon={<UploadIcon />}
+                startIcon={
+                    uploading ? <CircularProgress size="1em" /> : <UploadIcon />
+                }
+                disabled={uploading}
             >
                 {buttonLabel}
                 <VisuallyHiddenInput
