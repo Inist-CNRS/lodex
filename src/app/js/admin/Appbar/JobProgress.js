@@ -258,17 +258,18 @@ const JobProgressComponent = props => {
                                     </Typography>
                                 )}
                         </Box>
-                        {progress?.status !== UPLOADING_DATASET && (
-                            <Button
-                                sx={styles.cancelButton}
-                                color="inherit"
-                                onClick={() => {
-                                    setIsCancelDialogOpen(true);
-                                }}
-                            >
-                                <Cancel />
-                            </Button>
-                        )}
+                        {progress?.status !== UPLOADING_DATASET &&
+                            progress?.type !== 'precomputer' && (
+                                <Button
+                                    sx={styles.cancelButton}
+                                    color="inherit"
+                                    onClick={() => {
+                                        setIsCancelDialogOpen(true);
+                                    }}
+                                >
+                                    <Cancel />
+                                </Button>
+                            )}
                     </Box>
                     {!!progress?.progress && !!progress?.target && (
                         <LinearProgress

@@ -29,7 +29,12 @@ export default async db => {
     };
 
     collection.delete = async id => {
-        await db.collection(`pc_${id}`).drop();
+        try {
+            await db.collection(`pc_${id}`).drop();
+        } catch {
+            // Collection does not exist, no big deal
+            console.warn(`Failed to drop collection 'pc_${id}'`);
+        }
         return collection.remove({
             $or: [{ _id: new ObjectId(id) }, { _id: id }],
         });
