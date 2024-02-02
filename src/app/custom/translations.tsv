@@ -1065,3 +1065,5 @@
 "admin_panel_link"	"Instance administration"	"Administration de l'instance"
 "subresource_path_validation_error"	"A subresource with this path already exists"	"Une sous-ressource avec ce chemin existe déjà"
 "import"	"Import"	"Importer"
+"import_successfull"	"Import completed successfully"	"Import réalisé avec succés"
+"import_successfull"	"Error during import"	"Erreur lors de l'import"

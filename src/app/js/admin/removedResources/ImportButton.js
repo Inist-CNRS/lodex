@@ -5,6 +5,7 @@ import translate from 'redux-polyglot/translate';
 import UploadIcon from '@mui/icons-material/Upload';
 import { Button, CircularProgress, styled } from '@mui/material';
 import { importHiddenResources } from '../api/hiddenResource';
+import { toast } from '../../../../common/tools/toast';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -26,8 +27,18 @@ const ImportButton = ({ p: polyglot }) => {
         const file = event.target.files[0];
         const formData = new FormData();
         formData.append('file', file);
-        await importHiddenResources(formData);
+        const response = await importHiddenResources(formData);
         setUploading(false);
+
+        if (response.error) {
+            toast(polyglot.t('import_error'), {
+                type: toast.TYPE.ERROR,
+            });
+        } else {
+            toast(polyglot.t('import_successfull'), {
+                type: toast.TYPE.SUCCESS,
+            });
+        }
     };
 
     return (
