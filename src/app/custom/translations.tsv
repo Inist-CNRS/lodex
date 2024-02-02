@@ -58,6 +58,7 @@
 "clear_model"	"Clear model"	"Effacer le modèle"
 "sign_out"	"Sign out"	"Déconnexion"
 "back_to_list"	"Back to list"	"Retourner à la liste"
+"back"	"Back"	"Retour"
 "not_found"	"Resource not found"	"Ressource non trouvée"
 "powered"	"Powered by"	"Propulsé par"
 "loading_resource"	"Resource loading..."	"Ressource en cours de chargement..."

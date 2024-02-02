@@ -81,10 +81,13 @@ export const getComputedFromWebservice = async ctx => {
     const tenant = ctx.tenant;
     const { id: precomputedId, callId, askForPrecomputedJobId } = ctx.job.data;
 
-    const {
-        webServiceUrl,
-        name: precomputedName,
-    } = await ctx.precomputed.findOneById(precomputedId);
+    const precomputed = await ctx.precomputed.findOneById(precomputedId);
+    if (!precomputed) {
+        // Entry may have been deleted before the webservice called us back.
+        // We can ignore the reply in that case.
+        return;
+    }
+    const { webServiceUrl, name: precomputedName } = precomputed;
     const webServiceBaseURL = new RegExp('.*\\/').exec(webServiceUrl)[0];
     progress.initialize(tenant);
     progress.start(ctx.tenant, {

@@ -9,7 +9,7 @@ import {
     getPrecomputedDataPreview,
     setPrecomputedJobId,
 } from '../../services/precomputed/precomputed';
-import { cancelJob, getActiveJob } from '../../workers/tools';
+import { cancelJob } from '../../workers/tools';
 import getLocale from '../../../common/getLocale';
 
 export const setup = async (ctx, next) => {
@@ -65,13 +65,8 @@ export const putPrecomputed = async (ctx, id) => {
 
 export const deletePrecomputed = async (ctx, id) => {
     try {
-        const activeJob = await getActiveJob(ctx.tenant);
-        if (
-            activeJob?.data?.jobType === PRECOMPUTER &&
-            activeJob?.data?.id === id
-        ) {
-            cancelJob(ctx, PRECOMPUTER);
-        }
+        const precomputed = await ctx.precomputed.findOneById(id);
+        await cancelJob(ctx, PRECOMPUTER, precomputed?.name);
         await ctx.precomputed.delete(id);
         ctx.status = 200;
         ctx.body = { message: 'ok' };

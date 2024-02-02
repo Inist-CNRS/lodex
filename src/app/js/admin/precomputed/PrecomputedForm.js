@@ -346,7 +346,7 @@ export const PrecomputedForm = ({
         setIsLoading(false);
     };
 
-    const handleCancel = () => {
+    const handleBack = () => {
         history.push('/data/precomputed');
     };
 
@@ -594,9 +594,9 @@ export const PrecomputedForm = ({
                         <Box>
                             <CancelButton
                                 sx={{ height: '100%' }}
-                                onClick={handleCancel}
+                                onClick={handleBack}
                             >
-                                {polyglot.t('cancel')}
+                                {polyglot.t('back')}
                             </CancelButton>
                             <Button
                                 variant="contained"
