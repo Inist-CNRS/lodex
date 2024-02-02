@@ -4,7 +4,6 @@ import koaBodyParser from 'koa-bodyparser';
 import asyncBusboy from '@recuperateur/async-busboy';
 import mime from 'mime-types';
 import fs from 'fs';
-import { ObjectId } from 'mongodb';
 
 const app = new Koa();
 
