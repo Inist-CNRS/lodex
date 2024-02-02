@@ -7,13 +7,19 @@ import RemovedResourceList from './RemovedResourceList';
 import withInitialData from '../withInitialData';
 import redirectToDashboardIfNoField from '../../admin/redirectToDashboardIfNoField';
 import ExportButton from './ExportButton';
+import ImportButton from './ImportButton';
 
 export const RemovedResourcePageComponent = ({ p: polyglot }) => {
     return (
         <Card>
             <CardHeader
                 title={<h3>{polyglot.t('hidden_resources')}</h3>}
-                action={<ExportButton />}
+                action={
+                    <>
+                        <ImportButton />
+                        <ExportButton />
+                    </>
+                }
             />
             <Divider />
             <RemovedResourceList />

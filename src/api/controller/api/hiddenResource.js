@@ -1,5 +1,10 @@
 import Koa from 'koa';
 import route from 'koa-route';
+import koaBodyParser from 'koa-bodyparser';
+import asyncBusboy from '@recuperateur/async-busboy';
+import mime from 'mime-types';
+import fs from 'fs';
+import { ObjectId } from 'mongodb';
 
 const app = new Koa();
 
@@ -9,6 +14,42 @@ const getExportHiddenResources = async ctx => {
     ctx.status = 200;
 };
 
+const postImportHiddenResources = async ctx => {
+    const { files } = await asyncBusboy(ctx.req);
+
+    if (files.length !== 1) {
+        ctx.status = 400;
+        ctx.body = { message: 'File does not exist' };
+        return;
+    }
+
+    const type = mime.lookup(files[0].filename);
+    if (type !== 'application/json') {
+        ctx.status = 400;
+        ctx.body = { message: 'Wrong mime type, application/json required' };
+        return;
+    }
+    try {
+        const file = fs.readFileSync(files[0].path, 'utf8');
+        const hiddenResources = JSON.parse(file);
+        await ctx.hiddenResource.deleteMany({});
+        const toInsert = hiddenResources.map(hiddenResource => ({
+            ...hiddenResource,
+            _id: new ObjectId(hiddenResource.id),
+        }));
+        await ctx.hiddenResource.insertMany(toInsert);
+    } catch (error) {
+        ctx.status = 400;
+        ctx.body = { message: error.message };
+        return;
+    }
+
+    ctx.body = { message: 'Imported' };
+    ctx.status = 200;
+};
+
+app.use(koaBodyParser());
 app.use(route.get('/export', getExportHiddenResources));
+app.use(route.post('/import', postImportHiddenResources));
 
 export default app;
