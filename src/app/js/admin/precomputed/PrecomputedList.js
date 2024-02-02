@@ -97,7 +97,7 @@ export const PrecomputedList = ({
                     {
                         field: 'status',
                         headerName: polyglot.t('precomputed_status'),
-                        flex: 2,
+                        flex: 3,
                         renderCell: params =>
                             renderStatus(
                                 params.row.status,
@@ -108,7 +108,7 @@ export const PrecomputedList = ({
                     {
                         field: 'run',
                         headerName: polyglot.t('run'),
-                        flex: 1,
+                        flex: 2,
                         renderCell: params => {
                             return renderRunButton(
                                 handleLaunchPrecomputed(params.row),
