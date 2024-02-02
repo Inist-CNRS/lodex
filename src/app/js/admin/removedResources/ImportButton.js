@@ -50,24 +50,22 @@ const ImportButton = ({ p: polyglot }) => {
     }
 
     return (
-        <>
-            <Button
-                component="label"
-                variant="text"
-                className="export"
-                startIcon={
-                    uploading ? <CircularProgress size="1em" /> : <UploadIcon />
-                }
-                disabled={uploading}
-            >
-                {buttonLabel}
-                <VisuallyHiddenInput
-                    onChange={handleFileChange}
-                    type="file"
-                    accept="application/json"
-                />
-            </Button>
-        </>
+        <Button
+            component="label"
+            variant="text"
+            className="export"
+            startIcon={
+                uploading ? <CircularProgress size="1em" /> : <UploadIcon />
+            }
+            disabled={uploading}
+        >
+            {buttonLabel}
+            <VisuallyHiddenInput
+                onChange={handleFileChange}
+                type="file"
+                accept="application/json"
+            />
+        </Button>
     );
 };
 
