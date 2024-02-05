@@ -1037,7 +1037,7 @@
 "vega_variable_list"	"You can use these variables to set the size dynamically:"	"Vous pouvez utiliser ces variables pour définir la taille de manière dynamique :"
 "vega_variable_width"	"Replace with the width of the chart container"	"Remplacée par la largeur du conteneur du graphique"
 "vega_variable_height"	"Replace with the height of the chart container"	"Remplacée par la hauteur du conteneur du graphique"
-"vega_variable_container"	"Vega 'width' and 'height' variables to set the size of the graph to the same size as the parent container"	"Variables Vega pour 'width' et 'height' permettent de fixer la taille du graphique à la même taille que le conteneur parent"
+"vega_variable_container"	"Vega-Lite 'width' and 'height' variables to set the size of the graph to the same size as the parent container"	"Variables Vega-Lite pour 'width' et 'height' permettent de fixer la taille du graphique à la même taille que le conteneur parent"
 "theme"	"Application theme"	"Thème de l'application"
 "error_precomputed_data_empty"	"Precomputed data is empty or unfinished. You might want to relaunch the action"	"Les données précalculées sont vides ou non terminées. Vous pouvez relancer l'action"
 "pc_post-v1-lda-segment_title"	"Lda-Segment"	"Lda-Segment"

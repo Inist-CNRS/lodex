@@ -34,6 +34,13 @@ class PieChart extends BasicChart {
             ];
         }
 
+        this.model.width = 'container';
+        this.model.height = 'container';
+        this.model.autosize = {
+            type: 'fit',
+            contains: 'padding',
+        };
+
         return this.model;
     }
 }
