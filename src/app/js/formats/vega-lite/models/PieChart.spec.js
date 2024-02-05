@@ -70,6 +70,10 @@ describe('PieChart', () => {
             },
             width: 'container',
             height: 'container',
+            autosize: {
+                contains: 'padding',
+                type: 'fit',
+            },
         });
     });
 });
