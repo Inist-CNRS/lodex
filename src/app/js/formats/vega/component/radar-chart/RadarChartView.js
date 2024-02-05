@@ -16,6 +16,7 @@ import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
+import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
 
 const styles = {
     container: {
@@ -60,7 +61,7 @@ const RadarChartView = ({
                 return convertSpecTemplate(
                     advancedModeSpec,
                     width - VEGA_ACTIONS_WIDTH,
-                    clamp((width - VEGA_ACTIONS_WIDTH) * 0.76, 300, 1200),
+                    width * 0.76,
                 );
             } catch (e) {
                 setError(e.message);
@@ -99,6 +100,7 @@ const RadarChartView = ({
                 spec={spec}
                 data={formattedData}
                 injectType={VEGA_DATA_INJECT_TYPE_A}
+                aspectRatio={ASPECT_RATIO_8_5}
             />
         </div>
     );

@@ -70,6 +70,9 @@ class FlowMap extends BasicChartVG {
         if (!this.editMode) {
             this.model.width = widthIn - VEGA_ACTIONS_WIDTH;
             this.model.height = widthIn * 0.6;
+        } else {
+            this.model.width = '{|__LODEX_WIDTH__|}';
+            this.model.height = '{|__LODEX_HEIGHT__|}';
         }
 
         this.model.marks.forEach(e => {

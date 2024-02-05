@@ -94,6 +94,9 @@ class RadarChart extends BasicChartVG {
         if (!this.editMode) {
             this.model.width = widthIn - widthIn * 0.06;
             this.model.height = widthIn - widthIn * 0.24;
+        } else {
+            this.model.width = '{|__LODEX_WIDTH__|}';
+            this.model.height = '{|__LODEX_HEIGHT__|}';
         }
 
         this.model.padding = {
