@@ -312,6 +312,7 @@ const BarChartAdmin = props => {
                             <MenuItem value="log">{polyglot.t('log')}</MenuItem>
                         </TextField>
                         <TextField
+                            type="number"
                             fullWidth
                             label={polyglot.t('bar_size')}
                             onChange={handleBarSize}
