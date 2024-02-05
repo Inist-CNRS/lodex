@@ -213,10 +213,17 @@ class BarChart extends BasicChart {
             encoding.tooltip = [this.tooltip.category, this.tooltip.value];
         }
 
+        let height = 'container';
         if (this.size > 0) {
-            encoding.size = {
-                value: this.size,
-            };
+            if (this.direction === AXIS_HORIZONTAL) {
+                height = {
+                    step: this.size,
+                };
+            } else {
+                encoding.size = {
+                    value: this.size,
+                };
+            }
         }
 
         if (!this.labels) {
@@ -225,7 +232,7 @@ class BarChart extends BasicChart {
                 encoding: encoding,
                 padding: this.padding,
                 width: 'container',
-                height: 'container',
+                height,
                 autosize: {
                     type: 'fit',
                     contains: 'padding',
@@ -260,7 +267,7 @@ class BarChart extends BasicChart {
                     view: { strokeWidth: 0 },
                 },
                 width: 'container',
-                height: 'container',
+                height,
                 autosize: {
                     type: 'fit',
                     contains: 'padding',
