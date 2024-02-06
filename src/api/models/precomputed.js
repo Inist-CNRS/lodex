@@ -28,8 +28,17 @@ export default async db => {
         return collection.findOne({ _id: insertedId });
     };
 
-    collection.delete = async id =>
-        collection.remove({ $or: [{ _id: new ObjectId(id) }, { _id: id }] });
+    collection.delete = async id => {
+        try {
+            await db.collection(`pc_${id}`).drop();
+        } catch {
+            // Collection does not exist, no big deal
+            console.warn(`Failed to drop collection 'pc_${id}'`);
+        }
+        return collection.remove({
+            $or: [{ _id: new ObjectId(id) }, { _id: id }],
+        });
+    };
 
     collection.update = async (id, data) => {
         if (checkMissingFields(data)) {

@@ -87,7 +87,11 @@ export const createFunction = () =>
         ];
         let cursor = collection.aggregate(
             aggregatePipeline,
-            fields.length > 0 ? projection : null,
+            fields.length > 0
+                ? { ...projection, allowDiskUse: true }
+                : {
+                      allowDiskUse: true,
+                  },
         );
 
         const count = await collection

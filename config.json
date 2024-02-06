@@ -49,6 +49,7 @@
         "unwind-by"
     ],
     "loaders": [
+        "bib",
         "csv",
         "csv-semicolon",
         "csv-comma",
@@ -67,6 +68,9 @@
         "json-inspirehep",
         "json-optimized",
         "json-lines",
+        "query-istex",
+        "query-conditor",
+        "query-openalex",
         "rss",
         "atom",
         "mods",

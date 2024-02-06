@@ -110,6 +110,7 @@ describe('Precomputed controller', () => {
                     delete: async () => {
                         throw new Error('ERROR!');
                     },
+                    findOneById: async () => ({ name: 'NAME' }),
                 },
             };
 

@@ -3,8 +3,10 @@ import localConfig from '../../../../config.json';
 import { getHost } from '../../../common/uris';
 import { unlinkFile } from '../fsHelpers.js';
 import streamToPromise from 'stream-to-promise';
+import fetch from 'fetch-with-proxy';
 import path from 'path';
 import { tmpdir } from 'os';
+import { createReadStream } from 'fs';
 import ezs from '@ezs/core';
 import Lodex from '@ezs/lodex';
 import Basics from '@ezs/basics';
@@ -79,10 +81,13 @@ export const getComputedFromWebservice = async ctx => {
     const tenant = ctx.tenant;
     const { id: precomputedId, callId, askForPrecomputedJobId } = ctx.job.data;
 
-    const {
-        webServiceUrl,
-        name: precomputedName,
-    } = await ctx.precomputed.findOneById(precomputedId);
+    const precomputed = await ctx.precomputed.findOneById(precomputedId);
+    if (!precomputed) {
+        // Entry may have been deleted before the webservice called us back.
+        // We can ignore the reply in that case.
+        return;
+    }
+    const { webServiceUrl, name: precomputedName } = precomputed;
     const webServiceBaseURL = new RegExp('.*\\/').exec(webServiceUrl)[0];
     progress.initialize(tenant);
     progress.start(ctx.tenant, {
@@ -222,7 +227,7 @@ export const getComputedFromWebservice = async ctx => {
 };
 
 export const getFailureFromWebservice = async ctx => {
-    const { tenant } = ctx.tenant;
+    const { tenant } = ctx;
     const { askForPrecomputedJobId, id: precomputedId, error } = ctx.job.data;
 
     if (!tenant || !precomputedId) {
@@ -284,6 +289,7 @@ const tryParseJsonString = str => {
 };
 
 export const processPrecomputed = async (precomputed, ctx) => {
+    const precomputedId = precomputed._id.toString();
     let logData = {};
     await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS, {
         hasData: false,
@@ -300,13 +306,11 @@ export const processPrecomputed = async (precomputed, ctx) => {
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-
-    const precomputedId = precomputed._id.toString();
     const dataSetSize = await ctx.dataset.count();
     const databaseOutput = await ctx.dataset.find().stream();
     const databaseOutputBis = ezs('transit'); // trick: mongo stream does not propagate error in the pipeline
 
-    const streamWorflow = databaseOutput
+    const streamDatabaseExport = databaseOutput
         .on('error', e => databaseOutputBis.emit('error', e))
         .pipe(databaseOutputBis)
         .pipe(
@@ -367,34 +371,13 @@ export const processPrecomputed = async (precomputed, ctx) => {
                 });
                 jobLogger.info(ctx.job, logData);
                 notifyListeners(room, logData);
-                feed.send(entry.filename);
+                feed.send(entry);
             }),
-        )
-        .pipe(
-            ezs('FILELoad', {
-                compress: false,
-                location: tmpDirectory,
-            }),
-        )
-        .pipe(
-            ezs('URLConnect', {
-                url: precomputed.webServiceUrl,
-                streaming: true,
-                json: true,
-                encoder: 'transit',
-                timeout: Number(localConfig.timeout) || 120000,
-                header: [
-                    'Content-Type: application/gzip',
-                    `X-Webhook-Success: ${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}`,
-                    `X-Webhook-Failure: ${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}&failure`,
-                ],
-            }),
-        )
-        .pipe(ezs('dump'));
-
-    let response;
+        );
+    let fileDescription;
     try {
-        response = await streamToPromise(streamWorflow);
+        const [file] = await streamToPromise(streamDatabaseExport);
+        fileDescription = file;
     } catch (err) {
         let msg = err.message;
         if (err.sourceError && err.sourceError.responseText) {
@@ -412,17 +395,51 @@ export const processPrecomputed = async (precomputed, ctx) => {
         });
         throw new Error(msg);
     }
-    const token = response.join('');
-
+    const { size: fileSize, filename: fileToUpload } = fileDescription;
+    const parameters = {
+        timeout: Number(localConfig.timeout) || 120000,
+        method: 'POST',
+        body: createReadStream(fileToUpload),
+        headers: {
+            'Content-Type': 'application/x-gzip',
+            'Content-Length': fileSize,
+            'X-Webhook-Success': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}`,
+            'X-Webhook-Failure': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}&failure`,
+        },
+    };
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] 4/10 - Get Token`,
+        message: `[Instance: ${ctx.tenant}] 4/10 - Get Token from ${precomputed.webServiceUrl}`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
 
+    const response = await fetch(precomputed.webServiceUrl, parameters);
+    const token = await response.text();
+    if (!response.ok) {
+        const {
+            type: responseErrorTitle,
+            message: responseErrorMessage,
+        } = tryParseJsonString(token);
+        let responseErrorMessageFull;
+        if (responseErrorMessage) {
+            // for error 400 see /v1/mock-error-sync
+            const responseErrorMessageCleaned = responseErrorMessage.replace(
+                /(<Error: |\[\w+\]|>+)/g,
+                '',
+            );
+            responseErrorMessageFull = `${responseErrorTitle} (${responseErrorMessageCleaned})`;
+        } else {
+            // for error 404, 5XX, etc.
+            responseErrorMessageFull = `${response.status} ${response.statusText}`;
+        }
+        await ctx.precomputed.updateStatus(precomputedId, ERROR, {
+            message: responseErrorMessageFull,
+        });
+        throw new Error(responseErrorMessageFull);
+    }
     await ctx.precomputed.updateStatus(precomputed._id, ON_HOLD, {
         hasData: false,
         callId: token,

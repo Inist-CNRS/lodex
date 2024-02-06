@@ -9,12 +9,14 @@ const SubressourceFieldAutoComplete = ({
     hint,
     meta: { touched, error },
     clearIdentifier,
+    error: rootError,
     ...props
 }) => {
+    const finalError = rootError || (touched && error) || undefined;
     return (
-        <FormControl fullWidth>
+        <FormControl fullWidth error={!!finalError}>
             <Autocomplete
-                error={touched ? error : undefined}
+                error={finalError}
                 {...input}
                 onChange={(event, newValue, reason) => {
                     if (reason === 'clear') {
@@ -24,7 +26,7 @@ const SubressourceFieldAutoComplete = ({
                 }}
                 {...props}
             />
-            <FormHelperText>{hint}</FormHelperText>
+            <FormHelperText>{finalError || hint}</FormHelperText>
         </FormControl>
     );
 };

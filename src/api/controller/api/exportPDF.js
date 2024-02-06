@@ -12,6 +12,7 @@ import {
     RESOURCE_TITLE,
 } from '../../../common/overview';
 import { ObjectId } from 'mongodb';
+import { unlinkFile } from '../../services/fsHelpers.js';
 
 const PDF_MARGIN_LEFT = 70;
 const PDF_IMAGE_TOP_POSITION = 50;
@@ -315,7 +316,7 @@ async function exportPDF(ctx) {
 
         ctx.body = doc;
         // delete file
-        fs.unlinkSync('/tmp/publication.pdf');
+        await unlinkFile('/tmp/publication.pdf');
 
         // return pdf
         ctx.status = 200;

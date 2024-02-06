@@ -3,6 +3,7 @@ import fs from 'fs';
 import os from 'os';
 import moment from 'moment';
 import { streamEnd } from '../../services/streamHelper';
+import { unlinkFile } from '../../services/fsHelpers.js';
 
 export default async ctx => {
     const filename = `dataset_${moment().format('YYYY-MM-DD-HHmmss')}.jsonl`;
@@ -22,9 +23,8 @@ export default async ctx => {
         const readStream = fs.createReadStream(pathname);
         readStream.pipe(ctx.res);
 
-        await streamEnd(readStream).then(
-            () => new Promise(r => fs.unlink(pathname, r)),
-        );
+        await streamEnd(readStream);
+        await unlinkFile(pathname);
     } catch (e) {
         ctx.status = 500;
     }

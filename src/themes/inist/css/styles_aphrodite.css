@@ -1,0 +1,58 @@
+/*couleur de data-aphrodite boutons, liens, svg...*/
+/*initial vert #7dbd42 devient bleu #25809a*//*#06bad6 ko contrast*/
+/*green:{ primary: "#25809a",
+secondary: "rgba(6, 186, 214, 1.5)",
+tertiary: "rgba(6, 186, 214, .5)",
+light: "rgba(6, 186, 214, .1)",
+}*/
+/* ‘plus de résultats' et bouton vert 'parcourir les résultats' voir css-loader.css*/
+/*active et focus orange #f48022 devient fushia #da1d64*/
+/* hover violet reste violet #b22f90*/
+._1uvcf79{color:#25809a!important;}
+._1uvcf79:hover{color:#b22f90!important;}
+._1uvcf79:active{color:#da1d64!important;}
+._ml1bs2:active{color:#da1d64!important;}
+._zcmg8f{color:#da1d64!important;}
+._zcmg8f:hover{color:#da1d64!important;}
+._1t0hnnn{color:#25809a!important;}
+._1t0hnnn:hover{color:#25809a!important;}
+._1t0hnnn:active{color:#da1d64!important;}
+._1t0hnnn:focus{color:#da1d64!important;}
+._1alyjjs{color:#25809a!important;}
+._1alyjjs:hover{color:#b22f90!important;}
+._1alyjjs:active{color:#da1d64!important;}
+._uil13f:active{color:#da1d64!important;}
+._wvpt9r{color:#da1d64!important;}
+._wvpt9r:hover{color:#da1d64!important;}
+.MuiButton-textPrimary._1slu1mr{color:#25809a!important;}
+.MuiButton-textPrimary._1slu1mr:hover{color:#b22f90!important;}
+.MuiButton-textPrimary._1slu1mr:active{color:#da1d64!important;}
+.MuiButton-textPrimary._1slu1mr:focus{color:#da1d64!important;}
+._kntyad{color:#A1A1A4!important;}
+._1j0pxga{background-color:#f8f8f8!important;fill:#25809a!important;color:#25809a!important;}
+._1j0pxga:hover{fill:#b22f90!important;color:#b22f90!important;}
+._1kcjc0f{color:#da1d64!important;fill:#da1d64!important;}
+._1kcjc0f:hover{fill:#da1d64!important;color:#da1d64!important;}
+/*breadcrumb*/
+svg._1c3exmh{color:#25809a!important;}
+a._66fo0a{color:#25809a!important;}
+a._66fo0a:hover{color:#b22f90!important;}
+a._66fo0a:active{color:#da1d64!important;}
+/*recherche input focus, result_title + svg*/
+._rwszrk{border-color:#da1d64!important;}
+._rwszrk:focus{border-color:#da1d64!important;}
+a._6gfn5m, a.{color:#25809a!important;}
+a._6gfn5m:hover{color:#b22f90!important;}
+a._6gfn5m:active{color:#da1d64!important;}
+a._6gfn5m:focus{color:#da1d64!important;}
+
+/*notice*/
+/* exemple de class aphrodite mais pas trouve utilisation dans page*/
+/* ces class change a chaque notice ? */
+._1hjrvck{color:#25809a!important;}
+._6gfn5m{color:#da1d64!important;}
+/*fleche suivant precedent notice verte*/
+/*!! change de couleur au clic devient orange*/
+._1r5a9s9{color:#25809a!important;}
+._1r5a9s9:active{color:#da1d64!important;}
+._1r5a9s9:hover{color:#25809a!important;}

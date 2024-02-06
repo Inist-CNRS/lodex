@@ -14,10 +14,15 @@ import getLogger from './logger';
 export const versionTransformerDecorator = (
     transformDocument,
     subresourceId = null,
+    hiddenResources = null,
 ) => async (document, _, __, publicationDate = new Date()) => {
     const doc = await transformDocument(document);
+    const hiddenResource = hiddenResources?.find(
+        hidden => hidden.uri === doc.uri,
+    );
 
     return {
+        ...hiddenResource,
         uri: doc.uri,
         subresourceId,
         versions: [
@@ -131,6 +136,7 @@ export const publishDocumentsFactory = ({
 
     const subresources = groupSubresourcesById(await ctx.subresource.findAll());
     const groupedSubresourceFields = groupSubresourceFields(subresourceFields);
+    const hiddenResources = await ctx.hiddenResource.findAll();
 
     const transformMainResourceDocument = getDocumentTransformer(
         ctx.dataset.findBy,
@@ -175,6 +181,7 @@ export const publishDocumentsFactory = ({
                                         true,
                                     ),
                                     subresourceId,
+                                    hiddenResources,
                                 )(JSON.stringify(d)),
                             ),
                         ];
@@ -189,6 +196,7 @@ export const publishDocumentsFactory = ({
                                 false,
                             ),
                             subresourceId,
+                            hiddenResources,
                         )(curr),
                     ];
                 }, []);
@@ -208,7 +216,11 @@ export const publishDocumentsFactory = ({
         count,
         ctx.dataset.findLimitFromSkip,
         ctx.publishedDataset.insertBatch,
-        versionTransformerDecorator(transformMainResourceDocument),
+        versionTransformerDecorator(
+            transformMainResourceDocument,
+            null,
+            hiddenResources,
+        ),
         undefined,
         ctx.job,
     );
