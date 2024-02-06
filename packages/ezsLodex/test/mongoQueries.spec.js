@@ -6,6 +6,7 @@ import ezsLodex from '../src';
 import { handles } from '../src/mongoDatabase';
 import publishedDataset from './fixture.publishedDataset.json';
 import publishedDatasetWithSubResource from './lodexV12.publishedDataset.json';
+import precomputedDataset from './lodexV14.precomputedDataset.json';
 import publishedCharacteristic from './fixture.publishedCharacteristic.json';
 import field from './fixture.field.json';
 
@@ -25,12 +26,14 @@ describe('mongo queries', () => {
     });
 
     afterAll(async () => {
-        await Promise.all(Object.keys(handles).map((key) => handles[key].close()));
+        await Promise.all(
+            Object.keys(handles).map(key => handles[key].close()),
+        );
         await connection.close();
     });
 
     const initDb = (url, data) => {
-        const requests = Object.keys(data).map((col) => {
+        const requests = Object.keys(data).map(col => {
             const collection = db.collection(col);
             return collection.insertMany(data[col]);
         });
@@ -43,40 +46,47 @@ describe('mongo queries', () => {
         beforeEach(() => initDb(connectionStringURI, publishedCharacteristic));
         afterEach(() => drop());
 
-        it('should return characteristics', (done) => {
+        it('should return characteristics', done => {
             let res = [];
-            from([{
-                connectionStringURI,
-            }])
-            // to test disabled instructions: all  actions will not do anything
+            from([
+                {
+                    connectionStringURI,
+                },
+            ])
+                // to test disabled instructions: all  actions will not do anything
                 .pipe(ezs('LodexContext'))
                 .pipe(ezs('LodexConfig'))
                 .pipe(ezs('LodexParseQuery'))
                 .pipe(ezs('LodexSetField'))
                 .pipe(ezs('LodexGetCharacteristics'))
-                .on('data', (data) => {
+                .on('data', data => {
                     res = [...res, data];
                 })
                 .on('end', () => {
                     expect(res).toHaveLength(1);
-                    expect(res).toEqual([{
-                        characteristics: {
-                            _id: '5b2cc39cc767d60017eb131f',
-                            V99c: 'Jeu de données sur les types de contenu',
-                            AtQO: 'Ce jeu correspond au choix de documenter des données ISTEX et plus particulièrement'
-                            + " les types de contenu utilisés dans ISTEX.\r\n \r\nIls ont fait l'objet d'une"
-                            + " homogénéisation opérée par l'équipe ISTEX-DATA et d'un alignement avec le jeu de"
-                            + ' données types de publication. \r\n\r\nCes types permettent de retranscrire la'
-                            + " structuration initiale de l'ouvrage.",
-                            gLBB: '/api/run/syndication',
-                            G0Ux: 'https://docs.google.com/drawings/d/1rtQ5_GT9QIHKzEjXU5vzSiAnmcu-hdNuyuEArOwUEU4/pub?w=960&h=720',
-                            etxw: '2017-10-02',
-                            '7IpS': 'LODEX Team',
-                            CAhi: 'http://www.istex.fr/wp-content/uploads/2015/02/2015_Licence-type-ISTEX.pdf',
-                            PJTS: 'ISTEX',
-                            publicationDate: '2018-06-22T09:38:36.475Z',
+                    expect(res).toEqual([
+                        {
+                            characteristics: {
+                                _id: '5b2cc39cc767d60017eb131f',
+                                V99c: 'Jeu de données sur les types de contenu',
+                                AtQO:
+                                    'Ce jeu correspond au choix de documenter des données ISTEX et plus particulièrement' +
+                                    " les types de contenu utilisés dans ISTEX.\r\n \r\nIls ont fait l'objet d'une" +
+                                    " homogénéisation opérée par l'équipe ISTEX-DATA et d'un alignement avec le jeu de" +
+                                    ' données types de publication. \r\n\r\nCes types permettent de retranscrire la' +
+                                    " structuration initiale de l'ouvrage.",
+                                gLBB: '/api/run/syndication',
+                                G0Ux:
+                                    'https://docs.google.com/drawings/d/1rtQ5_GT9QIHKzEjXU5vzSiAnmcu-hdNuyuEArOwUEU4/pub?w=960&h=720',
+                                etxw: '2017-10-02',
+                                '7IpS': 'LODEX Team',
+                                CAhi:
+                                    'http://www.istex.fr/wp-content/uploads/2015/02/2015_Licence-type-ISTEX.pdf',
+                                PJTS: 'ISTEX',
+                                publicationDate: '2018-06-22T09:38:36.475Z',
+                            },
                         },
-                    }]);
+                    ]);
                     done();
                 });
         });
@@ -86,13 +96,15 @@ describe('mongo queries', () => {
         beforeEach(() => initDb(connectionStringURI, field));
         afterEach(() => drop());
 
-        it('should return the fields', (done) => {
+        it('should return the fields', done => {
             let res = [];
-            from([{
-                connectionStringURI,
-            }])
+            from([
+                {
+                    connectionStringURI,
+                },
+            ])
                 .pipe(ezs('LodexGetFields'))
-                .on('data', (data) => {
+                .on('data', data => {
                     res = [...res, data];
                 })
                 .on('end', () => {
@@ -105,14 +117,18 @@ describe('mongo queries', () => {
                             label: 'uri',
                             name: 'uri',
                             position: 0,
-                            transformers: [{
-                                args: [{
-                                    name: 'column',
-                                    type: 'column',
-                                    value: 'uri',
-                                }],
-                                operation: 'COLUMN',
-                            }],
+                            transformers: [
+                                {
+                                    args: [
+                                        {
+                                            name: 'column',
+                                            type: 'column',
+                                            value: 'uri',
+                                        },
+                                    ],
+                                    operation: 'COLUMN',
+                                },
+                            ],
                         },
                     });
                     done();
@@ -124,14 +140,16 @@ describe('mongo queries', () => {
         beforeEach(() => initDb(connectionStringURI, publishedDataset));
         afterEach(() => drop());
 
-        it('should return results', (done) => {
+        it('should return results', done => {
             let res = [];
-            from([{
-                connectionStringURI,
-            }])
+            from([
+                {
+                    connectionStringURI,
+                },
+            ])
                 .pipe(ezs('LodexRunQuery'))
-            // .pipe(ezs('debug'))
-                .on('data', (data) => {
+                // .pipe(ezs('debug'))
+                .on('data', data => {
                     res = [...res, data];
                 })
                 .on('end', () => {
@@ -140,7 +158,7 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should limit result to one result', (done) => {
+        it('should limit result to one result', done => {
             let res = [];
             from([
                 {
@@ -149,8 +167,8 @@ describe('mongo queries', () => {
                 },
             ])
                 .pipe(ezs('LodexRunQuery'))
-            // .pipe(ezs('debug'))
-                .on('data', (data) => {
+                // .pipe(ezs('debug'))
+                .on('data', data => {
                     res = [...res, data];
                 })
                 .on('end', () => {
@@ -159,7 +177,7 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should skip results', (done) => {
+        it('should skip results', done => {
             let res = [];
             from([
                 {
@@ -168,8 +186,8 @@ describe('mongo queries', () => {
                 },
             ])
                 .pipe(ezs('LodexRunQuery'))
-            // .pipe(ezs('debug'))
-                .on('data', (data) => {
+                // .pipe(ezs('debug'))
+                .on('data', data => {
                     res = [...res, data];
                 })
                 .on('end', () => {
@@ -179,7 +197,7 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should return the total number of results / 0', (done) => {
+        it('should return the total number of results / 0', done => {
             let res = [];
             from([
                 {
@@ -188,8 +206,8 @@ describe('mongo queries', () => {
                 },
             ])
                 .pipe(ezs('LodexRunQuery'))
-            // .pipe(ezs('debug'))
-                .on('data', (data) => {
+                // .pipe(ezs('debug'))
+                .on('data', data => {
                     res = [...res, data];
                 })
                 .on('end', () => {
@@ -199,7 +217,7 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should return the total number of results / 10', (done) => {
+        it('should return the total number of results / 10', done => {
             let res = [];
             from([
                 {
@@ -208,8 +226,8 @@ describe('mongo queries', () => {
                 },
             ])
                 .pipe(ezs('LodexRunQuery'))
-            // .pipe(ezs('debug'))
-                .on('data', (data) => {
+                // .pipe(ezs('debug'))
+                .on('data', data => {
                     res = [...res, data];
                 })
                 .on('end', () => {
@@ -219,7 +237,7 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should return referer', (done) => {
+        it('should return referer', done => {
             let res = [];
             from([
                 {
@@ -229,8 +247,8 @@ describe('mongo queries', () => {
                 },
             ])
                 .pipe(ezs('LodexRunQuery'))
-            // .pipe(ezs('debug'))
-                .on('data', (data) => {
+                // .pipe(ezs('debug'))
+                .on('data', data => {
                     res = [...res, data];
                 })
                 .on('end', () => {
@@ -242,7 +260,7 @@ describe('mongo queries', () => {
                 });
         });
 
-        it.skip('should select one field', (done) => {
+        it.skip('should select one field', done => {
             let res = [];
             from([
                 {
@@ -253,7 +271,7 @@ describe('mongo queries', () => {
             ])
                 .pipe(ezs('LodexRunQuery'))
                 // .pipe(ezs('debug'))
-                .on('data', (data) => {
+                .on('data', data => {
                     res = [...res, data];
                 })
                 .on('end', () => {
@@ -264,7 +282,7 @@ describe('mongo queries', () => {
                 });
         });
 
-        it.skip('should select an array of fields', (done) => {
+        it.skip('should select an array of fields', done => {
             let res = [];
             from([
                 {
@@ -275,7 +293,7 @@ describe('mongo queries', () => {
             ])
                 .pipe(ezs('LodexRunQuery'))
                 .pipe(ezs('debug'))
-                .on('data', (data) => {
+                .on('data', data => {
                     res = [...res, data];
                 })
                 .on('end', () => {
@@ -291,15 +309,19 @@ describe('mongo queries', () => {
         beforeEach(() => initDb(connectionStringURI, publishedDataset));
         afterEach(() => drop());
 
-        it('should throw when no reducer is given', (done) => {
-            from([{
-                connectionStringURI,
-            }])
+        it('should throw when no reducer is given', done => {
+            from([
+                {
+                    connectionStringURI,
+                },
+            ])
                 .pipe(ezs('LodexReduceQuery'))
                 .pipe(ezs('debug'))
-                .on('error', (err) => {
+                .on('error', err => {
                     expect(err).toBeInstanceOf(Error);
-                    expect(err.message).toContain('reducer= must be defined as parameter.');
+                    expect(err.message).toContain(
+                        'reducer= must be defined as parameter.',
+                    );
                     done();
                 })
                 .on('end', () => {
@@ -307,15 +329,17 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should throw when the reducer is not found', (done) => {
-            from([{
-                connectionStringURI,
-            }])
+        it('should throw when the reducer is not found', done => {
+            from([
+                {
+                    connectionStringURI,
+                },
+            ])
                 .pipe(ezs('LodexReduceQuery', { reducer: 'foo' }))
                 .pipe(ezs('debug'))
-                .on('error', (err) => {
+                .on('error', err => {
                     expect(err).toBeInstanceOf(Error);
-                    expect(err.message).toContain('Unknown reducer \'foo\'');
+                    expect(err.message).toContain("Unknown reducer 'foo'");
                     done();
                 })
                 .on('end', () => {
@@ -323,16 +347,20 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should take field into account', (done) => {
+        it('should take field into account', done => {
             let res = [];
-            from([{
-                connectionStringURI,
-            }])
-                .pipe(ezs('LodexReduceQuery', {
-                    reducer: 'distinct',
-                    field: 'publicationDate',
-                }))
-                .on('data', (data) => {
+            from([
+                {
+                    connectionStringURI,
+                },
+            ])
+                .pipe(
+                    ezs('LodexReduceQuery', {
+                        reducer: 'distinct',
+                        field: 'publicationDate',
+                    }),
+                )
+                .on('data', data => {
                     res = [...res, data];
                 })
                 .on('end', () => {
@@ -351,17 +379,21 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should take minValue into account', (done) => {
+        it('should take minValue into account', done => {
             let res = [];
-            from([{
-                connectionStringURI,
-            }])
-                .pipe(ezs('LodexReduceQuery', {
-                    reducer: 'distinct',
-                    field: 'publicationDate',
-                    minValue: 6,
-                }))
-                .on('data', (data) => {
+            from([
+                {
+                    connectionStringURI,
+                },
+            ])
+                .pipe(
+                    ezs('LodexReduceQuery', {
+                        reducer: 'distinct',
+                        field: 'publicationDate',
+                        minValue: 6,
+                    }),
+                )
+                .on('data', data => {
                     res = [...res, data];
                 })
                 .on('end', () => {
@@ -371,17 +403,21 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should take maxValue into account', (done) => {
+        it('should take maxValue into account', done => {
             let res = [];
-            from([{
-                connectionStringURI,
-            }])
-                .pipe(ezs('LodexReduceQuery', {
-                    reducer: 'distinct',
-                    field: 'publicationDate',
-                    maxValue: 4,
-                }))
-                .on('data', (data) => {
+            from([
+                {
+                    connectionStringURI,
+                },
+            ])
+                .pipe(
+                    ezs('LodexReduceQuery', {
+                        reducer: 'distinct',
+                        field: 'publicationDate',
+                        maxValue: 4,
+                    }),
+                )
+                .on('data', data => {
                     res = [...res, data];
                 })
                 .on('end', () => {
@@ -391,16 +427,20 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should inject referer into the results', (done) => {
+        it('should inject referer into the results', done => {
             let res = [];
-            from([{
-                connectionStringURI,
-            }])
-                .pipe(ezs('LodexReduceQuery', {
-                    reducer: 'distinct',
-                    referer: 'referer',
-                }))
-                .on('data', (data) => {
+            from([
+                {
+                    connectionStringURI,
+                },
+            ])
+                .pipe(
+                    ezs('LodexReduceQuery', {
+                        reducer: 'distinct',
+                        referer: 'referer',
+                    }),
+                )
+                .on('data', data => {
                     expect(data).toHaveProperty('referer');
                     res = [...res, data];
                 })
@@ -411,35 +451,41 @@ describe('mongo queries', () => {
         });
 
         describe('count', () => {
-            it('should count the fields/resources(?) values', (done) => {
+            it('should count the fields/resources(?) values', done => {
                 let res = [];
-                from([{
-                    connectionStringURI,
-                }])
+                from([
+                    {
+                        connectionStringURI,
+                    },
+                ])
                     .pipe(ezs('LodexReduceQuery', { reducer: 'count' }))
-                    .on('data', (data) => {
+                    .on('data', data => {
                         res = [...res, data];
                     })
                     .on('end', () => {
                         expect(res).toHaveLength(1);
-                        expect(res).toEqual([{
-                            _id: 'uri',
-                            total: 1,
-                            value: 10,
-                        }]);
+                        expect(res).toEqual([
+                            {
+                                _id: 'uri',
+                                total: 1,
+                                value: 10,
+                            },
+                        ]);
                         done();
                     });
             });
         });
 
         describe('distinct', () => {
-            it('should return the different distinct values', (done) => {
+            it('should return the different distinct values', done => {
                 let res = [];
-                from([{
-                    connectionStringURI,
-                }])
+                from([
+                    {
+                        connectionStringURI,
+                    },
+                ])
                     .pipe(ezs('LodexReduceQuery', { reducer: 'distinct' }))
-                    .on('data', (data) => {
+                    .on('data', data => {
                         res = [...res, data];
                     })
                     .on('end', () => {
@@ -454,13 +500,15 @@ describe('mongo queries', () => {
     });
 
     describe('injectSyndicationFrom', () => {
-        beforeEach(() => Promise.all([
-            initDb(connectionStringURI, publishedDataset),
-            initDb(connectionStringURI, field),
-        ]));
+        beforeEach(() =>
+            Promise.all([
+                initDb(connectionStringURI, publishedDataset),
+                initDb(connectionStringURI, field),
+            ]),
+        );
         afterEach(() => drop());
 
-        it('should inject title & summary in each item', (done) => {
+        it('should inject title & summary in each item', done => {
             const res = [];
             from([
                 {
@@ -473,26 +521,34 @@ describe('mongo queries', () => {
                     source: 'ark:/67375/XTP-HPN7T1Q2-R',
                 },
             ])
-                .pipe(ezs('injectSyndicationFrom', {
-                    connectionStringURI,
-                    path: 'source',
-                }))
+                .pipe(
+                    ezs('injectSyndicationFrom', {
+                        connectionStringURI,
+                        path: 'source',
+                    }),
+                )
                 .pipe(ezs('debug'))
-                .on('data', (data) => {
+                .on('data', data => {
                     res.push(data);
                 })
                 .on('end', () => {
                     expect(res).toHaveLength(3);
                     expect(res[0].source).toEqual('ark:/67375/XTP-1JC4F85T-7');
                     expect(res[0].source_title).toEqual('research-article');
-                    expect(res[0].source_summary).toContain('Il s’agit d’une source primaire. ');
+                    expect(res[0].source_summary).toContain(
+                        'Il s’agit d’une source primaire. ',
+                    );
                     expect(res[1].source).toEqual('ark:/67375/XTP-HPN7T1Q2-R');
                     expect(res[1].source_title).toEqual('abstract');
-                    expect(res[1].source_summary).toContain('Résumé d’un papier ou ');
+                    expect(res[1].source_summary).toContain(
+                        'Résumé d’un papier ou ',
+                    );
                     expect(res[2].source).toEqual('ark:/67375/XTP-HPN7T1Q2-R');
                     expect(res[2].source_title).toEqual('abstract');
-                    expect(res[2].source_summary).toEqual('Résumé d’un papier ou d’une présentation qui a été '
-                        + 'présentée ou publiée séparément.');
+                    expect(res[2].source_summary).toEqual(
+                        'Résumé d’un papier ou d’une présentation qui a été ' +
+                            'présentée ou publiée séparément.',
+                    );
                     done();
                 });
         });
@@ -502,7 +558,7 @@ describe('mongo queries', () => {
         beforeEach(() => initDb(connectionStringURI, publishedCharacteristic));
         afterEach(() => drop());
 
-        it('should inject dataset fiels in each item', (done) => {
+        it('should inject dataset fiels in each item', done => {
             const res = [];
             from([
                 {
@@ -515,10 +571,12 @@ describe('mongo queries', () => {
                     item: 3,
                 },
             ])
-                .pipe(ezs('injectDatasetFields', {
-                    connectionStringURI,
-                }))
-                .on('data', (data) => {
+                .pipe(
+                    ezs('injectDatasetFields', {
+                        connectionStringURI,
+                    }),
+                )
+                .on('data', data => {
                     res.push(data);
                 })
                 .on('end', () => {
@@ -556,13 +614,15 @@ describe('mongo queries', () => {
             },
         ];
 
-        it('should labelize each item', (done) => {
+        it('should labelize each item', done => {
             const res = [];
             from(input)
-                .pipe(ezs('labelizeFieldID', {
-                    connectionStringURI,
-                }))
-                .on('data', (data) => {
+                .pipe(
+                    ezs('labelizeFieldID', {
+                        connectionStringURI,
+                    }),
+                )
+                .on('data', data => {
                     res.push(data);
                 })
                 .on('end', () => {
@@ -580,14 +640,16 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should labelize each item', (done) => {
+        it('should labelize each item', done => {
             const res = [];
             from(input)
-                .pipe(ezs('labelizeFieldID', {
-                    connectionStringURI,
-                    suffix: true,
-                }))
-                .on('data', (data) => {
+                .pipe(
+                    ezs('labelizeFieldID', {
+                        connectionStringURI,
+                        suffix: true,
+                    }),
+                )
+                .on('data', data => {
                     res.push(data);
                 })
                 .on('end', () => {
@@ -609,24 +671,30 @@ describe('mongo queries', () => {
         beforeEach(() => initDb(connectionStringURI, field));
         afterEach(() => drop());
 
-        it('with a standard context', (done) => {
+        it('with a standard context', done => {
             const res = [];
-            const context = { maxSize: '200', orderBy: '_id/asc', $query: { uri: 'xxx' } };
+            const context = {
+                maxSize: '200',
+                orderBy: '_id/asc',
+                $query: { uri: 'xxx' },
+            };
             from([context])
-                .pipe(ezs('buildContext', {
-                    connectionStringURI,
-                }))
+                .pipe(
+                    ezs('buildContext', {
+                        connectionStringURI,
+                    }),
+                )
                 .pipe(ezs.catch())
                 .on('error', done)
-                .on('data', (data) => {
+                .on('data', data => {
                     res.push(data);
                 })
                 .on('end', () => {
-                    expect(res.length).toEqual(1);
+                    expect(res).toHaveLength(1);
                     expect(res[0].maxSize).toEqual(context.maxSize);
                     expect(res[0].orderBy).toEqual(context.orderBy);
                     expect(res[0].$query).not.toBeDefined();
-                    expect(res[0].fields.length).toEqual(20);
+                    expect(res[0].fields).toHaveLength(20);
                     expect(res[0].filter).toEqual({
                         removedAt: {
                             $exists: false,
@@ -637,31 +705,39 @@ describe('mongo queries', () => {
                     done();
                 });
         });
-        it('with a context with field id', (done) => {
+        it('with a context with field id', done => {
             const res = [];
-            const context = { maxSize: '200', orderBy: '_id/asc', tfFF: ['The Lancet'] };
+            const context = {
+                maxSize: '200',
+                orderBy: '_id/asc',
+                tfFF: ['The Lancet'],
+            };
             from([context])
-                .pipe(ezs('buildContext', {
-                    connectionStringURI,
-                }))
+                .pipe(
+                    ezs('buildContext', {
+                        connectionStringURI,
+                    }),
+                )
                 .pipe(ezs.catch())
                 .on('error', done)
-                .on('data', (data) => {
+                .on('data', data => {
                     res.push(data);
                 })
                 .on('end', () => {
-                    expect(res.length).toEqual(1);
+                    expect(res).toHaveLength(1);
                     expect(res[0].maxSize).toEqual(context.maxSize);
                     expect(res[0].orderBy).toEqual(context.orderBy);
-                    expect(res[0].fields.length).toEqual(20);
+                    expect(res[0].fields).toHaveLength(20);
                     expect(res[0].filter).toEqual({
                         removedAt: {
                             $exists: false,
                         },
                         subresourceId: null,
-                        $and: [{
-                            'versions.tfFF': 'The Lancet',
-                        }],
+                        $and: [
+                            {
+                                'versions.tfFF': 'The Lancet',
+                            },
+                        ],
                     });
                     done();
                 });
@@ -672,19 +748,23 @@ describe('mongo queries', () => {
         beforeEach(() => initDb(connectionStringURI, publishedDataset));
         afterEach(() => drop());
 
-        it('should return results', (done) => {
+        it('should return results', done => {
             let res = [];
-            from([{
-                connectionStringURI,
-            }])
+            from([
+                {
+                    connectionStringURI,
+                },
+            ])
                 .pipe(ezs('LodexRunQuery'))
                 .pipe(ezs('filterVersions'))
-                .pipe(ezs('injectCountFrom', {
-                    connectionStringURI,
-                    path: '6gfz',
-                    field: '6gfz',
-                }))
-                .on('data', (data) => {
+                .pipe(
+                    ezs('injectCountFrom', {
+                        connectionStringURI,
+                        path: '6gfz',
+                        field: '6gfz',
+                    }),
+                )
+                .on('data', data => {
                     expect(data['6gfz_count']).toBeGreaterThanOrEqual(1);
                     res = [...res, data];
                 })
@@ -699,21 +779,25 @@ describe('mongo queries', () => {
         beforeEach(() => initDb(connectionStringURI, publishedDataset));
         afterEach(() => drop());
 
-        it('should return results', (done) => {
+        it('should return results', done => {
             let res = [];
-            from([{
-                connectionStringURI,
-            }])
-                .pipe(ezs('LodexAggregateQuery', {
-                    stage: [
-                        '$project: { value: { $arrayElemAt: [ "$versions.tfFF", -1 ] } }',
-                        '$unwind: "$value"',
-                        '$group: { _id: "$value",value: {$sum: 1} }',
-                    ],
-                }))
+            from([
+                {
+                    connectionStringURI,
+                },
+            ])
+                .pipe(
+                    ezs('LodexAggregateQuery', {
+                        stage: [
+                            '$project: { value: { $arrayElemAt: [ "$versions.tfFF", -1 ] } }',
+                            '$unwind: "$value"',
+                            '$group: { _id: "$value",value: {$sum: 1} }',
+                        ],
+                    }),
+                )
                 .pipe(ezs.catch())
                 .on('error', done)
-                .on('data', (data) => {
+                .on('data', data => {
                     expect(data.value).toBeGreaterThanOrEqual(1);
                     res = [...res, data];
                 })
@@ -723,22 +807,26 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should return results with referer', (done) => {
+        it('should return results with referer', done => {
             let res = [];
-            from([{
-                connectionStringURI,
-            }])
-                .pipe(ezs('LodexAggregateQuery', {
-                    stage: [
-                        '$project: { value: { $arrayElemAt: [ "$versions.tfFF", -1 ] } }',
-                        '$unwind: "$value"',
-                        '$group: { _id: "$value",value: {$sum: 1} }',
-                    ],
-                    referer: 'referer',
-                }))
+            from([
+                {
+                    connectionStringURI,
+                },
+            ])
+                .pipe(
+                    ezs('LodexAggregateQuery', {
+                        stage: [
+                            '$project: { value: { $arrayElemAt: [ "$versions.tfFF", -1 ] } }',
+                            '$unwind: "$value"',
+                            '$group: { _id: "$value",value: {$sum: 1} }',
+                        ],
+                        referer: 'referer',
+                    }),
+                )
                 .pipe(ezs.catch())
                 .on('error', done)
-                .on('data', (data) => {
+                .on('data', data => {
                     expect(data.value).toBeGreaterThanOrEqual(1);
                     expect(data.referer).toBe('referer');
                     res = [...res, data];
@@ -749,23 +837,27 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should return no results ', (done) => {
+        it('should return no results ', done => {
             let res = [];
-            from([{
-                connectionStringURI,
-                filter: { uri: 'xxxx' },
-            }])
-                .pipe(ezs('LodexAggregateQuery', {
-                    stage: [
-                        '$project: { value: { $arrayElemAt: [ "$versions.tfFF", -1 ] } }',
-                        'wrong stage',
-                        '$unwind: "$value"',
-                        '$group: { _id: "$value",value: {$sum: 1} }',
-                    ],
-                }))
+            from([
+                {
+                    connectionStringURI,
+                    filter: { uri: 'xxxx' },
+                },
+            ])
+                .pipe(
+                    ezs('LodexAggregateQuery', {
+                        stage: [
+                            '$project: { value: { $arrayElemAt: [ "$versions.tfFF", -1 ] } }',
+                            'wrong stage',
+                            '$unwind: "$value"',
+                            '$group: { _id: "$value",value: {$sum: 1} }',
+                        ],
+                    }),
+                )
                 .pipe(ezs.catch())
                 .on('error', done)
-                .on('data', (data) => {
+                .on('data', data => {
                     expect(data.total).toBe(0);
                     res = [...res, data];
                 })
@@ -775,21 +867,25 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should return error', (done) => {
-            from([{
-                aaa: 'bbbb',
-            }])
-                .pipe(ezs('LodexAggregateQuery', {
-                    stage: [
-                        '$project: { value: { $arrayElemAt: [ "$versions.tfFF", -1 ] } }',
-                        'wrong stage',
-                        '$unwind: "$value"',
-                        '$group: { _id: "$value",value: {$sum: 1} }',
-                    ],
-                }))
+        it('should return error', done => {
+            from([
+                {
+                    aaa: 'bbbb',
+                },
+            ])
+                .pipe(
+                    ezs('LodexAggregateQuery', {
+                        stage: [
+                            '$project: { value: { $arrayElemAt: [ "$versions.tfFF", -1 ] } }',
+                            'wrong stage',
+                            '$unwind: "$value"',
+                            '$group: { _id: "$value",value: {$sum: 1} }',
+                        ],
+                    }),
+                )
                 .pipe(ezs.catch())
                 .pipe(ezs.catch())
-                .on('error', (e) => {
+                .on('error', e => {
                     expect(() => {
                         throw e.sourceError;
                     }).toThrow('Invalid scheme');
@@ -802,20 +898,24 @@ describe('mongo queries', () => {
     });
 
     describe('#joinQuery', () => {
-        beforeEach(() => initDb(connectionStringURI, publishedDatasetWithSubResource));
+        beforeEach(() =>
+            initDb(connectionStringURI, publishedDatasetWithSubResource),
+        );
         afterEach(() => drop());
 
-        it('should return no results with parameters matchField, matchValue, joinField as empty string', (done) => {
+        it('should return no results with parameters matchField, matchValue, joinField as empty string', done => {
             const results = [];
             from([{ connectionStringURI }])
-                .pipe(ezs('LodexJoinQuery', {
-                    matchField: '',
-                    matchValue: '',
-                    joinField: '',
-                }))
+                .pipe(
+                    ezs('LodexJoinQuery', {
+                        matchField: '',
+                        matchValue: '',
+                        joinField: '',
+                    }),
+                )
                 .pipe(ezs.catch())
                 .on('error', done)
-                .on('data', (data) => results.push(data))
+                .on('data', data => results.push(data))
                 .on('end', () => {
                     expect(results).toHaveLength(1);
                     expect(results[0].total).toBe(0);
@@ -823,17 +923,19 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should return nothing with incomplet parameters', (done) => {
+        it('should return nothing with incomplet parameters', done => {
             const results = [];
             from([{ connectionStringURI }])
-                .pipe(ezs('LodexJoinQuery', {
-                    matchField: '',
-                    matchValue: '',
-                    joinField: 'dqff',
-                }))
+                .pipe(
+                    ezs('LodexJoinQuery', {
+                        matchField: '',
+                        matchValue: '',
+                        joinField: 'dqff',
+                    }),
+                )
                 .pipe(ezs.catch())
                 .on('error', done)
-                .on('data', (data) => results.push(data))
+                .on('data', data => results.push(data))
                 .on('end', () => {
                     expect(results).toHaveLength(1);
                     expect(results[0].total).toBe(0);
@@ -841,17 +943,19 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should return nothing when searching value that not exists into the dataset', (done) => {
+        it('should return nothing when searching value that not exists into the dataset', done => {
             const results = [];
             from([{ connectionStringURI }])
-                .pipe(ezs('LodexJoinQuery', {
-                    matchField: 'aHOZ',
-                    matchValue: 'unset value',
-                    joinField: 'dqff',
-                }))
+                .pipe(
+                    ezs('LodexJoinQuery', {
+                        matchField: 'aHOZ',
+                        matchValue: 'unset value',
+                        joinField: 'dqff',
+                    }),
+                )
                 .pipe(ezs.catch())
                 .on('error', done)
-                .on('data', (data) => results.push(data))
+                .on('data', data => results.push(data))
                 .on('end', () => {
                     expect(results).toHaveLength(1);
                     expect(results[0].total).toBe(0);
@@ -859,43 +963,53 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should return 10 unique sub resources', (done) => {
+        it('should return 10 unique sub resources', done => {
             const results = [];
             const expectedResults = [
-                'Boa constrictor', 'Cebus capucinus', 'Chlorocebus pygerythrus',
-                'Crotalus durissus', 'Drymarchon corais', 'Macaca mulatta',
-                'Macaca radiata', 'Otolemur garnettii', 'Saguinus fuscicollis',
+                'Boa constrictor',
+                'Cebus capucinus',
+                'Chlorocebus pygerythrus',
+                'Crotalus durissus',
+                'Drymarchon corais',
+                'Macaca mulatta',
+                'Macaca radiata',
+                'Otolemur garnettii',
+                'Saguinus fuscicollis',
             ];
             from([{ connectionStringURI }])
-                .pipe(ezs('LodexJoinQuery', {
-                    matchField: 'aHOZ',
-                    matchValue: 'Tarsius spectrum',
-                    joinField: 'dqff',
-                }))
+                .pipe(
+                    ezs('LodexJoinQuery', {
+                        matchField: 'aHOZ',
+                        matchValue: 'Tarsius spectrum',
+                        joinField: 'dqff',
+                    }),
+                )
                 .pipe(ezs.catch())
                 .on('error', done)
-                .on('data', (data) => results.push(data))
+                .on('data', data => results.push(data))
                 .on('end', () => {
                     const uniqResultsSize = _(results)
                         .uniqWith(_.isEqual)
                         .size();
 
                     const isResultsSameHasExpectedResults = _.chain(results)
-                        .map((result) => _(result).get('versions[0].dqff'))
+                        .map(result => _(result).get('versions[0].dqff'))
                         .difference(expectedResults)
                         .size()
                         .eq(0)
                         .value();
 
                     const isCountEqualsToOne = _.chain(results)
-                        .map((result) => _(result).get('count'))
-                        .every((value) => _.eq(value, 1))
+                        .map(result => _(result).get('count'))
+                        .every(value => _.eq(value, 1))
                         .value();
 
-                    const hitsTotal = results.filter((value) => value.hitsTotal === 1);
+                    const hitsTotal = results.filter(
+                        value => value.hitsTotal === 1,
+                    );
 
                     // Check if we have 1 document containg this sous-ressources
-                    expect(hitsTotal.length).toBe(9);
+                    expect(hitsTotal).toHaveLength(9);
                     // Check if all result have the count to 1
                     expect(isCountEqualsToOne).toBeTruthy();
                     // Check if all result a in ExpectedResults list
@@ -910,46 +1024,61 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should return 13 sub resources', (done) => {
+        it('should return 13 sub resources', done => {
             const results = [];
             const expectedResults = [
-                'Alligator mississippiensis', 'Eublepharis macularius',
-                'Mesocricetus auratus', 'Mus musculus', 'Rattus norvegicus',
-                'Sceloporus occidentalis', 'Tenebrio molitor', 'Crocodylus siamensis',
-                'Odontochelys semitestacea', 'Pelodiscus sinensis', 'Proganochelys quenstedti',
+                'Alligator mississippiensis',
+                'Eublepharis macularius',
+                'Mesocricetus auratus',
+                'Mus musculus',
+                'Rattus norvegicus',
+                'Sceloporus occidentalis',
+                'Tenebrio molitor',
+                'Crocodylus siamensis',
+                'Odontochelys semitestacea',
+                'Pelodiscus sinensis',
+                'Proganochelys quenstedti',
                 'Acheta domesticus',
             ];
             from([{ connectionStringURI }])
-                .pipe(ezs('LodexJoinQuery', {
-                    matchField: 'aHOZ',
-                    matchValue: 'Gallus gallus',
-                    joinField: 'dqff',
-                }))
+                .pipe(
+                    ezs('LodexJoinQuery', {
+                        matchField: 'aHOZ',
+                        matchValue: 'Gallus gallus',
+                        joinField: 'dqff',
+                    }),
+                )
                 .pipe(ezs.catch())
                 .on('error', done)
-                .on('data', (data) => results.push(data))
+                .on('data', data => results.push(data))
                 .on('end', () => {
                     const uniqResultsSize = _(results)
                         .uniqWith(_.isEqual)
                         .size();
 
                     const isResultsSameHasExpectedResults = _.chain(results)
-                        .map((result) => _(result).get('versions[0].dqff'))
+                        .map(result => _(result).get('versions[0].dqff'))
                         .difference(expectedResults)
                         .size()
                         .eq(0)
                         .value();
 
-                    const countEqualsOne = results.filter((value) => value.count === 1);
-                    const countEqualsTwo = results.filter((value) => value.count === 2);
+                    const countEqualsOne = results.filter(
+                        value => value.count === 1,
+                    );
+                    const countEqualsTwo = results.filter(
+                        value => value.count === 2,
+                    );
 
-                    const hitsTotal = results.filter((value) => value.hitsTotal === 2);
+                    const hitsTotal = results.filter(
+                        value => value.hitsTotal === 2,
+                    );
 
                     // Check if the count are good
-                    expect(countEqualsOne.length).toBe(11);
-                    expect(countEqualsTwo.length).toBe(1);
+                    expect(countEqualsOne).toHaveLength(11);
+                    expect(countEqualsTwo).toHaveLength(1);
                     // Check if we have 2 document containg this sous-ressources
-                    expect(hitsTotal.length).toBe(12);
+                    expect(hitsTotal).toHaveLength(12);
                     // Check if all result a in ExpectedResults list
                     expect(isResultsSameHasExpectedResults).toBeTruthy();
                     // Check the if all element returned are sub ressource
@@ -960,6 +1089,160 @@ describe('mongo queries', () => {
                     expect(uniqResultsSize).toBe(12);
                     done();
                 });
+        });
+    });
+
+    describe('runQueryPrecomputed', () => {
+        beforeEach(async () => {
+            await initDb(connectionStringURI, precomputedDataset);
+        });
+
+        afterEach(() => drop());
+
+        it('should return 5 result for segments precomputed', done => {
+            const results = [];
+            from([
+                {
+                    connectionStringURI,
+                    filter: {},
+                    precomputedId: 'segments_precomputed',
+                    orderBy: 'label/asc',
+                },
+            ])
+                .pipe(
+                    ezs('LodexRunQueryPrecomputed', {
+                        valueFieldName: 'weight',
+                        labelFieldName: 'source',
+                    }),
+                )
+                .pipe(ezs.catch())
+                .on('error', done)
+                .on('data', data => results.push(data))
+                .on('end', () => {
+                    expect(results).toHaveLength(5);
+
+                    expect(results[0]).toHaveProperty('_id');
+                    expect(results[0]).toHaveProperty('total');
+                    expect(results[0]).toHaveProperty('source', 'A');
+                    expect(results[0]).toHaveProperty('target', 'B');
+                    expect(results[0]).toHaveProperty('weight', 10);
+
+                    expect(results[1]).toHaveProperty('_id');
+                    expect(results[1]).toHaveProperty('total');
+                    expect(results[1]).toHaveProperty('source', 'B');
+                    expect(results[1]).toHaveProperty('target', 'C');
+                    expect(results[1]).toHaveProperty('weight', 30);
+
+                    expect(results[2]).toHaveProperty('_id');
+                    expect(results[2]).toHaveProperty('total');
+                    expect(results[2]).toHaveProperty('source', 'C');
+                    expect(results[2]).toHaveProperty('target', 'D');
+                    expect(results[2]).toHaveProperty('weight', 42);
+
+                    expect(results[3]).toHaveProperty('_id');
+                    expect(results[3]).toHaveProperty('total');
+                    expect(results[3]).toHaveProperty('source', 'D');
+                    expect(results[3]).toHaveProperty('target', 'E');
+                    expect(results[3]).toHaveProperty('weight', 67);
+
+                    expect(results[4]).toHaveProperty('_id');
+                    expect(results[4]).toHaveProperty('total');
+                    expect(results[4]).toHaveProperty('source', 'E');
+                    expect(results[4]).toHaveProperty('target', 'F');
+                    expect(results[4]).toHaveProperty('weight', 88);
+                    done();
+                });
+        });
+
+        it('should return 5 result for values precomputed', done => {
+            const results = [];
+            from([
+                {
+                    connectionStringURI,
+                    filter: {},
+                    precomputedId: 'values_precomputed',
+                    orderBy: 'label/asc',
+                },
+            ])
+                .pipe(
+                    ezs('LodexRunQueryPrecomputed', {
+                        valueFieldName: 'value',
+                        labelFieldName: 'id',
+                    }),
+                )
+                .pipe(ezs.catch())
+                .on('error', done)
+                .on('data', data => results.push(data))
+                .on('end', () => {
+                    expect(results).toHaveLength(5);
+
+                    expect(results[0]).toHaveProperty('_id');
+                    expect(results[0]).toHaveProperty('total');
+                    expect(results[0]).toHaveProperty('id', 'A');
+                    expect(results[0]).toHaveProperty('value', 10);
+
+                    expect(results[1]).toHaveProperty('_id');
+                    expect(results[1]).toHaveProperty('total');
+                    expect(results[1]).toHaveProperty('id', 'B');
+                    expect(results[1]).toHaveProperty('value', 30);
+
+                    expect(results[2]).toHaveProperty('_id');
+                    expect(results[2]).toHaveProperty('total');
+                    expect(results[2]).toHaveProperty('id', 'C');
+                    expect(results[2]).toHaveProperty('value', 42);
+
+                    expect(results[3]).toHaveProperty('_id');
+                    expect(results[3]).toHaveProperty('total');
+                    expect(results[3]).toHaveProperty('id', 'D');
+                    expect(results[3]).toHaveProperty('value', 67);
+
+                    expect(results[4]).toHaveProperty('_id');
+                    expect(results[4]).toHaveProperty('total');
+                    expect(results[4]).toHaveProperty('id', 'E');
+                    expect(results[4]).toHaveProperty('value', 88);
+                    done();
+                });
+        });
+
+        it('should returns 50 000 documents', done => {
+            jest.setTimeout(2 * 60 * 1000); // 2 mins
+
+            const bigPrecomputedDataset = [];
+
+            // Generate 50 000 documents
+            for (let i = 0; i < 50000; i++) {
+                bigPrecomputedDataset.push({
+                    id: `____${i}_${i}____`,
+                    value: `____${i}_${Math.random()}_${i}____`,
+                });
+            }
+
+            initDb(connectionStringURI, {
+                pc_big_values_precomputed: bigPrecomputedDataset,
+            }).then(() => {
+                const results = [];
+                from([
+                    {
+                        connectionStringURI,
+                        filter: {},
+                        precomputedId: 'big_values_precomputed',
+                        orderBy: 'label/asc',
+                    },
+                ])
+                    .pipe(
+                        ezs('LodexRunQueryPrecomputed', {
+                            valueFieldName: 'value',
+                            labelFieldName: 'id',
+                        }),
+                    )
+                    .pipe(ezs.catch())
+                    .on('error', done)
+                    .on('data', data => results.push(data))
+                    .on('end', () => {
+                        expect(results).toHaveLength(50000);
+                        done();
+                    });
+            });
         });
     });
 });
