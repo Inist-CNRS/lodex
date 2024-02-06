@@ -329,14 +329,24 @@ const Tenants = ({ handleLogout }) => {
         },
         {
             field: 'stats',
-            headerName: 'Taille Base de donnée',
+            headerName: 'Taille Base de données',
             flex: 2,
+            sortable: true,
+            valueGetter: params => {
+                if (
+                    params.row.stats == null ||
+                    params.row.stats.totalSize == null
+                ) {
+                    return -1;
+                }
+                return params.row.stats.totalSize;
+            },
             valueFormatter: params => {
-                if (params.value == null || params.value.totalSize == null) {
+                if (params.value === -1) {
                     return '-';
                 }
 
-                const mbSize = (params.value.totalSize / 1024).toFixed(2);
+                const mbSize = (params.value / 1024).toFixed(2);
 
                 if (mbSize > 1024) {
                     return `${(mbSize / 1024).toFixed(2)} Gio`;
@@ -346,7 +356,7 @@ const Tenants = ({ handleLogout }) => {
                     return `${mbSize} Mio`;
                 }
 
-                return `${params.value.totalSize} Kio`;
+                return `${params.value} Kio`;
             },
         },
         {
