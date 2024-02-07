@@ -328,6 +328,32 @@ const Tenants = ({ handleLogout }) => {
             },
         },
         {
+            field: 'dataset',
+            headerName: 'Données',
+            flex: 2,
+            sortable: true,
+            valueFormatter: params => {
+                if (!params.value) {
+                    return '-';
+                }
+
+                return params.value;
+            },
+        },
+        {
+            field: 'publishedDataset',
+            headerName: 'Données publié',
+            flex: 2,
+            sortable: true,
+            valueFormatter: params => {
+                if (!params.value) {
+                    return '-';
+                }
+
+                return params.value;
+            },
+        },
+        {
             field: 'stats',
             headerName: 'Taille Base de données',
             flex: 2,
