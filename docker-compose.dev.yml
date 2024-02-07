@@ -2,16 +2,13 @@ version: '3'
 
 services:
     node:
-        image: node:16.20-bullseye
+        image: node:18.18-bookworm
         extra_hosts: # for linux hosts since version 20.10
             - host.docker.internal:host-gateway
         volumes:
             - .:/app
         working_dir: /app
         environment:
-            npm_config_cache: /app/.npm
-            CYPRESS_CACHE_FOLDER: /app/.cache
-            MONGOMS_DOWNLOAD_DIR: /app/.cache/mongodb-binaries
             DEBUG: ${DEBUG}
             NODE_ENV: ${NODE_ENV}
             NODE_OPTIONS: ${NODE_OPTIONS}
@@ -36,14 +33,11 @@ services:
         command: npm run development:api
 
     dev-server: ## Enable hot-reload in development
-        image: node:16.20-bullseye
+        image: node:18.18-bookworm
         volumes:
             - .:/app
-            - ./.cache:/root/.cache
         working_dir: /app
         environment:
-            npm_config_cache: /app/.npm
-            CYPRESS_CACHE_FOLDER: /app/.cache
             NODE_ENV: development
         ports:
             - "8080:8080"
@@ -60,14 +54,11 @@ services:
             - "6379:6379"
 
     workers:
-        image: node:16.20-bullseye
+        image: node:18.18-bookworm
         volumes:
             - .:/app
-            - ./.cache:/root/.cache
         working_dir: /app
         environment:
-            npm_config_cache: /app/.npm
-            CYPRESS_CACHE_FOLDER: /app/.cache
             DEBUG: ${DEBUG}
             NODE_ENV: ${NODE_ENV}
             NODE_OPTIONS: ${NODE_OPTIONS}
