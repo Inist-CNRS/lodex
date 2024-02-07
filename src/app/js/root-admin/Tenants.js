@@ -342,7 +342,7 @@ const Tenants = ({ handleLogout }) => {
         },
         {
             field: 'published',
-            headerName: 'Données publié',
+            headerName: 'Données publiées',
             flex: 2,
             sortable: true,
             valueFormatter: params => {
