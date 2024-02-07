@@ -1,5 +1,4 @@
-import deepClone from 'lodash.clonedeep';
-import { clamp } from 'lodash';
+import { clamp, deepClone } from 'lodash';
 
 // Values given when an error are encounter
 export const INVALID_VALUE = -1;
