@@ -341,34 +341,21 @@ const Tenants = ({ handleLogout }) => {
             },
         },
         {
-            field: 'publishedDataset',
+            field: 'published',
             headerName: 'Données publié',
             flex: 2,
             sortable: true,
             valueFormatter: params => {
-                if (!params.value) {
-                    return '-';
-                }
-
-                return params.value;
+                return params.value ? 'Oui' : 'Non';
             },
         },
         {
-            field: 'stats',
+            field: 'totalSize',
             headerName: 'Taille Base de données',
             flex: 2,
             sortable: true,
-            valueGetter: params => {
-                if (
-                    params.row.stats == null ||
-                    params.row.stats.totalSize == null
-                ) {
-                    return -1;
-                }
-                return params.row.stats.totalSize;
-            },
             valueFormatter: params => {
-                if (params.value === -1) {
+                if (params.value == null) {
                     return '-';
                 }
 
