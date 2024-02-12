@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { Box, TextField } from '@mui/material';
+import { Box, MenuItem, TextField } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../utils/updateAdminArgs';
@@ -13,16 +13,25 @@ import {
 } from '../utils/components/field-set/FormatFieldSets';
 import VegaFieldPreview from '../utils/components/admin/VegaFieldPreview';
 import { VegaLiteAdminView } from './VegaLiteView';
+import { ASPECT_RATIO_16_9, ASPECT_RATIOS } from '../utils/aspectRatio';
 
 export const defaultArgs = {
     params: {
         maxSize: 200,
         orderBy: 'value/asc',
     },
-    specTemplate:
-        '{"width": 600, "autosize": {"type": "fit", "contains": "padding" }, "mark": "bar", "encoding": { "x": {"field": "_id", "type": "ordinal"}, "y": {"field": "value", "type": "quantitative"} }, "data": {"name": "values"} }',
-    width: '',
-    height: '',
+    specTemplate: JSON.stringify({
+        width: 'container',
+        height: 'container',
+        autosize: { type: 'fit', contains: 'padding' },
+        mark: 'bar',
+        encoding: {
+            x: { field: '_id', type: 'ordinal' },
+            y: { field: 'value', type: 'quantitative' },
+        },
+        data: { name: 'values' },
+    }),
+    aspectRatio: ASPECT_RATIO_16_9,
 };
 
 const VegaLiteAdmin = props => {
@@ -34,7 +43,7 @@ const VegaLiteAdmin = props => {
         showMinValue,
         showOrderBy,
     } = props;
-    const { specTemplate, width, height, params } = args;
+    const { specTemplate, aspectRatio, params } = args;
 
     const formattedSpecTemplate = useMemo(() => {
         try {
@@ -52,12 +61,8 @@ const VegaLiteAdmin = props => {
         updateAdminArgs('specTemplate', value, props);
     };
 
-    const handleWidth = e => {
-        updateAdminArgs('width', e.target.value, props);
-    };
-
-    const handleHeight = e => {
-        updateAdminArgs('height', e.target.value, props);
+    const handleAspectRatio = event => {
+        updateAdminArgs('aspectRatio', event.target.value, props);
     };
 
     return (
@@ -79,45 +84,23 @@ const VegaLiteAdmin = props => {
                 />
             </FormatDataParamsFieldSet>
             <FormatChartParamsFieldSet>
-                <Box width="100%">
-                    <VegaAdvancedMode
-                        value={formattedSpecTemplate}
-                        onChange={handleSpecTemplate}
-                    />
-                    <a
-                        href="https://vega.github.io/vega-lite/docs/size.html#specifying-width-and-height-per-discrete-step"
-                        target="_blank"
-                        rel="noopener nofollow noreferrer"
-                    >
-                        {p.t('vega_size_step')}
-                    </a>
-                </Box>
-                <TextField
-                    type="number"
-                    min={10}
-                    max={200}
-                    step={10}
-                    label={p.t('vegalite_width')}
-                    onChange={handleWidth}
-                    value={width}
-                    fullWidth
-                    InputProps={{
-                        endAdornment: '%',
-                    }}
+                <VegaAdvancedMode
+                    value={formattedSpecTemplate}
+                    onChange={handleSpecTemplate}
                 />
                 <TextField
-                    type="number"
-                    min={10}
-                    max={800}
-                    step={10}
-                    label={p.t('vegalite_height')}
-                    onChange={handleHeight}
-                    value={height}
                     fullWidth
-                    InputProps={{
-                        endAdornment: '%',
-                    }}
-                />
+                    select
+                    label={p.t('aspect_ratio')}
+                    onChange={handleAspectRatio}
+                    value={aspectRatio}
+                >
+                    {ASPECT_RATIOS.map(aspectRatio => (
+                        <MenuItem key={aspectRatio} value={aspectRatio}>
+                            {aspectRatio}
+                        </MenuItem>
+                    ))}
+                </TextField>
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
@@ -144,8 +127,7 @@ VegaLiteAdmin.propTypes = {
             orderBy: PropTypes.string,
         }),
         specTemplate: PropTypes.string,
-        width: PropTypes.number,
-        height: PropTypes.number,
+        aspectRatio: PropTypes.string,
     }),
     onChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,

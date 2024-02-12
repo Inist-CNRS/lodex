@@ -135,12 +135,20 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                         {p.t('vega_variable_list')}
                         <div>
                             <i>
-                                <code>
-                                    {'{|__LODEX_WIDTH__|}'} (
-                                    {p.t('vega_variable_width')}),{' '}
-                                    {'{|__LODEX_HEIGHT__|}'} (
-                                    {p.t('vega_variable_height')})
-                                </code>
+                                <ul>
+                                    <li>
+                                        <code>{'{|__LODEX_WIDTH__|}'}</code> (
+                                        {p.t('vega_variable_width')})
+                                    </li>
+                                    <li>
+                                        <code>{'{|__LODEX_HEIGHT__|}'}</code> (
+                                        {p.t('vega_variable_height')})
+                                    </li>
+                                    <li>
+                                        <code>container</code> (
+                                        {p.t('vega_variable_container')})
+                                    </li>
+                                </ul>
                             </i>
                         </div>
                     </p>

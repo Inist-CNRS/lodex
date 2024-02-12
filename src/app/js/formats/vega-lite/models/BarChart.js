@@ -7,7 +7,6 @@ import {
     AXIS_Y,
     SCALE_LINEAR,
     SCALE_LOG,
-    VEGA_ACTIONS_WIDTH,
 } from '../../utils/chartsUtils';
 import BasicChart from './BasicChart';
 import barChartVL from './json/bar_chart.vl.json';
@@ -46,15 +45,11 @@ class BarChart extends BasicChart {
         this.round = false;
         this.labels = false;
         this.labelOverlap = false;
-        this.autosize = {
-            type: 'fit',
-            contains: 'padding',
-        };
     }
 
     /**
      * round the value or not
-     * @param round new round status
+     * @param round {boolean} new round status
      */
     setRoundValue(round) {
         this.round = round;
@@ -62,7 +57,7 @@ class BarChart extends BasicChart {
 
     /**
      * Set bar size
-     * @param size new size
+     * @param size {number} new size
      */
     setSize(size) {
         this.size = size;
@@ -70,7 +65,7 @@ class BarChart extends BasicChart {
 
     /**
      * Add label on the bar for display her value or not
-     * @param labels new labels status
+     * @param labels {boolean} new labels status
      */
     setLabels(labels) {
         this.labels = labels;
@@ -78,7 +73,7 @@ class BarChart extends BasicChart {
 
     /**
      * Set labelOverlap
-     * @param labelOverlap flag
+     * @param labelOverlap {boolean} flag
      */
     setLabelOverlap(labelOverlap) {
         this.labelOverlap = Boolean(labelOverlap);
@@ -159,10 +154,8 @@ class BarChart extends BasicChart {
 
     /**
      * Rebuild the edited spec
-     * @param widthIn{number | null}
-     * @param dataNumber{number | null}
      */
-    buildSpec(widthIn = null, dataNumber = null) {
+    buildSpec() {
         let model = this.model;
         let labelsModel = this.labelsModel;
         model.encoding.color.scale.range = this.colors;
@@ -189,10 +182,6 @@ class BarChart extends BasicChart {
         if (this.round) {
             model.encoding.x.axis.tickMinStep = 1;
             model.encoding.y.axis.tickMinStep = 1;
-        }
-
-        if (!this.editMode && widthIn <= 300) {
-            model.encoding.x.axis.labelLimit = 120;
         }
 
         let x, y, lx, ly;
@@ -224,42 +213,30 @@ class BarChart extends BasicChart {
             encoding.tooltip = [this.tooltip.category, this.tooltip.value];
         }
 
-        let width, height;
-
-        if (!this.editMode) {
-            if (this.direction === AXIS_VERTICAL) {
-                width = widthIn - VEGA_ACTIONS_WIDTH;
-                height = 300;
-                if (dataNumber * (parseInt(this.size) + 4) >= width) {
-                    encoding.size = {
-                        value: width / (dataNumber + 1),
-                    };
-                } else {
-                    encoding.size = {
-                        value: parseInt(this.size),
-                    };
-                }
+        let height = 'container';
+        if (this.size > 0) {
+            if (this.direction === AXIS_HORIZONTAL) {
+                height = {
+                    step: this.size,
+                };
             } else {
-                width = widthIn - VEGA_ACTIONS_WIDTH;
-                height = { step: parseInt(this.size) };
+                encoding.size = {
+                    value: this.size,
+                };
             }
         }
 
         if (!this.labels) {
-            const toReturn = {
+            return {
                 mark: model.mark,
                 encoding: encoding,
                 padding: this.padding,
-                autosize: this.autosize,
-            };
-
-            if (this.editMode) {
-                return toReturn;
-            }
-            return {
-                ...toReturn,
-                width,
+                width: 'container',
                 height,
+                autosize: {
+                    type: 'fit',
+                    contains: 'padding',
+                },
             };
         } else {
             const mark = labelsModel.mark;
@@ -274,7 +251,7 @@ class BarChart extends BasicChart {
                 mark.align = 'center';
             }
 
-            const toReturn = {
+            return {
                 layer: [
                     {
                         mark: model.mark,
@@ -289,17 +266,12 @@ class BarChart extends BasicChart {
                 config: {
                     view: { strokeWidth: 0 },
                 },
-                autosize: this.autosize,
-            };
-
-            if (this.editMode) {
-                return toReturn;
-            }
-
-            return {
-                ...toReturn,
-                width,
+                width: 'container',
                 height,
+                autosize: {
+                    type: 'fit',
+                    contains: 'padding',
+                },
             };
         }
     }

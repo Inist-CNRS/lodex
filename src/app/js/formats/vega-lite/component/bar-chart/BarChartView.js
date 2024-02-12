@@ -19,7 +19,10 @@ import BarChart from '../../models/BarChart';
 import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
-import { ASPECT_RATIO_16_6 } from '../../../utils/aspectRatio';
+import {
+    ASPECT_RATIO_16_6,
+    ASPECT_RATIO_4_3,
+} from '../../../utils/aspectRatio';
 
 const styles = {
     container: {
@@ -102,6 +105,16 @@ const BarChartView = ({
         diagonalValueAxis,
     ]);
 
+    const aspectRatioByDirection = useMemo(() => {
+        if (direction === 'vertical') {
+            return ASPECT_RATIO_16_6;
+        }
+        if (barSize <= 0) {
+            return ASPECT_RATIO_4_3;
+        }
+        return undefined;
+    }, [direction, barSize]);
+
     if (!spec) {
         return <InvalidFormat format={field.format} value={error} />;
     }
@@ -112,7 +125,7 @@ const BarChartView = ({
                 spec={spec}
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
-                aspectRatio={ASPECT_RATIO_16_6}
+                aspectRatio={aspectRatioByDirection}
             />
         </div>
     );

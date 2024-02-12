@@ -15,9 +15,6 @@ class BubblePlot extends HeatMap {
 
         this.commonWithBubblePlot();
 
-        this.model.width = 'container';
-        this.model.height = 'container';
-
         return this.model;
     }
 }

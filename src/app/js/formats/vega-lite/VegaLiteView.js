@@ -21,7 +21,7 @@ const styles = {
     },
 };
 
-const VegaLiteView = ({ field, data, specTemplate }) => {
+const VegaLiteView = ({ field, data, aspectRatio, specTemplate }) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
@@ -48,6 +48,7 @@ const VegaLiteView = ({ field, data, specTemplate }) => {
                 spec={spec || {}}
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+                aspectRatio={aspectRatio}
             />
         </div>
     );
@@ -58,8 +59,7 @@ VegaLiteView.propTypes = {
     resource: PropTypes.object.isRequired,
     data: PropTypes.any,
     specTemplate: PropTypes.string.isRequired,
-    width: PropTypes.string,
-    height: PropTypes.string,
+    aspectRatio: PropTypes.string,
 };
 
 VegaLiteView.defaultProps = {

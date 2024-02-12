@@ -64,7 +64,6 @@ describe('BasicChart', () => {
                 y: {
                     axis: {
                         labelAngle: 0,
-                        labelLimit: 120,
                     },
                     field: '_id',
                     sort: null,
@@ -84,9 +83,9 @@ describe('BasicChart', () => {
                 right: 0,
                 top: 10,
             },
-            width: 160,
+            width: 'container',
         };
-        expect(barChart.buildSpec(200)).toStrictEqual(defaultBuild);
+        expect(barChart.buildSpec()).toStrictEqual(defaultBuild);
     });
 
     it('Testing default and updated axis direction', function() {

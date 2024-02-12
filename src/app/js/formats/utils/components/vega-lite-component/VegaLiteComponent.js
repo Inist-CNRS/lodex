@@ -9,14 +9,7 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../chartsUtils';
-import {
-    ASPECT_RATIO_16_6,
-    ASPECT_RATIO_16_9,
-    ASPECT_RATIO_1_1,
-    ASPECT_RATIO_3_2,
-    ASPECT_RATIO_4_3,
-    ASPECT_RATIO_8_5,
-} from '../../aspectRatio';
+import { ASPECT_RATIO_16_9, ASPECT_RATIOS } from '../../aspectRatio';
 
 /**
  * small component use to handle vega lite display
@@ -94,14 +87,7 @@ CustomActionVegaLite.propTypes = {
     spec: PropTypes.any.isRequired,
     data: PropTypes.any,
     injectType: PropTypes.number.isRequired,
-    aspectRatio: PropTypes.oneOf([
-        ASPECT_RATIO_1_1,
-        ASPECT_RATIO_3_2,
-        ASPECT_RATIO_4_3,
-        ASPECT_RATIO_8_5,
-        ASPECT_RATIO_16_6,
-        ASPECT_RATIO_16_9,
-    ]),
+    aspectRatio: PropTypes.oneOf(ASPECT_RATIOS),
 };
 
 /**

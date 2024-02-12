@@ -107,6 +107,13 @@ class HeatMap extends BasicChart {
         }
 
         this.model.padding = this.padding;
+
+        this.model.width = 'container';
+        this.model.height = 'container';
+        this.model.autosize = {
+            type: 'fit',
+            contains: 'padding',
+        };
     }
 
     /**
@@ -126,9 +133,6 @@ class HeatMap extends BasicChart {
         this.model.encoding.x.axis.labelAngle = -45;
 
         this.commonWithBubblePlot();
-
-        this.model.width = 'container';
-        this.model.height = 'container';
 
         return this.model;
     }

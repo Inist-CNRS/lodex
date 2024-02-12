@@ -8,6 +8,7 @@ import {
     VEGA_DATA_INJECT_TYPE_A,
     VEGA_DATA_INJECT_TYPE_B,
 } from '../../chartsUtils';
+import { ASPECT_RATIO_16_9, ASPECT_RATIOS } from '../../aspectRatio';
 
 /**
  * small component use to handle vega lite display
@@ -73,13 +74,17 @@ function CustomActionVega(props) {
 
     return (
         <Vega
-            style={{ width: '100%' }}
+            style={{ width: '100%', aspectRatio: props.aspectRatio }}
             spec={deepClone(props.spec)}
             actions={actions}
             mode="vega"
         />
     );
 }
+
+CustomActionVega.defaultProps = {
+    aspectRatio: ASPECT_RATIO_16_9,
+};
 
 /**
  * Element required in the props
@@ -90,6 +95,7 @@ CustomActionVega.propTypes = {
     spec: PropTypes.any.isRequired,
     data: PropTypes.any,
     injectType: PropTypes.number.isRequired,
+    aspectRatio: PropTypes.oneOf(ASPECT_RATIOS),
 };
 
 /**

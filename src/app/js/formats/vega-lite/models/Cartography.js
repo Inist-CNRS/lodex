@@ -16,10 +16,6 @@ class Cartography extends BasicChart {
         this.model = deepClone(cartographyVL);
         this.tooltip.category.field = 'properties.name';
         this.worldPosition = 'world';
-        this.autosize = {
-            type: 'fit',
-            contains: 'padding',
-        };
     }
 
     setWorldPosition(worldPosition) {
@@ -94,8 +90,10 @@ class Cartography extends BasicChart {
 
         this.model.width = 'container';
         this.model.height = 'container';
-
-        this.model.autosize = this.autosize;
+        this.model.autosize = {
+            type: 'fit',
+            contains: 'padding',
+        };
 
         return this.model;
     }

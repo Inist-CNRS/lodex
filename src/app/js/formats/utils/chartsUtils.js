@@ -1,4 +1,4 @@
-import deepClone from 'lodash.clonedeep';
+import { clamp, cloneDeep } from 'lodash';
 
 // Values given when an error are encounter
 export const INVALID_VALUE = -1;
@@ -107,10 +107,29 @@ const HEIGHT_REGEX = /\{\|__LODEX_HEIGHT__\|}/g;
  * @returns {any} The Vega Lite spec as a json object
  */
 export const convertSpecTemplate = (spec, width, height) => {
-    const specWithoutTemplate = deepClone(spec)
-        .replace(WIDTH_REGEX, width)
-        .replace(HEIGHT_REGEX, height);
-    return JSON.parse(specWithoutTemplate);
+    const specCopy = cloneDeep(spec);
+
+    const specWithTemplate = JSON.parse(specCopy);
+    const specWithNumberSize = {};
+
+    if (specWithTemplate.width === '{|__LODEX_WIDTH__|}') {
+        specWithNumberSize.width = clamp(width, 100, 1200);
+    }
+
+    if (specWithTemplate.height === '{|__LODEX_HEIGHT__|}') {
+        specWithNumberSize.height = clamp(height, 100, 1200);
+    }
+
+    const specWithoutTemplate = JSON.parse(
+        specCopy
+            .replace(WIDTH_REGEX, clamp(width, 100, 1200))
+            .replace(HEIGHT_REGEX, clamp(height, 100, 1200)),
+    );
+
+    return {
+        ...specWithoutTemplate,
+        ...specWithNumberSize,
+    };
 };
 
 export const flip = (condition, defaultValue, flipValue) => {

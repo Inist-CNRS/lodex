@@ -49,7 +49,7 @@ const FlowMapView = ({
                 return convertSpecTemplate(
                     advancedModeSpec,
                     width - VEGA_ACTIONS_WIDTH,
-                    clamp((width - VEGA_ACTIONS_WIDTH) * 0.6, 300, 1200),
+                    width * 0.6,
                 );
             } catch (e) {
                 setError(e.message);
@@ -67,10 +67,9 @@ const FlowMapView = ({
             colorScheme !== undefined ? colorScheme : schemeBlues[9].split(' '),
         );
 
-        return specBuilder.buildSpec(width, data.values.length);
+        return specBuilder.buildSpec(width);
     }, [
         width,
-        data.values.length,
         advancedMode,
         advancedModeSpec,
         tooltip,
