@@ -32,10 +32,9 @@ const tmpDirectory = path.resolve(tmpdir(), 'precomputed');
 const baseUrl = getHost();
 const webhookBaseUrl = String(
     localConfig.alternativePrecomputedBaseUrl,
-).startsWith('http:')
+).startsWith('http')
     ? localConfig.alternativePrecomputedBaseUrl
     : baseUrl;
-
 export const getPrecomputedDataPreview = async ctx => {
     const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
     const { sourceColumns } = ctx.request.body;
