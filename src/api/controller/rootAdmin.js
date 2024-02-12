@@ -50,7 +50,27 @@ const getTenants = async (ctx, filter) => {
 
     for (const tenant of tenants) {
         const db = await mongoClient(tenant.name);
-        tenant.stats = await db.stats({ scale: 1024 });
+
+        tenant.totalSize = (await db.stats({ scale: 1024 })).totalSize;
+
+        try {
+            tenant.dataset = await db
+                .collection('dataset')
+                .find()
+                .count();
+        } catch (e) {
+            tenant.dataset = 0;
+        }
+
+        try {
+            tenant.published =
+                (await db
+                    .collection('publishedDataset')
+                    .find()
+                    .count()) > 0;
+        } catch (e) {
+            tenant.published = false;
+        }
     }
 
     return tenants;
