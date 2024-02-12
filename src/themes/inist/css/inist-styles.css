@@ -1,6 +1,5 @@
-/*lodex theme_inist 2*/
-/* fonts*/
 @import url("fonts-style.css");
+/*lodex theme_inist lodex14*/
 /*class css couleurs*/
 /* -> declaration dans colorsTheme.js, custom/css/ styles_aphrodite, css-loader.css*/
 /*initial vert #7dbd42 devient bleu #25809a ou rgb(37, 128, 154)*/ /*#06bad6 ko contrast*/
@@ -14,8 +13,6 @@ light: "rgba(37, 128, 154, .1)",
 /*@import url("styles_aphrodite.css");*/
 /*bouton vert ‘plus de résultats' et bouton vert 'parcourir les résultats'*/
 /* (deviennent bleu et bleu foncé) uniquement par class css-xxxxx rgb(31, 106, 129)*/
-@import url("css-loader.css");
-/*reprise de style.css lodex appel supprime*/
 
 /* MOBILE FIRST*/
 
@@ -60,7 +57,7 @@ body {
         margin: -5rem auto 0;
     }
     /*titre court position*/
-    div.breadcrumb-trail a[href="/"]:last-child {
+    div.breadcrumb-trail a:not([href*="https"]):last-child {
         width: max-content;
         max-width: 70%;
         margin: 1.5rem auto 0 2.5rem;
@@ -80,7 +77,7 @@ body {
         margin: -5rem auto 0;
     }
     /*titre court position*/
-    div.breadcrumb-trail a[href="/"]:last-child {
+    div.breadcrumb-trail a:not([href*="https"]):last-child {
         width: max-content;
         max-width: 70%;
         margin: 1.5rem auto 0 5rem;
@@ -118,10 +115,10 @@ body {
         padding: 0 1.6rem;
     }
     /* pas de links*/
-    div.breadcrumb-trail a[href^="http"] {
+    div.breadcrumb-trail a[href*="https"] {
         display: none;
     }
-    div.breadcrumb-trail a[href="/"]:last-child {
+    div.breadcrumb-trail a:not([href*="https"]):last-child {
         margin: 0 auto;
     }
     footer ul {
@@ -239,7 +236,7 @@ header {
 }
 /*text header bg fonce sur img bg body*/
 header > *,
-div.breadcrumb-trail a[href^="http"] {
+div.breadcrumb-trail a[href*="https"] {
     background-color: rgba(24, 20, 79, 0.6);
     box-shadow: 0px 0px 10px rgba(24, 20, 79, 0.9);
 }
@@ -322,7 +319,7 @@ div.breadcrumb-trail {
     height: 60px;
     text-align: right;
 }
-div.breadcrumb-trail a[href^="http"]._66fo0a {
+div.breadcrumb-trail a[href*="https"]._zfmrqt {
     color: white !important;
     font-variant: all-petite-caps;
     font-family: "Barlow Regular";
@@ -332,14 +329,14 @@ div.breadcrumb-trail a[href^="http"]._66fo0a {
     white-space: nowrap;
     margin: 0 8px;
 }
-div.breadcrumb-trail a[href^="http"]:hover,
-div.breadcrumb-trail a[href^="http"]:focus,
-div.breadcrumb-trail a[href^="http"]:active {
+div.breadcrumb-trail a[href*="https"]:hover,
+div.breadcrumb-trail a[href*="https"]:focus,
+div.breadcrumb-trail a[href*="https"]:active {
     border-bottom: 2px solid rgba(35, 174, 255, 1);
 }
 /*svg icone lien externe*/
-div.breadcrumb-trail a[href^="http"]::after,
-footer li a[href^="http"]::after {
+div.breadcrumb-trail a[href*="https"]::after,
+footer li a[href*="https"]::after {
     content: "";
     display: inline-flex;
     width: 1rem;
@@ -351,14 +348,14 @@ footer li a[href^="http"]::after {
     background-position: right bottom;
     background-size: 1rem;
 }
-div.breadcrumb-trail a[href^="http"]::after {
+div.breadcrumb-trail a[href*="https"]::after {
     filter: invert(100%);
 }
-footer li a[href^="http"]::after {
+footer li a[href*="https"]::after {
     background-image: url("../img/external-link-alt_gris.svg");
 }
 /* titre courant*/
-div.breadcrumb-trail a[href="/"]:last-child {
+div.breadcrumb-trail a:not([href*="https"]):last-child {
     display: flex;
     border: 1px dotted rgb(224, 224, 224);
     border-bottom: white;
@@ -367,7 +364,7 @@ div.breadcrumb-trail a[href="/"]:last-child {
     padding: 1rem;
 }
 /*titre courant svg home*/
-div.breadcrumb-trail a[href="/"]:last-child::before {
+div.breadcrumb-trail a:not([href*="https"]):last-child::before {
     content: " ";
     background-image: url("../img/home.svg");
     background-repeat: no-repeat;
@@ -376,7 +373,7 @@ div.breadcrumb-trail a[href="/"]:last-child::before {
     margin-right: 0.5rem;
 }
 /*titre court texte*/
-div.breadcrumb-trail a[href="/"]:last-child {
+div.breadcrumb-trail a:not([href*="https"]):last-child {
     text-align: center;
     color: rgb(43, 131, 186) !important;
     font-family: "Barlow Medium";
@@ -384,9 +381,9 @@ div.breadcrumb-trail a[href="/"]:last-child {
     font-weight: normal;
 }
 /*titre court clicable*/
-div.breadcrumb-trail a[href="/"]:last-child:hover,
-div.breadcrumb-trail a[href="/"]:last-child:focus,
-div.breadcrumb-trail a[href="/"]:last-child:active {
+div.breadcrumb-trail a:not([href*="https"]):last-child:hover,
+div.breadcrumb-trail a:not([href*="https"]):last-child:focus,
+div.breadcrumb-trail a:not([href*="https"]):last-child:active {
     text-decoration: underline 2px rgb(35, 174, 255);
     text-underline-offset: 5px;
 }
@@ -416,7 +413,7 @@ span.property_label:empty {
 }
 /*home label avec un tiret*/
 .dataset-characteristics div .property_label::before {
-    /* content: "—"; */
+    content: "—";
     padding-right: 20px;
     font-weight: bold;
 }
@@ -502,6 +499,10 @@ nav img._1m2up2 {
     padding-bottom: 1rem;
     margin: 30px auto;
 }
+/*search-container*/
+.search-container .stats {
+    font-size: 80%;
+}
 /*static-page reprend prop page home*/
 .static-page {
     display: flex;
@@ -523,7 +524,7 @@ nav img._1m2up2 {
 }
 .tiret::before,
 .static-page h2::before {
-    /* content: "—"; */
+    content: "—";
     padding-right: 20px;
     font-weight: bold;
 }
@@ -553,33 +554,4 @@ a.VoirPlus {
 a.VoirPlus:hover,
 a.VoirPlus:focus {
     box-shadow: 0px 0px 0px 1px #23aeff;
-}
-/*element lodex reprise css bibliolodex*/
-.dialog-button,
-.export svg,
-.export,
-.graph-summary-icon,
-.menu-item-drawerActive,
-.graph-link,
-._1hjrvck,
-.link-link,
-.link-link svg {
-    color: #25809a !important;
-    fill: #25809a !important;
-}
-.facet-value-item svg:last-of-type,
-.exclude-facet svg:last-of-type,
-.display-in-graph div svg:last-of-type {
-    fill: #25809a !important;
-}
-.browse-result button,
-.create-resource button,
-.configure-field button {
-    background-color: #25809a !important;
-}
-/*CircularProgress,*/
-.fa-spinner,
-.fa-spin {
-    fill: #25809a !important;
-    color: #25809a !important;
 }
