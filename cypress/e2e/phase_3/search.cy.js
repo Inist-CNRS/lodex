@@ -33,7 +33,7 @@ describe('Search', () => {
             cy.get('.export').click();
             cy.wait(300);
             cy.get('.export-menuList  li[role="menuitem"]')
-                .should('have.length', 3)
+                .should('have.length', 2)
                 .contains('CSV')
                 .should('be.visible');
         });

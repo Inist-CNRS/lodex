@@ -217,7 +217,9 @@ export default compose(
         }
 
         if (!isURL(value)) {
-            return '/api/export/jsonallvalue?uri=' + resource[field.name];
+            return (
+                '/api/export/format/jsonallvalue?uri=' + resource[field.name]
+            );
         }
 
         const source = URL.parse(value);
@@ -228,7 +230,7 @@ export default compose(
                 hostname: source.hostname,
                 slashes: source.slashes,
                 port: source.port,
-                pathname: '/api/export/jsonallvalue',
+                pathname: '/api/export/format/jsonallvalue',
                 search: '?uri=' + uri,
             };
             return URL.format(target);
