@@ -106,7 +106,7 @@
         "https://query.wikidata.org/sparql",
         "http://www.lotico.com:3030/lotico/sparql"
     ],
-    "precomputedBaseUrlForDevelopment": "{public url of the server accessible from webhooks (ie ngrok)}",
+    "alternativePrecomputedBaseUrl": "{public url of the server accessible from webhooks (ie ngrok)}",
     "activateBullDashboard": false,
     "themes": ["void", "nougat", "inist", "istex"],
     "timeout": 3600000

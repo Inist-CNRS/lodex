@@ -30,10 +30,11 @@ ezs.use(Lodex);
 ezs.use(Basics);
 const tmpDirectory = path.resolve(tmpdir(), 'precomputed');
 const baseUrl = getHost();
-const webhookBaseUrl =
-    process.env.NODE_ENV === 'development'
-        ? localConfig.precomputedBaseUrlForDevelopment
-        : baseUrl;
+const webhookBaseUrl = String(
+    localConfig.alternativePrecomputedBaseUrl,
+).startsWith('http:')
+    ? localConfig.alternativePrecomputedBaseUrl
+    : baseUrl;
 
 export const getPrecomputedDataPreview = async ctx => {
     const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
