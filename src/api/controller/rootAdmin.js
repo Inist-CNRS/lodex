@@ -122,7 +122,7 @@ const putTenant = async (ctx, id) => {
 };
 
 const deleteTenant = async ctx => {
-    const { _id, name } = ctx.request.body;
+    const { _id, name, deleteDatabase } = ctx.request.body;
     const tenantExists = await ctx.tenantCollection.findOne({
         _id: new ObjectId(_id),
         name,
@@ -131,8 +131,12 @@ const deleteTenant = async ctx => {
         ctx.status = 403;
         ctx.body = { error: `Invalid name: "${name}"` };
     } else {
-        deleteWorkerQueue(tenantExists.name);
+        deleteWorkerQueue(tenantExists.name).then();
         bullBoard.removeDashboardQueue(tenantExists.name);
+        if (deleteDatabase) {
+            const db = await mongoClient(name);
+            await db.dropDatabase();
+        }
         await ctx.tenantCollection.deleteOne(tenantExists);
         ctx.body = await getTenants(ctx);
     }
