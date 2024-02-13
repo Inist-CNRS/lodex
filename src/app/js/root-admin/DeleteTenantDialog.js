@@ -7,10 +7,13 @@ import {
     DialogActions,
     DialogTitle,
     Button,
+    FormControlLabel,
+    Checkbox,
 } from '@mui/material';
 
 const DeleteTenantDialog = ({ tenant, handleClose, deleteAction }) => {
     const [name, setName] = useState('');
+    const [deleteDatabase, setDeleteDatabase] = useState(true);
 
     return (
         <Dialog
@@ -34,14 +37,29 @@ const DeleteTenantDialog = ({ tenant, handleClose, deleteAction }) => {
                     error={name !== tenant.name}
                     value={name}
                 />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            defaultChecked
+                            value={deleteDatabase}
+                            onChange={() => {
+                                setDeleteDatabase(!deleteDatabase);
+                            }}
+                            color="error"
+                        />
+                    }
+                    label="Supprimer la base de données correspondante"
+                    labelPlacement="end"
+                />
             </DialogContent>
             <DialogActions>
                 <Button
                     variant="contained"
                     color="error"
                     onClick={() => {
-                        deleteAction(tenant._id, tenant.name);
+                        deleteAction(tenant._id, tenant.name, deleteDatabase);
                         setName('');
+                        setDeleteDatabase(true);
                     }}
                     disabled={name !== tenant.name}
                     sx={{ height: '100%' }}

@@ -147,7 +147,7 @@ const Tenants = ({ handleLogout }) => {
             });
     };
 
-    const deleteTenant = (_id, name) => {
+    const deleteTenant = (_id, name, deleteDatabase) => {
         fetch('/rootAdmin/tenant', {
             credentials: 'include',
             headers: {
@@ -155,7 +155,7 @@ const Tenants = ({ handleLogout }) => {
                 'X-Lodex-Tenant': 'admin',
             },
             method: 'DELETE',
-            body: JSON.stringify({ _id, name }),
+            body: JSON.stringify({ _id, name, deleteDatabase }),
         })
             .then(response => {
                 if (response.status === 401) {
