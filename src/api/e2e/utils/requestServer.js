@@ -2,11 +2,11 @@ import fetch from 'fetch-with-proxy';
 import config from 'config';
 import { getHost } from '../../../common/uris';
 
-import server from '../../';
+import app from '../../app';
 import { closeAllWorkerQueues } from '../../workers';
 
 export default () => {
-    const app = server.listen(config.port);
+    const server = app.listen(config.port);
 
     return {
         get: (url, headers = {}) =>
@@ -46,7 +46,7 @@ export default () => {
             }),
         close: () => {
             closeAllWorkerQueues();
-            app.close();
+            server.close();
         },
     };
 };
