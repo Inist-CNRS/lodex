@@ -10,10 +10,38 @@ light: "rgba(37, 128, 154, .1)",
 }*/
 /*orange #f48022 devient fushia #da1d64 (active et focus)*/
 /* hover violet reste violet #b22f90*/
-/*@import url("styles_aphrodite.css");*/
 /*bouton vert ‘plus de résultats' et bouton vert 'parcourir les résultats'*/
 /* (deviennent bleu et bleu foncé) uniquement par class css-xxxxx rgb(31, 106, 129)*/
-
+/*:root {
+    --primary-main: #25809a;
+    --primary-secondary: rgba(37, 128, 154, 1.5);
+    --primary-light: rgba(37, 128, 154, 0.1);
+    --primary-contrast-text: #fff;
+    --secondary-main: #da1d64;
+    --secondary-contrast-text: #fff;
+    --info-main: #b22f90;
+    --info-contrast-text: #fff;
+    --warning-main: #da1d64;
+    --warning-contrast-text: #fff;
+    --danger-main: #f44336;
+    --danger-contrast-text: #fff;
+    --success-main: #25809a;
+    --success-contrast-text: #fff;
+    --neutral-main: #e0e0e0;
+    --neutral-dark-main: #555;
+    --neutral-dark-secondary: rgb(95, 99, 104);
+    --neutral-dark-very-dark: #333;
+    --neutral-dark-dark: #555;
+    --neutral-dark-light: rgb(95, 99, 104, 0.5);
+    --neutral-dark-lighter: rgb(95, 99, 104, 0.15);
+    --neutral-dark-very-light: rgb(95, 99, 104, 0.1);
+    --neutral-dark-transparent: rgba(0, 0, 0, 0.1);
+    --text-main: rgb(95, 99, 104);
+    --text-primary: rgb(95, 99, 104);
+    --contrast-main: #fff;
+    --contrast-light: rgba(255, 255, 255, 0.2);
+    --contrast-threshold: 3;
+}*/
 /* MOBILE FIRST*/
 
 /* adaptative charte : cf site inist/inist.css*/
@@ -37,13 +65,13 @@ body {
 .css-oa9bdm {
   padding: 0.75rem 0.75rem 0.75rem 0px;
 }*/
-    div.dataset-characteristics > div > div.format_title:nth-child(2) {
-        margin: -15rem auto 1rem 3rem;
-        padding: 4rem;
+    div.dataset-characteristics > div > div.property.format_title:nth-child(2) {
+        margin: -10rem auto 1rem 3rem;
+        padding: 2rem 4rem !important;
     }
     /* position titre pour home*/
     .header-dataset-section {
-        margin-top: 15rem;
+        margin-top: 8rem;
     }
     /*lodex content*/
     /*petite marge full screen*/
@@ -56,8 +84,13 @@ body {
         width: 95%;
         margin: -5rem auto 0;
     }
+    div.breadcrumb-trail {
+        height: 60px;
+    }
     /*titre court position*/
     div.breadcrumb-trail a:not([href*="https"]):last-child {
+        position: absolute;
+        top: 2rem;
         width: max-content;
         max-width: 70%;
         margin: 1.5rem auto 0 2.5rem;
@@ -76,23 +109,25 @@ body {
     div.breadcrumb-root {
         margin: -5rem auto 0;
     }
+    div.breadcrumb-trail {
+        height: 60px;
+    }
     /*titre court position*/
     div.breadcrumb-trail a:not([href*="https"]):last-child {
+        position: absolute;
+        top: 2rem;
         width: max-content;
         max-width: 70%;
         margin: 1.5rem auto 0 5rem;
     }
     /*TITRE l'instance*/
-    div.dataset-characteristics > div > div.format_title:nth-child(2) {
-        margin: -10rem 1rem 0;
-        background-color: white;
-        border: 1px dotted rgb(224, 224, 224);
-        border-bottom: white;
-        padding: 4rem;
+    div.dataset-characteristics > div > div.property.format_title:nth-child(2) {
+        margin: -8rem 1rem 0;
+        padding: 1rem 2rem !important;
     }
     /* position titre pour home*/
     .header-dataset-section {
-        margin-top: 10rem;
+        margin-top: 6rem;
     }
 }
 @media only screen and (max-width: 480px) {
@@ -115,22 +150,26 @@ body {
         padding: 0 1.6rem;
     }
     /* pas de links*/
+    div.breadcrumb-trail {
+        height: 0;
+    }
     div.breadcrumb-trail a[href*="https"] {
         display: none;
     }
     div.breadcrumb-trail a:not([href*="https"]):last-child {
-        margin: 0 auto;
+        margin: 0 auto 0 1rem;
+        width: max-content;
     }
     footer ul {
         flex-direction: column;
     }
     /*position TITRE l'instance*/
-    div.dataset-characteristics > div > div.format_title:nth-child(2) {
-        margin: -6rem 1rem 0;
-        padding: 1.5rem;
+    div.dataset-characteristics > div > div.property.format_title:nth-child(2) {
+        margin: -8rem 1rem 0;
+        padding: 1rem 1.5rem !important;
     }
     .header-dataset-section {
-        margin-top: 5rem;
+        margin-top: 6rem;
     }
 }
 
@@ -316,7 +355,6 @@ div.breadcrumb-root span {
 }
 div.breadcrumb-trail {
     width: 100% !important;
-    height: 60px;
     text-align: right;
 }
 div.breadcrumb-trail a[href*="https"]._zfmrqt {
@@ -389,38 +427,47 @@ div.breadcrumb-trail a:not([href*="https"]):last-child:active {
 }
 
 /*ELEMENTS lodex - texte */
-
+.css-oa9bdm {
+    text-align: initial !important;
+}
 /*TITRE l'instance*/
 /*pour info .css-oa9bdm h1 objet lodex
 .css-oa9bdm {
   padding: 0.75rem 0.75rem 0.75rem 0px;
 }*/
-div.dataset-characteristics > div > div.format_title:nth-child(2) {
+div.dataset-characteristics > div > div.property.format_title:nth-child(2) {
     background-color: white;
     border: 1px dotted rgb(224, 224, 224);
     border-bottom: white;
+    text-align: initial !important;
 }
-
-/*lodex Etiquette : graph,resource titre champs, graphs titre*/
-div .property_label {
+/* les paves de données*/
+/*.dataset-characteristics .css-15oih4j */
+/* .resource .css-1ngt2jr*/
+/* .graph-page.graph-container .css-e4nvpy padding-top: 0.5rem;
+  padding-bottom: 0.5rem;*/
+.dataset-characteristics > div > .property,
+.graph-page .property,
+.resource .property {
+    padding: 1rem 0.5rem 0 !important;
+}
+/*lodex Etiquette : home, graph,resource titre champs, graphs titre*/
+div.property_label_container {
+    max-width: 90%;
+}
+div span.property_label {
     font-family: "Barlow Medium" !important;
     font-weight: normal !important;
     color: #434148 !important;
-}
-/*label vide : pas de place*/
-span.property_label:empty {
-    display: none !important;
-}
-/*home label avec un tiret*/
-.dataset-characteristics div .property_label::before {
-    content: "—";
-    padding-right: 20px;
-    font-weight: bold;
+    border-bottom: 1px solid var(--neutral-dark-main);
 }
 /*resource titres champs*/
-div.resource .property_label {
+div.resource span.property_label {
     font-size: 1rem !important;
-    border-bottom: 1px dotted rgb(224, 224, 224);
+    border-bottom: 1px dotted var(--neutral-dark-light);
+}
+div span.property_label:empty {
+    border-bottom: none;
 }
 /*annotation bt bb bl3*/
 .linked_fields {
@@ -463,7 +510,7 @@ nav img._1m2up2 {
 .container,
 .container-fluid {
     width: 100%;
-    max-width: 1300px;
+    max-width: 1700px;
     margin-right: auto;
     margin-left: auto;
     padding-left: 0;
@@ -492,16 +539,21 @@ nav img._1m2up2 {
 .dataset-characteristics > div:first-child {
     justify-content: space-between;
 }
-/* PAGE resource et graph manque 1 div*/
+/* PAGE resource et graph*/
 .body > div div.resource,
 .body .graph-container {
-    padding-top: 3rem;
     padding-bottom: 1rem;
     margin: 30px auto;
 }
-/*search-container*/
-.search-container .stats {
-    font-size: 80%;
+.body .graph-container {
+    padding-top: 3rem;
+}
+/*nb de doc résultats stats*/
+.stats {
+    height: auto !important;
+    line-height: 1.2rem !important;
+    padding: 1rem 0;
+    margin: 1rem auto 1rem 1%;
 }
 /*static-page reprend prop page home*/
 .static-page {
