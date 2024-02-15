@@ -459,7 +459,6 @@ div span.property_label {
     font-family: "Barlow Medium" !important;
     font-weight: normal !important;
     color: #434148 !important;
-    border-bottom: 1px solid var(--neutral-dark-main);
 }
 /*resource titres champs*/
 div.resource span.property_label {
