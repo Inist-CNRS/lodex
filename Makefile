@@ -45,9 +45,17 @@ install: copy-conf install-npm-dependencies ## Install npm dependencies for the 
 
 ## Production =================================================================
 
-run: ## Run the project in production mode
+run: build ## Run the project in production mode
 	docker compose up --force-recreate
 start: run ## Start the project (alias of make run)
+build:
+	docker compose build --build-arg http_proxy --build-arg https_proxy
+
+## Deploy =================================================================
+
+publish: build  ## publish version to docker hub
+	docker build -t inistcnrs/lodex:14.0.41 --build-arg http_proxy --build-arg https_proxy .
+	docker push inistcnrs/lodex:14.0.41
 
 ## Development =================================================================
 
@@ -57,11 +65,6 @@ start-dev: run-dev ## Start the project (alias of make run-dev)
 
 build-app:
 	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run build
-
-build: ## Build the docker image localy
-	docker build -t inistcnrs/lodex:14.0.41 --build-arg http_proxy --build-arg https_proxy .
-publish: build  ## publish version to docker hub
-	docker push inistcnrs/lodex:14.0.41
 
 analyze-code: ## Generate statistics about the bundle. Usage: make analyze-code.
 	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run analyze
@@ -170,7 +173,7 @@ clear-tenants: ## Clear all tenants databases in mongo
 	docker compose exec mongo mongo lodex_admin --eval "db.tenant.remove({});"
 	docker compose exec mongo mongo --quiet --eval 'db.getMongo().getDBNames().forEach(function(i){ if (i !== "lodex_admin") {db.getSiblingDB(i).dropDatabase()}})'
 
-clear-docker: 
+clear-docker:
 	docker stop lodex-lodex-1 || true
 	docker rm lodex-lodex-1 || true
 	docker image rm lodex-lodex
