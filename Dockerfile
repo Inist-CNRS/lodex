@@ -45,4 +45,4 @@ ENV NODE_ENV="production"
 ENV npm_config_cache=/app/.npm
 EXPOSE 3000
 ENTRYPOINT [ "/app/docker-entrypoint.sh" ]
-CMD ["npm", "start"]
+CMD ["npx", "pm2-runtime", "ecosystem.config.js"]
