@@ -4,6 +4,7 @@
 # White list only the required files
 !package-lock.json
 !package.json
+!upload/.gitkeep
 !src/
 !config/
 !config.json
