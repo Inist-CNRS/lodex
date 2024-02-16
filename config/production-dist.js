@@ -1,13 +1,15 @@
 import config from '../config.json';
 
 const getMongoConfig = () => {
-    const { mongo = {} } = config;
+    const { mongo } = config;
 
     const defaultConfig = {
-        dbName: String(process.env.EZMASTER_TECHNICAL_NAME).replace(
-            /(-[^-]*)-[0-9]+$/,
-            '$1',
+        host: String(
+            process.env.EZMASTER_MONGODB_HOST_PORT || 'localhost:27017',
         ),
+        dbName: String(
+            process.env.EZMASTER_TECHNICAL_NAME || 'local-lodex',
+        ).replace(/(-[^-]*)-[0-9]+$/, '$1'),
     };
 
     if (!mongo) {
