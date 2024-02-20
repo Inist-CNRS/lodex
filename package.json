@@ -244,8 +244,8 @@
         "vega-view-transforms": "4.5.9",
         "vega-voronoi": "4.2.1",
         "vega-wordcloud": "4.1.4",
-        "webpack": "5.89.0",
-        "webpack-bundle-analyzer": "4.9.1",
+        "webpack": "5.90.2",
+        "webpack-bundle-analyzer": "4.10.1",
         "webpack-cli": "5.1.4",
         "winston": "^3.2.1"
     },
@@ -285,7 +285,7 @@
         "nodemon": "2.0.20",
         "prettier": "^1.19.1",
         "sleepjs": "3.0.1",
-        "webpack-dev-server": "4.15.1"
+        "webpack-dev-server": "5.0.2"
     },
     "config": {
         "mongodbMemoryServer": {
