@@ -260,6 +260,11 @@
         "webpack-cli": "5.1.4",
         "winston": "^3.11.0"
     },
+    "overrides": {
+        "mongodb-restore@1.6.2": {
+            "bson": "1.1.6"
+        }
+    },
     "devDependencies": {
         "@babel/eslint-parser": "^7.23.10",
         "@shelf/jest-mongodb": "3.0.2",
