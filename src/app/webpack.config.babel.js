@@ -118,6 +118,10 @@ module.exports = {
                 __dirname,
                 '../../node_modules/react-infinite/node_modules/lodash.isarray/index.js',
             ),
+            'json-6': resolve(
+                __dirname,
+                '../../packages/transformers/node_modules/json-6/dist/index.js',
+            ),
         },
     },
 };
