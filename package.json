@@ -165,31 +165,10 @@
         "mui-file-dropzone": "4.0.2",
         "multistream": "^2.1.1",
         "node-polyglot": "^2.3.1",
-<<<<<<< HEAD
         "pdfkit": "0.14.0",
         "pm2": "5.3.1",
-<<<<<<< HEAD
-<<<<<<< HEAD
-        "prop-types": "15.7.2",
-        "qs": "^6.5.3",
-=======
-        "pdfkit": "0.13.0",
-<<<<<<< HEAD
         "prop-types": "15.8.1",
         "qs": "^6.11.2",
->>>>>>> update minor
-=======
-        "prop-types": "15.7.2",
-        "qs": "^6.5.3",
->>>>>>> Revert "update minor"
-=======
-        "prop-types": "15.8.1",
-        "qs": "^6.11.2",
->>>>>>> update minor #2
-=======
-        "prop-types": "15.7.2",
-        "qs": "^6.5.3",
->>>>>>> Revert "update minor #2"
         "react": "^16.14.0",
         "react-ace": "10.1.0",
         "react-dom": "^16.14.0",
