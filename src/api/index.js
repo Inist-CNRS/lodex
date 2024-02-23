@@ -10,8 +10,11 @@ import { addImportListener } from './workers/import';
 if (!module.parent) {
     const httpServer = app.listen(config.port, () => {
         global.console.log(`Server listening on port ${config.port}`);
-        // Here we send the ready signal to PM2
-        process.send('ready');
+        // only available only for cluster mode (IPC channel)
+        if (process.send) {
+            // Here we send the ready signal to PM2
+            process.send('ready');
+        }
     });
     const io = new Server(httpServer);
 
