@@ -8,9 +8,11 @@ import { addPrecomputedJobListener } from './services/precomputed/precomputed';
 import { addImportListener } from './workers/import';
 
 if (!module.parent) {
-    global.console.log(`Server listening on port ${config.port}`);
-    global.console.log('Press CTRL+C to stop server');
-    const httpServer = app.listen(config.port);
+    const httpServer = app.listen(config.port, () => {
+        global.console.log(`Server listening on port ${config.port}`);
+        // Here we send the ready signal to PM2
+        process.send('ready');
+    });
     const io = new Server(httpServer);
 
     io.on('connection', socket => {

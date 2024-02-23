@@ -13,10 +13,7 @@ ENV NODE_ENV="production"
 ENV CYPRESS_CACHE_FOLDER=/app/.cache
 ENV npm_config_cache=/app/.npm
 
-RUN mkdir /app/upload && \
-    mkdir /app/webservice_temp && \
-    cp -n ./config/production-dist.js ./config/production.js && \
-    npm run build && \
+RUN npm run build && \
     npm cache clean --force  && \
     npm prune --production --legacy-peer-deps && \
     npm run clean
@@ -40,9 +37,11 @@ RUN echo '{ \
     sed -i -e "s/bin:x:1:/bin:x:2:/" /etc/group
 
 COPY --chown=daemon:daemon --from=build /app /app
+COPY --chown=daemon:daemon ./config/production-dist.js ./config/production.js
 WORKDIR /app
 ENV NODE_ENV="production"
+ENV PM2_HOME=/app/.pm2
 ENV npm_config_cache=/app/.npm
 EXPOSE 3000
 ENTRYPOINT [ "/app/docker-entrypoint.sh" ]
-CMD ["npm", "start"]
+CMD ["npx", "pm2-runtime", "ecosystem.config.js"]
