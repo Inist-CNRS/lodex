@@ -166,6 +166,7 @@
         "multistream": "^2.1.1",
         "node-polyglot": "^2.3.1",
         "pdfkit": "0.13.0",
+        "pm2": "5.3.1",
         "prop-types": "15.7.2",
         "qs": "^6.5.3",
         "react": "^16.14.0",
