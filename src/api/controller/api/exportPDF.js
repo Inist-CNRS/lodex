@@ -1,7 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import PDFDocument from 'pdfkit';
-import fs from 'fs';
 import moment from 'moment';
 import {
     DATASET_TITLE,
@@ -12,7 +11,6 @@ import {
     RESOURCE_TITLE,
 } from '../../../common/overview';
 import { ObjectId } from 'mongodb';
-import { unlinkFile } from '../../services/fsHelpers.js';
 
 const PDF_MARGIN_LEFT = 70;
 const PDF_IMAGE_TOP_POSITION = 50;
@@ -296,9 +294,13 @@ async function exportPDF(ctx) {
 
         // Create a document
         const doc = new PDFDocument({ bufferPages: true });
-
-        // Pipe its output somewhere, like to a file or HTTP response
-        doc.pipe(fs.createWriteStream('/tmp/publication.pdf'));
+        ctx.set(
+            'Content-disposition',
+            // set publication name with the current date
+            `attachment; filename="publication_${new Date().toISOString()}.pdf"`,
+        );
+        ctx.set('Content-type', 'application/pdf');
+        ctx.body = doc;
 
         renderHeader(doc, PDFTitle, ctx);
         renderDate(doc, locale, ctx);
@@ -306,17 +308,6 @@ async function exportPDF(ctx) {
         renderFooter(doc, locale, ctx);
         // Finalize PDF file
         doc.end();
-
-        // set publication name with the current date
-        ctx.set(
-            'Content-disposition',
-            `attachment; filename="publication_${new Date().toISOString()}.pdf"`,
-        );
-        ctx.set('Content-type', 'application/pdf');
-
-        ctx.body = doc;
-        // delete file
-        await unlinkFile('/tmp/publication.pdf');
 
         // return pdf
         ctx.status = 200;
