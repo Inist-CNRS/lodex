@@ -3,7 +3,7 @@
 [![Documentation](https://img.shields.io/badge/Documentation-f48022)](https://lodex.inist.fr/docs/)
 [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/inistcnrs/lodex)](https://hub.docker.com/r/inistcnrs/lodex/)
 
-# [Lodex](http://lodex.inist.fr)
+# [Lodex](http://www.lodex.fr)
 
 <img src="https://user-images.githubusercontent.com/7420853/30152932-1794db3c-93b5-11e7-98ab-a7f28d0061cb.png" width=150 align=right alt="Lodex Logo">
 
@@ -61,7 +61,16 @@ Note: You can disable end-to-end tests in the `make test` command by setting the
 
 ### Production
 
-You can create an instance via three methods.
+You can create an instance via four methods.
+
+#### Github
+
+```bash
+git clone https://github.com/Inist-CNRS/lodex.git
+cd lodex
+make start
+```
+
 
 #### GitHub Release
 
@@ -88,12 +97,10 @@ docker run -it inistcnrs/lodex
 ## Useful links
 
 - Data and Model ready to use: <https://github.com/Inist-CNRS/lodex-use-cases>
-- Lodex in production:
-  - <https://data.istex.fr/>
 - User Documentation: <https://lodex.inist.fr/docs/> (French Only)
-- Lodex home page: <http://lodex.inist.fr/>
+- Lodex home page: <http://www.lodex.fr/>
 - Contribute (for developer): <https://github.com/Inist-CNRS/lodex/wiki>
-- Contact email: contact@listes.lodex.fr
+- Contact: <https://www.lodex.fr/contact/>
 
 ## Licence
 
