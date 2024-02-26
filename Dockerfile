@@ -15,8 +15,8 @@ ENV npm_config_cache=/app/.npm
 
 RUN npm run build && \
     npm cache clean --force  && \
-    npm prune --production --legacy-peer-deps && \
-    npm run clean
+    npm run clean  && \
+    npm prune --production --legacy-peer-deps
 
 FROM node:18.19-alpine AS release
 RUN apk add --no-cache su-exec redis
