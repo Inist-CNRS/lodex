@@ -37,7 +37,7 @@ RUN echo '{ \
     sed -i -e "s/bin:x:1:/bin:x:2:/" /etc/group
 
 COPY --chown=daemon:daemon --from=build /app /app
-COPY --chown=daemon:daemon ./config/production-dist.js ./config/production.js
+COPY --chown=daemon:daemon ./config/production-dist.js /app/config/production.js
 WORKDIR /app
 ENV NODE_ENV="production"
 ENV PM2_HOME=/app/.pm2
