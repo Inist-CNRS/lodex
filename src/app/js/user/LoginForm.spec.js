@@ -16,7 +16,7 @@ describe('<LoginForm />', () => {
     it('should render error', () => {
         const wrapper = shallow(
             <LoginFormComponent
-                p={{ t: () => {} }}
+                p={{ t: (l) => l }}
                 error="Foo"
                 handleSubmit={() => {}}
             />,

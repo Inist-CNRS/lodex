@@ -37,7 +37,7 @@ export const LoginFormComponent = ({
     <form id="login_form" onSubmit={handleSubmit}>
         {error && (
             <Alert style={styles.alert}>
-                <p>{error}</p>
+                <p>{polyglot.t(error)}</p>
             </Alert>
         )}
         <Field
