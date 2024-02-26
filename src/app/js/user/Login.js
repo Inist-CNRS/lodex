@@ -37,24 +37,34 @@ export const LoginComponent = ({
     submitting,
     target = 'admin',
 }) => {
-    const { href, title } = useMemo(() => {
+    const { href, title, className, backgroundColor, subheader } = useMemo(() => {
         if (target === 'root') {
             return {
                 href: '/instances',
                 title: 'root_panel_link',
+                subheader: 'admin_subheader', //'',
+                className: 'rootPanel',
+                backgroundColor: '#4195e2',
             };
         }
 
         return {
             href: 'admin#/login',
             title: 'admin_panel_link',
+            subheader: 'user_subheader', //'',
+            className: 'adminPanel',
+            backgroundColor: '#7dbd42',
         };
     }, [target]);
 
     return (
-        <Card sx={styles.container}>
+        <Card
+            sx={styles.container}
+            className={className}
+        >
             <CardHeader
                 title={polyglot.t('Login')}
+                subheader={polyglot.t(subheader)}
                 action={
                     <Button
                         variant="contained"
@@ -67,6 +77,7 @@ export const LoginComponent = ({
                             '&:hover': {
                                 color: '#fff',
                             },
+                            backgroundColor,
                         }}
                     >
                         {polyglot.t(title)}
