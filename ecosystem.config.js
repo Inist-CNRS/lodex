@@ -20,5 +20,14 @@ module.exports = {
             err_file: '/dev/null',
             out_file: '/dev/null',
         },
+        {
+            name: 'redis',
+            script: 'redis-server',
+            exec_mode: 'fork',
+            instances: 1,
+            err_file: '/dev/null',
+            out_file: '/dev/null',
+        },
+
     ],
 };

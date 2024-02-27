@@ -18,5 +18,4 @@ COPY ./config/production-dist.js ./config/production.js
 RUN npm run build
 
 EXPOSE 3000
-#CMD ["npm", "run", "production:api"]
-CMD ["npx", "pm2-runtime", "ecosystem.config.js"]
+CMD ["npm", "run", "production:api"]
