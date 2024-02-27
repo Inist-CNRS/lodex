@@ -18,7 +18,6 @@ services:
             WORKERS_URL: 'http://localhost:31976'
         volumes:
             - ./upload:/app/upload
-            - ./precomputedData:/app/precomputedData
         links:
             - mongo
         ports:
