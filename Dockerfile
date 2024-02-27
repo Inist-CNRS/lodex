@@ -23,13 +23,11 @@ RUN apk add --no-cache su-exec redis
 
 # ezmasterizing of lodex
 # See https://github.com/Inist-CNRS/ezmaster#ezmasterizing-an-application
-# cleanupScript disabled because of this commit https://github.com/Inist-CNRS/lodex/commit/4e7c542a8745f97fb21004c96489a21c5bea32a4
 # change uid/gid to be compilant with Debian/Ubuntu container (and so with ezmaster-webdav)
 RUN echo '{ \
     "httpPort": 3000, \
     "configPath": "/app/config.json", \
-    "dataPath": "/app/src/app/custom", \
-    "#cleanupScript": "/app/src/common/mongoCleanup.sh" \
+    "dataPath": "/app/src/app/custom" \
     }' > /etc/ezmaster.json  && \
     sed -i -e "s/daemon:x:2:2/daemon:x:1:1/" /etc/passwd && \
     sed -i -e "s/daemon:x:2:/daemon:x:1:/" /etc/group && \
