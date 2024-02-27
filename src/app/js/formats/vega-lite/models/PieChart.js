@@ -1,7 +1,7 @@
 import BasicChart from './BasicChart';
 import pieChartVL from './json/pie_chart.vl.json';
 import pieChartLabelsVL from './json/pie_chart_labels.vl.json';
-import deepClone from 'lodash.clonedeep';
+import deepClone from 'lodash/cloneDeep';
 
 class PieChart extends BasicChart {
     /**

@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { clamp } from 'lodash';
+import clamp from 'lodash/clamp';
 
 import injectData from '../../../injectData';
 import { field as fieldPropTypes } from '../../../../propTypes';

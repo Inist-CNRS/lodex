@@ -1,4 +1,4 @@
-import get from 'lodash.get';
+import get from 'lodash/get';
 import { rawTransformerWithArg } from './transformer';
 
 export const select = (value, path) => {

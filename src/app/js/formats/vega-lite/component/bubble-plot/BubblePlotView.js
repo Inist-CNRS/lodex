@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
-import { clamp } from 'lodash';
+import clamp from 'lodash/clamp';
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 

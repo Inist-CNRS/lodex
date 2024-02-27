@@ -1,4 +1,5 @@
-import { clamp, cloneDeep } from 'lodash';
+import clamp from 'lodash/clamp';
+import cloneDeep from 'lodash/cloneDeep';
 
 // Values given when an error are encounter
 export const INVALID_VALUE = -1;

@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
-import { clamp } from 'lodash';
+import clamp from 'lodash/clamp';
 
 import { CustomActionVega } from '../../../utils/components/vega-component';
 import RadarChart from '../../models/RadarChart';

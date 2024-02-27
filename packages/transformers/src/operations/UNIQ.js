@@ -1,4 +1,4 @@
-import uniq from 'lodash.uniq';
+import uniq from 'lodash/uniq';
 
 export const uniqArray = value => {
     if (value === null || typeof value === 'undefined') {

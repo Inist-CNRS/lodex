@@ -1,4 +1,4 @@
-import compose from 'lodash.compose';
+import compose from 'lodash/compose';
 
 export const addMatchToFilters = (match, searchableFieldNames) => filters => {
     if (!match || !searchableFieldNames || !searchableFieldNames.length) {

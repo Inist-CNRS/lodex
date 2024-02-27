@@ -1,5 +1,5 @@
-import mapKeys from 'lodash.mapkeys';
-import find from 'lodash.find';
+import mapKeys from 'lodash/mapkeys';
+import find from 'lodash/find';
 import mongoDatabase from './mongoDatabase';
 
 /**

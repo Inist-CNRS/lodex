@@ -9,8 +9,8 @@ import {
 } from 'react-vis-force';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import get from 'lodash.get';
-import isEqual from 'lodash.isequal';
+import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
 import { scaleLinear } from 'd3-scale';
 
 import injectData from '../../injectData';

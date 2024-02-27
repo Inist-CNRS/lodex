@@ -23,7 +23,7 @@ const ClusteredChartView = ({ data, colors, xTitle, yTitle, flipAxis }) => {
     const { values } = data;
 
     const topics = useMemo(() => {
-        return _.chain(values)
+        return chain(values)
             .map(value => flip(flipAxis, value.target, value.source))
             .uniq()
             .sort((a, b) =>

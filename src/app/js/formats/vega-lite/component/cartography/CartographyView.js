@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import { clamp } from 'lodash';
+import clamp from 'lodash/clamp';
 import { schemeOrRd } from 'd3-scale-chromatic';
 
 import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';

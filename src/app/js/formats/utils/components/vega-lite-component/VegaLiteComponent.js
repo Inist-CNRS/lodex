@@ -2,7 +2,7 @@ import { Vega } from 'react-vega';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import deepClone from 'lodash.clonedeep';
+import deepClone from 'lodash/cloneDeep';
 import { isAdmin } from '../../../../user';
 import {
     VEGA_LITE_DATA_INJECT_TYPE_A,

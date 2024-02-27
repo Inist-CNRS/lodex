@@ -1,6 +1,6 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import { PROPOSED } from '../../../../common/propositionStatus';
 

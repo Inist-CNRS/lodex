@@ -1,4 +1,4 @@
-import zipObject from 'lodash.zipobject';
+import zipObject from 'lodash/zipobject';
 import mongoDatabase from './mongoDatabase';
 
 /**

@@ -1,4 +1,4 @@
-import zipObject from 'lodash.zipobject';
+import zipObject from 'lodash/zipobject';
 
 /**
  * Take an object and map its keys to the one in mapping parameters.

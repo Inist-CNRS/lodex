@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import isEqual from 'lodash.isequal';
+import isEqual from 'lodash/isEqual';
 
 import { saveResourceSuccess, saveResourceError, SAVE_RESOURCE } from '../';
 

@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Button, CircularProgress } from '@mui/material';
-import memoize from 'lodash.memoize';
+import memoize from 'lodash/memoize';
 
 import LodexResource from '../../utils/components/LodexResource';
 import injectData from '../../injectData';

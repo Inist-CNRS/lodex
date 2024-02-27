@@ -1,9 +1,9 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
-import get from 'lodash.get';
-import set from 'lodash.set';
-import deepCopy from 'lodash.clonedeep';
+import get from 'lodash/get';
+import set from 'lodash/set';
+import deepCopy from 'lodash/cloneDeep';
 
 const app = new Koa();
 
@@ -20,7 +20,7 @@ const updateFieldValue = async (ctx, field, value) => {
         return field;
     }
 
-    // lodash.set mutate the object, so we need to copy the object first
+    // lodash/set mutate the object, so we need to copy the object first
     const copiedField = deepCopy(field);
     return ctx.field.updateOneById(
         field._id,
