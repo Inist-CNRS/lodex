@@ -12,7 +12,7 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import { FIELD_FORM_NAME } from '..';
 import { polyglot as polyglotPropTypes } from '../../propTypes';

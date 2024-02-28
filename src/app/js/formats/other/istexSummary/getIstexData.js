@@ -1,4 +1,4 @@
-import get from 'lodash.get';
+import get from 'lodash/get';
 import omit from 'lodash.omit';
 
 import composeAsync from '../../../../../common/lib/composeAsync';

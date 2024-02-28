@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import compose from 'recompose/compose';
-import get from 'lodash.get';
+import get from 'lodash/get';
 import translate from 'redux-polyglot/translate';
 
 import { getPercentValue } from '../../../lib/getPercentage';

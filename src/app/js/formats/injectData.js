@@ -5,7 +5,7 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
 import isEqual from 'lodash.isequal';
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import {
     field as fieldPropTypes,

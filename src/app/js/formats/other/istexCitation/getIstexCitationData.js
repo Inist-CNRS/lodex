@@ -1,4 +1,4 @@
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import composeAsync from '../../../../../common/lib/composeAsync';
 import { parseFetchResult, output } from '../../utils/fetchIstexData';

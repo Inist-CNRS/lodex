@@ -1,6 +1,6 @@
 import Stream from 'stream';
 import omit from 'lodash.omit';
-import get from 'lodash.get';
+import get from 'lodash/get';
 import set from 'lodash.set';
 
 import saveParsedStream from './saveParsedStream';

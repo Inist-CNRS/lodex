@@ -1,6 +1,6 @@
 import omit from 'lodash.omit';
 import { createSelector } from 'reselect';
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import * as overview from '../../../common/overview';
 import { getProps } from '../lib/selectors';

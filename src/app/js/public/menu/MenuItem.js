@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '@fortawesome/free-solid-svg-icons';
-import get from 'lodash.get';
+import get from 'lodash/get';
 import classnames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
 

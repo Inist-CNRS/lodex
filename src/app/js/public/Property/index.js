@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { grey } from '@mui/material/colors';
 import memoize from 'lodash.memoize';
-import get from 'lodash.get';
+import get from 'lodash/get';
 import translate from 'redux-polyglot/translate';
 
 import { fromDisplayConfig, fromResource } from '../selectors';

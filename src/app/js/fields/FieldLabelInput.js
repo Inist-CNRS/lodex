@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import FormTextField from '../lib/components/FormTextField';
 import FieldInput from '../lib/components/FieldInput';
