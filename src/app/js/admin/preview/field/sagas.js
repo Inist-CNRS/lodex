@@ -15,7 +15,7 @@ import { getFieldFormData } from '../../../fields/selectors';
 import { fromParsing } from '../../selectors';
 import { FIELD_FORM_NAME } from '../../../fields/index';
 import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../../../fields/sourceValue/SourceValueToggle';
-import cloneDeep from 'lodash.clonedeep';
+import cloneDeep from 'lodash/cloneDeep';
 
 export function* handleComputeFieldPreview({ meta: { form } }) {
     if (form !== FIELD_FORM_NAME) {

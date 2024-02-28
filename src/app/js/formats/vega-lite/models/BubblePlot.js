@@ -1,6 +1,6 @@
 import HeatMap from './HeatMap';
 import bubblePlotVL from './json/bubble_plot.vl.json';
-import deepClone from 'lodash.clonedeep';
+import deepClone from 'lodash/cloneDeep';
 
 class BubblePlot extends HeatMap {
     constructor() {
