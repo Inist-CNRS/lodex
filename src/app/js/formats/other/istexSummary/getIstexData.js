@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import omit from 'lodash.omit';
+import omit from 'lodash/omit';
 
 import composeAsync from '../../../../../common/lib/composeAsync';
 import { parseFetchResult, output } from '../../utils/fetchIstexData';

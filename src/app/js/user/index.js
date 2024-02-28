@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
-import omit from 'lodash.omit';
+import omit from 'lodash/omit';
 
 import getQueryString from '../lib/getQueryString';
 import { ADMIN_ROLE } from '../../../common/tools/tenantTools';

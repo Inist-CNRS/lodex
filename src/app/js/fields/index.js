@@ -1,4 +1,4 @@
-import omit from 'lodash.omit';
+import omit from 'lodash/omit';
 import uniq from 'lodash.uniq';
 import { createAction, handleActions, combineActions } from 'redux-actions';
 

@@ -1,4 +1,4 @@
-import omit from 'lodash.omit';
+import omit from 'lodash/omit';
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
 
