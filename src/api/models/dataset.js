@@ -1,4 +1,4 @@
-import chunk from 'lodash.chunk';
+import chunk from 'lodash/chunk';
 import groupBy from 'lodash.groupby';
 import omit from 'lodash/omit';
 import JSONStream from 'jsonstream';

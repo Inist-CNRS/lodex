@@ -1,5 +1,5 @@
-import range from 'lodash.range';
-import chunk from 'lodash.chunk';
+import range from 'lodash/range';
+import chunk from 'lodash/chunk';
 
 export default (data, reverse) => {
     if (!data.hits.length) {

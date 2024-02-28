@@ -1,5 +1,5 @@
 import { ObjectID } from 'mongodb';
-import chunk from 'lodash.chunk';
+import chunk from 'lodash/chunk';
 import omit from 'lodash/omit';
 
 import { getFullResourceUri } from '../../common/uris';
