@@ -1,5 +1,5 @@
 import chunk from 'lodash/chunk';
-import groupBy from 'lodash.groupby';
+import groupBy from 'lodash/groupBy';
 import omit from 'lodash/omit';
 import JSONStream from 'jsonstream';
 import { Transform } from 'stream';
