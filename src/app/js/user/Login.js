@@ -71,7 +71,6 @@ export const LoginComponent = ({
                         color="primary"
                         disableElevation
                         href={href}
-                        target="_blank"
                         startIcon={<OpenInNewIcon />}
                         sx={{
                             '&:hover': {
