@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import compose from 'lodash/compose';
+import compose from 'lodash/flow';
 import PropTypes from 'prop-types';
 import GridLayout from 'react-grid-layout';
 import { Box, IconButton, Tooltip } from '@mui/material';
