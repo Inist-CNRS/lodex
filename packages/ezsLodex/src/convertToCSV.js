@@ -1,4 +1,4 @@
-import omit from 'lodash.omit';
+import omit from 'lodash/omit';
 
 // import { VALIDATED } from '../../common/propositionStatus'; // IN LODEX
 const VALIDATED = 'VALIDATED';

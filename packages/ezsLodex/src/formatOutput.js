@@ -1,5 +1,5 @@
-import get from 'lodash.get';
-import unset from 'lodash.unset';
+import get from 'lodash/get';
+import unset from 'lodash/unset';
 /**
  * Format the output in compliance with LODEX routines format.
  *
