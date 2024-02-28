@@ -147,7 +147,6 @@
         "lodash.pick": "^4.4.0",
         "lodash.range": "^3.2.0",
         "lodash.rangeright": "^4.2.0",
-        "lodash.set": "^4.3.2",
         "lodash.topairs": "^4.3.0",
         "lodash.uniq": "^4.5.0",
         "markdown-it": "13.0.2",
