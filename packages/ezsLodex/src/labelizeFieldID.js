@@ -1,4 +1,4 @@
-import mapKeys from 'lodash/mapkeys';
+import mapKeys from 'lodash/mapKeys';
 import find from 'lodash/find';
 import mongoDatabase from './mongoDatabase';
 
