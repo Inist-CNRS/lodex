@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, FormControlLabel } from '@mui/material';
-import memoize from 'lodash.memoize';
+import memoize from 'lodash/memoize';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
 const isChecked = memoize(value => {

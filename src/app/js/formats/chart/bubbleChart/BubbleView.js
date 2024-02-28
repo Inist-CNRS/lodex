@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { pack, hierarchy } from 'd3-hierarchy';
-import memoize from 'lodash.memoize';
+import memoize from 'lodash/memoize';
 
 import injectData from '../../injectData';
 import Bubble from './Bubble';
