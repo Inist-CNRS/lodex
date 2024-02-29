@@ -39,7 +39,6 @@ const funcs = {
     keyMapping,
     linkDataset,
     useFieldNames,
-    JSONLDCompacter,
     getFields,
     getCharacteristics,
     injectDatasetFields,
