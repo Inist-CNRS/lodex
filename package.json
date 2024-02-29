@@ -133,7 +133,6 @@
         "koa-route": "^3.2.0",
         "koa-static": "^5.0.0",
         "lodash": "4.17.21",
-        "lodash.compose": "^2.4.1",
         "markdown-it": "13.0.2",
         "md5": "2.3.0",
         "memorystream": "0.3.1",
