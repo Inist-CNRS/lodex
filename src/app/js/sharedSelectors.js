@@ -1,4 +1,4 @@
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import { createGlobalSelectors } from './lib/selectors';
 import { selectors as fieldsSelectors } from './fields';

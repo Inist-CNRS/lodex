@@ -1,5 +1,5 @@
-import get from 'lodash.get';
-import set from 'lodash.set';
+import get from 'lodash/get';
+import set from 'lodash/set';
 import QuickLRU from 'quick-lru';
 import mongoDatabase from './mongoDatabase';
 

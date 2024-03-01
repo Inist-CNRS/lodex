@@ -19,7 +19,7 @@ import { StyleSheetServer } from 'aphrodite/no-important';
 import jwt from 'koa-jwt';
 import jsonwebtoken from 'jsonwebtoken';
 import { auth, istexApiUrl, jsHost, mongo } from 'config';
-import pick from 'lodash.pick';
+import pick from 'lodash/pick';
 import { createMemoryHistory } from 'history';
 
 import rootReducer from '../../app/js/public/reducers';

@@ -1,5 +1,5 @@
-import omit from 'lodash.omit';
-import pick from 'lodash.pick';
+import omit from 'lodash/omit';
+import pick from 'lodash/pick';
 import { ObjectID, ObjectId } from 'mongodb';
 
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';

@@ -1,4 +1,4 @@
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import { REJECTED } from '../../../common/propositionStatus';
 import isEmpty from '../../../common/lib/isEmpty';

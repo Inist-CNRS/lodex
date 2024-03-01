@@ -1,5 +1,5 @@
-import get from 'lodash.get';
-import memoize from 'lodash.memoize';
+import get from 'lodash/get';
+import memoize from 'lodash/memoize';
 
 export default memoize(
     field => {

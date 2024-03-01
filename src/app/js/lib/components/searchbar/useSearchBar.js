@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import debounce from 'lodash.debounce';
+import debounce from 'lodash/debounce';
 
 const DEBOUNCE_TIMEOUT = 500;
 

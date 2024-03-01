@@ -1,9 +1,9 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
-import get from 'lodash.get';
-import set from 'lodash.set';
-import deepCopy from 'lodash.clonedeep';
+import get from 'lodash/get';
+import set from 'lodash/set';
+import deepCopy from 'lodash/cloneDeep';
 
 const app = new Koa();
 

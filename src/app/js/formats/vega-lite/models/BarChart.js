@@ -11,7 +11,7 @@ import {
 import BasicChart from './BasicChart';
 import barChartVL from './json/bar_chart.vl.json';
 import barChartLabelsVL from './json/bar_chart_labels.vl.json';
-import deepClone from 'lodash.clonedeep';
+import deepClone from 'lodash/cloneDeep';
 
 class BarChart extends BasicChart {
     /**

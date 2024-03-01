@@ -1,7 +1,7 @@
 import BasicChart from './BasicChart';
 import { LABEL_ASC, LABEL_DESC } from '../../utils/chartsUtils';
 import heatmapVL from './json/heatmap.vl.json';
-import deepClone from 'lodash.clonedeep';
+import deepClone from 'lodash/cloneDeep';
 
 class HeatMap extends BasicChart {
     /**

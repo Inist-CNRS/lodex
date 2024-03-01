@@ -1,4 +1,4 @@
-import compose from 'lodash.compose';
+import compose from 'lodash/flowRight';
 import qs from 'qs';
 
 export const addLiteralToLiteral = (facets = {}) => (literal = {}) => ({
