@@ -1,6 +1,6 @@
-import chunk from 'lodash.chunk';
-import groupBy from 'lodash.groupby';
-import omit from 'lodash.omit';
+import chunk from 'lodash/chunk';
+import groupBy from 'lodash/groupBy';
+import omit from 'lodash/omit';
 import JSONStream from 'jsonstream';
 import { Transform } from 'stream';
 import { ObjectID } from 'mongodb';

@@ -6,7 +6,7 @@ import SparqlRequest from '../SparqlRequest';
 import { isURL } from '../../../../../../common/uris.js';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import URL from 'url';
-import toPairs from 'lodash.topairs';
+import toPairs from 'lodash/toPairs';
 import toSentenceCase from 'js-sentencecase';
 import { getViewComponent } from '../../../index';
 import Link from '../../../../lib/components/Link';

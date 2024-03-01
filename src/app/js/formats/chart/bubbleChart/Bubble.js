@@ -1,5 +1,5 @@
 import React from 'react';
-import memoize from 'lodash.memoize';
+import memoize from 'lodash/memoize';
 import { hsl } from 'd3-color';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';

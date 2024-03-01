@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
-import memoize from 'lodash.memoize';
+import memoize from 'lodash/memoize';
 import HiddenIcon from '@mui/icons-material/VisibilityOff';
 
 import { SCOPE_DATASET } from '../../../../common/scope';

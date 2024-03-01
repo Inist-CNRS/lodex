@@ -4,7 +4,7 @@ import Folder from '@mui/icons-material/Folder';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import Arrow from '@mui/icons-material/KeyboardArrowDown';
 import { Button, CircularProgress } from '@mui/material';
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import AdminOnlyAlert from '../../../lib/components/AdminOnlyAlert';

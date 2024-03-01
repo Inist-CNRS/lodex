@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import { getPercentValue } from '../../../lib/getPercentage';
 import { getShortText } from '../../../lib/longTexts';

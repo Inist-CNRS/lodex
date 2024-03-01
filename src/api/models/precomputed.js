@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import omit from 'lodash.omit';
+import omit from 'lodash/omit';
 import { castIdsFactory } from './utils';
 
 const checkMissingFields = data =>

@@ -5,7 +5,7 @@ import pure from 'recompose/pure';
 import withProps from 'recompose/withProps';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import memoize from 'lodash.memoize';
+import memoize from 'lodash/memoize';
 import {
     Table,
     TableBody,

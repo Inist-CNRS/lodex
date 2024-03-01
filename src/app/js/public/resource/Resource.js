@@ -22,8 +22,8 @@ import { preLoadExporters } from '../export';
 import Link from '../../lib/components/Link';
 import stylesToClassname from '../../lib/stylesToClassName';
 import NavButton, { NEXT, PREV } from '../../lib/components/NavButton';
-import isEqual from 'lodash.isequal';
-import get from 'lodash.get';
+import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
 import { getResourceUri } from '../../../../common/uris';
 
 const navStyles = stylesToClassname(

@@ -5,9 +5,9 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { CardActions } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import memoize from 'lodash.memoize';
+import memoize from 'lodash/memoize';
 import { Helmet } from 'react-helmet';
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromDisplayConfig, fromI18n, fromResource } from '../selectors';

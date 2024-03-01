@@ -1,4 +1,4 @@
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import fetch from '../../../lib/fetch';
 import composeAsync from '../../../../../common/lib/composeAsync';

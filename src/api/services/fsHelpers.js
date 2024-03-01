@@ -1,6 +1,6 @@
 import fs from 'fs';
-import range from 'lodash.range';
-import rangeRight from 'lodash.rangeright';
+import range from 'lodash/range';
+import rangeRight from 'lodash/rangeRight';
 import multiStream from 'multistream';
 
 import composeAsync from '../../common/lib/composeAsync';

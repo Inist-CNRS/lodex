@@ -1,4 +1,4 @@
-import memoize from 'lodash.memoize';
+import memoize from 'lodash/memoize';
 
 const countNotUniqueSubresources = collection => async subresources => {
     const count = await collection.count();

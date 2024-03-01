@@ -1,5 +1,5 @@
 import React from 'react';
-import get from 'lodash.get';
+import get from 'lodash/get';
 import translate from 'redux-polyglot/translate';
 
 import InvalidFormat from './InvalidFormat';

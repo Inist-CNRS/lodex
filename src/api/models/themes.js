@@ -5,7 +5,7 @@ import path from 'path';
 import getLogger from '../services/logger';
 import defaultCustomTheme from '../../app/custom/customTheme';
 import { version } from '../../../package.json';
-import deepClone from 'lodash.clonedeep';
+import deepClone from 'lodash/cloneDeep';
 
 const logger = getLogger('system');
 

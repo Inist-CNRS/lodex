@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import isEqual from 'lodash.isequal';
+import isEqual from 'lodash/isEqual';
 
 import { fromUser, fromFields } from '../sharedSelectors';
 import { field as fieldPropTypes } from '../propTypes';

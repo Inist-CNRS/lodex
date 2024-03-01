@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import memoize from 'lodash.memoize';
+import memoize from 'lodash/memoize';
 
 import { REJECTED } from '../../../../../common/propositionStatus';
 import { field as fieldPropTypes } from '../../../propTypes';

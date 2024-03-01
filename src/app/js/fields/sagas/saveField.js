@@ -1,7 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { destroy } from 'redux-form';
-import set from 'lodash.set';
-import get from 'lodash.get';
+import set from 'lodash/set';
+import get from 'lodash/get';
 
 import {
     loadField,

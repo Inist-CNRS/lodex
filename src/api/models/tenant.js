@@ -1,5 +1,5 @@
 import { ObjectID } from 'mongodb';
-import omit from 'lodash.omit';
+import omit from 'lodash/omit';
 import { castIdsFactory } from './utils';
 
 export default async db => {

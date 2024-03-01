@@ -3,7 +3,7 @@ import route from 'koa-route';
 import mount from 'koa-mount';
 import jwt from 'koa-jwt';
 import { auth } from 'config';
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import ezMasterConfig from '../../services/ezMasterConfig';
 import characteristic from './characteristic';

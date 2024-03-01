@@ -1,4 +1,4 @@
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import merge from '../lib/merge';
 import { FORMATS_CATALOG } from './formats';

@@ -12,7 +12,7 @@ import {
 } from '../../propTypes';
 import RemoveButton from '../../admin/preview/RemoveButton';
 import CancelButton from '../../lib/components/CancelButton';
-import isEqual from 'lodash.isequal';
+import isEqual from 'lodash/isEqual';
 import { getFormValues } from 'redux-form';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';

@@ -1,5 +1,5 @@
-import omit from 'lodash.omit';
-import get from 'lodash.get';
+import omit from 'lodash/omit';
+import get from 'lodash/get';
 
 import getDocumentTransformer from './getDocumentTransformer';
 import transformAllDocuments from './transformAllDocuments';

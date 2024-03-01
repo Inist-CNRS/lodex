@@ -1,5 +1,5 @@
-import get from 'lodash.get';
-import pick from 'lodash.pick';
+import get from 'lodash/get';
+import pick from 'lodash/pick';
 
 export const getAppliedFacets = ({ appliedFacets }) => appliedFacets;
 

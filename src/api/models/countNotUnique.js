@@ -1,4 +1,4 @@
-import memoize from 'lodash.memoize';
+import memoize from 'lodash/memoize';
 
 export const countUniqueConcatenation = collection => async fieldNames => {
     const $concat = fieldNames.map(v => `$${v}`);

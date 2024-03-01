@@ -6,7 +6,7 @@ import {
     throttle,
     all,
 } from 'redux-saga/effects';
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import {
     LOAD_FORMAT_DATA,

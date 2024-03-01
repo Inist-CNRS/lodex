@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import get from 'lodash.get';
+import get from 'lodash/get';
 import URL from 'url';
 
 import { isURL } from '../../../../../common/uris.js';
