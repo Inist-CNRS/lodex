@@ -230,9 +230,9 @@ const getCssVariable = theme => {
 
     --success-main: ${palette.success.main};
     --success-contrast-text: ${palette.success.contrastText};
-    
+
     --neutral-main: ${palette.neutral.main};
-    
+
     --neutral-dark-main: ${palette.neutralDark.main};
     --neutral-dark-secondary: ${palette.neutralDark.secondary};
     --neutral-dark-very-dark: ${palette.neutralDark.veryDark};
@@ -241,13 +241,13 @@ const getCssVariable = theme => {
     --neutral-dark-lighter: ${palette.neutralDark.lighter};
     --neutral-dark-very-light: ${palette.neutralDark.veryLight};
     --neutral-dark-transparent: ${palette.neutralDark.transparent};
-    
+
     --text-main: ${palette.text.main};
     --text-primary: ${palette.text.primary};
-    
+
     --contrast-main: ${palette.contrast.main};
     --contrast-light: ${palette.contrast.light};
-    
+
     --contrast-threshold: ${palette.contrastThreshold};
 }
     `;
@@ -424,7 +424,7 @@ for (let theme of getAvailableThemesKeys()) {
     app.use(
         mount(
             `/themes/${theme}/`,
-            serve(path.resolve(__dirname, `../../themes/${theme}`)),
+            serve(path.resolve(__dirname, `../../app/custom/themes/${theme}`)),
         ),
     );
 }
