@@ -1,6 +1,7 @@
 import chunk from 'lodash/chunk';
 import groupBy from 'lodash/groupBy';
 import omit from 'lodash/omit';
+import uniqWith from 'lodash/uniqWith';
 import JSONStream from 'jsonstream';
 import { Transform } from 'stream';
 import { ObjectID } from 'mongodb';
@@ -54,7 +55,7 @@ export default db => {
 
     collection.bulkUpdate = async (items, getFilter, upsert = false) => {
         if (items.length) {
-            await collection.bulkWrite(
+            return await collection.bulkWrite(
                 items.map(item => ({
                     updateOne: {
                         filter: getFilter(item),
@@ -137,16 +138,16 @@ export default db => {
     };
 
     collection.getColumns = async () => {
-        const firstLine = await collection.findOne();
+        const result = await collection.find({})
+            .limit(30) // The first 30 documents are considered representative of the entire dataset.
+            .toArray();
         const columns = [];
-        if (firstLine) {
-            Object.keys(firstLine).forEach(key => {
-                columns.push({ key, type: typeof firstLine[key] });
+        result.forEach(item => {
+            Object.keys(item).forEach(key => {
+                columns.push({ key, type: typeof item[key] });
             });
-        } else {
-            throw new Error('Unable to get columns, first line is empty.');
-        }
-        return columns;
+        });
+        return uniqWith(columns, (x, y) => (x.key === y.key));
     };
 
     collection.indexColumns = async () => {
