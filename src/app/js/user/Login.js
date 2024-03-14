@@ -10,7 +10,7 @@ import {
     CardActions,
     CardHeader,
     CardContent,
-    Button,
+    Link,
 } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
@@ -37,14 +37,14 @@ export const LoginComponent = ({
     submitting,
     target = 'admin',
 }) => {
-    const { href, title, className, backgroundColor, subheader } = useMemo(() => {
+    const { href, title, className, color, subheader } = useMemo(() => {
         if (target === 'root') {
             return {
                 href: '/instances',
                 title: 'root_panel_link',
                 subheader: 'admin_subheader', //'',
                 className: 'rootPanel',
-                backgroundColor: '#4195e2',
+                color: '#4195e2',
             };
         }
 
@@ -53,7 +53,7 @@ export const LoginComponent = ({
             title: 'admin_panel_link',
             subheader: 'user_subheader', //'',
             className: 'adminPanel',
-            backgroundColor: '#7dbd42',
+            color: '#7dbd42',
         };
     }, [target]);
 
@@ -66,7 +66,7 @@ export const LoginComponent = ({
                 title={polyglot.t('Login')}
                 subheader={polyglot.t(subheader)}
                 action={
-                    <Button
+                    <Link
                         variant="contained"
                         color="primary"
                         disableElevation
@@ -74,13 +74,13 @@ export const LoginComponent = ({
                         startIcon={<OpenInNewIcon />}
                         sx={{
                             '&:hover': {
-                                color: '#fff',
+                                color,
                             },
-                            backgroundColor,
+                            color: '#626368',
                         }}
                     >
                         {polyglot.t(title)}
-                    </Button>
+                    </Link>
                 }
             />
             <CardContent>
