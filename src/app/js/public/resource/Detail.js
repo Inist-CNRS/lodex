@@ -6,6 +6,7 @@ import compose from 'recompose/compose';
 import { CardActions } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import memoize from 'lodash/memoize';
+import camelCase from 'lodash/camelCase';
 import { Helmet } from 'react-helmet';
 import get from 'lodash/get';
 
@@ -165,6 +166,7 @@ export const DetailComponent = ({
                                 field={field}
                                 resource={resource}
                                 style={styles.property(dense)}
+                                className={camelCase(field.internalName || '')}
                             />
                         ))}
                     </div>
