@@ -57,6 +57,12 @@ publish: build  ## publish version to docker hub
 	docker build -t inistcnrs/lodex:14.0.44 --build-arg http_proxy --build-arg https_proxy .
 	docker push inistcnrs/lodex:14.0.44
 
+## Deploy Theme SDK =================================================================
+
+publish-sdk: build  ## publish version to docker hub
+	docker build . -t alasdiablodocker/lodex-sdk:14.0.44 --build-arg http_proxy --build-arg https_proxy -f ./Dockerfile.sdk
+	docker push alasdiablodocker/lodex-sdk:14.0.44
+
 ## Development =================================================================
 
 run-dev: ## Run the project in dev mode
