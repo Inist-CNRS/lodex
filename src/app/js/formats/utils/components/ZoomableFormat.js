@@ -28,8 +28,8 @@ const ZoomableFormat = ({ children, p }) => {
                         onClick={handleClickOpen}
                         sx={{
                             position: 'absolute',
-                            right: 32,
-                            bottom: 32,
+                            right: 8,
+                            bottom: 8,
                         }}
                     >
                         <OpenInFullIcon />

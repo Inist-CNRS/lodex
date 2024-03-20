@@ -15,6 +15,7 @@ import { scaleLinear } from 'd3-scale';
 
 import injectData from '../../injectData';
 import MouseIcon from '../../utils/components/MouseIcon';
+import ZoomableFormat from '../../utils/components/ZoomableFormat';
 
 const simulationOptions = {
     animate: true,
@@ -39,7 +40,7 @@ const zoomOptions = { minScale: 0.25, maxScale: 16 };
 
 class Network extends Component {
     mouseIcon = '';
-    createSimulation = options => {
+    createSimulation = (options) => {
         // extends react-vis-force createSimulation to get a reference on the simulation
         this.simulation = createSimulation(options);
 
@@ -63,34 +64,36 @@ class Network extends Component {
         const { nodes, links, colorSet } = this.props;
 
         return (
-            <div style={styles.container}>
-                <InteractiveForceGraph
-                    simulationOptions={simulationOptions}
-                    zoom
-                    showLabels
-                    zoomOptions={zoomOptions}
-                    labelAttr="label"
-                    labelOffset={labelOffset}
-                    highlightDependencies
-                    createSimulation={this.createSimulation}
-                >
-                    {nodes.map(node => (
-                        <ForceGraphNode
-                            key={node.id}
-                            node={node}
-                            fill={colorSet[0]}
-                        />
-                    ))}
-                    {links.map((link, index) => (
-                        <ForceGraphLink
-                            key={`${link.source}_${link.target}_${index}`}
-                            link={link}
-                        />
-                    ))}
-                </InteractiveForceGraph>
+            <ZoomableFormat>
+                <div style={styles.container}>
+                    <InteractiveForceGraph
+                        simulationOptions={simulationOptions}
+                        zoom
+                        showLabels
+                        zoomOptions={zoomOptions}
+                        labelAttr="label"
+                        labelOffset={labelOffset}
+                        highlightDependencies
+                        createSimulation={this.createSimulation}
+                    >
+                        {nodes.map((node) => (
+                            <ForceGraphNode
+                                key={node.id}
+                                node={node}
+                                fill={colorSet[0]}
+                            />
+                        ))}
+                        {links.map((link, index) => (
+                            <ForceGraphLink
+                                key={`${link.source}_${link.target}_${index}`}
+                                link={link}
+                            />
+                        ))}
+                    </InteractiveForceGraph>
 
-                <div>{this.mouseIcon}</div>
-            </div>
+                    <div>{this.mouseIcon}</div>
+                </div>
+            </ZoomableFormat>
         );
     }
 }
@@ -161,7 +164,7 @@ const mapStateToProps = (state, { formatData }) => {
         .range([1, 20]);
 
     return {
-        nodes: nodes.map(node => ({
+        nodes: nodes.map((node) => ({
             ...node,
             radius: nodeScale(node.radius),
         })),
