@@ -8,7 +8,7 @@ import {
     VEGA_DATA_INJECT_TYPE_A,
     VEGA_DATA_INJECT_TYPE_B,
 } from '../../chartsUtils';
-import { ASPECT_RATIO_16_9, ASPECT_RATIOS } from '../../aspectRatio';
+import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 
 /**
  * small component use to handle vega lite display
@@ -43,7 +43,7 @@ function CustomActionVega(props) {
 
     switch (props.injectType) {
         case VEGA_DATA_INJECT_TYPE_A:
-            spec.data.forEach(e => {
+            spec.data.forEach((e) => {
                 if (e.name === 'table') {
                     e.values = props.data.values;
                 }
@@ -54,14 +54,14 @@ function CustomActionVega(props) {
                 let data = {
                     values: [],
                 };
-                props.data.values.forEach(e => {
+                props.data.values.forEach((e) => {
                     data.values.push({
                         origin: e.source,
                         destination: e.target,
                         count: e.weight,
                     });
                 });
-                spec.data.forEach(e => {
+                spec.data.forEach((e) => {
                     if (e.name === 'routes' || e.name === 'link_data') {
                         e.values = data.values;
                     }
@@ -74,7 +74,11 @@ function CustomActionVega(props) {
 
     return (
         <Vega
-            style={{ width: '100%', aspectRatio: props.aspectRatio }}
+            style={
+                props.aspectRatio === ASPECT_RATIO_NONE
+                    ? { width: '100%' }
+                    : { width: '100%', aspectRatio: props.aspectRatio }
+            }
             spec={deepClone(props.spec)}
             actions={actions}
             mode="vega"
@@ -83,7 +87,7 @@ function CustomActionVega(props) {
 }
 
 CustomActionVega.defaultProps = {
-    aspectRatio: ASPECT_RATIO_16_9,
+    aspectRatio: ASPECT_RATIO_NONE,
 };
 
 /**
@@ -103,7 +107,7 @@ CustomActionVega.propTypes = {
  * @param state application state
  * @returns {{user: *}} user state
  */
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         user: state.user,
     };

@@ -15,7 +15,6 @@ import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
-import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
 
 const styles = {
     container: {
@@ -33,6 +32,7 @@ const PieChartView = ({
     tooltipValue,
     colors,
     labels,
+    aspectRatio,
 }) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
@@ -55,7 +55,7 @@ const PieChartView = ({
 
         // enable the orderBy in vega-lite
         let count = 1;
-        data.values.forEach(entry => {
+        data.values.forEach((entry) => {
             entry.order = count++;
         });
 
@@ -88,7 +88,7 @@ const PieChartView = ({
                 spec={spec}
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
-                aspectRatio={ASPECT_RATIO_8_5}
+                aspectRatio={aspectRatio}
             />
         </div>
     );
@@ -107,6 +107,7 @@ PieChartView.propTypes = {
     labels: PropTypes.bool,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
+    aspectRatio: PropTypes.string,
 };
 
 PieChartView.defaultProps = {

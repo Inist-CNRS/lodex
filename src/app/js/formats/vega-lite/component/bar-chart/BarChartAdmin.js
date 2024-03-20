@@ -32,6 +32,8 @@ import {
 } from '../../../utils/components/field-set/FormatFieldSets';
 import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import { StandardIdValue } from '../../../utils/dataSet';
+import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
+import { ASPECT_RATIO_16_6 } from '../../../utils/aspectRatio';
 
 export const defaultArgs = {
     params: {
@@ -52,9 +54,10 @@ export const defaultArgs = {
     labels: false,
     labelOverlap: false,
     barSize: 20,
+    aspectRatio: ASPECT_RATIO_16_6,
 };
 
-const BarChartAdmin = props => {
+const BarChartAdmin = (props) => {
     const {
         p: polyglot,
         args,
@@ -63,6 +66,7 @@ const BarChartAdmin = props => {
         showMinValue,
         showOrderBy,
     } = props;
+
     const {
         advancedMode,
         advancedModeSpec,
@@ -78,6 +82,7 @@ const BarChartAdmin = props => {
         direction,
         axisRoundValue,
         labelOverlap,
+        aspectRatio,
     } = args;
 
     const colors = useMemo(() => {
@@ -127,7 +132,7 @@ const BarChartAdmin = props => {
         updateAdminArgs('advancedMode', !advancedMode, props);
     };
 
-    const handleAdvancedModeSpec = newSpec => {
+    const handleAdvancedModeSpec = (newSpec) => {
         updateAdminArgs('advancedModeSpec', newSpec, props);
     };
 
@@ -135,11 +140,11 @@ const BarChartAdmin = props => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
-    const handleParams = params => {
+    const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
 
-    const handleColors = colors => {
+    const handleColors = (colors) => {
         updateAdminArgs('colors', colors || defaultArgs.colors, props);
     };
 
@@ -147,11 +152,11 @@ const BarChartAdmin = props => {
         updateAdminArgs('axisRoundValue', !axisRoundValue, props);
     };
 
-    const handleScale = event => {
+    const handleScale = (event) => {
         updateAdminArgs('scale', event.target.value, props);
     };
 
-    const handleDirection = event => {
+    const handleDirection = (event) => {
         updateAdminArgs('direction', event.target.value, props);
     };
 
@@ -163,7 +168,7 @@ const BarChartAdmin = props => {
         updateAdminArgs('diagonalCategoryAxis', !diagonalCategoryAxis, props);
     };
 
-    const handleBarSize = event => {
+    const handleBarSize = (event) => {
         updateAdminArgs('barSize', parseInt(event.target.value, 10), props);
     };
 
@@ -179,12 +184,16 @@ const BarChartAdmin = props => {
         updateAdminArgs('labelOverlap', !args.labelOverlap, props);
     };
 
-    const handleTooltipCategory = category => {
+    const handleTooltipCategory = (category) => {
         updateAdminArgs('tooltipCategory', category, props);
     };
 
-    const handleTooltipValue = value => {
+    const handleTooltipValue = (value) => {
         updateAdminArgs('tooltipValue', value, props);
+    };
+
+    const handleAspectRatio = (value) => {
+        updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
@@ -320,6 +329,10 @@ const BarChartAdmin = props => {
                         />
                     </>
                 )}
+                <AspectRatioSelector
+                    value={aspectRatio}
+                    onChange={handleAspectRatio}
+                />
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
@@ -361,6 +374,7 @@ BarChartAdmin.propTypes = {
         tooltipValue: PropTypes.string,
         labels: PropTypes.bool,
         labelOverlap: PropTypes.bool,
+        aspectRatio: PropTypes.string,
     }),
     onChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,

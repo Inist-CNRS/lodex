@@ -2,7 +2,6 @@ import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
-import { clamp } from 'lodash';
 
 import { CustomActionVega } from '../../../utils/components/vega-component';
 import RadarChart from '../../models/RadarChart';
@@ -16,7 +15,6 @@ import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import injectData from '../../../injectData';
-import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
 
 const styles = {
     container: {
@@ -35,6 +33,7 @@ const RadarChartView = ({
     tooltipCategory,
     tooltipValue,
     scale,
+    aspectRatio,
 }) => {
     const formattedData = useMemo(() => {
         if (!data) {
@@ -45,7 +44,7 @@ const RadarChartView = ({
             ...data,
         };
 
-        tmpData.values.forEach(value => {
+        tmpData.values.forEach((value) => {
             value.category = 0;
         });
 
@@ -100,7 +99,7 @@ const RadarChartView = ({
                 spec={spec}
                 data={formattedData}
                 injectType={VEGA_DATA_INJECT_TYPE_A}
-                aspectRatio={ASPECT_RATIO_8_5}
+                aspectRatio={aspectRatio}
             />
         </div>
     );
@@ -117,6 +116,7 @@ RadarChartView.propTypes = {
     scale: PropTypes.string.isRequired,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
+    aspectRatio: PropTypes.string,
 };
 
 RadarChartView.defaultProps = {

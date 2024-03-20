@@ -80,7 +80,7 @@ class Cartography extends BasicChart {
                         feature: 'FRA_adm2',
                     },
                 };
-                this.model.transform.forEach(e => {
+                this.model.transform.forEach((e) => {
                     if (e.lookup === 'id') {
                         e.lookup = 'properties.HASC_2';
                     }

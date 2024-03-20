@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { clamp } from 'lodash';
 import PropTypes from 'prop-types';
 
 import {
@@ -39,6 +38,7 @@ const FlowMapView = ({
     tooltipValue,
     color,
     colorScheme,
+    aspectRatio,
 }) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
@@ -89,6 +89,7 @@ const FlowMapView = ({
                 spec={spec}
                 data={data}
                 injectType={VEGA_DATA_INJECT_TYPE_B}
+                aspectRatio={aspectRatio}
             />
             <MouseIcon polyglot={p} />
         </div>
@@ -106,6 +107,7 @@ FlowMapView.propTypes = {
     p: polyglotPropTypes.isRequired,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
+    aspectRatio: PropTypes.string,
 };
 
 FlowMapView.defaultProps = {

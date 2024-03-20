@@ -75,7 +75,7 @@ class FlowMap extends BasicChartVG {
             this.model.height = '{|__LODEX_HEIGHT__|}';
         }
 
-        this.model.marks.forEach(e => {
+        this.model.marks.forEach((e) => {
             if (e.type === 'text' && !this.editMode) {
                 e.encode.encode.x.value = this.model.width - 5;
             }
@@ -84,14 +84,14 @@ class FlowMap extends BasicChartVG {
             }
         });
 
-        this.model.scales.forEach(e => {
+        this.model.scales.forEach((e) => {
             if (e.name === 'color') {
                 e.range = this.colors;
             }
         });
 
         if (this.tooltip.toggle) {
-            this.model.marks.forEach(e => {
+            this.model.marks.forEach((e) => {
                 if (e.name === 'cell') {
                     e.encode.enter.tooltip = {
                         signal: `{"${this.tooltip.category.title}": datum.name, "${this.tooltip.value.title}": datum.link_data.count}`,
@@ -100,7 +100,7 @@ class FlowMap extends BasicChartVG {
             });
         }
 
-        this.model.data.forEach(e => {
+        this.model.data.forEach((e) => {
             if (e.name === 'geo_data') {
                 e.values = worldCountriesSansAntarctica;
             }

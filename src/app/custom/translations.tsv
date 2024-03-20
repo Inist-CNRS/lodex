@@ -1072,3 +1072,5 @@
 "import"	"Import"	"Importer"
 "import_successful"	"Import completed successfully"	"Import réalisé avec succès"
 "import_error"	"Error during import"	"Erreur lors de l'import"
+"aspect_ratio"	"Aspect ratio (Caution: If used incorrectly, this may cause page layout problems)"	"Rapport de forme (Attention : Si mal utilisée cela peut causer des problèmes de mise en page)"
+"aspect_ratio_none"	"No aspect ratio"	"Aucun rapport de forme"

@@ -9,7 +9,7 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../chartsUtils';
-import { ASPECT_RATIO_16_9, ASPECT_RATIOS } from '../../aspectRatio';
+import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 
 /**
  * small component use to handle vega lite display
@@ -47,14 +47,14 @@ function CustomActionVegaLite({ aspectRatio, user, spec, data, injectType }) {
             specWithData.data = data;
             break;
         case VEGA_LITE_DATA_INJECT_TYPE_B:
-            specWithData.transform.forEach(e => {
+            specWithData.transform.forEach((e) => {
                 if (e.lookup === 'id') {
                     e.from.data.values = data.values;
                 }
             });
             break;
         case VEGA_LITE_DATA_INJECT_TYPE_C:
-            specWithData.transform.forEach(e => {
+            specWithData.transform.forEach((e) => {
                 if (e.lookup === 'properties.HASC_2') {
                     e.from.data.values = data.values;
                 }
@@ -66,7 +66,11 @@ function CustomActionVegaLite({ aspectRatio, user, spec, data, injectType }) {
 
     return (
         <Vega
-            style={{ width: '100%', aspectRatio }}
+            style={
+                aspectRatio === ASPECT_RATIO_NONE
+                    ? { width: '100%' }
+                    : { width: '100%', aspectRatio }
+            }
             spec={deepClone(specWithData)}
             actions={actions}
             mode="vega-lite"
@@ -75,7 +79,7 @@ function CustomActionVegaLite({ aspectRatio, user, spec, data, injectType }) {
 }
 
 CustomActionVegaLite.defaultProps = {
-    aspectRatio: ASPECT_RATIO_16_9,
+    aspectRatio: ASPECT_RATIO_NONE,
 };
 
 /**
@@ -95,7 +99,7 @@ CustomActionVegaLite.propTypes = {
  * @param state application state
  * @returns {{user: *}} user state
  */
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         user: state.user,
     };

@@ -28,6 +28,5 @@ module.exports = {
             err_file: '/dev/null',
             out_file: '/dev/null',
         },
-
     ],
 };
