@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import DialogContent from '@mui/material/DialogContent';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
+import Tooltip from '@mui/material/Tooltip';
+import translate from 'redux-polyglot/translate';
+import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
-const ZoomableFormat = ({ children }) => {
+const ZoomableFormat = ({ children, p }) => {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -21,16 +23,18 @@ const ZoomableFormat = ({ children }) => {
         <>
             <div>
                 {children}
-                <Button
-                    onClick={handleClickOpen}
-                    sx={{
-                        position: 'absolute',
-                        right: 32,
-                        bottom: 32,
-                    }}
-                >
-                    <OpenInFullIcon />
-                </Button>
+                <Tooltip title={p.t('fullscreen')} placement="left">
+                    <IconButton
+                        onClick={handleClickOpen}
+                        sx={{
+                            position: 'absolute',
+                            right: 32,
+                            bottom: 32,
+                        }}
+                    >
+                        <OpenInFullIcon />
+                    </IconButton>
+                </Tooltip>
             </div>
 
             <Dialog fullScreen={true} open={open} onClose={handleClose}>
@@ -65,6 +69,7 @@ const ZoomableFormat = ({ children }) => {
 
 ZoomableFormat.propTypes = {
     children: PropTypes.node.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
-export default ZoomableFormat;
+export default translate(ZoomableFormat);

@@ -1072,3 +1072,4 @@
 "import"	"Import"	"Importer"
 "import_successful"	"Import completed successfully"	"Import réalisé avec succès"
 "import_error"	"Error during import"	"Erreur lors de l'import"
+"fullscreen"	"View in full screen"	"Mettre en plein écran"
