@@ -75,6 +75,7 @@ function CustomActionVega(props) {
 
     return (
         <ZoomableFormat>
+            <style>{'#vg-tooltip-element {z-index:99999}'}</style>
             <Vega
                 style={{ width: '100%', aspectRatio: props.aspectRatio }}
                 spec={deepClone(props.spec)}

@@ -67,6 +67,7 @@ function CustomActionVegaLite({ aspectRatio, user, spec, data, injectType }) {
 
     return (
         <ZoomableFormat>
+            <style>{'#vg-tooltip-element {z-index:99999}'}</style>
             <Vega
                 style={{ width: '100%', aspectRatio }}
                 spec={deepClone(specWithData)}
