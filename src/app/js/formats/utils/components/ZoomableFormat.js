@@ -22,7 +22,8 @@ const ZoomableFormat = ({ children, p }) => {
     return (
         <>
             <div>
-                {children}
+                {!open ? children : null}
+
                 <Tooltip title={p.t('fullscreen')} placement="left">
                     <IconButton
                         onClick={handleClickOpen}
@@ -57,9 +58,12 @@ const ZoomableFormat = ({ children, p }) => {
                         style={{
                             borderRadius: '5px',
                             margin: '24px',
+                            height: '100%',
+                            maxHeight: 'calc(100% - 48px)',
+                            overflow: 'scroll',
                         }}
                     >
-                        {children}
+                        {open ? children : null}
                     </fieldset>
                 </DialogContent>
             </Dialog>
