@@ -15,27 +15,21 @@ export default {
         light: "rgba(255, 255, 255, .2)",
     },
     gray: {
-        primary: "#ebf0f5",
+        primary: "#e0e0e0",
     },
     red: {
         primary: "#f44336",
     },
     green: {
-        primary: "#ffeb6e",
-        secondary: "rgba(255, 235, 110, 1.5)",
-        tertiary: "rgba(255, 235, 110, .5)",
-        light: "#fffcf0",
+        primary: "#25809a",
+        secondary: "rgba(37, 128, 154, 1.5)",
+        tertiary: "rgba(37, 128, 154, .5)",
+        light: "rgba(37, 128, 154, .1)",
     },
     purple: {
-        primary: "#6941eb",
+        primary: "#b22f90",
     },
     orange: {
-        primary: "#ffbc75",
-    },
-    blue: {
-        primary: "#00284b",
-        secondary: "rgba(0, 40, 75, .7)",
-        tertiary: "rgba(0, 40, 75, .5)",
-        light: "rgba(0, 40, 75, .1)",
+        primary: "#da1d64",
     },
 };
