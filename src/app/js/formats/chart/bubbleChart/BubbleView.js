@@ -8,6 +8,7 @@ import memoize from 'lodash/memoize';
 import injectData from '../../injectData';
 import Bubble from './Bubble';
 import { getColor } from '../../utils/colorUtils';
+import ZoomableFormat from '../../utils/components/ZoomableFormat';
 
 const styles = {
     container: memoize(({ diameter }) => ({
@@ -19,19 +20,21 @@ const styles = {
 };
 
 export const BubbleView = ({ data, diameter, colorSet }) => (
-    <div style={styles.container({ diameter })}>
-        {data.map(({ data: { _id: key }, r, x, y, value }, index) => (
-            <Bubble
-                key={key}
-                r={r}
-                x={x}
-                y={y}
-                name={key}
-                value={value}
-                color={getColor(colorSet, index)}
-            />
-        ))}
-    </div>
+    <ZoomableFormat>
+        <div style={styles.container({ diameter })}>
+            {data.map(({ data: { _id: key }, r, x, y, value }, index) => (
+                <Bubble
+                    key={key}
+                    r={r}
+                    x={x}
+                    y={y}
+                    name={key}
+                    value={value}
+                    color={getColor(colorSet, index)}
+                />
+            ))}
+        </div>
+    </ZoomableFormat>
 );
 
 BubbleView.propTypes = {
@@ -52,12 +55,10 @@ const mapStateToProps = (_, { formatData, diameter: stringDiameter }) => {
         };
     }
 
-    const packingFunction = pack()
-        .size([diameter, diameter])
-        .padding(5);
+    const packingFunction = pack().size([diameter, diameter]).padding(5);
 
     const root = hierarchy({ name: 'root', children: formatData })
-        .sum(d => d.value)
+        .sum((d) => d.value)
         .sort((a, b) => b.value - a.value);
     const data = packingFunction(root).leaves();
 

@@ -12,12 +12,16 @@ import compose from 'recompose/compose';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { scaleLinear } from 'd3-scale';
+import { StyleSheet, css } from 'aphrodite/no-important';
 
 import injectData from '../../injectData';
 import MouseIcon from '../../utils/components/MouseIcon';
+import ZoomableFormat from '../../utils/components/ZoomableFormat';
 
 const simulationOptions = {
     animate: true,
+    width: '100%',
+    height: '100%',
     strength: {
         charge: ({ radius }) => -radius * 100,
     },
@@ -28,18 +32,23 @@ const labelOffset = {
     y: ({ radius }) => radius * Math.sin(Math.PI / 4) + 6,
 };
 
-const styles = {
+const styles = StyleSheet.create({
     container: {
         overflow: 'hidden',
         userSelect: 'none',
+        height: '100%',
+        minHeight: '600px',
     },
-};
+    network: {
+        minHeight: '600px',
+    },
+});
 
 const zoomOptions = { minScale: 0.25, maxScale: 16 };
 
 class Network extends Component {
     mouseIcon = '';
-    createSimulation = options => {
+    createSimulation = (options) => {
         // extends react-vis-force createSimulation to get a reference on the simulation
         this.simulation = createSimulation(options);
 
@@ -63,34 +72,37 @@ class Network extends Component {
         const { nodes, links, colorSet } = this.props;
 
         return (
-            <div style={styles.container}>
-                <InteractiveForceGraph
-                    simulationOptions={simulationOptions}
-                    zoom
-                    showLabels
-                    zoomOptions={zoomOptions}
-                    labelAttr="label"
-                    labelOffset={labelOffset}
-                    highlightDependencies
-                    createSimulation={this.createSimulation}
-                >
-                    {nodes.map(node => (
-                        <ForceGraphNode
-                            key={node.id}
-                            node={node}
-                            fill={colorSet[0]}
-                        />
-                    ))}
-                    {links.map((link, index) => (
-                        <ForceGraphLink
-                            key={`${link.source}_${link.target}_${index}`}
-                            link={link}
-                        />
-                    ))}
-                </InteractiveForceGraph>
+            <ZoomableFormat>
+                <div className={css(styles.container)}>
+                    <InteractiveForceGraph
+                        simulationOptions={simulationOptions}
+                        zoom
+                        showLabels
+                        zoomOptions={zoomOptions}
+                        labelAttr="label"
+                        labelOffset={labelOffset}
+                        highlightDependencies
+                        createSimulation={this.createSimulation}
+                        className={css(styles.network)}
+                    >
+                        {nodes.map((node) => (
+                            <ForceGraphNode
+                                key={node.id}
+                                node={node}
+                                fill={colorSet[0]}
+                            />
+                        ))}
+                        {links.map((link, index) => (
+                            <ForceGraphLink
+                                key={`${link.source}_${link.target}_${index}`}
+                                link={link}
+                            />
+                        ))}
+                    </InteractiveForceGraph>
 
-                <div>{this.mouseIcon}</div>
-            </div>
+                    <div>{this.mouseIcon}</div>
+                </div>
+            </ZoomableFormat>
         );
     }
 }
@@ -161,7 +173,7 @@ const mapStateToProps = (state, { formatData }) => {
         .range([1, 20]);
 
     return {
-        nodes: nodes.map(node => ({
+        nodes: nodes.map((node) => ({
             ...node,
             radius: nodeScale(node.radius),
         })),

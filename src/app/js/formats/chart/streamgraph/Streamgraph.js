@@ -22,6 +22,7 @@ import MouseIcon from '../../utils/components/MouseIcon';
 
 import CenterIcon from '../../utils/components/CenterIcon';
 import stylesToClassname from '../../../lib/stylesToClassName';
+import ZoomableFormat from '../../utils/components/ZoomableFormat';
 
 const styles = StyleSheet.create({
     divContainer: {
@@ -265,13 +266,13 @@ class Streamgraph extends PureComponent {
             }
             const area = d3
                 .area()
-                .x(d => {
+                .x((d) => {
                     return this.xAxisScale(d.data.date);
                 })
-                .y0(d => {
+                .y0((d) => {
                     return this.yAxisScale(d[0]);
                 })
-                .y1(d => {
+                .y1((d) => {
                     return this.yAxisScale(d[1]);
                 });
 
@@ -280,7 +281,7 @@ class Streamgraph extends PureComponent {
                 .data(stackedData)
                 .enter()
                 .append('path')
-                .attr('d', d => (d ? area(d) : []))
+                .attr('d', (d) => (d ? area(d) : []))
                 .attr('name', (d, i) => {
                     const currentName = nameList[i];
                     const currentColor = z[i];
@@ -453,11 +454,12 @@ class Streamgraph extends PureComponent {
                     this.hoveredKey = d3.select(nodes[i]).attr('name');
 
                     this.hoveredValue = d.find(
-                        elem => elem.data.date.getFullYear() === parseInt(date),
+                        (elem) =>
+                            elem.data.date.getFullYear() === parseInt(date),
                     ).data[this.hoveredKey];
 
                     this.hoveredColor = colorNameList.find(
-                        elem => elem.name === this.hoveredKey,
+                        (elem) => elem.name === this.hoveredKey,
                     ).color;
 
                     d3.select(nodes[i]).classed('hover', true);
@@ -501,7 +503,7 @@ class Streamgraph extends PureComponent {
     setMouseOutStreams(tooltip, colorNameList) {
         const componentContext = this;
         if (this.streams) {
-            this.streams.on('mouseout', function() {
+            this.streams.on('mouseout', function () {
                 componentContext.mouseIsOverStream = false;
                 componentContext.streams
                     .transition()
@@ -539,13 +541,8 @@ class Streamgraph extends PureComponent {
     }
 
     setGraph() {
-        const {
-            valuesObjectsArray,
-            valuesArray,
-            dateMin,
-            dateMax,
-            namesList,
-        } = transformDataIntoMapArray(this.props.formatData);
+        const { valuesObjectsArray, valuesArray, dateMin, dateMax, namesList } =
+            transformDataIntoMapArray(this.props.formatData);
 
         const svgWidth = this.divContainer.current.clientWidth;
         const { margin, height: svgHeight } = this.state;
@@ -614,21 +611,13 @@ class Streamgraph extends PureComponent {
             .selectAll('#d3DivContainer')
             .remove();
 
-        d3.select(this.divContainer.current)
-            .selectAll('#vertical')
-            .remove();
+        d3.select(this.divContainer.current).selectAll('#vertical').remove();
 
-        d3.select(this.divContainer.current)
-            .selectAll('#tooltip')
-            .remove();
+        d3.select(this.divContainer.current).selectAll('#tooltip').remove();
 
-        d3.select(this.anchor.current)
-            .selectAll('g')
-            .remove();
+        d3.select(this.anchor.current).selectAll('g').remove();
 
-        d3.select(this.anchor.current)
-            .selectAll('defs')
-            .remove();
+        d3.select(this.anchor.current).selectAll('defs').remove();
     }
 
     componentDidMount() {
@@ -665,52 +654,54 @@ class Streamgraph extends PureComponent {
             loading = '';
         }
         return (
-            <div
-                ref={this.divContainer}
-                style={styles.divContainer}
-                id={`divContainer${this.uniqueId}`}
-            >
+            <ZoomableFormat>
                 <div
-                    style={{
-                        textAlign: 'center',
-                        fontSize: '24px',
-                        paddingTop: '5px',
-                    }}
+                    ref={this.divContainer}
+                    style={styles.divContainer}
+                    id={`divContainer${this.uniqueId}`}
                 >
-                    {loading}
-                </div>
+                    <div
+                        style={{
+                            textAlign: 'center',
+                            fontSize: '24px',
+                            paddingTop: '5px',
+                        }}
+                    >
+                        {loading}
+                    </div>
 
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: 150 + (height - defaultArgs.height) + 'px',
-                        left: '5px',
-                    }}
-                >
-                    {this.mouseIcon}
-                </div>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: 150 + (height - defaultArgs.height) + 'px',
+                            left: '5px',
+                        }}
+                    >
+                        {this.mouseIcon}
+                    </div>
 
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: 210 + (height - defaultArgs.height) + 'px',
-                        left: '12px',
-                    }}
-                    onClick={this.centerGraphClick}
-                    className={stylesWithClassnames.icon}
-                >
-                    {this.centerIcon}
-                </div>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: 210 + (height - defaultArgs.height) + 'px',
+                            left: '12px',
+                        }}
+                        onClick={this.centerGraphClick}
+                        className={stylesWithClassnames.icon}
+                    >
+                        {this.centerIcon}
+                    </div>
 
-                <svg
-                    id={`svgContainer${this.uniqueId}`}
-                    ref={this.svgContainer}
-                    width={width}
-                    height={height}
-                >
-                    <g id="anchor" ref={this.anchor} />
-                </svg>
-            </div>
+                    <svg
+                        id={`svgContainer${this.uniqueId}`}
+                        ref={this.svgContainer}
+                        width={width}
+                        height={height}
+                    >
+                        <g id="anchor" ref={this.anchor} />
+                    </svg>
+                </div>
+            </ZoomableFormat>
         );
     }
 }
