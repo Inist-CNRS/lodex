@@ -121,12 +121,11 @@ class HeatMap extends BasicChart {
      * @param widthIn{number | null}
      */
     buildSpec() {
-        this.model.layer.forEach(e => {
+        this.model.layer.forEach((e) => {
             if (e.mark.type === 'rect') {
                 e.encoding.color.scale.range = this.colors;
-                e.encoding.color.condition.value = this.colors[
-                    this.colors.length - 1
-                ];
+                e.encoding.color.condition.value =
+                    this.colors[this.colors.length - 1];
             }
         });
 

@@ -65,16 +65,16 @@ class RadarChart extends BasicChartVG {
      * @param widthIn
      */
     buildSpec(widthIn) {
-        this.model.scales.forEach(e => {
+        this.model.scales.forEach((e) => {
             if (e.name === 'color') {
                 e.range = this.colors;
             }
         });
 
         if (this.tooltip.toggle) {
-            this.model.marks.forEach(e1 => {
+            this.model.marks.forEach((e1) => {
                 if (e1.type === 'group') {
-                    e1.marks.forEach(e2 => {
+                    e1.marks.forEach((e2) => {
                         if (e2.type === 'text') {
                             e2.encode.enter.tooltip = {
                                 signal: `{"${this.tooltip.category.title}": datum.datum._id, "${this.tooltip.value.title}": datum.datum.value}`,
@@ -85,7 +85,7 @@ class RadarChart extends BasicChartVG {
             });
         }
 
-        this.model.scales.forEach(e => {
+        this.model.scales.forEach((e) => {
             if (e.name === 'radial') {
                 e.type = this.scales === SCALE_LINEAR ? 'linear' : 'symlog';
             }

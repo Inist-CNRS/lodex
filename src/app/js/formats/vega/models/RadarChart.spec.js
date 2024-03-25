@@ -2,14 +2,14 @@ import RadarChart from './RadarChart';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 
 describe('RadarChart', () => {
-    it('Test Color', function() {
+    it('Test Color', function () {
         const radarChart = new RadarChart();
         expect(radarChart.colors).toStrictEqual(
             MONOCHROMATIC_DEFAULT_COLORSET.split(' '),
         );
     });
 
-    it('Test Tooltip', function() {
+    it('Test Tooltip', function () {
         const radarChart = new RadarChart();
         expect(radarChart.tooltip).toStrictEqual({
             toggle: false,
@@ -36,7 +36,7 @@ describe('RadarChart', () => {
         });
     });
 
-    it('build', function() {
+    it('build', function () {
         const radarChart = new RadarChart();
         expect(radarChart.buildSpec(400)).toStrictEqual({
             $schema: 'https://vega.github.io/schema/vega/v5.json',
@@ -103,12 +103,10 @@ describe('RadarChart', () => {
                                         value: 1,
                                     },
                                     x: {
-                                        signal:
-                                            "scale('radial', datum.value) * cos(scale('angular', datum._id))",
+                                        signal: "scale('radial', datum.value) * cos(scale('angular', datum._id))",
                                     },
                                     y: {
-                                        signal:
-                                            "scale('radial', datum.value) * sin(scale('angular', datum._id))",
+                                        signal: "scale('radial', datum.value) * sin(scale('angular', datum._id))",
                                     },
                                 },
                             },
@@ -165,15 +163,13 @@ describe('RadarChart', () => {
                                 value: 0,
                             },
                             x2: {
-                                signal:
-                                    "radius * cos(scale('angular', datum._id))",
+                                signal: "radius * cos(scale('angular', datum._id))",
                             },
                             y: {
                                 value: 0,
                             },
                             y2: {
-                                signal:
-                                    "radius * sin(scale('angular', datum._id))",
+                                signal: "radius * sin(scale('angular', datum._id))",
                             },
                         },
                     },
@@ -189,8 +185,7 @@ describe('RadarChart', () => {
                         enter: {
                             align: [
                                 {
-                                    test:
-                                        "abs(scale('angular', datum._id)) > PI / 2",
+                                    test: "abs(scale('angular', datum._id)) > PI / 2",
                                     value: 'right',
                                 },
                                 {
@@ -220,12 +215,10 @@ describe('RadarChart', () => {
                                 field: '_id',
                             },
                             x: {
-                                signal:
-                                    "(radius + 5) * cos(scale('angular', datum._id))",
+                                signal: "(radius + 5) * cos(scale('angular', datum._id))",
                             },
                             y: {
-                                signal:
-                                    "(radius + 5) * sin(scale('angular', datum._id))",
+                                signal: "(radius + 5) * sin(scale('angular', datum._id))",
                             },
                         },
                     },

@@ -26,6 +26,8 @@ import {
 import { MapFranceIdValue, MapIdValue } from '../../../utils/dataSet';
 import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import { CartographyAdminView } from './CartographyView';
+import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
+import { ASPECT_RATIO_16_9 } from '../../../utils/aspectRatio';
 
 export const defaultArgs = {
     params: {
@@ -39,9 +41,10 @@ export const defaultArgs = {
     tooltipCategory: 'Category',
     tooltipValue: 'Value',
     worldPosition: MAP_WORLD,
+    aspectRatio: ASPECT_RATIO_16_9,
 };
 
-const CartographyAdmin = props => {
+const CartographyAdmin = (props) => {
     const {
         p: polyglot,
         args,
@@ -50,6 +53,7 @@ const CartographyAdmin = props => {
         showMinValue,
         showOrderBy,
     } = props;
+
     const {
         advancedMode,
         advancedModeSpec,
@@ -59,6 +63,7 @@ const CartographyAdmin = props => {
         tooltipCategory,
         tooltipValue,
         worldPosition,
+        aspectRatio,
     } = args;
 
     const spec = useMemo(() => {
@@ -96,7 +101,7 @@ const CartographyAdmin = props => {
         updateAdminArgs('advancedMode', !advancedMode, props);
     };
 
-    const handleAdvancedModeSpec = newSpec => {
+    const handleAdvancedModeSpec = (newSpec) => {
         updateAdminArgs('advancedModeSpec', newSpec, props);
     };
 
@@ -104,9 +109,9 @@ const CartographyAdmin = props => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
-    const handleParams = params => updateAdminArgs('params', params, props);
+    const handleParams = (params) => updateAdminArgs('params', params, props);
 
-    const handleWorldPosition = e => {
+    const handleWorldPosition = (e) => {
         updateAdminArgs('worldPosition', e.target.value, props);
     };
 
@@ -122,12 +127,16 @@ const CartographyAdmin = props => {
         updateAdminArgs('tooltip', !tooltip, props);
     };
 
-    const handleTooltipCategory = tooltipCategory => {
+    const handleTooltipCategory = (tooltipCategory) => {
         updateAdminArgs('tooltipCategory', tooltipCategory, props);
     };
 
-    const handleTooltipValue = tooltipValue => {
+    const handleTooltipValue = (tooltipValue) => {
         updateAdminArgs('tooltipValue', tooltipValue, props);
+    };
+
+    const handleAspectRatio = (value) => {
+        updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
@@ -202,6 +211,10 @@ const CartographyAdmin = props => {
                         />
                     </>
                 )}
+                <AspectRatioSelector
+                    value={aspectRatio}
+                    onChange={handleAspectRatio}
+                />
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
@@ -231,6 +244,7 @@ CartographyAdmin.propTypes = {
         tooltipCategory: PropTypes.string,
         tooltipValue: PropTypes.string,
         worldPosition: PropTypes.oneOf([MAP_WORLD, MAP_EUROPE, MAP_FRANCE]),
+        aspectRatio: PropTypes.string,
     }),
     onChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,

@@ -2,7 +2,7 @@ import HeatMap from './HeatMap';
 import { LABEL_ASC, LABEL_DESC } from '../../utils/chartsUtils';
 
 describe('HeatMap', () => {
-    it('Test flipAxis', function() {
+    it('Test flipAxis', function () {
         let heatMap = new HeatMap();
         expect(heatMap.flip).toBe(false);
 
@@ -10,7 +10,7 @@ describe('HeatMap', () => {
         expect(heatMap.flip).toBe(true);
     });
 
-    it('Test OrderBy', function() {
+    it('Test OrderBy', function () {
         let heatMap = new HeatMap();
         expect(heatMap.orderBy).toBe(LABEL_ASC);
 
@@ -18,7 +18,7 @@ describe('HeatMap', () => {
         expect(heatMap.orderBy).toBe(LABEL_DESC);
     });
 
-    it('Test Tooltip', function() {
+    it('Test Tooltip', function () {
         let heatMap = new HeatMap();
         expect(heatMap.tooltip).toStrictEqual({
             toggle: false,
@@ -64,7 +64,7 @@ describe('HeatMap', () => {
         });
     });
 
-    it('build', function() {
+    it('build', function () {
         let heatMap = new HeatMap();
         expect(heatMap.buildSpec(400)).toStrictEqual({
             config: {

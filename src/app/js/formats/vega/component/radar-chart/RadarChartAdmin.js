@@ -27,6 +27,8 @@ import {
 import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import { RadarChartAdminView } from './RadarChartView';
 import { StandardIdValue } from '../../../utils/dataSet';
+import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
+import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 
 export const defaultArgs = {
     params: {
@@ -41,9 +43,10 @@ export const defaultArgs = {
     tooltip: false,
     tooltipCategory: 'Category',
     tooltipValue: 'Value',
+    aspectRatio: ASPECT_RATIO_8_5,
 };
 
-const RadarChartAdmin = props => {
+const RadarChartAdmin = (props) => {
     const {
         p: polyglot,
         showMaxSize,
@@ -62,6 +65,7 @@ const RadarChartAdmin = props => {
         tooltip,
         tooltipValue,
         tooltipCategory,
+        aspectRatio,
     } = args;
 
     const colors = useMemo(() => {
@@ -102,7 +106,7 @@ const RadarChartAdmin = props => {
         updateAdminArgs('advancedMode', !args.advancedMode, props);
     };
 
-    const handleAdvancedModeSpec = newSpec => {
+    const handleAdvancedModeSpec = (newSpec) => {
         updateAdminArgs('advancedModeSpec', newSpec, props);
     };
 
@@ -110,7 +114,7 @@ const RadarChartAdmin = props => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
-    const handleParams = params => {
+    const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
 
@@ -118,11 +122,11 @@ const RadarChartAdmin = props => {
         updateAdminArgs('axisRoundValue', !axisRoundValue, props);
     };
 
-    const handleScale = e => {
+    const handleScale = (e) => {
         updateAdminArgs('scale', e.target.value, props);
     };
 
-    const handleColors = colors => {
+    const handleColors = (colors) => {
         updateAdminArgs(
             'colors',
             colors.split(' ')[0] || defaultArgs.colors,
@@ -134,12 +138,16 @@ const RadarChartAdmin = props => {
         updateAdminArgs('tooltip', !tooltip, props);
     };
 
-    const handleTooltipCategory = tooltipCategory => {
+    const handleTooltipCategory = (tooltipCategory) => {
         updateAdminArgs('tooltipCategory', tooltipCategory, props);
     };
 
-    const handleTooltipValue = tooltipValue => {
+    const handleTooltipValue = (tooltipValue) => {
         updateAdminArgs('tooltipValue', tooltipValue, props);
+    };
+
+    const handleAspectRatio = (value) => {
+        updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
@@ -219,6 +227,10 @@ const RadarChartAdmin = props => {
                         </TextField>
                     </>
                 )}
+                <AspectRatioSelector
+                    value={aspectRatio}
+                    onChange={handleAspectRatio}
+                />
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
@@ -246,6 +258,7 @@ RadarChartAdmin.propTypes = {
         tooltip: PropTypes.bool,
         tooltipCategory: PropTypes.string,
         tooltipValue: PropTypes.string,
+        aspectRatio: PropTypes.string,
     }),
     onChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,

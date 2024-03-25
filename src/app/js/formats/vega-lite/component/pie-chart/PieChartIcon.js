@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PieChartByGregorCresnarFromTheNounProject = props => (
+const PieChartByGregorCresnarFromTheNounProject = (props) => (
     <svg
         data-name="Layer 1"
         viewBox="0 0 100 125"
