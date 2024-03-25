@@ -29,7 +29,7 @@ const DatasetCharacteristicsView = ({
     locale,
 }) => {
     const filteredCharacteristics = characteristics.filter(
-        characteristic =>
+        (characteristic) =>
             !isMultilingual ||
             !characteristic.language ||
             characteristic.language === locale,
@@ -37,7 +37,7 @@ const DatasetCharacteristicsView = ({
     return (
         <div className="dataset-characteristics">
             <div style={styles.container}>
-                {filteredCharacteristics.map(characteristicField => (
+                {filteredCharacteristics.map((characteristicField) => (
                     <DatasetCharacteristicItem
                         key={characteristicField.name}
                         characteristic={characteristicField}

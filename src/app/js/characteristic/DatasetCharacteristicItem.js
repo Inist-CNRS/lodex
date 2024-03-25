@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import camelCase from 'lodash/camelCase';
 import { connect } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 
@@ -34,7 +35,12 @@ export const DatasetCharacteristicItemComponent = ({
         <>
             <div ref={ref} style={inView ? styles.loaded : styles.loading} />
             {inView && (
-                <Property resource={resource} field={field} style={style} />
+                <Property
+                    resource={resource}
+                    field={field}
+                    style={style}
+                    className={camelCase(field.internalName || '')}
+                />
             )}
         </>
     );
