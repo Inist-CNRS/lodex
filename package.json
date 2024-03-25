@@ -122,7 +122,7 @@
         "js-sentencecase": "^1.2.1",
         "jsonstream": "1.0.3",
         "jsonwebtoken": "9.0.2",
-        "katex": "0.13.24",
+        "katex": "0.16.10",
         "kcors": "^2.2.2",
         "koa": "^2.6.2",
         "koa-bodyparser": "^4.2.1",
