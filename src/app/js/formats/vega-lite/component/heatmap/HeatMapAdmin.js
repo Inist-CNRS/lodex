@@ -25,6 +25,8 @@ import {
 } from '../../../utils/components/field-set/FormatFieldSets';
 import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import { StandardSourceTargetWeight } from '../../../utils/dataSet';
+import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
+import { ASPECT_RATIO_1_1 } from '../../../utils/aspectRatio';
 
 export const defaultArgs = {
     params: {
@@ -39,9 +41,10 @@ export const defaultArgs = {
     tooltipSource: 'Source',
     tooltipTarget: 'Target',
     tooltipWeight: 'Weight',
+    aspectRatio: ASPECT_RATIO_1_1,
 };
 
-const HeatMapAdmin = props => {
+const HeatMapAdmin = (props) => {
     const {
         p: polyglot,
         args,
@@ -61,6 +64,7 @@ const HeatMapAdmin = props => {
         tooltipSource,
         tooltipTarget,
         tooltipWeight,
+        aspectRatio,
     } = args;
 
     const spec = useMemo(() => {
@@ -98,7 +102,7 @@ const HeatMapAdmin = props => {
         updateAdminArgs('advancedMode', !advancedMode, props);
     };
 
-    const handleAdvancedModeSpec = newSpec => {
+    const handleAdvancedModeSpec = (newSpec) => {
         updateAdminArgs('advancedModeSpec', newSpec, props);
     };
 
@@ -106,7 +110,7 @@ const HeatMapAdmin = props => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
-    const handleParams = params => {
+    const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
 
@@ -126,16 +130,20 @@ const HeatMapAdmin = props => {
         updateAdminArgs('tooltip', !tooltip, props);
     };
 
-    const handleTooltipSource = tooltipSource => {
+    const handleTooltipSource = (tooltipSource) => {
         updateAdminArgs('tooltipSource', tooltipSource, props);
     };
 
-    const handleTooltipTarget = tooltipTarget => {
+    const handleTooltipTarget = (tooltipTarget) => {
         updateAdminArgs('tooltipTarget', tooltipTarget, props);
     };
 
-    const handleTooltipWeight = tooltipWeight => {
+    const handleTooltipWeight = (tooltipWeight) => {
         updateAdminArgs('tooltipWeight', tooltipWeight, props);
+    };
+
+    const handleAspectRatio = (value) => {
+        updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
@@ -204,6 +212,10 @@ const HeatMapAdmin = props => {
                         />
                     </>
                 )}
+                <AspectRatioSelector
+                    value={aspectRatio}
+                    onChange={handleAspectRatio}
+                />
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
@@ -231,6 +243,7 @@ HeatMapAdmin.propTypes = {
         tooltipSource: PropTypes.string,
         tooltipTarget: PropTypes.string,
         tooltipWeight: PropTypes.string,
+        aspectRatio: PropTypes.string,
     }),
     onChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,

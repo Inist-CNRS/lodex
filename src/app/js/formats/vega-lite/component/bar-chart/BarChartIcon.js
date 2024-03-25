@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DiagramByTheFitProjectFromTheNounProject = props => (
+const DiagramByTheFitProjectFromTheNounProject = (props) => (
     <svg viewBox="0 0 100 125" width="1em" height="1em" {...props}>
         <path d="M85.783 74.75H14.217M85.783 76.75H14.217a2 2 0 0 1 0-4h71.566a2 2 0 0 1 0 4z" />
         <path d="M53.467 53.75h11.75V74h-11.75z" />

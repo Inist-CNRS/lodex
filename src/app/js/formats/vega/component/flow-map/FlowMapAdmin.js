@@ -18,6 +18,8 @@ import {
     FormatDataParamsFieldSet,
 } from '../../../utils/components/field-set/FormatFieldSets';
 import { MapSourceTargetWeight } from '../../../utils/dataSet';
+import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
+import { ASPECT_RATIO_16_9 } from '../../../utils/aspectRatio';
 
 export const defaultArgs = {
     params: {
@@ -31,9 +33,10 @@ export const defaultArgs = {
     tooltipValue: 'Value',
     color: '#000000',
     colorScheme: schemeBlues[9],
+    aspectRatio: ASPECT_RATIO_16_9,
 };
 
-const FlowMapAdmin = props => {
+const FlowMapAdmin = (props) => {
     const {
         p: polyglot,
         showMaxSize,
@@ -42,6 +45,7 @@ const FlowMapAdmin = props => {
         showOrderBy,
         args,
     } = props;
+
     const {
         advancedMode,
         advancedModeSpec,
@@ -50,6 +54,7 @@ const FlowMapAdmin = props => {
         tooltipValue,
         tooltipCategory,
         colorScheme,
+        aspectRatio,
     } = args;
 
     const color = useMemo(() => {
@@ -91,7 +96,7 @@ const FlowMapAdmin = props => {
         updateAdminArgs('advancedMode', !args.advancedMode, props);
     };
 
-    const handleAdvancedModeSpec = newSpec => {
+    const handleAdvancedModeSpec = (newSpec) => {
         updateAdminArgs('advancedModeSpec', newSpec, props);
     };
 
@@ -99,11 +104,11 @@ const FlowMapAdmin = props => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
-    const handleParams = params => {
+    const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
 
-    const handleColor = color => {
+    const handleColor = (color) => {
         updateAdminArgs(
             'color',
             color.split(' ')[0] || defaultArgs.color,
@@ -123,12 +128,16 @@ const FlowMapAdmin = props => {
         updateAdminArgs('tooltip', !tooltip, props);
     };
 
-    const handleTooltipCategory = tooltipCategory => {
+    const handleTooltipCategory = (tooltipCategory) => {
         updateAdminArgs('tooltipCategory', tooltipCategory, props);
     };
 
-    const handleTooltipValue = tooltipValue => {
+    const handleTooltipValue = (tooltipValue) => {
         updateAdminArgs('tooltipValue', tooltipValue, props);
+    };
+
+    const handleAspectRatio = (value) => {
+        updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
@@ -192,6 +201,10 @@ const FlowMapAdmin = props => {
                         />
                     </>
                 )}
+                <AspectRatioSelector
+                    value={aspectRatio}
+                    onChange={handleAspectRatio}
+                />
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={{ ...args, p: polyglot }}
@@ -218,6 +231,7 @@ FlowMapAdmin.propTypes = {
         tooltipValue: PropTypes.string,
         color: PropTypes.string,
         colorScheme: PropTypes.arrayOf(PropTypes.string),
+        aspectRatio: PropTypes.string,
     }),
     onChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,

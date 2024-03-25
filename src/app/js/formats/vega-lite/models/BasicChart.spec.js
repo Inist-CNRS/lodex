@@ -1,7 +1,7 @@
 import BasicChart from './BasicChart';
 
 describe('BasicChart', () => {
-    it('Default color need to be equals to MULTICHROMATIC_DEFAULT_COLORSET(transformed in to an array)', function() {
+    it('Default color need to be equals to MULTICHROMATIC_DEFAULT_COLORSET(transformed in to an array)', function () {
         let basicChart = new BasicChart();
         expect(basicChart.colors).toStrictEqual([
             '#d7191c',
@@ -12,7 +12,7 @@ describe('BasicChart', () => {
         ]);
     });
 
-    it('Default padding need to return 0 on the 4 side', function() {
+    it('Default padding need to return 0 on the 4 side', function () {
         let basicChart = new BasicChart();
         expect(basicChart.padding).toStrictEqual({
             left: 0,
@@ -22,19 +22,19 @@ describe('BasicChart', () => {
         });
     });
 
-    it('Updated color need to return the new value', function() {
+    it('Updated color need to return the new value', function () {
         let basicChart = new BasicChart();
         let newColor = '#ffa6e6';
         basicChart.setColor(newColor);
         expect(basicChart.colors).toStrictEqual([newColor]);
     });
 
-    it('The build function need to throw an error', function() {
+    it('The build function need to throw an error', function () {
         let basicChart = new BasicChart();
         expect(basicChart.buildSpec).toThrow(Error);
     });
 
-    it('Test tooltip', function() {
+    it('Test tooltip', function () {
         let basicChart = new BasicChart();
         expect(basicChart.tooltip).toStrictEqual({
             toggle: false,

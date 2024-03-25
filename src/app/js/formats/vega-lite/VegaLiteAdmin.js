@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { Box, MenuItem, TextField } from '@mui/material';
+import { Box } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../utils/updateAdminArgs';
@@ -13,7 +13,8 @@ import {
 } from '../utils/components/field-set/FormatFieldSets';
 import VegaFieldPreview from '../utils/components/admin/VegaFieldPreview';
 import { VegaLiteAdminView } from './VegaLiteView';
-import { ASPECT_RATIO_16_9, ASPECT_RATIOS } from '../utils/aspectRatio';
+import { ASPECT_RATIO_16_9 } from '../utils/aspectRatio';
+import AspectRatioSelector from '../utils/components/admin/AspectRatioSelector';
 
 export const defaultArgs = {
     params: {
@@ -34,15 +35,9 @@ export const defaultArgs = {
     aspectRatio: ASPECT_RATIO_16_9,
 };
 
-const VegaLiteAdmin = props => {
-    const {
-        args,
-        p,
-        showMaxSize,
-        showMaxValue,
-        showMinValue,
-        showOrderBy,
-    } = props;
+const VegaLiteAdmin = (props) => {
+    const { args, p, showMaxSize, showMaxValue, showMinValue, showOrderBy } =
+        props;
     const { specTemplate, aspectRatio, params } = args;
 
     const formattedSpecTemplate = useMemo(() => {
@@ -53,16 +48,16 @@ const VegaLiteAdmin = props => {
         }
     }, [specTemplate]);
 
-    const handleParams = params => {
+    const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
 
-    const handleSpecTemplate = value => {
+    const handleSpecTemplate = (value) => {
         updateAdminArgs('specTemplate', value, props);
     };
 
-    const handleAspectRatio = event => {
-        updateAdminArgs('aspectRatio', event.target.value, props);
+    const handleAspectRatio = (value) => {
+        updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
@@ -88,19 +83,10 @@ const VegaLiteAdmin = props => {
                     value={formattedSpecTemplate}
                     onChange={handleSpecTemplate}
                 />
-                <TextField
-                    fullWidth
-                    select
-                    label={p.t('aspect_ratio')}
-                    onChange={handleAspectRatio}
+                <AspectRatioSelector
                     value={aspectRatio}
-                >
-                    {ASPECT_RATIOS.map(aspectRatio => (
-                        <MenuItem key={aspectRatio} value={aspectRatio}>
-                            {aspectRatio}
-                        </MenuItem>
-                    ))}
-                </TextField>
+                    onChange={handleAspectRatio}
+                />
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}

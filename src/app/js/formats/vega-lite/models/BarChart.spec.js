@@ -12,7 +12,7 @@ import {
 } from '../../utils/chartsUtils';
 
 describe('BasicChart', () => {
-    it('Default values should filled with all default values', function() {
+    it('Default values should filled with all default values', function () {
         let barChart = new BarChart();
         expect(barChart.direction).toBe(AXIS_HORIZONTAL);
         expect(barChart.model).toStrictEqual(
@@ -27,7 +27,7 @@ describe('BasicChart', () => {
         });
     });
 
-    it('Default build need to return the vega lite spec with all default values', function() {
+    it('Default build need to return the vega lite spec with all default values', function () {
         let barChart = new BarChart();
         let defaultBuild = {
             autosize: {
@@ -88,7 +88,7 @@ describe('BasicChart', () => {
         expect(barChart.buildSpec()).toStrictEqual(defaultBuild);
     });
 
-    it('Testing default and updated axis direction', function() {
+    it('Testing default and updated axis direction', function () {
         let barChart = new BarChart();
         expect(barChart.direction).toBe(AXIS_HORIZONTAL);
 
@@ -99,7 +99,7 @@ describe('BasicChart', () => {
         expect(barChart.direction).toBe(AXIS_HORIZONTAL);
     });
 
-    it('Testing default and updated axis type on x', function() {
+    it('Testing default and updated axis type on x', function () {
         let barChart = new BarChart();
         expect(barChart.type.x).toBe(AXIS_NOMINAL);
 
@@ -119,7 +119,7 @@ describe('BasicChart', () => {
         expect(barChart.type.x).toBe(AXIS_NOMINAL);
     });
 
-    it('Testing default and updated axis type on y', function() {
+    it('Testing default and updated axis type on y', function () {
         let barChart = new BarChart();
         expect(barChart.type.y).toBe(AXIS_QUANTITATIVE);
 
@@ -139,7 +139,7 @@ describe('BasicChart', () => {
         expect(barChart.type.y).toBe(AXIS_QUANTITATIVE);
     });
 
-    it('Testing default and updated axis title', function() {
+    it('Testing default and updated axis title', function () {
         let barChart = new BarChart();
         expect(barChart.title.x).toBe('');
         expect(barChart.title.y).toBe('');

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FlowMapIcon = props => (
+const FlowMapIcon = (props) => (
     <svg viewBox="0 0 512 640" width="1em" height="1em" {...props}>
         <path
             d="M41.3,131.9c-68.5,118.7-27.9,270.3,90.8,338.8s270.3,27.9,338.8-90.8S498.7,109.6,380,41.2S109.8,13.4,41.3,131.9z

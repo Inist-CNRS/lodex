@@ -9,7 +9,7 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../chartsUtils';
-import { ASPECT_RATIO_16_9, ASPECT_RATIOS } from '../../aspectRatio';
+import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 import ZoomableFormat from '../ZoomableFormat';
 
 /**
@@ -69,7 +69,11 @@ function CustomActionVegaLite({ aspectRatio, user, spec, data, injectType }) {
         <ZoomableFormat>
             <style>{'#vg-tooltip-element {z-index:99999}'}</style>
             <Vega
-                style={{ width: '100%', aspectRatio }}
+                style={
+                    aspectRatio === ASPECT_RATIO_NONE
+                        ? { width: '100%' }
+                        : { width: '100%', aspectRatio }
+                }
                 spec={deepClone(specWithData)}
                 actions={actions}
                 mode="vega-lite"
@@ -79,7 +83,7 @@ function CustomActionVegaLite({ aspectRatio, user, spec, data, injectType }) {
 }
 
 CustomActionVegaLite.defaultProps = {
-    aspectRatio: ASPECT_RATIO_16_9,
+    aspectRatio: ASPECT_RATIO_NONE,
 };
 
 /**

@@ -35,6 +35,7 @@ const CartographyView = ({
     tooltipValue,
     worldPosition,
     colorScheme,
+    aspectRatio,
 }) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
@@ -90,6 +91,7 @@ const CartographyView = ({
                         ? VEGA_LITE_DATA_INJECT_TYPE_C
                         : VEGA_LITE_DATA_INJECT_TYPE_B
                 }
+                aspectRatio={aspectRatio}
             />
         </div>
     );
@@ -108,6 +110,7 @@ CartographyView.propTypes = {
     worldPosition: PropTypes.string,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
+    aspectRatio: PropTypes.string,
 };
 
 const mapStateToProps = (state, { formatData }) => {

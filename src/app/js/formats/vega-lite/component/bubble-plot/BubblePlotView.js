@@ -16,7 +16,6 @@ import {
 import BubblePlot from '../../models/BubblePlot';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
-import { ASPECT_RATIO_1_1 } from '../../../utils/aspectRatio';
 
 const styles = {
     container: {
@@ -36,6 +35,7 @@ const BubblePlotView = ({
     tooltipSource,
     tooltipTarget,
     tooltipWeight,
+    aspectRatio,
 }) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
@@ -89,7 +89,7 @@ const BubblePlotView = ({
                 spec={spec}
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
-                aspectRatio={ASPECT_RATIO_1_1}
+                aspectRatio={aspectRatio}
             />
         </div>
     );
@@ -110,6 +110,7 @@ BubblePlotView.propTypes = {
     tooltipWeight: PropTypes.string,
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
+    aspectRatio: PropTypes.string,
 };
 
 BubblePlotView.defaultProps = {

@@ -24,6 +24,8 @@ import {
 import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import { PieChartAdminView } from './PieChartView';
 import { StandardIdValue } from '../../../utils/dataSet';
+import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
+import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 
 export const defaultArgs = {
     params: {
@@ -37,9 +39,10 @@ export const defaultArgs = {
     tooltipCategory: 'Category',
     tooltipValue: 'Value',
     labels: false,
+    aspectRatio: ASPECT_RATIO_8_5,
 };
 
-const PieChartAdmin = props => {
+const PieChartAdmin = (props) => {
     const {
         p: polyglot,
         args,
@@ -57,6 +60,7 @@ const PieChartAdmin = props => {
         tooltipCategory,
         tooltipValue,
         labels,
+        aspectRatio,
     } = args;
 
     const colors = useMemo(() => {
@@ -96,7 +100,7 @@ const PieChartAdmin = props => {
         updateAdminArgs('advancedMode', !advancedMode, props);
     };
 
-    const handleAdvancedModeSpec = newSpec => {
+    const handleAdvancedModeSpec = (newSpec) => {
         updateAdminArgs('advancedModeSpec', newSpec, props);
     };
 
@@ -104,9 +108,9 @@ const PieChartAdmin = props => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
-    const handleParams = params => updateAdminArgs('params', params, props);
+    const handleParams = (params) => updateAdminArgs('params', params, props);
 
-    const handleColors = colors => {
+    const handleColors = (colors) => {
         updateAdminArgs('colors', colors || defaultArgs.colors, props);
     };
 
@@ -118,12 +122,16 @@ const PieChartAdmin = props => {
         updateAdminArgs('tooltip', !tooltip, props);
     };
 
-    const handleTooltipCategory = tooltipCategory => {
+    const handleTooltipCategory = (tooltipCategory) => {
         updateAdminArgs('tooltipCategory', tooltipCategory, props);
     };
 
-    const handleTooltipValue = tooltipValue => {
+    const handleTooltipValue = (tooltipValue) => {
         updateAdminArgs('tooltipValue', tooltipValue, props);
+    };
+
+    const handleAspectRatio = (value) => {
+        updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
@@ -190,6 +198,10 @@ const PieChartAdmin = props => {
                         />
                     </>
                 )}
+                <AspectRatioSelector
+                    value={aspectRatio}
+                    onChange={handleAspectRatio}
+                />
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
@@ -224,6 +236,7 @@ PieChartAdmin.propTypes = {
         tooltipCategory: PropTypes.string,
         tooltipValue: PropTypes.string,
         labels: PropTypes.bool,
+        aspectRatio: PropTypes.string,
     }),
     onChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,

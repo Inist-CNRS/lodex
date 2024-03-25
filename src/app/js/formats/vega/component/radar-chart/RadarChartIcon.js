@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RadarChartByAgusPurwantoFromTheNounProject = props => (
+const RadarChartByAgusPurwantoFromTheNounProject = (props) => (
     <svg viewBox="0 0 100 125" width="1em" height="1em" {...props}>
         <path d="M86.001 95.5c-.435 0-.865-.188-1.162-.55L50 52.369 15.161 94.95a1.5 1.5 0 1 1-2.322-1.9l36-44c.57-.696 1.752-.696 2.322 0l36 44a1.5 1.5 0 0 1-1.16 2.45z" />
         <path d="M49.563 52.036c-.236 0-.473-.056-.688-.167L3.312 28.333a1.5 1.5 0 0 1 1.377-2.665l44.873 23.18 44.749-23.179a1.499 1.499 0 1 1 1.378 2.664L50.252 51.868a1.498 1.498 0 0 1-.689.168z" />

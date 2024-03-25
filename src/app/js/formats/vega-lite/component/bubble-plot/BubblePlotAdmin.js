@@ -25,6 +25,8 @@ import {
 import { BubblePlotAdminView } from './BubblePlotView';
 import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import { StandardSourceTargetWeight } from '../../../utils/dataSet';
+import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
+import { ASPECT_RATIO_1_1 } from '../../../utils/aspectRatio';
 
 export const defaultArgs = {
     params: {
@@ -39,9 +41,10 @@ export const defaultArgs = {
     tooltipSource: 'Source',
     tooltipTarget: 'Target',
     tooltipWeight: 'Weight',
+    aspectRatio: ASPECT_RATIO_1_1,
 };
 
-const BubblePlotAdmin = props => {
+const BubblePlotAdmin = (props) => {
     const {
         p: polyglot,
         args,
@@ -50,6 +53,7 @@ const BubblePlotAdmin = props => {
         showMinValue,
         showOrderBy,
     } = props;
+
     const {
         advancedMode,
         advancedModeSpec,
@@ -59,6 +63,7 @@ const BubblePlotAdmin = props => {
         tooltipSource,
         tooltipTarget,
         tooltipWeight,
+        aspectRatio,
     } = args;
 
     const colors = useMemo(() => {
@@ -100,7 +105,7 @@ const BubblePlotAdmin = props => {
         updateAdminArgs('advancedMode', !advancedMode, props);
     };
 
-    const handleAdvancedModeSpec = newSpec => {
+    const handleAdvancedModeSpec = (newSpec) => {
         updateAdminArgs('advancedModeSpec', newSpec, props);
     };
 
@@ -108,11 +113,11 @@ const BubblePlotAdmin = props => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
-    const handleColors = colors => {
+    const handleColors = (colors) => {
         updateAdminArgs('colors', colors || defaultArgs.colors, props);
     };
 
-    const handleParams = params => {
+    const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
 
@@ -124,16 +129,20 @@ const BubblePlotAdmin = props => {
         updateAdminArgs('tooltip', !tooltip, props);
     };
 
-    const handleTooltipSource = tooltipSource => {
+    const handleTooltipSource = (tooltipSource) => {
         updateAdminArgs('tooltipSource', tooltipSource, props);
     };
 
-    const handleTooltipTarget = tooltipTarget => {
+    const handleTooltipTarget = (tooltipTarget) => {
         updateAdminArgs('tooltipTarget', tooltipTarget, props);
     };
 
-    const handleTooltipWeight = tooltipWeight => {
+    const handleTooltipWeight = (tooltipWeight) => {
         updateAdminArgs('tooltipWeight', tooltipWeight, props);
+    };
+
+    const handleAspectRatio = (value) => {
+        updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
@@ -202,6 +211,10 @@ const BubblePlotAdmin = props => {
                         />
                     </>
                 )}
+                <AspectRatioSelector
+                    value={aspectRatio}
+                    onChange={handleAspectRatio}
+                />
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
@@ -229,6 +242,7 @@ BubblePlotAdmin.propTypes = {
         tooltipSource: PropTypes.string,
         tooltipTarget: PropTypes.string,
         tooltipWeight: PropTypes.string,
+        aspectRatio: PropTypes.string,
     }),
     onChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
