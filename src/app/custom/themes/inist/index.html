@@ -6,16 +6,16 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-  <link rel="apple-touch-icon" sizes="180x180" href="{|__THEMES_HOST__|}/themes/inist/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="{|__THEMES_HOST__|}/themes/inist/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="{|__THEMES_HOST__|}/themes/inist/favicon-16x16.png">
-  <link rel="manifest" href="{|__THEMES_HOST__|}/themes/inist/site.webmanifest">
-  <link rel="mask-icon" href="{|__THEMES_HOST__|}/themes/inist/safari-pinned-tab.svg" color="#ffc40d">
+  <link rel="apple-touch-icon" sizes="180x180" href="<%= it.theme.base.href %>/themes/inist/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="<%= it.theme.base.href %>/themes/inist/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="<%= it.theme.base.href %>/themes/inist/favicon-16x16.png">
+  <link rel="manifest" href="<%= it.theme.base.href %>/themes/inist/site.webmanifest">
+  <link rel="mask-icon" href="<%= it.theme.base.href %>/themes/inist/safari-pinned-tab.svg" color="#ffc40d">
   <meta name="msapplication-TileColor" content="#ffc40d">
   <meta name="theme-color" content="#ffc40d">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
-  <link rel="stylesheet" href="{|__THEMES_HOST__|}/themes/inist/styles.css" />
-  <link rel="stylesheet" href="{|__THEMES_HOST__|}/themes/inist/css/inist-styles.css" />
+  <link rel="stylesheet" href="<%= it.theme.base.href %>/themes/inist/styles.css" />
+  <link rel="stylesheet" href="<%= it.theme.base.href %>/themes/inist/css/inist-styles.css" />
 </head>
 
 <body>
@@ -23,16 +23,16 @@
     <div>
       <div id="logos">
         <a class="logo logocnrs" href="http://www.cnrs.fr">
-          <img src="{|__THEMES_HOST__|}/themes/inist/img/logo_cnrs_2019_blanc.svg" alt="CNRS" />
+          <img src="<%= it.theme.base.href %>/themes/inist/img/logo_cnrs_2019_blanc.svg" alt="CNRS" />
         </a>
         <a class="logo logoinist" href="https://www.inist.fr" aria-label="accueil du site">
           <span>Inist</span>
           <span class="inist">Institut de l'information scientifique et technique</span>
         </a>
       </div>
-      <!-- <h1 id="titre_lodex" class="bl3">
-          titre si besoin 
-        </h1>-->
+      <h1 id="titre_lodex" class="bl3">
+          <%= it.theme.title %>
+      </h1>
     </div>
   </header>
   <div id="root" class="container"></div>

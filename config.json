@@ -116,9 +116,12 @@
     ],
     "theme" : {
         "istex": {
-            "href": "/",
+            "host": "/",
             "title": "Services",
             "summary": "Les technologies et les outils ISTEX pour les projets de recherche."
+        },
+        "inist": {
+            "title": "Etudes"
         }
     },
     "timeout": 3600000
