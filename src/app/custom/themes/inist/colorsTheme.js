@@ -22,7 +22,7 @@ export default {
     },
     green: {
         primary: "#ffeb6e",
-        secondary: "rgba(255, 235, 110, 1.5)",
+        secondary: "#b0ee89",
         tertiary: "rgba(255, 235, 110, .5)",
         light: "#fffcf0",
     },
@@ -34,7 +34,7 @@ export default {
     },
     blue: {
         primary: "#00284b",
-        secondary: "rgba(0, 40, 75, .7)",
+        secondary: "#9ae2ff",
         tertiary: "rgba(0, 40, 75, .5)",
         light: "rgba(0, 40, 75, .1)",
     },
