@@ -1,15 +1,15 @@
-import colorsTheme from './colorsTheme';
+import colorsTheme from "./colorsTheme";
 
 export default {
     palette: {
         primary: {
-            main: colorsTheme.green.primary,
-            secondary: colorsTheme.green.secondary,
-            light: colorsTheme.green.light,
+            main: colorsTheme.blue.primary,
+            secondary: colorsTheme.blue.secondary,
+            light: colorsTheme.green.primary,
             contrastText: colorsTheme.white.primary,
         },
         secondary: {
-            main: colorsTheme.orange.primary,
+            main: colorsTheme.purple.primary,
             contrastText: colorsTheme.white.primary,
         },
         info: {
@@ -25,7 +25,7 @@ export default {
             contrastText: colorsTheme.white.primary,
         },
         success: {
-            main: colorsTheme.green.primary,
+            main: colorsTheme.blue.primary,
             contrastText: colorsTheme.white.primary,
         },
         neutral: {
@@ -42,7 +42,7 @@ export default {
             transparent: colorsTheme.black.transparent,
         },
         text: {
-            primary: colorsTheme.black.secondary,
+            primary: colorsTheme.blue.primary,
             main: colorsTheme.black.secondary,
         },
         contrast: {
