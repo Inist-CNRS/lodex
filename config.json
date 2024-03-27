@@ -65,6 +65,7 @@
         "json-lodex",
         "json-wordpress",
         "json-datacite",
+        "json-openalex",
         "json-inspirehep",
         "json-optimized",
         "json-lines",
