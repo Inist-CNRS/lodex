@@ -1,11 +1,11 @@
-import colorsTheme from './colorsTheme';
+import colorsTheme from './default/colorsTheme';
 
 export default {
     palette: {
         primary: {
-            main: colorsTheme.green.primary,
-            secondary: colorsTheme.green.secondary,
-            light: colorsTheme.green.light,
+            main: colorsTheme.blue.primary,
+            secondary: colorsTheme.blue.secondary,
+            light: colorsTheme.blue.light,
             contrastText: colorsTheme.white.primary,
         },
         secondary: {
@@ -25,7 +25,7 @@ export default {
             contrastText: colorsTheme.white.primary,
         },
         success: {
-            main: colorsTheme.green.primary,
+            main: colorsTheme.blue.primary,
             contrastText: colorsTheme.white.primary,
         },
         neutral: {

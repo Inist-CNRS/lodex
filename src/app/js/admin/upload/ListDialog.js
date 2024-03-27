@@ -16,7 +16,7 @@ import {
 import FilterIcon from '@mui/icons-material/FilterList';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import adminTheme from '../../../custom/adminTheme';
+import adminTheme from '../../../custom/themes/adminTheme';
 
 const styles = {
     item: {

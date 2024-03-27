@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import customTheme from '../../../custom/customTheme';
+import customTheme from '../../../custom/themes/default/customTheme';
 import { themeLoader } from '../api/themeLoader';
 
 /**

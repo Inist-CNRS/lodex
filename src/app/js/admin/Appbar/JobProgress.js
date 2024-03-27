@@ -31,7 +31,7 @@ import { toast } from '../../../../common/tools/toast';
 import { finishProgress } from '../progress/reducer';
 import { loadEnrichments } from '../enrichment';
 import { loadPrecomputed } from '../precomputed';
-import adminTheme from '../../../custom/adminTheme';
+import adminTheme from '../../../custom/themes/adminTheme';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 
 const styles = {
