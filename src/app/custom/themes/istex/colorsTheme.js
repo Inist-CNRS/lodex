@@ -30,7 +30,7 @@ export default {
         primary: "#c4d733",
     },
     orange: {
-        primary: "#f1720c",
+        primary: "#f48022",
     },
     blue: {
         primary: "#458CA5",

@@ -9,7 +9,7 @@ export default {
             contrastText: colorsTheme.white.primary,
         },
         secondary: {
-            main: colorsTheme.green.secondary,
+            main: colorsTheme.orange.primary,
             contrastText: colorsTheme.white.light,
         },
         info: {
@@ -42,7 +42,7 @@ export default {
             transparent: colorsTheme.black.transparent,
         },
         text: {
-            primary: colorsTheme.black.secondary,
+            primary: colorsTheme.green.primary,
             main: colorsTheme.black.secondary,
         },
         contrast: {
