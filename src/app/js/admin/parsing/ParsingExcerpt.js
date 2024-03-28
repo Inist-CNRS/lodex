@@ -13,7 +13,7 @@ import { IN_PROGRESS } from '../../../../common/taskStatus';
 import { addField } from '../../fields';
 import { useParams } from 'react-router';
 import parseValue from '../../../../common/tools/parseValue';
-import adminTheme from '../../../custom/adminTheme';
+import adminTheme from '../../../custom/themes/adminTheme';
 
 export const getRowStyle = (index, total) => {
     let opacity = 1;

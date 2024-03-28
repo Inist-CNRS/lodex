@@ -8,7 +8,7 @@ import { Box, CircularProgress } from '@mui/material';
 import { fromPublicationPreview } from './selectors';
 import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import adminTheme from '../../custom/adminTheme';
+import adminTheme from '../../custom/themes/adminTheme';
 
 const styles = {
     container: {

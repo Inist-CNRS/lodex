@@ -25,7 +25,7 @@ import { Display } from './Display';
 import { Data } from './Data';
 import { frFR as frFRDatagrid, enUS as enUSDatagrid } from '@mui/x-data-grid';
 import { frFR, enUS } from '@mui/material/locale';
-import adminTheme from '../../custom/adminTheme';
+import adminTheme from '../../custom/themes/adminTheme';
 import LoginAdmin from './LoginAdmin';
 import { ConfigTenantRoute } from './ConfigTenantRoute';
 import '../../ace-webpack-loader';

@@ -1,17 +1,18 @@
 {
-  "version": "2",
-  "restricted": true,
-  "name": {
-    "fr": "ISTEX",
-    "en": "ISTEX"
-  },
-  "description": {
-    "fr": "Thème ISTEX (restreint)",
-    "en": "ISTEX theme (restricted)"
-  },
-  "files": {
-    "theme": {
-      "index": "index.html"
+    "version": "2",
+    "restricted": true,
+    "name": {
+        "fr": "ISTEX",
+        "en": "ISTEX"
+    },
+    "description": {
+        "fr": "Thème ISTEX (restreint)",
+        "en": "ISTEX theme (restricted)"
+    },
+    "files": {
+        "theme": {
+            "main": "customTheme.js",
+            "index": "index.html"
+        }
     }
-  }
 }

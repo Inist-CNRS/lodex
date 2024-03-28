@@ -34,7 +34,7 @@ import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
 import PopupConfirmUpload from './PopupConfirmUpload';
 import { toast } from '../../../../common/tools/toast';
-import adminTheme from '../../../custom/adminTheme';
+import adminTheme from '../../../custom/themes/adminTheme';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 
 const styles = {

@@ -10,10 +10,10 @@ export default {
         },
         secondary: {
             main: colorsTheme.orange.primary,
-            contrastText: colorsTheme.white.primary,
+            contrastText: colorsTheme.white.light,
         },
         info: {
-            main: colorsTheme.purple.primary,
+            main: colorsTheme.orange.primary,
             contrastText: colorsTheme.white.primary,
         },
         warning: {
@@ -25,8 +25,8 @@ export default {
             contrastText: colorsTheme.white.primary,
         },
         success: {
-            main: colorsTheme.blue.primary,
-            contrastText: colorsTheme.white.primary,
+            main: colorsTheme.green.secondary,
+            contrastText: colorsTheme.white.light,
         },
         neutral: {
             main: colorsTheme.gray.primary,
@@ -42,7 +42,7 @@ export default {
             transparent: colorsTheme.black.transparent,
         },
         text: {
-            primary: colorsTheme.black.secondary,
+            primary: colorsTheme.green.primary,
             main: colorsTheme.black.secondary,
         },
         contrast: {

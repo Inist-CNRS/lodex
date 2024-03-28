@@ -24,7 +24,7 @@ import {
     SCOPE_GRAPHIC,
 } from '../../../../common/scope';
 import { MenuItemLink } from './MenuItemLink';
-import adminTheme from '../../../custom/adminTheme';
+import adminTheme from '../../../custom/themes/adminTheme';
 
 const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;

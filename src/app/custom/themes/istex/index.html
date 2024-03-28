@@ -1,161 +1,102 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="keywords" content="istex, semantic web, linked data" />
-        <meta name="description" content="Site on semantic web approch to ISTEX data" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-        <link rel="apple-touch-icon" sizes="180x180" href="{|__THEMES_HOST__|}/themes/istex/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="{|__THEMES_HOST__|}/themes/istex/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="{|__THEMES_HOST__|}/themes/istex/favicon-16x16.png" />
-        <link rel="alternate" type="application/atom+xml" href="/api/export/atom" />
-        <link rel="manifest" href="{|__THEMES_HOST__|}/themes/istex/manifest.json" />
-        <link rel="mask-icon" href="{|__THEMES_HOST__|}/themes/istex/safari-pinned-tab.svg" color="#5bbad5" />
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" />
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat&amp;subset=latin,latin-ext" type="text/css" />
-        <link rel="stylesheet" href="{|__THEMES_HOST__|}/themes/istex/css/style.css" />
-        <link rel="stylesheet" href="{|__THEMES_HOST__|}/themes/istex/css/istex.css?ver2.0" />
-        
-        <title>data.istex.fr : Linked Data from ISTEX</title>
-    </head>
-    <body>
-        <header class="banniereIstex">
-            <div class="inner-banniereIstex container"> 
-                <a class="logo" href="https://www.istex.fr">
-                    <img class="logo-istex" src="{|__THEMES_HOST__|}/themes/istex/img/header/istex_logo.svg" alt="ISTEX">
-                    <span class="baseline">Le socle de la bibliothèque scientifique numérique nationale</span>
-                </a>
-                <div class="interactions">
-                    <a href="https://twitter.com/ISTEX_Platform" class="ttipContainer" target="_blank">
-                        <span class="screen-reader-text">s'ouvre dans un nouvel onglet</span>
-                        <svg width="21" height="21" xmlns="http://www.w3.org/2000/svg" class="tw"> 
-                            <path d="M6.79 18.764c7.547 0 11.675-6.157 11.675-11.495 0-.175 0-.35-.012-.523a8.265 8.265 0 0 0 2.047-2.09 8.273 8.273 0 0 1-2.356.635 4.07 4.07 0 0 0 1.804-2.235 8.303 8.303 0 0 1-2.606.98 4.153 4.153 0 0 0-5.806-.174 4.006 4.006 0 0 0-1.187 3.86 11.717 11.717 0 0 1-8.457-4.22 4.005 4.005 0 0 0 1.271 5.392A4.122 4.122 0 0 1 1.3 8.389v.05c.001 1.924 1.378 3.58 3.292 3.96a4.144 4.144 0 0 1-1.852.07c.537 1.646 2.078 2.773 3.833 2.805A8.315 8.315 0 0 1 .5 16.95a11.754 11.754 0 0 0 6.29 1.812"  fill-rule="evenodd"/>
-                        </svg>
-                        <span class="tt tooltipDessous">Nous suivre sur twitter</span>
-                    </a>
-                    <a href="https://github.com/istex" class="ttipContainer" target="_blank">
-                        <span class="screen-reader-text">s'ouvre dans un nouvel onglet</span>
-                        <span class="tt tooltipDessous">Code source</span>
-                        <svg width="21" height="21" xmlns="http://www.w3.org/2000/svg" class="gb">
-                            <path d="M10.499 1.18C4.977 1.18.5 5.675.5 11.22c0 4.435 2.865 8.198 6.84 9.526.5.093.683-.217.683-.483 0-.24-.01-.87-.014-1.708-2.782.606-3.369-1.346-3.369-1.346-.454-1.16-1.11-1.469-1.11-1.469-.909-.622.068-.61.068-.61 1.003.071 1.53 1.035 1.53 1.035.893 1.534 2.342 1.091 2.912.834.09-.649.349-1.091.635-1.343-2.22-.253-4.555-1.115-4.555-4.961 0-1.096.39-1.992 1.03-2.695-.104-.254-.446-1.275.097-2.656 0 0 .84-.27 2.75 1.029a9.54 9.54 0 0 1 2.504-.338 9.563 9.563 0 0 1 2.504.339c1.909-1.299 2.747-1.029 2.747-1.029.545 1.383.203 2.403.1 2.656.642.703 1.028 1.599 1.028 2.695 0 3.857-2.337 4.705-4.565 4.954.359.31.679.923.679 1.859 0 1.342-.013 2.425-.013 2.754 0 .268.18.58.688.482A10.04 10.04 0 0 0 20.5 11.22c0-5.545-4.477-10.04-10.001-10.04z" fill-rule="nonzero"/>
-                        </svg>
-                    </a>
-                    <a href="https://www.youtube.com/channel/UCyow0tVlCRcjwRfk9p7q8Uw" class="ttipContainer" target="_blank">
-                        <span class="screen-reader-text">s'ouvre dans un nouvel onglet</span>
-                        <span class="tt tooltipDessous">Chaîne ISTEX</span>
-                        <svg width="21" height="21" xmlns="http://www.w3.org/2000/svg" class="yt">
-                            <path d="M8.488 13.35V7.738c1.993.937 3.536 1.843 5.36 2.82-1.505.834-3.367 1.77-5.36 2.792m11.103-8.403c-.344-.453-.93-.805-1.553-.922-1.833-.348-13.267-.349-15.099 0-.5.094-.945.32-1.328.672C0 6.193.505 14.215.893 15.515c.164.562.375.968.64 1.234.343.352.812.595 1.351.703 1.51.312 9.284.487 15.122.047a2.62 2.62 0 0 0 1.39-.71c1.49-1.49 1.388-9.964.195-11.842" fill-rule="evenodd"/>
-                        </svg>
-                    </a>
-                    <a href="https://www.istex.fr/contactez-nous/" class="ttipContainer  contact">
-                        <span class="tt tooltipDessous">Contact</span>
-                        <svg width="21" height="21" xmlns="http://www.w3.org/2000/svg" class="ct">
-                            <path d="M10.5 15.738.5 6.913v11.35h20V6.914l-10 8.825zm.001-2.662L.5 4.245v-.981h20v.98l-9.999 8.832z" fill-rule="evenodd"/>
-                        </svg>
-                    </a>
-                </div>
-                <nav id="navigation-main" class="navigation-main" role="navigation" aria-label="menu-principal">
-                    <ul class="menu">
-                        <li><a href="https://www.istex.fr/la-base/">La base</a></li>
-                        <li><a href="https://www.istex.fr/fouille-de-texte/">Fouille de textes</a></li>
-                        <li><a href="https://www.istex.fr/category/actualites/">Actualités</a></li>
-                        <li><a href="https://www.istex.fr/a-propos/">À propos</a></li>
-                        <li><a href="https://www.istex.fr/institutions-adherentes/">Institutions  adhérentes</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </header>
 
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/">Lodex</a>
-                </div>
-                <ul class="nav navbar-nav">
-                    <li><a href="/graph">Resources</a></li>
-                    <li><a href="/admin">Administration</a></li>
-                    <li><a href="/login">Connection</a></li>
-                </ul>
-            </div>
-        </nav>
-        <div id="pageHead">
-            <a href="https://data.istex.fr/">
-                <img src="{|__THEMES_HOST__|}/themes/istex/img/ic_Data_ISTEX.svg" class="dataLogo" alt="" />
+<head>
+    <meta charset="utf-8" />
+    <meta name="keywords" content="istex, semantic web, linked data" />
+    <meta name="description" content="Site on semantic web approch to ISTEX data" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <link rel="apple-touch-icon" sizes="180x180" href="<%= theme.base.href %>/themes/istex/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="<%= theme.base.href %>/themes/istex/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="<%= theme.base.href %>/themes/istex/favicon-16x16.png" />
+    <link rel="alternate" type="application/atom+xml" href="/api/export/atom" />
+    <link rel="manifest" href="<%= theme.base.href %>/themes/istex/manifest.json" />
+    <link rel="mask-icon" href="<%= theme.base.href %>/themes/istex/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="stylesheet" href="<%= theme.base.href %>/themes/istex/css/style.css" />
+    <link rel="stylesheet" href="<%= theme.base.href %>/themes/istex/css/istex.css?ver2.0" />
+
+    <title></title>
+</head>
+
+<body>
+    <header>
+        <nav class="menuIstex zutile flexrow" aria-label="Menu Istex">
+            <a href="https://www.istex.fr" target="blank" class="accesIstex" title="accès Istex (lien externe)">
+                <img src="<%= theme.base.href %>/themes/istex/img/header/leftarrow.png" alt=""> Accès
+                Istex.fr
             </a>
-            <div id="pageText" class="pageHead-texte">
-                <div id="pageTitle">
-                    <a href="https://data.istex.fr">data.istex.fr</a>
-                </div>
-                <p id="pageSubTitle" class="text-center">
-                    data.istex.fr expose le Triple Store des données
-                    <a class="underline" href="//www.istex.fr">ISTEX</a> via son
-                    <a class="underline" href="//data.istex.fr/triplestore/sparql">SPARQL Endpoint</a>.
-                </p>
+            <ul class="menu-haut flexrow">
+                <li
+                    class="nav-main-item  menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-2651">
+                    <a class="nav-main-link" href="<%= theme.host %>" title="Accueil">Accueil</a>
+                </li>
+                <li class="nav-main-item  menu-item menu-item-type-custom menu-item-object-custom menu-item-2652">
+                    <a class="nav-main-link" href="https://www.loterre.fr/" target="_blank"
+                        title="Loterre (lien externe)">Loterre</a>
+                </li>
+                <li class="nav-main-item  menu-item menu-item-type-custom menu-item-object-custom menu-item-2653">
+                    <a class="nav-main-link" href="https://www.istex.fr/category/actualites/" target="_blank"
+                        title="Actualités (lien externe)">Actualités</a>
+                </li>
+                <li class="nav-main-item  menu-item menu-item-type-custom menu-item-object-custom menu-item-2654">
+                    <a class="nav-main-link" href="https://scientific-corpus.data.istex.fr/" target="_blank"
+                        title="Corpus spécialisés (lien externe)">Corpus spécialisés</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="banner">
+            <div class="zutile">
+                <a href="https://tmtoolsfr-explorerfr.tdm.inist.fr/">
+                    <img src="<%= theme.base.href %>/themes/istex/img/header/istex.png" alt="logo Istex">
+                    <h1 class="siteTitle"><%= theme.title %></h1>
+                    <div class="subTitle"><%= theme.summary %></div>
+                </a>
             </div>
         </div>
-        <div class="container">
-            <div id="root"></div>
-        </div>
-        <footer class="footerIstex">
-            <ul class="footer1">
+    </header>
+    <div class="container">
+        <div id="root"></div>
+    </div>
+    <footer class="site-footer">
+        <nav>
+            <ul class="footer1 flexrow zutile">
                 <li><a href="https://www.istex.fr/politique-de-confidentialite/">Confidentialité</a></li>
                 <li><a href="https://www.istex.fr/accessibilite/">Accessibilité</a></li>
                 <li><a href="https://www.istex.fr/mentions-legales/">Mentions légales</a></li>
                 <li><a href="https://www.istex.fr/plan-du-site/">Plan du site</a></li>
                 <li><a href="https://stats.uptimerobot.com/Lg8APTkMmW">Météo des services</a></li>
             </ul>
-            <ul class="footer2 flexHz">
-                <li><a href="https://www.enseignementsup-recherche.gouv.fr/"><img src="https://www.istex.fr/wp-content/themes/istex/img/mesr.svg" alt="ministère de l'enseignement supérieur et de la recherche"></a></li>
-                <li><a href="https://www.cnrs.fr/"><img src="https://www.istex.fr/wp-content/themes/istex/img/cnrs.svg" alt="cnrs"></a></li>
-                <li><a href="https://www.abes.fr/"><img src="https://www.istex.fr/wp-content/themes/istex/img/abes.png" alt="abes : agence bibliographique de l'enseignement supérieur"></a></li>
-                <li><a href="https://www.couperin.org/"><img src="https://www.istex.fr/wp-content/themes/istex/img/couperin.png" alt="couperin.org"></a></li>
-                <li><a href="https://franceuniversites.fr/"><img class="fu" src="https://www.istex.fr/wp-content/themes/istex/img/france_universites_logo.svg" alt="France universités"></a></li>
-                <li><a href="https://www.univ-lorraine.fr/"><img src="https://www.istex.fr/wp-content/themes/istex/img/ul.svg" alt="université de lorraine"></a></li>
+        </nav>
+        <nav>
+            <ul class="footer3 flexrow zutile">
+                <li><a href="https://www.enseignementsup-recherche.gouv.fr/"><img
+                            src="https://www.istex.fr/wp-content/themes/istex/img/mesr.svg"
+                            alt="ministère de l'enseignement supérieur et de la recherche"></a></li>
+                <li><a href="https://www.cnrs.fr/"><img src="https://www.istex.fr/wp-content/themes/istex/img/cnrs.svg"
+                            alt="cnrs"></a></li>
+                <li><a href="https://www.abes.fr/"><img src="https://www.istex.fr/wp-content/themes/istex/img/abes.png"
+                            alt="abes : agence bibliographique de l'enseignement supérieur"></a></li>
+                <li><a href="https://www.couperin.org/"><img
+                            src="https://www.istex.fr/wp-content/themes/istex/img/couperin.png" alt="couperin.org"></a>
+                </li>
+                <li><a href="https://franceuniversites.fr/"><img class="fu"
+                            src="https://www.istex.fr/wp-content/themes/istex/img/france_universites_logo.svg"
+                            alt="France universités"></a></li>
+                <li><a href="https://www.univ-lorraine.fr/"><img
+                            src="https://www.istex.fr/wp-content/themes/istex/img/ul.svg"
+                            alt="université de lorraine"></a>
+                </li>
             </ul>
-            <div class="footer3"><img src="https://www.istex.fr/wp-content/themes/istex/img/investissement.png" alt="investissement d'avenir"><p class="mt0">Financement : ANR-10-IDEX-0004-02</p>
-            </div>
-        </footer>
-        <!-- Footer - bloc-8 END -->
-        <script src="{|__THEMES_HOST__|}/themes/istex/js/jquery-3.6.0.min.js"></script>
-        <script src="{|__THEMES_HOST__|}/themes/istex/js/responsiveMenu.js"></script>
-        <script src="{|__THEMES_HOST__|}/themes/istex/js/tooltip.js"></script>
-         <!-- Piwik -->
-        <script>
-            var _paq = _paq || [];
-            _paq.push([
-                function () {
-                    var self = this;
-                    function getOriginalVisitorCookieTimeout() {
-                        var now = new Date(),
-                            nowTs = Math.round(now.getTime() / 1000),
-                            visitorInfo = self.getVisitorInfo();
-                        var createTs = parseInt(visitorInfo[2]);
-                        var cookieTimeout = 33696000;
-                        var originalTimeout = createTs + cookieTimeout - nowTs;
-                        return originalTimeout;
-                    }
-                    this.setVisitorCookieTimeout(getOriginalVisitorCookieTimeout());
-                }
-            ]);
-            _paq.push(["trackPageView"]);
-            _paq.push(["enableLinkTracking"]);
-            (function () {
-                var u = "https://piwik2.inist.fr/";
-                _paq.push(["setTrackerUrl", u + "piwik.php"]);
-                _paq.push(["setSiteId", "39"]);
-                var d = document,
-                    g = d.createElement("script"),
-                    s = d.getElementsByTagName("script")[0];
-                g.type = "text/javascript";
-                g.async = true;
-                g.defer = true;
-                g.src = u + "piwik.js";
-                s.parentNode.insertBefore(g, s);
-            })();
-        </script>
-    <!-- End Piwik Code -->
-    </body>
+        </nav>
+        <div class="footer4 zutile"><img src="https://www.istex.fr/wp-content/themes/istex/img/investissement.png"
+                alt="investissement d'avenir">
+            <p class="mt0">Financement : ANR-10-IDEX-0004-02</p>
+        </div>
+    </footer>
+    <!-- Footer - bloc-8 END -->
+    <script src="<%= theme.base.href %>/themes/istex/js/jquery-3.6.0.min.js"></script>
+    <script src="<%= theme.base.href %>/themes/istex/js/responsiveMenu.js"></script>
+    <script src="<%= theme.base.href %>/themes/istex/js/tooltip.js"></script>
+</body>
+
 </html>

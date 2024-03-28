@@ -1,0 +1,18 @@
+{
+  "version": "2",
+  "restricted": true,
+  "name": {
+    "fr": "Classique",
+    "en": "Classic"
+  },
+  "description": {
+      "fr": "Thème Lodex Classique",
+      "en": "Classic Lodex theme"
+  },
+  "files": {
+    "theme": {
+      "main": "customTheme.js",
+      "index": "index.html"
+    }
+  }
+}

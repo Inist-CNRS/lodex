@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
 import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import adminTheme from '../../../custom/adminTheme';
+import adminTheme from '../../../custom/themes/adminTheme';
 
 const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
     return (
