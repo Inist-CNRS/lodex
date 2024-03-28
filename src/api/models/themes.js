@@ -1,12 +1,15 @@
 import { jsHost, themesHost } from 'config';
 import config from '../../../config.json';
 import path from 'path';
+import { promisify } from 'util';
 import getLogger from '../services/logger';
 import defaultCustomTheme from '../../app/custom/themes/default/customTheme';
 import { version } from '../../../package.json';
 import deepClone from 'lodash/cloneDeep';
 import get from 'lodash/get';
-import { Eta } from 'eta';
+import ejs from 'ejs';
+
+const renderFile = promisify(ejs.renderFile);
 
 const logger = getLogger('system');
 
@@ -65,11 +68,11 @@ const initAvailableThemes = () => {
 };
 
 const loadFile = async (themeFile, themeConfig = {}) => {
-    const eta = new Eta({
-        views: path.dirname(themeFile),
-        debug: process.env.NODE_ENV === 'development',
-    });
-    const etaData = {
+    const ejsOptions = {
+        "async": true,
+        root: path.dirname(themeFile),
+    };
+    const themeData = {
         lodex: {
             version,
             base: { href: jsHost },
@@ -79,7 +82,7 @@ const loadFile = async (themeFile, themeConfig = {}) => {
             base: { href: themesHost },
         },
     };
-    return await eta.renderAsync(path.basename(themeFile), etaData);
+    return await renderFile(themeFile, themeData, ejsOptions);
 };
 
 const init = async () => {
