@@ -14,5 +14,10 @@
       "main": "customTheme.js",
       "index": "index.html"
     }
+  },
+  "dev": {
+    "variables": {
+      "{|__JS_HOST__|}": ""
+    }
   }
 }
