@@ -1,19 +1,17 @@
-import fs from 'fs/promises';
 import { jsHost, themesHost } from 'config';
 import config from '../../../config.json';
 import path from 'path';
+import { promisify } from 'util';
 import getLogger from '../services/logger';
-import defaultCustomTheme from '../../app/custom/customTheme';
+import defaultCustomTheme from '../../app/custom/themes/default/customTheme';
 import { version } from '../../../package.json';
 import deepClone from 'lodash/cloneDeep';
+import get from 'lodash/get';
+import ejs from 'ejs';
+
+const renderFile = promisify(ejs.renderFile);
 
 const logger = getLogger('system');
-
-const THEMES_VERSION = 2;
-
-const REGEX_JS_HOST = /\{\|__JS_HOST__\|}/g;
-const REGEX_THEMES_HOST = /\{\|__THEMES_HOST__\|}/g;
-const REGEX_LODEX_VERSION = /\{\|__LODEX_VERSION__\|}/g;
 
 /**
  * @type {Map<string, {name: {fr: string, en: string}, description: {fr: string, en: string}, index: string, customTheme: *}>}
@@ -58,7 +56,7 @@ export const getAvailableThemesKeys = () => {
  * @param theme
  * @returns {boolean}
  */
-export const isLoaded = theme => {
+export const isLoaded = (theme) => {
     return availableThemes.get(theme);
 };
 
@@ -69,58 +67,43 @@ const initAvailableThemes = () => {
     }
 };
 
-const loadFile = async path =>
-    (await fs.readFile(path))
-        .toString('utf8')
-        .replace(REGEX_JS_HOST, jsHost)
-        .replace(REGEX_THEMES_HOST, themesHost)
-        .replace(REGEX_LODEX_VERSION, version);
+const loadFile = async (themeFile, themeConfig = {}) => {
+    const ejsOptions = {
+        "async": true,
+        root: path.dirname(themeFile),
+    };
+    const themeData = {
+        lodex: {
+            version,
+            base: { href: jsHost },
+        },
+        theme: {
+            ...themeConfig,
+            base: { href: themesHost },
+        },
+    };
+    return await renderFile(themeFile, themeData, ejsOptions);
+};
 
 const init = async () => {
     // Default theme
-    try {
-        loadedThemes.set('default', {
-            name: {
-                fr: 'Classique',
-                en: 'Classic',
-            },
-            description: {
-                fr: 'Thème Lodex Classique',
-                en: 'Classic Lodex theme',
-            },
-            index: await loadFile(
-                path.resolve(__dirname, '../../app/custom/index.html'),
-            ),
-            customTheme: defaultCustomTheme,
-        });
-        availableThemes.set('default', true);
-    } catch (e) {
-        logger.error("Can't load default Lodex theme!");
-        throw e;
-    }
+    const themes = Array.from(new Set([...config.themes, 'default'])).filter(Boolean);
 
     // Load custom themes
-    for (const theme of config.themes) {
+    for (const theme of themes) {
         try {
             const uri = `themes/${theme}`;
             const themeConfig = await import(`../../${uri}/lodex-theme.json`);
 
-            if (themeConfig.version !== THEMES_VERSION) {
-                logger.warn(
-                    `The ${theme} theme version may not be compatible with the current Lodex version. Expected theme version: 1, current version: ${themeConfig.version}.`,
-                );
-                logger.warn(
-                    'Lodex may attempt to load this theme. Please note that if you use this theme, it may cause visual problems.',
-                );
-            }
-
-            let indexLocation = '../../app/custom/index.html';
+            let indexLocation = '../../themes/default/index.html';
             if (themeConfig?.files?.theme?.index) {
                 indexLocation = `../../${uri}/${themeConfig.files.theme.index}`;
             }
 
+            const themeLocalConfig = get(config, `theme.${theme}`, {});
             const index = await loadFile(
                 path.resolve(__dirname, indexLocation),
+                { ...themeConfig, ...themeLocalConfig },
             );
 
             let customTheme = deepClone(defaultCustomTheme);

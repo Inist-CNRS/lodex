@@ -18,7 +18,7 @@ import {
 import precomputers from '../../../custom/precomputers/precomputers-catalog.json';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CancelButton from '../../lib/components/CancelButton';
-import adminTheme from '../../../custom/adminTheme';
+import adminTheme from '../../../custom/themes/adminTheme';
 
 const styles = {
     item: {

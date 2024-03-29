@@ -108,6 +108,21 @@
     ],
     "alternativePrecomputedBaseUrl": "{public url of the server accessible from webhooks (ie ngrok)}",
     "activateBullDashboard": false,
-    "themes": ["void", "nougat", "inist", "istex"],
+    "themes": [
+        "void",
+        "nougat",
+        "inist",
+        "istex"
+    ],
+    "theme" : {
+        "istex": {
+            "host": "/",
+            "title": "Services",
+            "summary": "Les technologies et les outils ISTEX pour les projets de recherche."
+        },
+        "inist": {
+            "title": "Etudes"
+        }
+    },
     "timeout": 3600000
 }

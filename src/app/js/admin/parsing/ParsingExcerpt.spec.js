@@ -10,7 +10,7 @@ import {
     getColumnStyle,
 } from './ParsingExcerpt';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
-import adminTheme from '../../../custom/adminTheme';
+import adminTheme from '../../../custom/themes/adminTheme';
 
 let mockedParams = {
     filter: undefined,

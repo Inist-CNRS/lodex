@@ -24,7 +24,7 @@ import {
     Toolbar,
     Link as MuiLink,
 } from '@mui/material';
-import adminTheme from '../../../custom/adminTheme';
+import adminTheme from '../../../custom/themes/adminTheme';
 
 const styles = {
     linksContainer: {

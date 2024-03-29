@@ -3,7 +3,7 @@
         "node": ">= 16"
     },
     "name": "lodex",
-    "version": "14.0.45",
+    "version": "14.0.47",
     "description": "",
     "main": "src/api/index.js",
     "browser": {
@@ -111,6 +111,7 @@
         "d3": "^5.14.2",
         "d3-scale": "^2.2.2",
         "d3-scale-chromatic": "^1.5.0",
+        "ejs": "3.1.9",
         "expect": "^26.4.2",
         "fetch-with-proxy": "^1.1.0",
         "file-loader": "6.2.0",
@@ -122,7 +123,7 @@
         "js-sentencecase": "^1.2.1",
         "jsonstream": "1.0.3",
         "jsonwebtoken": "9.0.2",
-        "katex": "0.13.24",
+        "katex": "0.16.10",
         "kcors": "^2.2.2",
         "koa": "^2.6.2",
         "koa-bodyparser": "^4.2.1",
@@ -246,6 +247,8 @@
         "array-series": "0.1.5",
         "babel-core": "^7.0.0-bridge.0",
         "babel-jest": "^27.0.6",
+        "compression-webpack-plugin": "10.0.0",
+        "copy-webpack-plugin": "11.0.0",
         "cypress": "13.6.4",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.8",
@@ -271,8 +274,6 @@
         "prettier": "^3.2.5",
         "sleepjs": "4.0.3",
         "webpack": "5.90.3",
-        "compression-webpack-plugin": "10.0.0",
-        "copy-webpack-plugin": "11.0.0",
         "webpack-bundle-analyzer": "4.10.1",
         "webpack-cli": "5.1.4",
         "webpack-dev-server": "5.0.2"
