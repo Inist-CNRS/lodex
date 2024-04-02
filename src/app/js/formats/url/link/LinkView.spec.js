@@ -21,8 +21,8 @@ describe('<LinkView />', () => {
             />,
         );
         expect(wrapper.find(Link)).toHaveLength(1);
-        expect(wrapper.prop('href')).toEqual('http://example.com');
-        expect(wrapper.find(Link).prop('children')).toEqual('label');
+        expect(wrapper.prop('href')).toBe('http://example.com');
+        expect(wrapper.find(Link).prop('children')).toBe('label');
     });
 
     it('should render a list with an array', () => {
@@ -36,29 +36,17 @@ describe('<LinkView />', () => {
         );
         expect(wrapper.find('li')).toHaveLength(2);
         expect(wrapper.find(Link)).toHaveLength(2);
-        expect(
-            wrapper
-                .find(Link)
-                .first()
-                .prop('href'),
-        ).toEqual('http://example.com');
-        expect(
-            wrapper
-                .find(Link)
-                .last()
-                .prop('href'),
-        ).toEqual('http://example.com/2');
-        expect(
-            wrapper
-                .find(Link)
-                .first()
-                .prop('children'),
-        ).toEqual('http://example.com');
-        expect(
-            wrapper
-                .find(Link)
-                .last()
-                .prop('children'),
-        ).toEqual('http://example.com/2');
+        expect(wrapper.find(Link).first().prop('href')).toBe(
+            'http://example.com',
+        );
+        expect(wrapper.find(Link).last().prop('href')).toBe(
+            'http://example.com/2',
+        );
+        expect(wrapper.find(Link).first().prop('children')).toBe(
+            'http://example.com',
+        );
+        expect(wrapper.find(Link).last().prop('children')).toBe(
+            'http://example.com/2',
+        );
     });
 });

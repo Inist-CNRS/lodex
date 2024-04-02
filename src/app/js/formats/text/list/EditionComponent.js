@@ -10,7 +10,7 @@ import {
 } from '../../../propTypes';
 import InputList from './InputList';
 
-const getSubFormat = args => ({
+const getSubFormat = (args) => ({
     args: args.subFormatOptions,
     name: args.subFormat,
 });

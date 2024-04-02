@@ -8,13 +8,14 @@ import localConfig from '../../../config.json';
 
 ezs.use(ezsBasics);
 
-export const getLoader = (loaderName, loaderEnvironment) => stream => {
+export const getLoader = (loaderName, loaderEnvironment) => (stream) => {
     const env2query = new URLSearchParams(loaderEnvironment);
     return stream
         .pipe(
             ezs('URLConnect', {
-                url: `${process.env.WORKERS_URL ||
-                    'http://localhost:31976'}/loaders/${loaderName}?${env2query}`,
+                url: `${
+                    process.env.WORKERS_URL || 'http://localhost:31976'
+                }/loaders/${loaderName}?${env2query}`,
                 streaming: true,
                 timeout: Number(localConfig.timeout) || 120000,
                 json: false,
@@ -24,11 +25,11 @@ export const getLoader = (loaderName, loaderEnvironment) => stream => {
         .pipe(ezs('unpack'));
 };
 export const getCustomLoader = async (script, loaderEnvironment) => {
-    return stream =>
+    return (stream) =>
         stream.pipe(ezs('delegate', { script }, loaderEnvironment));
 };
 
-export const getStreamFromUrl = async url => {
+export const getStreamFromUrl = async (url) => {
     const response = await fetch(url);
     if (!response.ok) {
         throw new Error(response.statusText);
@@ -36,11 +37,11 @@ export const getStreamFromUrl = async url => {
     return response.body;
 };
 
-export const getStreamFromText = text => {
+export const getStreamFromText = (text) => {
     return Readable.from([text]);
 };
 
-export const startImport = async ctx => {
+export const startImport = async (ctx) => {
     const {
         loaderName,
         url,
@@ -67,9 +68,8 @@ export const startImport = async ctx => {
         };
         let parseStream;
         if (customLoader) {
-            loaderEnvironment.parser = loaderEnvironment.parser.concat(
-                '/custom',
-            );
+            loaderEnvironment.parser =
+                loaderEnvironment.parser.concat('/custom');
             parseStream = await ctx.getCustomLoader(
                 customLoader,
                 loaderEnvironment,

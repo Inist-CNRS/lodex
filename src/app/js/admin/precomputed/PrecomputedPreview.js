@@ -50,7 +50,7 @@ const PrecomputedPreview = ({ lines, sourceColumns, p: polyglot }) => {
                                 title={JSON.stringify(line)}
                             >
                                 {Object.values(line)
-                                    .map(value =>
+                                    .map((value) =>
                                         value !== undefined
                                             ? JSON.stringify(value)
                                             : 'undefined',

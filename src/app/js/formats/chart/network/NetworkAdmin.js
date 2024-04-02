@@ -56,7 +56,7 @@ class NetworkAdmin extends Component {
         };
     }
 
-    handleParams = params => {
+    handleParams = (params) => {
         updateAdminArgs('params', params, this.props);
     };
 

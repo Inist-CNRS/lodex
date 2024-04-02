@@ -23,12 +23,12 @@ export const jobLogger = {
     },
 };
 
-export const getActiveJob = async tenant => {
+export const getActiveJob = async (tenant) => {
     const activeJobs = await getActiveJobs(tenant);
     return activeJobs?.[0] || undefined;
 };
 
-export const getActiveJobs = async tenant => {
+export const getActiveJobs = async (tenant) => {
     const activeJobs = (await workerQueues[tenant]?.getActive()) || null;
 
     if (activeJobs.length === 0) {
@@ -37,7 +37,7 @@ export const getActiveJobs = async tenant => {
     return activeJobs;
 };
 
-export const getcompletedJobs = async tenant => {
+export const getcompletedJobs = async (tenant) => {
     const completedJobs = (await workerQueues[tenant]?.getCompleted()) || null;
 
     if (completedJobs.length === 0) {
@@ -46,7 +46,7 @@ export const getcompletedJobs = async tenant => {
     return completedJobs;
 };
 
-export const getWaitingJobs = async tenant => {
+export const getWaitingJobs = async (tenant) => {
     const waitingJobs = await workerQueues[tenant].getWaiting();
 
     if (waitingJobs.length === 0) {
@@ -70,7 +70,7 @@ export const cancelJob = async (ctx, jobType, subLabel = null) => {
     if (subLabel) {
         const completedJobs = await getcompletedJobs(ctx.tenant);
         const jobToFail = completedJobs?.find(
-            job => job.data.subLabel === subLabel,
+            (job) => job.data.subLabel === subLabel,
         );
         // get precomputed job
         const precomputedID = jobToFail?.data?.id;
@@ -86,17 +86,17 @@ export const cancelJob = async (ctx, jobType, subLabel = null) => {
 
 export const dropJobs = async (tenant, jobType) => {
     const jobs = await workerQueues[tenant].getJobs();
-    jobs.forEach(job => {
+    jobs.forEach((job) => {
         if (!jobType || job?.data?.jobType === jobType) job.remove();
     });
 };
 
-export const clearJobs = async ctx => {
+export const clearJobs = async (ctx) => {
     const waitingJobs = await getWaitingJobs(ctx.tenant);
     const activeJobs = await getActiveJobs(ctx.tenant);
 
-    waitingJobs?.forEach(waitingJob => waitingJob.remove());
-    activeJobs?.forEach(activeJob =>
+    waitingJobs?.forEach((waitingJob) => waitingJob.remove());
+    activeJobs?.forEach((activeJob) =>
         activeJob.moveToFailed(new Error('cancelled'), true),
     );
     progress.finish(ctx.tenant);

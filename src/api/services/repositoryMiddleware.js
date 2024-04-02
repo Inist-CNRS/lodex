@@ -11,7 +11,7 @@ import tenant from '../models/tenant';
 import configTenant from '../models/configTenant';
 import hiddenResource from '../models/hiddenResource';
 
-export const mongoClientFactory = mongoClientImpl => async (ctx, next) => {
+export const mongoClientFactory = (mongoClientImpl) => async (ctx, next) => {
     ctx.db = await mongoClientImpl(ctx.tenant);
     ctx.dataset = await dataset(ctx.db);
     ctx.field = await field(ctx.db);
@@ -27,7 +27,7 @@ export const mongoClientFactory = mongoClientImpl => async (ctx, next) => {
     await next();
 };
 
-export const getPrecomputedCollectionForWebHook = async tenant => {
+export const getPrecomputedCollectionForWebHook = async (tenant) => {
     const db = await mongoClient(tenant);
     return await precomputed(db);
 };

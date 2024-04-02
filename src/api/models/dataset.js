@@ -10,11 +10,11 @@ import { URI_FIELD_NAME, moveUriToFirstPosition } from '../../common/uris';
 import countNotUnique from './countNotUnique';
 import countNotUniqueSubresources from './countNotUniqueSubresources';
 
-export default db => {
+export default (db) => {
     const collection = db.collection('dataset');
-    collection.insertBatch = documents => {
+    collection.insertBatch = (documents) => {
         return Promise.all(
-            chunk(documents, 100).map(data => {
+            chunk(documents, 100).map((data) => {
                 const orderedData = moveUriToFirstPosition(data);
                 return collection.insertMany(orderedData, {
                     forceServerObjectId: true,
@@ -23,12 +23,8 @@ export default db => {
             }),
         );
     };
-    collection.getExcerpt = filter =>
-        collection
-            .find(filter)
-            .sort({ $natural: 1 })
-            .limit(8)
-            .toArray();
+    collection.getExcerpt = (filter) =>
+        collection.find(filter).sort({ $natural: 1 }).limit(8).toArray();
     collection.findLimitFromSkip = (limit, skip, query = {}, sortBy, sortDir) =>
         collection
             .find(query)
@@ -46,17 +42,16 @@ export default db => {
 
     collection.countNotUnique = countNotUnique(collection);
 
-    collection.countNotUniqueSubresources = countNotUniqueSubresources(
-        collection,
-    );
+    collection.countNotUniqueSubresources =
+        countNotUniqueSubresources(collection);
 
-    collection.ensureIsUnique = async fieldName =>
+    collection.ensureIsUnique = async (fieldName) =>
         (await collection.countNotUnique(fieldName)) === 0;
 
     collection.bulkUpdate = async (items, getFilter, upsert = false) => {
         if (items.length) {
             return await collection.bulkWrite(
-                items.map(item => ({
+                items.map((item) => ({
                     updateOne: {
                         filter: getFilter(item),
                         update: { $set: item },
@@ -69,13 +64,13 @@ export default db => {
 
     collection.upsertBatch = (documents, getFilter) =>
         Promise.all(
-            chunk(documents, 100).map(data =>
+            chunk(documents, 100).map((data) =>
                 collection.bulkUpdate(data, getFilter, true),
             ),
         );
 
-    collection.bulkUpsertByUri = data => {
-        const { withUri, withoutUri } = groupBy(data, item =>
+    collection.bulkUpsertByUri = (data) => {
+        const { withUri, withoutUri } = groupBy(data, (item) =>
             typeof item.uri === 'undefined' || item.uri === ''
                 ? 'withoutUri'
                 : 'withUri',
@@ -84,22 +79,22 @@ export default db => {
         return Promise.all(
             [
                 withUri &&
-                    collection.upsertBatch(withUri, item => ({
+                    collection.upsertBatch(withUri, (item) => ({
                         uri: item[URI_FIELD_NAME],
                     })),
                 withoutUri &&
                     collection.insertBatch(
                         // Unset uri that is set empty in the stream loader
                         // @TODO: Find where the uri is set to "" and delete it
-                        withoutUri.map(item => omit(item, [URI_FIELD_NAME])),
+                        withoutUri.map((item) => omit(item, [URI_FIELD_NAME])),
                     ),
-            ].filter(x => x),
+            ].filter((x) => x),
         );
     };
 
     collection.dumpAsJsonStream = async () => {
         const omitMongoId = new Transform({ objectMode: true });
-        omitMongoId._transform = function(data, enc, cb) {
+        omitMongoId._transform = function (data, enc, cb) {
             this.push(omit(data, ['_id']));
             cb();
         };
@@ -111,7 +106,7 @@ export default db => {
 
     collection.dumpAsJsonLStream = async () => {
         const omitMongoId = new Transform({ objectMode: true });
-        omitMongoId._transform = function(data, enc, cb) {
+        omitMongoId._transform = function (data, enc, cb) {
             this.push(JSON.stringify(omit(data, ['_id'])).concat('\n'));
             cb();
         };
@@ -119,7 +114,7 @@ export default db => {
         return (await collection.find({}).stream()).pipe(omitMongoId);
     };
 
-    collection.removeAttribute = async attribute =>
+    collection.removeAttribute = async (attribute) =>
         collection.update({}, { $unset: { [attribute]: 1 } }, { multi: true });
 
     collection.findBy = async (fieldName, value) => {
@@ -138,16 +133,17 @@ export default db => {
     };
 
     collection.getColumns = async () => {
-        const result = await collection.find({})
+        const result = await collection
+            .find({})
             .limit(30) // The first 30 documents are considered representative of the entire dataset.
             .toArray();
         const columns = [];
-        result.forEach(item => {
-            Object.keys(item).forEach(key => {
+        result.forEach((item) => {
+            Object.keys(item).forEach((key) => {
                 columns.push({ key, type: typeof item[key] });
             });
         });
-        return uniqWith(columns, (x, y) => (x.key === y.key));
+        return uniqWith(columns, (x, y) => x.key === y.key);
     };
 
     collection.indexColumns = async () => {
@@ -178,7 +174,7 @@ export default db => {
         }
     };
 
-    collection.deleteOne = async id =>
+    collection.deleteOne = async (id) =>
         collection.remove({ _id: new ObjectID(id) });
 
     return collection;

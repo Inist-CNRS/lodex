@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const styles = {
-    legendColor: color => ({
+    legendColor: (color) => ({
         display: 'block',
         backgroundColor: color,
         height: '1em',
@@ -29,7 +29,7 @@ const ColorScaleLegend = ({ colorScale, nullColor }) => (
                 <div>{0}</div>
             </div>
         )}
-        {colorScale.range().map(value => {
+        {colorScale.range().map((value) => {
             const [start, end] = colorScale.invertExtent(value);
             return (
                 <div key={value} style={styles.legendItem}>

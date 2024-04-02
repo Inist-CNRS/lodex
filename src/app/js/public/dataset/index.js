@@ -73,7 +73,7 @@ export default handleActions(
             formatLoading: true,
             perPage: (payload && payload.perPage) || state.perPage,
         }),
-        LOAD_FORMAT_DATA_SUCCESS: state => ({
+        LOAD_FORMAT_DATA_SUCCESS: (state) => ({
             ...state,
             formatLoading: false,
         }),
@@ -100,7 +100,7 @@ export default handleActions(
             match,
             sort: {},
         }),
-        [facetActionTypes.TOGGLE_FACET_VALUE]: state => ({
+        [facetActionTypes.TOGGLE_FACET_VALUE]: (state) => ({
             ...state,
             currentPage: 0,
         }),
@@ -123,17 +123,17 @@ export default handleActions(
     defaultState,
 );
 
-const isDatasetLoading = state => state.loading;
-const getDatasetCurrentPage = state => state.currentPage;
-const getDatasetPerPage = state => state.perPage;
-const getDataset = state => state.dataset;
-const getDatasetTotal = state => state.total;
-const getDatasetFullTotal = state => state.fullTotal;
-const isDatasetLoaded = state => state.total > 0;
-const getFilter = state => state.match;
-const getSort = state => state.sort;
-const isSaving = state => state.isSaving;
-const getFacet = state => state.facet;
+const isDatasetLoading = (state) => state.loading;
+const getDatasetCurrentPage = (state) => state.currentPage;
+const getDatasetPerPage = (state) => state.perPage;
+const getDataset = (state) => state.dataset;
+const getDatasetTotal = (state) => state.total;
+const getDatasetFullTotal = (state) => state.fullTotal;
+const isDatasetLoaded = (state) => state.total > 0;
+const getFilter = (state) => state.match;
+const getSort = (state) => state.sort;
+const isSaving = (state) => state.isSaving;
+const getFacet = (state) => state.facet;
 
 export const fromDataset = {
     isDatasetLoading,

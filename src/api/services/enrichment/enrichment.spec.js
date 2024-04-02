@@ -538,6 +538,6 @@ describe('getSourceError', () => {
         expect(deepestSourceError.sourceError).toEqual({
             message: 'Source error',
         });
-        expect(deepestSourceError.sourceChunk).toEqual('This chunk');
+        expect(deepestSourceError.sourceChunk).toBe('This chunk');
     });
 });

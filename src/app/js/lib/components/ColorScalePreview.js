@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const styles = {
-    previewColor: color => ({
+    previewColor: (color) => ({
         display: 'block',
         backgroundColor: color,
         height: '1em',
@@ -18,7 +18,7 @@ const styles = {
 
 const ColorScalePreview = ({ colorScale }) => (
     <div style={styles.preview}>
-        {colorScale.range().map(value => (
+        {colorScale.range().map((value) => (
             <div key={value} style={styles.previewColor(value)} />
         ))}
     </div>

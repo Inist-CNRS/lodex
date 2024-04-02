@@ -54,7 +54,7 @@ export default function RootAdmin() {
             headers: {
                 'X-Lodex-Tenant': 'admin',
             },
-        }).then(response => response.json());
+        }).then((response) => response.json());
     };
 
     return (

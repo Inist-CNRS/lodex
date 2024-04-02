@@ -18,7 +18,7 @@ const FormSourceCodeField = ({
 }) => {
     const [currentMode, setCurrentMode] = useState(mode);
 
-    const handleModeChange = event => {
+    const handleModeChange = (event) => {
         setCurrentMode(event.target.value);
     };
 

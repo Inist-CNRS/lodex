@@ -29,11 +29,11 @@ export const PrecomputedList = ({
     onLaunchPrecomputed,
 }) => {
     const history = useHistory();
-    const handleRowClick = params => {
+    const handleRowClick = (params) => {
         history.push(`/data/precomputed/${params.row._id}`);
     };
 
-    const handleLaunchPrecomputed = params => event => {
+    const handleLaunchPrecomputed = (params) => (event) => {
         event.stopPropagation();
         if (isPrecomputedRunning) {
             toast(polyglot.t('pending_precomputed'), {
@@ -98,7 +98,7 @@ export const PrecomputedList = ({
                         field: 'status',
                         headerName: polyglot.t('precomputed_status'),
                         flex: 3,
-                        renderCell: params =>
+                        renderCell: (params) =>
                             renderStatus(
                                 params.row.status,
                                 polyglot,
@@ -109,7 +109,7 @@ export const PrecomputedList = ({
                         field: 'run',
                         headerName: polyglot.t('run'),
                         flex: 2,
-                        renderCell: params => {
+                        renderCell: (params) => {
                             return renderRunButton(
                                 handleLaunchPrecomputed(params.row),
                                 params.row.status,
@@ -120,7 +120,7 @@ export const PrecomputedList = ({
                     },
                 ]}
                 rows={precomputedList}
-                getRowId={row => row._id}
+                getRowId={(row) => row._id}
                 autoHeight
                 width="100%"
                 onRowClick={handleRowClick}
@@ -144,12 +144,12 @@ PrecomputedList.propTypes = {
     isPrecomputedRunning: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     precomputedList: state.precomputed.precomputed,
     isPrecomputedRunning: !!fromPrecomputed
         .precomputed(state)
         .find(
-            precomputedData =>
+            (precomputedData) =>
                 precomputedData.status === IN_PROGRESS ||
                 precomputedData.status === ON_HOLD,
         ),

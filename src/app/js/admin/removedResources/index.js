@@ -32,10 +32,9 @@ export const defaultState = {
 
 export default handleActions(
     {
-        [combineActions(
-            LOAD_REMOVED_RESOURCE_PAGE,
-            RESTORE_RESOURCE,
-        )]: state => ({
+        [combineActions(LOAD_REMOVED_RESOURCE_PAGE, RESTORE_RESOURCE)]: (
+            state,
+        ) => ({
             ...state,
             loading: true,
         }),
@@ -62,16 +61,16 @@ export default handleActions(
             ...state,
             error: false,
             loading: false,
-            items: items.filter(r => r.uri !== uri),
+            items: items.filter((r) => r.uri !== uri),
         }),
     },
     defaultState,
 );
 
-export const isRemovedResourceLoading = state => state.loading;
-export const getRemovedResourceCurrentPage = state => state.currentPage;
-export const getRemovedResourceTotal = state => state.total;
-export const getRemovedResourceItems = state => state.items;
+export const isRemovedResourceLoading = (state) => state.loading;
+export const getRemovedResourceCurrentPage = (state) => state.currentPage;
+export const getRemovedResourceTotal = (state) => state.total;
+export const getRemovedResourceItems = (state) => state.items;
 
 export const selectors = {
     isRemovedResourceLoading,

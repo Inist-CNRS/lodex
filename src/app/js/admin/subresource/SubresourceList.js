@@ -19,7 +19,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const SubresourceList = ({ subresources, p: polyglot }) => {
     const history = useHistory();
-    const handleRowClick = params => {
+    const handleRowClick = (params) => {
         history.push(`/display/document/subresource/${params.row._id}`);
     };
 
@@ -65,7 +65,7 @@ export const SubresourceList = ({ subresources, p: polyglot }) => {
                         field: 'path',
                         headerName: polyglot.t('subresource_path'),
                         flex: 1,
-                        renderCell: params => {
+                        renderCell: (params) => {
                             return params.value ? params.value : '-';
                         },
                     },
@@ -73,13 +73,13 @@ export const SubresourceList = ({ subresources, p: polyglot }) => {
                         field: 'identifier',
                         headerName: polyglot.t('subresource_id'),
                         flex: 1,
-                        renderCell: params => {
+                        renderCell: (params) => {
                             return params.value ? params.value : '-';
                         },
                     },
                 ]}
                 rows={subresources}
-                getRowId={row => row._id}
+                getRowId={(row) => row._id}
                 autoHeight
                 width="100%"
                 onRowClick={handleRowClick}
@@ -101,7 +101,7 @@ SubresourceList.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     subresources: state.subresource.subresources,
 });
 

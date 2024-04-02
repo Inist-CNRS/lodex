@@ -50,13 +50,13 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
                 token,
             );
             preview = yield all(
-                lines.map(line => call(getSubresourceData, line)),
+                lines.map((line) => call(getSubresourceData, line)),
             );
 
             // if there is other transformers we have to apply them to transform the preview
             if (subresourceTransformers.length > 0) {
                 const subresourceData = preview.map(
-                    subresourceLine => subresourceLine[formData.name],
+                    (subresourceLine) => subresourceLine[formData.name],
                 );
 
                 // use the subresource transformers to transform the subresource data
@@ -68,10 +68,10 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
                 );
 
                 preview = yield all(
-                    subresourceData.map(function*(subresourceLine) {
+                    subresourceData.map(function* (subresourceLine) {
                         if (Array.isArray(subresourceLine)) {
                             const previewLine = yield all(
-                                subresourceLine.map(subresourceLineItem =>
+                                subresourceLine.map((subresourceLineItem) =>
                                     call(
                                         transformSubresource,
                                         subresourceLineItem,
@@ -80,7 +80,7 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
                             );
                             return {
                                 [formData.name]: previewLine.map(
-                                    previewLineItem =>
+                                    (previewLineItem) =>
                                         previewLineItem[formData.name],
                                 ),
                             };
@@ -97,7 +97,7 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
             );
 
             preview = yield all(
-                lines.map(line => call(transformDocument, line)),
+                lines.map((line) => call(transformDocument, line)),
             );
         }
 

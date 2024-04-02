@@ -1,7 +1,7 @@
 import { getFacetsWithoutId } from './export';
 
-describe('Export getFacetsWithoutId', function() {
-    it('Should return an object without ID', function() {
+describe('Export getFacetsWithoutId', function () {
+    it('Should return an object without ID', function () {
         const facets = {
             facet1: [
                 {
@@ -36,7 +36,7 @@ describe('Export getFacetsWithoutId', function() {
         expect(getFacetsWithoutId(facets)).toEqual(facetsWithoutId);
     });
 
-    it('Should return an empty object', function() {
+    it('Should return an empty object', function () {
         expect(getFacetsWithoutId()).toEqual({});
     });
 });

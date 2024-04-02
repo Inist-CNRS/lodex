@@ -29,8 +29,8 @@ export const getRowStyle = (index, total) => {
     return { opacity, height: 36 };
 };
 
-export const getEnrichmentsNames = enrichments => {
-    return enrichments?.map(enrichiment => enrichiment.name);
+export const getEnrichmentsNames = (enrichments) => {
+    return enrichments?.map((enrichiment) => enrichiment.name);
 };
 
 export const getColumnStyle = (enrichmentsNames, column) => {
@@ -41,7 +41,7 @@ export const getColumnStyle = (enrichmentsNames, column) => {
         : {};
 };
 
-const formatValue = value => {
+const formatValue = (value) => {
     return JSON.stringify(value);
 };
 
@@ -55,21 +55,22 @@ export const ParsingExcerptComponent = ({
     maxLines,
     subresources,
 }) => {
-    const enrichmentsNames = useMemo(() => getEnrichmentsNames(enrichments), [
-        enrichments,
-    ]);
+    const enrichmentsNames = useMemo(
+        () => getEnrichmentsNames(enrichments),
+        [enrichments],
+    );
 
     const { filter, subresourceId } = useParams();
 
     const subresource = subresources.find(
-        subresource => subresource._id === subresourceId,
+        (subresource) => subresource._id === subresourceId,
     );
 
     const subresourceData = parseValue(lines[0][subresource?.path] || '');
 
     const displayedLines = subresourceId
         ? lines
-              .map(line => parseValue(line[subresource?.path]))
+              .map((line) => parseValue(line[subresource?.path]))
               .slice(0, maxLines)
         : lines.slice(0, maxLines);
 
@@ -83,9 +84,9 @@ export const ParsingExcerptComponent = ({
           ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
         : columns;
 
-    const checkIsEnrichmentLoading = column => {
+    const checkIsEnrichmentLoading = (column) => {
         return (
-            enrichments?.find(enrichiment => enrichiment.name === column)
+            enrichments?.find((enrichiment) => enrichiment.name === column)
                 ?.status === IN_PROGRESS
         );
     };
@@ -103,7 +104,7 @@ export const ParsingExcerptComponent = ({
         >
             <TableHead>
                 <TableRow>
-                    {displayedColumns.map(column => (
+                    {displayedColumns.map((column) => (
                         <ParsingExcerptHeaderColumn
                             key={`header_${column}`}
                             column={column}
@@ -122,7 +123,7 @@ export const ParsingExcerptComponent = ({
                         key={`${line._id || index}_data_row`}
                         style={getRowStyle(index, total)}
                     >
-                        {displayedColumns.map(column => {
+                        {displayedColumns.map((column) => {
                             const showAddColumnButton =
                                 showAddFromColumn &&
                                 (index === total - 3 ||
@@ -134,7 +135,8 @@ export const ParsingExcerptComponent = ({
                                     value={formatValue(
                                         Array.isArray(line)
                                             ? line.map(
-                                                  lineItem => lineItem[column],
+                                                  (lineItem) =>
+                                                      lineItem[column],
                                               )
                                             : line[column],
                                     )}
@@ -150,7 +152,7 @@ export const ParsingExcerptComponent = ({
                                         <ParsingExcerptAddColumn
                                             key={`add_column_${column}`}
                                             name={column}
-                                            onAddColumn={name => {
+                                            onAddColumn={(name) => {
                                                 onAddField && onAddField();
                                                 handleAddColumn({
                                                     name,
@@ -188,7 +190,7 @@ ParsingExcerptComponent.defaultProps = {
     maxLines: 6,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     enrichments: fromEnrichments.enrichments(state),
     columns: fromParsing.getParsedExcerptColumns(state),
     lines: fromParsing.getExcerptLines(state),

@@ -10,6 +10,6 @@ describe('<Alert />', () => {
                 <p>foo</p>
             </Alert>,
         );
-        expect(wrapper.contains(<p>foo</p>)).toEqual(true);
+        expect(wrapper.contains(<p>foo</p>)).toBe(true);
     });
 });

@@ -18,7 +18,7 @@ describe('<EmailView />', () => {
             />,
         );
         expect(wrapper.find('Link')).toHaveLength(1);
-        expect(wrapper.prop('to')).toEqual(
+        expect(wrapper.prop('to')).toBe(
             'mailto:firstname.lastname@example.com',
         );
     });

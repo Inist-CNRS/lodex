@@ -22,12 +22,12 @@ const TextMaskCustom = forwardRef(function TextMaskCustom(props, ref) {
                 },
             ]}
             inputRef={ref}
-            onAccept={value => onChange({ target: { name, value } })}
+            onAccept={(value) => onChange({ target: { name, value } })}
         />
     );
 });
 
-const NameField = inputProps => {
+const NameField = (inputProps) => {
     const { defaultValue } = inputProps;
     return (
         <OutlinedInput

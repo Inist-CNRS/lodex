@@ -37,22 +37,22 @@ export class IstexSummaryAdmin extends Component {
         args: defaultArgs,
     };
 
-    handleSearchedField = e => {
+    handleSearchedField = (e) => {
         updateAdminArgs('searchedField', e.target.value, this.props);
     };
 
-    handleSortDir = e => {
+    handleSortDir = (e) => {
         updateAdminArgs('sortDir', e.target.value, this.props);
     };
 
-    handleYearThreshold = e =>
+    handleYearThreshold = (e) =>
         updateAdminArgs(
             'yearThreshold',
             parseInt(e.target.value, 10),
             this.props,
         );
 
-    handleDocumentSortBy = e =>
+    handleDocumentSortBy = (e) =>
         updateAdminArgs('documentSortBy', e.target.value, this.props);
 
     render() {
@@ -71,7 +71,7 @@ export class IstexSummaryAdmin extends Component {
                     onChange={this.handleSearchedField}
                     className="searched_field"
                 >
-                    {SEARCHED_FIELD_VALUES.map(value => (
+                    {SEARCHED_FIELD_VALUES.map((value) => (
                         <MenuItem key={value} value={value}>
                             {polyglot.t(value)}
                         </MenuItem>
@@ -85,7 +85,7 @@ export class IstexSummaryAdmin extends Component {
                     onChange={this.handleSortDir}
                     className="year_sort_dir"
                 >
-                    {SORT_YEAR_VALUES.map(value => (
+                    {SORT_YEAR_VALUES.map((value) => (
                         <MenuItem key={value} value={value}>
                             {polyglot.t(value)}
                         </MenuItem>

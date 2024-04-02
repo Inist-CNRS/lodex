@@ -19,7 +19,7 @@ export const defaultState = {
 
 export default handleActions(
     {
-        TOGGLE_LOGIN: state => ({
+        TOGGLE_LOGIN: (state) => ({
             ...state,
             showModal: !state.showModal,
         }),
@@ -29,13 +29,13 @@ export default handleActions(
             token: token,
             role,
         }),
-        LOGOUT: state => ({
+        LOGOUT: (state) => ({
             ...state,
             showModal: true,
             token: null,
             role: null,
         }),
-        SIGNOUT: state => ({
+        SIGNOUT: (state) => ({
             ...state,
             showModal: false,
             token: null,
@@ -51,11 +51,11 @@ export const loginSuccess = createAction(LOGIN_SUCCESS);
 export const logout = createAction(LOGOUT);
 export const signOut = createAction(SIGNOUT);
 
-export const isAdmin = state => state.role === ADMIN_ROLE;
-export const getRole = state => state.role || 'not logged';
-export const getToken = state => state.token;
-export const getCookie = state => state.cookie;
-export const isUserModalShown = state => state.showModal;
+export const isAdmin = (state) => state.role === ADMIN_ROLE;
+export const getRole = (state) => state.role || 'not logged';
+export const getToken = (state) => state.token;
+export const getCookie = (state) => state.cookie;
+export const isUserModalShown = (state) => state.showModal;
 
 export const getRequest = createSelector(
     getToken,
@@ -104,18 +104,18 @@ export const getLoginRequest = (state, credentials) =>
         method: 'POST',
     });
 
-export const getLogoutRequest = state =>
+export const getLogoutRequest = (state) =>
     getRequest(state, {
         url: '/api/logout',
         method: 'POST',
     });
 
-export const getLoadSubresourcesRequest = state =>
+export const getLoadSubresourcesRequest = (state) =>
     getRequest(state, {
         url: '/api/subresource',
     });
 
-export const getLoadEnrichmentsRequest = state =>
+export const getLoadEnrichmentsRequest = (state) =>
     getRequest(state, {
         url: '/api/enrichment',
     });
@@ -160,13 +160,13 @@ export const getDeleteEnrichmentRequest = (state, id) =>
         method: 'DELETE',
     });
 
-export const getConfigTenantAvailableThemeRequest = state =>
+export const getConfigTenantAvailableThemeRequest = (state) =>
     getRequest(state, {
         url: '/api/themes',
         method: 'GET',
     });
 
-export const getConfigTenantRequest = state =>
+export const getConfigTenantRequest = (state) =>
     getRequest(state, {
         url: `/api/config-tenant`,
         method: 'GET',
@@ -179,7 +179,7 @@ export const getUpdateConfigTenantRequest = (state, configTenant) =>
         body: configTenant,
     });
 
-export const getLoadPrecomputedRequest = state =>
+export const getLoadPrecomputedRequest = (state) =>
     getRequest(state, {
         url: '/api/precomputed',
     });
@@ -230,7 +230,7 @@ export const getDeleteSubresourceRequest = (state, id) =>
         method: 'DELETE',
     });
 
-export const getLoadFieldRequest = state =>
+export const getLoadFieldRequest = (state) =>
     getRequest(state, {
         url: '/api/field',
     });
@@ -277,18 +277,18 @@ export const getRemoveFieldRequest = (state, { _id }) =>
         method: 'DELETE',
     });
 
-export const getLoadParsingResultRequest = state =>
+export const getLoadParsingResultRequest = (state) =>
     getRequest(state, {
         url: '/api/parsing',
     });
 
-export const getPublishRequest = state =>
+export const getPublishRequest = (state) =>
     getRequest(state, {
         url: '/api/publish',
         method: 'POST',
     });
 
-export const getClearPublishedRequest = state =>
+export const getClearPublishedRequest = (state) =>
     getRequest(state, {
         url: '/api/publish',
         method: 'DELETE',
@@ -330,7 +330,7 @@ export const getLoadDatasetPageRequest = (state, params = {}) => {
     });
 };
 
-export const getLoadPublicationRequest = state =>
+export const getLoadPublicationRequest = (state) =>
     getRequest(state, {
         url: '/api/publication',
     });
@@ -374,7 +374,7 @@ export const putUpdateDataset = (state, data) =>
         body: data,
     });
 
-export const getGetDatasetColumnsRequest = state => {
+export const getGetDatasetColumnsRequest = (state) => {
     return getRequest(state, {
         url: `/api/dataset/columns`,
         method: 'GET',
@@ -388,13 +388,13 @@ export const getDeleteDatasetRowRequest = (state, id) => {
     });
 };
 
-export const getClearDatasetRequest = state =>
+export const getClearDatasetRequest = (state) =>
     getRequest(state, {
         url: '/api/dataset',
         method: 'DELETE',
     });
 
-export const getDumpDatasetRequest = state =>
+export const getDumpDatasetRequest = (state) =>
     getRequest(state, {
         url: '/api/dump',
         method: 'GET',
@@ -414,12 +414,12 @@ export const getCreateResourceRequest = (state, data) =>
         body: data,
     });
 
-export const getExportFieldsRequest = state =>
+export const getExportFieldsRequest = (state) =>
     getRequest(state, {
         url: '/api/field/export',
     });
 
-export const getExportFieldsReadyRequest = state =>
+export const getExportFieldsReadyRequest = (state) =>
     getRequest(state, {
         url: '/api/field/export/ready',
     });
@@ -444,12 +444,12 @@ export const getChangeFieldStatusRequest = (state, { uri, field, status }) =>
         )}/change_contribution_status/${field}/${status}`,
     });
 
-export const getLoadExportersRequest = state =>
+export const getLoadExportersRequest = (state) =>
     getRequest(state, {
         url: '/api/export',
     });
 
-export const getClearUploadRequest = state =>
+export const getClearUploadRequest = (state) =>
     getRequest(state, {
         method: 'DELETE',
         url: '/api/upload/clear',
@@ -547,31 +547,31 @@ export const getReorderFieldRequest = (state, fields) =>
         },
     });
 
-export const getProgressRequest = state =>
+export const getProgressRequest = (state) =>
     getRequest(state, {
         method: 'GET',
         url: '/api/progress',
     });
 
-export const getBreadcrumbRequest = state =>
+export const getBreadcrumbRequest = (state) =>
     getRequest(state, {
         method: 'GET',
         url: '/api/breadcrumb',
     });
 
-export const getMenuRequest = state =>
+export const getMenuRequest = (state) =>
     getRequest(state, {
         method: 'GET',
         url: '/api/menu',
     });
 
-export const getDisplayConfigRequest = state =>
+export const getDisplayConfigRequest = (state) =>
     getRequest(state, {
         method: 'GET',
         url: '/api/displayConfig',
     });
 
-export const getLoadLoadersRequest = state =>
+export const getLoadLoadersRequest = (state) =>
     getRequest(state, {
         url: '/api/loader',
     });
@@ -588,7 +588,7 @@ export const getCancelJobRequest = (state, queue, subLabel) =>
         body: { subLabel },
     });
 
-export const getClearJobsRequest = state =>
+export const getClearJobsRequest = (state) =>
     getRequest(state, {
         url: `/api/job/clear`,
         method: 'POST',
@@ -607,13 +607,13 @@ export const postDuplicateField = (state, data) =>
         body: data,
     });
 
-export const clearModelRequest = state =>
+export const clearModelRequest = (state) =>
     getRequest(state, {
         url: '/api/field',
         method: 'DELETE',
     });
 
-export const getThemeRequest = state =>
+export const getThemeRequest = (state) =>
     getRequest(state, {
         url: '/api/themes/current',
         method: 'GET',
@@ -639,7 +639,7 @@ export const getPreviewPrecomputedDataRequest = (state, id) => {
     });
 };
 
-export const getExportHiddenResources = state => {
+export const getExportHiddenResources = (state) => {
     return getRequest(state, {
         url: '/api/hiddenResource/export',
         method: 'GET',

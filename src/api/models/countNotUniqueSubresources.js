@@ -1,10 +1,10 @@
 import memoize from 'lodash/memoize';
 
-const countNotUniqueSubresources = collection => async subresources => {
+const countNotUniqueSubresources = (collection) => async (subresources) => {
     const count = await collection.count();
 
     const countDiffBySubresource = await Object.values(subresources)
-        .filter(x => x)
+        .filter((x) => x)
         .reduce(async (acc, subresource) => {
             const map = await acc;
 
@@ -27,4 +27,4 @@ const countNotUniqueSubresources = collection => async subresources => {
     return countDiffBySubresource;
 };
 
-export default collection => memoize(countNotUniqueSubresources(collection));
+export default (collection) => memoize(countNotUniqueSubresources(collection));

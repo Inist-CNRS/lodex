@@ -19,8 +19,10 @@ ExportMenuItem.propTypes = {
 
 export default compose(
     withHandlers({
-        handleClick: ({ onClick, uri, exportID }) => () =>
-            onClick({ uri, exportID }),
+        handleClick:
+            ({ onClick, uri, exportID }) =>
+            () =>
+                onClick({ uri, exportID }),
     }),
     translate,
 )(ExportMenuItem);

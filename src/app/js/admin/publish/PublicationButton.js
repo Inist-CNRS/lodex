@@ -9,7 +9,7 @@ import compose from 'recompose/compose';
 import { ClearPublishedButton } from '../clear/ClearPublishedButton';
 import { RepublishAndClearButton } from './RepublishAndClearButton';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     invalidFields: fromFields.getInvalidFields(state),
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
     isEnableAutoPublication: fromConfigTenant.isEnableAutoPublication(state),

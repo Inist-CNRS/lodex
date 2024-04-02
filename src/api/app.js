@@ -69,12 +69,12 @@ const initQueueAndBullDashboard = async () => {
     const tenantCollection = await tenant(adminDb);
 
     const tenants = await tenantCollection.findAll();
-    tenants.forEach(tenant => {
+    tenants.forEach((tenant) => {
         const queue = createWorkerQueue(tenant.name, 1);
         bullBoard.addDashboardQueue(tenant.name, queue);
     });
     // if tenant `default` is not in the database, we add it
-    if (!tenants.find(tenant => tenant.name === DEFAULT_TENANT)) {
+    if (!tenants.find((tenant) => tenant.name === DEFAULT_TENANT)) {
         await tenantCollection.create({
             name: DEFAULT_TENANT,
             description: 'Instance par défaut',
@@ -115,7 +115,7 @@ app.use(async (ctx, next) => {
         }
 
         const filteredActiveJobs = activeJobs.filter(
-            job => job.data.tenant === ctx.tenant,
+            (job) => job.data.tenant === ctx.tenant,
         );
         ctx.job = filteredActiveJobs[0];
     } catch (e) {
@@ -145,17 +145,17 @@ app.use(async (ctx, next) => {
 // Prometheus metrics
 const meters = Meter(MeterConfig, { loadStandards: true, loadDefaults: true });
 app.use(meters.middleware); // The middleware that makes the meters available
-app.use(route.get('/metrics', ctx => (ctx.body = meters.print())));
+app.use(route.get('/metrics', (ctx) => (ctx.body = meters.print())));
 
 app.use(tracer());
 app.use(access());
-app.on(eventAccess, ctx => {
+app.on(eventAccess, (ctx) => {
     meters.automark(ctx);
 });
-app.on(eventTrace, ctx => meters.automark(ctx));
+app.on(eventTrace, (ctx) => meters.automark(ctx));
 app.on(eventError, () => meters.errorRate.mark(1));
 
-app.use(function*(next) {
+app.use(function* (next) {
     try {
         yield next;
     } catch (err) {

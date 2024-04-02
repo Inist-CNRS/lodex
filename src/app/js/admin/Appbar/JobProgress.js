@@ -75,7 +75,7 @@ const styles = {
     },
 };
 
-const JobProgressComponent = props => {
+const JobProgressComponent = (props) => {
     const {
         hasPublishedDataset,
         p: polyglot,
@@ -97,7 +97,7 @@ const JobProgressComponent = props => {
         const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         const dbName = sessionStorage.getItem('lodex-dbName');
 
-        socket.on(`${dbName}_${tenant}-progress`, data => {
+        socket.on(`${dbName}_${tenant}-progress`, (data) => {
             data.isJobProgress =
                 data.status !== PENDING &&
                 (data.type === 'enricher' ||
@@ -110,7 +110,7 @@ const JobProgressComponent = props => {
             }
         });
 
-        socket.on(`${dbName}_${tenant}-publisher`, data => {
+        socket.on(`${dbName}_${tenant}-publisher`, (data) => {
             if (data.success) {
                 handlePublishSuccess();
                 setProgress();
@@ -129,7 +129,7 @@ const JobProgressComponent = props => {
             }
         });
 
-        socket.on(`${dbName}_${tenant}-import`, data => {
+        socket.on(`${dbName}_${tenant}-import`, (data) => {
             if (!data.isImporting && data.success) {
                 loadParsingResult();
                 setHasLoadedParsingResult(false);
@@ -151,7 +151,7 @@ const JobProgressComponent = props => {
             }
         });
 
-        socket.on(`${dbName}_${tenant}-enricher`, data => {
+        socket.on(`${dbName}_${tenant}-enricher`, (data) => {
             if (!data.isEnriching) {
                 loadEnrichments();
             }
@@ -167,7 +167,7 @@ const JobProgressComponent = props => {
             }
         });
 
-        socket.on(`${dbName}_${tenant}-precomputer`, data => {
+        socket.on(`${dbName}_${tenant}-precomputer`, (data) => {
             if (!data.isPrecomputing) {
                 loadPrecomputed();
             }
@@ -323,7 +323,7 @@ JobProgressComponent.propTypes = {
     loadPrecomputed: PropTypes.func.isRequired,
 };
 
-const getTitle = type => {
+const getTitle = (type) => {
     switch (type) {
         case 'publisher':
             return 'cancelPublicationTitle';
@@ -336,7 +336,7 @@ const getTitle = type => {
     }
 };
 
-const getContent = type => {
+const getContent = (type) => {
     switch (type) {
         case 'publisher':
             return 'cancelPublicationContent';
@@ -349,12 +349,12 @@ const getContent = type => {
     }
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 const mapDispatchToProps = {
     handlePublishSuccess: () => publishSuccess(),
-    handlePublishError: error => publishError(error),
+    handlePublishError: (error) => publishError(error),
     handleCancelPublication: () => publicationCleared(),
     loadParsingResult,
     handleRepublish: async () => {

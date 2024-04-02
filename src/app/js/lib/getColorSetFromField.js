@@ -2,12 +2,12 @@ import get from 'lodash/get';
 import memoize from 'lodash/memoize';
 
 export default memoize(
-    field => {
+    (field) => {
         const colors = get(field, 'format.args.colors', '');
         return colors
             .split(/[^\w]/)
-            .filter(x => x.length > 0)
-            .map(x => `#${x}`);
+            .filter((x) => x.length > 0)
+            .map((x) => `#${x}`);
     },
-    field => get(field, 'format.args.colors', ''),
+    (field) => get(field, 'format.args.colors', ''),
 );

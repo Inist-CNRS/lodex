@@ -44,7 +44,7 @@ class RessourcesGridAdmin extends Component {
         args: defaultArgs,
     };
 
-    handleWidth = spaceWidth => {
+    handleWidth = (spaceWidth) => {
         updateAdminArgs('spaceWidth', spaceWidth, this.props);
     };
 
@@ -62,7 +62,7 @@ class RessourcesGridAdmin extends Component {
             this.props,
         );
 
-    handlePageSize = e => {
+    handlePageSize = (e) => {
         const { args, onChange } = this.props;
         const pageSize = parseInt(e.target.value, 10);
         onChange({
@@ -74,14 +74,14 @@ class RessourcesGridAdmin extends Component {
         });
     };
 
-    handleSummarySize = e => {
+    handleSummarySize = (e) => {
         this.props.onChange({
             ...this.props.args,
             summarySize: parseInt(e.target.value),
         });
     };
 
-    handleTitleSize = e => {
+    handleTitleSize = (e) => {
         this.props.onChange({
             ...this.props.args,
             titleSize: parseInt(e.target.value),
@@ -105,7 +105,7 @@ class RessourcesGridAdmin extends Component {
                     fullWidth
                     select
                     label={polyglot.t('list_format_select_image_width')}
-                    onChange={e => this.handleWidth(e.target.value)}
+                    onChange={(e) => this.handleWidth(e.target.value)}
                     value={spaceWidth}
                 >
                     <MenuItem value="10%">{polyglot.t('ten_percent')}</MenuItem>

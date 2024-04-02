@@ -10,9 +10,7 @@ const useTheme = () => {
     const [theme, setTheme] = useState(customTheme);
 
     useEffect(() => {
-        themeLoader()
-            .then(setTheme)
-            .catch(); // Catch error and do nothing with it
+        themeLoader().then(setTheme).catch(); // Catch error and do nothing with it
     }, []);
 
     return theme;

@@ -1,1 +1,1 @@
-export default field => field.name.toLowerCase();
+export default (field) => field.name.toLowerCase();

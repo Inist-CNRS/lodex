@@ -22,12 +22,12 @@ class TrelloTimelineAdmin extends Component {
         args: defaultArgs,
     };
 
-    handleToken = trelloToken => {
+    handleToken = (trelloToken) => {
         const newArgs = { ...this.props.args, trelloToken };
         this.props.onChange(newArgs);
     };
 
-    handleKey = trelloKey => {
+    handleKey = (trelloKey) => {
         const newArgs = { ...this.props.args, trelloKey };
         this.props.onChange(newArgs);
     };
@@ -38,13 +38,13 @@ class TrelloTimelineAdmin extends Component {
             <FormatDataParamsFieldSet>
                 <TextField
                     label="Trello key"
-                    onChange={e => this.handleKey(e.target.value)}
+                    onChange={(e) => this.handleKey(e.target.value)}
                     value={trelloKey}
                     sx={{ flexGrow: 1 }}
                 />
                 <TextField
                     label="Trello Token"
-                    onChange={e => this.handleToken(e.target.value)}
+                    onChange={(e) => this.handleToken(e.target.value)}
                     value={trelloToken}
                     sx={{ flexGrow: 1 }}
                 />

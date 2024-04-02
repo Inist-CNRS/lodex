@@ -12,19 +12,19 @@ export default (data, reverse) => {
     const max = Number(ascendingHits.slice(-1)[0].name);
     const roundedMax = Math.floor(max / 10) * 10 + 10;
 
-    const emptyBeforeYears = range(roundedMin, min).map(name => ({
+    const emptyBeforeYears = range(roundedMin, min).map((name) => ({
         name,
         count: 0,
     }));
 
-    const emptyAfterYears = range(max + 1, roundedMax).map(name => ({
+    const emptyAfterYears = range(max + 1, roundedMax).map((name) => ({
         name,
         count: 0,
     }));
 
     const years = [...emptyBeforeYears, ...ascendingHits, ...emptyAfterYears];
 
-    const decades = chunk(years, 10).map(yearList => {
+    const decades = chunk(years, 10).map((yearList) => {
         const decadeMin = Number(yearList[0].name);
         const decadeMax = Number(yearList.slice(-1)[0].name);
         return yearList.reduce(

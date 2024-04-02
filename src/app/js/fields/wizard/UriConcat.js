@@ -95,7 +95,7 @@ UriConcatComponent.defaultProps = {
     separator: '',
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const transformers = formValueSelector(FIELD_FORM_NAME)(
         state,
         'transformers',
@@ -122,55 +122,61 @@ const mapStateToProps = state => {
 export default compose(
     connect(mapStateToProps),
     withHandlers({
-        handleSelect: ({ onChange }) => () => {
-            onChange({
-                operation: 'CONCAT_URI',
-                args: [
-                    {
-                        name: 'separator',
-                        type: 'string',
-                        value: '',
-                    },
-                    {
-                        name: 'column',
-                        type: 'column',
-                        value: '',
-                    },
-                    {
-                        name: 'column',
-                        type: 'column',
-                        value: '',
-                    },
-                ],
-            });
-        },
-        handleChange: ({ onChange, args }) => (value, event, key, index) => {
-            onChange({
-                operation: 'CONCAT_URI',
-                args: [
-                    ...args.slice(0, index + 1),
-                    {
-                        name: 'column',
-                        type: 'column',
-                        value,
-                    },
-                    ...args.slice(index + 2),
-                ],
-            });
-        },
-        handleSeparatorChange: ({ onChange, args }) => event => {
-            onChange({
-                operation: 'CONCAT_URI',
-                args: [
-                    {
-                        name: 'separator',
-                        type: 'string',
-                        value: event.target.value,
-                    },
-                    ...args.slice(1),
-                ],
-            });
-        },
+        handleSelect:
+            ({ onChange }) =>
+            () => {
+                onChange({
+                    operation: 'CONCAT_URI',
+                    args: [
+                        {
+                            name: 'separator',
+                            type: 'string',
+                            value: '',
+                        },
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value: '',
+                        },
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value: '',
+                        },
+                    ],
+                });
+            },
+        handleChange:
+            ({ onChange, args }) =>
+            (value, event, key, index) => {
+                onChange({
+                    operation: 'CONCAT_URI',
+                    args: [
+                        ...args.slice(0, index + 1),
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value,
+                        },
+                        ...args.slice(index + 2),
+                    ],
+                });
+            },
+        handleSeparatorChange:
+            ({ onChange, args }) =>
+            (event) => {
+                onChange({
+                    operation: 'CONCAT_URI',
+                    args: [
+                        {
+                            name: 'separator',
+                            type: 'string',
+                            value: event.target.value,
+                        },
+                        ...args.slice(1),
+                    ],
+                });
+            },
         handleAddColumn: ({ onChange, args }) => {
             onChange({
                 operation: 'CONCAT_URI',
@@ -184,12 +190,17 @@ export default compose(
                 ],
             });
         },
-        handleRemoveColumn: ({ onChange, args }) => index => {
-            onChange({
-                operation: 'CONCAT_URI',
-                args: [...args.slice(0, index + 1), ...args.slice(index + 2)],
-            });
-        },
+        handleRemoveColumn:
+            ({ onChange, args }) =>
+            (index) => {
+                onChange({
+                    operation: 'CONCAT_URI',
+                    args: [
+                        ...args.slice(0, index + 1),
+                        ...args.slice(index + 2),
+                    ],
+                });
+            },
     }),
     translate,
 )(UriConcatComponent);

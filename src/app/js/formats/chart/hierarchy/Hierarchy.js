@@ -120,16 +120,16 @@ class Hierarchy extends PureComponent {
             // Setting up a way to handle the data
             this.tree = d3
                 .cluster() // This D3 API method setup the Dendrogram elements position.
-                .separation(function(a, b) {
+                .separation(function (a, b) {
                     return a.parent == b.parent ? 3 : 4;
                 }); // define separation ratio between siblings
 
             let stratify = d3
                 .stratify() // This D3 API method gives cvs file flat data array dimensions.
-                .id(function(d) {
+                .id(function (d) {
                     return d.target;
                 })
-                .parentId(function(d) {
+                .parentId(function (d) {
                     return d.source;
                 });
 
@@ -142,7 +142,7 @@ class Hierarchy extends PureComponent {
                     myData = this.addRootElements(treeData);
                     this.root = stratify(myData);
                     // collpsed all nodes
-                    this.root.children.forEach(d =>
+                    this.root.children.forEach((d) =>
                         d.children.forEach(this.collapse),
                     );
 
@@ -163,9 +163,7 @@ class Hierarchy extends PureComponent {
             }
 
             let current = this.divContainer.current;
-            let gBbox = this.g()
-                .node()
-                .getBBox();
+            let gBbox = this.g().node().getBBox();
 
             if (
                 current.clientWidth / gBbox.width <
@@ -194,8 +192,8 @@ class Hierarchy extends PureComponent {
             const maxWeight = d3.max(
                 this.root
                     .descendants()
-                    .filter(d => !d.children && !d._children),
-                function(d) {
+                    .filter((d) => !d.children && !d._children),
+                function (d) {
                     return d.data.weight;
                 },
             );
@@ -212,13 +210,13 @@ class Hierarchy extends PureComponent {
 
             this.tree(this.root); // d3.cluster()
             let maxHeightInTree = 0;
-            this.root.descendants().forEach(d => {
+            this.root.descendants().forEach((d) => {
                 if (maxHeightInTree < d.height) {
                     maxHeightInTree = d.height;
                 }
             });
 
-            this.root.descendants().forEach(d => {
+            this.root.descendants().forEach((d) => {
                 d.y = d.x;
                 if (d.height > 0) {
                     d.x = (d.depth / maxHeightInTree) * width;
@@ -236,11 +234,11 @@ class Hierarchy extends PureComponent {
                         .descendants()
                         .slice(1)
                         .filter(
-                            d =>
+                            (d) =>
                                 !d.parent.data.isFakeNode &&
                                 !d.parent.isCollapsedNode,
                         ),
-                    function(d) {
+                    function (d) {
                         return d.id;
                     },
                 );
@@ -249,7 +247,7 @@ class Hierarchy extends PureComponent {
             link.exit().remove();
 
             // update remaining link
-            link.attr('d', function(d) {
+            link.attr('d', function (d) {
                 return (
                     'M' +
                     d.x +
@@ -274,7 +272,7 @@ class Hierarchy extends PureComponent {
             link.enter()
                 .append('path')
                 .attr('class', `${css(styles.link)}`)
-                .attr('d', function(d) {
+                .attr('d', function (d) {
                     return (
                         'M' +
                         d.x +
@@ -300,10 +298,10 @@ class Hierarchy extends PureComponent {
             let node = this.g()
                 .selectAll(`.${css(styles.node)}`)
                 .data(
-                    this.root.descendants().filter(d => {
+                    this.root.descendants().filter((d) => {
                         return !d.data.isFakeNode; // remove fake node (ie: fakeRoot and fake children when collapsed)
                     }),
-                    function(d) {
+                    function (d) {
                         return d.id;
                     },
                 );
@@ -312,24 +310,24 @@ class Hierarchy extends PureComponent {
             node.exit().remove();
 
             // udpate remaining nodes
-            node.attr('transform', function(d) {
+            node.attr('transform', function (d) {
                 return 'translate(' + d.x + ',' + d.y + ')';
             });
 
             let nodeLeafG = node
-                .filter(function(d) {
+                .filter(function (d) {
                     return !d.children && !d._children;
                 })
                 .selectAll('g');
-            nodeLeafG.select('rect').attr('width', function(d) {
+            nodeLeafG.select('rect').attr('width', function (d) {
                 return xScale(d.data.weight);
             });
             nodeLeafG
                 .select('text')
-                .attr('width', function(d) {
+                .attr('width', function (d) {
                     return xScale(d.data.weight) - 8;
                 })
-                .text(function(d) {
+                .text(function (d) {
                     return d.id;
                 });
 
@@ -337,7 +335,7 @@ class Hierarchy extends PureComponent {
             let nodeEnter = node
                 .enter()
                 .append('g')
-                .attr('class', function(d) {
+                .attr('class', function (d) {
                     return (
                         `${css(styles.node)}` +
                         (d.children || d._children
@@ -346,10 +344,10 @@ class Hierarchy extends PureComponent {
                         (d._children ? ' node--collapsed' : '')
                     );
                 })
-                .on('click', d => {
+                .on('click', (d) => {
                     this.click(d, this.tree);
                 })
-                .attr('transform', function(d) {
+                .attr('transform', function (d) {
                     return 'translate(' + d.x + ',' + d.y + ')';
                 });
             nodeEnter
@@ -358,7 +356,7 @@ class Hierarchy extends PureComponent {
                 .attr('r', 4)
                 .attr('fill', color);
 
-            let nodeInternal = nodeEnter.filter(function(d) {
+            let nodeInternal = nodeEnter.filter(function (d) {
                 return d.children || d._children;
             });
             let currentId = '';
@@ -367,11 +365,11 @@ class Hierarchy extends PureComponent {
                 .append('rect')
                 .attr('x', -5 - this.props.params.labelOffset)
                 .attr('y', -22)
-                .attr('width', d => {
+                .attr('width', (d) => {
                     const label = this.getLabelAccordingChildren(d);
                     return label.length * 8;
                 })
-                .attr('id', d => {
+                .attr('id', (d) => {
                     return `id_${d.id.split(' ').join('_')}_${
                         this.uniqueId
                     }_rect`;
@@ -383,10 +381,10 @@ class Hierarchy extends PureComponent {
             nodeInternal
                 .append('text')
                 .style('text-anchor', 'start')
-                .text(d => {
+                .text((d) => {
                     return this.getLabelAccordingChildren(d);
                 })
-                .attr('id', d => {
+                .attr('id', (d) => {
                     currentId = `id_${d.id.split(' ').join('_')}_${
                         this.uniqueId
                     }`;
@@ -397,7 +395,7 @@ class Hierarchy extends PureComponent {
 
             // Setup G for every leaf datum. (rectangle)
             let leafNodeGEnter = nodeEnter
-                .filter(function(d) {
+                .filter(function (d) {
                     return !d.children && !d._children;
                 })
                 .append('g')
@@ -406,7 +404,7 @@ class Hierarchy extends PureComponent {
             leafNodeGEnter
                 .append('rect')
                 .attr('class', '')
-                .style('fill', function() {
+                .style('fill', function () {
                     return color;
                 })
                 .attr('width', 2)
@@ -415,18 +413,18 @@ class Hierarchy extends PureComponent {
                 .attr('ry', 2)
                 .transition()
                 .duration(500)
-                .attr('width', function(d) {
+                .attr('width', function (d) {
                     return xScale(d.data.weight);
                 });
             leafNodeGEnter
                 .append('text')
                 .style('text-anchor', 'start')
-                .text(function(d) {
+                .text(function (d) {
                     return d.id;
                 })
                 .attr('dy', -5)
                 .attr('x', 8)
-                .attr('width', function(d) {
+                .attr('width', function (d) {
                     return xScale(d.data.weight) - 8;
                 });
 
@@ -492,9 +490,7 @@ class Hierarchy extends PureComponent {
 
     handleMouseOutInternalNode(d, i, nodes) {
         this.tooltip().style('opacity', 0);
-        d3.select(nodes[i])
-            .select('circle')
-            .attr('r', 4);
+        d3.select(nodes[i]).select('circle').attr('r', 4);
     }
 
     collapse(d) {
@@ -520,13 +516,13 @@ class Hierarchy extends PureComponent {
         }
         d3.select(
             `[id="id_${d.id.split(' ').join('_')}_${this.uniqueId}"]`,
-        ).text(d => {
+        ).text((d) => {
             return this.getLabelAccordingChildren(d);
         });
 
         d3.select(
             `[id="id_${d.id.split(' ').join('_')}_${this.uniqueId}_rect"]`,
-        ).attr('width', d => {
+        ).attr('width', (d) => {
             const label = this.getLabelAccordingChildren(d);
             return label.length * 8;
         });
@@ -605,7 +601,7 @@ class Hierarchy extends PureComponent {
         if (data) {
             for (let rootName of rootNodesList) {
                 const rootNodePos = data
-                    .map(e => {
+                    .map((e) => {
                         return e.target;
                     })
                     .indexOf(rootName);
@@ -692,11 +688,9 @@ class Hierarchy extends PureComponent {
             this.zoom();
         });
 
-        this.svg()
-            .call(zoomListener)
-            .call(zoomListener.transform, transform);
+        this.svg().call(zoomListener).call(zoomListener.transform, transform);
 
-        this.root.children.forEach(d => {
+        this.root.children.forEach((d) => {
             d.children.forEach(this.collapse);
         });
         this.update();

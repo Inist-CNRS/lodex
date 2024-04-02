@@ -29,10 +29,7 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .append('g')
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-        const y = d3
-            .scaleLinear()
-            .range([chartHeight, 0])
-            .domain([0, 100]);
+        const y = d3.scaleLinear().range([chartHeight, 0]).domain([0, 100]);
 
         const x = d3
             .scalePoint()
@@ -40,7 +37,7 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .padding(1)
             .domain(fieldNames);
 
-        const path = d => {
+        const path = (d) => {
             return d3.line()(
                 fieldNames.map((fieldName, i) => [
                     x(fieldName),
@@ -82,8 +79,8 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .style('fill', 'none')
             .style('opacity', '0.5')
             .attr('data-html', true)
-            .attr('data-tip', d => d.label)
-            .on('click', d => d.onClick())
+            .attr('data-tip', (d) => d.label)
+            .on('click', (d) => d.onClick())
             .on('mouseover', highlight)
             .on('mouseleave', doNotHighlight);
 
@@ -92,20 +89,15 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .data(fieldNames)
             .enter()
             .append('g')
-            .attr('transform', d => 'translate(' + x(d) + ')')
-            .each(function() {
-                d3.select(this).call(
-                    d3
-                        .axisLeft()
-                        .ticks(5)
-                        .scale(y),
-                );
+            .attr('transform', (d) => 'translate(' + x(d) + ')')
+            .each(function () {
+                d3.select(this).call(d3.axisLeft().ticks(5).scale(y));
             })
             // Add axes title
             .append('text')
             .style('text-anchor', 'middle')
             .attr('y', -9)
-            .text(d => (isLongText(d, 20) ? getShortText(d, 20) : d))
+            .text((d) => (isLongText(d, 20) ? getShortText(d, 20) : d))
             .style('fill', 'black');
 
         ReactTooltip.rebuild();

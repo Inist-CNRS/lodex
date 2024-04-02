@@ -10,7 +10,7 @@ const styles = {
     },
 };
 
-export default fetchProps => Component =>
+export default (fetchProps) => (Component) =>
     class FetchPaginatedDataForComponent extends React.Component {
         state = {
             isLoading: !this.props.initialData,
@@ -54,13 +54,13 @@ export default fetchProps => Component =>
                 },
                 () =>
                     fetchProps({ props, page, perPage })
-                        .then(data =>
+                        .then((data) =>
                             this.setState({
                                 data,
                                 isLoading: false,
                             }),
                         )
-                        .catch(error =>
+                        .catch((error) =>
                             this.setState({
                                 error: error.message,
                                 isLoading: false,

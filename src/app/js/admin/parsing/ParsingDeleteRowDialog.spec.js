@@ -23,7 +23,7 @@ describe('ParsingDeleteRowDialog component', () => {
         isOpen = true;
         selectedRowForDelete = { _id: '1', uri: 'dataset.csv' };
         polyglot = {
-            t: key => key,
+            t: (key) => key,
         };
     });
 

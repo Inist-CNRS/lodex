@@ -22,15 +22,15 @@ export const DatasetOverviewSelectComponent = ({
 }) => {
     const [datasetTitle, datasetDescription] = useMemo(() => {
         const datasetTitleField = fields.find(
-            field => field.overview === overview.DATASET_TITLE,
+            (field) => field.overview === overview.DATASET_TITLE,
         );
         const datasetDescriptionField = fields.find(
-            field => field.overview === overview.DATASET_DESCRIPTION,
+            (field) => field.overview === overview.DATASET_DESCRIPTION,
         );
         return [datasetTitleField?._id, datasetDescriptionField?._id];
     }, [fields]);
 
-    const handleDatasetTitleChange = async event => {
+    const handleDatasetTitleChange = async (event) => {
         const { value: _id } = event.target;
         await fieldApi.patchOverview({
             _id,
@@ -39,7 +39,7 @@ export const DatasetOverviewSelectComponent = ({
         loadField();
     };
 
-    const handleDatasetDescriptionChange = async event => {
+    const handleDatasetDescriptionChange = async (event) => {
         const { value: _id } = event.target;
         await fieldApi.patchOverview({
             _id,
@@ -57,16 +57,16 @@ export const DatasetOverviewSelectComponent = ({
                 onChange={handleDatasetTitleChange}
                 sx={{ minWidth: 220 }}
                 SelectProps={{
-                    renderValue: option => (
+                    renderValue: (option) => (
                         <FieldRepresentation
-                            field={fields.find(f => f._id === option)}
+                            field={fields.find((f) => f._id === option)}
                             shortMode
                         />
                     ),
                 }}
             >
                 <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
-                {fields.map(field => (
+                {fields.map((field) => (
                     <MenuItem
                         sx={{
                             display: 'flex',
@@ -87,16 +87,16 @@ export const DatasetOverviewSelectComponent = ({
                 onChange={handleDatasetDescriptionChange}
                 sx={{ minWidth: 220 }}
                 SelectProps={{
-                    renderValue: option => (
+                    renderValue: (option) => (
                         <FieldRepresentation
-                            field={fields.find(f => f._id === option)}
+                            field={fields.find((f) => f._id === option)}
                             shortMode
                         />
                     ),
                 }}
             >
                 <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
-                {fields.map(field => (
+                {fields.map((field) => (
                     <MenuItem
                         sx={{
                             display: 'flex',
@@ -120,7 +120,7 @@ DatasetOverviewSelectComponent.propTypes = {
     loadField: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     fields: fromFields
         .getEditingFields(state, { filter: SCOPE_DATASET })
         .sort((a, b) => a.label.localeCompare(b.label)),

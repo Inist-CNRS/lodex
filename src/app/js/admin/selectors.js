@@ -18,60 +18,66 @@ import { selectors as dumpSelectors } from './dump';
 import { selectors as configTenantSelectors } from './configTenant';
 
 export const fromParsing = createGlobalSelectors(
-    s => s.parsing,
+    (s) => s.parsing,
     parsingSelectors,
 );
 export const fromPublication = createGlobalSelectors(
-    s => s.publication,
+    (s) => s.publication,
     publicationSelectors,
 );
 export const fromPublicationPreview = createGlobalSelectors(
-    s => s.preview.publication,
+    (s) => s.preview.publication,
     publicationPreviewSelectors,
 );
 export const fromFieldPreview = createGlobalSelectors(
-    s => s.preview.field,
+    (s) => s.preview.field,
     fieldPreviewSelectors,
 );
 export const fromPublish = createGlobalSelectors(
-    s => s.publish,
+    (s) => s.publish,
     publishSelectors,
 );
 export const fromRemovedResources = createGlobalSelectors(
-    s => s.removedResources,
+    (s) => s.removedResources,
     removedResourcesSelectors,
 );
 
-export const fromDump = createGlobalSelectors(s => s.dump, dumpSelectors);
-export const fromUpload = createGlobalSelectors(s => s.upload, uploadSelectors);
-export const fromImport = createGlobalSelectors(s => s.import, importSelectors);
-export const fromClear = createGlobalSelectors(s => s.clear, clearSelectors);
+export const fromDump = createGlobalSelectors((s) => s.dump, dumpSelectors);
+export const fromUpload = createGlobalSelectors(
+    (s) => s.upload,
+    uploadSelectors,
+);
+export const fromImport = createGlobalSelectors(
+    (s) => s.import,
+    importSelectors,
+);
+export const fromClear = createGlobalSelectors((s) => s.clear, clearSelectors);
 
 export const fromProgress = createGlobalSelectors(
-    s => s.progress,
+    (s) => s.progress,
     progressSelectors,
 );
 export const fromLoaders = createGlobalSelectors(
-    s => s.loaders,
+    (s) => s.loaders,
     loaderSelectors,
 );
 
 export const fromSubresources = createGlobalSelectors(
-    s => s.subresource,
+    (s) => s.subresource,
     subresourcesSelectors,
 );
 
 export const fromEnrichments = createGlobalSelectors(
-    s => s.enrichment,
+    (s) => s.enrichment,
     enrichmentsSelectors,
 );
 
 export const fromPrecomputed = createGlobalSelectors(
-    s => s.precomputed,
+    (s) => s.precomputed,
     precomputedSelectors,
 );
 
 export const fromConfigTenant = createGlobalSelectors(
-    s => s.configTenant,
+    (s) => s.configTenant,
     configTenantSelectors,
 );

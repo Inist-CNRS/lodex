@@ -62,7 +62,7 @@ class HierarchyAdmin extends Component {
             colors: this.props.args.colors || defaultArgs.colors,
         };
     }
-    handleParams = params => {
+    handleParams = (params) => {
         const newParams = {
             ...this.props.args.params,
             ...params,
@@ -78,7 +78,7 @@ class HierarchyAdmin extends Component {
         );
     }
 
-    handleMaxLabelLength = event => {
+    handleMaxLabelLength = (event) => {
         const maxLabelLength = event.target.value;
         this.handleParams({
             ...this.props.args.params,
@@ -86,7 +86,7 @@ class HierarchyAdmin extends Component {
         });
     };
 
-    handleLabelOffset = event => {
+    handleLabelOffset = (event) => {
         const labelOffset = event.target.value;
         this.handleParams({
             ...this.props.args.params,
@@ -94,7 +94,7 @@ class HierarchyAdmin extends Component {
         });
     };
 
-    handleMinimumScaleValue = event => {
+    handleMinimumScaleValue = (event) => {
         const minimumScaleValue = event.target.value;
         this.handleParams({
             ...this.props.args.params,

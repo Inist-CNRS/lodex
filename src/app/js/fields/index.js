@@ -186,7 +186,7 @@ export default handleActions(
                 },
             };
         },
-        LOAD_FIELD: state => ({ ...state, loading: true }),
+        LOAD_FIELD: (state) => ({ ...state, loading: true }),
         LOAD_FIELD_SUCCESS: (state, { payload: fields }) => {
             const { catalog, list } = getCatalogFromArray(fields, 'name');
 
@@ -200,7 +200,7 @@ export default handleActions(
         LOAD_FIELD_ERROR: () => defaultState,
         REMOVE_FIELD_SUCCESS: (state, { payload: { name: nameToRemove } }) => ({
             ...state,
-            list: state.list.filter(name => name !== nameToRemove),
+            list: state.list.filter((name) => name !== nameToRemove),
             byName: omit(state.byName, [nameToRemove]),
         }),
         SET_VALIDATION: (
@@ -215,7 +215,7 @@ export default handleActions(
             ...state,
             selectedField: name,
         }),
-        CONFIGURE_FIELD: state => ({
+        CONFIGURE_FIELD: (state) => ({
             ...state,
             error: null,
             isSaving: true,
@@ -247,7 +247,7 @@ export default handleActions(
             configuredFieldName,
             error: null,
         }),
-        CONFIGURE_FIELD_CANCEL: state => ({
+        CONFIGURE_FIELD_CANCEL: (state) => ({
             ...state,
             invalidProperties: [],
             configuredFieldName: null,
@@ -262,7 +262,7 @@ export default handleActions(
             CLOSE_EDIT_FIELD_VALUE,
             UPDATE_CHARACTERISTICS_SUCCESS,
             SAVE_RESOURCE_SUCCESS,
-        )]: state => ({
+        )]: (state) => ({
             ...state,
             editedValueFieldName: null,
         }),
@@ -294,7 +294,7 @@ export default handleActions(
                 state.byName,
             ),
         }),
-        LOAD_PUBLICATION: state => ({
+        LOAD_PUBLICATION: (state) => ({
             ...state,
             error: null,
             loading: true,
@@ -321,13 +321,13 @@ export default handleActions(
             error: error.message,
             loading: false,
         }),
-        [ADD_CHARACTERISTIC]: state => ({
+        [ADD_CHARACTERISTIC]: (state) => ({
             ...state,
             error: null,
             isSaving: true,
             invalidProperties: [],
         }),
-        [ADD_CHARACTERISTIC_OPEN]: state => ({
+        [ADD_CHARACTERISTIC_OPEN]: (state) => ({
             ...state,
             isAdding: true,
             error: null,
@@ -337,7 +337,7 @@ export default handleActions(
             isSaving: false,
             error,
         }),
-        [ADD_CHARACTERISTIC_CANCEL]: state => ({
+        [ADD_CHARACTERISTIC_CANCEL]: (state) => ({
             ...state,
             isAdding: false,
             error: null,

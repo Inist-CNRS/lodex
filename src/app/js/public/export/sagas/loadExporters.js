@@ -26,6 +26,6 @@ export function* handleLoadExporters() {
     yield put(loadExportersSuccess(response));
 }
 
-export default function*() {
+export default function* () {
     yield takeEvery(PRE_LOAD_EXPORTERS, handleLoadExporters);
 }

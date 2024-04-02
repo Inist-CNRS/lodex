@@ -38,13 +38,13 @@ export const processImport = (job, done) => {
             });
             done();
         })
-        .catch(err => {
+        .catch((err) => {
             handleImportError(job, err);
             done(err);
         });
 };
 
-const startJobImport = async job => {
+const startJobImport = async (job) => {
     notifyListeners(`${job.data.tenant}-import`, {
         isImporting: true,
         success: false,
@@ -68,7 +68,7 @@ const handleImportError = async (job, err) => {
     });
 };
 
-const prepareContext = async ctx => {
+const prepareContext = async (ctx) => {
     ctx.tenant = ctx.job.data.tenant;
     await repositoryMiddleware(ctx, () => Promise.resolve());
     ctx.getLoader = getLoader;
@@ -84,8 +84,8 @@ const prepareContext = async ctx => {
     return ctx;
 };
 
-export const addImportListener = listener => listeners.push(listener);
+export const addImportListener = (listener) => listeners.push(listener);
 
 export const notifyListeners = (room, payload) => {
-    listeners.forEach(listener => listener({ room, data: payload }));
+    listeners.forEach((listener) => listener({ room, data: payload }));
 };

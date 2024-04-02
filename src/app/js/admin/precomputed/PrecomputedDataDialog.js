@@ -35,7 +35,7 @@ export const PrecomputedDataDialog = ({
     }, [isOpen]);
 
     const handleDownloadData = () => {
-        exportPrecomputedData(precomputedID).then(response => {
+        exportPrecomputedData(precomputedID).then((response) => {
             const file = new Blob([response], { type: 'text/plain' });
             const element = document.createElement('a');
             element.href = URL.createObjectURL(file);

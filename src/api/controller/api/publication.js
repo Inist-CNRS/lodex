@@ -1,11 +1,11 @@
-export const getPublication = async ctx => {
+export const getPublication = async (ctx) => {
     const publishedDatasetCount = await ctx.publishedDataset.count();
     const characteristics = await ctx.publishedCharacteristic.findAllVersions(
         {},
     );
     const fields = await ctx.field.findAll();
 
-    const fieldsWithCountPromises = fields.map(async field => ({
+    const fieldsWithCountPromises = fields.map(async (field) => ({
         ...field,
         count: 0,
         /* Attempt to fix extreme slowness when loading the home page */
@@ -25,6 +25,6 @@ export const getPublication = async ctx => {
     };
 };
 
-export default async ctx => {
+export default async (ctx) => {
     ctx.body = await getPublication(ctx);
 };

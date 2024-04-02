@@ -21,7 +21,7 @@ const ParallelCoordinatesChartAdmin = ({
     showMaxValue,
     showMinValue,
 }) => {
-    const handleParams = params => {
+    const handleParams = (params) => {
         updateAdminArgs(
             'params',
             { ...args.params, ...params },
@@ -32,7 +32,7 @@ const ParallelCoordinatesChartAdmin = ({
         );
     };
 
-    const handleColors = colors => {
+    const handleColors = (colors) => {
         updateAdminArgs('colors', colors, {
             args,
             onChange,

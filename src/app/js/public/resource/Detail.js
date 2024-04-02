@@ -31,7 +31,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
     },
-    property: dense => ({
+    property: (dense) => ({
         display: 'flex',
         flexDirection: 'column',
         padding: dense ? '0.5rem 0.5rem 0' : '2rem 1rem 1rem',
@@ -56,7 +56,7 @@ const styles = {
     inkBarStyle: {
         backgroundColor: 'black',
     },
-    propertiesContainer: dense => ({
+    propertiesContainer: (dense) => ({
         display: 'flex',
         flexFlow: 'row wrap',
         paddingTop: dense ? '0.5rem' : '1rem',
@@ -86,7 +86,7 @@ const styles = {
         fontSize: '0.75em',
         alignSelf: 'flex-end',
     },
-    language: memoize(hide => ({
+    language: memoize((hide) => ({
         marginRight: '1rem',
         fontSize: '0.6em',
         color: 'grey',
@@ -126,7 +126,7 @@ export const DetailComponent = ({
         return null;
     }
     const filteredFields = fields.filter(
-        field =>
+        (field) =>
             !isMultilingual || !field.language || field.language === locale,
     );
     const sortedFields = [...filteredFields]; // Isolation
@@ -146,7 +146,7 @@ export const DetailComponent = ({
             <div className="header-resource-section">
                 <div style={styles.container}>
                     <div style={styles.propertiesContainer(dense)}>
-                        {topFields.map(field => (
+                        {topFields.map((field) => (
                             <Property
                                 key={field.name}
                                 field={field}
@@ -160,7 +160,7 @@ export const DetailComponent = ({
             <div className="main-resource-section">
                 <div style={styles.container}>
                     <div style={styles.propertiesContainer(dense)}>
-                        {otherFields.map(field => (
+                        {otherFields.map((field) => (
                             <Property
                                 key={field.name}
                                 field={field}
@@ -211,7 +211,7 @@ DetailComponent.propTypes = {
     locale: PropTypes.string,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const resource = fromResource.getResourceSelectedVersion(state);
 
     const titleKey =
@@ -225,7 +225,7 @@ const mapStateToProps = state => {
     const fields = fromFields.getResourceFields(state, resource);
 
     const subresourceFilteredFields = fields.filter(
-        field =>
+        (field) =>
             (!resource.subresourceId && !field.subresourceId) ||
             field.subresourceId === resource.subresourceId,
     );

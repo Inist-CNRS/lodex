@@ -82,7 +82,7 @@ Breadcrumb.propTypes = {
     ),
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         breadcrumb: fromBreadcrumb.getBreadcrumb(state),
     };

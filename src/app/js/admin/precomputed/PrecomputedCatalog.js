@@ -53,7 +53,7 @@ const PrecomputerDescription = ({ precomputer, polyglot }) => {
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{ marginRight: '1em' }}
-                            onClick={e => e.stopPropagation()}
+                            onClick={(e) => e.stopPropagation()}
                         >
                             <MenuBookIcon />
                         </Link>
@@ -71,12 +71,12 @@ export const PrecomputedCatalog = ({
     onChange,
     selectedWebServiceUrl,
 }) => {
-    const handleValueChange = newValue => {
+    const handleValueChange = (newValue) => {
         onChange(newValue);
         handleClose();
     };
 
-    const scrollTo = el => {
+    const scrollTo = (el) => {
         if (el) {
             el.scrollIntoView({ inline: 'center', block: 'center' });
         }
@@ -90,7 +90,7 @@ export const PrecomputedCatalog = ({
                     aria-label="format list"
                     style={{ height: '70vh' }}
                 >
-                    {precomputers.map(precomputer => (
+                    {precomputers.map((precomputer) => (
                         <ListItem
                             key={precomputer.id}
                             onClick={() => handleValueChange(precomputer.url)}

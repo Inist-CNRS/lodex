@@ -7,7 +7,7 @@ import { getViewComponent } from '../../index';
 import getColorSetFromField from '../../../lib/getColorSetFromField';
 
 const FieldCloneView = ({ className, resource, field, fields, value }) => {
-    const clonedField = fields.find(item => item.name === value);
+    const clonedField = fields.find((item) => item.name === value);
 
     const colorSet = getColorSetFromField(clonedField);
     const otherProps = { colorSet: colorSet ? colorSet : undefined };

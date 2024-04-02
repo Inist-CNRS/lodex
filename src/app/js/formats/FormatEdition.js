@@ -22,7 +22,7 @@ const FormatEdition = ({ p: polyglot, ...props }) => {
     );
 
     const displayedName =
-        FORMATS.find(format => format.componentName === input.value.name)
+        FORMATS.find((format) => format.componentName === input.value.name)
             ?.name || 'no_format';
 
     const [componentName, setComponentName] = React.useState(
@@ -35,7 +35,7 @@ const FormatEdition = ({ p: polyglot, ...props }) => {
         setComponentName(input.value.name || '');
     }, [input.value.name]);
 
-    const handleFormatChange = name => {
+    const handleFormatChange = (name) => {
         setComponentName(name);
         setOpenCatalog(false);
         setOpenEditDialog(true);

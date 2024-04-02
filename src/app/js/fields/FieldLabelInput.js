@@ -43,7 +43,7 @@ FieldLabelInputComponent.defaultProps = {
     disabled: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     fields: fromFields.getFields(state),
 });
 

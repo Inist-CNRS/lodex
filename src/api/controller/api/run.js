@@ -15,9 +15,9 @@ ezs.use(Lodex);
 
 const scripts = new Script('routines');
 
-const parseFieldsParams = fieldsParams =>
+const parseFieldsParams = (fieldsParams) =>
     typeof fieldsParams === 'string' && fieldsParams !== ''
-        ? fieldsParams.split('/').filter(x => x)
+        ? fieldsParams.split('/').filter((x) => x)
         : '';
 
 const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
@@ -55,7 +55,7 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             host,
         };
         const input = new PassThrough({ objectMode: true });
-        const errorHandle = err => {
+        const errorHandle = (err) => {
             ctx.status = 503;
             ctx.body.destroy();
             input.destroy();
@@ -78,10 +78,9 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
                 );
             }
         };
-        const workers_url = `${process.env.WORKERS_URL ||
-            'http://localhost:31976'}/routines/${routineName}?${
-            ctx.querystring
-        }`;
+        const workers_url = `${
+            process.env.WORKERS_URL || 'http://localhost:31976'
+        }/routines/${routineName}?${ctx.querystring}`;
         console.error('Connecting to workers', workers_url, 'with', query);
         ctx.body = input
             .pipe(

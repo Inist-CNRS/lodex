@@ -24,7 +24,7 @@ const styles = stylesToClassname(
     'lodex-resource',
 );
 
-const LodexResourceView = props => (
+const LodexResourceView = (props) => (
     <div className={styles.wrapper}>
         <LodexResource {...props} />
     </div>
@@ -40,11 +40,12 @@ LodexResourceView.defaultProps = {
 };
 
 const mapStateToProps = (state, { formatData = {} }) => {
-    const { id = '', url = '', title = 'n/a', summary = '' } = get(
-        formatData,
-        'items[0]',
-        {},
-    );
+    const {
+        id = '',
+        url = '',
+        title = 'n/a',
+        summary = '',
+    } = get(formatData, 'items[0]', {});
     return {
         id,
         url,

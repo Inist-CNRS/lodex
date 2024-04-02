@@ -29,7 +29,7 @@ const styles = {
     header: {
         cursor: 'pointer',
     },
-    table: memoize(separated => ({
+    table: memoize((separated) => ({
         display: separated ? 'block' : 'table',
         overflowX: 'auto',
         width: 'auto',
@@ -38,7 +38,7 @@ const styles = {
     })),
 };
 
-const getColStyle = memoize(style => ({ ...styles.header, ...style }));
+const getColStyle = memoize((style) => ({ ...styles.header, ...style }));
 
 export const ExcerptComponent = ({
     colStyle,
@@ -54,7 +54,7 @@ export const ExcerptComponent = ({
         <Table className="publication-excerpt" sx={styles.table(isPreview)}>
             <TableHead>
                 <TableRow>
-                    {columns.map(field => (
+                    {columns.map((field) => (
                         <TableCell
                             key={field.name}
                             className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
@@ -86,7 +86,7 @@ export const ExcerptComponent = ({
             <TableBody>
                 {areHeadersClickable && (
                     <TableRow>
-                        {columns.map(c => (
+                        {columns.map((c) => (
                             <ExcerptRemoveColumn
                                 key={`remove_column_${c._id}`}
                                 field={c}
@@ -131,15 +131,19 @@ export default compose(
         areHeadersClickable: typeof onHeaderClick === 'function',
     })),
     withHandlers({
-        onHeaderClick: ({ onHeaderClick }) => col => {
-            if (onHeaderClick) {
-                onHeaderClick(col);
-            }
-        },
-        onCellClick: ({ onHeaderClick }) => col => {
-            if (onHeaderClick) {
-                onHeaderClick(col);
-            }
-        },
+        onHeaderClick:
+            ({ onHeaderClick }) =>
+            (col) => {
+                if (onHeaderClick) {
+                    onHeaderClick(col);
+                }
+            },
+        onCellClick:
+            ({ onHeaderClick }) =>
+            (col) => {
+                if (onHeaderClick) {
+                    onHeaderClick(col);
+                }
+            },
     }),
 )(ExcerptComponent);

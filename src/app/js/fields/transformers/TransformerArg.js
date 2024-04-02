@@ -15,7 +15,7 @@ const TransformerArgs = ({ availableArgs, onChange, transformerArgs }) => {
     const handleChange = (editedArgName, value) => {
         // If the transformer is already in the list, we update its value. Otherwise, we add it to the list from the available args.
         const newTransformerArgs = transformerArgs
-            ? transformerArgs.map(transformerArg => {
+            ? transformerArgs.map((transformerArg) => {
                   if (transformerArg.name === editedArgName) {
                       return {
                           ...transformerArg,
@@ -24,7 +24,7 @@ const TransformerArgs = ({ availableArgs, onChange, transformerArgs }) => {
                   }
                   return transformerArg;
               })
-            : availableArgs.map(availableArg => {
+            : availableArgs.map((availableArg) => {
                   if (availableArg.name === editedArgName) {
                       return {
                           ...availableArg,
@@ -38,10 +38,10 @@ const TransformerArgs = ({ availableArgs, onChange, transformerArgs }) => {
 
     return (
         <Box display="flex" flexDirection="column" gap={2} sx={{ paddingY: 2 }}>
-            {availableArgs.map(arg => {
+            {availableArgs.map((arg) => {
                 const value =
                     transformerArgs?.find(
-                        transformerArg => transformerArg.name === arg.name,
+                        (transformerArg) => transformerArg.name === arg.name,
                     )?.value || null;
                 return (
                     <TextField
@@ -49,7 +49,7 @@ const TransformerArgs = ({ availableArgs, onChange, transformerArgs }) => {
                         placeholder={arg.name}
                         label={arg.name}
                         defaultValue={value === null ? '' : value}
-                        onChange={e => handleChange(arg.name, e.target.value)}
+                        onChange={(e) => handleChange(arg.name, e.target.value)}
                         multiline={arg.type === 'text'}
                     />
                 );

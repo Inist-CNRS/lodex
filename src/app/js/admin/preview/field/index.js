@@ -37,7 +37,7 @@ export default handleActions(
             REDUX_FORM_ARRAY_SPLICE,
             REDUX_FORM_REGISTER_FIELD,
             REDUX_FORM_UNREGISTER_FIELD,
-        )]: state => ({ ...state, isComputing: true }),
+        )]: (state) => ({ ...state, isComputing: true }),
         COMPUTE_FIELD_PREVIEW_SUCCESS: (state, { payload: resources }) => ({
             isComputing: false,
             resources,
@@ -47,9 +47,9 @@ export default handleActions(
     defaultState,
 );
 
-export const isComputing = state => state.isComputing;
-export const getFieldPreview = state => state.resources;
-export const hasFieldPreview = state => !!state.resources.length;
+export const isComputing = (state) => state.isComputing;
+export const getFieldPreview = (state) => state.resources;
+export const hasFieldPreview = (state) => !!state.resources.length;
 
 export const selectors = {
     isComputing,

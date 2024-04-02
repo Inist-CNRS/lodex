@@ -90,7 +90,7 @@ class SearchResultList extends Component {
                     [styles.loadingContainer]: renderPlaceholders,
                 })}
             >
-                {results.map(result => (
+                {results.map((result) => (
                     <SearchResult
                         key={result.uri}
                         fields={fields}

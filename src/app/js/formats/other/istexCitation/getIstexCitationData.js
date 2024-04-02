@@ -21,7 +21,7 @@ export const getCitationUrl = ({ resource, field, searchedField }) => {
     });
 };
 
-export const parseCitationData = formatData => ({
+export const parseCitationData = (formatData) => ({
     hits: get(formatData, ['aggregations', 'host.title', 'buckets'], []).map(
         ({ key, docCount }) => ({
             name: key,
@@ -30,22 +30,19 @@ export const parseCitationData = formatData => ({
     ),
 });
 
-export const getCitationDocumentUrl = ({
-    value,
-    name,
-    searchedField,
-    documentSortBy,
-}) => () => ({
-    url: buildIstexQuery({
-        query: `${getFilterQuery(
-            searchedField,
-            value,
-        )} AND ${HOST_TITLE_RAW}:"${name}"`,
-        output,
-        sortBy: documentSortBy,
-        size: 10,
-    }),
-});
+export const getCitationDocumentUrl =
+    ({ value, name, searchedField, documentSortBy }) =>
+    () => ({
+        url: buildIstexQuery({
+            query: `${getFilterQuery(
+                searchedField,
+                value,
+            )} AND ${HOST_TITLE_RAW}:"${name}"`,
+            output,
+            sortBy: documentSortBy,
+            size: 10,
+        }),
+    });
 
 export const getCitationDocumentData = ({
     value,

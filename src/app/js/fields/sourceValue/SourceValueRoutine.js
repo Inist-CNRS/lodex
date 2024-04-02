@@ -14,7 +14,7 @@ const SourceValueRoutine = ({
 }) => {
     const [openRoutineCatalog, setOpenRoutineCatalog] = React.useState(false);
     const [valueInput, setValueInput] = React.useState(value || '');
-    const handleChange = event => {
+    const handleChange = (event) => {
         setValueInput(event.target.value);
         const transformers = [
             {

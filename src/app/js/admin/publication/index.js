@@ -23,7 +23,7 @@ export const defaultState = {
 
 export default handleActions(
     {
-        LOAD_PUBLICATION: state => ({
+        LOAD_PUBLICATION: (state) => ({
             ...state,
             error: null,
             loading: true,
@@ -47,7 +47,7 @@ export default handleActions(
             ...state,
             selectedField: name,
         }),
-        PUBLICATION_CLEARED: state => ({
+        PUBLICATION_CLEARED: (state) => ({
             ...state,
             published: false,
         }),

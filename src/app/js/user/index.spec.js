@@ -50,24 +50,24 @@ describe('user reducer', () => {
     describe('isAdmin selector', () => {
         it('should return false if state has no role', () => {
             const result = isAdmin({});
-            expect(result).toEqual(false);
+            expect(result).toBe(false);
         });
 
         it('should return false if state role is not admin', () => {
             const result = isAdmin({ role: 'user' });
-            expect(result).toEqual(false);
+            expect(result).toBe(false);
         });
 
         it('should return true if state role is admin', () => {
             const result = isAdmin({ role: ADMIN_ROLE });
-            expect(result).toEqual(true);
+            expect(result).toBe(true);
         });
     });
 
     describe('getToken selector', () => {
         it('should return the token from state', () => {
             const result = getToken({ token: 'foo' });
-            expect(result).toEqual('foo');
+            expect(result).toBe('foo');
         });
     });
 

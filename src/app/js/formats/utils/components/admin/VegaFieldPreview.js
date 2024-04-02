@@ -19,17 +19,17 @@ const VegaFieldPreview = ({
     const [dataset, setDataset] = useState({});
 
     useEffect(() => {
-        const newSet = datasets.find(value => value.name === datasetName);
+        const newSet = datasets.find((value) => value.name === datasetName);
         setDataset({
             values: newSet.values,
         });
     }, [datasetName]);
 
-    const handleDataSetChange = event => {
+    const handleDataSetChange = (event) => {
         setDatasetName(event.target.value);
     };
 
-    const handleDataSetEditor = event => {
+    const handleDataSetEditor = (event) => {
         setDataset(event.updated_src);
     };
 
@@ -47,7 +47,7 @@ const VegaFieldPreview = ({
                     value={datasetName}
                     onChange={handleDataSetChange}
                 >
-                    {datasets.map(set => (
+                    {datasets.map((set) => (
                         <MenuItem key={set.name} value={set.name}>
                             {set.name}
                         </MenuItem>

@@ -25,21 +25,21 @@ export const loadMoreSucceed = createAction(SEARCH_LOAD_MORE_SUCCESS);
 export const loadMoreFailed = createAction(SEARCH_LOAD_MORE_ERROR);
 
 export const fromSearch = {
-    isLoading: state => state.loading,
-    getDataset: state => state.dataset,
-    getDatasetTotal: state => state.total,
-    getDatasetFullTotal: state => state.fullTotal,
-    getSort: state => state.sort,
-    getFieldNames: state => state.fields,
-    getPage: state => state.page,
-    getTotal: state => state.total,
-    getQuery: state => state.query,
+    isLoading: (state) => state.loading,
+    getDataset: (state) => state.dataset,
+    getDatasetTotal: (state) => state.total,
+    getDatasetFullTotal: (state) => state.fullTotal,
+    getSort: (state) => state.sort,
+    getFieldNames: (state) => state.fields,
+    getPage: (state) => state.page,
+    getTotal: (state) => state.total,
+    getQuery: (state) => state.query,
     getPrevResource: (state, currentResource) => {
         if (!currentResource || !currentResource.uri) {
             return null;
         }
         const indexCurrentResource = state.dataset.findIndex(
-            resource => resource.uri === currentResource.uri,
+            (resource) => resource.uri === currentResource.uri,
         );
         return indexCurrentResource < 0
             ? null
@@ -50,14 +50,14 @@ export const fromSearch = {
             return null;
         }
         const indexCurrentResource = state.dataset.findIndex(
-            resource => resource.uri === currentResource.uri,
+            (resource) => resource.uri === currentResource.uri,
         );
         return indexCurrentResource === -1 ||
             indexCurrentResource + 1 > state.dataset.length
             ? null
             : state.dataset[indexCurrentResource + 1];
     },
-    ...createGlobalSelectors(state => state.facet, facetSelectors),
+    ...createGlobalSelectors((state) => state.facet, facetSelectors),
 };
 
 const {
@@ -126,7 +126,7 @@ export default handleActions(
             fullTotal: payload.fullTotal || 0,
             fields: payload.fields || state.fields,
         }),
-        [SEARCH_LOAD_MORE]: state => ({
+        [SEARCH_LOAD_MORE]: (state) => ({
             ...state,
             loading: true,
         }),

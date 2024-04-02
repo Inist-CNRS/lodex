@@ -20,7 +20,7 @@ export const defaultState = {
 
 export default handleActions(
     {
-        SET_LANGUAGE_REQUEST: state => ({
+        SET_LANGUAGE_REQUEST: (state) => ({
             ...state,
             loading: true,
         }),
@@ -38,7 +38,7 @@ export default handleActions(
     defaultState,
 );
 
-const getLocale = state => state.language;
+const getLocale = (state) => state.language;
 
 export const fromI18n = {
     getLocale,

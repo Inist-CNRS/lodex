@@ -8,7 +8,7 @@ describe('countNotUnique', () => {
                 .fn()
                 .mockImplementation(() => Promise.resolve({ length: 10 })),
         };
-        expect(await countNotUnique(collection)('fieldName')).toEqual(0);
+        expect(await countNotUnique(collection)('fieldName')).toBe(0);
 
         expect(collection.count).toHaveBeenCalled();
         expect(collection.distinct).toHaveBeenCalled();
@@ -30,7 +30,7 @@ describe('countNotUnique', () => {
                     'field2',
                     'field3',
                 ]),
-            ).toEqual('result');
+            ).toBe('result');
 
             expect(collection.aggregate).toHaveBeenCalledWith([
                 {

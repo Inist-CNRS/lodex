@@ -38,7 +38,7 @@ export const FieldAddDropdownButtonComponent = ({
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef();
 
-    const handleClick = index => {
+    const handleClick = (index) => {
         if (index === 2) {
             return onShowExistingColumns();
         }
@@ -51,10 +51,10 @@ export const FieldAddDropdownButtonComponent = ({
     };
 
     const handleToggle = () => {
-        setOpen(prevOpen => !prevOpen);
+        setOpen((prevOpen) => !prevOpen);
     };
 
-    const handleClose = event => {
+    const handleClose = (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         }
@@ -116,7 +116,7 @@ export const FieldAddDropdownButtonComponent = ({
                                             return (
                                                 <MenuItem
                                                     key={option.label}
-                                                    onClick={event =>
+                                                    onClick={(event) =>
                                                         handleMenuItemClick(
                                                             event,
                                                             index,
@@ -145,7 +145,7 @@ export const FieldAddDropdownButtonComponent = ({
     );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     isFieldsLoading: fromFields.isLoading(state),
 });
 

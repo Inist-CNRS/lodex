@@ -23,7 +23,7 @@ describe('<LoginForm />', () => {
         );
         const alerts = wrapper.find(Alert);
         expect(alerts).toHaveLength(1);
-        expect(alerts.children().html()).toEqual('<p>Foo</p>');
+        expect(alerts.children().html()).toBe('<p>Foo</p>');
     });
 
     it('should render a Field for username', () => {
@@ -32,7 +32,7 @@ describe('<LoginForm />', () => {
         );
         const textField = wrapper.find(Field).at(0);
         expect(textField).toHaveLength(1);
-        expect(textField.prop('name')).toEqual('username');
+        expect(textField.prop('name')).toBe('username');
     });
 
     it('should render a Field for password', () => {
@@ -41,6 +41,6 @@ describe('<LoginForm />', () => {
         );
         const textField = wrapper.find(Field).at(1);
         expect(textField).toHaveLength(1);
-        expect(textField.prop('name')).toEqual('password');
+        expect(textField.prop('name')).toBe('password');
     });
 });

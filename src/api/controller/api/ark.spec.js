@@ -12,7 +12,7 @@ describe('ark routes', () => {
             };
             const next = jest.fn();
             await getFromArkUri(ctx, next);
-            expect(ctx.status).toEqual(200);
+            expect(ctx.status).toBe(200);
             expect(next).toHaveBeenCalled();
         });
 
@@ -24,7 +24,7 @@ describe('ark routes', () => {
             };
 
             await getFromArkUri(ctx, () => {});
-            expect(ctx.status).toEqual(404);
+            expect(ctx.status).toBe(404);
         });
 
         it('should return the data for the requested ARK URI', async () => {
@@ -47,7 +47,7 @@ describe('ark routes', () => {
             };
 
             await getFromArkUri(ctx);
-            expect(ctx.status).toEqual(200);
+            expect(ctx.status).toBe(200);
             expect(ctx.body).toEqual({ id: 'foo' });
             expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith(uri);
         });
@@ -65,7 +65,7 @@ describe('ark routes', () => {
             };
 
             await getFromArkUri(ctx);
-            expect(ctx.status).toEqual(200);
+            expect(ctx.status).toBe(200);
             expect(ctx.body).toEqual({ id: 'foo' });
             expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith(
                 'ark_custom_uri',

@@ -34,8 +34,8 @@ const styles = {
 };
 
 const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
-    const FormSourceCodeField = require('../../../../lib/components/FormSourceCodeField')
-        .default;
+    const FormSourceCodeField =
+        require('../../../../lib/components/FormSourceCodeField').default;
 
     const [currentValue, setCurrentValue] = useState(value || '{}');
     const [error, setError] = useState(null);
@@ -68,7 +68,7 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
         }
     }, [currentValueObject, valueObject]);
 
-    const handleChange = newValue => {
+    const handleChange = (newValue) => {
         setCurrentValue(newValue);
     };
 

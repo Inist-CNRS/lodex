@@ -151,7 +151,7 @@ AppbarComponent.defaultProps = {
 
 export default compose(
     translate,
-    connect(state => ({
+    connect((state) => ({
         hasLoadedDataset: fromParsing.hasUploadedFile(state),
         isLoading: state.loading,
         isAdmin: fromUser.isAdmin(state),

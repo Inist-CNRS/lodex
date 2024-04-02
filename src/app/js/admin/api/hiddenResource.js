@@ -13,7 +13,7 @@ export const exportHiddenResources = () => {
     });
 };
 
-export const importHiddenResources = async formData => {
+export const importHiddenResources = async (formData) => {
     const { token } = getUserSessionStorageInfo();
     const request = getImportHiddenResources({ token }, formData);
     return fetch(request).then(({ response, error }) => {

@@ -44,7 +44,7 @@ export function* watchLaunchPrecomputed() {
     yield takeLatest(LAUNCH_PRECOMPUTED, handleLaunchPrecomputed);
 }
 
-export default function*() {
+export default function* () {
     yield fork(watchLoadPrecomputedRequest);
     yield fork(watchLaunchPrecomputed);
 }

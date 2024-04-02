@@ -20,11 +20,11 @@ export const SelectDatasetFieldComponent = ({
         select
         fullWidth
         id={id}
-        onChange={e => handleChange(e.target.value)}
+        onChange={(e) => handleChange(e.target.value)}
         label={polyglot.t(label)}
         value={column}
     >
-        {datasetFields.map(datasetField => (
+        {datasetFields.map((datasetField) => (
             <MenuItem
                 key={`id_${datasetField}`}
                 className={`column-${datasetField.replaceAll(' ', '-')}`}
@@ -49,7 +49,7 @@ SelectDatasetFieldComponent.defaultProps = {
     id: 'select_column',
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     datasetFields: fromParsing.getParsedExcerptColumns(state),
 });
 

@@ -20,7 +20,7 @@ import {
     fromConfigTenant,
 } from './selectors';
 
-export const withInitialDataHoc = BaseComponent =>
+export const withInitialDataHoc = (BaseComponent) =>
     class HocComponent extends Component {
         static propTypes = {
             loadParsingResult: PropTypes.func.isRequired,
@@ -42,12 +42,8 @@ export const withInitialDataHoc = BaseComponent =>
         }
 
         render() {
-            const {
-                loadPublication,
-                loadParsingResult,
-                isLoading,
-                ...props
-            } = this.props;
+            const { loadPublication, loadParsingResult, isLoading, ...props } =
+                this.props;
 
             if (isLoading) {
                 return <LinearProgress />;
@@ -57,7 +53,7 @@ export const withInitialDataHoc = BaseComponent =>
         }
     };
 
-export default BaseComponent => {
+export default (BaseComponent) => {
     const mapDispatchToProps = {
         loadParsingResult: loadParsingResultAction,
         loadPublication: loadPublicationAction,
@@ -67,7 +63,7 @@ export default BaseComponent => {
         loadConfigTenant: loadConfigTenantAction,
     };
 
-    const mapStateToProps = state => ({
+    const mapStateToProps = (state) => ({
         isLoading:
             fromParsing.isParsingLoading(state) ||
             fromPublication.isPublicationLoading(state) ||

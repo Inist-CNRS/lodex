@@ -26,7 +26,7 @@ const ImportButton = ({ p: polyglot }) => {
     const [uploading, setUploading] = useState(false);
     const [done, setDone] = useState(false);
 
-    const handleFileChange = async event => {
+    const handleFileChange = async (event) => {
         setUploading(true);
         const file = event.target.files[0];
         const formData = new FormData();

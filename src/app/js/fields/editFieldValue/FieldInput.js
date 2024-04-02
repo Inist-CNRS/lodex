@@ -38,7 +38,7 @@ export const FieldInputComponent = ({
     const required = isFieldRequired(field);
     const label = getLabel(field, polyglot, completedField, required);
 
-    const validate = value => {
+    const validate = (value) => {
         if (required && isEmpty(value)) {
             return polyglot.t('error_overview_field_required');
         }

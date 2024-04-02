@@ -11,7 +11,7 @@ export const setup = async (ctx, next) => {
     }
 };
 
-export const postSubresource = async ctx => {
+export const postSubresource = async (ctx) => {
     const newResource = ctx.request.body;
     const result = await ctx.subresource.create(newResource);
     await ctx.field.initializeSubresourceModel(result);
@@ -55,7 +55,7 @@ export const getSubresource = async (ctx, id) => {
     ctx.body = await ctx.subresource.findOne(id);
 };
 
-export const getAllSubresources = async ctx => {
+export const getAllSubresources = async (ctx) => {
     ctx.body = await ctx.subresource.findAll();
 };
 

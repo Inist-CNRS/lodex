@@ -1,6 +1,6 @@
 export const preventUnload = () => {
     if (global.window && !global.window.onbeforeunload) {
-        global.window.onbeforeunload = function() {
+        global.window.onbeforeunload = function () {
             return true;
         };
     }

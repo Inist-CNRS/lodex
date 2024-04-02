@@ -57,7 +57,7 @@ export const ModerateButtonComponent = ({
     }
     return (
         <div className="moderate">
-            {propositionStatus.map(availableStatus => (
+            {propositionStatus.map((availableStatus) => (
                 <IconButton
                     className={classnames(availableStatus, {
                         active: availableStatus === status,
@@ -65,7 +65,7 @@ export const ModerateButtonComponent = ({
                     sx={styles.iconButton}
                     key={availableStatus}
                     tooltip={polyglot.t(availableStatus)}
-                    onClick={e => {
+                    onClick={(e) => {
                         e.preventDefault();
                         changeStatus(status, availableStatus);
                         return false;

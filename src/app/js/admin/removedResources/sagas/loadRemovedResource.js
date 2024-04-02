@@ -29,7 +29,7 @@ export function* handleLoadRemovedResourcePageRequest({ payload }) {
     );
 }
 
-export default function*() {
+export default function* () {
     yield takeLatest(
         LOAD_REMOVED_RESOURCE_PAGE,
         handleLoadRemovedResourcePageRequest,

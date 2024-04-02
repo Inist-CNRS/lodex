@@ -91,13 +91,13 @@ const PureGraphSummary = ({
     locale,
 }) => {
     const filteredGraphs = graphicFields.filter(
-        graph =>
+        (graph) =>
             !isMultilingual || !graph.language || graph.language === locale,
     );
     return (
         <div className={styles.container}>
             <div className={classnames('graph-summary', styles.links)}>
-                {filteredGraphs.map(field => {
+                {filteredGraphs.map((field) => {
                     const Icon = getIconComponent(field);
                     return (
                         <Link
@@ -136,8 +136,10 @@ PureGraphSummary.propTypes = {
     locale: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = state => ({
-    graphicFields: fromFields.getGraphicFields(state).filter(f => !!f.display),
+const mapStateToProps = (state) => ({
+    graphicFields: fromFields
+        .getGraphicFields(state)
+        .filter((f) => !!f.display),
     isMultilingual: fromDisplayConfig.isMultilingual(state),
     locale: fromI18n.getLocale(state),
 });

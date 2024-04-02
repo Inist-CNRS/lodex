@@ -16,10 +16,10 @@ describe('<SearchResultSort />', () => {
 
             expect(result).toHaveLength(4);
 
-            expect(result[0]).toEqual('my-title');
-            expect(result[1]).toEqual('my-description');
-            expect(result[2]).toEqual('my-first-detail');
-            expect(result[3]).toEqual('my-second-detail');
+            expect(result[0]).toBe('my-title');
+            expect(result[1]).toBe('my-description');
+            expect(result[2]).toBe('my-first-detail');
+            expect(result[3]).toBe('my-second-detail');
         });
 
         it('should remove empty fieldNames', () => {
@@ -34,8 +34,8 @@ describe('<SearchResultSort />', () => {
 
             expect(result).toHaveLength(2);
 
-            expect(result[0]).toEqual('my-title');
-            expect(result[1]).toEqual('my-second-detail');
+            expect(result[0]).toBe('my-title');
+            expect(result[1]).toBe('my-second-detail');
         });
     });
 
@@ -60,17 +60,17 @@ describe('<SearchResultSort />', () => {
 
             expect(result).toHaveLength(4);
 
-            expect(result[0].name).toEqual('my-title');
-            expect(result[0].label).toEqual('Title');
+            expect(result[0].name).toBe('my-title');
+            expect(result[0].label).toBe('Title');
 
-            expect(result[1].name).toEqual('my-description');
-            expect(result[1].label).toEqual('Description');
+            expect(result[1].name).toBe('my-description');
+            expect(result[1].label).toBe('Description');
 
-            expect(result[2].name).toEqual('my-first-detail');
-            expect(result[2].label).toEqual('First Detail');
+            expect(result[2].name).toBe('my-first-detail');
+            expect(result[2].label).toBe('First Detail');
 
-            expect(result[3].name).toEqual('my-second-detail');
-            expect(result[3].label).toEqual('Second Detail');
+            expect(result[3].name).toBe('my-second-detail');
+            expect(result[3].label).toBe('Second Detail');
         });
     });
 });

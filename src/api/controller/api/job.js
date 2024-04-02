@@ -23,7 +23,7 @@ export const postCancelJob = async (ctx, type) => {
     ctx.status = 200;
 };
 
-export const postClearJobs = async ctx => {
+export const postClearJobs = async (ctx) => {
     clearJobs(ctx);
     ctx.body = { status: 'success' };
     ctx.status = 200;

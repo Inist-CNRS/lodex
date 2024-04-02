@@ -155,7 +155,7 @@ export const renderRunButton = (
     variant,
 ) => {
     const [isClicked, setIsClicked] = useState(false);
-    const handleClick = event => {
+    const handleClick = (event) => {
         handleLaunchEnrichment(event);
         setIsClicked(true);
     };
@@ -210,7 +210,7 @@ export const EnrichmentForm = ({
         return getKeys(firstExcerptLine);
     }, [excerptLines, formValues?.sourceColumn]);
 
-    const handleSourcePreview = async formValues => {
+    const handleSourcePreview = async (formValues) => {
         if (formValues?.advancedMode && !formValues?.rule) {
             return;
         }
@@ -311,7 +311,7 @@ export const EnrichmentForm = ({
     const handleGetLogs = async () => {
         if (initialValues?.jobId) {
             getJobLogs(initialValues.jobId).then(
-                result => {
+                (result) => {
                     setEnrichmentLogs(result.response.logs.reverse());
                 },
                 () => {
@@ -330,17 +330,20 @@ export const EnrichmentForm = ({
         const dbName = sessionStorage.getItem('lodex-dbName');
         socket.on(
             `${dbName}_${tenant}-enrichment-job-${initialValues?.jobId}`,
-            data => {
+            (data) => {
                 let lastLine;
                 let parsedData;
                 if (Array.isArray(data)) {
-                    setEnrichmentLogs(currentState => [
+                    setEnrichmentLogs((currentState) => [
                         ...data,
                         ...currentState,
                     ]);
                     lastLine = data[0];
                 } else {
-                    setEnrichmentLogs(currentState => [data, ...currentState]);
+                    setEnrichmentLogs((currentState) => [
+                        data,
+                        ...currentState,
+                    ]);
                     lastLine = data;
                 }
                 try {
@@ -474,7 +477,7 @@ export const EnrichmentForm = ({
                                 type="text"
                                 component={SubressourceFieldAutoComplete}
                                 options={datasetFields}
-                                renderInput={params => (
+                                renderInput={(params) => (
                                     <TextField
                                         {...params}
                                         label={polyglot.t('sourceColumn')}
@@ -499,7 +502,7 @@ export const EnrichmentForm = ({
                                 type="text"
                                 component={SubressourceFieldAutoComplete}
                                 options={optionsIdentifier}
-                                renderInput={params => (
+                                renderInput={(params) => (
                                     <TextField
                                         {...params}
                                         label={polyglot.t('subPath')}
@@ -587,19 +590,19 @@ const mapStateToProps = (state, { match }) => ({
     ),
     initialValues: fromEnrichments
         .enrichments(state)
-        .find(enrichment => enrichment._id === match.params.enrichmentId),
+        .find((enrichment) => enrichment._id === match.params.enrichmentId),
     datasetFields: fromParsing.getParsedExcerptColumns(state),
     excerptLines: fromParsing.getExcerptLines(state),
     isEnrichmentRunning: !!fromEnrichments
         .enrichments(state)
         .find(
-            enrichment =>
+            (enrichment) =>
                 enrichment.status === IN_PROGRESS ||
                 enrichment.status === ON_HOLD,
         ),
 });
 const mapDispatchToProps = {
-    onChangeWebServiceUrl: value =>
+    onChangeWebServiceUrl: (value) =>
         change(ENRICHMENT_FORM, 'webServiceUrl', value),
     onLaunchEnrichment: launchEnrichment,
     onLoadEnrichments: loadEnrichments,

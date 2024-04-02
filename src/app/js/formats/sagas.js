@@ -24,14 +24,14 @@ import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../common/scope';
 import { ISTEX_API_URL } from '../../../common/externals';
 import { isPrecomputed } from './checkPredicate';
 
-const isSparqlQuery = url =>
+const isSparqlQuery = (url) =>
     url.toLowerCase().includes('select') &&
     url.toLowerCase().includes('where') &&
     url.toLowerCase().includes('?query=');
 
-const isIstexQuery = url => url.includes(ISTEX_API_URL);
+const isIstexQuery = (url) => url.includes(ISTEX_API_URL);
 
-export const getQueryType = url => {
+export const getQueryType = (url) => {
     if (isSparqlQuery(url)) {
         return 'sparql';
     }
@@ -100,7 +100,7 @@ export function* loadFormatData(name, url, queryString) {
     );
 }
 
-export const splitPrecomputedNameAndRoutine = value => {
+export const splitPrecomputedNameAndRoutine = (value) => {
     if (!value || typeof value !== 'string') {
         return {
             precomputedName: null,
@@ -194,7 +194,9 @@ export function* loadFormatDataForName(name, filter) {
 
     let facets = yield select(fromDataset.getAppliedFacets);
     facets = Object.keys(facets).reduce((acc, facetName) => {
-        acc[facetName] = facets[facetName].map(facetValue => facetValue.value);
+        acc[facetName] = facets[facetName].map(
+            (facetValue) => facetValue.value,
+        );
         return acc;
     }, {});
     const invertedFacets = yield select(fromDataset.getInvertedFacetKeys);
@@ -221,10 +223,10 @@ export function* handleFilterFormatDataRequest({ payload: { filter } = {} }) {
         return;
     }
 
-    yield all(names.map(name => call(loadFormatDataForName, name, filter)));
+    yield all(names.map((name) => call(loadFormatDataForName, name, filter)));
 }
 
-export default function*() {
+export default function* () {
     // see https://github.com/redux-saga/redux-saga/blob/master/docs/api/README.md#throttlems-pattern-saga-args
     yield throttle(
         500,

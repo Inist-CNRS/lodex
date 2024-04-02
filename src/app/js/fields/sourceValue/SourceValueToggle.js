@@ -124,7 +124,9 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
         return { source: null, value: null };
     }
 
-    const transformersOperations = transformers.map(t => t.operation).join('|');
+    const transformersOperations = transformers
+        .map((t) => t.operation)
+        .join('|');
 
     if (
         transformersOperations ===
@@ -407,7 +409,7 @@ export const SourceValueToggle = ({
 
             {source === 'arbitrary' && (
                 <SourceValueArbitrary
-                    updateDefaultValueTransformers={newTransformers =>
+                    updateDefaultValueTransformers={(newTransformers) =>
                         updateDefaultValueTransformers(
                             source,
                             currentTransformers,
@@ -420,7 +422,7 @@ export const SourceValueToggle = ({
 
             {source === 'routine' && (
                 <SourceValueRoutine
-                    updateDefaultValueTransformers={newTransformers =>
+                    updateDefaultValueTransformers={(newTransformers) =>
                         updateDefaultValueTransformers(
                             source,
                             currentTransformers,
@@ -433,7 +435,7 @@ export const SourceValueToggle = ({
 
             {source === 'precomputed' && (
                 <SourceValuePrecomputed
-                    updateDefaultValueTransformers={newTransformers =>
+                    updateDefaultValueTransformers={(newTransformers) =>
                         updateDefaultValueTransformers(
                             source,
                             currentTransformers,
@@ -447,7 +449,7 @@ export const SourceValueToggle = ({
 
             {source === 'fromColumns' && (
                 <SourceValueFromColumns
-                    updateDefaultValueTransformers={newTransformers =>
+                    updateDefaultValueTransformers={(newTransformers) =>
                         updateDefaultValueTransformers(
                             source,
                             currentTransformers,
@@ -460,7 +462,7 @@ export const SourceValueToggle = ({
 
             {source === 'fromColumnsForSubRessource' && (
                 <SourceValueFromColumnsForSubResource
-                    updateDefaultValueTransformers={newTransformers =>
+                    updateDefaultValueTransformers={(newTransformers) =>
                         updateDefaultValueTransformers(
                             source,
                             currentTransformers,
@@ -474,7 +476,7 @@ export const SourceValueToggle = ({
 
             {source === 'fromSubresource' && (
                 <SourceValueFromSubResource
-                    updateDefaultValueTransformers={newTransformers =>
+                    updateDefaultValueTransformers={(newTransformers) =>
                         updateDefaultValueTransformers(
                             source,
                             currentTransformers,
@@ -498,7 +500,7 @@ SourceValueToggle.propTypes = {
     subresources: PropTypes.arrayOf(PropTypes.object),
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const currentTransformers = formValueSelector(FIELD_FORM_NAME)(
         state,
         'transformers',
@@ -508,8 +510,8 @@ const mapStateToProps = state => {
     return { currentTransformers, subresources };
 };
 
-const mapDispatchToProps = dispatch => ({
-    updateTransformers: valueTransformers => {
+const mapDispatchToProps = (dispatch) => ({
+    updateTransformers: (valueTransformers) => {
         return dispatch(
             change(FIELD_FORM_NAME, 'transformers', valueTransformers),
         );

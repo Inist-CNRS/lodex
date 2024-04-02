@@ -25,7 +25,7 @@ const SourceValueFromColumns = ({
                 operation: value.length > 1 ? 'CONCAT' : 'COLUMN',
                 args:
                     value.length !== 0
-                        ? value.map(v => ({
+                        ? value.map((v) => ({
                               name: 'column',
                               type: 'column',
                               value: v,
@@ -43,7 +43,7 @@ const SourceValueFromColumns = ({
                 fullWidth
                 options={datasetFields}
                 value={autocompleteValue ?? []}
-                renderInput={params => (
+                renderInput={(params) => (
                     <TextField
                         {...params}
                         label={polyglot.t('from_columns')}
@@ -56,7 +56,7 @@ const SourceValueFromColumns = ({
     );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     datasetFields: fromParsing
         .getParsedExcerptColumns(state)
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),

@@ -70,14 +70,14 @@ const SearchAutocomplete = ({
             disableCloseOnSelect={multiple}
             multiple={multiple}
             limitTags={limitTags}
-            renderInput={params => (
+            renderInput={(params) => (
                 <TextField
                     {...params}
                     label={translation}
                     placeholder={translation}
                 />
             )}
-            getOptionLabel={option =>
+            getOptionLabel={(option) =>
                 multiple ? (
                     <FieldRepresentation field={option} shortMode />
                 ) : (

@@ -13,7 +13,7 @@ export const useSizeObserver = () => {
             return;
         }
 
-        const resizeObserver = new ResizeObserver(entries => {
+        const resizeObserver = new ResizeObserver((entries) => {
             window.requestAnimationFrame(() => {
                 if (
                     !Array.isArray(entries) ||

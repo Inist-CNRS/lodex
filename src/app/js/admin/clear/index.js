@@ -22,15 +22,15 @@ export const initialState = {
 
 export default handleActions(
     {
-        CLEAR_DATASET: state => ({ ...state, loading: true }),
-        CLEAR_PUBLISHED: state => ({ ...state, loading: true }),
+        CLEAR_DATASET: (state) => ({ ...state, loading: true }),
+        CLEAR_PUBLISHED: (state) => ({ ...state, loading: true }),
         CLEAR_DATASET_ERROR: (state, { payload: error }) => ({
             ...state,
             status: 'error',
             error,
             loading: false,
         }),
-        CLEAR_DATASET_SUCCESS: state => ({
+        CLEAR_DATASET_SUCCESS: (state) => ({
             ...state,
             status: 'success',
             loading: false,
@@ -41,7 +41,7 @@ export default handleActions(
             error,
             loading: false,
         }),
-        CLEAR_PUBLISHED_SUCCESS: state => ({
+        CLEAR_PUBLISHED_SUCCESS: (state) => ({
             ...state,
             status: 'success',
             loading: false,
@@ -50,9 +50,9 @@ export default handleActions(
     initialState,
 );
 
-export const getIsLoading = state => state.loading;
-export const hasClearSucceeded = state => state.status === 'success';
-export const hasClearFailed = state => state.status === 'error';
+export const getIsLoading = (state) => state.loading;
+export const hasClearSucceeded = (state) => state.status === 'success';
+export const hasClearFailed = (state) => state.status === 'error';
 
 export const selectors = {
     getIsLoading,

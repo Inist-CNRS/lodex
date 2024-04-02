@@ -24,7 +24,7 @@ export default ({ url, ...config }, mode = 'json') => {
     }
 
     return fetch(fullUrl, config).then(
-        response => {
+        (response) => {
             if (response.status === 204) {
                 return { response: null };
             }
@@ -64,17 +64,17 @@ export default ({ url, ...config }, mode = 'json') => {
 
                     return response
                         .blob()
-                        .then(blob => ({ response: blob, filename }));
+                        .then((blob) => ({ response: blob, filename }));
                 }
 
                 return response
                     .json()
-                    .then(json => ({ response: json }))
-                    .catch(error => ({ error }));
+                    .then((json) => ({ response: json }))
+                    .catch((error) => ({ error }));
             }
 
             return response.json().then(
-                json => {
+                (json) => {
                     const error = new Error(json.error);
                     error.response = response;
                     error.code = response.status;
@@ -100,6 +100,6 @@ export default ({ url, ...config }, mode = 'json') => {
                 },
             );
         },
-        error => ({ error }),
+        (error) => ({ error }),
     );
 };

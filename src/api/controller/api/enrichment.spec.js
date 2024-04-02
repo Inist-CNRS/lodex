@@ -83,7 +83,7 @@ describe('Enrichment controller', () => {
             expect(ctx.enrichment.findOneById).toHaveBeenCalledWith(42);
             expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith('NAME');
             expect(ctx.enrichment.update.mock.calls[0][0]).toBe(42);
-            expect(ctx.body).toEqual('updated enrichment');
+            expect(ctx.body).toBe('updated enrichment');
             return;
         });
 

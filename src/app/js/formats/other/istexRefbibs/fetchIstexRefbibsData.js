@@ -25,7 +25,7 @@ export const getUrl = ({ props: { resource, field } }) => {
     };
 };
 
-const getOpenurlQuery = article => {
+const getOpenurlQuery = (article) => {
     let queryParams = ['noredirect'];
 
     if (article.doi) queryParams.push('rft_id=info:doi/' + article.doi);
@@ -64,7 +64,7 @@ const getOpenurlQuery = article => {
         return `${ISTEX_API_URL}/document/openurl?${queryParams.join('&')}`;
 };
 
-const parseOpenurlFetchResult = async fetchResult => {
+const parseOpenurlFetchResult = async (fetchResult) => {
     if (
         fetchResult.error &&
         fetchResult.error.code != 404 && // Resource not found
@@ -90,7 +90,7 @@ const parseOpenurlFetchResult = async fetchResult => {
     }
 };
 
-const isArticleIstex = async article => {
+const isArticleIstex = async (article) => {
     const url = getOpenurlQuery(article);
     if (url) {
         const openurlFetchResult = await fetch({ url });
@@ -99,7 +99,7 @@ const isArticleIstex = async article => {
     }
 };
 
-const parseFetchResult = fetchResult => {
+const parseFetchResult = (fetchResult) => {
     if (fetchResult.error) {
         throw new Error(fetchResult.error);
     }
@@ -110,7 +110,7 @@ const parseFetchResult = fetchResult => {
     let istexArticles = [];
     let fetchPromises = [];
 
-    buckets.forEach(bucket => {
+    buckets.forEach((bucket) => {
         let refbibsArticle = get(bucket, [
             'topHits',
             'hits',
@@ -119,13 +119,13 @@ const parseFetchResult = fetchResult => {
             '_source',
             'refBibs',
         ]).find(
-            refBib =>
+            (refBib) =>
                 refBib.title === bucket.key &&
                 refbibsValue.includes(refBib.host.title),
         );
         if (refbibsArticle) {
             fetchPromises.push(
-                isArticleIstex(refbibsArticle).then(article => {
+                isArticleIstex(refbibsArticle).then((article) => {
                     if (article) istexArticles.push(article);
                 }),
             );
@@ -134,7 +134,7 @@ const parseFetchResult = fetchResult => {
 
     return Promise.all(fetchPromises).then(() => {
         return {
-            hits: istexArticles.map(istexArticle => {
+            hits: istexArticles.map((istexArticle) => {
                 const hostPagesFirst =
                     istexArticle.host.pages && istexArticle.host.pages.first
                         ? istexArticle.host.pages.first

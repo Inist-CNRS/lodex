@@ -28,6 +28,6 @@ export function* handleLoadLoaders() {
     yield put(loadLoadersSuccess(response));
 }
 
-export default function*() {
+export default function* () {
     yield takeEvery(PRE_LOAD_LOADERS, handleLoadLoaders);
 }

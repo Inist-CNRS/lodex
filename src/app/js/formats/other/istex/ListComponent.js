@@ -8,7 +8,7 @@ import { ISTEX_API_URL } from '../../../../../common/externals';
 import Link from '../../../lib/components/Link';
 
 const styles = {
-    text: memoize(status => ({
+    text: memoize((status) => ({
         fontSize: '1rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     })),

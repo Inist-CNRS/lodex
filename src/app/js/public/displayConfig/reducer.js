@@ -40,14 +40,14 @@ export default handleActions(
     initialState,
 );
 
-export const hasDisplayConfig = state => state;
+export const hasDisplayConfig = (state) => state;
 
-const isDense = state => state.displayDensity === 'dense';
-const getDisplayExportPDF = state => state.PDFExportOptions?.display || false;
-const getMaxExportPDFSize = state => state.PDFExportOptions?.maxSize || 0;
-const getMaxCheckAllFacetsValue = state =>
+const isDense = (state) => state.displayDensity === 'dense';
+const getDisplayExportPDF = (state) => state.PDFExportOptions?.display || false;
+const getMaxExportPDFSize = (state) => state.PDFExportOptions?.maxSize || 0;
+const getMaxCheckAllFacetsValue = (state) =>
     state.maxCheckAllFacetsValue || DEFAULT_MAX_VALUE_FOR_CHECK_ALL_FACET;
-const isMultilingual = state => state.multilingual;
+const isMultilingual = (state) => state.multilingual;
 
 export const fromDisplayConfig = {
     hasDisplayConfig,

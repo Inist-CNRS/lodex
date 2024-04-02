@@ -50,7 +50,7 @@ class EmphasedNumberAdmin extends Component {
         };
     }
 
-    handleSize = size => {
+    handleSize = (size) => {
         const newArgs = {
             ...this.props.args,
             size,
@@ -62,7 +62,7 @@ class EmphasedNumberAdmin extends Component {
         updateAdminArgs('colors', colors.split(' ')[0], this.props);
     }
 
-    handleParams = params => updateAdminArgs('params', params, this.props);
+    handleParams = (params) => updateAdminArgs('params', params, this.props);
 
     render() {
         const {
@@ -88,7 +88,7 @@ class EmphasedNumberAdmin extends Component {
                         fullWidth
                         select
                         label={polyglot.t('list_format_select_size')}
-                        onChange={e => this.handleSize(e.target.value)}
+                        onChange={(e) => this.handleSize(e.target.value)}
                         value={size}
                     >
                         <MenuItem value={1}>{polyglot.t('size1')}</MenuItem>

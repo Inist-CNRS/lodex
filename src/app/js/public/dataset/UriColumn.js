@@ -14,7 +14,7 @@ const UriColumn = ({ column, resource, indice }) => (
     >
         <Button
             variant="text"
-            component={props => (
+            component={(props) => (
                 <Link to={getResourceUri(resource)} {...props} />
             )}
             startIcon={<RightIcon />}

@@ -19,13 +19,13 @@ export const processEnrichment = (job, done) => {
             });
             done();
         })
-        .catch(err => {
+        .catch((err) => {
             handleEnrichmentError(job, err);
             done(err);
         });
 };
 
-const startJobEnrichment = async job => {
+const startJobEnrichment = async (job) => {
     notifyListeners(`${job.data.tenant}-enricher`, {
         isEnriching: true,
         success: false,
@@ -43,7 +43,7 @@ const handleEnrichmentError = async (job, err) => {
     await setEnrichmentError(ctx, err);
 };
 
-const prepareContext = async ctx => {
+const prepareContext = async (ctx) => {
     ctx.tenant = ctx.job.data.tenant;
     await repositoryMiddleware(ctx, () => Promise.resolve());
     ctx.configTenant = await ctx.configTenantCollection.findLast();

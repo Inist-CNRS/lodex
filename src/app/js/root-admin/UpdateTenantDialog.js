@@ -36,7 +36,7 @@ const UpdateTenantDialog = ({ tenant, handleClose, updateAction }) => {
                     fullWidth
                     label="Description"
                     placeholder="Entrer une description"
-                    onChange={event => setDescription(event.target.value)}
+                    onChange={(event) => setDescription(event.target.value)}
                     value={description}
                     sx={{ marginTop: '1em' }}
                 />
@@ -46,7 +46,7 @@ const UpdateTenantDialog = ({ tenant, handleClose, updateAction }) => {
                     fullWidth
                     label="Auteur"
                     placeholder="Entrer le nom de l'auteur"
-                    onChange={event => setAuthor(event.target.value)}
+                    onChange={(event) => setAuthor(event.target.value)}
                     value={author}
                     sx={{ marginTop: '1em' }}
                 />
@@ -55,7 +55,7 @@ const UpdateTenantDialog = ({ tenant, handleClose, updateAction }) => {
                     fullWidth
                     label="Username"
                     placeholder="Username"
-                    onChange={event => setUsername(event.target.value)}
+                    onChange={(event) => setUsername(event.target.value)}
                     value={username}
                     sx={{ marginTop: '1em' }}
                 />
@@ -64,7 +64,7 @@ const UpdateTenantDialog = ({ tenant, handleClose, updateAction }) => {
                     fullWidth
                     label="Password"
                     placeholder="Mot de passe"
-                    onChange={event => setPassword(event.target.value)}
+                    onChange={(event) => setPassword(event.target.value)}
                     value={password}
                     sx={{ marginTop: '1em' }}
                 />

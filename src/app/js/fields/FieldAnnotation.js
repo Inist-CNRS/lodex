@@ -25,9 +25,9 @@ const FieldAnnotation = ({ fields, scope, p: polyglot, subresourceId }) => (
             component={FormSelectField}
             fullWidth
             SelectProps={{
-                renderValue: option => (
+                renderValue: (option) => (
                     <FieldRepresentation
-                        field={fields.find(f => f.name === option)}
+                        field={fields.find((f) => f.name === option)}
                         shortMode
                     />
                 ),
@@ -40,7 +40,7 @@ const FieldAnnotation = ({ fields, scope, p: polyglot, subresourceId }) => (
                 fields,
                 scope,
                 subresourceId,
-            ).map(f => (
+            ).map((f) => (
                 <MenuItem
                     className={`completes-${getFieldClassName(f)}`}
                     key={f.name}

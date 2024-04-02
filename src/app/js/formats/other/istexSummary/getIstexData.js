@@ -23,7 +23,7 @@ export const buildIstexQuery = (options = defaultQueryOptions) => {
     };
 
     const queryParams = Object.entries(params)
-        .filter(param => Number.isInteger(param[1]) || !!param[1])
+        .filter((param) => Number.isInteger(param[1]) || !!param[1])
         .map(
             ([key, value]) =>
                 `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
@@ -51,15 +51,17 @@ export const getYearUrl = ({ resource, field, searchedField }) => {
     });
 };
 
-export const getDecadeYearUrl = ({ value, to, from, searchedField }) => () => ({
-    url: buildIstexQuery({
-        query: `${getFilterQuery(
-            searchedField,
-            value,
-        )} AND publicationDate:[${from} TO ${to}]`,
-        facet: 'publicationDate[*-*:1]',
-    }),
-});
+export const getDecadeYearUrl =
+    ({ value, to, from, searchedField }) =>
+    () => ({
+        url: buildIstexQuery({
+            query: `${getFilterQuery(
+                searchedField,
+                value,
+            )} AND publicationDate:[${from} TO ${to}]`,
+            facet: 'publicationDate[*-*:1]',
+        }),
+    });
 
 export const getDecadeYearData = ({
     value,
@@ -72,7 +74,7 @@ export const getDecadeYearData = ({
         getDecadeYearUrl({ value, to, from, searchedField }),
         fetch,
         parseFacetData('publicationDate', ({ keyAsString }) => keyAsString),
-        data => ({
+        (data) => ({
             ...data,
             hits: data.hits.sort((a, b) =>
                 sortDir === SORT_YEAR_DESC ? b.name - a.name : a.name - b.name,
@@ -93,61 +95,66 @@ export const parseYearData = (formatData, sortDir = SORT_YEAR_DESC) => ({
         })),
 });
 
-export const getVolumeUrl = ({ value, year, searchedField }) => () => ({
-    url: buildIstexQuery({
-        query: `${getFilterQuery(
-            searchedField,
-            value,
-        )} AND publicationDate:"${year}"`,
-        facet: 'host.volume[*-*:1]',
-    }),
-});
+export const getVolumeUrl =
+    ({ value, year, searchedField }) =>
+    () => ({
+        url: buildIstexQuery({
+            query: `${getFilterQuery(
+                searchedField,
+                value,
+            )} AND publicationDate:"${year}"`,
+            facet: 'host.volume[*-*:1]',
+        }),
+    });
 
-export const parseFacetData = (facetName, getName = ({ key }) => key) => ({
-    response,
-    error,
-}) => {
-    if (error) {
-        throw error;
-    }
+export const parseFacetData =
+    (facetName, getName = ({ key }) => key) =>
+    ({ response, error }) => {
+        if (error) {
+            throw error;
+        }
 
-    return {
-        hits: get(response, ['aggregations', facetName, 'buckets'], []).map(
-            ({ docCount, ...data }) => ({
-                name: getName(data),
-                count: docCount,
-            }),
-        ),
+        return {
+            hits: get(response, ['aggregations', facetName, 'buckets'], []).map(
+                ({ docCount, ...data }) => ({
+                    name: getName(data),
+                    count: docCount,
+                }),
+            ),
+        };
     };
-};
 
 export const parseVolumeData = parseFacetData('host.volume');
 
-export const getOtherVolumeUrl = ({ value, year, searchedField }) => () => ({
-    url: buildIstexQuery({
-        query: `${getFilterQuery(
-            searchedField,
-            value,
-        )} AND publicationDate:"${year}" AND -host.volume:[0 TO *]`,
-        output: 'host.volume',
-        size: '*',
-    }),
-});
+export const getOtherVolumeUrl =
+    ({ value, year, searchedField }) =>
+    () => ({
+        url: buildIstexQuery({
+            query: `${getFilterQuery(
+                searchedField,
+                value,
+            )} AND publicationDate:"${year}" AND -host.volume:[0 TO *]`,
+            output: 'host.volume',
+            size: '*',
+        }),
+    });
 
-export const parseOtherData = key => ({ response, error }) => {
-    if (error) {
-        throw error;
-    }
-    const count = response.hits.reduce((acc, hit) => {
-        const name = get(hit, key, 'other');
-        return {
-            ...acc,
-            [name]: get(acc, name, 0) + 1,
-        };
-    }, {});
+export const parseOtherData =
+    (key) =>
+    ({ response, error }) => {
+        if (error) {
+            throw error;
+        }
+        const count = response.hits.reduce((acc, hit) => {
+            const name = get(hit, key, 'other');
+            return {
+                ...acc,
+                [name]: get(acc, name, 0) + 1,
+            };
+        }, {});
 
-    return Object.keys(count).map(name => ({ name, count: count[name] }));
-};
+        return Object.keys(count).map((name) => ({ name, count: count[name] }));
+    };
 
 export const getOtherVolumeData = ({ value, year, searchedField }) =>
     composeAsync(
@@ -156,14 +163,14 @@ export const getOtherVolumeData = ({ value, year, searchedField }) =>
         parseOtherData('host.volume'),
     );
 
-export const addOtherVolumeData = ({ value, year, searchedField }) => async ({
-    hits,
-}) => ({
-    hits: alphabeticalSort([
-        ...hits,
-        ...(await getOtherVolumeData({ value, year, searchedField })()),
-    ]),
-});
+export const addOtherVolumeData =
+    ({ value, year, searchedField }) =>
+    async ({ hits }) => ({
+        hits: alphabeticalSort([
+            ...hits,
+            ...(await getOtherVolumeData({ value, year, searchedField })()),
+        ]),
+    });
 
 export const getVolumeData = ({ value, year, searchedField }) =>
     composeAsync(
@@ -173,38 +180,37 @@ export const getVolumeData = ({ value, year, searchedField }) =>
         addOtherVolumeData({ value, year, searchedField }),
     );
 
-const getVolumeQuery = volume =>
+const getVolumeQuery = (volume) =>
     volume === 'other' ? '-host.volume.raw:*' : `host.volume.raw:"${volume}"`;
 
-export const getIssueUrl = ({ value, year, volume, searchedField }) => () => ({
-    url: buildIstexQuery({
-        query: `${getFilterQuery(
-            searchedField,
-            value,
-        )} AND publicationDate:"${year}" AND ${getVolumeQuery(volume)}`,
-        facet: 'host.issue[*-*:1]',
-    }),
-});
+export const getIssueUrl =
+    ({ value, year, volume, searchedField }) =>
+    () => ({
+        url: buildIstexQuery({
+            query: `${getFilterQuery(
+                searchedField,
+                value,
+            )} AND publicationDate:"${year}" AND ${getVolumeQuery(volume)}`,
+            facet: 'host.issue[*-*:1]',
+        }),
+    });
 
 export const parseIssueData = parseFacetData('host.issue');
 
-export const getOtherIssueUrl = ({
-    value,
-    year,
-    volume,
-    searchedField,
-}) => () => ({
-    url: buildIstexQuery({
-        query: `${getFilterQuery(
-            searchedField,
-            value,
-        )} AND publicationDate:"${year}" AND ${getVolumeQuery(
-            volume,
-        )} AND -host.issue:[0 TO *]`,
-        size: '*',
-        output: 'host.issue',
-    }),
-});
+export const getOtherIssueUrl =
+    ({ value, year, volume, searchedField }) =>
+    () => ({
+        url: buildIstexQuery({
+            query: `${getFilterQuery(
+                searchedField,
+                value,
+            )} AND publicationDate:"${year}" AND ${getVolumeQuery(
+                volume,
+            )} AND -host.issue:[0 TO *]`,
+            size: '*',
+            output: 'host.issue',
+        }),
+    });
 
 export const getOtherIssueData = ({ value, year, volume, searchedField }) =>
     composeAsync(
@@ -213,17 +219,19 @@ export const getOtherIssueData = ({ value, year, volume, searchedField }) =>
         parseOtherData('host.issue'),
     );
 
-export const addOtherIssueData = ({
-    value,
-    year,
-    volume,
-    searchedField,
-}) => async ({ hits }) => ({
-    hits: alphabeticalSort([
-        ...hits,
-        ...(await getOtherIssueData({ value, year, volume, searchedField })()),
-    ]),
-});
+export const addOtherIssueData =
+    ({ value, year, volume, searchedField }) =>
+    async ({ hits }) => ({
+        hits: alphabeticalSort([
+            ...hits,
+            ...(await getOtherIssueData({
+                value,
+                year,
+                volume,
+                searchedField,
+            })()),
+        ]),
+    });
 
 export const getIssueData = ({ value, year, volume, searchedField }) =>
     composeAsync(
@@ -233,29 +241,24 @@ export const getIssueData = ({ value, year, volume, searchedField }) =>
         addOtherIssueData({ value, year, volume, searchedField }),
     );
 
-const getIssueQuery = issue =>
+const getIssueQuery = (issue) =>
     issue === 'other' ? '-host.issue.raw:*' : `host.issue.raw:"${issue}"`;
 
-export const getDocumentUrl = ({
-    value,
-    year,
-    volume,
-    issue,
-    searchedField,
-    documentSortBy,
-}) => () => ({
-    url: buildIstexQuery({
-        query: `${getFilterQuery(
-            searchedField,
-            value,
-        )} AND publicationDate:"${year}" AND ${getVolumeQuery(
-            volume,
-        )} AND ${getIssueQuery(issue)}`,
-        output,
-        sortBy: documentSortBy,
-        size: 10,
-    }),
-});
+export const getDocumentUrl =
+    ({ value, year, volume, issue, searchedField, documentSortBy }) =>
+    () => ({
+        url: buildIstexQuery({
+            query: `${getFilterQuery(
+                searchedField,
+                value,
+            )} AND publicationDate:"${year}" AND ${getVolumeQuery(
+                volume,
+            )} AND ${getIssueQuery(issue)}`,
+            output,
+            sortBy: documentSortBy,
+            size: 10,
+        }),
+    });
 
 export const getDocumentData = ({
     value,
@@ -278,9 +281,9 @@ export const getDocumentData = ({
         parseFetchResult,
     );
 
-export const getMoreDocumentUrl = nextPageURI => ({
+export const getMoreDocumentUrl = (nextPageURI) => ({
     url: nextPageURI,
 });
 
-export const getMoreDocumentData = nextPageURI =>
+export const getMoreDocumentData = (nextPageURI) =>
     composeAsync(getMoreDocumentUrl, fetch, parseFetchResult)(nextPageURI);

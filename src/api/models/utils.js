@@ -1,6 +1,6 @@
 import { ObjectID } from 'mongodb';
 
-export const castIdsFactory = collection => async () => {
+export const castIdsFactory = (collection) => async () => {
     const items = await collection.find({}).toArray();
 
     return items.reduce(

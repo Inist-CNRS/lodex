@@ -19,7 +19,7 @@ export const EditSubresourceForm = compose(
         (s, { match }) => ({
             pathSelected: formValueSelector('SUBRESOURCE_EDIT_FORM')(s, 'path'),
             initialValues: s.subresource.subresources.find(
-                sr => sr._id === match.params.subresourceId,
+                (sr) => sr._id === match.params.subresourceId,
             ),
             subresources: s.subresource.subresources,
         }),
@@ -33,12 +33,16 @@ export const EditSubresourceForm = compose(
         renderComponent(({ match }) => <Redirect to={`${match.url}/main`} />),
     ),
     withHandlers({
-        onSubmit: ({ updateSubresource }) => resource => {
-            updateSubresource(resource);
-        },
-        onDelete: ({ deleteSubresource, match }) => () => {
-            deleteSubresource(match.params.subresourceId);
-        },
+        onSubmit:
+            ({ updateSubresource }) =>
+            (resource) => {
+                updateSubresource(resource);
+            },
+        onDelete:
+            ({ deleteSubresource, match }) =>
+            () => {
+                deleteSubresource(match.params.subresourceId);
+            },
     }),
     withProps(({ onDelete }) => ({
         additionnalActions: <DeleteSubresourceButton onClick={onDelete} />,

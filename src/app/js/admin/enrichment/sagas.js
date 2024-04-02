@@ -44,7 +44,7 @@ export function* watchLaunchEnrichment() {
     yield takeLatest(LAUNCH_ENRICHMENT, handleLaunchEnrichment);
 }
 
-export default function*() {
+export default function* () {
     yield fork(watchLoadEnrichmentsRequest);
     yield fork(watchLaunchEnrichment);
 }

@@ -16,7 +16,7 @@ export const initialState = {
 
 export default handleActions(
     {
-        LOAD_CONFIG_TENANT: state => ({ ...state, loading: true }),
+        LOAD_CONFIG_TENANT: (state) => ({ ...state, loading: true }),
         LOAD_CONFIG_TENANT_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
@@ -31,11 +31,11 @@ export default handleActions(
     initialState,
 );
 
-export const isLoading = state => state.loading;
-export const configTenant = state => state.configTenant;
-export const isEnableAutoPublication = state =>
+export const isLoading = (state) => state.loading;
+export const configTenant = (state) => state.configTenant;
+export const isEnableAutoPublication = (state) =>
     state.configTenant?.enableAutoPublication;
-export const getError = state => state.error;
+export const getError = (state) => state.error;
 
 export const selectors = {
     isLoading,

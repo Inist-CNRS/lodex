@@ -1,4 +1,4 @@
-export default array =>
+export default (array) =>
     array.sort((a, b) => {
         const typeA = typeof a.name;
         const typeB = typeof b.name;

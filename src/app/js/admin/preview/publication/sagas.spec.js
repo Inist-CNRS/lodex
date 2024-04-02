@@ -72,7 +72,7 @@ describe('publication saga', () => {
 
         it('should call transformDocument for each lines', () => {
             expect(saga.next(transformDocument).value).toEqual(
-                lines.map(line => call(transformDocument, line)),
+                lines.map((line) => call(transformDocument, line)),
             );
         });
 

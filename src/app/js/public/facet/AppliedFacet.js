@@ -35,7 +35,7 @@ export const AppliedFacetComponent = ({
                     {field.label}
                 </b>{' '}
                 {interleave(
-                    facetValues.map(facetValue => (
+                    facetValues.map((facetValue) => (
                         <span key={facetValue.value} style={styles.labelValue}>
                             {facetValue.value}
                         </span>

@@ -27,7 +27,7 @@ DataRouteComponent.propTypes = {
     hasPublishedDataset: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     canUploadFile: fromParsing.canUpload(state),
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });

@@ -14,12 +14,12 @@ const SelectFormat = ({ formats, value, onChange, p: polyglot }) => {
                 select
                 className="select-format"
                 label={polyglot.t('select_a_format')}
-                onChange={e => onChange(e.target.value)}
+                onChange={(e) => onChange(e.target.value)}
                 value={value}
                 fullWidth
             >
                 <MenuItem value="">{polyglot.t('none')}</MenuItem>
-                {formats.map(format => (
+                {formats.map((format) => (
                     <MenuItem
                         className="select-format-item"
                         key={format.name}

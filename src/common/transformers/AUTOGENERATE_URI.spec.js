@@ -16,8 +16,8 @@ describe('AUTOGENERATE_URI', () => {
         );
         const ark = new InistArk({ naan: '67375', subpublisher: '39D' });
         const parsedArk = ark.parse(arkUri);
-        expect(parsedArk.naan).toEqual('67375');
-        expect(parsedArk.subpublisher).toEqual('39D');
+        expect(parsedArk.naan).toBe('67375');
+        expect(parsedArk.subpublisher).toBe('39D');
         expect(ark.validate(arkUri)).toEqual({
             ark: true,
             naan: true,

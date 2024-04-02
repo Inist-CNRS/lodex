@@ -18,7 +18,7 @@ class UnPaginatedTableView extends AbstractTableView {
                         {this.sortData(data, columnsParameters).map(
                             (entry, index) => (
                                 <TableRow key={`${index}-table`}>
-                                    {columnsParameters.map(column =>
+                                    {columnsParameters.map((column) =>
                                         this.getCellInnerHtml(
                                             entry,
                                             index,
@@ -36,7 +36,7 @@ class UnPaginatedTableView extends AbstractTableView {
 }
 
 export default compose(
-    injectData(null, field => !!field),
+    injectData(null, (field) => !!field),
     connect(AbstractTableView.mapStateToProps),
     translate,
 )(UnPaginatedTableView);

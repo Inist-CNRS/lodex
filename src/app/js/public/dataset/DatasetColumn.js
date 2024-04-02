@@ -5,6 +5,6 @@ import UriColumn from './UriColumn';
 import DefaultColumn from './DefaultColumn';
 
 export default branch(
-    props => props.column.name === 'uri',
+    (props) => props.column.name === 'uri',
     renderComponent(UriColumn),
 )(DefaultColumn);

@@ -24,7 +24,7 @@ const ClusteredChartView = ({ data, colors, xTitle, yTitle, flipAxis }) => {
 
     const topics = useMemo(() => {
         return _.chain(values)
-            .map(value => flip(flipAxis, value.target, value.source))
+            .map((value) => flip(flipAxis, value.target, value.source))
             .uniq()
             .sort((a, b) =>
                 a.localeCompare(b, 'fr', {
@@ -45,7 +45,7 @@ const ClusteredChartView = ({ data, colors, xTitle, yTitle, flipAxis }) => {
                 rowSpacing={1}
                 columnSpacing={1}
             >
-                {topics.map(topic => (
+                {topics.map((topic) => (
                     <Grid key={topic} item xs={6}>
                         <Paper style={{ padding: '6px' }}>
                             <ClusteredChart

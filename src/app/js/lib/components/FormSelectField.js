@@ -18,7 +18,7 @@ const FormSelectField = ({
         helperText={hint}
         error={touched && error}
         {...input}
-        onChange={e => input.onChange(e.target.value)}
+        onChange={(e) => input.onChange(e.target.value)}
         {...props}
     />
 );

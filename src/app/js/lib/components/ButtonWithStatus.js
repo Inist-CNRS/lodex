@@ -63,9 +63,7 @@ const ButtonWithStatus = ({
                     variant="determinate"
                     value={target ? (progress / target) * 100 : 0}
                 />
-            ) : (
-                undefined
-            )}
+            ) : undefined}
         </Box>
     );
 };

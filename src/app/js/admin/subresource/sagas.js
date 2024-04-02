@@ -92,7 +92,7 @@ export function* watchDeleteSubresource() {
     yield takeLatest(DELETE_SUBRESOURCE, handleDeleteSubresource);
 }
 
-export default function*() {
+export default function* () {
     yield fork(watchLoadSubresourcesRequest);
     yield fork(watchCreateSubresource);
     yield fork(watchUpdateSubresource);

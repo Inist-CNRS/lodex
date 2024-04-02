@@ -19,7 +19,7 @@ export const initialState = {
     invertedFacets: {},
 };
 
-export const createActionTypes = prefix => ({
+export const createActionTypes = (prefix) => ({
     OPEN_FACET: `${prefix}_OPEN_FACET`,
     TOGGLE_FACET_VALUE: `${prefix}_TOGGLE_FACET_VALUE`,
     CLEAR_FACET: `${prefix}_CLEAR_FACET`,
@@ -31,7 +31,7 @@ export const createActionTypes = prefix => ({
     ...createFacetValueActionTypes(prefix),
 });
 
-export const createActions = actionTypes => ({
+export const createActions = (actionTypes) => ({
     openFacet: createAction(actionTypes.OPEN_FACET),
     toggleFacetValue: createAction(actionTypes.TOGGLE_FACET_VALUE),
     clearFacet: createAction(actionTypes.CLEAR_FACET),
@@ -43,7 +43,7 @@ export const createActions = actionTypes => ({
     ...createFacetValueActions(actionTypes),
 });
 
-export const createReducer = prefix => {
+export const createReducer = (prefix) => {
     const actionTypes = createActionTypes(prefix);
     const actions = createActions(actionTypes);
 
@@ -76,7 +76,7 @@ export const createReducer = prefix => {
                 const prevValues = appliedFacets[name] || [];
 
                 const newValues = isChecked
-                    ? prevValues.filter(v => v.value !== facetValue.value)
+                    ? prevValues.filter((v) => v.value !== facetValue.value)
                     : prevValues.concat(facetValue);
 
                 if (!newValues.length) {
@@ -151,7 +151,7 @@ export const createReducer = prefix => {
                     },
                 };
             },
-            [SAVE_RESOURCE_SUCCESS]: state => ({
+            [SAVE_RESOURCE_SUCCESS]: (state) => ({
                 ...state,
                 openedFacets: {},
             }),

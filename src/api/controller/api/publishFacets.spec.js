@@ -3,7 +3,7 @@ import publishFacets from './publishFacets';
 describe('publishFacets', () => {
     const ctx = {
         publishedDataset: {
-            getFacetsForField: jest.fn().mockImplementation(name => ({
+            getFacetsForField: jest.fn().mockImplementation((name) => ({
                 toArray: () =>
                     Promise.resolve([
                         {

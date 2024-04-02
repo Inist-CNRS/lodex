@@ -50,7 +50,7 @@ AppliedSearchFacetListComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     facets: fromSearch.getAppliedFacetList(state),
 });
 

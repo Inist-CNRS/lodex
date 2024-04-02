@@ -59,7 +59,7 @@ const SearchBar = ({
                 sx={{ maxWidth: maxWidth }}
                 placeholder={polyglot.t('search')}
                 onChange={onChange}
-                onFocus={event => {
+                onFocus={(event) => {
                     event && event.target && event.target.select();
                 }}
                 value={value}

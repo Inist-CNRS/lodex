@@ -38,7 +38,7 @@ DatasetColumnHeader.propTypes = {
     sortDataset: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     ...fromDataset.getSort(state),
 });
 

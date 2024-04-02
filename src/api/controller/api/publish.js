@@ -9,7 +9,7 @@ import getLogger from '../../services/logger';
 
 const app = new Koa();
 
-export const doPublish = async ctx => {
+export const doPublish = async (ctx) => {
     await workerQueues[ctx.tenant].add(
         PUBLISHER, // Name of the job
         { jobType: PUBLISHER, tenant: ctx.tenant },
@@ -21,7 +21,7 @@ export const doPublish = async ctx => {
     };
 };
 
-export const handleClearPublished = async ctx => {
+export const handleClearPublished = async (ctx) => {
     try {
         await clearPublished(ctx);
         ctx.body = {

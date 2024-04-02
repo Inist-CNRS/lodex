@@ -42,7 +42,7 @@ const Bubble = ({ r, x, y, name, value, color }) => (
             place="top"
             type="light"
             effect="float"
-            getContent={dataTip => dataTip}
+            getContent={(dataTip) => dataTip}
         />
     </div>
 );

@@ -15,7 +15,7 @@ app.use(repositoryMiddleware);
 app.use(mongoRootAdminClient);
 
 app.use(
-    route.delete('/fixtures', async ctx => {
+    route.delete('/fixtures', async (ctx) => {
         await ctx.db.collection('publishedDataset').remove({});
         await ctx.db.collection('publishedCharacteristic').remove({});
         await ctx.db.collection('field').remove({});

@@ -12,7 +12,7 @@ describe('<ExcerptRemoveColumn />', () => {
             <ExcerptRemoveColumn
                 field={field}
                 removeColumn={() => {}}
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
             />,
         );
 
@@ -26,7 +26,7 @@ describe('<ExcerptRemoveColumn />', () => {
             <ExcerptRemoveColumn
                 field={field}
                 removeColumn={() => {}}
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
             />,
         );
 

@@ -36,7 +36,9 @@ export function* handleComputePublicationPreview() {
             token,
         );
 
-        const preview = yield lines.map(line => call(transformDocument, line));
+        const preview = yield lines.map((line) =>
+            call(transformDocument, line),
+        );
         yield put(computePublicationPreviewSuccess(preview));
     } catch (error) {
         yield put(computePublicationPreviewError(error));

@@ -30,17 +30,17 @@ class LinkImageAdmin extends Component {
         args: defaultArgs,
     };
 
-    handleType = e => {
+    handleType = (e) => {
         const newArgs = { ...this.props.args, type: e.target.value };
         this.props.onChange(newArgs);
     };
 
-    handleValue = e => {
+    handleValue = (e) => {
         const newArgs = { ...this.props.args, value: e.target.value };
         this.props.onChange(newArgs);
     };
 
-    handleMaxHeight = e => {
+    handleMaxHeight = (e) => {
         const maxHeight = Math.max(e.target.value, 1);
         const newArgs = { ...this.props.args, maxHeight };
         this.props.onChange(newArgs);

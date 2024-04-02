@@ -36,7 +36,7 @@ InvalidFieldProperties.propTypes = {
     p: fieldPropTypes,
 };
 
-const mapStateToprops = state => ({
+const mapStateToprops = (state) => ({
     invalidProperties: fromFields.getInvalidProperties(state),
 });
 

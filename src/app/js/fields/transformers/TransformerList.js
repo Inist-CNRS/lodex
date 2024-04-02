@@ -44,7 +44,7 @@ const SHOW_TRANSFORMER = memoize(
     (operation, type) => `${operation}_${type}`,
 );
 
-const getHiddenTransformers = source => {
+const getHiddenTransformers = (source) => {
     if (source === 'fromSubresource') {
         return 7;
     }
@@ -68,7 +68,7 @@ export const TransformerListComponent = ({
     p: polyglot,
 }) => {
     const [fieldsToDrag, setFieldsToDrag] = useState(
-        fields.map(fieldName => fieldName),
+        fields.map((fieldName) => fieldName),
     );
 
     const { source, value } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(
@@ -80,15 +80,13 @@ export const TransformerListComponent = ({
 
     const transformersLocked = source === 'fromSubresource' && !value;
 
-    const [
-        isTransformerUpsertDialogOpen,
-        setIsTransformerUpsertDialogOpen,
-    ] = useState(false);
+    const [isTransformerUpsertDialogOpen, setIsTransformerUpsertDialogOpen] =
+        useState(false);
     const [isRemoveAllDialogOpen, setIsRemoveAllDialogOpen] = useState(false);
     const [indexFieldToEdit, setIndexFieldToEdit] = useState(null);
 
     useEffect(() => {
-        setFieldsToDrag(fields.map(fieldName => fieldName));
+        setFieldsToDrag(fields.map((fieldName) => fieldName));
     }, [fields]);
 
     const sensors = useSensors(
@@ -98,7 +96,7 @@ export const TransformerListComponent = ({
         }),
     );
 
-    const handleDragEnd = event => {
+    const handleDragEnd = (event) => {
         const { active, over } = event;
         let oldItemIndex;
         let newItemIndex;
@@ -112,7 +110,7 @@ export const TransformerListComponent = ({
         });
 
         fields.move(oldItemIndex, newItemIndex);
-        setFieldsToDrag(fieldsToDrag => {
+        setFieldsToDrag((fieldsToDrag) => {
             return arrayMove(fieldsToDrag, oldItemIndex, newItemIndex);
         });
     };

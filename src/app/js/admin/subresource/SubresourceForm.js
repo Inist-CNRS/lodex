@@ -34,7 +34,7 @@ const TextField = ({
     />
 );
 
-export const getKeys = value => {
+export const getKeys = (value) => {
     if (!value || value.length === 0) {
         return [];
     }
@@ -78,8 +78,8 @@ const SubresourceFormComponent = ({
     };
 
     const validatePath = useCallback(
-        path =>
-            path && subresources.map(sr => sr.path).includes(path)
+        (path) =>
+            path && subresources.map((sr) => sr.path).includes(path)
                 ? polyglot.t('subresource_path_validation_error')
                 : undefined,
         [subresources],
@@ -105,7 +105,7 @@ const SubresourceFormComponent = ({
                         type="text"
                         component={SubressourceFieldAutoComplete}
                         options={datasetFields}
-                        renderInput={params => (
+                        renderInput={(params) => (
                             <MUITextField
                                 {...params}
                                 label={polyglot.t('subresource_path')}
@@ -133,7 +133,7 @@ const SubresourceFormComponent = ({
                         component={SubressourceFieldAutoComplete}
                         options={optionsIdentifier}
                         disabled={!pathSelected}
-                        renderInput={params => (
+                        renderInput={(params) => (
                             <MUITextField
                                 {...params}
                                 label={polyglot.t('subresource_id')}
@@ -200,7 +200,7 @@ TextField.propTypes = {
     }),
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     datasetFields: fromParsing.getParsedExcerptColumns(state),
     excerptLines: fromParsing.getExcerptLines(state),
 });

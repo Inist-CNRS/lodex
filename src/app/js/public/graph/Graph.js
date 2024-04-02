@@ -100,7 +100,7 @@ class Graph extends Component {
         this.setState({ showFacets: !showFacets });
     };
 
-    handleEditField = field => {
+    handleEditField = (field) => {
         const redirectUrl = getEditFieldRedirectUrl(
             field.name,
             field.scope,

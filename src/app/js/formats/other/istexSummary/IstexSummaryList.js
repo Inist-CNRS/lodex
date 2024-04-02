@@ -7,7 +7,7 @@ import { field as fieldPropTypes } from '../../../propTypes';
 import { getSiteUrl } from '../../utils/fetchIstexData';
 
 const styles = {
-    text: memoize(status => ({
+    text: memoize((status) => ({
         fontSize: '1rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     })),

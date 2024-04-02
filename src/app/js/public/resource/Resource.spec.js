@@ -13,7 +13,7 @@ describe('<Resource />', () => {
         preLoadResource: () => null,
         preLoadPublication: () => null,
         preLoadExporters: () => null,
-        p: { t: v => v },
+        p: { t: (v) => v },
         history: { goBack: () => {} },
         match: { params: { uri: 'FOO' } },
     };
@@ -74,7 +74,7 @@ describe('<Resource />', () => {
         };
 
         const wrapper = shallow(<ResourceComponent {...props} />);
-        expect(wrapper.find(Detail).prop('backToListLabel')).toEqual(
+        expect(wrapper.find(Detail).prop('backToListLabel')).toBe(
             'back_to_list',
         );
     });
@@ -89,7 +89,7 @@ describe('<Resource />', () => {
         };
 
         const wrapper = shallow(<ResourceComponent {...props} />);
-        expect(wrapper.find(Detail).prop('backToListLabel')).toEqual(
+        expect(wrapper.find(Detail).prop('backToListLabel')).toBe(
             'dataset title',
         );
     });

@@ -2,7 +2,7 @@ import React from 'react';
 import { formField as formFieldPropTypes } from '../../../propTypes';
 import DefaultEdition from '../../utils/components/default-format/DefaultEdition';
 
-const FormTextField = props => {
+const FormTextField = (props) => {
     const {
         input,
         label,

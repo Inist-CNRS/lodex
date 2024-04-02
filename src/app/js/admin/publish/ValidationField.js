@@ -42,8 +42,8 @@ const ValidationFieldComponent = ({
             <Grid item>
                 <ul>
                     {properties
-                        .filter(p => !p.isValid)
-                        .map(p => (
+                        .filter((p) => !p.isValid)
+                        .map((p) => (
                             <li key={`${p.name}_${p.error}`}>
                                 {polyglot.t(
                                     `error_${p.name}_${p.error}`,
@@ -69,14 +69,14 @@ ValidationFieldComponent.propTypes = {
     isFieldsLoading: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     isFieldsLoading: fromFields.isLoading(state),
 });
 
 export default compose(
     connect(mapStateToProps),
     withHandlers({
-        onEditField: props => event => {
+        onEditField: (props) => (event) => {
             event.preventDefault();
             props.onEditField(props.field.name);
         },

@@ -19,7 +19,7 @@ describe('Detail', () => {
                 contribution1: 'value3',
             },
             p: {
-                t: v => v,
+                t: (v) => v,
             },
         };
 
@@ -67,7 +67,7 @@ describe('Detail', () => {
                 contribution1: 'value3',
             },
             p: {
-                t: v => v,
+                t: (v) => v,
             },
         };
 
@@ -100,13 +100,13 @@ describe('Detail', () => {
                 contribution1: 'value3',
             },
             p: {
-                t: v => v,
+                t: (v) => v,
             },
         };
 
         const wrapper = shallow(<Detail {...props} />);
         const exportButton = wrapper.find(ExportButton);
-        expect(exportButton.exists()).toBeTruthy()
+        expect(exportButton.exists()).toBeTruthy();
     });
 
     it('should not render export button for subressource', () => {
@@ -123,7 +123,7 @@ describe('Detail', () => {
                 subresourceId: 'value4',
             },
             p: {
-                t: v => v,
+                t: (v) => v,
             },
         };
 

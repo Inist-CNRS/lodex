@@ -23,7 +23,7 @@ import dumpSaga from './dump/sagas';
 import navigationSaga from './navigation/sagas';
 import configTenantSaga from './configTenant/sagas';
 
-export default function*() {
+export default function* () {
     yield fork(exportSaga);
     yield fork(fetchSaga);
     yield fork(fieldsSaga);

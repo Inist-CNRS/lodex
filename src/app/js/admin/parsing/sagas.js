@@ -24,6 +24,6 @@ export function* watchLoadParsingResult() {
     yield takeLatest([LOAD_PARSING_RESULT], handleLoadParsingResult);
 }
 
-export default function*() {
+export default function* () {
     yield fork(watchLoadParsingResult);
 }

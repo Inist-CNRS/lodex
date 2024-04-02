@@ -63,7 +63,7 @@ const RoutineCatalogDescription = ({ routine, polyglot }) => {
                             href={routine.doc}
                             target="_blank"
                             rel="noopener noreferrer"
-                            onClick={e => e.stopPropagation()}
+                            onClick={(e) => e.stopPropagation()}
                         >
                             <SettingsEthernetIcon />
                         </Link>
@@ -82,13 +82,13 @@ const RoutineCatalog = ({
     currentValue,
     precomputed = false,
 }) => {
-    const handleValueChange = newValue => {
+    const handleValueChange = (newValue) => {
         const event = { target: { value: newValue } };
         onChange(event);
         handleClose();
     };
 
-    const scrollTo = el => {
+    const scrollTo = (el) => {
         if (el) {
             el.scrollIntoView({ inline: 'center', block: 'center' });
         }
@@ -103,7 +103,7 @@ const RoutineCatalog = ({
                     sx={{ height: '70vh' }}
                 >
                     {(precomputed ? routinesPrecomputed : routines).map(
-                        routine => (
+                        (routine) => (
                             <ListItem
                                 key={routine.id}
                                 onClick={() => handleValueChange(routine.url)}

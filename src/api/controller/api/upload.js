@@ -17,7 +17,7 @@ import { v1 as uuid } from 'uuid';
 import { workerQueues } from '../../workers';
 import { IMPORT } from '../../workers/import';
 
-export const requestToStream = asyncBusboyImpl => async req => {
+export const requestToStream = (asyncBusboyImpl) => async (req) => {
     const { files, fields } = await asyncBusboyImpl(req);
 
     files[0].once('close', () => {
@@ -30,7 +30,7 @@ export const requestToStream = asyncBusboyImpl => async req => {
     return { stream: files[0], fields };
 };
 
-export const clearUpload = async ctx => {
+export const clearUpload = async (ctx) => {
     await ctx.dataset.drop({});
     ctx.body = true;
 };
@@ -137,7 +137,7 @@ export async function uploadChunkMiddleware(ctx, loaderName) {
     ctx.status = 200;
 }
 
-export const uploadUrl = async ctx => {
+export const uploadUrl = async (ctx) => {
     const { url, loaderName, customLoader } = ctx.request.body;
     const [extension] = url.match(/[^.]*$/);
     await workerQueues[ctx.tenant].add(
@@ -157,7 +157,7 @@ export const uploadUrl = async ctx => {
     };
 };
 
-export const uploadText = async ctx => {
+export const uploadText = async (ctx) => {
     const { text, loaderName, customLoader } = ctx.request.body;
     await workerQueues[ctx.tenant].add(
         IMPORT, // Name of the job

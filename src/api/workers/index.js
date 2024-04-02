@@ -48,7 +48,7 @@ export const createWorkerQueue = (queueName, concurrency) => {
     return workerQueue;
 };
 
-export const deleteWorkerQueue = async queueName => {
+export const deleteWorkerQueue = async (queueName) => {
     const workerQueue = workerQueues[queueName];
     await workerQueue.close();
     delete workerQueues[queueName];
@@ -56,16 +56,16 @@ export const deleteWorkerQueue = async queueName => {
 
 export const cleanWaitingJobsOfType = (queueName, jobType) => {
     const workerQueue = workerQueues[queueName];
-    workerQueue.getWaiting().then(jobs => {
-        jobs.filter(job => job.data.jobType === jobType).forEach(waitingJob =>
-            waitingJob.remove(),
+    workerQueue.getWaiting().then((jobs) => {
+        jobs.filter((job) => job.data.jobType === jobType).forEach(
+            (waitingJob) => waitingJob.remove(),
         );
     });
 };
 
 export const closeAllWorkerQueues = async () => {
     await Promise.all(
-        Object.keys(workerQueues).map(queueName =>
+        Object.keys(workerQueues).map((queueName) =>
             workerQueues[queueName].close(),
         ),
     );

@@ -13,7 +13,7 @@ import propositionStatus, {
 } from '../../../../common/propositionStatus';
 
 const styles = {
-    container: status => ({
+    container: (status) => ({
         display: 'flex',
         marginRight: '1rem',
         color: status && status !== VALIDATED ? 'grey' : 'black',

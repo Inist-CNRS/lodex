@@ -54,20 +54,14 @@ const getTenants = async (ctx, filter) => {
         tenant.totalSize = (await db.stats({ scale: 1024 })).totalSize;
 
         try {
-            tenant.dataset = await db
-                .collection('dataset')
-                .find()
-                .count();
+            tenant.dataset = await db.collection('dataset').find().count();
         } catch (e) {
             tenant.dataset = 0;
         }
 
         try {
             tenant.published =
-                (await db
-                    .collection('publishedDataset')
-                    .find()
-                    .count()) > 0;
+                (await db.collection('publishedDataset').find().count()) > 0;
         } catch (e) {
             tenant.published = false;
         }
@@ -76,11 +70,11 @@ const getTenants = async (ctx, filter) => {
     return tenants;
 };
 
-const getTenant = async ctx => {
+const getTenant = async (ctx) => {
     ctx.body = await getTenants(ctx, { createdAt: -1 });
 };
 
-const postTenant = async ctx => {
+const postTenant = async (ctx) => {
     const { name, description, author } = ctx.request.body;
     const tenantExists = await ctx.tenantCollection.count({ name });
     if (tenantExists || checkForbiddenNames(name)) {
@@ -121,7 +115,7 @@ const putTenant = async (ctx, id) => {
     ctx.body = await getTenants(ctx, { createdAt: -1 });
 };
 
-const deleteTenant = async ctx => {
+const deleteTenant = async (ctx) => {
     const { _id, name, deleteDatabase } = ctx.request.body;
     const tenantExists = await ctx.tenantCollection.findOne({
         _id: new ObjectId(_id),
@@ -147,7 +141,7 @@ app.use(route.post('/tenant', postTenant));
 app.use(route.put('/tenant/:id', putTenant));
 app.use(route.delete('/tenant', deleteTenant));
 
-app.use(async ctx => {
+app.use(async (ctx) => {
     ctx.status = 404;
 });
 

@@ -5,7 +5,7 @@ import { Dialog, LinearProgress } from '@mui/material';
 import { ProgressComponent as Progress } from './Progress';
 import { PENDING, STARTING } from '../../../../common/progressStatus';
 
-const identity = x => x;
+const identity = (x) => x;
 
 describe('Progress', () => {
     const defaultProps = {

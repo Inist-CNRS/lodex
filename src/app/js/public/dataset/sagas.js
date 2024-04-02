@@ -36,7 +36,7 @@ export function* handlePreLoadDatasetPage() {
 export function* handleLoadDatasetPageRequest({ payload }) {
     let facets = yield select(fromDataset.getAppliedFacets);
     facets = Object.keys(facets).reduce((acc, facetName) => {
-        acc[facetName] = facets[facetName].map(facetValue => facetValue.id);
+        acc[facetName] = facets[facetName].map((facetValue) => facetValue.id);
         return acc;
     }, {});
     const invertedFacets = yield select(fromDataset.getInvertedFacetKeys);
@@ -79,8 +79,8 @@ const facetSagas = facetSagasFactory({
     selectors: fromDataset,
 });
 
-export default function*() {
-    yield fork(function*() {
+export default function* () {
+    yield fork(function* () {
         // see https://github.com/redux-saga/redux-saga/blob/master/docs/api/README.md#throttlems-pattern-saga-args
         yield throttle(
             500,

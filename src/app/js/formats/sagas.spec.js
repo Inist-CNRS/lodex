@@ -435,8 +435,8 @@ describe('format sagas', () => {
                 '/api/run/routine?precomputedName=name',
             );
 
-            expect(it.routine).toEqual('/api/run/routine');
-            expect(it.precomputedName).toEqual('name');
+            expect(it.routine).toBe('/api/run/routine');
+            expect(it.precomputedName).toBe('name');
         });
 
         it('should return routine and precomputeName for correct distant precompted url', () => {
@@ -444,14 +444,14 @@ describe('format sagas', () => {
                 'https://someserver/routine?precomputedName=name',
             );
 
-            expect(it.routine).toEqual('https://someserver/routine');
-            expect(it.precomputedName).toEqual('name');
+            expect(it.routine).toBe('https://someserver/routine');
+            expect(it.precomputedName).toBe('name');
         });
 
         it('should return routine and precomputeName for correct local routine url', () => {
             const it = splitPrecomputedNameAndRoutine('/api/run/routine');
 
-            expect(it.routine).toEqual('/api/run/routine');
+            expect(it.routine).toBe('/api/run/routine');
             expect(it.precomputedName).toBeNull();
         });
 
@@ -460,14 +460,14 @@ describe('format sagas', () => {
                 'https://someserver/routine',
             );
 
-            expect(it.routine).toEqual('https://someserver/routine');
+            expect(it.routine).toBe('https://someserver/routine');
             expect(it.precomputedName).toBeNull();
         });
 
         it('should return raw text for incorrect url', () => {
             const it = splitPrecomputedNameAndRoutine('something');
 
-            expect(it.routine).toEqual('/something/');
+            expect(it.routine).toBe('/something/');
             expect(it.precomputedName).toBeNull();
         });
 

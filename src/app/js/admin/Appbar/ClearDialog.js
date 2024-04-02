@@ -34,7 +34,7 @@ const TRANSLATION_KEY = new Map([
     ['model', 'clear_model'],
 ]);
 
-const ClearDialogComponent = props => {
+const ClearDialogComponent = (props) => {
     const [validName, setValidName] = React.useState(false);
     const {
         type,
@@ -61,11 +61,11 @@ const ClearDialogComponent = props => {
         }
     }, [succeeded]);
 
-    const handleChangeField = e => {
+    const handleChangeField = (e) => {
         setValidName(e.target.value === instanceName);
     };
 
-    const handleClear = type =>
+    const handleClear = (type) =>
         (type === 'dataset' && handleClearDataset) ||
         (type === 'published' && handleClearPublished) ||
         (type === 'model' && handleClearModel);
@@ -150,7 +150,7 @@ const ClearDialogComponent = props => {
                         placeholder={polyglot.t('instance_name')}
                         fullWidth
                         onChange={handleChangeField}
-                        onKeyPress={e => handleKeyPress(e, type)}
+                        onKeyPress={(e) => handleKeyPress(e, type)}
                         error={hasFailed && polyglot.t('error')}
                         variant="standard"
                     />
@@ -177,7 +177,7 @@ ClearDialogComponent.propTypes = {
     loadSubResources: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     succeeded: fromClear.hasClearSucceeded(state),
     hasFailed: fromClear.hasClearFailed(state),
     isLoading: fromClear.getIsLoading(state),

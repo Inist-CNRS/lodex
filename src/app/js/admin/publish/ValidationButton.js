@@ -87,7 +87,7 @@ const ValidationButtonComponent = ({
                 onClose={handleHideErrors}
             >
                 <List className="validation">
-                    {fields.map(field => (
+                    {fields.map((field) => (
                         <ValidationField
                             key={field.name}
                             field={field}
@@ -112,7 +112,7 @@ ValidationButtonComponent.defaultProps = {
     popover: { show: false },
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     fields: fromFields.getInvalidFields(state),
 });
 
@@ -120,16 +120,22 @@ export default compose(
     connect(mapStateToProps),
     withState('popover', 'setShowPopover', { show: false }),
     withHandlers({
-        handleShowErrorsClick: ({ setShowPopover }) => event => {
-            event.preventDefault();
-            setShowPopover({ anchorEl: event.currentTarget, show: true });
-        },
-        handleHideErrors: ({ setShowPopover }) => () => {
-            setShowPopover({ show: false });
-        },
-        handleEditField: ({ setShowPopover }) => () => {
-            setShowPopover({ show: false });
-        },
+        handleShowErrorsClick:
+            ({ setShowPopover }) =>
+            (event) => {
+                event.preventDefault();
+                setShowPopover({ anchorEl: event.currentTarget, show: true });
+            },
+        handleHideErrors:
+            ({ setShowPopover }) =>
+            () => {
+                setShowPopover({ show: false });
+            },
+        handleEditField:
+            ({ setShowPopover }) =>
+            () => {
+                setShowPopover({ show: false });
+            },
     }),
     translate,
 )(ValidationButtonComponent);

@@ -27,7 +27,7 @@ const Tenants = ({ handleLogout }) => {
     const [openDeleteTenantDialog, setOpenDeleteTenantDialog] = useState(false);
     const [tenantToUpdate, setTenantToUpdate] = useState(null);
 
-    const onChangeTenants = changedTenants => {
+    const onChangeTenants = (changedTenants) => {
         if (changedTenants instanceof Array) {
             setTenants(changedTenants);
         }
@@ -40,14 +40,14 @@ const Tenants = ({ handleLogout }) => {
                 'X-Lodex-Tenant': 'admin',
             },
         })
-            .then(response => {
+            .then((response) => {
                 if (response.status === 401) {
                     handleLogout();
                     return;
                 }
                 return response;
             })
-            .then(response => response.json())
+            .then((response) => response.json())
             .then(onChangeTenants);
     }, []);
 
@@ -61,7 +61,7 @@ const Tenants = ({ handleLogout }) => {
             method: 'POST',
             body: JSON.stringify({ name, description, author }),
         })
-            .then(response => {
+            .then((response) => {
                 if (response.status === 401) {
                     handleLogout();
                     return;
@@ -92,7 +92,7 @@ const Tenants = ({ handleLogout }) => {
 
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 onChangeTenants(data);
                 setOpenCreateTenantDialog(false);
             });
@@ -108,7 +108,7 @@ const Tenants = ({ handleLogout }) => {
             method: 'PUT',
             body: JSON.stringify(updatedTenant),
         })
-            .then(response => {
+            .then((response) => {
                 if (response.status === 401) {
                     handleLogout();
                     return;
@@ -141,7 +141,7 @@ const Tenants = ({ handleLogout }) => {
 
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 onChangeTenants(data);
                 setTenantToUpdate(null);
             });
@@ -157,7 +157,7 @@ const Tenants = ({ handleLogout }) => {
             method: 'DELETE',
             body: JSON.stringify({ _id, name, deleteDatabase }),
         })
-            .then(response => {
+            .then((response) => {
                 if (response.status === 401) {
                     handleLogout();
                     return;
@@ -190,7 +190,7 @@ const Tenants = ({ handleLogout }) => {
 
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 onChangeTenants(data);
                 setOpenDeleteTenantDialog(false);
             });
@@ -224,7 +224,7 @@ const Tenants = ({ handleLogout }) => {
         );
     };
 
-    const formatValue = value => {
+    const formatValue = (value) => {
         if (value == null) {
             return '-';
         }
@@ -238,7 +238,7 @@ const Tenants = ({ handleLogout }) => {
             field: 'name',
             headerName: 'Nom',
             flex: 4,
-            renderCell: params => {
+            renderCell: (params) => {
                 const name = params.row.name;
                 return (
                     <Link
@@ -283,10 +283,10 @@ const Tenants = ({ handleLogout }) => {
             field: 'description',
             headerName: 'Description',
             flex: 4,
-            valueFormatter: params => {
+            valueFormatter: (params) => {
                 return formatValue(params.value);
             },
-            renderCell: params => {
+            renderCell: (params) => {
                 return (
                     <Typography
                         sx={{
@@ -305,7 +305,7 @@ const Tenants = ({ handleLogout }) => {
             field: 'author',
             headerName: 'Auteur',
             flex: 2,
-            valueFormatter: params => {
+            valueFormatter: (params) => {
                 return formatValue(params.value);
             },
         },
@@ -313,7 +313,7 @@ const Tenants = ({ handleLogout }) => {
             field: 'createdAt',
             headerName: 'Créée le',
             flex: 2,
-            valueFormatter: params => {
+            valueFormatter: (params) => {
                 if (params.value == null) {
                     return '-';
                 }
@@ -332,7 +332,7 @@ const Tenants = ({ handleLogout }) => {
             headerName: 'Données',
             flex: 2,
             sortable: true,
-            valueFormatter: params => {
+            valueFormatter: (params) => {
                 if (!params.value) {
                     return '-';
                 }
@@ -345,7 +345,7 @@ const Tenants = ({ handleLogout }) => {
             headerName: 'Données publiées',
             flex: 2,
             sortable: true,
-            valueFormatter: params => {
+            valueFormatter: (params) => {
                 return params.value ? 'Oui' : 'Non';
             },
         },
@@ -354,7 +354,7 @@ const Tenants = ({ handleLogout }) => {
             headerName: 'Taille Base de données',
             flex: 2,
             sortable: true,
-            valueFormatter: params => {
+            valueFormatter: (params) => {
                 if (params.value == null) {
                     return '-';
                 }
@@ -376,7 +376,7 @@ const Tenants = ({ handleLogout }) => {
             field: 'update',
             headerName: 'Modifier',
             flex: 1,
-            renderCell: params => {
+            renderCell: (params) => {
                 return (
                     <Button
                         color="warning"
@@ -391,7 +391,7 @@ const Tenants = ({ handleLogout }) => {
             field: 'delete',
             headerName: 'Supprimer',
             flex: 1,
-            renderCell: params => {
+            renderCell: (params) => {
                 if (params.row.name === 'default') {
                     return null;
                 }
@@ -411,7 +411,7 @@ const Tenants = ({ handleLogout }) => {
         <>
             <div style={{ height: `calc(100vh - 110px)`, width: '100%' }}>
                 <DataGrid
-                    getRowId={row => row._id}
+                    getRowId={(row) => row._id}
                     rows={tenants}
                     columns={columns}
                     components={{

@@ -8,16 +8,17 @@ import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
  */
 let clients = new Map();
 
-export const mongoConnectionString = tenant =>
-    `mongodb://${config.mongo.host}/${config.mongo.dbName}_${tenant ||
-        DEFAULT_TENANT}`;
+export const mongoConnectionString = (tenant) =>
+    `mongodb://${config.mongo.host}/${config.mongo.dbName}_${
+        tenant || DEFAULT_TENANT
+    }`;
 
 /**
  * Get the DBMS client
  * @param tenant Name of the Lodex instance
  * @returns {Promise<MongoClient>}
  */
-const mongoClientConnectionFactory = async tenant => {
+const mongoClientConnectionFactory = async (tenant) => {
     if (!tenant) {
         throw new Error(
             `L'instance n'est pas renseigné, impossible de se connecter à la base de données.`,
@@ -47,11 +48,11 @@ const mongoClientConnectionFactory = async tenant => {
  * @param tenant Name of the Lodex instance
  * @returns {Promise<Db>}
  */
-export const mongoClientFactory = async tenant => {
+export const mongoClientFactory = async (tenant) => {
     return (await mongoClientConnectionFactory(tenant)).db();
 };
 
-export const closeDb = async tenant => {
+export const closeDb = async (tenant) => {
     if (clients && clients.has(tenant)) {
         await clients.get(tenant).close();
     }

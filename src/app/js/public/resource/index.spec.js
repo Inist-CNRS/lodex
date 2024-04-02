@@ -90,19 +90,21 @@ describe('resourceReducer', () => {
     });
 
     it('should handle SAVE_RESOURCE, HIDE_RESOURCE and ADD_FIELD_TO_RESOURCE', () => {
-        [SAVE_RESOURCE, HIDE_RESOURCE, ADD_FIELD_TO_RESOURCE].forEach(type => {
-            const state = reducer(
-                {
+        [SAVE_RESOURCE, HIDE_RESOURCE, ADD_FIELD_TO_RESOURCE].forEach(
+            (type) => {
+                const state = reducer(
+                    {
+                        key: 'value',
+                    },
+                    { type },
+                );
+                expect(state).toEqual({
                     key: 'value',
-                },
-                { type },
-            );
-            expect(state).toEqual({
-                key: 'value',
-                error: null,
-                saving: true,
-            });
-        });
+                    error: null,
+                    saving: true,
+                });
+            },
+        );
     });
 
     it('should handle SAVE_RESOURCE_SUCCESS', () => {
@@ -202,7 +204,7 @@ describe('resourceReducer', () => {
             SAVE_RESOURCE_ERROR,
             HIDE_RESOURCE_ERROR,
             ADD_FIELD_TO_RESOURCE_ERROR,
-        ].forEach(type => {
+        ].forEach((type) => {
             const state = reducer(
                 {
                     key: 'value',

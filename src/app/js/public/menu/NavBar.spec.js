@@ -14,7 +14,7 @@ describe('NavBar', () => {
     // 3. You might have more than one copy of React in the same app
 
     const defaultProps = {
-        p: { t: v => v },
+        p: { t: (v) => v },
         canBeSearched: false,
         graphFields: [],
         role: 'not logged',

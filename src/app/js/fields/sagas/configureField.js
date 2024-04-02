@@ -15,7 +15,7 @@ import validateField from './validateField';
 export function* handleConfigureField() {
     const formData = yield select(getFieldOntologyFormData);
     const fields = yield select(fromFields.getFields);
-    const fieldToUpdate = fields.find(f => f.name === formData.name);
+    const fieldToUpdate = fields.find((f) => f.name === formData.name);
 
     const isValid = yield call(validateField, formData);
 

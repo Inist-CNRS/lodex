@@ -20,9 +20,7 @@ describe('<DefaultColumn />', () => {
     it('renders a TableCell with correct class', () => {
         const element = wrapper.find(TableCell);
 
-        expect(element.prop('className')).toEqual(
-            'dataset-column dataset-a_name',
-        );
+        expect(element.prop('className')).toBe('dataset-column dataset-a_name');
     });
 
     it('renders a Format with correct props', () => {

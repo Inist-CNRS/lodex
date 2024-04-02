@@ -18,7 +18,7 @@ import {
 } from '../../propTypes';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
 
-const getStyle = memoize(field => {
+const getStyle = memoize((field) => {
     if (field.scope === SCOPE_DATASET) {
         return {
             fontWeight: 'bold',
@@ -54,10 +54,10 @@ const titleStyle = {
     },
 };
 
-const ensureTextIsShort = text =>
+const ensureTextIsShort = (text) =>
     isLongText(text) ? getShortText(text) : text;
 
-const isVisible = field =>
+const isVisible = (field) =>
     field.display ? null : <HiddenIcon style={titleStyle.hidden} />;
 
 const ComposedOf = ({ compositeFields, polyglot }) => {
@@ -101,7 +101,7 @@ const ExcerptHeaderComponent = ({
         <ComposedOf compositeFields={compositeFields} polyglot={polyglot} />
         <div style={titleStyle.internal}>
             {field.internalScopes &&
-                field.internalScopes.map(internalScope => (
+                field.internalScopes.map((internalScope) => (
                     <FieldInternalIcon
                         key={internalScope}
                         scope={internalScope}

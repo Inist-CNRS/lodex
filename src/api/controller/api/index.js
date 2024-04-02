@@ -152,7 +152,7 @@ app.use(mount('/loader', loader));
 app.use(route.get('/dump', dump));
 app.use(mount('/hiddenResource', hiddenResource));
 
-app.use(async ctx => {
+app.use(async (ctx) => {
     ctx.status = 404;
 });
 

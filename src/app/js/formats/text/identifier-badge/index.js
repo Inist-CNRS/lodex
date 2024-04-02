@@ -8,7 +8,7 @@ export default {
     ListComponent: IdentifierBadgeView,
     AdminComponent,
     defaultArgs,
-    predicate: value =>
+    predicate: (value) =>
         value == null || value === '' || typeof value === 'string',
 };
 

@@ -18,13 +18,13 @@ export const processPrecomputed = (job, done) => {
             });
             done();
         })
-        .catch(err => {
+        .catch((err) => {
             handlePrecomputedError(job, err);
             done(err);
         });
 };
 
-const startJobPrecomputed = async job => {
+const startJobPrecomputed = async (job) => {
     notifyListeners(`${job.data.tenant}-precomputer`, {
         isPrecomputing: true,
         success: false,
@@ -47,7 +47,7 @@ const handlePrecomputedError = async (job, err) => {
     await setPrecomputedError(ctx, err);
 };
 
-const prepareContext = async ctx => {
+const prepareContext = async (ctx) => {
     ctx.tenant = ctx.job.data.tenant;
     await repositoryMiddleware(ctx, () => Promise.resolve());
     ctx.configTenant = await ctx.configTenantCollection.findLast();

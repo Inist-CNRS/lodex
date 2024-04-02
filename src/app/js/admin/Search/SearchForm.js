@@ -26,20 +26,21 @@ import { getFieldForSpecificScope } from '../../../../common/scope';
 import FieldRepresentation from '../../fields/FieldRepresentation';
 import withInitialData from '../withInitialData';
 
-const getSearchableFields = fields => fields.filter(f => f.searchable) || [];
+const getSearchableFields = (fields) =>
+    fields.filter((f) => f.searchable) || [];
 
-const getFacetFields = fields => fields?.filter(f => f.isFacet) || [];
+const getFacetFields = (fields) => fields?.filter((f) => f.isFacet) || [];
 
-const getResourceTitle = fields =>
-    fields?.find(f => f.overview === overview.RESOURCE_TITLE) || null;
-const getResourceDescription = fields =>
-    fields?.find(f => f.overview === overview.RESOURCE_DESCRIPTION) || null;
-const getResourceDetailFirst = fields =>
-    fields?.find(f => f.overview === overview.RESOURCE_DETAIL_1) || null;
-const getResourceDetailSecond = fields =>
-    fields?.find(f => f.overview === overview.RESOURCE_DETAIL_2) || null;
-const getResourceDetailThird = fields =>
-    fields?.find(f => f.overview === overview.RESOURCE_DETAIL_3) || null;
+const getResourceTitle = (fields) =>
+    fields?.find((f) => f.overview === overview.RESOURCE_TITLE) || null;
+const getResourceDescription = (fields) =>
+    fields?.find((f) => f.overview === overview.RESOURCE_DESCRIPTION) || null;
+const getResourceDetailFirst = (fields) =>
+    fields?.find((f) => f.overview === overview.RESOURCE_DETAIL_1) || null;
+const getResourceDetailSecond = (fields) =>
+    fields?.find((f) => f.overview === overview.RESOURCE_DETAIL_2) || null;
+const getResourceDetailThird = (fields) =>
+    fields?.find((f) => f.overview === overview.RESOURCE_DETAIL_3) || null;
 
 export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     const fieldsResource = React.useMemo(
@@ -141,9 +142,9 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         saveSyndication(value, overview.RESOURCE_DETAIL_3);
     };
 
-    const handleFacetCheckedChange = async value => {
+    const handleFacetCheckedChange = async (value) => {
         const currentIndex = facetChecked.findIndex(
-            item => item.name === value.name,
+            (item) => item.name === value.name,
         );
         const oldChecked = [...facetChecked];
         const newChecked = [...facetChecked];
@@ -208,7 +209,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 padding: 0,
                             }}
                         >
-                            {fieldsResource?.map(field => {
+                            {fieldsResource?.map((field) => {
                                 const labelId = `checkbox-list-label-${field.name}`;
 
                                 return (
@@ -232,7 +233,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                                     edge="start"
                                                     checked={
                                                         facetChecked.findIndex(
-                                                            item =>
+                                                            (item) =>
                                                                 item.name ===
                                                                 field.name,
                                                         ) !== -1
@@ -240,7 +241,8 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                                     tabIndex={-1}
                                                     disableRipple
                                                     inputProps={{
-                                                        'aria-labelledby': labelId,
+                                                        'aria-labelledby':
+                                                            labelId,
                                                     }}
                                                     sx={{
                                                         padding: 0,
@@ -339,7 +341,7 @@ SearchForm.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         // sort by label asc
         fields: fromFields

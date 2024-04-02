@@ -22,7 +22,7 @@ class LatexAdmin extends Component {
         args: defaultArgs,
     };
 
-    handleDelimiter = e => {
+    handleDelimiter = (e) => {
         const delimiter = String(e.target.value);
         const newArgs = { ...this.props.args, delimiter };
         this.props.onChange(newArgs);

@@ -80,7 +80,7 @@ const FacetList = ({
             })}
         >
             <FacetActionsContext.Provider value={actions}>
-                {fields.map(field => (
+                {fields.map((field) => (
                     <FacetItem
                         key={`${page}-${field.name}`}
                         field={field}
@@ -108,7 +108,7 @@ FacetList.propTypes = {
     toggleFacetValue: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     hasFacetFields: fromFields.hasFacetFields(state),
     fields: fromFields.getFacetFields(state),
 });

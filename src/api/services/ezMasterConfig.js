@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-export const validateConfig = config => {
+export const validateConfig = (config) => {
     if (config.naan) {
         expect(config.naan).toMatch(/(\d{5,})/);
     }

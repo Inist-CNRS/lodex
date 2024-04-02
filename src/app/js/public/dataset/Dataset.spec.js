@@ -26,7 +26,7 @@ describe('<Dataset />', () => {
                 perPage={10}
                 preLoadDatasetPage={preLoadDatasetPage}
                 loading
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
                 total={0}
             />,
         );
@@ -46,7 +46,7 @@ describe('<Dataset />', () => {
                 dataset={dataset}
                 preLoadDatasetPage={() => {}}
                 loading={false}
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
                 total={3}
             />,
         );
@@ -72,44 +72,44 @@ describe('<Dataset />', () => {
                 changePage={() => {}}
                 preLoadDatasetPage={() => {}}
                 loading={false}
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
                 total={3}
             />,
         );
 
         const cells = wrapper.find(DatasetColumn);
         expect(cells.at(0).props()).toEqual({
-            column: columns.find(c => c.name === 'col1'),
+            column: columns.find((c) => c.name === 'col1'),
             columns,
             indice: 11,
             resource: dataset[0],
         });
         expect(cells.at(1).props()).toEqual({
-            column: columns.find(c => c.name === 'col2'),
+            column: columns.find((c) => c.name === 'col2'),
             columns,
             indice: 11,
             resource: dataset[0],
         });
         expect(cells.at(2).props()).toEqual({
-            column: columns.find(c => c.name === 'col1'),
+            column: columns.find((c) => c.name === 'col1'),
             columns,
             indice: 12,
             resource: dataset[1],
         });
         expect(cells.at(3).props()).toEqual({
-            column: columns.find(c => c.name === 'col2'),
+            column: columns.find((c) => c.name === 'col2'),
             columns,
             indice: 12,
             resource: dataset[1],
         });
         expect(cells.at(4).props()).toEqual({
-            column: columns.find(c => c.name === 'col1'),
+            column: columns.find((c) => c.name === 'col1'),
             columns,
             indice: 13,
             resource: dataset[2],
         });
         expect(cells.at(5).props()).toEqual({
-            column: columns.find(c => c.name === 'col2'),
+            column: columns.find((c) => c.name === 'col2'),
             columns,
             indice: 13,
             resource: dataset[2],
@@ -119,7 +119,7 @@ describe('<Dataset />', () => {
     it('should render the Pagination', () => {
         const wrapper = shallow(
             <Dataset
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
                 columns={columns}
                 currentPage={1}
                 perPage={10}
@@ -131,8 +131,8 @@ describe('<Dataset />', () => {
         );
 
         const pagination = wrapper.find(Pagination).at(0);
-        expect(pagination.prop('total')).toEqual(3);
-        expect(pagination.prop('perPage')).toEqual(10);
+        expect(pagination.prop('total')).toBe(3);
+        expect(pagination.prop('perPage')).toBe(10);
     });
 
     it('should call preLoadDatasetPage on pagination change', () => {
@@ -140,7 +140,7 @@ describe('<Dataset />', () => {
         const changePage = jest.fn();
         const wrapper = shallow(
             <Dataset
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
                 currentPage={1}
                 perPage={10}
                 preLoadDatasetPage={preLoadDatasetPage}

@@ -23,14 +23,14 @@ describe('CompositeFieldInput', () => {
         const editField = wrapper.find(Field);
         expect(editField).toHaveLength(1);
         const editFieldProps = editField.at(0).props();
-        expect(editFieldProps.field).toEqual('field');
+        expect(editFieldProps.field).toBe('field');
 
         const editFieldInput = wrapper.find(FieldInput);
         expect(editFieldInput).toHaveLength(2);
         const editFieldInput1Props = editFieldInput.at(0).props();
-        expect(editFieldInput1Props.field).toEqual('field1');
+        expect(editFieldInput1Props.field).toBe('field1');
         const editFieldInput2Props = editFieldInput.at(1).props();
-        expect(editFieldInput2Props.field).toEqual('field2');
+        expect(editFieldInput2Props.field).toBe('field2');
     });
 
     it('should not render an input for root field is it is not editable', () => {
@@ -52,9 +52,9 @@ describe('CompositeFieldInput', () => {
         const editFieldInput = wrapper.find(FieldInput);
         expect(editFieldInput).toHaveLength(2);
         const editFieldInput1Props = editFieldInput.at(0).props();
-        expect(editFieldInput1Props.field).toEqual('field1');
+        expect(editFieldInput1Props.field).toBe('field1');
         const editFieldInput2Props = editFieldInput.at(1).props();
-        expect(editFieldInput2Props.field).toEqual('field2');
+        expect(editFieldInput2Props.field).toBe('field2');
     });
 
     it('should render ListSubheader with label', () => {
@@ -70,11 +70,6 @@ describe('CompositeFieldInput', () => {
 
         const subheader = wrapper.find(ListSubheader);
         expect(subheader).toHaveLength(1);
-        expect(
-            subheader
-                .at(0)
-                .children()
-                .text(),
-        ).toBe('Field');
+        expect(subheader.at(0).children().text()).toBe('Field');
     });
 });

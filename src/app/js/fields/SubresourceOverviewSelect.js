@@ -22,12 +22,12 @@ export const SubresourceOverviewSelectComponent = ({
 }) => {
     const subresourceTitle = useMemo(() => {
         const subresourceTitleField = fields.find(
-            field => field.overview === overview.SUBRESOURCE_TITLE,
+            (field) => field.overview === overview.SUBRESOURCE_TITLE,
         );
         return subresourceTitleField?._id;
     }, [fields]);
 
-    const handleSubresourceTitleChange = async event => {
+    const handleSubresourceTitleChange = async (event) => {
         const { value: _id } = event.target;
         await fieldApi.patchOverview({
             _id,
@@ -45,16 +45,16 @@ export const SubresourceOverviewSelectComponent = ({
             onChange={handleSubresourceTitleChange}
             sx={{ minWidth: 220 }}
             SelectProps={{
-                renderValue: option => (
+                renderValue: (option) => (
                     <FieldRepresentation
-                        field={fields.find(f => f._id === option)}
+                        field={fields.find((f) => f._id === option)}
                         shortMode
                     />
                 ),
             }}
         >
             <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
-            {fields.map(field => (
+            {fields.map((field) => (
                 <MenuItem
                     sx={{
                         display: 'flex',

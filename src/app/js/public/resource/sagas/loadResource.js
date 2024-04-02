@@ -12,7 +12,7 @@ import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { fromResource, fromRouter } from '../../selectors';
 
-export const parsePathName = pathname => {
+export const parsePathName = (pathname) => {
     const match = pathname.match(/^\/((?:ark|uid):\/.*$)/);
 
     return match && match[1];

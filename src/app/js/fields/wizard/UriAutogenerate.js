@@ -34,7 +34,7 @@ UriAutogenerateComponent.propTypes = {
     selected: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const transformers = formValueSelector(FIELD_FORM_NAME)(
         state,
         'transformers',
@@ -59,12 +59,14 @@ const mapStateToProps = state => {
 export default compose(
     connect(mapStateToProps),
     withHandlers({
-        handleSelect: ({ onChange }) => () => {
-            onChange({
-                operation: 'AUTOGENERATE_URI',
-                args: [],
-            });
-        },
+        handleSelect:
+            ({ onChange }) =>
+            () => {
+                onChange({
+                    operation: 'AUTOGENERATE_URI',
+                    args: [],
+                });
+            },
     }),
     translate,
 )(UriAutogenerateComponent);

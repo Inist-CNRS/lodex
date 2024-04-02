@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 
-export const getFieldAndLatestValue = async ctx => {
+export const getFieldAndLatestValue = async (ctx) => {
     const { uri, fieldName } = ctx.query;
 
     const [resource, field] = await Promise.all([

@@ -45,7 +45,7 @@ export function hslToHex(h, s, l) {
         g = hue2rgb(p, q, h);
         b = hue2rgb(p, q, h - 1 / 3);
     }
-    const toHex = x => {
+    const toHex = (x) => {
         const hex = Math.round(x * 255).toString(16);
         return hex.length === 1 ? '0' + hex : hex;
     };
@@ -125,7 +125,7 @@ export function transformDataIntoMapArray(formatData) {
         }
     }
 
-    const namesList = valuesObjectsArray.map(value => value.name);
+    const namesList = valuesObjectsArray.map((value) => value.name);
 
     let currentDate = dateMin;
     const valuesArray = [];
@@ -190,7 +190,7 @@ export function findFirstTickPosition(uniqueId) {
         .getBoundingClientRect().left;
     document
         .querySelectorAll(`.xAxis${uniqueId} .tick`)
-        .forEach(function(value) {
+        .forEach(function (value) {
             return value.getBoundingClientRect().left - containerXPosition;
         });
     return 0;
@@ -203,7 +203,7 @@ export function findNearestTickPosition(cursorPosition, uniqueId) {
     const ticksPositionAndValueList = [];
     document
         .querySelectorAll(`.xAxis${uniqueId} .tick`)
-        .forEach(function(value) {
+        .forEach(function (value) {
             ticksPositionAndValueList.push({
                 position:
                     value.getBoundingClientRect().left -
@@ -216,7 +216,7 @@ export function findNearestTickPosition(cursorPosition, uniqueId) {
 
     let tickPosition = cursorPosition + 10000;
     let tickValue;
-    ticksPositionAndValueList.forEach(function(value) {
+    ticksPositionAndValueList.forEach(function (value) {
         if (
             Math.abs(cursorPosition - value.position) <
             Math.abs(cursorPosition - tickPosition)
@@ -229,9 +229,10 @@ export function findNearestTickPosition(cursorPosition, uniqueId) {
 }
 
 export function generateUniqueId(length = 8) {
-    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split(
-        '',
-    );
+    const chars =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split(
+            '',
+        );
 
     let str = '';
     for (let i = 0; i < length; i++) {

@@ -1,21 +1,25 @@
 import compose from 'lodash/flowRight';
 import qs from 'qs';
 
-export const addLiteralToLiteral = (facets = {}) => (literal = {}) => ({
-    ...literal,
-    ...facets,
-});
-
-export const addKeyToLiteral = (key, value) => (literal = {}) => {
-    if (!value) {
-        return literal;
-    }
-
-    return {
+export const addLiteralToLiteral =
+    (facets = {}) =>
+    (literal = {}) => ({
         ...literal,
-        [key]: value,
+        ...facets,
+    });
+
+export const addKeyToLiteral =
+    (key, value) =>
+    (literal = {}) => {
+        if (!value) {
+            return literal;
+        }
+
+        return {
+            ...literal,
+            [key]: value,
+        };
     };
-};
 
 export default ({
     match,

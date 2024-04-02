@@ -127,7 +127,7 @@ export const ConfigTenantForm = ({
         history.push('/data');
     };
 
-    const handleConfigTenantChange = newConfigTenant => {
+    const handleConfigTenantChange = (newConfigTenant) => {
         setIsFormModified(true);
         setConfigTenant(newConfigTenant);
     };
@@ -145,7 +145,7 @@ export const ConfigTenantForm = ({
                 <h2>{polyglot.t('enableAutoPublication')}</h2>
                 <Checkbox
                     checked={enableAutoPublication}
-                    onChange={event => {
+                    onChange={(event) => {
                         setIsFormModified(true);
                         setEnableAutoPublication(event.target.checked);
                     }}
@@ -161,7 +161,7 @@ export const ConfigTenantForm = ({
                 <h2>{polyglot.t('user_auth')}</h2>
                 <Checkbox
                     checked={userAuth?.active || false}
-                    onChange={event => {
+                    onChange={(event) => {
                         setIsFormModified(true);
                         setUserAuth({
                             ...userAuth,
@@ -183,7 +183,7 @@ export const ConfigTenantForm = ({
                     label="Username"
                     value={userAuth?.username || ''}
                     disabled={!userAuth?.active}
-                    onChange={event => {
+                    onChange={(event) => {
                         setIsFormModified(true);
                         setUserAuth({
                             ...userAuth,
@@ -196,7 +196,7 @@ export const ConfigTenantForm = ({
                     label="Password"
                     value={userAuth?.password || ''}
                     disabled={!userAuth?.active}
-                    onChange={event => {
+                    onChange={(event) => {
                         setIsFormModified(true);
                         setUserAuth({
                             ...userAuth,
@@ -213,12 +213,12 @@ export const ConfigTenantForm = ({
                     width: 'min(505px, 100%)',
                 }}
                 sx={{ mb: 2 }}
-                onChange={event => {
+                onChange={(event) => {
                     setIsFormModified(true);
                     setTheme(event.target.value);
                 }}
             >
-                {themes.map(t => (
+                {themes.map((t) => (
                     <MenuItem key={t.value} value={t.value}>
                         {t.name[polyglot.currentLocale]} -{' '}
                         {t.description[polyglot.currentLocale]}
@@ -232,7 +232,7 @@ export const ConfigTenantForm = ({
                 value={enrichmentBatchSize || ''}
                 type="number"
                 sx={{ mb: 2 }}
-                onChange={event => {
+                onChange={(event) => {
                     setIsFormModified(true);
                     setEnrichmentBatchSize(Number(event.target.value));
                 }}

@@ -91,7 +91,7 @@ export class DatasetComponent extends Component {
                 <Table sx={styles.table}>
                     <TableHead>
                         <TableRow>
-                            {columns.map(c => (
+                            {columns.map((c) => (
                                 <DatasetColumnHeader
                                     key={c.name}
                                     name={c.name}
@@ -108,7 +108,7 @@ export class DatasetComponent extends Component {
                         ) : (
                             dataset.map((data, indice) => (
                                 <TableRow key={data.uri}>
-                                    {columns.map(column => (
+                                    {columns.map((column) => (
                                         <DatasetColumn
                                             key={column.name}
                                             column={column}
@@ -159,7 +159,7 @@ DatasetComponent.defaultProps = {
     dataset: [],
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     loading: fromDataset.isDatasetLoading(state),
     columns: fromFields.getListFields(state),
     currentPage: fromDataset.getDatasetCurrentPage(state),

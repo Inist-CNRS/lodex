@@ -31,7 +31,6 @@ describe('handleSearchInFieldsChange', () => {
         const polyglot = { t: jest.fn().mockReturnValue('searchable_success') };
 
         fieldApi.patchSearchableFields.mockResolvedValue(true);
-        
 
         const { getByTestId } = render(
             <SearchForm loadField={jest.fn()} fields={fields} p={polyglot} />,

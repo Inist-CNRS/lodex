@@ -7,7 +7,7 @@ export default {
     ListComponent: DefaultView,
     AdminComponent: DefaultAdmin,
     EditionComponent: DefaultEdition,
-    predicate: value =>
+    predicate: (value) =>
         value == null ||
         value === '' ||
         (!Array.isArray(value) && typeof value !== 'object'),

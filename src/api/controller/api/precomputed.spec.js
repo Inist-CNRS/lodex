@@ -80,7 +80,7 @@ describe('Precomputed controller', () => {
                 42,
                 'my updated precomputed',
             );
-            expect(ctx.body).toEqual('updated precomputed');
+            expect(ctx.body).toBe('updated precomputed');
             return;
         });
 

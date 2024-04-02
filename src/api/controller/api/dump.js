@@ -5,7 +5,7 @@ import moment from 'moment';
 import { streamEnd } from '../../services/streamHelper';
 import { unlinkFile } from '../../services/fsHelpers.js';
 
-export default async ctx => {
+export default async (ctx) => {
     const filename = `dataset_${moment().format('YYYY-MM-DD-HHmmss')}.jsonl`;
 
     const pathname = `${os.tmpdir()}/${filename}`;

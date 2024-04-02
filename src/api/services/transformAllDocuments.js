@@ -6,7 +6,7 @@ export default async function transformAllDocument(
     findLimitFromSkip,
     insertBatch,
     transformer,
-    datasetChunkExtractor = x => x,
+    datasetChunkExtractor = (x) => x,
     job,
 ) {
     let handled = 0;
@@ -32,7 +32,7 @@ export default async function transformAllDocument(
 
         const transformedDataset = (
             await Promise.all(dataset.map(transformer))
-        ).filter(x => x);
+        ).filter((x) => x);
         await insertBatch(transformedDataset);
         progress.incrementProgress(
             job?.data?.tenant || mongo.dbName,

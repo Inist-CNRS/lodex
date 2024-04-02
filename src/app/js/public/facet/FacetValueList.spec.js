@@ -20,7 +20,7 @@ describe('FacetValueList', () => {
             sortBy: 'count',
         },
         p: {
-            t: v => v,
+            t: (v) => v,
         },
         page: 'dataset',
         changeFacetValue: jest.fn(),
@@ -41,12 +41,7 @@ describe('FacetValueList', () => {
 
         expect(sortButtons).toHaveLength(2);
 
-        sortButtons
-            .at(0)
-            .dive()
-            .dive()
-            .find(Button)
-            .simulate('click');
+        sortButtons.at(0).dive().dive().find(Button).simulate('click');
 
         expect(defaultProps.sortFacetValue).toHaveBeenCalledTimes(1);
 
@@ -55,12 +50,7 @@ describe('FacetValueList', () => {
             nextSortBy: 'value',
         });
 
-        sortButtons
-            .at(1)
-            .dive()
-            .dive()
-            .find(Button)
-            .simulate('click');
+        sortButtons.at(1).dive().dive().find(Button).simulate('click');
 
         expect(defaultProps.sortFacetValue).toHaveBeenCalledTimes(2);
 

@@ -13,20 +13,22 @@ import injectData from '../../injectData';
 import AsterPlot from './AsterPlot';
 import { getResourceUri } from '../../../../../common/uris';
 
-const sortByKey = (key = '') => (dataA, dataB) => {
-    if (key === '') {
-        return 0;
-    }
+const sortByKey =
+    (key = '') =>
+    (dataA, dataB) => {
+        if (key === '') {
+            return 0;
+        }
 
-    const a = get(dataA, `${key}`, '');
-    const b = get(dataB, `${key}`, '');
+        const a = get(dataA, `${key}`, '');
+        const b = get(dataB, `${key}`, '');
 
-    return Math.sign(a - b);
-};
+        return Math.sign(a - b);
+    };
 
 const prepareData = (data = [], history, polyglot) =>
     data
-        .map(d => {
+        .map((d) => {
             const title = getShortText(d['target_title']);
             const weight = get(d, 'weight', 0);
             const value = getPercentValue(weight);

@@ -32,8 +32,8 @@ const sortByFieldUri = (a, b) =>
 export const restoreFields = (fileStream, ctx) => {
     if (!fileStream.filename.endsWith('.tar')) {
         return streamToString(fileStream)
-            .then(fieldsString => JSON.parse(fieldsString))
-            .then(fields => {
+            .then((fieldsString) => JSON.parse(fieldsString))
+            .then((fields) => {
                 ctx.field
                     .remove({})
                     .then(() =>
@@ -62,7 +62,7 @@ export const restoreFields = (fileStream, ctx) => {
                     'enrichment',
                     'precomputed',
                 ],
-                callback: function(err) {
+                callback: function (err) {
                     err ? reject(err) : resolve();
                 },
             }),
@@ -161,11 +161,11 @@ export const setup = async (ctx, next) => {
     }
 };
 
-export const getAllField = async ctx => {
+export const getAllField = async (ctx) => {
     ctx.body = await ctx.field.findAll();
 };
 
-export const postField = async ctx => {
+export const postField = async (ctx) => {
     const newField = ctx.request.body;
 
     const { searchable } = newField;
@@ -201,7 +201,7 @@ export const patchField = async (ctx, id) => {
     }
 };
 
-export const patchOverview = async ctx => {
+export const patchOverview = async (ctx) => {
     const { _id, overview, subresourceId } = ctx.request.body;
 
     try {
@@ -224,11 +224,11 @@ export const patchOverview = async ctx => {
     }
 };
 
-export const patchSearchableFields = async ctx => {
+export const patchSearchableFields = async (ctx) => {
     const fields = ctx.request.body;
 
     try {
-        const ids = fields.map(field => new ObjectID(field._id));
+        const ids = fields.map((field) => new ObjectID(field._id));
         await ctx.field.updateMany(
             { _id: { $in: ids } },
             { $set: { searchable: true } },
@@ -257,7 +257,7 @@ export const removeField = async (ctx, id) => {
     await indexSearchableFields(ctx);
 };
 
-export const exportFields = async ctx => {
+export const exportFields = async (ctx) => {
     const filename = `model_${moment().format('YYYY-MM-DD-HHmmss')}.tar`;
     ctx.set('Content-disposition', `attachment; filename=${filename}`);
     ctx.set('Content-type', 'application/x-tar');
@@ -298,7 +298,7 @@ export const exportFields = async ctx => {
     }
 };
 
-export const importFields = asyncBusboyImpl => async ctx => {
+export const importFields = (asyncBusboyImpl) => async (ctx) => {
     const { files } = await asyncBusboyImpl(ctx.req);
     const fileStream = files[0];
 
@@ -319,11 +319,11 @@ export const importFields = asyncBusboyImpl => async ctx => {
     }
 };
 
-export const reorderField = async ctx => {
+export const reorderField = async (ctx) => {
     const { fields } = ctx.request.body;
 
     const fieldsDict = await ctx.field.findByNames(fields);
-    const fieldsData = fields.map(name => fieldsDict[name]);
+    const fieldsData = fields.map((name) => fieldsDict[name]);
 
     try {
         fieldsData.reduce((prev, { scope }) => {
@@ -377,7 +377,7 @@ export const reorderField = async ctx => {
     }
 };
 
-export const duplicateField = async ctx => {
+export const duplicateField = async (ctx) => {
     try {
         // get field id from request body
         const { fieldId } = ctx.request.body;
@@ -403,13 +403,13 @@ export const duplicateField = async ctx => {
     }
 };
 
-export const dropFieldCollection = async ctx => {
+export const dropFieldCollection = async (ctx) => {
     try {
         // drop field collection except the uri field from scope collection
         await ctx.field.drop();
         await ctx.field.initializeModel();
         const collectionNames = await ctx.db.listCollections().toArray();
-        if (collectionNames.map(c => c.name).includes('subresource')) {
+        if (collectionNames.map((c) => c.name).includes('subresource')) {
             await ctx.subresource.drop();
         }
         ctx.status = 200;

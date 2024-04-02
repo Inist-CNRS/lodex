@@ -14,7 +14,7 @@ describe('<ClearPublishedButton />', () => {
         const wrapper = shallow(
             <ClearPublishedButton
                 hasPublishedDataset={false}
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
             />,
         );
 
@@ -26,7 +26,7 @@ describe('<ClearPublishedButton />', () => {
         const wrapper = shallow(
             <ClearPublishedButton
                 hasPublishedDataset={false}
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
             />,
         );
 
@@ -37,7 +37,7 @@ describe('<ClearPublishedButton />', () => {
         const wrapper = shallow(
             <ClearPublishedButton
                 hasPublishedDataset={false}
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
             />,
         );
 

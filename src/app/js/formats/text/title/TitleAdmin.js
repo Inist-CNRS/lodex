@@ -36,7 +36,7 @@ class TitleAdmin extends Component {
         };
     }
 
-    handleLevel = level => {
+    handleLevel = (level) => {
         this.props.onChange({ level });
     };
 
@@ -56,7 +56,7 @@ class TitleAdmin extends Component {
                     fullWidth
                     select
                     label={polyglot.t('list_format_select_level')}
-                    onChange={e => this.handleLevel(e.target.value)}
+                    onChange={(e) => this.handleLevel(e.target.value)}
                     value={level}
                 >
                     <MenuItem value={1}>{polyglot.t('level1')}</MenuItem>

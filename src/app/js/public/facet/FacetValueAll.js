@@ -63,9 +63,8 @@ const mapStateToProps = (state, { name, page }) => {
     return {
         facetData: selectors.getFacetValueRequestData(state, name),
         total: selectors.getFacetValuesTotal(state, name),
-        maxCheckAllValue: fromDisplayConfig.getMaxCheckAllFacetsValue(state)[
-            page
-        ],
+        maxCheckAllValue:
+            fromDisplayConfig.getMaxCheckAllFacetsValue(state)[page],
     };
 };
 

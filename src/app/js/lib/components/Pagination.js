@@ -85,7 +85,7 @@ class Pagination extends Component {
         this.setState({ pages, count });
     };
 
-    handleChangePerPage = e => {
+    handleChangePerPage = (e) => {
         const perPage = e.target.value;
         const count = Math.ceil(this.props.total / perPage);
         let currentPage = this.props.currentPage;
@@ -105,15 +105,15 @@ class Pagination extends Component {
         this.handleChangePage(this.props.currentPage + 1);
     };
 
-    handleChangePage = currentPage => {
+    handleChangePage = (currentPage) => {
         this.props.onChange(currentPage, this.props.perPage);
     };
 
-    handleChangePageFromSelect = e => {
+    handleChangePageFromSelect = (e) => {
         this.handleChangePage(e.target.value);
     };
 
-    handleChangePageFromText = e => {
+    handleChangePageFromText = (e) => {
         const page = parseInt(e.target.value) - 1;
 
         if (page < this.state.count && page > -1) {
@@ -171,7 +171,7 @@ class Pagination extends Component {
                             sx={styles.input}
                             variant="standard"
                         >
-                            {pages.map(page => (
+                            {pages.map((page) => (
                                 <MenuItem value={page} key={`page-${page}`}>
                                     {page + 1}
                                 </MenuItem>

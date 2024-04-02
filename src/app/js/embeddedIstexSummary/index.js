@@ -26,7 +26,7 @@ const theme = createTheme(customTheme, {
     userAgent: navigator.userAgent,
 });
 
-const App = props => (
+const App = (props) => (
     <MuiThemeProvider theme={theme}>
         <FieldProvider {...props}>
             {({ resource, field, formatData }) => (
@@ -45,7 +45,7 @@ const App = props => (
 
 const elements = document.querySelectorAll('.embedded-istex-summary');
 
-elements.forEach(element => {
+elements.forEach((element) => {
     const props = {
         api: element.getAttribute('data-api'),
         uri: element.getAttribute('data-uri'),

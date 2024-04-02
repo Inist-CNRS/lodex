@@ -15,7 +15,7 @@ describe('YearFold', () => {
         value: 'value',
         item: { name: 'year', count: 1 },
         searchedField: 'host.issn',
-        polyglot: { t: v => v },
+        polyglot: { t: (v) => v },
         children,
     };
 

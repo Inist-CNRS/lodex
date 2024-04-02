@@ -148,8 +148,8 @@ describe('field routes', () => {
             await importFields(asyncBusboyImpl)(ctx);
             expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
             expect(ctx.restoreFields).toHaveBeenCalledWith('file0', ctx);
-            expect(ctx.status).toEqual(200);
-            expect(ctx.body.hasEnrichments).toEqual(false);
+            expect(ctx.status).toBe(200);
+            expect(ctx.body.hasEnrichments).toBe(false);
         });
 
         it('should import fields with enrichments', async () => {
@@ -164,8 +164,8 @@ describe('field routes', () => {
             await importFields(asyncBusboyImpl)(ctx);
             expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
             expect(ctx.restoreFields).toHaveBeenCalledWith('file0', ctx);
-            expect(ctx.status).toEqual(200);
-            expect(ctx.body.hasEnrichments).toEqual(true);
+            expect(ctx.status).toBe(200);
+            expect(ctx.body.hasEnrichments).toBe(true);
         });
 
         it('should import fields with precomputed', async () => {
@@ -180,8 +180,8 @@ describe('field routes', () => {
             await importFields(asyncBusboyImpl)(ctx);
             expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
             expect(ctx.restoreFields).toHaveBeenCalledWith('file0', ctx);
-            expect(ctx.status).toEqual(200);
-            expect(ctx.body.hasPrecomputed).toEqual(true);
+            expect(ctx.status).toBe(200);
+            expect(ctx.body.hasPrecomputed).toBe(true);
         });
 
         it('should import fields with precomputed and enrichment', async () => {
@@ -200,9 +200,9 @@ describe('field routes', () => {
             await importFields(asyncBusboyImpl)(ctx);
             expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
             expect(ctx.restoreFields).toHaveBeenCalledWith('file0', ctx);
-            expect(ctx.status).toEqual(200);
-            expect(ctx.body.hasPrecomputed).toEqual(true);
-            expect(ctx.body.hasEnrichments).toEqual(true);
+            expect(ctx.status).toBe(200);
+            expect(ctx.body.hasPrecomputed).toBe(true);
+            expect(ctx.body.hasEnrichments).toBe(true);
         });
 
         it('should return 500 in ctx.status and error message in ctx.body on error', async () => {
@@ -423,7 +423,7 @@ describe('field routes', () => {
                 field: {
                     updatePosition: jest
                         .fn()
-                        .mockImplementation(name =>
+                        .mockImplementation((name) =>
                             Promise.resolve(`updated ${name}`),
                         ),
                     findByNames: jest
@@ -456,7 +456,7 @@ describe('field routes', () => {
                 field: {
                     updatePosition: jest
                         .fn()
-                        .mockImplementation(name =>
+                        .mockImplementation((name) =>
                             Promise.resolve(`updated ${name}`),
                         ),
                     findByNames: jest

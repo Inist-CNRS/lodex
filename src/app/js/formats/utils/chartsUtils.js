@@ -55,7 +55,7 @@ export const MAP_FRANCE = 'france';
 export const VEGA_ACTIONS_WIDTH = 40;
 
 // function use to convert scale give by lodex to an normalized id
-export const lodexScaleToIdScale = scale => {
+export const lodexScaleToIdScale = (scale) => {
     switch (scale) {
         case 'linear':
             return SCALE_LINEAR;
@@ -65,7 +65,7 @@ export const lodexScaleToIdScale = scale => {
 };
 
 // function use to convert orderBy give by lodex to an normalized id
-export const lodexOrderToIdOrder = orderBy => {
+export const lodexOrderToIdOrder = (orderBy) => {
     switch (orderBy) {
         case 'value/asc':
             return VALUES_ASC;
@@ -85,7 +85,7 @@ export const lodexOrderToIdOrder = orderBy => {
  * @param direction{'vertical' | 'horizontal'}
  * @returns {number}
  */
-export const lodexDirectionToIdDirection = direction => {
+export const lodexDirectionToIdDirection = (direction) => {
     switch (direction) {
         case 'vertical':
             return AXIS_VERTICAL;

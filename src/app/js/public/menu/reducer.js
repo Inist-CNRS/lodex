@@ -34,13 +34,13 @@ export default handleActions(
     initialState,
 );
 
-export const hasMenu = state => state;
+export const hasMenu = (state) => state;
 
-const getLeftMenu = state => state.leftMenu;
-const getRightMenu = state => state.rightMenu;
-const getAdvancedMenu = state => state.advancedMenu;
-const getCustomRoutes = state => state.customRoutes;
-const getAdvancedMenuButton = state => state.advancedMenuButton;
+const getLeftMenu = (state) => state.leftMenu;
+const getRightMenu = (state) => state.rightMenu;
+const getAdvancedMenu = (state) => state.advancedMenu;
+const getCustomRoutes = (state) => state.customRoutes;
+const getAdvancedMenuButton = (state) => state.advancedMenuButton;
 
 export const fromMenu = {
     hasMenu,

@@ -13,7 +13,7 @@ describe('<AdminOnlyAlert />', () => {
                 <p>foo</p>
             </AdminOnlyAlertComponent>,
         );
-        expect(wrapper.contains(<p>foo</p>)).toEqual(true);
+        expect(wrapper.contains(<p>foo</p>)).toBe(true);
     });
 
     it('should not render its children when isAdmin is false', () => {
@@ -22,7 +22,7 @@ describe('<AdminOnlyAlert />', () => {
                 <p>foo</p>
             </AdminOnlyAlertComponent>,
         );
-        expect(wrapper.contains(<p>foo</p>)).toEqual(false);
+        expect(wrapper.contains(<p>foo</p>)).toBe(false);
     });
 
     afterEach(() => StyleSheetTestUtils.clearBufferAndResumeStyleInjection());

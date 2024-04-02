@@ -22,7 +22,7 @@ ExportDatasetButtonComponent.propTypes = {
 };
 
 export const ExportDatasetButton = compose(
-    connect(state => ({ loading: fromDump.isDumpLoading(state) }), {
+    connect((state) => ({ loading: fromDump.isDumpLoading(state) }), {
         dumpDataset,
     }),
     translate,

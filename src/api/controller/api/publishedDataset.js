@@ -10,7 +10,7 @@ import { ObjectID } from 'mongodb';
 
 const app = new Koa();
 
-export const getPage = async ctx => {
+export const getPage = async (ctx) => {
     const {
         page = 0,
         perPage = 10,
@@ -27,7 +27,7 @@ export const getPage = async ctx => {
         facetsWithValueIds,
     )) {
         const facetValues = await Promise.all(
-            facetValueIds.map(async facetValueId => {
+            facetValueIds.map(async (facetValueId) => {
                 const facetValue = await ctx.publishedFacet.findOne({
                     _id: new ObjectID(facetValueId),
                 });
@@ -63,14 +63,14 @@ export const getPage = async ctx => {
     ctx.body = {
         total,
         fullTotal,
-        data: data.map(doc => ({
+        data: data.map((doc) => ({
             ...doc.versions[doc.versions.length - 1],
             uri: doc.uri,
         })),
     };
 };
 
-export const getRemovedPage = async ctx => {
+export const getRemovedPage = async (ctx) => {
     const { page = 0, perPage = 10 } = ctx.request.query;
     const intPage = parseInt(page, 10);
     const intPerPage = parseInt(perPage, 10);
@@ -82,7 +82,7 @@ export const getRemovedPage = async ctx => {
 
     ctx.body = {
         total,
-        data: data.map(doc => ({
+        data: data.map((doc) => ({
             ...doc.versions[doc.versions.length - 1],
             uri: doc.uri,
             removed_at: doc.removed_at,
@@ -91,7 +91,7 @@ export const getRemovedPage = async ctx => {
     };
 };
 
-export const removeResource = async ctx => {
+export const removeResource = async (ctx) => {
     const { uri, reason } = ctx.request.body;
     const removedAt = ctx.request.body.removedAt ?? new Date();
     await ctx.hiddenResource.create({
@@ -102,13 +102,13 @@ export const removeResource = async ctx => {
     ctx.body = await ctx.publishedDataset.hide(uri, reason, removedAt);
 };
 
-export const restoreResource = async ctx => {
+export const restoreResource = async (ctx) => {
     const { uri } = ctx.request.body;
     await ctx.hiddenResource.deleteByUri(uri);
     ctx.body = await ctx.publishedDataset.restore(uri);
 };
 
-export const addFieldToResource = async ctx => {
+export const addFieldToResource = async (ctx) => {
     const isLoggedIn = ctx.state.isAdmin;
     const { uri, contributor, field } = ctx.request.body;
     const fieldName = await ctx.field.addContributionField(
@@ -156,7 +156,7 @@ export const getPropositionPage = async (ctx, status = PROPOSED) => {
 
     ctx.body = {
         total,
-        data: data.map(doc => ({
+        data: data.map((doc) => ({
             ...doc.versions[doc.versions.length - 1],
             uri: doc.uri,
         })),
@@ -168,7 +168,7 @@ export const prepareEditResource = async (ctx, next) => {
     await next();
 };
 
-export const editResource = async ctx => {
+export const editResource = async (ctx) => {
     const { resource: newVersion, field } = ctx.request.body;
     const resource = await ctx.publishedDataset.findByUri(newVersion.uri);
     if (!resource || resource.removed_at) {
@@ -192,7 +192,7 @@ export const editResource = async ctx => {
     ctx.body = result;
 };
 
-export const createResource = async ctx => {
+export const createResource = async (ctx) => {
     const newResource = ctx.request.body;
     if (!newResource.uri) {
         newResource.uri = await generateUri()();

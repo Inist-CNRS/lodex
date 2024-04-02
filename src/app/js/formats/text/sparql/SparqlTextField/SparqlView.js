@@ -72,7 +72,7 @@ export class SparqlTextField extends Component {
         const { ViewComponent, args } = getViewComponent(subformat.sub);
         return (
             <ViewComponent
-                resource={{ '0': attrData.value }}
+                resource={{ 0: attrData.value }}
                 field={{
                     ...field,
                     name: '0',
@@ -90,7 +90,7 @@ export class SparqlTextField extends Component {
     renderAttributeFormat = (attrName, attrData) => {
         const { sparql } = this.props;
 
-        const subFormat = sparql.subformat.find(data => {
+        const subFormat = sparql.subformat.find((data) => {
             return attrName === data.attribute.trim().replace(/^\?/, '');
         });
 
@@ -101,7 +101,7 @@ export class SparqlTextField extends Component {
         return this.renderDefaultAttributeFormat(attrData);
     };
 
-    renderDefaultAttributeFormat = attrData => {
+    renderDefaultAttributeFormat = (attrData) => {
         const { className, sparql } = this.props;
 
         if (attrData.value.includes(sparql.separator)) {
@@ -134,7 +134,7 @@ export class SparqlTextField extends Component {
         return <span>{value}</span>;
     };
 
-    renderLang = attrData => {
+    renderLang = (attrData) => {
         if (attrData['xml:lang'] !== undefined) {
             return <span>{attrData['xml:lang']}</span>;
         }

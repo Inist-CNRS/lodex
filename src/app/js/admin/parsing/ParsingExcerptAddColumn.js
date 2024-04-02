@@ -53,14 +53,17 @@ ParsingExcerptAddColumnComponent.defaultProps = {
     style: null,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     isFieldsLoading: fromFields.isLoading(state),
 });
 
 export default compose(
     connect(mapStateToProps),
     withHandlers({
-        handleAddColumn: ({ name, onAddColumn }) => () => onAddColumn(name),
+        handleAddColumn:
+            ({ name, onAddColumn }) =>
+            () =>
+                onAddColumn(name),
     }),
     translate,
 )(ParsingExcerptAddColumnComponent);

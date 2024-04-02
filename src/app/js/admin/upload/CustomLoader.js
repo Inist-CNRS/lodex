@@ -108,7 +108,7 @@ const CustomLoader = ({
 
 const formSelector = formValueSelector('CUSTOM_LOADER_FORM');
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     formValue: formSelector(state, 'customLoader'),
     initialValues: { customLoader: fromUpload.getCustomLoader(state) },
     loaderName: fromUpload.getLoaderName(state),

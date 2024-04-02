@@ -24,12 +24,12 @@ describe('IstexCitationView', () => {
         resource: { uri: 'uri', field: 'refBibs.host.title:"The Lancet"' },
         searchedField: CUSTOM_ISTEX_QUERY,
         documentSortBy: 'publicationDate[desc]',
-        p: { t: v => v },
+        p: { t: (v) => v },
     };
     const ComposedComponent = () => <div>Composed Child</div>;
 
     beforeAll(() => {
-        parseCitationData.mockImplementation(v => v);
+        parseCitationData.mockImplementation((v) => v);
         composeRenderProps.mockImplementation(() => ComposedComponent);
     });
 

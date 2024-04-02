@@ -59,13 +59,13 @@ class BubbleAdmin extends Component {
         };
     }
 
-    handleParams = params => updateAdminArgs('params', params, this.props);
+    handleParams = (params) => updateAdminArgs('params', params, this.props);
 
     handleColors(colors) {
         updateAdminArgs('colors', colors, this.props);
     }
 
-    handleDiameter = e => {
+    handleDiameter = (e) => {
         updateAdminArgs('diameter', e.target.value, this.props);
     };
 

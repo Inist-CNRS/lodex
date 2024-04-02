@@ -15,7 +15,7 @@ describe('<DeleteSubresourceButton />', () => {
                 onClick={onClick}
                 setShowDeletePopup={setShowDeletePopup}
                 showDeletePopup={showDeletePopup}
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
             />,
         );
 
@@ -35,7 +35,7 @@ describe('<DeleteSubresourceButton />', () => {
                 onClick={onClick}
                 setShowDeletePopup={setShowDeletePopup}
                 showDeletePopup={showDeletePopup}
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
             />,
         );
 
@@ -52,12 +52,12 @@ describe('<DeleteSubresourceButton />', () => {
                 onClick={onClick}
                 setShowDeletePopup={setShowDeletePopup}
                 showDeletePopup={showDeletePopup}
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
             />,
         );
 
         const dialog = wrapper.find(Dialog);
-        const confirmButton = dialog.findWhere(node => {
+        const confirmButton = dialog.findWhere((node) => {
             return node.type() === Button && node.text() === 'delete';
         });
 

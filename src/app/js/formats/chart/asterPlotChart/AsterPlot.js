@@ -22,7 +22,7 @@ const styles = stylesToClassname(
 
 const AsterPlot = ({ data, width, height, colorSet }) => {
     const ref = useRef(null);
-    const createPie = d3.pie().value(d => d.value);
+    const createPie = d3.pie().value((d) => d.value);
 
     useEffect(() => {
         // Create structure
@@ -82,7 +82,7 @@ const AsterPlot = ({ data, width, height, colorSet }) => {
         const filledArc = d3
             .arc()
             .innerRadius(inner)
-            .outerRadius(function(d) {
+            .outerRadius(function (d) {
                 return (radius - inner) * (d.value / 100) + inner;
             })
             .startAngle(computeStartAngle)
@@ -118,10 +118,10 @@ const AsterPlot = ({ data, width, height, colorSet }) => {
             .attr('class', `outlineArc ${styles.outlineArc}`)
             .attr('transform', `translate(${width / 2} ${height / 2})`)
             .attr('data-html', true)
-            .attr('data-tip', function(d) {
+            .attr('data-tip', function (d) {
                 return d.data.label;
             })
-            .on('click', function(d) {
+            .on('click', function (d) {
                 d.data.onClick();
             });
 

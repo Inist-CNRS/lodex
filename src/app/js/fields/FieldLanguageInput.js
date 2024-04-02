@@ -17,7 +17,7 @@ export const FieldLanguageInputComponent = ({
     p: polyglot,
     ...props
 }) => {
-    const languagesItems = languages.map(language => (
+    const languagesItems = languages.map((language) => (
         <MenuItem
             className={`language_${getFieldClassName(field)}`}
             key={language.code}

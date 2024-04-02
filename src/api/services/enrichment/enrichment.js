@@ -63,12 +63,12 @@ export const createEnrichmentRule = async (ctx, enrichment) => {
     };
 };
 
-const cleanWebServiceRule = rule => {
+const cleanWebServiceRule = (rule) => {
     rule = rule.replace('URLConnect', 'transit');
     return rule;
 };
 
-export const getEnrichmentDataPreview = async ctx => {
+export const getEnrichmentDataPreview = async (ctx) => {
     const { enrichmentBatchSize } = ctx.configTenant;
     const BATCH_SIZE = Number(enrichmentBatchSize || 10);
     const { sourceColumn, subPath, rule } = ctx.request.body;
@@ -104,7 +104,7 @@ export const getEnrichmentDataPreview = async ctx => {
 
             // Display null or undefined by string only for preview. Use for show informations to user.
             result.push(
-                ...values.map(v =>
+                ...values.map((v) =>
                     v.value !== undefined ? v.value : 'undefined',
                 ),
             );
@@ -166,9 +166,9 @@ export const getEnrichmentDatasetCandidate = async (id, ctx) => {
     return entry;
 };
 
-const createEzsRuleCommands = rule => ezs.compileScript(rule).get();
+const createEzsRuleCommands = (rule) => ezs.compileScript(rule).get();
 
-export const getSourceError = error => {
+export const getSourceError = (error) => {
     const sourceError = error?.sourceError;
     if (sourceError?.sourceError) {
         return getSourceError(sourceError);
@@ -202,7 +202,7 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
             .pipe(ezs(preformat))
             .pipe(ezs('delegate', { commands }, {}))
             .pipe(ezs(postcheck, { preview }, ctx))
-            .on('data', data => {
+            .on('data', (data) => {
                 if (data instanceof Error) {
                     const error = getSourceError(data);
                     let sourceChunk = null;
@@ -223,7 +223,7 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
                 }
             })
             .on('end', () => resolve(values))
-            .on('error', error => reject(error));
+            .on('error', (error) => reject(error));
     });
 };
 
@@ -353,7 +353,7 @@ export const setEnrichmentJobId = async (ctx, enrichmentID, job) => {
     });
 };
 
-export const startEnrichment = async ctx => {
+export const startEnrichment = async (ctx) => {
     const id = ctx.job?.data?.id;
     const enrichment = await ctx.enrichment.findOneById(id);
     const dataSetSize = await ctx.dataset.count();
@@ -410,7 +410,7 @@ export const setEnrichmentError = async (ctx, err) => {
     });
 };
 
-export const restoreEnrichments = async ctx => {
+export const restoreEnrichments = async (ctx) => {
     // mongo update all enrichment to set status to empty
     await ctx.enrichment.updateMany({}, { $set: { status: '' } });
 
@@ -429,10 +429,10 @@ export const restoreEnrichments = async ctx => {
 };
 
 const LISTENERS = [];
-export const addEnrichmentJobListener = listener => {
+export const addEnrichmentJobListener = (listener) => {
     LISTENERS.push(listener);
 };
 
 export const notifyListeners = (room, payload) => {
-    LISTENERS.forEach(listener => listener({ room, data: payload }));
+    LISTENERS.forEach((listener) => listener({ room, data: payload }));
 };

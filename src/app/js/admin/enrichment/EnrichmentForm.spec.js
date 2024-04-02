@@ -27,7 +27,7 @@ describe('<EnrichmentFormComponent />', () => {
         );
         const textField = wrapper.find(Field).at(0);
         expect(textField).toHaveLength(1);
-        expect(textField.prop('name')).toEqual('name');
+        expect(textField.prop('name')).toBe('name');
     });
 
     it('should render 3 Fields for enrichment rule with simplified mode', () => {
@@ -40,15 +40,15 @@ describe('<EnrichmentFormComponent />', () => {
         );
         const webServiceUrl = wrapper.find(Field).at(2);
         expect(webServiceUrl).toHaveLength(1);
-        expect(webServiceUrl.prop('name')).toEqual('webServiceUrl');
+        expect(webServiceUrl.prop('name')).toBe('webServiceUrl');
 
         const sourceColumn = wrapper.find(Field).at(3);
         expect(sourceColumn).toHaveLength(1);
-        expect(sourceColumn.prop('name')).toEqual('sourceColumn');
+        expect(sourceColumn.prop('name')).toBe('sourceColumn');
 
         const subPath = wrapper.find(Field).at(4);
         expect(subPath).toHaveLength(1);
-        expect(subPath.prop('name')).toEqual('subPath');
+        expect(subPath.prop('name')).toBe('subPath');
     });
 
     it('should render 1 Field for enrichment rule with advanced mode', () => {
@@ -67,7 +67,7 @@ describe('<EnrichmentFormComponent />', () => {
         );
         const rule = wrapper.find(Field).at(2);
         expect(rule).toHaveLength(1);
-        expect(rule.prop('name')).toEqual('rule');
+        expect(rule.prop('name')).toBe('rule');
     });
 
     it('should render a  enrichment logs dialog', () => {

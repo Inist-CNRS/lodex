@@ -58,10 +58,7 @@ export const LoginComponent = ({
     }, [target]);
 
     return (
-        <Card
-            sx={styles.container}
-            className={className}
-        >
+        <Card sx={styles.container} className={className}>
             <CardHeader
                 title={polyglot.t('Login')}
                 subheader={polyglot.t(subheader)}
@@ -111,15 +108,15 @@ LoginComponent.defaultProps = {
     previousState: null,
 };
 
-export const mapStateToProps = state => ({
+export const mapStateToProps = (state) => ({
     showModal: fromUser.isUserModalShown(state),
     submitting: isSubmitting(LOGIN_FORM_NAME)(state),
 });
 
-export const mapDispatchToProps = dispatch =>
+export const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {
-            login: values => loginAction(values),
+            login: (values) => loginAction(values),
             submit: () => submitAction(LOGIN_FORM_NAME),
             toggleLogin: toggleLoginAction,
         },

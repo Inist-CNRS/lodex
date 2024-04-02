@@ -16,7 +16,7 @@ describe('FetchFold', () => {
         )),
         label: 'label',
         count: 10,
-        polyglot: { t: v => v },
+        polyglot: { t: (v) => v },
     };
 
     beforeEach(() => {
@@ -86,7 +86,7 @@ describe('FetchFold', () => {
         button.simulate('click');
         expect(getData).toHaveBeenCalledTimes(1);
         expect(wrapper.find(CircularProgress)).toHaveLength(1);
-        await dataPromise.catch(v => v); // wait for dataPromise to get rejected by component
+        await dataPromise.catch((v) => v); // wait for dataPromise to get rejected by component
         wrapper.update();
         expect(wrapper.find(CircularProgress)).toHaveLength(0);
         expect(wrapper.find(Folder)).toHaveLength(0);

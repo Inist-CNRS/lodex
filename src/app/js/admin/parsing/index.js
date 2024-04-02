@@ -26,7 +26,7 @@ export const defaultState = {
 
 export default handleActions(
     {
-        LOAD_PARSING_RESULT: state => ({
+        LOAD_PARSING_RESULT: (state) => ({
             ...state,
             allowUpload: false,
             loading: true,
@@ -43,16 +43,16 @@ export default handleActions(
             allowUpload: payload.totalLoadedLines === 0,
             loading: false,
         }),
-        RELOAD_PARSING_RESULT: state => ({
+        RELOAD_PARSING_RESULT: (state) => ({
             ...state,
             allowUpload: true,
         }),
-        CANCEL_RELOAD: state => ({
+        CANCEL_RELOAD: (state) => ({
             ...state,
             allowUpload: false,
         }),
-        SHOW_ADD_COLUMNS: state => ({ ...state, showAddFromColumn: true }),
-        HIDE_ADD_COLUMNS: state => ({ ...state, showAddFromColumn: false }),
+        SHOW_ADD_COLUMNS: (state) => ({ ...state, showAddFromColumn: true }),
+        HIDE_ADD_COLUMNS: (state) => ({ ...state, showAddFromColumn: false }),
     },
     defaultState,
 );
@@ -68,8 +68,9 @@ export const cancelReload = createAction(CANCEL_RELOAD);
 export const getExcerptLines = ({ excerptLines }) =>
     !excerptLines || !excerptLines.length ? [] : excerptLines;
 
-export const getParsedExcerptColumns = createSelector(getExcerptLines, lines =>
-    Object.keys(lines[0] || {}).filter(key => key !== '_id'),
+export const getParsedExcerptColumns = createSelector(
+    getExcerptLines,
+    (lines) => Object.keys(lines[0] || {}).filter((key) => key !== '_id'),
 );
 
 export const hasUploadedFile = ({ totalLoadedLines }) => !!totalLoadedLines;
@@ -80,7 +81,7 @@ export const isParsingLoading = ({ loading }) => loading;
 
 export const getTotalLoadedLines = ({ totalLoadedLines }) => totalLoadedLines;
 
-export const getshowAddFromColumn = state => state.showAddFromColumn;
+export const getshowAddFromColumn = (state) => state.showAddFromColumn;
 
 export const selectors = {
     getExcerptLines,

@@ -32,7 +32,7 @@ const FormatEditionDialog = ({
             : getFormatInitialArgs(currentValue),
     );
 
-    const setFormat = name => {
+    const setFormat = (name) => {
         setName(name);
         if (name !== input.value.name) {
             setArgs(getFormatInitialArgs(name));

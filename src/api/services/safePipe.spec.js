@@ -4,20 +4,20 @@ import through from 'through';
 import safePipe from './safePipe';
 
 describe('safePipe', () => {
-    it('should pass error to the resulting stream', done => {
+    it('should pass error to the resulting stream', (done) => {
         const readStream = MemoryStream.createReadStream(['data']);
         const writeStream = MemoryStream.createWriteStream();
 
         const resultStream = safePipe(readStream, [
-            through(function() {
+            through(function () {
                 this.emit('error', new Error('Boom'));
             }),
             writeStream,
         ]);
 
-        resultStream.on('error', error => {
+        resultStream.on('error', (error) => {
             try {
-                expect(error.message).toEqual('Boom');
+                expect(error.message).toBe('Boom');
                 done();
             } catch (error) {
                 done(error);
@@ -29,20 +29,20 @@ describe('safePipe', () => {
         );
     });
 
-    it('should pass data to the resulting stream', done => {
+    it('should pass data to the resulting stream', (done) => {
         const readStream = new MemoryStream(['data']);
         readStream.end();
         const writeStream = MemoryStream.createWriteStream();
 
         const resultStream = safePipe(readStream, [
-            through(function(data) {
+            through(function (data) {
                 this.emit('data', data);
             }),
             writeStream,
         ]);
 
-        resultStream.on('error', error => done(error));
-        resultStream.on('data', data => expect(data).toBe('data'));
+        resultStream.on('error', (error) => done(error));
+        resultStream.on('data', (data) => expect(data).toBe('data'));
 
         resultStream.on('finish', () => done());
     });

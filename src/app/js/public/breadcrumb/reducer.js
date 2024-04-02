@@ -28,9 +28,9 @@ export default handleActions(
     initialState,
 );
 
-export const hasBreadcrumb = state => state;
+export const hasBreadcrumb = (state) => state;
 
-const getBreadcrumb = state => state;
+const getBreadcrumb = (state) => state;
 
 export const fromBreadcrumb = {
     hasBreadcrumb,

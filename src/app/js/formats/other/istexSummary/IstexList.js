@@ -35,7 +35,7 @@ class IstexList extends Component {
         this.setState({ isLoading: true }, () =>
             getMoreDocumentData(this.state.nextPageURI).then(
                 ({ hits, total, nextPageURI }) =>
-                    this.setState(state => ({
+                    this.setState((state) => ({
                         ...state,
                         hits: state.hits.concat(hits),
                         total,

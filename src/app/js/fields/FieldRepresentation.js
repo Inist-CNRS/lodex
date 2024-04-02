@@ -48,7 +48,7 @@ function FieldRepresentation({ field, shortMode = false, p: polyglot }) {
                         marginRight={1}
                     >
                         {field.internalScopes &&
-                            field.internalScopes.map(internalScope => (
+                            field.internalScopes.map((internalScope) => (
                                 <FieldInternalIcon
                                     key={internalScope}
                                     scope={internalScope}

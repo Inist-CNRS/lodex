@@ -23,7 +23,7 @@ const styles = {
 };
 
 const ImportModelDialogComponent = ({ onClose, p: polyglot, importFields }) => {
-    const handleFileUpload = event => {
+    const handleFileUpload = (event) => {
         importFields(event.target.files[0]);
         onClose();
     };

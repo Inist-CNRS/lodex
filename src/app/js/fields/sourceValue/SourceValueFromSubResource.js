@@ -23,7 +23,7 @@ export const GET_TRANSFORMERS_FROM_SUBRESOURCE = (
 ) => {
     if (!subresources || !subresourcePath) return [];
 
-    const subresource = subresources.find(sr => sr.path === subresourcePath);
+    const subresource = subresources.find((sr) => sr.path === subresourcePath);
 
     if (!subresource) return [];
 
@@ -126,7 +126,7 @@ const SourceValueFromSubResource = ({
         setAutocompleteValue(column);
     }, [column]);
 
-    const handleChangeSubresource = event => {
+    const handleChangeSubresource = (event) => {
         const transformers = GET_TRANSFORMERS_FROM_SUBRESOURCE(
             subresources,
             event.target.value,
@@ -157,7 +157,7 @@ const SourceValueFromSubResource = ({
                     label={polyglot.t('subRessource_tooltip')}
                     onChange={handleChangeSubresource}
                 >
-                    {subresources.map(subresource => (
+                    {subresources.map((subresource) => (
                         // TODO: manage selected subresource with its id because two subresources can have the same path
                         // but currently we store only the path in mongo and not the id
                         <MenuItem
@@ -175,7 +175,7 @@ const SourceValueFromSubResource = ({
                 fullWidth
                 options={datasetFields}
                 value={autocompleteValue ?? ''}
-                renderInput={params => (
+                renderInput={(params) => (
                     <TextField
                         {...params}
                         label={polyglot.t('from_columns')}
@@ -188,7 +188,7 @@ const SourceValueFromSubResource = ({
     );
 };
 
-export const mapStateToProps = state => {
+export const mapStateToProps = (state) => {
     const { subresources } = state.subresource;
     const [firstParsedLine] = fromParsing.getExcerptLines(state);
 

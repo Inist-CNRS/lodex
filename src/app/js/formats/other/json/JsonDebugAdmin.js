@@ -19,18 +19,12 @@ export const defaultArgs = {
     debugMode: false,
 };
 
-const JsonDebugAdmin = props => {
-    const {
-        args,
-        p,
-        showMaxSize,
-        showMaxValue,
-        showMinValue,
-        showOrderBy,
-    } = props;
+const JsonDebugAdmin = (props) => {
+    const { args, p, showMaxSize, showMaxValue, showMinValue, showOrderBy } =
+        props;
     const { params, debugMode } = args;
 
-    const handleParams = params => {
+    const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
 

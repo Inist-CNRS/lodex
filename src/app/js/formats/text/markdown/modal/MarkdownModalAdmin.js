@@ -10,18 +10,18 @@ export const defaultArgs = {
     label: '',
 };
 
-const MarkdownModalAdmin = props => {
+const MarkdownModalAdmin = (props) => {
     const { args, p, onChange } = props;
     const { type, label } = args;
 
-    const handleType = event => {
+    const handleType = (event) => {
         onChange({
             ...args,
             type: event.target.value,
         });
     };
 
-    const handleLabel = event => {
+    const handleLabel = (event) => {
         onChange({
             ...args,
             label: event.target.value,
