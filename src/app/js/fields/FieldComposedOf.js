@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
     Box,
@@ -41,15 +41,10 @@ import {
 } from '@dnd-kit/core';
 
 const SortableItem = ({ option, onDelete, isActive }) => {
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        isDragging,
-    } = useSortable({
-        id: option.name,
-    });
+    const { attributes, listeners, setNodeRef, transform, isDragging } =
+        useSortable({
+            id: option.name,
+        });
     const style = {
         transform: CSS.Transform.toString(transform),
         transition: 'transform 0ms ease',
@@ -98,19 +93,19 @@ const SortableChips = ({ onChange, onDelete, options }) => {
         }),
     );
 
-    const handleDragEnd = event => {
+    const handleDragEnd = (event) => {
         const { active, over } = event;
         if (active && over && active.id !== over.id) {
             const oldIndex = options.findIndex(
-                option => option.name === active.id,
+                (option) => option.name === active.id,
             );
             const newIndex = options.findIndex(
-                option => option.name === over.id,
+                (option) => option.name === over.id,
             );
             const newFields = arrayMove(options, oldIndex, newIndex);
             onChange({
                 isComposedOf: newFields.length > 0,
-                fields: newFields.map(field => field.name),
+                fields: newFields.map((field) => field.name),
             });
         }
         setActiveId(null);
@@ -134,10 +129,10 @@ const SortableChips = ({ onChange, onDelete, options }) => {
             onDragCancel={handleDragCancel}
         >
             <SortableContext
-                items={options.map(option => option.name)}
+                items={options.map((option) => option.name)}
                 strategy={horizontalListSortingStrategy}
             >
-                {options.map(option => (
+                {options.map((option) => (
                     <SortableItem
                         key={option.name}
                         option={option}
@@ -150,7 +145,7 @@ const SortableChips = ({ onChange, onDelete, options }) => {
                     <SortableItem
                         isActive={true}
                         option={options.find(
-                            option => option.name === activeId,
+                            (option) => option.name === activeId,
                         )}
                     />
                 ) : null}
@@ -173,12 +168,30 @@ const FieldComposedOf = ({
     scope,
     subresourceId,
 }) => {
-    const autocompleteValue = columns.map(column => {
-        return fields.find(field => field.name === column);
-    });
+    const options = useMemo(() => {
+        const toReturn = getFieldForSpecificScope(fields, scope, subresourceId);
+        toReturn.filter(Boolean);
+        for (const column of columns) {
+            if (
+                toReturn.filter((field) => field.name === column).length === 0
+            ) {
+                toReturn.push({
+                    name: column,
+                    internalName: polyglot.t('missing_field'),
+                });
+            }
+        }
+        return toReturn;
+    }, [fields, scope, subresourceId, columns]);
 
-    const onDelete = name => {
-        const newFields = columns.filter(column => column !== name);
+    const autocompleteValue = useMemo(() => {
+        return columns.map((column) => {
+            return options.find((field) => field.name === column);
+        });
+    }, [columns, options]);
+
+    const onDelete = (name) => {
+        const newFields = columns.filter((column) => column !== name);
         onChange({
             isComposedOf: newFields.length > 0,
             fields: newFields,
@@ -188,7 +201,7 @@ const FieldComposedOf = ({
     const handleChange = (event, value) => {
         onChange({
             isComposedOf: value.length > 0,
-            fields: value.map(field => field.name),
+            fields: value.map((field) => field.name),
         });
     };
 
@@ -200,9 +213,12 @@ const FieldComposedOf = ({
             <Autocomplete
                 multiple
                 fullWidth
-                options={getFieldForSpecificScope(fields, scope, subresourceId)}
+                options={options}
                 value={autocompleteValue ?? []}
-                renderInput={params => (
+                isOptionEqualToValue={(option, value) =>
+                    option.name === value.name
+                }
+                renderInput={(params) => (
                     <TextField
                         {...params}
                         label={polyglot.t('fields_composed_of')}
@@ -223,7 +239,7 @@ const FieldComposedOf = ({
                     </MenuItem>
                 )}
                 onChange={handleChange}
-                renderTags={props => (
+                renderTags={(props) => (
                     <SortableChips
                         onChange={onChange}
                         onDelete={onDelete}
@@ -263,7 +279,7 @@ const mapStateToProps = (state, { FORM_NAME }) => {
 };
 
 const mapDispatchToProps = (dispatch, { FORM_NAME = FIELD_FORM_NAME }) => ({
-    onChange: composedOf => {
+    onChange: (composedOf) => {
         dispatch(change(FORM_NAME, 'composedOf', composedOf));
     },
 });

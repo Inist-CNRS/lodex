@@ -1075,3 +1075,4 @@
 "aspect_ratio"	"Aspect ratio (caution: if used incorrectly, this may cause page layout problems)"	"Format d'image (attention : si mal utilisé cela peut causer des problèmes de mise en page)"
 "aspect_ratio_none"	"No aspect ratio"	"Aucun format d'image"
 "fullscreen"	"View in full screen"	"Mettre en plein écran"
+"missing_field"	"Missing field"	"Champ manquant"
