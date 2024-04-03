@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
     Box,
@@ -168,9 +168,27 @@ const FieldComposedOf = ({
     scope,
     subresourceId,
 }) => {
-    const autocompleteValue = columns.map((column) => {
-        return fields.find((field) => field.name === column);
-    });
+    const options = useMemo(() => {
+        const toReturn = getFieldForSpecificScope(fields, scope, subresourceId);
+        toReturn.filter(Boolean);
+        for (const column of columns) {
+            if (
+                toReturn.filter((field) => field.name === column).length === 0
+            ) {
+                toReturn.push({
+                    name: column,
+                    internalName: polyglot.t('missing_field'),
+                });
+            }
+        }
+        return toReturn;
+    }, [fields, scope, subresourceId, columns]);
+
+    const autocompleteValue = useMemo(() => {
+        return columns.map((column) => {
+            return options.find((field) => field.name === column);
+        });
+    }, [columns, options]);
 
     const onDelete = (name) => {
         const newFields = columns.filter((column) => column !== name);
@@ -195,8 +213,11 @@ const FieldComposedOf = ({
             <Autocomplete
                 multiple
                 fullWidth
-                options={getFieldForSpecificScope(fields, scope, subresourceId)}
+                options={options}
                 value={autocompleteValue ?? []}
+                isOptionEqualToValue={(option, value) =>
+                    option.name === value.name
+                }
                 renderInput={(params) => (
                     <TextField
                         {...params}

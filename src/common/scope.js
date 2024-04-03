@@ -11,6 +11,26 @@ export const hasSimilarScope = (scope) => (field) => {
     return similarScopes.includes(scope) && similarScopes.includes(field.scope);
 };
 
+/**
+ * @param fields
+ * @param scope
+ * @param subresourceId
+ * @return {Array<{
+ *  _id: string;
+ *  classes: Array<any>;
+ *  count: number;
+ *  display: boolean;
+ *  format: any;
+ *  internalName: string;
+ *  label: string;
+ *  name: string;
+ *  overview: number;
+ *  position: number;
+ *  scope: string;
+ *  searchable: boolean;
+ *  transformers: Array<any>
+ * }>}
+ */
 export const getFieldForSpecificScope = (
     fields,
     scope,
