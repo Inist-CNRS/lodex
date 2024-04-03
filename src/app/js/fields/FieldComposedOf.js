@@ -171,15 +171,13 @@ const FieldComposedOf = ({
     const options = useMemo(() => {
         const toReturn = getFieldForSpecificScope(fields, scope, subresourceId);
         toReturn.filter(Boolean);
-        let i = 0;
         for (const column of columns) {
             if (
                 toReturn.filter((field) => field.name === column).length === 0
             ) {
                 toReturn.push({
                     name: column,
-                    // Add i18n text
-                    internalName: `undefined_value_${i}`,
+                    internalName: polyglot.t('missing_field'),
                 });
             }
         }
