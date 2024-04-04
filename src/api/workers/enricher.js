@@ -34,7 +34,7 @@ const startJobEnrichment = async (job) => {
     await startEnrichment(ctx);
 };
 
-const handleEnrichmentError = async (job, err) => {
+export const handleEnrichmentError = async (job, err) => {
     const ctx = await prepareContext({ job });
     if (err instanceof CancelWorkerError) {
         const enrichment = await ctx.enrichment.findOneById(ctx.job.data.id);
