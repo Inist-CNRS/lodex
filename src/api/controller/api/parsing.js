@@ -6,7 +6,7 @@ import fetchLineBy from './fetchLineBy';
 
 const app = new Koa();
 
-export const getExcerpt = async ctx => {
+export const getExcerpt = async (ctx) => {
     const excerptLines = await ctx.dataset.getExcerpt();
     const totalLoadedLines = await ctx.dataset.count();
 

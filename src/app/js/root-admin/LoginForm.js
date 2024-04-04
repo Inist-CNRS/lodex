@@ -7,7 +7,7 @@ const LoginForm = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = async event => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         setError('');
         try {
@@ -72,7 +72,7 @@ const LoginForm = () => {
                     fullWidth
                     autoFocus
                     value={username}
-                    onChange={event => setUsername(event.target.value)}
+                    onChange={(event) => setUsername(event.target.value)}
                     sx={{ mb: 2 }}
                 />
                 <TextField
@@ -84,7 +84,7 @@ const LoginForm = () => {
                     fullWidth
                     type="password"
                     value={password}
-                    onChange={event => setPassword(event.target.value)}
+                    onChange={(event) => setPassword(event.target.value)}
                     sx={{ mb: 2 }}
                 />
                 <Button

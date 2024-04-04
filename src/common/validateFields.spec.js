@@ -316,8 +316,8 @@ describe('validateField', () => {
     describe('validateTransformer', () => {
         it('should return invalid if the transformer is not in known transformers', () => {
             const knownTransformers = {
-                UPPERCASE: x => x,
-                LOWERCASE: x => x,
+                UPPERCASE: (x) => x,
+                LOWERCASE: (x) => x,
             };
 
             const transformer = {
@@ -337,7 +337,7 @@ describe('validateField', () => {
         });
 
         it('should return invalid if there is less args in the transformer than in the corresponding transformer', () => {
-            const IVY = x => x;
+            const IVY = (x) => x;
 
             IVY.getMetas = () => ({
                 name: 'IVY',
@@ -372,7 +372,7 @@ describe('validateField', () => {
         });
 
         it('should return invalid if the transformer args has an undefined value', () => {
-            const IVY = x => x;
+            const IVY = (x) => x;
 
             IVY.getMetas = () => ({
                 name: 'IVY',
@@ -414,7 +414,7 @@ describe('validateField', () => {
         });
 
         it('should return invalid if the transformer args has a value equals to an empty string', () => {
-            const IVY = x => x;
+            const IVY = (x) => x;
 
             IVY.getMetas = () => ({
                 name: 'IVY',
@@ -456,7 +456,7 @@ describe('validateField', () => {
         });
 
         it('should return valid otherwise', () => {
-            const IVY = x => x;
+            const IVY = (x) => x;
 
             IVY.getMetas = () => ({
                 name: 'IVY',

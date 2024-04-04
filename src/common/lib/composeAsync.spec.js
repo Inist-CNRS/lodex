@@ -3,8 +3,8 @@ import composeAsync from './composeAsync';
 describe('composeAsync', () => {
     it('should compose given funcs into a single func returning a promise', async () => {
         const fn = composeAsync(
-            arg => arg.join('/'),
-            prev => `previous result is ${prev}`,
+            (arg) => arg.join('/'),
+            (prev) => `previous result is ${prev}`,
         );
 
         expect(typeof fn).toBe('function');
@@ -14,8 +14,8 @@ describe('composeAsync', () => {
 
     it('should work with async func', async () => {
         const fn = composeAsync(
-            async args => args.join('/'),
-            async prev => `previous result is ${prev}`,
+            async (args) => args.join('/'),
+            async (prev) => `previous result is ${prev}`,
         );
 
         expect(typeof fn).toBe('function');
@@ -25,8 +25,8 @@ describe('composeAsync', () => {
 
     it('should work function returning promise', async () => {
         const fn = composeAsync(
-            args => Promise.resolve(args.join('/')),
-            prev => Promise.resolve(`previous result is ${prev}`),
+            (args) => Promise.resolve(args.join('/')),
+            (prev) => Promise.resolve(`previous result is ${prev}`),
         );
 
         expect(typeof fn).toBe('function');
@@ -36,8 +36,8 @@ describe('composeAsync', () => {
 
     it('should execute function serially', async () => {
         const fn = composeAsync(
-            args => args.toUpperCase(),
-            prev => prev.split(''),
+            (args) => args.toUpperCase(),
+            (prev) => prev.split(''),
         );
 
         expect(typeof fn).toBe('function');

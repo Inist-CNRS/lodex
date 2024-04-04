@@ -24,7 +24,7 @@ const formatProgress = (progress, target, symbol, label) => {
     return progress + formatedTarget + formatedSymbol + formatedLabel;
 };
 
-const renderProgressText = props => {
+const renderProgressText = (props) => {
     const { progress, target, symbol, label, p: polyglot } = props;
     if (!progress) {
         return null;
@@ -42,7 +42,7 @@ const renderProgressText = props => {
     );
 };
 
-export const ProgressComponent = props => {
+export const ProgressComponent = (props) => {
     const { clearProgress, p: polyglot, loadProgress, progress } = props;
 
     const [updatedProgress, setUpdatedProgress] = useState(progress);
@@ -53,7 +53,7 @@ export const ProgressComponent = props => {
         const socket = io();
         const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         // log all messages
-        socket.on(`${tenant}-progress`, data => {
+        socket.on(`${tenant}-progress`, (data) => {
             setUpdatedProgress(data);
         });
         socket.on(`${tenant}-connect_error`, () => {
@@ -119,7 +119,7 @@ ProgressComponent.defaultProps = {
     target: null,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     progress: fromProgress.getProgress(state),
 });
 

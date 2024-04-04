@@ -30,6 +30,6 @@ export function* handleAddCharacteristic() {
     yield put(addCharacteristicSuccess(response));
 }
 
-export default function*() {
+export default function* () {
     yield takeLatest(ADD_CHARACTERISTIC, handleAddCharacteristic);
 }

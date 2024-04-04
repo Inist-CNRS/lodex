@@ -30,11 +30,11 @@ export class IstexCitationAdmin extends Component {
         args: defaultArgs,
     };
 
-    handleSearchedField = e => {
+    handleSearchedField = (e) => {
         updateAdminArgs('searchedField', e.target.value, this.props);
     };
 
-    handleDocumentSortBy = e =>
+    handleDocumentSortBy = (e) =>
         updateAdminArgs('documentSortBy', e.target.value, this.props);
 
     render() {
@@ -52,7 +52,7 @@ export class IstexCitationAdmin extends Component {
                     value={searchedField}
                     onChange={this.handleSearchedField}
                 >
-                    {SEARCHED_FIELD_VALUES.map(value => (
+                    {SEARCHED_FIELD_VALUES.map((value) => (
                         <MenuItem key={value} value={value}>
                             {polyglot.t(value)}
                         </MenuItem>

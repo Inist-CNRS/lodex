@@ -52,5 +52,8 @@ SortButton.propTypes = {
 };
 
 export default withHandlers({
-    sort: ({ sort, name }) => () => sort(name),
+    sort:
+        ({ sort, name }) =>
+        () =>
+            sort(name),
 })(SortButton);

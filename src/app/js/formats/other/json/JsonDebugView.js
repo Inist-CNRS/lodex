@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { field as fieldPropTypes } from '../../../propTypes';
 import injectData from '../../injectData';
 
-const JsonDebugView = props => {
+const JsonDebugView = (props) => {
     const ReactJson = require('react-json-view').default;
 
     const { debugMode } = props;

@@ -22,7 +22,7 @@ const RoutineParamsAdmin = ({
     showMinValue,
     showOrderBy,
 }) => {
-    const handleMaxSize = e => {
+    const handleMaxSize = (e) => {
         onChange({
             maxSize: e.target.value,
             maxValue,
@@ -32,7 +32,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const handleMaxValue = e => {
+    const handleMaxValue = (e) => {
         onChange({
             maxSize,
             maxValue: e.target.value,
@@ -42,7 +42,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const handleMinValue = e => {
+    const handleMinValue = (e) => {
         onChange({
             maxSize,
             maxValue,
@@ -52,7 +52,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const handleSortField = e => {
+    const handleSortField = (e) => {
         onChange({
             maxSize,
             maxValue,
@@ -62,7 +62,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const handleSortOrder = e => {
+    const handleSortOrder = (e) => {
         onChange({
             maxSize,
             maxValue,
@@ -72,7 +72,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
-    const handleUri = e => {
+    const handleUri = (e) => {
         onChange({
             maxSize,
             maxValue,

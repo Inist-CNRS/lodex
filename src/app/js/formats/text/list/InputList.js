@@ -36,7 +36,7 @@ class InputList extends Component {
         all.split(';').forEach(fields.push);
     };
 
-    removeValue = memoize(index => () => this.props.fields.remove(index));
+    removeValue = memoize((index) => () => this.props.fields.remove(index));
 
     addValue = () => this.props.fields.push();
     render() {

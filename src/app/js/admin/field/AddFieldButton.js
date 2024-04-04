@@ -47,7 +47,7 @@ AddFieldButtonComponent.propTypes = {
     isFieldsLoading: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     isFieldsLoading: fromFields.isLoading(state),
 });
 

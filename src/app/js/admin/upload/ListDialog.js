@@ -43,28 +43,28 @@ export const ListDialogComponent = ({
     handleClose,
     actions,
 }) => {
-    const [filteredLoaders, setFilter] = useState(loaders.map(l => l.name));
+    const [filteredLoaders, setFilter] = useState(loaders.map((l) => l.name));
 
-    const scrollTo = el => {
+    const scrollTo = (el) => {
         if (el) {
             el.scrollIntoView({ inline: 'center', block: 'center' });
         }
     };
 
     useEffect(() => {
-        setFilter(loaders.map(l => l.name));
+        setFilter(loaders.map((l) => l.name));
     }, [loaders]);
 
-    const changeValue = newValue => {
+    const changeValue = (newValue) => {
         setLoader(newValue);
         handleClose();
     };
 
     const loaderNames = loaders
-        .map(loader => loader.name)
-        .filter(loader => filteredLoaders.includes(loader))
+        .map((loader) => loader.name)
+        .filter((loader) => filteredLoaders.includes(loader))
         .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
-        .map(pn => (
+        .map((pn) => (
             <ListItemComponent
                 key={pn}
                 value={pn}
@@ -153,15 +153,15 @@ ListItemComponent.propTypes = {
 
 const FilterComponent = ({ loaders, filter, setFilter, p: polyglot }) => {
     const allFilters = {
-        allFormat: loaders.map(l => l.name),
+        allFormat: loaders.map((l) => l.name),
         csvFormat: loaders
-            .filter(l => l.name.startsWith('csv'))
-            .map(l => l.name),
+            .filter((l) => l.name.startsWith('csv'))
+            .map((l) => l.name),
         tsvFormat: loaders
-            .filter(l => l.name.startsWith('tsv'))
-            .map(l => l.name),
+            .filter((l) => l.name.startsWith('tsv'))
+            .map((l) => l.name),
         xmlFormat: loaders
-            .filter(l =>
+            .filter((l) =>
                 [
                     'xml',
                     'rss',
@@ -172,13 +172,13 @@ const FilterComponent = ({ loaders, filter, setFilter, p: polyglot }) => {
                     'skos',
                 ].includes(l.name),
             )
-            .map(l => l.name),
+            .map((l) => l.name),
         jsonFormat: loaders
-            .filter(l => l.name.startsWith('json'))
-            .map(l => l.name),
+            .filter((l) => l.name.startsWith('json'))
+            .map((l) => l.name),
     };
     allFilters.otherFormat = allFilters.allFormat.filter(
-        l =>
+        (l) =>
             !allFilters.csvFormat.includes(l) &&
             !allFilters.tsvFormat.includes(l) &&
             !allFilters.xmlFormat.includes(l) &&
@@ -201,7 +201,7 @@ const FilterComponent = ({ loaders, filter, setFilter, p: polyglot }) => {
             <Box>
                 <FilterIcon fontSize="large" sx={{ marginRight: '10px' }} />
             </Box>
-            {Object.keys(allFilters).map(key => (
+            {Object.keys(allFilters).map((key) => (
                 <Box key={key}>
                     <Button
                         variant={

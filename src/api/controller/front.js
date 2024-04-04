@@ -207,7 +207,7 @@ export const getRenderingData = async (
  * @param theme
  * @returns {string}
  */
-const getCssVariable = theme => {
+const getCssVariable = (theme) => {
     const palette = theme.palette;
     return `
 :root {
@@ -277,21 +277,16 @@ const handleRender = async (ctx, next) => {
 
     const cssVariable = getCssVariable(lodexTheme.customTheme);
 
-    const {
-        html,
-        css,
-        preloadedState,
-        helmet,
-        redirect,
-    } = await getRenderingData(
-        history,
-        theme,
-        ctx.state.headerToken,
-        ctx.request.header.cookie,
-        getLocale(ctx),
-        url,
-        ctx,
-    );
+    const { html, css, preloadedState, helmet, redirect } =
+        await getRenderingData(
+            history,
+            theme,
+            ctx.state.headerToken,
+            ctx.request.header.cookie,
+            getLocale(ctx),
+            url,
+            ctx,
+        );
 
     if (redirect) {
         return ctx.redirect(redirect);
@@ -308,7 +303,7 @@ const handleRender = async (ctx, next) => {
     );
 };
 
-const renderAdminIndexHtml = ctx => {
+const renderAdminIndexHtml = (ctx) => {
     const lodexTheme = getTheme('default');
     const cssVariable = getCssVariable(lodexTheme.customTheme);
 
@@ -334,7 +329,7 @@ const renderAdminIndexHtml = ctx => {
         .replace(REGEX_JS_HOST, jsHost);
 };
 
-const renderRootAdminIndexHtml = ctx => {
+const renderRootAdminIndexHtml = (ctx) => {
     ctx.body = fs
         .readFileSync(path.resolve(__dirname, '../../app/root-admin.html'))
         .toString()
@@ -407,7 +402,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(
-    route.get('/instances(.*)', async ctx => {
+    route.get('/instances(.*)', async (ctx) => {
         renderRootAdminIndexHtml(ctx);
     }),
 );
@@ -415,7 +410,7 @@ app.use(
 app.use(handleRender);
 
 app.use(
-    route.get('/instance/:slug/admin', async ctx => {
+    route.get('/instance/:slug/admin', async (ctx) => {
         renderAdminIndexHtml(ctx);
     }),
 );

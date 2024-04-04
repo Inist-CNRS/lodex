@@ -37,7 +37,7 @@ const GraphLink = ({ link, children, p: polyglot }) => (
                 color="primary"
                 fullWidth
                 sx={styles.detailsButton}
-                component={props => <Link to={link} {...props} />}
+                component={(props) => <Link to={link} {...props} />}
                 to={link}
                 endIcon={<Forward sx={styles.icon} />}
             >

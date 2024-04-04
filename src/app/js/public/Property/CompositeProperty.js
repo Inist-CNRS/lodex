@@ -32,7 +32,7 @@ export const CompositePropertyComponent = ({
 
     return (
         <div style={styles.container}>
-            {compositeFields.map(f => (
+            {compositeFields.map((f) => (
                 <Property
                     className={`compose_${getFieldClassName(field)}`}
                     key={f.name}
@@ -65,7 +65,7 @@ const mapStateToProps = (state, { field, resource, parents }) => {
     );
 
     const compositeFields = allCompositeFields?.filter(
-        f => f?.name && !parents.includes(f.name),
+        (f) => f?.name && !parents.includes(f.name),
     );
 
     return {

@@ -6,7 +6,7 @@ import ListView, { UL, OL } from './ListView';
 
 describe('list format view <ListView />', () => {
     const polyglot = {
-        t: v => v,
+        t: (v) => v,
     };
 
     const defaultProps = {
@@ -34,7 +34,7 @@ describe('list format view <ListView />', () => {
     it('should render nothing if the list of value is not an array', () => {
         const wrongValues = [undefined, null, '', 'covfefe', 0, 42, {}];
 
-        wrongValues.forEach(value => {
+        wrongValues.forEach((value) => {
             const component = shallow(
                 <ListView {...defaultProps} resource={{ name: value }} />,
             );

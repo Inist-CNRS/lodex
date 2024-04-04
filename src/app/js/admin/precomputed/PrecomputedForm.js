@@ -56,7 +56,7 @@ import getLocale from '../../../../common/getLocale';
 // UTILITARY PART
 const PRECOMPUTED_FORM = 'PRECOMPUTED_FORM';
 
-const required = text => value =>
+const required = (text) => (value) =>
     value && !(value instanceof Array && value.length === 0) ? undefined : text;
 
 const renderTextField = ({ input, label, meta: { touched, error } }) => {
@@ -204,7 +204,7 @@ export const renderRunButton = (
     variant,
 ) => {
     const [isClicked, setIsClicked] = useState(false);
-    const handleClick = event => {
+    const handleClick = (event) => {
         handleLaunchPrecomputed(event);
         setIsClicked(true);
     };
@@ -261,7 +261,7 @@ export const PrecomputedForm = ({
 
     const isEditMode = !!initialValues?._id;
 
-    const handleSourcePreview = async formValues => {
+    const handleSourcePreview = async (formValues) => {
         if (!formValues?.sourceColumns) {
             return;
         }
@@ -308,13 +308,13 @@ export const PrecomputedForm = ({
         }
     };
 
-    const handleSubmit = async values => {
+    const handleSubmit = async (values) => {
         const validation = {
             name: requiredField(values.name),
             webServiceUrl: requiredField(values.webServiceUrl),
             sourceColumns: requiredField(values.sourceColumns),
         };
-        if (Object.values(validation).some(value => value !== undefined)) {
+        if (Object.values(validation).some((value) => value !== undefined)) {
             throw new SubmissionError({
                 ...validation,
                 _error: 'Tous les champs doivent être remplis',
@@ -350,7 +350,7 @@ export const PrecomputedForm = ({
         history.push('/data/precomputed');
     };
 
-    const handleLaunchPrecomputed = event => {
+    const handleLaunchPrecomputed = (event) => {
         event.preventDefault();
         if (isPrecomputedRunning) {
             toast(polyglot.t('pending_precomputed'), {
@@ -366,7 +366,7 @@ export const PrecomputedForm = ({
     const handleGetLogs = async () => {
         if (initialValues?.jobId) {
             getJobLogs(initialValues.jobId).then(
-                result => {
+                (result) => {
                     setPrecomputedLogs(result.response.logs.reverse());
                 },
                 () => {
@@ -385,17 +385,20 @@ export const PrecomputedForm = ({
         const dbName = sessionStorage.getItem('lodex-dbName');
         socket.on(
             `${dbName}_${tenant}-precomputed-job-${initialValues?.jobId}`,
-            data => {
+            (data) => {
                 let lastLine;
                 let parsedData;
                 if (Array.isArray(data)) {
-                    setPrecomputedLogs(currentState => [
+                    setPrecomputedLogs((currentState) => [
                         ...data,
                         ...currentState,
                     ]);
                     lastLine = data[0];
                 } else {
-                    setPrecomputedLogs(currentState => [data, ...currentState]);
+                    setPrecomputedLogs((currentState) => [
+                        data,
+                        ...currentState,
+                    ]);
                     lastLine = data;
                 }
                 try {
@@ -633,15 +636,15 @@ const mapStateToProps = (state, { match }) => ({
     formValues: formSelector(state, 'sourceColumns', 'name', 'webServiceUrl'),
     initialValues: fromPrecomputed
         .precomputed(state)
-        .find(precomputed => precomputed._id === match.params.precomputedId),
+        .find((precomputed) => precomputed._id === match.params.precomputedId),
     datasetFields: fromParsing.getParsedExcerptColumns(state),
     excerptLines: fromParsing.getExcerptLines(state),
     isPrecomputedRunning: !!fromPrecomputed
         .precomputed(state)
-        .find(precomputedData => precomputedData.status === IN_PROGRESS),
+        .find((precomputedData) => precomputedData.status === IN_PROGRESS),
 });
 const mapDispatchToProps = {
-    onChangeWebServiceUrl: value =>
+    onChangeWebServiceUrl: (value) =>
         change(PRECOMPUTED_FORM, 'webServiceUrl', value),
     onLaunchPrecomputed: launchPrecomputed,
     onLoadPrecomputedData: loadPrecomputed,

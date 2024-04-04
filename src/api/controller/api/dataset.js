@@ -6,16 +6,16 @@ import fs from 'fs';
 
 const app = new Koa();
 
-export const clearDataset = async ctx => {
+export const clearDataset = async (ctx) => {
     try {
         // get all collection names except `configTenant`
         const collectionNames = (
             await ctx.db.listCollections().toArray()
-        ).filter(collection => collection.name !== 'configTenant');
+        ).filter((collection) => collection.name !== 'configTenant');
 
         if (collectionNames.length > 0) {
             await Promise.all(
-                collectionNames.map(collection =>
+                collectionNames.map((collection) =>
                     ctx.db.dropCollection(collection.name),
                 ),
             );
@@ -51,12 +51,12 @@ const buildQuery = (filterBy, filterOperator, filterValue) => {
     }
 };
 
-export const getDatasetColumns = async ctx => {
+export const getDatasetColumns = async (ctx) => {
     const columns = await ctx.dataset.getColumns();
     ctx.body = { columns };
 };
 
-export const getDataset = async ctx => {
+export const getDataset = async (ctx) => {
     const {
         skip,
         limit,
@@ -78,7 +78,7 @@ export const getDataset = async ctx => {
     ctx.body = { count, datas };
 };
 
-export const updateDataset = async ctx => {
+export const updateDataset = async (ctx) => {
     const { uri, field, value } = ctx.request.body;
     const dataset = await ctx.dataset.findBy('uri', uri);
     if (!dataset) {

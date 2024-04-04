@@ -96,7 +96,7 @@ ActionsComponent.defaultProps = {
 };
 
 // REDUX PART
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const currentFormValues = getFormValues(FIELD_FORM_NAME)(state);
     return {
         currentFormValues,

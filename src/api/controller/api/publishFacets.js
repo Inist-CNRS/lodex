@@ -3,7 +3,7 @@ import { PUBLISH_FACET } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 
 export default async (ctx, fields, withProgress = false) => {
-    const facetFields = fields.filter(c => c.isFacet);
+    const facetFields = fields.filter((c) => c.isFacet);
     if (!facetFields.length) {
         withProgress && progress.finish(ctx.tenant);
         return;
@@ -36,7 +36,7 @@ export default async (ctx, fields, withProgress = false) => {
                 }),
             Promise.resolve(),
         )
-        .catch(error => {
+        .catch((error) => {
             if (!withProgress) {
                 throw error;
             }

@@ -31,14 +31,14 @@ class LodexFieldAdmin extends Component {
         args: defaultArgs,
     };
 
-    handleRequest = e => {
+    handleRequest = (e) => {
         const labelArray = (e.target.value || '').split(';');
         const { param, ...args } = this.props.args;
         const newArgs = { ...args, param: { ...param, labelArray } };
         this.props.onChange(newArgs);
     };
 
-    handleHiddenInfo = event => {
+    handleHiddenInfo = (event) => {
         let hiddenInfo = event.target.checked;
         const { param, ...state } = this.props.args;
         const newState = { ...state, param: { ...param, hiddenInfo } };

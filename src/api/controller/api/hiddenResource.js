@@ -7,13 +7,13 @@ import fs from 'fs';
 
 const app = new Koa();
 
-const getExportHiddenResources = async ctx => {
+const getExportHiddenResources = async (ctx) => {
     const hiddenResources = await ctx.hiddenResource.findAll();
     ctx.body = JSON.stringify(hiddenResources);
     ctx.status = 200;
 };
 
-const postImportHiddenResources = async ctx => {
+const postImportHiddenResources = async (ctx) => {
     const { files } = await asyncBusboy(ctx.req);
 
     if (files.length !== 1) {

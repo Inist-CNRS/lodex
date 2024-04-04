@@ -41,16 +41,16 @@ class AbstractTableAdmin extends Component {
         },
     };
 
-    handleParams = params => updateAdminArgs('params', params, this.props);
+    handleParams = (params) => updateAdminArgs('params', params, this.props);
 
-    handlePageSize = e => {
+    handlePageSize = (e) => {
         this.props.onChange({
             ...this.props.args,
             pageSize: parseInt(e.target.value, 10),
         });
     };
 
-    handleColumnParameter = args => {
+    handleColumnParameter = (args) => {
         this.props.onChange({
             ...this.props.args,
             columnsCount: args.parameterCount,

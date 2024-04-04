@@ -4,7 +4,7 @@ import pick from 'lodash/pick';
 export const getAppliedFacets = ({ appliedFacets }) => appliedFacets;
 
 export const getAppliedFacetList = ({ appliedFacets }) =>
-    Object.keys(appliedFacets).map(name => ({
+    Object.keys(appliedFacets).map((name) => ({
         name,
         value: appliedFacets[name],
     }));
@@ -34,7 +34,7 @@ export const isFacetValuesInverted = ({ invertedFacets }, name) =>
 
 export const isFacetValuesChecked = (state, { name, facetValue }) =>
     get(state, ['appliedFacets', name], []).some(
-        facet => facet?.value == facetValue?.value,
+        (facet) => facet?.value == facetValue?.value,
     );
 
 export const getInvertedFacetKeys = ({ invertedFacets }) =>

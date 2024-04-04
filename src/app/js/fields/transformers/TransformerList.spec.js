@@ -26,14 +26,14 @@ describe('TransformerList', () => {
                     transformers.map((_, index) => `transformers[${index}]`),
                 ),
             getAll: jest.fn().mockReturnValue(transformers),
-            get: jest.fn().mockImplementation(index => transformers[index]),
+            get: jest.fn().mockImplementation((index) => transformers[index]),
         };
         mockMeta = {
             touched: false,
             error: null,
         };
         polyglot = {
-            t: key => key,
+            t: (key) => key,
         };
     });
 
@@ -58,7 +58,7 @@ describe('TransformerList', () => {
                     transformers.map((_, index) => `transformers[${index}]`),
                 ),
             getAll: jest.fn().mockReturnValue(transformers),
-            get: jest.fn().mockImplementation(index => transformers[index]),
+            get: jest.fn().mockImplementation((index) => transformers[index]),
         };
         const { queryByText } = render(
             <TransformerList
@@ -90,7 +90,7 @@ describe('TransformerList', () => {
                     transformers.map((_, index) => `transformers[${index}]`),
                 ),
             getAll: jest.fn().mockReturnValue(transformers),
-            get: jest.fn().mockImplementation(index => transformers[index]),
+            get: jest.fn().mockImplementation((index) => transformers[index]),
         };
         const { queryByText } = render(
             <TransformerList
@@ -125,7 +125,7 @@ describe('TransformerList', () => {
                     transformers.map((_, index) => `transformers[${index}]`),
                 ),
             getAll: jest.fn().mockReturnValue(transformers),
-            get: jest.fn().mockImplementation(index => transformers[index]),
+            get: jest.fn().mockImplementation((index) => transformers[index]),
         };
         const { queryByText } = render(
             <TransformerList
@@ -191,7 +191,7 @@ describe('TransformerList', () => {
                     transformers.map((_, index) => `transformers[${index}]`),
                 ),
             getAll: jest.fn().mockReturnValue(transformers),
-            get: jest.fn().mockImplementation(index => transformers[index]),
+            get: jest.fn().mockImplementation((index) => transformers[index]),
         };
         const { queryByText } = render(
             <TransformerList
@@ -255,7 +255,7 @@ describe('TransformerList', () => {
                     transformers.map((_, index) => `transformers[${index}]`),
                 ),
             getAll: jest.fn().mockReturnValue(transformers),
-            get: jest.fn().mockImplementation(index => transformers[index]),
+            get: jest.fn().mockImplementation((index) => transformers[index]),
         };
         const { queryByText } = render(
             <TransformerList
@@ -296,7 +296,7 @@ describe('TransformerList', () => {
                     transformers.map((_, index) => `transformers[${index}]`),
                 ),
             getAll: jest.fn().mockReturnValue(transformers),
-            get: jest.fn().mockImplementation(index => transformers[index]),
+            get: jest.fn().mockImplementation((index) => transformers[index]),
         };
         const { queryByText } = render(
             <TransformerList

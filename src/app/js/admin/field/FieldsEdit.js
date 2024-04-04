@@ -130,7 +130,7 @@ FieldsEditComponent.propTypes = {
     subresourceId: PropTypes.string,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     showAddFromColumn: fromParsing.showAddFromColumn(state),
 });
 

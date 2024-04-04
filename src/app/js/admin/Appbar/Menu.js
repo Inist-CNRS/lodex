@@ -58,10 +58,8 @@ const MenuComponent = ({
 
     const [showClearDialog, setShowClearDialog] = useState(false);
     const [clearDialogType, setClearDialogType] = useState(null);
-    const [
-        showImportFieldsConfirmation,
-        setShowImportFieldsConfirmation,
-    ] = useState(false);
+    const [showImportFieldsConfirmation, setShowImportFieldsConfirmation] =
+        useState(false);
     const [showRelaunchDialog, setShowRelaunchDialog] = useState(false);
     const [dataRelaunchDialog, setDataRelaunchDialog] = useState(null);
 
@@ -99,11 +97,11 @@ const MenuComponent = ({
 
     const open = !!anchorEl;
 
-    const handleOpenMenu = event => {
+    const handleOpenMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleCloseMenu = callback => {
+    const handleCloseMenu = (callback) => {
         setAnchorEl(null);
         typeof callback === 'function' && callback();
     };
@@ -161,7 +159,7 @@ const MenuComponent = ({
                         <input
                             name="file_model"
                             type="file"
-                            onChange={event =>
+                            onChange={(event) =>
                                 handleCloseMenu(
                                     importFields(event.target.files[0]),
                                 )
@@ -406,7 +404,7 @@ MenuComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     history: PropTypes.object.isRequired,
 };
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {
             dumpDataset,
@@ -416,10 +414,10 @@ const mapDispatchToProps = dispatch =>
         },
         dispatch,
     );
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     hasLoadedDataset: fromParsing.hasUploadedFile(state),
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
-    nbFields: fromFields.getAllListFields(state).filter(f => f.name !== 'uri')
+    nbFields: fromFields.getAllListFields(state).filter((f) => f.name !== 'uri')
         .length,
     importSucceeded: fromImport.hasImportSucceeded(state),
     importHasEnrichments: fromImport.hasEnrichments(state),

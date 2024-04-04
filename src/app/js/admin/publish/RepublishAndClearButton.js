@@ -40,7 +40,7 @@ export const RepublishAndClearButtonComponent = ({
 
     const anchorRef = React.useRef();
 
-    const handleClick = index => {
+    const handleClick = (index) => {
         if (index === 1) {
             return handleShowClearDialog();
         }
@@ -53,10 +53,10 @@ export const RepublishAndClearButtonComponent = ({
     };
 
     const handleToggle = () => {
-        setOpen(prevOpen => !prevOpen);
+        setOpen((prevOpen) => !prevOpen);
     };
 
-    const handleClose = event => {
+    const handleClose = (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         }
@@ -124,7 +124,7 @@ export const RepublishAndClearButtonComponent = ({
                                             return (
                                                 <MenuItem
                                                     key={option.label}
-                                                    onClick={event =>
+                                                    onClick={(event) =>
                                                         handleMenuItemClick(
                                                             event,
                                                             index,

@@ -8,5 +8,5 @@ export default {
     ListComponent: Component,
     AdminComponent,
     defaultArgs,
-    predicate: value => !!value && typeof value === 'string',
+    predicate: (value) => !!value && typeof value === 'string',
 };

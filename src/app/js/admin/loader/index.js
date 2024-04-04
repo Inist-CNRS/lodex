@@ -18,7 +18,7 @@ const initialState = {
 
 export default handleActions(
     {
-        [LOAD_LOADERS]: state => ({
+        [LOAD_LOADERS]: (state) => ({
             ...state,
             error: false,
             loading: true,
@@ -38,8 +38,8 @@ export default handleActions(
     initialState,
 );
 
-export const getLoaders = state => state.loaders;
-export const areLoadersLoaded = state => getLoaders(state).length > 0;
+export const getLoaders = (state) => state.loaders;
+export const areLoadersLoaded = (state) => getLoaders(state).length > 0;
 
 export const selectors = {
     preLoadLoaders,

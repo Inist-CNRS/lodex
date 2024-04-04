@@ -43,12 +43,7 @@ describe('MenuItem', () => {
 
         const link = wrapper.find(NavLink);
 
-        expect(
-            link
-                .children()
-                .at(1)
-                .text(),
-        ).toBe('label fr');
+        expect(link.children().at(1).text()).toBe('label fr');
     });
 
     it('should translate label based on currentLocate en', () => {
@@ -66,12 +61,7 @@ describe('MenuItem', () => {
 
         const link = wrapper.find(NavLink);
 
-        expect(
-            link
-                .children()
-                .at(1)
-                .text(),
-        ).toBe('label en');
+        expect(link.children().at(1).text()).toBe('label en');
     });
 
     describe('role: unknown', () => {

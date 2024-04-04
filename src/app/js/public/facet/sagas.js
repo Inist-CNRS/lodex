@@ -4,7 +4,7 @@ import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export default ({ actionTypes, actions, selectors }) => {
-    const handleLoadFacetValuesRequest = function*({ payload: { name } }) {
+    const handleLoadFacetValuesRequest = function* ({ payload: { name } }) {
         const data = yield select(selectors.getFacetValueRequestData, name);
         const request = yield select(fromUser.getLoadFacetValuesRequest, {
             field: name,

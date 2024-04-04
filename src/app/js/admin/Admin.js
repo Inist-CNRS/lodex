@@ -63,7 +63,7 @@ AdminComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     loadingParsingResult:
         fromParsing.isParsingLoading(state) ||
         fromUpload.isUploadPending(state),

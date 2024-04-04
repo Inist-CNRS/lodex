@@ -69,7 +69,7 @@ const initAvailableThemes = () => {
 
 const loadFile = async (themeFile, themeConfig = {}) => {
     const ejsOptions = {
-        "async": true,
+        async: true,
         root: path.dirname(themeFile),
     };
     const themeData = {
@@ -87,7 +87,9 @@ const loadFile = async (themeFile, themeConfig = {}) => {
 
 const init = async () => {
     // Default theme
-    const themes = Array.from(new Set([...config.themes, 'default'])).filter(Boolean);
+    const themes = Array.from(new Set([...config.themes, 'default'])).filter(
+        Boolean,
+    );
 
     // Load custom themes
     for (const theme of themes) {

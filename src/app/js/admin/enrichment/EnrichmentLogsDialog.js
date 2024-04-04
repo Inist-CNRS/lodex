@@ -34,7 +34,7 @@ const styles = {
     },
 };
 
-const LogLine = props => {
+const LogLine = (props) => {
     const { data, index, style } = props;
     const log = data[index];
     let parsedLog;

@@ -24,12 +24,12 @@ class DefaultUrlAdmin extends Component {
         args: defaultArgs,
     };
 
-    handleType = e => {
+    handleType = (e) => {
         const newArgs = { ...this.props.args, type: e.target.value };
         this.props.onChange(newArgs);
     };
 
-    handleValue = e => {
+    handleValue = (e) => {
         const newArgs = { ...this.props.args, value: e.target.value };
         this.props.onChange(newArgs);
     };

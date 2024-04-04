@@ -28,7 +28,7 @@ const PropertyLinkedFieldsComponent = ({
     }
     return (
         <div className="linked_fields" style={styles.container}>
-            {linkedFields.map(linkedField => (
+            {linkedFields.map((linkedField) => (
                 <Property
                     key={linkedField._id}
                     className={classnames(
@@ -58,7 +58,9 @@ PropertyLinkedFieldsComponent.defaultProps = {
 
 const mapStateToProps = (state, { fieldName, parents = [] }) => {
     const allLinkedFields = fromFields.getLinkedFields(state, fieldName);
-    const linkedFields = allLinkedFields.filter(f => !parents.includes(f.name));
+    const linkedFields = allLinkedFields.filter(
+        (f) => !parents.includes(f.name),
+    );
 
     return { linkedFields };
 };

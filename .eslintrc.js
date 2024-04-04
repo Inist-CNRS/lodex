@@ -12,6 +12,11 @@ module.exports = {
         node: true,
         'cypress/globals': true,
     },
+    settings: {
+        react: {
+            version: 'detect',
+        },
+    },
     extends: [
         'eslint:recommended',
         'plugin:import/errors',
@@ -21,6 +26,7 @@ module.exports = {
         'prettier',
     ],
     plugins: ['import', 'react', 'prettier', 'cypress', 'jest'],
+    ignorePatterns: ['src/themes/**/*.js', 'src/app/custom/themes/**/js/*.js'],
     rules: {
         'prettier/prettier': [
             'error',

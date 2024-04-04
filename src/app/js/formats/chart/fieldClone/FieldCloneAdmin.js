@@ -25,12 +25,14 @@ export const defaultArgs = {
 
 const FieldCloneAdmin = ({ args, onChange, p: polyglot, fields }) => {
     const { filter } = useParams();
-    const handleValue = e => {
+    const handleValue = (e) => {
         const newArgs = { value: e.target.value };
         onChange(newArgs);
     };
 
-    const filteredFields = fields.filter(f => isValidClonableField(f, filter));
+    const filteredFields = fields.filter((f) =>
+        isValidClonableField(f, filter),
+    );
 
     return (
         <FormatDefaultParamsFieldSet>
@@ -41,7 +43,7 @@ const FieldCloneAdmin = ({ args, onChange, p: polyglot, fields }) => {
                 value={args.value}
                 label={polyglot.t('fieldclone_format_value')}
             >
-                {filteredFields.map(field => {
+                {filteredFields.map((field) => {
                     return (
                         <MenuItem value={field.name} key={field.name}>
                             {field.name} - {field.label}
@@ -67,7 +69,7 @@ FieldCloneAdmin.defaultProps = {
     fields: [],
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     fields: fromFields.getFields(state),
 });
 

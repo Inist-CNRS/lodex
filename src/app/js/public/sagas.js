@@ -15,7 +15,7 @@ import breadcrumbSagas from './breadcrumb/loadBreadcrumbSaga';
 import menuSagas from './menu/loadMenuSaga';
 import displayConfigSagas from './displayConfig/loadDisplayConfigSaga';
 
-export default function*() {
+export default function* () {
     yield fork(characteristicSaga);
     yield fork(datasetSaga);
     yield fork(exportSaga);

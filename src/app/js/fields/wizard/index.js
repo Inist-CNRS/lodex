@@ -60,7 +60,7 @@ const FieldEditionWizardComponent = ({
         }
         if (
             currentEditedField &&
-            !fieldsFromFilter.some(f => f.name === currentEditedField.name)
+            !fieldsFromFilter.some((f) => f.name === currentEditedField.name)
         ) {
             toast(polyglot.t('no_field_in_scope', { fieldName, filter }), {
                 type: toast.TYPE.ERROR,
@@ -120,7 +120,7 @@ const FieldEditionWizardComponent = ({
             id: 'tab-semantics',
             component: <TabSemantics currentEditedField={currentEditedField} />,
         },
-    ].filter(x => x);
+    ].filter((x) => x);
 
     return (
         <Box

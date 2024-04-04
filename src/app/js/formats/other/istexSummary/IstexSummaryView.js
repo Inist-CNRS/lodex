@@ -31,7 +31,7 @@ IstexDocument.propTypes = {
     item: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
 };
 
-export const getComposedComponent = displayDecade =>
+export const getComposedComponent = (displayDecade) =>
     composeRenderProps([
         ...(displayDecade ? [IstexList, DecadeFold] : []),
         IstexList,

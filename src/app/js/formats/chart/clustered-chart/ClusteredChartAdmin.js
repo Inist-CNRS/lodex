@@ -23,23 +23,23 @@ export const defaultArgs = {
     flipAxis: false,
 };
 
-const ClusteredChartAdmin = props => {
+const ClusteredChartAdmin = (props) => {
     const { args, p } = props;
     const { params, colors, xTitle, yTitle, flipAxis } = args;
 
-    const handleParams = params => {
+    const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
 
-    const handleColors = colors => {
+    const handleColors = (colors) => {
         updateAdminArgs('colors', colors || defaultArgs.colors, props);
     };
 
-    const handleXAxisTitle = event => {
+    const handleXAxisTitle = (event) => {
         updateAdminArgs('xTitle', event.target.value, props);
     };
 
-    const handleYAxisTitle = event => {
+    const handleYAxisTitle = (event) => {
         updateAdminArgs('yTitle', event.target.value, props);
     };
 

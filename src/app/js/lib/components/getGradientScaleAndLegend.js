@@ -14,16 +14,15 @@ const getGradientScaleAndLegend = ({
         .domain([1, maxValue]);
 
     const hoverColorScale = hoverColorScheme
-        ? scaleQuantize()
-              .range(hoverColorScheme.slice(1))
-              .domain([1, maxValue])
+        ? scaleQuantize().range(hoverColorScheme.slice(1)).domain([1, maxValue])
         : () => {
               throw new Error('no hoverColorScheme specified');
           };
 
     return {
-        colorScale: value => (value ? colorScale(value) : nullColor),
-        hoverColorScale: value => (value ? hoverColorScale(value) : nullColor),
+        colorScale: (value) => (value ? colorScale(value) : nullColor),
+        hoverColorScale: (value) =>
+            value ? hoverColorScale(value) : nullColor,
         legend: (
             <ColorScaleLegend colorScale={colorScale} nullColor={nullColor} />
         ),

@@ -10,7 +10,7 @@ import configureField from './configureField';
 import addCharacteristic from './addCharacteristic';
 import addField from './addField';
 
-export default function*() {
+export default function* () {
     yield fork(loadFields);
     yield fork(removeField);
     yield fork(saveField);

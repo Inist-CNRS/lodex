@@ -11,6 +11,6 @@ export function* watchChangeLocation() {
     yield takeLatest(LOCATION_CHANGE, handleExitShowColumns);
 }
 
-export default function*() {
+export default function* () {
     yield fork(watchChangeLocation);
 }

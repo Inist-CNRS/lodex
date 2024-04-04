@@ -28,7 +28,7 @@ export const putConfigTenant = async (ctx, id) => {
     }
 };
 
-export const getConfigTenant = async ctx => {
+export const getConfigTenant = async (ctx) => {
     ctx.body = await ctx.configTenantCollection.findLast();
 };
 

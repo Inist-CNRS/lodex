@@ -54,14 +54,14 @@ export default handleActions(
             label,
             isBackground,
         }),
-        [UPLOAD_FILE]: state => ({
+        [UPLOAD_FILE]: (state) => ({
             ...state,
             status: STARTING,
             progress: undefined,
             target: undefined,
             error: undefined,
         }),
-        [PUBLISH]: state => ({
+        [PUBLISH]: (state) => ({
             ...state,
             status: STARTING,
             progress: undefined,
@@ -69,35 +69,35 @@ export default handleActions(
             error: undefined,
             isBackground: true,
         }),
-        [CLEAR_DATASET]: state => ({
+        [CLEAR_DATASET]: (state) => ({
             ...state,
             status: STARTING,
             progress: undefined,
             target: undefined,
             error: undefined,
         }),
-        [CLEAR_DATASET_ERROR]: state => ({
+        [CLEAR_DATASET_ERROR]: (state) => ({
             ...state,
             status: PENDING,
             progress: undefined,
             target: undefined,
             error: undefined,
         }),
-        [CLEAR_PUBLISHED_ERROR]: state => ({
+        [CLEAR_PUBLISHED_ERROR]: (state) => ({
             ...state,
             status: PENDING,
             progress: undefined,
             target: undefined,
             error: undefined,
         }),
-        [ERROR_PROGRESS]: state => ({
+        [ERROR_PROGRESS]: (state) => ({
             ...state,
             status: ERROR,
             progress: undefined,
             target: undefined,
             error: true,
         }),
-        [CLEAR_PROGRESS]: state => ({
+        [CLEAR_PROGRESS]: (state) => ({
             ...state,
             status: PENDING,
             progress: undefined,
@@ -108,7 +108,7 @@ export default handleActions(
     defaultState,
 );
 
-const getProgress = state => state;
+const getProgress = (state) => state;
 const getProgressAndTarget = ({ progress, target }) => ({ progress, target });
 
 export const selectors = {

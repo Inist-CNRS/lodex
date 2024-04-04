@@ -45,7 +45,7 @@ const updateDataset = async ({ uri, field, value }) => {
     });
 };
 
-const deleteDatasetRow = async id => {
+const deleteDatasetRow = async (id) => {
     const { token } = getUserSessionStorageInfo();
 
     const request = getDeleteDatasetRowRequest({ token }, id);

@@ -50,7 +50,7 @@ AppliedDatasetFacetListComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     facets: fromDataset.getAppliedFacetList(state),
 });
 

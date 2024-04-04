@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AsterPlotChartIcon = props => (
+const AsterPlotChartIcon = (props) => (
     <svg
         viewBox="0 0 525 525"
         preserveAspectRatio="xMidYMid meet"

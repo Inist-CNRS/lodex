@@ -32,7 +32,7 @@ export default handleActions(
             REMOVE_FIELD_SUCCESS,
             SAVE_FIELD_SUCCESS,
             LOAD_PARSING_RESULT_SUCCESS,
-        )]: state => ({ ...state, isComputing: true }),
+        )]: (state) => ({ ...state, isComputing: true }),
         COMPUTE_PUBLICATION_PREVIEW_SUCCESS: (
             state,
             { payload: resources },
@@ -42,9 +42,9 @@ export default handleActions(
     defaultState,
 );
 
-export const isComputing = state => state.isComputing;
-export const getPublicationPreview = state => state.resources;
-export const hasPublicationPreview = state => !!state.resources.length;
+export const isComputing = (state) => state.isComputing;
+export const getPublicationPreview = (state) => state.resources;
+export const hasPublicationPreview = (state) => !!state.resources.length;
 
 export const selectors = {
     isComputing,

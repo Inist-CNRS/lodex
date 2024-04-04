@@ -33,7 +33,7 @@ const clearModel = async () => {
     });
 };
 
-const patchField = async field => {
+const patchField = async (field) => {
     const { token } = getUserSessionStorageInfo();
     const request = getUpdateFieldRequest({ token }, field);
     return fetch(request).then(({ response, error }) => {
@@ -44,7 +44,7 @@ const patchField = async field => {
     });
 };
 
-const patchOverview = async field => {
+const patchOverview = async (field) => {
     const { token } = getUserSessionStorageInfo();
     const request = getPatchOverviewRequest({ token }, field);
     return fetch(request).then(({ response, error }) => {
@@ -56,7 +56,7 @@ const patchOverview = async field => {
     });
 };
 
-const patchSearchableFields = async fields => {
+const patchSearchableFields = async (fields) => {
     const { token } = getUserSessionStorageInfo();
     const request = getPatchSearchableFieldsRequest({ token }, fields);
     return fetch(request).then(({ response, error }) => {

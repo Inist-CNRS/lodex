@@ -46,7 +46,7 @@ const DatasetSearchBar = ({
                 <SearchBar
                     className="dataset-searchbar"
                     value={localQuery}
-                    onChange={e => handleSearch(e.target.value)}
+                    onChange={(e) => handleSearch(e.target.value)}
                     onClear={handleClearSearch}
                 />
             </Box>
@@ -70,7 +70,7 @@ DatasetSearchBar.propTypes = {
     onToggleFacets: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     hasSearchableFields: fromFields.hasSearchableFields(state),
     defaultQuery: fromDataset.getFilter(state),
 });

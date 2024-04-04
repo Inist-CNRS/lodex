@@ -25,7 +25,7 @@ const SourceValuePrecomputed = ({
     const [valueInput, setValueInput] = React.useState(routine || '');
 
     const handleChangePrecomputed = (event, value) => {
-        const precomputedSelected = precomputedData.find(precomputed => {
+        const precomputedSelected = precomputedData.find((precomputed) => {
             return precomputed.name === value;
         });
 
@@ -58,7 +58,7 @@ const SourceValuePrecomputed = ({
         updateDefaultValueTransformers(transformers);
     };
 
-    const handleChangeRoutine = event => {
+    const handleChangeRoutine = (event) => {
         setValueInput(event.target.value);
         const transformers = [
             {
@@ -88,7 +88,7 @@ const SourceValuePrecomputed = ({
                 fullWidth
                 options={precomputedData.map(({ name }) => name)}
                 value={autocompleteValue ?? ''}
-                renderInput={params => (
+                renderInput={(params) => (
                     <TextField
                         {...params}
                         label={polyglot.t('from_precomputed')}
@@ -127,7 +127,7 @@ const SourceValuePrecomputed = ({
     );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     precomputedData: fromPrecomputed
         .precomputed(state)
         .sort((a, b) =>

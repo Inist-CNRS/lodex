@@ -92,9 +92,10 @@ describe('publishDocuments', () => {
         });
 
         it('should call getDocumentTransformer with all other fields', () => {
-            expect(
-                getDocumentTransformer,
-            ).toHaveBeenCalledWith('dataset.findBy()', [fields[0], fields[1]]);
+            expect(getDocumentTransformer).toHaveBeenCalledWith(
+                'dataset.findBy()',
+                [fields[0], fields[1]],
+            );
         });
 
         it('should call versionTransformerDecorator with transformDocument', () => {

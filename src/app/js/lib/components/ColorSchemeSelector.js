@@ -61,7 +61,7 @@ const categorySchemes = [
 
 import ColorScalePreview from '../../lib/components/ColorScalePreview';
 
-const getColorSchemeSelector = schemes => {
+const getColorSchemeSelector = (schemes) => {
     const ColorSchemeSelector = ({ value = [], label, onChange }) => (
         <TextField
             fullWidth
@@ -70,7 +70,7 @@ const getColorSchemeSelector = schemes => {
             value={value.join(',')}
             onChange={onChange}
         >
-            {schemes.map(scheme => (
+            {schemes.map((scheme) => (
                 <MenuItem key={scheme} value={scheme.join(',')}>
                     {
                         <ColorScalePreview

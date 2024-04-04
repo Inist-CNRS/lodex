@@ -33,7 +33,7 @@ const DeleteTenantDialog = ({ tenant, handleClose, deleteAction }) => {
                     placeholder={
                         "Taper le nom de l'instance pour confirmer la suppression"
                     }
-                    onChange={event => setName(event.target.value)}
+                    onChange={(event) => setName(event.target.value)}
                     error={name !== tenant.name}
                     value={name}
                 />

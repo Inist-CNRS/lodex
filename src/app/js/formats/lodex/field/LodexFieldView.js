@@ -75,7 +75,7 @@ export class LodexFieldView extends Component {
         return buildValue(field, resource);
     };
 
-    ifArray = value => {
+    ifArray = (value) => {
         const { className } = this.props;
         if (Array.isArray(value)) {
             return (
@@ -101,7 +101,7 @@ export class LodexFieldView extends Component {
         );
     };
 
-    ifLang = value => {
+    ifLang = (value) => {
         const { className } = this.props;
         if (value) {
             return (
@@ -116,7 +116,7 @@ export class LodexFieldView extends Component {
         return;
     };
 
-    ifUrl = value => {
+    ifUrl = (value) => {
         if (isURL(value)) {
             return <Link href={value}>{value}</Link>;
         }
@@ -130,7 +130,7 @@ export class LodexFieldView extends Component {
             return;
         }
 
-        const data = formatData[0].fields.find(data => data.name == label);
+        const data = formatData[0].fields.find((data) => data.name == label);
         if (!data) {
             return;
         }
@@ -181,7 +181,7 @@ export class LodexFieldView extends Component {
             return <span> </span>;
         }
 
-        const labelArray = field.format.args.param.labelArray.map(e =>
+        const labelArray = field.format.args.param.labelArray.map((e) =>
             e.trim(),
         );
 

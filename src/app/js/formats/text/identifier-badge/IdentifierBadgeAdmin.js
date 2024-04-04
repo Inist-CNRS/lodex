@@ -38,7 +38,7 @@ class IdentifierBadgeAdmin extends Component {
         };
     }
 
-    handleTypid = typid => {
+    handleTypid = (typid) => {
         const newArgs = { ...this.props.args, typid };
         this.props.onChange(newArgs);
     };
@@ -52,7 +52,7 @@ class IdentifierBadgeAdmin extends Component {
             p: polyglot,
             args: { typid },
         } = this.props;
-        const items = Object.keys(resolvers).map(resolverID => (
+        const items = Object.keys(resolvers).map((resolverID) => (
             <MenuItem key={`resolver_${resolverID}`} value={resolverID}>
                 {polyglot.t(resolverID)}
             </MenuItem>
@@ -64,7 +64,7 @@ class IdentifierBadgeAdmin extends Component {
                     select
                     label={polyglot.t('list_format_select_identifier')}
                     value={typid}
-                    onChange={e => this.handleTypid(e.target.value)}
+                    onChange={(e) => this.handleTypid(e.target.value)}
                 >
                     {items}
                 </TextField>

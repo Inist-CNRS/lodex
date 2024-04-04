@@ -30,13 +30,13 @@ export const EnrichmentList = ({
 }) => {
     const history = useHistory();
     const isEnrichingRunning = enrichments.some(
-        enrichment => enrichment.status === IN_PROGRESS,
+        (enrichment) => enrichment.status === IN_PROGRESS,
     );
-    const handleRowClick = params => {
+    const handleRowClick = (params) => {
         history.push(`/data/enrichment/${params.row._id}`);
     };
 
-    const handleLaunchPrecomputed = params => event => {
+    const handleLaunchPrecomputed = (params) => (event) => {
         event.stopPropagation();
         if (isEnrichingRunning) {
             toast(polyglot.t('pending_enrichment'), {
@@ -91,7 +91,7 @@ export const EnrichmentList = ({
                         field: 'sourceColumn',
                         headerName: polyglot.t('sourceColumn'),
                         flex: 1,
-                        renderCell: params => {
+                        renderCell: (params) => {
                             return params.value ? params.value : '-';
                         },
                     },
@@ -99,7 +99,7 @@ export const EnrichmentList = ({
                         field: 'subPath',
                         headerName: polyglot.t('subPath'),
                         flex: 1,
-                        renderCell: params => {
+                        renderCell: (params) => {
                             return params.value ? params.value : '-';
                         },
                     },
@@ -107,7 +107,7 @@ export const EnrichmentList = ({
                         field: 'advancedMode',
                         headerName: polyglot.t('advancedMode'),
                         flex: 1,
-                        renderCell: params => {
+                        renderCell: (params) => {
                             return params.value ? <CheckIcon /> : <CloseIcon />;
                         },
                     },
@@ -115,14 +115,14 @@ export const EnrichmentList = ({
                         field: 'status',
                         headerName: polyglot.t('enrichment_status'),
                         flex: 1,
-                        renderCell: params =>
+                        renderCell: (params) =>
                             renderStatus(params.value, polyglot),
                     },
                     {
                         field: 'run',
                         headerName: polyglot.t('run'),
                         flex: 1,
-                        renderCell: params => {
+                        renderCell: (params) => {
                             return renderRunButton(
                                 handleLaunchPrecomputed(params.row),
                                 params.row.status,
@@ -133,7 +133,7 @@ export const EnrichmentList = ({
                     },
                 ]}
                 rows={enrichments}
-                getRowId={row => row._id}
+                getRowId={(row) => row._id}
                 autoHeight
                 width="100%"
                 onRowClick={handleRowClick}
@@ -156,7 +156,7 @@ EnrichmentList.propTypes = {
     onLaunchEnrichment: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     enrichments: state.enrichment.enrichments,
 });
 

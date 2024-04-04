@@ -11,7 +11,7 @@ ezs.use(ezsLodex);
 
 const loaders = new Script('loaders');
 
-export const getLoader = async type => {
+export const getLoader = async (type) => {
     const loader = await loaders.get(type);
     if (!loader) {
         throw new Error(`Unsupported document type: ${type}`);
@@ -66,16 +66,16 @@ export async function setup(ctx, next) {
 export async function getLoaders(ctx) {
     const configuredLoaders = config.loaders || [];
 
-    const availableLoaderStreamFactoryPromises = configuredLoaders.map(loader =>
-        ctx.getLoader(loader),
+    const availableLoaderStreamFactoryPromises = configuredLoaders.map(
+        (loader) => ctx.getLoader(loader),
     );
     const availableLoaders = await Promise.all(
         availableLoaderStreamFactoryPromises,
     );
 
     ctx.body = availableLoaders
-        .filter(loader => loader.label !== undefined)
-        .map(loader => ({
+        .filter((loader) => loader.label !== undefined)
+        .map((loader) => ({
             name: loader.label,
         }));
 }

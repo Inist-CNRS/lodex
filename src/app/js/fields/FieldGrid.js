@@ -94,7 +94,7 @@ export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
     }
 };
 
-const scrollToField = fieldLabel => {
+const scrollToField = (fieldLabel) => {
     setTimeout(() => {
         const field = document.querySelector(`[aria-label="${fieldLabel}"]`);
         field?.scrollIntoView({
@@ -104,7 +104,7 @@ const scrollToField = fieldLabel => {
     }, 200);
 };
 
-const layoutFromItems = items => {
+const layoutFromItems = (items) => {
     const result = items
         .sort((a, b) => a.position - b.position)
         .reduce(
@@ -133,7 +133,7 @@ const layoutFromItems = items => {
     return result.layout;
 };
 
-const itemsFromLayout = layout =>
+const itemsFromLayout = (layout) =>
     layout
         .sort((a, b) => (a.y === b.y ? a.x - b.x : a.y - b.y))
         .map((item, index) => ({
@@ -155,7 +155,7 @@ const ItemGridLabel = connect((state, { field }) => ({
     return (
         <>
             <Box
-                onClick={e => {
+                onClick={(e) => {
                     handleCopyToClipboard(e, field.name);
                 }}
                 sx={{
@@ -178,8 +178,8 @@ const ItemGridLabel = connect((state, { field }) => ({
     );
 });
 
-export const buildFieldsDefinitionsArray = fields =>
-    fields.map(field => ({
+export const buildFieldsDefinitionsArray = (fields) =>
+    fields.map((field) => ({
         id: field.name,
         width: field.width ? parseInt(field.width, 10) / 10 : 10,
         position: field.position,
@@ -189,194 +189,186 @@ const DraggableItemGrid = compose(
     connect(null, {
         loadField,
     }),
-)(
-    ({
-        onChangeWidth,
-        onChangePositions,
-        allowResize,
-        fields,
-        polyglot,
-        loadField,
-        filter,
-        isFieldsLoading,
-        subresourceId,
-    }) => {
-        const history = useHistory();
+)(({
+    onChangeWidth,
+    onChangePositions,
+    allowResize,
+    fields,
+    polyglot,
+    loadField,
+    filter,
+    isFieldsLoading,
+    subresourceId,
+}) => {
+    const history = useHistory();
 
-        const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
-        const [isEditable, setIsEditable] = useState(true);
+    const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
+    const [isEditable, setIsEditable] = useState(true);
 
-        const layout = useMemo(() => layoutFromItems(items), [
-            JSON.stringify(items),
-        ]);
+    const layout = useMemo(
+        () => layoutFromItems(items),
+        [JSON.stringify(items)],
+    );
 
-        const [gridLayoutRef, { width }] = useMeasure();
+    const [gridLayoutRef, { width }] = useMeasure();
 
-        useEffect(() => {
-            setItems(buildFieldsDefinitionsArray(fields));
-        }, [JSON.stringify(fields)]);
+    useEffect(() => {
+        setItems(buildFieldsDefinitionsArray(fields));
+    }, [JSON.stringify(fields)]);
 
-        useDidUpdateEffect(() => {
-            onChangePositions(items);
-        }, [JSON.stringify(items.map(item => item.id))]);
+    useDidUpdateEffect(() => {
+        onChangePositions(items);
+    }, [JSON.stringify(items.map((item) => item.id))]);
 
-        const stopClickPropagation = () => {
-            setIsEditable(false);
-            setTimeout(() => setIsEditable(true), 200);
-        };
+    const stopClickPropagation = () => {
+        setIsEditable(false);
+        setTimeout(() => setIsEditable(true), 200);
+    };
 
-        const handleLayoutChange = newLayout => {
-            stopClickPropagation();
-            setItems(itemsFromLayout(newLayout));
-        };
+    const handleLayoutChange = (newLayout) => {
+        stopClickPropagation();
+        setItems(itemsFromLayout(newLayout));
+    };
 
-        const handleResize = (elements, el) => {
-            stopClickPropagation();
-            const newEl = elements.find(elem => elem.i === el.i);
-            if (newEl) {
-                onChangeWidth(newEl.i, newEl.w * 10);
-                setItems(itemsFromLayout(elements));
-            }
-        };
+    const handleResize = (elements, el) => {
+        stopClickPropagation();
+        const newEl = elements.find((elem) => elem.i === el.i);
+        if (newEl) {
+            onChangeWidth(newEl.i, newEl.w * 10);
+            setItems(itemsFromLayout(elements));
+        }
+    };
 
-        const handleEditField = (fieldName, filter, subresourceId) => {
-            if (isEditable && !isFieldsLoading) {
-                const redirectUrl = getEditFieldRedirectUrl(
-                    fieldName,
-                    filter,
-                    subresourceId,
-                );
-                history.push(redirectUrl);
-            }
-        };
+    const handleEditField = (fieldName, filter, subresourceId) => {
+        if (isEditable && !isFieldsLoading) {
+            const redirectUrl = getEditFieldRedirectUrl(
+                fieldName,
+                filter,
+                subresourceId,
+            );
+            history.push(redirectUrl);
+        }
+    };
 
-        const handleDuplicateField = async (event, field) => {
+    const handleDuplicateField = async (event, field) => {
+        event.stopPropagation();
+        event.preventDefault();
 
-            event.stopPropagation();
-            event.preventDefault();
+        const res = await fieldApi.duplicateField({
+            fieldId: field._id,
+        });
 
-            const res = await fieldApi.duplicateField({
-                fieldId: field._id,
+        if (!res) {
+            toast(`${polyglot.t('duplicate_field_error')}`, {
+                type: toast.TYPE.ERROR,
             });
+        }
 
-            if (!res) {
-                toast(`${polyglot.t('duplicate_field_error')}`, {
-                    type: toast.TYPE.ERROR,
-                });
-            }
+        loadField();
+        toast(`${polyglot.t('duplicate_field_success')}`, {
+            type: toast.TYPE.SUCCESS,
+        });
+    };
 
-            loadField();
-            toast(`${polyglot.t('duplicate_field_success')}`, {
-                type: toast.TYPE.SUCCESS,
-            });
-        };
-
-        return (
-            <Box sx={styles.layoutContainer} ref={gridLayoutRef}>
-                <GridLayout
-                    className="layout"
-                    layout={layout}
-                    key={JSON.stringify(items)}
-                    cols={10}
-                    rowHeight={75}
-                    width={width - ROOT_PADDING}
-                    onDragStop={handleLayoutChange}
-                    onResizeStop={handleResize}
-                    isResizable={allowResize}
-                >
-                    {fields.map(field => (
+    return (
+        <Box sx={styles.layoutContainer} ref={gridLayoutRef}>
+            <GridLayout
+                className="layout"
+                layout={layout}
+                key={JSON.stringify(items)}
+                cols={10}
+                rowHeight={75}
+                width={width - ROOT_PADDING}
+                onDragStop={handleLayoutChange}
+                onResizeStop={handleResize}
+                isResizable={allowResize}
+            >
+                {fields.map((field) => (
+                    <Box
+                        key={field.name}
+                        aria-label={field.label}
+                        sx={{
+                            ...styles.property,
+                            cursor: isFieldsLoading ? 'auto' : 'pointer',
+                        }}
+                        onClick={() =>
+                            handleEditField(field.name, filter, subresourceId)
+                        }
+                    >
                         <Box
-                            key={field.name}
-                            aria-label={field.label}
                             sx={{
-                                ...styles.property,
-                                cursor: isFieldsLoading ? 'auto' : 'pointer',
+                                ...styles.propertyHandle,
+                                ...styles.fieldChildren,
                             }}
-                            onClick={() =>
-                                handleEditField(
-                                    field.name,
-                                    filter,
-                                    subresourceId,
-                                )
-                            }
+                            className="draghandle"
                         >
-                            <Box
-                                sx={{
-                                    ...styles.propertyHandle,
-                                    ...styles.fieldChildren,
-                                }}
-                                className="draghandle"
-                            >
-                                <DragIndicatorIcon />
-                            </Box>
-                            <Box
-                                sx={styles.propertyLabel}
-                                data-field-name={field.name}
-                            >
-                                <ItemGridLabel
-                                    field={field}
-                                    polyglot={polyglot}
-                                    onShowNameCopied={() =>
-                                        toast(
-                                            polyglot.t(
-                                                'fieldidentifier_copied_clipboard',
-                                            ),
-                                            {
-                                                type: toast.TYPE.SUCCESS,
-                                            },
-                                        )
-                                    }
-                                />
-                            </Box>
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'flex-end',
-                                    marginRight: '10px',
-                                    flex: 1,
-                                }}
-                            >
-                                <Tooltip
-                                    title={polyglot.t(
-                                        'duplicate_field_tooltip',
-                                    )}
-                                >
-                                    <Box>
-                                        <IconButton
-                                            sx={styles.otherIcon}
-                                            onClick={e => {
-                                                handleDuplicateField(e, field);
-                                            }}
-                                            aria-label={`duplicate-${field.label}`}
-                                            disabled={isFieldsLoading}
-                                        >
-                                            <FileCopyIcon />
-                                        </IconButton>
-                                    </Box>
-                                </Tooltip>
-                                <Tooltip
-                                    title={polyglot.t('setting_field_tooltip')}
-                                >
-                                    <Box>
-                                        <IconButton
-                                            sx={styles.otherIcon}
-                                            aria-label={`edit-${field.label}`}
-                                            disabled={isFieldsLoading}
-                                        >
-                                            <SettingsIcon />
-                                        </IconButton>
-                                    </Box>
-                                </Tooltip>
-                                {!field.display && <HiddenIcon />}
-                            </Box>
+                            <DragIndicatorIcon />
                         </Box>
-                    ))}
-                </GridLayout>
-            </Box>
-        );
-    },
-);
+                        <Box
+                            sx={styles.propertyLabel}
+                            data-field-name={field.name}
+                        >
+                            <ItemGridLabel
+                                field={field}
+                                polyglot={polyglot}
+                                onShowNameCopied={() =>
+                                    toast(
+                                        polyglot.t(
+                                            'fieldidentifier_copied_clipboard',
+                                        ),
+                                        {
+                                            type: toast.TYPE.SUCCESS,
+                                        },
+                                    )
+                                }
+                            />
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'flex-end',
+                                marginRight: '10px',
+                                flex: 1,
+                            }}
+                        >
+                            <Tooltip
+                                title={polyglot.t('duplicate_field_tooltip')}
+                            >
+                                <Box>
+                                    <IconButton
+                                        sx={styles.otherIcon}
+                                        onClick={(e) => {
+                                            handleDuplicateField(e, field);
+                                        }}
+                                        aria-label={`duplicate-${field.label}`}
+                                        disabled={isFieldsLoading}
+                                    >
+                                        <FileCopyIcon />
+                                    </IconButton>
+                                </Box>
+                            </Tooltip>
+                            <Tooltip
+                                title={polyglot.t('setting_field_tooltip')}
+                            >
+                                <Box>
+                                    <IconButton
+                                        sx={styles.otherIcon}
+                                        aria-label={`edit-${field.label}`}
+                                        disabled={isFieldsLoading}
+                                    >
+                                        <SettingsIcon />
+                                    </IconButton>
+                                </Box>
+                            </Tooltip>
+                            {!field.display && <HiddenIcon />}
+                        </Box>
+                    </Box>
+                ))}
+            </GridLayout>
+        </Box>
+    );
+});
 
 DraggableItemGrid.propTypes = {
     onEditField: PropTypes.func,
@@ -423,7 +415,7 @@ const FieldGridComponent = ({
         const previousFields = previousFieldsRef.current;
 
         const newFields = fields.filter(
-            field => !previousFields.find(f => f.name === field.name),
+            (field) => !previousFields.find((f) => f.name === field.name),
         );
 
         if (newFields.length === 1) {
@@ -432,10 +424,10 @@ const FieldGridComponent = ({
         previousFieldsRef.current = fields;
     }, [fields]);
 
-    const handleChangePositions = fieldsWithPosition => {
+    const handleChangePositions = (fieldsWithPosition) => {
         changePositions({
             type: filter,
-            fields: fieldsWithPosition.map(field => ({
+            fields: fieldsWithPosition.map((field) => ({
                 name: field.id,
                 position: field.position,
             })),

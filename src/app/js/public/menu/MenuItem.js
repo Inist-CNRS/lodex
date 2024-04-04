@@ -64,7 +64,7 @@ const styles = stylesToClassname(
     'menu-item',
 );
 
-const getIcon = icon => {
+const getIcon = (icon) => {
     const faIcon = get(icons, icon);
     if (faIcon) {
         return (
@@ -108,7 +108,7 @@ const MenuItem = ({
                     )}
                     activeClassName={styles.active}
                     onClick={onClick(config.role)}
-                    isActive={match => {
+                    isActive={(match) => {
                         if (
                             !match ||
                             graphDrawer === 'open' ||

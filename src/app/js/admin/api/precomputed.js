@@ -9,7 +9,7 @@ import {
 } from '../../user';
 import { getUserSessionStorageInfo } from './tools';
 
-export const getPreviewPrecomputed = previewPrecomputed => {
+export const getPreviewPrecomputed = (previewPrecomputed) => {
     const { token } = getUserSessionStorageInfo();
     const request = getPreviewDataPrecomputedRequest(
         { token },
@@ -18,25 +18,25 @@ export const getPreviewPrecomputed = previewPrecomputed => {
     return fetch(request);
 };
 
-export const createPrecomputed = precomputed => {
+export const createPrecomputed = (precomputed) => {
     const { token } = getUserSessionStorageInfo();
     const request = getCreatePrecomputedRequest({ token }, precomputed);
     return fetch(request);
 };
 
-export const updatePrecomputed = precomputed => {
+export const updatePrecomputed = (precomputed) => {
     const { token } = getUserSessionStorageInfo();
     const request = getUpdatePrecomputedRequest({ token }, precomputed);
     return fetch(request);
 };
 
-export const deletePrecomputed = id => {
+export const deletePrecomputed = (id) => {
     const { token } = getUserSessionStorageInfo();
     const request = getDeletePrecomputedRequest({ token }, id);
     return fetch(request);
 };
 
-export const exportPrecomputedData = id => {
+export const exportPrecomputedData = (id) => {
     const { token } = getUserSessionStorageInfo();
 
     const request = getExportPrecomputedDataRequest({ token }, id);
@@ -48,7 +48,7 @@ export const exportPrecomputedData = id => {
     });
 };
 
-export const previewPrecomputedData = id => {
+export const previewPrecomputedData = (id) => {
     const { token } = getUserSessionStorageInfo();
 
     const request = getPreviewPrecomputedDataRequest({ token }, id);

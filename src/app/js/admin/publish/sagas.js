@@ -19,6 +19,6 @@ export function* handlePublishRequest() {
     }
 }
 
-export default function*() {
+export default function* () {
     yield takeLatest(PUBLISH, handlePublishRequest);
 }

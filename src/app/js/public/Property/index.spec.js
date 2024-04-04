@@ -124,11 +124,11 @@ describe('Property', () => {
     describe('is admin', () => {
         it('should always render something', () => {
             [null, undefined, '', [], 'value', ['value1', 'value2']].forEach(
-                value => {
+                (value) => {
                     const wrapper = shallow(
                         <PropertyComponent
                             {...defaultProps}
-                            p={{ t: x => x }}
+                            p={{ t: (x) => x }}
                             isAdmin={true}
                             resource={{ field: value }}
                         />,

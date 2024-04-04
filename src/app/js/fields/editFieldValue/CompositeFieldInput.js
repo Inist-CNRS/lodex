@@ -31,7 +31,7 @@ export const directlyEditableTransformers = [
     'CAPITALIZE',
 ];
 
-export const canBeDirectlyEdited = transformers =>
+export const canBeDirectlyEdited = (transformers) =>
     !transformers.some(
         ({ operation }) => !directlyEditableTransformers.includes(operation),
     );
@@ -59,7 +59,7 @@ export const CompositeFieldInputComponent = ({
             )}
         </div>
         <div style={style.list}>
-            {compositeFields.map(f => (
+            {compositeFields.map((f) => (
                 <FieldInput key={f.name} field={f} />
             ))}
         </div>

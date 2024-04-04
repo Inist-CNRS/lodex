@@ -21,13 +21,13 @@ export const processPublication = (job, done) => {
             });
             done();
         })
-        .catch(err => {
+        .catch((err) => {
             handlePublishError(job, err);
             done(err);
         });
 };
 
-const startPublishing = async job => {
+const startPublishing = async (job) => {
     notifyListeners(`${job.data.tenant}-publisher`, {
         isPublishing: true,
         success: false,
@@ -49,7 +49,7 @@ const handlePublishError = async (job, error) => {
     });
 };
 
-const prepareContext = async ctx => {
+const prepareContext = async (ctx) => {
     ctx.tenant = ctx.job.data.tenant;
     await repositoryMiddleware(ctx, () => Promise.resolve());
     ctx.publishDocuments = publishDocuments;
@@ -58,7 +58,7 @@ const prepareContext = async ctx => {
     return ctx;
 };
 
-export const addPublisherListener = listener => listeners.push(listener);
+export const addPublisherListener = (listener) => listeners.push(listener);
 const notifyListeners = (room, payload) => {
-    listeners.forEach(listener => listener({ room, data: payload }));
+    listeners.forEach((listener) => listener({ room, data: payload }));
 };

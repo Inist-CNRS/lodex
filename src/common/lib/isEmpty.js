@@ -1,4 +1,4 @@
-export default value =>
+export default (value) =>
     value === null ||
     typeof value === 'undefined' ||
     value === '' ||

@@ -22,7 +22,7 @@ export const setup = async (ctx, next) => {
     }
 };
 
-export const postEnrichment = async ctx => {
+export const postEnrichment = async (ctx) => {
     try {
         const enrichment = ctx.request.body;
         const newEnrichmentWithRule = await createEnrichmentRule(
@@ -101,7 +101,7 @@ export const getEnrichment = async (ctx, id) => {
     ctx.body = await ctx.enrichment.findOneById(id);
 };
 
-export const getAllEnrichments = async ctx => {
+export const getAllEnrichments = async (ctx) => {
     ctx.body = await ctx.enrichment.findAll();
 };
 
@@ -121,7 +121,7 @@ export const enrichmentAction = async (ctx, action, id) => {
                 },
                 { jobId: uuid() },
             )
-            .then(job => {
+            .then((job) => {
                 setEnrichmentJobId(ctx, id, job);
             });
         ctx.body = {
@@ -142,7 +142,7 @@ export const enrichmentAction = async (ctx, action, id) => {
                 },
                 { jobId: uuid() },
             )
-            .then(job => {
+            .then((job) => {
                 setEnrichmentJobId(ctx, id, job);
             });
         ctx.body = {
@@ -153,7 +153,7 @@ export const enrichmentAction = async (ctx, action, id) => {
     ctx.status = 200;
 };
 
-export const enrichmentDataPreview = async ctx => {
+export const enrichmentDataPreview = async (ctx) => {
     try {
         const result = await getEnrichmentDataPreview(ctx);
         ctx.status = 200;

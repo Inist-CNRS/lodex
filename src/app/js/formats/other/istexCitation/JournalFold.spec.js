@@ -18,7 +18,7 @@ describe('JournalFold', () => {
         item: { name: 'The Lancet', count: 9908 },
         searchedField: CUSTOM_ISTEX_QUERY,
         documentSortBy: 'publicationDate[desc]',
-        polyglot: { t: v => v },
+        polyglot: { t: (v) => v },
         children,
     };
 

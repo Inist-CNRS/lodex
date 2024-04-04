@@ -5,13 +5,13 @@ import getLogger from '../services/logger';
 
 const scriptRegEx = new RegExp('<script.*?( src=".*")?.*?>.*?</script>', 'gm');
 
-export const getScriptsFromHtml = html =>
+export const getScriptsFromHtml = (html) =>
     (html.match(scriptRegEx) || [])
-        .map(script => {
+        .map((script) => {
             const src = script.match(/<script.*?src="(.*?)".*?>/);
             return src && src[1];
         })
-        .filter(src => !!src);
+        .filter((src) => !!src);
 
 const getPathname = async (file, tenant) => {
     const absoluteFilename = path.resolve(
@@ -32,7 +32,7 @@ const getPathname = async (file, tenant) => {
     return `${absoluteFilename}.html`;
 };
 
-export default async ctx => {
+export default async (ctx) => {
     const { page: file } = ctx.request.query;
     const tenant = ctx.tenant;
     if (!file) {

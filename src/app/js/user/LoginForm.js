@@ -73,10 +73,12 @@ export default compose(
         validate,
     }),
     withHandlers({
-        handleKeyPress: ({ handleSubmit }) => event => {
-            if (event.key === 'Enter') {
-                handleSubmit();
-            }
-        },
+        handleKeyPress:
+            ({ handleSubmit }) =>
+            (event) => {
+                if (event.key === 'Enter') {
+                    handleSubmit();
+                }
+            },
     }),
 )(LoginFormComponent);

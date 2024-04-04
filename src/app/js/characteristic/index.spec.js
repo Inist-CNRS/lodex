@@ -139,16 +139,16 @@ describe('characteristic', () => {
                 expect(characteristics).toHaveLength(2);
 
                 const c1 = characteristics[0];
-                expect(c1.name).toEqual('lothal');
-                expect(c1.completes).toEqual(false);
-                expect(c1.display).toEqual(true);
-                expect(c1.value).toEqual('ezra');
+                expect(c1.name).toBe('lothal');
+                expect(c1.completes).toBe(false);
+                expect(c1.display).toBe(true);
+                expect(c1.value).toBe('ezra');
 
                 const c2 = characteristics[1];
-                expect(c2.name).toEqual('malachor');
-                expect(c2.completes).toEqual(false);
-                expect(c2.display).toEqual(true);
-                expect(c2.value).toEqual('ahsoka');
+                expect(c2.name).toBe('malachor');
+                expect(c2.completes).toBe(false);
+                expect(c2.display).toBe(true);
+                expect(c2.value).toBe('ahsoka');
             });
         });
     });

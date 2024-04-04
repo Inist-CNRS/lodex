@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ParallelCoordinatesChartIcon = props => {
+const ParallelCoordinatesChartIcon = (props) => {
     return (
         <svg viewBox="0 0 100 125" width="1em" height="1em" {...props}>
             <path d="M 0 95 L 100 95 L 100 92 L 0 92 z" />

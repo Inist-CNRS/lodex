@@ -15,7 +15,7 @@ import { fetchForIstexRefbibsFormat } from './fetchIstexRefbibsData';
 import IstexItem from '../istex/IstexItem';
 
 const styles = {
-    text: memoize(status =>
+    text: memoize((status) =>
         Object.assign({
             fontSize: '1rem',
             textDecoration: status === REJECTED ? 'line-through' : 'none',
@@ -58,7 +58,7 @@ export const IstexRefbibsView = ({
         </div>
         {data && data.hits && (
             <div>
-                {data.hits.map(item => (
+                {data.hits.map((item) => (
                     <IstexItem key={item.id} {...item} />
                 ))}
             </div>

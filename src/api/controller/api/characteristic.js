@@ -7,12 +7,12 @@ import deepCopy from 'lodash/cloneDeep';
 
 const app = new Koa();
 
-const isCompositeField = field =>
+const isCompositeField = (field) =>
     field.composedOf &&
     field.composedOf.isComposedOf &&
     field.composedOf.fields.length > 0;
 
-const isValueField = field =>
+const isValueField = (field) =>
     get(field, 'transformers[0].operation') === 'VALUE';
 
 const updateFieldValue = async (ctx, field, value) => {
@@ -28,7 +28,7 @@ const updateFieldValue = async (ctx, field, value) => {
     );
 };
 
-const updateField = (ctx, requestedNewCharacteristics) => async field => {
+const updateField = (ctx, requestedNewCharacteristics) => async (field) => {
     const body = {};
 
     if (isValueField(field)) {
@@ -60,9 +60,9 @@ const prepareNewCharacteristics = (characteristics, newCharacteristics) => {
     const newCharacteristicsNames = Object.keys(newCharacteristics);
 
     const existingNewCharacteristicsNames = newCharacteristicsNames.filter(
-        newCharacteristicName =>
+        (newCharacteristicName) =>
             characteristicsNames.some(
-                characteristicName =>
+                (characteristicName) =>
                     characteristicName === newCharacteristicName,
             ),
     );
@@ -76,12 +76,9 @@ const prepareNewCharacteristics = (characteristics, newCharacteristics) => {
     }, {});
 };
 
-export const updateCharacteristics = async ctx => {
-    const {
-        name,
-        publicationDate,
-        ...requestedNewCharacteristics
-    } = ctx.request.body;
+export const updateCharacteristics = async (ctx) => {
+    const { name, publicationDate, ...requestedNewCharacteristics } =
+        ctx.request.body;
 
     ctx.body = {};
 
@@ -103,7 +100,7 @@ export const updateCharacteristics = async ctx => {
     });
 };
 
-export const createCharacteristic = async ctx => {
+export const createCharacteristic = async (ctx) => {
     const { value, ...fieldData } = ctx.request.body;
 
     const highestPosition = await ctx.field.getHighestPosition();
@@ -125,7 +122,8 @@ export const createCharacteristic = async ctx => {
         ],
     });
 
-    const prevCharacteristics = await ctx.publishedCharacteristic.findLastVersion();
+    const prevCharacteristics =
+        await ctx.publishedCharacteristic.findLastVersion();
     const characteristics = await ctx.publishedCharacteristic.addNewVersion({
         ...prevCharacteristics,
         [field.name]: value,

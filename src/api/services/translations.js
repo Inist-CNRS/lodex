@@ -3,7 +3,7 @@ const { resolve } = require('path');
 const CSV = require('csv-string');
 const moment = require('moment');
 
-const getFileUpdatedDate = path => {
+const getFileUpdatedDate = (path) => {
     const stats = fs.statSync(path);
     return stats.mtime;
 };
@@ -12,7 +12,7 @@ const shouldUpdateTranslations = (fileCacheTime, fileLastUpdatedTime) =>
     lastCacheTimestamp === null ||
     moment(fileLastUpdatedTime).isAfter(fileCacheTime);
 
-const parseTranslationsFile = path => {
+const parseTranslationsFile = (path) => {
     const tsv = fs.readFileSync(path, 'utf8');
     const csv = CSV.parse(tsv, `\t`, '"');
 

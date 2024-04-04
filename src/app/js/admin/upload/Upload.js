@@ -173,7 +173,7 @@ export const UploadComponent = ({
         setDropping(false);
     };
 
-    const handleFileAdded = list => {
+    const handleFileAdded = (list) => {
         setDropping(false);
         if (!list || list.length === 0) return;
 
@@ -283,8 +283,9 @@ export const UploadComponent = ({
                                 dropzoneProps={{
                                     disabled: !!url,
                                 }}
-                                dropzoneClass={`dropzone ${!!url &&
-                                    'disabledDropzone'}`}
+                                dropzoneClass={`dropzone ${
+                                    !!url && 'disabledDropzone'
+                                }`}
                                 showAlerts={['error']}
                                 showPreviewsInDropzone
                                 showFileNamesInPreview
@@ -298,7 +299,7 @@ export const UploadComponent = ({
                                         horizontal: 'center',
                                     },
                                 }}
-                                onAdd={fileObjs => handleFileAdded(fileObjs)}
+                                onAdd={(fileObjs) => handleFileAdded(fileObjs)}
                                 onDrop={handleAdding}
                                 onDropRejected={handleAddRejected}
                                 onDelete={() => setFiles([])}
@@ -439,7 +440,7 @@ UploadComponent.propTypes = {
     text: PropTypes.string,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     url: fromUpload.getUrl(state),
     textContent: fromUpload.getTextContent(state),
     isUrlValid: fromUpload.isUrlValid(state),
@@ -452,9 +453,9 @@ const mapDispatchToProps = {
     onUrlUpload: uploadUrl,
     onFileLoad: uploadFile,
     onTextUpload: uploadText,
-    onChangeUrl: e => changeUploadUrl(e.target.value),
-    onChangeTextContent: e => changeUploadText(e),
-    onChangeLoaderName: val =>
+    onChangeUrl: (e) => changeUploadUrl(e.target.value),
+    onChangeTextContent: (e) => changeUploadText(e),
+    onChangeLoaderName: (val) =>
         changeLoaderName(Array.isArray(val) ? val[0] : val),
 };
 

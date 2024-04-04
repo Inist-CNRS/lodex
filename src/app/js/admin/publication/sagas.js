@@ -33,6 +33,6 @@ export function* watchLoadPublicationRequest() {
     );
 }
 
-export default function*() {
+export default function* () {
     yield fork(watchLoadPublicationRequest);
 }

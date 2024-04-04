@@ -169,7 +169,7 @@ Sidebar.propTypes = {
     hasPublishedDataset: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 

@@ -16,7 +16,7 @@ describe('<Excerpt />', () => {
             { foo: 'foo2', bar: 'bar2' },
         ],
         readonly: true,
-        p: { t: key => key },
+        p: { t: (key) => key },
     };
 
     it('should render Table container', () => {
@@ -28,20 +28,14 @@ describe('<Excerpt />', () => {
     it('should render headers', () => {
         const wrapper = shallow(<Excerpt {...defaultProps} />);
         const headers = wrapper.find(TableCell);
-        expect(
-            headers
-                .at(0)
-                .children()
-                .at(0)
-                .prop('field'),
-        ).toEqual({ name: 'foo', label: 'foo' });
-        expect(
-            headers
-                .at(1)
-                .children()
-                .at(0)
-                .prop('field'),
-        ).toEqual({ name: 'bar', label: 'Super Bar' });
+        expect(headers.at(0).children().at(0).prop('field')).toEqual({
+            name: 'foo',
+            label: 'foo',
+        });
+        expect(headers.at(1).children().at(0).prop('field')).toEqual({
+            name: 'bar',
+            label: 'Super Bar',
+        });
     });
 
     it('should render lines', () => {

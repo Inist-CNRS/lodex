@@ -18,8 +18,8 @@ if (!module.parent) {
     });
     const io = new Server(httpServer);
 
-    io.on('connection', socket => {
-        const emitPayload = payload => {
+    io.on('connection', (socket) => {
+        const emitPayload = (payload) => {
             socket.emit(`${mongo.dbName}_${payload.room}`, payload.data);
         };
 

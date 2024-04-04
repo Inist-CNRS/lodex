@@ -48,7 +48,7 @@ const navStyles = stylesToClassname(
     'resource-navigation',
 );
 
-const buildLocationFromResource = resource =>
+const buildLocationFromResource = (resource) =>
     resource
         ? {
               pathname: getResourceUri(resource),
@@ -124,7 +124,7 @@ export class ResourceComponent extends React.Component {
             <Button
                 variant="text"
                 className="btn-back-to-list"
-                component={props => <Link to="/graph" {...props} />}
+                component={(props) => <Link to="/graph" {...props} />}
                 startIcon={<HomeIcon />}
             >
                 {backToListLabel}
@@ -251,7 +251,7 @@ ResourceComponent.propTypes = {
     nextResource: PropTypes.object,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const resource = fromResource.getResourceLastVersion(state);
 
     return {

@@ -81,12 +81,10 @@ export const NavBar = ({
         return null;
     }
 
-    const [searchDrawer, toggleSearchDrawer, closeSearchDrawer] = useDrawer(
-        DRAWER_CLOSED,
-    );
-    const [graphDrawer, toggleGraphDrawer, closeGraphDrawer] = useDrawer(
-        DRAWER_CLOSED,
-    );
+    const [searchDrawer, toggleSearchDrawer, closeSearchDrawer] =
+        useDrawer(DRAWER_CLOSED);
+    const [graphDrawer, toggleGraphDrawer, closeGraphDrawer] =
+        useDrawer(DRAWER_CLOSED);
     const [
         advancedMenuDrawer,
         toggleAdvancedMenuDrawer,
@@ -132,29 +130,31 @@ export const NavBar = ({
         closeGraphDrawer();
     };
 
-    const handleMenuItemClick = (role, suppressEvent = false) => evt => {
-        if (suppressEvent) {
-            evt.preventDefault();
-        }
+    const handleMenuItemClick =
+        (role, suppressEvent = false) =>
+        (evt) => {
+            if (suppressEvent) {
+                evt.preventDefault();
+            }
 
-        switch (role) {
-            case 'graphs':
-                toggleGraph();
-                break;
-            case 'search':
-                toggleSearch();
-                break;
-            case 'sign-out':
-                logout();
-                break;
-            case 'advanced':
-                toggleAdvancedMenu();
-                break;
-            default:
-                closeAll();
-                return;
-        }
-    };
+            switch (role) {
+                case 'graphs':
+                    toggleGraph();
+                    break;
+                case 'search':
+                    toggleSearch();
+                    break;
+                case 'sign-out':
+                    logout();
+                    break;
+                case 'advanced':
+                    toggleAdvancedMenu();
+                    break;
+                default:
+                    closeAll();
+                    return;
+            }
+        };
 
     return (
         <>
@@ -284,11 +284,12 @@ NavBar.propTypes = {
     isMultilingual: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     role: fromUser.getRole(state),
     canBeSearched: fromFields.canBeSearched(state),
     hasGraph:
-        fromFields.getGraphicFields(state).filter(f => !!f.display).length > 0,
+        fromFields.getGraphicFields(state).filter((f) => !!f.display).length >
+        0,
     leftMenu: fromMenu.getLeftMenu(state),
     rightMenu: fromMenu.getRightMenu(state),
     advancedMenu: fromMenu.getAdvancedMenu(state),

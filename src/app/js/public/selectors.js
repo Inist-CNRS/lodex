@@ -11,63 +11,63 @@ import { fromDisplayConfig as localFromDisplayConfig } from './displayConfig/red
 import { fromI18n as localFromI18n } from '../i18n';
 import localFromFacet from './facet/selectors';
 
-const getDatasetState = state => state.dataset;
+const getDatasetState = (state) => state.dataset;
 export const fromDataset = createGlobalSelectors(
     getDatasetState,
     localFromDataset,
 );
 
-const getExportState = state => state.export;
+const getExportState = (state) => state.export;
 export const fromExport = createGlobalSelectors(
     getExportState,
     localFromExport,
 );
 
-const getResourceState = state => state.resource;
+const getResourceState = (state) => state.resource;
 export const fromResource = createGlobalSelectors(
     getResourceState,
     localFromResource,
 );
 
-const getFormatState = state => state.format;
+const getFormatState = (state) => state.format;
 export const fromFormat = createGlobalSelectors(
     getFormatState,
     localFromFormat,
 );
 
-const getBreadcrumbState = state => state.breadcrumb;
+const getBreadcrumbState = (state) => state.breadcrumb;
 export const fromBreadcrumb = createGlobalSelectors(
     getBreadcrumbState,
     localFromBreadcrumb,
 );
 
-const getMenuState = state => state.menu;
+const getMenuState = (state) => state.menu;
 export const fromMenu = createGlobalSelectors(getMenuState, localFromMenu);
 
-const getSearchState = state => state.search;
+const getSearchState = (state) => state.search;
 export const fromSearch = createGlobalSelectors(
     getSearchState,
     localFromSearch,
 );
 
-const getDisplayConfigState = state => state.displayConfig;
+const getDisplayConfigState = (state) => state.displayConfig;
 export const fromDisplayConfig = createGlobalSelectors(
     getDisplayConfigState,
     localFromDisplayConfig,
 );
 
-const getFacet = page => state => state[page].facet;
+const getFacet = (page) => (state) => state[page].facet;
 const facetSelectorsByPage = {
     dataset: createGlobalSelectors(getFacet('dataset'), localFromFacet),
     search: createGlobalSelectors(getFacet('search'), localFromFacet),
 };
-export const fromFacet = page => facetSelectorsByPage[page];
+export const fromFacet = (page) => facetSelectorsByPage[page];
 
-const getI18nState = state => state.i18n;
+const getI18nState = (state) => state.i18n;
 export const fromI18n = createGlobalSelectors(getI18nState, localFromI18n);
 
 export const fromRouter = {
-    getResourceUri: state => {
+    getResourceUri: (state) => {
         const pathname = state.router.location.pathname;
         const match = pathname.match(/^\/((?:ark|uid):\/.*$)/);
 

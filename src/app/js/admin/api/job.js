@@ -6,7 +6,7 @@ import {
 } from '../../user';
 import { getUserSessionStorageInfo } from './tools';
 
-export const getJobLogs = jobId => {
+export const getJobLogs = (jobId) => {
     const { token } = getUserSessionStorageInfo();
 
     const request = getJobLogsRequest({ token }, jobId);

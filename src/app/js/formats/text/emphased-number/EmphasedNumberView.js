@@ -32,14 +32,8 @@ function getNumber(numb) {
 
 class EmphasedNumberView extends Component {
     render() {
-        const {
-            field,
-            className,
-            resource,
-            formatData,
-            size,
-            colors,
-        } = this.props;
+        const { field, className, resource, formatData, size, colors } =
+            this.props;
 
         const value = getNumber(formatData || resource[field.name]);
         return (

@@ -9,10 +9,10 @@ import { Button } from '@mui/material';
 
 describe('<Publish />', () => {
     it('should render a publish button', () => {
-        const wrapper = shallow(<PublishButton p={{ t: key => key }} />);
+        const wrapper = shallow(<PublishButton p={{ t: (key) => key }} />);
 
         const button = wrapper.find(Button).at(0);
-        expect(button.prop('children')).toEqual('publish');
+        expect(button.prop('children')).toBe('publish');
     });
 
     it('should trigger the onPublish action on click', () => {
@@ -20,7 +20,7 @@ describe('<Publish />', () => {
 
         const wrapper = shallow(
             <PublishButton
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
                 loadField={() => {}}
                 isPublishing={false}
                 onPublish={onPublish}

@@ -28,7 +28,7 @@ export const changeLoaderName = createAction(CHANGE_LOADER_NAME);
 export const upsertCustomLoader = createAction(UPSERT_CUSTOM_LOADER);
 export const deleteCustomLoader = createAction(DELETE_CUSTOM_LOADER);
 
-const validateUrl = url =>
+const validateUrl = (url) =>
     url && (url.startsWith('http://') || url.startsWith('https://'));
 
 export const defaultState = {
@@ -55,7 +55,7 @@ export default handleActions(
                       status: 'PENDING',
                   }
                 : state,
-        UPLOAD_SUCCESS: state => ({
+        UPLOAD_SUCCESS: (state) => ({
             ...state,
             status: 'SUCCESS',
         }),
@@ -64,11 +64,11 @@ export default handleActions(
             status: 'ERROR',
             error: payload.message,
         }),
-        OPEN_UPLOAD: state => ({
+        OPEN_UPLOAD: (state) => ({
             ...state,
             open: true,
         }),
-        CLOSE_UPLOAD: state => ({
+        CLOSE_UPLOAD: (state) => ({
             ...state,
             open: false,
         }),
@@ -89,7 +89,7 @@ export default handleActions(
             ...state,
             customLoader,
         }),
-        DELETE_CUSTOM_LOADER: state => ({
+        DELETE_CUSTOM_LOADER: (state) => ({
             ...state,
             customLoader: null,
         }),
@@ -97,9 +97,9 @@ export default handleActions(
     defaultState,
 );
 
-export const getUpload = state => state;
-export const isUploadPending = state => state.status === 'PENDING';
-export const isOpen = state => state.open;
+export const getUpload = (state) => state;
+export const isUploadPending = (state) => state.status === 'PENDING';
+export const isOpen = (state) => state.open;
 export const getUrl = ({ url }) => url;
 export const getTextContent = ({ textContent }) => textContent;
 export const getLoaderName = ({ loaderName }) => loaderName;

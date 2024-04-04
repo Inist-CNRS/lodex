@@ -20,7 +20,7 @@ export const initialState = {
 
 export default handleActions(
     {
-        LOAD_ENRICHMENTS: state => ({ ...state, loading: true }),
+        LOAD_ENRICHMENTS: (state) => ({ ...state, loading: true }),
         LOAD_ENRICHMENTS_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
@@ -35,11 +35,11 @@ export default handleActions(
     initialState,
 );
 
-export const isDataPreviewLoading = state => state.dataPreviewLoading;
-export const isLoading = state => state.loading;
-export const enrichments = state => state.enrichments;
-export const dataPreviewEnrichment = state => state.dataPreviewEnrichment;
-export const getError = state => state.error;
+export const isDataPreviewLoading = (state) => state.dataPreviewLoading;
+export const isLoading = (state) => state.loading;
+export const enrichments = (state) => state.enrichments;
+export const dataPreviewEnrichment = (state) => state.dataPreviewEnrichment;
+export const getError = (state) => state.error;
 
 export const selectors = {
     isDataPreviewLoading,

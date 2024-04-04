@@ -432,7 +432,7 @@ describe('field reducer', () => {
     describe('addCharacteristicSuccess, addFieldToResourceSuccess', () => {
         it('should add payload.field to byName and list', () => {
             [addCharacteristicSuccess, addFieldToResourceSuccess].forEach(
-                action => {
+                (action) => {
                     const state = reducer(
                         {
                             byName: {
@@ -462,7 +462,7 @@ describe('field reducer', () => {
 
         it('should update payload.field in byName and not touch list if field was already present', () => {
             [addCharacteristicSuccess, addFieldToResourceSuccess].forEach(
-                action => {
+                (action) => {
                     const state = reducer(
                         {
                             byName: {

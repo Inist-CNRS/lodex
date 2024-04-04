@@ -169,7 +169,7 @@ describe('saveParsedStream', () => {
 
         beforeAll(async () => {
             result = await saveParsedStream(ctx, parsedStream).catch(
-                error => error,
+                (error) => error,
             );
         });
 

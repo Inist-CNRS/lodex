@@ -7,7 +7,7 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
 import stylesToClassname from '../lib/stylesToClassName';
 
-const capitalize = str =>
+const capitalize = (str) =>
     str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
 const styles = stylesToClassname(

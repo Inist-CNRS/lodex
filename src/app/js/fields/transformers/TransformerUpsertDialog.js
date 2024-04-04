@@ -43,7 +43,7 @@ const TransformerUpsertDialog = ({
         return null;
     }
 
-    const handleChangeOperation = newValue => {
+    const handleChangeOperation = (newValue) => {
         setTransformer({
             operation: newValue,
         });
@@ -75,7 +75,7 @@ const TransformerUpsertDialog = ({
                             handleChangeOperation(newValue);
                         }}
                         options={availableTransformers}
-                        renderInput={params => (
+                        renderInput={(params) => (
                             <TextField
                                 {...params}
                                 label={polyglot.t('select_an_operation')}
@@ -98,14 +98,15 @@ const TransformerUpsertDialog = ({
                                         '&:last-child': {
                                             borderBottom: 'none',
                                         },
-                                        '&.MuiAutocomplete-option[aria-selected="true"].Mui-selected': {
-                                            backgroundColor:
-                                                'var(--primary-secondary)',
-                                            '&:hover': {
+                                        '&.MuiAutocomplete-option[aria-selected="true"].Mui-selected':
+                                            {
                                                 backgroundColor:
-                                                    'var(--primary-main)',
+                                                    'var(--primary-secondary)',
+                                                '&:hover': {
+                                                    backgroundColor:
+                                                        'var(--primary-main)',
+                                                },
                                             },
-                                        },
                                     }}
                                     selected={state.selected}
                                 >
@@ -124,8 +125,8 @@ const TransformerUpsertDialog = ({
                     <TransformerArg
                         operation={transformer.operation}
                         transformerArgs={transformer.args}
-                        onChange={args => {
-                            setTransformer(transformer => ({
+                        onChange={(args) => {
+                            setTransformer((transformer) => ({
                                 ...transformer,
                                 args,
                             }));
@@ -169,7 +170,7 @@ TransformerUpsertDialog.propTypes = {
 const mapStateToProps = (state, { type }) => ({
     availableTransformers: fromFields
         .getTransformers(state, type)
-        .map(transformer => transformer.name),
+        .map((transformer) => transformer.name),
 });
 
 export default compose(

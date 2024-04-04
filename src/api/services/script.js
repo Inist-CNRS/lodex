@@ -13,11 +13,11 @@ export default class Script {
 
         const routinesDeclared = config[source] || [];
         const routinesLocal = routinesDeclared
-            .map(routineName =>
+            .map((routineName) =>
                 Path.resolve(routineLocalDirectory, routineName.concat('.ini')),
             )
-            .filter(fileName => fs.existsSync(fileName))
-            .map(fileName => [
+            .filter((fileName) => fs.existsSync(fileName))
+            .map((fileName) => [
                 fileName,
                 ezs.metaFile(fileName),
                 Path.basename(fileName, '.ini'),
@@ -37,7 +37,7 @@ export default class Script {
             return this.cache[routineCalled];
         }
 
-        const routineLocal = this.local.find(r => r[2] === routineCalled);
+        const routineLocal = this.local.find((r) => r[2] === routineCalled);
         if (routineLocal) {
             this.cache[routineCalled] = routineLocal;
             return routineLocal;
@@ -45,7 +45,9 @@ export default class Script {
     }
 
     async list() {
-        const availableListPromises = this.declared.map(name => this.get(name));
+        const availableListPromises = this.declared.map((name) =>
+            this.get(name),
+        );
         const availableList = await Promise.all(availableListPromises);
         return availableList
             .map(([, metaData, id]) => ({
@@ -54,7 +56,7 @@ export default class Script {
                 type: metaData.type,
                 fileName: metaData.fileName,
             }))
-            .filter(script => script.label !== undefined);
+            .filter((script) => script.label !== undefined);
     }
 
     useCache() {

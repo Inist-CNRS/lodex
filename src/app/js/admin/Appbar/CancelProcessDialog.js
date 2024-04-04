@@ -12,7 +12,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import translate from 'redux-polyglot/translate';
 import CancelButton from '../../lib/components/CancelButton';
 
-const CancelProcessDialog = props => {
+const CancelProcessDialog = (props) => {
     const { p: polyglot, isOpen, title, content, onConfirm, onCancel } = props;
     return (
         <Dialog open={isOpen}>

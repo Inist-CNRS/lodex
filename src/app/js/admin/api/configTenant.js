@@ -18,7 +18,7 @@ export const getConfigTenant = () => {
     return fetch(request);
 };
 
-export const updateConfigTenant = configTenant => {
+export const updateConfigTenant = (configTenant) => {
     const { token } = getUserSessionStorageInfo();
     const request = getUpdateConfigTenantRequest({ token }, configTenant);
     return fetch(request);

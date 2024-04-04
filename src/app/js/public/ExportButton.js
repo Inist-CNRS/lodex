@@ -61,7 +61,7 @@ const ExportButton = ({
 
     const [popover, setPopover] = useState({ open: false });
 
-    const handleOpen = event => {
+    const handleOpen = (event) => {
         // This prevents ghost click.
         event.preventDefault();
 
@@ -77,7 +77,7 @@ const ExportButton = ({
         });
     };
 
-    const handleExport = event => {
+    const handleExport = (event) => {
         handleClose();
         onExport(event);
     };
@@ -86,7 +86,9 @@ const ExportButton = ({
         handleClose();
 
         const facetsIds = Object.keys(facets).reduce((acc, facetName) => {
-            acc[facetName] = facets[facetName].map(facetValue => facetValue.id);
+            acc[facetName] = facets[facetName].map(
+                (facetValue) => facetValue.id,
+            );
             return acc;
         }, {});
 
@@ -178,7 +180,7 @@ ExportButton.defaultProps = {
     isResourceExport: false,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     exporters: fromExport.getExporters(state),
     displayExportPDF: fromDisplayConfig.getDisplayExportPDF(state),
     maxExportPDFSize: fromDisplayConfig.getMaxExportPDFSize(state),
@@ -189,7 +191,7 @@ const mapStateToProps = state => ({
     locale: fromI18n.getLocale(state),
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {
             onExport: exportPublishedDatasetAction,

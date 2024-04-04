@@ -15,13 +15,13 @@ export const initialState = {
 
 export default handleActions(
     {
-        DUMP_DATASET: state => ({ ...state, loading: true }),
-        DUMP_DATASET_ERROR: state => ({
+        DUMP_DATASET: (state) => ({ ...state, loading: true }),
+        DUMP_DATASET_ERROR: (state) => ({
             ...state,
             status: 'error',
             loading: false,
         }),
-        DUMP_DATASET_SUCCESS: state => ({
+        DUMP_DATASET_SUCCESS: (state) => ({
             ...state,
             status: 'success',
             loading: false,
@@ -30,7 +30,7 @@ export default handleActions(
     initialState,
 );
 
-export const isDumpLoading = state => state.loading;
+export const isDumpLoading = (state) => state.loading;
 
 export const selectors = {
     isDumpLoading,

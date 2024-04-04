@@ -36,7 +36,7 @@ export class SelectVersionComponent extends Component {
             </MenuItem>
         ));
 
-    handleClick = event => {
+    handleClick = (event) => {
         this.setState({
             anchorEl: event.currentTarget,
             showMenu: true,
@@ -89,7 +89,7 @@ SelectVersionComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     versions: fromResource.getVersions(state),
     selectedVersion: fromResource.getSelectedVersion(state),
 });

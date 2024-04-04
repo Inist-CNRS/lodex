@@ -22,6 +22,6 @@ export function* handleExportFields() {
     yield call(downloadFile, response, filename[0]);
 }
 
-export default function*() {
+export default function* () {
     yield takeEvery(EXPORT_FIELDS, handleExportFields);
 }

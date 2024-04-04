@@ -19,7 +19,7 @@ import fetchSaga from '../../lib/sagas/fetchSaga';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
 import { push } from 'connected-react-router';
 
-export const sanitizeField = fieldData => {
+export const sanitizeField = (fieldData) => {
     const valueOperation = get(fieldData, 'transformers[0].operation');
     if (valueOperation === 'CONCAT') {
         const values = get(fieldData, 'transformers[0].args');

@@ -5,7 +5,7 @@ import { RedirectView, RedirectViewLoader } from './RedirectView';
 describe('<RedirectView />', () => {
     it('should render nothing if there is no field', () => {
         const className = 'redirect';
-        const p = { t: x => x };
+        const p = { t: (x) => x };
         const resource = { covfefe: 'http://example.com' };
         const field = {};
 
@@ -23,7 +23,7 @@ describe('<RedirectView />', () => {
 
     it('should render nothing if there is no resource', () => {
         const className = 'redirect';
-        const p = { t: x => x };
+        const p = { t: (x) => x };
         const resource = {};
         const field = { name: 'covfefe' };
 
@@ -42,7 +42,7 @@ describe('<RedirectView />', () => {
     it('should render a <RedirectViewLoader />', () => {
         const className = 'redirect';
         const classes = {};
-        const p = { t: x => x };
+        const p = { t: (x) => x };
         const resource = { foo: 'http://example.com' };
         const field = { name: 'foo' };
 

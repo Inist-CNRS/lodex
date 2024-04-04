@@ -21,7 +21,7 @@ export const setup = async (ctx, next) => {
     }
 };
 
-export const postPrecomputed = async ctx => {
+export const postPrecomputed = async (ctx) => {
     try {
         const precomputed = ctx.request.body;
         const result = await ctx.precomputed.create(precomputed);
@@ -81,7 +81,7 @@ export const getPrecomputed = async (ctx, id) => {
     ctx.body = await ctx.precomputed.findOneById(id);
 };
 
-export const getAllPrecomputed = async ctx => {
+export const getAllPrecomputed = async (ctx) => {
     ctx.body = await ctx.precomputed
         .find({}, { projection: { data: { $slice: 10 } } })
         .toArray();
@@ -106,7 +106,7 @@ export const precomputedAction = async (ctx, action, id) => {
                 },
                 { jobId: uuid() },
             )
-            .then(job => {
+            .then((job) => {
                 setPrecomputedJobId(ctx, id, job);
             });
         ctx.body = {
@@ -128,7 +128,7 @@ export const precomputedAction = async (ctx, action, id) => {
                 },
                 { jobId: uuid() },
             )
-            .then(job => {
+            .then((job) => {
                 setPrecomputedJobId(ctx, id, job);
             });
         ctx.body = {
@@ -139,7 +139,7 @@ export const precomputedAction = async (ctx, action, id) => {
     ctx.status = 200;
 };
 
-export const precomputedDataPreview = async ctx => {
+export const precomputedDataPreview = async (ctx) => {
     try {
         const result = await getPrecomputedDataPreview(ctx);
         ctx.status = 200;

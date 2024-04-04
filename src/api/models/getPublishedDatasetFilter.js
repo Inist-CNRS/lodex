@@ -1,6 +1,6 @@
 import compose from 'lodash/flowRight';
 
-export const addMatchToFilters = (match, searchableFieldNames) => filters => {
+export const addMatchToFilters = (match, searchableFieldNames) => (filters) => {
     if (!match || !searchableFieldNames || !searchableFieldNames.length) {
         return filters;
     }
@@ -11,7 +11,7 @@ export const addMatchToFilters = (match, searchableFieldNames) => filters => {
     };
 };
 
-export const addRegexToFilters = (match, searchableFieldNames) => filters => {
+export const addRegexToFilters = (match, searchableFieldNames) => (filters) => {
     if (!match || !searchableFieldNames || !searchableFieldNames.length) {
         return filters;
     }
@@ -20,13 +20,13 @@ export const addRegexToFilters = (match, searchableFieldNames) => filters => {
 
     return {
         ...filters,
-        $or: searchableFieldNames.map(name => ({
+        $or: searchableFieldNames.map((name) => ({
             [`versions.${name}`]: { $regex: regexMatch, $options: 'i' },
         })),
     };
 };
 
-export const addFieldsToFilters = matchableFields => filters => {
+export const addFieldsToFilters = (matchableFields) => (filters) => {
     if (!matchableFields) {
         return filters;
     }
@@ -38,7 +38,7 @@ export const addFieldsToFilters = matchableFields => filters => {
 
     return {
         ...filters,
-        $or: matchableFieldNames.map(fieldName => ({
+        $or: matchableFieldNames.map((fieldName) => ({
             [`versions.${fieldName}`]: matchableFields[fieldName],
         })),
     };
@@ -47,7 +47,7 @@ export const addFieldsToFilters = matchableFields => filters => {
 export const getValueQueryFragment = (name, value, inverted) => {
     if (Array.isArray(value) && value.length > 1) {
         return {
-            [inverted ? '$nor' : '$or']: value.map(v => ({
+            [inverted ? '$nor' : '$or']: value.map((v) => ({
                 [`versions.${name}`]: v,
             })),
         };
@@ -60,38 +60,36 @@ export const getValueQueryFragment = (name, value, inverted) => {
     };
 };
 
-export const addFacetToFilters = (
-    facets,
-    facetFieldNames,
-    invertedFacets = [],
-) => filters => {
-    if (
-        !facets ||
-        !Object.keys(facets).length ||
-        !facetFieldNames ||
-        !facetFieldNames.length
-    ) {
-        return filters;
-    }
+export const addFacetToFilters =
+    (facets, facetFieldNames, invertedFacets = []) =>
+    (filters) => {
+        if (
+            !facets ||
+            !Object.keys(facets).length ||
+            !facetFieldNames ||
+            !facetFieldNames.length
+        ) {
+            return filters;
+        }
 
-    return {
-        ...filters,
-        $and: facetFieldNames.reduce((acc, name) => {
-            if (!facets[name]) return acc;
+        return {
+            ...filters,
+            $and: facetFieldNames.reduce((acc, name) => {
+                if (!facets[name]) return acc;
 
-            return [
-                ...acc,
-                getValueQueryFragment(
-                    name,
-                    facets[name],
-                    invertedFacets.indexOf(name) !== -1,
-                ),
-            ];
-        }, []),
+                return [
+                    ...acc,
+                    getValueQueryFragment(
+                        name,
+                        facets[name],
+                        invertedFacets.indexOf(name) !== -1,
+                    ),
+                ];
+            }, []),
+        };
     };
-};
 
-export const addKeyToFilters = (key, value) => filters => {
+export const addKeyToFilters = (key, value) => (filters) => {
     if (!value) {
         return filters;
     }

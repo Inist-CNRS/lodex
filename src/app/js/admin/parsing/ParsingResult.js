@@ -95,11 +95,11 @@ const styles = {
     },
 };
 
-const getFiltersOperatorsForType = type => {
+const getFiltersOperatorsForType = (type) => {
     switch (type) {
         case 'number':
             return getGridNumericColumnOperators().filter(
-                operator =>
+                (operator) =>
                     operator.value === '=' ||
                     operator.value === '<' ||
                     operator.value === '>',
@@ -108,12 +108,12 @@ const getFiltersOperatorsForType = type => {
             return getGridBooleanOperators();
         default:
             return getGridStringOperators().filter(
-                operator => operator.value === 'contains',
+                (operator) => operator.value === 'contains',
             );
     }
 };
 
-export const ParsingResultComponent = props => {
+export const ParsingResultComponent = (props) => {
     const {
         p: polyglot,
         enrichments,
@@ -140,7 +140,9 @@ export const ParsingResultComponent = props => {
     };
 
     const getColumnsToShow = () => {
-        const enrichmentsNames = enrichments.map(enrichment => enrichment.name);
+        const enrichmentsNames = enrichments.map(
+            (enrichment) => enrichment.name,
+        );
 
         const res = columns
             .filter(({ key }) => {
@@ -157,12 +159,12 @@ export const ParsingResultComponent = props => {
                 const isEnrichmentLoading =
                     isEnrichment &&
                     enrichments.some(
-                        enrichment =>
+                        (enrichment) =>
                             enrichment.name === key &&
                             enrichment.status === IN_PROGRESS,
                     );
                 const errorCount = isEnrichment
-                    ? enrichments.find(enrichment => enrichment.name === key)
+                    ? enrichments.find((enrichment) => enrichment.name === key)
                           ?.errorCount
                     : null;
                 return {
@@ -180,7 +182,7 @@ export const ParsingResultComponent = props => {
                     sortable: type !== 'object',
                     filterOperators: getFiltersOperatorsForType(type),
                     type,
-                    renderCell: params => {
+                    renderCell: (params) => {
                         if (isEnrichmentLoading && params.value === undefined)
                             return (
                                 <CircularProgress
@@ -216,12 +218,12 @@ export const ParsingResultComponent = props => {
             filterable: false,
             sortable: false,
             hideable: false,
-            renderCell: params => {
+            renderCell: (params) => {
                 return (
                     <Tooltip title={polyglot.t('parsing_delete_row_tooltip')}>
                         <IconButton
                             aria-label="delete row"
-                            onClick={e => handleDeleteRow(e, params.row)}
+                            onClick={(e) => handleDeleteRow(e, params.row)}
                         >
                             <Delete color="warning" />
                         </IconButton>
@@ -245,11 +247,11 @@ export const ParsingResultComponent = props => {
     );
 
     const numberOfColumns = useCallback(
-        columnType => {
+        (columnType) => {
             if (!columns || columns.length === 0 || !enrichments) return 0;
             return columns.filter(({ key }) => {
                 const isEnrichmentColumn = enrichments.some(
-                    enrichment => enrichment.name === key,
+                    (enrichment) => enrichment.name === key,
                 );
                 switch (columnType) {
                     case COLUMN_TYPE.MAIN:
@@ -266,7 +268,7 @@ export const ParsingResultComponent = props => {
 
     const rows = useMemo(() => {
         if (!datas || !Array.isArray(datas)) return [];
-        return datas.map(data => ({ id: data._id, ...data }));
+        return datas.map((data) => ({ id: data._id, ...data }));
     }, [datas]);
 
     const [rowCount, setRowCount] = useState(0);
@@ -286,11 +288,11 @@ export const ParsingResultComponent = props => {
         setDatas(datas);
     };
 
-    const onPageChange = page => {
+    const onPageChange = (page) => {
         setSkip(page * limit);
     };
 
-    const handleChangeRowsPerPage = e => {
+    const handleChangeRowsPerPage = (e) => {
         setLimit(e.target.value);
         setSkip(0);
     };
@@ -306,14 +308,14 @@ export const ParsingResultComponent = props => {
         fetchDataset();
     }, [skip, limit, filter, sort]);
 
-    const handleSortModelChange = sortModel => {
+    const handleSortModelChange = (sortModel) => {
         setSort({
             sortBy: sortModel[0]?.field,
             sortDir: sortModel[0]?.sort,
         });
     };
 
-    const handleFilterModelChange = filterModel => {
+    const handleFilterModelChange = (filterModel) => {
         if (filterModel.items.length === 0) {
             return;
         }
@@ -321,7 +323,7 @@ export const ParsingResultComponent = props => {
         setFilter({ columnField, operatorValue, value });
     };
 
-    const handleCellClick = params => {
+    const handleCellClick = (params) => {
         setSelectedCell(params);
         setToggleDrawer(true);
     };
@@ -482,14 +484,16 @@ export const ParsingResultComponent = props => {
                     },
                 }}
                 sx={{
-                    [`& .${gridClasses.columnHeaderTitleContainer} .${gridClasses.iconButtonContainer}`]: {
-                        visibility: 'visible',
-                        width: 'auto',
-                    },
+                    [`& .${gridClasses.columnHeaderTitleContainer} .${gridClasses.iconButtonContainer}`]:
+                        {
+                            visibility: 'visible',
+                            width: 'auto',
+                        },
                     // hide the `delete-row` column and disable the `delete-row` button on row hover
-                    [`& .${gridClasses.row} .${gridClasses.cellWithRenderer} .${gridClasses.iconButtonContainer}`]: {
-                        visibility: 'hidden',
-                    },
+                    [`& .${gridClasses.row} .${gridClasses.cellWithRenderer} .${gridClasses.iconButtonContainer}`]:
+                        {
+                            visibility: 'hidden',
+                        },
                     [`& .MuiDataGrid-columnHeader[data-field="delete-row"]`]: {
                         display: 'none',
                     },
@@ -501,12 +505,13 @@ export const ParsingResultComponent = props => {
                         transform: 'translateX(-100%)',
                         backgroundColor: 'contrast.main',
                     },
-                    [`& .MuiDataGrid-row:hover > .MuiDataGrid-cell[data-field="delete-row"]`]: {
-                        visibility: 'visible',
-                        transition: 'all 0.3s ease-in-out',
-                        opacity: 1,
-                        transform: 'translateX(0)',
-                    },
+                    [`& .MuiDataGrid-row:hover > .MuiDataGrid-cell[data-field="delete-row"]`]:
+                        {
+                            visibility: 'visible',
+                            transition: 'all 0.3s ease-in-out',
+                            opacity: 1,
+                            transform: 'translateX(0)',
+                        },
                     ['& .error-header']: styles.errorHeader,
                     ['& .enriched-column']: styles.enrichedColumn,
                 }}
@@ -545,7 +550,7 @@ ParsingResultComponent.propTypes = {
     isPublished: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     loadingParsingResult: fromParsing.isParsingLoading(state),
     enrichments: fromEnrichments.enrichments(state),
     isPublished: fromPublication.hasPublishedDataset(state),

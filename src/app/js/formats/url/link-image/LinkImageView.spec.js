@@ -19,18 +19,12 @@ describe('<LinkImageView />', () => {
             />,
         );
         expect(wrapper.find(Link)).toHaveLength(1);
-        expect(wrapper.prop('href')).toEqual('http://example.com');
-        expect(
-            wrapper
-                .find(Link)
-                .find('img')
-                .prop('src'),
-        ).toEqual('http://image.com');
-        expect(
-            wrapper
-                .find(Link)
-                .find('img')
-                .prop('style'),
-        ).toEqual({ maxHeight: '500px' });
+        expect(wrapper.prop('href')).toBe('http://example.com');
+        expect(wrapper.find(Link).find('img').prop('src')).toBe(
+            'http://image.com',
+        );
+        expect(wrapper.find(Link).find('img').prop('style')).toEqual({
+            maxHeight: '500px',
+        });
     });
 });

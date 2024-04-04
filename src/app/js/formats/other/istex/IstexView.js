@@ -18,7 +18,7 @@ import IstexItem from './IstexItem';
 import { ISTEX_SITE_URL } from '../../../../../common/externals';
 
 const styles = {
-    text: memoize(status => ({
+    text: memoize((status) => ({
         fontSize: '1rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     })),
@@ -68,7 +68,7 @@ export const IstexView = ({
         </div>
         {data && data.hits && (
             <div>
-                {data.hits.map(item => (
+                {data.hits.map((item) => (
                     <IstexItem key={item.id} {...item} />
                 ))}
             </div>

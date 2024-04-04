@@ -1,7 +1,7 @@
 import memoize from 'lodash/memoize';
 
-export const countUniqueConcatenation = collection => async fieldNames => {
-    const $concat = fieldNames.map(v => `$${v}`);
+export const countUniqueConcatenation = (collection) => async (fieldNames) => {
+    const $concat = fieldNames.map((v) => `$${v}`);
     const [{ distinct }] = await collection
         .aggregate([
             { $project: { uri: { $concat } } },
@@ -12,7 +12,7 @@ export const countUniqueConcatenation = collection => async fieldNames => {
     return distinct;
 };
 
-const countNotUnique = collection => async fieldName => {
+const countNotUnique = (collection) => async (fieldName) => {
     const count = await collection.count();
     const distinct = Array.isArray(fieldName)
         ? await countUniqueConcatenation(collection)(fieldName)
@@ -20,4 +20,4 @@ const countNotUnique = collection => async fieldName => {
     return count - distinct;
 };
 
-export default collection => memoize(countNotUnique(collection));
+export default (collection) => memoize(countNotUnique(collection));

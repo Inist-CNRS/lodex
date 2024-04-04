@@ -24,6 +24,6 @@ export function* watchLoadConfigTenantRequest() {
     yield takeLatest([LOAD_CONFIG_TENANT], handleLoadConfigTenantRequest);
 }
 
-export default function*() {
+export default function* () {
     yield fork(watchLoadConfigTenantRequest);
 }

@@ -16,7 +16,7 @@ const styles = {
 
 const ExcerptLine = ({ columns, line, readonly }) => (
     <TableRow sx={styles.row}>
-        {columns.map(col => (
+        {columns.map((col) => (
             <ExcerptLineCol
                 key={`${line.uri}_${col.name}`}
                 field={col}

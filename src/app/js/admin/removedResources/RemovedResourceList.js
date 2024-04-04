@@ -45,7 +45,7 @@ export class RemovedResourceListComponent extends Component {
         this.props.loadRemovedResourcePage({ page: currentPage, perPage });
     };
 
-    handleRestoreResourceClick = id => () => {
+    handleRestoreResourceClick = (id) => () => {
         this.props.restoreRessource(id);
     };
 
@@ -77,7 +77,7 @@ export class RemovedResourceListComponent extends Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {resources.map(data => (
+                        {resources.map((data) => (
                             <TableRow key={data.uri}>
                                 <TableCell>
                                     {moment(data.removedAt).format('L')}
@@ -133,7 +133,7 @@ RemovedResourceListComponent.propTypes = {
     total: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     loading: fromRemovedResources.isRemovedResourceLoading(state),
     columns: fromFields.getCollectionFields(state),
     currentPage: fromRemovedResources.getRemovedResourceCurrentPage(state),

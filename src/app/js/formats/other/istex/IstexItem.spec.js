@@ -22,7 +22,7 @@ describe('<IstexItem />', () => {
         );
         const link = wrapper.find(Link);
         expect(link).toHaveLength(1);
-        expect(link.props().href).toEqual('url');
+        expect(link.props().href).toBe('url');
     });
     afterEach(() => StyleSheetTestUtils.clearBufferAndResumeStyleInjection());
 });

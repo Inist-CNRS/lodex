@@ -78,8 +78,8 @@ describe('getDocumentTransformer', () => {
     describe('applyTransformation', () => {
         it('should apply allDocumentTransformers to document and combine their results', async () => {
             const documentTransformers = [
-                doc => Promise.resolve({ a: doc.A }),
-                doc => Promise.resolve({ original: doc }),
+                (doc) => Promise.resolve({ a: doc.A }),
+                (doc) => Promise.resolve({ original: doc }),
             ];
             const doc = {
                 A: 1,

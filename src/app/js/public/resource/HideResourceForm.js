@@ -58,7 +58,7 @@ HideResourceFormComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     resourceError: fromResource.getError(state),
     initialValues: fromResource.getResourceLastVersion(state),
     resource: fromResource.getResourceLastVersion(state),
@@ -72,9 +72,11 @@ export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
-        onSubmit: ({ hideResource, resource }) => () => {
-            hideResource(resource.uri);
-        },
+        onSubmit:
+            ({ hideResource, resource }) =>
+            () => {
+                hideResource(resource.uri);
+            },
     }),
     reduxForm({
         form: HIDE_RESOURCE_FORM_NAME,

@@ -17,10 +17,10 @@ export const output = [
     'host.issue',
 ].join(',');
 
-export const getSiteUrl = value =>
+export const getSiteUrl = (value) =>
     `${ISTEX_SITE_URL}/?q=${encodeURIComponent(`host.issn="${value}"`)}`;
 
-export const getApiUrl = value =>
+export const getApiUrl = (value) =>
     `${ISTEX_API_URL}/document/?q=${encodeURIComponent(
         `host.issn="${value}"`,
     )}`;
@@ -49,7 +49,7 @@ export const getUrlFromISSN = ({
     };
 };
 
-export const parseFetchResult = fetchResult => {
+export const parseFetchResult = (fetchResult) => {
     if (fetchResult.error) {
         throw new Error(fetchResult.error);
     }
@@ -58,7 +58,7 @@ export const parseFetchResult = fetchResult => {
     } = fetchResult;
     const { protocol, host } = URL.parse(ISTEX_API_URL);
     return {
-        hits: hits.map(hit => {
+        hits: hits.map((hit) => {
             const hostPagesFirst =
                 hit.host.pages && hit.host.pages.first
                     ? hit.host.pages.first

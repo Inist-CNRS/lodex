@@ -21,13 +21,8 @@ const TransformerListItem = ({
     onEdit,
     p: polyglot,
 }) => {
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-    } = useSortable({ id });
+    const { attributes, listeners, setNodeRef, transform, transition } =
+        useSortable({ id });
 
     const renderChip = (name, value) => {
         if (value === undefined || value === null || value === '') {
@@ -80,10 +75,10 @@ const TransformerListItem = ({
         );
     };
 
-    const renderTransformersArgs = args => {
+    const renderTransformersArgs = (args) => {
         return (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                {args.map(item => renderChip(item.name, item.value))}
+                {args.map((item) => renderChip(item.name, item.value))}
             </Box>
         );
     };

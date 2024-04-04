@@ -8,7 +8,7 @@ const loggers = new Map();
  * @param tenant
  * @returns {winston.Logger}
  */
-const getLogger = tenant => {
+const getLogger = (tenant) => {
     if (loggers.has(tenant)) {
         return loggers.get(tenant);
     }
@@ -21,7 +21,7 @@ const getLogger = tenant => {
             format.colorize(),
             format.simple(),
             format.printf(
-                info => ` [${tenant}] ${info.timestamp} ${info[MESSAGE]}`,
+                (info) => ` [${tenant}] ${info.timestamp} ${info[MESSAGE]}`,
             ),
         ),
         silent: config.logger.disabled,

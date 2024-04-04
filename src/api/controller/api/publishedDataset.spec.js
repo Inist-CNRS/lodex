@@ -280,7 +280,7 @@ describe('publishedDataset', () => {
         it('should return the new version', async () => {
             await editResource(ctx);
 
-            expect(ctx.body).toEqual('the new version');
+            expect(ctx.body).toBe('the new version');
         });
     });
 
@@ -328,7 +328,7 @@ describe('publishedDataset', () => {
         it('should return the result', async () => {
             await removeResource(ctx);
 
-            expect(ctx.body).toEqual('foo');
+            expect(ctx.body).toBe('foo');
         });
     });
 
@@ -367,7 +367,7 @@ describe('publishedDataset', () => {
         it('should return the result', async () => {
             await restoreResource(ctx);
 
-            expect(ctx.body).toEqual('foo');
+            expect(ctx.body).toBe('foo');
         });
     });
 

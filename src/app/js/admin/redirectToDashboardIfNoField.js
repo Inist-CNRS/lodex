@@ -5,7 +5,7 @@ import { compose, branch, renderComponent } from 'recompose';
 
 import { fromFields } from '../sharedSelectors';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     nbFields: fromFields.getNbFields(state),
     isLoading: fromFields.isLoading(state),
 });

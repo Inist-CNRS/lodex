@@ -68,9 +68,7 @@ describe('field selectors', () => {
                 name: 'field',
             };
             const getLineCol = getLineColGetterFromAllFields({ field }, field);
-            expect(getLineCol({ field: 'value', other: 'data' })).toEqual(
-                'value',
-            );
+            expect(getLineCol({ field: 'value', other: 'data' })).toBe('value');
         });
         it('should stringify result if it is an array', () => {
             const field = {
@@ -79,7 +77,7 @@ describe('field selectors', () => {
             const getLineCol = getLineColGetterFromAllFields({ field }, field);
             expect(
                 getLineCol({ field: ['value1', 'value2'], other: 'data' }),
-            ).toEqual('["value1","value2"]');
+            ).toBe('["value1","value2"]');
         });
     });
 
@@ -129,12 +127,12 @@ describe('field selectors', () => {
 
     describe('hasPublishedDataset', () => {
         it('should return true if published', () => {
-            expect(selectors.hasPublishedDataset({ published: true })).toEqual(
+            expect(selectors.hasPublishedDataset({ published: true })).toBe(
                 true,
             );
         });
         it('should return false if published', () => {
-            expect(selectors.hasPublishedDataset({ published: false })).toEqual(
+            expect(selectors.hasPublishedDataset({ published: false })).toBe(
                 false,
             );
         });

@@ -47,7 +47,7 @@ const styles = stylesToClassname(
 );
 
 // see https://jsonfeed.org/version/1#items
-const LodexResource = props => {
+const LodexResource = (props) => {
     const { id, url, openInNewTab, polyglot } = props;
     const summary = truncateByWords(props.summary, props.summarySize);
     const title = truncateByWords(props.title, props.titleSize);

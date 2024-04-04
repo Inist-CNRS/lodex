@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ClusteredChartIcon = props => {
+const ClusteredChartIcon = (props) => {
     return (
         <svg viewBox="0 0 100 125" width="1em" height="1em" {...props}>
             <g>

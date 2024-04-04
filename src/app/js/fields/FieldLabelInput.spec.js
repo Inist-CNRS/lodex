@@ -2,7 +2,7 @@ import { uniqueField } from './FieldLabelInput';
 
 describe('FieldLabelInput', () => {
     const polyglot = {
-        t: v => v,
+        t: (v) => v,
     };
     describe('validator: uniqueField', () => {
         it('should return error message if value is the label of an existing field other than itself', () => {

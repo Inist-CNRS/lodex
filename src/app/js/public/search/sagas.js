@@ -29,12 +29,12 @@ import facetSagasFactory from '../facet/sagas';
 
 const PER_PAGE = 10;
 
-const doSearchRequest = function*(page = 0) {
+const doSearchRequest = function* (page = 0) {
     const query = yield select(fromSearch.getQuery);
     const sort = yield select(fromSearch.getSort);
     let facets = yield select(fromSearch.getAppliedFacets);
     facets = Object.keys(facets).reduce((acc, facetName) => {
-        acc[facetName] = facets[facetName].map(facetValue => facetValue.id);
+        acc[facetName] = facets[facetName].map((facetValue) => facetValue.id);
         return acc;
     }, {});
     const invertedFacets = yield select(fromSearch.getInvertedFacetKeys);
@@ -51,7 +51,7 @@ const doSearchRequest = function*(page = 0) {
     return yield call(fetchSaga, request);
 };
 
-const handleSearch = function*() {
+const handleSearch = function* () {
     const fieldsNumber = yield select(fromFields.getNbColumns);
 
     if (fieldsNumber === 0) {
@@ -85,7 +85,7 @@ const handleSearch = function*() {
     );
 };
 
-const handleLoadMore = function*() {
+const handleLoadMore = function* () {
     const currentPage = yield select(fromSearch.getPage);
     const page = currentPage + 1;
 
@@ -105,7 +105,7 @@ const handleLoadMore = function*() {
     );
 };
 
-const handleLoadNextResource = function*() {
+const handleLoadNextResource = function* () {
     const total = yield select(fromSearch.getTotal);
     const results = yield select(fromSearch.getDataset);
 
@@ -115,7 +115,7 @@ const handleLoadNextResource = function*() {
 
     const currentResource = yield select(fromResource.getResourceLastVersion);
     const indexCurrentResource = results.findIndex(
-        resource => resource.uri === currentResource?.uri,
+        (resource) => resource.uri === currentResource?.uri,
     );
 
     if (indexCurrentResource < results.length - 1) {
@@ -130,7 +130,7 @@ const facetSagas = facetSagasFactory({
     selectors: fromSearch,
 });
 
-export default function*() {
+export default function* () {
     yield takeLatest(
         [
             SEARCH,

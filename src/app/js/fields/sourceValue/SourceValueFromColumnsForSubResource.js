@@ -57,7 +57,7 @@ const SourceValueFromColumnsForSubResource = ({
                 fullWidth
                 options={datasetFields}
                 value={autocompleteValue ?? []}
-                renderInput={params => (
+                renderInput={(params) => (
                     <TextField
                         {...params}
                         label={polyglot.t('from_columns')}
@@ -74,7 +74,7 @@ export const mapStateToProps = (state, { selectedSubresourceUri }) => {
     const { subresources } = state.subresource;
 
     const subresource = subresources.find(
-        s => s._id === selectedSubresourceUri,
+        (s) => s._id === selectedSubresourceUri,
     );
     const [firstParsedLine] = fromParsing.getExcerptLines(state);
 

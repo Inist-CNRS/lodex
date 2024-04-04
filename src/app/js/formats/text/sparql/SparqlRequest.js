@@ -48,7 +48,7 @@ const styles = {
     },
 };
 
-const getCreateUrl = url => {
+const getCreateUrl = (url) => {
     if (typeof url === 'function') {
         return url;
     }
@@ -59,7 +59,7 @@ const getCreateUrl = url => {
     return ({ field, resource }) => resource[field.name];
 };
 
-export default url => FormatView => {
+export default (url) => (FormatView) => {
     const createUrl = getCreateUrl(url);
 
     class SparqlRequest extends Component {
@@ -93,7 +93,7 @@ export default url => FormatView => {
             this.loadFormatData();
         }
 
-        filterFormatData = filter => {
+        filterFormatData = (filter) => {
             const { field, loadFormatData } = this.props;
             loadFormatData({
                 field,

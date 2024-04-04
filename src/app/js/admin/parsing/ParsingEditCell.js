@@ -36,7 +36,7 @@ const style = {
     },
 };
 
-export const returnParsedValue = value => {
+export const returnParsedValue = (value) => {
     try {
         return JSON.parse(value);
     } catch (e) {
@@ -44,11 +44,11 @@ export const returnParsedValue = value => {
     }
 };
 
-export const isPrimitive = value => {
+export const isPrimitive = (value) => {
     return value !== Object(value);
 };
 
-export const tryParseJSONObjectOrArray = jsonString => {
+export const tryParseJSONObjectOrArray = (jsonString) => {
     try {
         if (typeof jsonString === 'object') {
             return jsonString;
@@ -119,7 +119,7 @@ export const getValueBySavingType = (value, type, previousValue) => {
     return JSON.stringify(value);
 };
 
-const isError = value => {
+const isError = (value) => {
     return (
         typeof value === 'string' &&
         (value.startsWith('[Error]') || value.startsWith('ERROR'))
@@ -180,7 +180,7 @@ const ButtonEditCellWithDropdown = ({ polyglot, loading, handleChange }) => {
                     },
                 }}
             >
-                {types.map(type => (
+                {types.map((type) => (
                     <MenuItem
                         key={type}
                         onClick={() => {
@@ -209,7 +209,7 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
     const [loading, setLoading] = React.useState(false);
     const [value, setValue] = React.useState(cell.value);
 
-    const handleChange = async type => {
+    const handleChange = async (type) => {
         setLoading(true);
         try {
             let valueToSave;
@@ -274,7 +274,7 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                 {isPrimitive(value) ? (
                     <Input
                         value={value}
-                        onChange={e => setValue(e.target.value)}
+                        onChange={(e) => setValue(e.target.value)}
                         style={{
                             width: '100%',
                             background: '#272822',
@@ -292,13 +292,13 @@ const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
                         theme="monokai"
                         enableClipboard={false}
                         collapsed={2}
-                        onEdit={e => {
+                        onEdit={(e) => {
                             setValue(e.updated_src);
                         }}
-                        onAdd={e => {
+                        onAdd={(e) => {
                             setValue(e.updated_src);
                         }}
-                        onDelete={e => {
+                        onDelete={(e) => {
                             setValue(e.updated_src);
                         }}
                         style={{

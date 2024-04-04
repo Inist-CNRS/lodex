@@ -169,7 +169,7 @@ class AbstractTableView extends Component {
     sortData(array, columnsParameters) {
         if (this.state.sort === false) return array;
         const sortedArray = _.sortBy(array, [
-            o => {
+            (o) => {
                 const parameter = _.findIndex(columnsParameters, {
                     id: this.state.sortId,
                 });
@@ -183,7 +183,7 @@ class AbstractTableView extends Component {
         return (
             <TableHead>
                 <TableRow>
-                    {columnsParameters.map(column => (
+                    {columnsParameters.map((column) => (
                         <TableCell key={column.id}>
                             <TableSortLabel
                                 active={

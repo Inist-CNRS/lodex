@@ -12,7 +12,7 @@ describe('IstexList', () => {
     const defaultProps = {
         data: { hits: ['item1', 'item2', 'item3'], total: 3 },
         other: 'props',
-        polyglot: { t: v => v },
+        polyglot: { t: (v) => v },
     };
 
     beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
@@ -26,9 +26,9 @@ describe('IstexList', () => {
         );
 
         expect(wrapper.find('li')).toHaveLength(3);
-        expect(wrapper.find('.item1').text()).toEqual('item1');
-        expect(wrapper.find('.item2').text()).toEqual('item2');
-        expect(wrapper.find('.item3').text()).toEqual('item3');
+        expect(wrapper.find('.item1').text()).toBe('item1');
+        expect(wrapper.find('.item2').text()).toBe('item2');
+        expect(wrapper.find('.item3').text()).toBe('item3');
         expect(children).toHaveBeenCalledTimes(3);
         expect(children).toHaveBeenCalledWith({
             item: 'item1',
@@ -84,9 +84,9 @@ describe('IstexList', () => {
         );
 
         expect(wrapper.find('li')).toHaveLength(3);
-        expect(wrapper.find('.item1').text()).toEqual('item1');
-        expect(wrapper.find('.item2').text()).toEqual('item2');
-        expect(wrapper.find('.item3').text()).toEqual('item3');
+        expect(wrapper.find('.item1').text()).toBe('item1');
+        expect(wrapper.find('.item2').text()).toBe('item2');
+        expect(wrapper.find('.item3').text()).toBe('item3');
 
         const button = wrapper.find(ButtonWithStatus);
         expect(button).toHaveLength(1);
@@ -103,12 +103,12 @@ describe('IstexList', () => {
         expect(wrapper.find(ButtonWithStatus)).toHaveLength(0);
 
         expect(wrapper.find('li')).toHaveLength(6);
-        expect(wrapper.find('.item1').text()).toEqual('item1');
-        expect(wrapper.find('.item2').text()).toEqual('item2');
-        expect(wrapper.find('.item3').text()).toEqual('item3');
-        expect(wrapper.find('.item4').text()).toEqual('item4');
-        expect(wrapper.find('.item5').text()).toEqual('item5');
-        expect(wrapper.find('.item6').text()).toEqual('item6');
+        expect(wrapper.find('.item1').text()).toBe('item1');
+        expect(wrapper.find('.item2').text()).toBe('item2');
+        expect(wrapper.find('.item3').text()).toBe('item3');
+        expect(wrapper.find('.item4').text()).toBe('item4');
+        expect(wrapper.find('.item5').text()).toBe('item5');
+        expect(wrapper.find('.item6').text()).toBe('item6');
     });
 
     afterEach(() => {

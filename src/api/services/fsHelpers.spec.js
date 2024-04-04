@@ -101,7 +101,7 @@ describe('fsHelpers', () => {
     });
 
     describe('mergeChunksFactory', () => {
-        const createReadStreamImpl = jest.fn(v => `read stream for ${v}`);
+        const createReadStreamImpl = jest.fn((v) => `read stream for ${v}`);
         const multiStreamImpl = jest.fn(() => 'merged stream');
         beforeAll(async () => {
             await mergeChunksFactory(createReadStreamImpl, multiStreamImpl)(

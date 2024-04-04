@@ -8,10 +8,10 @@ import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../common/scope';
 import generateUid from '../services/generateUid';
 import { castIdsFactory } from './utils';
 
-export const buildInvalidPropertiesMessage = name =>
+export const buildInvalidPropertiesMessage = (name) =>
     `Invalid data for field ${name} which need a name, a label, a scope, a valid scheme if specified and a transformers array`;
 
-export const buildInvalidTransformersMessage = name =>
+export const buildInvalidTransformersMessage = (name) =>
     `Invalid transformers for field ${name}: transformers must have a valid operation and an args array`;
 
 export const validateField = (data, isContribution) => {
@@ -30,7 +30,7 @@ export const validateField = (data, isContribution) => {
     return data;
 };
 
-const createSubresourceUriField = subresource => ({
+const createSubresourceUriField = (subresource) => ({
     scope: SCOPE_COLLECTION,
     label: URI_FIELD_NAME,
     name: `${subresource._id}_${URI_FIELD_NAME}`,
@@ -95,16 +95,13 @@ const createSubresourceUriField = subresource => ({
     position: 1,
 });
 
-export default async db => {
+export default async (db) => {
     const collection = db.collection('field');
 
     await collection.createIndex({ name: 1 }, { unique: true });
 
     collection.findAll = async () =>
-        collection
-            .find({})
-            .sort({ position: 1, scope: 1 })
-            .toArray();
+        collection.find({}).sort({ position: 1, scope: 1 }).toArray();
 
     collection.findSearchableNames = async () => {
         const searchableFields = await collection
@@ -122,10 +119,10 @@ export default async db => {
         return searchableFields.map(({ name }) => name);
     };
 
-    collection.findOneById = id =>
+    collection.findOneById = (id) =>
         collection.findOne({ _id: new ObjectID(id) });
 
-    collection.findOneByName = name => collection.findOne({ name });
+    collection.findOneByName = (name) => collection.findOne({ name });
 
     collection.create = async (
         fieldData,
@@ -202,13 +199,13 @@ export default async db => {
                     returnOriginal: false,
                 },
             )
-            .then(result => result.value);
+            .then((result) => result.value);
     };
 
-    collection.removeById = id =>
+    collection.removeById = (id) =>
         collection.remove({ _id: new ObjectID(id), name: { $ne: 'uri' } });
 
-    collection.removeBySubresource = subresourceId =>
+    collection.removeBySubresource = (subresourceId) =>
         collection.remove({
             $or: [
                 { subresourceId: new ObjectID(subresourceId) },
@@ -320,7 +317,7 @@ export default async db => {
         }
     };
 
-    collection.initializeSubresourceModel = async subresource => {
+    collection.initializeSubresourceModel = async (subresource) => {
         const newField = createSubresourceUriField(subresource);
 
         await collection.updateOne(
@@ -336,12 +333,12 @@ export default async db => {
         );
     };
 
-    collection.updateSubresourcePaths = async subresource => {
+    collection.updateSubresourcePaths = async (subresource) => {
         const fields = await collection
             .find({ subresourceId: subresource._id })
             .toArray();
 
-        const updatedFields = fields.map(field => {
+        const updatedFields = fields.map((field) => {
             const [columnTransformer, ...transformers] = field.transformers;
 
             return {
@@ -362,7 +359,7 @@ export default async db => {
         });
 
         await Promise.all(
-            updatedFields.map(uf =>
+            updatedFields.map((uf) =>
                 collection.updateOne(
                     {
                         _id: new ObjectId(uf._id),
@@ -393,7 +390,7 @@ export default async db => {
             )
             .then(({ value }) => value);
 
-    collection.findByNames = async names => {
+    collection.findByNames = async (names) => {
         const fields = await collection
             .find({ name: { $in: names } })
             .toArray();
@@ -406,7 +403,7 @@ export default async db => {
         );
     };
 
-    collection.findByName = async name => {
+    collection.findByName = async (name) => {
         const fields = await collection.findByNames([name]);
 
         return fields[name];

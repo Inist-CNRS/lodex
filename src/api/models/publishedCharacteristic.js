@@ -1,4 +1,4 @@
-export default db => {
+export default (db) => {
     const collection = db.collection('publishedCharacteristic');
 
     collection.findLastVersion = async () => {
@@ -13,7 +13,7 @@ export default db => {
         return null;
     };
 
-    collection.addNewVersion = async characteristics => {
+    collection.addNewVersion = async (characteristics) => {
         const queryResult = await collection.insertOne({
             ...characteristics,
             _id: undefined,
@@ -30,10 +30,7 @@ export default db => {
     };
 
     collection.findAllVersions = () =>
-        collection
-            .find({})
-            .sort({ publicationDate: -1 })
-            .toArray();
+        collection.find({}).sort({ publicationDate: -1 }).toArray();
 
     return collection;
 };

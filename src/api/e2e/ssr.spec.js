@@ -43,7 +43,7 @@ describe('ssr', () => {
             beforeEach(async () => {
                 const response = await server
                     .get('/instance/default', authentifiedHeader)
-                    .then(response => response.text());
+                    .then((response) => response.text());
                 state = JSON.parse(
                     response.match(
                         /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
@@ -100,7 +100,7 @@ describe('ssr', () => {
 
             it('should preload characteristics for home', () => {
                 expect(
-                    state.characteristic.characteristics.map(d =>
+                    state.characteristic.characteristics.map((d) =>
                         omit(d, '_id'),
                     ),
                 ).toEqual([{ movie: 'LOTR', author: 'Peter Jackson' }]);
@@ -117,7 +117,7 @@ describe('ssr', () => {
             beforeEach(async () => {
                 const response = await server
                     .get('/')
-                    .then(response => response.text());
+                    .then((response) => response.text());
                 state = JSON.parse(
                     response.match(
                         /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
@@ -163,7 +163,7 @@ describe('ssr', () => {
             beforeEach(async () => {
                 const response = await server
                     .get('/resource?uri=1', authentifiedHeader)
-                    .then(response => response.text());
+                    .then((response) => response.text());
                 state = JSON.parse(
                     response.match(
                         /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
@@ -190,7 +190,7 @@ describe('ssr', () => {
 
             it('should preload characteristics', () => {
                 expect(
-                    state.characteristic.characteristics.map(d =>
+                    state.characteristic.characteristics.map((d) =>
                         omit(d, '_id'),
                     ),
                 ).toEqual([{ movie: 'LOTR', author: 'Peter Jackson' }]);
@@ -219,7 +219,7 @@ describe('ssr', () => {
             beforeEach(async () => {
                 const response = await server
                     .get('/instance/default/resource?uri=1')
-                    .then(response => response.text());
+                    .then((response) => response.text());
                 state = JSON.parse(
                     response.match(
                         /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
@@ -228,7 +228,7 @@ describe('ssr', () => {
             });
 
             it('should redirect to login', () => {
-                expect(state.router.location.pathname).toEqual('/login');
+                expect(state.router.location.pathname).toBe('/login');
             });
 
             it('should not preload fields', () => {
@@ -238,7 +238,7 @@ describe('ssr', () => {
 
             it('should not preload characteristics', () => {
                 expect(
-                    state.characteristic.characteristics.map(d =>
+                    state.characteristic.characteristics.map((d) =>
                         omit(d, '_id'),
                     ),
                 ).toEqual([]);

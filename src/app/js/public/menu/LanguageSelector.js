@@ -10,11 +10,10 @@ import { Button, Menu, MenuItem } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const LanguageSelector = ({ locale, setLanguage, p: polyglot }) => {
-    const [languageSelectorAnchorEl, setLanguageSelectorAnchorEl] = useState(
-        null,
-    );
+    const [languageSelectorAnchorEl, setLanguageSelectorAnchorEl] =
+        useState(null);
     const languageSelectorOpen = Boolean(languageSelectorAnchorEl);
-    const handleLanguageSelectorClick = event => {
+    const handleLanguageSelectorClick = (event) => {
         setLanguageSelectorAnchorEl(event.currentTarget);
     };
     const handleLanguageSelectorClose = () => {
@@ -81,7 +80,7 @@ LanguageSelector.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     locale: fromI18n.getLocale(state),
 });
 

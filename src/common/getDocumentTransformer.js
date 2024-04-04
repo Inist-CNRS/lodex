@@ -10,15 +10,15 @@ export const getFieldTransformation = (context, field) => {
     );
 
     const transformDocument = composeTransformers(documentTransformers);
-    return async doc => ({
+    return async (doc) => ({
         [field.name]: await transformDocument(doc).catch(() => ''),
     });
 };
 
 export const getDocumentTransformations = (context, fields) =>
-    fields.map(field => getFieldTransformation(context, field));
+    fields.map((field) => getFieldTransformation(context, field));
 
-export const sanitizeUris = doc => {
+export const sanitizeUris = (doc) => {
     if (!doc.uri) {
         return doc;
     }
@@ -36,8 +36,8 @@ export const sanitizeUris = doc => {
     };
 };
 
-export const applyTransformation = documentTransformers => async doc => {
-    const partialDocsPromises = documentTransformers.map(transformer =>
+export const applyTransformation = (documentTransformers) => async (doc) => {
+    const partialDocsPromises = documentTransformers.map((transformer) =>
         transformer(doc),
     );
 

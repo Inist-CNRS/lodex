@@ -22,7 +22,7 @@ const AsterPlotChartAdmin = ({
     showMinValue,
     showOrderBy,
 }) => {
-    const handleParams = params => {
+    const handleParams = (params) => {
         updateAdminArgs(
             'params',
             { ...args.params, ...params },
@@ -33,7 +33,7 @@ const AsterPlotChartAdmin = ({
         );
     };
 
-    const handleColors = colors => {
+    const handleColors = (colors) => {
         updateAdminArgs('colors', colors, {
             args,
             onChange,

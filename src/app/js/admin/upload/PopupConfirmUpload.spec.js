@@ -8,7 +8,7 @@ describe('<PopupConfirmUpload />', () => {
     it('should render a popup for confirm upload', () => {
         const wrapper = shallow(
             <PopupConfirmUpload
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
                 setIsOpenPopupConfirm={() => {}}
                 isOpen
                 onConfirm={() => {}}
@@ -23,7 +23,7 @@ describe('<PopupConfirmUpload />', () => {
         const onConfirm = jest.fn();
         const wrapper = shallow(
             <PopupConfirmUpload
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
                 setIsOpenPopupConfirm={() => {}}
                 isOpen
                 onConfirm={onConfirm}
@@ -32,10 +32,7 @@ describe('<PopupConfirmUpload />', () => {
 
         expect(wrapper.find(Dialog).exists()).toBeTruthy();
         expect(wrapper.find(Button).exists()).toBeTruthy();
-        wrapper
-            .find(Button)
-            .first()
-            .simulate('click');
+        wrapper.find(Button).first().simulate('click');
         expect(onConfirm).toHaveBeenCalled();
     });
 
@@ -43,7 +40,7 @@ describe('<PopupConfirmUpload />', () => {
         const handleClose = jest.fn();
         const wrapper = shallow(
             <PopupConfirmUpload
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
                 setIsOpenPopupConfirm={handleClose}
                 isOpen
                 onConfirm={() => {}}

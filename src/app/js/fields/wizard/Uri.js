@@ -20,9 +20,8 @@ export const UriComponent = ({
 }) => {
     const [value, setValue] = React.useState(null);
     React.useEffect(() => {
-        const { value: currentValue } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(
-            currentTransformers,
-        );
+        const { value: currentValue } =
+            GET_SOURCE_VALUE_FROM_TRANSFORMERS(currentTransformers);
         setValue(currentValue);
     }, [currentTransformers]);
 
@@ -57,7 +56,7 @@ const mapDispatchToProps = (
     dispatch,
     { currentEditedField: { transformers } },
 ) => ({
-    handleTransformerChange: valueTransformer => {
+    handleTransformerChange: (valueTransformer) => {
         let newTransformers = [];
         const firstTransformerIsValueTransformer =
             transformers &&
@@ -76,7 +75,7 @@ const mapDispatchToProps = (
 
         dispatch(change(FIELD_FORM_NAME, 'transformers', newTransformers));
     },
-    updateTransformers: valueTransformers => {
+    updateTransformers: (valueTransformers) => {
         return dispatch(
             change(FIELD_FORM_NAME, 'transformers', valueTransformers),
         );

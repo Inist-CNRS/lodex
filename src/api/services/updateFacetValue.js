@@ -1,6 +1,6 @@
 import difference from 'lodash/difference';
 
-const removeOldValue = (publishedFacet, field) => async oldValue => {
+const removeOldValue = (publishedFacet, field) => async (oldValue) => {
     const { value: updatedFacet } = await publishedFacet.findOneAndUpdate(
         { field, value: oldValue },
         { $inc: { count: -1 } },
@@ -12,7 +12,7 @@ const removeOldValue = (publishedFacet, field) => async oldValue => {
     }
 };
 
-const addNewValue = (publishedFacet, field) => async newValue => {
+const addNewValue = (publishedFacet, field) => async (newValue) => {
     await publishedFacet.update(
         { field, value: newValue },
         { $inc: { count: 1 } },
@@ -20,25 +20,23 @@ const addNewValue = (publishedFacet, field) => async newValue => {
     );
 };
 
-const updateFacetValue = publishedFacet => async ({
-    field,
-    oldValue,
-    newValue,
-}) => {
-    const oldValues = Array.isArray(oldValue) ? oldValue : [oldValue];
-    const newValues = Array.isArray(newValue) ? newValue : [newValue];
+const updateFacetValue =
+    (publishedFacet) =>
+    async ({ field, oldValue, newValue }) => {
+        const oldValues = Array.isArray(oldValue) ? oldValue : [oldValue];
+        const newValues = Array.isArray(newValue) ? newValue : [newValue];
 
-    await Promise.all(
-        difference(oldValues, newValue).map(
-            removeOldValue(publishedFacet, field),
-        ),
-    );
+        await Promise.all(
+            difference(oldValues, newValue).map(
+                removeOldValue(publishedFacet, field),
+            ),
+        );
 
-    await Promise.all(
-        difference(newValues, oldValues).map(
-            addNewValue(publishedFacet, field),
-        ),
-    );
-};
+        await Promise.all(
+            difference(newValues, oldValues).map(
+                addNewValue(publishedFacet, field),
+            ),
+        );
+    };
 
 export default updateFacetValue;

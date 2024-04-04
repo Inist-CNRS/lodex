@@ -47,7 +47,7 @@ const SearchSearchBar = ({
                 <SearchBar
                     className="search-searchbar"
                     value={localQuery}
-                    onChange={e => handleSearch(e.target.value)}
+                    onChange={(e) => handleSearch(e.target.value)}
                     onClear={handleClearSearch}
                     maxWidth={875}
                 />
@@ -75,13 +75,13 @@ SearchSearchBar.propTypes = {
     withFacets: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     hasSearchableFields: fromFields.hasSearchableFields(state),
     defaultQuery: fromSearch.getQuery(state),
 });
 
 const mapDispatchToProps = {
-    search: value => searchAction({ query: value }),
+    search: (value) => searchAction({ query: value }),
 };
 
 export default compose(

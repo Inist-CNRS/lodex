@@ -12,11 +12,11 @@ const setup = async (ctx, next) => {
     }
 };
 
-export const getThemes = async ctx => {
+export const getThemes = async (ctx) => {
     ctx.body = getAvailableThemes();
 };
 
-export const getCustomTheme = async ctx => {
+export const getCustomTheme = async (ctx) => {
     const config = await ctx.configTenantCollection.findLast();
     const theme = getTheme(config.theme);
     ctx.body = theme.customTheme;

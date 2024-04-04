@@ -86,17 +86,11 @@ describe('<ParsingExcerpt />', () => {
             />,
         );
         expect(
-            wrapper
-                .find(ParsingExcerptHeaderColumn)
-                .at(0)
-                .prop('column'),
-        ).toEqual('foo');
+            wrapper.find(ParsingExcerptHeaderColumn).at(0).prop('column'),
+        ).toBe('foo');
         expect(
-            wrapper
-                .find(ParsingExcerptHeaderColumn)
-                .at(1)
-                .prop('column'),
-        ).toEqual('bar');
+            wrapper.find(ParsingExcerptHeaderColumn).at(1).prop('column'),
+        ).toBe('bar');
     });
 
     it('should render lines', () => {
@@ -112,30 +106,18 @@ describe('<ParsingExcerpt />', () => {
                 subresources={[]}
             />,
         );
-        expect(
-            wrapper
-                .find(ParsingExcerptColumn)
-                .at(0)
-                .prop('value'),
-        ).toEqual('"foo1"');
-        expect(
-            wrapper
-                .find(ParsingExcerptColumn)
-                .at(1)
-                .prop('value'),
-        ).toEqual('"bar1"');
-        expect(
-            wrapper
-                .find(ParsingExcerptColumn)
-                .at(2)
-                .prop('value'),
-        ).toEqual('"foo2"');
-        expect(
-            wrapper
-                .find(ParsingExcerptColumn)
-                .at(3)
-                .prop('value'),
-        ).toEqual('"bar2"');
+        expect(wrapper.find(ParsingExcerptColumn).at(0).prop('value')).toBe(
+            '"foo1"',
+        );
+        expect(wrapper.find(ParsingExcerptColumn).at(1).prop('value')).toBe(
+            '"bar1"',
+        );
+        expect(wrapper.find(ParsingExcerptColumn).at(2).prop('value')).toBe(
+            '"foo2"',
+        );
+        expect(wrapper.find(ParsingExcerptColumn).at(3).prop('value')).toBe(
+            '"bar2"',
+        );
     });
 
     it('should render headers with subresource', () => {
@@ -180,17 +162,11 @@ describe('<ParsingExcerpt />', () => {
             />,
         );
         expect(
-            wrapper
-                .find(ParsingExcerptHeaderColumn)
-                .at(0)
-                .prop('column'),
-        ).toEqual('column1');
+            wrapper.find(ParsingExcerptHeaderColumn).at(0).prop('column'),
+        ).toBe('column1');
         expect(
-            wrapper
-                .find(ParsingExcerptHeaderColumn)
-                .at(1)
-                .prop('column'),
-        ).toEqual('column2');
+            wrapper.find(ParsingExcerptHeaderColumn).at(1).prop('column'),
+        ).toBe('column2');
     });
 
     it('should render lines with subresource', () => {
@@ -233,30 +209,18 @@ describe('<ParsingExcerpt />', () => {
                 subresources={subresources}
             />,
         );
-        expect(
-            wrapper
-                .find(ParsingExcerptColumn)
-                .at(0)
-                .prop('value'),
-        ).toEqual('["value1","value3"]');
-        expect(
-            wrapper
-                .find(ParsingExcerptColumn)
-                .at(1)
-                .prop('value'),
-        ).toEqual('["value2","value4"]');
-        expect(
-            wrapper
-                .find(ParsingExcerptColumn)
-                .at(2)
-                .prop('value'),
-        ).toEqual('["value5","value7"]');
-        expect(
-            wrapper
-                .find(ParsingExcerptColumn)
-                .at(3)
-                .prop('value'),
-        ).toEqual('["value6","value8"]');
+        expect(wrapper.find(ParsingExcerptColumn).at(0).prop('value')).toBe(
+            '["value1","value3"]',
+        );
+        expect(wrapper.find(ParsingExcerptColumn).at(1).prop('value')).toBe(
+            '["value2","value4"]',
+        );
+        expect(wrapper.find(ParsingExcerptColumn).at(2).prop('value')).toBe(
+            '["value5","value7"]',
+        );
+        expect(wrapper.find(ParsingExcerptColumn).at(3).prop('value')).toBe(
+            '["value6","value8"]',
+        );
     });
 
     it('should render ParsingExcerptAddColumn when showAddFromColumn is true', () => {
@@ -296,10 +260,7 @@ describe('<ParsingExcerpt />', () => {
                 handleAddColumn={handleAddColumn}
             />,
         );
-        wrapper
-            .find(ParsingExcerptAddColumn)
-            .at(0)
-            .simulate('click');
+        wrapper.find(ParsingExcerptAddColumn).at(0).simulate('click');
         expect(handleAddColumn).toHaveBeenCalledWith({
             name: 'foo',
             scope: 'document',
@@ -351,10 +312,7 @@ describe('<ParsingExcerpt />', () => {
                 handleAddColumn={handleAddColumn}
             />,
         );
-        wrapper
-            .find(ParsingExcerptAddColumn)
-            .at(0)
-            .simulate('click');
+        wrapper.find(ParsingExcerptAddColumn).at(0).simulate('click');
         expect(handleAddColumn).toHaveBeenCalledWith({
             name: 'column1',
             scope: 'document',

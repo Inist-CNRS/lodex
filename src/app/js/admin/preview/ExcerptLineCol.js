@@ -13,7 +13,7 @@ import { field as fieldPropTypes } from '../../propTypes';
 import parseValue from '../../../../common/tools/parseValue';
 
 const styles = {
-    cell: readonly => ({
+    cell: (readonly) => ({
         cursor: readonly ? 'default' : 'pointer',
         height: 'auto',
     }),

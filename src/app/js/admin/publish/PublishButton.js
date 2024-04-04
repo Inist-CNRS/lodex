@@ -53,10 +53,10 @@ PublishButtonComponent.propTypes = {
 };
 
 export const canPublish = (areAllFieldsValid, allListFields) => {
-    return areAllFieldsValid && allListFields.some(f => f.name !== 'uri');
+    return areAllFieldsValid && allListFields.some((f) => f.name !== 'uri');
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     canPublish: canPublish(
         fromFields.areAllFieldsValid(state),
         fromFields.getAllListFields(state),

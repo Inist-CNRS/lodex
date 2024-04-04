@@ -35,7 +35,7 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
                         id="tenant-name-field"
                         fullWidth
                         placeholder={`Entrer le nom technique de l'instance`}
-                        onChange={event => setName(event.target.value)}
+                        onChange={(event) => setName(event.target.value)}
                         error={checkForbiddenNames(name)}
                         value={name}
                     />
@@ -58,7 +58,7 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
                     fullWidth
                     label="Description"
                     placeholder="Entrer une description"
-                    onChange={event => setDescription(event.target.value)}
+                    onChange={(event) => setDescription(event.target.value)}
                     value={description}
                     sx={{ marginTop: '1em' }}
                 />
@@ -68,7 +68,7 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
                     fullWidth
                     label="Auteur"
                     placeholder="Entrer le nom de l'auteur"
-                    onChange={event => setAuthor(event.target.value)}
+                    onChange={(event) => setAuthor(event.target.value)}
                     value={author}
                     sx={{ marginTop: '1em' }}
                 />

@@ -21,6 +21,6 @@ export function* watchDumpDatasetRequest() {
     yield takeLatest(DUMP_DATASET, handleDumpDatasetRequest);
 }
 
-export default function*() {
+export default function* () {
     yield fork(watchDumpDatasetRequest);
 }

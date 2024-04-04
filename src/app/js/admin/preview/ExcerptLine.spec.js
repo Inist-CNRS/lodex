@@ -12,7 +12,11 @@ describe('<ExcerptLine />', () => {
         ];
         const line = { uri: 'uri1', foo: 'foo', bar: 'bar' };
         const wrapper = shallow(
-            <ExcerptLine columns={columns} line={line} p={{ t: key => key }} />,
+            <ExcerptLine
+                columns={columns}
+                line={line}
+                p={{ t: (key) => key }}
+            />,
         );
 
         const excerptLineCols = wrapper.find(ExcerptLineCol);

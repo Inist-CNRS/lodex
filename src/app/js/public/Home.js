@@ -89,10 +89,9 @@ export class HomeComponent extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    const characteristics = fromCharacteristic.getCharacteristicsAsResource(
-        state,
-    );
+const mapStateToProps = (state) => {
+    const characteristics =
+        fromCharacteristic.getCharacteristicsAsResource(state);
     const titleKey = fromFields.getDatasetTitleFieldName(state);
     const descriptionKey = fromFields.getDatasetDescriptionFieldName(state);
     const title = titleKey && characteristics[titleKey];

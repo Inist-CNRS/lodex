@@ -1,4 +1,4 @@
-export const ISTEX_API_URL = (function() {
+export const ISTEX_API_URL = (function () {
     if (typeof window === 'undefined') {
         return require('config').istexApiUrl;
     }

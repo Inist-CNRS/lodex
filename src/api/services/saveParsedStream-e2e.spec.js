@@ -120,7 +120,7 @@ describe('e2e upload saveparsedStream', () => {
             await loadFixtures(fixtures);
 
             parsedStream = new Stream.Transform({ objectMode: true });
-            newDocuments.forEach(doc => parsedStream.push(doc));
+            newDocuments.forEach((doc) => parsedStream.push(doc));
             parsedStream.push(null);
             const dataset = await datasetFactory(db);
 
@@ -137,7 +137,7 @@ describe('e2e upload saveparsedStream', () => {
 
         it('should add new document to publication', async () => {
             await saveParsedStream(ctx)(parsedStream);
-            expect(await ctx.dataset.count()).toEqual(5);
+            expect(await ctx.dataset.count()).toBe(5);
             expect(await ctx.dataset.find({}, { _id: 0 }).toArray()).toEqual([
                 {
                     id: 1,
@@ -160,13 +160,13 @@ describe('e2e upload saveparsedStream', () => {
                 { id: 4, name: 'spock', stronger_than: 1 },
                 { id: 5, name: 'lizard', stronger_than: 3 },
             ]);
-            expect(await ctx.publishedDataset.count()).toEqual(5);
+            expect(await ctx.publishedDataset.count()).toBe(5);
 
             const publishedDataset = await ctx.publishedDataset
                 .find({}, { _id: 0 })
                 .toArray();
 
-            const cleanedPublishedDataset = publishedDataset.map(doc =>
+            const cleanedPublishedDataset = publishedDataset.map((doc) =>
                 // omit versions[0].publicationDate
                 set(
                     doc,
@@ -226,7 +226,7 @@ describe('e2e upload saveparsedStream', () => {
             await loadFixtures(fixtures);
 
             parsedStream = new Stream.Transform({ objectMode: true });
-            newDocuments.forEach(doc => parsedStream.push(doc));
+            newDocuments.forEach((doc) => parsedStream.push(doc));
             parsedStream.push(null);
             const dataset = await datasetFactory(db);
 
@@ -243,12 +243,12 @@ describe('e2e upload saveparsedStream', () => {
 
         it('should not add new document to publication', async () => {
             const error = await saveParsedStream(ctx)(parsedStream).catch(
-                error => error,
+                (error) => error,
             );
             expect(error.message).toContain('E11000 duplicate key error');
             expect(error.message).toContain('dup key: { : "uid:/rock" }');
 
-            expect(await ctx.dataset.count()).toEqual(3);
+            expect(await ctx.dataset.count()).toBe(3);
             expect(await ctx.dataset.find({}, { _id: 0 }).toArray()).toEqual([
                 {
                     id: 1,
@@ -269,13 +269,13 @@ describe('e2e upload saveparsedStream', () => {
                     lodex_published: true,
                 },
             ]);
-            expect(await ctx.publishedDataset.count()).toEqual(3);
+            expect(await ctx.publishedDataset.count()).toBe(3);
 
             const publishedDataset = await ctx.publishedDataset
                 .find({}, { _id: 0 })
                 .toArray();
 
-            const cleanedPublishedDataset = publishedDataset.map(doc =>
+            const cleanedPublishedDataset = publishedDataset.map((doc) =>
                 // omit versions[0].publicationDate
                 set(
                     doc,

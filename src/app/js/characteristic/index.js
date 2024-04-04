@@ -45,7 +45,7 @@ export default handleActions(
                 [name]: value,
             },
         }),
-        UPDATE_CHARACTERISTICS: state => ({
+        UPDATE_CHARACTERISTICS: (state) => ({
             ...state,
             error: null,
             isSaving: true,
@@ -69,10 +69,11 @@ export default handleActions(
     defaultState,
 );
 
-const getCharacteristicError = state => state.error;
+const getCharacteristicError = (state) => state.error;
 
-const getCharacteristicsAsResource = state => state.characteristics[0] || {};
-const getNewCharacteristicsAsResource = state => state.newCharacteristics || {};
+const getCharacteristicsAsResource = (state) => state.characteristics[0] || {};
+const getNewCharacteristicsAsResource = (state) =>
+    state.newCharacteristics || {};
 
 const getParams = (state, params) => params;
 
@@ -80,7 +81,7 @@ const getCharacteristics = createSelector(
     getCharacteristicsAsResource,
     getParams,
     (characteristics, fields) =>
-        fields.map(field => ({
+        fields.map((field) => ({
             ...field,
             value: characteristics[field.name],
         })),
@@ -90,7 +91,7 @@ const getNewCharacteristics = createSelector(
     getNewCharacteristicsAsResource,
     getParams,
     (characteristics, fields) =>
-        fields.map(field => ({
+        fields.map((field) => ({
             ...field,
             value: characteristics[field.name],
         })),
@@ -101,12 +102,12 @@ const getRootCharacteristics = createSelector(
     getParams,
     (characteristics, fields) =>
         fields
-            .map(field => ({
+            .map((field) => ({
                 ...field,
                 value: characteristics[field.name],
             }))
             .filter(
-                field =>
+                (field) =>
                     !field.completes &&
                     field.scope === SCOPE_DATASET &&
                     !!field.display,
@@ -119,11 +120,11 @@ const getCharacteristicByName = createSelector(
     (characteristics, name) => characteristics[name],
 );
 
-const isSaving = state => state.isSaving;
+const isSaving = (state) => state.isSaving;
 
-const isAdding = state => state.isAdding;
+const isAdding = (state) => state.isAdding;
 
-const getError = state => state.error;
+const getError = (state) => state.error;
 
 export const selectors = {
     getNewCharacteristics,

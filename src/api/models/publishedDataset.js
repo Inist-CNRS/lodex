@@ -34,14 +34,14 @@ const getSort = (sortBy, sortDir, match, searchableFieldNames) => {
     return { uri: 1 };
 };
 
-export default async db => {
+export default async (db) => {
     const collection = db.collection('publishedDataset');
 
     await collection.createIndex({ uri: 1 }, { unique: true });
 
-    collection.insertBatch = documents =>
+    collection.insertBatch = (documents) =>
         Promise.all(
-            chunk(documents, 1000).map(data =>
+            chunk(documents, 1000).map((data) =>
                 collection.insertMany(data, {
                     forceServerObjectId: true,
                     w: 1,
@@ -49,10 +49,10 @@ export default async db => {
             ),
         );
 
-    collection.insertBatchIgnoreDuplicate = documents =>
+    collection.insertBatchIgnoreDuplicate = (documents) =>
         Promise.all(
-            chunk(documents, 1000).map(data =>
-                collection.insert(data, { ordered: false }).catch(e => {
+            chunk(documents, 1000).map((data) =>
+                collection.insert(data, { ordered: false }).catch((e) => {
                     if (e.code === 11000 /* duplicate error */) {
                         return;
                     }
@@ -87,10 +87,7 @@ export default async db => {
 
         return {
             total: await cursor.count(),
-            data: await cursor
-                .skip(skip)
-                .limit(limit)
-                .toArray(),
+            data: await cursor.skip(skip).limit(limit).toArray(),
         };
     };
 
@@ -192,7 +189,7 @@ export default async db => {
         const cursor = collection.getFindCursor({ filter, sort });
 
         return cursor
-            .map(resource =>
+            .map((resource) =>
                 resource.uri.startsWith('http')
                     ? resource
                     : {
@@ -203,12 +200,12 @@ export default async db => {
             .stream();
     };
 
-    collection.findById = async id => {
+    collection.findById = async (id) => {
         const oid = new ObjectID(id);
         return collection.findOne({ _id: oid });
     };
 
-    collection.findByUri = uri => collection.findOne({ uri });
+    collection.findByUri = (uri) => collection.findOne({ uri });
 
     collection.addVersion = async (
         resource,
@@ -244,7 +241,7 @@ export default async db => {
         return { reason, removedAt: date };
     };
 
-    collection.restore = async uri =>
+    collection.restore = async (uri) =>
         collection.update(
             { uri },
             { $unset: { removedAt: true, reason: true } },
@@ -336,10 +333,10 @@ export default async db => {
         };
     };
 
-    collection.findDistinctValuesForField = field =>
+    collection.findDistinctValuesForField = (field) =>
         collection.distinct(`versions.${field}`);
 
-    collection.getFacetsForField = field =>
+    collection.getFacetsForField = (field) =>
         collection.aggregate([
             {
                 $project: {
@@ -369,7 +366,7 @@ export default async db => {
                       { $count: 'value' },
                   ])
                   .toArray()
-                  .then(result => (result[0] ? result[0].value : 0));
+                  .then((result) => (result[0] ? result[0].value : 0));
 
     collection.countAll = async ({ excludeSubresources = false } = {}) => {
         const filter = {
@@ -397,7 +394,7 @@ export default async db => {
         });
     };
 
-    collection.createTextIndexes = async fields => {
+    collection.createTextIndexes = async (fields) => {
         if (!fields.length) {
             return;
         }

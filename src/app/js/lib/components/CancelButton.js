@@ -13,7 +13,7 @@ const Button = styled(MuiButton)(({ theme }) => {
     };
 });
 
-const CancelButton = props => {
+const CancelButton = (props) => {
     return <Button disableRipple {...props} />;
 };
 

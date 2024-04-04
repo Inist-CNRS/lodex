@@ -22,12 +22,12 @@ const TABLE_COMPATIBLE_FORMATS = [
     'code',
 ];
 
-export const COMPATIBLE_FORMATS = FORMATS_CATALOG.filter(format =>
+export const COMPATIBLE_FORMATS = FORMATS_CATALOG.filter((format) =>
     TABLE_COMPATIBLE_FORMATS.includes(format.componentName),
 );
 
-export const getFormatInitialArgs = name => {
-    const format = FORMATS_CATALOG.find(f => f.componentName === name);
+export const getFormatInitialArgs = (name) => {
+    const format = FORMATS_CATALOG.find((f) => f.componentName === name);
     if (!format) {
         return {};
     }
@@ -35,13 +35,13 @@ export const getFormatInitialArgs = name => {
     return format.component?.defaultArgs || {};
 };
 
-export const getComponent = field => {
+export const getComponent = (field) => {
     if (!field) {
         return DefaultFormat;
     }
     if (typeof field === 'string') {
         return (
-            FORMATS_CATALOG.find(i => i.componentName === field)?.component ||
+            FORMATS_CATALOG.find((i) => i.componentName === field)?.component ||
             DefaultFormat
         );
     }
@@ -51,15 +51,14 @@ export const getComponent = field => {
     }
 
     return (
-        FORMATS_CATALOG.find(i => i.componentName === field.format.name)
+        FORMATS_CATALOG.find((i) => i.componentName === field.format.name)
             ?.component || DefaultFormat
     );
 };
 
 export const getViewComponent = (field, isList) => {
-    const { defaultArgs, Component, ListComponent, predicate } = getComponent(
-        field,
-    );
+    const { defaultArgs, Component, ListComponent, predicate } =
+        getComponent(field);
 
     const args = merge(defaultArgs, get(field, 'format.args', {}));
 
@@ -76,8 +75,8 @@ export const getViewComponent = (field, isList) => {
     };
 };
 
-export const getAdminComponent = name => getComponent(name).AdminComponent;
-export const getEditionComponent = field =>
+export const getAdminComponent = (name) => getComponent(name).AdminComponent;
+export const getEditionComponent = (field) =>
     getComponent(field).EditionComponent;
-export const getIconComponent = name => getComponent(name).Icon;
-export const getPredicate = name => getComponent(name).predicate;
+export const getIconComponent = (name) => getComponent(name).Icon;
+export const getPredicate = (name) => getComponent(name).predicate;

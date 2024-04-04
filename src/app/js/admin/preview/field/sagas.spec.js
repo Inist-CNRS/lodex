@@ -39,7 +39,7 @@ describe('field saga', () => {
 
         it('should call transformDocument for each lines', () => {
             expect(saga.next(transformDocument).value).toEqual(
-                all(lines.map(line => call(transformDocument, line))),
+                all(lines.map((line) => call(transformDocument, line))),
             );
         });
 

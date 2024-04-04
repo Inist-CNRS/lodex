@@ -48,10 +48,10 @@ export default class Roadmap extends Component {
             key: trelloKey,
         };
         milestones(trelloURL, options)
-            .then(values => {
+            .then((values) => {
                 this.setState({ milestones: values });
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error(error);
             });
     }

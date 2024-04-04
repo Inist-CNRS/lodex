@@ -33,8 +33,8 @@ const FormAutoCompleteField = ({
                 id="autocomplete"
                 options={source}
                 freeSolo
-                getOptionLabel={option => option.text}
-                renderInput={params => (
+                getOptionLabel={(option) => option.text}
+                renderInput={(params) => (
                     <TextField
                         {...params}
                         label={label}
@@ -65,7 +65,7 @@ const mapStateToProps = ({ fetch }, { input: { name }, parseResponse }) => ({
 const mapDispatchToProps = (dispatch, { input: { name }, getFetchRequest }) =>
     bindActionCreators(
         {
-            handleSearch: searchText =>
+            handleSearch: (searchText) =>
                 searchText
                     ? fetchAction({ config: getFetchRequest(searchText), name })
                     : { type: '@@NULL' }, // We must return an action so return an action which will not be handled
@@ -73,29 +73,26 @@ const mapDispatchToProps = (dispatch, { input: { name }, getFetchRequest }) =>
         dispatch,
     );
 
-const handleValueChosen = ({ allowNewItem, input: { onChange } }) => (
-    event,
-    value,
-) => {
-    // Material UI doc: index is the index in dataSource of the list item selected,
-    // or -1 if enter is pressed in the TextField
-    if (!allowNewItem && index === -1) {
-        return onChange('');
-    }
+const handleValueChosen =
+    ({ allowNewItem, input: { onChange } }) =>
+    (event, value) => {
+        // Material UI doc: index is the index in dataSource of the list item selected,
+        // or -1 if enter is pressed in the TextField
+        if (!allowNewItem && index === -1) {
+            return onChange('');
+        }
 
-    return value.text ? onChange(value.text) : onChange(value);
-};
+        return value.text ? onChange(value.text) : onChange(value);
+    };
 
-const handleComplete = ({
-    allowNewItem,
-    input: { onChange },
-    handleSearch,
-}) => (event, searchText) => {
-    if (allowNewItem) {
-        onChange(searchText);
-        handleSearch(searchText);
-    }
-};
+const handleComplete =
+    ({ allowNewItem, input: { onChange }, handleSearch }) =>
+    (event, searchText) => {
+        if (allowNewItem) {
+            onChange(searchText);
+            handleSearch(searchText);
+        }
+    };
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),

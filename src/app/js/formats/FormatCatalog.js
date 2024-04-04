@@ -32,7 +32,7 @@ const FormatCatalogDescription = ({ format, polyglot }) => {
                             href={format.doc}
                             target="_blank"
                             rel="noopener noreferrer"
-                            onClick={e => e.stopPropagation()}
+                            onClick={(e) => e.stopPropagation()}
                         >
                             <SettingsEthernetIcon />
                         </Link>
@@ -51,8 +51,8 @@ export const FormatCatalog = ({
     onChange,
     currentValue,
 }) => {
-    const filters = [...new Set(formats.map(item => item.type))].sort((x, y) =>
-        polyglot.t(x).localeCompare(polyglot.t(y)),
+    const filters = [...new Set(formats.map((item) => item.type))].sort(
+        (x, y) => polyglot.t(x).localeCompare(polyglot.t(y)),
     );
     filters.unshift('all');
     filters.push(filters.splice(filters.indexOf('other'), 1)[0]);
@@ -63,17 +63,17 @@ export const FormatCatalog = ({
     useEffect(() => {
         setFilterFormats(
             selectedFilter && selectedFilter !== 'all'
-                ? formats.filter(item => item.type === selectedFilter)
+                ? formats.filter((item) => item.type === selectedFilter)
                 : formats,
         );
     }, [selectedFilter]);
 
-    const handleValueChange = newValue => {
+    const handleValueChange = (newValue) => {
         onChange(newValue);
         handleClose();
     };
 
-    const scrollTo = el => {
+    const scrollTo = (el) => {
         if (el) {
             el.scrollIntoView({ inline: 'center', block: 'center' });
         }
@@ -96,7 +96,7 @@ export const FormatCatalog = ({
                     <Box>
                         <FilterIcon fontSize="large" sx={{ marginRight: 10 }} />
                     </Box>
-                    {filters.map(filter => (
+                    {filters.map((filter) => (
                         <Box key={filter}>
                             <Button
                                 color="primary"
@@ -118,7 +118,7 @@ export const FormatCatalog = ({
                     aria-label="format list"
                     style={{ height: '70vh' }}
                 >
-                    {filteredFormats.map(format => (
+                    {filteredFormats.map((format) => (
                         <ListItem
                             key={format.name}
                             onClick={() =>

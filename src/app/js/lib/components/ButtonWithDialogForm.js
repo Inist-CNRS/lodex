@@ -125,9 +125,11 @@ const mapDispatchToProps = { submit: submitAction };
 export default compose(
     connect(null, mapDispatchToProps),
     withHandlers({
-        handleSubmit: ({ submit, formName }) => () => {
-            submit(formName);
-        },
+        handleSubmit:
+            ({ submit, formName }) =>
+            () => {
+                submit(formName);
+            },
     }),
     translate,
 )(PureButtonWithDialogForm);

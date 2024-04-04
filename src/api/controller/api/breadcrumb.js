@@ -1,4 +1,4 @@
-export default async ctx => {
+export default async (ctx) => {
     ctx.body = {
         breadcrumb: ctx.configTenant.front.breadcrumb,
     };

@@ -77,19 +77,19 @@ const styles = stylesToClassname(
 
 const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
     const [showMore, setShowMore] = React.useState(false);
-    const titleField = fields.find(field => field.name === fieldNames.title);
+    const titleField = fields.find((field) => field.name === fieldNames.title);
     const descriptionField = fields.find(
-        field => field.name === fieldNames.description,
+        (field) => field.name === fieldNames.description,
     );
     const firstDetailField = fields.find(
-        field => field.name === fieldNames.detail1,
+        (field) => field.name === fieldNames.detail1,
     );
     const secondDetailField = fields.find(
-        field => field.name === fieldNames.detail2,
+        (field) => field.name === fieldNames.detail2,
     );
 
     const thirdDetailField = fields.find(
-        field => field.name === fieldNames.detail3,
+        (field) => field.name === fieldNames.detail3,
     );
 
     const shouldDisplayDetails =
@@ -192,22 +192,26 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                                 {result[firstDetailField.name]}
                             </Box>
                         )}
-                        {secondDetailField && result[secondDetailField.name] && (
-                            <Box
-                                className={classnames(
-                                    'search-result-detail2',
-                                    styles.detailsColumn,
-                                )}
-                                title={result[secondDetailField.name]}
-                                sx={
-                                    showMore
-                                        ? { maxHeight: 90000, transition: '1s' }
-                                        : { ...ellipsis }
-                                }
-                            >
-                                {result[secondDetailField.name]}
-                            </Box>
-                        )}
+                        {secondDetailField &&
+                            result[secondDetailField.name] && (
+                                <Box
+                                    className={classnames(
+                                        'search-result-detail2',
+                                        styles.detailsColumn,
+                                    )}
+                                    title={result[secondDetailField.name]}
+                                    sx={
+                                        showMore
+                                            ? {
+                                                  maxHeight: 90000,
+                                                  transition: '1s',
+                                              }
+                                            : { ...ellipsis }
+                                    }
+                                >
+                                    {result[secondDetailField.name]}
+                                </Box>
+                            )}
                     </div>
                 )}
                 <ExpandMoreIcon
@@ -225,7 +229,7 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                             backgroundColor: 'var(--neutral-dark-very-light)',
                         },
                     }}
-                    onClick={event => {
+                    onClick={(event) => {
                         event.stopPropagation();
                         event.preventDefault();
                         setShowMore(!showMore);

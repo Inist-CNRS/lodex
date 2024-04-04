@@ -34,7 +34,7 @@ export const NEXT = 'next';
 export const PREV = 'previous';
 export const NONE = '';
 
-const renderIcon = direction =>
+const renderIcon = (direction) =>
     direction === NEXT ? (
         <FontAwesomeIcon
             className={styles.icon}

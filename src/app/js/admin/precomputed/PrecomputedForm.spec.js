@@ -29,7 +29,7 @@ describe('<PrecomputedFormComponent />', () => {
         );
         const textField = wrapper.find(Field).at(0);
         expect(textField).toHaveLength(1);
-        expect(textField.prop('name')).toEqual('name');
+        expect(textField.prop('name')).toBe('name');
     });
 
     it('should render 2 Fields for precomputed info', () => {
@@ -43,11 +43,11 @@ describe('<PrecomputedFormComponent />', () => {
         );
         const webServiceUrl = wrapper.find(Field).at(1);
         expect(webServiceUrl).toHaveLength(1);
-        expect(webServiceUrl.prop('name')).toEqual('webServiceUrl');
+        expect(webServiceUrl.prop('name')).toBe('webServiceUrl');
 
         const sourceColumns = wrapper.find(Field).at(2);
         expect(sourceColumns).toHaveLength(1);
-        expect(sourceColumns.prop('name')).toEqual('sourceColumns');
+        expect(sourceColumns.prop('name')).toBe('sourceColumns');
     });
 
     it('should render a  precomputed logs dialog', () => {

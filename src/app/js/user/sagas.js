@@ -42,7 +42,7 @@ export function* watchLogoutRequest() {
     yield takeEvery([LOGOUT, SIGNOUT], handleLogoutRequest);
 }
 
-export default function*() {
+export default function* () {
     yield fork(watchLoginRequest);
     yield fork(watchLogoutRequest);
 }

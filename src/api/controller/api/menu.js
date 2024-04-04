@@ -1,4 +1,4 @@
-export default async ctx => {
+export default async (ctx) => {
     ctx.body = {
         leftMenu: ctx.configTenant.leftMenu,
         rightMenu: ctx.configTenant.rightMenu,

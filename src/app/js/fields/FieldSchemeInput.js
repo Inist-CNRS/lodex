@@ -30,7 +30,7 @@ export const FieldSchemeInputComponent = ({
             horizontal: 'left',
         }}
         getFetchRequest={getSchemeSearchRequest}
-        parseResponse={response =>
+        parseResponse={(response) =>
             getSchemeMenuItemsDataFromResponse(response).map(
                 ({ label, uri }) => ({
                     text: uri,
@@ -85,12 +85,12 @@ FieldSchemeInputComponent.propTypes = {
 };
 
 const mapStateToProps = () => ({
-    getSchemeSearchRequest: query => ({
+    getSchemeSearchRequest: (query) => ({
         url: `https://lov.linkeddata.es/dataset/lov/api/v2/term/search?q=${query}`,
     }),
-    getSchemeMenuItemsDataFromResponse: response =>
+    getSchemeMenuItemsDataFromResponse: (response) =>
         response && response.results
-            ? response.results.map(r => ({
+            ? response.results.map((r) => ({
                   label: r.prefixedName[0],
                   uri: r.uri[0],
               }))

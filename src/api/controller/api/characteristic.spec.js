@@ -284,7 +284,7 @@ describe('characteristic routes', () => {
                     })),
                 },
                 field: {
-                    findByNames: jest.fn().mockImplementation(names => {
+                    findByNames: jest.fn().mockImplementation((names) => {
                         const fields = {};
 
                         if (names.includes('updateField')) {

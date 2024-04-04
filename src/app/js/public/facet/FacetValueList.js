@@ -34,30 +34,29 @@ const styles = {
     },
 };
 
-const onPageChange = (changeFacetValue, filter, name) => (
-    currentPage,
-    perPage,
-) =>
-    changeFacetValue({
-        name,
-        currentPage,
-        perPage,
-        filter,
-    });
+const onPageChange =
+    (changeFacetValue, filter, name) => (currentPage, perPage) =>
+        changeFacetValue({
+            name,
+            currentPage,
+            perPage,
+            filter,
+        });
 
-const onFilterChange = (changeFacetValue, name, currentPage, perPage) => e => {
-    changeFacetValue({
-        name,
-        currentPage,
-        perPage,
-        filter: e.target.value,
-    });
-};
+const onFilterChange =
+    (changeFacetValue, name, currentPage, perPage) => (e) => {
+        changeFacetValue({
+            name,
+            currentPage,
+            perPage,
+            filter: e.target.value,
+        });
+    };
 
 const onInvertChange = (invertFacet, name) => (_, inverted) =>
     invertFacet({ name, inverted });
 
-const onSortChange = (sortFacetValue, name) => nextSortBy =>
+const onSortChange = (sortFacetValue, name) => (nextSortBy) =>
     sortFacetValue({
         name,
         nextSortBy,
@@ -129,7 +128,7 @@ export const FacetValueList = ({
                 </div>
                 <div>
                     {filter && <FacetValueAll name={name} page={page} />}
-                    {facetValues.map(facetValue => {
+                    {facetValues.map((facetValue) => {
                         return (
                             <FacetValueItem
                                 key={facetValue.value}
@@ -172,7 +171,7 @@ FacetValueList.propTypes = {
     sortFacetValue: PropTypes.func.isRequired,
 };
 
-export const ConnectFacetValueList = props => (
+export const ConnectFacetValueList = (props) => (
     <FacetActionsContext.Consumer>
         {({ changeFacetValue, invertFacet, sortFacetValue }) => (
             <FacetValueList

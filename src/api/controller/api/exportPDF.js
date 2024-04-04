@@ -69,7 +69,8 @@ async function getPDFTitle(ctx, locale) {
         .toArray();
 
     // FIlter only on lastVersion not null or empty object
-    let publishedCharacteristic = await ctx.publishedCharacteristic.findLastVersion();
+    let publishedCharacteristic =
+        await ctx.publishedCharacteristic.findLastVersion();
     let publishedDatasetTitle =
         publishedCharacteristic[datasetTitleField[0]?.name];
 
@@ -216,7 +217,7 @@ async function getPublishedFacet(ctx) {
         facetsWithValueIds,
     )) {
         const facetValues = await Promise.all(
-            facetValueIds.map(async facetValueId => {
+            facetValueIds.map(async (facetValueId) => {
                 const facetValue = await ctx.publishedFacet.findOne({
                     _id: new ObjectId(facetValueId),
                 });
@@ -268,7 +269,7 @@ async function getSyndicatedFields(ctx) {
 
     // place overview with value 6 at the second position
     const overview6Index = sortedFields.findIndex(
-        field => field.overview === RESOURCE_DETAIL_3,
+        (field) => field.overview === RESOURCE_DETAIL_3,
     );
     if (overview6Index !== -1) {
         const overview6 = sortedFields.splice(overview6Index, 1);

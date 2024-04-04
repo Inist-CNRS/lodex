@@ -21,7 +21,7 @@ import { initializeLanguage } from '../i18n';
 
 const notLogin = new RegExp('^(?!.*(/login)).*$');
 
-const Routes = props => {
+const Routes = (props) => {
     const [search, setSearch] = useState(false);
 
     useEffect(() => {
@@ -51,7 +51,7 @@ const Routes = props => {
                     <Route path={notLogin} component={Breadcrumb} />
                     <Route
                         path={notLogin}
-                        render={props => (
+                        render={(props) => (
                             <NavBar
                                 {...props}
                                 search={search}
@@ -66,14 +66,14 @@ const Routes = props => {
                     <Route path="/login" component={Login} />
                     <Route
                         path="/graph/:name"
-                        render={props => (
+                        render={(props) => (
                             <GraphPage
                                 {...props}
                                 onSearch={handleSearchWithDataset}
                             />
                         )}
                     />
-                    {customRoutes.map(link => (
+                    {customRoutes.map((link) => (
                         <Route
                             key={link}
                             exact
@@ -95,7 +95,7 @@ Routes.propTypes = {
     history: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     customRoutes: fromMenu.getCustomRoutes(state),
 });
 

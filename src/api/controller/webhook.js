@@ -7,7 +7,7 @@ import { v1 as uuid } from 'uuid';
 import { workerQueues } from '../workers';
 import { PRECOMPUTER } from '../workers/precomputer';
 
-export const getComputedWebserviceData = async ctx => {
+export const getComputedWebserviceData = async (ctx) => {
     const { precomputedId, tenant, jobId, failure } = ctx.request.query;
     const { identifier, generator, state } = ctx.request.body;
     const callId = JSON.stringify([{ id: generator, value: identifier }]);

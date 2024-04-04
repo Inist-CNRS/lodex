@@ -35,7 +35,7 @@ const webhookBaseUrl = String(
 ).startsWith('http')
     ? localConfig.alternativePrecomputedBaseUrl
     : baseUrl;
-export const getPrecomputedDataPreview = async ctx => {
+export const getPrecomputedDataPreview = async (ctx) => {
     const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
     const { sourceColumns } = ctx.request.body;
     if (!sourceColumns) {
@@ -53,7 +53,7 @@ export const getPrecomputedDataPreview = async ctx => {
             const entry = {};
 
             // Display null or undefined by string only for preview. Use for show informations to user.
-            sourceColumns.map(column => {
+            sourceColumns.map((column) => {
                 if (excerptLines[index][column] === undefined) {
                     entry[column] = 'undefined';
                 } else if (excerptLines[index][column] === null) {
@@ -70,14 +70,14 @@ export const getPrecomputedDataPreview = async ctx => {
         return [];
     }
     // if all object are empty, we return an empty array
-    if (result.every(entry => Object.keys(entry).length === 0)) {
+    if (result.every((entry) => Object.keys(entry).length === 0)) {
         return [];
     }
 
     return result;
 };
 
-export const getComputedFromWebservice = async ctx => {
+export const getComputedFromWebservice = async (ctx) => {
     const tenant = ctx.tenant;
     const { id: precomputedId, callId, askForPrecomputedJobId } = ctx.job.data;
 
@@ -112,7 +112,7 @@ export const getComputedFromWebservice = async ctx => {
     progress.setProgress(tenant, 65);
     const workerQueue = workerQueues[tenant];
     const completedJobs = await workerQueue.getCompleted();
-    const askForPrecomputedJob = completedJobs.filter(completedJob => {
+    const askForPrecomputedJob = completedJobs.filter((completedJob) => {
         const { id, jobType, tenant: jobTenant } = completedJob.data;
 
         return (
@@ -226,7 +226,7 @@ export const getComputedFromWebservice = async ctx => {
     progress.finish(tenant);
 };
 
-export const getFailureFromWebservice = async ctx => {
+export const getFailureFromWebservice = async (ctx) => {
     const { tenant } = ctx;
     const { askForPrecomputedJobId, id: precomputedId, error } = ctx.job.data;
 
@@ -240,7 +240,7 @@ export const getFailureFromWebservice = async ctx => {
     }
     const workerQueue = workerQueues[tenant];
     const completedJobs = await workerQueue.getCompleted();
-    const job = completedJobs.filter(job => {
+    const job = completedJobs.filter((job) => {
         const { id, jobType, tenant: jobTenant } = job.data;
 
         return (
@@ -279,7 +279,7 @@ export const getFailureFromWebservice = async ctx => {
     });
 };
 
-const tryParseJsonString = str => {
+const tryParseJsonString = (str) => {
     try {
         const parsed = JSON.parse(str);
         return parsed;
@@ -311,7 +311,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
     const databaseOutputBis = ezs('transit'); // trick: mongo stream does not propagate error in the pipeline
 
     const streamDatabaseExport = databaseOutput
-        .on('error', e => databaseOutputBis.emit('error', e))
+        .on('error', (e) => databaseOutputBis.emit('error', e))
         .pipe(databaseOutputBis)
         .pipe(
             ezs((entry, feed, self) => {
@@ -319,7 +319,7 @@ export const processPrecomputed = async (precomputed, ctx) => {
                     return feed.close();
                 }
                 const colums = [];
-                precomputed.sourceColumns.map(column => {
+                precomputed.sourceColumns.map((column) => {
                     colums.push(entry[column]);
                 });
                 // Please note, it is important to produce identifiers identical to those that will be used in the published data.
@@ -419,10 +419,8 @@ export const processPrecomputed = async (precomputed, ctx) => {
     const response = await fetch(precomputed.webServiceUrl, parameters);
     const token = await response.text();
     if (!response.ok) {
-        const {
-            type: responseErrorTitle,
-            message: responseErrorMessage,
-        } = tryParseJsonString(token);
+        const { type: responseErrorTitle, message: responseErrorMessage } =
+            tryParseJsonString(token);
         let responseErrorMessageFull;
         if (responseErrorMessage) {
             // for error 400 see /v1/mock-error-sync
@@ -471,7 +469,7 @@ export const setPrecomputedJobId = async (ctx, precomputedID, job) => {
     });
 };
 
-export const startAskForPrecomputed = async ctx => {
+export const startAskForPrecomputed = async (ctx) => {
     const id = ctx.job?.data?.id;
     const precomputed = await ctx.precomputed.findOneById(id);
     progress.initialize(ctx.tenant);
@@ -495,7 +493,7 @@ export const startAskForPrecomputed = async ctx => {
     await processPrecomputed(precomputed, ctx);
 };
 
-export const startGetPrecomputed = async ctx => {
+export const startGetPrecomputed = async (ctx) => {
     const logger = getLogger(ctx.tenant);
     logger.info(`Precompute webhook call for ${ctx.tenant}`);
 
@@ -543,7 +541,7 @@ export const setPrecomputedError = async (ctx, err) => {
     });
 };
 
-export const restorePrecomputed = async ctx => {
+export const restorePrecomputed = async (ctx) => {
     // mongo update all precomputed to set status to empty and clean possible data
     await ctx.precomputed.updateMany(
         {},
@@ -555,10 +553,10 @@ export const restorePrecomputed = async ctx => {
 };
 
 const LISTENERS = [];
-export const addPrecomputedJobListener = listener => {
+export const addPrecomputedJobListener = (listener) => {
     LISTENERS.push(listener);
 };
 
 export const notifyListeners = (room, payload) => {
-    LISTENERS.forEach(listener => listener({ room, data: payload }));
+    LISTENERS.forEach((listener) => listener({ room, data: payload }));
 };

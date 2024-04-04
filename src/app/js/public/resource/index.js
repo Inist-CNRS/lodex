@@ -79,11 +79,11 @@ export const defaultState = {
 
 export default handleActions(
     {
-        [combineActions('@@INIT', PRE_LOAD_RESOURCE)]: state => ({
+        [combineActions('@@INIT', PRE_LOAD_RESOURCE)]: (state) => ({
             ...state,
             loading: true,
         }),
-        LOAD_RESOURCE: state => ({
+        LOAD_RESOURCE: (state) => ({
             ...state,
             resource: null,
             selectedVersion: 0,
@@ -108,11 +108,9 @@ export default handleActions(
             loading: false,
             saving: false,
         }),
-        [combineActions(
-            SAVE_RESOURCE,
-            HIDE_RESOURCE,
-            ADD_FIELD_TO_RESOURCE,
-        )]: state => ({
+        [combineActions(SAVE_RESOURCE, HIDE_RESOURCE, ADD_FIELD_TO_RESOURCE)]: (
+            state,
+        ) => ({
             ...state,
             error: null,
             saving: true,
@@ -211,7 +209,7 @@ export default handleActions(
                 },
             };
         },
-        CHANGE_FIELD_STATUS_SUCCESS: state => ({
+        CHANGE_FIELD_STATUS_SUCCESS: (state) => ({
             ...state,
             error: null,
             moderating: false,
@@ -220,22 +218,22 @@ export default handleActions(
             ...state,
             selectedVersion,
         }),
-        ADD_FIELD_TO_RESOURCE_OPEN: state => ({
+        ADD_FIELD_TO_RESOURCE_OPEN: (state) => ({
             ...state,
             addingField: true,
             error: null,
         }),
-        ADD_FIELD_TO_RESOURCE_CANCEL: state => ({
+        ADD_FIELD_TO_RESOURCE_CANCEL: (state) => ({
             ...state,
             addingField: false,
             error: null,
         }),
-        HIDE_RESOURCE_OPEN: state => ({
+        HIDE_RESOURCE_OPEN: (state) => ({
             ...state,
             hiding: true,
             error: null,
         }),
-        HIDE_RESOURCE_CANCEL: state => ({
+        HIDE_RESOURCE_CANCEL: (state) => ({
             ...state,
             hiding: false,
             error: null,
@@ -267,7 +265,7 @@ const hasBeenRemoved = (state, resource = state.resource) => {
     return !!resource.removedAt;
 };
 
-const getResourceProposedFields = state => {
+const getResourceProposedFields = (state) => {
     const contributions = get(state, 'resource.contributions');
     if (!contributions) {
         return [];
@@ -277,7 +275,7 @@ const getResourceProposedFields = state => {
         .map(({ fieldName }) => fieldName);
 };
 
-const getProposedFieldStatus = state => {
+const getProposedFieldStatus = (state) => {
     const contributions = get(state, 'resource.contributions');
     if (!contributions) {
         return {};
@@ -298,12 +296,12 @@ const getFieldStatus = createSelector(
     (fieldStatusByName, name) => fieldStatusByName[name],
 );
 
-const getResourceContributions = state =>
+const getResourceContributions = (state) =>
     get(state, 'resource.contributions', []);
 
 const getResourceContributorsCatalog = createSelector(
     getResourceContributions,
-    contributions =>
+    (contributions) =>
         contributions
             .filter(({ contributor }) => !!contributor)
             .reduce(
@@ -321,7 +319,7 @@ const getResourceContributorForField = createSelector(
     (contributorsCatalog, fieldName) => contributorsCatalog[fieldName],
 );
 
-const getRemovedData = state => {
+const getRemovedData = (state) => {
     const resource = state.resource;
     if (!resource) {
         return {};
@@ -334,9 +332,9 @@ const getRemovedData = state => {
     };
 };
 
-const isSaving = state => state.saving;
+const isSaving = (state) => state.saving;
 
-const isLoading = state => state.loading;
+const isLoading = (state) => state.loading;
 
 const getVersions = ({ resource }) => {
     const versions = get(resource, 'versions', []);
@@ -347,14 +345,14 @@ const getNbVersions = ({ resource }) =>
     (resource && resource.versions && resource.versions.length) || 0;
 
 const getSelectedVersion = createSelector(
-    state => state.selectedVersion,
+    (state) => state.selectedVersion,
     getNbVersions,
     (selectedVersion, nbVersions) =>
         selectedVersion !== null ? selectedVersion : nbVersions - 1,
 );
 
 const getResourceSelectedVersion = createSelector(
-    state => state.resource,
+    (state) => state.resource,
     getSelectedVersion,
     (resource, selectedVersion) => {
         if (!resource) {
@@ -378,13 +376,13 @@ const isLastVersionSelected = createSelector(
     (selectedVersion, nbVersions) => selectedVersion === nbVersions - 1,
 );
 
-const isAdding = state => state.addingField;
+const isAdding = (state) => state.addingField;
 
-const isHiding = state => state.hiding;
+const isHiding = (state) => state.hiding;
 
 const getError = ({ error }) => error;
 
-const isCreating = state => state.isCreating;
+const isCreating = (state) => state.isCreating;
 
 const isResourceLoaded = (state, uri) =>
     !state.loading && state.resource && state.resource.uri === uri;
@@ -412,8 +410,9 @@ export const fromResource = {
     isResourceLoaded,
 };
 
-export const getResourceFormData = state => get(state, 'form.resource.values');
-export const getHideResourceFormData = state =>
+export const getResourceFormData = (state) =>
+    get(state, 'form.resource.values');
+export const getHideResourceFormData = (state) =>
     get(state, 'form.hideResource.values');
-export const getNewResourceFieldFormData = state =>
+export const getNewResourceFieldFormData = (state) =>
     get(state, 'form.newResourceField.values');

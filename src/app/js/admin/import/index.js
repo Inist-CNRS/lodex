@@ -19,8 +19,8 @@ export const initialState = {
 
 export default handleActions(
     {
-        IMPORT_FIELDS: state => ({ ...state, loading: true }),
-        IMPORT_FIELDS_ERROR: state => ({
+        IMPORT_FIELDS: (state) => ({ ...state, loading: true }),
+        IMPORT_FIELDS_ERROR: (state) => ({
             ...state,
             status: 'error',
             loading: false,
@@ -32,7 +32,7 @@ export default handleActions(
             hasEnrichments: payload.hasEnrichments,
             hasPrecomputed: payload.hasPrecomputed,
         }),
-        IMPORT_FIELDS_CLOSED: state => ({
+        IMPORT_FIELDS_CLOSED: (state) => ({
             ...state,
             status: null,
             hasEnrichments: false,
@@ -42,10 +42,10 @@ export default handleActions(
     initialState,
 );
 
-export const hasImportFailed = state => state.status === 'error';
-export const hasImportSucceeded = state => state.status === 'success';
-export const hasEnrichments = state => state.hasEnrichments;
-export const hasPrecomputed = state => state.hasPrecomputed;
+export const hasImportFailed = (state) => state.status === 'error';
+export const hasImportSucceeded = (state) => state.status === 'success';
+export const hasEnrichments = (state) => state.hasEnrichments;
+export const hasPrecomputed = (state) => state.hasPrecomputed;
 
 export const selectors = {
     hasImportFailed,

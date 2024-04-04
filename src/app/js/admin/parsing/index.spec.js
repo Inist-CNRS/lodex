@@ -93,11 +93,11 @@ describe('parsing reducer', () => {
 
     describe('hasUploadedFile', () => {
         it('should return true if totalLoadedLines is truthy', () => {
-            expect(hasUploadedFile({ totalLoadedLines: 100 })).toEqual(true);
+            expect(hasUploadedFile({ totalLoadedLines: 100 })).toBe(true);
         });
 
         it('should return true if totalLoadedLines is falsy', () => {
-            expect(hasUploadedFile({ totalLoadedLines: 0 })).toEqual(false);
+            expect(hasUploadedFile({ totalLoadedLines: 0 })).toBe(false);
         });
     });
 });

@@ -29,12 +29,12 @@ describe('IstexSummaryView', () => {
         searchedField: 'host.issn',
         sortDir: 'sortDir',
         yearThreshold: 50,
-        p: { t: v => v },
+        p: { t: (v) => v },
     };
     const ComposedComponent = () => <div>Composed Child</div>;
 
     beforeAll(() => {
-        parseYearData.mockImplementation(v => v);
+        parseYearData.mockImplementation((v) => v);
         composeRenderProps.mockImplementation(() => ComposedComponent);
         getDecadeFromData.mockImplementation(() => 'decade data');
     });

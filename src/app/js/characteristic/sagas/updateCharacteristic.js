@@ -35,6 +35,6 @@ export function* handleUpdateCharacteristics({ payload }) {
     }
 }
 
-export default function*() {
+export default function* () {
     yield takeLatest(UPDATE_CHARACTERISTICS, handleUpdateCharacteristics);
 }

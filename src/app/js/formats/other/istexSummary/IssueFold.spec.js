@@ -17,7 +17,7 @@ describe('IssueFold', () => {
         volume: 'volume',
         item: { name: 'issue', count: 1 },
         searchedField: 'host.issn',
-        polyglot: { t: v => v },
+        polyglot: { t: (v) => v },
         children,
     };
 

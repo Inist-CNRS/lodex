@@ -13,7 +13,7 @@ import { VEGA_LITE_DATA_INJECT_TYPE_A, flip } from '../../utils/chartsUtils';
  */
 const ClusteredChart = ({ data, topic, params }) => {
     const values = useMemo(() => {
-        return data.filter(value =>
+        return data.filter((value) =>
             flip(
                 params.flipAxis,
                 value.target === topic,

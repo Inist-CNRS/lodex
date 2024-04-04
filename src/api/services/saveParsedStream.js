@@ -28,7 +28,7 @@ export const saveParsedStream = async (ctx, parsedStream) => {
         await ctx.saveStream(parsedStream, ctx);
 
         const fields = await ctx.field.findAll();
-        const collectionScopeFields = fields.filter(c =>
+        const collectionScopeFields = fields.filter((c) =>
             [SCOPE_COLLECTION, SCOPE_DOCUMENT].includes(c.scope),
         );
 

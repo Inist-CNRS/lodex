@@ -15,7 +15,7 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../../propTypes';
 
-const createStyles = memoize(spaceWidth =>
+const createStyles = memoize((spaceWidth) =>
     stylesToClassname(
         {
             list: {
@@ -81,7 +81,7 @@ class ResourcesGridView extends Component {
         const { filterFormatData, pageSize } = this.props;
 
         this.setState(
-            prevState => ({ more: prevState.more + pageSize }),
+            (prevState) => ({ more: prevState.more + pageSize }),
             () => filterFormatData({ maxSize: this.state.more }),
         );
     };
@@ -158,7 +158,7 @@ const mapStateToProps = (_, { formatData, spaceWidth }) => {
 };
 
 export default compose(
-    injectData(null, field => !!field),
+    injectData(null, (field) => !!field),
     connect(mapStateToProps),
     translate,
 )(ResourcesGridView);

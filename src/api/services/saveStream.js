@@ -30,7 +30,7 @@ export default async (stream, ctx) => {
             .pipe(ezs('group', { length: 100 }))
             .pipe(ezs(insert, { method }, ctx))
             .pipe(ezs.catch())
-            .on('error', e => {
+            .on('error', (e) => {
                 reject(e.sourceError || e);
             })
             .on('data', ({ insertedCount = 0 }) => {

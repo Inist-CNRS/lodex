@@ -7,7 +7,7 @@ import fetchSaga from '../../../lib/sagas/fetchSaga';
 import downloadFile from '../../../lib/downloadFile';
 import { fromUser } from '../../../sharedSelectors';
 
-export const open = url => window.open(url); // Warning: does not work with authentication and token
+export const open = (url) => window.open(url); // Warning: does not work with authentication and token
 
 export function* handleExportPublishedDatasetSuccess({
     payload: { exportID, uri },
@@ -16,7 +16,9 @@ export function* handleExportPublishedDatasetSuccess({
 
     if (facets) {
         facets = Object.keys(facets).reduce((acc, facetName) => {
-            acc[facetName] = facets[facetName].map(facetValue => facetValue.id);
+            acc[facetName] = facets[facetName].map(
+                (facetValue) => facetValue.id,
+            );
             return acc;
         }, {});
     }
@@ -50,7 +52,7 @@ export function* handleExportPublishedDatasetSuccess({
     }
 }
 
-export default function*() {
+export default function* () {
     yield takeEvery(
         EXPORT_PUBLISHED_DATASET,
         handleExportPublishedDatasetSuccess,

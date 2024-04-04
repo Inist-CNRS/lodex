@@ -17,12 +17,12 @@ export const defaultState = {
 
 export default handleActions(
     {
-        PUBLISH: state => ({
+        PUBLISH: (state) => ({
             ...state,
             error: null,
             loading: true,
         }),
-        PUBLISH_SUCCESS: state => ({
+        PUBLISH_SUCCESS: (state) => ({
             ...state,
             error: null,
             loading: false,
@@ -32,7 +32,7 @@ export default handleActions(
             error: error.message || error,
             loading: false,
         }),
-        [combineActions(SAVE_FIELD_ERROR, SAVE_FIELD_SUCCESS)]: state => ({
+        [combineActions(SAVE_FIELD_ERROR, SAVE_FIELD_SUCCESS)]: (state) => ({
             ...state,
             loading: false,
         }),
@@ -40,8 +40,8 @@ export default handleActions(
     defaultState,
 );
 
-export const getIsPublishing = state => state.loading;
-export const getPublishingError = state => state.error;
+export const getIsPublishing = (state) => state.loading;
+export const getPublishingError = (state) => state.error;
 
 export const selectors = {
     getIsPublishing,

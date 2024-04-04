@@ -57,7 +57,7 @@ const EnricherDescription = ({ enricher, polyglot }) => {
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{ marginRight: '1em' }}
-                            onClick={e => e.stopPropagation()}
+                            onClick={(e) => e.stopPropagation()}
                         >
                             <MenuBookIcon />
                         </Link>
@@ -69,7 +69,7 @@ const EnricherDescription = ({ enricher, polyglot }) => {
                             href={enricher.swagger}
                             target="_blank"
                             rel="noopener noreferrer"
-                            onClick={e => e.stopPropagation()}
+                            onClick={(e) => e.stopPropagation()}
                         >
                             <SettingsEthernetIcon />
                         </Link>
@@ -87,9 +87,9 @@ export const EnrichmentCatalog = ({
     onChange,
     selectedWebServiceUrl,
 }) => {
-    const filters = [
-        ...new Set(enrichers.map(item => item.type)),
-    ].sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)));
+    const filters = [...new Set(enrichers.map((item) => item.type))].sort(
+        (x, y) => polyglot.t(x).localeCompare(polyglot.t(y)),
+    );
     filters.unshift('all');
     filters.push(filters.splice(filters.indexOf('other'), 1)[0]);
 
@@ -99,17 +99,17 @@ export const EnrichmentCatalog = ({
     useEffect(() => {
         setFilterEnricher(
             selectedFilter && selectedFilter !== 'all'
-                ? enrichers.filter(item => item.type === selectedFilter)
+                ? enrichers.filter((item) => item.type === selectedFilter)
                 : enrichers,
         );
     }, [selectedFilter]);
 
-    const handleValueChange = newValue => {
+    const handleValueChange = (newValue) => {
         onChange(newValue);
         handleClose();
     };
 
-    const scrollTo = el => {
+    const scrollTo = (el) => {
         if (el) {
             el.scrollIntoView({ inline: 'center', block: 'center' });
         }
@@ -136,7 +136,7 @@ export const EnrichmentCatalog = ({
                             style={{ marginRight: 10 }}
                         />
                     </Box>
-                    {filters.map(filter => (
+                    {filters.map((filter) => (
                         <Box key={filter}>
                             <Button
                                 color="primary"
@@ -158,7 +158,7 @@ export const EnrichmentCatalog = ({
                     aria-label="format list"
                     style={{ height: '70vh' }}
                 >
-                    {filteredEnricher.map(enricher => (
+                    {filteredEnricher.map((enricher) => (
                         <ListItem
                             key={enricher.id}
                             onClick={() => handleValueChange(enricher.url)}

@@ -61,17 +61,17 @@ class StreamgraphAdmin extends Component {
         };
     }
 
-    handleParams = params => updateAdminArgs('params', params, this.props);
+    handleParams = (params) => updateAdminArgs('params', params, this.props);
 
     handleColors(colors) {
         updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
     }
 
-    handleMaxLegendLength = e => {
+    handleMaxLegendLength = (e) => {
         updateAdminArgs('maxLegendLength', e.target.value, this.props);
     };
 
-    handleHeight = e => {
+    handleHeight = (e) => {
         updateAdminArgs('height', e.target.value, this.props);
     };
 

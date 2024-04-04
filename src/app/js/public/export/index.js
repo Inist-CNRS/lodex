@@ -38,7 +38,7 @@ const initialState = {
 
 export default handleActions(
     {
-        [LOAD_EXPORTERS]: state => ({
+        [LOAD_EXPORTERS]: (state) => ({
             ...state,
             error: false,
             loading: true,
@@ -54,11 +54,11 @@ export default handleActions(
             exporters,
             loading: false,
         }),
-        [EXPORT_OPEN]: state => ({
+        [EXPORT_OPEN]: (state) => ({
             ...state,
             open: true,
         }),
-        [EXPORT_CLOSE]: state => ({
+        [EXPORT_CLOSE]: (state) => ({
             ...state,
             open: false,
         }),
@@ -66,10 +66,10 @@ export default handleActions(
     initialState,
 );
 
-export const getExporters = state =>
-    state.exporters.filter(e => e.type === 'file');
-export const areExporterLoaded = state => state.exporters.length > 0;
-export const isOpen = state => state.open;
+export const getExporters = (state) =>
+    state.exporters.filter((e) => e.type === 'file');
+export const areExporterLoaded = (state) => state.exporters.length > 0;
+export const isOpen = (state) => state.open;
 
 export const fromExport = {
     getExporters,

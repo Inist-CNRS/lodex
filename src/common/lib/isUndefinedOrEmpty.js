@@ -1,1 +1,1 @@
-export default value => typeof value === 'undefined' || value === '';
+export default (value) => typeof value === 'undefined' || value === '';

@@ -9,7 +9,7 @@ describe('<FieldAddDropdownButton />', () => {
         mockAddField = jest.fn();
         mockShowAddFromColumn = jest.fn();
         polyglot = {
-            t: key => key,
+            t: (key) => key,
         };
     });
     afterEach(() => {

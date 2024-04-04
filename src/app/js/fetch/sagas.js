@@ -5,7 +5,7 @@ import fetchSaga from '../lib/sagas/fetchSaga';
 
 import { FETCH, fetchError, fetchSuccess } from './';
 
-export const filterAction = action =>
+export const filterAction = (action) =>
     action.type === FETCH && action.meta && action.meta.name === name;
 
 export function* handleFetch({ payload: config, meta: { name } }) {

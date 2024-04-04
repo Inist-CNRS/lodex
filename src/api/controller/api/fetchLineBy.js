@@ -1,6 +1,6 @@
-export default ctx => (fieldName, value) =>
+export default (ctx) => (fieldName, value) =>
     value
-        ? ctx.dataset.findBy(fieldName, value).then(line =>
+        ? ctx.dataset.findBy(fieldName, value).then((line) =>
               line
                   ? {
                         ...line,

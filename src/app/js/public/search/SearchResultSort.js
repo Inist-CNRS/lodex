@@ -31,18 +31,18 @@ const styles = stylesToClassname(
     'sort',
 );
 
-export const getSortableFieldNames = fieldNames =>
+export const getSortableFieldNames = (fieldNames) =>
     [
         fieldNames.title,
         fieldNames.description,
         fieldNames.detail1,
         fieldNames.detail2,
         fieldNames.detail3,
-    ].filter(x => !!x);
+    ].filter((x) => !!x);
 
 export const getSortableFields = (fields, sortedFieldNames) =>
     fields
-        .filter(field => sortedFieldNames.includes(field.name) && field.label)
+        .filter((field) => sortedFieldNames.includes(field.name) && field.label)
         .sort(
             (fieldA, fieldB) =>
                 sortedFieldNames.indexOf(fieldA.name) -
@@ -61,14 +61,14 @@ const SearchResultSort = ({
     const sortableFieldNames = getSortableFieldNames(fieldNames);
     const sortableFields = getSortableFields(fields, sortableFieldNames);
 
-    const handleSort = name => {
+    const handleSort = (name) => {
         sort({ sortBy: name });
         setPopover({
             open: false,
         });
     };
 
-    const handleOpen = event => {
+    const handleOpen = (event) => {
         // This prevents ghost click.
         event.preventDefault();
 
@@ -95,7 +95,7 @@ const SearchResultSort = ({
             >
                 {sortBy
                     ? polyglot.t('sort_search_by_field', {
-                          field: sortableFields.find(s => s.name === sortBy)
+                          field: sortableFields.find((s) => s.name === sortBy)
                               ?.label,
                       })
                     : polyglot.t('sort_search')}{' '}
@@ -117,7 +117,7 @@ const SearchResultSort = ({
                     <h3 className={styles.menuTitle}>
                         {polyglot.t('sort_search_title')}
                     </h3>
-                    {sortableFields.map(field => (
+                    {sortableFields.map((field) => (
                         <MenuItem
                             key={field.name}
                             onClick={() => handleSort(field.name)}

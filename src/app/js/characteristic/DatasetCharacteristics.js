@@ -60,7 +60,7 @@ DatasetCharacteristicsView.defaultProps = {
     newCharacteristics: [],
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const fields = fromFields.getDatasetFields(state);
 
     return {

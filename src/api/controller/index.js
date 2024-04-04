@@ -18,8 +18,8 @@ import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 
 const app = new Koa();
 
-const simulateLatency = ms => async (ctx, next) => {
-    await new Promise(resolve => setTimeout(resolve, ms));
+const simulateLatency = (ms) => async (ctx, next) => {
+    await new Promise((resolve) => setTimeout(resolve, ms));
     await next();
 };
 
@@ -34,7 +34,7 @@ app.use(mount('/rootAdmin', rootAdmin));
 // # 404 error middleware
 // #######################
 
-const render404IndexHtml = ctx => {
+const render404IndexHtml = (ctx) => {
     ctx.body = fs
         .readFileSync(path.resolve(__dirname, '../../app/404.html'))
         .toString();

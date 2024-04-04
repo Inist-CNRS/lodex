@@ -21,7 +21,7 @@ class AdminComponent extends Component {
         args: defaultArgs,
     };
 
-    handleLanguageToHighlight = languageToHighlight => {
+    handleLanguageToHighlight = (languageToHighlight) => {
         this.props.onChange({ languageToHighlight });
     };
 
@@ -37,7 +37,7 @@ class AdminComponent extends Component {
                     fullWidth
                     select
                     label={polyglot.t('list_of_language')}
-                    onChange={e =>
+                    onChange={(e) =>
                         this.handleLanguageToHighlight(e.target.value)
                     }
                     value={languageToHighlight}

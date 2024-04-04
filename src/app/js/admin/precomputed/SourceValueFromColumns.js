@@ -27,7 +27,7 @@ const SourceValueFromColumns = ({
                 multiple
                 disableCloseOnSelect
                 value={autocompleteValue || []}
-                renderInput={params => {
+                renderInput={(params) => {
                     return (
                         <TextField
                             placeholder={`${label} *`}

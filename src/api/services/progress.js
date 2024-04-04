@@ -93,12 +93,12 @@ export class Progress {
         };
     }
 
-    addProgressListener = listener => {
+    addProgressListener = (listener) => {
         this.listeners.push(listener);
     };
 
-    notifyListeners = tenant => {
-        this.listeners.forEach(listener =>
+    notifyListeners = (tenant) => {
+        this.listeners.forEach((listener) =>
             listener({
                 room: `${tenant}-progress`,
                 data: this.getProgress(tenant),

@@ -33,12 +33,12 @@ class ListAdmin extends Component {
         args: defaultArgs,
     };
 
-    handleType = type => {
+    handleType = (type) => {
         const newArgs = { ...this.props.args, type };
         this.props.onChange(newArgs);
     };
 
-    handleSubFormat = subFormat => {
+    handleSubFormat = (subFormat) => {
         const newArgs = {
             ...this.props.args,
             subFormat,
@@ -47,7 +47,7 @@ class ListAdmin extends Component {
         this.props.onChange(newArgs);
     };
 
-    handleSubFormatOptions = subFormatOptions => {
+    handleSubFormatOptions = (subFormatOptions) => {
         const newArgs = {
             ...this.props.args,
             subFormatOptions,
@@ -70,7 +70,7 @@ class ListAdmin extends Component {
                         fullWidth
                         select
                         label={polyglot.t('list_format_select_type')}
-                        onChange={e => this.handleType(e.target.value)}
+                        onChange={(e) => this.handleType(e.target.value)}
                         value={type}
                     >
                         <MenuItem value="unordered">

@@ -30,7 +30,7 @@ export const initialState = {
 
 export default handleActions(
     {
-        LOAD_SUBRESOURCES: state => ({ ...state, loading: true }),
+        LOAD_SUBRESOURCES: (state) => ({ ...state, loading: true }),
         LOAD_SUBRESOURCES_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
@@ -47,7 +47,7 @@ export default handleActions(
         }),
         UPDATE_SUBRESOURCE_OPTIMISTIC: (state, { payload: subresource }) => ({
             ...state,
-            subresources: state.subresources.map(sr => {
+            subresources: state.subresources.map((sr) => {
                 if (sr._id === subresource._id) {
                     return subresource;
                 }
@@ -59,8 +59,8 @@ export default handleActions(
     initialState,
 );
 
-export const isLoading = state => state.loading;
-export const getSubresources = state => state.subresources;
+export const isLoading = (state) => state.loading;
+export const getSubresources = (state) => state.subresources;
 
 export const selectors = {
     isLoading,

@@ -16,7 +16,7 @@ describe('VolumeFold', () => {
         year: 'year',
         item: { name: 'volume', count: 1 },
         searchedField: 'host.issn',
-        polyglot: { t: v => v },
+        polyglot: { t: (v) => v },
         children,
     };
 

@@ -5,11 +5,15 @@ import { fromFields, fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export const movePosition = (fields, oldPosition, newPosition) => {
-    const fieldToMove = fields.find(field => field.position === oldPosition);
+    const fieldToMove = fields.find((field) => field.position === oldPosition);
 
-    const newIndex = fields.findIndex(field => field.position === newPosition);
+    const newIndex = fields.findIndex(
+        (field) => field.position === newPosition,
+    );
 
-    const otherFields = fields.filter(field => field.position !== oldPosition);
+    const otherFields = fields.filter(
+        (field) => field.position !== oldPosition,
+    );
 
     const reorderedFields = [
         ...otherFields.slice(0, newIndex),

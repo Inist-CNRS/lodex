@@ -308,7 +308,7 @@ Search.defaultProps = {
     searchQuery: null,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     const { sortBy, sortDir } = fromSearch.getSort(state);
 
     return {

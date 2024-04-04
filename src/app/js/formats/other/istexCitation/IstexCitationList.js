@@ -39,7 +39,7 @@ class IstexCitationList extends Component {
         this.setState({ isLoading: true }, () =>
             getMoreDocumentData(this.state.nextPageURI).then(
                 ({ hits, total, nextPageURI }) =>
-                    this.setState(state => ({
+                    this.setState((state) => ({
                         ...state,
                         hits: state.hits.concat(hits),
                         total,
@@ -51,15 +51,8 @@ class IstexCitationList extends Component {
     };
 
     render() {
-        const {
-            children,
-            polyglot,
-            data,
-            skip,
-            value,
-            name,
-            ...props
-        } = this.props;
+        const { children, polyglot, data, skip, value, name, ...props } =
+            this.props;
         const { hits, total, nextPageURI, isLoading } = this.state;
 
         if (!hits || !hits.length) {

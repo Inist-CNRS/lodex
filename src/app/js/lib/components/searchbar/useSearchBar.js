@@ -12,13 +12,13 @@ const useSearchBar = (
     const [query, setQuery] = useState(defaultQuery || '');
 
     const debouncedSearch = useCallback(
-        debounce(value => {
+        debounce((value) => {
             onSearch(value);
         }, debounceTimeout),
         [],
     );
 
-    const search = value => {
+    const search = (value) => {
         setQuery(value);
         debouncedSearch(value);
     };

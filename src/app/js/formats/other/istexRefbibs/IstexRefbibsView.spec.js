@@ -35,7 +35,7 @@ describe('<IstexView />', () => {
                 }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
-                p={{ t: v => v }}
+                p={{ t: (v) => v }}
             />,
         );
         expect(wrapper.find('.istex-list')).toHaveLength(1);
@@ -48,7 +48,7 @@ describe('<IstexView />', () => {
                 data={{ total: 0 }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
-                p={{ t: v => v }}
+                p={{ t: (v) => v }}
             />,
         );
         expect(wrapper.find(List)).toHaveLength(0);
@@ -63,7 +63,7 @@ describe('<IstexView />', () => {
                 data={{ total: 0, hits: [] }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
-                p={{ t: v => v }}
+                p={{ t: (v) => v }}
             />,
         );
         expect(wrapper.find('.istex-list')).toHaveLength(1);
@@ -97,7 +97,7 @@ describe('<IstexView />', () => {
                 }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
-                p={{ t: v => v }}
+                p={{ t: (v) => v }}
             />,
         );
         const list = wrapper.find('.istex-list');
@@ -132,7 +132,7 @@ describe('<IstexView />', () => {
                 }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
-                p={{ t: v => v }}
+                p={{ t: (v) => v }}
             />,
         );
         const span = wrapper.find('span');
@@ -149,7 +149,7 @@ describe('<IstexView />', () => {
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
                 error="error message"
-                p={{ t: v => v }}
+                p={{ t: (v) => v }}
             />,
         );
 
@@ -167,7 +167,7 @@ describe('<IstexView />', () => {
                 }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
-                p={{ t: v => v }}
+                p={{ t: (v) => v }}
             />,
         );
 

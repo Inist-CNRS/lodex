@@ -87,7 +87,7 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
     },
-    value: dense => ({
+    value: (dense) => ({
         flexGrow: 2,
         width: '100%',
         padding: {

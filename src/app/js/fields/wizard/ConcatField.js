@@ -57,15 +57,17 @@ ConcatFieldComponent.defaultProps = {
     column: '',
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     datasetFields: fromParsing.getParsedExcerptColumns(state),
 });
 
 export default compose(
     connect(mapStateToProps),
     withHandlers({
-        handleChange: ({ handleChange, index }) => (event, key, value) =>
-            handleChange(event, key, value, index),
+        handleChange:
+            ({ handleChange, index }) =>
+            (event, key, value) =>
+                handleChange(event, key, value, index),
         handleRemoveColumn: ({ handleRemoveColumn, index }) =>
             handleRemoveColumn(index),
     }),

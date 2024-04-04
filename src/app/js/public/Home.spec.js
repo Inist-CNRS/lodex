@@ -13,7 +13,7 @@ describe('<Home />', () => {
 
         shallow(
             <Home
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
                 loading
                 preLoadPublication={preLoadPublication}
                 preLoadDatasetPage={preLoadDatasetPage}
@@ -29,7 +29,7 @@ describe('<Home />', () => {
     it('should render Loading if loading', () => {
         const wrapper = shallow(
             <Home
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
                 loading
                 preLoadPublication={() => {}}
                 preLoadDatasetPage={() => {}}
@@ -44,7 +44,7 @@ describe('<Home />', () => {
     it('should render a NoDataset component if no dataset present', () => {
         const wrapper = shallow(
             <Home
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
                 hasPublishedDataset={false}
                 preLoadPublication={() => {}}
                 preLoadDatasetPage={() => {}}

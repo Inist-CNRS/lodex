@@ -18,7 +18,7 @@ describe('<AddFieldButton />', () => {
             <AddFieldButton
                 onAddNewField={onAddNewField}
                 name="foo"
-                p={{ t: key => key }}
+                p={{ t: (key) => key }}
             />,
         );
 

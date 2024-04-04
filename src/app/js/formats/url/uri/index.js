@@ -9,7 +9,7 @@ export default {
     ListComponent: Component,
     AdminComponent,
     defaultArgs,
-    predicate: value =>
+    predicate: (value) =>
         value == null ||
         value === '' ||
         isLink(value) ||

@@ -5,7 +5,7 @@ const bullBoard = (() => {
     let queues = {};
     let bullBoardInstance = {};
 
-    const initBullBoard = serverAdapter => {
+    const initBullBoard = (serverAdapter) => {
         bullBoardInstance = createBullBoard({
             queues: [],
             serverAdapter,
@@ -20,7 +20,7 @@ const bullBoard = (() => {
         bullBoardInstance.addQueue(new BullAdapter(queue));
     };
 
-    const removeDashboardQueue = queueName => {
+    const removeDashboardQueue = (queueName) => {
         if (!queues[queueName]) {
             throw new Error(`Queue ${queueName} does not exist`);
         }
@@ -28,7 +28,7 @@ const bullBoard = (() => {
         delete queues[queueName];
     };
 
-    const hasDashboardQueue = queueName => {
+    const hasDashboardQueue = (queueName) => {
         return !!queues[queueName];
     };
 

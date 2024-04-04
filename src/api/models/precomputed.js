@@ -2,17 +2,17 @@ import { ObjectId } from 'mongodb';
 import omit from 'lodash/omit';
 import { castIdsFactory } from './utils';
 
-const checkMissingFields = data =>
+const checkMissingFields = (data) =>
     !data.name ||
     !data.webServiceUrl ||
     !data.sourceColumns ||
     (data.sourceColumns instanceof Array && data.sourceColumns.length === 0);
 
-export default async db => {
+export default async (db) => {
     const collection = db.collection('precomputed');
     await collection.createIndex({ name: 1 }, { unique: true });
 
-    collection.findOneById = async id =>
+    collection.findOneById = async (id) =>
         collection.findOne(
             { $or: [{ _id: new ObjectId(id) }, { _id: id }] },
             { projection: { data: { $slice: 10 } } }, // Limit the size of the data field to 10 elements
@@ -20,7 +20,7 @@ export default async db => {
 
     collection.findAll = async () => collection.find({}).toArray();
 
-    collection.create = async data => {
+    collection.create = async (data) => {
         if (checkMissingFields(data)) {
             throw new Error('Missing required fields');
         }
@@ -28,7 +28,7 @@ export default async db => {
         return collection.findOne({ _id: insertedId });
     };
 
-    collection.delete = async id => {
+    collection.delete = async (id) => {
         try {
             await db.collection(`pc_${id}`).drop();
         } catch {
@@ -58,7 +58,7 @@ export default async db => {
                     returnOriginal: false,
                 },
             )
-            .then(result => result.value);
+            .then((result) => result.value);
     };
 
     collection.updateStatus = async (id, status, data = {}) => {
@@ -82,7 +82,7 @@ export default async db => {
 
     collection.castIds = castIdsFactory(collection);
 
-    collection.getSample = async id => {
+    collection.getSample = async (id) => {
         return db
             .collection(`pc_${id}`)
             .find({}, { projection: { _id: 0 } })
@@ -90,7 +90,7 @@ export default async db => {
             .toArray();
     };
 
-    collection.getStreamOfResult = async id => {
+    collection.getStreamOfResult = async (id) => {
         return db
             .collection(`pc_${id}`)
             .find({}, { projection: { _id: 0, id: 1, value: 1 } })

@@ -22,7 +22,7 @@ const styles = stylesToClassname(
 );
 
 const prepareData = (data = [], history, polyglot) =>
-    data.map(d => {
+    data.map((d) => {
         const title = getShortText(d['target-title']);
         const onClick = () => {
             history.push({
@@ -37,7 +37,7 @@ const prepareData = (data = [], history, polyglot) =>
         )}</div>`;
         return {
             label,
-            weights: d.weights.map(weight => weight * 100),
+            weights: d.weights.map((weight) => weight * 100),
             onClick,
         };
     });
@@ -72,8 +72,8 @@ const getFieldNames = (field, fields, resource) => {
         return [];
     }
     characteristics.splice(0, 4);
-    return characteristics.map(characteristic => {
-        const fieldName = fields.find(field => field.name === characteristic);
+    return characteristics.map((characteristic) => {
+        const fieldName = fields.find((field) => field.name === characteristic);
         return get(fieldName, 'label', '');
     });
 };

@@ -23,7 +23,7 @@ export function getFacetsWithoutId(facets) {
     return Object.keys(facets).reduce((acc, facetName) => {
         if (Array.isArray(facets[facetName])) {
             acc[facetName] = facets[facetName].map(
-                facetValue => facetValue.value,
+                (facetValue) => facetValue.value,
             );
         } else {
             acc[facetName] = facets[facetName];
@@ -32,9 +32,9 @@ export function getFacetsWithoutId(facets) {
     }, {});
 }
 
-const parseFieldsParams = fieldsParams =>
+const parseFieldsParams = (fieldsParams) =>
     typeof fieldsParams === 'string' && fieldsParams !== ''
-        ? fieldsParams.split('/').filter(x => x)
+        ? fieldsParams.split('/').filter((x) => x)
         : '';
 
 const middlewareScript = (isFormatExporters = false) => {
@@ -42,10 +42,9 @@ const middlewareScript = (isFormatExporters = false) => {
         ? formatExportersScripts
         : exportersScripts;
 
-    const workersUrlPrefix = `${process.env.WORKERS_URL ||
-        'http://localhost:31976'}/${
-        isFormatExporters ? 'formatExporters' : 'exporters'
-    }`;
+    const workersUrlPrefix = `${
+        process.env.WORKERS_URL || 'http://localhost:31976'
+    }/${isFormatExporters ? 'formatExporters' : 'exporters'}`;
 
     return async (ctx, scriptNameCalledParam, fieldsParams) => {
         const currentScript = await scripts.get(scriptNameCalledParam);
@@ -87,7 +86,7 @@ const middlewareScript = (isFormatExporters = false) => {
             facetsWithValueIds,
         )) {
             const facetValues = await Promise.all(
-                facetValueIds.map(async facetValueId => {
+                facetValueIds.map(async (facetValueId) => {
                     const facetValue = await ctx.publishedFacet.findOne({
                         _id: new ObjectId(facetValueId),
                     });
@@ -108,7 +107,7 @@ const middlewareScript = (isFormatExporters = false) => {
         };
 
         const input = new PassThrough({ objectMode: true });
-        const errorHandle = err => {
+        const errorHandle = (err) => {
             ctx.status = 503;
             ctx.body.destroy();
             input.destroy();

@@ -23,9 +23,8 @@ const LoaderSelectComponent = ({
     disabled,
 }) => {
     const [openLoadersDialog, setOpenLoadersDialog] = useState(false);
-    const [openCustomLoadersDialog, setOpenCustomLoadersDialog] = useState(
-        false,
-    );
+    const [openCustomLoadersDialog, setOpenCustomLoadersDialog] =
+        useState(false);
 
     const handleOpen = () => {
         setOpenLoadersDialog(true);
@@ -55,7 +54,7 @@ const LoaderSelectComponent = ({
                     sx={{ minWidth: 200 }}
                     className="select-loader"
                     label={polyglot.t('loader_name')}
-                    onChange={e => setLoader(e.target.value)}
+                    onChange={(e) => setLoader(e.target.value)}
                     value={value}
                     autoWidth
                     disabled={disabled}
@@ -75,7 +74,7 @@ const LoaderSelectComponent = ({
                                 .t(x.name)
                                 .localeCompare(polyglot.t(y.name)),
                         )
-                        .map(loader => (
+                        .map((loader) => (
                             <MenuItem
                                 className="select-loader-item"
                                 key={loader.name}

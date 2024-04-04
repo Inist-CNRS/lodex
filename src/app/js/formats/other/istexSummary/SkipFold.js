@@ -26,14 +26,14 @@ class SkipFold extends Component {
     UNSAFE_componentWillMount() {
         this.props
             .getData(this.props)
-            .then(data => {
+            .then((data) => {
                 this.setState({
                     data,
                     isLoading: false,
                     isOpen: true,
                 });
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error(error);
                 this.setState({ error: true, isLoading: false });
             });

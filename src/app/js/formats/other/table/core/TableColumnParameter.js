@@ -138,7 +138,7 @@ class TableColumnParameter extends Component {
                             onChange={this.changeField}
                             sx={{ flexGrow: 1 }}
                         >
-                            {availableField.map(value => (
+                            {availableField.map((value) => (
                                 <MenuItem
                                     key={`table_parameter_${value}`}
                                     value={value}

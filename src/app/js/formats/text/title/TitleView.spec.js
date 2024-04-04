@@ -15,6 +15,6 @@ describe('<TitleView />', () => {
                 colors={'#ff6347'}
             />,
         );
-        expect(wrapper.find('h1').text()).toEqual('Run you fools!');
+        expect(wrapper.find('h1').text()).toBe('Run you fools!');
     });
 });
