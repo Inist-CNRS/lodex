@@ -3,6 +3,8 @@ import { ERROR } from '../../common/progressStatus';
 import getLogger from '../services/logger';
 import progress from '../services/progress';
 import { notifyListeners } from './import';
+import { CancelWorkerError } from '.';
+import { handleEnrichmentError } from './enricher';
 
 export const jobLogger = {
     info: (job, message) => {
@@ -93,11 +95,22 @@ export const dropJobs = async (tenant, jobType) => {
 
 export const clearJobs = async (ctx) => {
     const waitingJobs = await getWaitingJobs(ctx.tenant);
+    if (waitingJobs) {
+        for (const waitingJob of waitingJobs) {
+            waitingJob.remove();
+            if (waitingJob.name === 'enricher') {
+                await handleEnrichmentError(waitingJob, CancelWorkerError);
+            }
+        }
+    }
     const activeJobs = await getActiveJobs(ctx.tenant);
-
-    waitingJobs?.forEach((waitingJob) => waitingJob.remove());
-    activeJobs?.forEach((activeJob) =>
-        activeJob.moveToFailed(new Error('cancelled'), true),
-    );
+    if (activeJobs) {
+        for (const activeJob of activeJobs) {
+            if (activeJob.name === 'enricher') {
+                await handleEnrichmentError(activeJob, CancelWorkerError);
+            }
+            activeJob.moveToFailed(new Error('cancelled'), true);
+        }
+    }
     progress.finish(ctx.tenant);
 };
