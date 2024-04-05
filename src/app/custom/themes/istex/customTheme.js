@@ -1,4 +1,4 @@
-import colorsTheme from './colorsTheme';
+import colorsTheme from "./colorsTheme";
 
 export default {
     palette: {
@@ -42,7 +42,7 @@ export default {
             transparent: colorsTheme.black.transparent,
         },
         text: {
-            primary: colorsTheme.green.primary,
+            primary: colorsTheme.black.primary,
             main: colorsTheme.black.secondary,
         },
         contrast: {
