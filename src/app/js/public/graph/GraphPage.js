@@ -10,7 +10,7 @@ import Graph from './Graph';
 const GraphPage = ({ name, onSearch, tenant }) => (
     <>
         <Helmet>
-            <title>Resources - {getTitle(tenant)}</title>
+            <title>{getTitle(tenant, 'Resources')}</title>
         </Helmet>
         <Graph className="graph-page" name={name} onSearch={onSearch} />
     </>

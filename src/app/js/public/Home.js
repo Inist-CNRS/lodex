@@ -74,9 +74,7 @@ export class HomeComponent extends Component {
             return (
                 <div>
                     <Helmet>
-                        <title>
-                            {title || 'LODEX'} - {getTitle(tenant)}
-                        </title>
+                        <title>{getTitle(tenant, title || 'LODEX')}</title>
                         <meta name="description" content={description || ''} />
                     </Helmet>
                     <div className="header-dataset-section">

@@ -139,9 +139,7 @@ export const DetailComponent = ({
     return (
         <span className="detail">
             <Helmet>
-                <title>
-                    {title || resource.uri} - {getTitle(tenant)}
-                </title>
+                <title>{getTitle(tenant, title || resource.uri)}</title>
                 <meta name="description" content={description} />
             </Helmet>
             <div className="header-resource-section">

@@ -2,7 +2,12 @@ import { getCleanHost } from '../../../common/uris';
 
 const HOST_REGEX = /https?:\/\/([\w-]+)/;
 
-export default (tenant) => {
+/**
+ * @param tenant{string|undefined}
+ * @param prefix{string|undefined}
+ * @return {string}
+ */
+export default (tenant, prefix) => {
     const host = getCleanHost();
 
     /**
@@ -10,14 +15,16 @@ export default (tenant) => {
      */
     const title = [];
 
+    if (prefix) {
+        title.push(prefix);
+    }
+
     if (tenant) {
         title.push(tenant);
     }
 
     if (host) {
         title.push(HOST_REGEX.exec(host)[1]);
-    } else {
-        title.push('example');
     }
 
     return title.join(' - ');
