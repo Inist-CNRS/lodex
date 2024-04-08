@@ -2,7 +2,7 @@ import { getCleanHost } from '../../../common/uris';
 
 const HOST_REGEX = /https?:\/\/([\w-]+)/;
 
-export default () => {
+export default (tenant) => {
     const host = getCleanHost();
 
     /**
@@ -10,10 +10,8 @@ export default () => {
      */
     const title = [];
 
-    if (window && window.__TENANT__) {
-        title.push(window.__TENANT__);
-    } else {
-        title.push('default');
+    if (tenant) {
+        title.push(tenant);
     }
 
     if (host) {

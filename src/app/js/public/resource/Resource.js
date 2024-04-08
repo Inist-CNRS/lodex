@@ -106,6 +106,7 @@ export class ResourceComponent extends React.Component {
             prevResource,
             nextResource,
             match,
+            tenant,
         } = this.props;
 
         if (loading) {
@@ -176,7 +177,12 @@ export class ResourceComponent extends React.Component {
             >
                 <div className="resource">
                     {removed && <RemovedDetail />}
-                    {!removed && <Detail backToListLabel={backToListLabel} />}
+                    {!removed && (
+                        <Detail
+                            backToListLabel={backToListLabel}
+                            tenant={tenant}
+                        />
+                    )}
                     {prevResource && (
                         <div
                             className={classnames(
@@ -249,6 +255,7 @@ ResourceComponent.propTypes = {
     }).isRequired,
     prevResource: PropTypes.object,
     nextResource: PropTypes.object,
+    tenant: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {

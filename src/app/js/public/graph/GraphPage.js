@@ -7,10 +7,10 @@ import compose from 'recompose/compose';
 import getTitle from '../../lib/getTitle';
 import Graph from './Graph';
 
-const GraphPage = ({ name, onSearch }) => (
+const GraphPage = ({ name, onSearch, tenant }) => (
     <>
         <Helmet>
-            <title>Resources - {getTitle()}</title>
+            <title>Resources - {getTitle(tenant)}</title>
         </Helmet>
         <Graph className="graph-page" name={name} onSearch={onSearch} />
     </>
@@ -19,6 +19,7 @@ const GraphPage = ({ name, onSearch }) => (
 GraphPage.propTypes = {
     name: PropTypes.string.isRequired,
     onSearch: PropTypes.func.isRequired,
+    tenant: PropTypes.string,
 };
 
 GraphPage.defaultProps = {

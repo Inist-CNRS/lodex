@@ -39,7 +39,7 @@ const store = configureStore(
 hydrate(
     <Provider {...{ store }}>
         <LodexThemeProvider>
-            <Routes history={history} />
+            <Routes history={history} tenant={window.__TENANT__} />
         </LodexThemeProvider>
     </Provider>,
     document.getElementById('root'),

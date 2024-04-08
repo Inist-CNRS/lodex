@@ -121,6 +121,7 @@ export const DetailComponent = ({
     dense,
     isMultilingual,
     locale,
+    tenant,
 }) => {
     if (!resource) {
         return null;
@@ -139,7 +140,7 @@ export const DetailComponent = ({
         <span className="detail">
             <Helmet>
                 <title>
-                    {title || resource.uri} - {getTitle()}
+                    {title || resource.uri} - {getTitle(tenant)}
                 </title>
                 <meta name="description" content={description} />
             </Helmet>
@@ -209,6 +210,7 @@ DetailComponent.propTypes = {
     dense: PropTypes.bool,
     isMultilingual: PropTypes.bool,
     locale: PropTypes.string,
+    tenant: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {

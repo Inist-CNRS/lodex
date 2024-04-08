@@ -25,7 +25,7 @@ const styles = {
     },
 };
 
-export const AppComponent = ({ children }) => {
+export const AppComponent = ({ children, tenant }) => {
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const sidebarContextValue = useMemo(
         () => ({
@@ -38,7 +38,7 @@ export const AppComponent = ({ children }) => {
     return (
         <SidebarContext.Provider value={sidebarContextValue}>
             <Helmet>
-                <title>{getTitle()}</title>
+                <title>{getTitle(tenant)}</title>
                 <style type="text/css">{`
                 html, body { height: 100%; background: #efefef }
                 #root { height: 100%; }
@@ -72,6 +72,7 @@ export const AppComponent = ({ children }) => {
 
 AppComponent.propTypes = {
     children: PropTypes.node.isRequired,
+    tenant: PropTypes.string,
 };
 
 export default AppComponent;

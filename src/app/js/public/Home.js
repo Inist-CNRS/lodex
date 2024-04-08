@@ -38,6 +38,7 @@ export class HomeComponent extends Component {
         p: polyglotPropTypes.isRequired,
         title: PropTypes.string,
         description: PropTypes.string,
+        tenant: PropTypes.string,
     };
 
     UNSAFE_componentWillMount() {
@@ -54,6 +55,7 @@ export class HomeComponent extends Component {
             p: polyglot,
             title,
             description,
+            tenant,
         } = this.props;
 
         if (loading) {
@@ -73,7 +75,7 @@ export class HomeComponent extends Component {
                 <div>
                     <Helmet>
                         <title>
-                            {title || 'LODEX'} - {getTitle()}
+                            {title || 'LODEX'} - {getTitle(tenant)}
                         </title>
                         <meta name="description" content={description || ''} />
                     </Helmet>

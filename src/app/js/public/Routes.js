@@ -30,7 +30,7 @@ const Routes = (props) => {
         props.initializeLanguage();
     }, []);
 
-    const { customRoutes, history } = props;
+    const { customRoutes, history, tenant } = props;
     if (!customRoutes) {
         return null;
     }
@@ -59,10 +59,29 @@ const Routes = (props) => {
                             />
                         )}
                     />
-                    <Route path="/" exact component={Home} />
-                    <Route path="/resource" component={Resource} />
-                    <Route path="/ark:/:naan/:rest" component={Resource} />
-                    <Route path="/uid:/:uri" component={Resource} />
+                    <Route
+                        path="/"
+                        exact
+                        render={(props) => <Home {...props} tenant={tenant} />}
+                    />
+                    <Route
+                        path="/resource"
+                        render={(props) => (
+                            <Resource {...props} tenant={tenant} />
+                        )}
+                    />
+                    <Route
+                        path="/ark:/:naan/:rest"
+                        render={(props) => (
+                            <Resource {...props} tenant={tenant} />
+                        )}
+                    />
+                    <Route
+                        path="/uid:/:uri"
+                        render={(props) => (
+                            <Resource {...props} tenant={tenant} />
+                        )}
+                    />
                     <Route path="/login" component={Login} />
                     <Route
                         path="/graph/:name"
@@ -70,6 +89,7 @@ const Routes = (props) => {
                             <GraphPage
                                 {...props}
                                 onSearch={handleSearchWithDataset}
+                                tenant={tenant}
                             />
                         )}
                     />
@@ -93,6 +113,7 @@ Routes.propTypes = {
     loadDisplayConfig: PropTypes.func.isRequired,
     initializeLanguage: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
+    tenant: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
