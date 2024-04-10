@@ -66,7 +66,7 @@ render(
             theme={createThemeMui(adminTheme, localesMUI.get(locale))}
         >
             <ConnectedRouter history={history} onUpdate={scrollToTop}>
-                <App>
+                <App tenant={window.__TENANT__}>
                     <Route
                         path="/"
                         exact

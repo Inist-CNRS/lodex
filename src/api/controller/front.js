@@ -143,13 +143,13 @@ const renderFullPage = (
             </body>`,
         );
 
-const renderHtml = (store, muiTheme, url, context, history) =>
+const renderHtml = (store, muiTheme, url, context, history, tenant) =>
     StyleSheetServer.renderStatic(() =>
         renderToString(
             <StaticRouter location={url} context={context}>
                 <Provider {...{ store }}>
                     <MuiThemeProvider theme={muiTheme}>
-                        <Routes history={history} />
+                        <Routes history={history} tenant={tenant} />
                     </MuiThemeProvider>
                 </Provider>
             </StaticRouter>,
@@ -174,7 +174,14 @@ export const getRenderingData = async (
 
     const sagaPromise = store.runSaga(sagas).done;
     const context = {};
-    const { html, css } = renderHtml(store, theme, url, context, history);
+    const { html, css } = renderHtml(
+        store,
+        theme,
+        url,
+        context,
+        history,
+        ctx.configTenant.name,
+    );
     store.dispatch(END);
 
     await sagaPromise;

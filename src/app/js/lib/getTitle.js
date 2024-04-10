@@ -1,13 +1,31 @@
 import { getCleanHost } from '../../../common/uris';
 
-export default () => {
-    const host = getCleanHost();
-    /**
-     * @type {string}
-     */
-    const tenant = window.__TENANT__ ?? 'default';
+const HOST_REGEX = /https?:\/\/([\w-]+)/;
 
-    return host
-        ? `${tenant} - ${/https?:\/\/([\w-]+)/.exec(host)[1]}`
-        : `${tenant} - example`;
+/**
+ * @param tenant{string|undefined}
+ * @param prefix{string|undefined}
+ * @return {string}
+ */
+export default (tenant, prefix) => {
+    const host = getCleanHost();
+
+    /**
+     * @type {string[]}
+     */
+    const title = [];
+
+    if (prefix) {
+        title.push(prefix);
+    }
+
+    if (tenant) {
+        title.push(tenant);
+    }
+
+    if (host) {
+        title.push(HOST_REGEX.exec(host)[1]);
+    }
+
+    return title.join(' - ');
 };
