@@ -89,7 +89,7 @@ export const startImport = async (ctx) => {
             }
         }
         if (text) {
-            loaderEnvironment.source = text;
+            loaderEnvironment.source = 'text input';
             stream = ctx.getStreamFromText(text);
         }
         const parsedStream = await parseStream(stream);

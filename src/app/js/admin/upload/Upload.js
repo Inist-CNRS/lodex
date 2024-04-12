@@ -228,17 +228,17 @@ export const UploadComponent = ({
                     <Tab
                         icon={<UploadFileIcon />}
                         iconPosition="start"
-                        label="fichier"
+                        label={polyglot.t('upload_by_file')}
                     />
                     <Tab
                         icon={<LinkIcon />}
                         iconPosition="start"
-                        label="lien web"
+                        label={polyglot.t('upload_by_url')}
                     />
                     <Tab
                         icon={<EditNoteIcon />}
                         iconPosition="start"
-                        label="saisie libre"
+                        label={polyglot.t('upload_by_text')}
                     />
                 </Tabs>
             </Box>
