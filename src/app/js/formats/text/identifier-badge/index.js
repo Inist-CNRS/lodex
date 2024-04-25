@@ -25,4 +25,5 @@ export const resolvers = {
     PPN: 'https://www.sudoc.fr/',
     ORCID: 'https://orcid.org/',
     IDREF: 'https://www.idref.fr/',
+    OAID: 'https://openalex.org/', // for id like W2081939991
 };
