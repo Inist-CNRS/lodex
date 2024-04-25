@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import camelCase from 'lodash/camelCase';
 import { fromFields } from '../../sharedSelectors';
 import { field as fieldPropTypes } from '../../propTypes';
 import Property from './';
@@ -34,7 +35,7 @@ export const CompositePropertyComponent = ({
         <div style={styles.container}>
             {compositeFields.map((f) => (
                 <Property
-                    className={`compose_${getFieldClassName(field)}`}
+                    className={`compose_${getFieldClassName(field)} ${camelCase(f.internalName || '')}`}
                     key={f.name}
                     field={f}
                     isSub
