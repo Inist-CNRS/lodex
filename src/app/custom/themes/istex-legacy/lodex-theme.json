@@ -1,0 +1,18 @@
+{
+    "version": "2",
+    "restricted": true,
+    "name": {
+        "fr": "ISTEX",
+        "en": "ISTEX"
+    },
+    "description": {
+        "fr": "Thème ISTEX historique (restreint)",
+        "en": "ISTEX theme legacy(restricted)"
+    },
+    "files": {
+        "theme": {
+            "main": "customTheme.js",
+            "index": "index.html"
+        }
+    }
+}

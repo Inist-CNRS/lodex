@@ -113,7 +113,8 @@
         "void",
         "nougat",
         "inist",
-        "istex"
+        "istex",
+        "istex-legacy"
     ],
     "theme" : {
         "istex": {

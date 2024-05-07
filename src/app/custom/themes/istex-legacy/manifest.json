@@ -1,0 +1,12 @@
+{
+    "name": "lodex theme istex",
+    "icons": {
+            "16":"favicon-16x16.png",
+            "32":"favicon-32x32.png",
+            "180": "/apple-touch-icon.png",
+            "700":"/safari-pinned-tab.svg"
+    },
+    "theme_color": "#1d1d1d",
+    "background_color": "#f0f0f0",
+    "display": "standalone"
+}
