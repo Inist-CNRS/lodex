@@ -9,6 +9,9 @@ import deepClone from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import ejs from 'ejs';
 
+export const THEMES_VERSION = '3';
+export const THEMES_FOLDER = '../../app/custom/themes';
+
 const renderFile = promisify(ejs.renderFile);
 
 const logger = getLogger('system');
@@ -50,6 +53,10 @@ export const getAvailableThemes = () => {
  */
 export const getAvailableThemesKeys = () => {
     return availableThemes.keys();
+};
+
+export const getThemeFile = (theme, file) => {
+    return `${THEMES_FOLDER}/${theme}/${file}`;
 };
 
 /**
@@ -94,12 +101,53 @@ const init = async () => {
     // Load custom themes
     for (const theme of themes) {
         try {
-            const uri = `themes/${theme}`;
-            const themeConfig = await import(`../../${uri}/lodex-theme.json`);
+            /**
+             * @type {{
+             *     version: string;
+             *     restricted: boolean;
+             *     name: {
+             *         fr: string;
+             *         en: string;
+             *     };
+             *     description: {
+             *         fr: string;
+             *         en: string;
+             *     };
+             *     files?: {
+             *         theme?: {
+             *             main?: string;
+             *             index?: string;
+             *         };
+             *     };
+             * }}
+             */
+            const themeConfig = await import(
+                getThemeFile(theme, 'lodex-theme.json')
+            );
 
-            let indexLocation = '../../themes/default/index.html';
+            if (themeConfig.version !== THEMES_VERSION) {
+                themeConfig.description = {
+                    fr: themeConfig.description.fr + ' (thème obsolète)',
+                    en: themeConfig.description.en + ' (outdated theme)',
+                };
+
+                logger.warn(
+                    `The ${theme} theme version may not be compatible with the current LODEX version.`,
+                );
+                logger.warn(
+                    `Expected theme version: ${THEMES_VERSION}, current version: ${themeConfig.version}.`,
+                );
+                logger.warn(
+                    'LODEX may attempt to load this theme. Please note that if you use this theme, it may cause visual problems.',
+                );
+            }
+
+            let indexLocation = getThemeFile('default', 'index.html');
             if (themeConfig?.files?.theme?.index) {
-                indexLocation = `../../${uri}/${themeConfig.files.theme.index}`;
+                indexLocation = getThemeFile(
+                    theme,
+                    themeConfig.files.theme.index,
+                );
             }
 
             const themeLocalConfig = get(config, `theme.${theme}`, {});
@@ -114,7 +162,7 @@ const init = async () => {
                     customTheme,
                     (
                         await import(
-                            `../../${uri}/${themeConfig.files.theme.main}`
+                            getThemeFile(theme, themeConfig.files.theme.main)
                         )
                     ).default,
                 );

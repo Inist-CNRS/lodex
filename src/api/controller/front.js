@@ -32,7 +32,7 @@ import getLocale from '../../common/getLocale';
 import { getPublication } from './api/publication';
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
-import { getTheme, getAvailableThemesKeys } from '../models/themes';
+import { getTheme } from '../models/themes';
 
 const REGEX_JS_HOST = /\{\|__JS_HOST__\|\}/g;
 
@@ -421,15 +421,6 @@ app.use(
         renderAdminIndexHtml(ctx);
     }),
 );
-
-for (let theme of getAvailableThemesKeys()) {
-    app.use(
-        mount(
-            `/themes/${theme}/`,
-            serve(path.resolve(__dirname, `../../app/custom/themes/${theme}`)),
-        ),
-    );
-}
 
 app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
 app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));
