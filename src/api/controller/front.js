@@ -209,55 +209,44 @@ export const getRenderingData = async (
 };
 
 /**
- * Create all css variable linked to the customTheme,
- * this is done to avoid importing the customTheme file into the front and source code
- * @param theme
- * @returns {string}
+ * @param {string} key
+ * @param {any} value
+ * @return {string[]}
  */
-const getCssVariable = (theme) => {
-    const palette = theme.palette;
-    return `
-:root {
-    --primary-main: ${palette.primary.main};
-    --primary-secondary: ${palette.primary.secondary};
-    --primary-light: ${palette.primary.light};
-    --primary-contrast-text: ${palette.primary.contrastText};
+const buildCss = ([key, value]) => {
+    if (typeof value === 'object') {
+        const prefix = key
+            .split(/(?=[A-Z])/)
+            .map((word) => word.toLowerCase())
+            .join('-');
+        return Object.entries(value)
+            .flatMap(buildCss)
+            .map((variable) => `${prefix}-${variable}`);
+    }
 
-    --secondary-main: ${palette.secondary.main};
-    --secondary-contrast-text: ${palette.secondary.contrastText};
+    if (typeof value === 'number' || typeof value === 'string') {
+        const prefix = key
+            .split(/(?=[A-Z])/)
+            .map((word) => word.toLowerCase())
+            .join('-');
+        return [`${prefix}:${value};`];
+    }
 
-    --info-main: ${palette.info.main};
-    --info-contrast-text: ${palette.info.contrastText};
+    return [];
+};
 
-    --warning-main: ${palette.warning.main};
-    --warning-contrast-text: ${palette.warning.contrastText};
-
-    --danger-main: ${palette.danger.main};
-    --danger-contrast-text: ${palette.danger.contrastText};
-
-    --success-main: ${palette.success.main};
-    --success-contrast-text: ${palette.success.contrastText};
-
-    --neutral-main: ${palette.neutral.main};
-
-    --neutral-dark-main: ${palette.neutralDark.main};
-    --neutral-dark-secondary: ${palette.neutralDark.secondary};
-    --neutral-dark-very-dark: ${palette.neutralDark.veryDark};
-    --neutral-dark-dark: ${palette.neutralDark.dark};
-    --neutral-dark-light: ${palette.neutralDark.light};
-    --neutral-dark-lighter: ${palette.neutralDark.lighter};
-    --neutral-dark-very-light: ${palette.neutralDark.veryLight};
-    --neutral-dark-transparent: ${palette.neutralDark.transparent};
-
-    --text-main: ${palette.text.main};
-    --text-primary: ${palette.text.primary};
-
-    --contrast-main: ${palette.contrast.main};
-    --contrast-light: ${palette.contrast.light};
-
-    --contrast-threshold: ${palette.contrastThreshold};
-}
-    `;
+/**
+ * @param {import('@mui/material/styles').Theme['palette']} palette
+ */
+const buildCssVariable = (palette) => {
+    const css = [
+        ':root{',
+        ...Object.entries(palette)
+            .flatMap(buildCss)
+            .map((variable) => `--${variable}`),
+        '}',
+    ];
+    return css.join('');
 };
 
 const handleRender = async (ctx, next) => {
@@ -282,7 +271,10 @@ const handleRender = async (ctx, next) => {
         userAgent: headers['user-agent'],
     });
 
-    const cssVariable = getCssVariable(lodexTheme.customTheme);
+    const cssVariable = buildCssVariable({
+        ...lodexTheme.customTheme.palette,
+        ...theme.palette,
+    });
 
     const { html, css, preloadedState, helmet, redirect } =
         await getRenderingData(
@@ -312,7 +304,7 @@ const handleRender = async (ctx, next) => {
 
 const renderAdminIndexHtml = (ctx) => {
     const lodexTheme = getTheme('default');
-    const cssVariable = getCssVariable(lodexTheme.customTheme);
+    const cssVariable = buildCssVariable(lodexTheme.customTheme.palette);
 
     ctx.body = fs
         .readFileSync(path.resolve(__dirname, '../../app/admin.html'))

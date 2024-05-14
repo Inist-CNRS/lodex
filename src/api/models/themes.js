@@ -9,15 +9,68 @@ import deepClone from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import ejs from 'ejs';
 
+// --- Global variable for the Theme system
 export const THEMES_VERSION = '3';
 export const THEMES_FOLDER = '../../app/custom/themes';
 
+// --- Global function for the Theme system
 const renderFile = promisify(ejs.renderFile);
-
 const logger = getLogger('system');
 
+// --- TypeScript without TypeScript (Required an ide with TypeScript support)
 /**
- * @type {Map<string, {name: {fr: string, en: string}, description: {fr: string, en: string}, index: string, customTheme: *}>}
+ * @typedef {Partial<import('@mui/material/styles').Theme>} CustomTheme
+ */
+
+/**
+ * @typedef {Object} ThemeConfig - Theme config file
+ * @property {string} version - Version of the LODEX theme system
+ * @property {{
+ *     fr: string;
+ *     en: string
+ * }} name - Name of the theme
+ * @property {{
+ *     fr: string;
+ *     en: string
+ * }} description - Short description about the theme
+ * @property {{
+ *     theme: {
+ *         main: string;
+ *         index: string;
+ *     };
+ * }} file - Optional option for the theme system
+ */
+
+/**
+ * @typedef {Object} ThemeEntry - Theme object use to store the theme
+ * @property {{
+ *     fr: string;
+ *     en: string
+ * }} name - Name of the theme
+ * @property {{
+ *     fr: string;
+ *     en: string
+ * }} description - Short description about the theme
+ * @property {string} index - Html index file
+ * @property {CustomTheme} customTheme - Mui theme
+ */
+
+/**
+ * @typedef {Object} ThemeDescription
+ * @property {string} value - ID of the theme
+ * @property {{
+ *     fr: string;
+ *     en: string
+ * }} name - Name of the theme
+ * @property {{
+ *     fr: string;
+ *     en: string
+ * }} description - Short description about the theme
+ */
+
+// --- Theme storage
+/**
+ * @type {Map<string, ThemeEntry>}
  */
 const loadedThemes = new Map();
 /**
@@ -25,16 +78,17 @@ const loadedThemes = new Map();
  */
 const availableThemes = new Map();
 
+// --- Theme accessing
 /**
  * @param theme
- * @returns {{name: {fr: string, en: string}, description: {fr: string, en: string}, index: string, customTheme: *}}
+ * @returns {ThemeEntry}
  */
 export const getTheme = (theme = 'default') => {
     return loadedThemes.get(theme);
 };
 
 /**
- * @returns {*[]}
+ * @returns {ThemeDescription[]}
  */
 export const getAvailableThemes = () => {
     const toReturn = [];
@@ -49,6 +103,7 @@ export const getAvailableThemes = () => {
 };
 
 /**
+ * @deprecated
  * @returns {IterableIterator<string>}
  */
 export const getAvailableThemesKeys = () => {
@@ -60,6 +115,7 @@ export const getThemeFile = (theme, file) => {
 };
 
 /**
+ * @deprecated
  * @param theme
  * @returns {boolean}
  */
@@ -67,6 +123,7 @@ export const isLoaded = (theme) => {
     return availableThemes.get(theme);
 };
 
+// --- Theme initialisation
 const initAvailableThemes = () => {
     availableThemes.set('default', false);
     for (const theme of config.themes) {
@@ -102,24 +159,7 @@ const init = async () => {
     for (const theme of themes) {
         try {
             /**
-             * @type {{
-             *     version: string;
-             *     restricted: boolean;
-             *     name: {
-             *         fr: string;
-             *         en: string;
-             *     };
-             *     description: {
-             *         fr: string;
-             *         en: string;
-             *     };
-             *     files?: {
-             *         theme?: {
-             *             main?: string;
-             *             index?: string;
-             *         };
-             *     };
-             * }}
+             * @type {ThemeConfig}
              */
             const themeConfig = await import(
                 getThemeFile(theme, 'lodex-theme.json')
