@@ -3,7 +3,7 @@ import config from '../../../config.json';
 import path from 'path';
 import { promisify } from 'util';
 import getLogger from '../services/logger';
-import defaultCustomTheme from '../../app/custom/themes/default/customTheme';
+import defaultCustomTheme from '../../app/custom/themes/default/defaultTheme';
 import { version } from '../../../package.json';
 import deepClone from 'lodash/cloneDeep';
 import get from 'lodash/get';

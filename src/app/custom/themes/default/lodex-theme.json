@@ -1,5 +1,5 @@
 {
-  "version": "2",
+  "version": "3",
   "restricted": true,
   "name": {
     "fr": "Système",
@@ -11,7 +11,7 @@
   },
   "files": {
     "theme": {
-      "main": "customTheme.js",
+      "main": "defaultTheme.js",
       "index": "index.html"
     }
   }
