@@ -34,7 +34,6 @@ import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
 import PopupConfirmUpload from './PopupConfirmUpload';
 import { toast } from '../../../../common/tools/toast';
-import adminTheme from '../../../custom/themes/adminTheme';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 
 const styles = {
@@ -76,8 +75,8 @@ const styles = {
     },
     loader: {
         minHeight: '220px',
-        backgroundColor: adminTheme.palette.contrast.main,
-        color: adminTheme.palette.primary.secondary,
+        backgroundColor: 'var(--contrast-main)',
+        color: 'var(--primary-secondary)',
     },
     divider: {
         textTransform: 'uppercase',
@@ -89,7 +88,7 @@ const styles = {
             width: '100%',
             height: '2px',
             content: '""',
-            backgroundColor: adminTheme.palette.primary.secondary,
+            backgroundColor: 'var(--primary-secondary)',
             position: 'absolute',
             top: '50%',
             left: 0,
@@ -112,7 +111,7 @@ const styles = {
     },
     dividerLabel: {
         padding: '1rem',
-        backgroundColor: adminTheme.palette.contrast.main,
+        backgroundColor: 'var(--contrast-main)',
         position: 'relative',
         display: 'inline-block',
         '@media (min-width: 992px)': {

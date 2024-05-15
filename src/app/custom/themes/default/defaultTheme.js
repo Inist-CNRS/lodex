@@ -16,8 +16,9 @@ const palette = {
     mode: 'light',
     primary: {
         main: '#7dbd42',
-        // light: 'rgba(125, 189, 66, .7)', // Old color, now using mui to generated new color
-        // dark: 'rgba(125, 189, 66, .1)', // The new color may be different
+        secondary: 'rgba(125, 189, 66, .7)', // Do not exist in mui
+        // light: 'rgba(125, 189, 66, .7)',  // Old color, now using mui to generated new color
+        // dark: 'rgba(125, 189, 66, .1)',   // The new color may be different
         contrastText: '#fff',
     },
     secondary: {

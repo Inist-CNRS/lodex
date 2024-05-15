@@ -18,13 +18,12 @@ import PublicationPreview from './preview/publication/PublicationPreview';
 import Upload from './upload/Upload';
 import Loading from '../lib/components/Loading';
 import { preLoadLoaders } from './loader/';
-import adminTheme from '../../custom/themes/adminTheme';
 
 const styles = {
     punchLine: {
         padding: '16px',
         textAlign: 'center',
-        color: adminTheme.palette.info.main,
+        color: 'var(--info-main)',
     },
 };
 

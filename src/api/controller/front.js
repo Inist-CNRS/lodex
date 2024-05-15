@@ -303,8 +303,18 @@ const handleRender = async (ctx, next) => {
 };
 
 const renderAdminIndexHtml = (ctx) => {
+    const { headers } = ctx.request;
+
     const lodexTheme = getTheme('default');
-    const cssVariable = buildCssVariable(lodexTheme.customTheme.palette);
+
+    const theme = createTheme(lodexTheme.customTheme, {
+        userAgent: headers['user-agent'],
+    });
+
+    const cssVariable = buildCssVariable({
+        ...lodexTheme.customTheme.palette,
+        ...theme.palette,
+    });
 
     ctx.body = fs
         .readFileSync(path.resolve(__dirname, '../../app/admin.html'))

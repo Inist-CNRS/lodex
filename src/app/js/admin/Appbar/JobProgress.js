@@ -31,7 +31,6 @@ import { toast } from '../../../../common/tools/toast';
 import { finishProgress } from '../progress/reducer';
 import { loadEnrichments } from '../enrichment';
 import { loadPrecomputed } from '../precomputed';
-import adminTheme from '../../../custom/themes/adminTheme';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 
 const styles = {
@@ -40,8 +39,8 @@ const styles = {
         display: 'flex',
         margin: '0 4px 0',
     },
-    colorPrimary: { backgroundColor: adminTheme.palette.contrast.light },
-    barColorPrimary: { backgroundColor: adminTheme.palette.contrast.main },
+    colorPrimary: { backgroundColor: 'var(--contrast-light)' },
+    barColorPrimary: { backgroundColor: 'var(--contrast-main)' },
     progressContainer: {
         display: 'flex',
         flexDirection: 'column',
