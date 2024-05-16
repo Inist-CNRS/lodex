@@ -40,11 +40,11 @@ describe('RadarChart', () => {
         const radarChart = new RadarChart();
         expect(radarChart.buildSpec(400)).toStrictEqual({
             $schema: 'https://vega.github.io/schema/vega/v5.json',
+            background: 'transparent',
             autosize: {
                 contains: 'padding',
                 type: 'none',
             },
-            background: 'white',
             data: [
                 {
                     name: 'table',

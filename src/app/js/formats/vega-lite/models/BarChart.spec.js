@@ -30,6 +30,7 @@ describe('BasicChart', () => {
     it('Default build need to return the vega lite spec with all default values', function () {
         let barChart = new BarChart();
         let defaultBuild = {
+            background: 'transparent',
             autosize: {
                 contains: 'padding',
                 type: 'fit',

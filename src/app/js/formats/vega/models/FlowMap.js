@@ -67,6 +67,8 @@ class FlowMap extends BasicChartVG {
      * @param widthIn
      */
     buildSpec(widthIn) {
+        this.model.background = 'transparent';
+
         if (!this.editMode) {
             this.model.width = widthIn - VEGA_ACTIONS_WIDTH;
             this.model.height = widthIn * 0.6;

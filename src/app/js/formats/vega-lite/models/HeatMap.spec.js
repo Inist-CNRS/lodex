@@ -67,6 +67,7 @@ describe('HeatMap', () => {
     it('build', function () {
         let heatMap = new HeatMap();
         expect(heatMap.buildSpec(400)).toStrictEqual({
+            background: 'transparent',
             config: {
                 axis: {
                     grid: false,

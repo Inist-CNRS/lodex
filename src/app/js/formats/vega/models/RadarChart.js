@@ -65,6 +65,8 @@ class RadarChart extends BasicChartVG {
      * @param widthIn
      */
     buildSpec(widthIn) {
+        this.model.background = 'transparent';
+
         this.model.scales.forEach((e) => {
             if (e.name === 'color') {
                 e.range = this.colors;

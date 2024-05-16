@@ -81,6 +81,8 @@ class HeatMap extends BasicChart {
     }
 
     commonWithBubblePlot() {
+        this.model.background = 'transparent';
+
         if (this.flip) {
             const field = this.model.encoding.x.field;
             this.model.encoding.x.field = this.model.encoding.y.field;

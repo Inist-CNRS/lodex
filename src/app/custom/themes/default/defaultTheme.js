@@ -14,6 +14,10 @@
  */
 const palette = {
     mode: 'light',
+    background: {
+        default: '#eeeeee',
+        paper: '#fafafa',
+    },
     primary: {
         main: '#7dbd42',
         secondary: 'rgba(125, 189, 66, .7)', // Do not exist in mui
@@ -39,10 +43,12 @@ const palette = {
         main: '#7dbd42',
         contrastText: '#fff',
     },
-    text: {
-        main: 'rgb(98, 99, 104)', // Do not exist in mui
-        primary: '#626368',
-    },
+    // text: {
+    //     main: 'rgb(98,99,104)', // Do not exist in mui
+    //     primary: 'rgb(98,99,104)',
+    //     secondary: 'rgba(98,99,104,0.75)',
+    //     disabled: 'rgba(98,99,104,0.55)',
+    // },
     contrastThreshold: 3, // Mui default (we need to look if is pertinent to change it)
     // Do not exist in mui / Custom variable
     danger: {
