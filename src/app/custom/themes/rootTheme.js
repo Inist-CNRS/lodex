@@ -1,54 +1,46 @@
-import colorsTheme from './default/colorsTheme';
+/**
+ * LODEX Root panel color palette
+ * @licence CeCILL
+ */
+
+/**
+ * LODEX use Mui theme
+ * See this link to look a mui configuration
+ * https://mui.com/material-ui/customization/theming/
+ * https://mui.com/material-ui/customization/palette/
+ * https://mui.com/material-ui/customization/default-theme/
+ * https://zenoo.github.io/mui-theme-creator/
+ * @type {Partial<import('@mui/material/styles').Theme['palette']>}
+ */
+const palette = {
+    mode: 'light',
+    primary: {
+        main: '#539ce1',
+        contrastText: '#fff',
+    },
+    secondary: {
+        main: '#f48022',
+        contrastText: '#fff',
+    },
+    info: {
+        main: '#b22f90',
+    },
+    warning: {
+        main: '#f48022',
+        contrastText: '#fff',
+    },
+    error: {
+        main: '#f44336',
+    },
+    success: {
+        main: '#539ce1',
+        contrastText: '#fff',
+    },
+    text: {
+        primary: '#626368',
+    },
+};
 
 export default {
-    palette: {
-        primary: {
-            main: colorsTheme.blue.primary,
-            secondary: colorsTheme.blue.secondary,
-            light: colorsTheme.blue.light,
-            contrastText: colorsTheme.white.primary,
-        },
-        secondary: {
-            main: colorsTheme.orange.primary,
-            contrastText: colorsTheme.white.primary,
-        },
-        info: {
-            main: colorsTheme.purple.primary,
-            contrastText: colorsTheme.white.primary,
-        },
-        warning: {
-            main: colorsTheme.orange.primary,
-            contrastText: colorsTheme.white.primary,
-        },
-        danger: {
-            main: colorsTheme.red.primary,
-            contrastText: colorsTheme.white.primary,
-        },
-        success: {
-            main: colorsTheme.blue.primary,
-            contrastText: colorsTheme.white.primary,
-        },
-        neutral: {
-            main: colorsTheme.gray.primary,
-        },
-        neutralDark: {
-            main: colorsTheme.black.dark,
-            secondary: colorsTheme.black.secondary,
-            veryDark: colorsTheme.black.veryDark,
-            dark: colorsTheme.black.dark,
-            light: colorsTheme.black.light,
-            lighter: colorsTheme.black.lighter,
-            veryLight: colorsTheme.black.veryLight,
-            transparent: colorsTheme.black.transparent,
-        },
-        text: {
-            primary: colorsTheme.black.secondary,
-            main: colorsTheme.black.secondary,
-        },
-        contrast: {
-            main: colorsTheme.white.primary,
-            light: colorsTheme.white.light,
-        },
-        contrastThreshold: 3,
-    },
+    palette,
 };

@@ -9,10 +9,7 @@ import mount from 'koa-mount';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 import { Helmet } from 'react-helmet';
-import {
-    ThemeProvider as MuiThemeProvider,
-    createTheme,
-} from '@mui/material/styles';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { END } from 'redux-saga';
 import fs from 'fs';
 import { StyleSheetServer } from 'aphrodite/no-important';
@@ -33,8 +30,8 @@ import { getPublication } from './api/publication';
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 import { getTheme } from '../models/themes';
-
-const REGEX_JS_HOST = /\{\|__JS_HOST__\|\}/g;
+import { buildCssVariable, createMuiTheme } from '../models/front';
+import rootTheme from '../../app/custom/themes/rootTheme';
 
 const getDefaultInitialState = (ctx, token, cookie, locale) => ({
     enableAutoPublication: ctx.configTenant.enableAutoPublication,
@@ -208,49 +205,8 @@ export const getRenderingData = async (
     };
 };
 
-/**
- * @param {string} key
- * @param {any} value
- * @return {string[]}
- */
-const buildCss = ([key, value]) => {
-    if (typeof value === 'object') {
-        const prefix = key
-            .split(/(?=[A-Z])/)
-            .map((word) => word.toLowerCase())
-            .join('-');
-        return Object.entries(value)
-            .flatMap(buildCss)
-            .map((variable) => `${prefix}-${variable}`);
-    }
-
-    if (typeof value === 'number' || typeof value === 'string') {
-        const prefix = key
-            .split(/(?=[A-Z])/)
-            .map((word) => word.toLowerCase())
-            .join('-');
-        return [`${prefix}:${value};`];
-    }
-
-    return [];
-};
-
-/**
- * @param {import('@mui/material/styles').Theme['palette']} palette
- */
-const buildCssVariable = (palette) => {
-    const css = [
-        ':root{',
-        ...Object.entries(palette)
-            .flatMap(buildCss)
-            .map((variable) => `--${variable}`),
-        '}',
-    ];
-    return css.join('');
-};
-
 const handleRender = async (ctx, next) => {
-    const { url, headers } = ctx.request;
+    const { url } = ctx.request;
     if (
         (url.match(/[^\\]*\.(\w+)$/) && !url.match(/\/uid:\//)) ||
         url.match(/[^\\]*\.html$/) ||
@@ -267,14 +223,8 @@ const handleRender = async (ctx, next) => {
 
     const lodexTheme = getTheme(ctx.configTenant.theme);
 
-    const theme = createTheme(lodexTheme.customTheme, {
-        userAgent: headers['user-agent'],
-    });
-
-    const cssVariable = buildCssVariable({
-        ...lodexTheme.customTheme.palette,
-        ...theme.palette,
-    });
+    const theme = createMuiTheme(lodexTheme.customTheme);
+    const cssVariable = buildCssVariable(theme.palette);
 
     const { html, css, preloadedState, helmet, redirect } =
         await getRenderingData(
@@ -303,18 +253,9 @@ const handleRender = async (ctx, next) => {
 };
 
 const renderAdminIndexHtml = (ctx) => {
-    const { headers } = ctx.request;
-
     const lodexTheme = getTheme('default');
-
-    const theme = createTheme(lodexTheme.customTheme, {
-        userAgent: headers['user-agent'],
-    });
-
-    const cssVariable = buildCssVariable({
-        ...lodexTheme.customTheme.palette,
-        ...theme.palette,
-    });
+    const theme = createMuiTheme(lodexTheme.customTheme);
+    const cssVariable = buildCssVariable(theme.palette);
 
     ctx.body = fs
         .readFileSync(path.resolve(__dirname, '../../app/admin.html'))
@@ -332,26 +273,32 @@ const renderAdminIndexHtml = (ctx) => {
                 ctx.tenant,
             )}</script>
               <script>window.__JS_HOST__ = "${jsHost}"</script>
-              <script src="{|__JS_HOST__|}/admin/index.js"></script>
+              <script src="${jsHost}/admin/index.js"></script>
         </body>`,
-        )
-        .replace(REGEX_JS_HOST, jsHost);
+        );
 };
 
 const renderRootAdminIndexHtml = (ctx) => {
+    const theme = createMuiTheme(rootTheme);
+    const cssVariable = buildCssVariable(theme.palette);
+
     ctx.body = fs
         .readFileSync(path.resolve(__dirname, '../../app/root-admin.html'))
         .toString()
+        .replace(
+            '</head>',
+            `<style>${cssVariable}</style>
+            </head>`,
+        )
         .replace(
             '</body>',
             ` <script>window.__DBNAME__ = ${JSON.stringify(
                 mongo.dbName,
             )}</script><script>window.__TENANT__ = ${JSON.stringify(
                 ctx.tenant,
-            )}</script><script src="{|__JS_HOST__|}/root-admin/index.js"></script>
+            )}</script><script src="${jsHost}/root-admin/index.js"></script>
         </body>`,
-        )
-        .replace(REGEX_JS_HOST, jsHost);
+        );
 };
 
 const app = new Koa();
