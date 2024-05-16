@@ -15,7 +15,7 @@
 const palette = {
     mode: 'light',
     background: {
-        default: '#eeeeee',
+        default: '#fafafa',
         paper: '#fafafa',
     },
     primary: {
