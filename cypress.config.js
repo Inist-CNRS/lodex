@@ -1,5 +1,6 @@
 const { defineConfig } = require('cypress');
 
+// Commit use to run test in pr
 module.exports = defineConfig({
     e2e: {
         baseUrl: 'http://localhost:3000',
