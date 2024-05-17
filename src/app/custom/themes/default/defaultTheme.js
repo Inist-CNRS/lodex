@@ -43,12 +43,12 @@ const palette = {
         main: '#7dbd42',
         contrastText: '#fff',
     },
-    // text: {
-    //     main: 'rgb(98,99,104)', // Do not exist in mui
-    //     primary: 'rgb(98,99,104)',
-    //     secondary: 'rgba(98,99,104,0.75)',
-    //     disabled: 'rgba(98,99,104,0.55)',
-    // },
+    text: {
+        main: 'rgb(98,99,104)', // Do not exist in mui
+        primary: 'rgb(98,99,104)',
+        secondary: 'rgba(98,99,104,0.75)',
+        disabled: 'rgba(98,99,104,0.55)',
+    },
     contrastThreshold: 3, // Mui default (we need to look if is pertinent to change it)
     // Do not exist in mui / Custom variable
     danger: {
