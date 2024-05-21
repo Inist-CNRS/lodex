@@ -238,6 +238,7 @@
         "@shelf/jest-mongodb": "3.0.2",
         "@testing-library/jest-dom": "5.16.5",
         "@testing-library/react": "11.2.7",
+        "@types/ejs": "3.1.5",
         "@types/jest": "26.0.22",
         "@types/node": "18.18.9",
         "@types/ramda": "0.27.40",
