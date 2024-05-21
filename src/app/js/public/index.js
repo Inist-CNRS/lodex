@@ -2,7 +2,7 @@ import '@babel/polyfill';
 import 'url-api-polyfill';
 import { createBrowserHistory } from 'history';
 import React from 'react';
-import { hydrate } from 'react-dom';
+import { hydrateRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 
 import rootReducer from './reducers';
@@ -36,11 +36,12 @@ const store = configureStore(
     history,
 );
 
-hydrate(
+const container = document.getElementById('root');
+hydrateRoot(
+    container,
     <Provider {...{ store }}>
         <LodexThemeProvider>
             <Routes history={history} tenant={window.__TENANT__} />
         </LodexThemeProvider>
     </Provider>,
-    document.getElementById('root'),
 );

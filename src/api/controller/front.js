@@ -121,7 +121,10 @@ const renderFullPage = (
     cssVariable,
 ) =>
     indexHtml
-        .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
+        .replace(
+            '<div id="root" class="container"></div>',
+            `<div id="root" class="container">${html}</div>`,
+        )
         .replace(/<title>.*?<\/title>/, helmet.title.toString())
         .replace(
             '</head>',

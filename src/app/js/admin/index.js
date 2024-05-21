@@ -2,7 +2,7 @@ import '@babel/polyfill';
 import 'url-api-polyfill';
 
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { createHashHistory } from 'history';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
@@ -60,7 +60,10 @@ if (process.env.NODE_ENV === 'e2e') {
     sessionStorage.setItem('lodex-tenant', tenant);
 }
 
-render(
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+root.render(
     <Provider store={store}>
         <ThemeProvider
             theme={createThemeMui(adminTheme, localesMUI.get(locale))}
@@ -83,5 +86,4 @@ render(
             </ConnectedRouter>
         </ThemeProvider>
     </Provider>,
-    document.getElementById('root'),
 );
