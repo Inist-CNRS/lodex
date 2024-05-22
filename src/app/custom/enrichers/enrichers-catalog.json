@@ -42,7 +42,7 @@
     {
         "id": "post-v1-idref-orcid-json",
         "url": "https://mapping-tools.services.istex.fr/v1/idRef/orcid/json",
-        "doc": "",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools#v1%2fidref%2forcid%2fjson",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-idref-orcid-json",
         "objectifTDM": "https://services.istex.fr/2022/03/29/associer-un-identifiant-orcid-a-lidentifiant-idref-correspondant-a-valider/",
         "type": "other"
