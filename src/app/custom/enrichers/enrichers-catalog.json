@@ -18,8 +18,8 @@
     {
         "id": "post-v1-homogenize-document-type-json",
         "url": "https://mapping-tools.services.istex.fr/v1/homogenize/documentType/json",
-        "doc": "",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-homogenize-document-type-json",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools#v1%2fhomogenize%2fdocumenttype%2fjson",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-homogenize-document-type-json",
         "objectifTDM": "https://services.istex.fr/2022/03/29/homogeneisation-des-types-de-documents/",
         "type": "other"
     },
