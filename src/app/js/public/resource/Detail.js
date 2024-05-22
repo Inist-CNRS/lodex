@@ -62,6 +62,7 @@ const styles = {
         paddingTop: dense ? '0.5rem' : '1rem',
         paddingLeft: '1rem',
         paddingRight: '1rem',
+        gap: '1%',
     }),
     valueContainer: {
         display: 'flex',
