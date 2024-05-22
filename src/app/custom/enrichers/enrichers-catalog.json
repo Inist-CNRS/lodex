@@ -90,7 +90,7 @@
     {
         "id": "post-v1-detect-lang",
         "url": "https://nlp-tools2.services.istex.fr/v1/detect-lang",
-        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/nlp-tools2",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/nlp-tools2#v1%2fdetect-lang",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=nlp-tools2%20-%20Outils%20de%20NLP#/NLP/post-v1-detect-lang",
         "objectifTDM": "https://services.istex.fr/2021/12/16/detection-de-la-llangue-dun-texte/",
         "type": "other"
