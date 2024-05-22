@@ -82,8 +82,8 @@
     {
         "id": "post-v1-addresses-parse",
         "url": "https://affiliations-tools.services.istex.fr/v1/addresses/parse",
-        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/affiliations-tools",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliations-tools%20-%20Structuration%20%26%20enrichissements%20d%27affiliations#/adresses/post-v1-addresses-parse",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/affiliations-tools#v1addressesparse",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliations-tools%20-%20Structuration%20et%20enrichissements%20d%27affiliations#/adresses/post-v1-addresses-parse",
         "objectifTDM": "https://services.istex.fr/2021/12/20/decoupage-dune-adresse/",
         "type": "affiliation"
     },
