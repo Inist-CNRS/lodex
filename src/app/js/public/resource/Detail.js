@@ -152,6 +152,7 @@ export const DetailComponent = ({
                                 field={field}
                                 resource={resource}
                                 style={styles.property(dense)}
+                                className={camelCase(field.internalName || '')}
                             />
                         ))}
                     </div>
