@@ -720,8 +720,8 @@
 "dataset_edit_enrichment_title"	"Enrichment %{column_name} for row %{row_name}"	"Enrichissement %{column_name} pour la ligne %{row_name}"
 "dataset_edit_success"	"Field updated with value"	"Champ mis à jour avec la nouvelle valeur"
 "header_name_with_errors"	"%{name} (%{errorCount} errors)"	"%{name} (%{errorCount} erreurs)"
-"ws_post-v1-rnsr-json_title"	"Affiliation to RNSR (using rules)"	"Affiliation vers RNSR (par règle)"
-"ws_post-v1-rnsr-json_description"	"Finds the identifier of the National Repository of Research Structures for an affiliation address (with name of the structure)."	"Trouve l’identifiant du Référentiel Nationale des Structure de Recherche pour une adresse d’affiliation (avec nom de la structure)."
+"ws_post-v1-rnsr-json_title"	 Assigning RNSR identifier(s) to an address (Alignments)	 Attribution d’identifiant(s) RNSR à une adresse (Alignements)
+"ws_post-v1-rnsr-json_description"	"Assigns, using rules, one or more RNSR identifiers based on an author affiliation address and a year of publication."	"Attribue, à l’aide de règles, un ou plusieurs identifiants RNSR à partir d’une adresse d’affiliation d’auteur et d’une année de publication."
 "ws_post-v1-halauthorid-idref-json_title"	"halAuthorId to idRef"	"halAuthorId vers idRef"
 "ws_post-v1-halauthorid-idref-json_description"	"Gives the idRef corresponding to a halAuthorID."	"Donne l’idRef correspondant à un halAuthorID."
 "ws_post-v1-homogenize-document-type-json_title"	"Homogenize document type"	"Homogénéisation du type de document"
