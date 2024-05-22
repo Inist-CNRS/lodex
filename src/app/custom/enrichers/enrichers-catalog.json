@@ -106,7 +106,7 @@
     {
         "id": "post-v1-en-classhalen",
         "url": "https://hal-classifier.services.istex.fr/v1/en/classhalen",
-        "doc": "",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/hal-classifier#v1%2fen%2fclasshalen",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=hal-classifier%20-%20Classification%20HAL#/Classification%20supervis%C3%A9e/post-v1-en-classhalen",
         "objectifTDM": "https://services.istex.fr/2022/02/10/classification-dans-les-domaines-hal/",
         "type": "classification"

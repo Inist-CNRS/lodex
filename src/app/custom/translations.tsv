@@ -749,7 +749,7 @@
 "ws_post-v1-en-classify_title"	"Classification into scientific fields Pascal-Francis"	"Classification en domaines scientifiques Pascal-Francis "
 "ws_post-v1-en-classify_description"	"Automatically classifies scientific documents in English using the Pascal (Science, Technology and Medicine) or Francis (Humanities and Social Sciences) classification schemes."	"Classe automatiquement des documents scientifiques en anglais dans le plan de classement Pascal (Sciences, Techniques et Médecine) ou Francis (Sciences Humaines et Sociales)."
 "ws_post-v1-en-classhalen_title"	"Classification in HAL domains"	"Classification dans les domaines HAL"
-"ws_post-v1-en-classhalen_description"	"The web service of classification HAL takes in entry a text in English and gives the corresponding scientific field in the plan of classification used by the base HAL."	"Le web service de classification HAL prend en entrée un texte en anglais et donne le domaine scientifique correspondant dans le plan de classement utilisé par la base HAL."
+"ws_post-v1-en-classhalen_description"	"Classification of documents in French or in English in the 13 major fields (in French) of the classification plan used by the HAL database."	"Classe des documents en français ou en anglais dans les  13 grands domaines (en français) du plan de classement utilisé par la base HAL."
 "ws_post-v2-unpaywall-expand_title"	"Unpaywall (Info related to Open Access)"	"Unpaywall (Infos liées à l'Open Access)"
 "ws_post-v2-unpaywall-expand_description"	"Get unpaywall info from doi (is_oa, oa_status, host_type, has_repository_copy)."	"Récupère des infos d'unpaywall à partir du doi (is_oa, oa_status, host_type, has_repository_copy)."
 "ws_post-v2-openalex-expand_title"	"Notice OpenAlex"	"Notice OpenAlex"
