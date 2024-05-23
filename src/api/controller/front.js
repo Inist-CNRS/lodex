@@ -1,4 +1,10 @@
 /* eslint-disable no-useless-escape */
+import React from 'react';
+import { StyleSheetServer } from 'aphrodite/no-important';
+import { Provider } from 'react-redux';
+import { StaticRouter } from 'react-router';
+import { renderToString } from 'react-dom/server';
+
 import path from 'path';
 import Koa from 'koa';
 import serve from 'koa-static';
@@ -14,6 +20,7 @@ import { createMemoryHistory } from 'history';
 import rootReducer from '../../app/js/public/reducers';
 import sagas from '../../app/js/public/sagas';
 import configureStoreServer from '../../app/js/configureStoreServer';
+import Routes from '../../app/js/public/Routes';
 import translations from '../services/translations';
 import getLocale from '../../common/getLocale';
 
@@ -113,10 +120,24 @@ export const getPreloadedState = async (
     );
 
     const sagaPromise = store.runSaga(sagas).done;
-
+    const context = {};
+    StyleSheetServer.renderStatic(() =>
+        renderToString(
+            <StaticRouter location={url} context={context}>
+                <Provider {...{ store }}>
+                    <Routes history={history} tenant={ctx.tenant} />
+                </Provider>
+            </StaticRouter>,
+        ),
+    );
     store.dispatch(END);
-
     await sagaPromise;
+
+    if (context.url) {
+        return {
+            redirect: context.url,
+        };
+    }
 
     const preloadedState = store.getState();
 
@@ -146,7 +167,7 @@ const handleRender = async (ctx, next) => {
         initialEntries: [url],
     });
 
-    const { preloadedState } = await getPreloadedState(
+    const { preloadedState, redirect } = await getPreloadedState(
         history,
         ctx.state.headerToken,
         ctx.request.header.cookie,
@@ -154,6 +175,10 @@ const handleRender = async (ctx, next) => {
         url,
         ctx,
     );
+
+    if (redirect) {
+        return ctx.redirect(redirect);
+    }
 
     renderPublic(ctx.configTenant.theme, {
         preload: JSON.stringify(preloadedState),
