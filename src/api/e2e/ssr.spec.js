@@ -46,7 +46,7 @@ describe('ssr', () => {
                     .then((response) => response.text());
                 state = JSON.parse(
                     response.match(
-                        /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
+                        /window\.__PRELOADED_STATE__ = ([\s\S]*?);/,
                     )[1],
                 );
             });
@@ -120,7 +120,7 @@ describe('ssr', () => {
                     .then((response) => response.text());
                 state = JSON.parse(
                     response.match(
-                        /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
+                        /window\.__PRELOADED_STATE__ = ([\s\S]*?);/,
                     )[1],
                 );
             });
@@ -166,7 +166,7 @@ describe('ssr', () => {
                     .then((response) => response.text());
                 state = JSON.parse(
                     response.match(
-                        /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
+                        /window\.__PRELOADED_STATE__ = ([\s\S]*?);/,
                     )[1],
                 );
             });
@@ -222,7 +222,7 @@ describe('ssr', () => {
                     .then((response) => response.text());
                 state = JSON.parse(
                     response.match(
-                        /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
+                        /window\.__PRELOADED_STATE__ = ([\s\S]*?);/,
                     )[1],
                 );
             });
