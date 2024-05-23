@@ -802,7 +802,7 @@
 "ws_post-v1-cnrsunit_title"	"Detection of CNRS units"	"Détection d’unités CNRS"
 "ws_post-v1-cnrsunit_description"	"Detects a CNRS unit code in an affiliation-address and associates information with it."	"Détecte un code unité du CNRS dans une affiliation-adresse et lui associe des informations."
 "ws_post-v1-D63-identify_title"	"Associate a term with the vocabulary of the communes of France"	"Associer un terme au vocabulaire des communes de France"
-"ws_post-v1-D63-identify_description"	"Associate a commune in France with the corresponding Loterre vocabulary."	"Associe une communes de France au vocabulaire Loterre correspondant."
+"ws_post-v1-D63-identify_description"	"Finds terms in the Communes de France thesaurus in a text and retrieves the associated concept(s)."	"Repère dans un texte des termes présents dans le thésaurus Communes de France et récupère le(s) concept(s) associé(s)."
 "ws_post-v1-tools_title"	"Normalise a text or a term"	"Normaliser un texte ou un terme"
 "ws_post-v1-tools_description"	"Standardisation of terms in a text."	"Normalisation des termes d'un texte."
 "ws_post-v1-9SD-identify_title"	"Associate a term with the vocabulary Country and Subdivision"	"Associer un terme au vocabulaire Pays et Subdivision"
