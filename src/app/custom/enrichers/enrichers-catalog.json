@@ -146,8 +146,8 @@
     {
         "id": "post-v1-cnrsunit",
         "url": "https://address-kit.services.istex.fr/v1/cnrsunit/cnrsunit",
-        "doc": "",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=address-kit%20-%20Informations%20sur%20des%20adresses%20d%27affiliations",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/address-kit#v1%2fcnrsunit%2fcnrsunit",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=address-kit%20-%20Informations%20sur%20des%20adresses%20d%27affiliations#/address/post-v1-cnrsunit",
         "objectifTDM": "https://services.istex.fr/2022/11/09/detection-dunites-cnrs/",
         "type": "affiliation"
     },
