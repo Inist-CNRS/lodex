@@ -194,8 +194,8 @@
     {
         "id": "post-v1-irc3sp",
         "url": "https://irc3-species.services.istex.fr/v1/irc3sp",
-        "doc": "",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=irc3-species%20-%20IRC3%20esp%C3%A8ces%20animales#/default/post_v1_irc3sp",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/irc3-species",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=irc3-species%20-%20Recherche%20de%20noms%20d%27esp%C3%A8ces#/default/post_v1_irc3sp",
         "objectifTDM": "https://services.istex.fr/2023/03/22/irc3-species-recherche-despeces-animales/",
         "type": "indexation"
     },
