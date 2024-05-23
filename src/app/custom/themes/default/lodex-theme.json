@@ -1,7 +1,6 @@
 {
   "version": "3",
   "licence": "CeCILL",
-  "restricted": true,
   "name": {
     "fr": "Système",
     "en": "System"
