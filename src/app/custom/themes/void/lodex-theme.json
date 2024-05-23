@@ -1,5 +1,6 @@
 {
   "version": "3",
+  "licence": "CeCILL",
   "restricted": false,
   "name": {
     "fr": "Void",

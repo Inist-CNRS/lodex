@@ -1,5 +1,6 @@
 {
-    "version": "2",
+    "version": "3",
+    "licence": "All Right Reserved",
     "restricted": true,
     "name": {
         "fr": "ISTEX",
@@ -11,7 +12,7 @@
     },
     "files": {
         "theme": {
-            "main": "customTheme.js",
+            "main": "istexTheme.js",
             "index": "index.ejs"
         }
     }

@@ -1,6 +1,6 @@
 /**
- * LODEX System Theme
- * @licence CeCILL
+ * LODEX ISTEX Theme
+ * @licence All Right Reserved
  */
 
 /**
@@ -14,23 +14,19 @@
  */
 const palette = {
     mode: 'light',
-    background: {
-        default: '#fafafa',
-        paper: '#fafafa',
-    },
     primary: {
-        main: '#7dbd42',
-        secondary: 'rgba(125, 189, 66, .7)', // Do not exist in mui
-        // light: 'rgba(125, 189, 66, .7)',  // Old color, now using mui to generated new color
-        // dark: 'rgba(125, 189, 66, .1)',   // The new color may be different
+        main: '#458cA5',
+        secondary: '#337288',
+        light: '#f6f9fa',
         contrastText: '#fff',
     },
     secondary: {
         main: '#f48022',
-        contrastText: '#fff',
+        contrastText: '#f0f0f0',
     },
     info: {
-        main: '#b22f90',
+        main: '#f48022',
+        contrastText: '#fff',
     },
     warning: {
         main: '#f48022',
@@ -38,16 +34,15 @@ const palette = {
     },
     error: {
         main: '#f44336',
-    },
-    success: {
-        main: '#7dbd42',
         contrastText: '#fff',
     },
+    success: {
+        main: '#779e04',
+        contrastText: '#f0f0f0',
+    },
     text: {
-        main: 'rgb(98,99,104)', // Do not exist in mui
-        primary: 'rgb(98,99,104)',
-        secondary: 'rgba(98,99,104,0.75)',
-        disabled: 'rgba(98,99,104,0.55)',
+        primary: '#1d1d1d',
+        main: '#4a4a4a',
     },
     contrastThreshold: 3, // Mui default (we need to look if is pertinent to change it)
     // Do not exist in mui / Custom variable
@@ -61,17 +56,17 @@ const palette = {
     // Use mui palette.grey ???
     neutralDark: {
         main: '#555',
-        secondary: 'rgb(98, 99, 104)',
-        veryDark: '#333',
+        secondary: '#4a4a4a',
+        veryDark: '#000',
         dark: '#555',
-        light: 'rgb(98, 99, 104, 0.5)',
-        lighter: 'rgb(98, 99, 104, 0.15)',
-        veryLight: 'rgb(98, 99, 104, 0.1)',
+        light: '#8f8f8f',
+        lighter: '#f0f0f0',
+        veryLight: '#f6f9fa',
         transparent: 'rgba(0, 0, 0, .1)',
     },
     contrast: {
         main: '#fff',
-        light: 'rgba(255, 255, 255, .2)',
+        light: '#f0f0f0',
     },
 };
 
