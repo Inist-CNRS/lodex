@@ -1,37 +1,26 @@
 /* eslint-disable no-useless-escape */
 import path from 'path';
-import { renderToString } from 'react-dom/server';
-import React from 'react';
 import Koa from 'koa';
 import serve from 'koa-static';
 import route from 'koa-route';
 import mount from 'koa-mount';
-import { Provider } from 'react-redux';
-import { StaticRouter } from 'react-router';
-import { Helmet } from 'react-helmet';
-import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { END } from 'redux-saga';
-import fs from 'fs';
-import { StyleSheetServer } from 'aphrodite/no-important';
 import jwt from 'koa-jwt';
 import jsonwebtoken from 'jsonwebtoken';
-import { auth, istexApiUrl, jsHost, mongo } from 'config';
+import { auth, istexApiUrl, jsHost, mongo, themesHost } from 'config';
 import pick from 'lodash/pick';
 import { createMemoryHistory } from 'history';
 
 import rootReducer from '../../app/js/public/reducers';
 import sagas from '../../app/js/public/sagas';
 import configureStoreServer from '../../app/js/configureStoreServer';
-import Routes from '../../app/js/public/Routes';
 import translations from '../services/translations';
 import getLocale from '../../common/getLocale';
 
 import { getPublication } from './api/publication';
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
-import { getTheme } from '../models/themes';
-import { buildCssVariable, createMuiTheme } from '../models/front';
-import rootTheme from '../../app/custom/themes/rootTheme';
+import { renderAdmin, renderPublic, renderRootAdmin } from '../models/front';
 
 const getDefaultInitialState = (ctx, token, cookie, locale) => ({
     enableAutoPublication: ctx.configTenant.enableAutoPublication,
@@ -108,54 +97,8 @@ const getInitialState = async (token, cookie, locale, ctx) => {
     };
 };
 
-const renderFullPage = (
-    html,
-    css,
-    preloadedState,
-    helmet,
-    tenant,
-    indexHtml,
-    cssVariable,
-) =>
-    indexHtml
-        .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
-        .replace(/<title>.*?<\/title>/, helmet.title.toString())
-        .replace(
-            '</head>',
-            `${helmet.meta.toString()}
-            ${helmet.link.toString()}
-            <style data-aphrodite>${css.content}</style>
-            <style>${cssVariable}</style>
-            </head>`,
-        )
-        .replace(
-            '</body>',
-            `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(
-                preloadedState,
-            ).replace(/</g, '\\u003c')};window.ISTEX_API_URL=${JSON.stringify(
-                istexApiUrl,
-            )}</script>
-            <script>window.__TENANT__ = ${JSON.stringify(tenant)}</script>
-            <script src="${jsHost}/index.js"></script>
-            </body>`,
-        );
-
-const renderHtml = (store, muiTheme, url, context, history, tenant) =>
-    StyleSheetServer.renderStatic(() =>
-        renderToString(
-            <StaticRouter location={url} context={context}>
-                <Provider {...{ store }}>
-                    <MuiThemeProvider theme={muiTheme}>
-                        <Routes history={history} tenant={tenant} />
-                    </MuiThemeProvider>
-                </Provider>
-            </StaticRouter>,
-        ),
-    );
-
-export const getRenderingData = async (
+export const getPreloadedState = async (
     history,
-    theme,
     token,
     cookie,
     locale,
@@ -170,32 +113,14 @@ export const getRenderingData = async (
     );
 
     const sagaPromise = store.runSaga(sagas).done;
-    const context = {};
-    const { html, css } = renderHtml(
-        store,
-        theme,
-        url,
-        context,
-        history,
-        ctx.configTenant.name,
-    );
+
     store.dispatch(END);
 
     await sagaPromise;
 
-    if (context.url) {
-        return {
-            redirect: context.url,
-        };
-    }
-
-    const helmet = Helmet.renderStatic();
     const preloadedState = store.getState();
 
     return {
-        html,
-        css,
-        helmet,
         preloadedState: {
             ...preloadedState,
             user: {
@@ -221,84 +146,46 @@ const handleRender = async (ctx, next) => {
         initialEntries: [url],
     });
 
-    const lodexTheme = getTheme(ctx.configTenant.theme);
-
-    const theme = createMuiTheme(lodexTheme.customTheme);
-    const cssVariable = buildCssVariable(theme.palette);
-
-    const { html, css, preloadedState, helmet, redirect } =
-        await getRenderingData(
-            history,
-            theme,
-            ctx.state.headerToken,
-            ctx.request.header.cookie,
-            getLocale(ctx),
-            url,
-            ctx,
-        );
-
-    if (redirect) {
-        return ctx.redirect(redirect);
-    }
-
-    ctx.body = renderFullPage(
-        html,
-        css,
-        preloadedState,
-        helmet,
-        ctx.tenant,
-        lodexTheme.index,
-        cssVariable,
+    const { preloadedState } = await getPreloadedState(
+        history,
+        ctx.state.headerToken,
+        ctx.request.header.cookie,
+        getLocale(ctx),
+        url,
+        ctx,
     );
+
+    renderPublic(ctx.configTenant.theme, {
+        preload: JSON.stringify(preloadedState),
+        tenant: ctx.tenant,
+        jsHost: jsHost,
+        themesHost: themesHost,
+        istexApi: istexApiUrl,
+    }).then((html) => {
+        ctx.body = html;
+    });
 };
 
 const renderAdminIndexHtml = (ctx) => {
-    const lodexTheme = getTheme('default');
-    const theme = createMuiTheme(lodexTheme.customTheme);
-    const cssVariable = buildCssVariable(theme.palette);
-
-    ctx.body = fs
-        .readFileSync(path.resolve(__dirname, '../../app/admin.html'))
-        .toString()
-        .replace(
-            '</head>',
-            `<style>${cssVariable}</style>
-            </head>`,
-        )
-        .replace(
-            '</body>',
-            ` <script>window.__DBNAME__ = ${JSON.stringify(
-                mongo.dbName,
-            )}</script><script>window.__TENANT__ = ${JSON.stringify(
-                ctx.tenant,
-            )}</script>
-              <script>window.__JS_HOST__ = "${jsHost}"</script>
-              <script src="${jsHost}/admin/index.js"></script>
-        </body>`,
-        );
+    renderAdmin({
+        tenant: ctx.tenant,
+        dbName: mongo.dbName,
+        jsHost: jsHost,
+        themesHost: themesHost,
+    }).then((html) => {
+        ctx.body = html;
+    });
 };
 
 const renderRootAdminIndexHtml = (ctx) => {
-    const theme = createMuiTheme(rootTheme);
-    const cssVariable = buildCssVariable(theme.palette);
-
-    ctx.body = fs
-        .readFileSync(path.resolve(__dirname, '../../app/root-admin.html'))
-        .toString()
-        .replace(
-            '</head>',
-            `<style>${cssVariable}</style>
-            </head>`,
-        )
-        .replace(
-            '</body>',
-            ` <script>window.__DBNAME__ = ${JSON.stringify(
-                mongo.dbName,
-            )}</script><script>window.__TENANT__ = ${JSON.stringify(
-                ctx.tenant,
-            )}</script><script src="${jsHost}/root-admin/index.js"></script>
-        </body>`,
-        );
+    renderRootAdmin({
+        tenant: ctx.tenant,
+        dbName: mongo.dbName,
+        jsHost: jsHost,
+        themesHost: themesHost,
+    }).then((html) => {
+        ctx.body = html;
+    });
 };
 
 const app = new Koa();

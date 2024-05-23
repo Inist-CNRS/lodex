@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lodex - Administration</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:400,500"/>
+    <link rel="stylesheet" href="<%= theme.base.href %>/themes/default/css/styles.css"/>
+    <style><%= theme.cssVariable %></style>
+</head>
+<body>
+<div id="root" class="container-fluid"></div>
+<script>
+    window.__DBNAME__ = '<%= lodex.dbName %>';
+    window.__TENANT__ = '<%= lodex.tenant %>';
+    window.__JS_HOST__ = '<%= lodex.base.href %>';
+</script>
+<script src="<%= lodex.base.href %>/admin/index.js"></script>
+</body>
+</html>

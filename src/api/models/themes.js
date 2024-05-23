@@ -1,20 +1,14 @@
-import { jsHost, themesHost } from 'config';
 import config from '../../../config.json';
 import path from 'path';
-import { promisify } from 'util';
 import getLogger from '../services/logger';
 import defaultCustomTheme from '../../app/custom/themes/default/defaultTheme';
-import { version } from '../../../package.json';
 import deepClone from 'lodash/cloneDeep';
-import get from 'lodash/get';
-import ejs from 'ejs';
 
 // --- Global variable for the Theme system
 export const THEMES_VERSION = '3';
 export const THEMES_FOLDER = '../../app/custom/themes';
 
 // --- Global function for the Theme system
-const renderFile = promisify(ejs.renderFile);
 const logger = getLogger('system');
 
 // --- TypeScript without TypeScript (Required an ide with TypeScript support)
@@ -38,7 +32,7 @@ const logger = getLogger('system');
  *         main: string;
  *         index: string;
  *     };
- * }} file - Optional option for the theme system
+ * }} files - Optional option for the theme system
  */
 
 /**
@@ -51,7 +45,7 @@ const logger = getLogger('system');
  *     fr: string;
  *     en: string
  * }} description - Short description about the theme
- * @property {string} index - Html index file
+ * @property {string} index - Html index file location
  * @property {CustomTheme} customTheme - Mui theme
  */
 
@@ -111,7 +105,7 @@ export const getAvailableThemesKeys = () => {
 };
 
 export const getThemeFile = (theme, file) => {
-    return `${THEMES_FOLDER}/${theme}/${file}`;
+    return path.resolve(__dirname, `${THEMES_FOLDER}/${theme}/${file}`);
 };
 
 /**
@@ -129,24 +123,6 @@ const initAvailableThemes = () => {
     for (const theme of config.themes) {
         availableThemes.set(theme, false);
     }
-};
-
-const loadFile = async (themeFile, themeConfig = {}) => {
-    const ejsOptions = {
-        async: true,
-        root: path.dirname(themeFile),
-    };
-    const themeData = {
-        lodex: {
-            version,
-            base: { href: jsHost },
-        },
-        theme: {
-            ...themeConfig,
-            base: { href: themesHost },
-        },
-    };
-    return await renderFile(themeFile, themeData, ejsOptions);
 };
 
 const init = async () => {
@@ -182,19 +158,13 @@ const init = async () => {
                 );
             }
 
-            let indexLocation = getThemeFile('default', 'index.html');
+            let indexLocation = getThemeFile('default', 'index.ejs');
             if (themeConfig?.files?.theme?.index) {
                 indexLocation = getThemeFile(
                     theme,
                     themeConfig.files.theme.index,
                 );
             }
-
-            const themeLocalConfig = get(config, `theme.${theme}`, {});
-            const index = await loadFile(
-                path.resolve(__dirname, indexLocation),
-                { ...themeConfig, ...themeLocalConfig },
-            );
 
             let customTheme = deepClone(defaultCustomTheme);
             if (themeConfig?.files?.theme?.main) {
@@ -211,7 +181,7 @@ const init = async () => {
             loadedThemes.set(theme, {
                 name: themeConfig.name,
                 description: themeConfig.description,
-                index,
+                index: indexLocation,
                 customTheme,
             });
             availableThemes.set(theme, true);
