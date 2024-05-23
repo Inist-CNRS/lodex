@@ -178,8 +178,8 @@
     {
         "id": "post-v1-perseeBaipTagger",
         "url": "https://ner-tagger.services.istex.fr/v1/perseeBaipTagger/tagger",
-        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/geo-tagger",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=ner-tagger%20-%20D%C3%A9tection%20d%27entit%C3%A9s%20nomm%C3%A9es#/default/post_v1_perseeBaipTagger_tagger",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/ner-tagger#persee-baip-tagger",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=ner-tagger#/default/post_v1_perseeBaipTagger_tagger",
         "objectifTDM": "https://services.istex.fr/2022/03/29/detection-dentites-nommees-dans-les-bulletins-administratifs-de-linstruction-publique-persee/",
         "type": "geography"
     },
