@@ -242,7 +242,7 @@
     {
         "id": "post-v1-inspire-category-meta-category-json",
         "url": "https://mapping-tools.services.istex.fr/v1/inspire-category/meta-category/json",
-        "doc": "",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools#v1%2finspire-category%2fmeta-category%2fjson",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-inspire-category-meta-category-json",
         "objectifTDM": "https://services.istex.fr/2023/02/06/regroupement-des-categories-inspire-en-meta-categorie-in2p3/",
         "type": "other"
