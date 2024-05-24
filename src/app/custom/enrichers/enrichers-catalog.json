@@ -218,8 +218,8 @@
     {
         "id": "post-v2-affiliation-rnsr",
         "url": "https://affiliation-rnsr.services.istex.fr/v2/affiliation/rnsr",
-        "doc": "",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliation-rnsr%20-%20D%C3%A9tection%20d%27un%20RNSR%20%C3%A0%20partir%20d%27une%20affiliation#/default/post_v2_affiliation_rnsr",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/affiliation-rnsr#readme",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliation-rnsr%20-%20Trouve%20un%20RNSR%20%C3%A0%20partir%20d%27une%20affiliation.#/default/post_v2_affiliation_rnsr",
         "objectifTDM": "https://services.istex.fr/2023/04/20/attribution-dun-rnsr-a-une-affiliation-apprentissage/",
         "type": "affiliation"
     },
@@ -227,7 +227,7 @@
         "id": "post-v3-affiliation-rnsr",
         "url": "https://affiliation-rnsr.services.istex.fr/v3/affiliation/rnsr",
         "doc": "",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliation-rnsr%20-%20D%C3%A9tection%20d%27un%20RNSR%20%C3%A0%20partir%20d%27une%20affiliation#/default/post_v3_affiliation_rnsr",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliation-rnsr%20-%20Trouve%20un%20RNSR%20%C3%A0%20partir%20d%27une%20affiliation.#/default/post_v3_affiliation_rnsr",
         "objectifTDM": "https://services.istex.fr/2023/04/20/attribution-dun-rnsr-a-une-affiliation-apprentissage/",
         "type": "affiliation"
     },
