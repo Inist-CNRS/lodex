@@ -67,10 +67,6 @@ const logger = getLogger('system');
  * @type {Map<string, ThemeEntry>}
  */
 const loadedThemes = new Map();
-/**
- * @type {Map<string, boolean>}
- */
-const availableThemes = new Map();
 
 // --- Theme accessing
 /**
@@ -96,35 +92,11 @@ export const getAvailableThemes = () => {
     return toReturn;
 };
 
-/**
- * @deprecated
- * @returns {IterableIterator<string>}
- */
-export const getAvailableThemesKeys = () => {
-    return availableThemes.keys();
-};
-
 export const getThemeFile = (theme, file) => {
     return path.resolve(__dirname, `${THEMES_FOLDER}/${theme}/${file}`);
 };
 
-/**
- * @deprecated
- * @param theme
- * @returns {boolean}
- */
-export const isLoaded = (theme) => {
-    return availableThemes.get(theme);
-};
-
 // --- Theme initialisation
-const initAvailableThemes = () => {
-    availableThemes.set('default', false);
-    for (const theme of config.themes) {
-        availableThemes.set(theme, false);
-    }
-};
-
 const init = async () => {
     // Default theme
     const themes = Array.from(new Set([...config.themes, 'default'])).filter(
@@ -184,7 +156,6 @@ const init = async () => {
                 index: indexLocation,
                 customTheme,
             });
-            availableThemes.set(theme, true);
         } catch (e) {
             logger.error(`unable to load ${theme} theme!`);
             logger.error(e);
@@ -192,7 +163,6 @@ const init = async () => {
     }
 };
 
-initAvailableThemes();
 init().then(() => {
     logger.info('Theme initialization finished');
 });
