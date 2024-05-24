@@ -234,7 +234,7 @@
     {
         "id": "post-v1-inspire-labos-in2p3-labos-json",
         "url": "https://mapping-tools.services.istex.fr/v1/inspire-labos/in2p3-labos/json",
-        "doc": "",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools#v1%2finspire-labos%2fin2p3-labos%2fjson",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-inspire-labos-in2p3-labos-json",
         "objectifTDM": "https://services.istex.fr/2023/02/06/identification-des-laboratoires-in2p3/",
         "type": "other"
