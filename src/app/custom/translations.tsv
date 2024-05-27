@@ -738,7 +738,7 @@
 "ws_post-v2-crossref-prefixes-expand_description"	"Queries the Crossref database and reads the prefix of a DOI from the identifier prefix or the full DOI identifier."	"Interroge la base de données Crossref et verbalise le préfixe d’un DOI à partir du préfixe de l’identifiant ou de l’identifiant DOI complet."
 "ws_post-v1-teeft-en_title"	"Extraction of terms from an English text using Teeft"	"Extraction de termes d’un texte en Anglais via Teeft"
 "ws_post-v1-teeft-en_description"	"Extracts, by default, the 5 most specific terms from an English text."	"Extrait, par défaut, les 5 termes les plus spécifiques d’un texte en Anglais."
-"ws_post-v1-teeft-fr_title"	"Extraction of terms from an French text using Teeft"	"Extraction de termes d’un texte en Français via Teeft"
+"ws_post-v1-teeft-fr_title"	"Extraction of terms from a French text using Teeft"	"Extraction de termes d’un texte en Français via Teeft"
 "ws_post-v1-teeft-fr_description"	"Extracts, by default, the 5 most specific terms from an French text."	"Extrait, par défaut, les 5 termes les plus spécifiques d’un texte en Français."
 "ws_post-v1-teeft-with-numbers-en_title"	"Extraction of terms from an English text using Teeft (including numbers)"	"Extraction de termes d’un texte en Anglais via Teeft (nombres compris)"
 "ws_post-v1-teeft-with-numbers-en_description"	"Extracts the most relevant terms from a text in English or French, retaining the numbers: it provides terms containing numbers (important when dealing with chemical formulae, physical quantities, etc.)."	"Extrait les termes les plus pertinents d’un texte en Anglais ou en français, en conservant les chiffres : il fournit des termes contenant des chiffres (c’est important quand on a des formules chimiques, des grandeurs physiques, …)."
