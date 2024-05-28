@@ -70,6 +70,7 @@ describe('PieChart', () => {
             },
             width: 'container',
             height: 'container',
+            padding: 18,
             autosize: {
                 contains: 'padding',
                 type: 'fit',
