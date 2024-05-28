@@ -109,6 +109,7 @@
       }
     }
   ],
+  "padding": 18,
   "config": {
     "view": {
       "strokeWidth": 1,
