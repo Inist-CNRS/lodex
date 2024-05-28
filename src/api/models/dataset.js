@@ -23,8 +23,34 @@ export default (db) => {
             }),
         );
     };
-    collection.getExcerpt = (filter) =>
-        collection.find(filter).sort({ $natural: 1 }).limit(8).toArray();
+    collection.getExcerpt = async (filter) => {
+        const result = await collection
+            .find(filter)
+            .sort({ $natural: 1 })
+            .limit(100)
+            .toArray();
+        // choisr parmi les 100 premiers documents, ceux ayants le plus de champs
+        const result2 = result
+            .map((item) => {
+                const validKeys = Object.keys(item).filter((key) => {
+                    if (
+                        item[key] === undefined ||
+                        item[key] === null ||
+                        item[key] === ''
+                    ) {
+                        return false;
+                    }
+                    return true;
+                });
+                return { ...item, __nb: validKeys.length };
+            })
+            .sort((x, y) => y.__nb - x.__nb);
+        return result2.slice(8).map((item) => {
+            delete item.__nb;
+            return item;
+        });
+    };
+
     collection.findLimitFromSkip = (limit, skip, query = {}, sortBy, sortDir) =>
         collection
             .find(query)
