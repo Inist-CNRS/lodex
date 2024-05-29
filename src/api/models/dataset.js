@@ -45,7 +45,7 @@ export default (db) => {
                 return { ...item, __nb: validKeys.length };
             })
             .sort((x, y) => y.__nb - x.__nb);
-        return result2.slice(8).map((item) => {
+        return result2.splice(0, 8).map((item) => {
             delete item.__nb;
             return item;
         });
