@@ -42,11 +42,6 @@
 /*****************************/
 /* General *******************/
 /*****************************/
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 html {
     font-size: 62.5%;
     width: 100%;
@@ -253,12 +248,6 @@ footer.site-footer::after {
     line-height: 1.7rem;
     color: var(--text-main);
 }
-.body * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-align: initial !important;
-}
 /*****************************/
 /* Layout (.zutile) **********/
 /*****************************/
@@ -306,9 +295,8 @@ nav.nav-bar-menu {
 .body h6 {
     font-family: var(--font-titre);
     margin-block-start: 0;
-    margin-top: 3rem;
-    margin-bottom: 3rem;
     color: var(--primary-main);
+    text-align: left;
 }
 .body h1 {
     font-size: 3rem;
@@ -324,13 +312,11 @@ nav.nav-bar-menu {
 .body h3 {
     font-size: 2.2rem;
     line-height: 3rem;
-    margin: 12px 0;
 }
 .body h4 {
     font-size: 2rem;
     line-height: 2.8rem;
     font-style: italic;
-    margin: 12px 0;
 }
 .body h5 {
     font-size: 1.8rem;
@@ -363,12 +349,6 @@ a img {
 .body ul {
     margin-inline-start: 0px;
     margin-bottom: 10px;
-}
-.body ul,
-.body li {
-    margin: 0;
-    padding: 0;
-    list-style: none;
 }
 /******************************/
 /*. body button links a.button*/
