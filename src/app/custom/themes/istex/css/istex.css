@@ -239,7 +239,7 @@ footer.site-footer::after {
 /*.container #root .page-page*/
 /*****************************/
 #root .page-page {
-    min-height: 65vh;
+    min-height: 35vh;
     padding: 0 !important;
 }
 .body {
@@ -248,17 +248,19 @@ footer.site-footer::after {
     line-height: 1.7rem;
     color: var(--text-main);
 }
-/*****************************/
-/* Layout (.zutile) **********/
-/*****************************/
+/********************/
+/* Layout (.zutile) */
+/********************/
 .breadcrumb-root,
 nav.nav-bar-menu div.nav-bar-container,
+/*propulse lodex*/
 .header-dataset-section > div:last-child,
+/*home page istex*/
 .dataset-characteristics > div,
 .graph-container,
 .search-container,
 .resource {
-    max-width: 1190px;
+    max-width: 1200px;
     min-width: 360px;
     padding: 0 10px;
     margin: 0 auto;
@@ -281,8 +283,15 @@ nav.nav-bar-menu div.nav-bar-container,
 /*****************************/
 /* Breadcrumb  + Nav *********/
 /*****************************/
+.breadcrumb-root {
+    height: 50px;
+}
 nav.nav-bar-menu {
     box-shadow: 0px -5px 3px rgba(0, 0, 0, 0.2);
+}
+/*logo lodex*/
+nav.nav-bar-menu div.nav-bar-container > img {
+    display: none;
 }
 /******************/
 /*Lodex elements */
@@ -293,21 +302,20 @@ nav.nav-bar-menu {
 .body h4,
 .body h5,
 .body h6 {
-    font-family: var(--font-titre);
-    margin-block-start: 0;
-    color: var(--primary-main);
-    text-align: left;
+    font-family: var(--font-titre) !important;
+    color: var(--text-main);
+    text-align: left !important;
 }
 .body h1 {
-    font-size: 3rem;
+    font-size: 4.8rem;
     line-height: 4rem;
-    margin-bottom: 60px;
     font-weight: 700;
 }
 .body h2 {
     font-size: 2.8rem;
-    line-height: 3.4rem;
+    line-height: 3rem;
     font-weight: 700;
+    margin-block-end: 0.5em;
 }
 .body h3 {
     font-size: 2.2rem;
@@ -324,7 +332,7 @@ nav.nav-bar-menu {
     font-style: italic;
 }
 .body h6 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     margin-top: 20px;
     font-size: 1.7rem;
     line-height: 2.4rem;
@@ -447,15 +455,14 @@ a img {
 /***************/
 /* LODEX class */
 /***************/
-/*admin champs*/
+/* champs*/
 .property {
     margin-bottom: 1.5rem;
 }
-
-/* lodex label */
+/* label */
 span.property_label[style*="color: rgb(158, 158, 158)"] {
     font-family: var(--font-titre) !important;
-    font-size: 1.4rem !important;
+    font-size: 2rem !important;
 }
 /* ul istex */
 .resources-grid-list {
@@ -476,7 +483,6 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
 .header-dataset-section {
     background-color: var(--primary-main);
     position: relative;
-    margin-top: 50px;
     z-index: 2;
 }
 /*istex home promo en bas*/
@@ -499,24 +505,23 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
     left: 0;
     width: 100% !important;
     background-color: var(--primary-main);
+    background-image: url(../img/backZoneSimple.jpg);
+    background-position: center top;
+    background-color: var(--primary-main);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 #backZoneContainer #backZoneTexte {
     border: 0 !important;
     height: var(--height-backZoneSimple);
-    padding-top: 12rem;
-    padding-bottom: 8rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 2%;
     width: 100%;
-    max-width: 1920px;
+    max-width: 1200px;
     margin: 0 auto;
-    background-image: url(../img/backZoneSimple.jpg);
-    background-position: center top;
-    background-color: var(--primary-main);
-    background-size: auto;
-    background-repeat: no-repeat;
 }
 #backZoneContainer #backZoneTexte *:not(h2) {
     padding: 0 !important;
@@ -596,14 +601,13 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
     position: relative;
 }
 /*contents home label titre as h2*/
-.blocPaveFonce span.property_label {
+.dataset-characteristics .blocPaveFonce .property_label {
     font-size: 2.8rem !important;
-    line-height: 3.4rem;
+    line-height: 4rem;
     font-weight: 700 !important;
     color: var(--text-main) !important;
-    padding: 3rem 20px 70px 20px;
 }
-.blocPaveFonce .resources-grid-content {
+.dataset-characteristics .resources-grid-content {
     background-color: var(--contrast-light) !important;
     padding: 0 !important;
 }
@@ -611,20 +615,24 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
 .dataset-characteristics .resources-grid-content > div > a:last-child {
     display: none;
 }*/
-.blocPaveFonce .resources-grid-content > div > a > div {
+.dataset-characteristics .resources-grid-content > div > a > div {
     margin: 2rem;
     height: 80px;
     background: var(--contrast-light) url("../img/fleched.svg") no-repeat bottom
         0rem right 1rem;
 }
-.blocPaveFonce .resources-grid-content > div > a .lodex-resource-contentTitle {
+.dataset-characteristics
+    .resources-grid-content
+    > div
+    > a
+    .lodex-resource-contentTitle {
     font-size: 1.6rem;
     line-height: 2rem;
     font-weight: 700;
     color: var(--primary-main);
     padding-bottom: 1rem;
 }
-.blocPaveFonce
+.dataset-characteristics
     .resources-grid-content
     > div
     > a
@@ -634,7 +642,7 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
     overflow: hidden;
     text-overflow: "..." !important;
 }
-.blocPaveFonce
+.dataset-characteristics
     .resources-grid-content
     > div
     > a
@@ -673,6 +681,9 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
 /*.sidebarFonce contrast color text*/
 .sidebarFonce *:not(button, svg) {
     color: var(--secondary-contrast-text) !important;
+}
+.sidebarFonce h2 {
+    margin-top: 0;
 }
 /*.sidebarFonce bloc champs composant*/
 .sidebarFonce > .property_value_container > div .property {
@@ -894,6 +905,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
     color: var(--text-main) !important;
     margin: 0 !important;
     padding-left: 1rem;
+    text-align: left;
 }
 /*bloc infos associees au titre*/
 .resource
@@ -931,10 +943,6 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
     font-size: 2.8rem !important;
     line-height: 3.4rem;
     font-weight: 700 !important;
-    padding: 3rem 20px 70px 20px;
-}
-.blocFondClair > .property_label_container span.property_label:empty {
-    display: none;
 }
 .blocFondClair .property_value_container h2 {
     margin-top: 0rem !important;
