@@ -77,12 +77,7 @@ describe('BasicChart', () => {
             mark: {
                 type: 'bar',
             },
-            padding: {
-                bottom: 0,
-                left: 10,
-                right: 0,
-                top: 10,
-            },
+            padding: 18,
             width: 'container',
         };
         expect(barChart.buildSpec()).toStrictEqual(defaultBuild);

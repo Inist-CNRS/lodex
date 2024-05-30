@@ -45,5 +45,6 @@
       "on": "mouseover", "empty": "none"
     }
   },
+  "padding": 18,
   "view": {"fill": "#a4d3ff", "cornerRadius": 16, "cursor": "crosshair"}
 }

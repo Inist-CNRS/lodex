@@ -19,12 +19,7 @@ class BarChart extends BasicChart {
      */
     constructor() {
         super();
-        this.padding = {
-            left: 10,
-            right: 0,
-            top: 10,
-            bottom: 0,
-        };
+        this.padding = 18;
         this.model = deepClone(barChartVL);
         this.labelsModel = deepClone(barChartLabelsVL);
         this.scale = 'linear';

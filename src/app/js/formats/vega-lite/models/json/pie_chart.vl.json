@@ -63,6 +63,7 @@
       }
     }
   ],
+  "padding": 18,
   "view": {
     "stroke": null
   }

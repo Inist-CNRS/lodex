@@ -7,12 +7,6 @@ class BasicChart {
     constructor() {
         this.editMode = false;
         this.colors = MULTICHROMATIC_DEFAULT_COLORSET.split(' ');
-        this.padding = {
-            left: 0,
-            right: 0,
-            top: 10,
-            bottom: 0,
-        };
         this.tooltip = {
             toggle: false,
             category: {

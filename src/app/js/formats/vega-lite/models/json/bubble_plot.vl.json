@@ -46,6 +46,7 @@
       }
     }
   },
+  "padding": 18,
   "config": {
     "point": {
       "opacity": 1
