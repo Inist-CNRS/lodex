@@ -348,11 +348,31 @@ nav.nav-bar-menu div.nav-bar-container > img {
 a img {
     border: none;
 }
-.body p a,
-.body li a {
+.body > div a:not(.graph-link),
+.body > div a[target="_blank"] {
     color: var(--primary-main);
     cursor: pointer;
+}
+.body a:hover {
+    color: #31768f !important;
     text-decoration: underline;
+}
+.body a:active,
+.body a:focus {
+    color: #1a5a71 !important;
+    text-decoration: underline;
+}
+.body a desactive {
+    color: #cdcdcd;
+}
+.body > div a:not(:empty)[target="_blank"]::after {
+    display: inline-block;
+    content: " ";
+    width: 20px;
+    height: 17px;
+    margin-bottom: -4px;
+    background: url("../img/lien-externe.svg") bottom right no-repeat;
+    background-size: 15px;
 }
 .body ul {
     margin-inline-start: 0px;
@@ -361,58 +381,62 @@ a img {
 /******************************/
 /*. body button links a.button*/
 /******************************/
-.body button,
-.body .button {
+button,
+.button {
     border: 0px solid transparent;
     border-radius: 5px;
     cursor: pointer;
     padding: 15px 30px;
     line-height: 18px;
     font-size: 16px !important;
+    text-decoration: none;
 }
 /*fonce sur fond clair*/
 /*plus, parcourir résultats css-10ro12o css-xiqrbu*/
-.body .cta1,
-.body a.cta1,
-.body .button.cta1 > a {
+.cta1,
+a.cta1,
+.button.cta1 > a {
     color: var(--contrast-light);
     background-color: var(--primary-main);
 }
-.body .cta1:hover,
-.body .cta1:focus,
-.body .button.cta1 > a:hover,
-.body .button.cta1:hover > a,
-.body .button.cta1 > a:focus,
-.body .cta3:hover,
-.body .cta3:focus,
+.cta1:hover,
+.cta1:focus,
+.button.cta1 > a:hover,
+.button.cta1:hover > a,
+.button.cta1 > a:focus,
+.cta3:hover,
+.cta3:focus,
 .css-10ro12o:hover,
 .css-10ro12o:focus,
 .css-xiqrbu:hover,
 .css-xiqrbu:focus {
-    background: linear-gradient(to left, rgb(96, 157, 178), #458ca5);
+    background: var(--primary-secondary);
 }
 /*clair bordure sur fond clair*/
-.body .button.cta3 {
+.button.cta3 {
     color: var(--primary-main);
     background-color: transparent;
     border: 1px solid var(--primary-main);
     padding: 15px 30px;
 }
-.body .button.cta3:hover,
-.body .button.cta3:focus {
+.button.cta3:hover,
+.button.cta3:focus {
     color: var(--contrast-light);
 }
 /*clair bordure sur fond fonce*/
-.body .cta2,
-.body a.button.cta2,
-.body .button.cta2 > a {
+.cta2,
+.designCta2 .property_value_container button,
+a.button.cta2,
+.button.cta2 > a {
     font-family: var(--font-texte);
     color: var(--contrast-light);
     background-color: transparent;
     border: 1px solid var(--contrast-light);
 }
-.body .button.cta2:hover,
-.body .button.cta2:focus {
+.designCta2 .property_value_container button:hover,
+.designCta2 .property_value_container button:focus,
+.button.cta2:hover,
+.button.cta2:focus {
     color: var(--primary-main) !important;
     background-color: var(--contrast-light);
 }
@@ -432,6 +456,7 @@ a img {
 }
 /***************/
 /* formulaires */
+/* color size  */
 /***************/
 .MuiButton-root,
 .MuiGrid-root {
@@ -462,7 +487,11 @@ a img {
 /* label */
 span.property_label[style*="color: rgb(158, 158, 158)"] {
     font-family: var(--font-titre) !important;
-    font-size: 2rem !important;
+    font-size: 1.4rem !important;
+}
+/*label semantique*/
+.body span.property_scheme a {
+    text-decoration: none;
 }
 /* ul istex */
 .resources-grid-list {
@@ -476,7 +505,7 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
     margin: 0 !important;
 }
 /***************************/
-/* page home               */
+/* design Home             */
 /* .header-dataset-section */
 /***************************/
 /*.backZoneBTC*/
@@ -568,11 +597,6 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
 .dataset-characteristics {
     background-color: var(--primary-light);
 }
-.header-dataset-section a,
-.header-dataset-section a:visited,
-.header-dataset-section a:hover {
-    text-decoration: none !important;
-}
 /**home zone gauche fond blanc casse + sidebar **/
 .dataset-characteristics > div {
     justify-content: flex-start !important;
@@ -606,6 +630,7 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
     line-height: 4rem;
     font-weight: 700 !important;
     color: var(--text-main) !important;
+    margin-block-end: 0.5rem;
 }
 .dataset-characteristics .resources-grid-content {
     background-color: var(--contrast-light) !important;
@@ -684,6 +709,7 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
 }
 .sidebarFonce h2 {
     margin-top: 0;
+    margin-bottom: 3rem;
 }
 /*.sidebarFonce bloc champs composant*/
 .sidebarFonce > .property_value_container > div .property {
@@ -692,6 +718,26 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
 .sidebarFonce > .property_value_container > div .property p {
     padding: 0 !important;
     margin: 0 !important;
+}
+/*lien*/
+.sidebarFonce > .property_value_container > div .property a {
+    color: var(--secondary-contrast-text) !important;
+    text-decoration: underline;
+}
+.sidebarFonce > .property_value_container > div .property a:hover,
+.sidebarFonce > .property_value_container > div .property a:active,
+.sidebarFonce > .property_value_container > div .property a:focus {
+    color: var(--primary-contrast-text) !important;
+    text-decoration: underline;
+}
+/*lien externe*/
+.sidebarFonce
+    > .property_value_container
+    > div
+    .property
+    a[target="_blank"]::after {
+    background: url("../img/lien-externe_blanc.svg") bottom right no-repeat;
+    background-size: 15px;
 }
 /*a avec url en texte*/
 .sidebarFonce > .property_value_container > div .property a {
