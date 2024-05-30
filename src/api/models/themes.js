@@ -91,10 +91,8 @@ const init = async () => {
         Boolean,
     );
 
-    const profilerThemes = {};
     // Load custom themes
     for (const theme of themes) {
-        profilerThemes[theme] = logger.startTimer();
         try {
             const uri = `themes/${theme}`;
             const themeConfig = await import(`../../${uri}/lodex-theme.json`);
@@ -129,9 +127,6 @@ const init = async () => {
                 customTheme,
             });
             availableThemes.set(theme, true);
-            profilerThemes[theme].done({
-                message: `Theme ${theme} initialization finished`,
-            });
         } catch (e) {
             logger.error(`unable to load ${theme} theme!`);
             logger.error(e);
@@ -139,8 +134,7 @@ const init = async () => {
     }
 };
 
-const profilerAllThemes = logger.startTimer();
 initAvailableThemes();
 init().then(() => {
-    profilerAllThemes.done({ message: 'Themes initialization finished' });
+    logger.info('Theme initialization finished');
 });
