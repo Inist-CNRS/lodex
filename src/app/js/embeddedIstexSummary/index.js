@@ -12,7 +12,7 @@ import {
 
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
-import customTheme from '../../custom/themes/default/customTheme';
+import customTheme from '../../custom/themes/default/defaultTheme';
 import FieldProvider from './FieldProvider';
 import { IstexSummaryView } from '../formats/other/istexSummary/IstexSummaryView';
 

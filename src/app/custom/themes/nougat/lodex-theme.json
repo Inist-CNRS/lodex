@@ -1,17 +1,17 @@
 {
-  "version": "2",
-  "restricted": false,
+  "version": "3",
+  "licence": "CeCILL",
   "name": {
     "fr": "Nougat",
     "en": "Nougat"
   },
   "description": {
-    "fr": "Thème classique qui ressemble au Nougat",
-    "en": "Classic theme that looks like Nougat"
+    "fr": "Thème système qui ressemble au Nougat",
+    "en": "System theme that looks like Nougat"
   },
   "files": {
     "theme": {
-      "main": "customTheme.js"
+      "main": "nougatTheme.js"
     }
   }
 }

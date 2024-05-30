@@ -1,6 +1,6 @@
 {
-  "version": "2",
-  "restricted": true,
+  "version": "3",
+  "licence": "All Right Reserved",
   "name": {
     "fr": "INIST",
     "en": "INIST"
@@ -11,13 +11,8 @@
   },
   "files": {
     "theme": {
-      "main": "customTheme.js",
-      "index": "index.html"
-    }
-  },
-  "dev": {
-    "variables": {
-      "{|__JS_HOST__|}": ""
+      "main": "inistTheme.js",
+      "index": "index.ejs"
     }
   }
 }

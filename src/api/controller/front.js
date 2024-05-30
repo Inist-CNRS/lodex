@@ -1,24 +1,19 @@
 /* eslint-disable no-useless-escape */
-import path from 'path';
-import { renderToString } from 'react-dom/server';
 import React from 'react';
+import { StyleSheetServer } from 'aphrodite/no-important';
+import { Provider } from 'react-redux';
+import { StaticRouter } from 'react-router';
+import { renderToString } from 'react-dom/server';
+
+import path from 'path';
 import Koa from 'koa';
 import serve from 'koa-static';
 import route from 'koa-route';
 import mount from 'koa-mount';
-import { Provider } from 'react-redux';
-import { StaticRouter } from 'react-router';
-import { Helmet } from 'react-helmet';
-import {
-    ThemeProvider as MuiThemeProvider,
-    createTheme,
-} from '@mui/material/styles';
 import { END } from 'redux-saga';
-import fs from 'fs';
-import { StyleSheetServer } from 'aphrodite/no-important';
 import jwt from 'koa-jwt';
 import jsonwebtoken from 'jsonwebtoken';
-import { auth, istexApiUrl, jsHost, mongo } from 'config';
+import { auth, istexApiUrl, jsHost, mongo, themesHost } from 'config';
 import pick from 'lodash/pick';
 import { createMemoryHistory } from 'history';
 
@@ -32,9 +27,7 @@ import getLocale from '../../common/getLocale';
 import { getPublication } from './api/publication';
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
-import { getTheme, getAvailableThemesKeys } from '../models/themes';
-
-const REGEX_JS_HOST = /\{\|__JS_HOST__\|\}/g;
+import { renderAdmin, renderPublic, renderRootAdmin } from '../models/front';
 
 const getDefaultInitialState = (ctx, token, cookie, locale) => ({
     enableAutoPublication: ctx.configTenant.enableAutoPublication,
@@ -111,54 +104,8 @@ const getInitialState = async (token, cookie, locale, ctx) => {
     };
 };
 
-const renderFullPage = (
-    html,
-    css,
-    preloadedState,
-    helmet,
-    tenant,
-    indexHtml,
-    cssVariable,
-) =>
-    indexHtml
-        .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
-        .replace(/<title>.*?<\/title>/, helmet.title.toString())
-        .replace(
-            '</head>',
-            `${helmet.meta.toString()}
-            ${helmet.link.toString()}
-            <style data-aphrodite>${css.content}</style>
-            <style>${cssVariable}</style>
-            </head>`,
-        )
-        .replace(
-            '</body>',
-            `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(
-                preloadedState,
-            ).replace(/</g, '\\u003c')};window.ISTEX_API_URL=${JSON.stringify(
-                istexApiUrl,
-            )}</script>
-            <script>window.__TENANT__ = ${JSON.stringify(tenant)}</script>
-            <script src="${jsHost}/index.js"></script>
-            </body>`,
-        );
-
-const renderHtml = (store, muiTheme, url, context, history, tenant) =>
-    StyleSheetServer.renderStatic(() =>
-        renderToString(
-            <StaticRouter location={url} context={context}>
-                <Provider {...{ store }}>
-                    <MuiThemeProvider theme={muiTheme}>
-                        <Routes history={history} tenant={tenant} />
-                    </MuiThemeProvider>
-                </Provider>
-            </StaticRouter>,
-        ),
-    );
-
-export const getRenderingData = async (
+export const getPreloadedState = async (
     history,
-    theme,
     token,
     cookie,
     locale,
@@ -174,16 +121,16 @@ export const getRenderingData = async (
 
     const sagaPromise = store.runSaga(sagas).done;
     const context = {};
-    const { html, css } = renderHtml(
-        store,
-        theme,
-        url,
-        context,
-        history,
-        ctx.configTenant.name,
+    StyleSheetServer.renderStatic(() =>
+        renderToString(
+            <StaticRouter location={url} context={context}>
+                <Provider {...{ store }}>
+                    <Routes history={history} tenant={ctx.tenant} />
+                </Provider>
+            </StaticRouter>,
+        ),
     );
     store.dispatch(END);
-
     await sagaPromise;
 
     if (context.url) {
@@ -192,13 +139,9 @@ export const getRenderingData = async (
         };
     }
 
-    const helmet = Helmet.renderStatic();
     const preloadedState = store.getState();
 
     return {
-        html,
-        css,
-        helmet,
         preloadedState: {
             ...preloadedState,
             user: {
@@ -208,60 +151,8 @@ export const getRenderingData = async (
     };
 };
 
-/**
- * Create all css variable linked to the customTheme,
- * this is done to avoid importing the customTheme file into the front and source code
- * @param theme
- * @returns {string}
- */
-const getCssVariable = (theme) => {
-    const palette = theme.palette;
-    return `
-:root {
-    --primary-main: ${palette.primary.main};
-    --primary-secondary: ${palette.primary.secondary};
-    --primary-light: ${palette.primary.light};
-    --primary-contrast-text: ${palette.primary.contrastText};
-
-    --secondary-main: ${palette.secondary.main};
-    --secondary-contrast-text: ${palette.secondary.contrastText};
-
-    --info-main: ${palette.info.main};
-    --info-contrast-text: ${palette.info.contrastText};
-
-    --warning-main: ${palette.warning.main};
-    --warning-contrast-text: ${palette.warning.contrastText};
-
-    --danger-main: ${palette.danger.main};
-    --danger-contrast-text: ${palette.danger.contrastText};
-
-    --success-main: ${palette.success.main};
-    --success-contrast-text: ${palette.success.contrastText};
-
-    --neutral-main: ${palette.neutral.main};
-
-    --neutral-dark-main: ${palette.neutralDark.main};
-    --neutral-dark-secondary: ${palette.neutralDark.secondary};
-    --neutral-dark-very-dark: ${palette.neutralDark.veryDark};
-    --neutral-dark-dark: ${palette.neutralDark.dark};
-    --neutral-dark-light: ${palette.neutralDark.light};
-    --neutral-dark-lighter: ${palette.neutralDark.lighter};
-    --neutral-dark-very-light: ${palette.neutralDark.veryLight};
-    --neutral-dark-transparent: ${palette.neutralDark.transparent};
-
-    --text-main: ${palette.text.main};
-    --text-primary: ${palette.text.primary};
-
-    --contrast-main: ${palette.contrast.main};
-    --contrast-light: ${palette.contrast.light};
-
-    --contrast-threshold: ${palette.contrastThreshold};
-}
-    `;
-};
-
 const handleRender = async (ctx, next) => {
-    const { url, headers } = ctx.request;
+    const { url } = ctx.request;
     if (
         (url.match(/[^\\]*\.(\w+)$/) && !url.match(/\/uid:\//)) ||
         url.match(/[^\\]*\.html$/) ||
@@ -276,80 +167,50 @@ const handleRender = async (ctx, next) => {
         initialEntries: [url],
     });
 
-    const lodexTheme = getTheme(ctx.configTenant.theme);
-
-    const theme = createTheme(lodexTheme.customTheme, {
-        userAgent: headers['user-agent'],
-    });
-
-    const cssVariable = getCssVariable(lodexTheme.customTheme);
-
-    const { html, css, preloadedState, helmet, redirect } =
-        await getRenderingData(
-            history,
-            theme,
-            ctx.state.headerToken,
-            ctx.request.header.cookie,
-            getLocale(ctx),
-            url,
-            ctx,
-        );
+    const { preloadedState, redirect } = await getPreloadedState(
+        history,
+        ctx.state.headerToken,
+        ctx.request.header.cookie,
+        getLocale(ctx),
+        url,
+        ctx,
+    );
 
     if (redirect) {
         return ctx.redirect(redirect);
     }
 
-    ctx.body = renderFullPage(
-        html,
-        css,
-        preloadedState,
-        helmet,
-        ctx.tenant,
-        lodexTheme.index,
-        cssVariable,
-    );
+    renderPublic(ctx.configTenant.theme, {
+        preload: JSON.stringify(preloadedState),
+        tenant: ctx.tenant,
+        jsHost: jsHost,
+        themesHost: themesHost,
+        istexApi: istexApiUrl,
+    }).then((html) => {
+        ctx.body = html;
+    });
 };
 
 const renderAdminIndexHtml = (ctx) => {
-    const lodexTheme = getTheme('default');
-    const cssVariable = getCssVariable(lodexTheme.customTheme);
-
-    ctx.body = fs
-        .readFileSync(path.resolve(__dirname, '../../app/admin.html'))
-        .toString()
-        .replace(
-            '</head>',
-            `<style>${cssVariable}</style>
-            </head>`,
-        )
-        .replace(
-            '</body>',
-            ` <script>window.__DBNAME__ = ${JSON.stringify(
-                mongo.dbName,
-            )}</script><script>window.__TENANT__ = ${JSON.stringify(
-                ctx.tenant,
-            )}</script>
-              <script>window.__JS_HOST__ = "${jsHost}"</script>
-              <script src="{|__JS_HOST__|}/admin/index.js"></script>
-        </body>`,
-        )
-        .replace(REGEX_JS_HOST, jsHost);
+    renderAdmin({
+        tenant: ctx.tenant,
+        dbName: mongo.dbName,
+        jsHost: jsHost,
+        themesHost: themesHost,
+    }).then((html) => {
+        ctx.body = html;
+    });
 };
 
 const renderRootAdminIndexHtml = (ctx) => {
-    ctx.body = fs
-        .readFileSync(path.resolve(__dirname, '../../app/root-admin.html'))
-        .toString()
-        .replace(
-            '</body>',
-            ` <script>window.__DBNAME__ = ${JSON.stringify(
-                mongo.dbName,
-            )}</script><script>window.__TENANT__ = ${JSON.stringify(
-                ctx.tenant,
-            )}</script><script src="{|__JS_HOST__|}/root-admin/index.js"></script>
-        </body>`,
-        )
-        .replace(REGEX_JS_HOST, jsHost);
+    renderRootAdmin({
+        tenant: ctx.tenant,
+        dbName: mongo.dbName,
+        jsHost: jsHost,
+        themesHost: themesHost,
+    }).then((html) => {
+        ctx.body = html;
+    });
 };
 
 const app = new Koa();
@@ -421,15 +282,6 @@ app.use(
         renderAdminIndexHtml(ctx);
     }),
 );
-
-for (let theme of getAvailableThemesKeys()) {
-    app.use(
-        mount(
-            `/themes/${theme}/`,
-            serve(path.resolve(__dirname, `../../app/custom/themes/${theme}`)),
-        ),
-    );
-}
 
 app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
 app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));

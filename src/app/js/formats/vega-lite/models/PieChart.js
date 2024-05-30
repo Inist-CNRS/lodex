@@ -20,6 +20,7 @@ class PieChart extends BasicChart {
 
     buildSpec() {
         this.model.encoding.color.scale.range = this.colors;
+        this.model.background = 'transparent';
 
         if (this.labels) {
             this.model.layer.push(this.modelLabels);

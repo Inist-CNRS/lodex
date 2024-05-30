@@ -223,6 +223,7 @@ class BarChart extends BasicChart {
 
         if (!this.labels) {
             return {
+                background: 'transparent',
                 mark: model.mark,
                 encoding: encoding,
                 padding: this.padding,
@@ -247,6 +248,7 @@ class BarChart extends BasicChart {
             }
 
             return {
+                background: 'transparent',
                 layer: [
                     {
                         mark: model.mark,
