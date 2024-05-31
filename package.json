@@ -37,7 +37,8 @@
         "insertversion:makefile": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" Makefile",
         "insertversion:docker": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose*.yml",
         "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && git add README.md Makefile",
-        "postinstall": "cd ./packages/ezsLodex/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../transformers/ && npm install --production --install-strategy=nested --legacy-peer-deps"
+        "postinstall": "cd ./packages/ezsLodex/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../transformers/ && npm install --production --install-strategy=nested --legacy-peer-deps",
+        "mimify-css": "cleancss"
     },
     "nodemonConfig": {
         "ignore": [
@@ -250,6 +251,7 @@
         "array-series": "0.1.5",
         "babel-core": "^7.0.0-bridge.0",
         "babel-jest": "^27.0.6",
+        "clean-css-cli": "5.6.3",
         "compression-webpack-plugin": "10.0.0",
         "copy-webpack-plugin": "11.0.0",
         "cypress": "13.6.4",
