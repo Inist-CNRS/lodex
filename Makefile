@@ -16,7 +16,7 @@ help:
 	@grep -P '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 # If the first argument is one of the supported commands...
-SUPPORTED_COMMANDS := npm restore-db-dev _restore_db_dev restore-db-prod _restore_db_prod build import_units import_users import_sections import_unit_sections
+SUPPORTED_COMMANDS := minify-theme-css npm restore-db-dev _restore_db_dev restore-db-prod _restore_db_prod build import_units import_users import_sections import_unit_sections
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""
     # use the rest as arguments for the command
@@ -71,6 +71,9 @@ analyze-code: ## Generate statistics about the bundle. Usage: make analyze-code.
 
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm $(COMMAND_ARGS)
+
+minify-theme-css: ## Example: make minify-theme-css default/css/style -> mimify the style.css of the default theme
+	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run minify-css ./src/app/custom/themes/$(COMMAND_ARGS).min.css ./src/app/custom/themes/$(COMMAND_ARGS).css
 
 ## Tests =======================================================================
 
