@@ -87,10 +87,10 @@
             </a>
             <div id="pageText" class="pageHead-texte">
                 <div id="pageTitle">
-                        <%= theme.title %>
+                        <%= custom.title %>
                 </div>
                 <p id="pageSubTitle" class="text-center">
-                    <%= theme.summary %>
+                    <%= custom.summary %>
                 </p>
             </div>
         </div>
@@ -117,13 +117,16 @@
             </div>
         </footer>
         <!-- Footer - bloc-8 END -->
-        <script
-            src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-            crossorigin="anonymous"></script>
-        <script src="/js/responsiveMenu.js"></script>
-        <script src="/js/tooltip.js"></script>
-         <!-- Piwik -->
+	<script src="<%= theme.base.href %>/themes/istex/js/jquery-3.6.0.min.js"></script>
+	<script src="<%= theme.base.href %>/themes/istex/js/responsiveMenu.js"></script>
+	<script src="<%= theme.base.href %>/themes/istex/js/tooltip.js"></script>
+	<script>
+	    window.__PRELOADED_STATE__ = <%- lodex.preload %>;
+	    window.__TENANT__ = '<%= lodex.tenant %>';
+	    window.ISTEX_API_URL = '<%= lodex.istexApi %>';
+	</script>
+	<script src="<%= lodex.base.href %>/index.js"></script>
+  	<!-- Piwik -->
         <script>
             var _paq = _paq || [];
             _paq.push([
@@ -146,7 +149,7 @@
             (function () {
                 var u = "https://piwik2.inist.fr/";
                 _paq.push(["setTrackerUrl", u + "piwik.php"]);
-                _paq.push(["setSiteId", "39"]);
+                _paq.push(["setSiteId", "<%= custom.matomoID %>"]);
                 var d = document,
                     g = d.createElement("script"),
                     s = d.getElementsByTagName("script")[0];
