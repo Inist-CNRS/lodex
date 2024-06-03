@@ -120,7 +120,14 @@
         "istex": {
             "host": "/",
             "title": "Services",
-            "summary": "Les technologies et les outils ISTEX pour les projets de recherche."
+            "summary": "Les technologies et les outils ISTEX pour les projets de recherche.",
+            "matomoID": "39"
+        },
+        "istex-legacy": {
+            "host": "/",
+            "title": "Services",
+            "summary": "Les technologies et les outils ISTEX pour les projets de recherche.",
+            "matomoID": "39"
         },
         "inist": {
             "title": "Etudes"
