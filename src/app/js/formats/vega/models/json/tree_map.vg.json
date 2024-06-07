@@ -29,6 +29,14 @@
       "transform": [{ "type": "filter", "expr": "datum.children" }]
     },
     {
+      "name": "textNodes",
+      "source": "tree",
+      "transform": [
+        { "type": "filter", "expr": "datum.children" },
+        { "type": "filter", "expr": "datum.depth == 1" }
+      ]
+    },
+    {
       "name": "leaves",
       "source": "tree",
       "transform": [{ "type": "filter", "expr": "!datum.children" }]
@@ -46,18 +54,6 @@
         "#a1d99b", "#c7e9c0", "#756bb1", "#9e9ac8", "#bcbddc",
         "#dadaeb", "#636363", "#969696", "#bdbdbd", "#d9d9d9"
       ]
-    },
-    {
-      "name": "size",
-      "type": "ordinal",
-      "domain": [0, 1, 2, 3],
-      "range": [256, 28, 20, 14]
-    },
-    {
-      "name": "opacity",
-      "type": "ordinal",
-      "domain": [0, 1, 2, 3],
-      "range": [0.15, 0.5, 0.8, 1.0]
     }
   ],
 
@@ -83,7 +79,10 @@
       "from": {"data": "leaves"},
       "encode": {
         "enter": {
-          "stroke": {"value": "#fff"}
+          "stroke": {"value": "#fff"},
+          "tooltip": {
+            "signal": "datum"
+          }
         },
         "update": {
           "x": {"field": "x0"},
@@ -99,7 +98,7 @@
     },
     {
       "type": "text",
-      "from": {"data": "nodes"},
+      "from": {"data": "textNodes"},
       "interactive": false,
       "encode": {
         "enter": {
@@ -108,8 +107,8 @@
           "baseline": {"value": "middle"},
           "fill": {"value": "#000"},
           "text": {"field": "name"},
-          "fontSize": {"scale": "size", "field": "depth"},
-          "fillOpacity": {"scale": "opacity", "field": "depth"}
+          "fontSize": {"value": 14},
+          "fillOpacity": {"value": 0.85}
         },
         "update": {
           "x": {"signal": "0.5 * (datum.x0 + datum.x1)"},

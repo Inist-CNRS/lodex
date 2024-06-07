@@ -73,9 +73,14 @@ const TreeMapView = (props) => {
             });
         });
 
-        const outputData = [];
+        const nodes = new Set();
+
+        let outputData = new Map();
         tmpData.forEach((value, key) => {
-            outputData.push({
+            if (value.parent && !nodes.has(value.parent)) {
+                nodes.add(value.parent);
+            }
+            outputData.set(ids.get(key), {
                 id: ids.get(key),
                 name: key,
                 ...value,
@@ -84,7 +89,28 @@ const TreeMapView = (props) => {
 
         return {
             ...data,
-            values: outputData,
+            values: Array.from(outputData, ([id, value]) => {
+                if (nodes.has(id)) {
+                    delete value.size;
+                } else {
+                    const getHierarchy = (parentId) => {
+                        if (!outputData.has(parentId)) {
+                            return [];
+                        }
+                        const parent = outputData.get(parentId);
+                        if (parent.parent) {
+                            return [
+                                ...getHierarchy(parent.parent),
+                                parent.name,
+                            ];
+                        }
+                        return [parent.name];
+                    };
+
+                    value.hierarchy = getHierarchy(value.parent).join(', ');
+                }
+                return value;
+            }),
         };
     }, [data]);
 
@@ -108,6 +134,7 @@ const TreeMapView = (props) => {
         const specBuilder = new TreeMap();
 
         specBuilder.setColors(colors.split(' '));
+        // TODO Add tooltip
         // specBuilder.setTooltip(tooltip);
         // specBuilder.setTooltipCategory(tooltipCategory);
         // specBuilder.setTooltipValue(tooltipValue);
