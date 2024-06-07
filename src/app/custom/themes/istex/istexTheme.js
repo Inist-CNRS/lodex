@@ -16,16 +16,16 @@ const palette = {
     mode: 'light',
     primary: {
         main: '#458cA5',
-        secondary: '#337288',
-        light: '#f6f9fa',
+        secondary: '#31768F' /*secondary: '#337288' */,
+        light: '#f4f9fa',
         contrastText: '#fff',
     },
     secondary: {
-        main: '#f48022',
+        main: '#AABF23',
         contrastText: '#f0f0f0',
     },
     info: {
-        main: '#f48022',
+        main: '#C4D733',
         contrastText: '#fff',
     },
     warning: {
@@ -37,7 +37,7 @@ const palette = {
         contrastText: '#fff',
     },
     success: {
-        main: '#779e04',
+        main: '#AABF23',
         contrastText: '#f0f0f0',
     },
     text: {
