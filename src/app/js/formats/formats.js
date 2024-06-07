@@ -44,6 +44,7 @@ import bubblePlot from './vega-lite/component/bubble-plot';
 import flowMap from './vega/component/flow-map';
 import clusteredChart from './chart/clustered-chart';
 import json from './other/json';
+import TreeMap from './vega/component/tree-map';
 
 export const FORMATS_CATALOG = [
     {
@@ -79,6 +80,13 @@ export const FORMATS_CATALOG = [
         description: 'formatGlobalRadarchartDescription',
         componentName: 'globalRadarchart',
         component: globalRadarchart,
+        type: 'chart',
+    },
+    {
+        name: 'formatTreemap',
+        description: 'formatTreemapDescription',
+        componentName: 'Treemap',
+        component: TreeMap,
         type: 'chart',
     },
     {

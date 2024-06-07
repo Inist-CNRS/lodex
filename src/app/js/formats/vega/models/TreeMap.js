@@ -28,8 +28,8 @@ class TreeMap extends BasicChartVG {
         this.ratio = newRatio;
     }
 
-    setColor(colors) {
-        this.colors = colors.split(' ');
+    setColors(colors) {
+        this.colors = colors;
     }
 
     buildSpec(widthIn) {
