@@ -36,8 +36,9 @@ export const defaultArgs = {
     advancedMode: false,
     advancedModeSpec: null,
     tooltip: false,
-    tooltipCategory: 'Category',
-    tooltipValue: 'Value',
+    tooltipSource: 'Source',
+    tooltipTarget: 'Target',
+    tooltipWeight: 'Weight',
     colors: MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
     layout: 'squarify',
     ratio: 2.0,
@@ -58,8 +59,9 @@ const TreeMapAdmin = (props) => {
         advancedMode,
         advancedModeSpec,
         tooltip,
-        tooltipCategory,
-        tooltipValue,
+        tooltipSource,
+        tooltipTarget,
+        tooltipWeight,
         params,
         layout,
         ratio,
@@ -118,12 +120,16 @@ const TreeMapAdmin = (props) => {
         updateAdminArgs('tooltip', !tooltip, props);
     };
 
-    const handleTooltipCategory = (tooltipCategory) => {
-        updateAdminArgs('tooltipCategory', tooltipCategory, props);
+    const handleTooltipSource = (tooltipSource) => {
+        updateAdminArgs('tooltipSource', tooltipSource, props);
     };
 
-    const handleTooltipValue = (tooltipValue) => {
-        updateAdminArgs('tooltipValue', tooltipValue, props);
+    const handleTooltipTarget = (tooltipTarget) => {
+        updateAdminArgs('tooltipTarget', tooltipTarget, props);
+    };
+
+    const handleTooltipWeight = (tooltipWeight) => {
+        updateAdminArgs('tooltipWeight', tooltipWeight, props);
     };
 
     const handleColors = (colors) => {
@@ -187,12 +193,14 @@ const TreeMapAdmin = (props) => {
                         <VegaToolTips
                             checked={tooltip}
                             onChange={toggleTooltip}
-                            onCategoryTitleChange={handleTooltipCategory}
-                            categoryTitle={tooltipCategory}
-                            onValueTitleChange={handleTooltipValue}
-                            valueTitle={tooltipValue}
+                            onCategoryTitleChange={handleTooltipSource}
+                            categoryTitle={tooltipSource}
+                            onValueTitleChange={handleTooltipTarget}
+                            valueTitle={tooltipTarget}
                             polyglot={polyglot}
-                            thirdValue={false}
+                            thirdValue={true}
+                            onThirdValueChange={handleTooltipWeight}
+                            thirdValueTitle={tooltipWeight}
                         />
                         <ColorPickerParamsAdmin
                             colors={colors}
@@ -270,8 +278,9 @@ TreeMapAdmin.propTypes = {
         advancedMode: PropTypes.bool,
         advancedModeSpec: PropTypes.string,
         tooltip: PropTypes.bool,
-        tooltipCategory: PropTypes.string,
-        tooltipValue: PropTypes.string,
+        tooltipSource: PropTypes.string,
+        tooltipTarget: PropTypes.string,
+        tooltipWeight: PropTypes.string,
         colors: PropTypes.string,
         layout: PropTypes.oneOf(TREE_MAP_LAYOUT),
         ratio: PropTypes.number,

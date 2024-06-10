@@ -12,6 +12,12 @@ class TreeMap extends BasicChartVG {
         this.layout = 'squarify';
         this.ratio = 2.0;
         this.colors = MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH.split(' ');
+        this.tooltip = {
+            toggle: false,
+            source: 'Source',
+            target: 'Target',
+            weight: 'Weight',
+        };
     }
 
     setLayout(newLayout) {
@@ -30,6 +36,38 @@ class TreeMap extends BasicChartVG {
 
     setColors(colors) {
         this.colors = colors;
+    }
+
+    /**
+     * Set the status of the tooltip (display or not)
+     * @param bool new status
+     */
+    setTooltip(bool) {
+        this.tooltip.toggle = bool;
+    }
+
+    /**
+     * Set the display name of the source
+     * @param title new name
+     */
+    setTooltipSource(title) {
+        this.tooltip.source = title;
+    }
+
+    /**
+     * Set the display name of the target
+     * @param title new name
+     */
+    setTooltipTarget(title) {
+        this.tooltip.target = title;
+    }
+
+    /**
+     * Set the display name of the weight
+     * @param title new name
+     */
+    setTooltipWeight(title) {
+        this.tooltip.weight = title;
     }
 
     buildSpec(widthIn) {
@@ -51,6 +89,24 @@ class TreeMap extends BasicChartVG {
                 });
             }
         });
+
+        if (this.tooltip.toggle) {
+            this.model.marks.forEach((markEntry) => {
+                if (
+                    markEntry.type === 'rect' &&
+                    markEntry.from.data === 'leaves'
+                ) {
+                    const signal = ['{'];
+                    signal.push(`"${this.tooltip.source}": datum.hierarchy`);
+                    signal.push(',');
+                    signal.push(`"${this.tooltip.target}": datum.name`);
+                    signal.push(',');
+                    signal.push(`"${this.tooltip.weight}": datum.size`);
+                    signal.push('}');
+                    markEntry.encode.enter.tooltip.signal = signal.join('');
+                }
+            });
+        }
 
         this.model.scales.forEach((scalesEntry) => {
             if (scalesEntry.name === 'color') {

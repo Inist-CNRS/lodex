@@ -28,8 +28,9 @@ const TreeMapView = (props) => {
         advancedMode,
         advancedModeSpec,
         tooltip,
-        tooltipCategory,
-        tooltipValue,
+        tooltipSource,
+        tooltipTarget,
+        tooltipWeight,
         colors,
         layout,
         ratio,
@@ -134,10 +135,10 @@ const TreeMapView = (props) => {
         const specBuilder = new TreeMap();
 
         specBuilder.setColors(colors.split(' '));
-        // TODO Add tooltip
-        // specBuilder.setTooltip(tooltip);
-        // specBuilder.setTooltipCategory(tooltipCategory);
-        // specBuilder.setTooltipValue(tooltipValue);
+        specBuilder.setTooltip(tooltip);
+        specBuilder.setTooltipSource(tooltipSource);
+        specBuilder.setTooltipTarget(tooltipTarget);
+        specBuilder.setTooltipWeight(tooltipWeight);
         specBuilder.setRatio(ratio);
         specBuilder.setLayout(layout);
 
@@ -147,8 +148,9 @@ const TreeMapView = (props) => {
         advancedMode,
         advancedModeSpec,
         tooltip,
-        tooltipCategory,
-        tooltipValue,
+        tooltipSource,
+        tooltipTarget,
+        tooltipWeight,
         colors,
         layout,
         ratio,
@@ -177,8 +179,9 @@ TreeMapView.propTypes = {
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
     tooltip: PropTypes.bool,
-    tooltipCategory: PropTypes.string,
-    tooltipValue: PropTypes.string,
+    tooltipSource: PropTypes.string,
+    tooltipTarget: PropTypes.string,
+    tooltipWeight: PropTypes.string,
     colors: PropTypes.string,
     layout: PropTypes.oneOf(TREE_MAP_LAYOUT),
     ratio: PropTypes.number,
