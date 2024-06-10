@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "padding": 18,
-  "autosize": "none",
+  "autosize": {"type": "none", "contains": "padding"},
 
   "data": [
     {
@@ -79,10 +79,7 @@
       "from": {"data": "leaves"},
       "encode": {
         "enter": {
-          "stroke": {"value": "#fff"},
-          "tooltip": {
-            "signal": "datum"
-          }
+          "stroke": {"value": "#fff"}
         },
         "update": {
           "x": {"field": "x0"},

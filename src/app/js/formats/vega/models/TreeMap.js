@@ -103,7 +103,9 @@ class TreeMap extends BasicChartVG {
                     signal.push(',');
                     signal.push(`"${this.tooltip.weight}": datum.size`);
                     signal.push('}');
-                    markEntry.encode.enter.tooltip.signal = signal.join('');
+                    markEntry.encode.enter.tooltip = {
+                        signal: signal.join(''),
+                    };
                 }
             });
         }

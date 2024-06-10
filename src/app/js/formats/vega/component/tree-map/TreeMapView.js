@@ -94,7 +94,13 @@ const TreeMapView = (props) => {
                 if (nodes.has(id)) {
                     delete value.size;
                 } else {
+                    const maxRecursion = 10;
+                    let recursion = 0;
                     const getHierarchy = (parentId) => {
+                        recursion++;
+                        if (recursion > maxRecursion) {
+                            return [];
+                        }
                         if (!outputData.has(parentId)) {
                             return [];
                         }

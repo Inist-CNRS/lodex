@@ -24,9 +24,10 @@ import {
 import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
-import { StandardIdValue } from '../../../utils/dataSet';
+import { TreeMapSourceTargetWeight } from '../../../utils/dataSet';
 import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
+import { TreeMapAdminView } from './TreeMapView';
 
 export const defaultArgs = {
     params: {
@@ -84,8 +85,12 @@ const TreeMapAdmin = (props) => {
         const specBuilder = new TreeMap();
 
         specBuilder.setColors(colors.split(' '));
-        specBuilder.setLayout(layout);
+        specBuilder.setTooltip(tooltip);
+        specBuilder.setTooltipSource(tooltipSource);
+        specBuilder.setTooltipTarget(tooltipTarget);
+        specBuilder.setTooltipWeight(tooltipWeight);
         specBuilder.setRatio(ratio);
+        specBuilder.setLayout(layout);
 
         specBuilder.setEditMode(true);
         return JSON.stringify(specBuilder.buildSpec(), null, 2);
@@ -259,8 +264,8 @@ const TreeMapAdmin = (props) => {
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
-                PreviewComponent={() => null}
-                datasets={[StandardIdValue]}
+                PreviewComponent={TreeMapAdminView}
+                datasets={[TreeMapSourceTargetWeight]}
                 showDatasetsSelector={false}
             />
         </Box>
