@@ -180,12 +180,18 @@ const handleRender = async (ctx, next) => {
         return ctx.redirect(redirect);
     }
 
+    let customTemplateVariables = {};
+    if (ctx.configTenant.front && ctx.configTenant.front.theme) {
+        customTemplateVariables = ctx.configTenant.front.theme;
+    }
+
     renderPublic(ctx.configTenant.theme, {
         preload: JSON.stringify(preloadedState),
         tenant: ctx.tenant,
         jsHost: jsHost,
         themesHost: themesHost,
         istexApi: istexApiUrl,
+        customTemplateVariables,
     }).then((html) => {
         ctx.body = html;
     });

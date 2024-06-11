@@ -1,18 +1,24 @@
 {
-    "version": "3",
-    "licence": "All Right Reserved",
-    "name": {
-        "fr": "ISTEX",
-        "en": "ISTEX"
-    },
-    "description": {
-        "fr": "Thème ISTEX (restreint)",
-        "en": "ISTEX theme (restricted)"
-    },
+  "version": "4",
+  "licence": "All Right Reserved",
+  "name": {
+    "fr": "ISTEX",
+    "en": "ISTEX"
+  },
+  "description": {
+    "fr": "Thème ISTEX (restreint)",
+    "en": "ISTEX theme (restricted)"
+  },
+  "configuration": {
     "files": {
-        "theme": {
-            "main": "istexTheme.js",
-            "index": "index.ejs"
-        }
+      "index": "index.ejs",
+      "palette": "istexTheme.js"
+    },
+    "variables": {
+      "host": "/",
+      "title": "Services",
+      "summary": "Les technologies et les outils ISTEX pour les projets de recherche.",
+      "matomoID": "39"
     }
+  }
 }

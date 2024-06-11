@@ -7,6 +7,7 @@
     },
     "enrichmentBatchSize": 10,
     "front": {
+        "theme": {},
         "breadcrumb": [],
         "menu": [
             {

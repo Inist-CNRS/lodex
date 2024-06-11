@@ -1,5 +1,5 @@
 {
-  "version": "3",
+  "version": "4",
   "licence": "CeCILL",
   "name": {
     "fr": "Système",
@@ -9,10 +9,10 @@
       "fr": "Thème système",
       "en": "System theme"
   },
-  "files": {
-    "theme": {
-      "main": "defaultTheme.js",
-      "index": "index.ejs"
+  "configuration": {
+    "files": {
+      "index": "index.ejs",
+      "palette": "defaultTheme.js"
     }
   }
 }
