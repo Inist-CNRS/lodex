@@ -13,6 +13,7 @@ import {
 } from '../../../utils/chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
 import { CustomActionVega } from '../../../utils/components/vega-component';
+import TreeMapData from './TreeMapData';
 
 const styles = {
     container: {
@@ -38,86 +39,14 @@ const TreeMapView = (props) => {
     } = props;
 
     const formattedData = useMemo(() => {
-        if (!data) {
+        if (!data || !data.values || !Array.isArray(data.values)) {
             return data;
         }
 
-        let idIncrement = 0;
-        /**
-         * @type {Map<string, number>}
-         */
-        const ids = new Map();
-        /**
-         * @type {Map<string, {parent: number?, size: number?}>}
-         */
-        const tmpData = new Map();
-
-        data.values.forEach((value) => {
-            const parent = value.source;
-            const name = value.target;
-            const size = value.weight;
-
-            if (!tmpData.has(parent)) {
-                tmpData.set(parent, {});
-                if (!ids.has(parent)) {
-                    ids.set(parent, ++idIncrement);
-                }
-            }
-
-            if (!ids.has(name)) {
-                ids.set(name, ++idIncrement);
-            }
-
-            tmpData.set(name, {
-                parent: ids.get(parent),
-                size,
-            });
-        });
-
-        const nodes = new Set();
-
-        let outputData = new Map();
-        tmpData.forEach((value, key) => {
-            if (value.parent && !nodes.has(value.parent)) {
-                nodes.add(value.parent);
-            }
-            outputData.set(ids.get(key), {
-                id: ids.get(key),
-                name: key,
-                ...value,
-            });
-        });
-
+        const treeMapDataBuilder = new TreeMapData(data.values);
         return {
             ...data,
-            values: Array.from(outputData, ([id, value]) => {
-                if (nodes.has(id)) {
-                    delete value.size;
-                } else {
-                    const maxRecursion = 10;
-                    let recursion = 0;
-                    const getHierarchy = (parentId) => {
-                        recursion++;
-                        if (recursion > maxRecursion) {
-                            return [];
-                        }
-                        if (!outputData.has(parentId)) {
-                            return [];
-                        }
-                        const parent = outputData.get(parentId);
-                        if (parent.parent) {
-                            return [
-                                ...getHierarchy(parent.parent),
-                                parent.name,
-                            ];
-                        }
-                        return [parent.name];
-                    };
-
-                    value.hierarchy = getHierarchy(value.parent).join(', ');
-                }
-                return value;
-            }),
+            values: treeMapDataBuilder.build(),
         };
     }, [data]);
 
