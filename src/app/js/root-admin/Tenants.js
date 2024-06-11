@@ -17,7 +17,15 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
-import { Button, Link, Tooltip, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    IconButton,
+    Link,
+    Tooltip,
+    Typography,
+} from '@mui/material';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 const baseUrl = getHost();
 
@@ -241,9 +249,7 @@ const Tenants = ({ handleLogout }) => {
             renderCell: (params) => {
                 const name = params.row.name;
                 return (
-                    <Link
-                        href={`${baseUrl}/instance/${name}`}
-                        target="_blank"
+                    <Box
                         sx={{
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
@@ -255,9 +261,6 @@ const Tenants = ({ handleLogout }) => {
                             display: 'flex',
                             alignItems: 'center',
                             padding: '0 16px',
-                            '&:visited': {
-                                color: '#0069A9',
-                            },
                             '&:focus': {
                                 borderBottom: '1px solid',
                                 background: '#D9F3FF',
@@ -267,15 +270,43 @@ const Tenants = ({ handleLogout }) => {
                                 background: '#D9F3FF',
                                 textDecoration: 'none',
                             },
-                            '&:active': {
-                                background: '#0069A9',
-                                color: '#D9F3FF',
-                            },
                         }}
-                        title={params.value}
                     >
-                        {params.value}
-                    </Link>
+                        <Link
+                            href={`${baseUrl}/instance/${name}`}
+                            target="_blank"
+                            title={params.value}
+                            color="primary"
+                            sx={{
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                outline: 'none',
+                                textDecoration: 'none',
+                                height: '100%',
+                                width: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                padding: '0 16px',
+                                '&:focus': {
+                                    textDecoration: 'none',
+                                },
+                                '&:hover': {
+                                    textDecoration: 'none',
+                                },
+                            }}
+                        >
+                            {params.value}
+                        </Link>
+                        <IconButton
+                            size="large"
+                            href={`${baseUrl}/instance/${name}/admin`}
+                            target="_blank"
+                            color="primary"
+                        >
+                            <AdminPanelSettingsIcon />
+                        </IconButton>
+                    </Box>
                 );
             },
         },
@@ -378,12 +409,13 @@ const Tenants = ({ handleLogout }) => {
             flex: 1,
             renderCell: (params) => {
                 return (
-                    <Button
+                    <IconButton
                         color="warning"
+                        size="large"
                         onClick={() => setTenantToUpdate(params.row)}
                     >
                         <EditIcon />
-                    </Button>
+                    </IconButton>
                 );
             },
         },
@@ -396,12 +428,13 @@ const Tenants = ({ handleLogout }) => {
                     return null;
                 }
                 return (
-                    <Button
+                    <IconButton
                         color="error"
+                        size="large"
                         onClick={() => setOpenDeleteTenantDialog(params.row)}
                     >
                         <DeleteIcon />
-                    </Button>
+                    </IconButton>
                 );
             },
         },
