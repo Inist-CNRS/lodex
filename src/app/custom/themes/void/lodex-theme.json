@@ -1,5 +1,5 @@
 {
-  "version": "3",
+  "version": "4",
   "licence": "CeCILL",
   "name": {
     "fr": "Void",
@@ -9,9 +9,9 @@
     "fr": "Thème système en violet",
     "en": "System theme in purple"
   },
-  "files": {
-    "theme": {
-      "main": "voidTheme.js"
+  "configuration": {
+    "files": {
+      "palette": "voidTheme.js"
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "version": "3",
+  "version": "4",
   "licence": "CeCILL",
   "name": {
     "fr": "Nougat",
@@ -9,9 +9,9 @@
     "fr": "Thème système qui ressemble au Nougat",
     "en": "System theme that looks like Nougat"
   },
-  "files": {
-    "theme": {
-      "main": "nougatTheme.js"
+  "configuration": {
+    "files": {
+      "palette": "nougatTheme.js"
     }
   }
 }

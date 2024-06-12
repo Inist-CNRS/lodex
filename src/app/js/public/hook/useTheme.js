@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import customTheme from '../../../custom/themes/default/defaultTheme';
+import defaultMuiTheme from '../../../custom/themes/default/defaultTheme';
 import { themeLoader } from '../api/themeLoader';
 
 /**
@@ -7,7 +7,7 @@ import { themeLoader } from '../api/themeLoader';
  * @return {{palette: import('@mui/material/styles').Theme['palette']}}
  */
 const useTheme = () => {
-    const [theme, setTheme] = useState(customTheme);
+    const [theme, setTheme] = useState(defaultMuiTheme);
 
     useEffect(() => {
         themeLoader().then(setTheme).catch(); // Catch error and do nothing with it

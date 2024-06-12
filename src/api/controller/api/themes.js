@@ -16,17 +16,17 @@ export const getThemes = async (ctx) => {
     ctx.body = getAvailableThemes();
 };
 
-export const getCustomTheme = async (ctx) => {
+export const getMuiTheme = async (ctx) => {
     const config = await ctx.configTenantCollection.findLast();
     const theme = getTheme(config.theme);
-    ctx.body = theme.customTheme;
+    ctx.body = theme.muiTheme;
 };
 
 const app = new Koa();
 
 app.use(setup);
 app.use(route.get('/', getThemes));
-app.use(route.get('/current', getCustomTheme));
+app.use(route.get('/current', getMuiTheme));
 app.use(koaBodyParser());
 
 export default app;

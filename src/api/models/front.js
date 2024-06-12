@@ -2,8 +2,6 @@ import { createTheme } from '@mui/material/styles';
 import { assign } from 'lodash';
 import { getTheme } from './themes';
 import { version } from '../../../package.json';
-import get from 'lodash/get';
-import config from '../../../config.json';
 import ejs from 'ejs';
 import path from 'path';
 import rootTheme from '../../app/custom/themes/rootTheme';
@@ -81,6 +79,7 @@ const renderTemplate = (file, data) => {
  * @property {object?} preload
  * @property {string?} dbName
  * @property {string?} istexApi
+ * @property {object?} customTemplateVariables
  */
 
 /**
@@ -90,13 +89,14 @@ const renderTemplate = (file, data) => {
  */
 export const renderPublic = (themeId, data) => {
     const lodexTheme = getTheme(themeId);
-    const theme = createMuiTheme(lodexTheme.customTheme);
+    const theme = createMuiTheme(lodexTheme.muiTheme);
     const cssVariable = buildCssVariable(theme.palette);
 
-    const themeCustomTemplateConfig = get(config, `theme.${themeId}`, {});
-
     const extendedData = {
-        custom: themeCustomTemplateConfig,
+        custom: {
+            ...lodexTheme.customTemplateVariables,
+            ...data.customTemplateVariables,
+        },
         lodex: {
             version,
             base: { href: data.jsHost ?? '' },
@@ -130,7 +130,7 @@ export const renderPublic = (themeId, data) => {
  */
 export const renderAdmin = (data) => {
     const lodexTheme = getTheme('default');
-    const theme = createMuiTheme(lodexTheme.customTheme);
+    const theme = createMuiTheme(lodexTheme.muiTheme);
     const cssVariable = buildCssVariable(theme.palette);
 
     const extendedData = {

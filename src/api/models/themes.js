@@ -1,11 +1,11 @@
 import config from '../../../config.json';
 import path from 'path';
 import getLogger from '../services/logger';
-import defaultCustomTheme from '../../app/custom/themes/default/defaultTheme';
+import defaultMuiTheme from '../../app/custom/themes/default/defaultTheme';
 import deepClone from 'lodash/cloneDeep';
 
 // --- Global variable for the Theme system
-export const THEMES_VERSION = '3';
+export const THEMES_VERSION = '4';
 export const THEMES_FOLDER = '../../app/custom/themes';
 
 // --- Global function for the Theme system
@@ -13,7 +13,7 @@ const logger = getLogger('system');
 
 // --- TypeScript without TypeScript (Required an ide with TypeScript support)
 /**
- * @typedef {Partial<import('@mui/material/styles').Theme>} CustomTheme
+ * @typedef {Partial<import('@mui/material/styles').Theme>} MuiTheme
  */
 
 /**
@@ -28,11 +28,12 @@ const logger = getLogger('system');
  *     en: string
  * }} description - Short description about the theme
  * @property {{
- *     theme: {
- *         main: string;
+ *     files: {
  *         index: string;
+ *         palette: string;
  *     };
- * }} files - Optional option for the theme system
+ *     variables?: Record<string, string>
+ * }} configuration - Optional option for the theme system
  */
 
 /**
@@ -46,7 +47,8 @@ const logger = getLogger('system');
  *     en: string
  * }} description - Short description about the theme
  * @property {string} index - Html index file location
- * @property {CustomTheme} customTheme - Mui theme
+ * @property {MuiTheme} muiTheme - Mui theme
+ * @property {object} customTemplateVariables - Default value of custom variables use in the ejs template
  */
 
 /**
@@ -131,30 +133,39 @@ const init = async () => {
             }
 
             let indexLocation = getThemeFile('default', 'index.ejs');
-            if (themeConfig?.files?.theme?.index) {
+            if (themeConfig?.configuration?.files?.index) {
                 indexLocation = getThemeFile(
                     theme,
-                    themeConfig.files.theme.index,
+                    themeConfig.configuration.files.index,
                 );
             }
 
-            let customTheme = deepClone(defaultCustomTheme);
-            if (themeConfig?.files?.theme?.main) {
+            let muiTheme = deepClone(defaultMuiTheme);
+            if (themeConfig?.configuration?.files?.palette) {
                 Object.assign(
-                    customTheme,
+                    muiTheme,
                     (
                         await import(
-                            getThemeFile(theme, themeConfig.files.theme.main)
+                            getThemeFile(
+                                theme,
+                                themeConfig.configuration.files.palette,
+                            )
                         )
                     ).default,
                 );
+            }
+
+            let customTemplateVariables = {};
+            if (themeConfig?.configuration?.variables) {
+                customTemplateVariables = themeConfig.configuration.variables;
             }
 
             loadedThemes.set(theme, {
                 name: themeConfig.name,
                 description: themeConfig.description,
                 index: indexLocation,
-                customTheme,
+                muiTheme,
+                customTemplateVariables,
             });
         } catch (e) {
             logger.error(`unable to load ${theme} theme!`);

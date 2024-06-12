@@ -12,7 +12,7 @@ import {
 
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
-import customTheme from '../../custom/themes/default/defaultTheme';
+import defaultMuiTheme from '../../custom/themes/default/defaultTheme';
 import FieldProvider from './FieldProvider';
 import { IstexSummaryView } from '../formats/other/istexSummary/IstexSummaryView';
 
@@ -22,7 +22,7 @@ const polyglot = new Polyglot({
     phrases: phrasesFor(locale),
 });
 
-const theme = createTheme(customTheme, {
+const theme = createTheme(defaultMuiTheme, {
     userAgent: navigator.userAgent,
 });
 

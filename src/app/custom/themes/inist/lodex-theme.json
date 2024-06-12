@@ -1,5 +1,5 @@
 {
-  "version": "3",
+  "version": "4",
   "licence": "All Right Reserved",
   "name": {
     "fr": "INIST",
@@ -9,10 +9,13 @@
     "fr": "Thème INIST (restreint)",
     "en": "INIST theme (restricted)"
   },
-  "files": {
-    "theme": {
-      "main": "inistTheme.js",
-      "index": "index.ejs"
+  "configuration": {
+    "files": {
+      "index": "index.ejs",
+      "palette": "inistTheme.js"
+    },
+    "variables": {
+      "title": "Etudes"
     }
   }
 }
