@@ -20,12 +20,12 @@ export default class TreeMapData {
      */
     rawNodesAndLeaves;
     /**
-     * Formatted list of nodes and leaves ready to be cleanup and returned
+     * Formatted list of nodes and leaves ready to be clean-up and returned
      * @type {Map<number, {id: number, name: string, parent: number?, size: number?}>}
      */
     formattedNodesAndLeaves;
     /**
-     * Filtered nodes use to create the final transformed data
+     * Filtered nodes (list of nodes without the leaves) use to create the final transformed data
      * @type {Set<number>}
      */
     filteredNodes;
@@ -84,7 +84,7 @@ export default class TreeMapData {
     }
 
     /**
-     * Transformed routine data into transformable data
+     * Transforme routine data into manipulable data
      */
     buildNodesAndLeaves() {
         for (let datum of this.data) {
@@ -106,12 +106,10 @@ export default class TreeMapData {
     }
 
     /**
-     * Create a list of node and transformed the raw data into cleanable data
+     * Create a list of node and transforme the raw data into cleanable data
      */
     buildFilteredNodes() {
-        for (let rawNodeAndLeaf of this.rawNodesAndLeaves) {
-            const node = rawNodeAndLeaf[0];
-            const datum = rawNodeAndLeaf[1];
+        for (let [node, datum] of this.rawNodesAndLeaves) {
             const id = this.ids.get(node);
 
             if (datum.parent) {
@@ -136,10 +134,7 @@ export default class TreeMapData {
          */
         const transformedAndCleanupData = [];
 
-        for (let formattedNodeAndLeaf of this.formattedNodesAndLeaves) {
-            const node = formattedNodeAndLeaf[0];
-            const datum = formattedNodeAndLeaf[1];
-
+        for (let [node, datum] of this.formattedNodesAndLeaves) {
             if (this.filteredNodes.has(node)) {
                 delete datum.size;
                 transformedAndCleanupData.push(datum);
