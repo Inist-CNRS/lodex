@@ -758,6 +758,8 @@
 "ws_post-v2-istex-expand_description"	"Retrieves the metadata of a scientific article in the ISTEX database from a DOI."	"Récupère les métadonnées d’un article scientifique présent dans la base ISTEX à partir d’un DOI."
 "ws_post-v2-hal-expand_title"	"DOI enrichment via HAL"	"Enrichissement par DOI via HAL"
 "ws_post-v2-hal-expand_description"	"Retrieves the metadata of a scientific article in the HAL database from a DOI."	"Récupère les métadonnées d’un article scientifique présent dans la base HAL à partir d’un DOI."
+"pc_post-v1-statistics_title"	"Statistics"	"Statistiques"
+"pc_post-v1-statistics_description"	"Calculate some statistics on all values for one field "	"Calcul une série de statistiques sur toutes les valeurs d'un champ (fréquence, moyenne, etc.)"
 "pc_post-v1-tree-segment_title"	"Tree-segment"	"Tree-segment"
 "pc_post-v1-tree-segment_description"	"Create sliding pairs of all elements in an array and aggregate these pairs to count them. Since the pairs are sliding, this process is used to create pairs that represent a hierarchical tree."	"Créer des segments glissant 2 à 2 de tous les éléments d'un tableau et agrège ces segments pour les compter. Le segment étant glissant, ce traitement sert à créer des segments qui représente un arbre hiérachique."
 "pc_post-v1-graph-segment_title"	"Graph-segment"	"Graph-segment"

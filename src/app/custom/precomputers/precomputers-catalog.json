@@ -1,5 +1,10 @@
 [
     {
+        "id": "post-v1-statistics",
+        "url": "https://data-computer.services.istex.fr/v1/statistics",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252ftree-segment"
+    },
+    {
         "id": "post-v1-tree-segment",
         "url": "https://data-computer.services.istex.fr/v1/tree-segment",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252ftree-segment"
