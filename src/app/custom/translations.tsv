@@ -844,6 +844,8 @@
 "r-distinct-alpha-3-ISO639-from_description"	"Transforms the ISO 3 codes of the languages of the represented field into verbalised headings."	"Transforme les codes ISO 3 des langues du champ représenté en intitulés verbalisés."
 "r-distinct-by_title"	"distinct-by"	"distinct-by"
 "r-distinct-by_description"	"Counts, for each element of the represented field (identifier), the number of times this element appears."	"Compte, pour chaque élément du champ représenté (identifiant), le nombre de fois où cet élément apparaît."
+"r-group-and-sum-with_title"	"group-and-sum-with"	"group-and-sum-with"
+"r-group-and-sum-with_description"	"Adds, for each element of the represented field (identifier), all the values of the corresponding second field (value)."	"Ajoute, pour chaque élément du champ représenté (identifiant), toutes les valeurs du deuxième champ (valeur) correspondant."
 "r-distinct-by-field_title"	"distinct-by-field"	"distinct-by-field"
 "r-distinct-by-field_description"	"This routine behaves like the distinct-by routine. But additionally, it can interpret the parameters associated with the graphs."	"Cette routine se comporte comme la routine distinct-by. Le petit + : elle sait interpréter les paramètres associés aux graphiques."
 "r-distribute-by-date_title"	"distribute-by-date"	"distribute-by-date"
