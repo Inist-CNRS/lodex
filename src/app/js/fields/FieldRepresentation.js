@@ -40,6 +40,7 @@ function FieldRepresentation({ field, shortMode = false, p: polyglot }) {
                     flexDirection="row"
                     alignItems="flex-end"
                     marginTop={1}
+                    color="text.secondary"
                 >
                     <Box
                         display="flex"
@@ -53,15 +54,10 @@ function FieldRepresentation({ field, shortMode = false, p: polyglot }) {
                                     key={internalScope}
                                     scope={internalScope}
                                     fontSize="small"
-                                    color="neutral"
                                 />
                             ))}
                     </Box>
-                    <Typography
-                        variant="body2"
-                        color="neutral"
-                        sx={{ color: 'neutral.main' }}
-                    >
+                    <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
                         {field.internalName}
                     </Typography>
                 </Box>

@@ -1,0 +1,24 @@
+{
+  "version": "4",
+  "restricted": true,
+  "name": {
+    "fr": "ISTEX",
+    "en": "ISTEX"
+  },
+  "description": {
+    "fr": "Thème ISTEX historique (restreint)",
+    "en": "ISTEX theme legacy(restricted)"
+  },
+  "configuration": {
+    "files": {
+      "index": "index.ejs",
+      "palette": "customTheme.js"
+    },
+    "variables": {
+      "host": "/",
+      "title": "Services",
+      "summary": "Les technologies et les outils ISTEX pour les projets de recherche.",
+      "matomoID": "39"
+    }
+  }
+}

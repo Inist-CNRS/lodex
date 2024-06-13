@@ -27,6 +27,7 @@ class Cartography extends BasicChart {
      */
     buildSpec() {
         this.model.encoding.color.scale.range = this.colors;
+        this.model.background = 'transparent';
 
         if (this.tooltip.toggle) {
             if (

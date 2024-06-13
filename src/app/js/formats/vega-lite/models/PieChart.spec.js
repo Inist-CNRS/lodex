@@ -5,6 +5,7 @@ describe('PieChart', () => {
         let pieChart = new PieChart();
         expect(pieChart.buildSpec()).toStrictEqual({
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+            background: 'transparent',
             encoding: {
                 color: {
                     field: '_id',
@@ -70,6 +71,7 @@ describe('PieChart', () => {
             },
             width: 'container',
             height: 'container',
+            padding: 18,
             autosize: {
                 contains: 'padding',
                 type: 'fit',

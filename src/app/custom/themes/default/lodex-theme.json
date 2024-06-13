@@ -1,18 +1,18 @@
 {
-  "version": "2",
-  "restricted": true,
+  "version": "4",
+  "licence": "CeCILL",
   "name": {
-    "fr": "Classique",
-    "en": "Classic"
+    "fr": "Système",
+    "en": "System"
   },
   "description": {
-      "fr": "Thème Lodex Classique",
-      "en": "Classic Lodex theme"
+      "fr": "Thème système",
+      "en": "System theme"
   },
-  "files": {
-    "theme": {
-      "main": "customTheme.js",
-      "index": "index.html"
+  "configuration": {
+    "files": {
+      "index": "index.ejs",
+      "palette": "defaultTheme.js"
     }
   }
 }

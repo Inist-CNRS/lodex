@@ -45,9 +45,7 @@ describe('ssr', () => {
                     .get('/instance/default', authentifiedHeader)
                     .then((response) => response.text());
                 state = JSON.parse(
-                    response.match(
-                        /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
-                    )[1],
+                    response.match(/__PRELOADED_STATE__ = ({[\s\S]*?});/)[1],
                 );
             });
 
@@ -119,9 +117,7 @@ describe('ssr', () => {
                     .get('/')
                     .then((response) => response.text());
                 state = JSON.parse(
-                    response.match(
-                        /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
-                    )[1],
+                    response.match(/__PRELOADED_STATE__ = ({[\s\S]*?});/)[1],
                 );
             });
 
@@ -165,9 +161,7 @@ describe('ssr', () => {
                     .get('/resource?uri=1', authentifiedHeader)
                     .then((response) => response.text());
                 state = JSON.parse(
-                    response.match(
-                        /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
-                    )[1],
+                    response.match(/__PRELOADED_STATE__ = ({[\s\S]*?});/)[1],
                 );
             });
 
@@ -221,9 +215,7 @@ describe('ssr', () => {
                     .get('/instance/default/resource?uri=1')
                     .then((response) => response.text());
                 state = JSON.parse(
-                    response.match(
-                        /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
-                    )[1],
+                    response.match(/__PRELOADED_STATE__ = ({[\s\S]*?});/)[1],
                 );
             });
 

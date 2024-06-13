@@ -11,12 +11,6 @@ class HeatMap extends BasicChart {
         super();
         this.model = deepClone(heatmapVL);
         this.flip = false;
-        this.padding = {
-            left: 10,
-            right: 10,
-            top: 10,
-            bottom: 10,
-        };
 
         this.tooltip = {
             toggle: false,
@@ -81,6 +75,8 @@ class HeatMap extends BasicChart {
     }
 
     commonWithBubblePlot() {
+        this.model.background = 'transparent';
+
         if (this.flip) {
             const field = this.model.encoding.x.field;
             this.model.encoding.x.field = this.model.encoding.y.field;
@@ -105,8 +101,6 @@ class HeatMap extends BasicChart {
                 this.model.encoding.y.sort = '-y';
                 break;
         }
-
-        this.model.padding = this.padding;
 
         this.model.width = 'container';
         this.model.height = 'container';

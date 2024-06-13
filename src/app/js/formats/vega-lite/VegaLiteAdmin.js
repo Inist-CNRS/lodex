@@ -22,6 +22,7 @@ export const defaultArgs = {
         orderBy: 'value/asc',
     },
     specTemplate: JSON.stringify({
+        background: 'transparent',
         width: 'container',
         height: 'container',
         autosize: { type: 'fit', contains: 'padding' },

@@ -1,6 +1,6 @@
 {
-  "version": "2",
-  "restricted": true,
+  "version": "4",
+  "licence": "All Right Reserved",
   "name": {
     "fr": "INIST",
     "en": "INIST"
@@ -9,15 +9,13 @@
     "fr": "Thème INIST (restreint)",
     "en": "INIST theme (restricted)"
   },
-  "files": {
-    "theme": {
-      "main": "customTheme.js",
-      "index": "index.html"
-    }
-  },
-  "dev": {
+  "configuration": {
+    "files": {
+      "index": "index.ejs",
+      "palette": "inistTheme.js"
+    },
     "variables": {
-      "{|__JS_HOST__|}": ""
+      "title": "Etudes"
     }
   }
 }

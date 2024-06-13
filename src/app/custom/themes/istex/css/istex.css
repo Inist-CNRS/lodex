@@ -42,11 +42,6 @@
 /*****************************/
 /* General *******************/
 /*****************************/
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 html {
     font-size: 62.5%;
     width: 100%;
@@ -244,7 +239,7 @@ footer.site-footer::after {
 /*.container #root .page-page*/
 /*****************************/
 #root .page-page {
-    min-height: 65vh;
+    min-height: 35vh;
     padding: 0 !important;
 }
 .body {
@@ -253,23 +248,19 @@ footer.site-footer::after {
     line-height: 1.7rem;
     color: var(--text-main);
 }
-.body * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-align: initial !important;
-}
-/*****************************/
-/* Layout (.zutile) **********/
-/*****************************/
+/********************/
+/* Layout (.zutile) */
+/********************/
 .breadcrumb-root,
 nav.nav-bar-menu div.nav-bar-container,
+/*propulse lodex*/
 .header-dataset-section > div:last-child,
+/*home page istex*/
 .dataset-characteristics > div,
 .graph-container,
 .search-container,
 .resource {
-    max-width: 1190px;
+    max-width: 1200px;
     min-width: 360px;
     padding: 0 10px;
     margin: 0 auto;
@@ -292,8 +283,15 @@ nav.nav-bar-menu div.nav-bar-container,
 /*****************************/
 /* Breadcrumb  + Nav *********/
 /*****************************/
+.breadcrumb-root {
+    height: 50px;
+}
 nav.nav-bar-menu {
     box-shadow: 0px -5px 3px rgba(0, 0, 0, 0.2);
+}
+/*logo lodex*/
+nav.nav-bar-menu div.nav-bar-container > img {
+    display: none;
 }
 /******************/
 /*Lodex elements */
@@ -304,33 +302,29 @@ nav.nav-bar-menu {
 .body h4,
 .body h5,
 .body h6 {
-    font-family: var(--font-titre);
-    margin-block-start: 0;
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-    color: var(--primary-main);
+    font-family: var(--font-titre) !important;
+    color: var(--text-main);
+    text-align: left !important;
 }
 .body h1 {
-    font-size: 3rem;
+    font-size: 4.8rem;
     line-height: 4rem;
-    margin-bottom: 60px;
     font-weight: 700;
 }
 .body h2 {
     font-size: 2.8rem;
-    line-height: 3.4rem;
+    line-height: 3rem;
     font-weight: 700;
+    margin-block-end: 0.5em;
 }
 .body h3 {
     font-size: 2.2rem;
     line-height: 3rem;
-    margin: 12px 0;
 }
 .body h4 {
     font-size: 2rem;
     line-height: 2.8rem;
     font-style: italic;
-    margin: 12px 0;
 }
 .body h5 {
     font-size: 1.8rem;
@@ -338,7 +332,7 @@ nav.nav-bar-menu {
     font-style: italic;
 }
 .body h6 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     margin-top: 20px;
     font-size: 1.7rem;
     line-height: 2.4rem;
@@ -354,77 +348,95 @@ nav.nav-bar-menu {
 a img {
     border: none;
 }
-.body p a,
-.body li a {
+.body > div a:not(.graph-link),
+.body > div a[target="_blank"] {
     color: var(--primary-main);
     cursor: pointer;
+}
+.body a:hover {
+    color: #31768f !important;
     text-decoration: underline;
+}
+.body a:active,
+.body a:focus {
+    color: #1a5a71 !important;
+    text-decoration: underline;
+}
+.body a desactive {
+    color: #cdcdcd;
+}
+.body > div a:not(:empty)[target="_blank"]::after {
+    display: inline-block;
+    content: " ";
+    width: 20px;
+    height: 17px;
+    margin-bottom: -4px;
+    background: url("../img/lien-externe.svg") bottom right no-repeat;
+    background-size: 15px;
 }
 .body ul {
     margin-inline-start: 0px;
     margin-bottom: 10px;
 }
-.body ul,
-.body li {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
 /******************************/
 /*. body button links a.button*/
 /******************************/
-.body button,
-.body .button {
+button,
+.button {
     border: 0px solid transparent;
     border-radius: 5px;
     cursor: pointer;
     padding: 15px 30px;
     line-height: 18px;
     font-size: 16px !important;
+    text-decoration: none;
 }
 /*fonce sur fond clair*/
 /*plus, parcourir résultats css-10ro12o css-xiqrbu*/
-.body .cta1,
-.body a.cta1,
-.body .button.cta1 > a {
+.cta1,
+a.cta1,
+.button.cta1 > a {
     color: var(--contrast-light);
     background-color: var(--primary-main);
 }
-.body .cta1:hover,
-.body .cta1:focus,
-.body .button.cta1 > a:hover,
-.body .button.cta1:hover > a,
-.body .button.cta1 > a:focus,
-.body .cta3:hover,
-.body .cta3:focus,
+.cta1:hover,
+.cta1:focus,
+.button.cta1 > a:hover,
+.button.cta1:hover > a,
+.button.cta1 > a:focus,
+.cta3:hover,
+.cta3:focus,
 .css-10ro12o:hover,
 .css-10ro12o:focus,
 .css-xiqrbu:hover,
 .css-xiqrbu:focus {
-    background: linear-gradient(to left, rgb(96, 157, 178), #458ca5);
+    background: var(--primary-secondary);
 }
 /*clair bordure sur fond clair*/
-.body .button.cta3 {
+.button.cta3 {
     color: var(--primary-main);
     background-color: transparent;
     border: 1px solid var(--primary-main);
     padding: 15px 30px;
 }
-.body .button.cta3:hover,
-.body .button.cta3:focus {
+.button.cta3:hover,
+.button.cta3:focus {
     color: var(--contrast-light);
 }
 /*clair bordure sur fond fonce*/
-.body .cta2,
-.body a.button.cta2,
-.body .button.cta2 > a {
+.cta2,
+.designCta2 .property_value_container button,
+a.button.cta2,
+.button.cta2 > a {
     font-family: var(--font-texte);
     color: var(--contrast-light);
     background-color: transparent;
     border: 1px solid var(--contrast-light);
 }
-.body .button.cta2:hover,
-.body .button.cta2:focus {
+.designCta2 .property_value_container button:hover,
+.designCta2 .property_value_container button:focus,
+.button.cta2:hover,
+.button.cta2:focus {
     color: var(--primary-main) !important;
     background-color: var(--contrast-light);
 }
@@ -444,6 +456,7 @@ a img {
 }
 /***************/
 /* formulaires */
+/* color size  */
 /***************/
 .MuiButton-root,
 .MuiGrid-root {
@@ -467,15 +480,18 @@ a img {
 /***************/
 /* LODEX class */
 /***************/
-/*admin champs*/
+/* champs*/
 .property {
     margin-bottom: 1.5rem;
 }
-
-/* lodex label */
+/* label */
 span.property_label[style*="color: rgb(158, 158, 158)"] {
     font-family: var(--font-titre) !important;
     font-size: 1.4rem !important;
+}
+/*label semantique*/
+.body span.property_scheme a {
+    text-decoration: none;
 }
 /* ul istex */
 .resources-grid-list {
@@ -489,14 +505,13 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
     margin: 0 !important;
 }
 /***************************/
-/* page home               */
+/* design Home             */
 /* .header-dataset-section */
 /***************************/
 /*.backZoneBTC*/
 .header-dataset-section {
     background-color: var(--primary-main);
     position: relative;
-    margin-top: 50px;
     z-index: 2;
 }
 /*istex home promo en bas*/
@@ -519,24 +534,23 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
     left: 0;
     width: 100% !important;
     background-color: var(--primary-main);
+    background-image: url(../img/backZoneSimple.jpg);
+    background-position: center top;
+    background-color: var(--primary-main);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 #backZoneContainer #backZoneTexte {
     border: 0 !important;
     height: var(--height-backZoneSimple);
-    padding-top: 12rem;
-    padding-bottom: 8rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 2%;
     width: 100%;
-    max-width: 1920px;
+    max-width: 1200px;
     margin: 0 auto;
-    background-image: url(../img/backZoneSimple.jpg);
-    background-position: center top;
-    background-color: var(--primary-main);
-    background-size: auto;
-    background-repeat: no-repeat;
 }
 #backZoneContainer #backZoneTexte *:not(h2) {
     padding: 0 !important;
@@ -583,11 +597,6 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
 .dataset-characteristics {
     background-color: var(--primary-light);
 }
-.header-dataset-section a,
-.header-dataset-section a:visited,
-.header-dataset-section a:hover {
-    text-decoration: none !important;
-}
 /**home zone gauche fond blanc casse + sidebar **/
 .dataset-characteristics > div {
     justify-content: flex-start !important;
@@ -616,14 +625,14 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
     position: relative;
 }
 /*contents home label titre as h2*/
-.blocPaveFonce span.property_label {
+.dataset-characteristics .blocPaveFonce .property_label {
     font-size: 2.8rem !important;
-    line-height: 3.4rem;
+    line-height: 4rem;
     font-weight: 700 !important;
     color: var(--text-main) !important;
-    padding: 3rem 20px 70px 20px;
+    margin-block-end: 0.5rem;
 }
-.blocPaveFonce .resources-grid-content {
+.dataset-characteristics .resources-grid-content {
     background-color: var(--contrast-light) !important;
     padding: 0 !important;
 }
@@ -631,20 +640,24 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
 .dataset-characteristics .resources-grid-content > div > a:last-child {
     display: none;
 }*/
-.blocPaveFonce .resources-grid-content > div > a > div {
+.dataset-characteristics .resources-grid-content > div > a > div {
     margin: 2rem;
     height: 80px;
     background: var(--contrast-light) url("../img/fleched.svg") no-repeat bottom
         0rem right 1rem;
 }
-.blocPaveFonce .resources-grid-content > div > a .lodex-resource-contentTitle {
+.dataset-characteristics
+    .resources-grid-content
+    > div
+    > a
+    .lodex-resource-contentTitle {
     font-size: 1.6rem;
     line-height: 2rem;
     font-weight: 700;
     color: var(--primary-main);
     padding-bottom: 1rem;
 }
-.blocPaveFonce
+.dataset-characteristics
     .resources-grid-content
     > div
     > a
@@ -654,7 +667,7 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
     overflow: hidden;
     text-overflow: "..." !important;
 }
-.blocPaveFonce
+.dataset-characteristics
     .resources-grid-content
     > div
     > a
@@ -694,6 +707,10 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
 .sidebarFonce *:not(button, svg) {
     color: var(--secondary-contrast-text) !important;
 }
+.sidebarFonce h2 {
+    margin-top: 0;
+    margin-bottom: 3rem;
+}
 /*.sidebarFonce bloc champs composant*/
 .sidebarFonce > .property_value_container > div .property {
     margin-bottom: 1.5rem;
@@ -701,6 +718,26 @@ span.property_label[style*="color: rgb(158, 158, 158)"] {
 .sidebarFonce > .property_value_container > div .property p {
     padding: 0 !important;
     margin: 0 !important;
+}
+/*lien*/
+.sidebarFonce > .property_value_container > div .property a {
+    color: var(--secondary-contrast-text) !important;
+    text-decoration: underline;
+}
+.sidebarFonce > .property_value_container > div .property a:hover,
+.sidebarFonce > .property_value_container > div .property a:active,
+.sidebarFonce > .property_value_container > div .property a:focus {
+    color: var(--primary-contrast-text) !important;
+    text-decoration: underline;
+}
+/*lien externe*/
+.sidebarFonce
+    > .property_value_container
+    > div
+    .property
+    a[target="_blank"]::after {
+    background: url("../img/lien-externe_blanc.svg") bottom right no-repeat;
+    background-size: 15px;
 }
 /*a avec url en texte*/
 .sidebarFonce > .property_value_container > div .property a {
@@ -914,6 +951,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
     color: var(--text-main) !important;
     margin: 0 !important;
     padding-left: 1rem;
+    text-align: left;
 }
 /*bloc infos associees au titre*/
 .resource
@@ -951,10 +989,6 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
     font-size: 2.8rem !important;
     line-height: 3.4rem;
     font-weight: 700 !important;
-    padding: 3rem 20px 70px 20px;
-}
-.blocFondClair > .property_label_container span.property_label:empty {
-    display: none;
 }
 .blocFondClair .property_value_container h2 {
     margin-top: 0rem !important;

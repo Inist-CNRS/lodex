@@ -30,6 +30,7 @@ describe('BasicChart', () => {
     it('Default build need to return the vega lite spec with all default values', function () {
         let barChart = new BarChart();
         let defaultBuild = {
+            background: 'transparent',
             autosize: {
                 contains: 'padding',
                 type: 'fit',
@@ -77,12 +78,7 @@ describe('BasicChart', () => {
             mark: {
                 type: 'bar',
             },
-            padding: {
-                bottom: 0,
-                left: 10,
-                right: 0,
-                top: 10,
-            },
+            padding: 18,
             width: 'container',
         };
         expect(barChart.buildSpec()).toStrictEqual(defaultBuild);

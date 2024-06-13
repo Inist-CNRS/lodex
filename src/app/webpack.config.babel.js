@@ -79,7 +79,7 @@ module.exports = {
                     to: resolve(__dirname, '../build'),
                     globOptions: {
                         ignore: [
-                            '/index.html',
+                            '/index.ejs',
                             '/admin/index.js',
                             '/root-admin/index.js',
                             '/index.js',

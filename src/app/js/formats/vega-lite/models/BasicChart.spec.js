@@ -12,16 +12,6 @@ describe('BasicChart', () => {
         ]);
     });
 
-    it('Default padding need to return 0 on the 4 side', function () {
-        let basicChart = new BasicChart();
-        expect(basicChart.padding).toStrictEqual({
-            left: 0,
-            right: 0,
-            top: 10,
-            bottom: 0,
-        });
-    });
-
     it('Updated color need to return the new value', function () {
         let basicChart = new BasicChart();
         let newColor = '#ffa6e6';

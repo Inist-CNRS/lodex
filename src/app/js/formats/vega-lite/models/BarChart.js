@@ -19,12 +19,7 @@ class BarChart extends BasicChart {
      */
     constructor() {
         super();
-        this.padding = {
-            left: 10,
-            right: 0,
-            top: 10,
-            bottom: 0,
-        };
+        this.padding = 18;
         this.model = deepClone(barChartVL);
         this.labelsModel = deepClone(barChartLabelsVL);
         this.scale = 'linear';
@@ -228,6 +223,7 @@ class BarChart extends BasicChart {
 
         if (!this.labels) {
             return {
+                background: 'transparent',
                 mark: model.mark,
                 encoding: encoding,
                 padding: this.padding,
@@ -252,6 +248,7 @@ class BarChart extends BasicChart {
             }
 
             return {
+                background: 'transparent',
                 layer: [
                     {
                         mark: model.mark,
