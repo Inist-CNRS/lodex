@@ -63,10 +63,44 @@ export const MapFranceIdValue = {
     ],
 };
 
+export const TreeMapSourceTargetWeight = {
+    name: 'Tree Map - source / target / weight',
+    values: [
+        { source: 'A', target: 'B', weight: 193 },
+        { source: 'B', target: 'BA', weight: 15 },
+        { source: 'B', target: 'BB', weight: 52 },
+        { source: 'B', target: 'BC', weight: 67 },
+        { source: 'B', target: 'BD', weight: 3 },
+        { source: 'B', target: 'BE', weight: 24 },
+        { source: 'B', target: 'BF', weight: 32 },
+
+        { source: 'A', target: 'C', weight: 87 },
+        { source: 'C', target: 'CA', weight: 12 },
+        { source: 'C', target: 'CB', weight: 36 },
+        { source: 'C', target: 'CC', weight: 29 },
+        { source: 'C', target: 'CD', weight: 10 },
+
+        { source: 'A', target: 'D', weight: 204 },
+        { source: 'D', target: 'DA', weight: 21 },
+        { source: 'D', target: 'DB', weight: 35 },
+        { source: 'D', target: 'DC', weight: 42 },
+        { source: 'D', target: 'DD', weight: 11 },
+        { source: 'D', target: 'DE', weight: 56 },
+        { source: 'D', target: 'DF', weight: 39 },
+
+        { source: 'A', target: 'E', weight: 174 },
+        { source: 'E', target: 'EA', weight: 23 },
+        { source: 'EA', target: 'EAA', weight: 36 },
+        { source: 'EA', target: 'EAB', weight: 46 },
+        { source: 'E', target: 'EB', weight: 69 },
+    ],
+};
+
 export const AllDataSets = [
     StandardIdValue,
     StandardSourceTargetWeight,
     MapSourceTargetWeight,
     MapIdValue,
     MapFranceIdValue,
+    TreeMapSourceTargetWeight,
 ];

@@ -7,6 +7,7 @@ import deepClone from 'lodash/cloneDeep';
 import {
     VEGA_DATA_INJECT_TYPE_A,
     VEGA_DATA_INJECT_TYPE_B,
+    VEGA_DATA_INJECT_TYPE_C,
 } from '../../chartsUtils';
 import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 import ZoomableFormat from '../ZoomableFormat';
@@ -68,6 +69,13 @@ function CustomActionVega(props) {
                     }
                 });
             }
+            break;
+        case VEGA_DATA_INJECT_TYPE_C:
+            spec.data.forEach((e) => {
+                if (e.name === 'tree') {
+                    e.values = props.data.values;
+                }
+            });
             break;
         default:
             throw new Error('Invalid data injection type');
