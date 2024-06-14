@@ -501,6 +501,33 @@ a.button.cta2,
 * label {
     color: var(--text-main);
 }
+/********/
+/*modal*/
+/*******/
+.MuiPaper-root[role='dialog'] {
+    border-radius: 10px;
+}
+.MuiPaper-root[role='dialog'] * {
+    font-family: var(--font-texte);
+}
+.MuiPaper-root[role='dialog'] > *:not(div) {
+    background-color: var(--primary-main);
+    color: var(--contrast-light);
+    font-size: 2rem;
+    line-height: 2.9rem;
+    font-weight: 550;
+}
+.MuiPaper-root[role='dialog'] button svg {
+    width: 2rem;
+    height: 2rem;
+}
+.MuiPaper-root[role='dialog'] h3 {
+    font-family: var(--font-texte);
+    color: var(--primary-main);
+    font-size: 1.6rem;
+    line-height: 1.93rem;
+    font-weight: 550;
+}
 /***************/
 /* LODEX class */
 /***************/
