@@ -5,7 +5,7 @@ import defaultMuiTheme from '../../app/custom/themes/default/defaultTheme';
 import deepClone from 'lodash/cloneDeep';
 
 // --- Global variable for the Theme system
-export const THEMES_VERSION = '4';
+export const THEMES_VERSION = '5';
 export const THEMES_FOLDER = '../../app/custom/themes';
 
 // --- Global function for the Theme system
