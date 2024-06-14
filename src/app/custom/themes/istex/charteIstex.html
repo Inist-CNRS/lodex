@@ -1,0 +1,379 @@
+<html>
+
+<head>
+    <style>
+        :root {
+            --mode: light;
+            --primary-main: #458cA5;
+            --primary-secondary: #31768F;
+            --primary-light: #f4f9fa;
+            --primary-contrast-text: #fff;
+            --primary-dark: rgb(48, 98, 115);
+            --secondary-main: #AABF23;
+            --secondary-contrast-text: #f0f0f0;
+            --secondary-light: rgb(187, 203, 79);
+            --secondary-dark: rgb(118, 133, 24);
+            --info-main: #C4D733;
+            --info-contrast-text: #fff;
+            --info-light: rgb(207, 223, 91);
+            --info-dark: rgb(137, 150, 35);
+            --warning-main: #f48022;
+            --warning-contrast-text: #fff;
+            --warning-light: rgb(246, 153, 78);
+            --warning-dark: rgb(170, 89, 23);
+            --error-main: #f44336;
+            --error-contrast-text: #fff;
+            --error-light: rgb(246, 104, 94);
+            --error-dark: rgb(170, 46, 37);
+            --success-main: #AABF23;
+            --success-contrast-text: #f0f0f0;
+            --success-light: rgb(187, 203, 79);
+            --success-dark: rgb(118, 133, 24);
+            --text-primary: #1d1d1d;
+            --text-main: #4a4a4a;
+            --text-secondary: rgba(0, 0, 0, 0.6);
+            --text-disabled: rgba(0, 0, 0, 0.38);
+            --contrast-threshold: 3;
+            --danger-main: #f44336;
+            --danger-contrast-text: #fff;
+            --neutral-main: #e0e0e0;
+            --neutral-dark-main: #555;
+            --neutral-dark-secondary: #4a4a4a;
+            --neutral-dark-very-dark: #000;
+            --neutral-dark-dark: #555;
+            --neutral-dark-light: #8f8f8f;
+            --neutral-dark-lighter: #f0f0f0;
+            --neutral-dark-very-light: #f6f9fa;
+            --neutral-dark-transparent: rgba(0, 0, 0, .1);
+            --contrast-main: #fff;
+            --contrast-light: #f0f0f0;
+            --common-black: #000;
+            --common-white: #fff;
+            --grey-50: #fafafa;
+            --grey-100: #f5f5f5;
+            --grey-200: #eeeeee;
+            --grey-300: #e0e0e0;
+            --grey-400: #bdbdbd;
+            --grey-500: #9e9e9e;
+            --grey-600: #757575;
+            --grey-700: #616161;
+            --grey-800: #424242;
+            --grey-900: #212121;
+            --grey-a100: #f5f5f5;
+            --grey-a200: #eeeeee;
+            --grey-a400: #bdbdbd;
+            --grey-a700: #616161;
+            --tonal-offset: 0.2;
+            --divider: rgba(0, 0, 0, 0.12);
+            --background-paper: #fff;
+            --background-default: #fff;
+            --action-active: rgba(0, 0, 0, 0.54);
+            --action-hover: rgba(0, 0, 0, 0.04);
+            --action-hover-opacity: 0.04;
+            --action-selected: rgba(0, 0, 0, 0.08);
+            --action-selected-opacity: 0.08;
+            --action-disabled: rgba(0, 0, 0, 0.26);
+            --action-disabled-background: rgba(0, 0, 0, 0.12);
+            --action-disabled-opacity: 0.38;
+            --action-focus: rgba(0, 0, 0, 0.12);
+            --action-focus-opacity: 0.12;
+            --action-activated-opacity: 0.12;
+        }
+
+        .tableau-couleurs {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1em;
+            text-align: left;
+        }
+
+        table {
+            caption-side: bottom;
+            border-collapse: collapse;
+        }
+
+        tbody,
+        td,
+        tfoot,
+        th,
+        thead,
+        tr {
+            border-color: inherit;
+            border-style: solid;
+            border-width: 0;
+        }
+
+        .tableau-couleurs__header {
+            background-color: #f2f2f2;
+            padding: 10px;
+            border-bottom: 2px solid #ddd;
+            text-align: center;
+        }
+
+        .tableau-couleurs__cell {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .tableau-couleurs__cell-content {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .tableau-couleurs__color-sample {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ccc;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <table class="tableau-couleurs">
+        <thead>
+            <tr>
+                <th class="tableau-couleurs__header">Couleur</th>
+                <th class="tableau-couleurs__header">Nom</th>
+                <th class="tableau-couleurs__header">lodex palette mui : istexTheme.js</th>
+                <th class="tableau-couleurs__header">Hexadecimal</th>
+                <th class="tableau-couleurs__header">HSL</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="tableau-couleurs__row">
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__color-sample" style="background-color: #458CA5;"></div>
+                </td>
+                <td class="tableau-couleurs__cell">Canard 0</td>
+                <td class="tableau-couleurs__cell" style="color: var(--primary-main);">--primary-main</td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>#458CA5</span>
+                    </div>
+                </td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>196 41 46</span>
+                    </div>
+                </td>
+            </tr>
+            <tr class="tableau-couleurs__row">
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__color-sample" style="background-color: #69A1B6;"></div>
+                </td>
+                <td class="tableau-couleurs__cell">Canard 1</td>
+                <td class="tableau-couleurs__cell" style="background-color: var();">non repris</td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>#69A1B6</span>
+                    </div>
+                </td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>196 35 56</span>
+                    </div>
+                </td>
+            </tr>
+            <tr class="tableau-couleurs__row">
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__color-sample" style="background-color: #8FBAC9;"></div>
+                </td>
+                <td class="tableau-couleurs__cell">Canard 2</td>
+                <td class="tableau-couleurs__cell" style="background-color: var();">non repris</td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>#8FBAC9</span>
+                    </div>
+                </td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>196 35 67</span>
+                    </div>
+                </td>
+            </tr>
+            <tr class="tableau-couleurs__row">
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__color-sample" style="background-color: #C4D733;"></div>
+                </td>
+                <td class="tableau-couleurs__cell">Lime 0</td>
+                <td class="tableau-couleurs__cell" style="color: var(--info-main);">--info-main</td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>#C4D733</span>
+                    </div>
+                </td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>67 67 52</span>
+                    </div>
+                </td>
+            </tr>
+            <tr class="tableau-couleurs__row">
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__color-sample" style="background-color: #E3EF63;"></div>
+                </td>
+                <td class="tableau-couleurs__cell">Lime 1</td>
+                <td class="tableau-couleurs__cell" style="background-color: var();">non repris</td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>#E3EF63</span>
+                    </div>
+                </td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>65 81 66</span>
+                    </div>
+                </td>
+            </tr>
+            <tr class="tableau-couleurs__row">
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__color-sample" style="background-color: #458CA5;"></div>
+                </td>
+                <td class="tableau-couleurs__cell">Canard 20%</td>
+                <td class="tableau-couleurs__cell" style="color: var(--primary-main);">--primary-main</td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>#458CA5</span>
+                    </div>
+                </td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>196 41 46</span>
+                    </div>
+                </td>
+            </tr>
+            <tr class="tableau-couleurs__row">
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__color-sample" style="background-color: #000000;"></div>
+                </td>
+                <td class="tableau-couleurs__cell">Noir 80%</td>
+                <td class="tableau-couleurs__cell" style="background-color: var();">non repris</td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>#000000</span>
+                    </div>
+                </td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>0 0 0</span>
+                    </div>
+                </td>
+            </tr>
+            <tr class="tableau-couleurs__row">
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__color-sample" style="background-color: #1D1D1D;"></div>
+                </td>
+                <td class="tableau-couleurs__cell">Gris 0</td>
+                <td class="tableau-couleurs__cell" style="color: var(--text-primary);">--text-primary</td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>#1D1D1D</span>
+                    </div>
+                </td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>0 0 11</span>
+                    </div>
+                </td>
+            </tr>
+            <tr class="tableau-couleurs__row">
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__color-sample" style="background-color: #4A4A4A;"></div>
+                </td>
+                <td class="tableau-couleurs__cell">Gris 1</td>
+                <td class="tableau-couleurs__cell" style="color: var(--text-main);">--text-main,
+                    --neutral-dark-secondary</td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>#4A4A4A</span>
+                    </div>
+                </td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>0 0 29</span>
+                    </div>
+                </td>
+            </tr>
+            <tr class="tableau-couleurs__row">
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__color-sample" style="background-color: #8F8F8F;"></div>
+                </td>
+                <td class="tableau-couleurs__cell">Gris 2</td>
+                <td class="tableau-couleurs__cell" style="color: var(--neutral-dark-light);">--neutral-dark-light</td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>#8F8F8F</span>
+                    </div>
+                </td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>0 0 56</span>
+                    </div>
+                </td>
+            </tr>
+            <tr class="tableau-couleurs__row">
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__color-sample" style="background-color: #F0F0F0;"></div>
+                </td>
+                <td class="tableau-couleurs__cell">Gris 3</td>
+                <td class="tableau-couleurs__cell"
+                    style="color: var(--success-contrast-text);background-color: var(--primary-main);">
+                    --success-contrast-text,
+                    --neutral-dark-lighter, --contrast-light</td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>#F0F0F0</span>
+                    </div>
+                </td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>0 0 94</span>
+                    </div>
+                </td>
+            </tr>
+            <tr class="tableau-couleurs__row">
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__color-sample" style="background-color: #F6F9FA;"></div>
+                </td>
+                <td class="tableau-couleurs__cell">Gris 4</td>
+                <td class="tableau-couleurs__cell" style="background-color: var(--neutral-dark-very-light);">
+                    --neutral-dark-very-light (couleur de fond Home)</td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>#F6F9FA</span>
+                    </div>
+                </td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>195 29 97</span>
+                    </div>
+                </td>
+            </tr>
+            <tr class="tableau-couleurs__row">
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__color-sample" style="background-color: #FFFFFF;"></div>
+                </td>
+                <td class="tableau-couleurs__cell">Blanc 100</td>
+                <td class="tableau-couleurs__cell"
+                    style="color: var(--primary-contrast-text);background-color: var(--primary-main);">--contrast-main,
+                    --common-white, --primary-contrast-text, --warning-contrast-text</td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>#FFFFFF</span>
+                    </div>
+                </td>
+                <td class="tableau-couleurs__cell">
+                    <div class="tableau-couleurs__cell-content">
+                        <span>0 0 100</span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

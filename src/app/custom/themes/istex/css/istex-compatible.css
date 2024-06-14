@@ -1,0 +1,257 @@
+/*****************************/
+/* LODEX  structure          */
+/*.container #root .page-page*/
+/*****************************/
+
+/********************/
+/* Layout (.zutile) */
+/********************/
+/*home page istex tools*/
+.dataset-characteristics > div {
+    max-width: 1200px;
+    min-width: 360px;
+    padding: 0 10px;
+    margin: 0 auto;
+}
+
+/***************************/
+/* design Home             */
+/* .header-dataset-section */
+/***************************/
+/*.backZoneBTC*/
+
+/*home content*/
+.dataset-characteristics {
+    background-color: var(--neutral-dark-very-light);
+}
+/**home zone gauche fond blanc casse + sidebar **/
+.dataset-characteristics > div {
+    justify-content: flex-start !important;
+    padding: 0 !important;
+}
+/*Home .blocPaveFonce*/
+.dataset-characteristics .blocPaveFonce {
+    flex: 2;
+    padding-bottom: 50px;
+}
+.dataset-characteristics .blocPaveFonce,
+.dataset-characteristics .sidebarFonce {
+    width: auto !important;
+    padding-top: 100px !important;
+    margin-bottom: 0;
+}
+/*Home page index texte principal*/
+/* .blocPaveFonce*/
+.blocPaveFonce {
+    padding: 3rem 20px 70px 20px;
+}
+.blocPaveFonce .resources-grid-item {
+    width: 330px;
+    background-color: var(--contrast-light);
+    position: relative;
+}
+/*contents home label titre as h2*/
+.dataset-characteristics .blocPaveFonce .property_label {
+    font-size: 2.8rem !important;
+    line-height: 4rem;
+    font-weight: 700 !important;
+    color: var(--text-main) !important;
+    margin-block-end: 0.5rem;
+}
+.dataset-characteristics .resources-grid-content {
+    background-color: var(--contrast-light) !important;
+    padding: 0 !important;
+}
+/*a avec icone lien externe - tools explorer dataset
+.dataset-characteristics .resources-grid-content > div > a:last-child {
+    display: none;
+}*/
+.dataset-characteristics .resources-grid-content > div > a > div {
+    margin: 2rem;
+    height: 80px;
+    background: var(--contrast-light) url('../img/fleched.svg') no-repeat bottom
+        0rem right 1rem;
+}
+.dataset-characteristics
+    .resources-grid-content
+    > div
+    > a
+    .lodex-resource-contentTitle {
+    font-size: 1.6rem;
+    line-height: 2rem;
+    font-weight: 700;
+    color: var(--primary-main);
+    padding-bottom: 1rem;
+}
+.dataset-characteristics
+    .resources-grid-content
+    > div
+    > a
+    .lodex-resource-contentParagraph {
+    display: inline-block;
+    max-height: 32px;
+    overflow: hidden;
+    text-overflow: '...' !important;
+}
+.dataset-characteristics
+    .resources-grid-content
+    > div
+    > a
+    .lodex-resource-contentParagraph
+    + div {
+    display: inline-block;
+}
+/*OTDM css sidebar*/
+/*.sidebarFonce*/
+.sidebarFonce {
+    align-items: flex-start !important;
+    background-color: var(--primary-main);
+    padding: 3rem 3rem 1.5rem !important;
+    min-width: 280px !important;
+    max-width: 375px !important;
+}
+.sidebarClair {
+    align-items: flex-start !important;
+    background-color: transparent;
+    padding: 3rem 3rem 1.5rem !important;
+    min-width: 280px !important;
+    max-width: 375px !important;
+}
+/*sidebar + contents sidebar*/
+.dataset-characteristics > div > div.sidebarFonce {
+    flex: 1;
+    padding: 100px 30px 80px 30px !important;
+}
+/*.sidebar bloc + bloc champs composant*/
+.sidebarFonce .property_value_container > div,
+.sidebarFonce .property_value_container > div > div > div {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    border-left: 0px !important;
+}
+/*.sidebarFonce contrast color text*/
+.sidebarFonce *:not(button, svg) {
+    color: var(--secondary-contrast-text) !important;
+}
+.sidebarFonce h2 {
+    margin-top: 0;
+    margin-bottom: 3rem;
+}
+/*sidebar label sans bordure*/
+.resource
+    .sidebarFonce.property
+    .property_value_container
+    .property
+    .property_label_container
+    > div {
+    border-bottom: 0 !important;
+}
+/*.sidebarFonce bloc champs composant*/
+.sidebarFonce > .property_value_container > div .property {
+    margin-bottom: 1.5rem;
+}
+.sidebarFonce > .property_value_container > div .property p {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+/*lien*/
+.sidebarFonce > .property_value_container > div .property a {
+    color: var(--secondary-contrast-text) !important;
+    text-decoration: underline;
+}
+.sidebarFonce > .property_value_container > div .property a:hover,
+.sidebarFonce > .property_value_container > div .property a:active,
+.sidebarFonce > .property_value_container > div .property a:focus {
+    color: var(--primary-contrast-text) !important;
+    text-decoration: underline;
+}
+/*lien externe*/
+.sidebarFonce
+    > .property_value_container
+    > div
+    .property
+    a[target='_blank']::after {
+    background: url('../img/lien-externe_blanc.svg') bottom right no-repeat;
+    background-size: 15px;
+}
+/*a avec url en texte*/
+.sidebarFonce > .property_value_container > div .property a {
+    overflow-wrap: anywhere !important;
+    word-break: break-all !important;
+    hyphens: auto;
+}
+/*Home tools explorter bouton en savoir plus*/
+.dataset-characteristics .sidebarFonce a.button.cta2 {
+    margin-top: 30px !important;
+    font-size: 16px;
+    line-height: 19px;
+    text-transform: uppercase;
+}
+/*tools explorer compteur la phrase*/
+.dataset-characteristics .sidebarFonce > .property_value_container .compteur {
+    margin: 3rem 0 5rem;
+}
+.sidebarFonce > .property_value_container .compteur .MuiBox-root div {
+    display: inline !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    line-height: 1.2rem;
+    text-align: left;
+}
+/*compteur nb outils .numberStroke*/
+.sidebarFonce > .property_value_container .compteur div.content {
+    font-family: var(--font-titre) !important;
+    font-size: 5rem !important;
+    font-weight: 700 !important;
+    line-height: 61px !important;
+    color: var(--primary-main) !important;
+    -webkit-text-stroke: 1px var(--secondary-contrast-text);
+    padding-right: 5px;
+    padding-left: 5px;
+}
+/*tools explorer img licence*/
+.dataset-characteristics .sidebarFonce img:last-child {
+    filter: opacity(90%);
+}
+/*****************/
+/*page resource*/
+/*bloc header-resource-section*/
+
+/*bloc header value titre champ compose*/
+.header-resource-section .property .property_value_container {
+    flex: 1;
+}
+/*characteristiques = .blocFondClair*/
+.blocFondClair {
+    background-color: var(--primary-light);
+    padding: 3rem 3rem 1.5rem !important;
+    flex: 3;
+}
+/*.blocFondClair titre*/
+/* label titre as h2*/
+.blocFondClair .property_label_container {
+    margin-top: 0rem !important;
+}
+.blocFondClair > .property_label_container span.property_label {
+    font-size: 2.8rem !important;
+    line-height: 3.4rem;
+    font-weight: 700 !important;
+}
+.blocFondClair .property_value_container h2 {
+    margin-top: 0rem !important;
+}
+/*champs composés*/
+.blocFondClair .property_value_container > div > div > div {
+    margin-left: 0 !important;
+    border-left: 0px !important;
+    padding: 0 !important;
+    background-color: var(--primary-light);
+    gap: 2%;
+}
+.blocFondClair .property_value_container > div > div > div div.property {
+    flex: 1 1 30%;
+    background-color: var(--contrast-main);
+    padding: 1rem;
+    margin: 0.5rem auto;
+}
