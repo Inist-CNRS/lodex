@@ -1,0 +1,368 @@
+/* boutons */
+.design-bouton-primaire,
+.design-bouton-secondaire,
+.design-bouton-ombre {
+    width: max-content;
+}
+.designCta2 .property_value_container button:hover,
+.designCta2 .property_value_container button:focus,
+.button.cta2:hover,
+.button.cta2:focus {
+    color: var(--primary-main) !important;
+    background-color: var(--contrast-light);
+}
+/***************************/
+/*.designHomeContentSidebar */
+/* fond blanc casse + decor */
+.designHomeContentSidebar {
+    background-color: var(--neutral-dark-very-light);
+    background-image: url('../img/svgfond.svg');
+    background-repeat: repeat-x;
+    background-position: bottom center;
+    margin: 0 auto !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+/*s'il est en fin de home*/
+.dataset-characteristics
+    > div
+    > div.property.designHomeContentSidebar:not(:last-child) {
+    margin-bottom: 3rem !important;
+}
+.designHomeContentSidebar .MuiBox-root.css-oa9bdm {
+    padding: 0 !important;
+}
+/*.designHomeContentSidebar : champs composant*/
+.designHomeContentSidebar
+    > .property_value_container
+    > div.MuiBox-root
+    > div
+    > div {
+    gap: 64px;
+}
+/*.designHomeContentSidebar : champs composant*/
+.designHomeContentSidebar
+    > .property_value_container
+    > div.MuiBox-root
+    > div
+    > div,
+.designHomeContent .property_value_container > div.MuiBox-root > div > div,
+.designHomeSidebar .property_value_container > div.MuiBox-root > div > div {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    border-left: 0px !important;
+    gap: 4%;
+}
+/*Home .designHomeContent et*/
+/*Home .designHomeSidebar*/
+.designHomeContentSidebar .designHomeContent,
+.designHomeSidebar {
+    width: auto !important;
+    margin-bottom: 0 !important;
+    padding: 10rem 0;
+    min-height: 20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+/*Home texte principal*/
+/* .designHomeContent*/
+.designHomeContent {
+    flex: 2;
+    background-color: transparent !important;
+    padding-left: inherit 20px 70px 20px;
+}
+/*contents home label = titre as h2*/
+.designHomeContent span.property_label[style*='color: rgb(158, 158, 158)'] {
+    font-size: 2.8rem !important;
+    line-height: 3.4rem;
+    font-weight: 700 !important;
+    color: var(--text-main) !important;
+    padding: 3rem 0 20px;
+}
+/*sauf le premier titre*/
+.designHomeContent
+    > div.property_label_container
+    span.property_label[style*='color: rgb(158, 158, 158)'] {
+    font-size: 2.8rem !important;
+    line-height: 3.4rem;
+    font-weight: 700 !important;
+    color: var(--text-main) !important;
+    padding: 0 0 3rem;
+}
+.designHomeContent span.property_label:empty {
+    padding: 0;
+}
+/*home syndication elements*/
+.designHomeContent li.resources-grid-item {
+    width: 48%;
+    background-color: var(--contrast-light);
+    position: relative;
+}
+.designHomeContent .resources-grid-content {
+    background-color: var(--contrast-light) !important;
+    padding: 0 !important;
+}
+.designHomeContent .resources-grid-content > div > a > div {
+    margin: 2rem;
+    height: 80px;
+    background: var(--contrast-light) url('../img/fleched.svg') no-repeat bottom
+        0rem right 1rem;
+}
+.designHomeContent
+    .resources-grid-content
+    > div
+    > a
+    .lodex-resource-contentTitle {
+    font-size: 1.6rem;
+    line-height: 2rem;
+    font-weight: 700;
+    padding-bottom: 1rem;
+}
+
+/*ISTEX design sidebar*/
+.designHomeSidebar {
+    align-items: flex-start !important;
+    background-color: var(--primary-main);
+    padding: 3rem 3rem 1.5rem !important;
+    margin: 0 !important;
+    min-width: 280px !important;
+    max-width: 475px !important;
+    flex: 1;
+}
+/*.designHomeSidebar contrast color text*/
+.designHomeSidebar *:not(button, svg) {
+    color: var(--secondary-contrast-text) !important;
+    text-align: left;
+}
+/*.designHomeSidebar champs composant 1er niveau*/
+.designHomeSidebar > .property_value_container > div .property {
+    margin-bottom: 1.5rem;
+}
+/*espace titre-texte*/
+.designHomeSidebar > .property_value_container > div .property .MuiBox-root {
+    padding: 0 !important;
+}
+.designHomeSidebar > .property_value_container > div .property p {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+/*a avec url en texte*/
+.designHomeSidebar > .property_value_container > div .property a {
+    color: var(--secondary-contrast-text) !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-all !important;
+    hyphens: auto;
+}
+.designHomeSidebar
+    > .property_value_container
+    > div
+    .property
+    a[target='_blank']::after {
+    background: url('../img/lien-externe_blanc.svg') bottom right no-repeat;
+    background-size: 15px;
+}
+/*Home tools explorter bouton en savoir plus*/
+/*voir button*/
+/*tools explorer compteur la phrase*/
+.designHomeCompteur .MuiBox-root div {
+    display: inline !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    line-height: 1.2rem;
+    text-align: left;
+}
+/*compteur nb outils .numberStroke*/
+.designHomeCompteur div.content {
+    font-family: var(--font-titre) !important;
+    font-size: 5rem !important;
+    font-weight: 700 !important;
+    line-height: 61px !important;
+    color: var(--primary-main) !important;
+    -webkit-text-stroke: 1px var(--secondary-contrast-text);
+    padding-right: 5px;
+    padding-left: 5px;
+}
+/*tools explorer img licence*/
+.dataset-characteristics .designHomeSidebar img:last-child {
+    filter: opacity(90%);
+}
+/* tdm tools home*/
+.design-filter {
+    filter: opacity(90%);
+}
+
+/*istex home promo en bas*/
+.backZoneSimple {
+    --height-backZoneSimple: 45rem;
+    --height-lodexZone: 3.7rem;
+    margin-bottom: 0;
+}
+.backZoneSimple .property_value_container * {
+    padding: 0;
+    margin: 0;
+}
+.backZoneSimple .property_value {
+    height: calc(var(--height-backZoneSimple) - 1rem);
+    width: 100%;
+}
+#backZoneContainer {
+    position: absolute;
+    bottom: var(--height-lodexZone);
+    left: 0;
+    width: 100% !important;
+    background-color: var(--primary-main);
+    background-image: url(../img/backZoneSimple-1.jpg);
+    background-position: center top;
+    background-color: var(--primary-main);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+#backZoneContainer #backZoneTexte {
+    border: 0 !important;
+    height: var(--height-backZoneSimple);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2%;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+#backZoneContainer #backZoneTexte *:not(h2) {
+    padding: 0 !important;
+    border: 0 !important;
+    width: max-content;
+    color: var(--secondary-contrast-text) !important;
+    font-weight: 400;
+    font-family: var(--font-titre);
+    font-size: 2rem;
+}
+#backZoneContainer #backZoneTexte h2 {
+    color: #c4d733;
+    font-size: 4.3rem;
+    margin: 2rem 2rem 5rem;
+    text-align: center !important;
+}
+#backZoneContainer #backZoneTexte div#surtitre {
+    font-size: 2rem;
+}
+#backZoneContainer #backZoneTexte div#url {
+    font-size: 3rem;
+}
+#backZoneContainer #backZoneTexte div#url a:hover {
+    font-weight: bold;
+}
+/*****************/
+/*page resource*/
+/*ex: tools explorer website*/
+/*header-resource-section*/
+/* bloc titre label */
+.designResourceToolsHeader > div.property_label_container span.property_label {
+    font-size: 1.4rem;
+    color: var(--primary-main) !important;
+    border-bottom: 1px solid var(--primary-main);
+    margin-bottom: 1rem;
+}
+.designResourceToolsHeader h1 {
+    padding-left: 3rem;
+}
+.property.entityDefinition {
+    flex: 3;
+}
+.property.entityDefinition .property.definition {
+    padding: 2rem 3rem 0rem 3rem;
+}
+.header-resource-section .property_value_container .designHomeSidebar {
+    flex: 1;
+    margin-top: 2.9rem !important;
+    padding-top: 2rem !important;
+    padding-bottom: 0rem !important;
+    margin-bottom: 0 !important;
+}
+.property.licensePaysDeCreation .property ul {
+    margin: 0.5rem !important;
+    padding-left: 1.5rem;
+}
+/*.main-resource-section*/
+.main-resource-section > div > div:first-child {
+    justify-content: initial;
+    padding: 0 !important;
+}
+.designResourceCompose,
+.main-resource-section .designHomeSidebar {
+    padding: 1.5rem 3rem !important;
+}
+.resource
+    .designHomeSidebar
+    span.property_label[style*='color: rgb(158, 158, 158)'] {
+    color: inherit !important;
+}
+/*champs composés*/
+.designResourceCompose {
+    background-color: var(--primary-light);
+    flex: 2.79;
+}
+/*titre*/
+.designResourceCompose .property_label_container {
+    margin-top: 0rem !important;
+}
+.designResourceCompose > .property_label_container span.property_label {
+    color: var(--text-main) !important;
+    font-size: 1.8rem !important;
+    line-height: 2rem;
+    font-weight: 600 !important;
+}
+.designResourceCompose .property_value_container > div > div > div {
+    margin-left: 0 !important;
+    border-left: 0px !important;
+    padding: 0 !important;
+    background-color: var(--primary-light);
+}
+.designResourceCompose div.property {
+    margin: 0rem auto;
+}
+.designResourceCompose .property_value_container .property_value_container {
+    background-color: var(--contrast-main);
+}
+.designResourceCompose
+    .property_value_container
+    .property_value_container
+    > .MuiBox-root {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.designResourceCompose ul,
+.designResourceCompose ol {
+    margin: 0 !important;
+    padding: 8px;
+}
+.designResourceCompose li {
+    display: inline-block;
+    padding: 3px 8px !important;
+}
+.designResourceCompose li p {
+    padding: 0 !important;
+}
+.designResourceCompose li:not(:last-child) > span::after {
+    content: ',';
+}
+
+/*.designResourceCompose > .property_label_container span.property_label:empty {
+    display: none;
+}*/
+.designResourceCompose .property_value_container h2 {
+    margin-top: 0rem !important;
+}
+/*ref bib = .blocExergue*/
+.blocExergue {
+    box-shadow: 0px 0px 20px var(--neutral-main);
+    padding: 3rem 5rem;
+    margin: 5rem 0;
+}
+.blocExergue p {
+    margin: 0 auto 1.5rem;
+}
