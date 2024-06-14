@@ -7,14 +7,14 @@
     <meta name="keywords" content="istex, semantic web, linked data"/>
     <meta name="description" content="Site on semantic web approch to ISTEX data"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-    <link rel="apple-touch-icon" sizes="180x180" href="<%= theme.base.href %>/themes/istex/apple-touch-icon.png"/>
-    <link rel="icon" type="image/png" sizes="32x32" href="<%= theme.base.href %>/themes/istex/favicon-32x32.png"/>
-    <link rel="icon" type="image/png" sizes="16x16" href="<%= theme.base.href %>/themes/istex/favicon-16x16.png"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="<%= theme.base.href %>/apple-touch-icon.png"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="<%= theme.base.href %>/favicon-32x32.png"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="<%= theme.base.href %>/favicon-16x16.png"/>
     <link rel="alternate" type="application/atom+xml" href="/api/export/atom"/>
-    <link rel="manifest" href="<%= theme.base.href %>/themes/istex/manifest.json"/>
-    <link rel="mask-icon" href="<%= theme.base.href %>/themes/istex/safari-pinned-tab.svg" color="#5bbad5"/>
-    <link rel="stylesheet" href="<%= theme.base.href %>/themes/istex/css/style.css"/>
-    <link rel="stylesheet" href="<%= theme.base.href %>/themes/istex/css/istex.css?ver2.0"/>
+    <link rel="manifest" href="<%= theme.base.href %>/manifest.json"/>
+    <link rel="mask-icon" href="<%= theme.base.href %>/safari-pinned-tab.svg" color="#5bbad5"/>
+    <link rel="stylesheet" href="<%= theme.base.href %>/css/style.css"/>
+    <link rel="stylesheet" href="<%= theme.base.href %>/css/istex.css?ver2.0"/>
     <style><%= theme.cssVariable %></style>
 </head>
 
@@ -22,7 +22,7 @@
 <header>
     <nav class="menuIstex zutile flexrow" aria-label="Menu Istex">
         <a href="https://www.istex.fr" target="blank" class="accesIstex" title="accès Istex (lien externe)">
-            <img src="<%= theme.base.href %>/themes/istex/img/header/leftarrow.png" alt=""> Accès
+            <img src="<%= theme.base.href %>/img/header/leftarrow.png" alt=""> Accès
             Istex.fr
         </a>
         <ul class="menu-haut flexrow">
@@ -47,7 +47,7 @@
     <div class="banner">
         <div class="zutile">
             <a href="/">
-                <img src="<%= theme.base.href %>/themes/istex/img/header/istex.png" alt="logo Istex">
+                <img src="<%= theme.base.href %>/img/header/istex.png" alt="logo Istex">
                 <h1 class="siteTitle">
                     <%= custom.title %>
                 </h1>
@@ -99,9 +99,9 @@
     </div>
 </footer>
 <!-- Footer - bloc-8 END -->
-<script src="<%= theme.base.href %>/themes/istex/js/jquery-3.6.0.min.js"></script>
-<script src="<%= theme.base.href %>/themes/istex/js/responsiveMenu.js"></script>
-<script src="<%= theme.base.href %>/themes/istex/js/tooltip.js"></script>
+<script src="<%= theme.base.href %>/js/jquery-3.6.0.min.js"></script>
+<script src="<%= theme.base.href %>/js/responsiveMenu.js"></script>
+<script src="<%= theme.base.href %>/js/tooltip.js"></script>
 <script>
     window.__PRELOADED_STATE__ = <%- lodex.preload %>;
     window.__TENANT__ = '<%= lodex.tenant %>';
