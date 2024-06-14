@@ -106,7 +106,9 @@ export const renderPublic = (themeId, data) => {
         },
         theme: {
             cssVariable,
-            base: { href: data.themesHost ?? '' },
+            base: {
+                href: `${data.themesHost ?? ''}/themes/${themeId ?? 'default'}`,
+            },
         },
     };
 
@@ -142,7 +144,9 @@ export const renderAdmin = (data) => {
         },
         theme: {
             cssVariable,
-            base: { href: data.themesHost ?? '' },
+            base: {
+                href: `${data.themesHost ?? ''}/themes/default`,
+            },
         },
     };
 
@@ -169,7 +173,7 @@ export const renderRootAdmin = (data) => {
         },
         theme: {
             cssVariable,
-            base: { href: data.themesHost ?? '' },
+            base: { href: `${data.themesHost ?? ''}/themes/default` },
         },
     };
 
