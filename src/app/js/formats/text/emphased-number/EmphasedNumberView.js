@@ -14,6 +14,9 @@ function getNumber(numb) {
         // /api/run/total-of
         return numb;
     }
+    if (Number.isFinite(numb) && numb % 1 != 0) {
+        return numb.toFixed(2);
+    }
     if (Array.isArray(numb) && numb.length === 1) {
         // /api/run/count-by-fields
         const { value } = numb.shift();

@@ -15,7 +15,7 @@
         "id": "r-count-all",
         "url": "/api/run/count-all/",
         "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#count-all",
-        "recommendedWith": ["All"]
+        "recommendedWith": ["EmphasedNumber"]
     },
     {
         "id": "r-count-by-fields",
@@ -159,7 +159,7 @@
         "id": "r-total-of",
         "url": "/api/run/total-of/",
         "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#total-of",
-        "recommendedWith": ["All"]
+        "recommendedWith": ["EmphasedNumber"]
     },
     {
         "id": "r-tree-by",
