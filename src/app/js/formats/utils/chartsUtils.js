@@ -45,6 +45,7 @@ export const VEGA_LITE_DATA_INJECT_TYPE_C = 19;
 // Data injection for Radar Chart
 export const VEGA_DATA_INJECT_TYPE_A = 18;
 export const VEGA_DATA_INJECT_TYPE_B = 20;
+export const VEGA_DATA_INJECT_TYPE_C = 21;
 
 // Map type
 export const MAP_EUROPE = 'europe';
