@@ -15,7 +15,7 @@
         "id": "r-count-all",
         "url": "/api/run/count-all/",
         "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/countall",
-        "recommendedWith": ["All"]
+        "recommendedWith": ["EmphasedNumber"]
     },
     {
         "id": "r-count-by-fields",
@@ -153,7 +153,7 @@
         "id": "r-total-of",
         "url": "/api/run/total-of/",
         "doc": "https://user-doc.lodex.inist.fr/lodex-user-documentation/configuration/routines/totalof",
-        "recommendedWith": ["All"]
+        "recommendedWith": ["EmphasedNumber"]
     },
     {
         "id": "r-tree-by",
