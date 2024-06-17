@@ -4,7 +4,7 @@ import getLogger from '../services/logger';
 import defaultMuiTheme from '../../app/custom/themes/default/defaultTheme';
 import deepClone from 'lodash/cloneDeep';
 
-import fs from 'node:fs';
+import fs from 'fs';
 
 // --- Global variable for the Theme system
 export const THEMES_VERSION = '6';
