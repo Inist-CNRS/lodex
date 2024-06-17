@@ -5,7 +5,7 @@ import defaultMuiTheme from '../../app/custom/themes/default/defaultTheme';
 import deepClone from 'lodash/cloneDeep';
 
 // --- Global variable for the Theme system
-export const THEMES_VERSION = '5';
+export const THEMES_VERSION = '6';
 export const THEMES_FOLDER = '../../app/custom/themes';
 
 // --- Global function for the Theme system
@@ -48,6 +48,7 @@ const logger = getLogger('system');
  * }} description - Short description about the theme
  * @property {string} index - Html index file location
  * @property {MuiTheme} muiTheme - Mui theme
+ * @property {boolean} hasIndex - indicate if the theme have an index file
  * @property {object} customTemplateVariables - Default value of custom variables use in the ejs template
  */
 
@@ -132,12 +133,14 @@ const init = async () => {
                 );
             }
 
+            let hasIndex = false;
             let indexLocation = getThemeFile('default', 'index.ejs');
             if (themeConfig?.configuration?.files?.index) {
                 indexLocation = getThemeFile(
                     theme,
                     themeConfig.configuration.files.index,
                 );
+                hasIndex = true;
             }
 
             let muiTheme = deepClone(defaultMuiTheme);
@@ -166,6 +169,7 @@ const init = async () => {
                 index: indexLocation,
                 muiTheme,
                 customTemplateVariables,
+                hasIndex,
             });
         } catch (e) {
             logger.error(`unable to load ${theme} theme!`);
