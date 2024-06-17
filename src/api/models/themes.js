@@ -4,6 +4,8 @@ import getLogger from '../services/logger';
 import defaultMuiTheme from '../../app/custom/themes/default/defaultTheme';
 import deepClone from 'lodash/cloneDeep';
 
+import fs from 'node:fs';
+
 // --- Global variable for the Theme system
 export const THEMES_VERSION = '6';
 export const THEMES_FOLDER = '../../app/custom/themes';
@@ -136,26 +138,38 @@ const init = async () => {
             let hasIndex = false;
             let indexLocation = getThemeFile('default', 'index.ejs');
             if (themeConfig?.configuration?.files?.index) {
-                indexLocation = getThemeFile(
+                const unVerifiedIndexLocation = getThemeFile(
                     theme,
                     themeConfig.configuration.files.index,
                 );
-                hasIndex = true;
+
+                if (fs.existsSync(unVerifiedIndexLocation)) {
+                    indexLocation = unVerifiedIndexLocation;
+                    hasIndex = true;
+                } else {
+                    logger.warn(
+                        `The declared index file from ${theme} do not exists`,
+                    );
+                }
             }
 
             let muiTheme = deepClone(defaultMuiTheme);
             if (themeConfig?.configuration?.files?.palette) {
-                Object.assign(
-                    muiTheme,
-                    (
-                        await import(
-                            getThemeFile(
-                                theme,
-                                themeConfig.configuration.files.palette,
-                            )
-                        )
-                    ).default,
+                const unVerifiedMuiTheme = getThemeFile(
+                    theme,
+                    themeConfig.configuration.files.palette,
                 );
+
+                if (fs.existsSync(unVerifiedMuiTheme)) {
+                    Object.assign(
+                        muiTheme,
+                        (await import(unVerifiedMuiTheme)).default,
+                    );
+                } else {
+                    logger.warn(
+                        `The declared palette file from ${theme} do not exists`,
+                    );
+                }
             }
 
             let customTemplateVariables = {};
