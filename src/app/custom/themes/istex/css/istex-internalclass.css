@@ -270,23 +270,6 @@
 .designResourceToolsHeader h1 {
     padding-left: 3rem;
 }
-.property.entityDefinition {
-    flex: 3;
-}
-.property.entityDefinition .property.definition {
-    padding: 2rem 3rem 0rem 3rem;
-}
-.header-resource-section .property_value_container .designHomeSidebar {
-    flex: 1;
-    margin-top: 2.9rem !important;
-    padding-top: 2rem !important;
-    padding-bottom: 0rem !important;
-    margin-bottom: 0 !important;
-}
-.property.licensePaysDeCreation .property ul {
-    margin: 0.5rem !important;
-    padding-left: 1.5rem;
-}
 /*.main-resource-section*/
 .main-resource-section > div > div:first-child {
     justify-content: initial;
