@@ -170,13 +170,41 @@ const EJSAdmin = (props) => {
                 />
             </FormatDataParamsFieldSet>
             <FormatDefaultParamsFieldSet>
-                <a
-                    href="https://ejs.co/#docs"
-                    target="_blank"
-                    rel="nofollow noopener noreferrer"
-                >
-                    {polyglot.t('ejs_documentation')}
-                </a>
+                <div style={{ width: '100%' }}>
+                    <a
+                        href="https://ejs.co/#docs"
+                        target="_blank"
+                        rel="nofollow noopener noreferrer"
+                    >
+                        {polyglot.t('ejs_documentation')}
+                    </a>
+                </div>
+                <div style={{ width: '100%' }}>
+                    <a
+                        href="https://lodash.com/docs"
+                        target="_blank"
+                        rel="nofollow noopener noreferrer"
+                        style={{ width: '100%' }}
+                    >
+                        {polyglot.t('lodash_documentation')}
+                    </a>
+                </div>
+
+                <p style={{ width: '100%' }}>
+                    {polyglot.t('ejs_variable_list')}
+                    <div>
+                        <i>
+                            <ul>
+                                <li>
+                                    <code>root</code> ({polyglot.t('ejs_data')})
+                                </li>
+                                <li>
+                                    <code>_</code> ({polyglot.t('ejs_lodash')})
+                                </li>
+                            </ul>
+                        </i>
+                    </div>
+                </p>
                 <EJSEditor value={template} onChange={handleTemplateChange} />
             </FormatDefaultParamsFieldSet>
             <FormatFieldSetPreview
