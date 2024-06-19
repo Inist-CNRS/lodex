@@ -49,8 +49,8 @@ EJSView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
     data: PropTypes.shape({
-        total: PropTypes.number.isRequired,
-        values: PropTypes.any.isRequired,
+        total: PropTypes.number,
+        values: PropTypes.any,
     }),
     template: PropTypes.string.isRequired,
 };
