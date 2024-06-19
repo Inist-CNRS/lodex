@@ -6,6 +6,7 @@ import injectData from '../../injectData';
 import InvalidFormat from '../../InvalidFormat';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import _ from 'lodash';
 
 const EJSView = ({ field, data, template }) => {
     const [onError, setOnError] = useState(false);
@@ -28,7 +29,7 @@ const EJSView = ({ field, data, template }) => {
             return '';
         }
         try {
-            const h = compiledTemplate({ root: data });
+            const h = compiledTemplate({ root: data, _ });
             setOnError(false);
             return h;
         } catch (err) {
