@@ -34,14 +34,14 @@ export const defaultArgs = {
     <% /* affichage d'une donnée simple */ %>
     <% /* simple data display */ %>
     <style>
-        .nb-publication {
+        .text-value {
             background-color: rgba(0, 255, 255, 0.25);
             padding: 24px;
             max-width: 200px;
             text-align: center;
         }
     </style>
-    <div class="nb-publication">
+    <div class="text-value">
         <%= root.values %>
     </div>
 
