@@ -1091,3 +1091,6 @@
 "binary"	"Binary"	"Binary"
 "slicedice"	"Slice and Dice"	"Slice and Dice"
 "treemap_ratio"	"Aspect ratio of the layout method"	"Rapport d'aspect de la méthode de présentation"
+"formatEJS"	"Text - JavaScript/HTML templating"	"Texte - JavaScript/HTML templating (modèle)"
+"formatEJSDescription"	"Create template with EJS (HTML + JavaScript) and add you data in with the LODEX routines"	"Créez un modèle avec EJS (HTML + JavaScript) et ajoutez vos données avec les routines LODEX."
+"ejs_documentation"	"EJS Documentation"	"Documentation EJS"

@@ -1,5 +1,18 @@
+export const StandardText = {
+    name: 'Standard - Text',
+    total: 1,
+    values: 'Hello, LODEX',
+};
+
+export const StandardNumber = {
+    name: 'Standard - Number',
+    total: 1,
+    values: 314159265359,
+};
+
 export const StandardIdValue = {
     name: 'Standard - _id / value',
+    total: 3,
     values: [
         { _id: 'A', value: 28 },
         { _id: 'B', value: 55 },
@@ -9,6 +22,7 @@ export const StandardIdValue = {
 
 export const StandardSourceTargetWeight = {
     name: 'Standard - source / target / weight',
+    total: 9,
     values: [
         { source: 'A', target: 'A', weight: 28 },
         { source: 'A', target: 'B', weight: 55 },
@@ -24,6 +38,7 @@ export const StandardSourceTargetWeight = {
 
 export const MapSourceTargetWeight = {
     name: 'Map - source / target / weight',
+    total: 13,
     values: [
         // Points
         { source: 'FRA', target: 'FRA', weight: 18 },
@@ -46,6 +61,7 @@ export const MapSourceTargetWeight = {
 
 export const MapIdValue = {
     name: 'Map - _id / value',
+    total: 4,
     values: [
         { _id: 'JPN', value: 28 },
         { _id: 'GBR', value: 55 },
@@ -56,6 +72,7 @@ export const MapIdValue = {
 
 export const MapFranceIdValue = {
     name: 'Map France - _id / value',
+    total: 3,
     values: [
         { _id: 'FR.VG', value: 28 },
         { _id: 'FR.MM', value: 55 },
@@ -65,6 +82,7 @@ export const MapFranceIdValue = {
 
 export const TreeMapSourceTargetWeight = {
     name: 'Tree Map - source / target / weight',
+    total: 24,
     values: [
         { source: 'A', target: 'B', weight: 193 },
         { source: 'B', target: 'BA', weight: 15 },
@@ -97,6 +115,8 @@ export const TreeMapSourceTargetWeight = {
 };
 
 export const AllDataSets = [
+    StandardText,
+    StandardNumber,
     StandardIdValue,
     StandardSourceTargetWeight,
     MapSourceTargetWeight,

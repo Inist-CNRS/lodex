@@ -6,7 +6,7 @@ import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { MenuItem, Select } from '@mui/material';
 import { AllDataSets } from '../../dataSet';
 
-const VegaFieldPreview = ({
+const FormatFieldSetPreview = ({
     p,
     args,
     showDatasetsSelector,
@@ -21,6 +21,7 @@ const VegaFieldPreview = ({
     useEffect(() => {
         const newSet = datasets.find((value) => value.name === datasetName);
         setDataset({
+            total: newSet.total,
             values: newSet.values,
         });
     }, [datasetName]);
@@ -54,7 +55,9 @@ const VegaFieldPreview = ({
                     ))}
                 </Select>
             ) : null}
-            <fieldset style={{ borderRadius: '5px' }}>
+            <fieldset
+                style={{ borderRadius: formatAdminStyle.fieldset.borderRadius }}
+            >
                 <PreviewComponent {...args} dataset={dataset} />
             </fieldset>
             <ReactJson
@@ -75,12 +78,12 @@ const VegaFieldPreview = ({
     );
 };
 
-VegaFieldPreview.defaultProps = {
+FormatFieldSetPreview.defaultProps = {
     showDatasetsSelector: true,
     datasets: AllDataSets,
 };
 
-VegaFieldPreview.propTypes = {
+FormatFieldSetPreview.propTypes = {
     p: polyglotPropTypes.isRequired,
     args: PropTypes.any.isRequired,
     showDatasetsSelector: PropTypes.bool,
@@ -93,4 +96,4 @@ VegaFieldPreview.propTypes = {
     PreviewComponent: PropTypes.element.isRequired,
 };
 
-export default translate(VegaFieldPreview);
+export default translate(FormatFieldSetPreview);

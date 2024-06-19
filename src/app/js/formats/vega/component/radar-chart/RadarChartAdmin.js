@@ -24,7 +24,7 @@ import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
 } from '../../../utils/components/field-set/FormatFieldSets';
-import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
+import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import { RadarChartAdminView } from './RadarChartView';
 import { StandardIdValue } from '../../../utils/dataSet';
 import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
