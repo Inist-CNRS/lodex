@@ -4,7 +4,7 @@ import getLogger from '../services/logger';
 import defaultMuiTheme from '../../app/custom/themes/default/defaultTheme';
 import deepClone from 'lodash/cloneDeep';
 
-import fs from 'fs';
+import fs from 'fs/promises';
 
 // --- Global variable for the Theme system
 export const THEMES_VERSION = '6';
@@ -143,10 +143,11 @@ const init = async () => {
                     themeConfig.configuration.files.index,
                 );
 
-                if (fs.existsSync(unVerifiedIndexLocation)) {
+                try {
+                    await fs.access(unVerifiedIndexLocation, fs.constants.R_OK);
                     indexLocation = unVerifiedIndexLocation;
                     hasIndex = true;
-                } else {
+                } catch (_) {
                     logger.warn(
                         `The declared index file from ${theme} do not exists`,
                     );
@@ -160,12 +161,13 @@ const init = async () => {
                     themeConfig.configuration.files.palette,
                 );
 
-                if (fs.existsSync(unVerifiedMuiTheme)) {
+                try {
+                    await fs.access(unVerifiedMuiTheme, fs.constants.R_OK);
                     Object.assign(
                         muiTheme,
                         (await import(unVerifiedMuiTheme)).default,
                     );
-                } else {
+                } catch (_) {
                     logger.warn(
                         `The declared palette file from ${theme} do not exists`,
                     );
