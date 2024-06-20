@@ -91,6 +91,10 @@ export const renderPublic = (themeId, data) => {
     const lodexTheme = getTheme(themeId);
     const theme = createMuiTheme(lodexTheme.muiTheme);
     const cssVariable = buildCssVariable(theme.palette);
+    let themeFolder = themeId ?? 'default';
+    if (!lodexTheme.hasIndex) {
+        themeFolder = 'default';
+    }
 
     const extendedData = {
         custom: {
@@ -106,8 +110,11 @@ export const renderPublic = (themeId, data) => {
         },
         theme: {
             cssVariable,
+            current: {
+                href: `${data.themesHost ?? ''}/themes/${themeFolder}`,
+            },
             base: {
-                href: `${data.themesHost ?? ''}/themes/${themeId ?? 'default'}`,
+                href: `${data.themesHost ?? ''}/themes`,
             },
         },
     };
@@ -144,8 +151,11 @@ export const renderAdmin = (data) => {
         },
         theme: {
             cssVariable,
-            base: {
+            current: {
                 href: `${data.themesHost ?? ''}/themes/default`,
+            },
+            base: {
+                href: `${data.themesHost ?? ''}/themes`,
             },
         },
     };
@@ -173,7 +183,12 @@ export const renderRootAdmin = (data) => {
         },
         theme: {
             cssVariable,
-            base: { href: `${data.themesHost ?? ''}/themes/default` },
+            current: {
+                href: `${data.themesHost ?? ''}/themes/default`,
+            },
+            base: {
+                href: `${data.themesHost ?? ''}/themes`,
+            },
         },
     };
 
