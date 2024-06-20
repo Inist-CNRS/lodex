@@ -1,4 +1,4 @@
-@import url("fonts-style.css");
+@import url('fonts-style.css');
 /*lodex theme_inist lodex14*/
 /* MOBILE FIRST*/
 @media (min-width: 794px) {
@@ -13,7 +13,7 @@
         margin-top: var(--logosSansMarge) !important;
     }
     /* titre courant box*/
-    .breadcrumb-trail a:not([href*="https"]):last-child {
+    .breadcrumb-trail a:not([href*='https']):last-child {
         padding-left: 3rem;
         margin-right: 4.6rem;
     }
@@ -73,7 +73,6 @@ body {
     font-family: var(--font-texte) !important;
     font-size: 1rem;
     font-weight: 400;
-    line-height: 1.5;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     color: var(--text-primary) !important;
 }
@@ -112,7 +111,7 @@ html {
 body {
     display: flex;
     flex-direction: column;
-    background-image: url("../img/bg_projets.jpg");
+    background-image: url('../img/bg_projets.jpg');
     background-repeat: repeat-x;
     background-position: top left;
     opacity: 1;
@@ -123,7 +122,7 @@ header {
     top: 0;
     width: 100vw;
     background-color: var(--primary-main);
-    background-image: url("../img/bg_projets.jpg");
+    background-image: url('../img/bg_projets.jpg');
     background-repeat: repeat-x;
     background-position: top left;
     opacity: 1;
@@ -174,16 +173,16 @@ header a.logoinist {
     line-height: normal;
 }
 header a.logoinist > span:first-child {
-    font-family: "Satoshi-Bold", Arial, Helvetica, sans-serif;
+    font-family: 'Satoshi-Bold', Arial, Helvetica, sans-serif;
     font-size: 1.875rem;
 }
 header a.logoinist span.inist {
-    font-family: "Satoshi-Regular", Arial, Helvetica, sans-serif;
+    font-family: 'Satoshi-Regular', Arial, Helvetica, sans-serif;
     font-weight: bold;
 }
 header a.logoinist > span:first-child::after {
-    content: "|";
-    font-family: "Satoshi-Regular", Arial, Helvetica, sans-serif;
+    content: '|';
+    font-family: 'Satoshi-Regular', Arial, Helvetica, sans-serif;
     font-weight: normal;
     opacity: 0.8;
     padding-left: 0.5rem;
@@ -233,21 +232,17 @@ footer li a:active {
     color: #434148;
     text-decoration: none;
 }
-footer li a[href*="https"]::after {
-    background-image: url("../img/external-link-alt_gris.svg");
+footer li a[href*='https']::after {
+    background-image: url('../img/external-link-alt_gris.svg');
 }
 footer li#lodex::before {
     width: 30px;
     height: 30px;
-    content: " ";
-    background: #fff left center no-repeat scroll url("/favicon.ico");
+    content: ' ';
+    background: #fff left center no-repeat scroll url('/favicon.ico');
     background-size: contain;
 }
 
-/*ELEMENTS lodex - texte */
-.body * {
-    text-align: initial !important;
-}
 /*ELEMENTS LODEX structure*/
 /*padding et fond descendent 3 noeuds*/
 /*breadcrumb au niveau header fond transparent*/
@@ -333,7 +328,7 @@ div.static-page,
 }
 /*breadcrumb titre court et liens externes*/
 /* titre courant box*/
-.breadcrumb-trail a:not([href*="https"]):last-child {
+.breadcrumb-trail a:not([href*='https']):last-child {
     display: flex;
     align-items: end;
     background-color: white;
@@ -342,21 +337,21 @@ div.static-page,
     width: max-content;
 }
 /*titre courant texte*/
-.breadcrumb-trail a:not([href*="https"]):last-child {
+.breadcrumb-trail a:not([href*='https']):last-child {
     color: var(--text-primary) !important;
     font-family: var(--font-titre);
     font-size: 1.2rem;
     font-weight: normal;
 }
 /*titre court clicable*/
-.breadcrumb-trail a:not([href*="https"]):last-child:hover,
-.breadcrumb-trail a:not([href*="https"]):last-child:focus,
-.breadcrumb-trail a:not([href*="https"]):last-child:active {
+.breadcrumb-trail a:not([href*='https']):last-child:hover,
+.breadcrumb-trail a:not([href*='https']):last-child:focus,
+.breadcrumb-trail a:not([href*='https']):last-child:active {
     text-decoration: underline 2px var(--info-main);
     text-underline-offset: 5px;
 }
 /*external links*/
-.breadcrumb-trail a[href*="https"] {
+.breadcrumb-trail a[href*='https'] {
     display: none;
 }
 /*barre nav lodex*/
@@ -516,7 +511,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 }
 .tiret::before,
 .static-page h2::before {
-    content: "—";
+    content: '—';
     padding-right: 20px;
     font-weight: bold;
 }
