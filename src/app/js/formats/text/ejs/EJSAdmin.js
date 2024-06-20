@@ -20,14 +20,14 @@ export const defaultArgs = {
         orderBy: 'value/asc',
     },
     // Content of example.ejs
-    template: `<% /* Ceci est un exemple qui prendre en compte plusieurs types de donnée. */ %>
-<% /* Vous pouviez changer les données dans l'aperçu pour voir les different possibilité */ %>
+    template: `<% /* Ceci est un exemple qui peut prendre en compte plusieurs types de données. */ %>
+<% /* Vous pouvez changer les données dans l'aperçu pour voir les différentes possibilités */ %>
 
 <% /* This is an example that takes into account several types of data. */ %>
 <% /* You can change the data in the preview to see the different possibilities. */ %>
 
 
-<% /* On vérifie si les données ne sont pas une list */ %>
+<% /* On vérifie si les données ne sont pas une liste */ %>
 <% /* We check if the data is not a list */ %>
 <% if (!Array.isArray(root.values)) { %>
 
@@ -48,12 +48,12 @@ export const defaultArgs = {
 <% } %>
 
 
-<% /* On vérifie si les données sont une list de pair _id / value */ %>
-<% /* We check if the data is a list with _id / value pair */ %>
+<% /* On vérifie si les données sont une liste de paires _id / value */ %>
+<% /* We check if the data is a list of _id / value pairs */ %>
 <% if (Array.isArray(root.values) && root.values[0]._id !== undefined) { %>
 
     <% /* affichage des données sous forme de tableau */ %>
-    <% /* display data in table form */ %>
+    <% /* display data in table format */ %>
     <table>
         <thead>
         <tr>
@@ -82,12 +82,12 @@ export const defaultArgs = {
 <% } %>
 
 
-<% /* On vérifie si les données sont une list de tuple source / target / weight */ %>
-<% /* We check if the data is a list with source / target / weight tuple */ %>
+<% /* On vérifie si les données sont une liste de tuples source / target / weight */ %>
+<% /* We check if the data is a list with source / target / weight tuples */ %>
 <% if (Array.isArray(root.values) && root.values[0].source !== undefined) { %>
 
     <% /* affichage des données sous forme de tableau */ %>
-    <% /* display data in table form */ %>
+    <% /* display data in table format */ %>
         <style>
             .case-tableau {
                 border: 1px solid rgb(128, 128, 128);
