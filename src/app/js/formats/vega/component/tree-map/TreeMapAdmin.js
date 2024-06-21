@@ -25,7 +25,7 @@ import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import { TreeMapSourceTargetWeight } from '../../../utils/dataSet';
-import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
+import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import { TreeMapAdminView } from './TreeMapView';
 

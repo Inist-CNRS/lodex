@@ -11,7 +11,7 @@ import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
 } from '../utils/components/field-set/FormatFieldSets';
-import VegaFieldPreview from '../utils/components/admin/VegaFieldPreview';
+import VegaFieldPreview from '../utils/components/field-set/FormatFieldSetPreview';
 import { VegaLiteAdminView } from './VegaLiteView';
 import { ASPECT_RATIO_16_9 } from '../utils/aspectRatio';
 import AspectRatioSelector from '../utils/components/admin/AspectRatioSelector';

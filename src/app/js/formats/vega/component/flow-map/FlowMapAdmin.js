@@ -11,7 +11,7 @@ import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSe
 import { Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import FlowMap from '../../models/FlowMap';
 import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
-import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
+import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import { FlowMapAdminView } from './FlowMapView';
 import {
     FormatChartParamsFieldSet,
