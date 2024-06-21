@@ -1095,6 +1095,6 @@
 "formatEJSDescription"	"Create template with EJS (HTML + JavaScript) and add you data in with the LODEX routines"	"Créez un modèle avec EJS (HTML + JavaScript) et ajoutez vos données avec les routines LODEX."
 "ejs_documentation"	"EJS Documentation"	"Documentation EJS"
 "lodash_documentation"	"Lodash Documentation"	"Documentation Lodash"
-"ejs_variable_list"	"Data from a routine is displayed using an HTML template based on EJS syntax. You can use these variables to access to the data and utils:"	"L’affichage des données en provenance d’une routine est réalisé à l’aide d’un template HTML utilisant la syntaxe EJS. Vous pouvez utiliser ces variables pour accéder aux données et aux utilitaires :"
+"ejs_variable_list"	"Data from a routine is displayed using an HTML template based on EJS syntax. You can use these variables to access data and utils:"	"L’affichage des données en provenance d’une routine est réalisé à l’aide d’un template HTML utilisant la syntaxe EJS. Vous pouvez utiliser ces variables pour accéder aux données et aux utilitaires :"
 "ejs_data"	"Variable containing the routine data"	"Variable contenant les données de la routine"
 "ejs_lodash"	"Variable containing the Lodash function"	"Variable contenant les fonctions de Lodash"
