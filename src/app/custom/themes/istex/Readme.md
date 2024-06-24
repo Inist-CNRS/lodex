@@ -27,6 +27,8 @@ La class interne (liste ci-après) est à saisir dans le champ 'nom interne' d'u
 
 ### Page d'accueil
 
+![exemple-class-interne-data-istex-home](https://github.com/Inist-CNRS/lodex/assets/122360177/023edf48-7be6-4f72-88d0-1f587162aca8)
+
 -   **designHomeContentSidebar**  
     Le bloc pleine largeur, fond avec décor graph sur blanc casse et une sidebar bleu istex
 
@@ -56,3 +58,6 @@ pour un bloc composé
 -   enlève la bordure et le retrait à gauche
 -   ajoute une couleur de fond bleu très clair
 -   Les blocs composants ce bloc apparaissent en pavé clair
+
+  ![exemple-class-interne-istex-tools-resource](https://github.com/Inist-CNRS/lodex/assets/122360177/252c3b1a-193f-4d90-9f35-75bfdddffc54)
+
