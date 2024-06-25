@@ -1,5 +1,3 @@
-/*tools*/
-/*@import 'istex-compatible.css';*/
 @import 'istex-internalclass.css';
 @font-face {
     font-family: 'Montserrat';
@@ -364,16 +362,16 @@ a img {
     color: var(--primary-main);
     cursor: pointer;
 }
-.body a:hover {
-    color: #31768f !important;
+a:hover {
+    color: #31768f;
     text-decoration: underline;
 }
-.body a:active,
-.body a:focus {
+a:active,
+a:focus {
     color: #1a5a71 !important;
     text-decoration: underline;
 }
-.body a desactive {
+a desactive {
     color: #cdcdcd;
 }
 .body > div a:not(:empty)[target='_blank']::after {
