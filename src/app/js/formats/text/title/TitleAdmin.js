@@ -8,6 +8,7 @@ import updateAdminArgs from '../../utils/updateAdminArgs';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     level: 1,
@@ -51,26 +52,28 @@ class TitleAdmin extends Component {
         } = this.props;
 
         return (
-            <FormatDefaultParamsFieldSet>
-                <TextField
-                    fullWidth
-                    select
-                    label={polyglot.t('list_format_select_level')}
-                    onChange={(e) => this.handleLevel(e.target.value)}
-                    value={level}
-                >
-                    <MenuItem value={1}>{polyglot.t('level1')}</MenuItem>
-                    <MenuItem value={2}>{polyglot.t('level2')}</MenuItem>
-                    <MenuItem value={3}>{polyglot.t('level3')}</MenuItem>
-                    <MenuItem value={4}>{polyglot.t('level4')}</MenuItem>
-                </TextField>
-                <ColorPickerParamsAdmin
-                    colors={this.state.colors || defaultArgs.colors}
-                    onChange={this.handleColors}
-                    polyglot={polyglot}
-                    monochromatic={true}
-                />
-            </FormatDefaultParamsFieldSet>
+            <FormatGroupedFieldSet>
+                <FormatDefaultParamsFieldSet defaultExpanded>
+                    <TextField
+                        fullWidth
+                        select
+                        label={polyglot.t('list_format_select_level')}
+                        onChange={(e) => this.handleLevel(e.target.value)}
+                        value={level}
+                    >
+                        <MenuItem value={1}>{polyglot.t('level1')}</MenuItem>
+                        <MenuItem value={2}>{polyglot.t('level2')}</MenuItem>
+                        <MenuItem value={3}>{polyglot.t('level3')}</MenuItem>
+                        <MenuItem value={4}>{polyglot.t('level4')}</MenuItem>
+                    </TextField>
+                    <ColorPickerParamsAdmin
+                        colors={this.state.colors || defaultArgs.colors}
+                        onChange={this.handleColors}
+                        polyglot={polyglot}
+                        monochromatic={true}
+                    />
+                </FormatDefaultParamsFieldSet>
+            </FormatGroupedFieldSet>
         );
     }
 }

@@ -64,7 +64,7 @@ class LodexFieldAdmin extends Component {
                         fullWidth
                     />
                 </FormatDataParamsFieldSet>
-                <FormatDefaultParamsFieldSet>
+                <FormatDefaultParamsFieldSet defaultExpanded>
                     <FormControlLabel
                         control={
                             <Checkbox

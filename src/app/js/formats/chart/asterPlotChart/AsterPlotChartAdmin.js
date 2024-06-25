@@ -53,7 +53,7 @@ const AsterPlotChartAdmin = ({
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            <FormatChartParamsFieldSet>
+            <FormatChartParamsFieldSet defaultExpanded>
                 <ColorPickerParamsAdmin
                     colors={args.colors}
                     onChange={handleColors}

@@ -169,7 +169,7 @@ const EJSAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            <FormatDefaultParamsFieldSet>
+            <FormatDefaultParamsFieldSet defaultExpanded>
                 <p style={{ width: '100%' }}>
                     {polyglot.t('ejs_variable_list')}
                     <i>
@@ -193,12 +193,11 @@ const EJSAdmin = (props) => {
                                     target="_blank"
                                     rel="nofollow noopener noreferrer"
                                     style={{ width: '100%' }}
-                                >
-                                </a>
+                                ></a>
                             </li>
                         </ul>
                     </i>
-            </p>
+                </p>
                 <EJSEditor value={template} onChange={handleTemplateChange} />
             </FormatDefaultParamsFieldSet>
             <FormatFieldSetPreview

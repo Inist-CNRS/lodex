@@ -52,7 +52,7 @@ const ParallelCoordinatesChartAdmin = ({
                     showOrderBy={false}
                 />
             </FormatDataParamsFieldSet>
-            <FormatChartParamsFieldSet>
+            <FormatChartParamsFieldSet defaultExpanded>
                 <ColorPickerParamsAdmin
                     colors={args.colors}
                     onChange={handleColors}

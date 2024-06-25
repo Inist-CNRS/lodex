@@ -65,13 +65,15 @@ const TranslatedVegaFieldSet = translate(FormatFieldSet);
 /**
  * Default translation for the field set component
  * @param children {React.ReactNode} Field set content
+ * @param defaultExpanded
  * @returns {JSX.Element}
  */
-export const FormatDefaultParamsFieldSet = ({ children }) => {
+export const FormatDefaultParamsFieldSet = ({ children, defaultExpanded }) => {
     return (
         <TranslatedVegaFieldSet
             title="format_default_params"
             id="format-field-set-default-param"
+            defaultExpanded={defaultExpanded}
         >
             {children}
         </TranslatedVegaFieldSet>
@@ -80,18 +82,21 @@ export const FormatDefaultParamsFieldSet = ({ children }) => {
 
 FormatDefaultParamsFieldSet.propTypes = {
     children: PropTypes.node.isRequired,
+    defaultExpanded: PropTypes.bool,
 };
 
 /**
  * Format data parameters translation for the field set component
  * @param children {React.ReactNode} Field set content
+ * @param defaultExpanded
  * @returns {JSX.Element}
  */
-export const FormatDataParamsFieldSet = ({ children }) => {
+export const FormatDataParamsFieldSet = ({ children, defaultExpanded }) => {
     return (
         <TranslatedVegaFieldSet
             title="format_data_params"
             id="format-field-set-data-param"
+            defaultExpanded={defaultExpanded}
         >
             {children}
         </TranslatedVegaFieldSet>
@@ -100,18 +105,21 @@ export const FormatDataParamsFieldSet = ({ children }) => {
 
 FormatDataParamsFieldSet.propTypes = {
     children: PropTypes.node.isRequired,
+    defaultExpanded: PropTypes.bool,
 };
 
 /**
  * Format chart parameters translation for the field set component
  * @param children {React.ReactNode} Field set content
+ * @param defaultExpanded
  * @returns {JSX.Element}
  */
-export const FormatChartParamsFieldSet = ({ children }) => {
+export const FormatChartParamsFieldSet = ({ children, defaultExpanded }) => {
     return (
         <TranslatedVegaFieldSet
             title="format_chart_params"
             id="format-field-set-chart-param"
+            defaultExpanded={defaultExpanded}
         >
             {children}
         </TranslatedVegaFieldSet>
@@ -120,18 +128,24 @@ export const FormatChartParamsFieldSet = ({ children }) => {
 
 FormatChartParamsFieldSet.propTypes = {
     children: PropTypes.node.isRequired,
+    defaultExpanded: PropTypes.bool,
 };
 
 /**
  * Format sub-format parameters translation for the field set component
  * @param children {React.ReactNode} Field set content
+ * @param defaultExpanded
  * @returns {JSX.Element}
  */
-export const FormatSubFormatParamsFieldSet = ({ children }) => {
+export const FormatSubFormatParamsFieldSet = ({
+    children,
+    defaultExpanded,
+}) => {
     return (
         <TranslatedVegaFieldSet
             title="format_sub_format_params"
             id="format-field-set-sub-format-param"
+            defaultExpanded={defaultExpanded}
         >
             {children}
         </TranslatedVegaFieldSet>
@@ -140,4 +154,5 @@ export const FormatSubFormatParamsFieldSet = ({ children }) => {
 
 FormatSubFormatParamsFieldSet.propTypes = {
     children: PropTypes.node.isRequired,
+    defaultExpanded: PropTypes.bool,
 };
