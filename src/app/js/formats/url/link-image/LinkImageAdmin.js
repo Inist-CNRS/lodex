@@ -70,7 +70,7 @@ class LinkImageAdmin extends Component {
                         </MenuItem>
                     </TextField>
                 </FormatDataParamsFieldSet>
-                <FormatDefaultParamsFieldSet>
+                <FormatDefaultParamsFieldSet defaultExpanded>
                     <TextField
                         label={
                             type !== 'text'

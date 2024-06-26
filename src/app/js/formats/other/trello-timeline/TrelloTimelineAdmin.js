@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 import { FormatDataParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     trelloKey: '',
@@ -35,20 +36,22 @@ class TrelloTimelineAdmin extends Component {
     render() {
         const { trelloToken, trelloKey } = this.props.args;
         return (
-            <FormatDataParamsFieldSet>
-                <TextField
-                    label="Trello key"
-                    onChange={(e) => this.handleKey(e.target.value)}
-                    value={trelloKey}
-                    sx={{ flexGrow: 1 }}
-                />
-                <TextField
-                    label="Trello Token"
-                    onChange={(e) => this.handleToken(e.target.value)}
-                    value={trelloToken}
-                    sx={{ flexGrow: 1 }}
-                />
-            </FormatDataParamsFieldSet>
+            <FormatGroupedFieldSet>
+                <FormatDataParamsFieldSet defaultExpanded>
+                    <TextField
+                        label="Trello key"
+                        onChange={(e) => this.handleKey(e.target.value)}
+                        value={trelloKey}
+                        sx={{ flexGrow: 1 }}
+                    />
+                    <TextField
+                        label="Trello Token"
+                        onChange={(e) => this.handleToken(e.target.value)}
+                        value={trelloToken}
+                        sx={{ flexGrow: 1 }}
+                    />
+                </FormatDataParamsFieldSet>
+            </FormatGroupedFieldSet>
         );
     }
 }

@@ -65,7 +65,7 @@ class ListAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
-                <FormatDefaultParamsFieldSet>
+                <FormatDefaultParamsFieldSet defaultExpanded>
                     <TextField
                         fullWidth
                         select

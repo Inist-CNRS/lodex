@@ -3,8 +3,13 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { formatAdminStyle } from '../../adminStyles';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import { MenuItem, Select } from '@mui/material';
 import { AllDataSets } from '../../dataSet';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const FormatFieldSetPreview = ({
     p,
@@ -12,6 +17,7 @@ const FormatFieldSetPreview = ({
     showDatasetsSelector,
     datasets,
     PreviewComponent,
+    defaultExpanded,
 }) => {
     const ReactJson = require('react-json-view').default;
 
@@ -35,58 +41,68 @@ const FormatFieldSetPreview = ({
     };
 
     return (
-        <fieldset style={formatAdminStyle.fieldset}>
-            <legend style={formatAdminStyle.legend}>
-                {p.t('format_preview')}
-            </legend>
-            {showDatasetsSelector ? (
-                <Select
-                    style={{
-                        width: '100%',
-                        marginBottom: '12px',
-                    }}
-                    value={datasetName}
-                    onChange={handleDataSetChange}
-                >
-                    {datasets.map((set) => (
-                        <MenuItem key={set.name} value={set.name}>
-                            {set.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            ) : null}
-            <fieldset
-                style={{ borderRadius: formatAdminStyle.fieldset.borderRadius }}
+        <Accordion defaultExpanded={defaultExpanded}>
+            <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="format-field-set-preview"
+                id="format-field-set-preview"
             >
-                <PreviewComponent {...args} dataset={dataset} />
-            </fieldset>
-            <ReactJson
-                style={{
-                    borderRadius: '5px',
-                    padding: '8px',
-                    marginTop: '12px',
-                }}
-                src={dataset}
-                theme="monokai"
-                enableClipboard={false}
-                onEdit={handleDataSetEditor}
-                onAdd={handleDataSetEditor}
-                onDelete={handleDataSetEditor}
-                collapsed={1}
-            />
-        </fieldset>
+                {p.t('format_preview')}
+            </AccordionSummary>
+            <AccordionDetails>
+                {showDatasetsSelector ? (
+                    <Select
+                        style={{
+                            width: '100%',
+                            marginBottom: '12px',
+                        }}
+                        value={datasetName}
+                        onChange={handleDataSetChange}
+                    >
+                        {datasets.map((set) => (
+                            <MenuItem key={set.name} value={set.name}>
+                                {set.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                ) : null}
+                <fieldset
+                    style={{
+                        borderRadius: formatAdminStyle.fieldset.borderRadius,
+                    }}
+                >
+                    <PreviewComponent {...args} dataset={dataset} />
+                </fieldset>
+                <ReactJson
+                    style={{
+                        borderRadius: '5px',
+                        padding: '8px',
+                        marginTop: '12px',
+                    }}
+                    src={dataset}
+                    theme="monokai"
+                    enableClipboard={false}
+                    onEdit={handleDataSetEditor}
+                    onAdd={handleDataSetEditor}
+                    onDelete={handleDataSetEditor}
+                    collapsed={1}
+                />
+            </AccordionDetails>
+        </Accordion>
     );
 };
 
 FormatFieldSetPreview.defaultProps = {
     showDatasetsSelector: true,
     datasets: AllDataSets,
+    defaultExpanded: false,
 };
 
 FormatFieldSetPreview.propTypes = {
     p: polyglotPropTypes.isRequired,
     args: PropTypes.any.isRequired,
     showDatasetsSelector: PropTypes.bool,
+    defaultExpanded: PropTypes.bool,
     datasets: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string.isRequired,

@@ -9,6 +9,7 @@ import { resolvers } from './index';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     typid: 1,
@@ -58,23 +59,25 @@ class IdentifierBadgeAdmin extends Component {
             </MenuItem>
         ));
         return (
-            <FormatDefaultParamsFieldSet>
-                <TextField
-                    fullWidth
-                    select
-                    label={polyglot.t('list_format_select_identifier')}
-                    value={typid}
-                    onChange={(e) => this.handleTypid(e.target.value)}
-                >
-                    {items}
-                </TextField>
-                <ColorPickerParamsAdmin
-                    colors={this.state.colors || defaultArgs.colors}
-                    onChange={this.handleColors}
-                    polyglot={polyglot}
-                    monochromatic={true}
-                />
-            </FormatDefaultParamsFieldSet>
+            <FormatGroupedFieldSet>
+                <FormatDefaultParamsFieldSet defaultExpanded>
+                    <TextField
+                        fullWidth
+                        select
+                        label={polyglot.t('list_format_select_identifier')}
+                        value={typid}
+                        onChange={(e) => this.handleTypid(e.target.value)}
+                    >
+                        {items}
+                    </TextField>
+                    <ColorPickerParamsAdmin
+                        colors={this.state.colors || defaultArgs.colors}
+                        onChange={this.handleColors}
+                        polyglot={polyglot}
+                        monochromatic={true}
+                    />
+                </FormatDefaultParamsFieldSet>
+            </FormatGroupedFieldSet>
         );
     }
 }

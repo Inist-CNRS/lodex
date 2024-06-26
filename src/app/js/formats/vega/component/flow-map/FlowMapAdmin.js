@@ -20,6 +20,7 @@ import {
 import { MapSourceTargetWeight } from '../../../utils/dataSet';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import { ASPECT_RATIO_16_9 } from '../../../utils/aspectRatio';
+import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -141,12 +142,7 @@ const FlowMapAdmin = (props) => {
     };
 
     return (
-        <Box
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            gap={2}
-        >
+        <FormatGroupedFieldSet>
             <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
@@ -158,7 +154,7 @@ const FlowMapAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            <FormatChartParamsFieldSet>
+            <FormatChartParamsFieldSet defaultExpanded>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -212,7 +208,7 @@ const FlowMapAdmin = (props) => {
                 datasets={[MapSourceTargetWeight]}
                 showDatasetsSelector={false}
             />
-        </Box>
+        </FormatGroupedFieldSet>
     );
 };
 

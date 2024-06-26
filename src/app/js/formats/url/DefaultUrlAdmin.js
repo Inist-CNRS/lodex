@@ -4,6 +4,7 @@ import translate from 'redux-polyglot/translate';
 import { MenuItem, TextField } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FormatDefaultParamsFieldSet } from '../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     type: 'value',
@@ -41,39 +42,41 @@ class DefaultUrlAdmin extends Component {
         } = this.props;
 
         return (
-            <FormatDefaultParamsFieldSet>
-                <TextField
-                    fullWidth
-                    select
-                    label={polyglot.t('label_format_select_type')}
-                    onChange={this.handleType}
-                    value={type}
-                >
-                    <MenuItem value="value">
-                        {polyglot.t('label_format_column')}
-                    </MenuItem>
-                    <MenuItem value="text">
-                        {polyglot.t('label_format_custom')}
-                    </MenuItem>
-                    <MenuItem value="column">
-                        {polyglot.t('label_format_another_column')}
-                    </MenuItem>
-                </TextField>
-                {type !== 'value' && (
+            <FormatGroupedFieldSet>
+                <FormatDefaultParamsFieldSet defaultExpanded>
                     <TextField
                         fullWidth
-                        label={
-                            type === 'text'
-                                ? polyglot.t('label_format_custom_value')
-                                : polyglot.t(
-                                      'label_format_another_column_value',
-                                  )
-                        }
-                        onChange={this.handleValue}
-                        value={value}
-                    />
-                )}
-            </FormatDefaultParamsFieldSet>
+                        select
+                        label={polyglot.t('label_format_select_type')}
+                        onChange={this.handleType}
+                        value={type}
+                    >
+                        <MenuItem value="value">
+                            {polyglot.t('label_format_column')}
+                        </MenuItem>
+                        <MenuItem value="text">
+                            {polyglot.t('label_format_custom')}
+                        </MenuItem>
+                        <MenuItem value="column">
+                            {polyglot.t('label_format_another_column')}
+                        </MenuItem>
+                    </TextField>
+                    {type !== 'value' && (
+                        <TextField
+                            fullWidth
+                            label={
+                                type === 'text'
+                                    ? polyglot.t('label_format_custom_value')
+                                    : polyglot.t(
+                                          'label_format_another_column_value',
+                                      )
+                            }
+                            onChange={this.handleValue}
+                            value={value}
+                        />
+                    )}
+                </FormatDefaultParamsFieldSet>
+            </FormatGroupedFieldSet>
         );
     }
 }

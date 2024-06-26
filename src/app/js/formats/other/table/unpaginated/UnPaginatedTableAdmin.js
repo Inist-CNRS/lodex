@@ -41,7 +41,7 @@ class UnPaginatedTableAdmin extends AbstractTableAdmin {
                         showOrderBy={true}
                     />
                 </FormatDataParamsFieldSet>
-                <FormatDefaultParamsFieldSet>
+                <FormatDefaultParamsFieldSet defaultExpanded>
                     <TableColumnsParameters
                         onChange={this.handleColumnParameter}
                         polyglot={polyglot}

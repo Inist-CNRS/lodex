@@ -125,7 +125,7 @@ class HierarchyAdmin extends Component {
                         showOrderBy={showOrderBy}
                     />
                 </FormatDataParamsFieldSet>
-                <FormatChartParamsFieldSet>
+                <FormatChartParamsFieldSet defaultExpanded>
                     <ColorPickerParamsAdmin
                         colors={this.state.colors || defaultArgs.colors}
                         onChange={this.handleColors}

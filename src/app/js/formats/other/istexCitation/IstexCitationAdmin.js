@@ -10,6 +10,7 @@ import {
     CUSTOM_ISTEX_QUERY,
 } from '../istexSummary/constants';
 import { FormatDataParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     searchedField: CUSTOM_ISTEX_QUERY,
@@ -44,28 +45,30 @@ export class IstexCitationAdmin extends Component {
         } = this.props;
 
         return (
-            <FormatDataParamsFieldSet>
-                <TextField
-                    fullWidth
-                    select
-                    label={polyglot.t('searched_field')}
-                    value={searchedField}
-                    onChange={this.handleSearchedField}
-                >
-                    {SEARCHED_FIELD_VALUES.map((value) => (
-                        <MenuItem key={value} value={value}>
-                            {polyglot.t(value)}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField
-                    className="document_sort_by"
-                    label={polyglot.t('document_sort_by')}
-                    onChange={this.handleDocumentSortBy}
-                    value={documentSortBy}
-                    fullWidth
-                />
-            </FormatDataParamsFieldSet>
+            <FormatGroupedFieldSet>
+                <FormatDataParamsFieldSet defaultExpanded>
+                    <TextField
+                        fullWidth
+                        select
+                        label={polyglot.t('searched_field')}
+                        value={searchedField}
+                        onChange={this.handleSearchedField}
+                    >
+                        {SEARCHED_FIELD_VALUES.map((value) => (
+                            <MenuItem key={value} value={value}>
+                                {polyglot.t(value)}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        className="document_sort_by"
+                        label={polyglot.t('document_sort_by')}
+                        onChange={this.handleDocumentSortBy}
+                        value={documentSortBy}
+                        fullWidth
+                    />
+                </FormatDataParamsFieldSet>
+            </FormatGroupedFieldSet>
         );
     }
 }

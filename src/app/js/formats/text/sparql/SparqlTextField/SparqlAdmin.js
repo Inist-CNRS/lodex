@@ -232,7 +232,7 @@ class SparqlTextFieldAdmin extends Component {
                         fullWidth
                     />
                 </FormatDataParamsFieldSet>
-                <FormatDefaultParamsFieldSet>
+                <FormatDefaultParamsFieldSet defaultExpanded>
                     <Box
                         display="flex"
                         alignItems="center"
