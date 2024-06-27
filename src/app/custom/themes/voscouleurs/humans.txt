@@ -1,0 +1,11 @@
+Design:
+  - Nicolas, CNRS
+
+Development:
+ - Thiery, Marmelab
+ - Gildas, Marmelab
+ - Kévin, Marmelab
+ - Adrien, Marmelab
+ - Matthieu, Marmelab
+ - François, CNRS
+ - and guests (thanks to all)

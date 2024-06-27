@@ -1,0 +1,213 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+/* theme lodex 'voscouleurs' */
+/* modifiable depuis votre lodex/admin/configuration */
+/* author : helene creusot */
+/* developpeur : pierre marcolet */
+/* pour nos partenaires */
+/* CNRS Inist - juin 2024 */
+
+/*config*/
+/*"color": {
+--bgBody: <%= custom.color.bgBody %>;
+--bgHeader: <%= custom.color.bgHeader %>;
+--headerTitle: <%= custom.color.headerTitle %>;
+--bgFacet: <%= custom.color.bgFacet %>;
+--titles: <%= custom.color.titles %>;
+--titleGraph: <%= custom.color.titleGraph %>;
+--text: <%= custom.color.text %>;
+--icon: <%= custom.color.icon %>;
+--iconHover: <%= custom.color.iconHover %>;
+--button: <%= custom.color.button %>;
+--buttonHover: <%= custom.color.buttonHover %>;
+--textContrast: <%= custom.color.textContrast %>;
+--font-title: <%= custom.font.title %>;
+--font-text: <%= custom.font.text %>;
+*/
+:root {
+    /*search-results : couleur resultat visited*/
+    --secondary-main: var(--neutral-dark-secondary) !important;
+}
+/*bgBody + text*/
+body {
+    background-color: var(--bgBody);
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    color: var(--text) !important;
+}
+/*bgHeader + --headerTitle*/
+header {
+    background: var(--bgHeader);
+}
+header #banner {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 5%;
+    height: max-content;
+    margin: 10px auto;
+}
+#banner h1,
+#banner p {
+    color: var(--headerTitle) !important;
+}
+header a.logo,
+header a.logo img {
+    flex: 1;
+}
+header #banner :last-child {
+    flex: 3;
+    text-align: center;
+}
+/*summary*/
+#banner p {
+    font-weight: 500;
+}
+/*bgContent*/
+#root {
+    box-sizing: content-box;
+    padding: 0 50px;
+    background-color: var(--bgContent);
+}
+/*bgFacet : facet search et graph*/
+.search-content ul.search-facets,
+.graph-facets {
+    background-color: var(--bgFacet) !important;
+}
+/*logo lodex*/
+nav.nav-bar-menu div.nav-bar-container > img {
+    display: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: var(--font-title) !important;
+}
+/*titles*/
+h1,
+h2 {
+    color: var(--titles) !important;
+}
+/*titleGraph*/
+.property.format_fieldClone .property_label,
+.graph-results .MuiCardHeader-content {
+    color: var(--titleGraph) !important;
+}
+/*link in text*/
+a {
+    color: var(--text);
+}
+a:hover {
+    color: var(--titles);
+    text-decoration: none;
+}
+/*icon : a+svg*/
+a.nav-item,
+a.nav-item svg,
+a.graph-link,
+a.graph-link svg,
+.MuiIconButton-root,
+.MuiIconButton-root svg {
+    color: var(--icon) !important;
+    fill: var(--icon) !important;
+}
+/*iconHover*/
+a.nav-item:hover,
+a.nav-item:hover svg,
+a.graph-link:hover,
+a.graph-link:hover svg,
+.MuiIconButton-root:hover,
+.MuiIconButton-root:hover svg,
+.MuiCheckbox-colorPrimary.Mui-checked svg.MuiSvgIcon-root,
+.MuiCheckbox-colorPrimary.MuiCheckbox-indeterminate svg.MuiSvgIcon-root {
+    color: var(--iconHover) !important;
+    fill: var(--iconHover) !important;
+}
+/*graph-link*/
+a.graph-link.graph-summary-link {
+    background-color: var(--grey-100) !important;
+}
+/*graph-link*/
+a.graph-link.graph-summary-link:hover {
+    background-color: var(--bgContrast) !important;
+}
+/*button primaire*/
+.MuiButton-containedPrimary,
+.MuiButton-containedPrimary svg {
+    background-color: var(--icon) !important;
+    color: var(--textContrast) !important;
+    fill: var(--textContrast) !important;
+}
+.MuiButton-containedPrimary:hover,
+.MuiButton-containedPrimary:hover svg {
+    background-color: var(--buttonHover) !important;
+    color: var(--textContrast) !important;
+    fill: var(--textContrast) !important;
+}
+/*button secondaire*/
+.MuiButton-textPrimary,
+.MuiButton-textPrimary svg {
+    color: var(--icon) !important;
+    fill: var(--icon) !important;
+}
+.MuiButton-textPrimary:hover,
+.MuiButton-textPrimary:hover svg {
+    background-color: var(--bgContrast) !important;
+}
+/*background search content*/
+div._1eoh2kv.search-content {
+    background-color: var(--bgContent);
+}
+/*fieldset active*/
+fieldset.MuiOutlinedInput-notchedOutline {
+    border-color: var(--button) !important;
+}
+.MuiListItemText-secondary {
+    background-color: #fff;
+}
+
+/*structure lodex*/
+.container,
+.container-fluid {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+@media (min-width: 576px) {
+    .container {
+        max-width: 540px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+    }
+}
