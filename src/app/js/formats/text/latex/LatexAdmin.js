@@ -4,6 +4,7 @@ import { TextField } from '@mui/material';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     delimiter: '',
@@ -35,15 +36,17 @@ class LatexAdmin extends Component {
         } = this.props;
 
         return (
-            <FormatDefaultParamsFieldSet>
-                <TextField
-                    label={polyglot.t('choose_delimiter')}
-                    type="string"
-                    onChange={this.handleDelimiter}
-                    value={delimiter}
-                    fullWidth
-                />
-            </FormatDefaultParamsFieldSet>
+            <FormatGroupedFieldSet>
+                <FormatDefaultParamsFieldSet defaultExpanded>
+                    <TextField
+                        label={polyglot.t('choose_delimiter')}
+                        type="string"
+                        onChange={this.handleDelimiter}
+                        value={delimiter}
+                        fullWidth
+                    />
+                </FormatDefaultParamsFieldSet>
+            </FormatGroupedFieldSet>
         );
     }
 }

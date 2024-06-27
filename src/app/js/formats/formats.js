@@ -14,6 +14,7 @@ import html from './text/html';
 import image from './url/image';
 import pdf from './url/pdf';
 import latex from './text/latex';
+import ejs from './text/ejs';
 import istex from './other/istex';
 import link from './url/link';
 import linkImage from './url/link-image';
@@ -143,6 +144,13 @@ export const FORMATS_CATALOG = [
         description: 'formatLatexDescription',
         componentName: 'latex',
         component: latex,
+        type: 'text',
+    },
+    {
+        name: 'formatEJS',
+        description: 'formatEJSDescription',
+        componentName: 'ejs',
+        component: ejs,
         type: 'text',
     },
     {

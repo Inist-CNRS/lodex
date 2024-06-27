@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { FormatDefaultParamsFieldSet } from '../../../utils/components/field-set/FormatFieldSets';
 import { MenuItem, TextField } from '@mui/material';
+import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     type: 'text',
@@ -29,30 +30,34 @@ const MarkdownModalAdmin = (props) => {
     };
 
     return (
-        <FormatDefaultParamsFieldSet>
-            <TextField
-                fullWidth
-                select
-                label={p.t('label_format_select_type')}
-                onChange={handleType}
-                value={type}
-            >
-                <MenuItem value="text">{p.t('label_format_custom')}</MenuItem>
-                <MenuItem value="column">
-                    {p.t('label_format_another_column')}
-                </MenuItem>
-            </TextField>
-            <TextField
-                fullWidth
-                label={
-                    type === 'text'
-                        ? p.t('label_format_custom_value')
-                        : p.t('label_format_another_column_value')
-                }
-                onChange={handleLabel}
-                value={label}
-            />
-        </FormatDefaultParamsFieldSet>
+        <FormatGroupedFieldSet>
+            <FormatDefaultParamsFieldSet defaultExpanded>
+                <TextField
+                    fullWidth
+                    select
+                    label={p.t('label_format_select_type')}
+                    onChange={handleType}
+                    value={type}
+                >
+                    <MenuItem value="text">
+                        {p.t('label_format_custom')}
+                    </MenuItem>
+                    <MenuItem value="column">
+                        {p.t('label_format_another_column')}
+                    </MenuItem>
+                </TextField>
+                <TextField
+                    fullWidth
+                    label={
+                        type === 'text'
+                            ? p.t('label_format_custom_value')
+                            : p.t('label_format_another_column_value')
+                    }
+                    onChange={handleLabel}
+                    value={label}
+                />
+            </FormatDefaultParamsFieldSet>
+        </FormatGroupedFieldSet>
     );
 };
 

@@ -24,10 +24,11 @@ import {
     FormatDataParamsFieldSet,
 } from '../../../utils/components/field-set/FormatFieldSets';
 import { MapFranceIdValue, MapIdValue } from '../../../utils/dataSet';
-import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
+import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import { CartographyAdminView } from './CartographyView';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import { ASPECT_RATIO_16_9 } from '../../../utils/aspectRatio';
+import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -140,12 +141,7 @@ const CartographyAdmin = (props) => {
     };
 
     return (
-        <Box
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            gap={2}
-        >
+        <FormatGroupedFieldSet>
             <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
@@ -157,7 +153,7 @@ const CartographyAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            <FormatChartParamsFieldSet>
+            <FormatChartParamsFieldSet defaultExpanded>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -225,7 +221,7 @@ const CartographyAdmin = (props) => {
                         : [MapIdValue, MapFranceIdValue]
                 }
             />
-        </Box>
+        </FormatGroupedFieldSet>
     );
 };
 

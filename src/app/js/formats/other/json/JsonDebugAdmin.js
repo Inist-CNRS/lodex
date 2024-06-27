@@ -45,7 +45,7 @@ const JsonDebugAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            <FormatDefaultParamsFieldSet>
+            <FormatDefaultParamsFieldSet defaultExpanded>
                 <FormGroup>
                     <FormControlLabel
                         control={

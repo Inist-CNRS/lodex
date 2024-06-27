@@ -30,10 +30,11 @@ import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
 } from '../../../utils/components/field-set/FormatFieldSets';
-import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
+import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import { StandardIdValue } from '../../../utils/dataSet';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import { ASPECT_RATIO_16_6 } from '../../../utils/aspectRatio';
+import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -197,12 +198,7 @@ const BarChartAdmin = (props) => {
     };
 
     return (
-        <Box
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            gap={2}
-        >
+        <FormatGroupedFieldSet>
             <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
@@ -214,7 +210,7 @@ const BarChartAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            <FormatChartParamsFieldSet>
+            <FormatChartParamsFieldSet defaultExpanded>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -340,7 +336,7 @@ const BarChartAdmin = (props) => {
                 datasets={[StandardIdValue]}
                 showDatasetsSelector={false}
             />
-        </Box>
+        </FormatGroupedFieldSet>
     );
 };
 

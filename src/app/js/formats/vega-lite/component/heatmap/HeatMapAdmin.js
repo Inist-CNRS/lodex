@@ -23,10 +23,11 @@ import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
 } from '../../../utils/components/field-set/FormatFieldSets';
-import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
+import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import { StandardSourceTargetWeight } from '../../../utils/dataSet';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import { ASPECT_RATIO_1_1 } from '../../../utils/aspectRatio';
+import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -147,12 +148,7 @@ const HeatMapAdmin = (props) => {
     };
 
     return (
-        <Box
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            gap={2}
-        >
+        <FormatGroupedFieldSet>
             <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
@@ -164,7 +160,7 @@ const HeatMapAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            <FormatChartParamsFieldSet>
+            <FormatChartParamsFieldSet defaultExpanded>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -223,7 +219,7 @@ const HeatMapAdmin = (props) => {
                 datasets={[StandardSourceTargetWeight]}
                 showDatasetsSelector={false}
             />
-        </Box>
+        </FormatGroupedFieldSet>
     );
 };
 

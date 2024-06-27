@@ -48,12 +48,12 @@ const styles = {
             display: 'flex',
             flexDirection: 'column',
             width: {
-                xs: 'calc(100% - 2%)',
+                xs: 'calc(100% - 2vw)',
                 sm:
                     width === '50'
-                        ? 'calc(100% - 2%)'
-                        : `calc(${width || 100}% - 2%)`,
-                md: `calc(${width || 100}% - 2%)`,
+                        ? 'calc(100% - 2vw)'
+                        : `calc(${width || 100}% - 2vw)`,
+                md: `calc(${width || 100}% - 2vw)`,
             },
             ...style,
         }),

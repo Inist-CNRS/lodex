@@ -4,8 +4,10 @@ import getLogger from '../services/logger';
 import defaultMuiTheme from '../../app/custom/themes/default/defaultTheme';
 import deepClone from 'lodash/cloneDeep';
 
+import fs from 'fs/promises';
+
 // --- Global variable for the Theme system
-export const THEMES_VERSION = '5';
+export const THEMES_VERSION = '6';
 export const THEMES_FOLDER = '../../app/custom/themes';
 
 // --- Global function for the Theme system
@@ -48,6 +50,7 @@ const logger = getLogger('system');
  * }} description - Short description about the theme
  * @property {string} index - Html index file location
  * @property {MuiTheme} muiTheme - Mui theme
+ * @property {boolean} hasIndex - indicate if the theme have an index file
  * @property {object} customTemplateVariables - Default value of custom variables use in the ejs template
  */
 
@@ -132,27 +135,43 @@ const init = async () => {
                 );
             }
 
+            let hasIndex = false;
             let indexLocation = getThemeFile('default', 'index.ejs');
             if (themeConfig?.configuration?.files?.index) {
-                indexLocation = getThemeFile(
+                const unVerifiedIndexLocation = getThemeFile(
                     theme,
                     themeConfig.configuration.files.index,
                 );
+
+                try {
+                    await fs.access(unVerifiedIndexLocation, fs.constants.R_OK);
+                    indexLocation = unVerifiedIndexLocation;
+                    hasIndex = true;
+                } catch (_) {
+                    logger.warn(
+                        `The declared index file from ${theme} do not exists`,
+                    );
+                }
             }
 
             let muiTheme = deepClone(defaultMuiTheme);
             if (themeConfig?.configuration?.files?.palette) {
-                Object.assign(
-                    muiTheme,
-                    (
-                        await import(
-                            getThemeFile(
-                                theme,
-                                themeConfig.configuration.files.palette,
-                            )
-                        )
-                    ).default,
+                const unVerifiedMuiTheme = getThemeFile(
+                    theme,
+                    themeConfig.configuration.files.palette,
                 );
+
+                try {
+                    await fs.access(unVerifiedMuiTheme, fs.constants.R_OK);
+                    Object.assign(
+                        muiTheme,
+                        (await import(unVerifiedMuiTheme)).default,
+                    );
+                } catch (_) {
+                    logger.warn(
+                        `The declared palette file from ${theme} do not exists`,
+                    );
+                }
             }
 
             let customTemplateVariables = {};
@@ -166,6 +185,7 @@ const init = async () => {
                 index: indexLocation,
                 muiTheme,
                 customTemplateVariables,
+                hasIndex,
             });
         } catch (e) {
             logger.error(`unable to load ${theme} theme!`);

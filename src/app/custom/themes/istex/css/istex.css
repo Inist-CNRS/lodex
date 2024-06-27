@@ -55,7 +55,6 @@ html {
 body {
     font-family: var(--font-texte);
     font-size: 1.4rem;
-    line-height: 1.7rem;
     color: var(--text-main);
 }
 :root {
@@ -255,7 +254,6 @@ footer.site-footer::after {
 .body {
     font-family: var(--font-texte) !important;
     font-size: 1.4rem;
-    line-height: 1.7rem;
     color: var(--text-main);
 }
 /********************/

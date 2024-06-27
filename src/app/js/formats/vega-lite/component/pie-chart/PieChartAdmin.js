@@ -21,11 +21,12 @@ import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
 } from '../../../utils/components/field-set/FormatFieldSets';
-import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
+import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import { PieChartAdminView } from './PieChartView';
 import { StandardIdValue } from '../../../utils/dataSet';
 import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
+import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -135,12 +136,7 @@ const PieChartAdmin = (props) => {
     };
 
     return (
-        <Box
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            gap={2}
-        >
+        <FormatGroupedFieldSet>
             <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
@@ -152,7 +148,7 @@ const PieChartAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            <FormatChartParamsFieldSet>
+            <FormatChartParamsFieldSet defaultExpanded>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -209,7 +205,7 @@ const PieChartAdmin = (props) => {
                 datasets={[StandardIdValue]}
                 showDatasetsSelector={false}
             />
-        </Box>
+        </FormatGroupedFieldSet>
     );
 };
 

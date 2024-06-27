@@ -60,7 +60,7 @@ const ClusteredChartAdmin = (props) => {
                     showOrderBy
                 />
             </FormatDataParamsFieldSet>
-            <FormatChartParamsFieldSet>
+            <FormatChartParamsFieldSet defaultExpanded>
                 <FormControlLabel
                     control={
                         <Checkbox

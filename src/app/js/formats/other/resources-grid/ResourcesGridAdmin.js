@@ -6,6 +6,7 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../utils/updateAdminArgs';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     allowToLoadMore: true,
@@ -100,71 +101,75 @@ class RessourcesGridAdmin extends Component {
         } = this.props.args;
 
         return (
-            <FormatDefaultParamsFieldSet>
-                <TextField
-                    fullWidth
-                    select
-                    label={polyglot.t('list_format_select_image_width')}
-                    onChange={(e) => this.handleWidth(e.target.value)}
-                    value={spaceWidth}
-                >
-                    <MenuItem value="10%">{polyglot.t('ten_percent')}</MenuItem>
-                    <MenuItem value="20%">
-                        {polyglot.t('twenty_percent')}
-                    </MenuItem>
-                    <MenuItem value="30%">
-                        {polyglot.t('thirty_percent')}
-                    </MenuItem>
-                    <MenuItem value="50%">
-                        {polyglot.t('fifty_percent')}
-                    </MenuItem>
-                    <MenuItem value="80%">
-                        {polyglot.t('eighty_percent')}
-                    </MenuItem>
-                    <MenuItem value="100%">
-                        {polyglot.t('hundred_percent')}
-                    </MenuItem>
-                </TextField>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            onChange={this.toggleAllowToLoadMore}
-                            checked={allowToLoadMore}
-                        />
-                    }
-                    label={polyglot.t('allow_to_load_more')}
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            onChange={this.toggleOpenInNewTab}
-                            checked={openInNewTab}
-                        />
-                    }
-                    label={polyglot.t('open_in_new_tab')}
-                />
-                <TextField
-                    label={polyglot.t('number_of_char_title')}
-                    onChange={this.handleTitleSize}
-                    value={titleSize}
-                    type="number"
-                    fullWidth
-                />
-                <TextField
-                    label={polyglot.t('number_of_char_summary')}
-                    onChange={this.handleSummarySize}
-                    value={summarySize}
-                    type="number"
-                    fullWidth
-                />
-                <TextField
-                    label={polyglot.t('items_per_page')}
-                    onChange={this.handlePageSize}
-                    value={pageSize}
-                    type="number"
-                    fullWidth
-                />
-            </FormatDefaultParamsFieldSet>
+            <FormatGroupedFieldSet>
+                <FormatDefaultParamsFieldSet defaultExpanded>
+                    <TextField
+                        fullWidth
+                        select
+                        label={polyglot.t('list_format_select_image_width')}
+                        onChange={(e) => this.handleWidth(e.target.value)}
+                        value={spaceWidth}
+                    >
+                        <MenuItem value="10%">
+                            {polyglot.t('ten_percent')}
+                        </MenuItem>
+                        <MenuItem value="20%">
+                            {polyglot.t('twenty_percent')}
+                        </MenuItem>
+                        <MenuItem value="30%">
+                            {polyglot.t('thirty_percent')}
+                        </MenuItem>
+                        <MenuItem value="50%">
+                            {polyglot.t('fifty_percent')}
+                        </MenuItem>
+                        <MenuItem value="80%">
+                            {polyglot.t('eighty_percent')}
+                        </MenuItem>
+                        <MenuItem value="100%">
+                            {polyglot.t('hundred_percent')}
+                        </MenuItem>
+                    </TextField>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={this.toggleAllowToLoadMore}
+                                checked={allowToLoadMore}
+                            />
+                        }
+                        label={polyglot.t('allow_to_load_more')}
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={this.toggleOpenInNewTab}
+                                checked={openInNewTab}
+                            />
+                        }
+                        label={polyglot.t('open_in_new_tab')}
+                    />
+                    <TextField
+                        label={polyglot.t('number_of_char_title')}
+                        onChange={this.handleTitleSize}
+                        value={titleSize}
+                        type="number"
+                        fullWidth
+                    />
+                    <TextField
+                        label={polyglot.t('number_of_char_summary')}
+                        onChange={this.handleSummarySize}
+                        value={summarySize}
+                        type="number"
+                        fullWidth
+                    />
+                    <TextField
+                        label={polyglot.t('items_per_page')}
+                        onChange={this.handlePageSize}
+                        value={pageSize}
+                        type="number"
+                        fullWidth
+                    />
+                </FormatDefaultParamsFieldSet>
+            </FormatGroupedFieldSet>
         );
     }
 }

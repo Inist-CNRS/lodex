@@ -11,7 +11,7 @@ import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSe
 import { Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import FlowMap from '../../models/FlowMap';
 import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
-import VegaFieldPreview from '../../../utils/components/admin/VegaFieldPreview';
+import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import { FlowMapAdminView } from './FlowMapView';
 import {
     FormatChartParamsFieldSet,
@@ -20,6 +20,7 @@ import {
 import { MapSourceTargetWeight } from '../../../utils/dataSet';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import { ASPECT_RATIO_16_9 } from '../../../utils/aspectRatio';
+import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -141,12 +142,7 @@ const FlowMapAdmin = (props) => {
     };
 
     return (
-        <Box
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            gap={2}
-        >
+        <FormatGroupedFieldSet>
             <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
@@ -158,7 +154,7 @@ const FlowMapAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            <FormatChartParamsFieldSet>
+            <FormatChartParamsFieldSet defaultExpanded>
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -212,7 +208,7 @@ const FlowMapAdmin = (props) => {
                 datasets={[MapSourceTargetWeight]}
                 showDatasetsSelector={false}
             />
-        </Box>
+        </FormatGroupedFieldSet>
     );
 };
 

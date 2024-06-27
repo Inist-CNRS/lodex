@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box } from '@mui/material';
 import PropTypes from 'prop-types';
 
 /**
@@ -8,16 +7,7 @@ import PropTypes from 'prop-types';
  * @returns {JSX.Element}
  */
 const FormatGroupedFieldSet = ({ children }) => {
-    return (
-        <Box
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            gap={2}
-        >
-            {children}
-        </Box>
-    );
+    return <div>{children}</div>;
 };
 
 FormatGroupedFieldSet.propTypes = {

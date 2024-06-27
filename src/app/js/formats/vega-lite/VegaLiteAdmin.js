@@ -11,10 +11,11 @@ import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
 } from '../utils/components/field-set/FormatFieldSets';
-import VegaFieldPreview from '../utils/components/admin/VegaFieldPreview';
+import VegaFieldPreview from '../utils/components/field-set/FormatFieldSetPreview';
 import { VegaLiteAdminView } from './VegaLiteView';
 import { ASPECT_RATIO_16_9 } from '../utils/aspectRatio';
 import AspectRatioSelector from '../utils/components/admin/AspectRatioSelector';
+import FormatGroupedFieldSet from '../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {
@@ -62,12 +63,7 @@ const VegaLiteAdmin = (props) => {
     };
 
     return (
-        <Box
-            display="flex"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            gap={2}
-        >
+        <FormatGroupedFieldSet>
             <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
@@ -79,7 +75,7 @@ const VegaLiteAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            <FormatChartParamsFieldSet>
+            <FormatChartParamsFieldSet defaultExpanded>
                 <VegaAdvancedMode
                     value={formattedSpecTemplate}
                     onChange={handleSpecTemplate}
@@ -93,7 +89,7 @@ const VegaLiteAdmin = (props) => {
                 args={args}
                 PreviewComponent={VegaLiteAdminView}
             />
-        </Box>
+        </FormatGroupedFieldSet>
     );
 };
 

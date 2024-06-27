@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { MenuItem, TextField } from '@mui/material';
 import 'ace-builds/src-noconflict/mode-ini';
 import 'ace-builds/src-noconflict/mode-json';
+import 'ace-builds/src-noconflict/mode-ejs';
 import 'ace-builds/src-noconflict/theme-monokai';
 
 const FormSourceCodeField = ({

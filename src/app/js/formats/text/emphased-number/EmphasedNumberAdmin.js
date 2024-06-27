@@ -83,7 +83,7 @@ class EmphasedNumberAdmin extends Component {
                         showOrderBy={false}
                     />
                 </FormatDataParamsFieldSet>
-                <FormatDefaultParamsFieldSet>
+                <FormatDefaultParamsFieldSet defaultExpanded>
                     <TextField
                         fullWidth
                         select

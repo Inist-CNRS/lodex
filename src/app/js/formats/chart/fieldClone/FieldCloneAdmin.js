@@ -18,6 +18,7 @@ import {
     SCOPE_COLLECTION,
 } from '../../../../../common/scope';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     value: '',
@@ -35,23 +36,25 @@ const FieldCloneAdmin = ({ args, onChange, p: polyglot, fields }) => {
     );
 
     return (
-        <FormatDefaultParamsFieldSet>
-            <TextField
-                fullWidth
-                select
-                onChange={handleValue}
-                value={args.value}
-                label={polyglot.t('fieldclone_format_value')}
-            >
-                {filteredFields.map((field) => {
-                    return (
-                        <MenuItem value={field.name} key={field.name}>
-                            {field.name} - {field.label}
-                        </MenuItem>
-                    );
-                })}
-            </TextField>
-        </FormatDefaultParamsFieldSet>
+        <FormatGroupedFieldSet>
+            <FormatDefaultParamsFieldSet defaultExpanded>
+                <TextField
+                    fullWidth
+                    select
+                    onChange={handleValue}
+                    value={args.value}
+                    label={polyglot.t('fieldclone_format_value')}
+                >
+                    {filteredFields.map((field) => {
+                        return (
+                            <MenuItem value={field.name} key={field.name}>
+                                {field.name} - {field.label}
+                            </MenuItem>
+                        );
+                    })}
+                </TextField>
+            </FormatDefaultParamsFieldSet>
+        </FormatGroupedFieldSet>
     );
 };
 
