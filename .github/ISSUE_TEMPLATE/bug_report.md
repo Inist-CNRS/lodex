@@ -11,7 +11,7 @@ assignees: ''
 Une description claire et concise de ce qu'est le bogue.
 
 **Reproduire**
-Etapes pour reproduire le comportement :
+Étapes pour reproduire le comportement :
 
 1. Allez à '...'
 2. Cliquez sur '....'
@@ -27,7 +27,7 @@ Le cas échéant, ajoutez des captures d'écran pour expliquer votre problème.
 **Environnement (veuillez compléter les informations suivantes) :**
 
 - Navigateur [par ex. chrome, safari]
-- Version du navigateur (optionel) [par ex. 100]
+- Version du navigateur (optionnel) [par ex. 100]
 - Version de LODEX [ex. 14.0.55]
 
 **Contexte supplémentaire**
