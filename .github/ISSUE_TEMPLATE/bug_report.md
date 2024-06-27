@@ -23,10 +23,10 @@ Une description claire et concise de ce que vous attendez.
 **Captures d'écran**
 Le cas échéant, ajoutez des captures d'écran pour expliquer votre problème.
 
-**Environement (veuillez compléter les informations suivantes) :**
+**Environnement (veuillez compléter les informations suivantes) :**
  - Système d'exploitation : [ex : Windows]
  - Navigateur [par ex. chrome, safari]
- - Version [ex. 14.0.55]
+ - Version de LODEX [ex. 14.0.55]
 
 **Contexte supplémentaire**
 Ajoutez ici tout autre contexte relatif au problème.
