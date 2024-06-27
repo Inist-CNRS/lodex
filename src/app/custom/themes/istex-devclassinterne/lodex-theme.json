@@ -2,12 +2,12 @@
     "version": "6",
     "licence": "All Right Reserved",
     "name": {
-        "fr": "ISTEX Data&Lodex",
-        "en": "ISTEX Data&Lodex"
+        "fr": "ISTEX dev classinterne",
+        "en": "ISTEX istex-dev internalclass"
     },
     "description": {
-        "fr": "Thème ISTEX Data&Lodex (restreint) non maintenu",
-        "en": "ISTEX  Data&Lodex theme (restricted) obsoleted"
+        "fr": "Thème ISTEX compatible juin2024 data et istex lodex (restreint) non maintenu",
+        "en": "ISTEX theme june2024 for Data and Lodex  (restricted) obsoleted"
     },
     "configuration": {
         "files": {
