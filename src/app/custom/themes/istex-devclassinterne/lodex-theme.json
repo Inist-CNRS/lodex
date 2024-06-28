@@ -1,0 +1,24 @@
+{
+    "version": "6",
+    "licence": "All Right Reserved",
+    "name": {
+        "fr": "ISTEX dev classinterne",
+        "en": "ISTEX istex-dev internalclass"
+    },
+    "description": {
+        "fr": "Thème ISTEX compatible juin2024 data et istex lodex (restreint) non maintenu",
+        "en": "ISTEX theme june2024 for Data and Lodex  (restricted) obsoleted"
+    },
+    "configuration": {
+        "files": {
+            "index": "index.ejs",
+            "palette": "istexDataLodexTheme.js"
+        },
+        "variables": {
+            "host": "/",
+            "title": "DATA",
+            "summary": "Catalogues de données, de ressources et d'outils.",
+            "matomoID": "39"
+        }
+    }
+}
