@@ -1,3 +1,4 @@
+@import 'istex-internalclass.css';
 @font-face {
     font-family: 'Montserrat';
     src:
@@ -260,16 +261,14 @@ footer.site-footer::after {
 /********************/
 .breadcrumb-root,
 nav.nav-bar-menu div.nav-bar-container,
-/*propulse lodex*/
-.header-dataset-section > div:last-child,
 /*home page istex*/
-.dataset-characteristics > div,
+.dataset-characteristics > div > div.property > div,
 .graph-container,
 .search-container,
 .resource {
     max-width: 1200px;
     min-width: 360px;
-    padding: 0 10px;
+    padding: 0 10px !important;
     margin: 0 auto;
 }
 /****************/
@@ -310,12 +309,13 @@ nav.nav-bar-menu div.nav-bar-container > img {
 .body h5,
 .body h6 {
     font-family: var(--font-titre) !important;
+    margin-block-start: 0;
     color: var(--text-main);
     text-align: left !important;
 }
 .body h1 {
     font-size: 4.8rem;
-    line-height: 4rem;
+    line-height: 4.8rem;
     font-weight: 700;
 }
 .body h2 {
@@ -360,16 +360,16 @@ a img {
     color: var(--primary-main);
     cursor: pointer;
 }
-.body a:hover {
-    color: #31768f !important;
+a:hover {
+    color: #31768f;
     text-decoration: underline;
 }
-.body a:active,
-.body a:focus {
+a:active,
+a:focus {
     color: #1a5a71 !important;
     text-decoration: underline;
 }
-.body a desactive {
+a desactive {
     color: #cdcdcd;
 }
 .body > div a:not(:empty)[target='_blank']::after {
@@ -381,12 +381,25 @@ a img {
     background: url('../img/lien-externe.svg') bottom right no-repeat;
     background-size: 15px;
 }
-.body ul {
+/*.body liste*/
+.body ul,
+.body ol {
     margin-inline-start: 0px;
     margin-bottom: 10px;
 }
+.body li {
+    text-align: left;
+    padding-bottom: 1rem;
+}
+.body li p {
+    padding: 0 !important;
+    text-align: initial !important;
+}
+.body li p:first-of-type {
+    margin: 0 !important;
+}
 /******************************/
-/*. body button links a.button*/
+/*.body button links a.button*/
 /******************************/
 button,
 .button {
@@ -484,6 +497,33 @@ a.button.cta2,
 * label {
     color: var(--text-main);
 }
+/********/
+/*modal*/
+/*******/
+.MuiPaper-root[role='dialog'] {
+    border-radius: 10px;
+}
+.MuiPaper-root[role='dialog'] * {
+    font-family: var(--font-texte);
+}
+.MuiPaper-root[role='dialog'] > *:not(div) {
+    background-color: var(--primary-main);
+    color: var(--contrast-light);
+    font-size: 2rem;
+    line-height: 2.9rem;
+    font-weight: 550;
+}
+.MuiPaper-root[role='dialog'] button svg {
+    width: 2rem;
+    height: 2rem;
+}
+.MuiPaper-root[role='dialog'] h3 {
+    font-family: var(--font-texte);
+    color: var(--primary-main);
+    font-size: 1.6rem;
+    line-height: 1.93rem;
+    font-weight: 550;
+}
 /***************/
 /* LODEX class */
 /***************/
@@ -511,84 +551,47 @@ span.property_label[style*='color: rgb(158, 158, 158)'] {
     padding: 0 !important;
     margin: 0 !important;
 }
+/*input search*/
+.searchbar-container .MuiOutlinedInput-root fieldset,
+.searchbar-container .MuiOutlinedInput-root fieldset:hover,
+.searchbar-container .MuiOutlinedInput-root fieldset:active,
+.searchbar-container .MuiOutlinedInput-root fieldset:focus {
+    border-color: var(--primary-main) !important;
+}
 /***************************/
 /* design Home             */
 /* .header-dataset-section */
 /***************************/
-/*.backZoneBTC*/
-.header-dataset-section {
-    background-color: var(--primary-main);
-    position: relative;
-    z-index: 2;
+/*marge si pas de breadcrumb-root*/
+.body div:last-child .dataset-characteristics > div:first-child {
+    margin-top: 3.5rem;
 }
-/*istex home promo en bas*/
-.backZoneSimple {
-    --height-backZoneSimple: 45rem;
-    --height-lodexZone: 3.7rem;
-    margin-bottom: 0;
-}
-.backZoneSimple .property_value_container * {
-    padding: 0;
-    margin: 0;
-}
-.backZoneSimple .property_value {
-    height: calc(var(--height-backZoneSimple) - 1rem);
-    width: 100%;
-}
-#backZoneContainer {
-    position: absolute;
-    bottom: var(--height-lodexZone);
-    left: 0;
-    width: 100% !important;
-    background-color: var(--primary-main);
-    background-image: url(../img/backZoneSimple.jpg);
-    background-position: center top;
-    background-color: var(--primary-main);
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-#backZoneContainer #backZoneTexte {
-    border: 0 !important;
-    height: var(--height-backZoneSimple);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 2%;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-#backZoneContainer #backZoneTexte *:not(h2) {
-    padding: 0 !important;
-    border: 0 !important;
-    width: max-content;
-    color: var(--secondary-contrast-text) !important;
-    font-weight: 400;
-    font-family: var(--font-titre);
-    font-size: 2rem;
-}
-#backZoneContainer #backZoneTexte h2 {
-    color: #c4d733;
-    font-size: 4.3rem;
-    margin: 2rem 2rem 5rem;
-    text-align: center !important;
-}
-#backZoneContainer #backZoneTexte div#surtitre {
-    font-size: 2rem;
-}
-#backZoneContainer #backZoneTexte div#url {
-    font-size: 3rem;
-}
-#backZoneContainer #backZoneTexte div#url a:hover {
-    font-weight: bold;
+.breadcrumb-root ~ div:last-child .dataset-characteristics > div:first-child {
+    margin-top: 0 !important;
 }
 /*propulsé lodex zutile*/
+.header-dataset-section {
+    /*background-color: var(--primary-main);
+    background-position-y: 0;
+    background-size: 100% 50px;*/
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(
+        to top,
+        var(--primary-main) 40px,
+        transparent 1px,
+        transparent
+    );
+}
 .header-dataset-section > div:last-child {
-    color: var(--contrast-light) !important;
-    text-align: right !important;
+    position: relative;
+    max-width: 1200px;
+    min-width: 360px;
+    margin: 0 auto;
     padding: 10px 30px !important;
-    height: var(--bottom-backZoneSimple);
+    background-color: var(--primary-main);
+    color: var(--contrast-light) !important;
+    text-align: right;
 }
 .header-dataset-section > div:last-child a {
     color: var(--contrast-light) !important;
@@ -600,202 +603,64 @@ span.property_label[style*='color: rgb(158, 158, 158)'] {
 .header-dataset-section > div:last-child a:focus {
     text-decoration: underline !important;
 }
-/*home content*/
-.dataset-characteristics {
-    background-color: var(--primary-light);
-}
-/**home zone gauche fond blanc casse + sidebar **/
-.dataset-characteristics > div {
-    justify-content: flex-start !important;
-    padding: 0 !important;
-}
-/*Home .blocPaveFonce*/
-.dataset-characteristics .blocPaveFonce {
-    flex: 2;
-    background-color: transparent !important;
-    padding-bottom: 50px;
-}
-.dataset-characteristics .blocPaveFonce,
-.dataset-characteristics .sidebarFonce {
-    width: auto !important;
-    padding-top: 100px !important;
-    margin-bottom: 0;
-}
-/*Home page index texte principal*/
-/* .blocPaveFonce*/
-.blocPaveFonce {
-    padding: 3rem 20px 70px 20px;
-}
-.blocPaveFonce .resources-grid-item {
-    width: 330px;
-    background-color: var(--contrast-light);
-    position: relative;
-}
-/*contents home label titre as h2*/
-.dataset-characteristics .blocPaveFonce .property_label {
-    font-size: 2.8rem !important;
-    line-height: 4rem;
-    font-weight: 700 !important;
-    color: var(--text-main) !important;
-    margin-block-end: 0.5rem;
-}
-.dataset-characteristics .resources-grid-content {
-    background-color: var(--contrast-light) !important;
-    padding: 0 !important;
-}
-/*a avec icone lien externe - tools explorer dataset
-.dataset-characteristics .resources-grid-content > div > a:last-child {
-    display: none;
-}*/
-.dataset-characteristics .resources-grid-content > div > a > div {
-    margin: 2rem;
-    height: 80px;
-    background: var(--contrast-light) url('../img/fleched.svg') no-repeat bottom
-        0rem right 1rem;
-}
-.dataset-characteristics
-    .resources-grid-content
-    > div
-    > a
-    .lodex-resource-contentTitle {
-    font-size: 1.6rem;
-    line-height: 2rem;
-    font-weight: 700;
-    color: var(--primary-main);
-    padding-bottom: 1rem;
-}
-.dataset-characteristics
-    .resources-grid-content
-    > div
-    > a
-    .lodex-resource-contentParagraph {
-    display: inline-block;
-    max-height: 32px;
-    overflow: hidden;
-    text-overflow: '...' !important;
-}
-.dataset-characteristics
-    .resources-grid-content
-    > div
-    > a
-    .lodex-resource-contentParagraph
-    + div {
-    display: inline-block;
-}
-/*OTDM css sidebar*/
-/*.sidebarFonce*/
-.sidebarFonce {
-    align-items: flex-start !important;
-    background-color: var(--primary-main);
-    padding: 3rem 3rem 1.5rem !important;
-    min-width: 280px !important;
-    max-width: 375px !important;
-}
-.sidebarClair {
-    align-items: flex-start !important;
-    background-color: transparent;
-    padding: 3rem 3rem 1.5rem !important;
-    min-width: 280px !important;
-    max-width: 375px !important;
-}
-/*sidebar + contents sidebar*/
-.dataset-characteristics > div > div.sidebarFonce {
-    flex: 1;
-    padding: 100px 30px 80px 30px !important;
-}
-/*.sidebar bloc + bloc champs composant*/
-.sidebarFonce > .property_value_container > div,
-.sidebarFonce > .property_value_container > div > div > div {
-    padding-left: 0 !important;
-    margin-left: 0 !important;
-    border-left: 0px !important;
-}
-/*.sidebarFonce contrast color text*/
-.sidebarFonce *:not(button, svg) {
-    color: var(--secondary-contrast-text) !important;
-}
-.sidebarFonce h2 {
-    margin-top: 0;
+/*home .property = bloc d'info*/
+.dataset-characteristics > div > div.property {
     margin-bottom: 3rem;
 }
-/*.sidebarFonce bloc champs composant*/
-.sidebarFonce > .property_value_container > div .property {
-    margin-bottom: 1.5rem;
+/*************************/
+/* design Home bottom    */
+/* full screen           */
+/* content fond et promo */
+/*************************/
+/*istex home promo*/
+/* galaxieIstex */
+.designHomeGalaxieIstex {
+    background-color: var(--neutral-dark-very-light);
 }
-.sidebarFonce > .property_value_container > div .property p {
-    padding: 0 !important;
-    margin: 0 !important;
+#design-home-galaxieIstex-container {
+    width: 100% !important;
+    background-image: url(../img/galaxie-istex-1.jpg);
+    background-image: url(../img/galaxie-istex.jpg);
+    background-image: url(../img/galaxie-istex-2.jpg);
+    background-position: center bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
-/*lien*/
-.sidebarFonce > .property_value_container > div .property a {
-    color: var(--secondary-contrast-text) !important;
-    text-decoration: underline;
+#design-home-galaxieIstex-container #design-home-galaxieIstex-texte {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    width: 100%;
+    height: 45rem;
+    max-width: 1920px;
+    margin: 0 auto;
 }
-.sidebarFonce > .property_value_container > div .property a:hover,
-.sidebarFonce > .property_value_container > div .property a:active,
-.sidebarFonce > .property_value_container > div .property a:focus {
-    color: var(--primary-contrast-text) !important;
-    text-decoration: underline;
+#design-home-galaxieIstex-texte * {
+    color: var(--secondary-contrast-text);
+    margin: 0;
 }
-/*lien externe*/
-.sidebarFonce
-    > .property_value_container
-    > div
-    .property
-    a[target='_blank']::after {
-    background: url('../img/lien-externe_blanc.svg') bottom right no-repeat;
-    background-size: 15px;
+#design-home-galaxieIstex-texte span#surtitre {
+    display: block;
+    font-weight: 400;
+    font-family: var(--font-titre);
+    font-size: 2rem;
+    line-height: 4rem;
 }
-/*a avec url en texte*/
-.sidebarFonce > .property_value_container > div .property a {
-    overflow-wrap: anywhere !important;
-    word-break: break-all !important;
-    hyphens: auto;
+#design-home-galaxieIstex-texte h2 {
+    text-align: center !important;
+    color: #c4d733;
+    font-size: 4.3rem;
+    line-height: 5.3rem;
 }
-/*Home tools explorter bouton en savoir plus*/
-.dataset-characteristics .sidebarFonce a.button.cta2 {
-    margin-top: 30px !important;
-    font-size: 16px;
-    line-height: 19px;
-    text-transform: uppercase;
+#design-home-galaxieIstex-texte div#texte {
+    font-size: 2rem;
+    line-height: 3rem;
 }
-/*tools explorer compteur la phrase*/
-/*futur  .compteur*/
-/*.dataset-characteristics
-    .sidebarFonce
-    > .property_value_container
-    div:first-child.property {
-    margin: 5rem 0;
-}*/
-.dataset-characteristics .sidebarFonce > .property_value_container .compteur {
-    margin: 5rem 0;
-}
-.sidebarFonce
-    > .property_value_container
-    div:first-child.property
-    .MuiBox-root
-    div {
-    display: inline !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-    line-height: 1.2rem;
-    text-align: left;
-}
-/*compteur nb outils .numberStroke*/
-.sidebarFonce > .property_value_container .compteur div.content {
-    font-family: var(--font-titre) !important;
-    font-size: 5rem !important;
-    font-weight: 700 !important;
-    line-height: 61px !important;
-    color: var(--primary-main) !important;
-    -webkit-text-stroke: 1px var(--secondary-contrast-text);
-    padding-right: 5px;
-    padding-left: 5px;
-}
-/*tools explorer img licence*/
-.dataset-characteristics .sidebarFonce img:last-child {
-    filter: opacity(90%);
+#design-home-galaxieIstex-texte div#url a {
+    font-size: 1.6rem;
+    line-height: 2rem;
 }
 /*****************************/
 /* .drawer .search-container */
@@ -810,7 +675,6 @@ span.property_label[style*='color: rgb(158, 158, 158)'] {
 .search-header {
     margin-bottom: 2rem !important;
 }
-/*.css-72bc2f*/
 .searchbar-container .MuiOutlinedInput-root.MuiInputBase-root,
 .searchbar-container .MuiOutlinedInput-root.MuiInputBase-root:hover,
 .searchbar-container .MuiOutlinedInput-root.MuiInputBase-root:active,
@@ -834,17 +698,26 @@ span.property_label[style*='color: rgb(158, 158, 158)'] {
     line-height: 1.2rem !important;
     margin: 3rem auto 1rem 1%;
 }
+/*contents sous search*/
+.graph-content,
+.search-content {
+    gap: 4%;
+}
+.graph-results,
+.search-results {
+    padding: 0 !important;
+    flex: 1;
+}
 /*facettes*/
 ul.MuiList-root.facets-list {
     display: flex;
     flex-direction: column;
-    background-color: var(--contrast-light);
+    background-color: var(--neutral-dark-very-light);
     border-radius: 4px;
     min-width: 370px !important;
     padding-bottom: 8px !important;
     padding-left: 8px !important;
     padding-right: 8px !important;
-    flex: 1.2 0 0%;
 }
 /*titre*/
 ul.MuiList-root.facets-list > li {
@@ -856,9 +729,9 @@ ul.MuiList-root.facets-list > li .MuiGrid-root.MuiGrid-container {
     margin: 12px 0px;
     padding: 0px 16px;
     /*min-height: 48px;*/
-    color: var(--primary-main) !important;
+    color: var(--neutral-dark-very-dark) !important;
     font-size: 1.4rem;
-    font-weight: 600;
+    font-weight: 400;
     justify-content: space-between !important;
 }
 ul.MuiList-root.facets-list > li .MuiGrid-root.MuiGrid-container svg {
@@ -881,30 +754,32 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
     line-height: 2rem !important;
 }
 .search-result-list-container {
-    grid-template-columns: repeat(2, 1fr);
     margin-top: 8px;
     margin-bottom: 8px;
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
     gap: 16px;
 }
-.search-result-list-container a {
+/*a.search-result-link*/
+.body .search-result-list-container a {
+    text-decoration: none;
     flex: 1;
     color: rgb(74, 74, 74);
     transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    border-radius: 4px;
+    border-radius: 5px;
     border: 1px solid var(--primary-main);
     overflow: hidden;
-    height: 100%;
-    background-color: var(--primary-light);
+    background-color: var(--neutral-dark-very-light);
     display: flex;
     flex-direction: column;
+    min-width: 48%;
 }
-.search-result-list-container a:hover,
+/*.search-result-list-container a:hover,
 .search-result-list-container a:focus,
 .search-result-list-container a:active {
     border: 1px solid #c4d733;
     background-color: #f9fbeb;
-}
+}*/
 .search-result-list-container a > div,
 .search-result-list-container a > div:hover,
 .search-result-list-container a > div:focus,
@@ -915,50 +790,64 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 /*****************/
 /*page resource*/
 /*general*/
-/*labels souligné*/
+/*donnees en noir*/
+.resource .detail .property_value_container .property_value_container * {
+    color: var(--text-main);
+}
+/*labels en noir et soulignes*/
 .resource
     .property
     .property_value_container
     .property
     .property_label_container
     > div {
-    border-bottom: 1px solid var(--neutral-dark-lighter);
     width: max-content;
 }
+.resource span.property_label[style*='color: rgb(158, 158, 158)'] {
+    color: var(--neutral-dark-very-dark) !important;
+}
 /*moins d'espace en hauteur*/
-.resource .detail .main-resource-section .property_value_container li {
-    padding: 0 0;
+.header-resource-section div:not(.property .property) {
+    margin-top: 0 !important;
+    margin-right: 0 !important;
+    margin-bottom: 0;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    border-left: 0 !important;
 }
-/*plus de largeur pour texte dans li*/
-.resource > .detail div.property p {
-    max-width: max-content !important;
+/*si header bloc infos composé*/
+.header-resource-section div.property .property {
+    margin-bottom: 0 !important;
+    flex: 1;
 }
-/*données en noir*/
-.resource .detail .property_value_container .property_value_container * {
-    color: var(--neutral-dark-very-dark);
+.header-resource-section
+    div.property:first-of-type
+    > div.property_value_container
+    > div
+    > div
+    > div {
+    justify-content: space-between;
+    border-left: 0 !important;
 }
 /*bloc header-resource-section*/
-/* bloc header label */
+.header-resource-section .property * {
+    color: var(--text-main);
+    padding-left: 1rem;
+}
+/* resource titre*/
 .header-resource-section
+    .property.format_title
+    > .property_value_container
     > div
     > div
-    > .property
-    > .property_label_container
-    span.property_label[style*='color: rgb(158, 158, 158)'] {
-    font-size: 1.4rem;
-    color: var(--primary-main) !important;
-    border-bottom: 1px solid var(--primary-main);
+    > *:first-child {
+    color: var(--text-main) !important;
+    padding-left: 1rem;
+    font-size: 3rem;
 }
 /*bloc header value titre champ compose*/
 .header-resource-section .property .property_value_container {
     flex: 1;
-}
-/* resource titre*/
-.header-resource-section .property h1 {
-    color: var(--text-main) !important;
-    margin: 0 !important;
-    padding-left: 1rem;
-    text-align: left;
 }
 /*bloc infos associees au titre*/
 .resource
@@ -973,77 +862,15 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
     margin-left: 0 !important;
     border-left: 0 !important;
 }
-/*tools definition*/
-.resource > .detail .header-resource-section h1 + div .ldpu {
-    flex: 1;
-}
 /*.main-resource-section*/
 .resource .detail .main-resource-section > div > div:first-child {
     justify-content: initial;
-}
-/*characteristiques = .blocFondClair*/
-.blocFondClair {
-    background-color: var(--primary-light);
-    padding: 3rem 3rem 1.5rem !important;
-    flex: 3;
-}
-/*.blocFondClair titre*/
-/* label titre as h2*/
-.blocFondClair .property_label_container {
-    margin-top: 0rem !important;
-}
-.blocFondClair > .property_label_container span.property_label {
-    font-size: 2.8rem !important;
-    line-height: 3.4rem;
-    font-weight: 700 !important;
-}
-.blocFondClair .property_value_container h2 {
-    margin-top: 0rem !important;
-}
-/*champs composés*/
-.blocFondClair .property_value_container > div > div > div {
-    margin-left: 0 !important;
-    border-left: 0px !important;
-    padding: 0 !important;
-    background-color: var(--primary-light);
-    gap: 2%;
-}
-.blocFondClair .property_value_container > div > div > div div.property {
-    flex: 1 1 30%;
-    background-color: var(--contrast-main);
-    padding: 1rem;
-    margin: 0.5rem auto;
-}
-.blocFondClair .property_value_container > div > div > div div.property li {
-    display: inline-block;
-    padding: 3px 8px !important;
-}
-.blocFondClair
-    .property_value_container
-    > div
-    > div
-    > div
-    div.property
-    li:not(:last-child)
-    > span::after {
-    content: ',';
-}
-/*en savoir + = .sidebarFonce*/
-/*ref bib = .blocExergue*/
-.blocExergue {
-    box-shadow:
-        10px 10px 20px rgb(133 133 133),
-        -2px 0px 2px -2px rgb(236 236 236);
-    padding: 3rem 5rem;
-    margin: 5rem 0;
-}
-.blocExergue p {
-    margin: 0 auto 1.5rem;
 }
 /*barre fonctionnelle*/
 .main-resource-section > div .MuiCardActions-root {
     margin-top: 5rem;
 }
+
 /*****************************/
 /* Responsive  ***************/
 /*****************************/

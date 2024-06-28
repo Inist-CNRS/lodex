@@ -60,3 +60,7 @@ stats.json
 ## Folder for precomputed files
 /precomputedData/*
 !/precomputedData/.gitkeep
+src/app/custom/themes/istex/css/istex-dev.css
+src/app/custom/themes/istex/css/save-13062024istex.css-
+src/app/custom/themes/istex/img/SVG
+src/app/custom/themes/istex/img/ICONO
