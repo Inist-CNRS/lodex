@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lodex</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <link rel="apple-touch-icon" sizes="180x180" href="<%= theme.current.href %>/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="<%= theme.current.href %>/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="<%= theme.current.href %>/favicon-16x16.png" />
+    <link rel="manifest" href="<%= theme.current.href %>/site.webmanifest" />
+    <link rel="mask-icon" href="<%= theme.current.href %>/safari-pinned-tab.svg" color="#ffc40d" />
+    <meta name="msapplication-TileColor" content="#ffc40d" />
+    <meta name="theme-color" content="#ffc40d" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+    <% if(custom.font.family){ %>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=<%= custom.font.family %>:700" />
+    <% } %>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:400,500" />
+    <link rel="stylesheet" href="<%= theme.current.href %>/css/styles.css" />
+    <style>
+    /* import palette */
+        <%=theme.cssVariable %>
+    /* import config theme color */    
+        <% if(custom.color) {%> 
+        :root {
+        --bgBody: <%= custom.color.bgBody %>;
+        --bgHeader: <%= custom.color.bgHeader %>;
+        --headerTitle: <%= custom.color.headerTitle %>;
+        --bgContent: <%= custom.color.bgContent %>;
+        --bgFacet: <%= custom.color.bgFacet %>;
+        --titles: <%= custom.color.titles %>;
+        --titleGraph: <%= custom.color.titleGraph %>;
+        --text: <%= custom.color.text %>;
+        --icon: <%= custom.color.icon %>;
+        --iconHover: <%= custom.color.iconHover %>;
+        --button: <%= custom.color.button %>;
+        --buttonHover: <%= custom.color.buttonHover %>;
+        --textContrast: <%= custom.color.textContrast %>;
+        --bgContrast: <%= custom.color.bgContrast %>;
+        --font-title: <%= custom.font.title %>;
+        --font-text: <%= custom.font.text %>;
+        }
+        <%}%>
+            
+    </style>
+</head>
+
+<body>
+    <header>
+        <div id="banner" class="container">
+            <div id="logos">
+                <a class="logo" href="<%= custom.logo.url %>" target="_blank">
+                    <img src="<%= custom.logo.file %>" alt="<%= custom.logo.alt %>" width="<%= custom.logo.size %>" />
+                </a>
+            </div>
+            <div>
+            <% if (custom.siteTitle ) { %>
+			    <h1><%= custom.siteTitle %></h1>
+            <% } %>
+            <% if (custom.summary) { %>
+			    <p><%= custom.summary %></p>
+            <% } %>
+            </div>
+        </div>
+    </header>
+    <div id="root" class="container"></div>
+    <script>
+        window.__PRELOADED_STATE__ = <%- lodex.preload %>;
+        window.__TENANT__ = '<%= lodex.tenant %>';
+        window.ISTEX_API_URL = '<%= lodex.istexApi %>';
+    </script>
+    <script src="<%= lodex.base.href %>/index.js"></script>
+</body>
+
+</html>

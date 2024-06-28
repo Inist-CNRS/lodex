@@ -1,0 +1,51 @@
+{
+    "version": "6",
+    "licence": "CeCILL",
+    "name": {
+        "fr": "voscouleurs",
+        "en": "yourcolors"
+    },
+    "description": {
+        "fr": "Theme personnalisable",
+        "en": "customizable Theme"
+    },
+    "configuration": {
+        "files": {
+            "index": "index.ejs",
+            "palette": ""
+        }
+    },
+    "variables": {
+        "siteTitle": "titre du site",
+        "summary": "promesse du site",
+        "logo": {
+            "file": "path vers le fichier du logo",
+            "alt": "nom de l'organisme",
+            "url": "url de l'organisme",
+            "size": "100"
+        },
+        "font": {
+            "family": "",
+            "title": ""
+        },
+        "color": {
+            "themePrimary": "",
+            "themeSecondary": "",
+            "themeRGBA": "",
+            "bgBody": "#fff",
+            "bgHeader": "",
+            "headerTitle": "",
+            "bgContent": "",
+            "bgFacet": "",
+            "titles": "",
+            "titleGraph": "",
+            "text": "",
+            "icon": "",
+            "iconHover": "",
+            "button": "",
+            "buttonHover": "",
+            "textContrast": "",
+            "bgContrast": ""
+        }
+    }
+}
