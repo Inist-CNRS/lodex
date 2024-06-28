@@ -1,4 +1,6 @@
 import { cleanWaitingJobsOfType, workerQueues } from '.';
+import { disableFusible } from '@ezs/core/lib/fusible';
+
 import { ERROR } from '../../common/progressStatus';
 import getLogger from '../services/logger';
 import progress from '../services/progress';
@@ -59,6 +61,9 @@ export const getWaitingJobs = async (tenant) => {
 
 export const cancelJob = async (ctx, jobType, subLabel = null) => {
     const activeJob = await getActiveJob(ctx.tenant);
+    if (activeJob.data.fusible) {
+        await disableFusible(activeJob.data.fusible);
+    }
     if (activeJob?.data?.jobType === jobType) {
         if (jobType === 'publisher') {
             await cleanWaitingJobsOfType(ctx.tenant, activeJob.data.jobType);
