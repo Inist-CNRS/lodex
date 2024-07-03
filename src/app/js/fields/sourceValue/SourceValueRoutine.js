@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import RoutineCatalog from '../wizard/RoutineCatalog';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { fromFields } from '../../sharedSelectors';
 import { loadField } from '../index';
 import { connect } from 'react-redux';
@@ -86,7 +86,7 @@ const SourceValueRoutine = ({
                 <RoutineCatalogAutocomplete
                     onChange={handleRoutineChange}
                     currentValue={routine}
-                    label={polyglot.t('routine_value')}
+                    label={polyglot.t('enter_a_routine_value')}
                 />
 
                 <Box style={{ marginLeft: '10px', height: '56px' }}>

@@ -63,7 +63,7 @@ const RoutineOption = ({ key, option, polyglot, ...props }) => {
                             <Box sx={{ display: 'flex', gap: '10px' }}>
                                 <ThumbUpIcon color="primary" />
                                 <Typography>
-                                    {option.recommendedWith.toString()}
+                                    {option.recommendedWith.join(', ')}
                                 </Typography>
                             </Box>
                         </Tooltip>
@@ -130,8 +130,15 @@ const RoutineCatalog = ({
     }, [precomputed]);
 
     useEffect(() => {
-        setValue(catalog.find((routine) => routine.url.includes(currentValue)));
-    }, [currentValue]);
+        setValue(
+            catalog.find(
+                (routine) =>
+                    typeof currentValue === 'string' &&
+                    currentValue.startsWith('/') &&
+                    routine.url.includes(currentValue),
+            ),
+        );
+    }, [currentValue, catalog]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -144,8 +151,14 @@ const RoutineCatalog = ({
 
     return (
         <Autocomplete
-            value={value}
+            value={value ?? null}
             onChange={handleChange}
+            isOptionEqualToValue={(option1, option2) => {
+                if (!option1 || !option2) {
+                    return false;
+                }
+                return option1.id === option2.id && option1.url === option2.url;
+            }}
             fullWidth
             options={catalog}
             groupBy={(option) => option.firstLetter}
