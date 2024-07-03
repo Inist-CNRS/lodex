@@ -11,6 +11,7 @@ import { loadField } from '../index';
 import { connect } from 'react-redux';
 import { getFieldForSpecificScope } from '../../../../common/scope';
 import SearchAutocomplete from '../../admin/Search/SearchAutocomplete';
+import RoutineCatalogAutocomplete from '../wizard/RoutineCatalogAutocomplete';
 
 const SourceValueRoutine = ({
     fields,
@@ -19,7 +20,6 @@ const SourceValueRoutine = ({
     p: polyglot,
 }) => {
     const [openRoutineCatalog, setOpenRoutineCatalog] = React.useState(false);
-    const [valueInput, setValueInput] = React.useState(value || '');
     const [routine, setRoutine] = React.useState('');
     const [routineArgs, setRoutineArgs] = React.useState([]);
     const [routineFields, setRoutineFields] = React.useState([]);
@@ -45,32 +45,29 @@ const SourceValueRoutine = ({
 
     React.useEffect(() => {
         if (!first) {
-            handleChange({
-                target: {
-                    value: [routine, ...routineArgs].join('/'),
+            const finalRoutine = [routine, ...routineArgs].join('/');
+            const transformers = [
+                {
+                    operation: 'ROUTINE',
+                    args: [
+                        {
+                            name: 'value',
+                            type: 'string',
+                            value: finalRoutine,
+                        },
+                    ],
                 },
-            });
+            ];
+            updateDefaultValueTransformers(transformers);
         } else {
             setFirst(false);
         }
     }, [routine, routineArgs]);
 
-    const handleChange = (event) => {
-        setValueInput(event.target.value);
-        const transformers = [
-            {
-                operation: 'ROUTINE',
-                args: [
-                    {
-                        name: 'value',
-                        type: 'string',
-                        value: event.target.value,
-                    },
-                ],
-            },
-        ];
-
-        updateDefaultValueTransformers(transformers);
+    const handleRoutineChange = (event) => {
+        setRoutine(event.target.value);
+        setRoutineFields([]);
+        setRoutineArgs([]);
     };
 
     const handleRoutineFieldsChange = (event, newValue) => {
@@ -86,13 +83,10 @@ const SourceValueRoutine = ({
                 display="flex"
                 alignItems="center"
             >
-                <TextField
-                    fullWidth
-                    placeholder={polyglot.t('enter_a_routine_value')}
+                <RoutineCatalogAutocomplete
+                    onChange={handleRoutineChange}
+                    currentValue={routine}
                     label={polyglot.t('routine_value')}
-                    value={routine}
-                    disabled
-                    aria-readonly
                 />
 
                 <Box style={{ marginLeft: '10px', height: '56px' }}>
@@ -109,7 +103,7 @@ const SourceValueRoutine = ({
                 <RoutineCatalog
                     isOpen={openRoutineCatalog}
                     handleClose={() => setOpenRoutineCatalog(false)}
-                    onChange={handleChange}
+                    onChange={handleRoutineChange}
                     currentValue={value}
                 />
             </Box>
@@ -122,27 +116,12 @@ const SourceValueRoutine = ({
             >
                 <SearchAutocomplete
                     testId="autocomplete_routine_args"
-                    translation={polyglot.t('search_in_fields')}
+                    translation={polyglot.t('routine_args')}
                     fields={fieldsResource}
                     onChange={handleRoutineFieldsChange}
                     value={routineFields}
                     multiple
                     clearText={polyglot.t('clear')}
-                />
-            </Box>
-
-            <Box
-                sx={{ width: '100%' }}
-                mt={1}
-                display="flex"
-                alignItems="center"
-            >
-                <TextField
-                    fullWidth
-                    placeholder={polyglot.t('enter_a_routine_value')}
-                    label={polyglot.t('routine_value')}
-                    onChange={handleChange}
-                    value={valueInput}
                 />
             </Box>
         </Box>
