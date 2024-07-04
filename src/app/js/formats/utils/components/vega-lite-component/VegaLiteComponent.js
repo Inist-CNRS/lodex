@@ -72,34 +72,37 @@ function CustomActionVegaLite({
             throw new Error('Invalid data injection type');
     }
 
-    return disableZoom ? (
-        <div>
+    return (
+        <>
             <style>{'#vg-tooltip-element {z-index:99999}'}</style>
-            <Vega
-                style={
-                    aspectRatio === ASPECT_RATIO_NONE
-                        ? { width: '100%' }
-                        : { width: '100%', aspectRatio }
-                }
-                spec={deepClone(specWithData)}
-                actions={actions}
-                mode="vega-lite"
-            />
-        </div>
-    ) : (
-        <ZoomableFormat>
-            <style> {'#vg-tooltip-element {z-index:99999}'}</style>
-            <Vega
-                style={
-                    aspectRatio === ASPECT_RATIO_NONE
-                        ? { width: '100%' }
-                        : { width: '100%', aspectRatio }
-                }
-                spec={deepClone(specWithData)}
-                actions={actions}
-                mode="vega-lite"
-            />
-        </ZoomableFormat>
+            {disableZoom ? (
+                <div>
+                    <Vega
+                        style={
+                            aspectRatio === ASPECT_RATIO_NONE
+                                ? { width: '100%' }
+                                : { width: '100%', aspectRatio }
+                        }
+                        spec={deepClone(specWithData)}
+                        actions={actions}
+                        mode="vega-lite"
+                    />
+                </div>
+            ) : (
+                <ZoomableFormat>
+                    <Vega
+                        style={
+                            aspectRatio === ASPECT_RATIO_NONE
+                                ? { width: '100%' }
+                                : { width: '100%', aspectRatio }
+                        }
+                        spec={deepClone(specWithData)}
+                        actions={actions}
+                        mode="vega-lite"
+                    />
+                </ZoomableFormat>
+            )}
+        </>
     );
 }
 
