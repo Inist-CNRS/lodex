@@ -10,6 +10,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Typography from '@mui/material/Typography';
 
 const FormatFieldSetPreview = ({
     p,
@@ -47,7 +48,7 @@ const FormatFieldSetPreview = ({
                 aria-controls="format-field-set-preview"
                 id="format-field-set-preview"
             >
-                {p.t('format_preview')}
+                <Typography>{p.t('format_preview')}</Typography>
             </AccordionSummary>
             <AccordionDetails>
                 {showDatasetsSelector ? (
