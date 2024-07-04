@@ -17,7 +17,14 @@ import ZoomableFormat from '../ZoomableFormat';
  * @param props args taken by the component
  * @returns {*} React-Vega component
  */
-function CustomActionVegaLite({ aspectRatio, user, spec, data, injectType }) {
+function CustomActionVegaLite({
+    aspectRatio,
+    user,
+    spec,
+    data,
+    injectType,
+    disableZoom,
+}) {
     let actions;
     if (isAdmin(user)) {
         actions = {
@@ -65,9 +72,23 @@ function CustomActionVegaLite({ aspectRatio, user, spec, data, injectType }) {
             throw new Error('Invalid data injection type');
     }
 
-    return (
-        <ZoomableFormat>
+    return disableZoom ? (
+        <div>
             <style>{'#vg-tooltip-element {z-index:99999}'}</style>
+            <Vega
+                style={
+                    aspectRatio === ASPECT_RATIO_NONE
+                        ? { width: '100%' }
+                        : { width: '100%', aspectRatio }
+                }
+                spec={deepClone(specWithData)}
+                actions={actions}
+                mode="vega-lite"
+            />
+        </div>
+    ) : (
+        <ZoomableFormat>
+            <style> {'#vg-tooltip-element {z-index:99999}'}</style>
             <Vega
                 style={
                     aspectRatio === ASPECT_RATIO_NONE
@@ -83,6 +104,7 @@ function CustomActionVegaLite({ aspectRatio, user, spec, data, injectType }) {
 }
 
 CustomActionVegaLite.defaultProps = {
+    disableZoom: false,
     aspectRatio: ASPECT_RATIO_NONE,
 };
 
@@ -91,6 +113,7 @@ CustomActionVegaLite.defaultProps = {
  * @type {{data: Requireable<any>, user: Requireable<any>, spec: Validator<NonNullable<any>>}}
  */
 CustomActionVegaLite.propTypes = {
+    disableZoom: PropTypes.bool,
     user: PropTypes.any,
     spec: PropTypes.any.isRequired,
     data: PropTypes.any,

@@ -9,6 +9,7 @@ import injectData from '../../injectData';
 import { field as fieldPropTypes } from '../../../propTypes';
 import ClusteredChart from './ClusteredChart';
 import { flip } from '../../utils/chartsUtils';
+import ZoomableFormat from '../../utils/components/ZoomableFormat';
 
 /**
  * Clustered chart view components use to render the chart with given parameters
@@ -39,29 +40,31 @@ const ClusteredChartView = ({ data, colors, xTitle, yTitle, flipAxis }) => {
 
     return (
         <div style={{ margin: '12px' }}>
-            <Grid
-                container
-                justifyContent="center"
-                rowSpacing={1}
-                columnSpacing={1}
-            >
-                {topics.map((topic) => (
-                    <Grid key={topic} item xs={6}>
-                        <Paper style={{ padding: '6px' }}>
-                            <ClusteredChart
-                                data={values}
-                                topic={topic}
-                                params={{
-                                    colors,
-                                    xTitle,
-                                    yTitle,
-                                    flipAxis,
-                                }}
-                            />
-                        </Paper>
-                    </Grid>
-                ))}
-            </Grid>
+            <ZoomableFormat>
+                <Grid
+                    container
+                    justifyContent="center"
+                    rowSpacing={1}
+                    columnSpacing={1}
+                >
+                    {topics.map((topic) => (
+                        <Grid key={topic} item xs={6}>
+                            <Paper style={{ padding: '6px' }}>
+                                <ClusteredChart
+                                    data={values}
+                                    topic={topic}
+                                    params={{
+                                        colors,
+                                        xTitle,
+                                        yTitle,
+                                        flipAxis,
+                                    }}
+                                />
+                            </Paper>
+                        </Grid>
+                    ))}
+                </Grid>
+            </ZoomableFormat>
         </div>
     );
 };

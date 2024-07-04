@@ -62,6 +62,7 @@ const ClusteredChart = ({ data, topic, params }) => {
                 values,
             }}
             injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+            disableZoom
         />
     );
 };
