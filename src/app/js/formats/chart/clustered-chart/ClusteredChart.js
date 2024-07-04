@@ -29,6 +29,7 @@ const ClusteredChart = ({ data, topic, params }) => {
             config: { legend: { disable: true } },
             title: topic,
             mark: 'bar',
+            background: null,
             encoding: {
                 y: {
                     field: flip(flipAxis, 'source', 'target'),
