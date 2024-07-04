@@ -124,9 +124,11 @@ const RoutineCatalog = ({
                 firstLetter: formatedFirstLetter,
             };
         });
-        return formatedRoutineCatalog.sort(
-            (a, b) => -b.firstLetter.localeCompare(a.firstLetter),
-        );
+        const sorter = new Intl.Collator(polyglot.currentLocale, {
+            numeric: true,
+            ignorePunctuation: true,
+        });
+        return formatedRoutineCatalog.sort(sorter.compare);
     }, [precomputed]);
 
     useEffect(() => {
@@ -136,7 +138,7 @@ const RoutineCatalog = ({
                     typeof currentValue === 'string' &&
                     currentValue.startsWith('/') &&
                     routine.url.includes(currentValue),
-            ),
+            ) ?? null,
         );
     }, [currentValue, catalog]);
 
@@ -151,7 +153,7 @@ const RoutineCatalog = ({
 
     return (
         <Autocomplete
-            value={value ?? null}
+            value={value}
             onChange={handleChange}
             isOptionEqualToValue={(option1, option2) => {
                 if (!option1 || !option2) {
