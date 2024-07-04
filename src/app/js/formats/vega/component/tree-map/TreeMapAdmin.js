@@ -12,7 +12,6 @@ import {
     FormatDataParamsFieldSet,
 } from '../../../utils/components/field-set/FormatFieldSets';
 import {
-    Box,
     FormControlLabel,
     FormGroup,
     MenuItem,
@@ -24,7 +23,11 @@ import {
 import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
-import { TreeMapSourceTargetWeight } from '../../../utils/dataSet';
+import {
+    StandardIdValue,
+    StandardSourceTargetWeight,
+    TreeMapSourceTargetWeight,
+} from '../../../utils/dataSet';
 import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import { TreeMapAdminView } from './TreeMapView';
@@ -35,6 +38,8 @@ export const defaultArgs = {
         maxSize: 5,
         orderBy: 'value/asc',
     },
+    hierarchy: true,
+    flatType: 'id/value',
     advancedMode: false,
     advancedModeSpec: null,
     tooltip: false,
@@ -58,6 +63,8 @@ const TreeMapAdmin = (props) => {
     } = props;
 
     const {
+        hierarchy,
+        flatType,
         advancedMode,
         advancedModeSpec,
         tooltip,
@@ -69,6 +76,16 @@ const TreeMapAdmin = (props) => {
         ratio,
         aspectRatio,
     } = args;
+
+    const dataset = useMemo(() => {
+        if (hierarchy) {
+            return TreeMapSourceTargetWeight;
+        }
+        if (flatType === 'id/value') {
+            return StandardIdValue;
+        }
+        return StandardSourceTargetWeight;
+    }, [hierarchy, flatType]);
 
     const colors = useMemo(() => {
         return args.colors || defaultArgs.colors;
@@ -85,8 +102,12 @@ const TreeMapAdmin = (props) => {
 
         const specBuilder = new TreeMap();
 
+        specBuilder.setHierarchy(hierarchy);
         specBuilder.setColors(colors.split(' '));
         specBuilder.setTooltip(tooltip);
+        specBuilder.setThirdTooltip(
+            hierarchy || (!hierarchy && flatType !== 'id/value'),
+        );
         specBuilder.setTooltipSource(tooltipSource);
         specBuilder.setTooltipTarget(tooltipTarget);
         specBuilder.setTooltipWeight(tooltipWeight);
@@ -111,7 +132,15 @@ const TreeMapAdmin = (props) => {
     };
 
     const toggleAdvancedMode = () => {
-        updateAdminArgs('advancedMode', !args.advancedMode, props);
+        updateAdminArgs('advancedMode', !advancedMode, props);
+    };
+
+    const toggleHierarchy = () => {
+        updateAdminArgs('hierarchy', !hierarchy, props);
+    };
+
+    const handleFlatType = (e) => {
+        updateAdminArgs('flatType', e.target.value, props);
     };
 
     const clearAdvancedModeSpec = () => {
@@ -183,6 +212,31 @@ const TreeMapAdmin = (props) => {
                         label={polyglot.t('advancedMode')}
                     />
                 </FormGroup>
+                <FormGroup>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={hierarchy}
+                                onChange={toggleHierarchy}
+                            />
+                        }
+                        label={polyglot.t('treemap_hierarchy_data')}
+                    />
+                </FormGroup>
+                {!hierarchy ? (
+                    <TextField
+                        fullWidth
+                        select
+                        label={polyglot.t('treemap_flat_data_type')}
+                        onChange={handleFlatType}
+                        value={flatType}
+                    >
+                        <MenuItem value="id/value">_id / value</MenuItem>
+                        <MenuItem value="source/target/weight">
+                            source / target / weight
+                        </MenuItem>
+                    </TextField>
+                ) : null}
                 {advancedMode ? (
                     <VegaAdvancedMode
                         value={spec}
@@ -199,7 +253,10 @@ const TreeMapAdmin = (props) => {
                             onValueTitleChange={handleTooltipTarget}
                             valueTitle={tooltipTarget}
                             polyglot={polyglot}
-                            thirdValue={true}
+                            thirdValue={
+                                hierarchy ||
+                                (!hierarchy && flatType !== 'id/value')
+                            }
                             onThirdValueChange={handleTooltipWeight}
                             thirdValueTitle={tooltipWeight}
                         />
@@ -261,7 +318,7 @@ const TreeMapAdmin = (props) => {
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={TreeMapAdminView}
-                datasets={[TreeMapSourceTargetWeight]}
+                datasets={[dataset]}
                 showDatasetsSelector={false}
             />
         </FormatGroupedFieldSet>
@@ -276,6 +333,8 @@ TreeMapAdmin.propTypes = {
             minValue: PropTypes.number,
             orderBy: PropTypes.string,
         }),
+        hierarchy: PropTypes.bool,
+        flatType: PropTypes.oneOf(['id/value', 'source/target/weight']),
         advancedMode: PropTypes.bool,
         advancedModeSpec: PropTypes.string,
         tooltip: PropTypes.bool,
