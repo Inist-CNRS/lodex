@@ -29,6 +29,7 @@ const ClusteredChart = ({ data, topic, params }) => {
             config: { legend: { disable: true } },
             title: topic,
             mark: 'bar',
+            background: null,
             encoding: {
                 y: {
                     field: flip(flipAxis, 'source', 'target'),
@@ -62,6 +63,7 @@ const ClusteredChart = ({ data, topic, params }) => {
                 values,
             }}
             injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
+            disableZoom
         />
     );
 };
