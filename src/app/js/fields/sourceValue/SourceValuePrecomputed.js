@@ -9,6 +9,7 @@ import { fromPrecomputed } from '../../admin/selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { Autocomplete, Box, Button, TextField } from '@mui/material';
 import { toast } from 'react-toastify';
+import RoutineCatalogAutocomplete from '../wizard/RoutineCatalogAutocomplete';
 
 const SourceValuePrecomputed = ({
     precomputedData,
@@ -97,14 +98,15 @@ const SourceValuePrecomputed = ({
                 )}
                 onChange={handleChangePrecomputed}
             />
+
             <Box display="flex" alignItems="center">
-                <TextField
-                    fullWidth
-                    placeholder={polyglot.t('enter_a_routine_value')}
-                    label={polyglot.t('routine_value')}
+                <RoutineCatalogAutocomplete
                     onChange={handleChangeRoutine}
-                    value={valueInput}
+                    currentValue={valueInput}
+                    label={polyglot.t('enter_a_routine_value')}
+                    precomputed
                 />
+
                 <Box style={{ marginLeft: '10px', height: '56px' }}>
                     <Button
                         variant="contained"
@@ -115,6 +117,7 @@ const SourceValuePrecomputed = ({
                         <ListAltIcon fontSize="medium" />
                     </Button>
                 </Box>
+
                 <RoutineCatalog
                     isOpen={openRoutineCatalog}
                     handleClose={() => setOpenRoutineCatalog(false)}
