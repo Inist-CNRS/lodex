@@ -1098,5 +1098,5 @@
 "ejs_variable_list"	"Data from a routine is displayed using an HTML template based on EJS syntax. You can use these variables to access data and utils:"	"L’affichage des données en provenance d’une routine est réalisé à l’aide d’un template HTML utilisant la syntaxe EJS. Vous pouvez utiliser ces variables pour accéder aux données et aux utilitaires :"
 "ejs_data"	"Variable containing the routine data"	"Variable contenant les données de la routine"
 "ejs_lodash"	"Variable containing the Lodash function"	"Variable contenant les fonctions de Lodash"
-"treemap_hierarchy_data"	"Hierarchy data"	"Donnée hiérarchique"
-"treemap_flat_data_type"	"Data struture"	"Struture des données"
+"treemap_hierarchy_data"	"Hierarchy data"	"Données hiérarchiques"
+"treemap_flat_data_type"	"Data structure"	"Structure des données"
