@@ -5,7 +5,7 @@ jest.mock('./progress', () => ({
     finish: jest.fn(),
     status: 'PENDING',
 }));
-describe.skip('import', () => {
+describe('import', () => {
     describe('startImport with file and automatic loader', () => {
         const stream = {
             pipe: jest.fn(),
