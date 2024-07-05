@@ -76,7 +76,7 @@ export const startImport = async (ctx) => {
         };
         fusible = await createFusible();
         await enableFusible(fusible);
-        if (ctx.job) {
+        if (ctx.job?.update) {
             ctx.job.update({
                 ...ctx.job.data,
                 fusible,
