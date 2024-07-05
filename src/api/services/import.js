@@ -76,10 +76,12 @@ export const startImport = async (ctx) => {
         };
         fusible = await createFusible();
         await enableFusible(fusible);
-        ctx.job.update({
-            ...ctx.job.data,
-            fusible,
-        });
+        if (ctx.job) {
+            ctx.job.update({
+                ...ctx.job.data,
+                fusible,
+            });
+        }
         let parseStream;
         if (customLoader) {
             loaderEnvironment.parser =
