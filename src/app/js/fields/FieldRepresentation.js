@@ -67,7 +67,7 @@ function FieldRepresentation({ field, shortMode = false, p: polyglot }) {
 }
 
 FieldRepresentation.propTypes = {
-    field: PropTypes.isRequired,
+    field: PropTypes.object.isRequired,
     shortMode: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
 };

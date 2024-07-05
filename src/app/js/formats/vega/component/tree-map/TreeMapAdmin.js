@@ -168,11 +168,7 @@ const TreeMapAdmin = (props) => {
     };
 
     const handleColors = (colors) => {
-        updateAdminArgs(
-            'colors',
-            colors.split(' ') || defaultArgs.colors,
-            props,
-        );
+        updateAdminArgs('colors', colors || defaultArgs.colors, props);
     };
 
     const handleLayout = (e) => {

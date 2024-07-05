@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { PROPOSED, VALIDATED, REJECTED } from '../../common/propositionStatus';
 
 export const polyglot = PropTypes.shape({
+    currentLocale: PropTypes.string.isRequired,
     t: PropTypes.func.isRequired,
 });
 
