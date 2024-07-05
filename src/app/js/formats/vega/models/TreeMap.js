@@ -9,7 +9,7 @@ class TreeMap extends BasicChartVG {
     constructor() {
         super();
         this.model = deepClone(treeMapModel);
-        this.hierarchy = true;
+        this.isHierarchy = true;
         this.layout = 'squarify';
         this.ratio = 2.0;
         this.colors = MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH.split(' ');
@@ -23,7 +23,7 @@ class TreeMap extends BasicChartVG {
     }
 
     setHierarchy(bool) {
-        this.hierarchy = bool;
+        this.isHierarchy = bool;
     }
 
     setLayout(newLayout) {
@@ -106,7 +106,7 @@ class TreeMap extends BasicChartVG {
                     markEntry.type === 'rect' &&
                     markEntry.from.data === 'leaves'
                 ) {
-                    if (this.hierarchy) {
+                    if (this.isHierarchy) {
                         const signal = ['{'];
                         signal.push(
                             `"${this.tooltip.source}": datum.hierarchy`,
@@ -123,11 +123,11 @@ class TreeMap extends BasicChartVG {
                         if (this.tooltip.third) {
                             const signal = ['{'];
                             signal.push(
-                                `"${this.tooltip.source}": datum.hierarchy.source`,
+                                `"${this.tooltip.source}": datum.original.source`,
                             );
                             signal.push(',');
                             signal.push(
-                                `"${this.tooltip.target}": datum.hierarchy.target`,
+                                `"${this.tooltip.target}": datum.original.target`,
                             );
                             signal.push(',');
                             signal.push(`"${this.tooltip.weight}": datum.size`);
@@ -156,7 +156,7 @@ class TreeMap extends BasicChartVG {
             }
         });
 
-        if (!this.hierarchy && !this.tooltip.third) {
+        if (!this.isHierarchy && !this.tooltip.third) {
             this.model.marks.forEach((markEntry) => {
                 if (markEntry.type === 'text') {
                     markEntry.from.data = 'leaves';
