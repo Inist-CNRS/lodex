@@ -137,7 +137,7 @@ const SystemLoad = () => {
             .then((response) => response.json())
             .then((data) => {
                 setLoadTitle(
-                    `Processeur : ${data.cpu} cœur - Utilisation ${Math.round(data.load * 100)}%`,
+                    `Processeur : utilisation ${Math.round(data.load * 100)}% - ${data.cpu} cœur${data.cpu === 1 ? '' : 's'}`,
                 );
                 setLoadAvg(data.load * 100);
 
