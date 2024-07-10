@@ -55,65 +55,59 @@ const colorGradient = (fadeFraction, rgbColor1, rgbColor2, rgbColor3) => {
     return `rgb(${red},${green},${blue})`;
 };
 
-const CircularProgressWithLabel = ({ value, title }) => {
+const CircularProgressWithLabel = ({ value }) => {
     return (
-        <Tooltip title={title}>
+        <Box
+            sx={{
+                marginTop: '8px',
+                position: 'relative',
+                display: 'inline-flex',
+            }}
+        >
+            <Box sx={{ position: 'relative' }}>
+                <CircularProgress
+                    sx={{
+                        transform: 'rotate(0.395turn) !important',
+                        color: '#e3e3e3',
+                    }}
+                    variant="determinate"
+                    value={70}
+                />
+                <CircularProgress
+                    sx={{
+                        transform: 'rotate(0.395turn) !important',
+                        position: 'absolute',
+                        left: 0,
+                        color: colorGradient(
+                            value / 100,
+                            greenColor,
+                            yellowColor,
+                            redColor,
+                        ),
+                    }}
+                    variant="determinate"
+                    color="secondary"
+                    value={(value * 70) / 100}
+                />
+            </Box>
+
             <Box
                 sx={{
-                    marginTop: '8px',
-                    position: 'relative',
-                    display: 'inline-flex',
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    right: 0,
+                    position: 'absolute',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                 }}
             >
-                <Box sx={{ position: 'relative' }}>
-                    <CircularProgress
-                        sx={{
-                            transform: 'rotate(0.395turn) !important',
-                            color: '#e3e3e3',
-                        }}
-                        variant="determinate"
-                        value={70}
-                    />
-                    <CircularProgress
-                        sx={{
-                            transform: 'rotate(0.395turn) !important',
-                            position: 'absolute',
-                            left: 0,
-                            color: colorGradient(
-                                value / 100,
-                                greenColor,
-                                yellowColor,
-                                redColor,
-                            ),
-                        }}
-                        variant="determinate"
-                        color="secondary"
-                        value={(value * 70) / 100}
-                    />
-                </Box>
-
-                <Box
-                    sx={{
-                        top: 0,
-                        left: 0,
-                        bottom: 0,
-                        right: 0,
-                        position: 'absolute',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <Typography
-                        variant="caption"
-                        component="div"
-                        color="inherit"
-                    >
-                        {`${Math.round(value)}%`}
-                    </Typography>
-                </Box>
+                <Typography variant="caption" component="div" color="inherit">
+                    {`${Math.round(value)}%`}
+                </Typography>
             </Box>
-        </Tooltip>
+        </Box>
     );
 };
 
@@ -124,7 +118,6 @@ CircularProgressWithLabel.propTypes = {
      * @default 0
      */
     value: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
 };
 
 const SystemLoad = () => {
@@ -144,9 +137,9 @@ const SystemLoad = () => {
             .then((response) => response.json())
             .then((data) => {
                 setLoadTitle(
-                    `${data.loadavg[0]}% / 1 min, ${data.loadavg[1]}% / 5 min, ${data.loadavg[2]}% / 15 min`,
+                    `Processeur : ${data.cpu} cœur - Utilisation ${Math.round(data.load * 100)}%`,
                 );
-                setLoadAvg(data.loadavg[0]);
+                setLoadAvg(data.load * 100);
 
                 const memPercent =
                     ((data.totalmem - data.freemem) / data.totalmem) * 100;
@@ -156,7 +149,7 @@ const SystemLoad = () => {
                 );
 
                 setMemUsage(memPercent);
-                setMemTile(`${useMem} / ${totalMen}`);
+                setMemTile(`Mémoire : ${useMem} / ${totalMen}`);
 
                 const storagePercent =
                     (data.database.use / data.database.total) * 100;
@@ -164,7 +157,7 @@ const SystemLoad = () => {
                 const useStorage = sizeConverter(data.database.use);
 
                 setStorageUsage(storagePercent);
-                setStorageTile(`${useStorage} / ${totalStorage}`);
+                setStorageTile(`Stockage : ${useStorage} / ${totalStorage}`);
             });
     };
 
@@ -173,11 +166,11 @@ const SystemLoad = () => {
         fetchSystemLoad();
     }, []);
 
-    // Fetch evey 5 seconds
+    // Fetch evey 2 seconds
     useEffect(() => {
         const timer = setInterval(() => {
             fetchSystemLoad();
-        }, 5000);
+        }, 2000);
         return () => {
             clearInterval(timer);
         };
@@ -185,60 +178,63 @@ const SystemLoad = () => {
 
     return (
         <>
-            <div
-                style={{
-                    position: 'relative',
-                }}
-            >
-                <MemoryIcon
-                    sx={{
-                        fontSize: '18px',
-                        position: 'absolute',
-                        zIndex: '10',
-                        bottom: '2px',
-                        left: '11px',
+            <Tooltip title={loadTitle}>
+                <div
+                    style={{
+                        position: 'relative',
                     }}
-                />
-                <CircularProgressWithLabel title={loadTitle} value={loadAvg} />
-            </div>
-            <div
-                style={{
-                    marginLeft: '8px',
-                    position: 'relative',
-                }}
-            >
-                <StorageIcon
-                    sx={{
-                        fontSize: '18px',
-                        position: 'absolute',
-                        zIndex: '10',
-                        bottom: '2px',
-                        left: '11px',
+                >
+                    <MemoryIcon
+                        sx={{
+                            fontSize: '18px',
+                            position: 'absolute',
+                            zIndex: '10',
+                            bottom: '2px',
+                            left: '11px',
+                        }}
+                    />
+                    <CircularProgressWithLabel value={loadAvg} />
+                </div>
+            </Tooltip>
+            <Tooltip title={memTitle}>
+                <div
+                    style={{
+                        marginLeft: '8px',
+                        position: 'relative',
                     }}
-                />
-                <CircularProgressWithLabel title={memTitle} value={memUsage} />
-            </div>
-            <div
-                style={{
-                    marginLeft: '8px',
-                    marginRight: '16px',
-                    position: 'relative',
-                }}
-            >
-                <SdStorageIcon
-                    sx={{
-                        fontSize: '18px',
-                        position: 'absolute',
-                        zIndex: '10',
-                        bottom: '2px',
-                        left: '11px',
+                >
+                    <StorageIcon
+                        sx={{
+                            fontSize: '18px',
+                            position: 'absolute',
+                            zIndex: '10',
+                            bottom: '2px',
+                            left: '11px',
+                        }}
+                    />
+                    <CircularProgressWithLabel value={memUsage} />
+                </div>
+            </Tooltip>
+            <Tooltip title={storageTitle}>
+                <div
+                    style={{
+                        marginLeft: '8px',
+                        marginRight: '16px',
+                        position: 'relative',
                     }}
-                />
-                <CircularProgressWithLabel
-                    title={storageTitle}
-                    value={storageUsage}
-                />
-            </div>
+                >
+                    <SdStorageIcon
+                        sx={{
+                            fontSize: '18px',
+                            position: 'absolute',
+                            zIndex: '10',
+                            bottom: '2px',
+                            left: '11px',
+                        }}
+                    />
+                    <CircularProgressWithLabel value={storageUsage} />
+                </div>
+            </Tooltip>
         </>
     );
 };

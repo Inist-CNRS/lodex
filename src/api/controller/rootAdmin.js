@@ -6,9 +6,9 @@ import { auth } from 'config';
 import { ObjectId } from 'mongodb';
 import { createWorkerQueue, deleteWorkerQueue } from '../workers';
 import {
-    ROOT_ROLE,
     checkForbiddenNames,
     checkNameTooLong,
+    ROOT_ROLE,
 } from '../../common/tools/tenantTools';
 import bullBoard from '../bullBoard';
 import { insertConfigTenant } from '../services/configTenant';
@@ -137,14 +137,40 @@ const deleteTenant = async (ctx) => {
     }
 };
 
+// https://stackoverflow.com/questions/36816181/get-view-memory-cpu-usage-via-nodejs
+// Initial value; wait at little amount of time before making a measurement.
+let timesBefore = os.cpus().map((c) => c.times);
+
+// Call this function periodically, e.g. using setInterval,
+function getAverageUsage() {
+    let timesAfter = os.cpus().map((c) => c.times);
+    let timeDeltas = timesAfter.map((t, i) => ({
+        user: t.user - timesBefore[i].user,
+        sys: t.sys - timesBefore[i].sys,
+        idle: t.idle - timesBefore[i].idle,
+    }));
+
+    timesBefore = timesAfter;
+
+    return (
+        timeDeltas
+            .map(
+                (times) =>
+                    1 - times.idle / (times.user + times.sys + times.idle),
+            )
+            .reduce((l1, l2) => l1 + l2) / timeDeltas.length
+    );
+}
+
 const systemInfo = async (ctx) => {
     const dbStats = await ctx.rootAdminDb.stats({ scale: 1024 });
     ctx.body = {
+        cpu: os.cpus().length,
+        load: getAverageUsage(),
         database: {
             total: dbStats.fsTotalSize,
             use: dbStats.fsUsedSize,
         },
-        loadavg: os.loadavg(),
         totalmem: os.totalmem(),
         freemem: os.freemem(),
     };
