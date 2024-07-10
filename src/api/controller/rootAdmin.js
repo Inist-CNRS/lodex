@@ -13,6 +13,7 @@ import {
 import bullBoard from '../bullBoard';
 import { insertConfigTenant } from '../services/configTenant';
 import mongoClient from '../services/mongoClient';
+import os from 'os';
 
 const app = new Koa();
 app.use(
@@ -136,10 +137,25 @@ const deleteTenant = async (ctx) => {
     }
 };
 
+const systemInfo = async (ctx) => {
+    const dbStats = await ctx.rootAdminDb.stats({ scale: 1024 });
+    ctx.body = {
+        database: {
+            total: dbStats.fsTotalSize,
+            use: dbStats.fsUsedSize,
+        },
+        loadavg: os.loadavg(),
+        totalmem: os.totalmem(),
+        freemem: os.freemem(),
+    };
+};
+
 app.use(route.get('/tenant', getTenant));
 app.use(route.post('/tenant', postTenant));
 app.use(route.put('/tenant/:id', putTenant));
 app.use(route.delete('/tenant', deleteTenant));
+
+app.use(route.get('/system', systemInfo));
 
 app.use(async (ctx) => {
     ctx.status = 404;
