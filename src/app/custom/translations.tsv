@@ -1100,5 +1100,5 @@
 "ejs_lodash"	"Variable containing the Lodash function"	"Variable contenant les fonctions de Lodash"
 "routine_args"	"Routine fields"	"Champs de la routine"
 "routine_arg"	"Field N°"	"Champ N°"
-"routine_arg_add"	"Add a new field"	"Ajouté un nouveau champ"
-"routine_arg_delete"	"Delete this field"	"Supprimé ce champ"
+"routine_arg_add"	"Add a new field"	"Ajouter un nouveau champ"
+"routine_arg_delete"	"Delete this field"	"Supprimer ce champ"
