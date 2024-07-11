@@ -143,13 +143,13 @@ const SystemLoad = () => {
 
                 const memPercent =
                     ((data.totalmem - data.freemem) / data.totalmem) * 100;
-                const totalMen = sizeConverter(data.totalmem / 1024);
+                const totalMem = sizeConverter(data.totalmem / 1024);
                 const useMem = sizeConverter(
                     (data.totalmem - data.freemem) / 1024,
                 );
 
                 setMemUsage(memPercent);
-                setMemTile(`Mémoire : ${useMem} / ${totalMen}`);
+                setMemTile(`Mémoire : ${useMem} / ${totalMem}`);
 
                 const storagePercent =
                     (data.database.use / data.database.total) * 100;
