@@ -462,6 +462,7 @@ const Tenants = ({ handleLogout }) => {
             />
 
             <DeleteTenantDialog
+                isOpen={!!openDeleteTenantDialog}
                 tenant={openDeleteTenantDialog}
                 handleClose={() => setOpenDeleteTenantDialog(false)}
                 deleteAction={deleteTenant}
