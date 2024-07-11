@@ -11,11 +11,27 @@ import {
     Box,
 } from '@mui/material';
 
+import { deburr } from 'lodash';
+
 import {
     checkForbiddenNames,
     forbiddenNamesMessage,
     getTenantMaxSize,
 } from '../../../common/tools/tenantTools';
+
+const cleanUpName = (name) => {
+    // We replace any accented and special char with the base letter or a dash
+    // https://stackoverflow.com/questions/36557202/replacing-special-characters-with-dashes
+
+    return deburr(name)
+        .replace(/\s+/g, '-')
+        .replace(/_/g, '-')
+        .replace(/\W+/g, '-')
+        .replace(/^-/, '')
+        .replace(/-$/, '')
+        .substring(0, getTenantMaxSize(window.__DBNAME__))
+        .toLowerCase();
+};
 
 const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
     const [name, setName] = useState('');
@@ -31,29 +47,7 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
     }, [isOpen]);
 
     const handleName = (event) => {
-        /**
-         * @type {string}
-         */
-        const newName = event.target.value;
-        // We replace any accented and special char with the base letter or a dash
-        // https://stackoverflow.com/questions/70287406/how-to-replace-all-accented-characters-with-english-equivalents
-        // https://stackoverflow.com/questions/36557202/replacing-special-characters-with-dashes
-        const nameWithoutAccentedCharacters = newName
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '');
-
-        const nameWithoutSpecialChar = nameWithoutAccentedCharacters
-            .replace(/\s+/g, '-')
-            .replace(/\W+(?!$)/g, '-');
-        let nameWithoutFirstLetterAsDash = nameWithoutSpecialChar;
-        if (nameWithoutSpecialChar.startsWith('-', 0)) {
-            nameWithoutFirstLetterAsDash = nameWithoutSpecialChar.substring(
-                1,
-                nameWithoutSpecialChar.length,
-            );
-        }
-        const nameInLowerCase = nameWithoutFirstLetterAsDash.toLowerCase();
-        setName(nameInLowerCase);
+        setName(cleanUpName(event.target.value));
     };
 
     const handleDescription = (event) => {
@@ -66,7 +60,7 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        createAction({ name, description, author });
+        createAction({ name: cleanUpName(name), description, author });
     };
 
     return (
