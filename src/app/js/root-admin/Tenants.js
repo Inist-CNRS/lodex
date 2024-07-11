@@ -456,6 +456,7 @@ const Tenants = ({ handleLogout }) => {
                 createAction={addTenant}
             />
             <UpdateTenantDialog
+                isOpen={!!tenantToUpdate}
                 tenant={tenantToUpdate}
                 handleClose={() => setTenantToUpdate(null)}
                 updateAction={updateTenant}
