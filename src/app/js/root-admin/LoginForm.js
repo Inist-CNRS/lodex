@@ -56,7 +56,7 @@ const LoginForm = () => {
             )}
             <form
                 onSubmit={handleSubmit}
-                sx={{
+                style={{
                     width: '100%',
                     display: 'flex',
                     flexDirection: 'column',
