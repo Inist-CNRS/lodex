@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
     Dialog,
@@ -21,6 +21,14 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [author, setAuthor] = useState('');
+
+    useEffect(() => {
+        if (isOpen) {
+            setName('');
+            setDescription('');
+            setAuthor('');
+        }
+    }, [isOpen]);
 
     const handleName = (event) => {
         /**
@@ -59,9 +67,6 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         createAction({ name, description, author });
-        setName('');
-        setDescription('');
-        setAuthor('');
     };
 
     return (
