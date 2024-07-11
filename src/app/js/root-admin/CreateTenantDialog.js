@@ -70,7 +70,13 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
     };
 
     return (
-        <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="md">
+        <Dialog
+            open={isOpen}
+            onClose={handleClose}
+            scroll="body"
+            maxWidth="md"
+            fullWidth
+        >
             <DialogTitle>Créer une nouvelle instance</DialogTitle>
             <DialogContent
                 sx={{
