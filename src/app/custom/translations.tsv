@@ -1099,5 +1099,8 @@
 "ejs_data"	"Variable containing the routine data"	"Variable contenant les données de la routine"
 "ejs_lodash"	"Variable containing the Lodash function"	"Variable contenant les fonctions de Lodash"
 "routine_args"	"Routine fields"	"Champs de la routine"
+"routine_arg"	"Field N°"	"Champ N°"
+"routine_arg_add"	"Add a new field"	"Ajouter un nouveau champ"
+"routine_arg_delete"	"Delete this field"	"Supprimer ce champ"
 "treemap_hierarchy_data"	"Hierarchy data"	"Données hiérarchiques"
 "treemap_flat_data_type"	"Data structure"	"Structure des données"

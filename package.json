@@ -3,7 +3,7 @@
         "node": ">= 16"
     },
     "name": "lodex",
-    "version": "14.0.56",
+    "version": "14.0.57",
     "description": "",
     "main": "src/api/index.js",
     "browser": {
@@ -74,7 +74,7 @@
         "@emotion/react": "11.7.1",
         "@emotion/styled": "11.6.0",
         "@ezs/analytics": "2.3.2",
-        "@ezs/basics": "2.7.0",
+        "@ezs/basics": "2.7.1",
         "@ezs/conditor": "2.12.1",
         "@ezs/core": "3.10.2",
         "@ezs/istex": "1.5.9",
