@@ -16,16 +16,12 @@ describe('RootAdmin', () => {
 
         // Create a new instance
         // Find button ajouter
-        cy.get('button')
-            .contains('Ajouter')
-            .click();
+        cy.get('button').contains('Ajouter').click();
         // Fill the form
         cy.get('input[id="tenant-name-field"]').type('tenant-1');
         cy.get('input[id="tenant-description-field"]').type('Description');
         cy.get('input[id="tenant-author-field"]').type('Author');
-        cy.get('button')
-            .contains('Créer')
-            .click();
+        cy.get('button').contains('Créer').click();
 
         // Should display the new instance with login form
         cy.visit('http://localhost:3000/instance/tenant-1/');
