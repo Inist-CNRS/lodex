@@ -28,7 +28,6 @@ const cleanUpName = (name) => {
         .replace(/_/g, '-')
         .replace(/\W+/g, '-')
         .replace(/^-/, '')
-        .replace(/-$/, '')
         .substring(0, getTenantMaxSize(window.__DBNAME__))
         .toLowerCase();
 };
