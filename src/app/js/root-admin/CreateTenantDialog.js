@@ -24,9 +24,7 @@ const cleanUpName = (name) => {
     // https://stackoverflow.com/questions/36557202/replacing-special-characters-with-dashes
 
     return deburr(name)
-        .replace(/\s+/g, '-')
-        .replace(/_/g, '-')
-        .replace(/\W+/g, '-')
+        .replace(/[\s_\W]+/g, '-')
         .replace(/^-/, '')
         .substring(0, getTenantMaxSize(window.__DBNAME__))
         .toLowerCase();
