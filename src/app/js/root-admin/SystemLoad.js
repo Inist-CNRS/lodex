@@ -141,23 +141,19 @@ const SystemLoad = () => {
                 );
                 setLoadAvg(data.load * 100);
 
-                const memPercent =
-                    ((data.totalmem - data.freemem) / data.totalmem) * 100;
-                const totalMem = sizeConverter(data.totalmem / 1024);
-                const useMem = sizeConverter(
-                    (data.totalmem - data.freemem) / 1024,
-                );
+                const totalMem = data.totalmem / 1024;
+                const usedMem = (data.totalmem - data.freemem) / 1024;
+                const memPercent = 100 * usedMem / totalMem;
 
                 setMemUsage(memPercent);
-                setMemTile(`Mémoire : ${useMem} / ${totalMem}`);
+                setMemTile(`Mémoire : ${sizeConverter(usedMem)} / ${sizeConverter(totalMem)}`);
 
-                const storagePercent =
-                    (data.database.use / data.database.total) * 100;
+                const storagePercent = 100 * data.database.use / data.database.total;
                 const totalStorage = sizeConverter(data.database.total);
-                const useStorage = sizeConverter(data.database.use);
+                const usedStorage = sizeConverter(data.database.use);
 
                 setStorageUsage(storagePercent);
-                setStorageTile(`Stockage : ${useStorage} / ${totalStorage}`);
+                setStorageTile(`Stockage : ${usedStorage} / ${totalStorage}`);
             });
     };
 
