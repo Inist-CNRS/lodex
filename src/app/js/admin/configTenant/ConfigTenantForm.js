@@ -28,6 +28,7 @@ import CancelButton from '../../lib/components/CancelButton';
 import { toast } from '../../../../common/tools/toast';
 import { loadConfigTenant } from '.';
 import { SaveAs } from '@mui/icons-material';
+import _ from 'lodash';
 
 const shake = keyframes`
 10%, 90% {
@@ -61,6 +62,7 @@ export const ConfigTenantForm = ({
     const [theme, setTheme] = useState('default');
     const [themes, setThemes] = useState([
         {
+            defaultVariables: {},
             name: {
                 fr: 'Classique',
                 en: 'Classic',
@@ -130,6 +132,27 @@ export const ConfigTenantForm = ({
     const handleConfigTenantChange = (newConfigTenant) => {
         setIsFormModified(true);
         setConfigTenant(newConfigTenant);
+    };
+
+    const handleThemeChange = (event) => {
+        setIsFormModified(true);
+        setTheme(event.target.value);
+
+        try {
+            const themeValue = themes.find(
+                (value) => value.value === event.target.value,
+            );
+
+            const clonedConfig = _.cloneDeep(JSON.parse(configTenant));
+
+            if (clonedConfig.front) {
+                clonedConfig.front.theme = themeValue.defaultVariables;
+            }
+
+            setConfigTenant(JSON.stringify(clonedConfig, null, 2));
+        } catch (_) {
+            /* empty */
+        }
     };
 
     return (
@@ -213,10 +236,7 @@ export const ConfigTenantForm = ({
                     width: 'min(505px, 100%)',
                 }}
                 sx={{ mb: 2 }}
-                onChange={(event) => {
-                    setIsFormModified(true);
-                    setTheme(event.target.value);
-                }}
+                onChange={handleThemeChange}
             >
                 {themes.map((t) => (
                     <MenuItem key={t.value} value={t.value}>
