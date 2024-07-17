@@ -23,6 +23,13 @@
     /* import palette */
         <%=theme.cssVariable %>
     /* import config theme color */    
+        <% if(custom.font) {%> 
+        :root {
+        --font-title: <%= custom.font.title %>;
+        --font-text: <%= custom.font.text %>;
+        }
+        <%}%>
+    /* import config theme color */    
         <% if(custom.color) {%> 
         :root {
         --bgBody: <%= custom.color.bgBody %>;
@@ -39,11 +46,8 @@
         --buttonHover: <%= custom.color.buttonHover %>;
         --textContrast: <%= custom.color.textContrast %>;
         --bgContrast: <%= custom.color.bgContrast %>;
-        --font-title: <%= custom.font.title %>;
-        --font-text: <%= custom.font.text %>;
         }
-        <%}%>
-            
+        <%}%>        
     </style>
 </head>
 

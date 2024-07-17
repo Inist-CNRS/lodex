@@ -1,24 +1,25 @@
 {
-  "version": "6",
-  "licence": "All Right Reserved",
-  "name": {
-    "fr": "ISTEX",
-    "en": "ISTEX"
-  },
-  "description": {
-    "fr": "Thème ISTEX (restreint)",
-    "en": "ISTEX theme (restricted)"
-  },
-  "configuration": {
-    "files": {
-      "index": "index.ejs",
-      "palette": "istexTheme.js"
+    "version": "6",
+    "licence": "All Right Reserved",
+    "name": {
+        "fr": "ISTEX",
+        "en": "ISTEX"
     },
-    "variables": {
-      "host": "/",
-      "title": "Services",
-      "summary": "Les technologies et les outils ISTEX pour les projets de recherche.",
-      "matomoID": "39"
+    "description": {
+        "fr": "Thème ISTEX (restreint)",
+        "en": "ISTEX theme (restricted)"
+    },
+    "configuration": {
+        "files": {
+            "index": "index.ejs",
+            "palette": "istexTheme.js"
+        },
+        "variables": {
+            "host": "/",
+            "title": "Services",
+            "summary": "Les technologies et les outils ISTEX pour les projets de recherche.",
+            "matomoID": "39",
+            "documentation": "https://github.com/Inist-CNRS/lodex/tree/master/src/app/custom/themes/istex#readme"
+        }
     }
-  }
 }
