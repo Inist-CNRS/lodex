@@ -141,8 +141,8 @@ const SystemLoad = () => {
                 );
                 setLoadAvg(data.load * 100);
 
-                const totalMem = data.totalmem / 1024;
-                const usedMem = (data.totalmem - data.freemem) / 1024;
+                const totalMem = data.totalmem;
+                const usedMem = data.totalmem - data.freemem;
                 const memPercent = (100 * usedMem) / totalMem;
 
                 setMemUsage(memPercent);

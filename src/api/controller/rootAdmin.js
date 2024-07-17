@@ -52,7 +52,7 @@ const getTenants = async (ctx, filter) => {
     for (const tenant of tenants) {
         const db = await mongoClient(tenant.name);
 
-        tenant.totalSize = (await db.stats({ scale: 1024 })).totalSize;
+        tenant.totalSize = (await db.stats()).totalSize;
 
         try {
             tenant.dataset = await db.collection('dataset').find().count();
@@ -163,7 +163,7 @@ function getAverageUsage() {
 }
 
 const systemInfo = async (ctx) => {
-    const dbStats = await ctx.rootAdminDb.stats({ scale: 1024 });
+    const dbStats = await ctx.rootAdminDb.stats();
     ctx.body = {
         cpu: os.cpus().length,
         load: getAverageUsage(),
