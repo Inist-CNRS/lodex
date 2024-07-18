@@ -29,11 +29,11 @@
                 <span class="inist">Institut de l'information scientifique et technique</span>
             </a>
         </div>
+            <% if (custom.siteTitle ) { %>
         <h1 id="titre_lodex" class="bl3">
-            <a href="<%= theme.base.href %>">
-                <%= custom.title %>
-            </a>
+            <a href="/instance/<%= lodex.tenant %>"><%= custom.siteTitle %></a>
         </h1>
+            <% } %>
     </div>
 </header>
 <div id="root" class="container"></div>
