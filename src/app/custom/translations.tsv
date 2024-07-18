@@ -1102,3 +1102,5 @@
 "routine_arg"	"Field N°"	"Champ N°"
 "routine_arg_add"	"Add a new field"	"Ajouter un nouveau champ"
 "routine_arg_delete"	"Delete this field"	"Supprimer ce champ"
+"label_format_fullscreen"	"Full screen"	"plein écran"
+"label_format_size"	"Size"	"Taille"
