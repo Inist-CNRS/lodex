@@ -52,7 +52,7 @@ const MarkdownModalView = ({
     return (
         <div className={className}>
             <Button onClick={handleClickOpen}>{buttonLabel}</Button>
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
                 <DialogTitle>{buttonLabel}</DialogTitle>
                 <IconButton
                     aria-label="close"
