@@ -52,6 +52,7 @@ export const ConfigTenantForm = ({
     history,
     onLoadConfigTenant,
 }) => {
+    const [initialConfig, setInitialConfig] = useState('');
     const [configTenant, setConfigTenant] = useState('');
     const [enableAutoPublication, setEnableAutoPublication] = useState(false);
     const [userAuth, setUserAuth] = useState({});
@@ -61,6 +62,7 @@ export const ConfigTenantForm = ({
     const [theme, setTheme] = useState('default');
     const [themes, setThemes] = useState([
         {
+            defaultVariables: {},
             name: {
                 fr: 'Classique',
                 en: 'Classic',
@@ -88,6 +90,7 @@ export const ConfigTenantForm = ({
             delete response.theme;
 
             const stringified = JSON.stringify(response, null, 2);
+            setInitialConfig(stringified);
             setConfigTenant(stringified);
 
             const themesResponse = await getConfigTenantAvailableTheme();
@@ -130,6 +133,39 @@ export const ConfigTenantForm = ({
     const handleConfigTenantChange = (newConfigTenant) => {
         setIsFormModified(true);
         setConfigTenant(newConfigTenant);
+    };
+
+    const handleThemeChange = (event) => {
+        setIsFormModified(true);
+        setTheme(event.target.value);
+
+        try {
+            const themeValue = themes.find(
+                (value) => value.value === event.target.value,
+            );
+
+            try {
+                const parsedConfig = JSON.parse(configTenant);
+
+                if (parsedConfig.front) {
+                    parsedConfig.front.theme = themeValue.defaultVariables;
+                }
+
+                setConfigTenant(JSON.stringify(parsedConfig, null, 2));
+            } catch (_) {
+                // If we can't parse the actual config fallback to the initial
+
+                const parsedConfig = JSON.parse(initialConfig);
+
+                if (parsedConfig.front) {
+                    parsedConfig.front.theme = themeValue.defaultVariables;
+                }
+
+                setConfigTenant(JSON.stringify(parsedConfig, null, 2));
+            }
+        } catch (_) {
+            /* empty */
+        }
     };
 
     return (
@@ -213,10 +249,7 @@ export const ConfigTenantForm = ({
                     width: 'min(505px, 100%)',
                 }}
                 sx={{ mb: 2 }}
-                onChange={(event) => {
-                    setIsFormModified(true);
-                    setTheme(event.target.value);
-                }}
+                onChange={handleThemeChange}
             >
                 {themes.map((t) => (
                     <MenuItem key={t.value} value={t.value}>
