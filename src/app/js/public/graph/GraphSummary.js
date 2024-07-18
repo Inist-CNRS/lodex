@@ -38,7 +38,7 @@ const styles = stylesToClassname(
             color: 'var(--primary-main)',
             cursor: 'pointer',
             userSelect: 'none',
-            textTransform: 'capitalize',
+            textTransform: 'none',
             ':hover': {
                 textDecoration: 'none',
                 fill: 'var(--info-main)',
@@ -62,7 +62,7 @@ const styles = stylesToClassname(
             padding: 10,
             justifyContent: 'center',
             userSelect: 'none',
-            textTransform: 'capitalize',
+            textTransform: 'none',
             '@media (min-width: 768px)': {
                 width: 160,
                 height: 160,
