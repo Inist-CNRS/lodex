@@ -28,7 +28,6 @@ import CancelButton from '../../lib/components/CancelButton';
 import { toast } from '../../../../common/tools/toast';
 import { loadConfigTenant } from '.';
 import { SaveAs } from '@mui/icons-material';
-import _ from 'lodash';
 
 const shake = keyframes`
 10%, 90% {
@@ -53,6 +52,7 @@ export const ConfigTenantForm = ({
     history,
     onLoadConfigTenant,
 }) => {
+    const [initialConfig, setInitialConfig] = useState('');
     const [configTenant, setConfigTenant] = useState('');
     const [enableAutoPublication, setEnableAutoPublication] = useState(false);
     const [userAuth, setUserAuth] = useState({});
@@ -90,6 +90,7 @@ export const ConfigTenantForm = ({
             delete response.theme;
 
             const stringified = JSON.stringify(response, null, 2);
+            setInitialConfig(stringified);
             setConfigTenant(stringified);
 
             const themesResponse = await getConfigTenantAvailableTheme();
@@ -143,13 +144,25 @@ export const ConfigTenantForm = ({
                 (value) => value.value === event.target.value,
             );
 
-            const clonedConfig = _.cloneDeep(JSON.parse(configTenant));
+            try {
+                const parsedConfig = JSON.parse(configTenant);
 
-            if (clonedConfig.front) {
-                clonedConfig.front.theme = themeValue.defaultVariables;
+                if (parsedConfig.front) {
+                    parsedConfig.front.theme = themeValue.defaultVariables;
+                }
+
+                setConfigTenant(JSON.stringify(parsedConfig, null, 2));
+            } catch (_) {
+                // If we can't parse the actual config fallback to the initial
+
+                const parsedConfig = JSON.parse(initialConfig);
+
+                if (parsedConfig.front) {
+                    parsedConfig.front.theme = themeValue.defaultVariables;
+                }
+
+                setConfigTenant(JSON.stringify(parsedConfig, null, 2));
             }
-
-            setConfigTenant(JSON.stringify(clonedConfig, null, 2));
         } catch (_) {
             /* empty */
         }
